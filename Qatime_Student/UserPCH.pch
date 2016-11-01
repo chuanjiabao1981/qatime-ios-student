@@ -1,0 +1,23 @@
+//
+//  UserPCH.pch
+//  Qatime_Student
+//
+//  Created by Shin on 2016/10/31.
+//  Copyright © 2016年 WWTD. All rights reserved.
+//
+
+#ifndef UserPCH_pch
+#define UserPCH_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* UserPCH_pch */
+
+
+#import "SDAutoLayout.h"
+#import "AFNetworking.h"
+
+
+/* 全局绿色*/
+#define USERGREEN  [UIColor colorWithRed:26/255.0 green:183/255.0 blue:159/255.0 alpha:1.0]

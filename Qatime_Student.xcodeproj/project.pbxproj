@@ -1,0 +1,799 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C207D1DC6F66B0086B04B /* IndexPageViewController.m */; };
+		543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20801DC6F6B00086B04B /* TutoriumViewController.m */; };
+		543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20831DC6F6BE0086B04B /* ClassTimeViewController.m */; };
+		543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20861DC703CA0086B04B /* PersonalViewController.m */; };
+		544C15121DC73ADA00F59F86 /* selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 544C15111DC73ADA00F59F86 /* selected.png */; };
+		544C15141DC7414000F59F86 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 544C15131DC7414000F59F86 /* back.png */; };
+		546978561DC723B5001695F4 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546978551DC723B5001695F4 /* LoginViewController.m */; };
+		546978591DC723BD001695F4 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 546978581DC723BD001695F4 /* LoginView.m */; };
+		5469785C1DC72524001695F4 /* WechatIMG2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5469785B1DC72524001695F4 /* WechatIMG2.png */; };
+		5469785F1DC72534001695F4 /* account.png in Resources */ = {isa = PBXBuildFile; fileRef = 5469785D1DC72534001695F4 /* account.png */; };
+		546978601DC72534001695F4 /* bags.png in Resources */ = {isa = PBXBuildFile; fileRef = 5469785E1DC72534001695F4 /* bags.png */; };
+		546978641DC725A5001695F4 /* NavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 546978631DC725A5001695F4 /* NavigationBar.m */; };
+		546978691DC72A42001695F4 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546978681DC72A42001695F4 /* SignUpViewController.m */; };
+		5469786C1DC72A54001695F4 /* SignUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5469786B1DC72A54001695F4 /* SignUpView.m */; };
+		549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A050C1DC8396800B3564D /* SignUpInfoViewController.m */; };
+		549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A050F1DC8398300B3564D /* SignUpInfoView.m */; };
+		549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05141DC86EBB00B3564D /* HcdDateTimePickerView.m */; };
+		549A051A1DC86EBB00B3564D /* MXSCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05161DC86EBB00B3564D /* MXSCycleScrollView.m */; };
+		549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05181DC86EBB00B3564D /* UIColor+HcdCustom.m */; };
+		549A051E1DC892E500B3564D /* GradeList.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A051D1DC892E500B3564D /* GradeList.m */; };
+		549A05221DC89B0100B3564D /* MMPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05211DC89B0100B3564D /* MMPickerView.m */; };
+		54A153AA1DC6F09D0070B508 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153A91DC6F09D0070B508 /* main.m */; };
+		54A153AD1DC6F09D0070B508 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153AC1DC6F09D0070B508 /* AppDelegate.m */; };
+		54A153B01DC6F09D0070B508 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153AF1DC6F09D0070B508 /* ViewController.m */; };
+		54A153B51DC6F09D0070B508 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54A153B41DC6F09D0070B508 /* Assets.xcassets */; };
+		54A153B81DC6F09D0070B508 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54A153B61DC6F09D0070B508 /* LaunchScreen.storyboard */; };
+		54A153C31DC6F09E0070B508 /* Qatime_StudentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153C21DC6F09E0070B508 /* Qatime_StudentTests.m */; };
+		54A153CE1DC6F09E0070B508 /* Qatime_StudentUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153CD1DC6F09E0070B508 /* Qatime_StudentUITests.m */; };
+		7CBC5A24BDBE6078BA97A9A3 /* libPods-Qatime_Student.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0908EB8F55388D2CA5802D18 /* libPods-Qatime_Student.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		54A153BF1DC6F09E0070B508 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 54A1539D1DC6F09D0070B508 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 54A153A41DC6F09D0070B508;
+			remoteInfo = Qatime_Student;
+		};
+		54A153CA1DC6F09E0070B508 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 54A1539D1DC6F09D0070B508 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 54A153A41DC6F09D0070B508;
+			remoteInfo = Qatime_Student;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0908EB8F55388D2CA5802D18 /* libPods-Qatime_Student.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Qatime_Student.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		543C207C1DC6F66B0086B04B /* IndexPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexPageViewController.h; sourceTree = "<group>"; };
+		543C207D1DC6F66B0086B04B /* IndexPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexPageViewController.m; sourceTree = "<group>"; };
+		543C207F1DC6F6B00086B04B /* TutoriumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumViewController.h; sourceTree = "<group>"; };
+		543C20801DC6F6B00086B04B /* TutoriumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutoriumViewController.m; sourceTree = "<group>"; };
+		543C20821DC6F6BE0086B04B /* ClassTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassTimeViewController.h; sourceTree = "<group>"; };
+		543C20831DC6F6BE0086B04B /* ClassTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassTimeViewController.m; sourceTree = "<group>"; };
+		543C20851DC703CA0086B04B /* PersonalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalViewController.h; sourceTree = "<group>"; };
+		543C20861DC703CA0086B04B /* PersonalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalViewController.m; sourceTree = "<group>"; };
+		544C15111DC73ADA00F59F86 /* selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selected.png; sourceTree = "<group>"; };
+		544C15131DC7414000F59F86 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
+		546978541DC723B5001695F4 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		546978551DC723B5001695F4 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		546978571DC723BD001695F4 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
+		546978581DC723BD001695F4 /* LoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginView.m; sourceTree = "<group>"; };
+		5469785B1DC72524001695F4 /* WechatIMG2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WechatIMG2.png; sourceTree = "<group>"; };
+		5469785D1DC72534001695F4 /* account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account.png; sourceTree = "<group>"; };
+		5469785E1DC72534001695F4 /* bags.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bags.png; sourceTree = "<group>"; };
+		546978621DC725A5001695F4 /* NavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationBar.h; sourceTree = "<group>"; };
+		546978631DC725A5001695F4 /* NavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationBar.m; sourceTree = "<group>"; };
+		546978651DC726B3001695F4 /* UserPCH.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserPCH.pch; sourceTree = "<group>"; };
+		546978671DC72A42001695F4 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
+		546978681DC72A42001695F4 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
+		5469786A1DC72A54001695F4 /* SignUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpView.h; sourceTree = "<group>"; };
+		5469786B1DC72A54001695F4 /* SignUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpView.m; sourceTree = "<group>"; };
+		549A050B1DC8396800B3564D /* SignUpInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpInfoViewController.h; sourceTree = "<group>"; };
+		549A050C1DC8396800B3564D /* SignUpInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpInfoViewController.m; sourceTree = "<group>"; };
+		549A050E1DC8398300B3564D /* SignUpInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpInfoView.h; sourceTree = "<group>"; };
+		549A050F1DC8398300B3564D /* SignUpInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpInfoView.m; sourceTree = "<group>"; };
+		549A05131DC86EBB00B3564D /* HcdDateTimePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HcdDateTimePickerView.h; sourceTree = "<group>"; };
+		549A05141DC86EBB00B3564D /* HcdDateTimePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HcdDateTimePickerView.m; sourceTree = "<group>"; };
+		549A05151DC86EBB00B3564D /* MXSCycleScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXSCycleScrollView.h; sourceTree = "<group>"; };
+		549A05161DC86EBB00B3564D /* MXSCycleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXSCycleScrollView.m; sourceTree = "<group>"; };
+		549A05171DC86EBB00B3564D /* UIColor+HcdCustom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HcdCustom.h"; sourceTree = "<group>"; };
+		549A05181DC86EBB00B3564D /* UIColor+HcdCustom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HcdCustom.m"; sourceTree = "<group>"; };
+		549A051C1DC892E500B3564D /* GradeList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradeList.h; sourceTree = "<group>"; };
+		549A051D1DC892E500B3564D /* GradeList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradeList.m; sourceTree = "<group>"; };
+		549A05201DC89B0100B3564D /* MMPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMPickerView.h; sourceTree = "<group>"; };
+		549A05211DC89B0100B3564D /* MMPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMPickerView.m; sourceTree = "<group>"; };
+		54A153A51DC6F09D0070B508 /* Qatime_Student.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Qatime_Student.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		54A153A91DC6F09D0070B508 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		54A153AB1DC6F09D0070B508 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		54A153AC1DC6F09D0070B508 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		54A153AE1DC6F09D0070B508 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		54A153AF1DC6F09D0070B508 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		54A153B41DC6F09D0070B508 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		54A153B71DC6F09D0070B508 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		54A153B91DC6F09D0070B508 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		54A153BE1DC6F09E0070B508 /* Qatime_StudentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Qatime_StudentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		54A153C21DC6F09E0070B508 /* Qatime_StudentTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Qatime_StudentTests.m; sourceTree = "<group>"; };
+		54A153C41DC6F09E0070B508 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		54A153C91DC6F09E0070B508 /* Qatime_StudentUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Qatime_StudentUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		54A153CD1DC6F09E0070B508 /* Qatime_StudentUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Qatime_StudentUITests.m; sourceTree = "<group>"; };
+		54A153CF1DC6F09E0070B508 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E753843DEA9CDD394DEEC1C /* Pods-Qatime_Student.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qatime_Student.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Qatime_Student/Pods-Qatime_Student.debug.xcconfig"; sourceTree = "<group>"; };
+		DCA0893E028DF6D78D3599A3 /* Pods-Qatime_Student.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qatime_Student.release.xcconfig"; path = "Pods/Target Support Files/Pods-Qatime_Student/Pods-Qatime_Student.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		54A153A21DC6F09D0070B508 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7CBC5A24BDBE6078BA97A9A3 /* libPods-Qatime_Student.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54A153BB1DC6F09E0070B508 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54A153C61DC6F09E0070B508 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		543C20791DC6F6450086B04B /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				546978611DC7258B001695F4 /* 注册页面 */,
+				546978531DC723A2001695F4 /* 登录页面 */,
+				543C207C1DC6F66B0086B04B /* IndexPageViewController.h */,
+				543C207D1DC6F66B0086B04B /* IndexPageViewController.m */,
+				543C207F1DC6F6B00086B04B /* TutoriumViewController.h */,
+				543C20801DC6F6B00086B04B /* TutoriumViewController.m */,
+				543C20821DC6F6BE0086B04B /* ClassTimeViewController.h */,
+				543C20831DC6F6BE0086B04B /* ClassTimeViewController.m */,
+				543C20851DC703CA0086B04B /* PersonalViewController.h */,
+				543C20861DC703CA0086B04B /* PersonalViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		543C207A1DC6F6470086B04B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				546978621DC725A5001695F4 /* NavigationBar.h */,
+				546978631DC725A5001695F4 /* NavigationBar.m */,
+				546978661DC72A16001695F4 /* 注册页面 */,
+				5469785A1DC723CA001695F4 /* 登录页面View */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		543C207B1DC6F6480086B04B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				549A051C1DC892E500B3564D /* GradeList.h */,
+				549A051D1DC892E500B3564D /* GradeList.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		546978531DC723A2001695F4 /* 登录页面 */ = {
+			isa = PBXGroup;
+			children = (
+				546978541DC723B5001695F4 /* LoginViewController.h */,
+				546978551DC723B5001695F4 /* LoginViewController.m */,
+			);
+			name = "登录页面";
+			sourceTree = "<group>";
+		};
+		5469785A1DC723CA001695F4 /* 登录页面View */ = {
+			isa = PBXGroup;
+			children = (
+				546978571DC723BD001695F4 /* LoginView.h */,
+				546978581DC723BD001695F4 /* LoginView.m */,
+			);
+			name = "登录页面View";
+			sourceTree = "<group>";
+		};
+		546978611DC7258B001695F4 /* 注册页面 */ = {
+			isa = PBXGroup;
+			children = (
+				546978671DC72A42001695F4 /* SignUpViewController.h */,
+				546978681DC72A42001695F4 /* SignUpViewController.m */,
+				549A050B1DC8396800B3564D /* SignUpInfoViewController.h */,
+				549A050C1DC8396800B3564D /* SignUpInfoViewController.m */,
+			);
+			name = "注册页面";
+			sourceTree = "<group>";
+		};
+		546978661DC72A16001695F4 /* 注册页面 */ = {
+			isa = PBXGroup;
+			children = (
+				5469786A1DC72A54001695F4 /* SignUpView.h */,
+				5469786B1DC72A54001695F4 /* SignUpView.m */,
+				549A050E1DC8398300B3564D /* SignUpInfoView.h */,
+				549A050F1DC8398300B3564D /* SignUpInfoView.m */,
+			);
+			name = "注册页面";
+			sourceTree = "<group>";
+		};
+		549A05121DC86EBB00B3564D /* HcdDateTimePicker */ = {
+			isa = PBXGroup;
+			children = (
+				549A05131DC86EBB00B3564D /* HcdDateTimePickerView.h */,
+				549A05141DC86EBB00B3564D /* HcdDateTimePickerView.m */,
+				549A05151DC86EBB00B3564D /* MXSCycleScrollView.h */,
+				549A05161DC86EBB00B3564D /* MXSCycleScrollView.m */,
+				549A05171DC86EBB00B3564D /* UIColor+HcdCustom.h */,
+				549A05181DC86EBB00B3564D /* UIColor+HcdCustom.m */,
+			);
+			path = HcdDateTimePicker;
+			sourceTree = "<group>";
+		};
+		549A051F1DC89B0100B3564D /* MMPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				549A05201DC89B0100B3564D /* MMPickerView.h */,
+				549A05211DC89B0100B3564D /* MMPickerView.m */,
+			);
+			path = MMPickerView;
+			sourceTree = "<group>";
+		};
+		54A1539C1DC6F09D0070B508 = {
+			isa = PBXGroup;
+			children = (
+				54A153A71DC6F09D0070B508 /* Qatime_Student */,
+				54A153C11DC6F09E0070B508 /* Qatime_StudentTests */,
+				54A153CC1DC6F09E0070B508 /* Qatime_StudentUITests */,
+				54A153A61DC6F09D0070B508 /* Products */,
+				61F0B31770950FCD751F0794 /* Pods */,
+				B493EB6DEDE6DB14F293C15A /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		54A153A61DC6F09D0070B508 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				54A153A51DC6F09D0070B508 /* Qatime_Student.app */,
+				54A153BE1DC6F09E0070B508 /* Qatime_StudentTests.xctest */,
+				54A153C91DC6F09E0070B508 /* Qatime_StudentUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		54A153A71DC6F09D0070B508 /* Qatime_Student */ = {
+			isa = PBXGroup;
+			children = (
+				543C207B1DC6F6480086B04B /* Model */,
+				543C207A1DC6F6470086B04B /* View */,
+				543C20791DC6F6450086B04B /* Controller */,
+				54A153AB1DC6F09D0070B508 /* AppDelegate.h */,
+				54A153AC1DC6F09D0070B508 /* AppDelegate.m */,
+				54A153AE1DC6F09D0070B508 /* ViewController.h */,
+				54A153AF1DC6F09D0070B508 /* ViewController.m */,
+				54A153B41DC6F09D0070B508 /* Assets.xcassets */,
+				54A153B61DC6F09D0070B508 /* LaunchScreen.storyboard */,
+				54A153B91DC6F09D0070B508 /* Info.plist */,
+				54A153A81DC6F09D0070B508 /* Supporting Files */,
+			);
+			path = Qatime_Student;
+			sourceTree = "<group>";
+		};
+		54A153A81DC6F09D0070B508 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				549A051F1DC89B0100B3564D /* MMPickerView */,
+				549A05121DC86EBB00B3564D /* HcdDateTimePicker */,
+				544C15111DC73ADA00F59F86 /* selected.png */,
+				5469785D1DC72534001695F4 /* account.png */,
+				5469785E1DC72534001695F4 /* bags.png */,
+				5469785B1DC72524001695F4 /* WechatIMG2.png */,
+				544C15131DC7414000F59F86 /* back.png */,
+				54A153A91DC6F09D0070B508 /* main.m */,
+				546978651DC726B3001695F4 /* UserPCH.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		54A153C11DC6F09E0070B508 /* Qatime_StudentTests */ = {
+			isa = PBXGroup;
+			children = (
+				54A153C21DC6F09E0070B508 /* Qatime_StudentTests.m */,
+				54A153C41DC6F09E0070B508 /* Info.plist */,
+			);
+			path = Qatime_StudentTests;
+			sourceTree = "<group>";
+		};
+		54A153CC1DC6F09E0070B508 /* Qatime_StudentUITests */ = {
+			isa = PBXGroup;
+			children = (
+				54A153CD1DC6F09E0070B508 /* Qatime_StudentUITests.m */,
+				54A153CF1DC6F09E0070B508 /* Info.plist */,
+			);
+			path = Qatime_StudentUITests;
+			sourceTree = "<group>";
+		};
+		61F0B31770950FCD751F0794 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8E753843DEA9CDD394DEEC1C /* Pods-Qatime_Student.debug.xcconfig */,
+				DCA0893E028DF6D78D3599A3 /* Pods-Qatime_Student.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B493EB6DEDE6DB14F293C15A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0908EB8F55388D2CA5802D18 /* libPods-Qatime_Student.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		54A153A41DC6F09D0070B508 /* Qatime_Student */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 54A153D21DC6F09E0070B508 /* Build configuration list for PBXNativeTarget "Qatime_Student" */;
+			buildPhases = (
+				5C536022AC8B1A2D7C01CFFA /* [CP] Check Pods Manifest.lock */,
+				54A153A11DC6F09D0070B508 /* Sources */,
+				54A153A21DC6F09D0070B508 /* Frameworks */,
+				54A153A31DC6F09D0070B508 /* Resources */,
+				378B33FBB5064916119D2412 /* [CP] Embed Pods Frameworks */,
+				D80A0418E1DD517D1BF5677C /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Qatime_Student;
+			productName = Qatime_Student;
+			productReference = 54A153A51DC6F09D0070B508 /* Qatime_Student.app */;
+			productType = "com.apple.product-type.application";
+		};
+		54A153BD1DC6F09E0070B508 /* Qatime_StudentTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 54A153D51DC6F09E0070B508 /* Build configuration list for PBXNativeTarget "Qatime_StudentTests" */;
+			buildPhases = (
+				54A153BA1DC6F09E0070B508 /* Sources */,
+				54A153BB1DC6F09E0070B508 /* Frameworks */,
+				54A153BC1DC6F09E0070B508 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				54A153C01DC6F09E0070B508 /* PBXTargetDependency */,
+			);
+			name = Qatime_StudentTests;
+			productName = Qatime_StudentTests;
+			productReference = 54A153BE1DC6F09E0070B508 /* Qatime_StudentTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		54A153C81DC6F09E0070B508 /* Qatime_StudentUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 54A153D81DC6F09E0070B508 /* Build configuration list for PBXNativeTarget "Qatime_StudentUITests" */;
+			buildPhases = (
+				54A153C51DC6F09E0070B508 /* Sources */,
+				54A153C61DC6F09E0070B508 /* Frameworks */,
+				54A153C71DC6F09E0070B508 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				54A153CB1DC6F09E0070B508 /* PBXTargetDependency */,
+			);
+			name = Qatime_StudentUITests;
+			productName = Qatime_StudentUITests;
+			productReference = 54A153C91DC6F09E0070B508 /* Qatime_StudentUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		54A1539D1DC6F09D0070B508 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = WWTD;
+				TargetAttributes = {
+					54A153A41DC6F09D0070B508 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = 5DVPT5R6X2;
+						ProvisioningStyle = Automatic;
+					};
+					54A153BD1DC6F09E0070B508 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = 5DVPT5R6X2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 54A153A41DC6F09D0070B508;
+					};
+					54A153C81DC6F09E0070B508 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = 5DVPT5R6X2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 54A153A41DC6F09D0070B508;
+					};
+				};
+			};
+			buildConfigurationList = 54A153A01DC6F09D0070B508 /* Build configuration list for PBXProject "Qatime_Student" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 54A1539C1DC6F09D0070B508;
+			productRefGroup = 54A153A61DC6F09D0070B508 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				54A153A41DC6F09D0070B508 /* Qatime_Student */,
+				54A153BD1DC6F09E0070B508 /* Qatime_StudentTests */,
+				54A153C81DC6F09E0070B508 /* Qatime_StudentUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		54A153A31DC6F09D0070B508 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				544C15121DC73ADA00F59F86 /* selected.png in Resources */,
+				54A153B81DC6F09D0070B508 /* LaunchScreen.storyboard in Resources */,
+				546978601DC72534001695F4 /* bags.png in Resources */,
+				54A153B51DC6F09D0070B508 /* Assets.xcassets in Resources */,
+				544C15141DC7414000F59F86 /* back.png in Resources */,
+				5469785C1DC72524001695F4 /* WechatIMG2.png in Resources */,
+				5469785F1DC72534001695F4 /* account.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54A153BC1DC6F09E0070B508 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54A153C71DC6F09E0070B508 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		378B33FBB5064916119D2412 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Qatime_Student/Pods-Qatime_Student-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5C536022AC8B1A2D7C01CFFA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D80A0418E1DD517D1BF5677C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Qatime_Student/Pods-Qatime_Student-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		54A153A11DC6F09D0070B508 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				546978561DC723B5001695F4 /* LoginViewController.m in Sources */,
+				549A051A1DC86EBB00B3564D /* MXSCycleScrollView.m in Sources */,
+				543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */,
+				543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */,
+				549A05221DC89B0100B3564D /* MMPickerView.m in Sources */,
+				546978591DC723BD001695F4 /* LoginView.m in Sources */,
+				5469786C1DC72A54001695F4 /* SignUpView.m in Sources */,
+				543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */,
+				549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */,
+				549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */,
+				549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */,
+				54A153B01DC6F09D0070B508 /* ViewController.m in Sources */,
+				549A051E1DC892E500B3564D /* GradeList.m in Sources */,
+				549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */,
+				54A153AD1DC6F09D0070B508 /* AppDelegate.m in Sources */,
+				546978641DC725A5001695F4 /* NavigationBar.m in Sources */,
+				543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */,
+				546978691DC72A42001695F4 /* SignUpViewController.m in Sources */,
+				54A153AA1DC6F09D0070B508 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54A153BA1DC6F09E0070B508 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54A153C31DC6F09E0070B508 /* Qatime_StudentTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54A153C51DC6F09E0070B508 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54A153CE1DC6F09E0070B508 /* Qatime_StudentUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		54A153C01DC6F09E0070B508 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 54A153A41DC6F09D0070B508 /* Qatime_Student */;
+			targetProxy = 54A153BF1DC6F09E0070B508 /* PBXContainerItemProxy */;
+		};
+		54A153CB1DC6F09E0070B508 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 54A153A41DC6F09D0070B508 /* Qatime_Student */;
+			targetProxy = 54A153CA1DC6F09E0070B508 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		54A153B61DC6F09D0070B508 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				54A153B71DC6F09D0070B508 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		54A153D01DC6F09E0070B508 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		54A153D11DC6F09E0070B508 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		54A153D31DC6F09E0070B508 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8E753843DEA9CDD394DEEC1C /* Pods-Qatime_Student.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 5DVPT5R6X2;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
+				INFOPLIST_FILE = Qatime_Student/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wwtd.Qatime-Student.Qatime-Student";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		54A153D41DC6F09E0070B508 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DCA0893E028DF6D78D3599A3 /* Pods-Qatime_Student.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 5DVPT5R6X2;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
+				INFOPLIST_FILE = Qatime_Student/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wwtd.Qatime-Student.Qatime-Student";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		54A153D61DC6F09E0070B508 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 5DVPT5R6X2;
+				INFOPLIST_FILE = Qatime_StudentTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wwtd.Qatime-Student.Qatime-StudentTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Qatime_Student.app/Qatime_Student";
+			};
+			name = Debug;
+		};
+		54A153D71DC6F09E0070B508 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 5DVPT5R6X2;
+				INFOPLIST_FILE = Qatime_StudentTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wwtd.Qatime-Student.Qatime-StudentTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Qatime_Student.app/Qatime_Student";
+			};
+			name = Release;
+		};
+		54A153D91DC6F09E0070B508 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 5DVPT5R6X2;
+				INFOPLIST_FILE = Qatime_StudentUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wwtd.Qatime-Student.Qatime-StudentUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Qatime_Student;
+			};
+			name = Debug;
+		};
+		54A153DA1DC6F09E0070B508 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 5DVPT5R6X2;
+				INFOPLIST_FILE = Qatime_StudentUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wwtd.Qatime-Student.Qatime-StudentUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Qatime_Student;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		54A153A01DC6F09D0070B508 /* Build configuration list for PBXProject "Qatime_Student" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				54A153D01DC6F09E0070B508 /* Debug */,
+				54A153D11DC6F09E0070B508 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		54A153D21DC6F09E0070B508 /* Build configuration list for PBXNativeTarget "Qatime_Student" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				54A153D31DC6F09E0070B508 /* Debug */,
+				54A153D41DC6F09E0070B508 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		54A153D51DC6F09E0070B508 /* Build configuration list for PBXNativeTarget "Qatime_StudentTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				54A153D61DC6F09E0070B508 /* Debug */,
+				54A153D71DC6F09E0070B508 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		54A153D81DC6F09E0070B508 /* Build configuration list for PBXNativeTarget "Qatime_StudentUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				54A153D91DC6F09E0070B508 /* Debug */,
+				54A153DA1DC6F09E0070B508 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 54A1539D1DC6F09D0070B508 /* Project object */;
+}
