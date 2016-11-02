@@ -8,11 +8,14 @@
 
 #import "LoginViewController.h"
 #import "MBProgressHUD.h"
+#import "FindPasswordViewController.h"
 
 @interface LoginViewController ()<UITextFieldDelegate>{
     
     
     NSInteger keyHeight;
+    
+    FindPasswordViewController *findPasswordViewController;
 }
 
 @end
@@ -62,6 +65,27 @@
                                                  name:UIKeyboardWillHideNotification
      
                                                object:nil];
+    
+    
+    
+    
+    /* 忘记密码按钮*/
+    [_loginView.forgottenPassorwdButton addTarget:self action:@selector(forgetPassword) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    
+    
+}
+
+
+
+#pragma mark- 忘记密码点击事件
+- (void)forgetPassword{
+    
+    /* 弹出找回密码页面*/
+    findPasswordViewController = [[FindPasswordViewController alloc]init];
+    [self.navigationController pushViewController:findPasswordViewController animated:YES];
     
     
     

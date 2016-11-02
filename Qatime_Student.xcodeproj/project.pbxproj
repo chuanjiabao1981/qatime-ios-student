@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */; };
+		541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91D21DC97FFB00180BE8 /* FindPasswordView.m */; };
 		543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C207D1DC6F66B0086B04B /* IndexPageViewController.m */; };
 		543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20801DC6F6B00086B04B /* TutoriumViewController.m */; };
 		543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20831DC6F6BE0086B04B /* ClassTimeViewController.m */; };
@@ -57,6 +59,10 @@
 
 /* Begin PBXFileReference section */
 		0908EB8F55388D2CA5802D18 /* libPods-Qatime_Student.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Qatime_Student.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		541F91CE1DC97FED00180BE8 /* FindPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindPasswordViewController.h; sourceTree = "<group>"; };
+		541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindPasswordViewController.m; sourceTree = "<group>"; };
+		541F91D11DC97FFB00180BE8 /* FindPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindPasswordView.h; sourceTree = "<group>"; };
+		541F91D21DC97FFB00180BE8 /* FindPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindPasswordView.m; sourceTree = "<group>"; };
 		543C207C1DC6F66B0086B04B /* IndexPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexPageViewController.h; sourceTree = "<group>"; };
 		543C207D1DC6F66B0086B04B /* IndexPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexPageViewController.m; sourceTree = "<group>"; };
 		543C207F1DC6F6B00086B04B /* TutoriumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumViewController.h; sourceTree = "<group>"; };
@@ -202,6 +208,8 @@
 				546978681DC72A42001695F4 /* SignUpViewController.m */,
 				549A050B1DC8396800B3564D /* SignUpInfoViewController.h */,
 				549A050C1DC8396800B3564D /* SignUpInfoViewController.m */,
+				541F91CE1DC97FED00180BE8 /* FindPasswordViewController.h */,
+				541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */,
 			);
 			name = "注册页面";
 			sourceTree = "<group>";
@@ -213,6 +221,8 @@
 				5469786B1DC72A54001695F4 /* SignUpView.m */,
 				549A050E1DC8398300B3564D /* SignUpInfoView.h */,
 				549A050F1DC8398300B3564D /* SignUpInfoView.m */,
+				541F91D11DC97FFB00180BE8 /* FindPasswordView.h */,
+				541F91D21DC97FFB00180BE8 /* FindPasswordView.m */,
 			);
 			name = "注册页面";
 			sourceTree = "<group>";
@@ -527,6 +537,7 @@
 				543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */,
 				549A05221DC89B0100B3564D /* MMPickerView.m in Sources */,
 				546978591DC723BD001695F4 /* LoginView.m in Sources */,
+				541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */,
 				5469786C1DC72A54001695F4 /* SignUpView.m in Sources */,
 				543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */,
 				549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */,
@@ -540,6 +551,7 @@
 				543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */,
 				546978691DC72A42001695F4 /* SignUpViewController.m in Sources */,
 				54A153AA1DC6F09D0070B508 /* main.m in Sources */,
+				541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

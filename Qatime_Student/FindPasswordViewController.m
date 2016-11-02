@@ -1,29 +1,20 @@
 //
-//  SignUpViewController.m
+//  FindPasswordViewController.m
 //  Qatime_Student
 //
-//  Created by Shin on 2016/10/31.
+//  Created by Shin on 2016/11/2.
 //  Copyright © 2016年 WWTD. All rights reserved.
 //
 
-#import "SignUpViewController.h"
-#import "SignUpView.h"
+#import "FindPasswordViewController.h"
 #import "MBProgressHUD.h"
-#import "SignUpInfoViewController.h"
 
-@interface SignUpViewController (){
-    
-    SignUpInfoViewController *_signUpInfoViewController ;
-    
-    
-    
-}
+
+@interface FindPasswordViewController ()
 
 @end
 
-@implementation SignUpViewController
-
-
+@implementation FindPasswordViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -32,26 +23,21 @@
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];
     
-  
-        
-        [_navigationBar.titleLabel setText:@"设置登录"];
-  
     
-
-  
+    
+    [_navigationBar.titleLabel setText:@"设置登录"];
+    
+    
     
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(backToFrontPage:) forControlEvents:UIControlEventTouchUpInside];
     
-    _signUpView = [[SignUpView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
-    [self .view addSubview:_signUpView];
+    _findPasswordView = [[FindPasswordView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
+    [self .view addSubview:_findPasswordView];
     
-    [_signUpView.getCheckCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+    [_findPasswordView.getCheckCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
     
-    [_signUpView.nextStepButton addTarget:self action:@selector(nextStep:) forControlEvents:UIControlEventTouchUpInside];
-    
-   
-    
+    [_findPasswordView.nextStepButton addTarget:self action:@selector(nextStep:) forControlEvents:UIControlEventTouchUpInside];
     
     
     
@@ -63,107 +49,132 @@
     /* 测试口  直接跳转*/
     
     /* 进入下一页*/
-   // _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
+    // _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
     
     //[self.navigationController pushViewController:_signUpInfoViewController animated:YES];
-
+    
     ////////////////////////////////////////////
     
     
     /* 有信息填写不正确*/
-    if ([_signUpView.phoneNumber.text isEqualToString:@""]) {
+    if ([_findPasswordView.phoneNumber.text isEqualToString:@""]) {
         
         [self showAlertWith:@"请输入手机号！"];
     }
-    if (![self isMobileNumber:_signUpView.phoneNumber.text]) {
+    if (![self isMobileNumber:_findPasswordView.phoneNumber.text]) {
         
         [self showAlertWith:@"请输入正确的手机号！"];
         
     }
-    if ([_signUpView.userPassword.text isEqualToString:@""]||![self checkPassWord: _signUpView.userPassword.text] ) {
+    if ([_findPasswordView.userPassword.text isEqualToString:@""]||![self checkPassWord: _findPasswordView.userPassword.text] ) {
         
         [self showAlertWith:@"请输入6-16位密码！"];
         
     }
-    if ([self checkPassWord: _signUpView.userPassword.text]&&![_signUpView.userPassword.text isEqualToString:_signUpView.userPasswordCompare.text]) {
+    if ([self checkPassWord: _findPasswordView.userPassword.text]&&![_findPasswordView.userPassword.text isEqualToString:_findPasswordView.userPasswordCompare.text]) {
         
         [self showAlertWith:@"前后密码不一致"];
         
     }
     
-    if (!([_signUpView.phoneNumber.text isEqualToString:@""]&&[_signUpView.userPassword.text isEqualToString:@""]&&[_signUpView.userPasswordCompare.text isEqualToString:@""]&&[_signUpView.checkCode.text isEqualToString:@""])&&[_signUpView.unlockKey.text isEqualToString:@""]) {
-        [self showAlertWith:@"请输入注册号"];
-        
-    }
     
     /* 所有信息都填写正确的情况*/
-    if (!([_signUpView.phoneNumber.text isEqualToString:@""]&&[_signUpView.userPassword.text isEqualToString:@""]&&[_signUpView.userPasswordCompare.text isEqualToString:@""]&&[_signUpView.checkCode.text isEqualToString:@""]&&[_signUpView.unlockKey.text isEqualToString:@""])&&[_signUpView.userPasswordCompare.text isEqualToString:_signUpView.userPassword.text]) {
+    if (!([_findPasswordView.phoneNumber.text isEqualToString:@""]&&[_findPasswordView.userPassword.text isEqualToString:@""]&&[_findPasswordView.userPasswordCompare.text isEqualToString:@""]&&[_findPasswordView.checkCode.text isEqualToString:@""]&&[_findPasswordView.userPasswordCompare.text isEqualToString:_findPasswordView.userPassword.text])) {
         
         /* 所有信息汇总成字典*/
         
         NSDictionary *signUpInfo =@{
-                                    @"login_mobile":_signUpView.phoneNumber.text,
-                                    @"captcha_confirmation":_signUpView.checkCode.text,
-                                    @"password":_signUpView.userPassword.text,
-                                    @"password_confirmation":_signUpView.userPasswordCompare.text,
-                                    @"register_code_value":_signUpView.unlockKey.text,
-                                    @"accept":@"1",
-                                    @"type":@"Student",
-                                    @"client_type":@"app"
+                                    @"login_account":_findPasswordView.phoneNumber.text,
+                                    @"captcha_confirmation":_findPasswordView.checkCode.text,
+                                    @"password":_findPasswordView.userPassword.text,
+                                    @"password_confirmation":_findPasswordView.userPasswordCompare.text,
                                     };
         
         /* 验证码 请求状态*/
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager POST:@"http://testing.qatime.cn/api/v1/captcha/verify" parameters:signUpInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        [manager PUT:@"http://testing.qatime.cn/api/v1/password" parameters:signUpInfo success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *codeState = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            
             NSLog(@"%@",codeState);
             
-            NSDictionary *dataDic=[NSDictionary dictionaryWithDictionary: codeState[@"data"]];
+            NSString *status = [NSString stringWithFormat:@"%@",codeState[@"status"]];
+            
+            
             
 #pragma mark-注册信息校验正确
             /* 注册信息校验正确*/
             
-            if ([[dataDic allKeys]containsObject:@"remember_token"]){
+            if ([status isEqualToString:@"1"]){
                 
                 /* 发送成功提示框*/
                 MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
                 hud.mode = MBProgressHUDModeText;
-                [hud.label setText:@"验证成功！"];
+                [hud.label setText:@"密码修改成功！"];
                 hud.yOffset= 150.f;
                 hud.removeFromSuperViewOnHide = YES;
                 
-                [hud hideAnimated:YES afterDelay:1.0];
+                [self.navigationController popViewControllerAnimated:YES];
                 
-                
-                
-                #pragma mark- 把token和id(key : data)存储到本地沙盒路径
-                
-                 NSString *tokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"token.data"];
-                [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
-                
-                
-                
-                
-                
-                /* 进入下一页*/
-                _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
-                
-                [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
+                [hud hideAnimated:YES afterDelay:2.0];
                 
                 
             }
-            else if (![[dataDic allKeys]containsObject:@"remember_token"]){
+            else if (![status isEqualToString:@"1"]){
                 
-                [self showAlertWith:@"验证失败！"];
+                [self showAlertWith:@"验证失败！请输入正确的信息！"];
                 
             }
+            
+
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
         }];
+        
+        
+        
+//        [manager POST:@"http://testing.qatime.cn/api/v1/captcha/verify" parameters:signUpInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//            
+//            NSDictionary *codeState = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+//            
+//            NSLog(@"%@",codeState);
+//            
+//            NSString *status = [NSString stringWithFormat:@"%@",codeState[@"status"]];
+//            
+//            
+//            
+//        #pragma mark-注册信息校验正确
+//            /* 注册信息校验正确*/
+//            
+//            if ([status isEqualToString:@"1"]){
+//                
+//                /* 发送成功提示框*/
+//                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//                hud.mode = MBProgressHUDModeText;
+//                [hud.label setText:@"密码修改成功！"];
+//                hud.yOffset= 150.f;
+//                hud.removeFromSuperViewOnHide = YES;
+//                
+//                [hud hideAnimated:YES afterDelay:1.0];
+//                
+//                
+//                [self.navigationController popViewControllerAnimated:YES];
+//                
+//                
+//            }
+//            else if (![status isEqualToString:@"1"]){
+//                
+//                [self showAlertWith:@"验证失败！请输入正确的信息！"];
+//                
+//            }
+//            
+//        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//            
+//        }];
         
     }
     
@@ -177,13 +188,13 @@
     /* 手机号码正确的情况
      正则表达式 判断手机号的正确或错误
      */
-    if ([self isMobileNumber:_signUpView.phoneNumber.text]){
+    if ([self isMobileNumber:_findPasswordView.phoneNumber.text]){
         
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         
-        [manager POST:@"http://testing.qatime.cn/api/v1/captcha" parameters:@{@"send_to":_signUpView.phoneNumber.text,@"key":@"register_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager POST:@"http://testing.qatime.cn/api/v1/captcha" parameters:@{@"send_to":_findPasswordView.phoneNumber.text,@"key":@"get_password_back"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             /* 发送成功提示框*/
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -194,9 +205,7 @@
             
             
             /* 重新发送验证码*/
-            [self deadLineTimer:_signUpView.getCheckCodeButton];
-            
-            
+            [self deadLineTimer:_findPasswordView.getCheckCodeButton];
             
             [hud hideAnimated:YES afterDelay:2.0];
             
@@ -242,9 +251,6 @@
     }else
         return NO;
 }
-
-
-
 
 
 /* 弹出alter封装*/
@@ -320,13 +326,13 @@
 }
 
 /*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end
