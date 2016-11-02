@@ -12,8 +12,24 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum : NSUInteger {
+    /* 默认绿色*/
+    DefaultColor,
+    /* 可选红色*/
+    RedColor,
+    
+} BackgroundColorType;
+
 @interface NavigationBar : UIView
 @property(nonatomic,strong) UIButton *leftButton ;
 @property(nonatomic,strong) UIButton *rightButton ;
 @property(nonatomic,strong) UILabel *titleLabel  ;
+
+@property(nonatomic,assign) BackgroundColorType colorType ;
+
+
+
++ (instancetype)navigationBarWithFrame:(CGRect)frame title:(NSString *)title ;
+
+
 @end

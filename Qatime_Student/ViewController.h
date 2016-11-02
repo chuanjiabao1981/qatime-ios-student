@@ -9,9 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "RDVTabBarController.h"
 
+#import "IndexPageViewController.h"
+#import "TutoriumViewController.h"
+#import "ClassTimeViewController.h"
+#import "PersonalViewController.h"
+#import "RDVTabBarItem.h"
 
 @interface ViewController : RDVTabBarController
-
+/* 四个选项卡的ViewController*/
+@property(nonatomic,strong) IndexPageViewController *indexPageViewController ;
+@property(nonatomic,strong) TutoriumViewController *tutoriumViewController ;
+@property(nonatomic,strong) ClassTimeViewController *classTimeViewController ;
+@property(nonatomic,strong) PersonalViewController *personalViewController ;
 
 
 

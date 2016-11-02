@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NavigationBar.h"
+#import "TutoriumView.h"
 
 @interface TutoriumViewController : UIViewController
 
+@property(nonatomic,strong) NavigationBar *navigationBar ;
+
+@property(nonatomic,strong) TutoriumView *tutoriumView ;
 @end

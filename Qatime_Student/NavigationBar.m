@@ -17,8 +17,7 @@
         
         self.backgroundColor = USERGREEN;
         
-        
-        
+    
     }
     return self;
 }
@@ -60,6 +59,24 @@
     
     
     return  _titleLabel;
+    
+}
+
+
+/* 创建导航栏的类方法*/
++(instancetype)navigationBarWithFrame:(CGRect)frame title:(NSString *)title backgroundColor:(BackgroundColorType)colortype {
+    
+    NavigationBar *bar=[[NavigationBar alloc]initWithFrame:frame];
+    [bar.titleLabel setText:title];
+    if (colortype == DefaultColor) {
+        bar.backgroundColor = USERGREEN;
+    }
+    if (colortype == RedColor) {
+        
+        bar.backgroundColor = [UIColor redColor];
+    }
+    
+    return bar;
     
 }
 

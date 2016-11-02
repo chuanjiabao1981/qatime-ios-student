@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */; };
 		541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91D21DC97FFB00180BE8 /* FindPasswordView.m */; };
+		541F91D61DC9BB5200180BE8 /* TutoriumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91D51DC9BB5100180BE8 /* TutoriumView.m */; };
+		541F91E41DC9D16700180BE8 /* TutoriumCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91E31DC9D16700180BE8 /* TutoriumCollectionViewCell.m */; };
+		541F91E81DC9E3D200180BE8 /* students.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F91E71DC9E3D200180BE8 /* students.png */; };
+		541F91EA1DC9F1CC00180BE8 /* school.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F91E91DC9F1CC00180BE8 /* school.png */; };
 		543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C207D1DC6F66B0086B04B /* IndexPageViewController.m */; };
 		543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20801DC6F6B00086B04B /* TutoriumViewController.m */; };
 		543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20831DC6F6BE0086B04B /* ClassTimeViewController.m */; };
@@ -63,6 +67,12 @@
 		541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindPasswordViewController.m; sourceTree = "<group>"; };
 		541F91D11DC97FFB00180BE8 /* FindPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindPasswordView.h; sourceTree = "<group>"; };
 		541F91D21DC97FFB00180BE8 /* FindPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindPasswordView.m; sourceTree = "<group>"; };
+		541F91D41DC9BB5100180BE8 /* TutoriumView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumView.h; sourceTree = "<group>"; };
+		541F91D51DC9BB5100180BE8 /* TutoriumView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutoriumView.m; sourceTree = "<group>"; };
+		541F91E21DC9D16700180BE8 /* TutoriumCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumCollectionViewCell.h; sourceTree = "<group>"; };
+		541F91E31DC9D16700180BE8 /* TutoriumCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutoriumCollectionViewCell.m; sourceTree = "<group>"; };
+		541F91E71DC9E3D200180BE8 /* students.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = students.png; path = HcdDateTimePicker/students.png; sourceTree = "<group>"; };
+		541F91E91DC9F1CC00180BE8 /* school.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = school.png; sourceTree = "<group>"; };
 		543C207C1DC6F66B0086B04B /* IndexPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexPageViewController.h; sourceTree = "<group>"; };
 		543C207D1DC6F66B0086B04B /* IndexPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexPageViewController.m; sourceTree = "<group>"; };
 		543C207F1DC6F6B00086B04B /* TutoriumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumViewController.h; sourceTree = "<group>"; };
@@ -146,19 +156,92 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		541F91D71DC9BB5C00180BE8 /* 辅导班页面 */ = {
+			isa = PBXGroup;
+			children = (
+				543C207F1DC6F6B00086B04B /* TutoriumViewController.h */,
+				543C20801DC6F6B00086B04B /* TutoriumViewController.m */,
+			);
+			name = "辅导班页面";
+			sourceTree = "<group>";
+		};
+		541F91D81DC9BB7000180BE8 /* 辅导班页面 */ = {
+			isa = PBXGroup;
+			children = (
+				541F91D41DC9BB5100180BE8 /* TutoriumView.h */,
+				541F91D51DC9BB5100180BE8 /* TutoriumView.m */,
+				541F91E21DC9D16700180BE8 /* TutoriumCollectionViewCell.h */,
+				541F91E31DC9D16700180BE8 /* TutoriumCollectionViewCell.m */,
+			);
+			name = "辅导班页面";
+			sourceTree = "<group>";
+		};
+		541F91D91DC9BB8D00180BE8 /* 导航栏 */ = {
+			isa = PBXGroup;
+			children = (
+				546978621DC725A5001695F4 /* NavigationBar.h */,
+				546978631DC725A5001695F4 /* NavigationBar.m */,
+			);
+			name = "导航栏";
+			sourceTree = "<group>";
+		};
+		541F91DA1DC9BBA000180BE8 /* 个人页面 */ = {
+			isa = PBXGroup;
+			children = (
+				543C20851DC703CA0086B04B /* PersonalViewController.h */,
+				543C20861DC703CA0086B04B /* PersonalViewController.m */,
+			);
+			name = "个人页面";
+			sourceTree = "<group>";
+		};
+		541F91DD1DC9BBA800180BE8 /* 课程表页面 */ = {
+			isa = PBXGroup;
+			children = (
+				543C20821DC6F6BE0086B04B /* ClassTimeViewController.h */,
+				543C20831DC6F6BE0086B04B /* ClassTimeViewController.m */,
+			);
+			name = "课程表页面";
+			sourceTree = "<group>";
+		};
+		541F91DE1DC9BBAA00180BE8 /* 主页页面 */ = {
+			isa = PBXGroup;
+			children = (
+				543C207C1DC6F66B0086B04B /* IndexPageViewController.h */,
+				543C207D1DC6F66B0086B04B /* IndexPageViewController.m */,
+			);
+			name = "主页页面";
+			sourceTree = "<group>";
+		};
+		541F91DF1DC9BC3C00180BE8 /* 个人页面 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "个人页面";
+			sourceTree = "<group>";
+		};
+		541F91E01DC9BC3F00180BE8 /* 课程表页面 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "课程表页面";
+			sourceTree = "<group>";
+		};
+		541F91E11DC9BC4100180BE8 /* 主页页面 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "主页页面";
+			sourceTree = "<group>";
+		};
 		543C20791DC6F6450086B04B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
 				546978611DC7258B001695F4 /* 注册页面 */,
 				546978531DC723A2001695F4 /* 登录页面 */,
-				543C207C1DC6F66B0086B04B /* IndexPageViewController.h */,
-				543C207D1DC6F66B0086B04B /* IndexPageViewController.m */,
-				543C207F1DC6F6B00086B04B /* TutoriumViewController.h */,
-				543C20801DC6F6B00086B04B /* TutoriumViewController.m */,
-				543C20821DC6F6BE0086B04B /* ClassTimeViewController.h */,
-				543C20831DC6F6BE0086B04B /* ClassTimeViewController.m */,
-				543C20851DC703CA0086B04B /* PersonalViewController.h */,
-				543C20861DC703CA0086B04B /* PersonalViewController.m */,
+				541F91DE1DC9BBAA00180BE8 /* 主页页面 */,
+				541F91D71DC9BB5C00180BE8 /* 辅导班页面 */,
+				541F91DD1DC9BBA800180BE8 /* 课程表页面 */,
+				541F91DA1DC9BBA000180BE8 /* 个人页面 */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -166,10 +249,13 @@
 		543C207A1DC6F6470086B04B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				546978621DC725A5001695F4 /* NavigationBar.h */,
-				546978631DC725A5001695F4 /* NavigationBar.m */,
-				546978661DC72A16001695F4 /* 注册页面 */,
 				5469785A1DC723CA001695F4 /* 登录页面View */,
+				546978661DC72A16001695F4 /* 注册页面 */,
+				541F91E11DC9BC4100180BE8 /* 主页页面 */,
+				541F91D81DC9BB7000180BE8 /* 辅导班页面 */,
+				541F91E01DC9BC3F00180BE8 /* 课程表页面 */,
+				541F91DF1DC9BC3C00180BE8 /* 个人页面 */,
+				541F91D91DC9BB8D00180BE8 /* 导航栏 */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -284,6 +370,7 @@
 				54A153B41DC6F09D0070B508 /* Assets.xcassets */,
 				54A153B61DC6F09D0070B508 /* LaunchScreen.storyboard */,
 				54A153B91DC6F09D0070B508 /* Info.plist */,
+				546978651DC726B3001695F4 /* UserPCH.pch */,
 				54A153A81DC6F09D0070B508 /* Supporting Files */,
 			);
 			path = Qatime_Student;
@@ -295,12 +382,13 @@
 				549A051F1DC89B0100B3564D /* MMPickerView */,
 				549A05121DC86EBB00B3564D /* HcdDateTimePicker */,
 				544C15111DC73ADA00F59F86 /* selected.png */,
+				541F91E71DC9E3D200180BE8 /* students.png */,
 				5469785D1DC72534001695F4 /* account.png */,
 				5469785E1DC72534001695F4 /* bags.png */,
 				5469785B1DC72524001695F4 /* WechatIMG2.png */,
 				544C15131DC7414000F59F86 /* back.png */,
+				541F91E91DC9F1CC00180BE8 /* school.png */,
 				54A153A91DC6F09D0070B508 /* main.m */,
-				546978651DC726B3001695F4 /* UserPCH.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -457,6 +545,8 @@
 				546978601DC72534001695F4 /* bags.png in Resources */,
 				54A153B51DC6F09D0070B508 /* Assets.xcassets in Resources */,
 				544C15141DC7414000F59F86 /* back.png in Resources */,
+				541F91EA1DC9F1CC00180BE8 /* school.png in Resources */,
+				541F91E81DC9E3D200180BE8 /* students.png in Resources */,
 				5469785C1DC72524001695F4 /* WechatIMG2.png in Resources */,
 				5469785F1DC72534001695F4 /* account.png in Resources */,
 			);
@@ -538,12 +628,14 @@
 				549A05221DC89B0100B3564D /* MMPickerView.m in Sources */,
 				546978591DC723BD001695F4 /* LoginView.m in Sources */,
 				541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */,
+				541F91E41DC9D16700180BE8 /* TutoriumCollectionViewCell.m in Sources */,
 				5469786C1DC72A54001695F4 /* SignUpView.m in Sources */,
 				543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */,
 				549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */,
 				549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */,
 				549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */,
 				54A153B01DC6F09D0070B508 /* ViewController.m in Sources */,
+				541F91D61DC9BB5200180BE8 /* TutoriumView.m in Sources */,
 				549A051E1DC892E500B3564D /* GradeList.m in Sources */,
 				549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */,
 				54A153AD1DC6F09D0070B508 /* AppDelegate.m in Sources */,

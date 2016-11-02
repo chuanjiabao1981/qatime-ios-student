@@ -165,9 +165,38 @@
             
             NSDictionary *dicGet=[NSDictionary dictionaryWithDictionary:userInfoGet[@"data"]];
             /* 如果返回的字段里包含key值“remember_token“ 为登录成功*/
+            /* 如果登录成功*/
             if ([[dicGet allKeys]containsObject:@"remember_token" ]) {
                 
                 [hud hideAnimated:YES];
+                
+                
+                #pragma mark- 本地登录成功后 保存token文件，并且转到主页面
+                
+                 NSString *userTokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
+                
+                NSLog(@"保存的数据\n%@",dicGet);
+                /* 归档*/
+                [NSKeyedArchiver archiveRootObject:dicGet toFile:userTokenFilePath];
+                
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+                
+                /* 另存一份userdefault  只存token和id*/
+                NSString *remember_token = [NSString stringWithFormat:@"%@",dicGet[@"remember_token"]];
+                
+                NSDictionary *user=[NSDictionary dictionaryWithDictionary:dicGet[@"user"]];
+                NSLog(@"%@",user);
+                
+                
+                NSString *userID = [NSString stringWithFormat:@"%@",[[dicGet valueForKey:@"user"] valueForKey:@"id"]];
+                
+                [[NSUserDefaults standardUserDefaults]setObject:remember_token forKey:@"remember_token"];
+                [[NSUserDefaults standardUserDefaults]setObject:userID forKey:@"id"];
+                
+                
+                NSLog(@"token:%@,id:%@",remember_token,userID);
+                
+                
                 
              /* 登陆成功无提示*/
                 

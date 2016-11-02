@@ -21,17 +21,43 @@
     [_window makeKeyAndVisible];
     _window.backgroundColor = [UIColor whiteColor];
     
-    _loginViewController = [[LoginViewController alloc]init];
-    UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
     
-    [_window setRootViewController:naviVC];
+    /* 根据本地保存的用户文件  判断是否登录*/
+     NSString *userFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
+    if (![[NSFileManager defaultManager]fileExistsAtPath:userFilePath]) {
+        
+        _loginViewController = [[LoginViewController alloc]init];
+        UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
+        
+        [_window setRootViewController:naviVC];
+    }else{
+        
+        _viewController = [[ViewController alloc]init];
+        [_window setRootViewController:_viewController];
+        
+    }
+    
+    
+    
     
     NSLog(@"本地沙盒存储路径：%@", NSHomeDirectory());
     
-    
+    /* 添加消息中心监听 判断登录状态*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeRootViewConroller:) name:@"UserLogin" object:nil];
     
     
     return YES;
+}
+
+
+/* 修改rootViewController为系统的主页controller*/
+- (void)changeRootViewConroller:(NSNotification *)notification{
+    
+    
+    _viewController = [[ViewController alloc]init];
+    
+    [_window setRootViewController:_viewController];
+    
 }
 
 

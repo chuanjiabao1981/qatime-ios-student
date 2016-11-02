@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NavigationBar.h"
 
 @interface IndexPageViewController : UIViewController
+
+@property(nonatomic,strong) NavigationBar *navigationBar ;
 
 @end

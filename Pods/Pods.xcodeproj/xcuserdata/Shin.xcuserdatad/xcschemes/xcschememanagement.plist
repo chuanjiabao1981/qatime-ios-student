@@ -14,6 +14,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>MJRefresh.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Qatime_Student.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -37,7 +42,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>6A0CE576A7917859F36DAF125F8A74BF</key>
+		<key>0A4B383A2593212500588DC5BE2335EC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1796D6FBC13B97DFC0FBC146E7863115</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>44ED40B1F64A2E79BDF84CA8354A16E9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4733D0C7959D33AAED7621D22F8AFFEE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>70BC44266C6FFE30D2C57129458E070B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -47,22 +72,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BF2FB7899F48A33CE57809F0CCE9AAD1</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>D058B89EB3B3DF45457A2DCD3971AFFE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D4A2B9714DD7F694353A13C375601E26</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>EF6B52B2DF61076FB7314F0280D1BAE4</key>
 		<dict>
 			<key>primary</key>
 			<true/>

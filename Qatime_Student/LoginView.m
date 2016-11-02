@@ -28,7 +28,7 @@
     if (self) {
         
         /* logo图片布局*/
-        _logoImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 100, SCREENWIDES, 180)];
+        _logoImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 100, SCREENWIDES, SCREENWIDES*0.4f)];
         
         [_logoImage setImage:[UIImage imageNamed:@"WechatIMG2"]];
         [self addSubview:_logoImage];
