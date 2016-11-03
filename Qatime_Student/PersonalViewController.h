@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PersonalView.h"
 
 @interface PersonalViewController : UIViewController
+
+@property(nonatomic,strong) PersonalView *personalView ;
 
 @end

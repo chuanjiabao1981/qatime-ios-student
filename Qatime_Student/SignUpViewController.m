@@ -63,9 +63,9 @@
     /* 测试口  直接跳转*/
     
     /* 进入下一页*/
-   // _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
+    _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
     
-    //[self.navigationController pushViewController:_signUpInfoViewController animated:YES];
+    [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
 
     ////////////////////////////////////////////
     

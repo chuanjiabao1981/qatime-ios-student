@@ -42,6 +42,7 @@
 		54A153B81DC6F09D0070B508 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54A153B61DC6F09D0070B508 /* LaunchScreen.storyboard */; };
 		54A153C31DC6F09E0070B508 /* Qatime_StudentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153C21DC6F09E0070B508 /* Qatime_StudentTests.m */; };
 		54A153CE1DC6F09E0070B508 /* Qatime_StudentUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153CD1DC6F09E0070B508 /* Qatime_StudentUITests.m */; };
+		54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D8DDBA1DCB634100F0B408 /* PersonalView.m */; };
 		7CBC5A24BDBE6078BA97A9A3 /* libPods-Qatime_Student.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0908EB8F55388D2CA5802D18 /* libPods-Qatime_Student.a */; };
 /* End PBXBuildFile section */
 
@@ -129,6 +130,8 @@
 		54A153C91DC6F09E0070B508 /* Qatime_StudentUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Qatime_StudentUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		54A153CD1DC6F09E0070B508 /* Qatime_StudentUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Qatime_StudentUITests.m; sourceTree = "<group>"; };
 		54A153CF1DC6F09E0070B508 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		54D8DDB91DCB634100F0B408 /* PersonalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalView.h; sourceTree = "<group>"; };
+		54D8DDBA1DCB634100F0B408 /* PersonalView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalView.m; sourceTree = "<group>"; };
 		8E753843DEA9CDD394DEEC1C /* Pods-Qatime_Student.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qatime_Student.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Qatime_Student/Pods-Qatime_Student.debug.xcconfig"; sourceTree = "<group>"; };
 		DCA0893E028DF6D78D3599A3 /* Pods-Qatime_Student.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qatime_Student.release.xcconfig"; path = "Pods/Target Support Files/Pods-Qatime_Student/Pods-Qatime_Student.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -218,6 +221,8 @@
 		541F91DF1DC9BC3C00180BE8 /* 个人页面 */ = {
 			isa = PBXGroup;
 			children = (
+				54D8DDB91DCB634100F0B408 /* PersonalView.h */,
+				54D8DDBA1DCB634100F0B408 /* PersonalView.m */,
 			);
 			name = "个人页面";
 			sourceTree = "<group>";
@@ -639,6 +644,7 @@
 				549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */,
 				549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */,
 				549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */,
+				54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */,
 				54A153B01DC6F09D0070B508 /* ViewController.m in Sources */,
 				541F91D61DC9BB5200180BE8 /* TutoriumView.m in Sources */,
 				549A051E1DC892E500B3564D /* GradeList.m in Sources */,

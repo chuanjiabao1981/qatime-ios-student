@@ -50,6 +50,9 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeRootViewConroller:) name:@"UserLogin" object:nil];
     
     
+    /* 添加消息监听 判断用户退出登录*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogOut) name:@"userLogOut" object:nil];
+    
     return YES;
 }
 
@@ -61,6 +64,17 @@
     _viewController = [[ViewController alloc]init];
     
     [_window setRootViewController:_viewController];
+    
+}
+
+/* 用户退出登录后 跳转到登录页面*/
+- (void)userLogOut{
+    
+     _loginViewController = [[LoginViewController alloc]init];
+    UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
+    
+    [_window setRootViewController:naviVC];
+    
     
 }
 
