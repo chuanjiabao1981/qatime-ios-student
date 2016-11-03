@@ -21,6 +21,10 @@
             
             _grade = [[NSArray alloc]initWithArray:[[[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] valueForKey:@"data"]valueForKey:@"grades"]];
             
+            /* 年级信息归档*/
+            [[NSUserDefaults standardUserDefaults]setObject:_grade forKey:@"grade"];
+            
+            
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
         }];
