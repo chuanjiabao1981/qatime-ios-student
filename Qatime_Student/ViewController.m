@@ -106,6 +106,8 @@
 //    self.tabBar.backgroundView.backgroundColor=BLUECOLOR;
     self.selectedIndex=1;
     
+    self.tabBar.height=63.0f;
+    
     
     
     

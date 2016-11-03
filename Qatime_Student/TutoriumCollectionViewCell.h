@@ -19,6 +19,10 @@
 /* 教师姓名*/
 @property(nonatomic,strong) UILabel *teacherName ;
 
+
+/* 年级*/
+@property(nonatomic,strong) UILabel *grade ;
+
 /* 科目*/
 @property(nonatomic,strong) UILabel *subjectName ;
 

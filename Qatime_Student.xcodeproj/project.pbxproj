@@ -13,6 +13,7 @@
 		541F91E41DC9D16700180BE8 /* TutoriumCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91E31DC9D16700180BE8 /* TutoriumCollectionViewCell.m */; };
 		541F91E81DC9E3D200180BE8 /* students.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F91E71DC9E3D200180BE8 /* students.png */; };
 		541F91EA1DC9F1CC00180BE8 /* school.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F91E91DC9F1CC00180BE8 /* school.png */; };
+		541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91EC1DCA09CC00180BE8 /* TutoriumList.m */; };
 		543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C207D1DC6F66B0086B04B /* IndexPageViewController.m */; };
 		543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20801DC6F6B00086B04B /* TutoriumViewController.m */; };
 		543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20831DC6F6BE0086B04B /* ClassTimeViewController.m */; };
@@ -73,6 +74,8 @@
 		541F91E31DC9D16700180BE8 /* TutoriumCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutoriumCollectionViewCell.m; sourceTree = "<group>"; };
 		541F91E71DC9E3D200180BE8 /* students.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = students.png; path = HcdDateTimePicker/students.png; sourceTree = "<group>"; };
 		541F91E91DC9F1CC00180BE8 /* school.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = school.png; sourceTree = "<group>"; };
+		541F91EB1DCA09CC00180BE8 /* TutoriumList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumList.h; sourceTree = "<group>"; };
+		541F91EC1DCA09CC00180BE8 /* TutoriumList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutoriumList.m; sourceTree = "<group>"; };
 		543C207C1DC6F66B0086B04B /* IndexPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexPageViewController.h; sourceTree = "<group>"; };
 		543C207D1DC6F66B0086B04B /* IndexPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexPageViewController.m; sourceTree = "<group>"; };
 		543C207F1DC6F6B00086B04B /* TutoriumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumViewController.h; sourceTree = "<group>"; };
@@ -265,6 +268,8 @@
 			children = (
 				549A051C1DC892E500B3564D /* GradeList.h */,
 				549A051D1DC892E500B3564D /* GradeList.m */,
+				541F91EB1DCA09CC00180BE8 /* TutoriumList.h */,
+				541F91EC1DCA09CC00180BE8 /* TutoriumList.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -643,6 +648,7 @@
 				543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */,
 				546978691DC72A42001695F4 /* SignUpViewController.m in Sources */,
 				54A153AA1DC6F09D0070B508 /* main.m in Sources */,
+				541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */,
 				541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

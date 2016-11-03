@@ -27,8 +27,6 @@
         
         self.backgroundColor = [UIColor whiteColor];
        
-      
-        
         /* 4个button的contentview  白底*/
         _buttonContentView = [[UIView alloc]init];
        
@@ -88,12 +86,14 @@
                 
         /* contentview添加在collection的上层*/
         [self addSubview:_buttonContentView];
-        _buttonContentView.sd_layout.leftSpaceToView(self,0).rightSpaceToView(self,0).topSpaceToView(self,0).heightRatioToView(self,0.08f);
+        _buttonContentView.sd_layout.leftSpaceToView(self,0).rightSpaceToView(self,0).topSpaceToView(self,0).heightRatioToView(self,0.06f);
         
         /* collectionView的布局*/
         [self addSubview:_classesCollectionView];
-        _classesCollectionView.sd_layout.leftSpaceToView(self,0).rightSpaceToView(self,0).topSpaceToView(_buttonContentView,0).heightIs(CGRectGetHeight(self.bounds)*0.92f);
+        _classesCollectionView.sd_layout.leftSpaceToView(self,0).rightSpaceToView(self,0).topSpaceToView(_buttonContentView,0).bottomSpaceToView(self,0);
 
+        
+        _classesCollectionView.showsVerticalScrollIndicator = NO;
         
         
     }

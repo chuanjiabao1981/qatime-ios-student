@@ -35,6 +35,10 @@
         _viewController = [[ViewController alloc]init];
         [_window setRootViewController:_viewController];
         
+        NSString *token= [[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
+        NSString *userid=[[NSUserDefaults standardUserDefaults]objectForKey:@"id"];
+        NSLog(@"%@,%@",token,userid);
+        
     }
     
     

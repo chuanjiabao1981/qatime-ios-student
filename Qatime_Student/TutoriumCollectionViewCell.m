@@ -36,7 +36,7 @@
         _classImage = [[UIImageView alloc]init];
 //        [_classImage setImage:[UIImage imageNamed:@"school"]];
         [self.contentView addSubview:_classImage];
-        _classImage.sd_layout.topSpaceToView(self.contentView,0).leftSpaceToView(self.contentView,0).rightSpaceToView(self.contentView,0).heightRatioToView(self.contentView,0.75f);
+        _classImage.sd_layout.topSpaceToView(self.contentView,0).leftSpaceToView(self.contentView,0).rightSpaceToView(self.contentView,0).heightRatioToView(self.contentView,0.7);
         
         /* 距开课时间label布局*/
         _timeToStart = [[UILabel alloc]init];
@@ -44,8 +44,8 @@
         _timeToStart.backgroundColor = [UIColor orangeColor];
         _timeToStart.text = [NSString stringWithFormat:@"距开课**天"];
         _timeToStart.textColor = [UIColor whiteColor];
-        _timeToStart.sd_layout.rightSpaceToView(_classImage,0).bottomSpaceToView(_classImage,0).heightRatioToView(_classImage,0.15f);
-        [_timeToStart setSingleLineAutoResizeWithMaxWidth:100];
+        _timeToStart.sd_layout.rightSpaceToView(_classImage,0).bottomSpaceToView(_classImage,0).autoHeightRatio(0);
+        [_timeToStart setSingleLineAutoResizeWithMaxWidth:160];
         
         /* 教师姓名label*/
         /**** 预留label的宽度和教师姓名model源 ***/
@@ -67,6 +67,9 @@
         teacher.sd_layout.topEqualToView(_teacherName).bottomEqualToView(_teacherName).leftSpaceToView(_teacherName,0);
         [teacher setSingleLineAutoResizeWithMaxWidth:60];
         
+
+        
+        
         /* 科目 label*/
         /* 科目名称  预留名称的接口model*/
         _subjectName = [[UILabel alloc]init];
@@ -76,6 +79,16 @@
         _subjectName.sd_layout.rightSpaceToView(self.contentView,0).topSpaceToView(_classImage,5).autoHeightRatio(0);
         [_subjectName setSingleLineAutoResizeWithMaxWidth:80];
         _subjectName.textAlignment = NSTextAlignmentRight;
+        
+        /* 年级 label*/
+        _grade = [[UILabel alloc]init];
+        [self.contentView addSubview:_grade];
+        [_grade setText:@"年级"];
+        _grade.textColor =[UIColor grayColor];
+        _grade.sd_layout.rightSpaceToView(_subjectName,0).topEqualToView(_subjectName).bottomEqualToView(_subjectName);
+        [_grade setSingleLineAutoResizeWithMaxWidth:80];
+        _grade.textAlignment = NSTextAlignmentRight;
+        
         
         /* 价格label */
         /* 价格信息  预留接口model*/
@@ -92,7 +105,7 @@
         [self.contentView addSubview:_saleNumber];
         _saleNumber.textColor = [UIColor lightGrayColor];
         _saleNumber.text = @"10";
-        _saleNumber.sd_layout.rightSpaceToView(self.contentView,0).topSpaceToView(_subjectName,0).autoHeightRatio(0);
+        _saleNumber.sd_layout.rightSpaceToView(self.contentView,0).topSpaceToView(_subjectName,5).autoHeightRatio(0);
         [_saleNumber setSingleLineAutoResizeWithMaxWidth:80];
         _saleNumber.textAlignment = NSTextAlignmentRight;
         
@@ -101,7 +114,7 @@
         [self.contentView addSubview:student];
         [student setImage:[UIImage imageNamed:@"students"]];
         
-        student.sd_layout.rightSpaceToView(_saleNumber,2).widthEqualToHeight().centerYEqualToView(_saleNumber).heightRatioToView(_saleNumber,0.6);
+        student.sd_layout.rightSpaceToView(_saleNumber,2).widthEqualToHeight().centerYEqualToView(_saleNumber).heightRatioToView(_saleNumber,0.8);
         
         
         
@@ -110,6 +123,7 @@
         
 //        self.contentView.layer.borderColor =[UIColor blackColor].CGColor;
 //        self.contentView.layer.borderWidth =0.6f;
+        
         
         
         
