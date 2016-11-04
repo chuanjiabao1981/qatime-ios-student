@@ -39,11 +39,6 @@
     
     
     
-    
-    
-    
-    
-    
     /* 返回页码*/
     NSInteger page;
     
@@ -105,6 +100,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
+    
     /* 取出token*/
    _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
     
@@ -222,9 +218,7 @@
                 /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
                 _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
                 
-                
-                
-                
+                                
                 NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
                 
                 
@@ -322,8 +316,49 @@
     
     
     
+    /* 多想筛选*/
+    [_tutoriumView.filtersButton addTarget:self action:@selector(sortByMulti) forControlEvents:UIControlEventTouchUpInside];
+    _multiFilterView = [[MultiFilterView alloc]initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*2/5.0f)];
+  
     
 }
+
+#pragma mark- 多条件筛选
+- (void)sortByMulti{
+    
+    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+    
+    UIBlurEffect *effect=[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    effectView=[[UIVisualEffectView alloc]initWithFrame:self.view.bounds];
+    [effectView setEffect:effect];
+    [self.view addSubview:effectView];
+    
+      [self.view addSubview:_multiFilterView];
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        [_multiFilterView setFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds)*3/5.0f, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*2/5.0f)];
+    }];
+    
+    
+    
+    
+    
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
+    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+    
+    
+    [effectView removeFromSuperview];
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        [_multiFilterView setFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*2/5.0f)];
+    }];
+}
+
+
 
 #pragma mark- 按时间、价格筛选按钮点击事件
 - (void)sortByTimeAndPrice{

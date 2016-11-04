@@ -10,6 +10,7 @@
 #import "NavigationBar.h"
 #import "TutoriumView.h"
 #import "TutoriumList.h"
+#import "MultiFilterView.h"
 
 @interface TutoriumViewController : UIViewController
 
@@ -17,6 +18,7 @@
 
 @property(nonatomic,strong) TutoriumView *tutoriumView ;
 
+@property(nonatomic,strong) MultiFilterView *multiFilterView ;
 
 
 
