@@ -28,6 +28,7 @@
 		546978641DC725A5001695F4 /* NavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 546978631DC725A5001695F4 /* NavigationBar.m */; };
 		546978691DC72A42001695F4 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546978681DC72A42001695F4 /* SignUpViewController.m */; };
 		5469786C1DC72A54001695F4 /* SignUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5469786B1DC72A54001695F4 /* SignUpView.m */; };
+		5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */; };
 		549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A050C1DC8396800B3564D /* SignUpInfoViewController.m */; };
 		549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A050F1DC8398300B3564D /* SignUpInfoView.m */; };
 		549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05141DC86EBB00B3564D /* HcdDateTimePickerView.m */; };
@@ -101,6 +102,8 @@
 		546978681DC72A42001695F4 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		5469786A1DC72A54001695F4 /* SignUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpView.h; sourceTree = "<group>"; };
 		5469786B1DC72A54001695F4 /* SignUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpView.m; sourceTree = "<group>"; };
+		5492101A1DCC585E00A65702 /* NSString+UTF8Coding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UTF8Coding.h"; sourceTree = "<group>"; };
+		5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UTF8Coding.m"; sourceTree = "<group>"; };
 		549A050B1DC8396800B3564D /* SignUpInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpInfoViewController.h; sourceTree = "<group>"; };
 		549A050C1DC8396800B3564D /* SignUpInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpInfoViewController.m; sourceTree = "<group>"; };
 		549A050E1DC8398300B3564D /* SignUpInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpInfoView.h; sourceTree = "<group>"; };
@@ -399,6 +402,8 @@
 				544C15131DC7414000F59F86 /* back.png */,
 				541F91E91DC9F1CC00180BE8 /* school.png */,
 				54A153A91DC6F09D0070B508 /* main.m */,
+				5492101A1DCC585E00A65702 /* NSString+UTF8Coding.h */,
+				5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -643,6 +648,7 @@
 				543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */,
 				549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */,
 				549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */,
+				5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */,
 				549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */,
 				54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */,
 				54A153B01DC6F09D0070B508 /* ViewController.m in Sources */,

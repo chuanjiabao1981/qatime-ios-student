@@ -52,9 +52,6 @@
         [_getCheckCodeButton setBackgroundColor:[UIColor colorWithRed:231.0/255.0 green:151.0/255.0 blue:105.0/255.0 alpha:1]];
         
         
-        
-        
-        
         /* 用户密码输入框*/
         
         _userPassword = [[UITextField alloc]init];
@@ -64,6 +61,7 @@
         _userPassword.layer.borderWidth=0.6;
         _userPassword.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         _userPassword.sd_layout.topSpaceToView(_checkCode,15).leftSpaceToView(self,20).rightSpaceToView(self,20).heightIs(40);
+        _userPassword.secureTextEntry = YES;
         
         /* 确认登录密码框*/
         _userPasswordCompare =[[UITextField alloc]init];
@@ -73,10 +71,9 @@
         _userPasswordCompare.layer.borderWidth=0.6;
         _userPasswordCompare.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         _userPasswordCompare.sd_layout.topSpaceToView(_userPassword,15).leftSpaceToView(self,20).rightSpaceToView(self,20).heightIs(40);
+        _userPasswordCompare.secureTextEntry = YES;
+        
 
-        
-       
-        
         /* 下一步按钮*/
         
         _nextStepButton = [[UIButton alloc]init];
@@ -87,8 +84,7 @@
         _nextStepButton.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:151.0/255.0 blue:105.0/255.0 alpha:1];
         _nextStepButton.sd_layout.leftSpaceToView(self,20).rightSpaceToView(self,20).heightIs(40).topSpaceToView(_userPasswordCompare,30);
         
-        
-        
+    
         
     }
     return self;

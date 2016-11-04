@@ -82,6 +82,8 @@
         _userPassword.layer.borderWidth=0.6;
         _userPassword.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         _userPassword.sd_layout.topSpaceToView(_checkCode,15).leftSpaceToView(self,20).rightSpaceToView(self,20).heightIs(40);
+        _userPassword.secureTextEntry = YES;
+        
         
         /* 确认登录密码框*/
         _userPasswordCompare =[[UITextField alloc]init];
@@ -91,6 +93,7 @@
         _userPasswordCompare.layer.borderWidth=0.6;
         _userPasswordCompare.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         _userPasswordCompare.sd_layout.topSpaceToView(_userPassword,15).leftSpaceToView(self,20).rightSpaceToView(self,20).heightIs(40);
+        _userPasswordCompare.secureTextEntry = YES;
         
         /* 注册码输入框*/
         _unlockKey =[[UITextField alloc]init];

@@ -13,6 +13,7 @@
 #import "YYModel.h"
 #import "UIImageView+WebCache.h"
 #import "RDVTabBarController.h"
+#import "NSString+UTF8Coding.h"
 
 @interface TutoriumViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource>{
     
@@ -22,13 +23,32 @@
     
     /* 筛选科目*/
     NSString *_filterSubject;
+    /* 数据请求类型*/
+    /* 0 为全部请求， 1 为筛选类型请求*/
+    NSInteger filterStatus;
+    
+    /* 排序筛选*/
+    NSString *sort_By;
+    /* 保存筛选数据的字典*/
+    NSMutableDictionary *_filterDic;
+    /* 保存筛选字符串*/
+    NSString *_requestUrl;
+    NSString *_requestResaultURL;
+    /* 临时保存筛选key的数组*/
+    NSMutableArray *_filterArr;
+    
+    
+    
+    
+    
+    
+    
     
     /* 返回页码*/
     NSInteger page;
     
     /* 返回每页的条目*/
     NSInteger per_Page;
-    
     
     
     /* 数据model*/
@@ -42,9 +62,6 @@
     
     
     
-    /* 数据请求类型*/
-    /* 0 为全部请求， 1 为筛选类型请求*/
-    NSInteger filterStatus;
     
     
     
@@ -77,6 +94,8 @@
     UIVisualEffectView *effectView;
     
     
+    /* token*/
+    NSString *_remember_token;
     
 }
 @end
@@ -86,9 +105,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
-    //    self.view.backgroundColor = [UIColor whiteColor];
+    /* 取出token*/
+   _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
+    
+    
+   /* 字段初始化*/
     _filterGrade = [NSString string];
     _filterSubject = [NSString string];
+    
+    sort_By = [NSString string];
+    
+    
+    _filterDic = [NSMutableDictionary dictionaryWithObjects:@[_filterGrade,_filterSubject, sort_By] forKeys:@[@"grade",@"subject",@"sort_by"]];
+  
+  
+    
+    
     if ([[NSFileManager defaultManager]fileExistsAtPath:_tutoriumListFilePath]) {
         
         NSDictionary *dic=[NSDictionary dictionaryWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithFile:_tutoriumListFilePath]];
@@ -106,6 +138,15 @@
     _tutoriumListFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"Tutorium_List"];
     
     
+    
+    #pragma mark- 筛选条件状态存储
+    /* 筛选请求接口初始化字段*/
+    
+     _requestUrl =[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses?"];
+//    [self saveFilterStatus:_filterDic];
+    
+    _requestResaultURL = [NSString string];
+    _filterArr = [NSMutableArray array];
     
     [[NSFileManager defaultManager]removeItemAtPath:_tutoriumListFilePath error:nil];
 #pragma mark- 接受数据加载完成的消息
@@ -167,6 +208,75 @@
     
     /* 下拉的block*/
     _tutoriumView.classesCollectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+       
+        if (![[[NSUserDefaults standardUserDefaults]objectForKey:@"FilterURL"]isEqualToString:@""]) {
+            
+            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+            [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
+            [manager GET:[[NSUserDefaults standardUserDefaults]objectForKey:@"FilterURL"] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                listDic =@{};
+                [listArr removeAllObjects];
+                
+                /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
+                _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
+                
+                
+                
+                
+                NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
+                
+                
+                
+                /* 缓存数据源添加获取的Model*/
+                [listArr addObject:_tutroiumList];
+                
+                NSLog(@"%@",listArr[0].data);
+                NSLog(@"%ld",listArr.count);
+                
+                listDic = @{@"page":@"1",
+                            @"per_page":@"1",
+                            @"filterGrade":@"",
+                            @"filterSubject":@"",
+                            @"filterStatus":@"1",
+                            @"listArr":listArr
+                            };
+                
+                /* 测试代码*/
+                TutoriumList *tu =[[TutoriumList alloc]init];
+                tu = listDic[@"listArr"];
+                
+                //        NSLog(@"%@",tu.tutoriumListInfo);
+                
+                /* 获取到的数据缓存到本地*/
+                /* 保存的数据中含有自定义对象，保存到沙盒*/
+                [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
+                
+                /* 本地状态变化*/
+                //        savedDic =[NSDictionary dictionaryWithDictionary: listDic];
+                
+                
+                
+                /* 加载数据完成后  视图重新加载数据*/
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
+                
+                [self loadData:nil];
+                
+                NSLog(@"加载数据完成。");
+
+                
+                
+                
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                
+            }];
+            
+            
+            
+            
+        }else{
+        
         
         /* 重新请求数据 带次数*/
         NSDictionary *dic=[NSDictionary dictionaryWithDictionary: [NSKeyedUnarchiver unarchiveObjectWithFile:_tutoriumListFilePath]];
@@ -174,6 +284,7 @@
         
         [self requestDataWithGrade:dic[@"filterGrade"] andSubject:dic[@"filterSubject"] andPage:[[dic  valueForKey:@"page"]integerValue]  andPerPage:per_Page];
         
+        }
         [_tutoriumView.classesCollectionView.mj_header endRefreshing];
         
     }];
@@ -330,7 +441,7 @@
     [self.view addSubview:effectView];
     
     /* 点击确定按钮  原按钮字符变化，并发筛选请求数据*/
-    [yedButton addTarget: self action:@selector(selectedGradeFilter:) forControlEvents:UIControlEventTouchUpInside];
+    [yedButton addTarget: self action:@selector(selectedSubjectFilter:) forControlEvents:UIControlEventTouchUpInside];
     
     
     [effectView addSubview:_subjectPickerView];
@@ -427,13 +538,15 @@
         }
     }
     
-    /* 按年级*/
+    /* 按年级筛选*/
     if (pickerView == _gradePickerView ) {
         
         [_tutoriumView.gradeButton setTitle:[NSString stringWithFormat:@"%@",_gradeFilterArr[row]] forState:UIControlStateNormal];
         
         
     }
+    
+    /* 按科目筛选*/
     if (pickerView == _subjectPickerView) {
        [_tutoriumView.subjectButton setTitle:[NSString stringWithFormat:@"%@",_subjectArr[row]] forState:UIControlStateNormal];
     }
@@ -447,7 +560,11 @@
     
     [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
     
+    
+
+    
 }
+
 
 
 #pragma mark- 用户筛选完年级条件后的点击事件
@@ -456,13 +573,167 @@
     [effectView removeFromSuperview];
     [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
     
+    /* 获取当前年级信息 发送筛选*/
+    _filterGrade = _tutoriumView.gradeButton.titleLabel.text;
+    
+    [_filterDic setValue:_filterGrade forKey:@"grade"];
+    
+    NSLog(@"%@",_filterDic);
+    [self sendFilterStatus:_filterDic];
+    
+    
+    
+    
 }
+
+
+
+#pragma mark- 发送筛选请求
+- (void)sendFilterStatus:(NSDictionary *)filterstatusDic{
+    
+    
+    /* url字符转换*/
+    NSLog(@"%@",_filterDic);
+    
+    NSString *appendStr=[NSString string];
+    appendStr = @"";
+    
+    
+  /* 遍历筛选字典filterDic的key和value，得到正确筛选条件的dic*/
+    /* 因遍历时不能对字典进行增删改，故复制出一份字典用作遍历*/
+    
+    NSMutableDictionary *filterDic_Copy = [NSMutableDictionary dictionaryWithDictionary:_filterDic];
+    
+    for (NSString *keys in filterDic_Copy) {
+        
+        if ( [[_filterDic valueForKey:keys]isEqualToString:@"按科目∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"按年级∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"按时间∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"全部"]||[[_filterDic valueForKey:keys]isEqualToString:@"全部年级"]) {
+            
+            
+            NSLog(@"%@,%@",keys,[_filterDic valueForKey:keys]);
+            
+            [_filterDic setValue:@"" forKey:keys];
+            
+            
+            
+        }
+        
+    }
+    
+    
+    /* 用遍历方式，写请求字符*/
+    for (NSString *keys in _filterDic) {
+        if (![[_filterDic valueForKey:keys]isEqualToString:@""]) {
+          
+            NSString *values=[NSString encodeString:[_filterDic valueForKey:keys]];
+            NSLog(@"%@",values);
+            
+            appendStr = [appendStr stringByAppendingFormat:@"%@=%@&",keys,values];
+            
+            
+        }
+        
+    }
+    
+    
+    
+    NSLog(@"%@",appendStr);
+    
+    _requestResaultURL =[_requestUrl stringByAppendingFormat:@"%@",appendStr];
+    
+    /* 得到最终筛选的结果地址url*/
+    _requestResaultURL =[_requestResaultURL substringToIndex:[_requestResaultURL length]-1];
+    
+    
+    /* 下拉刷新专用的存储状态*/
+    [[NSUserDefaults standardUserDefaults]setObject:_requestResaultURL forKey:@"FilterURL"];
+    
+    
+        
+    
+    NSLog(@"%@",_requestResaultURL);
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    
+    [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
+    
+    [manager GET:_requestResaultURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        listDic =@{};
+        [listArr removeAllObjects];
+        
+        /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
+        _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
+        
+        
+        
+        
+        NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
+        
+        
+        
+        /* 缓存数据源添加获取的Model*/
+        [listArr addObject:_tutroiumList];
+        
+        NSLog(@"%@",listArr[0].data);
+        NSLog(@"%ld",listArr.count);
+        
+        listDic = @{@"page":@"1",
+                    @"per_page":@"1",
+                    @"filterGrade":@"",
+                    @"filterSubject":@"",
+                    @"filterStatus":@"1",
+                    @"listArr":listArr
+                    };
+        
+        /* 测试代码*/
+        TutoriumList *tu =[[TutoriumList alloc]init];
+        tu = listDic[@"listArr"];
+        
+        //        NSLog(@"%@",tu.tutoriumListInfo);
+        
+        /* 获取到的数据缓存到本地*/
+        
+        /* 保存的数据中含有自定义对象，保存到沙盒*/
+        [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
+        
+        /* 本地状态变化*/
+        //        savedDic =[NSDictionary dictionaryWithDictionary: listDic];
+        
+        
+        
+        /* 加载数据完成后  视图重新加载数据*/
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
+        
+        [self loadData:nil];
+        
+        NSLog(@"加载数据完成。");
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+
+    
+    
+}
+
+
 
 #pragma mark- 用户筛选完科目条件后的点击事件
 - (void)selectedSubjectFilter:(UIButton *)sender{
     
     [effectView removeFromSuperview];
     [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+    
+    /* 获取当前科目筛选信息 发送筛选*/
+    _filterSubject = _tutoriumView.subjectButton.titleLabel.text;
+    
+    [_filterDic setValue:_filterSubject forKey:@"subject"];
+    
+    NSLog(@"%@",_filterDic);
+    [self sendFilterStatus:_filterDic];
+
     
 }
 
@@ -666,16 +937,12 @@
 - (void)requestDataWithGrade:(NSString *)grade andSubject:(NSString *)subject andPage:(NSInteger)pageNumber andPerPage:(NSInteger)perPage{
     
     
-    /* 取出token*/
-    NSString *remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
-    NSLog(@"%@",remember_token);
-    
     /* 发请求获取课程列表*/
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     
-    [manager.requestSerializer setValue:remember_token forHTTPHeaderField:@"Remember-Token"];
+    [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
     
     NSString *requestStrURL=[NSString string];
     
@@ -762,7 +1029,14 @@
 }
 
 
-
+#pragma mark- 存储本地筛选状态
+- (void)saveFilterStatus:(NSDictionary *)filterStatusDic{
+    
+    
+    [[NSUserDefaults standardUserDefaults]setObject:filterStatusDic forKey:@"FilterStatus"];
+    
+    
+}
 
 
 
