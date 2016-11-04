@@ -39,6 +39,7 @@
         [highPriceContent addSubview:_highPrice];
         _highPrice.textAlignment = NSTextAlignmentCenter;
         _highPrice.sd_layout.leftSpaceToView(highPriceContent,5).topSpaceToView(highPriceContent,0).bottomSpaceToView(highPriceContent,0).widthRatioToView(highPriceContent,4/5.0f);
+        _highPrice.keyboardType=UIKeyboardTypeNumberPad;
         
         /* 元2*/
         UILabel *yuan2=[[UILabel alloc]init];
@@ -82,7 +83,7 @@
         [lowPriceContent1 addSubview:_lowPrice];
         _lowPrice.textAlignment = NSTextAlignmentCenter;
         _lowPrice.sd_layout.leftSpaceToView(lowPriceContent1,5).topSpaceToView(lowPriceContent1,0).bottomSpaceToView(lowPriceContent1,0).widthRatioToView(lowPriceContent1,4/5.0f);
-
+        _lowPrice.keyboardType=UIKeyboardTypeNumberPad;
         
         /* 价格范围label*/
         UILabel *priceZone = [[UILabel alloc]init];
@@ -102,20 +103,21 @@
         classLeftContent.sd_layout.leftEqualToView(lowPriceContent1).rightEqualToView(lowPriceContent1).topSpaceToView(lowPriceContent1,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(lowPriceContent1,1.0f);
         classLeftContent.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
         
-        /* 课时 左  元*/
-        /* 元3*/
-        UILabel *yuan3=[[UILabel alloc]init];
-        [classLeftContent addSubview:yuan3];
-        [yuan3 setText:@"元"];
-        [yuan3 setTextColor:[UIColor blackColor]];
-        yuan3.sd_layout.rightSpaceToView(classLeftContent,5).topSpaceToView(classLeftContent,0).bottomSpaceToView(classLeftContent,0);
-        [yuan3 setSingleLineAutoResizeWithMaxWidth:20];
+//        /* 课时 左  元*/
+//        /* 元3*/
+//        UILabel *yuan3=[[UILabel alloc]init];
+//        [classLeftContent addSubview:yuan3];
+//        [yuan3 setText:@"元"];
+//        [yuan3 setTextColor:[UIColor blackColor]];
+//        yuan3.sd_layout.rightSpaceToView(classLeftContent,5).topSpaceToView(classLeftContent,0).bottomSpaceToView(classLeftContent,0);
+//        [yuan3 setSingleLineAutoResizeWithMaxWidth:20];
         
         /* 课时左输入框*/
         _class_Low = [[UITextField alloc]init];
         [classLeftContent addSubview:_class_Low];
         _class_Low.textAlignment = NSTextAlignmentCenter;
         _class_Low.sd_layout.leftSpaceToView(classLeftContent,5).topSpaceToView(classLeftContent,0).bottomSpaceToView(classLeftContent,0).widthRatioToView(classLeftContent,4/5.0f);
+        _class_Low.keyboardType =UIKeyboardTypeNumberPad;
         
         
         /* 课时 右view*/
@@ -133,15 +135,16 @@
         [classRightContent addSubview:_class_High];
         _class_High.textAlignment = NSTextAlignmentCenter;
         _class_High.sd_layout.leftSpaceToView(classRightContent,5).topSpaceToView(classRightContent,0).bottomSpaceToView(classRightContent,0).widthRatioToView(classRightContent,4/5.0f);
+        _class_High.keyboardType =UIKeyboardTypeNumberPad;
         
         
-        /* 课时 元 右边*/
-        UILabel *yuan4=[[UILabel alloc]init];
-        [classRightContent addSubview:yuan4];
-        [yuan4 setText:@"元"];
-        [yuan4 setTextColor:[UIColor blackColor]];
-        yuan4.sd_layout.rightSpaceToView(classRightContent,5).topSpaceToView(classRightContent,0).bottomSpaceToView(classRightContent,0);
-        [yuan4 setSingleLineAutoResizeWithMaxWidth:20];
+//        /* 课时 元 右边*/
+//        UILabel *yuan4=[[UILabel alloc]init];
+//        [classRightContent addSubview:yuan4];
+//        [yuan4 setText:@"元"];
+//        [yuan4 setTextColor:[UIColor blackColor]];
+//        yuan4.sd_layout.rightSpaceToView(classRightContent,5).topSpaceToView(classRightContent,0).bottomSpaceToView(classRightContent,0);
+//        [yuan4 setSingleLineAutoResizeWithMaxWidth:20];
         
         
         /* 小横线2*/
@@ -184,10 +187,10 @@
         /* 小横线3*/
         UILabel *line3=[[UILabel alloc]init];
         [self addSubview:line3];
-        [line3 setText:@"-"];
+        [line3 setText:@"至"];
         [line3 setTextColor:[UIColor blackColor]];
         line3.textAlignment = NSTextAlignmentCenter;
-        line3.sd_layout.centerYEqualToView(_startTime).rightSpaceToView(_endTime,10).heightIs(10);
+        line3.sd_layout.centerYEqualToView(_startTime).rightSpaceToView(_endTime,0).leftSpaceToView(_startTime,0).heightIs(10);
         [line3 setSingleLineAutoResizeWithMaxWidth:20];
         
         /* 开课时间label*/
@@ -253,13 +256,7 @@
         _finishButton.sd_layout.rightEqualToView(_recuit).topEqualToView(_resetButton).widthRatioToView(_resetButton,1.0f).heightRatioToView(_resetButton,1.0f);
         _finishButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
         
-        
-        
-        
-        
-        
-        
-        
+                
         
     }
     return self;

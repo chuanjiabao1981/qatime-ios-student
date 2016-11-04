@@ -14,6 +14,7 @@
 #import "UIImageView+WebCache.h"
 #import "RDVTabBarController.h"
 #import "NSString+UTF8Coding.h"
+#import "HcdDateTimePickerView.h"
 
 @interface TutoriumViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource>{
     
@@ -26,6 +27,38 @@
     /* 数据请求类型*/
     /* 0 为全部请求， 1 为筛选类型请求*/
     NSInteger filterStatus;
+    /* 多项筛选*/
+    
+    /* 价格开始区间*/
+    NSString *_price_floor;
+    /* 价格结束区间*/
+    NSString *_price_ceil;
+    
+    /* 开课日期结束  开始日期*/
+    NSString *_class_date_floor;
+    
+    /*开课日期结束  结束日期*/
+    NSString *_class_date_ceil;
+    
+    /* 课时总数开始区间*/
+    
+    NSString *_preset_lesson_count_floor;
+    
+    /* 课时总数结束区间*/
+    
+    NSString *_preset_lesson_count_ceil;
+    
+    
+    /* 辅导班状态*/
+    NSString *_class_status;
+    
+    
+    /* 日期选择器*/
+    
+    HcdDateTimePickerView *_datePicker;
+    
+    
+    
     
     /* 排序筛选*/
     NSString *sort_By;
@@ -54,9 +87,6 @@
     
     /* 保存页面缓存的字典*/
     NSDictionary *listDic;
-    
-    
-    
     
     
     
@@ -102,19 +132,35 @@
     self.navigationController.navigationBarHidden = YES;
     
     /* 取出token*/
-   _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
+    _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
     
     
-   /* 字段初始化*/
+    /* 字段初始化*/
     _filterGrade = [NSString string];
     _filterSubject = [NSString string];
     
     sort_By = [NSString string];
     
+    /* 多选字段初始化*/
+    _price_floor =[NSString string];
+    _price_ceil = [NSString string];
+    _class_date_floor =[NSString string];
+    _class_date_ceil =[NSString string];
+    _preset_lesson_count_floor =[NSString string];
+    _preset_lesson_count_ceil =[NSString string];
+    _class_status =[NSString string];
     
-    _filterDic = [NSMutableDictionary dictionaryWithObjects:@[_filterGrade,_filterSubject, sort_By] forKeys:@[@"grade",@"subject",@"sort_by"]];
-  
-  
+    
+    _filterDic = [NSMutableDictionary dictionaryWithObjects:@[_filterGrade,_filterSubject, sort_By,_price_floor,_price_ceil,_class_date_floor,_class_date_ceil,_preset_lesson_count_floor,_preset_lesson_count_ceil,_class_status] forKeys:@[@"grade",
+                                                                                                                                                                                                                                             @"subject",
+                                                                                                                                                                                                                                             @"sort_by",
+                                                                                                                                                                                                                                             @"price_floor",
+                                                                                                                                                                                                                                             @"price_ceil",
+                                                                                                                                                                                                                                             @"class_date_floor",
+                                                                                                                                                                                                                                             @"class_date_ceil",
+                                                                                                                                                                                                                                             @"preset_lesson_count_floor",
+                                                                                                                                                                                                                                             @"preset_lesson_count_ceil",
+                                                                                                                                                                                                                                             @"status"]];
     
     
     if ([[NSFileManager defaultManager]fileExistsAtPath:_tutoriumListFilePath]) {
@@ -134,12 +180,11 @@
     _tutoriumListFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"Tutorium_List"];
     
     
-    
-    #pragma mark- 筛选条件状态存储
+#pragma mark- 筛选条件状态存储
     /* 筛选请求接口初始化字段*/
     
-     _requestUrl =[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses?"];
-//    [self saveFilterStatus:_filterDic];
+    _requestUrl =[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses?"];
+    //    [self saveFilterStatus:_filterDic];
     
     _requestResaultURL = [NSString string];
     _filterArr = [NSMutableArray array];
@@ -204,7 +249,7 @@
     
     /* 下拉的block*/
     _tutoriumView.classesCollectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-       
+        
         if (![[[NSUserDefaults standardUserDefaults]objectForKey:@"FilterURL"]isEqualToString:@""]) {
             
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -218,7 +263,7 @@
                 /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
                 _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
                 
-                                
+                
                 NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
                 
                 
@@ -258,7 +303,7 @@
                 [self loadData:nil];
                 
                 NSLog(@"加载数据完成。");
-
+                
                 
                 
                 
@@ -270,14 +315,14 @@
             
             
         }else{
-        
-        
-        /* 重新请求数据 带次数*/
-        NSDictionary *dic=[NSDictionary dictionaryWithDictionary: [NSKeyedUnarchiver unarchiveObjectWithFile:_tutoriumListFilePath]];
-        
-        
-        [self requestDataWithGrade:dic[@"filterGrade"] andSubject:dic[@"filterSubject"] andPage:[[dic  valueForKey:@"page"]integerValue]  andPerPage:per_Page];
-        
+            
+            
+            /* 重新请求数据 带次数*/
+            NSDictionary *dic=[NSDictionary dictionaryWithDictionary: [NSKeyedUnarchiver unarchiveObjectWithFile:_tutoriumListFilePath]];
+            
+            
+            [self requestDataWithGrade:dic[@"filterGrade"] andSubject:dic[@"filterSubject"] andPage:[[dic  valueForKey:@"page"]integerValue]  andPerPage:per_Page];
+            
         }
         [_tutoriumView.classesCollectionView.mj_header endRefreshing];
         
@@ -316,14 +361,241 @@
     
     
     
-    /* 多想筛选*/
+    /* 多项筛选*/
     [_tutoriumView.filtersButton addTarget:self action:@selector(sortByMulti) forControlEvents:UIControlEventTouchUpInside];
     _multiFilterView = [[MultiFilterView alloc]initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*2/5.0f)];
-  
+    
+    /* 多项筛选按钮和文本框功能实现*/
+    /* 重置按钮功能实现*/
+    [_multiFilterView.resetButton addTarget:self action:@selector(resetMultiFilter) forControlEvents:UIControlEventTouchUpInside];
+    /* 确定按钮功能实现*/
+    [_multiFilterView.finishButton addTarget:self action:@selector(finishMultiFilter) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    /* 日期选择 的左右两个按钮 点出来日期选择器*/
+    _multiFilterView.startTime.tag =1;
+    _multiFilterView.endTime.tag =2;
+    [_multiFilterView.startTime addTarget:self action:@selector(choseClassTime:) forControlEvents:UIControlEventTouchUpInside];
+    [_multiFilterView.endTime addTarget:self action:@selector(choseClassTime:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    /* 已开课和招生中 两个按钮的点击事件*/
+    _multiFilterView.class_Begin.tag=3;
+    _multiFilterView.class_Begin.selected = NO;
+    [_multiFilterView.class_Begin addTarget:self action:@selector(choseClassStatus:) forControlEvents:UIControlEventTouchUpInside];
+    _multiFilterView.recuit.tag=4;
+    _multiFilterView.recuit.selected = NO;
+    [_multiFilterView.recuit addTarget:self action:@selector(choseClassStatus:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    
+    
+        
+    
+    
+    //增加监听，当键盘出现或改变时收出消息
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+     
+                                             selector:@selector(keyboardWillShow:)
+     
+                                                 name:UIKeyboardWillShowNotification
+     
+                                               object:nil];
+    
+    
+    
+    //增加监听，当键退出时收出消息
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+     
+                                             selector:@selector(keyboardWillHide:)
+     
+                                                 name:UIKeyboardWillHideNotification
+     
+                                               object:nil];
+
     
 }
 
-#pragma mark- 多条件筛选
+#pragma mark- 选择招生和开课状态按钮点击事件
+- (void)choseClassStatus:(UIButton *)sender{
+    
+    if (sender.selected==NO) {
+        [sender setBackgroundColor:[UIColor lightGrayColor]];
+        [sender setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        sender.selected = YES;
+        
+        
+        
+    }else{
+        
+        [sender setBackgroundColor:[UIColor clearColor]];
+        [sender setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        
+        sender.selected = NO;
+    }
+    
+    
+    
+    
+    
+    
+}
+
+
+
+#pragma mark- 选择课程开始结束日期时间
+- (void)choseClassTime:(UIButton *)sender{
+    
+    
+    [_multiFilterView.lowPrice resignFirstResponder];
+    [_multiFilterView.highPrice resignFirstResponder];
+    [_multiFilterView.class_Low resignFirstResponder];
+    [_multiFilterView.class_High resignFirstResponder];
+    
+    
+    __block MultiFilterView *weakView = _multiFilterView;
+    
+    switch (sender.tag) {
+        case 1:
+            
+            _datePicker = [[HcdDateTimePickerView alloc]initWithDatePickerMode:DatePickerDateMode defaultDateTime:[NSDate date]];
+            [_datePicker setMinYear:2014];
+            [_datePicker setMaxYear:2018];
+            [_datePicker showHcdDateTimePicker];
+            _datePicker .clickedOkBtn =  ^(NSString * datetimeStr){
+                NSLog(@"%@", datetimeStr);
+                [weakView.startTime  setTitle:datetimeStr forState:UIControlStateNormal ];;
+            };
+
+            
+            break;
+            
+        case 2:
+            
+            _datePicker = [[HcdDateTimePickerView alloc]initWithDatePickerMode:DatePickerDateMode defaultDateTime:[NSDate date]];
+            [_datePicker setMinYear:2014];
+            [_datePicker setMaxYear:2018];
+            [_datePicker showHcdDateTimePicker];
+            _datePicker .clickedOkBtn =  ^(NSString * datetimeStr){
+                NSLog(@"%@", datetimeStr);
+                [weakView.endTime  setTitle:datetimeStr forState:UIControlStateNormal ];;
+            };
+
+            
+            
+        default:
+            break;
+    }
+    if (_datePicker) {
+        [self.view addSubview:_datePicker];
+        [_datePicker showHcdDateTimePicker];
+    }
+
+    
+    
+    
+}
+
+
+
+#pragma mark- 确定多项选择
+- (void)finishMultiFilter{
+    
+    /* 筛选条件变量赋值*/
+    _price_floor =_multiFilterView.lowPrice.text;
+    _price_ceil =_multiFilterView.highPrice.text;
+    _class_date_floor =_multiFilterView.startTime.titleLabel.text;
+    
+    _class_date_ceil =_multiFilterView.endTime.titleLabel.text;
+    
+    _preset_lesson_count_floor =_multiFilterView.class_Low.text;
+    
+    _preset_lesson_count_ceil =_multiFilterView.class_High.text;
+    [_filterDic setValue:_multiFilterView.lowPrice.text forKey:@"price_floor"];
+    [_filterDic setValue:_multiFilterView.highPrice.text  forKey:@"price_ceil"];
+    [_filterDic setValue:_multiFilterView.startTime.titleLabel.text  forKey:@"class_date_floor"];
+    
+    [_filterDic setValue:_multiFilterView.endTime.titleLabel.text  forKey:@"class_date_ceil"];
+    [_filterDic setValue:_multiFilterView.class_Low.text forKey:@"preset_lesson_count_floor"];
+    [_filterDic setValue:_multiFilterView.class_High.text forKey:@"preset_lesson_count_ceil"];
+    
+    if ([_multiFilterView.class_Begin isSelected]&&[_multiFilterView.recuit isSelected]) {
+        
+        [_filterDic setValue:@"all" forKey:@"status"];
+        
+    }
+    if (![_multiFilterView.class_Begin isSelected]&&[_multiFilterView.recuit isSelected]) {
+        [_filterDic setValue:@"preview" forKey:@"status"];
+
+    }
+    if ([_multiFilterView.class_Begin isSelected]&&![_multiFilterView.recuit isSelected]) {
+        [_filterDic setValue:@"teaching" forKey:@"status"];
+    }
+    if (![_multiFilterView.class_Begin isSelected]&&![_multiFilterView.recuit isSelected]) {
+        
+        [_filterDic setValue:@"" forKey:@"status"];
+        
+    }
+    
+    
+    NSLog(@"%@",_filterDic);
+
+    [self sendFilterStatus:_filterDic];
+    
+    [self textfileRespond];
+    [effectView removeFromSuperview];
+    [_multiFilterView removeFromSuperview];
+    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+    
+    
+    
+}
+
+
+#pragma mark- 重置多项选择界面
+- (void)resetMultiFilter{
+    
+    [self textfileRespond];
+    
+    [_multiFilterView.startTime setTitle:@"请选择时间" forState:UIControlStateNormal];
+     [_multiFilterView.endTime setTitle:@"请选择时间" forState:UIControlStateNormal];
+    
+    [_multiFilterView.class_Begin setSelected:NO];
+    [_multiFilterView.class_Begin setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    _multiFilterView.class_Begin.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    
+    [_multiFilterView.class_Begin setBackgroundColor:[UIColor clearColor]];
+    
+    
+    [_multiFilterView.recuit setSelected:NO];
+    [_multiFilterView.recuit setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    _multiFilterView.recuit.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    
+    [_multiFilterView.recuit setBackgroundColor:[UIColor clearColor]];
+
+    
+    
+}
+/* 文本框情况，取消响应*/
+- (void)textfileRespond{
+    
+    [_multiFilterView.lowPrice resignFirstResponder];
+    [_multiFilterView.lowPrice setText:@""];
+    [_multiFilterView.highPrice resignFirstResponder];
+    [_multiFilterView.highPrice setText:@""];
+    [_multiFilterView.class_Low resignFirstResponder];
+    [_multiFilterView.class_Low setText:@""];
+    [_multiFilterView.class_High resignFirstResponder];
+    [_multiFilterView.class_High setText:@""];
+
+}
+
+
+
+#pragma mark- 多条件筛选视图弹出和取消
 - (void)sortByMulti{
     
     [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
@@ -333,13 +605,11 @@
     [effectView setEffect:effect];
     [self.view addSubview:effectView];
     
-      [self.view addSubview:_multiFilterView];
+    [self.view addSubview:_multiFilterView];
     [UIView animateWithDuration:0.3 animations:^{
         
         [_multiFilterView setFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds)*3/5.0f, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*2/5.0f)];
     }];
-    
-    
     
     
     
@@ -349,6 +619,7 @@
     
     [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
     
+   [self textfileRespond];
     
     [effectView removeFromSuperview];
     
@@ -583,7 +854,7 @@
     
     /* 按科目筛选*/
     if (pickerView == _subjectPickerView) {
-       [_tutoriumView.subjectButton setTitle:[NSString stringWithFormat:@"%@",_subjectArr[row]] forState:UIControlStateNormal];
+        [_tutoriumView.subjectButton setTitle:[NSString stringWithFormat:@"%@",_subjectArr[row]] forState:UIControlStateNormal];
     }
     
 }
@@ -596,7 +867,7 @@
     [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
     
     
-
+    
     
 }
 
@@ -634,14 +905,14 @@
     appendStr = @"";
     
     
-  /* 遍历筛选字典filterDic的key和value，得到正确筛选条件的dic*/
+    /* 遍历筛选字典filterDic的key和value，得到正确筛选条件的dic*/
     /* 因遍历时不能对字典进行增删改，故复制出一份字典用作遍历*/
     
     NSMutableDictionary *filterDic_Copy = [NSMutableDictionary dictionaryWithDictionary:_filterDic];
     
     for (NSString *keys in filterDic_Copy) {
         
-        if ( [[_filterDic valueForKey:keys]isEqualToString:@"按科目∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"按年级∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"按时间∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"全部"]||[[_filterDic valueForKey:keys]isEqualToString:@"全部年级"]) {
+        if ( [[_filterDic valueForKey:keys]isEqualToString:@"按科目∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"按年级∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"按时间∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"全部"]||[[_filterDic valueForKey:keys]isEqualToString:@"全部年级"]||[[_filterDic valueForKey:keys]isEqualToString:@"请选择时间"]) {
             
             
             NSLog(@"%@,%@",keys,[_filterDic valueForKey:keys]);
@@ -658,7 +929,7 @@
     /* 用遍历方式，写请求字符*/
     for (NSString *keys in _filterDic) {
         if (![[_filterDic valueForKey:keys]isEqualToString:@""]) {
-          
+            
             NSString *values=[NSString encodeString:[_filterDic valueForKey:keys]];
             NSLog(@"%@",values);
             
@@ -683,7 +954,7 @@
     [[NSUserDefaults standardUserDefaults]setObject:_requestResaultURL forKey:@"FilterURL"];
     
     
-        
+    
     
     NSLog(@"%@",_requestResaultURL);
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -748,7 +1019,7 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-
+    
     
     
 }
@@ -768,7 +1039,7 @@
     
     NSLog(@"%@",_filterDic);
     [self sendFilterStatus:_filterDic];
-
+    
     
 }
 
@@ -1053,23 +1324,73 @@
     
 }
 
-#pragma mark- 缓存数据源添加数据方法
-/* 缓存数据源添加数据*/
+//#pragma mark- 缓存数据源添加数据方法
+///* 缓存数据源添加数据*/
+//
+//- (void)listArrayIncreaseData:(NSDictionary *)data{
+//    
+//    
+//    
+//    
+//}
+//
+//
+//#pragma mark- 存储本地筛选状态
+//- (void)saveFilterStatus:(NSDictionary *)filterStatusDic{
+//    
+//    
+//    [[NSUserDefaults standardUserDefaults]setObject:filterStatusDic forKey:@"FilterStatus"];
+//    
+//    
+//}
 
-- (void)listArrayIncreaseData:(NSDictionary *)data{
+
+
+/* 键盘出现*/
+
+- (void)keyboardWillShow:(NSNotification *)aNotification{
     
+    //获取键盘高度
     
+    NSDictionary *info = [aNotification userInfo];
+    
+    //获取动画时间
+    
+    float duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    
+    //获取动画开始状态的frame
+    
+    CGRect beginRect = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    
+    //获取动画结束状态的frame
+    
+    CGRect endRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue];
+    
+    //计算高度差
+    
+    float offsety =  endRect.origin.y - beginRect.origin.y ;
+    
+    NSLog(@"键盘高度:%f 高度差:%f\n",beginRect.origin.y,offsety);
+    
+    //下面的动画，整个View上移动
+    
+    CGRect fileRect = self.view.frame;
+    
+    fileRect.origin.y += offsety;
+    
+    [UIView animateWithDuration:duration animations:^{
+        
+        self.view.frame = fileRect;
+        
+    }];
     
     
 }
 
-
-#pragma mark- 存储本地筛选状态
-- (void)saveFilterStatus:(NSDictionary *)filterStatusDic{
+/* 键盘隐藏*/
+- (void)keyboardWillHide:(NSNotification *)aNotification{
     
-    
-    [[NSUserDefaults standardUserDefaults]setObject:filterStatusDic forKey:@"FilterStatus"];
-    
+    [self.view setFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
     
 }
 
