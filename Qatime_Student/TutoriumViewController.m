@@ -15,6 +15,8 @@
 #import "RDVTabBarController.h"
 #import "NSString+UTF8Coding.h"
 #import "HcdDateTimePickerView.h"
+//#import "MBProgressHUD.h"
+#import "UIViewController_HUD.h"
 
 @interface TutoriumViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource>{
     
@@ -130,10 +132,16 @@
     
     NSInteger pull;
     
+
+    
+    
 }
 @end
 
 @implementation TutoriumViewController
+
+
+/* 懒加载HUD*/
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -1287,6 +1295,10 @@
 #pragma mark- 请求数据和重新请求数据方法  --  下拉刷新和上滑刷新专用
 - (void)requestDataWithGrade:(NSString *)grade andSubject:(NSString *)subject andPage:(NSInteger)pageNumber andPerPage:(NSInteger)perPage  withPull:(NSInteger)pullState{
     
+    /* 加载框*/
+    
+    [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+    
     /* 发请求获取课程列表*/
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -1378,7 +1390,10 @@
                 NSLog(@"加载数据完成。");
                 }
                 
+                [self loadingHUDStopLoadingWithTitle:@"数据加载成功"];
+                
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                
                 
             }];
             
@@ -1445,6 +1460,7 @@
             [self loadData:nil];
             
             NSLog(@"加载数据完成。");
+            [self loadingHUDStopLoadingWithTitle:@"数据加载成功"];
             }
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -1559,6 +1575,17 @@
         
         [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
         
+        /* 清除所有用户文件*/
+         NSString *userFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
+        
+        if (userFilePath) {
+            
+        [[NSFileManager defaultManager]removeItemAtPath:userFilePath error:nil];
+        }
+        
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"id"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"remember_token"];
+        
         
     }];
     
@@ -1570,8 +1597,81 @@
     }];
     
     
-    
 }
+
+
+//- (MBProgressHUD *)loadingHUD{
+//    
+//    
+//    MBProgressHUD *hud=[MBProgressHUD HUDForView:self.view];
+//    
+//    
+//    return hud;
+//    
+//}
+//
+//-(MBProgressHUD *)endHUD{
+//    
+//    MBProgressHUD *hud=[MBProgressHUD HUDForView:self.view];
+//    
+//    
+//    return hud;
+//
+//}
+//
+//
+//
+//- (void)setLoadingHUD:(MBProgressHUD *)loadingHUD{
+//    
+//    
+//    
+//}
+//
+//- (void)setEndHUD:(MBProgressHUD *)endHUD{
+//    
+//    
+//}
+//
+//
+//
+//
+//
+///* HUD框 正在加载*/
+//- (void)loadingHUDStartLoadingWithTitle:(NSString *)hudTitle{
+//    
+//    
+//    /* HUD框 提示正在登陆*/
+//    self.loadingHUD=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    self.loadingHUD.mode = MBProgressHUDModeDeterminate;
+//    self.loadingHUD.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
+//    [self.loadingHUD.label setText:hudTitle];
+//    
+//    self.loadingHUD.mode = MBProgressHUDModeIndeterminate;
+//    
+//    
+//}
+//
+//
+//
+///* HUD框 加载完成*/
+//- (void)loadingHUDStopLoadingWithTitle:(NSString *)hudTitle{
+//    
+//    [self.loadingHUD hideAnimated:YES ];
+//    
+//    self.endHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//
+//    self.endHUD.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
+//    
+//    [self.endHUD.label setText:hudTitle];
+//    
+//    self.endHUD.mode = MBProgressHUDModeText;
+//    
+//    [self.endHUD showAnimated:YES];
+//    
+//    [self.endHUD hideAnimated:YES afterDelay:1 ];
+//
+//    
+//}
 
 
 
