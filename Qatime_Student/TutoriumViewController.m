@@ -51,6 +51,9 @@
     
     /* 辅导班状态*/
     NSString *_class_status;
+   
+    /* 排序筛选*/
+    NSString *sort_By;
     
     
     /* 日期选择器*/
@@ -60,8 +63,7 @@
     
     
     
-    /* 排序筛选*/
-    NSString *sort_By;
+    
     /* 保存筛选数据的字典*/
     NSMutableDictionary *_filterDic;
     /* 保存筛选字符串*/
@@ -151,16 +153,7 @@
     _class_status =[NSString string];
     
     
-    _filterDic = [NSMutableDictionary dictionaryWithObjects:@[_filterGrade,_filterSubject, sort_By,_price_floor,_price_ceil,_class_date_floor,_class_date_ceil,_preset_lesson_count_floor,_preset_lesson_count_ceil,_class_status] forKeys:@[@"grade",
-                                                                                                                                                                                                                                             @"subject",
-                                                                                                                                                                                                                                             @"sort_by",
-                                                                                                                                                                                                                                             @"price_floor",
-                                                                                                                                                                                                                                             @"price_ceil",
-                                                                                                                                                                                                                                             @"class_date_floor",
-                                                                                                                                                                                                                                             @"class_date_ceil",
-                                                                                                                                                                                                                                             @"preset_lesson_count_floor",
-                                                                                                                                                                                                                                             @"preset_lesson_count_ceil",
-                                                                                                                                                                                                                                             @"status"]];
+    _filterDic = [NSMutableDictionary dictionaryWithObjects:@[_filterGrade,_filterSubject, sort_By,_price_floor,_price_ceil,_class_date_floor,_class_date_ceil,_preset_lesson_count_floor,_preset_lesson_count_ceil,_class_status] forKeys:@[@"grade",@"subject",@"sort_by",@"price_floor",@"price_ceil",@"class_date_floor",@"class_date_ceil",@"preset_lesson_count_floor",@"preset_lesson_count_ceil",@"status"]];
     
     
     if ([[NSFileManager defaultManager]fileExistsAtPath:_tutoriumListFilePath]) {
@@ -865,6 +858,34 @@
     [effectView removeFromSuperview];
     
     [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+    
+    
+    sort_By  = _tutoriumView.timeButton.titleLabel.text;
+    
+    if ([sort_By isEqualToString:@"按时间∨"]) {
+        
+        sort_By = @"created_at";
+        
+        
+    }else if ([sort_By isEqualToString:@"按价格↑"]) {
+        sort_By = @"price.asc";
+        
+    }else if ([sort_By isEqualToString:@"按价格↓"]){
+        sort_By = @"price";
+        
+    }else if ( [sort_By isEqualToString:@"按购买人数"]){
+        
+        sort_By = @"buy_count";
+    }
+    
+    
+    [_filterDic setValue:sort_By forKey:@"sort_by"];
+   
+    
+    
+    /* 发送筛选请求*/
+    [self sendFilterStatus:_filterDic];
+    
     
     
     
