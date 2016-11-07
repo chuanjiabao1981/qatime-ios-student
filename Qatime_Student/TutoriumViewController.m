@@ -147,6 +147,9 @@
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
     
+    
+    
+    
     /* 取出token*/
     _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
     
@@ -278,8 +281,7 @@
                     
                 }else{
 
-                
-                
+                    
                 
                 listDic =@{};
                 [listArr removeAllObjects];
@@ -948,6 +950,8 @@
 - (void)sendFilterStatus:(NSDictionary *)filterstatusDic{
     
     
+    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+    
     page = 0;
     
     /* url字符转换*/
@@ -1068,6 +1072,8 @@
         
         NSLog(@"加载数据完成。");
         
+        [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
@@ -1094,14 +1100,6 @@
     
     
 }
-
-
-
-
-
-
-
-
 
 
 

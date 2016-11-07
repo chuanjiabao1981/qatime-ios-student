@@ -20,6 +20,9 @@
 		543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20861DC703CA0086B04B /* PersonalViewController.m */; };
 		544C15121DC73ADA00F59F86 /* selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 544C15111DC73ADA00F59F86 /* selected.png */; };
 		544C15141DC7414000F59F86 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 544C15131DC7414000F59F86 /* back.png */; };
+		544E0CDB1DD0806900884F31 /* YZSquareMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CDA1DD0806900884F31 /* YZSquareMenuCell.m */; };
+		544E0CE11DD090A700884F31 /* RecommandClassCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CE01DD090A700884F31 /* RecommandClassCollectionViewCell.m */; };
+		544E0CE41DD09FAE00884F31 /* IndexHeaderPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CE31DD09FAE00884F31 /* IndexHeaderPageView.m */; };
 		546978561DC723B5001695F4 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546978551DC723B5001695F4 /* LoginViewController.m */; };
 		546978591DC723BD001695F4 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 546978581DC723BD001695F4 /* LoginView.m */; };
 		5469785C1DC72524001695F4 /* WechatIMG2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5469785B1DC72524001695F4 /* WechatIMG2.png */; };
@@ -45,6 +48,8 @@
 		54A153C31DC6F09E0070B508 /* Qatime_StudentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153C21DC6F09E0070B508 /* Qatime_StudentTests.m */; };
 		54A153CE1DC6F09E0070B508 /* Qatime_StudentUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153CD1DC6F09E0070B508 /* Qatime_StudentUITests.m */; };
 		54D661221DD040EF00C9A0FF /* UIViewController+HUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D661211DD040EF00C9A0FF /* UIViewController+HUD.m */; };
+		54D661251DD048F500C9A0FF /* IndexPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D661241DD048F500C9A0FF /* IndexPageView.m */; };
+		54D661291DD04DC900C9A0FF /* YZSquareMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D661281DD04DC900C9A0FF /* YZSquareMenu.m */; };
 		54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D8DDBA1DCB634100F0B408 /* PersonalView.m */; };
 		7CBC5A24BDBE6078BA97A9A3 /* libPods-Qatime_Student.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0908EB8F55388D2CA5802D18 /* libPods-Qatime_Student.a */; };
 /* End PBXBuildFile section */
@@ -90,6 +95,12 @@
 		543C20861DC703CA0086B04B /* PersonalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalViewController.m; sourceTree = "<group>"; };
 		544C15111DC73ADA00F59F86 /* selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selected.png; sourceTree = "<group>"; };
 		544C15131DC7414000F59F86 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
+		544E0CD91DD0806900884F31 /* YZSquareMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZSquareMenuCell.h; sourceTree = "<group>"; };
+		544E0CDA1DD0806900884F31 /* YZSquareMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZSquareMenuCell.m; sourceTree = "<group>"; };
+		544E0CDF1DD090A700884F31 /* RecommandClassCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommandClassCollectionViewCell.h; sourceTree = "<group>"; };
+		544E0CE01DD090A700884F31 /* RecommandClassCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommandClassCollectionViewCell.m; sourceTree = "<group>"; };
+		544E0CE21DD09FAE00884F31 /* IndexHeaderPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexHeaderPageView.h; sourceTree = "<group>"; };
+		544E0CE31DD09FAE00884F31 /* IndexHeaderPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexHeaderPageView.m; sourceTree = "<group>"; };
 		546978541DC723B5001695F4 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		546978551DC723B5001695F4 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		546978571DC723BD001695F4 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
@@ -140,6 +151,10 @@
 		54D6611A1DD0373100C9A0FF /* UIViewController_HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_HUD.h; sourceTree = "<group>"; };
 		54D661201DD040EF00C9A0FF /* UIViewController+HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+HUD.h"; sourceTree = "<group>"; };
 		54D661211DD040EF00C9A0FF /* UIViewController+HUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+HUD.m"; sourceTree = "<group>"; };
+		54D661231DD048F500C9A0FF /* IndexPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexPageView.h; sourceTree = "<group>"; };
+		54D661241DD048F500C9A0FF /* IndexPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexPageView.m; sourceTree = "<group>"; };
+		54D661271DD04DC900C9A0FF /* YZSquareMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZSquareMenu.h; sourceTree = "<group>"; };
+		54D661281DD04DC900C9A0FF /* YZSquareMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZSquareMenu.m; sourceTree = "<group>"; };
 		54D8DDB91DCB634100F0B408 /* PersonalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalView.h; sourceTree = "<group>"; };
 		54D8DDBA1DCB634100F0B408 /* PersonalView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalView.m; sourceTree = "<group>"; };
 		8E753843DEA9CDD394DEEC1C /* Pods-Qatime_Student.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qatime_Student.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Qatime_Student/Pods-Qatime_Student.debug.xcconfig"; sourceTree = "<group>"; };
@@ -186,10 +201,10 @@
 			children = (
 				541F91D41DC9BB5100180BE8 /* TutoriumView.h */,
 				541F91D51DC9BB5100180BE8 /* TutoriumView.m */,
-				541F91E21DC9D16700180BE8 /* TutoriumCollectionViewCell.h */,
-				541F91E31DC9D16700180BE8 /* TutoriumCollectionViewCell.m */,
 				549210251DCC6D0E00A65702 /* MultiFilterView.h */,
 				549210261DCC6D0E00A65702 /* MultiFilterView.m */,
+				541F91E21DC9D16700180BE8 /* TutoriumCollectionViewCell.h */,
+				541F91E31DC9D16700180BE8 /* TutoriumCollectionViewCell.m */,
 			);
 			name = "辅导班页面";
 			sourceTree = "<group>";
@@ -249,6 +264,14 @@
 		541F91E11DC9BC4100180BE8 /* 主页页面 */ = {
 			isa = PBXGroup;
 			children = (
+				54D661231DD048F500C9A0FF /* IndexPageView.h */,
+				54D661241DD048F500C9A0FF /* IndexPageView.m */,
+				544E0CE21DD09FAE00884F31 /* IndexHeaderPageView.h */,
+				544E0CE31DD09FAE00884F31 /* IndexHeaderPageView.m */,
+				544E0CD91DD0806900884F31 /* YZSquareMenuCell.h */,
+				544E0CDA1DD0806900884F31 /* YZSquareMenuCell.m */,
+				544E0CDF1DD090A700884F31 /* RecommandClassCollectionViewCell.h */,
+				544E0CE01DD090A700884F31 /* RecommandClassCollectionViewCell.m */,
 			);
 			name = "主页页面";
 			sourceTree = "<group>";
@@ -401,6 +424,7 @@
 		54A153A81DC6F09D0070B508 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				54D661261DD04DBE00C9A0FF /* YZMenuView */,
 				549A051F1DC89B0100B3564D /* MMPickerView */,
 				549A05121DC86EBB00B3564D /* HcdDateTimePicker */,
 				544C15111DC73ADA00F59F86 /* selected.png */,
@@ -436,6 +460,15 @@
 				54A153CF1DC6F09E0070B508 /* Info.plist */,
 			);
 			path = Qatime_StudentUITests;
+			sourceTree = "<group>";
+		};
+		54D661261DD04DBE00C9A0FF /* YZMenuView */ = {
+			isa = PBXGroup;
+			children = (
+				54D661271DD04DC900C9A0FF /* YZSquareMenu.h */,
+				54D661281DD04DC900C9A0FF /* YZSquareMenu.m */,
+			);
+			name = YZMenuView;
 			sourceTree = "<group>";
 		};
 		61F0B31770950FCD751F0794 /* Pods */ = {
@@ -653,6 +686,7 @@
 				543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */,
 				543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */,
 				549A05221DC89B0100B3564D /* MMPickerView.m in Sources */,
+				54D661251DD048F500C9A0FF /* IndexPageView.m in Sources */,
 				546978591DC723BD001695F4 /* LoginView.m in Sources */,
 				541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */,
 				541F91E41DC9D16700180BE8 /* TutoriumCollectionViewCell.m in Sources */,
@@ -663,18 +697,22 @@
 				549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */,
 				5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */,
 				549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */,
+				544E0CE11DD090A700884F31 /* RecommandClassCollectionViewCell.m in Sources */,
 				54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */,
+				544E0CDB1DD0806900884F31 /* YZSquareMenuCell.m in Sources */,
 				54A153B01DC6F09D0070B508 /* ViewController.m in Sources */,
 				541F91D61DC9BB5200180BE8 /* TutoriumView.m in Sources */,
 				549A051E1DC892E500B3564D /* GradeList.m in Sources */,
 				549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */,
 				54A153AD1DC6F09D0070B508 /* AppDelegate.m in Sources */,
+				544E0CE41DD09FAE00884F31 /* IndexHeaderPageView.m in Sources */,
 				546978641DC725A5001695F4 /* NavigationBar.m in Sources */,
 				543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */,
 				546978691DC72A42001695F4 /* SignUpViewController.m in Sources */,
 				54A153AA1DC6F09D0070B508 /* main.m in Sources */,
 				541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */,
 				54D661221DD040EF00C9A0FF /* UIViewController+HUD.m in Sources */,
+				54D661291DD04DC900C9A0FF /* YZSquareMenu.m in Sources */,
 				541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

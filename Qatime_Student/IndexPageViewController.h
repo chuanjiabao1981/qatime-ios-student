@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "NavigationBar.h"
+#import "IndexPageView.h"
 
 @interface IndexPageViewController : UIViewController
 
 @property(nonatomic,strong) NavigationBar *navigationBar ;
 
+@property(nonatomic,strong) IndexPageView *indexPageView ;
+    
+@property(nonatomic,strong) IndexHeaderPageView *headerView ;
+    
 @end

@@ -55,8 +55,15 @@
     /* 添加消息监听 判断用户退出登录*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogOut) name:@"userLogOut" object:nil];
     
+    [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    
+    
+    
+    
     return YES;
 }
+
 
 
 /* 修改rootViewController为系统的主页controller*/

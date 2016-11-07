@@ -104,16 +104,24 @@
     
        [self.tabBar setItems:items];
 //    self.tabBar.backgroundView.backgroundColor=BLUECOLOR;
-    self.selectedIndex=1;
+    self.selectedIndex=0;
     
     self.tabBar.height=63.0f;
     
+   
     
     
     
     
+}
     
     
+- (BOOL)prefersStatusBarHidden{
+    return NO;
+}
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    
+    return UIStatusBarStyleLightContent;
     
 }
 
