@@ -8,6 +8,25 @@
 
 #import "TutoriumCollectionViewCell.h"
 
-@interface RecommandClassCollectionViewCell : TutoriumCollectionViewCell
+@interface RecommandClassCollectionViewCell : UICollectionViewCell
+
+/* 课程名称*/
+@property(nonatomic,strong) UILabel *className ;
+/* 课程的背景图*/
+@property(nonatomic,strong) UIImageView *classImage ;
+/* 教师姓名*/
+@property(nonatomic,strong) UILabel *teacherName ;
+
+
+/* 年级*/
+@property(nonatomic,strong) UILabel *grade ;
+
+/* 科目*/
+@property(nonatomic,strong) UILabel *subjectName ;
+/* 已购买的用户*/
+
+@property(nonatomic,strong) UILabel *saleNumber ;
+
+
 
 @end

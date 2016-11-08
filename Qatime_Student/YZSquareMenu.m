@@ -276,7 +276,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    [_YZSquareMenuDelegate touchesIconIndex:indexPath.row];
+    [_yzSquareMenuDelegate touchesIconIndex:indexPath.row];
     
     
 }

@@ -9,9 +9,52 @@
 #import "IndexPageViewController.h"
 #import "RecommandClassCollectionViewCell.h"
 #import "IndexHeaderPageView.h"
+#import "YZSquareMenu.h"
+#import "RDVTabBarController.h"
+#import "TutoriumViewController.h"
 
+#import "RecommandTeacher.h"
 
-@interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
+#import "UIImageView+WebCache.h"
+
+@interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate>{
+    
+    
+    //    IndexHeaderPageView *headerView ;
+    
+    NSArray *menuImages;
+    NSArray *menuTitiels;
+    
+    UIScrollView *contentScrollView;
+    
+    
+    /* 页数*/
+    NSInteger page;
+    /* 每页条数*/
+    NSInteger per_page;
+    
+    
+    /* kee*/
+    /* 推荐教师kee*/
+    NSString *_kee_teacher;
+    /* 推荐课程kee*/
+    NSString *_kee_class;
+    
+    /* 推荐老师存放数组*/
+    NSMutableArray *_teachers;
+    
+    
+    /* 推荐课程存放数组*/
+    NSMutableArray *_classes;
+    
+    
+    
+    
+    
+    /* token*/
+    NSString *_remember_token;
+    
+}
 
 @end
 
@@ -21,6 +64,22 @@
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    
+    /* 取出token*/
+    _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
+    
+    contentScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)-64-64)];
+    [self.view addSubview:contentScrollView];
+    
+    contentScrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*1.8f);
+    contentScrollView.showsVerticalScrollIndicator = NO;
+    
+    
+    menuImages = @[[UIImage imageNamed:@"语文"],[UIImage imageNamed:@"数学"],[UIImage imageNamed:@"英语"],[UIImage imageNamed:@"物理"],[UIImage imageNamed:@"化学"],[UIImage imageNamed:@"生物"],[UIImage imageNamed:@"历史"],[UIImage imageNamed:@"地理"],[UIImage imageNamed:@"政治"],[UIImage imageNamed:@"科学"]];
+    menuTitiels = @[@"语文",@"数学",@"英语",@"物理",@"化学",@"生物",@"历史",@"地理",@"政治",@"科学"];
+    
     
     /* 导航栏加载*/
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 64)];
@@ -29,54 +88,318 @@
     
     
     
-    /* 页面初始化布局*/
+    /* 头视图*/
+    _headerView = [[IndexHeaderPageView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*3.1/5.0f)];
     
-    _indexPageView = [[IndexPageView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)-64-63) ];
-    
-   [ self .view addSubview:_indexPageView];
-    
-    _headerView = [[IndexHeaderPageView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds))];
-    
-//                   [self.view addSubview:_headerView];
+    _headerView.teacherScrollView.tag =0;
     
     
+    [_headerView.teacherScrollView registerClass:[YZSquareMenuCell class] forCellWithReuseIdentifier:@"CollectionCell"];
+    /* 头视图的10个科目按钮加手势*/
+    for (int i=0; i<_headerView.squareMenuArr.count; i++) {
+        
+        _headerView.squareMenuArr[i].tag=10+i;
+        
+        UITapGestureRecognizer *taps =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(userSelectedSubject:)];
+        
+        [_headerView.squareMenuArr[i] addGestureRecognizer:taps];
+        
+        
+    }
     
+    
+    
+    /* 推荐教师滚动视图 指定代理*/
+    _headerView.teacherScrollView.delegate = self;
+    _headerView.teacherScrollView.dataSource = self;
+    
+    
+    [contentScrollView addSubview:_headerView];
+    
+    /* 主页的collection*/
+    _indexPageView = [[IndexPageView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_headerView.bounds), CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)) ];
+    _indexPageView.recommandClassCollectionView.scrollEnabled =NO;
+    _indexPageView.recommandClassCollectionView.scrollsToTop = YES;
     
     /* 指定代理*/
-       
+    
     _indexPageView.recommandClassCollectionView.delegate = self;
     _indexPageView.recommandClassCollectionView.dataSource = self;
     
-//    _headerView.teacherScrollView.delegate = self;
-//    _headerView.teacherScrollView.dataSource = self;
+    /* collectionView 注册cell、headerID*/
+    
+    [_indexPageView.recommandClassCollectionView registerClass:[RecommandClassCollectionViewCell class] forCellWithReuseIdentifier:@"RecommandCell"];
+    
+    _indexPageView.recommandClassCollectionView.tag =1;
+    
+    [contentScrollView addSubview:_indexPageView];
+    
+    if (!([[NSUserDefaults standardUserDefaults]objectForKey:@"SubjectChosen"]==NULL)) {
+        
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"SubjectChosen"];
+        
+    }
     
     
-    /* collectionView 注册cell、headerID、footerId*/
+    
+#pragma mark- 变量初始化
+    page = 1;
+    per_page =10;
     
     
-      
-    [  _indexPageView.recommandClassCollectionView registerClass:[RecommandClassCollectionViewCell class] forCellWithReuseIdentifier:@"RecommandCell"];
-  
-
-    [_indexPageView.recommandClassCollectionView registerClass:[IndexHeaderPageView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"RecommandHeader"];
-   
+    
+#pragma mark- 初始数据请求
+    
+    /* 请求kee*/
+    _kee_teacher = [NSString string];
+    _kee_class = [NSString string];
+    _teachers =@[].mutableCopy;
+    _classes = @[].mutableCopy;
+    
+    /* 请求kee 并存本地*/
+    [self requestKee];
+    
+    /* 初次请求成功后，直接申请推荐教师和推荐课程*/
+    
+    /* 请求推荐教师详情*/
     
     
-   
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
     
 }
+
+#pragma mark- 请求kee
+- (void)requestKee{
+    
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    //    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
+    [manager GET:@"http://testing.qatime.cn/api/v1/recommend/positions" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        NSDictionary *keeDic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        NSLog(@"%@",keeDic);
+        
+        NSString *state=[NSString stringWithFormat:@"%@",keeDic[@"status"]];
+        
+        if ([state isEqualToString:@"0"]) {
+            
+            /* 登陆过期提示*/
+            
+        }else{
+            
+            
+            NSArray *keeArr=[NSArray arrayWithArray:[keeDic valueForKey:@"data"]];
+            NSLog(@"%@",keeArr);
+            
+            _kee_teacher =[NSString stringWithFormat:@"%@",[keeArr[0] valueForKey:@"kee"]];
+            _kee_class =[NSString stringWithFormat:@"%@",[keeArr[1] valueForKey:@"kee"]];
+            
+            [[NSUserDefaults standardUserDefaults]setObject:_kee_teacher forKey:@"kee_teacher"];
+            [[NSUserDefaults standardUserDefaults]setObject:_kee_class forKey:@"kee_class"];
+            
+            NSLog(@"%@,%@",_kee_teacher,_kee_class);
+            
+            
+            [self requestTeachers];
+            
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
+    
+}
+
+
+
+
+#pragma mark- 推荐教师请求方法
+- (void)requestTeachers{
+    
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/recommend/positions/%@/items?page=%ld&per_page=%ld",_kee_teacher,page,per_page] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *teacherDic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        NSLog( @"%@",teacherDic);
+        
+        NSString *state =[NSString stringWithFormat:@"%@",teacherDic[@"status"]];
+        
+        NSArray *teacherarr=@[].mutableCopy;
+        
+        
+        if ([state isEqualToString:@"0"]) {
+            /* 请求错误，重新发请求*/
+            
+        }else{
+            
+            teacherarr = [teacherDic valueForKey:@"data"];
+            
+            for ( int i =0; i<teacherarr.count; i++) {
+                
+                RecommandTeacher *retech=[[RecommandTeacher alloc]init];
+                
+                
+                
+                retech.teacherID = [teacherarr[i][@"teacher"] valueForKey:@"id"];
+                retech.teacherName =[teacherarr[i][@"teacher"] valueForKey:@"name"];
+                retech.avatar_url =[teacherarr[i][@"teacher"] valueForKey:@"avatar_url"];
+                
+                if (retech.teacherID ==NULL) {
+                    retech.teacherID =@"";
+                }if (retech.teacherName ==NULL) {
+                    retech.teacherName =@"";
+                }if (retech.avatar_url ==NULL) {
+                    retech.avatar_url =@"";
+                }
+                
+                
+                [_teachers addObject:retech];
+                
+                
+                
+                NSLog(@"\n%@---%@---%@",retech.teacherID,retech.teacherName,retech.avatar_url);
+                
+            }
+            
+            
+            [self reloadData];
+            
+            
+            /* 因数据中有null 不能存plist*/
+            //            [[NSUserDefaults standardUserDefaults]setValue:@{@"recommandTeachers":_teachers} forKey:@"RecommandTeachers"];
+            
+            
+            
+            
+        }
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
     
     
     
+}
+
+
+- (void)reloadData{
+    
+    /* collectionView重新加载数据*/
+    [_headerView.teacherScrollView reloadData];
+    [_headerView.teacherScrollView setNeedsDisplay];
+    
+    [_indexPageView.recommandClassCollectionView reloadData];
+    [_indexPageView.recommandClassCollectionView setNeedsDisplay];
+    
+}
+
+
+
+
+
+#pragma mark- 用户选择科目
+- (void)userSelectedSubject:(UITapGestureRecognizer *)sender{
+    
+    
+    __block  NSString *subjectStr = [NSString string];
+    
+    switch (sender.view.tag) {
+        case 10:
+            
+            subjectStr=@"语文";
+            
+            break;
+        case 11:
+            subjectStr=@"数学";
+            
+            break;
+            
+        case 12:
+            subjectStr=@"英语";
+            
+            break;
+            
+        case 13:
+            subjectStr=@"物理";
+            
+            break;
+            
+        case 14:
+            subjectStr=@"化学";
+            
+            break;
+            
+        case 15:
+            
+            subjectStr=@"生物";
+            
+            break;
+            
+        case 16:
+            subjectStr=@"历史";
+            
+            break;
+            
+        case 17:
+            subjectStr=@"地理";
+            
+            break;
+            
+        case 18:
+            subjectStr=@"政治";
+            
+            break;
+            
+        case 19:
+            subjectStr=@"科学";
+            
+            break;
+    }
+    
+    [[NSUserDefaults standardUserDefaults]setObject:subjectStr forKey:@"SubjectChosen"];
+    
+    
+    self.rdv_tabBarController.selectedIndex = 1;
+    
+    
+    
+    /* 发送消息 让第二个页面在初始化后 进行筛选*/
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserChoseSubject" object:subjectStr];
+    
+    
+    
+}
+
+
+
+
 #pragma mark- collectionview的代理方法
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
     NSInteger items=0;
     
-       if (collectionView == _indexPageView.recommandClassCollectionView){
+    if (collectionView.tag==0) {
+        items =10;
+    }
+    
+    if (collectionView .tag ==1){
         
         items = 6;
     }
@@ -85,13 +408,18 @@
     return items;
     
 }
-    
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     
     CGSize layoutSize = CGSizeZero ;
     
-        if (collectionView == _indexPageView.recommandClassCollectionView){
+    
+    if (collectionView.tag==0){
+        layoutSize = CGSizeMake(CGRectGetWidth(self.view.frame)/5-10, CGRectGetWidth(self.view.frame)/5-10);
+    }
+    
+    if (collectionView .tag ==1){
         
         layoutSize = CGSizeMake((CGRectGetWidth(self.view.bounds)-40)/2, (CGRectGetWidth(self.view.bounds)-40)/2);
         
@@ -99,24 +427,55 @@
     
     
     return layoutSize;
-    }
-    
-  
+}
+
+
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     
-   __kindof UICollectionViewCell *cell=[[UICollectionViewCell alloc]init];
+    UICollectionViewCell *cell=[[UICollectionViewCell alloc]init];
     
     
-//    static NSString * CellIdentifier = @"CollectionCell";
+    static NSString * CellIdentifier = @"CollectionCell";
     static NSString * recommandIdentifier = @"RecommandCell";
     
+    
     /* 教师推荐的横滑视图*/
+    if (collectionView .tag==0) {
+        
+        YZSquareMenuCell * squarecell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        squarecell.iconImage.layer.masksToBounds = YES;
+        squarecell.iconImage.layer.cornerRadius = squarecell.iconImage.frame.size.width/2.f ;
+        
+        
+        if (_teachers.count ==0) {
+            
+        [squarecell.iconTitle setText:@"名师推荐"];
+            
+        
+        [squarecell.iconImage setImage: [UIImage imageNamed:@"老师"]];
+        
+        }else{
+        
+        RecommandTeacher *tech=[[RecommandTeacher alloc]init];
+        tech = _teachers[indexPath.row];
+        
+        /* 加载获取到的数据*/
+        [squarecell.iconImage sd_setImageWithURL:[NSURL URLWithString:tech.avatar_url ]];
+        [squarecell.iconTitle setText:tech.teacherName];
+        
+        }
+        
+        cell = squarecell;
+        
+    }
+    
     
     
     /* 辅导推荐*/
     
-    if (collectionView == _indexPageView.recommandClassCollectionView) {
+    if (collectionView .tag==1) {
         
         RecommandClassCollectionViewCell *reccell=[collectionView dequeueReusableCellWithReuseIdentifier:recommandIdentifier forIndexPath:indexPath];
         
@@ -129,73 +488,47 @@
     }
     
     
+    
     return cell;
     
 }
-    
-    /* 回调 返回header*/
-    
-    //返回 Header的大小 size
--(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
-    
-    
-    CGSize headSize=CGSizeZero;
-    
-    if (collectionView == _indexPageView.recommandClassCollectionView){
-        
-        headSize = CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.frame)/5*3.4);
-        
-    }
-    
-//    if (collectionView == _headerView.teacherScrollView) {
-//        headSize = CGSizeZero;
-//    }
-    
-    return headSize;
-    
-}
-    
-    #pragma mark- 获取collection header的方法
-    //重要的方法 获取Header的 方法。
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
-    
-     NSString *CellIdentifier = @"RecommandHeader";
 
-    if (collectionView == _indexPageView.recommandClassCollectionView) {
-        
-        //从缓存中获取 Headercell
-        _headerView = (IndexHeaderPageView *)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-        
-    }
-    
-    
-    return _headerView;
-}
-    
-    
-    
-    
-    
-    /* section数量*/
+
+
+#pragma mark- 获取collection header的方法
+
+
+/* section数量*/
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
-   
+    
+    
     return 1;
     
 }
-    
-    /* cell的四边间距*/
+
+/* cell的四边间距*/
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
+    
+    
+    //分别为上、左、下、右
     UIEdgeInsets insets = UIEdgeInsetsZero;
-    if (collectionView == _indexPageView.recommandClassCollectionView) {
+    
+    if (collectionView.tag ==0) {
+        insets = UIEdgeInsetsZero;
+        
+        
+    }
+    
+    
+    
+    if (collectionView.tag==1) {
         insets =UIEdgeInsetsMake(10, 15, 10, 10);
     }
     
-    
-    
-        return insets;//分别为上、左、下、右
-    }
-    
+    return insets;
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -203,13 +536,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

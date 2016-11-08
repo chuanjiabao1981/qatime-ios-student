@@ -10,6 +10,7 @@
 #import "NavigationBar.h"
 #import "IndexPageView.h"
 
+
 @interface IndexPageViewController : UIViewController
 
 @property(nonatomic,strong) NavigationBar *navigationBar ;

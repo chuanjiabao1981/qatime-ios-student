@@ -104,6 +104,7 @@
     
        [self.tabBar setItems:items];
 //    self.tabBar.backgroundView.backgroundColor=BLUECOLOR;
+   
     self.selectedIndex=0;
     
     self.tabBar.height=63.0f;

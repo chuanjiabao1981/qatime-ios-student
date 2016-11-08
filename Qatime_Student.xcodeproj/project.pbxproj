@@ -31,6 +31,11 @@
 		546978641DC725A5001695F4 /* NavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 546978631DC725A5001695F4 /* NavigationBar.m */; };
 		546978691DC72A42001695F4 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546978681DC72A42001695F4 /* SignUpViewController.m */; };
 		5469786C1DC72A54001695F4 /* SignUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5469786B1DC72A54001695F4 /* SignUpView.m */; };
+		547E89841DD1705100749366 /* SquareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E89831DD1705100749366 /* SquareView.m */; };
+		547E898A1DD1BC9900749366 /* RecommandTeacher.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E89891DD1BC9900749366 /* RecommandTeacher.m */; };
+		547E898D1DD1D01B00749366 /* TutoriumInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E898C1DD1D01B00749366 /* TutoriumInfoView.m */; };
+		547E89901DD1D03100749366 /* TutoriumInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E898F1DD1D03100749366 /* TutoriumInfoViewController.m */; };
+		547E899D1DD1D8AD00749366 /* HMSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E899C1DD1D8AD00749366 /* HMSegmentedControl.m */; };
 		5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */; };
 		549210271DCC6D0E00A65702 /* MultiFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549210261DCC6D0E00A65702 /* MultiFilterView.m */; };
 		549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A050C1DC8396800B3564D /* SignUpInfoViewController.m */; };
@@ -115,6 +120,16 @@
 		546978681DC72A42001695F4 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		5469786A1DC72A54001695F4 /* SignUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpView.h; sourceTree = "<group>"; };
 		5469786B1DC72A54001695F4 /* SignUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpView.m; sourceTree = "<group>"; };
+		547E89821DD1705100749366 /* SquareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SquareView.h; sourceTree = "<group>"; };
+		547E89831DD1705100749366 /* SquareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SquareView.m; sourceTree = "<group>"; };
+		547E89881DD1BC9900749366 /* RecommandTeacher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommandTeacher.h; sourceTree = "<group>"; };
+		547E89891DD1BC9900749366 /* RecommandTeacher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommandTeacher.m; sourceTree = "<group>"; };
+		547E898B1DD1D01B00749366 /* TutoriumInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumInfoView.h; sourceTree = "<group>"; };
+		547E898C1DD1D01B00749366 /* TutoriumInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutoriumInfoView.m; sourceTree = "<group>"; };
+		547E898E1DD1D03100749366 /* TutoriumInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumInfoViewController.h; sourceTree = "<group>"; };
+		547E898F1DD1D03100749366 /* TutoriumInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutoriumInfoViewController.m; sourceTree = "<group>"; };
+		547E899B1DD1D8AD00749366 /* HMSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMSegmentedControl.h; sourceTree = "<group>"; };
+		547E899C1DD1D8AD00749366 /* HMSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMSegmentedControl.m; sourceTree = "<group>"; };
 		5492101A1DCC585E00A65702 /* NSString+UTF8Coding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UTF8Coding.h"; sourceTree = "<group>"; };
 		5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UTF8Coding.m"; sourceTree = "<group>"; };
 		549210251DCC6D0E00A65702 /* MultiFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiFilterView.h; sourceTree = "<group>"; };
@@ -192,6 +207,8 @@
 			children = (
 				543C207F1DC6F6B00086B04B /* TutoriumViewController.h */,
 				543C20801DC6F6B00086B04B /* TutoriumViewController.m */,
+				547E898E1DD1D03100749366 /* TutoriumInfoViewController.h */,
+				547E898F1DD1D03100749366 /* TutoriumInfoViewController.m */,
 			);
 			name = "辅导班页面";
 			sourceTree = "<group>";
@@ -205,6 +222,8 @@
 				549210261DCC6D0E00A65702 /* MultiFilterView.m */,
 				541F91E21DC9D16700180BE8 /* TutoriumCollectionViewCell.h */,
 				541F91E31DC9D16700180BE8 /* TutoriumCollectionViewCell.m */,
+				547E898B1DD1D01B00749366 /* TutoriumInfoView.h */,
+				547E898C1DD1D01B00749366 /* TutoriumInfoView.m */,
 			);
 			name = "辅导班页面";
 			sourceTree = "<group>";
@@ -266,6 +285,8 @@
 			children = (
 				54D661231DD048F500C9A0FF /* IndexPageView.h */,
 				54D661241DD048F500C9A0FF /* IndexPageView.m */,
+				547E89821DD1705100749366 /* SquareView.h */,
+				547E89831DD1705100749366 /* SquareView.m */,
 				544E0CE21DD09FAE00884F31 /* IndexHeaderPageView.h */,
 				544E0CE31DD09FAE00884F31 /* IndexHeaderPageView.m */,
 				544E0CD91DD0806900884F31 /* YZSquareMenuCell.h */,
@@ -310,6 +331,8 @@
 				549A051D1DC892E500B3564D /* GradeList.m */,
 				541F91EB1DCA09CC00180BE8 /* TutoriumList.h */,
 				541F91EC1DCA09CC00180BE8 /* TutoriumList.m */,
+				547E89881DD1BC9900749366 /* RecommandTeacher.h */,
+				547E89891DD1BC9900749366 /* RecommandTeacher.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -356,6 +379,15 @@
 				541F91D21DC97FFB00180BE8 /* FindPasswordView.m */,
 			);
 			name = "注册页面";
+			sourceTree = "<group>";
+		};
+		547E899A1DD1D8AD00749366 /* HMSegmentedControl */ = {
+			isa = PBXGroup;
+			children = (
+				547E899B1DD1D8AD00749366 /* HMSegmentedControl.h */,
+				547E899C1DD1D8AD00749366 /* HMSegmentedControl.m */,
+			);
+			path = HMSegmentedControl;
 			sourceTree = "<group>";
 		};
 		549A05121DC86EBB00B3564D /* HcdDateTimePicker */ = {
@@ -424,6 +456,7 @@
 		54A153A81DC6F09D0070B508 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				547E899A1DD1D8AD00749366 /* HMSegmentedControl */,
 				54D661261DD04DBE00C9A0FF /* YZMenuView */,
 				549A051F1DC89B0100B3564D /* MMPickerView */,
 				549A05121DC86EBB00B3564D /* HcdDateTimePicker */,
@@ -682,20 +715,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				546978561DC723B5001695F4 /* LoginViewController.m in Sources */,
+				547E899D1DD1D8AD00749366 /* HMSegmentedControl.m in Sources */,
 				549A051A1DC86EBB00B3564D /* MXSCycleScrollView.m in Sources */,
 				543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */,
 				543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */,
 				549A05221DC89B0100B3564D /* MMPickerView.m in Sources */,
+				547E89841DD1705100749366 /* SquareView.m in Sources */,
 				54D661251DD048F500C9A0FF /* IndexPageView.m in Sources */,
 				546978591DC723BD001695F4 /* LoginView.m in Sources */,
 				541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */,
 				541F91E41DC9D16700180BE8 /* TutoriumCollectionViewCell.m in Sources */,
 				5469786C1DC72A54001695F4 /* SignUpView.m in Sources */,
+				547E898A1DD1BC9900749366 /* RecommandTeacher.m in Sources */,
 				549210271DCC6D0E00A65702 /* MultiFilterView.m in Sources */,
 				543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */,
 				549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */,
 				549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */,
 				5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */,
+				547E89901DD1D03100749366 /* TutoriumInfoViewController.m in Sources */,
+				547E898D1DD1D01B00749366 /* TutoriumInfoView.m in Sources */,
 				549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */,
 				544E0CE11DD090A700884F31 /* RecommandClassCollectionViewCell.m in Sources */,
 				54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */,

@@ -18,6 +18,8 @@
 //#import "MBProgressHUD.h"
 #import "UIViewController_HUD.h"
 
+#import "TutoriumInfoViewController.h"
+
 @interface TutoriumViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource>{
     
     /* 筛选条件的字段*/
@@ -61,8 +63,6 @@
     /* 日期选择器*/
     
     HcdDateTimePickerView *_datePicker;
-    
-    
     
     
     
@@ -141,7 +141,15 @@
 @implementation TutoriumViewController
 
 
-/* 懒加载HUD*/
+
+- (void)viewWillAppear:(BOOL)animated{
+    
+    
+    
+    
+    
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -169,10 +177,17 @@
     _preset_lesson_count_ceil =[NSString string];
     _class_status =[NSString string];
     
+    /* 筛选请求接口初始化字段*/
+    
+    _requestUrl =[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses?"];
+    
     
     _filterDic = [NSMutableDictionary dictionaryWithObjects:@[_filterGrade,_filterSubject, sort_By,_price_floor,_price_ceil,_class_date_floor,_class_date_ceil,_preset_lesson_count_floor,_preset_lesson_count_ceil,_class_status] forKeys:@[@"grade",@"subject",@"sort_by",@"price_floor",@"price_ceil",@"class_date_floor",@"class_date_ceil",@"preset_lesson_count_floor",@"preset_lesson_count_ceil",@"status"]];
     
     
+    
+    
+        
     if ([[NSFileManager defaultManager]fileExistsAtPath:_tutoriumListFilePath]) {
         
         NSDictionary *dic=[NSDictionary dictionaryWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithFile:_tutoriumListFilePath]];
@@ -183,56 +198,79 @@
         
         page = 1;
     }
-    per_Page = 10;
-    listArr= [[NSMutableArray alloc]init];
-    infoModel = [[TutoriumListInfo alloc]init];
-    
-    /* 本地缓存的沙盒路径*/
-    _tutoriumListFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"Tutorium_List"];
-    
-    
+        per_Page = 10;
+        listArr= [[NSMutableArray alloc]init];
+        infoModel = [[TutoriumListInfo alloc]init];
+        
+        /* 本地缓存的沙盒路径*/
+        _tutoriumListFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"Tutorium_List"];
+        
+        
 #pragma mark- 筛选条件状态存储
-    /* 筛选请求接口初始化字段*/
-    
-    _requestUrl =[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses?"];
-    //    [self saveFilterStatus:_filterDic];
-    
-    _requestResaultURL = [NSString string];
-    _filterArr = [NSMutableArray array];
-    
-    [[NSFileManager defaultManager]removeItemAtPath:_tutoriumListFilePath error:nil];
+      
+        //    [self saveFilterStatus:_filterDic];
+        
+        _requestResaultURL = [NSString string];
+        _filterArr = [NSMutableArray array];
+        
+        [[NSFileManager defaultManager]removeItemAtPath:_tutoriumListFilePath error:nil];
 #pragma mark- 接受数据加载完成的消息
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loadData:) name:@"DataLoaded" object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loadData:) name:@"DataLoaded" object:nil];
 #pragma mark- 加载model数据
     
-    /* 如果本地存在缓存数据*/
-    if ([[NSFileManager defaultManager]fileExistsAtPath:_tutoriumListFilePath]){
-        
-        savedDic=[NSDictionary dictionaryWithDictionary: [NSKeyedUnarchiver unarchiveObjectWithFile:_tutoriumListFilePath]];
-        
-    }else{
+    /* 在初始化阶段 如果用户在首页选择了科目*/
+    
+    NSLog(@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"SubjectChosen"]);
+    
+    if (!([[NSUserDefaults standardUserDefaults]objectForKey:@"SubjectChosen"]== NULL)) {
         
         /* 初次请求数据 ，请求课程列表的所有数据 */
-        [self requestDataWithGrade:@"" andSubject:@"" andPage:page andPerPage:per_Page withPull:0];
+       
+        NSString *sub =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"SubjectChosen"]];
         
+        
+        
+        [_filterDic setValue:sub forKey:@"subject"];
+        
+        
+        
+        [self sendFilterStatus:_filterDic];
+        
+        [_tutoriumView.subjectButton setTitle:sub forState:UIControlStateNormal];
+        
+    }else{
+    
+    
+        /* 如果本地存在缓存数据*/
+        if ([[NSFileManager defaultManager]fileExistsAtPath:_tutoriumListFilePath]){
+            
+            savedDic=[NSDictionary dictionaryWithDictionary: [NSKeyedUnarchiver unarchiveObjectWithFile:_tutoriumListFilePath]];
+            
+        }else{
+            
+            /* 初次请求数据 ，请求课程列表的所有数据 */
+            [self requestDataWithGrade:@"" andSubject:@"" andPage:page andPerPage:per_Page withPull:0];
+            
+        }
     }
     
 #pragma mark- 加载年级信息
+        
+        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+        [manager GET:@"http://testing.qatime.cn/api/v1/app_constant/grades" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            NSArray * grade = [[NSArray alloc]initWithArray:[[[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] valueForKey:@"data"]valueForKey:@"grades"]];
+            
+            /* 年级信息归档*/
+            [[NSUserDefaults standardUserDefaults]setObject:grade forKey:@"grade"];
+            
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+        }];
     
-    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager GET:@"http://testing.qatime.cn/api/v1/app_constant/grades" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        NSArray * grade = [[NSArray alloc]initWithArray:[[[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] valueForKey:@"data"]valueForKey:@"grades"]];
-        
-        /* 年级信息归档*/
-        [[NSUserDefaults standardUserDefaults]setObject:grade forKey:@"grade"];
-        
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-    }];
     
     
 #pragma mark- 导航栏
@@ -441,7 +479,39 @@
                                                object:nil];
     
     
+    
+    /* 初始化完成后 用户选择科目后的跳转情况*/
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userSelectedSubject:) name:@"UserChoseSubject" object:nil];
+    
+    
+    
+    
 }
+
+
+
+
+/* 界面加载完成后用户再次筛选后的 消息方法*/
+- (void)userSelectedSubject:(NSNotification *)notification{
+    
+    NSString *subj =[NSString stringWithFormat:@"%@",[notification object]];
+    
+    
+    
+    [_filterDic setValue:subj forKey:@"subject"];
+    [self sendFilterStatus:_filterDic];
+    
+    [_tutoriumView.subjectButton setTitle:subj forState:UIControlStateNormal];
+    
+    
+    
+    
+}
+
+
+
+
 
 #pragma mark- 选择招生和开课状态按钮点击事件
 - (void)choseClassStatus:(UIButton *)sender{
@@ -1267,6 +1337,10 @@
 #pragma mark- item被选中的回调方法
 /* item被选中的回调方法*/
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    TutoriumInfoViewController *tutoriumInfo =[[TutoriumInfoViewController alloc]init];
+    [self.navigationController pushViewController:tutoriumInfo animated:YES];
+    self.rdv_tabBarController.tabBar.hidden = YES;
     
     
 }

@@ -83,7 +83,7 @@ typedef NS_ENUM(NSUInteger,YZBreaklineWidthStyle) {
 @property(nonatomic,assign) NSInteger iconNumbers ;
 
 /* 代理属性*/
-@property(nonatomic,weak) id <YZSquareMenuDelegate> YZSquareMenuDelegate ;
+@property(nonatomic,weak) id <YZSquareMenuDelegate> yzSquareMenuDelegate ;
 
 
 /* 初始化器1 一个方法涵盖所有属性*/
