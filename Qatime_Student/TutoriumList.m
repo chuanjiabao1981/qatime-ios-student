@@ -44,6 +44,8 @@
     self = [super init];
     if (self) {
         
+        
+        
 //        /* 取出token*/
 //        NSString *remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
 //        NSLog(@"%@",remember_token);
@@ -122,6 +124,17 @@
     return self;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        
+        _classID = @"".mutableCopy;
+        
+        
+    }
+    return self;
+}
 
 
 

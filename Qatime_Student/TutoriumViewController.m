@@ -1214,8 +1214,10 @@
         NSLog(@"%@",listInfo.data);
         
         infoModel = [TutoriumListInfo yy_modelWithDictionary:listInfo.data[indexPath.row]];
+        infoModel.classID =[listInfo.data[indexPath.row]valueForKey:@"id"];
         
-        NSLog(@"%@",infoModel.name);
+        
+        NSLog(@"%@",infoModel.classID);
         
     }else{
         
@@ -1275,6 +1277,9 @@
         
         /* cell 已购买的用户 赋值*/
         [cell.saleNumber setText:infoModel.buy_tickets_count];
+        
+        /* cell 的课程id属性*/
+        cell.classID = @"" ;
         
     }
     return cell;
@@ -1338,7 +1343,23 @@
 /* item被选中的回调方法*/
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    TutoriumInfoViewController *tutoriumInfo =[[TutoriumInfoViewController alloc]init];
+    
+    TutoriumListInfo *mod;
+    if (listArr.count==0) {
+        
+    }else{
+        
+        TutoriumList *modlist=[TutoriumList new];
+        modlist = listArr[indexPath.section];
+        
+        mod = [TutoriumListInfo yy_modelWithDictionary:modlist.data[indexPath.row]];
+        mod.classID =[listInfo.data[indexPath.row]valueForKey:@"id"];
+        NSLog(@"%@",infoModel.classID);
+    }
+    
+    TutoriumInfoViewController *tutoriumInfo =[[TutoriumInfoViewController alloc]initWithClassID:mod.classID];
+    
+    
     [self.navigationController pushViewController:tutoriumInfo animated:YES];
     self.rdv_tabBarController.tabBar.hidden = YES;
     
@@ -1358,7 +1379,6 @@
     
     [_tutoriumView addSubview:_tutoriumView.classesCollectionView ];
     NSLog(@"重新刷新collection完成");
-    
     
 }
 

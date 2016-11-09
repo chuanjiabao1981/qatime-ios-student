@@ -306,6 +306,15 @@
 
         
         
+        /* 辅导课列表*/
+        _classesListTableView = [[UITableView alloc]init];
+        [view3 addSubview:_classesListTableView];
+        _classesListTableView.sd_layout.leftSpaceToView(view3,0).rightSpaceToView(view3,0).topSpaceToView(view3,0).bottomSpaceToView(view3,0);
+        
+        
+        
+        
+        
         
         
     }

@@ -15,7 +15,7 @@
 @interface TutoriumListInfo : NSObject
 
 /* model所包含的内容 及项目*/
-@property(nonatomic,strong) NSString *classid ;
+@property(nonatomic,strong) NSString *classID ;
 @property(nonatomic,strong) NSString *name ;
 @property(nonatomic,strong) NSString *subject ;
 @property(nonatomic,strong) NSString *grade ;

@@ -14,4 +14,14 @@
 @property(nonatomic,strong) NSString *teacherName ;
 @property(nonatomic,strong) NSString *avatar_url ;
 
+@property(nonatomic,strong) NSString *gender ;
+
+@property(nonatomic,strong) NSString *subject ;
+@property(nonatomic,strong) NSString *school ;
+@property(nonatomic,strong) NSString *teaching_years ;
+
+@property(nonatomic,strong) NSString *describe ;
+
+
+
 @end

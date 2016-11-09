@@ -17,6 +17,11 @@
 
 #import "UIImageView+WebCache.h"
 
+#import "RecommandClasses.h"
+#import "YYModel.h"
+
+#import "TeachersPublicViewController.h"
+
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate>{
     
     
@@ -40,15 +45,15 @@
     /* 推荐课程kee*/
     NSString *_kee_class;
     
-    /* 推荐老师存放数组*/
+    /* 推荐教师的存放数组*/
+    NSMutableArray *_recommandTeachers;
+    
+    /* 推荐老师按section的存放数组*/
     NSMutableArray *_teachers;
     
     
     /* 推荐课程存放数组*/
     NSMutableArray *_classes;
-    
-    
-    
     
     
     /* token*/
@@ -153,6 +158,10 @@
     /* 请求kee*/
     _kee_teacher = [NSString string];
     _kee_class = [NSString string];
+    
+    _recommandTeachers =@[].mutableCopy;
+    
+    
     _teachers =@[].mutableCopy;
     _classes = @[].mutableCopy;
     
@@ -162,9 +171,6 @@
     /* 初次请求成功后，直接申请推荐教师和推荐课程*/
     
     /* 请求推荐教师详情*/
-    
-    
-    
     
     
     
@@ -214,7 +220,28 @@
             NSLog(@"%@,%@",_kee_teacher,_kee_class);
             
             
-            [self requestTeachers];
+            /* 异步线程请求推荐教师*/
+            dispatch_queue_t teacher = dispatch_queue_create("teacher", DISPATCH_QUEUE_SERIAL);
+            dispatch_async(teacher, ^{
+                
+                /* 请求推荐教师数据*/
+                [self requestTeachers];
+                
+            });
+            
+            
+            /* 另一异步线程请求推荐课程*/
+            
+            dispatch_queue_t classes = dispatch_queue_create("teacher", DISPATCH_QUEUE_SERIAL);
+            dispatch_async(classes, ^{
+                
+                /* 请求推荐课程数据*/
+                [self requestClasses];
+                
+            });
+
+            
+            
             
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -224,6 +251,103 @@
     
 }
 
+#pragma mark- 请求推荐课程方法
+- (void)requestClasses{
+    
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/recommend/positions/%@/items?page=%ld&per_page=%ld",_kee_class,page,per_page] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *classDic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        NSLog( @"%@",classDic);
+        
+        NSString *state =[NSString stringWithFormat:@"%@",classDic[@"status"]];
+        
+        NSArray *classArr=@[].mutableCopy;
+        
+        
+        if ([state isEqualToString:@"0"]) {
+            /* 请求错误，重新发请求*/
+            
+        }else{
+            
+            classArr = [classDic valueForKey:@"data"];
+            
+            
+            for ( int i =0; i<classArr.count; i++) {
+                
+                NSDictionary *classinfo =[NSDictionary dictionaryWithDictionary:[classArr[i] valueForKey:@"live_studio_course"]];
+                RecommandClasses *reclass=[RecommandClasses yy_modelWithDictionary:classinfo];
+              
+                reclass.classID =[[classArr[i] valueForKey:@"live_studio_course"]valueForKey:@"id"];
+                
+                [_classes addObject:reclass];
+                
+                
+                /* 调试代码*/
+                //"id": 38,
+                //"name": "初三化学秋季精品高分班",
+                //"subject": "化学",
+                //"grade": "初三",
+                //"teacher_name": "赵雪琴",
+                //"price": 760,
+                //"chat_team_id": "7965148",
+                //"buy_tickets_count": 0,
+                //"preset_lesson_count": 4,
+                //"completed_lesson_count": 0,
+                //"live_start_time": "2016-09-03 09:30",
+                //"live_end_time": "2016-09-11 11:00",
+                //"publicize": "http://qatime-testing.oss-cn-beijing.aliyuncs.com/courses/publicize/list_d67ff91843999033d8ce1d08ca13aa8b.jpg"
+//                NSLog(@"\n{\nid:%@\name:n%@,subject:%@\n,grade:%@\n,teacher_name:%@\n,price:%@\n,chat_team_id:%@\n,buy_tickets_count:%@\n,preset_lesson_count:%@\n,completed_lesson_count:%@\n,live_start_time:%@\n,live_end_time:%@\n,publicize:%@\n}",reclass.classID,reclass.name,reclass.subject,reclass.grade,reclass.teacher_name,reclass.price,reclass.chat_team_id,reclass.buy_tickets_count,reclass.preset_lesson_count,reclass.completed_lesson_count,reclass.live_start_time,reclass.live_end_time,reclass.publicize);
+                
+                
+                
+//                RecommandTeacher *retech=[[RecommandTeacher alloc]init];
+//                                
+//                retech.teacherID = [teacherarr[i][@"teacher"] valueForKey:@"id"];
+//                retech.teacherName =[teacherarr[i][@"teacher"] valueForKey:@"name"];
+//                retech.avatar_url =[teacherarr[i][@"teacher"] valueForKey:@"avatar_url"];
+//                
+//                if (retech.teacherID ==NULL) {
+//                    retech.teacherID =@"";
+//                }if (retech.teacherName ==NULL) {
+//                    retech.teacherName =@"";
+//                }if (retech.avatar_url ==NULL) {
+//                    retech.avatar_url =@"";
+//                }
+//                
+//                
+//                [_teachers addObject:retech];
+//                
+//                
+//                
+//                NSLog(@"\n%@---%@---%@",retech.teacherID,retech.teacherName,retech.avatar_url);
+                
+            }
+            
+            
+            [self reloadData];
+            
+            
+            /* 因数据中有null 不能存plist*/
+            //            [[NSUserDefaults standardUserDefaults]setValue:@{@"recommandTeachers":_teachers} forKey:@"RecommandTeachers"];
+            
+            
+            
+            
+        }
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
+    
+
+    
+    
+}
 
 
 
@@ -254,8 +378,6 @@
                 
                 RecommandTeacher *retech=[[RecommandTeacher alloc]init];
                 
-                
-                
                 retech.teacherID = [teacherarr[i][@"teacher"] valueForKey:@"id"];
                 retech.teacherName =[teacherarr[i][@"teacher"] valueForKey:@"name"];
                 retech.avatar_url =[teacherarr[i][@"teacher"] valueForKey:@"avatar_url"];
@@ -268,27 +390,16 @@
                     retech.avatar_url =@"";
                 }
                 
-                
                 [_teachers addObject:retech];
                 
-                
-                
                 NSLog(@"\n%@---%@---%@",retech.teacherID,retech.teacherName,retech.avatar_url);
-                
             }
             
+            [_recommandTeachers addObject:_teachers];
             
             [self reloadData];
             
-            
-            /* 因数据中有null 不能存plist*/
-            //            [[NSUserDefaults standardUserDefaults]setValue:@{@"recommandTeachers":_teachers} forKey:@"RecommandTeachers"];
-            
-            
-            
-            
         }
-        
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -311,12 +422,8 @@
 }
 
 
-
-
-
 #pragma mark- 用户选择科目
 - (void)userSelectedSubject:(UITapGestureRecognizer *)sender{
-    
     
     __block  NSString *subjectStr = [NSString string];
     
@@ -379,10 +486,8 @@
     self.rdv_tabBarController.selectedIndex = 1;
     
     
-    
     /* 发送消息 让第二个页面在初始化后 进行筛选*/
     [[NSNotificationCenter defaultCenter]postNotificationName:@"UserChoseSubject" object:subjectStr];
-    
     
     
 }
@@ -407,6 +512,23 @@
     
     return items;
     
+}
+
+#pragma mark- collection的section
+
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    
+    NSInteger sec=0;
+    
+    if (collectionView.tag==0) {
+        sec = _recommandTeachers.count;
+    }
+    if(collectionView.tag==1){
+        sec =1;
+        
+    }
+    
+    return sec;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -449,22 +571,23 @@
         squarecell.iconImage.layer.cornerRadius = squarecell.iconImage.frame.size.width/2.f ;
         
         
-        if (_teachers.count ==0) {
+        if (_recommandTeachers.count ==0) {
             
         [squarecell.iconTitle setText:@"名师推荐"];
             
         
         [squarecell.iconImage setImage: [UIImage imageNamed:@"老师"]];
-        
+            
         }else{
-        
-        RecommandTeacher *tech=[[RecommandTeacher alloc]init];
-        tech = _teachers[indexPath.row];
-        
-        /* 加载获取到的数据*/
-        [squarecell.iconImage sd_setImageWithURL:[NSURL URLWithString:tech.avatar_url ]];
-        [squarecell.iconTitle setText:tech.teacherName];
-        
+            
+            _teachers = _recommandTeachers[indexPath.section];
+            RecommandTeacher *tech=[[RecommandTeacher alloc]init];
+            tech = _teachers[indexPath.row];
+            
+            /* 加载获取到的数据*/
+            [squarecell.iconImage sd_setImageWithURL:[NSURL URLWithString:tech.avatar_url ]];
+            [squarecell.iconTitle setText:tech.teacherName];
+            
         }
         
         cell = squarecell;
@@ -473,15 +596,32 @@
     
     
     
-    /* 辅导推荐*/
+    /* 辅导课程推荐 视图*/
     
     if (collectionView .tag==1) {
         
         RecommandClassCollectionViewCell *reccell=[collectionView dequeueReusableCellWithReuseIdentifier:recommandIdentifier forIndexPath:indexPath];
         
         
-        [reccell.classImage setImage:[UIImage imageNamed:@"school"]];
+        if (_classes .count ==0) {
+            
+            [reccell.classImage setImage:[UIImage imageNamed:@"school"]];
+        }else{
+            RecommandClasses *cellmod = [[RecommandClasses alloc]init];
+            cellmod = _classes[indexPath.row];
+            
+            
+            [reccell.classImage sd_setImageWithURL:[NSURL URLWithString:cellmod.publicize]];
+            
+            [reccell.className setText:[NSString stringWithFormat:@"%@",cellmod.name]];
+            [reccell.grade setText:[NSString stringWithFormat:@"%@",cellmod.grade]];
+            [reccell.subjectName setText:[NSString stringWithFormat:@"%@",cellmod.subject]];
+            [reccell.saleNumber setText:[NSString stringWithFormat:@"%@",cellmod.buy_tickets_count]];
+            
+            
+        }
         
+
         
         cell=reccell ;
         
@@ -495,21 +635,8 @@
 
 
 
-#pragma mark- 获取collection header的方法
-
-
-/* section数量*/
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
-    
-    
-    return 1;
-    
-}
-
 /* cell的四边间距*/
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    
-    
     
     //分别为上、左、下、右
     UIEdgeInsets insets = UIEdgeInsetsZero;
@@ -517,17 +644,62 @@
     if (collectionView.tag ==0) {
         insets = UIEdgeInsetsZero;
         
-        
     }
     
-    
-    
+ 
     if (collectionView.tag==1) {
         insets =UIEdgeInsetsMake(10, 15, 10, 10);
     }
     
     return insets;
 }
+
+
+
+#pragma mark- collection的点击事件
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (collectionView.tag ==0) {
+        
+       
+        
+        if (_recommandTeachers.count==0) {
+            
+            /* 数据请求错误*/
+            
+        }else{
+            
+            
+            NSString *teacherId=[NSString string];
+            
+            NSArray *teArr= [NSArray arrayWithArray:_recommandTeachers[indexPath.section]];
+            RecommandTeacher *teach =teArr[indexPath.row];
+            
+            teacherId = teach.teacherID;
+            
+            TeachersPublicViewController *public =[[TeachersPublicViewController alloc]initWithTeacherID:teacherId];
+            [self.navigationController pushViewController:public animated:YES];
+            
+            
+        }
+        
+        
+        
+        
+    }
+    if (collectionView.tag ==1) {
+        
+    }
+
+    
+    
+    
+    
+}
+
+
+
 
 
 - (void)didReceiveMemoryWarning {

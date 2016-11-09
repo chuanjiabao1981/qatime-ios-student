@@ -52,7 +52,12 @@
         _teacherName = [NSString string];
         _teacherID = [NSString string];
         _avatar_url = [NSString string];
+        _gender = @"".mutableCopy;
         
+        _subject = @"".mutableCopy;
+        _school =@"".mutableCopy;
+        _teaching_years = @"".mutableCopy;
+        _describe = @"".mutableCopy;
         
     }
     return self;

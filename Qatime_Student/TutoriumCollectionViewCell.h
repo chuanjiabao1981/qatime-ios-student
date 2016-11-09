@@ -33,6 +33,9 @@
 
 @property(nonatomic,strong) UILabel *saleNumber ;
 
+/* 课程Id*/
+@property(nonatomic,strong) NSString *classID ;
+
 
 
 @end
