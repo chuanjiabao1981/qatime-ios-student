@@ -7,8 +7,17 @@
 //
 
 #import "PersonalViewController.h"
+#import "VideoViewController.h"
 
-@interface PersonalViewController ()
+#import "NELivePlayerViewController.h"
+
+@interface PersonalViewController (){
+    
+    
+    VideoViewController *videoVC;
+    NELivePlayerViewController *neVideoVC;
+    
+}
 
 @end
 
@@ -29,8 +38,53 @@
     
     
     
+    /* 测试用按钮*/
+    
+    UIButton *playerButton= [[UIButton alloc]initWithFrame:CGRectMake(20, 100, CGRectGetWidth(self.view.frame)-40, 40)];
+    
+    playerButton.backgroundColor = [UIColor redColor];
+    
+    [playerButton setTitle:@"播放视频" forState:UIControlStateNormal];
+    
+    [self .view addSubview:playerButton];
+    
+    [playerButton addTarget:self action:@selector(playVideo) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    /* 测试用按钮2*/
+    
+    UIButton *playerButton2= [[UIButton alloc]initWithFrame:CGRectMake(20, 200, CGRectGetWidth(self.view.frame)-40, 40)];
+    
+    playerButton2.backgroundColor = [UIColor orangeColor];
+    
+    [playerButton2 setTitle:@"播放视频2" forState:UIControlStateNormal];
+    
+    [self .view addSubview:playerButton2];
+    
+    [playerButton2 addTarget:self action:@selector(playVideo2) forControlEvents:UIControlEventTouchUpInside];
+    
+
+    
 
 }
+
+
+- (void)playVideo{
+    
+    
+    videoVC = [[VideoViewController  alloc]init];
+    [self.navigationController pushViewController:videoVC animated:YES];
+    
+}
+
+- (void)playVideo2{
+    
+    neVideoVC =[[NELivePlayerViewController alloc]init];
+    
+     [self.navigationController pushViewController:neVideoVC animated:YES];
+}
+
+
 
 #pragma mark- 用户退出登录
 - (void)userLogOut{

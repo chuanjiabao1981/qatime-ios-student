@@ -12,19 +12,33 @@
 #import "YYModel.h"
 #import "UIImageView+WebCache.h"
 #import "TeacherPublicClassCollectionViewCell.h"
+#import "TeachersPublic_Classes.h"
+#import "RDVTabBarController.h"
 
 @interface TeachersPublicViewController ()
 <UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>
 
 {
     
+    /* 头视图*/
+    TeachersPublicHeaderView *_teachersPublicHeaderView ;
     
     NavigationBar *_navigationBar;
     
+    
+    /* 教师公开信息model*/
     TeachersPublicInfo *_teacherPublicInfo;
     
+    /* 教师课程存放的数组*/
+    NSMutableArray *_publicClasses;
+    
+    TeachersPublic_Classes *_teacherPublicClass;
     
     UICollectionViewFlowLayout *_flowLayout;
+    
+    
+    
+    
     
     CGSize headerSize;
     
@@ -54,6 +68,8 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
+    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+    
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];
     
@@ -61,37 +77,53 @@
     
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
-//    _teachersPublicHeaderView = [[TeachersPublicHeaderView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), 400)];
-    
-//    [self.view addSubview:_teachersPublicHeaderView];
+    _teachersPublicHeaderView = [[TeachersPublicHeaderView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 400)];
     
     
-    /* 初始化后直接发送教师公开页的请求*/
-    [self requestTeachersInfoWithID:_teacherID];
+    [self.view addSubview:_teachersPublicHeaderView];
+    
+//    
+//    dispatch_queue_t mian1 = dispatch_queue_create("main", DISPATCH_CURRENT_QUEUE_LABEL);
+//    dispatch_sync(mian1, ^{
+    
+        /* 初始化后直接发送教师公开页的请求*/
+        [self requestTeachersInfoWithID:_teacherID];
+        
+//    });
+    
     
         
     /* 接收label的frame变化的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sizeToFitHeight) name:@"LabelTextChange" object:nil];
     
     
-    
-    
     headerSize = CGSizeMake(CGRectGetWidth(self.view.frame), 600);
     
     _flowLayout = [[UICollectionViewFlowLayout alloc]init];
+    _flowLayout.headerReferenceSize = headerSize;
     
+    
+    
+//    dispatch_queue_t mian2 = dispatch_queue_create("main", DISPATCH_CURRENT_QUEUE_LABEL);
+//    dispatch_sync(mian2, ^{
     
     /* collection部分*/
-    _teachersPublicCollectionView = [[TeachersPublicCollectionView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64-63) collectionViewLayout:_flowLayout];
+    _teachersPublicCollectionView = [[TeachersPublicCollectionView alloc]initWithFrame:CGRectMake(0,64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64) collectionViewLayout:_flowLayout];
     [self.view addSubview:_teachersPublicCollectionView];
     _teachersPublicCollectionView.backgroundColor = [UIColor whiteColor];
-    
+    _teachersPublicCollectionView.showsVerticalScrollIndicator = NO;
+    _teachersPublicCollectionView.bounces = NO;
     /* collectionView 注册cell、headerID、footerId*/
     [_teachersPublicCollectionView registerClass:[TeacherPublicClassCollectionViewCell class] forCellWithReuseIdentifier:@"cellId"];
     [_teachersPublicCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId"];
     
-    _teachersPublicCollectionView.dataSource=self;
     _teachersPublicCollectionView.delegate = self;
+    _teachersPublicCollectionView.dataSource = self;
+        
+
+    
+    
+    _publicClasses = @[].mutableCopy;
     
     
     
@@ -103,7 +135,7 @@
 #pragma mark- collectionView的代理方法
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
-    return 10;
+    return _publicClasses.count;
     
 }
 
@@ -114,7 +146,34 @@
     static NSString * CellIdentifier = @"cellId";
     TeacherPublicClassCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     
+    
+    if (_publicClasses.count ==0) {
+        
+    }else{
+        
+        
+        /* yymodel解析教师公开页的课程model*/
+        
+        _teacherPublicClass = [TeachersPublic_Classes yy_modelWithDictionary:_publicClasses[indexPath.row]];
+        _teacherPublicClass.classID =[_publicClasses[indexPath.row] valueForKey:@"id"];
+        
+        
+        [cell.classImage sd_setImageWithURL:[NSURL URLWithString:_teacherPublicClass.publicize]];
+        cell.className.text = _teacherPublicClass.name;
+        cell.grade.text = _teacherPublicClass.grade;
+        cell.subjectName.text = _teacherPublicClass.subject;
+        cell.priceLabel .text = [NSString stringWithFormat:@"¥%@",_teacherPublicClass.price];
+        
+        
+        
+    }
+    
+    
+    
+    
+    NSLog(@"%@",[NSThread currentThread]);
     return cell;
+    
 
     
     
@@ -144,18 +203,26 @@
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
     
 
-  return  CGSizeMake(CGRectGetWidth(self.view.frame), 600);
+  return  headerSize;
 }
 
-//这个也是最重要的方法 获取Header的 方法。
+// 获取Header的 方法。
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     
     NSString *CellIdentifier = @"headerId";
     //从缓存中获取 Headercell
-   _teachersPublicHeaderView  = (TeachersPublicHeaderView *)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+
     
-    return _teachersPublicHeaderView;
+    UICollectionReusableView *header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    
+    
+    [header addSubview:_teachersPublicHeaderView];
+    
+
+    
+    return header;
 }
 
 
@@ -178,8 +245,16 @@
             
             
         }else{
+            
+            /* yymodel解析教师公开信息*/
             _teacherPublicInfo = [TeachersPublicInfo yy_modelWithDictionary:dic[@"data"]];
             NSLog(@"%@,%@,%@,%@,%@,%@,%@,%@,%@,%@,%@",_teacherPublicInfo.name,_teacherPublicInfo.desc,_teacherPublicInfo.teaching_years,_teacherPublicInfo.gender,_teacherPublicInfo.grade,_teacherPublicInfo.subject,_teacherPublicInfo.category,_teacherPublicInfo.province,_teacherPublicInfo.city,_teacherPublicInfo.avatar_url,_teacherPublicInfo.courses);
+            
+//             yymodel解析教师公开课程
+            
+            _publicClasses = dic[@"data"][@"courses"];
+            NSLog(@"%@",_publicClasses);
+            
             
             
             [self refreshTeacherInfoWith:_teacherPublicInfo];
@@ -187,10 +262,7 @@
             
         }
         
-        
-        
-        
-        
+       
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -206,8 +278,11 @@
 /* 刷新页面的信息*/
 - (void)refreshTeacherInfoWith:(TeachersPublicInfo *)teacherInfo{
     
+    if (teacherInfo) {
+        
+        
+        _teachersPublicHeaderView.teacherNameLabel.text =teacherInfo.name;
     [_teachersPublicHeaderView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:teacherInfo.avatar_url]];
-    _teachersPublicHeaderView.teacherNameLabel.text =teacherInfo.name;
     _teachersPublicHeaderView.category.text = teacherInfo.category;
     _teachersPublicHeaderView.subject.text = teacherInfo.subject;
     _teachersPublicHeaderView.teaching_year.text = teacherInfo.teaching_years;
@@ -218,12 +293,23 @@
     
     
     _teachersPublicHeaderView.selfInterview.text = teacherInfo.desc;
+        
+        [self sizeToFitHeight];
     
+        
+
+        
+        
+        
+        
     headerSize = CGSizeMake(CGRectGetWidth(_teachersPublicHeaderView.frame), CGRectGetHeight( _teachersPublicHeaderView.frame));
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"LabelTextChange" object:nil];
+        
+        
+        
     
-    
+    }
     
     
 }
@@ -238,7 +324,16 @@
     _teachersPublicHeaderView.selfInterview.frame = CGRectMake(_teachersPublicHeaderView.selfInterview.frame.origin.x, _teachersPublicHeaderView.selfInterview.frame.origin.y, CGRectGetWidth(self.view.frame)-20, rect.size.height) ;
     
     /* headerview的尺寸也变化*/
-    _teachersPublicHeaderView.frame = CGRectMake(0, 64,CGRectGetWidth(self.view.frame) , CGRectGetMaxY(_teachersPublicHeaderView.selfInterview.frame)+10);
+    _teachersPublicHeaderView.frame = CGRectMake(0,0,CGRectGetWidth(self.view.frame) , CGRectGetMaxY(_teachersPublicHeaderView.selfInterview.frame)+10);
+    
+    headerSize =CGSizeMake(_teachersPublicHeaderView.frame.size.width, _teachersPublicHeaderView.frame.size.height);
+    
+    [_teachersPublicCollectionView reloadData];
+    [_teachersPublicCollectionView setNeedsLayout];
+    [_teachersPublicCollectionView setNeedsDisplay];
+//    _teachersPublicCollectionView set
+    
+    
     
     
     

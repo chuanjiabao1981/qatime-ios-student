@@ -12,13 +12,18 @@
 
 
 @interface TeachersPublicViewController : UIViewController
-
-@property(nonatomic,strong) TeachersPublicHeaderView *teachersPublicHeaderView ;
+//
+//@property(nonatomic,strong) TeachersPublicHeaderView *teachersPublicHeaderView ;
 
 @property(nonatomic,strong) TeachersPublicCollectionView *teachersPublicCollectionView ;
 
 
 @property(nonatomic,strong) NSString *teacherID ;
+
+
+
+
+
 
 - (instancetype)initWithTeacherID:(NSString *)teacherID;
 

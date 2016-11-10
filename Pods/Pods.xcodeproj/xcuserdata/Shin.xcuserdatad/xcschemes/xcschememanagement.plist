@@ -8,56 +8,98 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>1</integer>
 		</dict>
 		<key>MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>3</integer>
 		</dict>
 		<key>MJRefresh.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>Masonry.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>2</integer>
 		</dict>
 		<key>Pods-Qatime_Student.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>5</integer>
 		</dict>
 		<key>RDVTabBarController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>6</integer>
 		</dict>
 		<key>SDAutoLayout.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>7</integer>
 		</dict>
 		<key>SDCycleScrollView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>8</integer>
 		</dict>
 		<key>SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>9</integer>
 		</dict>
 		<key>YYModel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>10</integer>
+		</dict>
+		<key>ZFPlayer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>11</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0C6981475DE82560ED5FCEE468633F2B</key>
+		<key>294A1C294FFAA6348D9424A98B01C263</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6A02FACF77138761EE993B5235F6F4C3</key>
+		<key>3F083C8E19DB2A9697E3200F6B9F3120</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5119ABAC5AE89B1BDBADDA3C8CD75C17</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>53480ED0BE09FF49E34B1702D485CAAB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -67,12 +109,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>72DD66FBC581A4F0AF50B2A3B0E17141</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>86A5997D27D48CD62323551389398698</key>
+		<key>8F97119810C73B7A449710CB1E90D70A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -82,7 +119,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9B17D543FFF189D8880C4C61504E4D09</key>
+		<key>A889EBD88460C246341B269BED234AE2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -92,7 +129,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F81ED43F44C2E4ED26DA7671BC4A3CB7</key>
+		<key>EF4E9C111081805DEC8787BD62305F96</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F2CDF0EE1BF189C5FBFE9D71BEA6F37E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
