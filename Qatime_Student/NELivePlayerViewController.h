@@ -16,12 +16,12 @@
 
 
 @class NELivePlayerControl;
-@interface NELivePlayerViewController : UIViewController
+@interface NELivePlayerViewController : UIViewController <NELivePlayer>
 
 @property(nonatomic, strong) NSURL *url;
 @property(nonatomic, strong) NSString *decodeType;
 @property(nonatomic, strong) NSString *mediaType;
-@property(nonatomic, strong) id<NELivePlayer> liveplayer;
+@property(nonatomic, strong) NELivePlayerController <NELivePlayer> *liveplayer;
 
 - (id)initWithURL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm;
 

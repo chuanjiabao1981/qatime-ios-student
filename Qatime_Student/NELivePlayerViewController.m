@@ -9,6 +9,8 @@
 #import "NELivePlayerViewController.h"
 #import "NELivePlayerControl.h"
 
+
+
 @interface NELivePlayerViewController ()
 
 @property (nonatomic, strong) UIView *playerView;
@@ -36,27 +38,6 @@
 
 @implementation NELivePlayerViewController
 
-@synthesize playerView;
-@synthesize controlOverlay;
-@synthesize topControlView;
-@synthesize bottomControlView;
-@synthesize playQuitBtn;
-@synthesize fileName;
-
-@synthesize currentTime;
-@synthesize totalDuration;
-@synthesize videoProgress;
-
-@synthesize bufferingIndicate;
-@synthesize bufferingReminder;
-
-@synthesize playBtn;
-@synthesize pauseBtn;
-@synthesize audioBtn;
-@synthesize muteBtn;
-@synthesize scaleModeBtn;
-@synthesize snapshotBtn;
-@synthesize mediaControl;
 
 NSTimeInterval mDuration;
 NSTimeInterval mCurrPos;
@@ -89,141 +70,278 @@ bool ismute     = NO;
     return self;
 }
 
-- (void)dealloc{
-    
-}
 
 - (void)loadView {
-    self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+    self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     //当前屏幕宽高
     screenWidth  = CGRectGetWidth([UIScreen mainScreen].bounds);
     screenHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
     
-    self.playerView        = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight-20)];
+    /* */
+    self.playerView =[[UIView alloc]init];
+    [self.view addSubview:self.playerView];
+//    [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).offset(20);
+//        make.left.right.equalTo(self.view);
+//        // 这里宽高比16：9，可以自定义视频宽高比
+//        make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
+//    }];
+    self.playerView.sd_layout
+    .leftEqualToView(self.view)
+    .rightEqualToView(self.view)
+    .topSpaceToView(self.view,20)
+    .autoHeightRatio(9/16.0f);
     
-    self.mediaControl = [[NELivePlayerControl alloc] initWithFrame:CGRectMake(0, 0, screenHeight, screenWidth)];
+    
+    
+    
+    /*[[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight-20)];*/
+    
+    self.mediaControl =[[NELivePlayerControl alloc] init];
+    [self.playerView addSubview:self.mediaControl];
+    self.mediaControl.sd_layout
+    .leftEqualToView(self.playerView)
+    .rightEqualToView(self.playerView)
+    .topEqualToView(self.playerView)
+    .bottomEqualToView(self.playerView);
+    
+    
+    
+    /*[[NELivePlayerControl alloc] initWithFrame:CGRectMake(0, 0, screenHeight, screenWidth)];*/
+    
+    
     [self.mediaControl addTarget:self action:@selector(onClickMediaControl:) forControlEvents:UIControlEventTouchDown];
     
     //控制
-    self.controlOverlay = [[UIControl alloc] initWithFrame:CGRectMake(0, 0, screenHeight, screenWidth)];
+    self.controlOverlay =[[UIControl alloc] init];
+    [self.mediaControl addSubview:self.controlOverlay];
+    
+    self.controlOverlay.sd_layout
+    .leftEqualToView(_mediaControl)
+    .rightEqualToView(_mediaControl)
+    .topEqualToView(_mediaControl)
+    .bottomEqualToView(_mediaControl);
+    
+    
+    
+//    [[UIControl alloc] initWithFrame:CGRectMake(0, 0, screenHeight, screenWidth)];
+    
+    
     [self.controlOverlay addTarget:self action:@selector(onClickOverlay:) forControlEvents:UIControlEventTouchDown];
     
     //顶部控制栏
-    self.topControlView    = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenHeight, 40)];
+    self.topControlView = [[UIView alloc] init];
+//    [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenHeight, 40)];
     self.topControlView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ic_background_black.png"]];
     self.topControlView.alpha = 0.8;
+    [self.controlOverlay addSubview:self.topControlView];
+    self.topControlView.sd_layout
+    .leftEqualToView(self.controlOverlay)
+    .rightEqualToView(self.controlOverlay)
+    .topEqualToView(self.controlOverlay)
+    .bottomEqualToView(self.controlOverlay);
+    
+    
     //退出按钮
     self.playQuitBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.playQuitBtn setImage:[UIImage imageNamed:@"btn_player_quit"] forState:UIControlStateNormal];
-    self.playQuitBtn.frame = CGRectMake(10, 0, 40, 40);
+//    self.playQuitBtn.frame = CGRectMake(10, 0, 40, 40);
     [self.playQuitBtn addTarget:self action:@selector(onClickBack:) forControlEvents:UIControlEventTouchUpInside];
     [self.topControlView addSubview:self.playQuitBtn];
+    self.playQuitBtn.sd_layout
+    .topEqualToView(self.topControlView)
+    .leftSpaceToView(self.topControlView,10)
+    .widthIs(40)
+    .heightIs(40);
+    
+    
     //文件名
-    self.fileName = [[UILabel alloc] initWithFrame:CGRectMake(70, 0, screenHeight - 140, 40)];
+    self.fileName = [[UILabel alloc] init ];
+//                     WithFrame:CGRectMake(70, 0, screenHeight - 140, 40)];
     self.fileName.text = [self.url lastPathComponent];
     self.fileName.textAlignment = NSTextAlignmentCenter; //文字居中
     self.fileName.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
     self.fileName.font = [UIFont fontWithName:self.fileName.font.fontName size:13.0];
     [self.topControlView addSubview:self.fileName];
+    self.fileName.sd_layout
+    .centerXEqualToView(self.topControlView)
+    .topEqualToView(self.topControlView)
+    .bottomEqualToView(self.topControlView)
+    .widthIs(screenWidth-100);
     
     //缓冲提示
-    self.bufferingIndicate = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [self.bufferingIndicate setCenter:CGPointMake(screenHeight/2, screenWidth/2)];
-    [self.bufferingIndicate setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    self.bufferingIndicate.hidden = YES;
-    
-    self.bufferingReminder = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
-    [self.bufferingReminder setCenter:CGPointMake(screenHeight/2, screenWidth/2 - 50)];
-    self.bufferingReminder.text = @"缓冲中";
-    self.bufferingReminder.textAlignment = NSTextAlignmentCenter; //文字居中
-    self.bufferingReminder.textColor = [UIColor whiteColor];
-    self.bufferingReminder.hidden = YES;
+//    self.bufferingIndicate = [[UIActivityIndicatorView alloc] init];
+//    
+//    
+////                              WithFrame:CGRectMake(0, 0, 30, 30)];
+//    [self.bufferingIndicate setCenter:CGPointMake(screenHeight/2, screenWidth/2)];
+//    [self.bufferingIndicate setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+//    self.bufferingIndicate.hidden = YES;
+//    
+//    self.bufferingReminder = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
+//    [self.bufferingReminder setCenter:CGPointMake(screenHeight/2, screenWidth/2 - 50)];
+//    self.bufferingReminder.text = @"缓冲中";
+//    self.bufferingReminder.textAlignment = NSTextAlignmentCenter; //文字居中
+//    self.bufferingReminder.textColor = [UIColor whiteColor];
+//    self.bufferingReminder.hidden = YES;
 
     
     //底部控制栏
-    self.bottomControlView = [[UIView alloc] initWithFrame:CGRectMake(0, screenWidth - 50, screenHeight, 50)];
+    self.bottomControlView = [[UIView alloc] init];
+//                              WithFrame:CGRectMake(0, screenWidth - 50, screenHeight, 50)];
     self.bottomControlView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ic_background_black.png"]];
     self.bottomControlView.alpha = 0.8;
+    [ self.controlOverlay addSubview:self.bottomControlView];
+    self.bottomControlView.sd_layout
+    .leftEqualToView(self.controlOverlay)
+    .bottomEqualToView(self.controlOverlay)
+    .rightEqualToView(self.controlOverlay)
+    .heightIs(50);
+    
     
     //播放按钮
     self.playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.playBtn setImage:[UIImage imageNamed:@"btn_player_pause"] forState:UIControlStateNormal];
-    self.playBtn.frame = CGRectMake(10, 5, 40, 40);
+//    self.playBtn.frame = CGRectMake(10, 5, 40, 40);
     [self.playBtn addTarget:self action:@selector(onClickPlay:) forControlEvents:UIControlEventTouchUpInside];
     [self.bottomControlView addSubview:self.playBtn];
+    self.playBtn.sd_layout
+    .leftSpaceToView(self.bottomControlView,10)
+    .centerYEqualToView(self.bottomControlView)
+    .topSpaceToView(self.bottomControlView,10)
+    .bottomSpaceToView(self.bottomControlView,10)
+    .widthEqualToHeight();
+    
+    
     
     //暂停按钮
     self.pauseBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.pauseBtn setImage:[UIImage imageNamed:@"btn_player_play"] forState:UIControlStateNormal];
-    self.pauseBtn.frame = CGRectMake(10, 5, 40, 40);
+//    self.pauseBtn.frame = CGRectMake(10, 5, 40, 40);
     [self.pauseBtn addTarget:self action:@selector(onClickPause:) forControlEvents:UIControlEventTouchUpInside];
     self.pauseBtn.hidden = YES;
     [self.bottomControlView addSubview:self.pauseBtn];
-
+    self.pauseBtn.sd_layout
+    .leftEqualToView(self.playBtn)
+    .rightEqualToView(self.playBtn)
+    .topEqualToView(self.playBtn)
+    .bottomEqualToView(self.playBtn);
+    
     
     //当前播放的时间点
-    self.currentTime = [[UILabel alloc] initWithFrame:CGRectMake(50, 15, 50, 20)];
+    self.currentTime = [[UILabel alloc] init];
+//                        WithFrame:CGRectMake(50, 15, 50, 20)];
     self.currentTime.text = @"00:00:00"; //for test
     self.currentTime.textAlignment = NSTextAlignmentCenter;
     self.currentTime.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
     self.currentTime.font = [UIFont fontWithName:self.currentTime.font.fontName size:10.0];
     [self.bottomControlView addSubview:self.currentTime];
-    
-    //播放进度条
-    self.videoProgress = [[UISlider alloc] initWithFrame:CGRectMake(100, 10, screenHeight-320, 30)];
-    [[UISlider appearance] setThumbImage:[UIImage imageNamed:@"btn_player_slider_thumb"] forState:UIControlStateNormal];
-    [[UISlider appearance] setMaximumTrackImage:[UIImage imageNamed:@"btn_player_slider_all"] forState:UIControlStateNormal];
-    [[UISlider appearance] setMinimumTrackImage:[UIImage imageNamed:@"btn_player_slider_played"] forState:UIControlStateNormal];
-    
-    [self.videoProgress addTarget:self action:@selector(onClickSeek:) forControlEvents:UIControlEventTouchUpInside];
-    [self.bottomControlView addSubview:self.videoProgress];
-
-    
-    //文件总时长
-    self.totalDuration = [[UILabel alloc] initWithFrame:CGRectMake(screenHeight-215, 15, 50, 20)];
-    self.totalDuration.text = @"--:--:--";
-    self.totalDuration.textAlignment = NSTextAlignmentCenter;
-    self.totalDuration.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
-    self.totalDuration.font = [UIFont fontWithName:self.totalDuration.font.fontName size:10.0];
-    [self.bottomControlView addSubview:self.totalDuration];
+    self.currentTime.sd_layout
+    .leftSpaceToView(self.playBtn,10)
+    .widthIs(50)
+    .topSpaceToView(self.bottomControlView,15)
+    .bottomSpaceToView(self.bottomControlView,15);
     
     
-    //声音打开按钮
-    self.audioBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.audioBtn setImage:[UIImage imageNamed:@"btn_player_mute02"] forState:UIControlStateNormal];
-    self.audioBtn.frame = CGRectMake(screenHeight-150, 5, 40, 40);
-    [self.audioBtn addTarget:self action:@selector(onClickMute:) forControlEvents:UIControlEventTouchUpInside];
-    [self.bottomControlView addSubview:self.audioBtn];
-    
-    //静音按钮
-    self.muteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.muteBtn setImage:[UIImage imageNamed:@"btn_player_mute01"] forState:UIControlStateNormal];
-    self.muteBtn.frame = CGRectMake(screenHeight-150, 5, 40, 40);
-    [self.muteBtn addTarget:self action:@selector(onClickMute:) forControlEvents:UIControlEventTouchUpInside];
-    self.muteBtn.hidden = YES;
-    [self.bottomControlView addSubview:self.muteBtn];
-    
-    //截图
-    self.snapshotBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.snapshotBtn setImage:[UIImage imageNamed:@"btn_player_snap"] forState:UIControlStateNormal];
-    self.snapshotBtn.frame = CGRectMake(screenHeight-100, 5, 40, 40);
-    if ([self.mediaType isEqualToString:@"localAudio"]) {
-        self.snapshotBtn.hidden = YES;
-    }
-    [self.snapshotBtn addTarget:self action:@selector(onClickSnapshot:) forControlEvents:UIControlEventTouchUpInside];
-    [self.bottomControlView addSubview:self.snapshotBtn];
     
     //显示模式
     self.scaleModeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
-    self.scaleModeBtn.frame = CGRectMake(screenHeight-50, 5, 40, 40);
+//    self.scaleModeBtn.frame = CGRectMake(screenHeight-50, 5, 40, 40);
     if ([self.mediaType isEqualToString:@"localAudio"]) {
         self.scaleModeBtn.hidden = YES;
     }
 
     [self.scaleModeBtn addTarget:self action:@selector(onClickScaleMode:) forControlEvents:UIControlEventTouchUpInside];
     [self.bottomControlView addSubview:self.scaleModeBtn];
+    
+    self.scaleModeBtn.sd_layout
+    .rightSpaceToView(self.bottomControlView,10)
+    .topSpaceToView(self.bottomControlView,10)
+    .bottomSpaceToView(self.bottomControlView,10)
+    .widthIs(40);
+    
+    
+    //截图
+    self.snapshotBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.snapshotBtn setImage:[UIImage imageNamed:@"btn_player_snap"] forState:UIControlStateNormal];
+//    self.snapshotBtn.frame = CGRectMake(screenHeight-100, 5, 40, 40);
+    if ([self.mediaType isEqualToString:@"localAudio"]) {
+        self.snapshotBtn.hidden = YES;
+    }
+    [self.snapshotBtn addTarget:self action:@selector(onClickSnapshot:) forControlEvents:UIControlEventTouchUpInside];
+    [self.bottomControlView addSubview:self.snapshotBtn];
+    
+    self.snapshotBtn.sd_layout
+    .rightSpaceToView(self.scaleModeBtn,10)
+    .topSpaceToView(self.bottomControlView,10)
+    .bottomSpaceToView(self.bottomControlView,10)
+    .widthIs(40);
+
+    
+    
+    //静音按钮
+    self.muteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.muteBtn setImage:[UIImage imageNamed:@"btn_player_mute01"] forState:UIControlStateNormal];
+//    self.muteBtn.frame = CGRectMake(screenHeight-150, 5, 40, 40);
+    [self.muteBtn addTarget:self action:@selector(onClickMute:) forControlEvents:UIControlEventTouchUpInside];
+    self.muteBtn.hidden = YES;
+    [self.bottomControlView addSubview:self.muteBtn];
+    
+    self.muteBtn.sd_layout
+    .rightSpaceToView(self.snapshotBtn,10)
+    .topSpaceToView(self.bottomControlView,10)
+    .bottomSpaceToView(self.bottomControlView,10)
+    .widthIs(40);
+    
+
+    //声音打开按钮
+    self.audioBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.audioBtn setImage:[UIImage imageNamed:@"btn_player_mute02"] forState:UIControlStateNormal];
+    self.audioBtn.frame = CGRectMake(screenHeight-150, 5, 40, 40);
+    [self.audioBtn addTarget:self action:@selector(onClickMute:) forControlEvents:UIControlEventTouchUpInside];
+    [self.bottomControlView addSubview:self.audioBtn];
+   
+    self.audioBtn.sd_layout
+    .rightSpaceToView(self.snapshotBtn,10)
+    .topSpaceToView(self.bottomControlView,10)
+    .bottomSpaceToView(self.bottomControlView,10)
+    .widthIs(40);
+
+    
+//    //文件总时长
+//    self.totalDuration = [[UILabel alloc] init];
+////                          WithFrame:CGRectMake(screenHeight-215, 15, 50, 20)];
+//    self.totalDuration.text = @"--:--:--";
+//    self.totalDuration.textAlignment = NSTextAlignmentCenter;
+//    self.totalDuration.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
+//    self.totalDuration.font = [UIFont fontWithName:self.totalDuration.font.fontName size:10.0];
+//    [self.bottomControlView addSubview:self.totalDuration];
+//
+//    self.totalDuration.sd_layout
+//    .rightSpaceToView(self.audioBtn,10)
+//    .topSpaceToView(self.bottomControlView,15)
+//    .bottomSpaceToView(self.bottomControlView,15)
+//    .widthIs(50);
+    
+    
+    
+    //播放进度条
+    self.videoProgress = [[UISlider alloc] init];
+    //                          WithFrame:CGRectMake(100, 10, screenHeight-320, 30)];
+    [[UISlider appearance] setThumbImage:[UIImage imageNamed:@"btn_player_slider_thumb"] forState:UIControlStateNormal];
+    [[UISlider appearance] setMaximumTrackImage:[UIImage imageNamed:@"btn_player_slider_all"] forState:UIControlStateNormal];
+    [[UISlider appearance] setMinimumTrackImage:[UIImage imageNamed:@"btn_player_slider_played"] forState:UIControlStateNormal];
+    
+    [self.videoProgress addTarget:self action:@selector(onClickSeek:) forControlEvents:UIControlEventTouchUpInside];
+    [self.bottomControlView addSubview:self.videoProgress];
+    self.videoProgress.sd_layout
+    .leftSpaceToView(self.currentTime,10)
+    .rightSpaceToView( self.audioBtn,10)
+    .topSpaceToView(self.bottomControlView,10)
+    .bottomSpaceToView(self.bottomControlView,10);
+    
     
 
     if ([self.decodeType isEqualToString:@"hardware"]) {
@@ -236,22 +354,32 @@ bool ismute     = NO;
     [self.controlOverlay addSubview:self.topControlView];
     [self.controlOverlay addSubview:self.bottomControlView];
     
-    [NELivePlayerController setLogLevel:NELP_LOG_DEBUG];
-
     
-    self.liveplayer = [[NELivePlayerController alloc] initWithContentURL:self.url];
+    [NELivePlayerController setLogLevel:NELP_LOG_DEBUG];
+    
+    
+    self.liveplayer = [[NELivePlayerController alloc] initWithContentURL:[NSURL URLWithString:@"rtmp://va0a19f55.live.126.net/live/834c6312006e4ffe927795a11fd317af"]];
     if (self.liveplayer == nil) { // 返回空则表示初始化失败
+        
+        [NELivePlayerController setLogLevel:NELP_LOG_DEFAULT];
+        
+        
         NSLog(@"player initilize failed, please tay again!");
     }
+    
+//    [self.liveplayer prepareToPlay];
+    
     self.liveplayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    
     self.liveplayer.view.frame = self.playerView.bounds;
+    
     [self.liveplayer setScalingMode:NELPMovieScalingModeFill];
     
     self.view.autoresizesSubviews = YES;
     
     [self.mediaControl addSubview:self.controlOverlay];
     [self.view addSubview:self.liveplayer.view];
-    [self.view addSubview:self.mediaControl];
+//    [self.view addSubview:self.mediaControl];
     [self.view addSubview:self.bufferingIndicate];
     [self.view addSubview:self.bufferingReminder];
     self.mediaControl.delegatePlayer = self.liveplayer;
@@ -302,7 +430,13 @@ bool ismute     = NO;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+//    [self.liveplayer];
+    
     NSLog(@"viewDidLoad");
+    
+    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(NELivePlayerDidPreparedToPlay:)
                                                  name:NELivePlayerDidPreparedToPlayNotification
@@ -351,6 +485,32 @@ bool ismute     = NO;
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
     return UIInterfaceOrientationLandscapeRight;
+}
+
+//全屏播放视频后，播放器的适配和全屏旋转
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
+        self.view.backgroundColor = [UIColor whiteColor];
+        //        self.fd_interactivePopDisabled = NO;
+        //if use Masonry,Please open this annotation
+        
+        /* 竖屏*/
+        [self.playerView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).offset(64);
+        }];
+        
+    }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
+        self.view.backgroundColor = [UIColor blackColor];
+        //        self.fd_interactivePopDisabled = YES;
+        //if use Masonry,Please open this annotation
+        
+        /* 横屏*/
+        [self.playerView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).offset(-20);
+        }];
+        
+    }
 }
 
 #pragma mark - IBAction
@@ -420,25 +580,106 @@ bool ismute     = NO;
 //显示模式
 - (void)onClickScaleMode:(id)sender
 {
+   UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+    
     switch (self.scaleModeBtn.titleLabel.tag) {
         case 0:
-            [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
+            [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
             [self.liveplayer setScalingMode:NELPMovieScalingModeNone];
             
+//            UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+
+            if (orientation == UIDeviceOrientationLandscapeRight) {
+                [self interfaceOrientation:UIInterfaceOrientationLandscapeLeft];
+            } else {
+                [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+            }
+
             self.scaleModeBtn.titleLabel.tag = 1;
             break;
         case 1:
-            [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
+            [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
             [self.liveplayer setScalingMode:NELPMovieScalingModeAspectFit];
+            
+            
+            if (orientation == UIDeviceOrientationLandscapeRight) {
+                [self interfaceOrientation:UIInterfaceOrientationLandscapeLeft];
+            } else {
+                [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+            }
+
+            
             self.scaleModeBtn.titleLabel.tag = 0;
             break;
         default:
             [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
             [self.liveplayer setScalingMode:NELPMovieScalingModeAspectFit];
+            
+//            UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+            if (orientation == UIDeviceOrientationLandscapeRight) {
+                [self interfaceOrientation:UIInterfaceOrientationLandscapeLeft];
+            } else {
+                [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+            }
+
+            
+            
             self.scaleModeBtn.titleLabel.tag = 0;
             break;
     }
 }
+
+//强制改变屏幕方向
+
+- (void)interfaceOrientation:(UIInterfaceOrientation)orientation
+{
+    // arc下
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+        SEL selector             = NSSelectorFromString(@"setOrientation:");
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+        [invocation setSelector:selector];
+        [invocation setTarget:[UIDevice currentDevice]];
+        int val                  = orientation;
+        // 从2开始是因为0 1 两个参数已经被selector和target占用
+        [invocation setArgument:&val atIndex:2];
+        [invocation invoke];
+    }
+    if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) {
+        /* 横屏*/
+        [self.playerView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).offset(-20);
+        }];
+
+    } else if (orientation == UIInterfaceOrientationPortrait) {
+        // 设置竖屏
+        
+        /* 竖屏*/
+        [self.playerView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).offset(64);
+        }];
+        
+
+        
+        
+       
+        
+        
+        
+    }
+    /*
+     // 非arc下
+     if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+     [[UIDevice currentDevice] performSelector:@selector(setOrientation:)
+     withObject:@(orientation)];
+     }
+     
+     // 直接调用这个方法通不过apple上架审核
+     [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
+     */
+}
+
+
+
 
 //截图
 - (void)onClickSnapshot:(id)sender
@@ -593,5 +834,61 @@ bool ismute     = NO;
     NSLog(@"resource release success!!!");
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayer];
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  是否支持自动转屏
+//- (BOOL)shouldAutorotate
+//{
+//    // 调用ZFPlayerSingleton单例记录播放状态是否锁定屏幕方向
+//    return !ZFPlayerShared.isLockScreen;
+//}
+
+// 支持哪些转屏方向
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+
+//全屏播放视频后，播放器的适配和全屏旋转
+//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+//{
+//    if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
+//        self.view.backgroundColor = [UIColor whiteColor];
+//        //        self.fd_interactivePopDisabled = NO;
+//        //if use Masonry,Please open this annotation
+//        
+//        [self.playerView mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.view).offset(64);
+//        }];
+//        
+//    }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
+//        self.view.backgroundColor = [UIColor blackColor];
+//        //        self.fd_interactivePopDisabled = YES;
+//        //if use Masonry,Please open this annotation
+//        
+//        [self.playerView mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.view).offset(0);
+//        }];
+//        
+//    }
+//}
+
+
+
+
 
 @end

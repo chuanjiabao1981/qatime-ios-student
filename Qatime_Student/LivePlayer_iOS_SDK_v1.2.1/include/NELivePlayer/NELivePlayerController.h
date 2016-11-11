@@ -39,7 +39,7 @@ typedef enum NELPLogLevel
  *
  *	@return	返回播放器实例
  */
-- (id)initWithContentURL:(NSURL *)aUrl;
+- (instancetype)initWithContentURL:(NSURL *)aUrl;
 
 /**
  *	@brief	设置log级别

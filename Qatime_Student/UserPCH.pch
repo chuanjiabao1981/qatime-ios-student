@@ -25,6 +25,6 @@
 #define USERGREEN  [UIColor colorWithRed:26/255.0 green:183/255.0 blue:159/255.0 alpha:1.0]
 
 /* 屏幕宽*/
-#define SCREENWIDTH [UIScreen mainScreen].bounce.size.width
+//#define SCREENWIDTH [UIScreen mainScreen].bounce.size.width
 
 

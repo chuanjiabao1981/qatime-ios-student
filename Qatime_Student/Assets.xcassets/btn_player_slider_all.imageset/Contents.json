@@ -2,6 +2,10 @@
   "images" : [
     {
       "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
       "filename" : "btn_player_slider_all@2x.png",
       "scale" : "2x"
     },

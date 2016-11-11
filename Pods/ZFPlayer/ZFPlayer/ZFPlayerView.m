@@ -853,6 +853,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)play
 {
+    
+    NSLog(@"%@",[NSThread currentThread]);
     [self.controlView zf_playerPlayBtnState:YES];
     if (self.state == ZFPlayerStatePause) { self.state = ZFPlayerStatePlaying; }
     self.isPauseByUser = NO;

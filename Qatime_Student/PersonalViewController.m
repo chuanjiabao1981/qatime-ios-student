@@ -63,6 +63,20 @@
     
     [playerButton2 addTarget:self action:@selector(playVideo2) forControlEvents:UIControlEventTouchUpInside];
     
+    
+    /* 测试用按钮2*/
+    
+    UIButton *playerButton3= [[UIButton alloc]initWithFrame:CGRectMake(20, 300, CGRectGetWidth(self.view.frame)-40, 40)];
+    
+    playerButton3.backgroundColor = [UIColor greenColor];
+    
+    [playerButton3 setTitle:@"播放视频3" forState:UIControlStateNormal];
+    
+    [self .view addSubview:playerButton3];
+    
+    [playerButton3 addTarget:self action:@selector(playVideo3) forControlEvents:UIControlEventTouchUpInside];
+
+    
 
     
 
@@ -82,6 +96,14 @@
     neVideoVC =[[NELivePlayerViewController alloc]init];
     
      [self.navigationController pushViewController:neVideoVC animated:YES];
+}
+
+
+- (void)playVideo3{
+    
+    
+    
+    
 }
 
 
