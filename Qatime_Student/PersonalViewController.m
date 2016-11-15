@@ -9,13 +9,13 @@
 #import "PersonalViewController.h"
 #import "VideoViewController.h"
 
-#import "NELivePlayerViewController.h"
+//#import "NELivePlayerViewController.h"
 
 @interface PersonalViewController (){
     
     
     VideoViewController *videoVC;
-    NELivePlayerViewController *neVideoVC;
+//    NELivePlayerViewController *neVideoVC;
     
 }
 
@@ -93,9 +93,9 @@
 
 - (void)playVideo2{
     
-    neVideoVC =[[NELivePlayerViewController alloc]init];
-    
-     [self.navigationController pushViewController:neVideoVC animated:YES];
+//    neVideoVC =[[NELivePlayerViewController alloc]init];
+//    
+//     [self.navigationController pushViewController:neVideoVC animated:YES];
 }
 
 

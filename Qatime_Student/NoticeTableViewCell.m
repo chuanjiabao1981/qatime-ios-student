@@ -73,23 +73,38 @@
         
         
         _announcement.sd_layout
-        .leftEqualToView(_edit_at)
+        .leftSpaceToView(_noticeImage,10)
         .topSpaceToView(_edit_at,5)
         .rightSpaceToView(self.contentView,30)
         .autoHeightRatio(0);
         
         
+        [self setupAutoHeightWithBottomView:_announcement bottomMargin:10];
+
         
-        
-        
-        
-        
-        
-        
+        _announcement.sd_resetLayout
+        .leftSpaceToView(_noticeImage,10)
+        .topSpaceToView(_edit_at,5)
+        .rightSpaceToView(self.contentView,30)
+        .autoHeightRatio(0);
+                _announcement.numberOfLines = 0;
+
         
     }
     
     return self;
+    
+}
+
+
+- (void)setModel:(Notice *)model{
+    
+    
+    _model = model;
+    
+    _edit_at.text = model.edit_at;
+    
+    _announcement.text = model.announcement;
     
 }
 

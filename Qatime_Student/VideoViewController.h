@@ -10,6 +10,7 @@
 #import "ZFPlayer.h"
 #import "UIViewController+ZFPlayer.h"
 #import "VideoInfoView.h"
+#import "InfoHeaderView.h"
 
 @interface VideoViewController : UIViewController
 
@@ -24,6 +25,8 @@
 
 /* 视频信息页面*/
 @property(nonatomic,strong) VideoInfoView *videoInfoView ;
+
+@property(nonatomic,strong) InfoHeaderView *infoHeaderView ;
 
 
 

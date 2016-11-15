@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "NIMSDK.h"
 
 @interface AppDelegate ()
 
@@ -56,6 +57,22 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogOut) name:@"userLogOut" object:nil];
     
     [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    
+    
+    
+    
+    
+    
+    
+    /* 初始化网易云信SDK*/
+    /* 暂时没有推送证书 先暂时不添加推送功能*/
+    
+    [[NIMSDK sharedSDK] registerWithAppID:@"a4e8381f3955f062cda22fbd7a2c9125"
+                                  cerName:@""];
+    
+    
+    
     
     
     

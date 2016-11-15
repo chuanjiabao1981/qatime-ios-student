@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "ClassesInfo_Time.h"
+#import "Classes.h"
+
 
 
 @interface ClassesListTableViewCell : UITableViewCell
@@ -31,6 +33,10 @@
 
 /* 数据model 用来计算高度*/
 @property(nonatomic,strong) ClassesInfo_Time *model ;
+
+/* 视频直播页的课程model*/
+@property(nonatomic,strong) Classes *classModel ;
+
 
 
 

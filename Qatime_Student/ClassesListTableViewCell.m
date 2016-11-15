@@ -9,6 +9,8 @@
 #import "ClassesListTableViewCell.h"
 #import "ClassesInfo_Time.h"
 
+
+
 @implementation ClassesListTableViewCell
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
@@ -138,6 +140,19 @@
     _status.text = _model.status;
     
     
+    
+}
+
+- (void)setClassModel:(Classes *)classModel{
+    
+    
+    _classModel = classModel;
+    
+    _className.text = _classModel.name;
+    _classDate .text = _classModel.class_date;
+    _classTime .text = _classModel.live_time;
+    _status.text = _classModel.status;
+
     
 }
 
