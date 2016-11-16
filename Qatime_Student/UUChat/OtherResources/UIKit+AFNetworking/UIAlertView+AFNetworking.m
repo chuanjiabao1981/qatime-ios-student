@@ -24,7 +24,7 @@
 
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 
-#import "AFURLConnectionOperation.h"
+#import "AFNetWorking.h"
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
 #import "AFURLSessionManager.h"
@@ -90,19 +90,13 @@ static void AFGetAlertViewTitleAndMessageFromError(NSError *error, NSString * __
                                             cancelButtonTitle:(NSString *)cancelButtonTitle
                                             otherButtonTitles:(NSString *)otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION
 {
-    __block id observer = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingOperationDidFinishNotification object:operation queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+    __block id observer = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingTaskDidResumeNotification object:operation queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
 
-        if (notification.object && [notification.object isKindOfClass:[AFURLConnectionOperation class]]) {
-            NSError *error = [(AFURLConnectionOperation *)notification.object error];
-            if (error) {
-                NSString *title, *message;
-                AFGetAlertViewTitleAndMessageFromError(error, &title, &message);
-
-                [[[UIAlertView alloc] initWithTitle:title message:message delegate:delegate cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles, nil] show];
-            }
+        if (notification.object ) {
+            
         }
 
-        [[NSNotificationCenter defaultCenter] removeObserver:observer name:AFNetworkingOperationDidFinishNotification object:notification.object];
+        [[NSNotificationCenter defaultCenter] removeObserver:observer name:AFNetworkingTaskDidResumeNotification object:notification.object];
     }];
 }
 

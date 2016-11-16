@@ -20,8 +20,14 @@
 @property(nonatomic,strong) UIScrollView *scrollView;
 
 
+/* 单独提出View2 放置聊天页面*/
+@property(nonatomic,strong) UIView *view2 ;
+
+
 /* 单独提出view3*/
 @property(nonatomic,strong) UIView *view3 ;
+
+
 
 
 /* 公告*/

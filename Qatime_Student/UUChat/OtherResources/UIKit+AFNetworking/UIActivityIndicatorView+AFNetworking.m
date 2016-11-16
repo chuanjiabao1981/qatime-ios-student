@@ -24,7 +24,7 @@
 
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 
-#import "AFHTTPRequestOperation.h"
+#import "AFNetWorking.h"
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
 #import "AFURLSessionManager.h"
@@ -58,24 +58,24 @@
 
 #pragma mark -
 
-- (void)setAnimatingWithStateOfOperation:(AFURLConnectionOperation *)operation {
+- (void)setAnimatingWithStateOfOperation:(AFURLSessionManager *)operation {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 
-    [notificationCenter removeObserver:self name:AFNetworkingOperationDidStartNotification object:nil];
-    [notificationCenter removeObserver:self name:AFNetworkingOperationDidFinishNotification object:nil];
+    [notificationCenter removeObserver:self name:AFNetworkingTaskDidCompleteNotification object:nil];
+    [notificationCenter removeObserver:self name:AFNetworkingTaskDidResumeNotification object:nil];
 
-    if (operation) {
-        if (![operation isFinished]) {
-            if ([operation isExecuting]) {
-                [self startAnimating];
-            } else {
-                [self stopAnimating];
-            }
+//    if (operation) {
+//        if (![operation isFinished]) {
+//            if ([operation isExecuting]) {
+//                [self startAnimating];
+//            } else {
+//                [self stopAnimating];
+//            }
 
-            [notificationCenter addObserver:self selector:@selector(af_startAnimating) name:AFNetworkingOperationDidStartNotification object:operation];
-            [notificationCenter addObserver:self selector:@selector(af_stopAnimating) name:AFNetworkingOperationDidFinishNotification object:operation];
-        }
-    }
+            [notificationCenter addObserver:self selector:@selector(af_startAnimating) name:AFNetworkingTaskDidCompleteNotification object:operation];
+            [notificationCenter addObserver:self selector:@selector(af_stopAnimating) name:AFNetworkingTaskDidResumeNotification object:operation];
+//        }
+//    }
 }
 
 #pragma mark -

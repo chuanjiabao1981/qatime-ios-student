@@ -67,11 +67,11 @@
         .leftEqualToView(_scrollView)
         .widthRatioToView(self,1.0f);
         
-        UIView *view2= [[UIView alloc]init];
-        [_scrollView addSubview:view2];
+        _view2= [[UIView alloc]init];
+        [_scrollView addSubview:_view2];
 //        view2.backgroundColor = [UIColor orangeColor];
 
-        view2.sd_layout
+        _view2.sd_layout
         .topEqualToView(_scrollView)
         .bottomEqualToView(_scrollView)
         .leftSpaceToView(view1,0)
@@ -84,7 +84,7 @@
         _view3.sd_layout
         .topEqualToView(_scrollView)
         .bottomEqualToView(_scrollView)
-         .leftSpaceToView(view2,0)
+         .leftSpaceToView(_view2,0)
         .widthRatioToView(self,1.0f);
         
         UIView *view4= [[UIView alloc]init];

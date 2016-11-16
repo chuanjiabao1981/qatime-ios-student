@@ -131,11 +131,11 @@
                 /* 发送成功提示框*/
                 MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
                 hud.mode = MBProgressHUDModeText;
-                [hud.label setText:@"验证成功！"];
+                hud.labelText = @"验证成功！";
                 hud.yOffset= 150.f;
                 hud.removeFromSuperViewOnHide = YES;
                 
-                [hud hideAnimated:YES afterDelay:1.0];
+                [hud hide:YES afterDelay:1.0];
                 
                 
                 
@@ -188,7 +188,7 @@
             /* 发送成功提示框*/
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             hud.mode = MBProgressHUDModeText;
-            [hud.label setText:@"发送成功！"];
+            [hud setLabelText:@"发送成功！"];
             hud.yOffset= 150.f;
             hud.removeFromSuperViewOnHide = YES;
             
@@ -198,7 +198,7 @@
             
             
             
-            [hud hideAnimated:YES afterDelay:2.0];
+            [hud hide:YES afterDelay:2.0];
             
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

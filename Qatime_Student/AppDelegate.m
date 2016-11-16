@@ -72,16 +72,29 @@
                                   cerName:@""];
     
     
+    [[[NIMSDK sharedSDK] loginManager] login:@"0ba06bd120840dc0423db9d4cb861e99"
+                                       token:@"ff1bcf619fb2e571ac3bba87bcac8aeb"
+                                  completion:^(NSError *error) {
+                                  
+                                  NSLog(@"%@",error);
+                                  
+                                  }];
     
     
-    
-    
+
     
     
     return YES;
 }
 
+- (void)onLogin:(NIMLoginStep)step{
+    
+}
 
+//APP主动发起自动登录
+- (void)autoLogin:(NIMAutoLoginData *)loginData{
+    
+}
 
 /* 修改rootViewController为系统的主页controller*/
 - (void)changeRootViewConroller:(NSNotification *)notification{

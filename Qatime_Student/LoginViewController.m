@@ -142,8 +142,8 @@
         /* HUD框 提示正在登陆*/
         MBProgressHUD *hud=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.mode = MBProgressHUDModeDeterminate;
-        hud.backgroundView.style = MBProgressHUDBackgroundStyleBlur;
-        [hud.label setText:@"正在登陆"];
+//        hud.backgroundView.style = MBProgressHUDBackgroundStyleBlur;
+        hud.labelText = @"正在登陆";
         
         
         /* 对应接口要上传的用户登录账号密码*/
@@ -168,7 +168,7 @@
             /* 如果登录成功*/
             if ([[dicGet allKeys]containsObject:@"remember_token" ]) {
                 
-                [hud hideAnimated:YES];
+                [hud hide:YES];
                 
                 
                 #pragma mark- 本地登录成功后 保存token文件，并且转到主页面
@@ -203,7 +203,7 @@
                 
             }else{
                 
-                [hud hideAnimated:YES];
+                [hud hide:YES];
                 
                 /* 账户名密码错误提示*/
                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"警告" message:@"账户名或密码错误！" preferredStyle:UIAlertControllerStyleAlert];
@@ -223,7 +223,7 @@
             
             MBProgressHUD *hud2=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
             hud2.mode = MBProgressHUDModeText;
-            [hud2.label setText:@"登陆失败"];
+            hud2.labelText = @"登陆失败";
             
         }];
         

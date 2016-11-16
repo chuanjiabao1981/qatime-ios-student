@@ -9,13 +9,15 @@
 #import "PersonalViewController.h"
 #import "VideoViewController.h"
 
-//#import "NELivePlayerViewController.h"
+#import "NELivePlayerViewController.h"
+#import "NewViewController.h"
 
 @interface PersonalViewController (){
     
     
     VideoViewController *videoVC;
-//    NELivePlayerViewController *neVideoVC;
+    NELivePlayerViewController *neVideoVC;
+    NewViewController *newVC;
     
 }
 
@@ -86,22 +88,23 @@
 - (void)playVideo{
     
     
-    videoVC = [[VideoViewController  alloc]init];
+    videoVC = [[VideoViewController  alloc]initWithClassID:@"34"];
     [self.navigationController pushViewController:videoVC animated:YES];
     
 }
 
 - (void)playVideo2{
     
-//    neVideoVC =[[NELivePlayerViewController alloc]init];
-//    
-//     [self.navigationController pushViewController:neVideoVC animated:YES];
+    neVideoVC =[[NELivePlayerViewController alloc]initWithClassID:@"34"];
+    
+     [self.navigationController pushViewController:neVideoVC animated:YES];
 }
 
 
 - (void)playVideo3{
     
-    
+//   NIMSessionViewController *newsVC  = [[NIMSessionViewController alloc]init];
+//    [self.navigationController pushViewControllenewVCVC animated:YES];
     
     
 }

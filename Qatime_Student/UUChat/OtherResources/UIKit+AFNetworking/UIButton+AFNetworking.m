@@ -26,8 +26,7 @@
 
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 
-#import "AFURLResponseSerialization.h"
-#import "AFHTTPRequestOperation.h"
+#import "AFNetWorking.h"
 
 #import "UIImageView+AFNetworking.h"
 
@@ -156,7 +155,7 @@ static const char * af_backgroundImageRequestOperationKeyForState(UIControlState
         }
 
         __weak __typeof(self)weakSelf = self;
-        AFHTTPRequestOperation *imageRequestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:urlRequest];
+        AFHTTPRequestSerializer *imageRequestOperation = [[AFHTTPRequestSerializer alloc] initWithRequest:urlRequest];
         imageRequestOperation.responseSerializer = self.imageResponseSerializer;
         [imageRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             __strong __typeof(weakSelf)strongSelf = weakSelf;

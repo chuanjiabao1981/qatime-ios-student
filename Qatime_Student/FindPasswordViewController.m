@@ -113,13 +113,13 @@
                 /* 发送成功提示框*/
                 MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
                 hud.mode = MBProgressHUDModeText;
-                [hud.label setText:@"密码修改成功！"];
+                hud.labelText  = @"密码修改成功！";
                 hud.yOffset= 150.f;
                 hud.removeFromSuperViewOnHide = YES;
                 
                 [self.navigationController popViewControllerAnimated:YES];
                 
-                [hud hideAnimated:YES afterDelay:2.0];
+                [hud hide:YES afterDelay:2.0];
                 
                 
             }
@@ -199,7 +199,7 @@
             /* 发送成功提示框*/
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             hud.mode = MBProgressHUDModeText;
-            [hud.label setText:@"发送成功！"];
+            hud.labelText = @"发送成功！";
             hud.yOffset= 150.f;
             hud.removeFromSuperViewOnHide = YES;
             
@@ -207,7 +207,7 @@
             /* 重新发送验证码*/
             [self deadLineTimer:_findPasswordView.getCheckCodeButton];
             
-            [hud hideAnimated:YES afterDelay:2.0];
+            [hud hide:YES afterDelay:2.0];
             
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

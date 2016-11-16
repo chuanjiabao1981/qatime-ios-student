@@ -26,7 +26,7 @@
 
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 
-#import "AFHTTPRequestOperation.h"
+#import "AFNetWorking.h"
 
 @interface AFImageCache : NSCache <AFImageCache>
 @end
@@ -34,7 +34,7 @@
 #pragma mark -
 
 @interface UIImageView (_AFNetworking)
-@property (readwrite, nonatomic, strong, setter = af_setImageRequestOperation:) AFHTTPRequestOperation *af_imageRequestOperation;
+@property (readwrite, nonatomic, strong, setter = af_setImageRequestOperation:) AFHTTPRequestSerializer *af_imageRequestOperation;
 @end
 
 @implementation UIImageView (_AFNetworking)
@@ -50,11 +50,11 @@
     return _af_sharedImageRequestOperationQueue;
 }
 
-- (AFHTTPRequestOperation *)af_imageRequestOperation {
-    return (AFHTTPRequestOperation *)objc_getAssociatedObject(self, @selector(af_imageRequestOperation));
+- (AFHTTPRequestSerializer *)af_imageRequestOperation {
+    return (AFHTTPRequestSerializer *)objc_getAssociatedObject(self, @selector(af_imageRequestOperation));
 }
 
-- (void)af_setImageRequestOperation:(AFHTTPRequestOperation *)imageRequestOperation {
+- (void)af_setImageRequestOperation:(AFHTTPRequestSerializer *)imageRequestOperation {
     objc_setAssociatedObject(self, @selector(af_imageRequestOperation), imageRequestOperation, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
@@ -142,7 +142,7 @@
         }
         
         __weak __typeof(self)weakSelf = self;
-        self.af_imageRequestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:urlRequest];
+        self.af_imageRequestOperation = [[AFHTTPRequestSerializer alloc] initWithRequest:urlRequest];
         self.af_imageRequestOperation.responseSerializer = self.imageResponseSerializer;
         [self.af_imageRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
