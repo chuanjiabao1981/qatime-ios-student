@@ -33,19 +33,22 @@
 @property (nonatomic, strong) UIView *bottomControlView;
 @property (nonatomic, strong) UIButton *playQuitBtn;
 @property (nonatomic, strong) UILabel *fileName;
-@property (nonatomic, strong) UILabel *currentTime;
-@property (nonatomic, strong) UILabel *totalDuration;
-@property (nonatomic, strong) UISlider *videoProgress;
-@property (nonatomic, strong) UIActivityIndicatorView *bufferingIndicate;
-@property (nonatomic, strong) UILabel *bufferingReminder;
 @property (nonatomic, strong) UIButton *playBtn;
 @property (nonatomic, strong) UIButton *pauseBtn;
-@property (nonatomic, strong) UIButton *audioBtn;
-@property (nonatomic, strong) UIButton *muteBtn;
 @property (nonatomic, strong) UIButton *scaleModeBtn;
-@property (nonatomic, strong) UIButton *snapshotBtn;
+@property (nonatomic, strong)  NELivePlayerControl *mediaControl;
 
-@property(nonatomic, strong)  NELivePlayerControl *mediaControl;
+/* 切换屏幕按钮*/
+@property(nonatomic,strong) UIButton *switchScreen ;
+
+/* 双屏平铺按钮*/
+@property(nonatomic,strong) UIButton *tileScreen ;
+
+/* 弹幕开关*/
+@property(nonatomic,strong) UISwitch *barrage ;
+
+
+
 
 
 

@@ -10,12 +10,26 @@
 
 @implementation MembersListView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        
+        _memberListTableView = [[UITableView alloc]init];
+        [self addSubview: _memberListTableView];
+        _memberListTableView.sd_layout
+        .leftEqualToView(self)
+        .rightEqualToView(self)
+        .topEqualToView(self)
+        .bottomEqualToView(self);
+        
+        
+        
+        
+        
+        
+    }
+    return self;
 }
-*/
 
 @end

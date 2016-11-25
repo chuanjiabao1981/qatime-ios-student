@@ -44,6 +44,13 @@
     
     
     
+    for (int i=1; i<=75; i++) {
+        
+        printf("@\"%d""\",",i);
+        
+    }
+    
+    
     
     
     
@@ -59,8 +66,7 @@
     [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
     
     
-    
-    
+
     
     
     
@@ -68,17 +74,11 @@
     /* 初始化网易云信SDK*/
     /* 暂时没有推送证书 先暂时不添加推送功能*/
     
-    [[NIMSDK sharedSDK] registerWithAppID:@"a4e8381f3955f062cda22fbd7a2c9125"
-                                  cerName:@""];
+    [[NIMSDK sharedSDK] registerWithAppID:@"2a24ca70e580cab2bef58b1e62478f9f"
+                                  cerName:@"QatimeStudent_aps.cer"];
     
     
-    [[[NIMSDK sharedSDK] loginManager] login:@"0ba06bd120840dc0423db9d4cb861e99"
-                                       token:@"ff1bcf619fb2e571ac3bba87bcac8aeb"
-                                  completion:^(NSError *error) {
-                                  
-                                  NSLog(@"%@",error);
-                                  
-                                  }];
+   
     
     
 
@@ -87,14 +87,9 @@
     return YES;
 }
 
-- (void)onLogin:(NIMLoginStep)step{
-    
-}
 
-//APP主动发起自动登录
-- (void)autoLogin:(NIMAutoLoginData *)loginData{
-    
-}
+
+
 
 /* 修改rootViewController为系统的主页controller*/
 - (void)changeRootViewConroller:(NSNotification *)notification{

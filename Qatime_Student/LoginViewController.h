@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LoginView.h"
 #import "SignUpViewController.h"
+#import "Chat_Account.h"
 
 @interface LoginViewController : UIViewController
 

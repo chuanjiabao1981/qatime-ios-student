@@ -7,17 +7,18 @@
 //
 
 #import "PersonalViewController.h"
-#import "VideoViewController.h"
+
 
 #import "NELivePlayerViewController.h"
-#import "NewViewController.h"
+
+#import "NIMSDK.h"
 
 @interface PersonalViewController (){
     
     
-    VideoViewController *videoVC;
+    
     NELivePlayerViewController *neVideoVC;
-    NewViewController *newVC;
+    
     
 }
 
@@ -88,8 +89,7 @@
 - (void)playVideo{
     
     
-    videoVC = [[VideoViewController  alloc]initWithClassID:@"34"];
-    [self.navigationController pushViewController:videoVC animated:YES];
+    
     
 }
 
@@ -123,9 +123,18 @@
         [[NSFileManager defaultManager]removeItemAtPath:userFilePath error:nil];
         [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"id"];
         [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"remember_token"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"chat_account"];
+        
+        
+        /* 云信退出登录*/
+        [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error){}];
+        
+        
         
         /* 发消息 给appdelegate*/
         [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
+        
+        
         
         
         

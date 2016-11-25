@@ -9,5 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface NSString (ContainEmoji)
++ (BOOL)stringContainsEmoji:(NSString *)string;
++ (BOOL)stringWithEmojiEncode:(NSString *)string;
 
 @end

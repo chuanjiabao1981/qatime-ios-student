@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Keyboard.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>12</integer>
+		</dict>
 		<key>Qatime_Student.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -23,6 +28,21 @@
 			<true/>
 		</dict>
 		<key>54A153C81DC6F09E0070B508</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>54A47CD11DE43456000216D9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>54A47CE91DE43456000216D9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>54A47CF41DE43457000216D9</key>
 		<dict>
 			<key>primary</key>
 			<true/>

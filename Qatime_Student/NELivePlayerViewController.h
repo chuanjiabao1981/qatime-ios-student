@@ -17,6 +17,7 @@
 #import "UIViewController+ZFPlayer.h"
 #import "VideoInfoView.h"
 #import "InfoHeaderView.h"
+#import "MembersListView.h"
 
 
 
@@ -28,7 +29,11 @@
 @property(nonatomic, strong) NSURL *url;
 @property(nonatomic, strong) NSString *decodeType;
 @property(nonatomic, strong) NSString *mediaType;
-@property(nonatomic, strong) NELivePlayerController <NELivePlayer> *liveplayer;
+
+/* 这个遵循协议的属性 才是真正的播放器*/
+@property(nonatomic, strong) NELivePlayerController <NELivePlayer> *liveplayerTeacher;
+@property(nonatomic, strong) NELivePlayerController <NELivePlayer> *liveplayerBoard;
+
 
 /* 数据界面层的属性*/
 
@@ -41,6 +46,24 @@
 @property(nonatomic,strong) VideoInfoView *videoInfoView ;
 
 @property(nonatomic,strong) InfoHeaderView *infoHeaderView ;
+/* 在线成员列表页*/
+@property(nonatomic,strong) MembersListView *memberListView;
+
+
+/* 切换屏幕按钮*/
+@property(nonatomic,strong) UIButton *switchScreen ;
+
+/* 双屏平铺按钮*/
+@property(nonatomic,strong) UIButton *tileScreen ;
+
+/* 弹幕开关*/
+@property(nonatomic,strong) UIButton *barrage ;
+
+
+/**
+ *  点击发送，会自动把文本框的内容传递过来
+ */
+@property (nonatomic, strong) void(^sendContent)(NSString *content);
 
 
 
@@ -65,7 +88,7 @@
 
 + (void)presentFromViewController:(UIViewController *)viewController withTitle:(NSString *)title URL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm completion:(void(^)())completion;
 
-@property(nonatomic, strong) IBOutlet NELivePlayerControl *mediaControl;
+@property(nonatomic, strong)  NELivePlayerControl *mediaControl;
 
 @end
 

@@ -9,5 +9,16 @@
 #import "YYTextView+YZEmotion.h"
 
 @implementation YYTextView (YZEmotion)
+- (void)setYz_emotionKeyboard:(YZEmotionKeyboard *)yz_emotionKeyboard
+{
+    self.inputView = yz_emotionKeyboard;
+    [self reloadInputViews];
+    yz_emotionKeyboard.textView = self;
+    
+}
+- (YZEmotionKeyboard *)yz_emotionKeyboard
+{
+    return (YZEmotionKeyboard *)self.inputView;
+}
 
 @end

@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface UIControl (RemoveTarget)
+- (void)removeAllTargets;
 
 @end

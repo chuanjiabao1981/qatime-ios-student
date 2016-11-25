@@ -82,6 +82,8 @@ static NSString * const ID = @"emotion";
 - (NSString *)emotionText
 {
     
+    NSLog(@"%@",_yz_textView.attributedText.description);
+    
     NSMutableString *strM = [NSMutableString string];
     
     [_yz_textView.attributedText enumerateAttributesInRange:NSMakeRange(0, _yz_textView.attributedText.length) options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(NSDictionary<NSString *,id> * _Nonnull attrs, NSRange range, BOOL * _Nonnull stop) {
@@ -98,6 +100,10 @@ static NSString * const ID = @"emotion";
         }
         
     }];
+    
+    NSLog(@"%@",strM);
+    
+    
     return strM;
 }
 
@@ -114,7 +120,15 @@ static NSString * const ID = @"emotion";
 {
     YZTextAttachment *attachment = note.object;
     
+    NSLog(@"%@",attachment.emotionStr.description);
+    
+    NSLog(@"%@",_yz_textView);
+    // 会在textView后面插入空的,触发textView文字改变
+    [_yz_textView insertText:@" "];
+    
     NSRange range = _yz_textView.selectedRange;
+    
+//    NSLog(@"%@",range);
     
     // 设置textView的文字
     NSMutableAttributedString *textAttr = [[NSMutableAttributedString alloc] initWithAttributedString:_yz_textView.attributedText];
@@ -122,12 +136,19 @@ static NSString * const ID = @"emotion";
     NSAttributedString *imageAttr = [NSMutableAttributedString attributedStringWithAttachment:attachment];
     
     [textAttr replaceCharactersInRange:_yz_textView.selectedRange withAttributedString:imageAttr];
+   
+    
+    
+    
+    
     [textAttr addAttributes:@{NSFontAttributeName : _yz_textView.font} range:NSMakeRange(_yz_textView.selectedRange.location, 1)];
     
     _yz_textView.attributedText = textAttr;
     
-    // 会在textView后面插入空的,触发textView文字改变
-    [_yz_textView insertText:@""];
+//    // 会在textView后面插入空的,触发textView文字改变
+//    [_yz_textView insertText:@""];
+    NSLog(@"%@",_yz_textView.attributedText.description);
+    
     
     // 设置光标位置
     _yz_textView.selectedRange = NSMakeRange(range.location + 1, 0);
@@ -190,6 +211,8 @@ static NSString * const ID = @"emotion";
     
     return cell;
 }
+
+
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView

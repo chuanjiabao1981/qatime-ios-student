@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "UUMessageContentButton.h"
+#import "YYLabel.h"
 @class UUMessageFrame;
 @class UUMessageCell;
 
@@ -29,6 +30,8 @@
 @property (nonatomic, retain)UUMessageFrame *messageFrame;
 
 @property (nonatomic, assign)id<UUMessageCellDelegate>delegate;
+
+@property(nonatomic,strong) YYLabel *title ;
 
 @end
 

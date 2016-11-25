@@ -6,8 +6,13 @@
 //  Copyright © 2016年 WWTD. All rights reserved.
 //
 
+
+/* 在线人员的页面*/
 #import <UIKit/UIKit.h>
 
 @interface MembersListView : UIView
+
+@property(nonatomic,strong) UITableView *memberListTableView ;
+
 
 @end

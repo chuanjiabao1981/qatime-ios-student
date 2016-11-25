@@ -10,6 +10,9 @@
 #import "NSDate+Utils.h"
 
 @implementation UUMessage
+
+
+/* 制作出一条消息*/
 - (void)setWithDict:(NSDictionary *)dict{
     
     self.strIcon = dict[@"strIcon"];

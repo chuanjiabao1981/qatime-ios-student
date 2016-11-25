@@ -18,6 +18,15 @@
 
 - (void)addRandomItemsToDataSource:(NSInteger)number;
 
-- (void)addSpecifiedItem:(NSDictionary *)dic;
+/* 组成自己发的消息*/
+
+- (void)addSpecifiedItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name;
+
+/* 组成别人发的消息 */
+- (NSDictionary *)getDicWithText:(NSString *)text andName:(NSString *)name andIcon:(NSString *)URLString;
+- (NSArray *)additems:(NSInteger)number withDictionary:(NSDictionary *)dictionary;
+
+
+
 
 @end

@@ -9,6 +9,7 @@
 #import "LoginViewController.h"
 #import "MBProgressHUD.h"
 #import "FindPasswordViewController.h"
+#import "YYModel.h"
 
 @interface LoginViewController ()<UITextFieldDelegate>{
     
@@ -16,6 +17,11 @@
     NSInteger keyHeight;
     
     FindPasswordViewController *findPasswordViewController;
+    
+    /* 用户聊天信息存本地*/
+    
+    Chat_Account *_chat_Account;
+    
 }
 
 @end
@@ -164,6 +170,10 @@
             NSLog(@"%@",userInfoGet);
             
             NSDictionary *dicGet=[NSDictionary dictionaryWithDictionary:userInfoGet[@"data"]];
+            
+            NSLog(@"%@",dicGet);
+            
+            
             /* 如果返回的字段里包含key值“remember_token“ 为登录成功*/
             /* 如果登录成功*/
             if ([[dicGet allKeys]containsObject:@"remember_token" ]) {
@@ -198,7 +208,24 @@
                 
                 
                 
-             /* 登陆成功无提示*/
+             #pragma mark- 把用户聊天账户信息存本地
+                
+                
+                
+                /* 另存一份userdefault  只存chat_account*/
+                
+                NSDictionary *chat_accountDic = [NSDictionary dictionaryWithDictionary:[[dicGet valueForKey:@"user"]valueForKey:@"chat_account"]];
+                
+            NSLog(@"%@",chat_accountDic);
+                
+                
+                
+                
+                
+                
+                [[NSUserDefaults standardUserDefaults]setObject:chat_accountDic forKey:@"chat_account"];
+                
+                
                 
                 
             }else{

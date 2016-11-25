@@ -14,6 +14,11 @@
 
 @implementation ClassTimeViewController
 
+
+- (void)loadView{
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;

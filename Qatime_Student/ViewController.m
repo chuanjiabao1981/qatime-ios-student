@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "ZFPlayer.h"
+
 
 @interface ViewController (){
     
@@ -128,12 +128,8 @@
 }
 
 
-//  是否支持自动转屏
-- (BOOL)shouldAutorotate
-{
-    // 调用ZFPlayerSingleton单例记录播放状态是否锁定屏幕方向
-    return !ZFPlayerShared.isLockScreen;
-}
+
+
 
 // 支持哪些转屏方向
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations

@@ -35,11 +35,15 @@
     if (self)
     {
         [self initTmpView];
-        [self initImageView];
-        [self initTipLabel];
+      
         [[UIApplication sharedApplication].keyWindow addSubview:self];
-        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
-        [self addGestureRecognizer:pan];
+        
+        
+        
+        
+        _pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+        
+        [self addGestureRecognizer:_pan];
         
         
         self.userInteractionEnabled = YES;
@@ -52,30 +56,36 @@
 #pragma mark --- 初始操作
 //初始化tmpView(用于计算位置)
 - (void)initTmpView{
-    self.tmpView = [[UIView alloc] initWithFrame:self.bounds];
+    self.tmpView = [[UIView alloc] init];
+    self.tmpView.sd_layout
+    .leftEqualToView(self)
+    .rightEqualToView(self)
+    .topEqualToView(self)
+    .bottomEqualToView(self);
+    [self.tmpView updateLayout];
 }
 
-//初始化图片
-- (void)initImageView{
-    self.userInteractionEnabled = YES;
-    self.backgroundColor = [UIColor clearColor];
-    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-    imageView.image = [UIImage imageNamed:@"zb_bg"];
-    [self addSubview:imageView];
-    UIImageView *imageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(23, 15, 22, 22)];
-    imageView1.image = [UIImage imageNamed:@"icon_zb"];
-    [self addSubview:imageView1];
-}
+////初始化图片
+//- (void)initImageView{
+//    self.userInteractionEnabled = YES;
+//    self.backgroundColor = [UIColor clearColor];
+//    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+//    imageView.image = [UIImage imageNamed:@"zb_bg"];
+//    [self addSubview:imageView];
+//    UIImageView *imageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(23, 15, 22, 22)];
+//    imageView1.image = [UIImage imageNamed:@"icon_zb"];
+//    [self addSubview:imageView1];
+//}
 
-//初始化tipLabel
-- (void)initTipLabel{
-    self.tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 36, self.frame.size.width, 32)];
-    self.tipLabel.text = @"呼叫中";
-    self.tipLabel.font = [UIFont systemFontOfSize:10.0f];
-    self.tipLabel.textAlignment = NSTextAlignmentCenter;
-    self.tipLabel.textColor = [UIColor whiteColor];
-    [self addSubview:self.tipLabel];
-}
+////初始化tipLabel
+//- (void)initTipLabel{
+//    self.tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 36, self.frame.size.width, 32)];
+//    self.tipLabel.text = @"呼叫中";
+//    self.tipLabel.font = [UIFont systemFontOfSize:10.0f];
+//    self.tipLabel.textAlignment = NSTextAlignmentCenter;
+//    self.tipLabel.textColor = [UIColor whiteColor];
+//    [self addSubview:self.tipLabel];
+//}
 
 
 #pragma mark --- 手势事件

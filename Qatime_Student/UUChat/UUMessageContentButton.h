@@ -7,11 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YYTextView.h"
+#import "YYLabel.h"
+
+
+
+
+
 
 @interface UUMessageContentButton : UIButton
 
+
+@property(nonatomic,strong) YYLabel *title ;
+
+@property(nonatomic,retain) YYTextView *contentTextView ;
+
+
 //bubble imgae
-@property (nonatomic, retain) UIImageView *backImageView;
+@property (nonatomic, strong) UIImageView *backImageView;
 
 //audio
 @property (nonatomic, retain) UIView *voiceBackView;
@@ -19,7 +32,12 @@
 @property (nonatomic, retain) UIImageView *voice;
 @property (nonatomic, retain) UIActivityIndicatorView *indicator;
 
+
+
+
 @property (nonatomic, assign) BOOL isMyMessage;
+
+
 
 
 - (void)benginLoadVoice;

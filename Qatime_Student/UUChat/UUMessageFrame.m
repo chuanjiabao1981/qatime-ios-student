@@ -8,12 +8,25 @@
 
 #import "UUMessageFrame.h"
 #import "UUMessage.h"
+#import "YZTextAttachment.h"
+#import "NSMutableAttributedString+Extention.h"
+#import "NSString+FindFace.h"
+#import "Define.h"
+
 
 @implementation UUMessageFrame
 
 - (void)setMessage:(UUMessage *)message{
     
     _message = message;
+    
+    
+    
+    
+  
+    
+    
+    
     
     CGFloat screenW = [UIScreen mainScreen].bounds.size.width;
     
@@ -46,8 +59,19 @@
     CGSize contentSize;
     switch (_message.type) {
         case UUMessageTypeText:
+            
             contentSize = [_message.strContent sizeWithFont:ChatContentFont  constrainedToSize:CGSizeMake(ChatContentW, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+            
+            
+            
  
+            /* 拿到yytext显示富文本的size*/
+        NSLog(@"%f,%f",contentSize.width,contentSize.height);
+            
+            
+          
+//            NSLog(@"%f,%f,%f,%f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
+           
             break;
         case UUMessageTypePicture:
             contentSize = CGSizeMake(ChatPicWH, ChatPicWH);
@@ -64,6 +88,8 @@
     _contentF = CGRectMake(contentX, contentY, contentSize.width + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);
     
     _cellHeight = MAX(CGRectGetMaxY(_contentF), CGRectGetMaxY(_nameF))  + ChatMargin;
+    /* 给消息方的yytext发送size消息*/
+    
     
 }
 

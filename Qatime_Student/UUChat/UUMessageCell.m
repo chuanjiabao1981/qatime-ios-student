@@ -9,18 +9,25 @@
 #import "UUMessageCell.h"
 #import "UUMessage.h"
 #import "UUMessageFrame.h"
-#import "UUAVAudioPlayer.h"
+
 #import "UIImageView+AFNetworking.h"
 #import "UIButton+AFNetworking.h"
 #import "UUImageAvatarBrowser.h"
 
-@interface UUMessageCell ()<UUAVAudioPlayerDelegate>
+#import "NSString+FindFace.h"
+#import "NSMutableAttributedString+Extention.h"
+#import "YYTextView.h"
+#import "YYLabel.h"
+#import "YYImage.h"
+#import "NSObject+YYAdd.h"
+#import "NSBundle+YYAdd.h"
+#import "NSAttributedString+YYtext.h"
+
+@interface UUMessageCell ()
 {
-    AVAudioPlayer *player;
+    
     NSString *voiceURL;
     NSData *songData;
-    
-    UUAVAudioPlayer *audio;
     
     UIView *headImageBackView;
     BOOL contentVoiceIsPlaying;
@@ -36,7 +43,13 @@
         
         self.backgroundColor = [UIColor clearColor];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-
+        
+        
+        
+        
+        
+        
+        
         // 1、创建时间
         self.labelTime = [[UILabel alloc] init];
         self.labelTime.textAlignment = NSTextAlignmentCenter;
@@ -65,6 +78,10 @@
         
         // 4、创建内容
         self.btnContent = [UUMessageContentButton buttonWithType:UIButtonTypeCustom];
+        /* 用yytextview改写*/
+        
+        self.btnContent.contentTextView.textColor = [UIColor blackColor];
+        self.btnContent.contentTextView.font = ChatContentFont;
         [self.btnContent setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         self.btnContent.titleLabel.font = ChatContentFont;
         self.btnContent.titleLabel.numberOfLines = 0;
@@ -79,7 +96,18 @@
                                                      name:UIDeviceProximityStateDidChangeNotification
                                                    object:nil];
         contentVoiceIsPlaying = NO;
-
+        
+        
+        
+        
+        
+        /* 创建支持自定义表情的YYLabel类型的label*/
+        self.title = [[YYLabel alloc]init];
+        self.title.textAlignment = NSTextAlignmentCenter;
+        self.title.textColor  = [UIColor whiteColor];
+        self.title.numberOfLines = 0;
+        [self.contentView addSubview:self.title];
+        
     }
     return self;
 }
@@ -93,31 +121,9 @@
 
 
 - (void)btnContentClick{
-    //play audio
-    if (self.messageFrame.message.type == UUMessageTypeVoice) {
-        if(!contentVoiceIsPlaying){
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"VoicePlayHasInterrupt" object:nil];
-            contentVoiceIsPlaying = YES;
-            audio = [UUAVAudioPlayer sharedInstance];
-            audio.delegate = self;
-            //        [audio playSongWithUrl:voiceURL];
-            [audio playSongWithData:songData];
-        }else{
-            [self UUAVAudioPlayerDidFinishPlay];
-        }
-    }
-    //show the picture
-    else if (self.messageFrame.message.type == UUMessageTypePicture)
-    {
-        if (self.btnContent.backImageView) {
-            [UUImageAvatarBrowser showImage:self.btnContent.backImageView];
-        }
-        if ([self.delegate isKindOfClass:[UIViewController class]]) {
-            [[(UIViewController *)self.delegate view] endEditing:YES];
-        }
-    }
+    
     // show text and gonna copy that
-    else if (self.messageFrame.message.type == UUMessageTypeText)
+    if (self.messageFrame.message.type == UUMessageTypeText)
     {
         [self.btnContent becomeFirstResponder];
         UIMenuController *menu = [UIMenuController sharedMenuController];
@@ -126,25 +132,10 @@
     }
 }
 
-- (void)UUAVAudioPlayerBeiginLoadVoice
-{
-    [self.btnContent benginLoadVoice];
-}
-- (void)UUAVAudioPlayerBeiginPlay
-{
-    [self.btnContent didLoadVoice];
-}
-- (void)UUAVAudioPlayerDidFinishPlay
-{
-    contentVoiceIsPlaying = NO;
-    [self.btnContent stopPlay];
-    [[UUAVAudioPlayer sharedInstance]stopSound];
-}
-
 
 //内容及Frame设置
 - (void)setMessageFrame:(UUMessageFrame *)messageFrame{
-
+    
     _messageFrame = messageFrame;
     UUMessage *message = messageFrame.message;
     
@@ -168,23 +159,33 @@
         self.labelNum.frame = CGRectMake(messageFrame.nameF.origin.x, messageFrame.nameF.origin.y + 3, 80, messageFrame.nameF.size.height);
         self.labelNum.textAlignment = NSTextAlignmentLeft;
     }
-
+    
     // 4、设置内容
     
     //prepare for reuse
     [self.btnContent setTitle:@"" forState:UIControlStateNormal];
+    /* 用yytext 改写*/
+    [self.btnContent.contentTextView setText:@""];
     self.btnContent.voiceBackView.hidden = YES;
     self.btnContent.backImageView.hidden = YES;
-
+    
     self.btnContent.frame = messageFrame.contentF;
     
     if (message.from == UUMessageFromMe) {
         self.btnContent.isMyMessage = YES;
+        
+        
         [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        /* YYText改写*/
+        [self.btnContent.contentTextView setTextColor:[UIColor whiteColor]];
         self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
     }else{
         self.btnContent.isMyMessage = NO;
+        
+        
         [self.btnContent setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        /* YYText改写*/
+        [self.btnContent.contentTextView setTextColor:[UIColor whiteColor]];
         self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentLeft, ChatContentBottom, ChatContentRight);
     }
     
@@ -200,31 +201,206 @@
     }
     [self.btnContent setBackgroundImage:normal forState:UIControlStateNormal];
     [self.btnContent setBackgroundImage:normal forState:UIControlStateHighlighted];
-
-    switch (message.type) {
-        case UUMessageTypeText:
-            [self.btnContent setTitle:message.strContent forState:UIControlStateNormal];
-            break;
-        case UUMessageTypePicture:
-        {
-            self.btnContent.backImageView.hidden = NO;
-            self.btnContent.backImageView.image = message.picture;
-            self.btnContent.backImageView.frame = CGRectMake(0, 0, self.btnContent.frame.size.width, self.btnContent.frame.size.height);
-            [self makeMaskView:self.btnContent.backImageView withImage:normal];
+    
+    
+    
+    
+    if (message.from == UUMessageFromMe) {
+        
+        
+        NSString *title = message.strContent;
+        
+        //创建一个可变的属性字符串
+        NSMutableAttributedString *text = [NSMutableAttributedString new];
+        [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
+        
+        
+        
+        
+        
+        /* 正则匹配*/
+        NSString * pattern = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
+        NSError *error = nil;
+        NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
+        
+        if (!re) {
+            NSLog(@"%@", [error localizedDescription]);
         }
-            break;
-        case UUMessageTypeVoice:
-        {
-            self.btnContent.voiceBackView.hidden = NO;
-            self.btnContent.second.text = [NSString stringWithFormat:@"%@'s Voice",message.strVoiceTime];
-            songData = message.voice;
-//            voiceURL = [NSString stringWithFormat:@"%@%@",RESOURCE_URL_HOST,message.strVoice];
-        }
-            break;
+        
+        //通过正则表达式来匹配字符串
+        NSArray *resultArray = [re matchesInString:message.strContent options:0 range:NSMakeRange(0, message.strContent.length)];
+        NSLog(@"%@",resultArray);
+        
+        
+        
+        /* 先取出来表情*/
+        
+        
+        
+        NSMutableArray *names = @[].mutableCopy;
+        
+        //根据匹配范围来用图片进行相应的替换
+        for(NSTextCheckingResult *match in resultArray){
+            //获取数组元素中得到range
+            NSRange range = [match range];
             
-        default:
-            break;
+            //获取原字符串中对应的值
+            NSString *subStr = [title substringWithRange:range];
+            NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+            NSMutableString *faceName = @"".mutableCopy;
+            
+            faceName = [NSMutableString stringWithFormat:@"em_%ld",subName.integerValue+1];
+            
+            
+            NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
+            [names addObject:dicc];
+            
+        }
+        
+        
+        
+        
+        for (NSInteger i = names.count-1; i>=0; i--) {
+            
+            NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
+            NSData *data = [NSData dataWithContentsOfFile:path];
+            YYImage *image = [YYImage imageWithData:data scale:2.5];
+            image.preloadAllAnimatedImageFrames = YES;
+            YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
+            
+            NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12] alignment:YYTextVerticalAlignmentCenter];
+            
+            
+            
+            [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
+        }
+        
+        
+        switch (message.type) {
+            case UUMessageTypeText:
+                
+                
+                self.title.attributedText =text;
+                
+                [self.title setFrame:self.btnContent.frame];
+                
+                self.title.textContainerInset  = UIEdgeInsetsMake(0, 5, 0, 5);
+                self.title.textAlignment = NSTextAlignmentLeft;
+                
+                break;
+            case UUMessageTypePicture:
+            {
+            }
+                break;
+            case UUMessageTypeVoice:
+            {
+                
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }else if(message.from == UUMessageFromOther){
+        
+        
+        NSString *title = message.strContent;
+        
+        //创建一个可变的属性字符串
+        NSMutableAttributedString *text = [NSMutableAttributedString new];
+        [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
+        
+        
+        
+        
+        
+        /* 正则匹配*/
+        NSString * pattern = @"\\[em_\\d{1,2}\\]";
+        NSError *error = nil;
+        NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
+        
+        if (!re) {
+            NSLog(@"%@", [error localizedDescription]);
+        }
+        
+        //通过正则表达式来匹配字符串
+        NSArray *resultArray = [re matchesInString:message.strContent options:0 range:NSMakeRange(0, message.strContent.length)];
+        NSLog(@"%@",resultArray);
+        
+        
+        
+        /* 先取出来表情*/
+        
+        
+        
+        NSMutableArray *names = @[].mutableCopy;
+        
+        //根据匹配范围来用图片进行相应的替换
+        for(NSTextCheckingResult *match in resultArray){
+            //获取数组元素中得到range
+            NSRange range = [match range];
+            
+            //获取原字符串中对应的值
+            NSString *subStr = [title substringWithRange:range];
+//            NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+            NSMutableString *faceName = @"".mutableCopy;
+            
+            faceName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+            
+            NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
+            [names addObject:dicc];
+            
+        }
+        
+        
+        
+        
+        for (NSInteger i = names.count-1; i>=0; i--) {
+            
+            NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
+            NSData *data = [NSData dataWithContentsOfFile:path];
+            YYImage *image = [YYImage imageWithData:data scale:2.5];
+            image.preloadAllAnimatedImageFrames = YES;
+            YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
+            
+            NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12] alignment:YYTextVerticalAlignmentCenter];
+            
+            
+            
+            [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
+        }
+        
+        
+        switch (message.type) {
+            case UUMessageTypeText:
+                
+                
+                self.title.attributedText =text;
+                
+                
+                [self.title setFrame:self.btnContent.frame];
+                
+                self.title.textContainerInset  = UIEdgeInsetsMake(0, 20, 0, 0);
+                self.title.textAlignment = NSTextAlignmentLeft;
+                
+                break;
+            case UUMessageTypePicture:
+            {
+            }
+                break;
+            case UUMessageTypeVoice:
+            {
+                
+            }
+                break;
+                
+            default:
+                break;
+        
+        
     }
+    }
+    
 }
 
 - (void)makeMaskView:(UIView *)view withImage:(UIImage *)image
@@ -239,11 +415,11 @@
 {
     if ([[UIDevice currentDevice] proximityState] == YES){
         NSLog(@"Device is close to user");
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+        //        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
     }
     else{
         NSLog(@"Device is not close to user");
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+        //        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     }
 }
 

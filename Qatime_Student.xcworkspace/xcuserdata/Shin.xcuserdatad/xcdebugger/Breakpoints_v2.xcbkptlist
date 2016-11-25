@@ -153,22 +153,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/NELivePlayerViewController.m"
-            timestampString = "500988722.498095"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
-            landmarkName = "-initWithURL:andDecodeParm:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Qatime_Student/NIM_iOS_UIKit/NIMKit/Classes/Sections/Session/NIMSessionViewController.m"
             timestampString = "500976243.836222"
             startingColumnNumber = "9223372036854775807"
@@ -201,13 +185,45 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/NELivePlayerViewController.m"
-            timestampString = "500994507.078656"
+            filePath = "Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/ExportHeaders/Protocol/NIMChatManagerProtocol.h"
+            timestampString = "501047230.640043"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1391"
-            endingLineNumber = "1391"
-            landmarkName = "-tableViewScrollToBottom"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "-sendMessage:didCompleteWithError:"
+            landmarkType = "6">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Qatime_Student/NELivePlayerViewController.m"
+            timestampString = "501768656.51721"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2817"
+            endingLineNumber = "2817"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Qatime_Student/NELivePlayerViewController.m"
+            timestampString = "501768656.51721"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2169"
+            endingLineNumber = "2169"
+            landmarkName = "-UUInputFunctionView:sendMessage:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

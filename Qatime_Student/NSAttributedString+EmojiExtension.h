@@ -10,4 +10,6 @@
 
 @interface NSAttributedString (EmojiExtension)
 
+ - (NSString *)getPlainString;
+
 @end

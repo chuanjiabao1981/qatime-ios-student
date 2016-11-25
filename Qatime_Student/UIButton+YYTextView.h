@@ -8,6 +8,4 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIButton (YYTextView)
 
-@end

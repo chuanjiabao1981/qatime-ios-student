@@ -10,4 +10,11 @@
 
 @implementation UIControl (RemoveTarget)
 
+- (void)removeAllTargets {
+    for (id target in [self allTargets]) {
+        [self removeTarget:target action:NULL forControlEvents:UIControlEventAllEvents];
+    }
+}
+
+
 @end

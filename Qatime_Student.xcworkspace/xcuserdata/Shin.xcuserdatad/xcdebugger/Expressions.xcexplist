@@ -3,10 +3,46 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "-[VideoViewController tableView:cellForRowAtIndexPath:]:VideoViewController.m">
+         contextName = "-[YZEmotionKeyboard didSelectEmotion:]:YZEmotionKeyboard.m">
          <PersistentStrings>
             <PersistentString
-               value = "tableView.tag">
+               value = "attachment.emotionStr">
+            </PersistentString>
+            <PersistentString
+               value = "_yz_textView.text">
+            </PersistentString>
+            <PersistentString
+               value = "_yz_textView.attributedText">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_sendContent">
+            </PersistentString>
+            <PersistentString
+               value = "funcView.TextViewInput.attributedText.description">
+            </PersistentString>
+            <PersistentString
+               value = "funcView.TextViewInput.attributedText.string">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "mach_msg_trap:(null)">
+         <PersistentStrings>
+            <PersistentString
+               value = "self">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[UUMessageCell setMessageFrame:]:UUMessageCell.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "subStr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -27,10 +63,27 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "mach_msg_trap:(null)">
+         contextName = "-[VideoViewController tableView:cellForRowAtIndexPath:]:VideoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "self">
+               value = "tableView.tag">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[UUInputFunctionView sendMessage:]:UUInputFunctionView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "resultStr">
+            </PersistentString>
+            <PersistentString
+               value = "self.TextViewInput.text">
+            </PersistentString>
+            <PersistentString
+               value = "self.TextViewInput.typingAttributes">
+            </PersistentString>
+            <PersistentString
+               value = " self.TextViewInput.attributedText">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

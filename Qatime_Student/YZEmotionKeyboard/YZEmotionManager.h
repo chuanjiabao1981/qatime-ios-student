@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 // 一页多少个
-static NSInteger const emojiCountOfPage = 20;
+static NSInteger const emojiCountOfPage = 28;
 
 // 一页多少列
 static NSInteger const colsOfPage = 7;

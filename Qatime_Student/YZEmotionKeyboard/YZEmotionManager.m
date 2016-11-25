@@ -29,7 +29,7 @@
     
     NSInteger emojiCount = [self emotions].count;
     
-    return (emojiCount - 1) / emojiCountOfPage + 1;
+    return (emojiCount - 1) / emojiCountOfPage ;
 }
 
 + (NSArray *)emotionsOfPage:(NSInteger)page

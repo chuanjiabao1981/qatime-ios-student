@@ -27,6 +27,9 @@
 /* 单独提出view3*/
 @property(nonatomic,strong) UIView *view3 ;
 
+/* 单独提出view4 放置在线成员*/
+@property(nonatomic,strong) UIView *view4 ;
+
 
 
 

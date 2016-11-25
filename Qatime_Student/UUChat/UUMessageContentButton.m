@@ -7,6 +7,14 @@
 //
 
 #import "UUMessageContentButton.h"
+
+@interface UUMessageContentButton ()
+
+
+@property(nonatomic,strong) YYTextView  *tView ;
+
+@end
+
 @implementation UUMessageContentButton
 
 - (id)initWithFrame:(CGRect)frame
@@ -51,9 +59,38 @@
         self.voice.backgroundColor = [UIColor clearColor];
         self.voiceBackView.backgroundColor = [UIColor clearColor];
         
+        
+        /* 使用yytext改写*/
+        /* 文字*/
+        
+        self.title = [[YYLabel alloc]init];
+        [self addSubview:self.title];
+        [self bringSubviewToFront:self.title];
+        self.title.numberOfLines = 0;
+        
+      
+        
+        self.contentTextView = [[YYTextView alloc]init];
+        
+//        self.backImageView.userInteractionEnabled = YES;
+        
+        [self addSubview:_contentTextView];
+        [self bringSubviewToFront:_contentTextView];
+        
+
+        
+        self.contentTextView.hidden = NO;
+        
+        
+        
+        
     }
     return self;
 }
+
+
+
+
 - (void)benginLoadVoice
 {
     self.voice.hidden = YES;
@@ -67,9 +104,9 @@
 }
 -(void)stopPlay
 {
-//    if(self.voice.isAnimating){
+
         [self.voice stopAnimating];
-//    }
+
 }
 
 - (void)setIsMyMessage:(BOOL)isMyMessage
@@ -98,6 +135,18 @@
     UIPasteboard *pboard = [UIPasteboard generalPasteboard];
     pboard.string = self.titleLabel.text;
 }
+
+
+- (YYLabel *)title{
+    
+    YYLabel *label = [[YYLabel alloc]init];
+    return  label;
+    
+}
+
+
+
+
 
 
 @end
