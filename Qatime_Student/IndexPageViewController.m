@@ -89,7 +89,7 @@
     /* 导航栏加载*/
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 64)];
     [self .view addSubview:_navigationBar];
-    _navigationBar.backgroundColor = [UIColor redColor];
+//    _navigationBar.backgroundColor = [UIColor redColor];
     
     
     

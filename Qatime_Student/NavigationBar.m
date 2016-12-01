@@ -15,7 +15,11 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.backgroundColor = USERGREEN;
+        self.backgroundColor = [UIColor whiteColor];
+        
+        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(frame)-0.8, CGRectGetWidth(frame), 0.8)];
+        [self addSubview:line];
+        line.backgroundColor  =[UIColor lightGrayColor];
         
     
     }
@@ -53,7 +57,7 @@
     [self addSubview:_titleLabel];
     
     
-    [_titleLabel setTextColor:[UIColor whiteColor]];
+    [_titleLabel setTextColor:[UIColor redColor]];
     [_titleLabel setTextAlignment:NSTextAlignmentCenter];
     [_titleLabel setFont:[UIFont systemFontOfSize:20]];
     

@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "PersonalView.h"
+#import "HeadBackView.h"
 
 @interface PersonalViewController : UIViewController
 
 @property(nonatomic,strong) PersonalView *personalView ;
+
+@property(nonatomic,strong) HeadBackView *headView ;
 
 @end

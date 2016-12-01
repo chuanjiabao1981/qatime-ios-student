@@ -26,7 +26,6 @@
 
 #import "BarrageWalkTextSprite.h"
 
-#import "YYLabel.h"
 @implementation BarrageWalkTextSprite
 
 @synthesize fontSize = _fontSize;
@@ -52,7 +51,7 @@
 
 - (UIView *)bindingView
 {
-    YYLabel * label = [[YYLabel alloc]init];
+    UILabel * label = [[UILabel alloc]init];
     label.text = self.text;
     label.textColor = self.textColor;
     label.shadowColor = _shadowColor;

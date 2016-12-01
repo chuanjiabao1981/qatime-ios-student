@@ -142,7 +142,7 @@
 
 
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewDidAppear:(BOOL)animated{
     
     
     
@@ -156,7 +156,7 @@
     self.navigationController.navigationBarHidden = YES;
     
     
-    
+    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
     
     /* 取出token*/
     _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
@@ -203,7 +203,7 @@
         infoModel = [[TutoriumListInfo alloc]init];
         
         /* 本地缓存的沙盒路径*/
-        _tutoriumListFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"Tutorium_List"];
+        _tutoriumListFilePath=[[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"Tutorium_List"];
         
         
 #pragma mark- 筛选条件状态存储
@@ -277,7 +277,7 @@
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 64)];
     [self.view addSubview:_navigationBar];
     [_navigationBar.titleLabel setText:@"辅导班"];
-    _navigationBar.backgroundColor = [UIColor colorWithRed:190/255.0f green:11/255.0f blue:11/255.0f alpha:1.0f];
+//    _navigationBar.backgroundColor = [UIColor colorWithRed:190/255.0f green:11/255.0f blue:11/255.0f alpha:1.0f];
     
     
     _tutoriumView = [[TutoriumView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)-64-49)];
@@ -546,8 +546,8 @@
     
     [_multiFilterView.lowPrice resignFirstResponder];
     [_multiFilterView.highPrice resignFirstResponder];
-    [_multiFilterView.class_Low resignFirstResponder];
-    [_multiFilterView.class_High resignFirstResponder];
+//    [_multiFilterView.class_Low resignFirstResponder];
+//    [_multiFilterView.class_High resignFirstResponder];
     
     
     __block MultiFilterView *weakView = _multiFilterView;
@@ -605,16 +605,16 @@
     
     _class_date_ceil =_multiFilterView.endTime.titleLabel.text;
     
-    _preset_lesson_count_floor =_multiFilterView.class_Low.text;
-    
-    _preset_lesson_count_ceil =_multiFilterView.class_High.text;
+//    _preset_lesson_count_floor =_multiFilterView.class_Low.text;
+//    
+//    _preset_lesson_count_ceil =_multiFilterView.class_High.text;
     [_filterDic setValue:_multiFilterView.lowPrice.text forKey:@"price_floor"];
     [_filterDic setValue:_multiFilterView.highPrice.text  forKey:@"price_ceil"];
     [_filterDic setValue:_multiFilterView.startTime.titleLabel.text  forKey:@"class_date_floor"];
     
     [_filterDic setValue:_multiFilterView.endTime.titleLabel.text  forKey:@"class_date_ceil"];
-    [_filterDic setValue:_multiFilterView.class_Low.text forKey:@"preset_lesson_count_floor"];
-    [_filterDic setValue:_multiFilterView.class_High.text forKey:@"preset_lesson_count_ceil"];
+//    [_filterDic setValue:_multiFilterView.class_Low.text forKey:@"preset_lesson_count_floor"];
+//    [_filterDic setValue:_multiFilterView.class_High.text forKey:@"preset_lesson_count_ceil"];
     
     if ([_multiFilterView.class_Begin isSelected]&&[_multiFilterView.recuit isSelected]) {
         
@@ -680,10 +680,10 @@
     [_multiFilterView.lowPrice setText:@""];
     [_multiFilterView.highPrice resignFirstResponder];
     [_multiFilterView.highPrice setText:@""];
-    [_multiFilterView.class_Low resignFirstResponder];
-    [_multiFilterView.class_Low setText:@""];
-    [_multiFilterView.class_High resignFirstResponder];
-    [_multiFilterView.class_High setText:@""];
+//    [_multiFilterView.class_Low resignFirstResponder];
+//    [_multiFilterView.class_Low setText:@""];
+//    [_multiFilterView.class_High resignFirstResponder];
+//    [_multiFilterView.class_High setText:@""];
     
 }
 

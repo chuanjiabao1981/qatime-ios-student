@@ -35,6 +35,10 @@
     NSString *URLStr = iconURL;
     [dataDic setObject:@(UUMessageFromMe) forKey:@"from"];
     [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
+    
+    if (name ==nil) {
+        name =@"";
+    }
     [dataDic setObject:name forKey:@"strName"];
     [dataDic setObject:URLStr forKey:@"strIcon"];
     
@@ -95,6 +99,9 @@ static int dateNum = 10;
     [dictionary setObject:@(UUMessageFromOther) forKey:@"from"];
     [dictionary setObject:@(randomNum) forKey:@"type"];
     [dictionary setObject:[date description] forKey:@"strTime"];
+    if (name == nil) {
+        name = @"";
+    }
     [dictionary setObject:name forKey:@"strName"];
     
     NSLog(@"%@",URLString);

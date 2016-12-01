@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HeadBackView.h"
 
 @interface PersonalView : UIView
 
-@property(nonatomic,strong) UIButton *logOutButton ;
+/* 设置菜单*/
+@property(nonatomic,strong) UITableView *settingTableView ;
 
 @end

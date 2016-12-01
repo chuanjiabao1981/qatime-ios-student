@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ClassTimeView.h"
 
 @interface ClassTimeViewController : UIViewController
+
+@property(nonatomic,strong) ClassTimeView *classTimeView ;
+
 
 @end

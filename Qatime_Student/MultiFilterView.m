@@ -96,12 +96,12 @@
         
         /* 课时范围输入框*/
         /* 课时 左view*/
-        UIView *classLeftContent =[[UIView alloc]init];
-        [self addSubview:classLeftContent];
-        classLeftContent.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        classLeftContent.layer.borderWidth = 0.6f;
-        classLeftContent.sd_layout.leftEqualToView(lowPriceContent1).rightEqualToView(lowPriceContent1).topSpaceToView(lowPriceContent1,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(lowPriceContent1,1.0f);
-        classLeftContent.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
+//        UIView *classLeftContent =[[UIView alloc]init];
+//        [self addSubview:classLeftContent];
+//        classLeftContent.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//        classLeftContent.layer.borderWidth = 0.6f;
+//        classLeftContent.sd_layout.leftEqualToView(lowPriceContent1).rightEqualToView(lowPriceContent1).topSpaceToView(lowPriceContent1,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(lowPriceContent1,1.0f);
+//        classLeftContent.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
         
 //        /* 课时 左  元*/
 //        /* 元3*/
@@ -113,29 +113,29 @@
 //        [yuan3 setSingleLineAutoResizeWithMaxWidth:20];
         
         /* 课时左输入框*/
-        _class_Low = [[UITextField alloc]init];
-        [classLeftContent addSubview:_class_Low];
-        _class_Low.textAlignment = NSTextAlignmentCenter;
-        _class_Low.sd_layout.leftSpaceToView(classLeftContent,5).topSpaceToView(classLeftContent,0).bottomSpaceToView(classLeftContent,0).widthRatioToView(classLeftContent,4/5.0f);
-        _class_Low.keyboardType =UIKeyboardTypeNumberPad;
+//        _class_Low = [[UITextField alloc]init];
+//        [classLeftContent addSubview:_class_Low];
+//        _class_Low.textAlignment = NSTextAlignmentCenter;
+//        _class_Low.sd_layout.leftSpaceToView(classLeftContent,5).topSpaceToView(classLeftContent,0).bottomSpaceToView(classLeftContent,0).widthRatioToView(classLeftContent,4/5.0f);
+//        _class_Low.keyboardType =UIKeyboardTypeNumberPad;
         
         
         /* 课时 右view*/
         
-        UIView *classRightContent =[[UIView alloc]init];
-        [self addSubview:classRightContent];
-        classRightContent.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        classRightContent.layer.borderWidth = 0.6f;
-        classRightContent.sd_layout.leftEqualToView(highPriceContent).rightEqualToView(highPriceContent).topEqualToView(classLeftContent).bottomEqualToView(classLeftContent).centerYEqualToView(classLeftContent);
-        classRightContent.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
+//        UIView *classRightContent =[[UIView alloc]init];
+//        [self addSubview:classRightContent];
+//        classRightContent.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//        classRightContent.layer.borderWidth = 0.6f;
+//        classRightContent.sd_layout.leftEqualToView(highPriceContent).rightEqualToView(highPriceContent).topEqualToView(classLeftContent).bottomEqualToView(classLeftContent).centerYEqualToView(classLeftContent);
+//        classRightContent.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
         
         
         /* 课时右输入框*/
-        _class_High = [[UITextField alloc]init];
-        [classRightContent addSubview:_class_High];
-        _class_High.textAlignment = NSTextAlignmentCenter;
-        _class_High.sd_layout.leftSpaceToView(classRightContent,5).topSpaceToView(classRightContent,0).bottomSpaceToView(classRightContent,0).widthRatioToView(classRightContent,4/5.0f);
-        _class_High.keyboardType =UIKeyboardTypeNumberPad;
+//        _class_High = [[UITextField alloc]init];
+//        [classRightContent addSubview:_class_High];
+//        _class_High.textAlignment = NSTextAlignmentCenter;
+//        _class_High.sd_layout.leftSpaceToView(classRightContent,5).topSpaceToView(classRightContent,0).bottomSpaceToView(classRightContent,0).widthRatioToView(classRightContent,4/5.0f);
+//        _class_High.keyboardType =UIKeyboardTypeNumberPad;
         
         
 //        /* 课时 元 右边*/
@@ -149,21 +149,21 @@
         
         /* 小横线2*/
         
-        UILabel *line2=[[UILabel alloc]init];
-        [self addSubview:line2];
-        [line2 setText:@"-"];
-        [line2 setTextColor:[UIColor blackColor]];
-        line2.textAlignment = NSTextAlignmentCenter;
-        line2.sd_layout.centerYEqualToView(classRightContent).rightSpaceToView(classRightContent,10).heightIs(10);
-        [line2 setSingleLineAutoResizeWithMaxWidth:20];
+//        UILabel *line2=[[UILabel alloc]init];
+//        [self addSubview:line2];
+//        [line2 setText:@"-"];
+//        [line2 setTextColor:[UIColor blackColor]];
+//        line2.textAlignment = NSTextAlignmentCenter;
+//        line2.sd_layout.centerYEqualToView(classRightContent).rightSpaceToView(classRightContent,10).heightIs(10);
+//        [line2 setSingleLineAutoResizeWithMaxWidth:20];
         
         /* 课时范围label*/
-        UILabel *classTimeZone = [[UILabel alloc]init];
-        [self addSubview: classTimeZone];
-        
-        [classTimeZone setText:@"课时范围"];
-        [classTimeZone setTextColor:[UIColor lightGrayColor]];
-        classTimeZone.sd_layout.leftEqualToView(priceZone).rightEqualToView(priceZone).centerYEqualToView(classLeftContent).autoHeightRatio(0);
+//        UILabel *classTimeZone = [[UILabel alloc]init];
+//        [self addSubview: classTimeZone];
+//        
+//        [classTimeZone setText:@"课时范围"];
+//        [classTimeZone setTextColor:[UIColor lightGrayColor]];
+//        classTimeZone.sd_layout.leftEqualToView(priceZone).rightEqualToView(priceZone).centerYEqualToView(classLeftContent).autoHeightRatio(0);
         
         
         
@@ -173,14 +173,14 @@
         [_startTime setTitle:@"请选择时间" forState:UIControlStateNormal];
         [_startTime setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self addSubview:_startTime];
-        _startTime.sd_layout.leftEqualToView(classLeftContent).rightEqualToView(classLeftContent).topSpaceToView(classLeftContent,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(classLeftContent,1.0);
+        _startTime.sd_layout.leftEqualToView(lowPriceContent1).rightEqualToView(lowPriceContent1).topSpaceToView(lowPriceContent1,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(lowPriceContent1,1.0);
         
         /* 开课时间 右button*/
         _endTime = [[UIButton alloc]init];
         [_endTime setTitle:@"请选择时间" forState:UIControlStateNormal];
         [_endTime setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self addSubview:_endTime];
-        _endTime.sd_layout.leftEqualToView(classRightContent).rightEqualToView(classRightContent).topSpaceToView(classRightContent,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(classRightContent,1.0);
+        _endTime.sd_layout.leftEqualToView(highPriceContent).rightEqualToView(highPriceContent).topSpaceToView(highPriceContent,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(highPriceContent,1.0);
         
         
         

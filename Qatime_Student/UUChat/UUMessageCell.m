@@ -151,6 +151,9 @@
                                  placeholderImage:[UIImage imageNamed:@"headImage.jpeg"]];
     
     // 3、设置下标
+    if (message.strName == nil) {
+        message.strName = @"";
+    }
     self.labelNum.text = message.strName;
     if (messageFrame.nameF.origin.x > 160) {
         self.labelNum.frame = CGRectMake(messageFrame.nameF.origin.x - 50, messageFrame.nameF.origin.y + 3, 100, messageFrame.nameF.size.height);
@@ -234,7 +237,6 @@
         
         
         /* 先取出来表情*/
-        
         
         
         NSMutableArray *names = @[].mutableCopy;

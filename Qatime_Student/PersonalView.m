@@ -8,28 +8,28 @@
 
 #import "PersonalView.h"
 
+
+#define SCREENWIDTH self.frame.size.width
+#define SCREENHEIGHT self.frame.size.height
+
+@interface PersonalView (){
+    
+    
+    
+    
+}
+
+@end
+
 @implementation PersonalView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
-        
-        
-        
-        
-        
-        /* 退出登录按钮*/
-        _logOutButton = [[UIButton alloc]init];
-        [self addSubview:_logOutButton];
-        _logOutButton .sd_layout.leftSpaceToView(self ,10).rightSpaceToView(self,10).bottomSpaceToView(self,60).heightRatioToView(self,0.08f);
-        _logOutButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
-        [_logOutButton setTitle:@"退出登录" forState:UIControlStateNormal];
-        [_logOutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_logOutButton setBackgroundColor:[UIColor orangeColor]];
-        
-        
+                
+        _settingTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT)];
+        [self addSubview:_settingTableView];
         
         
         

@@ -16,6 +16,10 @@
 - (void)setWithDict:(NSDictionary *)dict{
     
     self.strIcon = dict[@"strIcon"];
+    
+    if (dict[@"strName"] ==nil) {
+        [dict setValue:@"" forKey:@"strName" ];
+    }
     self.strName = dict[@"strName"];
     self.strId = dict[@"strId"];
     self.strTime = [self changeTheDateString:dict[@"strTime"]];

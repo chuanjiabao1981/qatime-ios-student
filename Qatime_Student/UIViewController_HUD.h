@@ -22,6 +22,9 @@
 
 - (void) loadingHUDStopLoadingWithTitle:(NSString *)hudTitle;
 
++ (instancetype)loadingHUD;
+
++ (instancetype)endHUD;
 
 
 @end

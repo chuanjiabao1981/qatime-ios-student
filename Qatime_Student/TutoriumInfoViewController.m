@@ -12,6 +12,9 @@
 #import "YYModel.h"
 #import "RDVTabBarController.h"
 
+#import "UIImageView+WebCache.h"
+#import "UIViewController_HUD.h"
+#import "UIViewController+HUD.h"
 
 
 @interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>{
@@ -51,9 +54,12 @@
         NSLog(@"%@",_remember_token);
         
         
+        
+        
     }
     return self;
 }
+
 
 
 
@@ -116,7 +122,7 @@
     [self requestClassesInfoWith:_classID];
     
     
-    
+    [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
     
     
 }
@@ -136,8 +142,6 @@
         NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         NSLog(@"%@",dic);
-        
-        
         
         
         NSString *status = [NSString stringWithFormat:@"%@",dic[@"status"]];
@@ -161,6 +165,7 @@
             _teacherModel.subject = [teacherDic valueForKey:@"subject"];
             _teacherModel.teaching_years =[teacherDic valueForKey:@"teaching_years"];
             _teacherModel.describe =[teacherDic valueForKey:@"desc"];
+            
             
             
             /* 判断性别是否为空对象    预留性别判断接口*/
@@ -187,6 +192,7 @@
             [_tutoriumInfoView.workPlaceLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.school]];
             [_tutoriumInfoView.teacherInterviewLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.describe]];
             [_tutoriumInfoView.workYearsLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.teaching_years]];
+            [_tutoriumInfoView.classImage sd_setImageWithURL:[NSURL URLWithString:_teacherModel.avatar_url]];
             
             
             

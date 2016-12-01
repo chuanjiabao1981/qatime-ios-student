@@ -18,9 +18,9 @@
 @property(nonatomic,strong) UITextField *highPrice ;
 
 /* 课时范围*/
-/* */
-@property(nonatomic,strong) UITextField *class_Low;
-@property(nonatomic,strong) UITextField *class_High ;
+/* 该版本暂时去掉该功能 */
+//@property(nonatomic,strong) UITextField *class_Low;
+//@property(nonatomic,strong) UITextField *class_High ;
 
 /* 开课时间范围*/
 /* 起始时间范围*/

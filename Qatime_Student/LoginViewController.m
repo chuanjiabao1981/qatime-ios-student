@@ -207,6 +207,11 @@
                 NSLog(@"token:%@,id:%@",remember_token,userID);
                 
                 
+                /* 另存一个userdefault ，只存user的头像地址*/
+                [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"avatar_url"] forKey:@"avatar_url"];
+                
+                
+                
                 
              #pragma mark- 把用户聊天账户信息存本地
                 
