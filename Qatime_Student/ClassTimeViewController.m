@@ -38,6 +38,11 @@
     /* 保存已上课数据的数组*/
   __block  NSMutableArray *_closedArr;
     
+    /* 该月份是否有课*/
+    
+    BOOL haveClass;
+    
+    
 }
 
 @property(nonatomic,strong) NavigationBar *navigationBar ;
@@ -64,7 +69,6 @@
     
     #pragma mark- HUD加载数据
     [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
-    
     
     
     
@@ -150,8 +154,13 @@
     [_classTimeView.notClassView.notClassTableView.mj_header endRefreshing];
     [_classTimeView.alreadyClassView.alreadyClassTableView.mj_header endRefreshing];
     
-    [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
-    
+    if (haveClass ==NO) {
+        
+        [self loadingHUDStopLoadingWithTitle:@"本月暂时没有课程!"];
+        
+    }else{
+        [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
+    }
 }
 
 
@@ -174,23 +183,34 @@
                 
                 NSLog(@"%@",dic[@"data"]);
                 
-                for (NSDictionary *classDic in dic[@"data"]) {
+                
+                if ([dic[@"data"] count] ==0) {
                     
-                    for (NSDictionary *lessons in classDic[@"lessons"]) {
+                    haveClass = NO;
+                    /* 弹窗警告*/
+                    [self noClassThisMonth];
+                    
+                }else{
+                    
+                    haveClass = YES;
+                    
+                    for (NSDictionary *classDic in dic[@"data"]) {
                         
+                        for (NSDictionary *lessons in classDic[@"lessons"]) {
+                            
+                            
+                            ClassTimeModel *mod = [ClassTimeModel yy_modelWithJSON:lessons];
+                            mod.classID = lessons[@"id"];
+                            
+                            
+                            [_unclosedArr addObject:mod];
+                        }
                         
-                        ClassTimeModel *mod = [ClassTimeModel yy_modelWithJSON:lessons];
-                        mod.classID = lessons[@"id"];
-                        
-                        
-                        [_unclosedArr addObject:mod];
                     }
                     
+                    
+                    NSLog(@"%@",_unclosedArr);
                 }
-                
-                
-              NSLog(@"%@",_unclosedArr);
-                
                 
             }else{
                 
@@ -200,8 +220,7 @@
             [self updateTablesData];
             [self endRefresh];
             
-            
-            
+        
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
@@ -235,19 +254,30 @@
                 
                 NSLog(@"%@",dic[@"data"]);
                 
-                for (NSDictionary *classDic in dic[@"data"]) {
+                if ([dic[@"data"] count] == 0) {
                     
-                    for (NSDictionary *lessons in classDic[@"lessons"]) {
+                    haveClass = NO;
+                    [self noClassThisMonth];
+                }else{
+                    
+                    haveClass = YES;
+                    
+                    for (NSDictionary *classDic in dic[@"data"]) {
                         
+                        for (NSDictionary *lessons in classDic[@"lessons"]) {
+                            
+                            
+                            ClassTimeModel *mod = [ClassTimeModel yy_modelWithJSON:lessons];
+                            mod.classID = lessons[@"id"];
+                            
+                            
+                            [_closedArr addObject:mod];
+                        }
                         
-                        ClassTimeModel *mod = [ClassTimeModel yy_modelWithJSON:lessons];
-                        mod.classID = lessons[@"id"];
-                        
-                        
-                        [_closedArr addObject:mod];
                     }
                     
                 }
+                
                 
                 NSLog(@"%@",_closedArr);
                 
@@ -273,6 +303,17 @@
     
 }
 
+#pragma mark- 当月无课程的情况
+- (void)noClassThisMonth{
+    
+    ClassTimeModel *mod = [ClassTimeModel new];
+    
+    _unclosedArr = [NSMutableArray arrayWithArray:@[mod]];
+     _closedArr = [NSMutableArray arrayWithArray:@[mod]];
+    
+    
+    
+}
 
 
 #pragma mark- 加载数据后，更新table的数据和视图
@@ -295,21 +336,28 @@
     
     NSInteger rows=0;
     
-    if (tableView.tag ==1) {
+    if (haveClass==NO) {
         
+        rows = 1;
+    }else{
         
-        if (_unclosedArr.count !=0) {
+        if (tableView.tag ==1) {
             
-            rows = _unclosedArr.count;
+            
+            if (_unclosedArr.count !=0) {
+                
+                rows = _unclosedArr.count;
+            }
+        }
+        
+        if (tableView.tag == 2) {
+            if (_closedArr.count !=0) {
+                
+                rows = _closedArr.count;
+            }
         }
     }
     
-    if (tableView.tag == 2) {
-        if (_closedArr.count !=0) {
-            
-            rows = _closedArr.count;
-        }
-    }
     
     
     return rows ;
@@ -322,52 +370,58 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     
-    /* cell的重用队列*/
-    
-    /* 未上课列表*/
-    if (tableView.tag ==1) {
-        
-        static NSString *cellIdenfier = @"cell";
-        ClassTimeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-        if (cell==nil) {
-            
-            cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-            
-            cell.sd_tableView = tableView;
-            
-            
-            if (_unclosedArr.count!=0) {
-                
-                cell.model =_unclosedArr[indexPath.row];
-            
-            }
-            
-        }
-        
-        return  cell;
-    }
-    
-    if (tableView.tag ==2) {
-        
-        static NSString *cellID = @"CellID";
-        ClassTimeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-        if (cell==nil) {
-            
-            cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellID"];
-            
-            cell.sd_tableView = tableView;
-            
-            
-            if (_closedArr.count!=0) {
-                
-                cell.model =_closedArr[indexPath.row];
-                
-            }
-            
-        }
 
-        return cell;
+    if (haveClass==NO) {
+        
+    }else{
+        
+        /* 未上课列表*/
+        if (tableView.tag ==1) {
+            
+            static NSString *cellIdenfier = @"cell";
+            ClassTimeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+            if (cell==nil) {
+                
+                cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+                
+                cell.sd_tableView = tableView;
+                
+                
+                if (_unclosedArr.count!=0) {
+                    
+                    cell.model =_unclosedArr[indexPath.row];
+                    
+                }
+                
+            }
+            
+            return  cell;
+        }
+        
+        if (tableView.tag ==2) {
+            
+            static NSString *cellID = @"CellID";
+            ClassTimeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+            if (cell==nil) {
+                
+                cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellID"];
+                
+                cell.sd_tableView = tableView;
+                
+                
+                if (_closedArr.count!=0) {
+                    
+                    cell.model =_closedArr[indexPath.row];
+                    
+                }
+                
+            }
+            
+            return cell;
+        }
     }
+    
+    
     
     
     return [[UITableViewCell alloc]init];
@@ -382,6 +436,7 @@
     
 
     CGFloat height = 0;
+    
  
     if (tableView.tag ==1) {
         
@@ -412,30 +467,37 @@
     
     NSString *classID;
     
-    if (tableView.tag ==1) {
+    if (haveClass == NO) {
         
-        if (_unclosedArr.count!=0) {
+    }else{
+        
+        if (tableView.tag ==1) {
             
-            classID  = [NSString stringWithFormat:@"%@",[_unclosedArr[indexPath.row] valueForKeyPath:@"course_id"]];
+            if (_unclosedArr.count!=0) {
+                
+                classID  = [NSString stringWithFormat:@"%@",[_unclosedArr[indexPath.row] valueForKeyPath:@"course_id"]];
+                
+            }
+            
+        }
+        if (tableView.tag ==2) {
+            
+            if (_unclosedArr.count!=0) {
+                
+                classID  = [NSString stringWithFormat:@"%@",[_unclosedArr[indexPath.row] valueForKeyPath:@"course_id"]];
+                
+            }
             
         }
         
-    }
-    if (tableView.tag ==2) {
+        NSLog(@"%@",classID);
         
-        if (_unclosedArr.count!=0) {
-            
-            classID  = [NSString stringWithFormat:@"%@",[_unclosedArr[indexPath.row] valueForKeyPath:@"course_id"]];
-            
-        }
+        TutoriumInfoViewController *infoVC= [[TutoriumInfoViewController alloc]initWithClassID:classID];
+        
+        [self.navigationController pushViewController:infoVC animated:YES];
         
     }
     
-    NSLog(@"%@",classID);
-    
-    TutoriumInfoViewController *infoVC= [[TutoriumInfoViewController alloc]initWithClassID:classID];
-    
-    [self.navigationController pushViewController:infoVC animated:YES];
     
     
     

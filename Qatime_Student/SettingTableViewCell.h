@@ -14,10 +14,15 @@
 @property(nonatomic,strong) UILabel *settingName ;
 
 /* 箭头图*/
-@property(nonatomic,strong) UIImageView *arrow ;
+//@property(nonatomic,strong) UIImageView *arrow ;
 
 /* 价格*/
 @property(nonatomic,strong) UILabel *balance ;
 
+/* logo图*/
+@property(nonatomic,strong) UIImageView *logoImage ;
+
+/* 分割线*/
+@property(nonatomic,strong) UIView *separateLine; 
 
 @end

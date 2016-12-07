@@ -7,10 +7,12 @@
 //
 
 #import "SettingTableViewCell.h"
+#import "UIView+FontSize.h"
+
 
 @interface SettingTableViewCell (){
     
-    UIView *_separateLine;
+    
     
     
 }
@@ -25,58 +27,76 @@
     
     if (self) {
         
+        self.backgroundColor = [UIColor whiteColor];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        /* logoImage*/
+        _logoImage = [[UIImageView alloc]init];
+        
+        
+        
         
         /* 菜单名*/
         _settingName = [[UILabel alloc]init];
-        _settingName.textColor = [UIColor blackColor];
+        _settingName.textColor = TITLECOLOR;
+        _settingName.font = TITLEFONTSIZE  ;
         
         
         /* 箭头*/
         
-        _arrow = [[UIImageView alloc]init];
-        [_arrow setImage:[UIImage imageNamed:@"rightArrow"]];
+//        _arrow = [[UIImageView alloc]init];
+//        [_arrow setImage:[UIImage imageNamed:@"rightArrow"]];
         
         
        
         /* 余额*/
         
         _balance = [[UILabel alloc]init];
-        _balance.textColor = [UIColor blackColor];
+        _balance.textColor = TITLECOLOR;
         _balance.hidden = YES;
+        _balance.font = [UIFont systemFontOfSize:16];
         
         /* 分割线*/
-        _separateLine = [[UIView alloc]init];
-        _separateLine.backgroundColor= [UIColor lightGrayColor];
+//        _separateLine = [[UIView alloc]init];
+//        _separateLine.backgroundColor= [UIColor lightGrayColor];
         
         
-        [self.contentView sd_addSubviews:@[_settingName,_arrow,_balance,_separateLine]];
+        [self.contentView sd_addSubviews:@[_logoImage,_settingName,_balance]];
+        
+        
         
         
         /* 布局*/
-        _settingName.sd_layout
-        .topSpaceToView(self.contentView,15)
-        .bottomSpaceToView(self.contentView,15)
-        .leftSpaceToView(self.contentView,20);
-        [_settingName setSingleLineAutoResizeWithMaxWidth:200];
         
-        _arrow.sd_layout
-        .topSpaceToView(self.contentView,20)
-        .bottomSpaceToView(self.contentView,20)
-        .rightSpaceToView(self.contentView,10)
+        _logoImage.sd_layout
+        .leftSpaceToView(self.contentView,10)
+        .centerYEqualToView(self.contentView)
+        .heightRatioToView(self.contentView,0.5)
         .widthEqualToHeight();
         
+        _settingName.sd_layout
+        .centerYEqualToView(self.contentView)
+        .heightRatioToView(self.contentView,0.5)
+        .leftSpaceToView(_logoImage,20);
+        [_settingName setSingleLineAutoResizeWithMaxWidth:200];
+        
+//        _arrow.sd_layout
+//        .topSpaceToView(self.contentView,15)
+//        .bottomSpaceToView(self.contentView,15)
+//        .rightSpaceToView(self.contentView,20)
+//        .widthEqualToHeight();
+        
         _balance.sd_layout
-        .rightSpaceToView(_arrow,15)
-        .topSpaceToView(self.contentView,15)
-        .bottomSpaceToView(self.contentView,15);
+        .rightSpaceToView(self.contentView,15)
+        .topSpaceToView(self.contentView,10)
+        .bottomSpaceToView(self.contentView,10);
         [_balance setSingleLineAutoResizeWithMaxWidth:200];
         
-        _separateLine.sd_layout
-        .leftEqualToView(self.contentView)
-        .rightEqualToView(self.contentView)
-        .bottomEqualToView(self.contentView)
-        .heightIs(0.4);
+//        _separateLine.sd_layout
+//        .leftSpaceToView(self.contentView,10)
+//        .rightEqualToView(self.contentView)
+//        .bottomEqualToView(self.contentView)
+//        .heightIs(0.4);
         
         
     }

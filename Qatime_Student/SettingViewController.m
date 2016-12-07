@@ -17,6 +17,8 @@
 #import "AboutUsViewController.h"
 #import "NoticeSettingViewController.h"
 
+#import "NELivePlayerViewController.h"
+
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
 
@@ -78,24 +80,48 @@
     
     _settingView.menuTableView.delegate = self;
     _settingView.menuTableView.dataSource = self;
-    
+    _settingView.menuTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     
     /* 获取当前软件版本*/
     
     _version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 
     
-     NSString *FilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"<#File Path#>"];
+//     NSString *FilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"<#File Path#>"];
     
     /* 获取缓存数据*/
     
     [self getCacheSpace];
     
+    
+    /* 测试视频按钮*/
+    
+    UIButton *but = [[UIButton alloc]init];
+    [_settingView addSubview:but];
+    but.sd_layout
+    .leftSpaceToView(_settingView,40)
+    .rightSpaceToView(_settingView,40)
+    .bottomSpaceToView(_settingView.logOutButton,40)
+    .heightIs(40);
+    
+    [but setTitle:@"播放视频" forState:UIControlStateNormal];
    
+    [but addTarget:self action:@selector(play) forControlEvents:UIControlEventTouchUpInside];
+    
     
     
 }
 
+
+/**
+ 播放视频.测试用
+ */
+- (void)play{
+    
+    NELivePlayerViewController *vc = [[NELivePlayerViewController alloc]initWithClassID:@"32"];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 
 
@@ -226,7 +252,13 @@
         
         cell.settingName.text = menus[indexPath.row];
         
-       
+        cell.logoImage.hidden = YES;
+        
+        cell.settingName.sd_layout
+        .leftSpaceToView(cell.contentView,20)
+        .topSpaceToView(cell.contentView,10)
+        .bottomSpaceToView(cell.contentView,10);
+        [cell.settingName setSingleLineAutoResizeWithMaxWidth:1000];
         
         if (indexPath.row ==2) {
     

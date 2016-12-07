@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NavigationBar.h"
+#import "SafeSettingTableViewCell.h"
 
-@interface SafeViewController : UIViewController
+
+@interface SafeViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+
+@property(nonatomic,strong) UITableView *menuTableView ;
 
 @end

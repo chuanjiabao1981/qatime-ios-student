@@ -34,13 +34,9 @@
     
   
         
-        [_navigationBar.titleLabel setText:@"设置登录"];
+        [_navigationBar.titleLabel setText:@"注册"];
   
-    
-
-  
-    
-    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+        [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(backToFrontPage:) forControlEvents:UIControlEventTouchUpInside];
     
     _signUpView = [[SignUpView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
@@ -52,10 +48,48 @@
     
    
     
+//    选项
+    
+    [_signUpView.chosenButton addTarget:self action:@selector(chosenProtocol:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     
     
     
 }
+
+
+
+
+
+
+/* 选择协议*/
+- (void)chosenProtocol:(UIButton *)sender{
+    
+    if (sender.selected ==NO) {
+        
+        sender.layer.borderWidth = 0;
+        sender.backgroundColor = [UIColor colorWithRed:0.84 green:0.33 blue:0.6 alpha:1.00];
+        [sender setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];
+        
+        sender.selected = YES;
+    }else{
+        
+        sender.layer.borderColor =[UIColor blackColor].CGColor;
+        sender.layer.borderWidth=1.0f;
+        [sender setImage:nil forState:UIControlStateNormal];
+        sender.backgroundColor = [UIColor clearColor];
+        
+        
+        
+        sender.selected= NO;
+    
+    }
+    
+    
+}
+
+
 
 /* 点击下一步按钮*/
 - (void)nextStep:(UIButton *)sender{
@@ -63,9 +97,9 @@
     /* 测试口  直接跳转*/
     
     /* 进入下一页*/
-//    _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
-//    
-//    [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
+    _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
+    
+    [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
 
     ////////////////////////////////////////////
     
@@ -91,79 +125,84 @@
         
     }
     
-    if (!([_signUpView.phoneNumber.text isEqualToString:@""]&&[_signUpView.userPassword.text isEqualToString:@""]&&[_signUpView.userPasswordCompare.text isEqualToString:@""]&&[_signUpView.checkCode.text isEqualToString:@""])&&[_signUpView.unlockKey.text isEqualToString:@""]) {
-        [self showAlertWith:@"请输入注册号"];
-        
-    }
+//    if (!([_signUpView.phoneNumber.text isEqualToString:@""]&&[_signUpView.userPassword.text isEqualToString:@""]&&[_signUpView.userPasswordCompare.text isEqualToString:@""]&&[_signUpView.checkCode.text isEqualToString:@""])&&[_signUpView.unlockKey.text isEqualToString:@""]) {
+//        [self showAlertWith:@"请输入注册号"];
+//        
+//    }
     
     /* 所有信息都填写正确的情况*/
-    if (!([_signUpView.phoneNumber.text isEqualToString:@""]&&[_signUpView.userPassword.text isEqualToString:@""]&&[_signUpView.userPasswordCompare.text isEqualToString:@""]&&[_signUpView.checkCode.text isEqualToString:@""]&&[_signUpView.unlockKey.text isEqualToString:@""])&&[_signUpView.userPasswordCompare.text isEqualToString:_signUpView.userPassword.text]) {
+    if (!([_signUpView.phoneNumber.text isEqualToString:@""]&&[_signUpView.userPassword.text isEqualToString:@""]&&[_signUpView.userPasswordCompare.text isEqualToString:@""]&&[_signUpView.checkCode.text isEqualToString:@""]/*&&[_signUpView.unlockKey.text isEqualToString:@""] 注册码功能暂时去掉*/)&&[_signUpView.userPasswordCompare.text isEqualToString:_signUpView.userPassword.text]) {
         
-        /* 所有信息汇总成字典*/
-        
-        NSDictionary *signUpInfo =@{
-                                    @"login_mobile":_signUpView.phoneNumber.text,
-                                    @"captcha_confirmation":_signUpView.checkCode.text,
-                                    @"password":_signUpView.userPassword.text,
-                                    @"password_confirmation":_signUpView.userPasswordCompare.text,
-                                    @"register_code_value":_signUpView.unlockKey.text,
-                                    @"accept":@"1",
-                                    @"type":@"Student",
-                                    @"client_type":@"app"
-                                    };
-        
-        /* 验证码 请求状态*/
-        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager POST:@"http://testing.qatime.cn/api/v1/captcha/verify" parameters:signUpInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if (!_signUpView.chosenButton.isSelected) {
             
-            NSDictionary *codeState = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-            NSLog(@"%@",codeState);
+            [self showAlertWith:@"请遵守《答疑时间用户协议》"];
+        }else{
             
-            NSDictionary *dataDic=[NSDictionary dictionaryWithDictionary: codeState[@"data"]];
+            /* 所有信息汇总成字典*/
             
+            NSDictionary *signUpInfo =@{
+                                        @"login_mobile":_signUpView.phoneNumber.text,
+                                        @"captcha_confirmation":_signUpView.checkCode.text,
+                                        @"password":_signUpView.userPassword.text,
+                                        @"password_confirmation":_signUpView.userPasswordCompare.text,
+                                        @"register_code_value":@"code",
+                                        @"accept":@"1",
+                                        @"type":@"Student",
+                                        @"client_type":@"app"
+                                        };
+            
+            /* 验证码 请求状态*/
+            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+            [manager POST:@"http://testing.qatime.cn/api/v1/captcha/verify" parameters:signUpInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                
+                NSDictionary *codeState = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                NSLog(@"%@",codeState);
+                
+                NSDictionary *dataDic=[NSDictionary dictionaryWithDictionary: codeState[@"data"]];
+                
 #pragma mark-注册信息校验正确
-            /* 注册信息校验正确*/
-            
-            if ([[dataDic allKeys]containsObject:@"remember_token"]){
                 
-                /* 发送成功提示框*/
-                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                hud.mode = MBProgressHUDModeText;
-                hud.labelText = @"验证成功！";
-                hud.yOffset= 150.f;
-                hud.removeFromSuperViewOnHide = YES;
+                /* 注册信息校验正确*/
                 
-                [hud hide:YES afterDelay:1.0];
+                if ([[dataDic allKeys]containsObject:@"remember_token"]){
+                    
+                    /* 发送成功提示框*/
+                    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+                    hud.mode = MBProgressHUDModeText;
+                    hud.labelText = @"验证成功！";
+                    hud.yOffset= 150.f;
+                    hud.removeFromSuperViewOnHide = YES;
+                    
+                    [hud hide:YES afterDelay:1.0];
+                    
+                    
+#pragma mark- 把token和id(key : data)存储到本地沙盒路径
+                    
+                    NSString *tokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"token.data"];
+                    [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
+                    
                 
+                    
+                    /* 进入下一页*/
+                    _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
+                    
+                    [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
+                    
+                    
+                }
+                else if (![[dataDic allKeys]containsObject:@"remember_token"]){
+                    
+                    [self showAlertWith:@"验证失败！"];
+                    
+                }
                 
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
-                #pragma mark- 把token和id(key : data)存储到本地沙盒路径
-                
-                 NSString *tokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"token.data"];
-                [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
-                
-                
-                
-                
-                
-                /* 进入下一页*/
-                _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
-                
-                [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
-                
-                
-            }
-            else if (![[dataDic allKeys]containsObject:@"remember_token"]){
-                
-                [self showAlertWith:@"验证失败！"];
-                
-            }
-            
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            
-        }];
+            }];
+        }
+        
         
     }
     
@@ -195,8 +234,6 @@
             
             /* 重新发送验证码*/
             [self deadLineTimer:_signUpView.getCheckCodeButton];
-            
-            
             
             [hud hide:YES afterDelay:2.0];
             
@@ -278,6 +315,8 @@
             NSString *strTime = [NSString stringWithFormat:@"重发验证码(%d)",deadline];
             
             [button setTitle:strTime forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            
             [button setEnabled:NO];
             
             
@@ -293,6 +332,8 @@
                 
                 
                 [button setTitle:@"获取校验码" forState:UIControlStateNormal];
+                [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
                 [button setEnabled:YES];
                 
                 

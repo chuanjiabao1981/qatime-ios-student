@@ -23,4 +23,9 @@
  */
 @property(nonatomic,strong) UIImageView *headImageView ;
 
+
+/* 用户名*/
+
+@property(nonatomic,strong) UILabel *name ;
+
 @end

@@ -40,7 +40,10 @@
 /* 课程id*/
 @property(nonatomic,strong) NSString *classID ;
 
-
+/* 白板拉流地址*/
+@property(nonatomic,strong) NSURL *boardPullAddress ;
+/* 教师拉流地址*/
+@property(nonatomic,strong) NSURL *teacherPullAddress ;
 
 /* 视频信息页面*/
 @property(nonatomic,strong) VideoInfoView *videoInfoView ;
@@ -77,6 +80,18 @@
  */
 
 -(instancetype)initWithClassID:(NSString *)classID;
+
+
+
+/**
+ 传入课程id和播放地址的初始化器
+
+ @param classID 课程id
+ @param boardPullAddress 白板拉流地址
+ @param teacherPullAddress 教师拉流地址
+ @return 播放器对象
+ */
+-(instancetype)initWithClassID:(NSString *)classID andBoardPullAddress:(NSURL *)boardPullAddress andTeacherPullAddress:(NSURL *)teacherPullAddress;
 
 
 

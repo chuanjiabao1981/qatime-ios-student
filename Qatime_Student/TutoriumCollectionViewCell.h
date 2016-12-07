@@ -37,5 +37,9 @@
 @property(nonatomic,strong) NSString *classID ;
 
 
+/* 课程名字*/
+@property(nonatomic,strong) UILabel *className ;
+
+
 
 @end

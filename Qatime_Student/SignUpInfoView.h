@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YYTextView.h"
 
 @interface SignUpInfoView : UIView
 
@@ -14,27 +15,30 @@
 @property(nonatomic,strong) UIImageView *headImage ;
 
 /* 姓名*/
-@property(nonatomic,strong) UITextField *userName ;
+@property(nonatomic,strong) YYTextView *userName ;
 
 /* 性别按钮  两个*/
-@property(nonatomic,strong) UIButton *boyButton ;
-@property(nonatomic,strong) UIButton *girlButton ;
+//@property(nonatomic,strong) UIButton *boyButton ;
+//@property(nonatomic,strong) UIButton *girlButton ;
 
 /* 生日*/
-@property(nonatomic,strong) UIButton *birthday ;
-@property(nonatomic,strong) NSDate *birthDate  ;
+//@property(nonatomic,strong) UIButton *birthday ;
+//@property(nonatomic,strong) NSDate *birthDate  ;
 
 /* 年级*/
-@property(nonatomic,strong) UIButton *gradeButton ;
-@property(nonatomic,strong) NSString *grade ;
+//@property(nonatomic,strong) UIButton *gradeButton ;
+@property(nonatomic,strong) YYTextView *grade ;
 
 /* 完成按钮*/
 
-@property(nonatomic,strong) UIButton  *finishButton ;
+//@property(nonatomic,strong) UIButton  *finishButton ;
+@property(nonatomic,strong) UIButton *enterButton ;
+@property(nonatomic,strong) UIButton *moreButton ;
+
 
 
 /* 上传图片按钮*/
-@property(nonatomic,strong) UIButton *uploadPic;
+//@property(nonatomic,strong) UIButton *uploadPic;
 
 
 @end

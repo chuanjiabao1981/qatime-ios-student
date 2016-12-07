@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MyWalletView.h"
 
 @interface MyWalletViewController : UIViewController
+
+@property(nonatomic,strong) MyWalletView *myWalletView ;
 
 @end

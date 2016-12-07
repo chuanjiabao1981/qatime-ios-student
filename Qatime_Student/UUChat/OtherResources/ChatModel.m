@@ -95,6 +95,11 @@ static int dateNum = 10;
         randomNum = UUMessageTypeText;
         [dictionary setObject:text forKey:@"strContent"];
     
+    if (text == nil) {
+        
+    }
+    
+    
     NSDate *date = [[NSDate date]dateByAddingTimeInterval:arc4random()%1000*(dateNum++) ];
     [dictionary setObject:@(UUMessageFromOther) forKey:@"from"];
     [dictionary setObject:@(randomNum) forKey:@"type"];

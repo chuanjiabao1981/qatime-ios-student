@@ -7,12 +7,13 @@
 //
 
 #import "SignUpView.h"
+#import "UIView+FontSize.h"
 
 @interface SignUpView()<UITextFieldDelegate>{
     
-    UIButton *_chosenButton;
     
-    UIButton *_userPolicy;
+    
+   
     
     BOOL selectedPolicy;
     
@@ -95,9 +96,11 @@
         _userPasswordCompare.sd_layout.topSpaceToView(_userPassword,15).leftSpaceToView(self,20).rightSpaceToView(self,20).heightIs(40);
         _userPasswordCompare.secureTextEntry = YES;
         
-        /* 注册码输入框*/
+        /* 注册码输入框  暂时隐藏*/
+        
         _unlockKey =[[UITextField alloc]init];
         [self addSubview:_unlockKey];
+        _unlockKey .hidden = YES;
         _unlockKey.placeholder =@" 请输入答疑时间注册码";
         _unlockKey.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _unlockKey.layer.borderWidth=0.6;
@@ -110,18 +113,19 @@
         
         _chosenButton = [[UIButton alloc]init];
         [self addSubview:_chosenButton];
-        _chosenButton .layer.borderColor =[UIColor blackColor].CGColor;
+        _chosenButton .layer.borderColor =TITLECOLOR.CGColor;
         _chosenButton.layer.borderWidth=1.0f;
         _chosenButton.sd_layout.leftSpaceToView(self,30).widthIs(20).heightIs(20).topSpaceToView(_unlockKey,30);
         _chosenButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         
+        _chosenButton.selected = NO;
         
         /* 同意label*/
-        UILabel *accessLabel= [[UILabel alloc]init];
-        [self addSubview:accessLabel];
-        [accessLabel setText:@"同意"];
-        accessLabel.textColor = [UIColor blackColor];
-        accessLabel.sd_layout.leftSpaceToView(_chosenButton,10).topEqualToView(_chosenButton).bottomEqualToView(_chosenButton).widthIs(40);
+        _accessLabel= [[UILabel alloc]init];
+        [self addSubview:_accessLabel];
+        [_accessLabel setText:@"同意"];
+        _accessLabel.textColor = TITLECOLOR;
+        _accessLabel.sd_layout.leftSpaceToView(_chosenButton,10).topEqualToView(_chosenButton).bottomEqualToView(_chosenButton).widthIs(40);
         
         
         /* 查看协议 按钮*/
@@ -130,7 +134,7 @@
         [_userPolicy setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [_userPolicy  setTitle:@"《答疑时间用户协议》" forState:UIControlStateNormal];
         [_userPolicy setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-        _userPolicy.sd_layout.leftSpaceToView(accessLabel,0).topEqualToView(accessLabel).bottomEqualToView(accessLabel).widthIs(220);
+        _userPolicy.sd_layout.leftSpaceToView(_accessLabel,0).topEqualToView(_accessLabel).bottomEqualToView(_accessLabel).widthIs(220);
         
         /* 下一步按钮*/
 

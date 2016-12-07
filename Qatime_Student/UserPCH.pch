@@ -27,4 +27,17 @@
 /* 屏幕宽*/
 //#define SCREENWIDTH [UIScreen mainScreen].bounce.size.width
 
+/* 背景灰色*/
+#define BACKGROUNDGRAY [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0]
+
+/*字号*/
+#define TITLEFONTSIZE [UIFont systemFontOfSize:18]
+/* 字体颜色*/
+#define TITLECOLOR [UIColor darkGrayColor]
+
+
+#import "UIView+FontSize.h"
+#import <objc/runtime.h>
+#import <objc/message.h>
+#import "UIButton+EnlargeTouchArea.h"
 

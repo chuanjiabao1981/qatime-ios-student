@@ -7,12 +7,23 @@
 //
 
 #import "GradeList.h"
+#import "MBProgressHUD.h"
+
+@interface GradeList (){
+    
+    MBProgressHUD *hud;
+    
+    
+}
+
+@end
 
 @implementation GradeList
 - (instancetype)init
 {
     self = [super init];
     if (self) {
+        
         
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -25,23 +36,11 @@
             [[NSUserDefaults standardUserDefaults]setObject:_grade forKey:@"grade"];
             
             
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"LoadGradeOver" object:nil];
+            
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
         }];
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         
     }

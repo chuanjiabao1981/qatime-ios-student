@@ -142,9 +142,11 @@ typedef enum : NSUInteger {
     
     
     
-
+    /* 后台获取的直播状态存储字典*/
+    NSDictionary *_statusDic;
     
-    
+    /* 状态循环*/
+    NSRunLoop *_runLoop;
     
     
     
@@ -283,6 +285,22 @@ bool ismute     = NO;
     return self;
 }
 
+-(instancetype)initWithClassID:(NSString *)classID andBoardPullAddress:(NSURL *)boardPullAddress andTeacherPullAddress:(NSURL *)teacherPullAddress{
+    self = [super init];
+    if (self) {
+        
+        _classID = [NSString stringWithFormat:@"%@",classID];
+        _boardPullAddress = boardPullAddress;
+        _teacherPullAddress = teacherPullAddress;
+        
+        
+    }
+    return self;
+
+    
+    
+}
+
 
 
 
@@ -301,13 +319,47 @@ bool ismute     = NO;
     _viewsArrangementMode = SameLevel;
     
     
+    /* 初始化视频播放器*/
+    
+    [self setupVideoPlayer];
+    
+    /* 初始化弹幕*/
+    
+    [self setupBarrage];
+    
+
+    
+    /* 添加视图层级的监听*/
+    
+    /* 变为非平级视图的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(viewLevelChangDifferent:) name:@"DifferentLevel" object:nil];
+    /* 变为平级视图的监听*/
+     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(viewLevelChangSame:) name:@"SameLevel" object:nil];
+    
+    /* 变为全屏后的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnFullScreen:) name:@"FullScreen" object:nil];
+    
+    /* 切换回竖屏后的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnDownFullScreen:) name:@"TurnDownFullScreen" object:nil];
+    
+    /* 全屏弹幕框的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(barrageTextEdit:) name:@"BarrageBecomeFirstResponder" object:nil];
+    
+    
+    
+}
+
+
+#pragma mark- 播放器的布局和初始化方法
+
+- (void)setupVideoPlayer{
     
     /* 白板播放器背景view*/
     
     _boardPlayerView = [[FJFloatingView alloc]init];
     _boardPlayerView.backgroundColor = [UIColor grayColor];
-//    _boardPlayerView.layer.borderColor = [UIColor grayColor].CGColor;
-//    _boardPlayerView.layer.borderWidth = 0.6f;
+    //    _boardPlayerView.layer.borderColor = [UIColor grayColor].CGColor;
+    //    _boardPlayerView.layer.borderWidth = 0.6f;
     _boardPlayerView.alpha = 0.4;
     [self.view addSubview:_boardPlayerView];
     
@@ -329,14 +381,14 @@ bool ismute     = NO;
     
     //    rtmp://va0a19f55.live.126.net/live/02dce8e380034cf9b2ef1f9c26c4234c
     /* 白板的 播放器*/
-
+    
     
     
     /* 教师摄像头的 播放层*/
     _teacherPlayerView =[[FJFloatingView alloc]init];
     [self.view addSubview:_teacherPlayerView];
     _teacherPlayerView.backgroundColor = [UIColor grayColor];
-//    _teacherPlayerView.alpha = 0.4;
+    //    _teacherPlayerView.alpha = 0.4;
     //     布局与整个视图的尺寸相同
     _teacherPlayerView.sd_layout
     .leftEqualToView(_boardPlayerView)
@@ -419,7 +471,7 @@ bool ismute     = NO;
     .rightEqualToView(_mediaControl)
     .topEqualToView(_mediaControl)
     .bottomEqualToView(_mediaControl);
-   
+    
     
     
     
@@ -514,7 +566,7 @@ bool ismute     = NO;
     if ([_mediaType isEqualToString:@"localAudio"]) {
         _scaleModeBtn.hidden = YES;
     }
-        [_scaleModeBtn addTarget:self action:@selector(onClickScaleMode:) forControlEvents:UIControlEventTouchUpInside];
+    [_scaleModeBtn addTarget:self action:@selector(onClickScaleMode:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomControlView addSubview:_scaleModeBtn];
     self.scaleModeBtn.sd_layout
     .rightSpaceToView(self.bottomControlView,0)
@@ -570,16 +622,22 @@ bool ismute     = NO;
     /* 刷新点击事件*/
     [refresh_FS addTarget:self action:@selector(refreshVideo:) forControlEvents:UIControlEventTouchUpInside];
 
+ 
     
-    
+}
+
+
+#pragma mark- 加载弹幕
+
+- (void)setupBarrage{
     
     /* 弹幕开关*/
     _barrage = [[UIButton alloc]init];
     _barrage.backgroundColor = [UIColor clearColor];
     [_bottomControlView addSubview:_barrage];
     [_barrage setImage:[UIImage imageNamed:@"barrage_on"] forState:UIControlStateNormal];
-//    _barrage.layer.borderColor = [UIColor whiteColor].CGColor;
-//    _barrage.layer.borderWidth = 0.8;
+    //    _barrage.layer.borderColor = [UIColor whiteColor].CGColor;
+    //    _barrage.layer.borderWidth = 0.8;
     [_barrage setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _barrage.backgroundColor = [UIColor clearColor];
     _barrage.alpha = 0.8;
@@ -595,48 +653,8 @@ bool ismute     = NO;
     [_barrage addTarget:self action:@selector(barragesSwitch) forControlEvents:UIControlEventTouchUpInside];
     
     
-    
-    
-    /* 初始化弹幕*/
-    
-    _aBarrage = [[BarrageRenderer alloc]init];
-    _descriptor = [[BarrageDescriptor alloc]init];
-    
-    
-    /* 全屏的弹幕发送文本框和按钮*/
-    _barrageText = [[UUInputFunctionView alloc]initWithSuperVC:self];
-    
-     _barrageText.delegate = self;
-    [_bottomControlView addSubview:_barrageText];
-    _barrageText.sd_layout
-    .leftSpaceToView(refresh_FS,20)
-    .topSpaceToView(_bottomControlView,0)
-    .bottomSpaceToView(_bottomControlView,0)
-    .rightSpaceToView(_barrage,20);
-    _barrageText.backgroundColor = [UIColor clearColor];
-    _barrageText.hidden = YES;
-//    _barrageText.TextViewInput.delegate = self;
-    
-    
 
-    
-    /* 添加视图层级的监听*/
-    
-    /* 变为非平级视图的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(viewLevelChangDifferent:) name:@"DifferentLevel" object:nil];
-    /* 变为平级视图的监听*/
-     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(viewLevelChangSame:) name:@"SameLevel" object:nil];
-    
-    /* 变为全屏后的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnFullScreen:) name:@"FullScreen" object:nil];
-    
-    /* 切换回竖屏后的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnDownFullScreen:) name:@"TurnDownFullScreen" object:nil];
-    
-    /* 全屏弹幕框的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(barrageTextEdit:) name:@"BarrageBecomeFirstResponder" object:nil];
-    
-    
+
     
 }
 
@@ -1187,7 +1205,7 @@ bool ismute     = NO;
     /* 白板播放器的设置*/
     [self.liveplayerBoard setBufferStrategy:NELPLowDelay]; //直播低延时模式
     [self.liveplayerBoard setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
-    [self.liveplayerBoard setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
+    [self.liveplayerBoard setShouldAutoplay:NO]; //设置prepareToPlay完成后是否自动播放
     [self.liveplayerBoard setHardwareDecoder:isHardware]; //设置解码模式，是否开启硬件解码
     [self.liveplayerBoard setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
     [self.liveplayerBoard prepareToPlay]; //初始化视频文件
@@ -1195,7 +1213,7 @@ bool ismute     = NO;
     /* 教师播放器的设置*/
     [self.liveplayerTeacher setBufferStrategy:NELPLowDelay]; //直播低延时模式
     [self.liveplayerTeacher setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
-    [self.liveplayerTeacher setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
+    [self.liveplayerTeacher setShouldAutoplay:NO]; //设置prepareToPlay完成后是否自动播放
     [self.liveplayerTeacher setHardwareDecoder:isHardware]; //设置解码模式，是否开启硬件解码
     [self.liveplayerTeacher setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
     [self.liveplayerTeacher prepareToPlay]; //初始化视频文件
@@ -1232,6 +1250,12 @@ bool ismute     = NO;
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstVideoDisplayedNotification object:_liveplayerTeacher];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstAudioDisplayedNotification object:_liveplayerTeacher];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerVideoParseErrorNotification object:_liveplayerTeacher];
+    
+    /* 干掉runloop*/
+    [_runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate date]];
+    [_runLoop runUntilDate:[NSDate date]];
+    
+    
 }
 
 /* 是否支持自动转屏*/
@@ -1523,32 +1547,40 @@ bool ismute     = NO;
     NSLog(@"NELivePlayerDidPreparedToPlay");
     [self syncUIStatus:NO];
     
-    [self.liveplayerBoard play]; //开始播放
-    [self.liveplayerTeacher play]; //开始播放
+//    [self.liveplayerBoard play]; //开始播放
+//    [self.liveplayerTeacher play]; //开始播放
 }
 
 
-
+#pragma mark- 直播结束的回调
 - (void)NELivePlayerPlayBackFinished:(NSNotification*)notification
 {
+    
+    
     UIAlertController *alertController = NULL;
     UIAlertAction *action = NULL;
     switch ([[[notification userInfo] valueForKey:NELivePlayerPlaybackDidFinishReasonUserInfoKey] intValue])
     {
         case NELPMovieFinishReasonPlaybackEnded:
-            
             /* 直播结束的回调*/
             
-            if (YES) {
+        {
+            if ([notification object]==_liveplayerBoard){
                 
-                alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"直播结束" preferredStyle:UIAlertControllerStyleAlert];
-                action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-                    if (self.presentingViewController) {
-                        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                    }}];
-                [alertController addAction:action];
-                [self presentViewController:alertController animated:YES completion:nil];
+                [_liveplayerBoard stop];
+                
+                
+            }else if ([notification object]==_liveplayerTeacher){
+                
+                  [_liveplayerTeacher stop];
+                
             }
+            
+            [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:30];
+            
+            
+        }
+            
             break;
             
         case NELPMovieFinishReasonPlaybackError:
@@ -1586,6 +1618,7 @@ bool ismute     = NO;
 {
     NSLog(@"resource release success!!!");
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayerTeacher];
+      [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayerBoard];
 }
 
 
@@ -1647,6 +1680,8 @@ bool ismute     = NO;
     
     
     
+    
+    
     ////////////////////////////////////
     
 #pragma mark- 以下是页面和功能逻辑
@@ -1655,8 +1690,8 @@ bool ismute     = NO;
     /* 取出token*/
     
     _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
-    //    测试用id
-    //    _classID = @"25" ;
+//        测试用id
+//        _classID = @"25" ;
     
 #pragma mark- 课程信息视图
     
@@ -1802,24 +1837,6 @@ bool ismute     = NO;
     
     
     
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 #pragma mark- 聊天UI初始化
     
     [self addRefreshViews];
@@ -1862,7 +1879,30 @@ bool ismute     = NO;
     //    [self.view bringSubviewToFront:_boardPlayerView];
     
     
+    
+    
+    
+    
+    #pragma mark- 视频播放状态查询功能
+    
+    
+    /* 每隔30秒请求一次数据*/
+    
+//    [self requestPullStatus];
+    
+    [self checkVideoStatus];
+    
+    
+    
+    
+    
+    
+    
 }
+
+
+
+
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
@@ -1894,7 +1934,8 @@ bool ismute     = NO;
     
     
 /* 请求历史聊天记录*/
-    [self requestHistoryChatList];
+    /* 该方法目前有bug*/
+//    [self requestHistoryChatList];
     
     
     /* 给聊天页面添加下拉方法*/
@@ -2008,6 +2049,12 @@ bool ismute     = NO;
                     [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
                     
                     title = [title stringByReplacingCharactersInRange:[names [i][@"range"] rangeValue] withString:[names[i]valueForKey:@"name"]];
+                }
+                
+                
+                
+                if (title ==nil) {
+                    title = @"";
                 }
                 
                 
@@ -2303,7 +2350,8 @@ bool ismute     = NO;
     
     NIMMessage * text_message = [[NIMMessage alloc] init];
     text_message.text = [funcView.TextViewInput.attributedText getPlainString];
-    
+    text_message.messageObject = NIMMessageTypeText;
+    text_message.apnsContent = @"发来了一条消息";
     
     /* 解析发送的字符串*/
     
@@ -2765,6 +2813,19 @@ bool ismute     = NO;
                 [self setValue:height forKey:@"headerHeight"];
                 
                 [self updateViewsInfos];
+                
+                
+//                在这里可以修改播放器的播放地址.
+                /* 
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 */
+//                _liveplayerBoard 
+                
                 
             }
             
@@ -3319,11 +3380,203 @@ bool ismute     = NO;
     
     
 }
+
+
+#pragma mark- 查询播放状态功能的方法实现 --播放器初始化状态
+- (void)checkVideoStatus{
+    
+    /* 向后台发送请求,请求视频直播状态*/
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
+    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses/%@/live_status",_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *dataDic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        NSLog(@"向服务器请求视频直播状态成功!");
+        
+//        地址:
+//        未直播 0
+//        直播中 1
+//        已关闭 2
+//        GET /api/v1/live_studio/courses/:id/live_status
+//        GET /live_studio/courses/:id/live_status
+//        返回值:
+//        {
+//            
+//            "status": 1,
+//            "data": {
+//                "board": 1, 
+//                "camera": 0 
+//            }
+//        }
+        
+        
+        if ([dataDic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
+            
+            /* 获取数据成功,执行下一步操作*/
+            
+            _statusDic = [NSDictionary dictionaryWithDictionary:dataDic[@"data"]];
+            
+            [self switchStatuseWithDictionary:dataDic[@"data"]];
+            
+            
+        }else{
+            /* 获取数据失败*/
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
+}
+
+
+
+#pragma mark- 封装一下直播状态和操作的方法
+- (void)switchStatuseWithDictionary:(NSDictionary *)statusDic{
+    
+    UIAlertController *alertController = NULL;
+    UIAlertAction *action = NULL;
+    
+    /* 如果有一个播放器是直播状态*/
+    if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:1]]||[statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:1]]) {
+        if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:1]]) {
+            [_liveplayerBoard play];
+            
+        }
+        if ([statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:1]]) {
+            
+            [_liveplayerTeacher play];
+        }
+        
+    }
+
+    
+    /* 如果有一个播放器是未直播状态*/
+    if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:0]]||[statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:0]]) {
+        
+        /**
+         测试 5s一次 正常值30s一次
+         
+         @param checkVideoStatus
+         @return void
+         */
+        
+        [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
+        
+        
+    }
+    
+    
+    /* 状态都是1  都是正在直播中的时候*/
+    if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:1]]&&[statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:1]]) {
+        
+        if ([_liveplayerBoard isPlaying]) {
+            
+        }else{
+            
+            [_liveplayerBoard play];
+        }
+        
+        if ([_liveplayerTeacher isPlaying]) {
+            
+        }else{
+            
+            [_liveplayerTeacher play];
+        }
+
+        
+        
+        
+        
+        /* 不用再向服务器发送查询请求*/
+        
+    }
+    
+    
+    /* 直播结束的状态*/
+    
+    if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:2]]||[statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:2]]) {
+        
+        if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:2]]) {
+            
+            [_liveplayerBoard stop];
+            
+           
+            
+        }
+        if ([statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:2]]) {
+            
+            [_liveplayerTeacher stop];
+            
+            
+            
+        }
+        
+        
+        /**
+         测试 5s一次 正常值30s一次
+
+         @param checkVideoStatus
+         @return void
+         */
+        [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
+   
+    }
+    
+    if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:2]]&&[statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:2]]) {
+        alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"直播结束" preferredStyle:UIAlertControllerStyleAlert];
+        action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            if (self.presentingViewController) {
+                [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+            }}];
+        [alertController addAction:action];
+        [self presentViewController:alertController animated:YES completion:nil];
+        
+        /* 两个播放流都结束之后,继续访问后台服务器直播状态*/
+      
+        [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
+        
+        
+    }
     
     
     
-    
-    
+}
+
+
+
+#pragma mark- 每隔30秒发送一次状态请求
+
+//- (void)requestPullStatus{
+//    
+////    NSLog(@"向服务器请求视频直播状态,%@",[NSDate date]);
+////    
+////    NSDate *scheduledTime = [NSDate dateWithTimeIntervalSinceNow:0.0];
+////    
+////    NSString *customUserObject = @"向服务器请求视频直播状态";
+////    
+////    NSTimer *timer = [[NSTimer alloc] initWithFireDate:scheduledTime
+////                                              interval:5
+////                                                target:self
+////                                              selector:@selector(checkVideoStatus)
+////                                              userInfo:customUserObject
+////                                               repeats:YES];
+////    
+////    _runLoop = [NSRunLoop currentRunLoop];
+////    [_runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+////    
+////    dispatch_queue_t request = dispatch_queue_create("request", DISPATCH_QUEUE_SERIAL);
+////    dispatch_async(request, ^{
+////        
+//////        [_runLoop run];
+////    });
+//    
+//}
+
     
     
     
@@ -3339,6 +3592,10 @@ bool ismute     = NO;
     
 }
 
+-(void)dealloc{
+    
+    
+}
 
 
 

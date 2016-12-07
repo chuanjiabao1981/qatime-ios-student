@@ -18,7 +18,8 @@
  * @brief 视频流类型
  */
 typedef enum NELPBufferStrategy{
-    NELPLowDelay,    //!< 网络直播低延时，适用于视频直播，延时低
+    NELPLowDelay,    //!< 网络直播低延时，适用于视频直播，延时低，网络抖动时偶尔有卡顿
+    NELPFluent,      //!< 网络直播流畅，适用于视频直播，流畅性好，延时比低延时模式稍大
     NELPAntiJitter,  //!< 网络点播抗抖动，适用于视频点播和本地视频，抗抖动性强
 }NELPBufferStrategy;
 
@@ -271,6 +272,15 @@ typedef struct NELPAudioInfo {
  * @return	无
  */
 - (void)setVolume:(float)volume;
+
+/**
+ * @brief 设置拉流超时时间
+ *
+ * @param timeout 超时时间 (单位: 毫秒 ms)
+ *
+ * @return 无
+ */
+- (void)setPlaybackTimeout:(long)timeout;
 
 //- (void)getAudioQueue:(NELPAudioQueue *)audioQueue;
 

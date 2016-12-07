@@ -8,27 +8,28 @@
 
 #import "SignUpInfoView.h"
 
+#import "UIView+FontSize.h"
 @interface SignUpInfoView (){
     /* 底层视图*/
-    UIView *_contentView;
+//    UIView *_contentView;
     
     /* 头像label*/
-    UILabel *headImage;
+//    UILabel *headImage;
     
     /* 姓名label*/
-    UILabel *userName;
+//    UILabel *userName;
     
     /* 性别label*/
-    UILabel *gender;
-    UILabel *boy;
-    UILabel *girl;
+//    UILabel *gender;
+//    UILabel *boy;
+//    UILabel *girl;
     
     /* 生日label*/
-    UILabel *birthday;
+//    UILabel *birthday;
     
     /* 年级 label*/
     
-    UILabel *grade;
+//    UILabel *grade;
     
     
     
@@ -49,187 +50,147 @@
         self.backgroundColor = [UIColor whiteColor];
         
         
-        /* 底层视图布局*/
-        _contentView = [[UIView alloc]init];
-        [self addSubview:_contentView];
-        _contentView.sd_layout.leftSpaceToView(self,10).rightSpaceToView(self,20).topSpaceToView(self,20).heightRatioToView(self,0.5);
-        _contentView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        _contentView.layer.borderWidth = 0.6f;
-        _contentView.backgroundColor = [UIColor whiteColor];
-        
         
         /* 头像*/
         
         _headImage = [[UIImageView alloc]init];
-        [_contentView addSubview:_headImage];
-        _headImage.sd_layout.topSpaceToView(_contentView,20).centerXEqualToView(_contentView).widthRatioToView(_contentView,0.15).heightEqualToWidth();
-        _headImage.layer.borderWidth=1;
-        _headImage.layer.borderColor = [UIColor grayColor].CGColor;
+        [self addSubview:_headImage];
+        _headImage.layer.borderWidth=2;
+        _headImage.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _headImage.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
+        _headImage.userInteractionEnabled = YES;
         
-        /* 头像label*/
-        headImage = [[UILabel alloc]init];
-        [headImage setText:@"头像"];
-        headImage.textColor = [UIColor blackColor];
-        
-        [_contentView addSubview:headImage ];
-        
-        headImage.sd_layout.centerYEqualToView(_headImage).heightIs(30).widthIs(80).leftSpaceToView(_contentView,(float)CGRectGetWidth(self.frame)/10.0);
-        
-        /* 上传头像按钮*/
-        _uploadPic = [[UIButton alloc]init];
-        [_contentView addSubview:_uploadPic];
-        [_uploadPic setTitle:@"上传照片" forState:UIControlStateNormal];
-        [_uploadPic setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        _uploadPic.sd_layout.centerYEqualToView(_headImage).heightIs(30).widthIs(80).leftSpaceToView(_headImage,(float)CGRectGetWidth(self.frame)/10.0);
-        
-        /* 分割线1*/
-        UIView *line1=[[UIView alloc]init];
-        [_contentView addSubview:line1];
-        line1.backgroundColor = [UIColor lightGrayColor];
-        line1.sd_layout.leftSpaceToView(_contentView,10).rightSpaceToView(_contentView,10).topSpaceToView(_headImage,20).heightIs(0.4f);
+        /* 头像提示*/
+        UILabel *head = [[UILabel alloc]init];
+        [self addSubview:head];
+        head.textColor = [UIColor lightGrayColor];
+        head.font = [UIFont systemFontOfSize:12];
+        head.text = @"点击图片添加头像";
         
         
-        /* 姓名label*/
-        userName = [[UILabel alloc]init];
-        [_contentView addSubview:userName];
-        userName.text = @"姓名";
-        userName.textColor = [UIColor blackColor];
-        userName.sd_layout.leftEqualToView(headImage).topSpaceToView(line1,10).heightRatioToView(headImage,1.0f).heightRatioToView(headImage,1.0f);
-        /* 星型label1*/
-        UILabel *star1=[[UILabel alloc]init];
-        [_contentView addSubview:star1];
-        [star1 setText:@"*"];
-        [star1 setTextColor:[UIColor redColor]];
-        star1.textAlignment = NSTextAlignmentRight;
-        star1.sd_layout.rightSpaceToView(userName,0).topEqualToView(userName).bottomEqualToView(userName).widthIs(10);
+        
         
         /* 姓名输入框*/
-        _userName = [[UITextField alloc]init];
-        [_contentView addSubview:_userName];
-        _userName.placeholder = @"输入真实姓名更方便老师联系你";
+        UIView *nameText = [[UIView alloc]init];
+        [self addSubview:nameText];
+        nameText.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        nameText.layer.borderWidth = 1;
+        
+        
+        
+        /* 姓名输入*/
+        _userName = [[YYTextView alloc]init];
+        [nameText addSubview:_userName];
+        _userName.placeholderText = @"输入真实姓名更方便老师联系你";
+        _userName.placeholderFont = [UIFont systemFontOfSize:18];
+        _userName.textVerticalAlignment = YYTextVerticalAlignmentCenter;
+        
         _userName.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        _userName.layer.borderWidth=0.6;
-        [_userName setFont:[UIFont systemFontOfSize:14]];
-        _userName.sd_layout.leftSpaceToView(userName,5).widthRatioToView(_contentView,0.7f).bottomEqualToView(userName).topEqualToView(userName);
-        userName.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
-        
-        /* 分割线2*/
-        UIView *line2=[[UIView alloc]init];
-        [_contentView addSubview:line2];
-        line2.backgroundColor = [UIColor lightGrayColor];
-        line2.sd_layout.leftSpaceToView(_contentView,10).rightSpaceToView(_contentView,10).topSpaceToView(_userName,10).heightIs(0.4f);
+//        _userName.layer.borderWidth=0.6;
+//        [_userName setFont:[UIFont systemFontOfSize:14]];
+        _userName.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
+        _userName.font = [UIFont systemFontOfSize:18];
         
         
-        /* 性别label*/
-        gender = [[UILabel alloc]init];
-        [_contentView addSubview:gender];
-        gender.text=@"性别";
-        gender.textColor = [UIColor blackColor];
-        gender.sd_layout.leftEqualToView(headImage).topSpaceToView(line2,10).heightRatioToView(headImage,1.0f).heightRatioToView(headImage,1.0f);
-        
-        /* "男生"选项*/
-        _boyButton = [[UIButton alloc]init];
-        [_contentView addSubview:_boyButton];
-        _boyButton.layer.borderWidth = 0.6f;
-        _boyButton.layer.borderColor = [UIColor grayColor].CGColor;
-        _boyButton.sd_layout.centerYEqualToView(gender).leftSpaceToView(gender,5).heightRatioToView(gender,0.6f).widthEqualToHeight();
-        _boyButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5f];
-        
-        /* 男生 label*/
-        boy = [[UILabel alloc]init];
-        [_contentView addSubview: boy];
-        boy.text = @"我是男神";
-        boy.textColor = [UIColor blackColor];
-        boy.sd_layout.leftSpaceToView(_boyButton,5).heightRatioToView(gender,1.0f).widthIs(80).centerYEqualToView(gender);
-        
-        /* "女生"选项*/
-        
-        _girlButton = [[UIButton alloc]init];
-        [_contentView addSubview:_girlButton];
-        _girlButton.layer.borderWidth = 0.6f;
-        _girlButton.layer.borderColor = [UIColor grayColor].CGColor;
-        _girlButton.sd_layout.centerYEqualToView(gender).leftSpaceToView(boy,10).heightRatioToView(gender,0.6f).widthEqualToHeight();
-        _girlButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5f];
-        
-        /* “女生”label*/
-        girl = [[UILabel alloc]init];
-        [_contentView addSubview: girl];
-        girl.text = @"我是女神";
-        girl.textColor = [UIColor blackColor];
-        girl.sd_layout.leftSpaceToView(_girlButton,5).heightRatioToView(gender,1.0f).widthIs(80).centerYEqualToView(gender);
-        
-        /* 分割线3*/
-        UIView *line3=[[UIView alloc]init];
-        [_contentView addSubview:line3];
-        line3.backgroundColor = [UIColor lightGrayColor];
-        line3.sd_layout.leftSpaceToView(_contentView,10).rightSpaceToView(_contentView,10).topSpaceToView(gender,10).heightIs(0.4f);
-
-        
-        /* 生日label*/
-        birthday = [[UILabel alloc]init];
-        birthday.text = @"生日";
-        birthday.textColor=[UIColor blackColor];
-        [_contentView addSubview: birthday];
-        birthday.sd_layout.topSpaceToView(line3,10).leftEqualToView(gender).rightEqualToView(gender).heightRatioToView(gender,1.0f);
-        
-        /* 生日选择器*/
-
-        _birthday = [[UIButton alloc]init];
-        [_contentView addSubview: _birthday];
-        [_birthday setTitle:@"请选择日期" forState:UIControlStateNormal];
-        _birthday.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-
-        [_birthday setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        _birthday.sd_layout.centerYEqualToView(birthday).leftSpaceToView(birthday,5).heightRatioToView(gender,0.6f).widthRatioToView(_contentView,0.5f);
         
         
-        /* 分割线4*/
-        UIView *line4=[[UIView alloc]init];
-        [_contentView addSubview:line4];
-        line4.backgroundColor = [UIColor lightGrayColor];
-        line4.sd_layout.leftSpaceToView(_contentView,10).rightSpaceToView(_contentView,10).topSpaceToView(birthday,10).heightIs(0.4f);
-        
-        /* 年级 label*/
-        grade = [[UILabel alloc]init];
-        [_contentView addSubview:grade];
-        [grade setText:@"年级"];
-        grade.textColor = [UIColor blackColor];
-        grade.sd_layout.topSpaceToView(line4,10).leftEqualToView(birthday).rightEqualToView(birthday).heightRatioToView(birthday,1.0f);
-        
-        
-        /* 星星label2*/
-        
-        UILabel *star2=[[UILabel alloc]init];
-        [_contentView addSubview:star2];
-        [star2 setText:@"*"];
-        [star2 setTextColor:[UIColor redColor]];
-        star2.textAlignment = NSTextAlignmentRight;
-        star2.sd_layout.rightSpaceToView(grade,0).topEqualToView(grade).bottomEqualToView(grade).widthIs(10);
+        /* 年级选择框*/
+        UIView *gradeText = [[UIView alloc]init];
+        [self addSubview:gradeText];
+        gradeText.layer.borderWidth = 1;
+        gradeText.layer.borderColor = [UIColor lightGrayColor].CGColor;
         
         /* 年级选择器*/
-        _gradeButton = [[UIButton alloc]init];
-        [_contentView addSubview:_gradeButton];
-        _gradeButton.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
-        [_gradeButton setTitle:@"请选择年级" forState:UIControlStateNormal];
-        [_gradeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        _gradeButton.sd_layout.leftEqualToView(_birthday).rightEqualToView(_birthday).heightRatioToView (_birthday,1).widthRatioToView(_birthday,1).centerYEqualToView(grade);
+        _grade = [[YYTextView alloc]init];
+        [gradeText addSubview:_grade];
+//        _grade.textColor = [UIColor colorWithRed:0.78 green:0.78 blue:0.8 alpha:1.0];
+        _grade.placeholderText = @"选择所在年级";
+        _grade.placeholderFont = [UIFont systemFontOfSize:18];
+        _grade.textVerticalAlignment = YYTextVerticalAlignmentCenter;
+        _grade.font = [UIFont systemFontOfSize:18];
+        _grade.editable = NO;
+        _grade.selectable = YES;
+        _grade.userInteractionEnabled =YES;
         
         
         
-        /* 完成按钮*/
+        
+        /* 完善更多*/
+        _moreButton = [[UIButton alloc]init];
+        [self addSubview:_moreButton];
+        _moreButton.layer.borderColor = [UIColor colorWithRed:0.79 green:0 blue:0 alpha:1.0].CGColor;
+        _moreButton.layer.borderWidth = 2;
+        [_moreButton setTitle:@"完善更多" forState:UIControlStateNormal];
+        [_moreButton setTitleColor:[UIColor colorWithRed:0.79 green:0 blue:0 alpha:1.0] forState:UIControlStateNormal];
+        
+        
+        
+        
+        /* 立即进入*/
+        _enterButton = [[UIButton alloc]init];
+        [self addSubview:_enterButton];
+        _enterButton.layer.borderColor = [UIColor colorWithRed:0.79 green:0 blue:0 alpha:1.0].CGColor;
+        _enterButton.layer.borderWidth = 2;
+        [_enterButton setTitle:@"立即进入" forState:UIControlStateNormal];
+        [_enterButton setTitleColor:[UIColor colorWithRed:0.79 green:0 blue:0 alpha:1.0] forState:UIControlStateNormal];
+        
+        
+        /* 头像*/
+       _headImage.sd_layout
+        .centerXEqualToView(self)
+        .topSpaceToView(self,40)
+        .widthRatioToView(self,1/5.5f)
+        .heightEqualToWidth();
+        
+        /* 头像提示*/
+        head.sd_layout
+        .centerXEqualToView(_headImage)
+        .topSpaceToView(_headImage,10)
+        .autoHeightRatio(0);
+        [head setSingleLineAutoResizeWithMaxWidth:500];
+        
+        
+        
+        /* 姓名框*/
+        nameText.sd_layout
+        .leftSpaceToView(self,20)
+        .rightSpaceToView(self,20)
+        .topSpaceToView(head,20)
+        .heightIs(60);
+        
+        _userName.sd_layout
+        .leftSpaceToView(nameText,10)
+        .rightSpaceToView(nameText,10)
+        .topSpaceToView(nameText,10)
+        .bottomSpaceToView(nameText,10);
+        
+        gradeText.sd_layout
+        .leftEqualToView(nameText)
+        .rightEqualToView(nameText)
+        .topSpaceToView(nameText,20)
+        .heightRatioToView(nameText,1.0f);
+        
+        _grade.sd_layout
+        .leftSpaceToView(gradeText,10)
+        .rightSpaceToView(gradeText,10)
+        .topSpaceToView(gradeText,10)
+        .bottomSpaceToView(gradeText,10);
+        
+        
+        _moreButton.sd_layout
+        .leftEqualToView(gradeText)
+        .topSpaceToView(gradeText,20)
+        .heightRatioToView(gradeText,0.8f)
+        .widthIs(self.width_sd/2.0f-20-10);
+        _moreButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
+        
+        _enterButton.sd_layout
+        .rightEqualToView(gradeText)
+        .topEqualToView(_moreButton)
+        .bottomEqualToView(_moreButton)
+        .widthRatioToView(_moreButton,1.0f);
+        _enterButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
 
-        _finishButton = [[UIButton alloc]init];
-        [self addSubview: _finishButton];
-        [_finishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_finishButton setTitle:@"完成" forState:UIControlStateNormal];
-        [_finishButton setBackgroundColor:[UIColor colorWithRed:231/255.0f green:151/255.0f blue:105/255.0f alpha:1.0f]];
-        _finishButton .sd_layout.leftEqualToView(_contentView).rightEqualToView(_contentView).topSpaceToView(_contentView,20).heightRatioToView(self,0.08f);
-        _finishButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
-        [_finishButton.titleLabel setFont:[UIFont systemFontOfSize:20]];
-        
-        
-        
         
         
         

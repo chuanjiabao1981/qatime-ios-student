@@ -15,6 +15,7 @@
 
 @property(nonatomic,strong) LoginView  *loginView ;
 
-
+/* 密码输入错误次数*/
+@property(nonatomic,assign) NSInteger wrongTimes;
 
 @end

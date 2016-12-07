@@ -24,7 +24,7 @@
         /* 头像的背景*/
         _backGroundView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT)];
         [self addSubview:_backGroundView];
-        _backGroundView.backgroundColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0];
+        _backGroundView.backgroundColor = [UIColor whiteColor];
 
         
         
@@ -34,15 +34,40 @@
         [_backGroundView addSubview:_headImageView];
         
         
+        _name = [[UILabel alloc]init];
+        [_backGroundView addSubview:_name];
+        _name.textColor = TITLECOLOR;
+        
+        
+        UIView *line = [[UIView alloc]init];
+        [_backGroundView addSubview:line];
+        line.backgroundColor = [UIColor lightGrayColor];
+        
+        
+        
+        
+        
         _headImageView.sd_layout
         .centerXEqualToView(_backGroundView)
         .centerYEqualToView(_backGroundView)
-        .heightRatioToView(_backGroundView,1/3.0f)
+        .heightRatioToView(_backGroundView,2/5.0f)
         .widthEqualToHeight();
         
         _headImageView.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5f];
         
         
+        _name.sd_layout
+        .topSpaceToView(_headImageView,5)
+        .centerXEqualToView(_headImageView)
+        .autoHeightRatio(0);
+        [_name setSingleLineAutoResizeWithMaxWidth:500];
+        
+        
+        line.sd_layout
+        .leftEqualToView(_backGroundView)
+        .rightEqualToView(_backGroundView)
+        .bottomEqualToView(_backGroundView)
+        .heightIs(0.4);
         
         
     }

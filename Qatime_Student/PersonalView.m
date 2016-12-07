@@ -27,12 +27,16 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        self.backgroundColor = [UIColor clearColor];
                 
         _settingTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT)];
+        
+        _settingTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         [self addSubview:_settingTableView];
+        _settingTableView.backgroundColor = [UIColor clearColor];
         
-        
-        
+        _settingTableView.tableFooterView = [[UIView alloc]init];
         
         
     }

@@ -3,30 +3,65 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "-[YZEmotionKeyboard didSelectEmotion:]:YZEmotionKeyboard.m">
+         contextName = "__50-[ChangePhoneViewController requestChangePasswrod]_block_invoke_2:ChangePhoneViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ClassTimeViewController requestClassList]:ClassTimeViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "attachment.emotionStr">
-            </PersistentString>
-            <PersistentString
-               value = "_yz_textView.text">
-            </PersistentString>
-            <PersistentString
-               value = "_yz_textView.attributedText">
+               value = "_token">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
+         contextName = "-[BarrageWalkTextSprite bindingView]:BarrageWalkTextSprite.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate jpushNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[UUMessageCell setMessageFrame:]:UUMessageCell.m">
          <PersistentStrings>
             <PersistentString
-               value = "_sendContent">
+               value = "subStr">
             </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "mach_msg_trap:(null)">
+         <PersistentStrings>
             <PersistentString
-               value = "funcView.TextViewInput.attributedText.description">
+               value = "self">
             </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChatModel getDicWithText:andName:andIcon:]:ChatModel.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ChangePasswordViewController textDidChange:]:ChangePasswordViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ClassTimeViewController requestUnclosedClassList]:ClassTimeViewController.m">
+         <PersistentStrings>
             <PersistentString
-               value = "funcView.TextViewInput.attributedText.string">
+               value = "_unclosedArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__46-[NELivePlayerViewController checkVideoStatus]_block_invoke:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_statusDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__37-[SafeViewController requestUserInfo]_block_invoke:SafeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_contentArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -39,24 +74,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[UUInputFunctionView sendMessage:]:UUInputFunctionView.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "resultStr">
-            </PersistentString>
-            <PersistentString
-               value = "self.TextViewInput.text">
-            </PersistentString>
-            <PersistentString
-               value = "self.TextViewInput.typingAttributes">
-            </PersistentString>
-            <PersistentString
-               value = " self.TextViewInput.attributedText">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[VideoViewController tableView:numberOfRowsInSection:]:VideoViewController.m">
+         contextName = "-[VideoViewController tableView:cellForRowAtIndexPath:]:VideoViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "tableView.tag">
@@ -64,10 +82,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[UUMessageCell setMessageFrame:]:UUMessageCell.m">
+         contextName = "__45-[PersonalInfoViewController requestUserInfo]_block_invoke:PersonalInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "subStr">
+               value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -86,18 +104,54 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[ClassTimeViewController requestClassList]:ClassTimeViewController.m">
+         contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_token">
+               value = "_sendContent">
+            </PersistentString>
+            <PersistentString
+               value = "funcView.TextViewInput.attributedText.description">
+            </PersistentString>
+            <PersistentString
+               value = "funcView.TextViewInput.attributedText.string">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "mach_msg_trap:(null)">
+         contextName = "-[VideoViewController tableView:numberOfRowsInSection:]:VideoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "self">
+               value = "tableView.tag">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__copy_helper_block_:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[YZEmotionKeyboard didSelectEmotion:]:YZEmotionKeyboard.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "attachment.emotionStr">
+            </PersistentString>
+            <PersistentString
+               value = "_yz_textView.text">
+            </PersistentString>
+            <PersistentString
+               value = "_yz_textView.attributedText">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalInfoViewController tableView:cellForRowAtIndexPath:]:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -110,24 +164,27 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[BarrageWalkTextSprite bindingView]:BarrageWalkTextSprite.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[ClassTimeViewController requestUnclosedClassList]:ClassTimeViewController.m">
+         contextName = "main:main.m">
          <PersistentStrings>
             <PersistentString
-               value = "_unclosedArr">
+               value = "info">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[ChatModel getDicWithText:andName:andIcon:]:ChatModel.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[VideoViewController tableView:cellForRowAtIndexPath:]:VideoViewController.m">
+         contextName = "-[UUInputFunctionView sendMessage:]:UUInputFunctionView.m">
          <PersistentStrings>
             <PersistentString
-               value = "tableView.tag">
+               value = "resultStr">
+            </PersistentString>
+            <PersistentString
+               value = "self.TextViewInput.text">
+            </PersistentString>
+            <PersistentString
+               value = "self.TextViewInput.typingAttributes">
+            </PersistentString>
+            <PersistentString
+               value = " self.TextViewInput.attributedText">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

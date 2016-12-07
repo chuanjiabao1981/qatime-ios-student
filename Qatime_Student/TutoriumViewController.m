@@ -1281,6 +1281,8 @@
         /* cell 的课程id属性*/
         cell.classID = @"" ;
         
+        [cell.className setText: infoModel.name];
+        
     }
     return cell;
     

@@ -25,7 +25,7 @@
     
     
     
-    [_navigationBar.titleLabel setText:@"设置登录"];
+    [_navigationBar.titleLabel setText:@"找回密码"];
     
     
     

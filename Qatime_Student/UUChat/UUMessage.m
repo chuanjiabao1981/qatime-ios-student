@@ -29,6 +29,9 @@
         
         case 0:
             self.type = UUMessageTypeText;
+            if (dict[@"strContent"]==nil) {
+                [dict setValue:@"" forKey:@"strContent"];
+            }
             self.strContent = dict[@"strContent"];
             break;
         

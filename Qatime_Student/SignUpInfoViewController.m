@@ -43,114 +43,139 @@
     
     
     /* 上传头像按钮方法*/
-    [_signUpInfoView.uploadPic addTarget:self action:@selector(upLoadHeadImage) forControlEvents:UIControlEventTouchUpInside];
+    UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(upLoadHeadImage)];
+    [_signUpInfoView.headImage addGestureRecognizer:imageTap];
     
-    /* 选择生日方法*/
-    [_signUpInfoView.birthday addTarget:self action:@selector(chooseBirthDay) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    /* 选择年级方法*/
-    
-    [_signUpInfoView .gradeButton addTarget:self action:@selector(chooseGrade) forControlEvents:UIControlEventTouchUpInside];
     
     /* 加载年级信息*/
     gradelist = [[GradeList alloc]init];
     
     
-    /* 完成按钮添加方法*/
-    [_signUpInfoView.finishButton addTarget:self action:@selector(finishedSign) forControlEvents:UIControlEventTouchUpInside];
+
+    /* 点击选择年级方法*/
+    UITapGestureRecognizer *gradeTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(chooseGrade)];
+    [_signUpInfoView.grade addGestureRecognizer:gradeTap];
+    
+    
+    
+    /* 立即进入按钮*/
+    [_signUpInfoView.enterButton addTarget:self action:@selector(enterIndex) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    /* 完善资料按钮*/
+    
+    [_signUpInfoView.moreButton addTarget:self action:@selector(writeMore) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    
+    
+    
+    
     
     
     
 }
+
+
+#pragma mark- 立即进入方法
+- (void)enterIndex{
+    
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"EnterWithoutLogin" object:nil];
+    
+}
+
+
+
 
 /* 完成按钮点击事件*/
 
-- (void)finishedSign{
-    
-    /* 取出token*/
-     NSString *FilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"token.data"];
-   
-    /* 取出存储的文件  成为一字典*/
-    NSDictionary *dataDic = [NSDictionary dictionaryWithDictionary: [NSKeyedUnarchiver unarchiveObjectWithFile:FilePath]];
-    
-    
-    /* token字段字符串*/
-    NSString *token = [NSString stringWithFormat:@"%@",dataDic[@"remember-token"]];
-    
-    /* id字段*/
-    
-    NSDictionary *userDic=[NSDictionary dictionaryWithDictionary:dataDic[@"user"]];
-    
-    NSUInteger userID = (NSUInteger)userDic[@"id"];
-    
-    /* name字段*/
-    
-    // _signUpInfoView.userName.text
-    
-    /* avatar字段   图片文件。。*/
-    
-    NSData *headImageData = UIImageJPEGRepresentation(_signUpInfoView.headImage.image, 0.8f);
-    
-    
-    
-    /* grade字段*/
-   // _signUpInfoView.gradeButton.titleLabel.text
-    
-    /* gender字段*/
-    /* birthday字段*/
-    
-    //PUT上去的字典
-    
-    NSDictionary *uploadDic=@{@"Remember-Token": token, //@"G_t7FJTt86Fi6Eg98scsrg",
-                              @"id": userDic[@"id"]   ,
-                              @"name":_signUpInfoView.userName.text,
-                              @"avatar":headImageData,
-                              @"grade":_signUpInfoView.gradeButton.titleLabel.text,
-                              @"birthday":_signUpInfoView.birthday.titleLabel.text,
-                              };
-    
-    
-    /* 向服务器发送请求 确定上传数据*/
-    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager PUT:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/students/%@/profile",userDic[@"id"] ] parameters:uploadDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        NSLog(@"%@",dic);
-        
-        
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-    }];
-    
-    
-    
-}
+//- (void)finishedSign{
+//    
+//    /* 取出token*/
+//     NSString *FilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"token.data"];
+//   
+//    /* 取出存储的文件  成为一字典*/
+//    NSDictionary *dataDic = [NSDictionary dictionaryWithDictionary: [NSKeyedUnarchiver unarchiveObjectWithFile:FilePath]];
+//    
+//    
+//    /* token字段字符串*/
+//    NSString *token = [NSString stringWithFormat:@"%@",dataDic[@"remember-token"]];
+//    
+//    /* id字段*/
+//    
+//    NSDictionary *userDic=[NSDictionary dictionaryWithDictionary:dataDic[@"user"]];
+//    
+//    NSUInteger userID = (NSUInteger)userDic[@"id"];
+//    
+//    /* name字段*/
+//    
+//    // _signUpInfoView.userName.text
+//    
+//    /* avatar字段   图片文件。。*/
+//    
+//    NSData *headImageData = UIImageJPEGRepresentation(_signUpInfoView.headImage.image, 0.8f);
+//    
+//    
+//    
+//    /* grade字段*/
+//   // _signUpInfoView.gradeButton.titleLabel.text
+//    
+//    /* gender字段*/
+//    /* birthday字段*/
+//    
+//    //PUT上去的字典
+//    
+//    NSDictionary *uploadDic=@{@"Remember-Token": token, //@"G_t7FJTt86Fi6Eg98scsrg",
+//                              @"id": userDic[@"id"]   ,
+//                              @"name":_signUpInfoView.userName.text,
+//                              @"avatar":headImageData,
+////                              @"grade":_signUpInfoView.gradeButton.titleLabel.text,
+////                              @"birthday":_signUpInfoView.birthday.titleLabel.text,
+//                              };
+//    
+//    
+//    /* 向服务器发送请求 确定上传数据*/
+//    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+//    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+//    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+//    [manager PUT:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/students/%@/profile",userDic[@"id"] ] parameters:uploadDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        
+//        NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+//        NSLog(@"%@",dic);
+//        
+//        
+//        
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        
+//    }];
+//    
+//    
+//    
+//}
 
 
 #pragma mark- 选择生日的点击事件
 
-- (void)chooseBirthDay{
-    
-    
-    HcdDateTimePickerView *dateTimePickerView = [[HcdDateTimePickerView alloc] initWithDatePickerMode:DatePickerDateMode defaultDateTime:[[NSDate alloc]initWithTimeIntervalSinceNow:0]];
-    dateTimePickerView.datePickerMode = DatePickerDateMode;
-    dateTimePickerView.clickedOkBtn = ^(NSString * datetimeStr){
-        
-        [_signUpInfoView.birthday setTitle:datetimeStr forState:UIControlStateNormal];
-        
-        
-        NSLog(@"%@", datetimeStr);
-    };
-    [self.view addSubview:dateTimePickerView];
-    [dateTimePickerView showHcdDateTimePicker];
-    
-    
-    
-}
+//- (void)chooseBirthDay{
+//    
+//    
+//    HcdDateTimePickerView *dateTimePickerView = [[HcdDateTimePickerView alloc] initWithDatePickerMode:DatePickerDateMode defaultDateTime:[[NSDate alloc]initWithTimeIntervalSinceNow:0]];
+//    dateTimePickerView.datePickerMode = DatePickerDateMode;
+//    dateTimePickerView.clickedOkBtn = ^(NSString * datetimeStr){
+//        
+////        [_signUpInfoView.birthday setTitle:datetimeStr forState:UIControlStateNormal];
+//        
+//        
+//        NSLog(@"%@", datetimeStr);
+//    };
+//    [self.view addSubview:dateTimePickerView];
+//    [dateTimePickerView showHcdDateTimePicker];
+//    
+//    
+//    
+//}
 
 #pragma mark- 选择年级列表
 - (void)chooseGrade{
@@ -223,7 +248,8 @@
 /* 选择的*/
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
     
-    [_signUpInfoView.gradeButton setTitle:gradelist.grade[row] forState:UIControlStateNormal];
+    [_signUpInfoView.grade setText:gradelist.grade[row] ];
+     
     
     
 }

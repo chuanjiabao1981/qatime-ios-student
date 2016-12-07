@@ -30,9 +30,17 @@
 
 /* 下一步按钮*/
 
-@property(nonatomic,strong)  UIButton *nextStepButton; 
+@property(nonatomic,strong)  UIButton *nextStepButton;
+
+/* 协议选择框*/
+@property(nonatomic,strong) UIButton *chosenButton; 
 
 
+/* 同意label*/
+@property(nonatomic,strong) UILabel *accessLabel ;
+
+/* 用户协议*/
+@property(nonatomic,strong)  UIButton *userPolicy; 
 
 
 @end
