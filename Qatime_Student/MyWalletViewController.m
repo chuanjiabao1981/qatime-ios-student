@@ -13,6 +13,9 @@
 #import "PersonalTableViewCell.h"
 #import "UIViewController+HUD.h"
 
+#import "CashRecordViewController.h"
+#import "ChargeViewController.h"
+
 @interface MyWalletViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     
@@ -74,11 +77,16 @@
     _myWalletView.menuTableView.delegate = self;
     _myWalletView.menuTableView.dataSource = self;
     
+    [_myWalletView.rechargeButton addTarget:self action:@selector(recharge) forControlEvents:UIControlEventTouchUpInside];
+    
     
     
     
     
 }
+
+
+
 
 - (void)requestWallet{
     
@@ -148,6 +156,30 @@
     
     return  cell;
     
+    
+}
+
+
+#pragma mark- tableview delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    CashRecordViewController *cashVC = [[CashRecordViewController alloc]initWithSelectedItem:indexPath.row];
+    
+    [self.navigationController pushViewController:cashVC animated:YES];
+    
+    
+    
+}
+
+
+
+#pragma mark- 进入充值页面
+- (void)recharge{
+    
+    ChargeViewController *cVC = [ChargeViewController new];
+    
+    [self.navigationController pushViewController:cVC animated:YES];
     
 }
 

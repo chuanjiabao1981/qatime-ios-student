@@ -13,6 +13,18 @@
 		5407C9931DE7DE7500DB04C8 /* NSData+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C9921DE7DE7500DB04C8 /* NSData+YYAdd.m */; };
 		5407C9961DE7DE8400DB04C8 /* NSNumber+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C9951DE7DE8400DB04C8 /* NSNumber+YYAdd.m */; };
 		5407C9991DE7DE9200DB04C8 /* UIDevice+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C9981DE7DE9200DB04C8 /* UIDevice+YYAdd.m */; };
+		5413D2521DF7B5CD00A8FDEC /* CashRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2511DF7B5CD00A8FDEC /* CashRecordView.m */; };
+		5413D2581DF7B5F400A8FDEC /* CashRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2571DF7B5F400A8FDEC /* CashRecordViewController.m */; };
+		5413D25B1DF7BC7900A8FDEC /* RechargeTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D25A1DF7BC7900A8FDEC /* RechargeTableView.m */; };
+		5413D25E1DF7BC8A00A8FDEC /* WidthDrawTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D25D1DF7BC8A00A8FDEC /* WidthDrawTableView.m */; };
+		5413D2611DF7BC9400A8FDEC /* PaymentTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2601DF7BC9400A8FDEC /* PaymentTableView.m */; };
+		5413D2651DF7C74F00A8FDEC /* RechargeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2641DF7C74F00A8FDEC /* RechargeTableViewCell.m */; };
+		5413D2681DF7C75D00A8FDEC /* WithDrawTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2671DF7C75D00A8FDEC /* WithDrawTableViewCell.m */; };
+		5413D26B1DF7C76B00A8FDEC /* PaymentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D26A1DF7C76B00A8FDEC /* PaymentTableViewCell.m */; };
+		5413D26E1DF7CF1C00A8FDEC /* Recharge.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D26D1DF7CF1C00A8FDEC /* Recharge.m */; };
+		5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2701DF7CF2900A8FDEC /* WithDraw.m */; };
+		5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2731DF7CF3000A8FDEC /* Payment.m */; };
+		5413D2781DF7D0DF00A8FDEC /* UIViewController+Token.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */; };
 		541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */; };
 		541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91D21DC97FFB00180BE8 /* FindPasswordView.m */; };
 		541F91D61DC9BB5200180BE8 /* TutoriumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91D51DC9BB5100180BE8 /* TutoriumView.m */; };
@@ -268,6 +280,9 @@
 		54AB49001DEDABCC008E3BC5 /* EndedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48FF1DEDABCC008E3BC5 /* EndedTableViewCell.m */; };
 		54AB49031DEDB1BA008E3BC5 /* ListenTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB49021DEDB1BA008E3BC5 /* ListenTableViewCell.m */; };
 		54AF51C61DE8226900581C4A /* Emotions.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 54AF51C51DE8226900581C4A /* Emotions.bundle */; };
+		54B4C1871DF8183800E31794 /* ChargeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B4C1861DF8183800E31794 /* ChargeView.m */; };
+		54B4C18A1DF8184500E31794 /* ChargeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B4C1891DF8184500E31794 /* ChargeViewController.m */; };
+		54B4C18C1DF8294B00E31794 /* alipay.png in Resources */ = {isa = PBXBuildFile; fileRef = 54B4C18B1DF8294B00E31794 /* alipay.png */; };
 		54B73CFB1DE3E40300B7A7EB /* MembersListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73CFA1DE3E40300B7A7EB /* MembersListView.m */; };
 		54B73CFE1DE3E42700B7A7EB /* MemberListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73CFD1DE3E42700B7A7EB /* MemberListTableViewCell.m */; };
 		54B73D041DE3E85A00B7A7EB /* ChineseString.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73D011DE3E85A00B7A7EB /* ChineseString.m */; };
@@ -355,6 +370,31 @@
 		5407C9951DE7DE8400DB04C8 /* NSNumber+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+YYAdd.m"; sourceTree = "<group>"; };
 		5407C9971DE7DE9200DB04C8 /* UIDevice+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+YYAdd.h"; sourceTree = "<group>"; };
 		5407C9981DE7DE9200DB04C8 /* UIDevice+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+YYAdd.m"; sourceTree = "<group>"; };
+		5413D2501DF7B5CD00A8FDEC /* CashRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CashRecordView.h; sourceTree = "<group>"; };
+		5413D2511DF7B5CD00A8FDEC /* CashRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CashRecordView.m; sourceTree = "<group>"; };
+		5413D2561DF7B5F400A8FDEC /* CashRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CashRecordViewController.h; sourceTree = "<group>"; };
+		5413D2571DF7B5F400A8FDEC /* CashRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CashRecordViewController.m; sourceTree = "<group>"; };
+		5413D2591DF7BC7900A8FDEC /* RechargeTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RechargeTableView.h; sourceTree = "<group>"; };
+		5413D25A1DF7BC7900A8FDEC /* RechargeTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RechargeTableView.m; sourceTree = "<group>"; };
+		5413D25C1DF7BC8A00A8FDEC /* WidthDrawTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidthDrawTableView.h; sourceTree = "<group>"; };
+		5413D25D1DF7BC8A00A8FDEC /* WidthDrawTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WidthDrawTableView.m; sourceTree = "<group>"; };
+		5413D25F1DF7BC9400A8FDEC /* PaymentTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentTableView.h; sourceTree = "<group>"; };
+		5413D2601DF7BC9400A8FDEC /* PaymentTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentTableView.m; sourceTree = "<group>"; };
+		5413D2631DF7C74F00A8FDEC /* RechargeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RechargeTableViewCell.h; sourceTree = "<group>"; };
+		5413D2641DF7C74F00A8FDEC /* RechargeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RechargeTableViewCell.m; sourceTree = "<group>"; };
+		5413D2661DF7C75D00A8FDEC /* WithDrawTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithDrawTableViewCell.h; sourceTree = "<group>"; };
+		5413D2671DF7C75D00A8FDEC /* WithDrawTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithDrawTableViewCell.m; sourceTree = "<group>"; };
+		5413D2691DF7C76B00A8FDEC /* PaymentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentTableViewCell.h; sourceTree = "<group>"; };
+		5413D26A1DF7C76B00A8FDEC /* PaymentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentTableViewCell.m; sourceTree = "<group>"; };
+		5413D26C1DF7CF1C00A8FDEC /* Recharge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Recharge.h; sourceTree = "<group>"; };
+		5413D26D1DF7CF1C00A8FDEC /* Recharge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Recharge.m; sourceTree = "<group>"; };
+		5413D26F1DF7CF2900A8FDEC /* WithDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithDraw.h; sourceTree = "<group>"; };
+		5413D2701DF7CF2900A8FDEC /* WithDraw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithDraw.m; sourceTree = "<group>"; };
+		5413D2721DF7CF3000A8FDEC /* Payment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Payment.h; sourceTree = "<group>"; };
+		5413D2731DF7CF3000A8FDEC /* Payment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Payment.m; sourceTree = "<group>"; };
+		5413D2751DF7D0AE00A8FDEC /* UIViewController_Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_Token.h; sourceTree = "<group>"; };
+		5413D2761DF7D0DF00A8FDEC /* UIViewController+Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Token.h"; sourceTree = "<group>"; };
+		5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Token.m"; sourceTree = "<group>"; };
 		541F91CE1DC97FED00180BE8 /* FindPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindPasswordViewController.h; sourceTree = "<group>"; };
 		541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindPasswordViewController.m; sourceTree = "<group>"; };
 		541F91D11DC97FFB00180BE8 /* FindPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindPasswordView.h; sourceTree = "<group>"; };
@@ -788,6 +828,11 @@
 		54AB49011DEDB1BA008E3BC5 /* ListenTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListenTableViewCell.h; sourceTree = "<group>"; };
 		54AB49021DEDB1BA008E3BC5 /* ListenTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListenTableViewCell.m; sourceTree = "<group>"; };
 		54AF51C51DE8226900581C4A /* Emotions.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Emotions.bundle; sourceTree = "<group>"; };
+		54B4C1851DF8183800E31794 /* ChargeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChargeView.h; sourceTree = "<group>"; };
+		54B4C1861DF8183800E31794 /* ChargeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChargeView.m; sourceTree = "<group>"; };
+		54B4C1881DF8184500E31794 /* ChargeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChargeViewController.h; sourceTree = "<group>"; };
+		54B4C1891DF8184500E31794 /* ChargeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChargeViewController.m; sourceTree = "<group>"; };
+		54B4C18B1DF8294B00E31794 /* alipay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alipay.png; sourceTree = "<group>"; };
 		54B73CF91DE3E40300B7A7EB /* MembersListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MembersListView.h; sourceTree = "<group>"; };
 		54B73CFA1DE3E40300B7A7EB /* MembersListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MembersListView.m; sourceTree = "<group>"; };
 		54B73CFC1DE3E42700B7A7EB /* MemberListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberListTableViewCell.h; sourceTree = "<group>"; };
@@ -990,6 +1035,78 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5413D24B1DF7B56700A8FDEC /* 我的钱包主页 */ = {
+			isa = PBXGroup;
+			children = (
+				54B4C1821DF8180A00E31794 /* 充值页面 */,
+				54AB48C51DED2D7E008E3BC5 /* Model */,
+				54AB48C41DED2D7B008E3BC5 /* View */,
+				54AB48C31DED2D79008E3BC5 /* Controller */,
+			);
+			name = "我的钱包主页";
+			sourceTree = "<group>";
+		};
+		5413D24C1DF7B57300A8FDEC /* 资金记录 */ = {
+			isa = PBXGroup;
+			children = (
+				5413D24F1DF7B59500A8FDEC /* Model */,
+				5413D24E1DF7B59400A8FDEC /* View */,
+				5413D24D1DF7B59200A8FDEC /* Controller */,
+			);
+			name = "资金记录";
+			sourceTree = "<group>";
+		};
+		5413D24D1DF7B59200A8FDEC /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				5413D2561DF7B5F400A8FDEC /* CashRecordViewController.h */,
+				5413D2571DF7B5F400A8FDEC /* CashRecordViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		5413D24E1DF7B59400A8FDEC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5413D2621DF7BE4E00A8FDEC /* Cell */,
+				5413D2501DF7B5CD00A8FDEC /* CashRecordView.h */,
+				5413D2511DF7B5CD00A8FDEC /* CashRecordView.m */,
+				5413D2591DF7BC7900A8FDEC /* RechargeTableView.h */,
+				5413D25A1DF7BC7900A8FDEC /* RechargeTableView.m */,
+				5413D25C1DF7BC8A00A8FDEC /* WidthDrawTableView.h */,
+				5413D25D1DF7BC8A00A8FDEC /* WidthDrawTableView.m */,
+				5413D25F1DF7BC9400A8FDEC /* PaymentTableView.h */,
+				5413D2601DF7BC9400A8FDEC /* PaymentTableView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		5413D24F1DF7B59500A8FDEC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5413D26C1DF7CF1C00A8FDEC /* Recharge.h */,
+				5413D26D1DF7CF1C00A8FDEC /* Recharge.m */,
+				5413D26F1DF7CF2900A8FDEC /* WithDraw.h */,
+				5413D2701DF7CF2900A8FDEC /* WithDraw.m */,
+				5413D2721DF7CF3000A8FDEC /* Payment.h */,
+				5413D2731DF7CF3000A8FDEC /* Payment.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		5413D2621DF7BE4E00A8FDEC /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				5413D2631DF7C74F00A8FDEC /* RechargeTableViewCell.h */,
+				5413D2641DF7C74F00A8FDEC /* RechargeTableViewCell.m */,
+				5413D2661DF7C75D00A8FDEC /* WithDrawTableViewCell.h */,
+				5413D2671DF7C75D00A8FDEC /* WithDrawTableViewCell.m */,
+				5413D2691DF7C76B00A8FDEC /* PaymentTableViewCell.h */,
+				5413D26A1DF7C76B00A8FDEC /* PaymentTableViewCell.m */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
 		541F91D71DC9BB5C00180BE8 /* 辅导班页面 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1728,6 +1845,7 @@
 				544C15131DC7414000F59F86 /* back.png */,
 				541F91E91DC9F1CC00180BE8 /* school.png */,
 				54CB266A1DF00BE000AE7414 /* wechat.png */,
+				54B4C18B1DF8294B00E31794 /* alipay.png */,
 				54294CC51DDB3BB100677333 /* LSMediaCapture.bundle */,
 				54A153A91DC6F09D0070B508 /* main.m */,
 			);
@@ -1890,9 +2008,8 @@
 		54AB48B41DED2CF4008E3BC5 /* 我的钱包 */ = {
 			isa = PBXGroup;
 			children = (
-				54AB48C51DED2D7E008E3BC5 /* Model */,
-				54AB48C41DED2D7B008E3BC5 /* View */,
-				54AB48C31DED2D79008E3BC5 /* Controller */,
+				5413D24C1DF7B57300A8FDEC /* 资金记录 */,
+				5413D24B1DF7B56700A8FDEC /* 我的钱包主页 */,
 			);
 			name = "我的钱包";
 			sourceTree = "<group>";
@@ -2051,6 +2168,33 @@
 				54AB49021DEDB1BA008E3BC5 /* ListenTableViewCell.m */,
 			);
 			name = Cell;
+			sourceTree = "<group>";
+		};
+		54B4C1821DF8180A00E31794 /* 充值页面 */ = {
+			isa = PBXGroup;
+			children = (
+				54B4C1841DF8181700E31794 /* View */,
+				54B4C1831DF8181600E31794 /* Controller */,
+			);
+			name = "充值页面";
+			sourceTree = "<group>";
+		};
+		54B4C1831DF8181600E31794 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54B4C1881DF8184500E31794 /* ChargeViewController.h */,
+				54B4C1891DF8184500E31794 /* ChargeViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54B4C1841DF8181700E31794 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54B4C1851DF8183800E31794 /* ChargeView.h */,
+				54B4C1861DF8183800E31794 /* ChargeView.m */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		54B73CF81DE3DA1700B7A7EB /* Controller */ = {
@@ -2659,6 +2803,9 @@
 				545162AD1DF4FAD1000BD17A /* UIView+FontSize.m */,
 				545162AF1DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.h */,
 				545162B01DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m */,
+				5413D2751DF7D0AE00A8FDEC /* UIViewController_Token.h */,
+				5413D2761DF7D0DF00A8FDEC /* UIViewController+Token.h */,
+				5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -2990,6 +3137,7 @@
 				54A47BF01DE42610000216D9 /* em_66.gif in Resources */,
 				54A47BD71DE42610000216D9 /* em_43.gif in Resources */,
 				548328D61DDC6F360053AB29 /* chat_send_message.png in Resources */,
+				54B4C18C1DF8294B00E31794 /* alipay.png in Resources */,
 				54A47BD01DE42610000216D9 /* em_37.gif in Resources */,
 				544C15141DC7414000F59F86 /* back.png in Resources */,
 				541F91EA1DC9F1CC00180BE8 /* school.png in Resources */,
@@ -3113,6 +3261,7 @@
 				54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */,
 				548328E81DDC6F360053AB29 /* Mp3Recorder.m in Sources */,
 				54AB48E41DED5415008E3BC5 /* MyClassView.m in Sources */,
+				5413D2521DF7B5CD00A8FDEC /* CashRecordView.m in Sources */,
 				54D66F6F1DEBF5ED00ED2EBC /* NotClassView.m in Sources */,
 				546978561DC723B5001695F4 /* LoginViewController.m in Sources */,
 				548328ED1DDC6F360053AB29 /* UUMessageCell.m in Sources */,
@@ -3173,6 +3322,7 @@
 				54AB48EA1DED607B008E3BC5 /* StartedClassView.m in Sources */,
 				54294C6D1DDB051E00677333 /* Classes.m in Sources */,
 				543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */,
+				54B4C18A1DF8184500E31794 /* ChargeViewController.m in Sources */,
 				549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */,
 				54AB49031DEDB1BA008E3BC5 /* ListenTableViewCell.m in Sources */,
 				548328F31DDC75050053AB29 /* ChatModel.m in Sources */,
@@ -3206,10 +3356,14 @@
 				54FB1DCD1DF172F300BA9A3C /* BindingViewController.m in Sources */,
 				54E428B41DE2DC6100AF5980 /* UIControl+RemoveTarget.m in Sources */,
 				54652E421DEEC25200F4607C /* MessageSettingViewController.m in Sources */,
+				5413D25B1DF7BC7900A8FDEC /* RechargeTableView.m in Sources */,
+				5413D2781DF7D0DF00A8FDEC /* UIViewController+Token.m in Sources */,
 				549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */,
+				5413D26B1DF7C76B00A8FDEC /* PaymentTableViewCell.m in Sources */,
 				54A153AD1DC6F09D0070B508 /* AppDelegate.m in Sources */,
 				544E0CE41DD09FAE00884F31 /* IndexHeaderPageView.m in Sources */,
 				54294C7C1DDB373400677333 /* NELivePlayerControl.m in Sources */,
+				5413D2651DF7C74F00A8FDEC /* RechargeTableViewCell.m in Sources */,
 				5407C9991DE7DE9200DB04C8 /* UIDevice+YYAdd.m in Sources */,
 				54FCBAF91DD5DCE50094BF58 /* Notice.m in Sources */,
 				54D66F791DEC087D00ED2EBC /* NSString+StatusSwitch.m in Sources */,
@@ -3221,15 +3375,19 @@
 				54AB48F01DED60D9008E3BC5 /* ListenClassView.m in Sources */,
 				54AB48E11DED51B8008E3BC5 /* SafeViewController.m in Sources */,
 				54FB1DB51DF10B9B00BA9A3C /* UIViewController+VideoStatus.m in Sources */,
+				5413D2611DF7BC9400A8FDEC /* PaymentTableView.m in Sources */,
 				54FCBAF31DD5CB6B0094BF58 /* NoticeTableViewCell.m in Sources */,
+				5413D26E1DF7CF1C00A8FDEC /* Recharge.m in Sources */,
 				548328EF1DDC6F360053AB29 /* UUMessageFrame.m in Sources */,
 				5435D9521DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m in Sources */,
 				5407C98D1DE7DDED00DB04C8 /* NSObject+YYAdd.m in Sources */,
+				5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */,
 				54AB48DE1DED51A0008E3BC5 /* MyClassViewController.m in Sources */,
 				543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */,
 				54294C7D1DDB373400677333 /* NELivePlayerViewController.m in Sources */,
 				54AB48D21DED3389008E3BC5 /* SettingTableViewCell.m in Sources */,
 				54652E311DEEBDC300F4607C /* ClassNoticeSettingView.m in Sources */,
+				5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */,
 				546978691DC72A42001695F4 /* SignUpViewController.m in Sources */,
 				54FCBAE01DD5B3050094BF58 /* VideoInfoView.m in Sources */,
 				546A54741DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m in Sources */,
@@ -3237,6 +3395,8 @@
 				54A153AA1DC6F09D0070B508 /* main.m in Sources */,
 				547FBF381DF6CFD700955A9E /* MyWalletView.m in Sources */,
 				54634D991DDEAC1F0070C0FF /* FJFloatingView.m in Sources */,
+				5413D2581DF7B5F400A8FDEC /* CashRecordViewController.m in Sources */,
+				5413D2681DF7C75D00A8FDEC /* WithDrawTableViewCell.m in Sources */,
 				54B73CFE1DE3E42700B7A7EB /* MemberListTableViewCell.m in Sources */,
 				54294F541DDB400E00677333 /* ReleaseNote.md in Sources */,
 				548328EA1DDC6F360053AB29 /* UUImageAvatarBrowser.m in Sources */,
@@ -3247,12 +3407,14 @@
 				545162C41DF53DF9000BD17A /* ChangePhoneGetCodeViewController.m in Sources */,
 				54D661221DD040EF00C9A0FF /* UIViewController+HUD.m in Sources */,
 				545162CE1DF5598E000BD17A /* PersonalInfoViewController.m in Sources */,
+				5413D25E1DF7BC8A00A8FDEC /* WidthDrawTableView.m in Sources */,
 				54CB26601DEFFBD300AE7414 /* ChangPhoneView.m in Sources */,
 				54FCBAC11DD58EB60094BF58 /* UIViewController+ZFPlayer.m in Sources */,
 				54DBA4AF1DE4423300A67A90 /* UITextView+YZEmotion.m in Sources */,
 				54652E3F1DEEBF0D00F4607C /* NoticeSettingTableViewCell.m in Sources */,
 				54652E1A1DEEB08200F4607C /* AboutUsTableViewCell.m in Sources */,
 				54CB26631DEFFBDF00AE7414 /* ChangePhoneViewController.m in Sources */,
+				54B4C1871DF8183800E31794 /* ChargeView.m in Sources */,
 				54D661291DD04DC900C9A0FF /* YZSquareMenu.m in Sources */,
 				54FCBAF61DD5D4500094BF58 /* VideoClassInfo.m in Sources */,
 				5435D9461DD315CD00DD4FCC /* TeachersPublicCollectionView.m in Sources */,

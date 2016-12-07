@@ -14,10 +14,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[BarrageWalkTextSprite bindingView]:BarrageWalkTextSprite.m">
+         contextName = "-[AppDelegate jpushNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
       </ContextState>
       <ContextState
-         contextName = "-[AppDelegate jpushNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
+         contextName = "-[BarrageWalkTextSprite bindingView]:BarrageWalkTextSprite.m">
       </ContextState>
       <ContextState
          contextName = "-[UUMessageCell setMessageFrame:]:UUMessageCell.m">
@@ -42,6 +42,25 @@
          contextName = "-[ChangePasswordViewController textDidChange:]:ChangePasswordViewController.m">
       </ContextState>
       <ContextState
+         contextName = "__43-[CashRecordViewController requestRecharge]_block_invoke:CashRecordViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "interval">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__43-[CashRecordViewController requestWithDraw]_block_invoke:CashRecordViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[CashRecordViewController initWithSelectedItem:]:CashRecordViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_selectedItem">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[ClassTimeViewController requestUnclosedClassList]:ClassTimeViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -54,6 +73,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_statusDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__copy_helper_block_:CashRecordViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_selectedItem">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -134,6 +161,25 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[CashRecordViewController tableView:heightForRowAtIndexPath:]:CashRecordViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_withDrawArr">
+            </PersistentString>
+            <PersistentString
+               value = "_rechargeArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[CashRecordViewController viewDidLoad]:CashRecordViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_selectedItem">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[YZEmotionKeyboard didSelectEmotion:]:YZEmotionKeyboard.m">
          <PersistentStrings>
             <PersistentString
@@ -168,6 +214,17 @@
          <PersistentStrings>
             <PersistentString
                value = "info">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[CashRecordViewController requestRecharge]:CashRecordViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.token">
+            </PersistentString>
+            <PersistentString
+               value = "self.idNumber">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

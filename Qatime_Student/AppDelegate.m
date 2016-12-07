@@ -244,10 +244,21 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     /* 微信登录成功的回调 直接跳转界面到这里.*/
     
-    BindingViewController *bindingVC = [[BindingViewController alloc]init];
-    UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:bindingVC];
-    
-    [_window setRootViewController:naviVC];
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==NO) {
+        
+        BindingViewController *bindingVC = [[BindingViewController alloc]init];
+        UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:bindingVC];
+        
+        [_window setRootViewController:naviVC];
+    }else if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES){
+        
+        
+        /* 支付成功后,发送消息,在支付页面自动跳转至状态查询页面*/
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"ChargeSucess" object:nil ];
+        
+        
+        
+    }
     
     
     return [WXApi handleOpenURL:url delegate:self];
@@ -281,6 +292,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     
     NSLog(@"%@,%d,%d",resp.errStr,resp.errCode,resp.type);
+    
+    
+    
 }
 
 

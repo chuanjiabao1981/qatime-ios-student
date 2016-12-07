@@ -35,6 +35,9 @@
 /* 字体颜色*/
 #define TITLECOLOR [UIColor darkGrayColor]
 
+/*按钮红色*/
+#define BUTTONRED [UIColor colorWithRed:0.79 green:0.00 blue:0.0 alpha:1.00] 
+
 
 #import "UIView+FontSize.h"
 #import <objc/runtime.h>
