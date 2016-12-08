@@ -261,6 +261,14 @@
 		54A47BFA1DE42610000216D9 /* em_75.gif in Resources */ = {isa = PBXBuildFile; fileRef = 54A47BAF1DE42610000216D9 /* em_75.gif */; };
 		54A47BFB1DE42610000216D9 /* em_8.gif in Resources */ = {isa = PBXBuildFile; fileRef = 54A47BB01DE42610000216D9 /* em_8.gif */; };
 		54A47BFC1DE42610000216D9 /* em_9.gif in Resources */ = {isa = PBXBuildFile; fileRef = 54A47BB11DE42610000216D9 /* em_9.gif */; };
+		54AA307C1DF9427D009E0D04 /* NSString+TimeStamp.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA307B1DF9427D009E0D04 /* NSString+TimeStamp.m */; };
+		54AA30821DF950CA009E0D04 /* CheckChargeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30811DF950CA009E0D04 /* CheckChargeView.m */; };
+		54AA30851DF950DB009E0D04 /* CheckChargeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30841DF950DB009E0D04 /* CheckChargeViewController.m */; };
+		54AA30881DF98C40009E0D04 /* MyOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30871DF98C40009E0D04 /* MyOrderView.m */; };
+		54AA30911DF98CBC009E0D04 /* UnpaidOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30901DF98CBC009E0D04 /* UnpaidOrderView.m */; };
+		54AA30941DF98CC7009E0D04 /* PaidOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30931DF98CC7009E0D04 /* PaidOrderView.m */; };
+		54AA30971DF98CD5009E0D04 /* CanceldOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30961DF98CD5009E0D04 /* CanceldOrderView.m */; };
+		54AA309B1DF98D30009E0D04 /* MyOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA309A1DF98D30009E0D04 /* MyOrderTableViewCell.m */; };
 		54AB48C81DED2D9B008E3BC5 /* SettingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48C71DED2D9B008E3BC5 /* SettingView.m */; };
 		54AB48CB1DED2DC7008E3BC5 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48CA1DED2DC7008E3BC5 /* SettingViewController.m */; };
 		54AB48CE1DED31D3008E3BC5 /* HeadBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48CD1DED31D3008E3BC5 /* HeadBackView.m */; };
@@ -793,6 +801,22 @@
 		54A47BAF1DE42610000216D9 /* em_75.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = em_75.gif; sourceTree = "<group>"; };
 		54A47BB01DE42610000216D9 /* em_8.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = em_8.gif; sourceTree = "<group>"; };
 		54A47BB11DE42610000216D9 /* em_9.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = em_9.gif; sourceTree = "<group>"; };
+		54AA307A1DF9427D009E0D04 /* NSString+TimeStamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TimeStamp.h"; sourceTree = "<group>"; };
+		54AA307B1DF9427D009E0D04 /* NSString+TimeStamp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TimeStamp.m"; sourceTree = "<group>"; };
+		54AA30801DF950CA009E0D04 /* CheckChargeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckChargeView.h; sourceTree = "<group>"; };
+		54AA30811DF950CA009E0D04 /* CheckChargeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckChargeView.m; sourceTree = "<group>"; };
+		54AA30831DF950DB009E0D04 /* CheckChargeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckChargeViewController.h; sourceTree = "<group>"; };
+		54AA30841DF950DB009E0D04 /* CheckChargeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckChargeViewController.m; sourceTree = "<group>"; };
+		54AA30861DF98C40009E0D04 /* MyOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOrderView.h; sourceTree = "<group>"; };
+		54AA30871DF98C40009E0D04 /* MyOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyOrderView.m; sourceTree = "<group>"; };
+		54AA308F1DF98CBC009E0D04 /* UnpaidOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnpaidOrderView.h; sourceTree = "<group>"; };
+		54AA30901DF98CBC009E0D04 /* UnpaidOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnpaidOrderView.m; sourceTree = "<group>"; };
+		54AA30921DF98CC7009E0D04 /* PaidOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaidOrderView.h; sourceTree = "<group>"; };
+		54AA30931DF98CC7009E0D04 /* PaidOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaidOrderView.m; sourceTree = "<group>"; };
+		54AA30951DF98CD5009E0D04 /* CanceldOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanceldOrderView.h; sourceTree = "<group>"; };
+		54AA30961DF98CD5009E0D04 /* CanceldOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanceldOrderView.m; sourceTree = "<group>"; };
+		54AA30991DF98D30009E0D04 /* MyOrderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOrderTableViewCell.h; sourceTree = "<group>"; };
+		54AA309A1DF98D30009E0D04 /* MyOrderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyOrderTableViewCell.m; sourceTree = "<group>"; };
 		54AB48C61DED2D9B008E3BC5 /* SettingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingView.h; sourceTree = "<group>"; };
 		54AB48C71DED2D9B008E3BC5 /* SettingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingView.m; sourceTree = "<group>"; };
 		54AB48C91DED2DC7008E3BC5 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -1045,6 +1069,7 @@
 			isa = PBXGroup;
 			children = (
 				54B4C1821DF8180A00E31794 /* 充值页面 */,
+				54AA307D1DF950A3009E0D04 /* 充值结果查询页面 */,
 				54AB48C51DED2D7E008E3BC5 /* Model */,
 				54AB48C41DED2D7B008E3BC5 /* View */,
 				54AB48C31DED2D79008E3BC5 /* Controller */,
@@ -1959,6 +1984,42 @@
 			path = KeyBoard/emoji;
 			sourceTree = "<group>";
 		};
+		54AA307D1DF950A3009E0D04 /* 充值结果查询页面 */ = {
+			isa = PBXGroup;
+			children = (
+				54AA307F1DF950B0009E0D04 /* View */,
+				54AA307E1DF950AF009E0D04 /* Controller */,
+			);
+			name = "充值结果查询页面";
+			sourceTree = "<group>";
+		};
+		54AA307E1DF950AF009E0D04 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54AA30831DF950DB009E0D04 /* CheckChargeViewController.h */,
+				54AA30841DF950DB009E0D04 /* CheckChargeViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54AA307F1DF950B0009E0D04 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54AA30801DF950CA009E0D04 /* CheckChargeView.h */,
+				54AA30811DF950CA009E0D04 /* CheckChargeView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54AA30981DF98D1E009E0D04 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				54AA30991DF98D30009E0D04 /* MyOrderTableViewCell.h */,
+				54AA309A1DF98D30009E0D04 /* MyOrderTableViewCell.m */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
 		54AB48AF1DED2CDB008E3BC5 /* 个人页面 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2116,6 +2177,15 @@
 		54AB48C11DED2D6D008E3BC5 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				54AA30981DF98D1E009E0D04 /* Cell */,
+				54AA30861DF98C40009E0D04 /* MyOrderView.h */,
+				54AA30871DF98C40009E0D04 /* MyOrderView.m */,
+				54AA308F1DF98CBC009E0D04 /* UnpaidOrderView.h */,
+				54AA30901DF98CBC009E0D04 /* UnpaidOrderView.m */,
+				54AA30921DF98CC7009E0D04 /* PaidOrderView.h */,
+				54AA30931DF98CC7009E0D04 /* PaidOrderView.m */,
+				54AA30951DF98CD5009E0D04 /* CanceldOrderView.h */,
+				54AA30961DF98CD5009E0D04 /* CanceldOrderView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2840,6 +2910,8 @@
 				5413D2751DF7D0AE00A8FDEC /* UIViewController_Token.h */,
 				5413D2761DF7D0DF00A8FDEC /* UIViewController+Token.h */,
 				5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */,
+				54AA307A1DF9427D009E0D04 /* NSString+TimeStamp.h */,
+				54AA307B1DF9427D009E0D04 /* NSString+TimeStamp.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -3295,6 +3367,7 @@
 				54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */,
 				548328E81DDC6F360053AB29 /* Mp3Recorder.m in Sources */,
 				54AB48E41DED5415008E3BC5 /* MyClassView.m in Sources */,
+				54AA30971DF98CD5009E0D04 /* CanceldOrderView.m in Sources */,
 				5413D2521DF7B5CD00A8FDEC /* CashRecordView.m in Sources */,
 				54D66F6F1DEBF5ED00ED2EBC /* NotClassView.m in Sources */,
 				546978561DC723B5001695F4 /* LoginViewController.m in Sources */,
@@ -3311,9 +3384,11 @@
 				545162AE1DF4FAD1000BD17A /* UIView+FontSize.m in Sources */,
 				543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */,
 				543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */,
+				54AA30911DF98CBC009E0D04 /* UnpaidOrderView.m in Sources */,
 				545162BB1DF50D85000BD17A /* ChangePasswordView.m in Sources */,
 				54FB1DDA1DF1AC3D00BA9A3C /* ParentViewController.m in Sources */,
 				54652E3A1DEEBE2800F4607C /* ClassSettingViewController.m in Sources */,
+				54AA30851DF950DB009E0D04 /* CheckChargeViewController.m in Sources */,
 				547E89841DD1705100749366 /* SquareView.m in Sources */,
 				5407C98E1DE7DDED00DB04C8 /* NSString+YYAdd.m in Sources */,
 				54D661251DD048F500C9A0FF /* IndexPageView.m in Sources */,
@@ -3332,6 +3407,7 @@
 				54AB49001DEDABCC008E3BC5 /* EndedTableViewCell.m in Sources */,
 				5435D9401DD3125800DD4FCC /* TeachersPublicViewController.m in Sources */,
 				541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */,
+				54AA30941DF98CC7009E0D04 /* PaidOrderView.m in Sources */,
 				5484B7421DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m in Sources */,
 				541F91E41DC9D16700180BE8 /* TutoriumCollectionViewCell.m in Sources */,
 				54652E2B1DEEB98600F4607C /* NoticeSettingViewController.m in Sources */,
@@ -3393,6 +3469,7 @@
 				5413D25B1DF7BC7900A8FDEC /* RechargeTableView.m in Sources */,
 				5413D2781DF7D0DF00A8FDEC /* UIViewController+Token.m in Sources */,
 				549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */,
+				54AA307C1DF9427D009E0D04 /* NSString+TimeStamp.m in Sources */,
 				5413D26B1DF7C76B00A8FDEC /* PaymentTableViewCell.m in Sources */,
 				54A153AD1DC6F09D0070B508 /* AppDelegate.m in Sources */,
 				544E0CE41DD09FAE00884F31 /* IndexHeaderPageView.m in Sources */,
@@ -3400,9 +3477,11 @@
 				5413D2651DF7C74F00A8FDEC /* RechargeTableViewCell.m in Sources */,
 				5407C9991DE7DE9200DB04C8 /* UIDevice+YYAdd.m in Sources */,
 				54FCBAF91DD5DCE50094BF58 /* Notice.m in Sources */,
+				54AA30881DF98C40009E0D04 /* MyOrderView.m in Sources */,
 				54D66F791DEC087D00ED2EBC /* NSString+StatusSwitch.m in Sources */,
 				547FBF311DF6B99600955A9E /* PersonalDescViewController.m in Sources */,
 				54294C6A1DDAFCF600677333 /* ClassList.m in Sources */,
+				54AA309B1DF98D30009E0D04 /* MyOrderTableViewCell.m in Sources */,
 				54AB48ED1DED608A008E3BC5 /* EndedClassView.m in Sources */,
 				546978641DC725A5001695F4 /* NavigationBar.m in Sources */,
 				54294C731DDB071700677333 /* Chat_Account.m in Sources */,
@@ -3411,6 +3490,7 @@
 				54FB1DB51DF10B9B00BA9A3C /* UIViewController+VideoStatus.m in Sources */,
 				5413D2611DF7BC9400A8FDEC /* PaymentTableView.m in Sources */,
 				54B4C1921DF8417400E31794 /* ConfirmChargeViewController.m in Sources */,
+				54AA30821DF950CA009E0D04 /* CheckChargeView.m in Sources */,
 				54FCBAF31DD5CB6B0094BF58 /* NoticeTableViewCell.m in Sources */,
 				5413D26E1DF7CF1C00A8FDEC /* Recharge.m in Sources */,
 				548328EF1DDC6F360053AB29 /* UUMessageFrame.m in Sources */,

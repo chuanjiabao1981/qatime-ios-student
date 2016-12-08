@@ -82,8 +82,9 @@
         _number.sd_layout
         .leftSpaceToView(number,10)
         .topEqualToView(number)
-        .bottomEqualToView(number);
-        [_number setSingleLineAutoResizeWithMaxWidth:5000];
+        .bottomEqualToView(number)
+        .rightSpaceToView(self.contentView,10);
+        
         
         
         /* 支付方式*/
@@ -96,15 +97,17 @@
         _mode.sd_layout
         .leftSpaceToView(mod,10)
         .topEqualToView(mod)
-        .bottomEqualToView(mod);
-        [_mode setSingleLineAutoResizeWithMaxWidth:2000];
+        .bottomEqualToView(mod)
+        .widthIs(500);
+        _mode.textAlignment = NSTextAlignmentLeft;
+//        [_mode setSingleLineAutoResizeWithMaxWidth:2000];
 
         /* 时间*/
         time.sd_layout
         .topSpaceToView(mod,10)
         .leftSpaceToView(self.contentView,10)
         .autoHeightRatio(0);
-        [time setSingleLineAutoResizeWithMaxWidth:200];
+        [time setSingleLineAutoResizeWithMaxWidth:2000];
         
         _time.sd_layout
         .leftSpaceToView(time,10)
@@ -117,17 +120,20 @@
         _money.sd_layout
         .centerYEqualToView(mod)
         .rightSpaceToView(self.contentView,10)
-        .autoHeightRatio(0);
-        [_money setSingleLineAutoResizeWithMaxWidth:2000];
+        .autoHeightRatio(0)
+        .widthIs(500);
+        _money.textAlignment = NSTextAlignmentRight;
+//        [_money setSingleLineAutoResizeWithMaxWidth:2000];
     
         
         /* 状态*/
         _status.sd_layout
         .topSpaceToView(_money,5)
         .rightEqualToView(_money)
-        .autoHeightRatio(0);
-        
-        [_status setSingleLineAutoResizeWithMaxWidth:500];
+        .autoHeightRatio(0)
+        .widthIs(200);
+        _status.textAlignment = NSTextAlignmentRight;
+//        [_status setSingleLineAutoResizeWithMaxWidth:1000];
         
         
         [self setupAutoHeightWithBottomView:_time bottomMargin:10];

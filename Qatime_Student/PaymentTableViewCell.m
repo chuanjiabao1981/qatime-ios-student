@@ -72,8 +72,9 @@
         _number.sd_layout
         .leftSpaceToView(number,10)
         .topEqualToView(number)
-        .bottomEqualToView(number);
-        [_number setSingleLineAutoResizeWithMaxWidth:5000];
+        .bottomEqualToView(number)
+        .rightSpaceToView(self.contentView,10);
+        
         
         
         /* 支付方式*/

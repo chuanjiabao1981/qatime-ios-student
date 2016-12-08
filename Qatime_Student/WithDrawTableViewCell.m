@@ -76,8 +76,9 @@
         _number.sd_layout
         .leftSpaceToView(number,10)
         .topEqualToView(number)
-        .bottomEqualToView(number);
-        [_number setSingleLineAutoResizeWithMaxWidth:5000];
+        .bottomEqualToView(number)
+        .rightSpaceToView(self.contentView,10);
+        
         
         
         /* 支付方式*/
@@ -119,9 +120,11 @@
         _status.sd_layout
         .topSpaceToView(_money,5)
         .rightEqualToView(_money)
-        .autoHeightRatio(0);
+        .autoHeightRatio(0)
+        .widthIs(200);
         
-        [_status setSingleLineAutoResizeWithMaxWidth:500];
+        _status.textAlignment = NSTextAlignmentRight;
+        
         
         
         [self setupAutoHeightWithBottomView:_time bottomMargin:10];

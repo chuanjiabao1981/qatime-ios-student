@@ -268,6 +268,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[CheckChargeViewController returnLastPage]:CheckChargeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.navigationController.viewControllers">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[ChatModel getDicWithText:andName:andIcon:]:ChatModel.m">
       </ContextState>
    </ContextStates>

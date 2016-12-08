@@ -10,10 +10,11 @@
 #import "NavigationBar.h"
 #import "WXApi.h"
 #import "RDVTabBarController.h"
-
+#import "UIViewController+HUD.h"
+#import "NSString+TimeStamp.h"
 #import "ConfirmChargeViewController.h"
 
-@interface ChargeViewController (){
+@interface ChargeViewController ()<UITextFieldDelegate>{
     
     
     NavigationBar *_navigationBar;
@@ -77,7 +78,9 @@
     
     /* 注册通知,接受支付成功的通知,自动跳转到状态查询页面*/
     
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(CheckPayStatus) name:@"ChargeSucess" object:nil];
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(CheckPayStatus) name:@"ChargeSucess" object:nil];
+    
+    _chargeView.moneyText.delegate = self;
     
     
     
@@ -85,6 +88,7 @@
 }
 #pragma mark- 立即支付按钮的点击事件
 - (void)finishChosen{
+    
     
     if (_chargeView.moneyText.text ==nil||[_chargeView.moneyText.text isEqualToString:@""]) {
         
@@ -94,7 +98,7 @@
         [alert addAction:sure];
         
         [self presentViewController:alert animated:YES completion:nil];
-
+        
     }else{
         
         if (_chargeView.wechatButton.selected == YES) {
@@ -107,6 +111,7 @@
             
             _payType = @"alipay";
             
+            
         }else if (_chargeView.wechatButton.selected!=YES&&_chargeView.alipayButton.selected != YES){
             
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择支付方式!" preferredStyle:UIAlertControllerStyleAlert];
@@ -115,12 +120,18 @@
             }] ;
             [alert addAction:sure];
             [self presentViewController:alert animated:YES completion:nil];
- 
+            
         }
+    }
+   
+    
+    if (![_chargeView.moneyText.text isEqualToString:@""]&&![_payType isEqualToString:@""]) {
+        
         
         [self chargeWithType:_payType];
+        
     }
-     
+    
 }
 
 
@@ -128,8 +139,8 @@
 
 
 /**
- 发送支付申请
- @param type 根据不同的type 会返回不同的支付secretKey
+ 向服务器发送支付申请
+ @param type 根据不同的type 会返回不同的支付openID
  */
 - (void)chargeWithType:(NSString *)type{
     
@@ -142,16 +153,27 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-            /* 成功*/
-            _dataDic = dic[@"data"];
-            [self requestChargWithType:type andData:_dataDic];
+
+            
+            NSString *date = [NSString stringWithFormat:@"%@",dic[@"data"][@"created_at"]];
+            
+            /* 订单生成成功*/
+            NSDictionary *infoDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
+            
+            
+            
+            ConfirmChargeViewController *conVC = [[ConfirmChargeViewController alloc]initWithInfo:infoDic];
+            [self.navigationController pushViewController:conVC animated:YES];
+            [self.rdv_tabBarController setTabBarHidden:YES];
+
             
             
             
         }else{
             /* 失败*/
-            
-            
+            /* 订单生成失败*/
+            [self loadingHUDStopLoadingWithTitle:@"订单创建失败,请查看登录状态!"];
+        
         }
         
         
@@ -166,37 +188,40 @@
     
 }
 
-#pragma mark- 发送支付跳转申请
 
-- (void)requestChargWithType:(NSString *)type andData:(NSMutableDictionary *)data{
-    
-    if ([type isEqualToString:@"weixin"]) {
-        
-        PayReq *request = [[PayReq alloc] init] ;
-        
-        request.partnerId = data[@"app_pay_params"][@"partnerid"];
-        
-        request.prepayId= data[@"app_pay_params"][@"prepayid"];
-        
-        request.package = data[@"app_pay_params"][@"package"];
-        
-        request.nonceStr= data[@"app_pay_params"][@"noncestr"];
-        
-        request.timeStamp= [ data[@"app_pay_params"][@"timestamp"] intValue];
-        
-        request.sign = data[@"app_pay_params"][@"sign"];
-        
-        [WXApi sendReq:request];
-    }else if ([type isEqualToString:@"alipay"]){
-        
-        
-    }
-    
 
-    
-    
-}
 
+//#pragma mark- 发送支付跳转申请
+//
+//- (void)requestChargWithType:(NSString *)type andData:(NSMutableDictionary *)data{
+//    
+//    if ([type isEqualToString:@"weixin"]) {
+//        
+//        PayReq *request = [[PayReq alloc] init] ;
+//        
+//        request.partnerId = data[@"app_pay_params"][@"partnerid"];
+//        
+//        request.prepayId= data[@"app_pay_params"][@"prepayid"];
+//        
+//        request.package = data[@"app_pay_params"][@"package"];
+//        
+//        request.nonceStr= data[@"app_pay_params"][@"noncestr"];
+//        
+//        request.timeStamp= [ data[@"app_pay_params"][@"timestamp"] intValue];
+//        
+//        request.sign = data[@"app_pay_params"][@"sign"];
+//        
+//        [WXApi sendReq:request];
+//    }else if ([type isEqualToString:@"alipay"]){
+//        
+//        
+//    }
+//    
+//
+//    
+//    
+//}
+//
 
 
 - (void)selectedWechat:(UIButton *)sender{
@@ -247,6 +272,35 @@
     [self.rdv_tabBarController setTabBarHidden:YES];
     
     
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    
+    
+    NSCharacterSet *cs;
+   
+    if ([textField isEqual:_chargeView.moneyText]) {
+        NSUInteger nDotLoc = [textField.text rangeOfString:@"."].location;
+        if (NSNotFound == nDotLoc && 0 != range.location) {
+            cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789.\n"] invertedSet];
+        }
+        else {
+            cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789\n"] invertedSet];
+        }
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
+        BOOL basicTest = [string isEqualToString:filtered];
+        if (!basicTest) {
+            
+            [self loadingHUDStopLoadingWithTitle:@"只能输入数字和小数点"];
+            return NO;
+        }
+        if (NSNotFound != nDotLoc && range.location > nDotLoc + 2) {
+            [self loadingHUDStopLoadingWithTitle:@"小数点后最多两位"];
+            return NO;
+        }
+    }
+    
+    return  YES;
 }
 
 
