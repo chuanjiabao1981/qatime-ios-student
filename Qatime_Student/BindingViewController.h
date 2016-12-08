@@ -14,4 +14,7 @@
 
 @property(nonatomic,strong) BindingView *bindingView ;
 
+
+- (instancetype)initWithOpenID:(NSString *)openID;
+
 @end

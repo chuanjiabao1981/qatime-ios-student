@@ -23,11 +23,31 @@
     UIPickerView *pickerView;
     UIView *dock;
     UIBlurEffect *effect;
+    
+    NSString *_openID;
+    
+    NSString *accept;
+    
+    
 }
 
 @end
 
 @implementation BindingViewController
+
+
+- (instancetype)initWithOpenID:(NSString *)openID
+{
+    self = [super init];
+    if (self) {
+        
+        _openID = [NSString stringWithFormat:@"%@",openID];
+        
+        
+    }
+    return self;
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -122,7 +142,7 @@
     }
     if ([_bindingView.userPassword.text isEqualToString:@""]||![self checkPassWord: _bindingView.userPassword.text] ) {
         
-        [self showAlertWith:@"请输入6-16位密码！"];
+        [self showAlertWith:@"请输入6-16位字母数字密码组合！"];
         
     }
     if ([self checkPassWord: _bindingView.userPassword.text]&&![_bindingView.userPassword.text isEqualToString:_bindingView.userPasswordCompare.text]) {
@@ -141,8 +161,10 @@
         
         if (!_bindingView.chosenButton.isSelected) {
             
+            
             [self showAlertWith:@"请遵守《答疑时间用户协议》"];
         }else{
+            
             
             /* 所有信息汇总成字典*/
             
@@ -151,17 +173,20 @@
                                         @"captcha_confirmation":_bindingView.checkCode.text,
                                         @"password":_bindingView.userPassword.text,
                                         @"password_confirmation":_bindingView.userPasswordCompare.text,
+                                        @"accept":_bindingView.chosenButton.isSelected==YES?@"1":@"2",
                                         @"register_code_value":@"code",
-                                        @"accept":@"1",
+                                        
                                         @"type":@"Student",
-                                        @"client_type":@"app"
+                                        @"client_type":@"app",
+                                        @"grade":_bindingView.gradeText.text,
+                                        @"openid":_openID
                                         };
             
             /* 验证码 请求状态*/
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-            [manager POST:@"http://testing.qatime.cn/api/v1/captcha/verify" parameters:signUpInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [manager POST:@"http://testing.qatime.cn/api/v1/user/wechat_regsiter" parameters:signUpInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 NSDictionary *codeState = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                 NSLog(@"%@",codeState);
@@ -181,32 +206,48 @@
                     
                     
                     
-//                    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//                    hud.mode = MBProgressHUDModeText;
-//                    hud.labelText = @"验证成功！";
-//                    hud.yOffset= 150.f;
-//                    hud.removeFromSuperViewOnHide = YES;
-//                    
-//                    [hud hide:YES afterDelay:1.0];
                     
                     
 #pragma mark- 把token和id(key : data)存储到本地沙盒路径
                     
-                    NSString *tokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"token.data"];
+                    NSString *tokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
+                    [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
+                    
+                    NSLog(@"保存的数据\n%@",dataDic);
+                    /* 归档*/
                     [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
                     
                     
+                    /* 另存一份userdefault  只存token和id*/
+                    NSString *remember_token = [NSString stringWithFormat:@"%@",dataDic[@"remember_token"]];
                     
-                    /* 进入下一页*/
-//                    _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
-//                    
-//                    [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
+                    NSDictionary *user=[NSDictionary dictionaryWithDictionary:dataDic[@"user"]];
+                    NSLog(@"%@",user);
                     
+                    
+                    NSString *userID = [NSString stringWithFormat:@"%@",[[dataDic valueForKey:@"user"] valueForKey:@"id"]];
+                    
+                    [[NSUserDefaults standardUserDefaults]setObject:remember_token forKey:@"remember_token"];
+                    [[NSUserDefaults standardUserDefaults]setObject:userID forKey:@"id"];
+                    
+                    
+                    NSLog(@"token:%@,id:%@",remember_token,userID);
+                    
+                    
+                    /* 另存一个userdefault ，只存user的头像地址*/
+                    [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"user"][@"avatar_url"] forKey:@"avatar_url"];
+                    
+                    /* 另存一个useerdefault 存user的name*/
+                    [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"user"][@"name"] forKey:@"name"];
+                    
+                    /* 发出一条消息:账号密码方式登录*/
+                    
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"Login_Type" object:@"wechat"];
                     
                 }
                 else if (![[dataDic allKeys]containsObject:@"remember_token"]){
                     
-                    [self showAlertWith:@"验证失败！"];
+                    [self showAlertWith:@"验证失败！请仔细填写信息!"];
                     
                 }
                 
@@ -362,6 +403,11 @@
 #pragma mark- 选择年级列表
 - (void)chooseGrade{
     
+    [_bindingView.checkCode resignFirstResponder];
+    [ _bindingView.userPassword resignFirstResponder];
+    [_bindingView.userPasswordCompare resignFirstResponder];
+    [_bindingView.phoneNumber resignFirstResponder];
+    
     //     添加一个模糊背景
     effect=[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     effectView=[[UIVisualEffectView alloc]initWithEffect:effect];
@@ -453,6 +499,16 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [_bindingView.checkCode resignFirstResponder];
+   [ _bindingView.userPassword resignFirstResponder];
+    [_bindingView.userPasswordCompare resignFirstResponder];
+    [_bindingView.phoneNumber resignFirstResponder];
+    
+    
+    
+}
 
 
 

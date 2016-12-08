@@ -17,7 +17,7 @@
 
 #import "BindingViewController.h"
 
-@interface LoginViewController ()<UITextFieldDelegate>{
+@interface LoginViewController ()<UITextFieldDelegate,UINavigationControllerDelegate>{
     
     
     NSInteger keyHeight;
@@ -47,6 +47,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationController.navigationBar.hidden = YES;
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
     
     needCheckCaptcha = NO;
     _wrongTimes = 0;
@@ -109,6 +111,9 @@
     [_loginView.wechatButton addTarget:self action:@selector(sendAuthRequest) forControlEvents:UIControlEventTouchUpInside];
     
     
+    
+    
+    
     /**
      测试调用方法
 
@@ -123,7 +128,60 @@
     
     [_loginView.acrossLogin addTarget:self action:@selector(enterWithoutLogin) forControlEvents:UIControlEventTouchUpInside];
     
+    
+    
+    /* 添加微信登录成功的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(wechatLoginSucess:) name:@"WechatLoginSucess" object:nil];
+    
+    
 }
+
+#pragma mark- 微信请求code数据
+- (void)wechatLoginSucess:(NSNotification *)notification{
+    
+    
+    NSString *code = [notification object];
+    
+    __block NSString *openID  = @"".mutableCopy;
+    
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager POST:@"http://testing.qatime.cn/api/v1/sessions/wechat" parameters:@{@"code":code,@"client_cate":@"student_client",@"client_type":@"app"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+            /* 登录信息拉取信息成功*/
+            openID = dic[@"data"][@"openid"];
+            
+            BindingViewController *bVC = [[BindingViewController alloc]initWithOpenID:openID];
+            [self.navigationController pushViewController:bVC animated:YES];
+            
+            
+            
+            
+            
+        }else{
+            /* 登录信息拉取失败*/
+            
+            [self loadingHUDStopLoadingWithTitle:@"获取微信登录信息失败,请重试!"];
+            
+            
+        }
+        
+        
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
+
+}
+
+
+
+
 
 - (void)mypage{
     BindingViewController *bVC=[BindingViewController new];
@@ -323,7 +381,7 @@
                     /* 归档*/
                     [NSKeyedArchiver archiveRootObject:dicGet toFile:userTokenFilePath];
                     
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
                     
                     /* 另存一份userdefault  只存token和id*/
                     NSString *remember_token = [NSString stringWithFormat:@"%@",dicGet[@"remember_token"]];
@@ -347,7 +405,12 @@
                     /* 另存一个useerdefault 存user的name*/
                      [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"name"] forKey:@"name"];
                     
-                    /* 另一个存userdefult 存家长电话*/
+                    
+                    
+                    /* 发出一条消息:账号密码方式登录*/
+                    
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"Login_Type" object:@"Normal" ];
+                   
                     
                     
                     
@@ -486,10 +549,15 @@
     req.scope = @"snsapi_userinfo" ;
     req.state = @"123" ;
     //第三方向微信终端发送一个SendAuthReq消息结构
+    
+    
     [WXApi sendReq:req];
     
     
 }
+
+
+
 
 
 

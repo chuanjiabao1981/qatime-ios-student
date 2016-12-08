@@ -115,7 +115,7 @@
         self.nextStepButton.sd_layout
         .leftEqualToView(self.gradeText)
         .rightEqualToView(self.gradeText)
-        .topSpaceToView(self.gradeText,20)
+        .topSpaceToView(self.chosenButton,20)
         .heightRatioToView(self.gradeText,1.0f);
         
 

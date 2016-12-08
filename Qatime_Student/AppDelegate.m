@@ -67,6 +67,21 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeRootViewConroller:) name:@"EnterWithoutLogin" object:nil];
     
     
+    
+    /* 监听登录方式:账号密码登录(Normal)或是微信登录(wechat)*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ChangeLoginRoot:) name:@"Login_Type" object:nil];
+    
+    
+    /* 微信登录状态的监听*/
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ChangRootToPerInfo:) name:@"WechatLoginSucess" object:nil];
+    
+    
+    /* 获取code成功*/
+//       [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ChangRootToPerInfo) name:@"GetCodeSucess" object:nil];
+//    
+    
+    
+    
     /* 添加消息监听 判断用户退出登录*/
     
     [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -200,15 +215,45 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
 }
 
+#pragma mark- 登录后的通知回调
+- (void)ChangeLoginRoot:(NSNotification *)notification{
+    
+    NSString *type = [notification object];
+    /* 登录方式存本地*/
+    
+    [[NSUserDefaults standardUserDefaults]setObject:type forKey:@"Login_Type"];
+    
+    /* 账号密码方式登录*/
+    if ([type isEqualToString:@"Normal"]) {
+        /* 发送消息,切换rootcontroller*/
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+        
+    }else if([type isEqualToString:@"wechat"]){
+        /* 微信登录*/
+         [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+        
+    }
+    
+    
+}
 
 
+/* 微信登录成功后,rootcontroller改变*/
+- (void)ChangRootToPerInfo:(NSNotification *)notification{
+    
+       
+    
+    
+//    BindingViewController *binVC = [BindingViewController new];
+//    [_window setRootViewController:binVC];
+    
+}
 
 
 
 
 /* 修改rootViewController为系统的主页controller*/
 - (void)changeRootViewConroller:(NSNotification *)notification{
-    
     
     _viewController = [[ViewController alloc]init];
     
@@ -244,22 +289,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     /* 微信登录成功的回调 直接跳转界面到这里.*/
     
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==NO) {
         
-        BindingViewController *bindingVC = [[BindingViewController alloc]init];
-        UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:bindingVC];
-        
-        [_window setRootViewController:naviVC];
-    }else if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES){
-        
-        
-        /* 支付成功后,发送消息,在支付页面自动跳转至状态查询页面*/
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"ChargeSucess" object:nil ];
-        
-        
-        
-    }
-    
     
     return [WXApi handleOpenURL:url delegate:self];
     
@@ -290,6 +320,65 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
  */
 - (void)onResp:(BaseResp *)resp {
     
+    /* 条件:拿到登录回调信息*/
+    if ([resp isKindOfClass:[SendAuthResp class]]) {
+       
+            
+            if (resp.errCode ==0) {
+                /* 登录成功*/
+                SendAuthResp *respdata = (SendAuthResp *)resp;
+                
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"WechatLoginSucess" object:respdata.code];
+                NSLog(@"%@",respdata.code);
+                
+                
+                
+                
+                
+            }else if (resp.errCode == -1){
+                /* 登录失败*/
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"wechatLoginFaild" object:nil];
+
+                
+                
+            }else if (resp.errCode == -2){
+                /* 取消登录*/
+                
+                
+            
+            
+            
+        }
+        
+        
+        SendAuthResp *respData = (SendAuthResp *)resp;
+//        respData.code
+        
+        
+        
+    }
+    
+    /* 条件 :拿到支付回调信息*/
+    if ([resp isKindOfClass:[PayResp class]]) {
+        
+        if (resp.errCode ==0) {
+            /* 充值成功*/
+            
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"ChargeSucess" object:nil];
+            
+            
+        }else if (resp.errCode == -1){
+            /* 充值失败*/
+            
+            
+        }else if (resp.errCode == -2){
+            /* 取消充值*/
+            
+            
+        }
+
+        
+    }
     
     NSLog(@"%@,%d,%d",resp.errStr,resp.errCode,resp.type);
     

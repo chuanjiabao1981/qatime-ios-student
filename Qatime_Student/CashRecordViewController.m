@@ -13,6 +13,7 @@
 #import "RechargeTableViewCell.h"
 #import "WithDrawTableViewCell.h"
 #import "PaymentTableViewCell.h"
+#import "RDVTabBarController.h"
 
 #import "Recharge.h"
 #import "WithDraw.h"
@@ -65,11 +66,15 @@
 
 
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     
     self.view.backgroundColor = [UIColor whiteColor];
+       
+     [self.rdv_tabBarController setTabBarHidden:YES];
+
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];
     
@@ -151,7 +156,7 @@
 #pragma mark- 请求充值记录数据
 - (void)requestRecharge{
     
-//    _rechargeArr = @[].mutableCopy;
+    _rechargeArr = @[].mutableCopy;
     
     [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
     
@@ -164,39 +169,81 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] ;
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
-            /* 获取数据成功  数据写到rechararr数组里*/
-            NSMutableArray *recharge = [NSMutableArray arrayWithArray:dic[@"data"]];
-        
-            if (recharge.count!= 0) {
-               
-                for (NSInteger i = 0; i<recharge.count; i++) {
+            NSMutableArray *dataArr = [NSMutableArray arrayWithArray:[dic valueForKey:@"data"]];
+            NSLog(@"%@",dataArr);
+            if (dataArr.count !=0) {
+                
+                for (NSInteger i = 0; i<dataArr.count; i++) {
                     
-                    Recharge *reMod = [Recharge yy_modelWithJSON:recharge[i]];
                     
-                    reMod.idNumber = recharge[i][@"id"];
-                    reMod.timeStamp = recharge[i][@"app_pay_params"][@"timestamp"];
                     
-                    [_rechargeArr addObject:reMod];
+                    Recharge *mod = [Recharge yy_modelWithJSON:dataArr[i]];
+                    
+                    mod.idNumber = [dataArr[i] valueForKey:@"id"];
+//                    mod.timeStamp
+                        
+                    
+                    /* 目前暂不支持支付宝,预留支付宝的筛选接口*/
+                    
+                    if ([[dataArr[i] valueForKey:@"pay_type"]isEqualToString:@"alipay"]) {
+                        
+                        
+                        mod.timeStamp = @"无";
+                    }else{
+                        
+                        NSString *timeStamp = [[dataArr[i] valueForKey:@"app_pay_params"]valueForKey:@"timestamp"];
+                        
+                        NSTimeInterval time=[timeStamp integerValue]+28800;//因为时差问题要加8小时 == 28800 sec
+                        NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
+                        NSLog(@"date:%@",[detaildate description]);
+                        //实例化一个NSDateFormatter对象
+                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+                        //设定时间格式,这里可以设置成自己需要的格式
+                        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+                        NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
+                        
+                        mod.timeStamp = currentDateStr;
+                    }
+                    
+                    [_rechargeArr addObject:mod];
+                    
+                    
+                                        
                     
                 }
                 
                 
                 [_cashRecordView.rechargeView reloadData];
                 [_cashRecordView.rechargeView setNeedsDisplay];
-                [self loadingHUDStopLoadingWithTitle:@"加载成功!"];
-                
                 
             }else{
                 
-                /* 数据为0条*/
-                
-                [self loadingHUDStopLoadingWithTitle:@"没有充值记录!"];
+                /* 没有充值记录*/
                 
                 
             }
             
             
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        }else{
+            
+            /* 数据为0条*/
+            
+            [self loadingHUDStopLoadingWithTitle:@"没有充值记录!"];
+            
+            
         }
+        
+        
+        
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -224,13 +271,22 @@
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
             /* 获取数据成功  数据写到rechararr数组里*/
-            NSMutableArray *recharge = [NSMutableArray arrayWithArray:dic[@"data"]];
+            NSMutableArray *withDraw = [NSMutableArray arrayWithArray:dic[@"data"]];
             
-            if (recharge.count!=0) {
+            if (withDraw.count!=0) {
                 
-                for (NSInteger i = 0; i<recharge.count; i++) {
+                for (NSInteger i = 0; i<withDraw.count; i++) {
                     
-                    WithDraw *wiMod = [WithDraw yy_modelWithJSON:recharge[i]];
+                    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:withDraw[i]];
+                    for (NSString *key in withDraw[i]) {
+                        
+                        if ([dic valueForKey:key]==nil||[[dic valueForKey:key]isEqual:[NSNull null]]) {
+                            [dic setValue:@"" forKey:key];
+                            
+                        }
+                    }
+
+                    WithDraw *wiMod = [WithDraw yy_modelWithJSON:dic];
                     
                     [_withDrawArr addObject:wiMod];
                     
@@ -284,15 +340,24 @@
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
             /* 获取数据成功  数据写到rechararr数组里*/
-            NSMutableArray *recharge = [NSMutableArray arrayWithArray:dic[@"data"]];
+            NSMutableArray *payment = [NSMutableArray arrayWithArray:dic[@"data"]];
             
-            if (recharge.count!=0) {
+            if (payment.count!=0) {
                 
-                for (NSInteger i = 0; i<recharge.count; i++) {
+                for (NSInteger i = 0; i<payment.count; i++) {
                     
-                    Payment *payMod = [Payment yy_modelWithJSON:recharge[i]];
+                    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:payment[i]];
+                    for (NSString *key in payment[i]) {
+                        
+                        if ([dic valueForKey:key]==nil||[[dic valueForKey:key]isEqual:[NSNull null]]) {
+                            [dic setValue:@"" forKey:key];
+                            
+                        }
+                    }
                     
-                    payMod.idNumber = recharge[i][@"id"];
+                    Payment *payMod = [Payment yy_modelWithJSON:dic];
+                    
+                    payMod.idNumber = payment[i][@"id"];
                     
                     
                     [_paymentArr addObject:payMod];

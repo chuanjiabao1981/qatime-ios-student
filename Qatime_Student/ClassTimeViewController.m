@@ -26,7 +26,7 @@
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
 
-@interface ClassTimeViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>{
+@interface ClassTimeViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>{
     
     NSString  *_token;
     NSString *_idNumber;
@@ -56,6 +56,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES];
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+
     self.view.backgroundColor = [UIColor whiteColor];
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
     [self.view addSubview:_navigationBar];

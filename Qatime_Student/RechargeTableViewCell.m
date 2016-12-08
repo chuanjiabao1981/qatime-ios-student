@@ -149,23 +149,17 @@
     
     if ([model.pay_type isEqualToString:@"weixin"]) {
         _mode.text = @"微信支付";
-    }else{
+    }else if([model.pay_type isEqualToString:@"alipay"]){
         
-         _mode.text = @"线下支付";
+         _mode.text = @"支付宝支付";
+    }else if (![model.pay_type isEqualToString:@"alipay"]&&![model.pay_type isEqualToString:@"weixin"]){
+        _mode.text = @"线下支付";
+
     }
     
-    //时间戳
     
-    NSTimeInterval time=[model.timeStamp doubleValue]+28800;//因为时差问题要加8小时 == 28800 sec
-    NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
-    NSLog(@"date:%@",[detaildate description]);
-    //实例化一个NSDateFormatter对象
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
-    //设定时间格式,这里可以设置成自己需要的格式
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
-    /* 时间戳*/
-    _time.text = currentDateStr;
+        /* 时间戳*/
+    _time.text = model.timeStamp;
     
     /* 金额*/
     _money.text = [NSString stringWithFormat:@"+ ¥%@",model.amount];

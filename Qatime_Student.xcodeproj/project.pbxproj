@@ -283,6 +283,8 @@
 		54B4C1871DF8183800E31794 /* ChargeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B4C1861DF8183800E31794 /* ChargeView.m */; };
 		54B4C18A1DF8184500E31794 /* ChargeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B4C1891DF8184500E31794 /* ChargeViewController.m */; };
 		54B4C18C1DF8294B00E31794 /* alipay.png in Resources */ = {isa = PBXBuildFile; fileRef = 54B4C18B1DF8294B00E31794 /* alipay.png */; };
+		54B4C18F1DF8416500E31794 /* ConfirmChargeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B4C18E1DF8416500E31794 /* ConfirmChargeView.m */; };
+		54B4C1921DF8417400E31794 /* ConfirmChargeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B4C1911DF8417400E31794 /* ConfirmChargeViewController.m */; };
 		54B73CFB1DE3E40300B7A7EB /* MembersListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73CFA1DE3E40300B7A7EB /* MembersListView.m */; };
 		54B73CFE1DE3E42700B7A7EB /* MemberListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73CFD1DE3E42700B7A7EB /* MemberListTableViewCell.m */; };
 		54B73D041DE3E85A00B7A7EB /* ChineseString.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73D011DE3E85A00B7A7EB /* ChineseString.m */; };
@@ -833,6 +835,10 @@
 		54B4C1881DF8184500E31794 /* ChargeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChargeViewController.h; sourceTree = "<group>"; };
 		54B4C1891DF8184500E31794 /* ChargeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChargeViewController.m; sourceTree = "<group>"; };
 		54B4C18B1DF8294B00E31794 /* alipay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alipay.png; sourceTree = "<group>"; };
+		54B4C18D1DF8416500E31794 /* ConfirmChargeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmChargeView.h; sourceTree = "<group>"; };
+		54B4C18E1DF8416500E31794 /* ConfirmChargeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmChargeView.m; sourceTree = "<group>"; };
+		54B4C1901DF8417400E31794 /* ConfirmChargeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmChargeViewController.h; sourceTree = "<group>"; };
+		54B4C1911DF8417400E31794 /* ConfirmChargeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmChargeViewController.m; sourceTree = "<group>"; };
 		54B73CF91DE3E40300B7A7EB /* MembersListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MembersListView.h; sourceTree = "<group>"; };
 		54B73CFA1DE3E40300B7A7EB /* MembersListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MembersListView.m; sourceTree = "<group>"; };
 		54B73CFC1DE3E42700B7A7EB /* MemberListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberListTableViewCell.h; sourceTree = "<group>"; };
@@ -2175,6 +2181,7 @@
 			children = (
 				54B4C1841DF8181700E31794 /* View */,
 				54B4C1831DF8181600E31794 /* Controller */,
+				54B4C1931DF8417C00E31794 /* 确认充值页面 */,
 			);
 			name = "充值页面";
 			sourceTree = "<group>";
@@ -2195,6 +2202,33 @@
 				54B4C1861DF8183800E31794 /* ChargeView.m */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		54B4C1931DF8417C00E31794 /* 确认充值页面 */ = {
+			isa = PBXGroup;
+			children = (
+				54B4C1941DF8418500E31794 /* View */,
+				54B4C1951DF8418A00E31794 /* Controller */,
+			);
+			name = "确认充值页面";
+			sourceTree = "<group>";
+		};
+		54B4C1941DF8418500E31794 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54B4C18D1DF8416500E31794 /* ConfirmChargeView.h */,
+				54B4C18E1DF8416500E31794 /* ConfirmChargeView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54B4C1951DF8418A00E31794 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54B4C1901DF8417400E31794 /* ConfirmChargeViewController.h */,
+				54B4C1911DF8417400E31794 /* ConfirmChargeViewController.m */,
+			);
+			name = Controller;
 			sourceTree = "<group>";
 		};
 		54B73CF81DE3DA1700B7A7EB /* Controller */ = {
@@ -3376,6 +3410,7 @@
 				54AB48E11DED51B8008E3BC5 /* SafeViewController.m in Sources */,
 				54FB1DB51DF10B9B00BA9A3C /* UIViewController+VideoStatus.m in Sources */,
 				5413D2611DF7BC9400A8FDEC /* PaymentTableView.m in Sources */,
+				54B4C1921DF8417400E31794 /* ConfirmChargeViewController.m in Sources */,
 				54FCBAF31DD5CB6B0094BF58 /* NoticeTableViewCell.m in Sources */,
 				5413D26E1DF7CF1C00A8FDEC /* Recharge.m in Sources */,
 				548328EF1DDC6F360053AB29 /* UUMessageFrame.m in Sources */,
@@ -3414,6 +3449,7 @@
 				54652E3F1DEEBF0D00F4607C /* NoticeSettingTableViewCell.m in Sources */,
 				54652E1A1DEEB08200F4607C /* AboutUsTableViewCell.m in Sources */,
 				54CB26631DEFFBDF00AE7414 /* ChangePhoneViewController.m in Sources */,
+				54B4C18F1DF8416500E31794 /* ConfirmChargeView.m in Sources */,
 				54B4C1871DF8183800E31794 /* ChargeView.m in Sources */,
 				54D661291DD04DC900C9A0FF /* YZSquareMenu.m in Sources */,
 				54FCBAF61DD5D4500094BF58 /* VideoClassInfo.m in Sources */,

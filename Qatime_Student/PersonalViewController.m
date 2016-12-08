@@ -27,7 +27,7 @@
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.width
 
-@interface PersonalViewController ()<UITableViewDelegate,UITableViewDataSource>{
+@interface PersonalViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>{
     
     
     NSString *_token;
@@ -62,11 +62,21 @@
 
 @implementation PersonalViewController
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    
+    [self.rdv_tabBarController setTabBarHidden:NO];
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.00];
-    
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+
     
     
     
@@ -184,6 +194,7 @@
         
         [self.navigationController pushViewController:personVC animated:YES];
         [self.rdv_tabBarController setTabBarHidden:YES];
+        
     }else{
         
         [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
@@ -353,17 +364,20 @@
                 case 0:{
                     MyWalletViewController *mwVC = [MyWalletViewController new];
                     [self.navigationController pushViewController:mwVC animated:YES];
+                    [self.rdv_tabBarController setTabBarHidden:YES];
                 }
                     break;
                 case 1:{
                     
                     MyOrderViewController *moVC = [MyOrderViewController new];
                     [self.navigationController pushViewController:moVC animated:YES];
+                    [self.rdv_tabBarController setTabBarHidden:YES];
                 }
                     break;
                 case 2:{
                     MyClassViewController *mcVC = [MyClassViewController new];
                     [self.navigationController pushViewController:mcVC animated:YES];
+                    [self.rdv_tabBarController setTabBarHidden:YES];
                 }
                     break;
                     
@@ -378,12 +392,14 @@
                 case 0:{
                     SafeViewController *sVC = [SafeViewController new];
                     [self.navigationController pushViewController:sVC animated:YES];
+                    [self.rdv_tabBarController setTabBarHidden:YES];
                     
                 }
                     break;
                 case 1:{
                     SettingViewController *settingVC = [SettingViewController new];
                     [self.navigationController pushViewController:settingVC animated:YES];
+                    [self.rdv_tabBarController setTabBarHidden:YES];
                 }
                     break;
             }
@@ -408,6 +424,8 @@
     neVideoVC =[[NELivePlayerViewController alloc]initWithClassID:@"34"];
     
      [self.navigationController pushViewController:neVideoVC animated:YES];
+    
+    
 }
 
 

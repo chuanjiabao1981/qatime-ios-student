@@ -16,7 +16,7 @@
 #import "CashRecordViewController.h"
 #import "ChargeViewController.h"
 
-@interface MyWalletViewController ()<UITableViewDelegate,UITableViewDataSource>{
+@interface MyWalletViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>{
     
     
     NavigationBar *_navigationBar;
@@ -34,10 +34,20 @@
 
 @implementation MyWalletViewController
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    
+    
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     
     [self.rdv_tabBarController setTabBarHidden:YES];
     
@@ -126,6 +136,8 @@
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
+        
+        [self loadingHUDStopLoadingWithTitle:@"数据获取失败!请重试"];
     }];
     
     

@@ -9,6 +9,9 @@
 #import "ChargeViewController.h"
 #import "NavigationBar.h"
 #import "WXApi.h"
+#import "RDVTabBarController.h"
+
+#import "ConfirmChargeViewController.h"
 
 @interface ChargeViewController (){
     
@@ -104,18 +107,24 @@
             
             _payType = @"alipay";
             
+        }else if (_chargeView.wechatButton.selected!=YES&&_chargeView.alipayButton.selected != YES){
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择支付方式!" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+            }] ;
+            [alert addAction:sure];
+            [self presentViewController:alert animated:YES completion:nil];
+ 
         }
         
         [self chargeWithType:_payType];
     }
-    
-    
-    
+     
 }
 
 
 #pragma mark- 发送支付申请
-
 
 
 /**
@@ -194,6 +203,9 @@
     
     if (sender.selected ==YES) {
         
+        sender.selected = NO;
+        [sender setImage:nil forState:UIControlStateNormal];
+        
     }else{
         
         sender.selected = YES;
@@ -211,6 +223,9 @@
    
     if (sender.selected ==YES) {
         
+        sender.selected = NO;
+        [sender setImage:nil forState:UIControlStateNormal];
+        
     }else{
         
         sender.selected = YES;
@@ -221,6 +236,15 @@
         
     }
 
+    
+    
+}
+/* 检查支付结果*/
+- (void)CheckPayStatus{
+    
+    ConfirmChargeViewController *conVC = [ConfirmChargeViewController new];
+    [self.navigationController pushViewController:conVC animated:YES];
+    [self.rdv_tabBarController setTabBarHidden:YES];
     
     
 }
