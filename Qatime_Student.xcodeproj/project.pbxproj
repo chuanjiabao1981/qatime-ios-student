@@ -73,6 +73,11 @@
 		54294F631DDB44C200677333 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FC81DD4714100F1282B /* CoreAudio.framework */; };
 		54294F641DDB44DC00677333 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FCA1DD4714700F1282B /* CoreGraphics.framework */; };
 		54294F651DDB44EC00677333 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FD01DD4715D00F1282B /* CoreVideo.framework */; };
+		542C17381DFA50460088DB3F /* PaidOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C17371DFA50460088DB3F /* PaidOrderTableViewCell.m */; };
+		542C173B1DFA50610088DB3F /* CancelOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C173A1DFA50610088DB3F /* CancelOrderTableViewCell.m */; };
+		542C173E1DFA50760088DB3F /* Unpaid.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C173D1DFA50760088DB3F /* Unpaid.m */; };
+		542C17411DFA507E0088DB3F /* Paid.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C17401DFA507E0088DB3F /* Paid.m */; };
+		542C17441DFA508A0088DB3F /* Canceld.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C17431DFA508A0088DB3F /* Canceld.m */; };
 		5435D9341DD2B42100DD4FCC /* RecommandClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9331DD2B42100DD4FCC /* RecommandClasses.m */; };
 		5435D9371DD2C12300DD4FCC /* ClassesListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9361DD2C12300DD4FCC /* ClassesListTableViewCell.m */; };
 		5435D93A1DD2C2C100DD4FCC /* ClassesInfo_Time.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9391DD2C2C100DD4FCC /* ClassesInfo_Time.m */; };
@@ -437,6 +442,16 @@
 		54294EBC1DDB400E00677333 /* ReleaseNote.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ReleaseNote.md; sourceTree = "<group>"; };
 		54294F581DDB401700677333 /* NELivePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NELivePlayer.h; sourceTree = "<group>"; };
 		54294F591DDB401700677333 /* NELivePlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NELivePlayerController.h; sourceTree = "<group>"; };
+		542C17361DFA50460088DB3F /* PaidOrderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaidOrderTableViewCell.h; sourceTree = "<group>"; };
+		542C17371DFA50460088DB3F /* PaidOrderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaidOrderTableViewCell.m; sourceTree = "<group>"; };
+		542C17391DFA50610088DB3F /* CancelOrderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CancelOrderTableViewCell.h; sourceTree = "<group>"; };
+		542C173A1DFA50610088DB3F /* CancelOrderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CancelOrderTableViewCell.m; sourceTree = "<group>"; };
+		542C173C1DFA50760088DB3F /* Unpaid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Unpaid.h; sourceTree = "<group>"; };
+		542C173D1DFA50760088DB3F /* Unpaid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Unpaid.m; sourceTree = "<group>"; };
+		542C173F1DFA507E0088DB3F /* Paid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paid.h; sourceTree = "<group>"; };
+		542C17401DFA507E0088DB3F /* Paid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Paid.m; sourceTree = "<group>"; };
+		542C17421DFA508A0088DB3F /* Canceld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Canceld.h; sourceTree = "<group>"; };
+		542C17431DFA508A0088DB3F /* Canceld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Canceld.m; sourceTree = "<group>"; };
 		5435D9321DD2B42100DD4FCC /* RecommandClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommandClasses.h; sourceTree = "<group>"; };
 		5435D9331DD2B42100DD4FCC /* RecommandClasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommandClasses.m; sourceTree = "<group>"; };
 		5435D9351DD2C12300DD4FCC /* ClassesListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassesListTableViewCell.h; sourceTree = "<group>"; };
@@ -2016,6 +2031,10 @@
 			children = (
 				54AA30991DF98D30009E0D04 /* MyOrderTableViewCell.h */,
 				54AA309A1DF98D30009E0D04 /* MyOrderTableViewCell.m */,
+				542C17361DFA50460088DB3F /* PaidOrderTableViewCell.h */,
+				542C17371DFA50460088DB3F /* PaidOrderTableViewCell.m */,
+				542C17391DFA50610088DB3F /* CancelOrderTableViewCell.h */,
+				542C173A1DFA50610088DB3F /* CancelOrderTableViewCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -2193,6 +2212,12 @@
 		54AB48C21DED2D6E008E3BC5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				542C173C1DFA50760088DB3F /* Unpaid.h */,
+				542C173D1DFA50760088DB3F /* Unpaid.m */,
+				542C173F1DFA507E0088DB3F /* Paid.h */,
+				542C17401DFA507E0088DB3F /* Paid.m */,
+				542C17421DFA508A0088DB3F /* Canceld.h */,
+				542C17431DFA508A0088DB3F /* Canceld.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -3440,6 +3465,7 @@
 				54D66F7C1DEC33B100ED2EBC /* AllClassView.m in Sources */,
 				5435D9371DD2C12300DD4FCC /* ClassesListTableViewCell.m in Sources */,
 				5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */,
+				542C17411DFA507E0088DB3F /* Paid.m in Sources */,
 				547E89901DD1D03100749366 /* TutoriumInfoViewController.m in Sources */,
 				54D66F721DEBF5FE00ED2EBC /* AlreadyClassView.m in Sources */,
 				547E898D1DD1D01B00749366 /* TutoriumInfoView.m in Sources */,
@@ -3460,6 +3486,7 @@
 				549A051E1DC892E500B3564D /* GradeList.m in Sources */,
 				54DBA4B21DE4423300A67A90 /* YZEmotionKeyboard.m in Sources */,
 				54AB48D81DED5183008E3BC5 /* MyWalletViewController.m in Sources */,
+				542C17441DFA508A0088DB3F /* Canceld.m in Sources */,
 				54B73D0F1DE40E1800B7A7EB /* NSString+ContainEmoji.m in Sources */,
 				547A7EF71DD411DB00F1282B /* TeachersPublic_Classes.m in Sources */,
 				54AB48CE1DED31D3008E3BC5 /* HeadBackView.m in Sources */,
@@ -3492,6 +3519,7 @@
 				54B4C1921DF8417400E31794 /* ConfirmChargeViewController.m in Sources */,
 				54AA30821DF950CA009E0D04 /* CheckChargeView.m in Sources */,
 				54FCBAF31DD5CB6B0094BF58 /* NoticeTableViewCell.m in Sources */,
+				542C173B1DFA50610088DB3F /* CancelOrderTableViewCell.m in Sources */,
 				5413D26E1DF7CF1C00A8FDEC /* Recharge.m in Sources */,
 				548328EF1DDC6F360053AB29 /* UUMessageFrame.m in Sources */,
 				5435D9521DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m in Sources */,
@@ -3515,6 +3543,8 @@
 				54B73CFE1DE3E42700B7A7EB /* MemberListTableViewCell.m in Sources */,
 				54294F541DDB400E00677333 /* ReleaseNote.md in Sources */,
 				548328EA1DDC6F360053AB29 /* UUImageAvatarBrowser.m in Sources */,
+				542C17381DFA50460088DB3F /* PaidOrderTableViewCell.m in Sources */,
+				542C173E1DFA50760088DB3F /* Unpaid.m in Sources */,
 				54DBA4BA1DE442D900A67A90 /* YZInputView.m in Sources */,
 				5407C9961DE7DE8400DB04C8 /* NSNumber+YYAdd.m in Sources */,
 				541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */,

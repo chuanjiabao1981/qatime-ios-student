@@ -1,14 +1,14 @@
 //
-//  MyOrderTableViewCell.m
+//  PaidOrderTableViewCell.m
 //  Qatime_Student
 //
-//  Created by Shin on 2016/12/8.
+//  Created by Shin on 2016/12/9.
 //  Copyright © 2016年 WWTD. All rights reserved.
 //
 
-#import "MyOrderTableViewCell.h"
+#import "PaidOrderTableViewCell.h"
 
-@implementation MyOrderTableViewCell
+@implementation PaidOrderTableViewCell
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -29,13 +29,13 @@
         UILabel *totl = [[UILabel alloc]init];
         totl.text = @"/共";
         totl.textColor = [UIColor lightGrayColor];
-
+        
         
         
         UILabel *tot = [[UILabel alloc]init];
         tot.text = @"课/";
         tot.textColor = [UIColor lightGrayColor];
-//
+        //
         
         /* 课时*/
         _classTime=[[UILabel alloc]init];
@@ -44,11 +44,11 @@
         /* 教师姓名*/
         _teacherName=[[UILabel alloc]init];
         _teacherName.textColor = [UIColor lightGrayColor];
-
+        
         /* 支付状态*/
         _status=[[UILabel alloc]init];
         _status.textColor = [UIColor blueColor];
-
+        
         /* 金额*/
         _price=[[UILabel alloc]init];
         _price.textColor = [UIColor redColor];
@@ -67,7 +67,7 @@
         _rightButton.layer.borderWidth = 0.8;
         [_rightButton setTitle:@"付款" forState:UIControlStateNormal];
         [_rightButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-
+        
         
         /* 布局*/
         [self.contentView sd_addSubviews:@[_name,_subject,_grade,_classTime,totl,tot,_teacherName,_status,_price,_leftButton,_rightButton]];
@@ -94,8 +94,8 @@
         .bottomEqualToView(_subject);
         [_grade setSingleLineAutoResizeWithMaxWidth:100];
         
-
-
+        
+        
         /* 课时*/
         
         totl.sd_layout
@@ -103,13 +103,10 @@
         .topEqualToView(_grade)
         .bottomEqualToView(_grade);
         [totl setSingleLineAutoResizeWithMaxWidth:100.0];
-       
-        
         
         [_classTime clearAutoHeigtSettings];
-    
         
-        _classTime.sd_layout
+        _classTime.sd_resetLayout
         .leftSpaceToView(totl,0)
         .topEqualToView(_grade)
         .autoHeightRatio(0);
@@ -160,7 +157,7 @@
         .bottomEqualToView(_rightButton)
         .heightRatioToView(_rightButton,1.0)
         .widthRatioToView(_rightButton,1.0);
-       
+        
         
         /* 金额*/
         _price.sd_layout
@@ -168,10 +165,8 @@
         .rightSpaceToView(_leftButton,10)
         .centerYEqualToView(_leftButton)
         .autoHeightRatio(0);
-       
+        
         [self setupAutoHeightWithBottomView:_leftButton bottomMargin:10];
-        
-        
         
         
     }
@@ -179,41 +174,26 @@
     return self;
 }
 
--(void)setUnpaidModel:(Unpaid *)unpaidModel{
-    
-    _classTime .text = unpaidModel.preset_lesson_count ;
-    _unpaidModel = unpaidModel;
-    _name.text = unpaidModel.name;
-    _subject.text = unpaidModel.subject;
-    _grade.text = unpaidModel.grade;
-    _teacherName.text = unpaidModel.teacher_name;
-    
-    _price.text = [NSString stringWithFormat:@"¥%@",unpaidModel.price];
 
-    if ([unpaidModel.status isEqualToString:@"unpaid"]) {
+-(void)setPaidModel:(Paid *)paidModel{
+    
+    _paidModel = paidModel;
+    _classTime .text = paidModel.preset_lesson_count ;
+    _name.text = paidModel.name;
+    _subject.text = paidModel.subject;
+    _grade.text = paidModel.grade;
+    _teacherName.text = paidModel.teacher_name;
+    
+    _price.text = [NSString stringWithFormat:@"¥%@",paidModel.price];
+    
+    if ([paidModel.status isEqualToString:@"unpaid"]) {
         _status.text = @"待付款";
-    }else if ([unpaidModel.status isEqualToString:@"shipped"]){
-        _status.text = @"交易完成";
-    }else if ([unpaidModel.status isEqualToString:@"canceled"]){
+    }else if ([paidModel.status isEqualToString:@"shipped"]){
+       _status.text = @"交易完成";
+    }else if ([paidModel.status isEqualToString:@"canceled"]){
         _status.text = @"已取消";
     }
     
-    
-    
-    
-}
-
-
-
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    // Initialization code
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 @end

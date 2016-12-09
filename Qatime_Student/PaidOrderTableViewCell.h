@@ -1,15 +1,16 @@
 //
-//  MyOrderTableViewCell.h
+//  PaidOrderTableViewCell.h
 //  Qatime_Student
 //
-//  Created by Shin on 2016/12/8.
+//  Created by Shin on 2016/12/9.
 //  Copyright © 2016年 WWTD. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "Unpaid.h"
+#import "MyOrderTableViewCell.h"
+#import "Paid.h"
 
-@interface MyOrderTableViewCell : UITableViewCell
+@interface PaidOrderTableViewCell : UITableViewCell
+
 /* 课程名*/
 @property(nonatomic,strong) UILabel  *name ;
 /* 科目*/
@@ -30,8 +31,8 @@
 /* 右侧按钮*/
 @property(nonatomic,strong) UIButton *rightButton ;
 
-/* frame model*/
-@property(nonatomic,strong) Unpaid *unpaidModel ;
 
+
+@property(nonatomic,strong) Paid *paidModel;
 
 @end

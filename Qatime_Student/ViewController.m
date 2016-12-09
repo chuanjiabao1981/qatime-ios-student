@@ -95,9 +95,9 @@
     
         [item setFinishedSelectedImage:selectedImage[i] withFinishedUnselectedImage:unselectedImage[i]];
         [item setTitle:titles[i]];
-        item.unselectedTitleAttributes= @{NSForegroundColorAttributeName:[UIColor lightGrayColor]};
+        item.unselectedTitleAttributes= @{NSForegroundColorAttributeName:[UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:1.00]};
         
-        item.selectedTitleAttributes=@{NSForegroundColorAttributeName:[UIColor redColor]};
+        item.selectedTitleAttributes=@{NSForegroundColorAttributeName:TITLERED};
         [item setTitlePositionAdjustment:UIOffsetMake(0, 3)];
         
         [items addObject:item];
@@ -108,7 +108,7 @@
    
     self.selectedIndex=0;
     
-    self.tabBar.height=63.0f;
+    self.tabBar.height = TabBar_Height;
     
    
     

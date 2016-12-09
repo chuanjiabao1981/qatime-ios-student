@@ -115,6 +115,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__38-[MyOrderViewController requestUnpaid]_block_invoke:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unpaidArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[ChangePasswordViewController textDidChange:]:ChangePasswordViewController.m">
       </ContextState>
       <ContextState
@@ -144,6 +152,14 @@
       </ContextState>
       <ContextState
          contextName = "__34-[BindingViewController nextStep:]_block_invoke:BindingViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[MyOrderViewController tableView:cellForRowAtIndexPath:]:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_paidArr">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__copy_helper_block_:CashRecordViewController.m">
@@ -256,6 +272,22 @@
             </PersistentString>
             <PersistentString
                value = "funcView.TextViewInput.attributedText.string">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__36-[MyOrderViewController requestPaid]_block_invoke:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "paidPage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__36-[MyOrderViewController viewDidLoad]_block_invoke.89:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "paidPage">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

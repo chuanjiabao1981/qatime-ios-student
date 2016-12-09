@@ -17,38 +17,6 @@
             endingLineNumber = "57"
             landmarkName = "-touchesIconIndex:"
             landmarkType = "6">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[YZSquareMenu collectionMenu]"
-                  moduleName = "Qatime_Student"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Qatime_Student/YZSquareMenu.h"
-                  timestampString = "502892842.457067"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "64"
-                  endingLineNumber = "64"
-                  offsetFromSymbolStart = "20">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[YZSquareMenu setCollectionMenu:]"
-                  moduleName = "Qatime_Student"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Qatime_Student/YZSquareMenu.h"
-                  timestampString = "502892842.458859"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "64"
-                  endingLineNumber = "64"
-                  offsetFromSymbolStart = "64">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -441,13 +409,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/MyOrderTableViewCell.m"
-            timestampString = "502895011.025582"
+            filePath = "Qatime_Student/MyOrderViewController.m"
+            timestampString = "502978635.273007"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
-            landmarkName = "-initWithStyle:reuseIdentifier:"
+            startingLineNumber = "384"
+            endingLineNumber = "384"
+            landmarkName = "-requestPaid"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -457,13 +425,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/MyOrderTableViewCell.m"
-            timestampString = "502895011.601951"
+            filePath = "Qatime_Student/MyOrderViewController.m"
+            timestampString = "502978390.015177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "-initWithStyle:reuseIdentifier:"
+            startingLineNumber = "318"
+            endingLineNumber = "318"
+            landmarkName = "-requestUnpaid"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -473,13 +441,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/MyOrderTableViewCell.m"
-            timestampString = "502895012.210393"
+            filePath = "Qatime_Student/MyOrderViewController.m"
+            timestampString = "502978406.198904"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
-            landmarkName = "-initWithStyle:reuseIdentifier:"
+            startingLineNumber = "317"
+            endingLineNumber = "317"
+            landmarkName = "-requestUnpaid"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

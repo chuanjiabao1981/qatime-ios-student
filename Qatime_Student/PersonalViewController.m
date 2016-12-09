@@ -17,6 +17,7 @@
 #import "MyClassViewController.h"
 #import "SafeViewController.h"
 #import "SettingViewController.h"
+#import "MyOrderViewController.h"
 
 #import "UIViewController_HUD.h"
 #import "UIViewController+HUD.h"

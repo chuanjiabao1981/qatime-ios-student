@@ -38,6 +38,17 @@
 /*按钮红色*/
 #define BUTTONRED [UIColor colorWithRed:0.79 green:0.00 blue:0.0 alpha:1.00] 
 
+/* 标题红色*/
+#define TITLERED [UIColor colorWithRed:0.75 green:0.04 blue:0.04 alpha:1.00]
+
+/* tabbar高度*/
+
+#define TabBar_Height 49;
+
+/* navigation高度*/
+#define Navigation_Height 64;
+
+
 
 #import "UIView+FontSize.h"
 #import <objc/runtime.h>

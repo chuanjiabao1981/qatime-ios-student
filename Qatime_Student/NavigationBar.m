@@ -15,11 +15,12 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = TITLERED;
         
         UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(frame)-0.8, CGRectGetWidth(frame), 0.8)];
         [self addSubview:line];
         line.backgroundColor  =[UIColor lightGrayColor];
+        
         
     
     }
@@ -36,7 +37,7 @@
 
 - (UIButton *)leftButton{
     
-    _leftButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 30, 30, 30)];
+    _leftButton = [[UIButton alloc]initWithFrame:CGRectMake(10, 30, 30, 30)];
     [self addSubview:_leftButton];
 
     return _leftButton;
@@ -44,7 +45,7 @@
 
 -(UIButton *)rightButton{
     
-    _rightButton = [[UIButton alloc]initWithFrame:CGRectMake((CGRectGetWidth(self.frame)-40), 20, 40, 40)];
+    _rightButton = [[UIButton alloc]initWithFrame:CGRectMake((CGRectGetWidth(self.frame)-50), 20, 40, 40)];
     [self addSubview:_rightButton];
 
     return _rightButton;
@@ -57,7 +58,7 @@
     [self addSubview:_titleLabel];
     
     
-    [_titleLabel setTextColor:[UIColor redColor]];
+    [_titleLabel setTextColor:[UIColor whiteColor]];
     [_titleLabel setTextAlignment:NSTextAlignmentCenter];
     [_titleLabel setFont:[UIFont systemFontOfSize:20]];
     

@@ -35,7 +35,6 @@
             _.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor]};
             _.selectedSegmentIndex = 0;
             _.verticalDividerEnabled = NO;
-            _.userDraggable = NO;
             _;
         });
         
