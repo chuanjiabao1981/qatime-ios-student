@@ -64,5 +64,6 @@
 @property(nonatomic,strong) NSString *appid ;
 @property(nonatomic,strong) NSString *pay_type;
 @property(nonatomic,strong) NSString *timestamp ;
+@property(nonatomic,strong) NSString *orderID ;
 
 @end

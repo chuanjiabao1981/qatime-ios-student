@@ -10,12 +10,20 @@
 #import "LoginView.h"
 #import "SignUpViewController.h"
 #import "Chat_Account.h"
+#import "NavigationBar.h"
 
-@interface LoginViewController : UIViewController
+@interface LoginViewController : UIViewController{
+    
+    
+    
+}
 
 @property(nonatomic,strong) LoginView  *loginView ;
 
 /* 密码输入错误次数*/
 @property(nonatomic,assign) NSInteger wrongTimes;
+
+//-(instancetype)initWithReturnButton:(BOOL)returnButton;
+
 
 @end

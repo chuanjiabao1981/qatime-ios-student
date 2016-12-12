@@ -16,6 +16,8 @@
 #import "CashRecordViewController.h"
 #import "ChargeViewController.h"
 
+#import "WithDrawViewController.h"
+
 @interface MyWalletViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>{
     
     
@@ -87,9 +89,12 @@
     _myWalletView.menuTableView.delegate = self;
     _myWalletView.menuTableView.dataSource = self;
     
+    /* 我的订单  充值记录点击时间*/
     [_myWalletView.rechargeButton addTarget:self action:@selector(recharge) forControlEvents:UIControlEventTouchUpInside];
     
     
+    /* 我的订单 提现功能*/
+    [_myWalletView.widthDrawButon addTarget:self action:@selector(widthDraw) forControlEvents:UIControlEventTouchUpInside];
     
     
     
@@ -117,6 +122,13 @@
             /* 数据加载成功*/
             _myWalletView.balance.text = [NSString stringWithFormat:@"¥%@",dic[@"data"][@"balance"]];
             _myWalletView.total.text =[NSString stringWithFormat:@"¥%@",dic[@"data"][@"total_expenditure"]];
+            
+            
+            
+            /* 余额数据存本地*/
+            [[NSUserDefaults standardUserDefaults]setObject:dic[@"data"][@"balance"] forKey:@"balance"];
+            
+            
             
             [_myWalletView updateLayout];
             
@@ -195,6 +207,14 @@
     
 }
 
+#pragma mark- 进入提现页面
+- (void)widthDraw{
+    
+    WithDrawViewController *withVC = [WithDrawViewController new];
+    
+    [self.navigationController pushViewController:withVC animated:YES];
+    
+}
 
 
 - (void) returnLastPage{

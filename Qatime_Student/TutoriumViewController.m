@@ -20,7 +20,7 @@
 
 #import "TutoriumInfoViewController.h"
 
-@interface TutoriumViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource>{
+@interface TutoriumViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UIGestureRecognizerDelegate>{
     
     /* 筛选条件的字段*/
     /* 筛选年级*/
@@ -141,9 +141,17 @@
 @implementation TutoriumViewController
 
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    
+    
+}
+
 
 - (void)viewDidAppear:(BOOL)animated{
-    
+    [super viewDidAppear:animated];
+    [self.rdv_tabBarController setTabBarHidden:NO];
     
     
     
@@ -157,7 +165,7 @@
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
 
-    
+//    [self.rdv_tabBarController setTabBarHidden:NO];
     
     [self loadingHUDStartLoadingWithTitle:@"正在加载"];
     

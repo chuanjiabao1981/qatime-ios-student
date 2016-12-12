@@ -35,6 +35,8 @@
 @property(nonatomic,assign) BOOL is_tasting ;
 @property(nonatomic,assign) BOOL is_bought ;
 
+@property(nonatomic,strong) NSString *status;
+
 @end
 
 

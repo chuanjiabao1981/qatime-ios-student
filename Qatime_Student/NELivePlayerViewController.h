@@ -82,7 +82,6 @@
 -(instancetype)initWithClassID:(NSString *)classID;
 
 
-
 /**
  传入课程id和播放地址的初始化器
 
@@ -91,7 +90,7 @@
  @param teacherPullAddress 教师拉流地址
  @return 播放器对象
  */
--(instancetype)initWithClassID:(NSString *)classID andBoardPullAddress:(NSURL *)boardPullAddress andTeacherPullAddress:(NSURL *)teacherPullAddress;
+//-(instancetype)initWithClassID:(NSString *)classID andBoardPullAddress:(NSURL *)boardPullAddress andTeacherPullAddress:(NSURL *)teacherPullAddress;
 
 
 

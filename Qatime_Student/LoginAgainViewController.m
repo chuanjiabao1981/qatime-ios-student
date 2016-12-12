@@ -1,12 +1,12 @@
 //
-//  LoginViewController.m
-//  Login
+//  LoginAgainViewController.m
+//  Qatime_Student
 //
-//  Created by Shin on 2016/10/31.
+//  Created by Shin on 2016/12/10.
 //  Copyright © 2016年 WWTD. All rights reserved.
 //
 
-#import "LoginViewController.h"
+#import "LoginAgainViewController.h"
 #import "MBProgressHUD.h"
 #import "FindPasswordViewController.h"
 #import "YYModel.h"
@@ -15,9 +15,11 @@
 #import "UIViewController+HUD.h"
 #import "UIViewController_HUD.h"
 
+#import "Chat_Account.h"
+
 #import "BindingViewController.h"
 
-@interface LoginViewController ()<UITextFieldDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate>{
+@interface LoginAgainViewController ()<UITextFieldDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate>{
     
     
     NavigationBar *_navigationBar;
@@ -52,15 +54,15 @@
 
 @end
 
-@implementation LoginViewController
+@implementation LoginAgainViewController
 
 //-(instancetype)initWithReturnButton:(BOOL)returnButton{
-//    
+//
 //    self = [super init];
 //    if (self) {
-//        
+//
 //        haveReturnButton = returnButton;
-//        
+//
 //    }
 //    return self;
 //}
@@ -75,29 +77,21 @@
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
-    _navigationBar.backgroundColor= [UIColor whiteColor];
+//    _navigationBar.backgroundColor= [UIColor whiteColor];
+    
+    _navigationBar.titleLabel.text = @"登录";
+    
     [self .view addSubview:_navigationBar];
-    /* logo图片布局*/
-    _logoImage = [[UIImageView alloc]init];
-    [_navigationBar addSubview:_logoImage];
-    [_logoImage setImage:[UIImage imageNamed:@"Logo"]];
-    
-    _logoImage.sd_layout
-    .topSpaceToView(_navigationBar,30)
-    .bottomSpaceToView(_navigationBar,10)
-    .centerXEqualToView(_navigationBar)
-    .widthIs(24*1080/208.0f);
-    
-    /* 判断登录是否有返回按钮*/
-//    if (haveReturnButton==YES) {
-//        
-//        [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-//        
-//        [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-//        
-//    }
 
-
+    
+    
+    
+            [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+    
+            [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+   
+    
+    
     
     
     
@@ -108,65 +102,65 @@
     _wrongTimes = 0;
     _captcha =[NSMutableString string ];
     
-    _loginView = [[LoginView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
-    [self.view addSubview:_loginView];
+    _loginAgainView = [[LoginAgainView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
+    [self.view addSubview:_loginAgainView];
     
     
     
     
     
-//    /* status bar的绿色*/
-//    UIView *status=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 20)];
-//    [self .view addSubview:status];
-//    [status setBackgroundColor:[UIColor colorWithRed:26/255.0 green:183/255.0 blue:159/255.0 alpha:1.0]];
+    //    /* status bar的绿色*/
+    //    UIView *status=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 20)];
+    //    [self .view addSubview:status];
+    //    [status setBackgroundColor:[UIColor colorWithRed:26/255.0 green:183/255.0 blue:159/255.0 alpha:1.0]];
     
-    [_loginView.signUpButton addTarget:self action:@selector(enterSignUpPage:) forControlEvents:UIControlEventTouchUpInside];
+    [_loginAgainView.signUpButton addTarget:self action:@selector(enterSignUpPage:) forControlEvents:UIControlEventTouchUpInside];
     
-    [_loginView.loginButton addTarget:self action:@selector(userLogin:) forControlEvents:UIControlEventTouchUpInside];
-    _loginView.userName.delegate = self;
-    _loginView.passWord.delegate = self;
+    [_loginAgainView.loginButton addTarget:self action:@selector(userLogin:) forControlEvents:UIControlEventTouchUpInside];
+    _loginAgainView.userName.delegate = self;
+    _loginAgainView.passWord.delegate = self;
     
     
     
     
     //增加监听，当键盘出现或改变时收出消息
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//     
-//                                             selector:@selector(keyboardWillShow:)
-//     
-//                                                 name:UIKeyboardWillShowNotification
-//     
-//                                               object:nil];
-//    
+    //    [[NSNotificationCenter defaultCenter] addObserver:self
+    //
+    //                                             selector:@selector(keyboardWillShow:)
+    //
+    //                                                 name:UIKeyboardWillShowNotification
+    //
+    //                                               object:nil];
+    //
     
     
     //增加监听，当键退出时收出消息
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//     
-//                                             selector:@selector(keyboardWillHide:)
-//     
-//                                                 name:UIKeyboardWillHideNotification
-//     
-//                                               object:nil];
+    //    [[NSNotificationCenter defaultCenter] addObserver:self
+    //
+    //                                             selector:@selector(keyboardWillHide:)
+    //
+    //                                                 name:UIKeyboardWillHideNotification
+    //
+    //                                               object:nil];
     
     
     
     
     /* 忘记密码按钮*/
-    [_loginView.forgottenPassorwdButton addTarget:self action:@selector(forgetPassword) forControlEvents:UIControlEventTouchUpInside];
+    [_loginAgainView.forgottenPassorwdButton addTarget:self action:@selector(forgetPassword) forControlEvents:UIControlEventTouchUpInside];
     
     /* 错误次数达到5次的监听*/
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyCodeAppear) name:@"FivethWrongTime" object:nil];
     /* 验证码按钮的点击事件*/
-    [_loginView.keyCodeButton addTarget:self action:@selector(makeCaptcha) forControlEvents:UIControlEventTouchUpInside];
+    [_loginAgainView.keyCodeButton addTarget:self action:@selector(makeCaptcha) forControlEvents:UIControlEventTouchUpInside];
     
     
     /* 微信按钮加点击事件 点击登录*/
     
-    [_loginView.wechatButton addTarget:self action:@selector(sendAuthRequest) forControlEvents:UIControlEventTouchUpInside];
+    [_loginAgainView.wechatButton addTarget:self action:@selector(sendAuthRequest) forControlEvents:UIControlEventTouchUpInside];
     
     
     
@@ -174,17 +168,17 @@
     
     /**
      测试调用方法
-
+     
      @param sendAuthRequest
      @return
      */
-//    [_loginView.wechatButton addTarget:self action:@selector(mypage) forControlEvents:UIControlEventTouchUpInside];
+    //    [_loginAgainView.wechatButton addTarget:self action:@selector(mypage) forControlEvents:UIControlEventTouchUpInside];
     
     
     
     /* 跳过登录直接进主页的方法*/
     
-    [_loginView.acrossLogin addTarget:self action:@selector(enterWithoutLogin) forControlEvents:UIControlEventTouchUpInside];
+    [_loginAgainView.acrossLogin addTarget:self action:@selector(enterWithoutLogin) forControlEvents:UIControlEventTouchUpInside];
     
     
     
@@ -233,7 +227,7 @@
         
     }];
     
-
+    
 }
 
 
@@ -264,15 +258,15 @@
     needCheckCaptcha = YES;
     
     /* 验证码框出现,改变布局*/
-    _loginView.keyCodeButton.hidden = NO;
-    _loginView.text3.hidden = NO;
-    _loginView.keyCodeText.hidden = NO;
+    _loginAgainView.keyCodeButton.hidden = NO;
+    _loginAgainView.text3.hidden = NO;
+    _loginAgainView.keyCodeText.hidden = NO;
     
-    _loginView.loginButton.sd_resetLayout
-    .topSpaceToView(_loginView.text3,20)
-    .leftEqualToView(_loginView.text3)
-    .rightEqualToView(_loginView.keyCodeButton)
-    .heightRatioToView(_loginView.text2,0.8);
+    _loginAgainView.loginButton.sd_resetLayout
+    .topSpaceToView(_loginAgainView.text3,20)
+    .leftEqualToView(_loginAgainView.text3)
+    .rightEqualToView(_loginAgainView.keyCodeButton)
+    .heightRatioToView(_loginAgainView.text2,0.8);
     
     
     [self makeCaptcha];
@@ -300,7 +294,7 @@
         _captcha = (NSMutableString *)[_captcha stringByAppendingString:getStr];
     }
     
-    [_loginView.keyCodeButton setTitle:_captcha forState:UIControlStateNormal];
+    [_loginAgainView.keyCodeButton setTitle:_captcha forState:UIControlStateNormal];
 }
 
 
@@ -339,7 +333,7 @@
     
     
     /* 如果用户名为空*/
-    if ([_loginView.userName.text isEqualToString:@""]) {
+    if ([_loginAgainView.userName.text isEqualToString:@""]) {
         
         /* 弹出alert框 提示输入账户名*/
         UIAlertController *alert =[UIAlertController alertControllerWithTitle:@"提示" message:@"账号不能为空！" preferredStyle:UIAlertControllerStyleAlert];
@@ -351,7 +345,7 @@
     }
     
     /* 如果密码为空*/
-    if ([_loginView.passWord.text isEqualToString:@""]) {
+    if ([_loginAgainView.passWord.text isEqualToString:@""]) {
         
         /* 弹出alert框 提示输入账户名*/
         UIAlertController *alert =[UIAlertController alertControllerWithTitle:@"提示" message:@"密码不能为空！" preferredStyle:UIAlertControllerStyleAlert];
@@ -364,10 +358,10 @@
     
     
     
-    if (![_loginView.userName.text isEqualToString:@""]&![_loginView.passWord.text isEqualToString:@""]) {
-       
+    if (![_loginAgainView.userName.text isEqualToString:@""]&![_loginAgainView.passWord.text isEqualToString:@""]) {
+        
         /* 判断是否需要输入验证码*/
-        if (needCheckCaptcha == YES&&[_loginView.keyCodeText.text isEqualToString:@""]) {
+        if (needCheckCaptcha == YES&&[_loginAgainView.keyCodeText.text isEqualToString:@""]) {
             
             /* 弹出alert框 提示输入验证码*/
             UIAlertController *alert =[UIAlertController alertControllerWithTitle:@"提示" message:@"请输入验证码！" preferredStyle:UIAlertControllerStyleAlert];
@@ -376,7 +370,7 @@
             
             [self presentViewController:alert animated:YES completion:nil];
         }
-        if (needCheckCaptcha == YES&&![_loginView.keyCodeText.text.lowercaseString isEqualToString:_captcha.lowercaseString]) {
+        if (needCheckCaptcha == YES&&![_loginAgainView.keyCodeText.text.lowercaseString isEqualToString:_captcha.lowercaseString]) {
             
             /* 弹出alert框 提示输入正确的验证码*/
             UIAlertController *alert =[UIAlertController alertControllerWithTitle:@"提示" message:@"请输入正确的验证码！" preferredStyle:UIAlertControllerStyleAlert];
@@ -389,7 +383,7 @@
         
         
         /* 不需要输入验证码或者验证码输入正确的情况*/
-        if (needCheckCaptcha == NO || (needCheckCaptcha == YES&&[_loginView.keyCodeText.text.lowercaseString isEqualToString:_captcha.lowercaseString])) {
+        if (needCheckCaptcha == NO || (needCheckCaptcha == YES&&[_loginAgainView.keyCodeText.text.lowercaseString isEqualToString:_captcha.lowercaseString])) {
             /* HUD框 提示正在登陆*/
             MBProgressHUD *hud=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
             hud.mode = MBProgressHUDModeDeterminate;
@@ -398,8 +392,8 @@
             
             
             /* 对应接口要上传的用户登录账号密码*/
-            NSDictionary *userInfo = @{@"login_account":[NSString stringWithFormat:@"%@",_loginView.userName.text],
-                                       @"password":[NSString stringWithFormat:@"%@",_loginView.passWord.text],
+            NSDictionary *userInfo = @{@"login_account":[NSString stringWithFormat:@"%@",_loginAgainView.userName.text],
+                                       @"password":[NSString stringWithFormat:@"%@",_loginAgainView.passWord.text],
                                        @"client_type":@"app",
                                        @"client_cate":@"student_client"};
             
@@ -438,7 +432,7 @@
                     /* 归档*/
                     [NSKeyedArchiver archiveRootObject:dicGet toFile:userTokenFilePath];
                     
-//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+                    //                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
                     
                     /* 另存一份userdefault  只存token和id*/
                     NSString *remember_token = [NSString stringWithFormat:@"%@",dicGet[@"remember_token"]];
@@ -460,14 +454,14 @@
                     [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"avatar_url"] forKey:@"avatar_url"];
                     
                     /* 另存一个useerdefault 存user的name*/
-                     [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"name"] forKey:@"name"];
+                    [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"name"] forKey:@"name"];
                     
                     
                     
                     /* 发出一条消息:账号密码方式登录*/
                     
                     [[NSNotificationCenter defaultCenter]postNotificationName:@"Login_Type" object:@"Normal" ];
-                   
+                    
                     
                     
                     
@@ -527,7 +521,7 @@
                 
             }];
         }
-
+        
     }
     
 }
@@ -593,9 +587,9 @@
 /* 取消响应*/
 - (void)cancelAllRespond{
     
-    [_loginView.userName resignFirstResponder];
-    [_loginView.passWord resignFirstResponder];
-    [_loginView.keyCodeText resignFirstResponder];
+    [_loginAgainView.userName resignFirstResponder];
+    [_loginAgainView.passWord resignFirstResponder];
+    [_loginAgainView.keyCodeText resignFirstResponder];
 }
 
 #pragma mark- 微信直接拉起请求
@@ -613,10 +607,10 @@
     
 }
 
-//- (void)returnLastPage{
-//    
-//    [self.navigationController popViewControllerAnimated:YES];
-//}
+- (void)returnLastPage{
+
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 
 

@@ -11,10 +11,17 @@
 #import "ClassesListTableViewCell.h"
 #import "YYModel.h"
 #import "RDVTabBarController.h"
+#import "BuyBar.h"
 
 #import "UIImageView+WebCache.h"
 #import "UIViewController_HUD.h"
 #import "UIViewController+HUD.h"
+
+#import "OrderViewController.h"
+
+
+
+#import "NELivePlayerViewController.h"
 
 
 @interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>{
@@ -29,7 +36,13 @@
     /* token*/
     NSString *_remember_token;
     
-
+    
+    /* 购买bar*/
+    BuyBar *_buyBar;
+    
+    
+    /* 保存本页面数据*/
+    NSMutableDictionary *_dataDic;
     
     
 }
@@ -45,8 +58,6 @@
         
         _classID = [NSString string];
         _classID = classID;
-        
-        
        
         /* 取出token*/
         _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
@@ -61,13 +72,18 @@
 }
 
 
+-(void)viewDidAppear:(BOOL)animated{
+    
+    [self.rdv_tabBarController setTabBarHidden:YES];
+    
+}
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    
+    [self.rdv_tabBarController setTabBarHidden: YES];
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     
@@ -77,8 +93,20 @@
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastpage) forControlEvents:UIControlEventTouchUpInside];
     
     
-    _tutoriumInfoView = [[TutoriumInfoView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64-63)];
+    _tutoriumInfoView = [[TutoriumInfoView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
     [self .view addSubview:_tutoriumInfoView];
+    
+    
+    /* 购买bar*/
+    
+    
+        _buyBar= [[BuyBar alloc]initWithFrame:CGRectMake(0, self.view.height_sd-49, self.view.width_sd, 49)];
+    
+        [self.view addSubview:_buyBar];
+        
+    
+    
+    
     
     _tutoriumInfoView.scrollView.delegate = self;
     _tutoriumInfoView.classesListTableView.scrollEnabled =NO;
@@ -146,15 +174,24 @@
         
         NSString *status = [NSString stringWithFormat:@"%@",dic[@"status"]];
         
-        NSDictionary *dataDic=[NSDictionary dictionaryWithDictionary:dic[@"data"]];
-        NSLog(@"%@",dataDic);
+        _dataDic=[NSMutableDictionary dictionaryWithDictionary:dic[@"data"]];
+        
+        NSLog(@"%@",_dataDic);
         
         if ([status isEqualToString:@"0"]) {
             /* 获取token错误  需要重新登录*/
         }else{
             
+            /* 判断课程状态*/
+            
+//            [_buyBar.listenButton addTarget:self action:@selector(switchClass) forControlEvents:UIControlEventTouchUpInside];
+            [self switchClassData:_dataDic];
+            
+            
+            
+            
             /* 手动解析teacherModel*/
-            NSDictionary *teacherDic =dataDic[@"teacher"];
+            NSDictionary *teacherDic =_dataDic[@"teacher"];
             NSLog(@"%@",teacherDic);
             
             /* teacherModel赋值与界面数据更新*/
@@ -201,9 +238,9 @@
             
             /* 手动解析classModel*/
             
-            _classModel = [RecommandClasses yy_modelWithDictionary:dataDic];
-            _classModel.classID =dataDic[@"id"];
-            _classModel.describe = dataDic[@"description"];
+            _classModel = [RecommandClasses yy_modelWithDictionary:_dataDic];
+            _classModel.classID = _dataDic[@"id"];
+            _classModel.describe = _dataDic[@"description"];
             
 //            NSLog(@"%@,%@,%@,%@,%@,%@,%@,%@,%@,%@,%@,%@,%@",_classModel.classID,_classModel.name,_classModel.subject,_classModel.grade,_classModel.teacher_name,_classModel.price,_classModel.chat_team_id,_classModel.buy_tickets_count,_classModel.preset_lesson_count,_classModel.completed_lesson_count,_classModel.live_start_time,_classModel.live_end_time,_classModel.publicize);
             
@@ -219,7 +256,7 @@
             
             /* 课程列表的手动解析model*/
             
-            NSMutableArray *classList=dataDic[@"lessons"];
+            NSMutableArray *classList = _dataDic[@"lessons"];
            
            
             NSLog(@"%@",classList);
@@ -253,6 +290,193 @@
     
     
 }
+
+
+
+
+#pragma mark- 判断课程状态
+- (void)switchClassData:(NSDictionary *)data{
+    /* 先判断is_tasting / is_bought / tasted 的状态*/
+    
+    
+    if ([_dataDic[@"is_bought"]boolValue]==NO) {
+        
+        /* 还没购买的情况下*/
+        if ([_dataDic[@"is_tasting"]boolValue]==YES) {
+            /* 如果已经加入试听*/
+            if ([_dataDic[@"tasted"]boolValue]==NO) {
+                /* 还没有试听*/
+                [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
+                [_buyBar.listenButton setBackgroundColor:BUTTONRED];
+                [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                
+                
+            }else{
+                /* 已经试听了*/
+                [_buyBar.listenButton setTitle:@"试听结束" forState:UIControlStateNormal];
+                [_buyBar.listenButton setBackgroundColor:[UIColor colorWithRed:0.84 green:0.47 blue:0.44 alpha:1.0]];
+                
+                _buyBar.listenButton.enabled = NO;
+                
+            }
+            
+            
+        }else{
+            /* 还没有加入试听*/
+            
+            /* 如果课程还没结束*/
+            
+            
+            if (![data[@"status"] isEqualToString:@"finished"]&&![data[@"status"] isEqualToString:@"competed"]){
+                
+                
+            [_buyBar.listenButton addTarget:self action:@selector(addListen) forControlEvents:UIControlEventTouchUpInside];
+            
+            }else{
+                /* 课程已结束*/
+                [_buyBar.listenButton addTarget:self action:@selector(addClosedListen) forControlEvents:UIControlEventTouchUpInside];
+                
+            }
+        }
+        
+        /* 购买按钮的点击事件*/
+        [_buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+    }else{
+        /* 已经够买的情况下*/
+        _buyBar.applyButton.hidden = YES;
+        
+        [_buyBar.listenButton sd_clearAutoLayoutSettings];
+        _buyBar.listenButton.sd_layout
+        .leftSpaceToView(_buyBar,10)
+        .topSpaceToView(_buyBar,10)
+        .bottomSpaceToView(_buyBar,10)
+        .rightSpaceToView(_buyBar,10);
+        
+        [_buyBar.listenButton setTitle:@"开始学习" forState:UIControlStateNormal];
+        _buyBar.listenButton.backgroundColor = BUTTONRED;
+        [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        
+    }
+    
+    
+}
+
+#pragma mark- 加入到已关闭的试听
+- (void)addClosedListen{
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"该课程已结束,是否继续试听?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }] ;
+    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        [self addListen];
+        
+    }] ;
+    
+    [alert addAction:cancel];
+    [alert addAction:sure];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+
+    
+}
+
+
+
+#pragma mark- 加入试听
+- (void)addListen{
+    
+    [self loadingHUDStartLoadingWithTitle:@"正在加入试听"];
+    
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
+    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses/%@/taste",_dataDic[@"id"]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+            /* 请求成功*/
+            
+            [_buyBar.listenButton removeTarget:self action:@selector(addListen) forControlEvents:UIControlEventTouchUpInside];
+            
+            [_buyBar.listenButton setTitle:@"立即试听" forState:UIControlStateNormal];
+            
+            [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
+            
+            [self loadingHUDStopLoadingWithTitle:@"加入成功"];
+            
+            
+        }
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+
+    
+}
+
+#pragma mark- 立即试听
+- (void)listen{
+ 
+    NELivePlayerViewController *neVC = [[NELivePlayerViewController alloc]initWithClassID:_dataDic[@"id"]];
+    
+            [self.navigationController pushViewController:neVC animated:YES];
+    
+}
+
+
+#pragma mark- 立即报名的 购买课程方法
+- (void)buyClass{
+    
+    if (_dataDic) {
+        if ([_dataDic[@"status"] isEqualToString:@"teaching"]) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"该辅导已开课,是否继续购买?" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }] ;
+            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+                
+                [self requestOrder];
+                
+            }] ;
+            
+            [alert addAction:cancel];
+            [alert addAction:sure];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+
+        }
+        
+        
+    }
+    
+    
+}
+
+#pragma mark- 收集订单信息,并传入下一页,开始提交订单
+- (void)requestOrder{
+    
+    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:_dataDic[@"id"]];
+    [self.navigationController pushViewController:orderVC animated:YES];
+    
+    
+    
+    
+}
+
+
+
 
 
 - (void)updateTableView{

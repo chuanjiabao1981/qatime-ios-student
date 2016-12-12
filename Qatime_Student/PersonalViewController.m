@@ -221,7 +221,24 @@
         }else{
             
             /* 获取失败*/
-            [self loadingHUDStopLoadingWithTitle:@"获取余额信息失败"];
+//            [self loadingHUDStopLoadingWithTitle:@"获取余额信息失败"];
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"登录超时!\n请重新登录!" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }] ;
+            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+                [self loginAgain];
+                
+            }] ;
+            
+            [alert addAction:cancel];
+            [alert addAction:sure];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+
+            
             
         }
         

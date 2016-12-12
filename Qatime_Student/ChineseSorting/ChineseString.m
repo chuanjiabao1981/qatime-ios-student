@@ -15,20 +15,26 @@
 #pragma mark - 返回tableview右方 indexArray
 +(NSMutableArray*)IndexArray:(NSArray*)stringArr
 {
+    
+    
     NSMutableArray *tempArray = [self ReturnSortChineseArrar:stringArr];
     NSMutableArray *A_Result = [NSMutableArray array];
     NSString *tempString ;
     
     for (NSString* object in tempArray)
     {
-        NSString *pinyin = [((ChineseString*)object).pinYin substringToIndex:1];
-        //不同
-        if(![tempString isEqualToString:pinyin])
-        {
-            // NSLog(@"IndexArray----->%@",pinyin);
-            [A_Result addObject:pinyin];
-            tempString = pinyin;
+        if ([((ChineseString*)object).pinYin length]>=1) {
+            
+            NSString *pinyin = [((ChineseString*)object).pinYin substringToIndex:1];
+            //不同
+            if(![tempString isEqualToString:pinyin])
+            {
+                // NSLog(@"IndexArray----->%@",pinyin);
+                [A_Result addObject:pinyin];
+                tempString = pinyin;
+            }
         }
+        
     }
     return A_Result;
 }
@@ -43,21 +49,25 @@
     //拼音分组
     for (NSString* object in tempArray) {
         
-        NSString *pinyin = [((ChineseString*)object).pinYin substringToIndex:1];
-        NSString *string = ((ChineseString*)object).string;
-        //不同
-        if(![tempString isEqualToString:pinyin])
-        {
-            //分组
-            item = [NSMutableArray array];
-            [item  addObject:string];
-            [LetterResult addObject:item];
-            //遍历
-            tempString = pinyin;
-        }else//相同
-        {
-            [item  addObject:string];
+        if ([((ChineseString*)object).pinYin length]>=1) {
+            
+            NSString *pinyin = [((ChineseString*)object).pinYin substringToIndex:1];
+            NSString *string = ((ChineseString*)object).string;
+            //不同
+            if(![tempString isEqualToString:pinyin])
+            {
+                //分组
+                item = [NSMutableArray array];
+                [item  addObject:string];
+                [LetterResult addObject:item];
+                //遍历
+                tempString = pinyin;
+            }else//相同
+            {
+                [item  addObject:string];
+            }
         }
+        
     }
     return LetterResult;
 }

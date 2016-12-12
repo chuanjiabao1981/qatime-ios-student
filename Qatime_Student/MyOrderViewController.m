@@ -19,6 +19,8 @@
 #import "UIViewController+HUD.h"
 #import "YYModel.h"
 #import "MJRefresh.h"
+
+#import "LoginAgainViewController.h"
 @interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
     NSString *_token;
@@ -67,7 +69,7 @@
         paidPage = 1;
         cancelPage = 1;
         
-        unpaidPageTime = 0;
+        unpaidPageTime = 1;
         paidPageTime = 0;
         cancelPageTime = 0;
 
@@ -99,7 +101,9 @@
         
         /* 设置代理*/
         _.scrollView.delegate = self;
-        
+        _.scrollView.directionalLockEnabled = YES;
+        _.scrollView.alwaysBounceVertical = NO;
+        _.scrollView.alwaysBounceHorizontal = YES;
         
         /* 滑动效果*/
         typeof(self) __weak weakSelf = self;
@@ -113,10 +117,12 @@
                         [_unpaidView.mj_footer beginRefreshing];
                         
                         
+                        
                     }else{
                         
                     }
                     unpaidPageTime ++;
+//                    unpaidPage++;
                 }
                     break;
                 case 1:{
@@ -168,8 +174,9 @@
         .widthIs(self.view.width_sd);
         
         _.tableFooterView = [[UIView alloc]init];
-        
+        _.tableHeaderView = [[UIView alloc]init];
 //        _.bounces = NO;
+        
 
         _.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
             if (unpaidPage ==1) {
@@ -261,6 +268,8 @@
     /* 发起网络请求*/
     /* 请求未支付的数据*/
     [self requestUnpaid];
+    unpaidPage ++;
+    unpaidPageTime ++;
 //    /* 请求已支付数据*/
 //    [self requestPaid];
 //    /* 请求取消的数据*/
@@ -284,6 +293,8 @@
             if ([dic[@"data"] count]!=0) {
                 /* 有数据*/
                 
+               
+                
                 _unpaidView.hidden = NO;
                 
                 __block NSMutableArray *unpaidArr = [NSMutableArray arrayWithArray:dic[@"data"]];
@@ -300,12 +311,15 @@
                     mod.pay_type = unpaidArr[i][@"pay_type"];
                     mod.appid = unpaidArr[i][@"app_pay_params"][@"appid"];
                     mod.timestamp = unpaidArr[i][@"app_pay_params"][@"timestamp"];
+                    mod.orderID = unpaidArr[i][@"id"];
                     
                     [_unpaidArr addObject:mod];
                 }
                 [_unpaidView reloadData];
                 [_unpaidView setNeedsDisplay];
                 [_unpaidView.mj_footer endRefreshing];
+                 [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+               
                 
             }else{
                 /* 没更多的数据了*/
@@ -314,8 +328,8 @@
                     _unpaidView.hidden = YES;
                 }
                 
-                [self loadingHUDStopLoadingWithTitle:@"没有符合条件的订单!"];
                 [_unpaidView.mj_footer endRefreshingWithNoMoreData];
+                [self loadingHUDStopLoadingWithTitle:@"没有符合条件的订单!"];
                 
             }
             
@@ -332,7 +346,7 @@
         [_unpaidView.mj_footer endRefreshing];
     }];
     
-    [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+   
     
     
 }
@@ -367,6 +381,7 @@
                     mod.pay_type = paidArr[i][@"pay_type"];
                     mod.appid = paidArr[i][@"app_pay_params"][@"appid"];
                     mod.timestamp = paidArr[i][@"app_pay_params"][@"timestamp"];
+                    mod.orderID = paidArr[i][@"id"];
                     
                     [_paidArr addObject:mod];
                 }
@@ -374,6 +389,7 @@
                 [_paidView reloadData];
                 [_paidView setNeedsDisplay];
                 [_paidView.mj_footer endRefreshing];
+                [self loadingHUDStopLoadingWithTitle:@"加载完成"];
             }else{
                 /* 没更多的数据了*/
                 
@@ -381,12 +397,12 @@
                     _paidView.hidden = YES;
                 }
                 
-                [_paidView.mj_footer endRefreshingWithNoMoreData];
                 [self loadingHUDStopLoadingWithTitle:@"没有符合条件的订单!"];
+                [_paidView.mj_footer endRefreshingWithNoMoreData];
                 
             }
             
-            [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+//            [self loadingHUDStopLoadingWithTitle:@"加载完成"];
             
         }else{
             
@@ -410,7 +426,7 @@
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/payment/orders?cate=canceled&per_page=6&page=%ld",paidPage] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/payment/orders?cate=canceled&per_page=6&page=%ld",cancelPage] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
@@ -434,12 +450,15 @@
                     mod.pay_type = cancelArr[i][@"pay_type"];
                     mod.appid = cancelArr[i][@"app_pay_params"][@"appid"];
                     mod.timestamp = cancelArr[i][@"app_pay_params"][@"timestamp"];
+                    mod.orderID = cancelArr[i][@"id"];
                     
                     [_caneldArr addObject:mod];
                 }
                 [_cancelView reloadData];
                 [_cancelView setNeedsDisplay];
+                [self loadingHUDStopLoadingWithTitle:@"加载完成"];
                 [_cancelView.mj_footer endRefreshing];
+                
                 
             }else{
                 /* 没更多的数据了*/
@@ -453,7 +472,7 @@
             }
             
            
-            [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+//            [self loadingHUDStopLoadingWithTitle:@"加载完成"];
             
         }else{
             
@@ -526,10 +545,12 @@
             if (_unpaidArr.count>indexPath.row) {
                 
                 cell.unpaidModel = _unpaidArr[indexPath.row];
-                
+                cell.leftButton.tag = 100+indexPath.row;
+                cell.rightButton.tag = 200+indexPath.row;
                 [cell.leftButton addTarget:self action:@selector(cancelOrder:) forControlEvents:UIControlEventTouchUpInside];
               
             }
+            
             
             return  cell;
         }
@@ -549,6 +570,13 @@
             if (_paidArr.count>indexPath.row) {
                 
                 cell.paidModel = _paidArr[indexPath.row];
+                
+                [cell.rightButton setTitle:@"重新购买" forState:UIControlStateNormal];
+                cell.leftButton.tag = 300+indexPath.row;
+                cell.rightButton.tag = 400+indexPath.row;
+                
+                [cell.leftButton addTarget:self action:@selector(cancelOrder:) forControlEvents:UIControlEventTouchUpInside];
+                
                 
             }
 
@@ -570,6 +598,8 @@
             if (_caneldArr.count>indexPath.row) {
                 
                 cell.canceldModel = _caneldArr[indexPath.row];
+                cell.leftButton.tag = 500+indexPath.row;
+                cell.rightButton.tag = 600+indexPath.row;
                 
             }
             
@@ -587,6 +617,9 @@
 }
 
 #pragma mark- tableview delegate
+
+
+
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
@@ -642,12 +675,201 @@
 
 /* 取消订单*/
 
-- (void)cancelOrder:(MyOrderTableViewCell *)cell{
+- (void)cancelOrder:(UIButton *)sender{
     
-//    cell.unpaidModel.
+    [self loadingHUDStartLoadingWithTitle:@"正在删除订单"];
+    
+    __block NSString *oderNumber = [NSString string];
+    
+    if (sender.tag>=100&&sender.tag<200) {
+        /* 取消订单的左边按钮->取消订单*/
+        
+        Unpaid *mod =_unpaidArr[sender.tag-100];
+        oderNumber = mod.orderID;
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否取消此订单?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+        }] ;
+        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            
+            [self requestCancelOrder:oderNumber withTag:sender.tag];
+            
+        }] ;
+        
+        [alert addAction:cancel];
+        [alert addAction:sure];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+
+        
+    }
+    
+    if (sender.tag>=300&&sender.tag<400) {
+        
+        /* 取消订单的左边按钮->取消订单*/
+        
+        Paid *mod =_paidArr[sender.tag-300];
+        oderNumber = mod.orderID;
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否取消此订单?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+        }] ;
+        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            
+            [self requestCancelOrder:oderNumber withTag:sender.tag];
+            
+        }] ;
+        
+        [alert addAction:cancel];
+        [alert addAction:sure];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+
+    }
     
     
 }
+
+
+/* 申请取消订单*/
+- (void)requestCancelOrder:(NSString *)oderNumber withTag:(NSInteger)tags{
+    
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+    [manager PUT:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/payment/orders/%@/cancel",oderNumber] parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+            /* 数据请求成功*/
+            [self loadingHUDStopLoadingWithTitle:@"删除成功!"];
+            
+            if (tags>=100&&tags<200) {
+                _unpaidArr = @[].mutableCopy;
+                unpaidPageTime = 1;
+                unpaidPage = 1;
+                [self requestUnpaid];
+                
+            }
+            if (tags>=300&&tags<400) {
+                _paidArr = @[].mutableCopy;
+                paidPageTime = 1;
+                paidPage = 1;
+                [self requestPaid];
+
+            }
+            
+            
+            
+            
+        }else if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:0]]){
+            if ([dic[@"error"][@"msg"]isEqualToString:@"授权过期"]) {
+                /* 登录过期 得重新登录了*/
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"登录过期!请重新登录" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                    
+                }] ;
+                UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    
+                    /* 重新登录*/
+                    
+                    LoginAgainViewController *laVC = [LoginAgainViewController new];
+                    [self.navigationController pushViewController:laVC animated:YES];
+                    
+                    
+                }] ;
+                
+                [alert addAction:cancel];
+                [alert addAction:sure];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+
+                
+                
+                
+            }
+            
+            
+        }
+        
+        
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
+    
+}
+
+#pragma mark- scrollView delegate
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+    if (scrollView != _myOrderView.scrollView) {
+        _myOrderView.scrollView.scrollEnabled = NO;
+        
+        
+        
+    }
+    
+   
+    
+    
+
+}
+
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    
+    if (scrollView != _myOrderView.scrollView) {
+        _myOrderView.scrollView.scrollEnabled = NO;
+
+    }
+    
+   
+    if (scrollView == _myOrderView.scrollView) {
+        
+        
+        if (_unpaidView.mj_footer.mj_y<self.view.height_sd) {
+            _myOrderView.scrollView.scrollEnabled = NO;
+        }else{
+            _myOrderView.scrollView.scrollEnabled = YES;
+        }
+        
+        if (_paidView.mj_footer.mj_y<self.view.height_sd) {
+            _myOrderView.scrollView.scrollEnabled = NO;
+        }else{
+            _myOrderView.scrollView.scrollEnabled = YES;
+        }
+        
+        if (_cancelView.mj_footer.mj_y<self.view.height_sd) {
+            _myOrderView.scrollView.scrollEnabled = NO;
+        }else{
+            _myOrderView.scrollView.scrollEnabled = YES;
+        }
+    }
+    
+
+    
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    
+    if (scrollView !=_myOrderView.scrollView) {
+        
+        _myOrderView.scrollView.scrollEnabled = YES;
+
+    }
+//
+    
+}
+
 
 
 
@@ -656,7 +878,6 @@
     
     
     if (scrollView == _myOrderView.scrollView) {
-        
         
         CGFloat pageWidth = scrollView.frame.size.width;
         NSInteger page = scrollView.contentOffset.x / pageWidth;
@@ -705,6 +926,9 @@
 
         
     }
+    
+
+    
     
     
 }

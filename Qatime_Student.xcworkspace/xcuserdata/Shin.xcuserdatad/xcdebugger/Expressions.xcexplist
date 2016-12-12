@@ -19,6 +19,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__46-[NELivePlayerViewController requestClassInfo]_block_invoke_2:NELivePlayerViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[NIMSessionViewController makeUI]:NIMSessionViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -62,10 +65,21 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[TutoriumInfoViewController requestOrder]:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__43-[CashRecordViewController requestWithDraw]_block_invoke:CashRecordViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[BarrageWalkTextSprite bindingView]:BarrageWalkTextSprite.m">
+      </ContextState>
+      <ContextState
+         contextName = "__46-[TutoriumInfoViewController switchClassData:]_block_invoke:TutoriumInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "__45-[PersonalInfoViewController requestUserInfo]_block_invoke:PersonalInfoViewController.m">
@@ -115,10 +129,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__38-[MyOrderViewController requestUnpaid]_block_invoke:MyOrderViewController.m">
+         contextName = "-[MyOrderViewController tableView:cellForRowAtIndexPath:]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_unpaidArr">
+               value = "_paidArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -154,10 +168,10 @@
          contextName = "__34-[BindingViewController nextStep:]_block_invoke:BindingViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[MyOrderViewController tableView:cellForRowAtIndexPath:]:MyOrderViewController.m">
+         contextName = "__38-[MyOrderViewController requestUnpaid]_block_invoke:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_paidArr">
+               value = "_unpaidArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -236,6 +250,14 @@
          <PersistentStrings>
             <PersistentString
                value = "tableView.tag">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController updateMembersList]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "membersName">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

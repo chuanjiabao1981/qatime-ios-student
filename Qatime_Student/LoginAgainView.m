@@ -1,59 +1,62 @@
+
 //
-//  LoginView.m
-//  Login
+//  LoginAgainView.m
+//  Qatime_Student
 //
-//  Created by Shin on 2016/10/31.
+//  Created by Shin on 2016/12/10.
 //  Copyright © 2016年 WWTD. All rights reserved.
 //
+
+#import "LoginAgainView.h"
 
 #define SCREENWIDES CGRectGetWidth(self.frame)
 #define SCREENHEIGHT CGRectGetHeight(self.frame)
 
 
-#import "LoginView.h"
+
 #import "UIView+FontSize.h"
 
 
 
-@interface LoginView (){
+@interface LoginAgainView (){
     
     /* logo图片*/
     UIImageView *_logoImage;
     
     
     
-   
+    
     
     
 }
 
 @end
 
-@implementation LoginView
+@implementation LoginAgainView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
-
         
-       
         
-                
+        
+        
+        
         
         
         /* 输入账号密码*/
         /* 框1 输入用户账号*/
         
         UIView *text1=[[UIView alloc]init];
-//        text1.layer.masksToBounds=YES;
-//        text1.layer.cornerRadius = M_PI;
+        //        text1.layer.masksToBounds=YES;
+        //        text1.layer.cornerRadius = M_PI;
         text1.layer.borderWidth = 1;
         text1.layer.borderColor = [UIColor lightGrayColor].CGColor;
         [self addSubview:text1];
-     
-
+        
+        
         /* 用户名输入框*/
         _userName = [[UITextField alloc]init];
         [text1 addSubview:_userName];
@@ -62,8 +65,8 @@
         
         /* 框2 输入密码*/
         _text2=[[UIView alloc]init];
-//        _text2.layer.masksToBounds=YES;
-//        _text2.layer.cornerRadius = M_PI;
+        //        _text2.layer.masksToBounds=YES;
+        //        _text2.layer.cornerRadius = M_PI;
         _text2.layer.borderWidth = 1;
         _text2.layer.borderColor = [UIColor lightGrayColor].CGColor;
         [self addSubview:_text2];
@@ -93,7 +96,7 @@
         _forgottenPassorwdButton.titleLabel.font = [UIFont systemFontOfSize:16];
         [_forgottenPassorwdButton setTitle:@"找回密码" forState:UIControlStateNormal];
         [_forgottenPassorwdButton setTitleColor:[UIColor grayColor]  forState:UIControlStateNormal];
-
+        
         
         
         
@@ -162,7 +165,7 @@
         [_text3 addSubview:_keyCodeText];
         _keyCodeText.hidden = YES;
         
-       
+        
         
         
         
@@ -171,8 +174,8 @@
         .leftSpaceToView(self,20)
         .topSpaceToView(self,40)
         .rightSpaceToView(self,20)
-        .heightRatioToView(self,0.07f);
-//        text1.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
+        .heightRatioToView(self,0.065f);
+        //        text1.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         
         _userName.sd_layout
         .leftSpaceToView(text1,10)
@@ -185,7 +188,7 @@
         .leftEqualToView(text1)
         .rightEqualToView(text1)
         .heightRatioToView(text1,1.0f);
-//        _text2.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
+        //        _text2.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         
         _passWord.sd_layout
         .leftSpaceToView(_text2,10)
@@ -219,7 +222,7 @@
         
         _wechatButton.sd_layout
         .centerXEqualToView(self)
-        .bottomSpaceToView(self,30)
+        .bottomSpaceToView(self,25)
         .widthIs(30)
         .heightIs(30);
         
@@ -274,8 +277,6 @@
         .topSpaceToView(_text3,10)
         .bottomSpaceToView(_text3,10)
         .rightSpaceToView(_text3,10);
-        
-        
         
         
         

@@ -127,6 +127,9 @@
 		5469786C1DC72A54001695F4 /* SignUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5469786B1DC72A54001695F4 /* SignUpView.m */; };
 		546A54741DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 546A54731DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m */; };
 		546A54771DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 546A54761DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.m */; };
+		546F5C531DFD6AFF00528F79 /* card.png in Resources */ = {isa = PBXBuildFile; fileRef = 546F5C521DFD6AFF00528F79 /* card.png */; };
+		546F5C561DFD75F400528F79 /* WithDrawInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 546F5C551DFD75F400528F79 /* WithDrawInfoView.m */; };
+		546F5C591DFD760000528F79 /* WithDrawInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546F5C581DFD760000528F79 /* WithDrawInfoViewController.m */; };
 		547A7EF71DD411DB00F1282B /* TeachersPublic_Classes.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EF61DD411DB00F1282B /* TeachersPublic_Classes.m */; };
 		547A7EFD1DD416F100F1282B /* ListenAndBuyTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EFC1DD416F100F1282B /* ListenAndBuyTabBar.m */; };
 		547E89841DD1705100749366 /* SquareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E89831DD1705100749366 /* SquareView.m */; };
@@ -136,7 +139,6 @@
 		547E899D1DD1D8AD00749366 /* HMSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E899C1DD1D8AD00749366 /* HMSegmentedControl.m */; };
 		547FBF1E1DF658C000955A9E /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547FBF1D1DF658C000955A9E /* UserNotifications.framework */; };
 		547FBF2A1DF681B300955A9E /* libUMessage_Sdk_1.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 547FBF291DF681B300955A9E /* libUMessage_Sdk_1.4.0.a */; };
-		547FBF2D1DF6A95600955A9E /* MMPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF2C1DF6A95600955A9E /* MMPickerView.m */; };
 		547FBF311DF6B99600955A9E /* PersonalDescViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF301DF6B99600955A9E /* PersonalDescViewController.m */; };
 		547FBF351DF6CEC800955A9E /* PersonalDescTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF341DF6CEC800955A9E /* PersonalDescTableViewCell.m */; };
 		547FBF381DF6CFD700955A9E /* MyWalletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF371DF6CFD700955A9E /* MyWalletView.m */; };
@@ -304,6 +306,9 @@
 		54B73D051DE3E85A00B7A7EB /* pinyin.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73D031DE3E85A00B7A7EB /* pinyin.m */; };
 		54B73D081DE40B1800B7A7EB /* NSString+Emojize.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73D071DE40B1800B7A7EB /* NSString+Emojize.m */; };
 		54B73D0F1DE40E1800B7A7EB /* NSString+ContainEmoji.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73D0E1DE40E1800B7A7EB /* NSString+ContainEmoji.m */; };
+		54B9CAF91DFE4A9D003961FF /* WithdrawConfirmView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9CAF81DFE4A9D003961FF /* WithdrawConfirmView.m */; };
+		54B9CAFC1DFE4AAC003961FF /* WithdrawConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9CAFB1DFE4AAC003961FF /* WithdrawConfirmViewController.m */; };
+		54B9CB001DFE4E8A003961FF /* BuyBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9CAFF1DFE4E8A003961FF /* BuyBar.m */; };
 		54CB26601DEFFBD300AE7414 /* ChangPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CB265F1DEFFBD300AE7414 /* ChangPhoneView.m */; };
 		54CB26631DEFFBDF00AE7414 /* ChangePhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CB26621DEFFBDF00AE7414 /* ChangePhoneViewController.m */; };
 		54CB266B1DF00BE000AE7414 /* wechat.png in Resources */ = {isa = PBXBuildFile; fileRef = 54CB266A1DF00BE000AE7414 /* wechat.png */; };
@@ -337,8 +342,17 @@
 		54DBA4BA1DE442D900A67A90 /* YZInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBA4B91DE442D900A67A90 /* YZInputView.m */; };
 		54E120CE1DDC2CA5004F8012 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E120CD1DDC2CA5004F8012 /* CoreText.framework */; };
 		54E428B41DE2DC6100AF5980 /* UIControl+RemoveTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E428B31DE2DC6100AF5980 /* UIControl+RemoveTarget.m */; };
+		54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC41DFE8D67001A98CE /* OrderView.m */; };
+		54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC71DFE8D75001A98CE /* OrderViewController.m */; };
+		54ECFECA1DFE978C001A98CE /* money.png in Resources */ = {isa = PBXBuildFile; fileRef = 54ECFEC91DFE978C001A98CE /* money.png */; };
 		54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F34D7C1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m */; };
 		54F34D801DE70BA500D6FC85 /* NSString+FindFace.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F34D7E1DE70BA500D6FC85 /* NSString+FindFace.m */; };
+		54F3BA151DFC2E3D003998D0 /* MMPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA141DFC2E3D003998D0 /* MMPickerView.m */; };
+		54F3BA181DFC3013003998D0 /* UIViewController+Login.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA171DFC3013003998D0 /* UIViewController+Login.m */; };
+		54F3BA211DFC4427003998D0 /* LoginAgainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA201DFC4427003998D0 /* LoginAgainView.m */; };
+		54F3BA241DFC4435003998D0 /* LoginAgainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA231DFC4435003998D0 /* LoginAgainViewController.m */; };
+		54F3BA2D1DFC7130003998D0 /* WithDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA2C1DFC7130003998D0 /* WithDrawView.m */; };
+		54F3BA301DFC7140003998D0 /* WithDrawViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA2F1DFC7140003998D0 /* WithDrawViewController.m */; };
 		54FB1DB51DF10B9B00BA9A3C /* UIViewController+VideoStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB1DB41DF10B9B00BA9A3C /* UIViewController+VideoStatus.m */; };
 		54FB1DCA1DF172E600BA9A3C /* BindingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB1DC91DF172E600BA9A3C /* BindingView.m */; };
 		54FB1DCD1DF172F300BA9A3C /* BindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB1DCC1DF172F300BA9A3C /* BindingViewController.m */; };
@@ -546,6 +560,11 @@
 		546A54731DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassNoticeSettingTableViewCell.m; sourceTree = "<group>"; };
 		546A54751DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassNoticeTimeSettingTableViewCell.h; sourceTree = "<group>"; };
 		546A54761DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassNoticeTimeSettingTableViewCell.m; sourceTree = "<group>"; };
+		546F5C521DFD6AFF00528F79 /* card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = card.png; sourceTree = "<group>"; };
+		546F5C541DFD75F400528F79 /* WithDrawInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithDrawInfoView.h; sourceTree = "<group>"; };
+		546F5C551DFD75F400528F79 /* WithDrawInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithDrawInfoView.m; sourceTree = "<group>"; };
+		546F5C571DFD760000528F79 /* WithDrawInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithDrawInfoViewController.h; sourceTree = "<group>"; };
+		546F5C581DFD760000528F79 /* WithDrawInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithDrawInfoViewController.m; sourceTree = "<group>"; };
 		547388651DD9876E00A50CCC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		547388681DD987AD00A50CCC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		547389FD1DD9A3FA00A50CCC /* libaacplus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libaacplus.a; path = Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/Libs/libaacplus.a; sourceTree = "<group>"; };
@@ -604,8 +623,6 @@
 		547FBF1F1DF658C800955A9E /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		547FBF271DF6817300955A9E /* UMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMessage.h; sourceTree = "<group>"; };
 		547FBF291DF681B300955A9E /* libUMessage_Sdk_1.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libUMessage_Sdk_1.4.0.a; path = Qatime_Student/UMessage_Sdk_1.4.0/libUMessage_Sdk_1.4.0.a; sourceTree = "<group>"; };
-		547FBF2B1DF6A95600955A9E /* MMPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPickerView.h; path = "../../../../../Desktop/MMPickerView-master 2/MMPickerView/MMPickerView.h"; sourceTree = "<group>"; };
-		547FBF2C1DF6A95600955A9E /* MMPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPickerView.m; path = "../../../../../Desktop/MMPickerView-master 2/MMPickerView/MMPickerView.m"; sourceTree = "<group>"; };
 		547FBF2F1DF6B99600955A9E /* PersonalDescViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDescViewController.h; sourceTree = "<group>"; };
 		547FBF301DF6B99600955A9E /* PersonalDescViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDescViewController.m; sourceTree = "<group>"; };
 		547FBF321DF6C3B800955A9E /* ChangeDescDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeDescDelegate.h; sourceTree = "<group>"; };
@@ -891,6 +908,12 @@
 		54B73D091DE40B5900B7A7EB /* emojis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = emojis.h; sourceTree = "<group>"; };
 		54B73D0D1DE40E1800B7A7EB /* NSString+ContainEmoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ContainEmoji.h"; sourceTree = "<group>"; };
 		54B73D0E1DE40E1800B7A7EB /* NSString+ContainEmoji.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ContainEmoji.m"; sourceTree = "<group>"; };
+		54B9CAF71DFE4A9D003961FF /* WithdrawConfirmView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithdrawConfirmView.h; sourceTree = "<group>"; };
+		54B9CAF81DFE4A9D003961FF /* WithdrawConfirmView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithdrawConfirmView.m; sourceTree = "<group>"; };
+		54B9CAFA1DFE4AAC003961FF /* WithdrawConfirmViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithdrawConfirmViewController.h; sourceTree = "<group>"; };
+		54B9CAFB1DFE4AAC003961FF /* WithdrawConfirmViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithdrawConfirmViewController.m; sourceTree = "<group>"; };
+		54B9CAFE1DFE4E8A003961FF /* BuyBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyBar.h; sourceTree = "<group>"; };
+		54B9CAFF1DFE4E8A003961FF /* BuyBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyBar.m; sourceTree = "<group>"; };
 		54C21F8A1DDDB06E000549F2 /* Qatime_Student.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Qatime_Student.entitlements; sourceTree = "<group>"; };
 		54C21F8B1DDDB2F1000549F2 /* QatimeStudentPush_Development.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = QatimeStudentPush_Development.p12; sourceTree = "<group>"; };
 		54C21F8C1DDDB2F1000549F2 /* QatimeStudentPush_Distribution.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = QatimeStudentPush_Distribution.p12; sourceTree = "<group>"; };
@@ -979,11 +1002,28 @@
 		54EA9B2A1DD9A7F1004B8040 /* libyuv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libyuv.a; path = "Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs/libyuv.a"; sourceTree = "<group>"; };
 		54EA9B2B1DD9A7F1004B8040 /* LSMediaCapture.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = LSMediaCapture.bundle; path = "Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs/LSMediaCapture.bundle"; sourceTree = "<group>"; };
 		54EA9B841DD9A9D5004B8040 /* libz.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.tbd; path = usr/lib/libz.1.tbd; sourceTree = SDKROOT; };
+		54ECFEC31DFE8D67001A98CE /* OrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderView.h; sourceTree = "<group>"; };
+		54ECFEC41DFE8D67001A98CE /* OrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderView.m; sourceTree = "<group>"; };
+		54ECFEC61DFE8D75001A98CE /* OrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
+		54ECFEC71DFE8D75001A98CE /* OrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
+		54ECFEC91DFE978C001A98CE /* money.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money.png; sourceTree = "<group>"; };
 		54F34D7A1DE70BA500D6FC85 /* Define.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Define.h; sourceTree = "<group>"; };
 		54F34D7B1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+Extention.h"; sourceTree = "<group>"; };
 		54F34D7C1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+Extention.m"; sourceTree = "<group>"; };
 		54F34D7D1DE70BA500D6FC85 /* NSString+FindFace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+FindFace.h"; sourceTree = "<group>"; };
 		54F34D7E1DE70BA500D6FC85 /* NSString+FindFace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FindFace.m"; sourceTree = "<group>"; };
+		54F3BA131DFC2E3D003998D0 /* MMPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMPickerView.h; sourceTree = "<group>"; };
+		54F3BA141DFC2E3D003998D0 /* MMPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMPickerView.m; sourceTree = "<group>"; };
+		54F3BA161DFC3013003998D0 /* UIViewController+Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Login.h"; sourceTree = "<group>"; };
+		54F3BA171DFC3013003998D0 /* UIViewController+Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Login.m"; sourceTree = "<group>"; };
+		54F3BA1F1DFC4427003998D0 /* LoginAgainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginAgainView.h; sourceTree = "<group>"; };
+		54F3BA201DFC4427003998D0 /* LoginAgainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginAgainView.m; sourceTree = "<group>"; };
+		54F3BA221DFC4435003998D0 /* LoginAgainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginAgainViewController.h; sourceTree = "<group>"; };
+		54F3BA231DFC4435003998D0 /* LoginAgainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginAgainViewController.m; sourceTree = "<group>"; };
+		54F3BA2B1DFC7130003998D0 /* WithDrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithDrawView.h; sourceTree = "<group>"; };
+		54F3BA2C1DFC7130003998D0 /* WithDrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithDrawView.m; sourceTree = "<group>"; };
+		54F3BA2E1DFC7140003998D0 /* WithDrawViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithDrawViewController.h; sourceTree = "<group>"; };
+		54F3BA2F1DFC7140003998D0 /* WithDrawViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithDrawViewController.m; sourceTree = "<group>"; };
 		54FB1DB31DF10B9B00BA9A3C /* UIViewController+VideoStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VideoStatus.h"; sourceTree = "<group>"; };
 		54FB1DB41DF10B9B00BA9A3C /* UIViewController+VideoStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VideoStatus.m"; sourceTree = "<group>"; };
 		54FB1DC81DF172E600BA9A3C /* BindingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingView.h; sourceTree = "<group>"; };
@@ -1083,6 +1123,7 @@
 		5413D24B1DF7B56700A8FDEC /* 我的钱包主页 */ = {
 			isa = PBXGroup;
 			children = (
+				54F3BA281DFC7076003998D0 /* 提现页面 */,
 				54B4C1821DF8180A00E31794 /* 充值页面 */,
 				54AA307D1DF950A3009E0D04 /* 充值结果查询页面 */,
 				54AB48C51DED2D7E008E3BC5 /* Model */,
@@ -1208,8 +1249,6 @@
 		54294C741DDB354400677333 /* NEPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				54294C781DDB373400677333 /* NELivePlayerControl.h */,
-				54294C791DDB373400677333 /* NELivePlayerControl.m */,
 				54294C771DDB355400677333 /* Model */,
 				54294C761DDB355300677333 /* View */,
 				54294C751DDB355000677333 /* Controller */,
@@ -1229,6 +1268,8 @@
 		54294C761DDB355300677333 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				54294C781DDB373400677333 /* NELivePlayerControl.h */,
+				54294C791DDB373400677333 /* NELivePlayerControl.m */,
 				54FCBAF01DD5CB520094BF58 /* Cell */,
 				54FCBADE1DD5B3050094BF58 /* VideoInfoView.h */,
 				54FCBADF1DD5B3050094BF58 /* VideoInfoView.m */,
@@ -1334,6 +1375,7 @@
 		543C207A1DC6F6470086B04B /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				54B9CAFD1DFE4E6C003961FF /* 试听购买栏 */,
 				541F91D91DC9BB8D00180BE8 /* 导航栏 */,
 			);
 			name = Util;
@@ -1542,6 +1584,7 @@
 		546978531DC723A2001695F4 /* 登录页面 */ = {
 			isa = PBXGroup;
 			children = (
+				54F3BA1C1DFC43FC003998D0 /* 重新登录页面 */,
 				54CB26651DEFFE4400AE7414 /* 登录界面 */,
 				54CB26641DEFFE4100AE7414 /* 找回密码 */,
 			);
@@ -1802,8 +1845,8 @@
 		549A051F1DC89B0100B3564D /* MMPickerView */ = {
 			isa = PBXGroup;
 			children = (
-				547FBF2B1DF6A95600955A9E /* MMPickerView.h */,
-				547FBF2C1DF6A95600955A9E /* MMPickerView.m */,
+				54F3BA131DFC2E3D003998D0 /* MMPickerView.h */,
+				54F3BA141DFC2E3D003998D0 /* MMPickerView.m */,
 			);
 			path = MMPickerView;
 			sourceTree = "<group>";
@@ -1890,8 +1933,10 @@
 				54652E151DEEA6F200F4607C /* Logo.png */,
 				544C15131DC7414000F59F86 /* back.png */,
 				541F91E91DC9F1CC00180BE8 /* school.png */,
+				546F5C521DFD6AFF00528F79 /* card.png */,
 				54CB266A1DF00BE000AE7414 /* wechat.png */,
 				54B4C18B1DF8294B00E31794 /* alipay.png */,
+				54ECFEC91DFE978C001A98CE /* money.png */,
 				54294CC51DDB3BB100677333 /* LSMediaCapture.bundle */,
 				54A153A91DC6F09D0070B508 /* main.m */,
 			);
@@ -2346,6 +2391,15 @@
 			path = ChineseSorting;
 			sourceTree = "<group>";
 		};
+		54B9CAFD1DFE4E6C003961FF /* 试听购买栏 */ = {
+			isa = PBXGroup;
+			children = (
+				54B9CAFE1DFE4E8A003961FF /* BuyBar.h */,
+				54B9CAFF1DFE4E8A003961FF /* BuyBar.m */,
+			);
+			name = "试听购买栏";
+			sourceTree = "<group>";
+		};
 		54CB26571DEFFB7800AE7414 /* 绑定手机 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2602,6 +2656,51 @@
 			name = "网易视频云";
 			sourceTree = "<group>";
 		};
+		54ECFEBE1DFE8D34001A98CE /* 课程购买页 */ = {
+			isa = PBXGroup;
+			children = (
+				54ECFEC21DFE8D4E001A98CE /* Model */,
+				54ECFEC11DFE8D4C001A98CE /* View */,
+				54ECFEC01DFE8D4A001A98CE /* Controller */,
+			);
+			name = "课程购买页";
+			sourceTree = "<group>";
+		};
+		54ECFEBF1DFE8D3D001A98CE /* 辅导班详情 */ = {
+			isa = PBXGroup;
+			children = (
+				54FCBAC51DD590BB0094BF58 /* Model */,
+				54FCBAC41DD590B90094BF58 /* View */,
+				54FCBAC31DD590B40094BF58 /* Controller */,
+			);
+			name = "辅导班详情";
+			sourceTree = "<group>";
+		};
+		54ECFEC01DFE8D4A001A98CE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54ECFEC61DFE8D75001A98CE /* OrderViewController.h */,
+				54ECFEC71DFE8D75001A98CE /* OrderViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54ECFEC11DFE8D4C001A98CE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54ECFEC31DFE8D67001A98CE /* OrderView.h */,
+				54ECFEC41DFE8D67001A98CE /* OrderView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54ECFEC21DFE8D4E001A98CE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		54F34D791DE70BA500D6FC85 /* LYCoreLabel */ = {
 			isa = PBXGroup;
 			children = (
@@ -2612,6 +2711,68 @@
 				54F34D7E1DE70BA500D6FC85 /* NSString+FindFace.m */,
 			);
 			path = LYCoreLabel;
+			sourceTree = "<group>";
+		};
+		54F3BA1C1DFC43FC003998D0 /* 重新登录页面 */ = {
+			isa = PBXGroup;
+			children = (
+				54F3BA1E1DFC440F003998D0 /* View */,
+				54F3BA1D1DFC440E003998D0 /* Controller */,
+			);
+			name = "重新登录页面";
+			sourceTree = "<group>";
+		};
+		54F3BA1D1DFC440E003998D0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54F3BA221DFC4435003998D0 /* LoginAgainViewController.h */,
+				54F3BA231DFC4435003998D0 /* LoginAgainViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54F3BA1E1DFC440F003998D0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54F3BA1F1DFC4427003998D0 /* LoginAgainView.h */,
+				54F3BA201DFC4427003998D0 /* LoginAgainView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54F3BA281DFC7076003998D0 /* 提现页面 */ = {
+			isa = PBXGroup;
+			children = (
+				54F3BA2A1DFC710D003998D0 /* View */,
+				54F3BA291DFC7109003998D0 /* Controller */,
+			);
+			name = "提现页面";
+			sourceTree = "<group>";
+		};
+		54F3BA291DFC7109003998D0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54F3BA2E1DFC7140003998D0 /* WithDrawViewController.h */,
+				54F3BA2F1DFC7140003998D0 /* WithDrawViewController.m */,
+				546F5C571DFD760000528F79 /* WithDrawInfoViewController.h */,
+				546F5C581DFD760000528F79 /* WithDrawInfoViewController.m */,
+				54B9CAFA1DFE4AAC003961FF /* WithdrawConfirmViewController.h */,
+				54B9CAFB1DFE4AAC003961FF /* WithdrawConfirmViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54F3BA2A1DFC710D003998D0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54F3BA2B1DFC7130003998D0 /* WithDrawView.h */,
+				54F3BA2C1DFC7130003998D0 /* WithDrawView.m */,
+				546F5C541DFD75F400528F79 /* WithDrawInfoView.h */,
+				546F5C551DFD75F400528F79 /* WithDrawInfoView.m */,
+				54B9CAF71DFE4A9D003961FF /* WithdrawConfirmView.h */,
+				54B9CAF81DFE4A9D003961FF /* WithdrawConfirmView.m */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		54FB1DBF1DF1722500BA9A3C /* 注册完善信息 */ = {
@@ -2937,6 +3098,8 @@
 				5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */,
 				54AA307A1DF9427D009E0D04 /* NSString+TimeStamp.h */,
 				54AA307B1DF9427D009E0D04 /* NSString+TimeStamp.m */,
+				54F3BA161DFC3013003998D0 /* UIViewController+Login.h */,
+				54F3BA171DFC3013003998D0 /* UIViewController+Login.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -2944,9 +3107,8 @@
 		54FCBAC21DD5909F0094BF58 /* 辅导班详情页 */ = {
 			isa = PBXGroup;
 			children = (
-				54FCBAC51DD590BB0094BF58 /* Model */,
-				54FCBAC41DD590B90094BF58 /* View */,
-				54FCBAC31DD590B40094BF58 /* Controller */,
+				54ECFEBF1DFE8D3D001A98CE /* 辅导班详情 */,
+				54ECFEBE1DFE8D34001A98CE /* 课程购买页 */,
 			);
 			name = "辅导班详情页";
 			sourceTree = "<group>";
@@ -3229,6 +3391,7 @@
 				548328DB1DDC6F360053AB29 /* chatto_bg_normal.png in Resources */,
 				546978601DC72534001695F4 /* bags.png in Resources */,
 				548328D91DDC6F360053AB29 /* chatfrom_bg_normal.png in Resources */,
+				54ECFECA1DFE978C001A98CE /* money.png in Resources */,
 				54A47BD31DE42610000216D9 /* em_4.gif in Resources */,
 				54A47BBA1DE42610000216D9 /* em_17.gif in Resources */,
 				54A47BBC1DE42610000216D9 /* em_19.gif in Resources */,
@@ -3274,6 +3437,7 @@
 				541F91EA1DC9F1CC00180BE8 /* school.png in Resources */,
 				54A47BD91DE42610000216D9 /* em_45.gif in Resources */,
 				54A47BF21DE42610000216D9 /* em_68.gif in Resources */,
+				546F5C531DFD6AFF00528F79 /* card.png in Resources */,
 				54A47BD21DE42610000216D9 /* em_39.gif in Resources */,
 				54A47BB91DE42610000216D9 /* em_16.gif in Resources */,
 				54A47BE21DE42610000216D9 /* em_53.gif in Resources */,
@@ -3388,6 +3552,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54B9CB001DFE4E8A003961FF /* BuyBar.m in Sources */,
 				54294C671DDAD82400677333 /* InfoHeaderView.m in Sources */,
 				54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */,
 				548328E81DDC6F360053AB29 /* Mp3Recorder.m in Sources */,
@@ -3398,10 +3563,12 @@
 				546978561DC723B5001695F4 /* LoginViewController.m in Sources */,
 				548328ED1DDC6F360053AB29 /* UUMessageCell.m in Sources */,
 				547E899D1DD1D8AD00749366 /* HMSegmentedControl.m in Sources */,
+				54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */,
 				548328EC1DDC6F360053AB29 /* UUMessage.m in Sources */,
 				5496A3AB1DE591680096ECE5 /* NSAttributedString+EmojiExtension.m in Sources */,
 				54AB48C81DED2D9B008E3BC5 /* SettingView.m in Sources */,
 				549A051A1DC86EBB00B3564D /* MXSCycleScrollView.m in Sources */,
+				546F5C561DFD75F400528F79 /* WithDrawInfoView.m in Sources */,
 				54F34D801DE70BA500D6FC85 /* NSString+FindFace.m in Sources */,
 				5407C98C1DE7DDED00DB04C8 /* NSBundle+YYAdd.m in Sources */,
 				545162D51DF55DC7000BD17A /* Personal_HeadTableViewCell.m in Sources */,
@@ -3449,16 +3616,19 @@
 				545162BE1DF50D99000BD17A /* ChangePasswordViewController.m in Sources */,
 				5469786C1DC72A54001695F4 /* SignUpView.m in Sources */,
 				54B73D051DE3E85A00B7A7EB /* pinyin.m in Sources */,
-				547FBF2D1DF6A95600955A9E /* MMPickerView.m in Sources */,
+				54F3BA211DFC4427003998D0 /* LoginAgainView.m in Sources */,
 				547E898A1DD1BC9900749366 /* RecommandTeacher.m in Sources */,
 				549210271DCC6D0E00A65702 /* MultiFilterView.m in Sources */,
 				545162CB1DF5597E000BD17A /* PersonalInfoView.m in Sources */,
+				54F3BA151DFC2E3D003998D0 /* MMPickerView.m in Sources */,
 				54DBA4B61DE4423300A67A90 /* YZTextAttachment.m in Sources */,
 				54AB48EA1DED607B008E3BC5 /* StartedClassView.m in Sources */,
 				54294C6D1DDB051E00677333 /* Classes.m in Sources */,
 				543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */,
+				54F3BA301DFC7140003998D0 /* WithDrawViewController.m in Sources */,
 				54B4C18A1DF8184500E31794 /* ChargeViewController.m in Sources */,
 				549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */,
+				54F3BA241DFC4435003998D0 /* LoginAgainViewController.m in Sources */,
 				54AB49031DEDB1BA008E3BC5 /* ListenTableViewCell.m in Sources */,
 				548328F31DDC75050053AB29 /* ChatModel.m in Sources */,
 				549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */,
@@ -3482,6 +3652,7 @@
 				54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */,
 				544E0CDB1DD0806900884F31 /* YZSquareMenuCell.m in Sources */,
 				54A153B01DC6F09D0070B508 /* ViewController.m in Sources */,
+				54B9CAFC1DFE4AAC003961FF /* WithdrawConfirmViewController.m in Sources */,
 				541F91D61DC9BB5200180BE8 /* TutoriumView.m in Sources */,
 				549A051E1DC892E500B3564D /* GradeList.m in Sources */,
 				54DBA4B21DE4423300A67A90 /* YZEmotionKeyboard.m in Sources */,
@@ -3491,10 +3662,13 @@
 				547A7EF71DD411DB00F1282B /* TeachersPublic_Classes.m in Sources */,
 				54AB48CE1DED31D3008E3BC5 /* HeadBackView.m in Sources */,
 				54FB1DCD1DF172F300BA9A3C /* BindingViewController.m in Sources */,
+				54B9CAF91DFE4A9D003961FF /* WithdrawConfirmView.m in Sources */,
 				54E428B41DE2DC6100AF5980 /* UIControl+RemoveTarget.m in Sources */,
 				54652E421DEEC25200F4607C /* MessageSettingViewController.m in Sources */,
 				5413D25B1DF7BC7900A8FDEC /* RechargeTableView.m in Sources */,
+				54F3BA181DFC3013003998D0 /* UIViewController+Login.m in Sources */,
 				5413D2781DF7D0DF00A8FDEC /* UIViewController+Token.m in Sources */,
+				54F3BA2D1DFC7130003998D0 /* WithDrawView.m in Sources */,
 				549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */,
 				54AA307C1DF9427D009E0D04 /* NSString+TimeStamp.m in Sources */,
 				5413D26B1DF7C76B00A8FDEC /* PaymentTableViewCell.m in Sources */,
@@ -3560,7 +3734,9 @@
 				54652E1A1DEEB08200F4607C /* AboutUsTableViewCell.m in Sources */,
 				54CB26631DEFFBDF00AE7414 /* ChangePhoneViewController.m in Sources */,
 				54B4C18F1DF8416500E31794 /* ConfirmChargeView.m in Sources */,
+				54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */,
 				54B4C1871DF8183800E31794 /* ChargeView.m in Sources */,
+				546F5C591DFD760000528F79 /* WithDrawInfoViewController.m in Sources */,
 				54D661291DD04DC900C9A0FF /* YZSquareMenu.m in Sources */,
 				54FCBAF61DD5D4500094BF58 /* VideoClassInfo.m in Sources */,
 				5435D9461DD315CD00DD4FCC /* TeachersPublicCollectionView.m in Sources */,

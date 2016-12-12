@@ -1,15 +1,14 @@
 //
-//  LoginView.h
-//  Login
+//  LoginAgainView.h
+//  Qatime_Student
 //
-//  Created by Shin on 2016/10/31.
+//  Created by Shin on 2016/12/10.
 //  Copyright © 2016年 WWTD. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface LoginView : UIView
-
+@interface LoginAgainView : UIView
 /* 注册按钮*/
 @property(nonatomic,strong) UIButton *signUpButton ;
 /* 登录按钮*/
@@ -38,11 +37,4 @@
 
 /* 验证码输入框*/
 @property(nonatomic,strong) UITextField *keyCodeText ;
-
-
-
-
-
-
-
 @end

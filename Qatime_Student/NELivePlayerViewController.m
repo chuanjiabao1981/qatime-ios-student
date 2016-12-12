@@ -289,16 +289,14 @@ bool ismute     = NO;
     self = [super init];
     if (self) {
         
-        _classID = [NSString stringWithFormat:@"%@",classID];
-        _boardPullAddress = boardPullAddress;
-        _teacherPullAddress = teacherPullAddress;
+//        _classID = [NSString stringWithFormat:@"%@",classID];
+//        _boardPullAddress = boardPullAddress;
+//        _teacherPullAddress = teacherPullAddress;
         
         
     }
     return self;
 
-    
-    
 }
 
 
@@ -319,13 +317,6 @@ bool ismute     = NO;
     _viewsArrangementMode = SameLevel;
     
     
-    /* 初始化视频播放器*/
-    
-    [self setupVideoPlayer];
-    
-    /* 初始化弹幕*/
-    
-    [self setupBarrage];
     
 
     
@@ -345,7 +336,14 @@ bool ismute     = NO;
     /* 全屏弹幕框的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(barrageTextEdit:) name:@"BarrageBecomeFirstResponder" object:nil];
     
+    /* 初始化视频播放器*/
     
+    [self setupVideoPlayer];
+    
+    /* 初始化弹幕*/
+    
+    [self setupBarrage];
+
     
 }
 
@@ -412,7 +410,7 @@ bool ismute     = NO;
     dispatch_sync(teacher, ^{
         
         
-        _liveplayerTeacher = [[NELivePlayerController alloc] initWithContentURL:[NSURL URLWithString:@"rtmp://va0a19f55.live.126.net/live/1243a663c3e54b099d1cc35ee83a7921"]];
+        _liveplayerTeacher = [[NELivePlayerController alloc] initWithContentURL:_teacherPullAddress];
         _liveplayerTeacher.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
         //    _liveplayer.view.frame = _playerView.bounds;
         [_liveplayerTeacher setScalingMode:NELPMovieScalingModeAspectFit];
@@ -430,7 +428,7 @@ bool ismute     = NO;
         }
         
         
-        _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:[NSURL URLWithString:@"rtmp://va0a19f55.live.126.net/live/02dce8e380034cf9b2ef1f9c26c4234c"]];
+        _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:_boardPullAddress];
         _liveplayerBoard.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
         [_liveplayerBoard setScalingMode:NELPMovieScalingModeAspectFit];
         [_boardPlayerView addSubview:_liveplayerBoard.view];
@@ -446,7 +444,6 @@ bool ismute     = NO;
             .topEqualToView(_boardPlayerView)
             .bottomEqualToView(_boardPlayerView);
         }
-        
         
         
         
@@ -626,6 +623,42 @@ bool ismute     = NO;
     
 }
 
+
+/* 数据加载完成 播放器二次加载*/
+- (void)reloadPlayerView{
+    
+    _liveplayerTeacher = [[NELivePlayerController alloc] initWithContentURL:_teacherPullAddress];
+    
+    if (_liveplayerTeacher == nil) {
+        // 返回空则表示初始化失败
+        NSLog(@"player initilize failed, please tay again!");
+    }else{
+        _liveplayerTeacher.view.sd_layout
+        .leftEqualToView(_teacherPlayerView)
+        .rightEqualToView(_teacherPlayerView)
+        .topEqualToView(_teacherPlayerView)
+        .bottomEqualToView(_teacherPlayerView);
+    }
+   
+    _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:_boardPullAddress];
+    
+    if (_liveplayerBoard == nil) {
+        // 返回空则表示初始化失败
+        NSLog(@"player initilize failed, please tay again!");
+    }else{
+        _liveplayerBoard.view.sd_layout
+        .leftEqualToView(_boardPlayerView)
+        .rightEqualToView(_boardPlayerView)
+        .topEqualToView(_boardPlayerView)
+        .bottomEqualToView(_boardPlayerView);
+    }
+    
+    
+    
+    
+    
+
+}
 
 #pragma mark- 加载弹幕
 
@@ -1679,6 +1712,22 @@ bool ismute     = NO;
     
     
     
+    #pragma mark- 加载课程数据请求
+    /* 根据token和传来的id 发送课程内容请求。*/
+    
+    dispatch_queue_t requestQueue = dispatch_queue_create("request", DISPATCH_QUEUE_SERIAL);
+    dispatch_async(requestQueue, ^{
+        
+        [self requestClassInfo];
+        
+    }) ;
+
+    
+    
+    
+    
+    
+   
     
     
     
@@ -1772,14 +1821,6 @@ bool ismute     = NO;
     _classList.classListTableView.tableHeaderView = _infoHeaderView;
     
     
-    /* 根据token和传来的id 发送课程内容请求。*/
-    
-    dispatch_queue_t requestQueue = dispatch_queue_create("request", DISPATCH_QUEUE_SERIAL);
-    dispatch_async(requestQueue, ^{
-        
-        [self requestClassInfo];
-        
-    }) ;
     
     
     _notices = [[Notice alloc]init];
@@ -2698,7 +2739,7 @@ bool ismute     = NO;
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
     
-    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses/%@/realtime",_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses/%@/play_info",_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         NSString *status = [NSString stringWithFormat:@"%@",[dic valueForKey:@"status"]];
@@ -2739,7 +2780,6 @@ bool ismute     = NO;
             
             
         }
-        
         
         
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -2824,7 +2864,54 @@ bool ismute     = NO;
                  *
                  *
                  */
-//                _liveplayerBoard 
+                
+                if (dataDic) {
+                    
+                    /* 已经试听过*/
+                    if ([dataDic[@"tasted"]boolValue ]==YES) {
+                        
+                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您已试听过该课程!" preferredStyle:UIAlertControllerStyleAlert];
+                        
+                        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                            
+                            
+                        }] ;
+                        
+                        
+                        [alert addAction:sure];
+                        
+                        [self presentViewController:alert animated:YES completion:nil];
+
+                        
+                    }else{
+                       
+                        /* 未试听过*/
+                        
+                        if (dataDic[@"camera_pull_stream"]==nil||[dataDic[@"camera_pull_stream"]isEqual:@""]||[dataDic[@"camera_pull_stream"] isEqual:[NSNull null]]) {
+                            
+                            _teacherPullAddress =[NSURL URLWithString:@""];
+                        }else{
+                            _teacherPullAddress =[NSURL URLWithString:dataDic[@"camera_pull_stream"]];
+                        }
+                        
+                        _boardPullAddress = [NSURL URLWithString:dataDic[@"board_pull_stream"]];
+                        
+                        
+                        
+                        /* 重新加载播放器*/
+                        [self reloadPlayerView];
+                        
+                    }
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+                
+                
                 
                 
             }
