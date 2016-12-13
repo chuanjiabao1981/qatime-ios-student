@@ -18,6 +18,7 @@
 @property(nonatomic,strong) NSString *preset_lesson_count ;
 @property(nonatomic,strong) NSString *teacher_name ;
 @property(nonatomic,strong) NSString *price ;
+@property(nonatomic,strong) NSString *productID ;
 /* 支付*/
 @property(nonatomic,strong) NSString *appid ;
 @property(nonatomic,strong) NSString *pay_type;

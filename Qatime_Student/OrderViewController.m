@@ -28,13 +28,11 @@
     
     CGFloat price;
     
-    
     /* 是否可以使用余额*/
     BOOL balanceEnable;
     
     /* 支付方式*/
     NSString *_payType;
-    
     
     /* 订单成功后,收到的数据,传入下一页*/
     NSDictionary *dataDic;

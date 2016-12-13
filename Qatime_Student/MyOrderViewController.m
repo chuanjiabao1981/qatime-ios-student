@@ -21,6 +21,10 @@
 #import "MJRefresh.h"
 
 #import "LoginAgainViewController.h"
+#import "OrderViewController.h"
+#import "MyOrderViewController.h"
+
+
 @interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
     NSString *_token;
@@ -283,6 +287,10 @@
     //    /* 请求取消的数据*/
     //
     //    [self requestCanceld];
+    /* 微信支付成功的监听回调*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(paySucess) name:@"ChargeSucess" object:nil];
+    
+    
     
 }
 
@@ -464,6 +472,7 @@
                     mod.appid = cancelArr[i][@"app_pay_params"][@"appid"];
                     mod.timestamp = cancelArr[i][@"app_pay_params"][@"timestamp"];
                     mod.orderID = cancelArr[i][@"id"];
+                    mod.productID = cancelArr[i][@"product"][@"id"];
                     
                     [_caneldArr addObject:mod];
                 }
@@ -587,8 +596,9 @@
                 [cell.rightButton setTitle:@"重新购买" forState:UIControlStateNormal];
                 cell.leftButton.tag = 300+indexPath.row;
                 cell.rightButton.tag = 400+indexPath.row;
-                
                 [cell.leftButton addTarget:self action:@selector(cancelOrder:) forControlEvents:UIControlEventTouchUpInside];
+                
+                
                 
             }
             
@@ -604,8 +614,13 @@
             if (cell==nil) {
                 cell=[[CancelOrderTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
+                cell.leftButton.tag = 500+indexPath.row;
+                cell.rightButton.tag = 600+indexPath.row;
+                
                 [cell.leftButton setTitle:@"删除订单" forState:UIControlStateNormal];
                 [cell.rightButton setTitle:@"重新购买" forState:UIControlStateNormal];
+                
+                [cell.rightButton addTarget:self action:@selector(buyAgain:) forControlEvents:UIControlEventTouchUpInside];
                 
                 cell.sd_tableView = tableView;
             }
@@ -688,6 +703,94 @@
     
     return height;
 }
+
+
+/* 再次购买功能*/
+- (void)buyAgain:(UIButton *)sender{
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定重新够买该课程?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }] ;
+    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        [self loadingHUDStopLoadingWithTitle:@"正在加载订单信息"];
+        
+        __block NSString *productNumber = [NSString string];
+        __block NSString *payType=[NSString string];
+        if (sender.tag>=600&&sender.tag<700) {
+            
+            Canceld *mod=_caneldArr[sender.tag-600];
+            productNumber = mod.productID;
+            payType = mod.pay_type;
+            
+            /* 发送再次购买请求*/
+            
+            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+            [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+            [manager POST:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses/%@/orders",productNumber] parameters:@{@"pay_type":mod.pay_type} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                
+                if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+                    /* 订单申请成功*/
+                    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:mod.productID];
+                    [self.navigationController pushViewController:orderVC animated:YES];
+                    
+                    
+                }else{
+                    
+                    
+                    [self loadingHUDStopLoadingWithTitle:@"订单创建失败,请重试!"];
+                }
+                
+                
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                
+            }];
+            
+        }
+    }] ;
+    
+    [alert addAction:cancel];
+    [alert addAction:sure];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+
+
+    
+    
+}
+
+
+
+
+#pragma mark- 购买成功后,跳转页面
+- (void)paySucess{
+    
+    if (_caneldArr) {
+        
+        MyOrderViewController *myorderVC = [[MyOrderViewController alloc]init];
+        UIViewController *controller = nil;
+        
+        for (UIViewController *vc in self.navigationController.viewControllers) {
+            if ([vc isKindOfClass:[myorderVC class]]) {
+                controller = vc;
+            }
+        }
+        
+        [self.navigationController popToViewController:controller animated:YES];
+        
+        
+    }
+    
+    
+    
+}
+
+
 
 
 /* 取消订单*/

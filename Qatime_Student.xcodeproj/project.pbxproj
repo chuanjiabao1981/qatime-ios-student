@@ -94,6 +94,8 @@
 		543E0CC11DFFDA82004B24FD /* PayConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CC01DFFDA82004B24FD /* PayConfirmViewController.m */; };
 		543E0CC81DFFEDBD004B24FD /* CheckOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CC71DFFEDBD004B24FD /* CheckOrderView.m */; };
 		543E0CCB1DFFEDC8004B24FD /* CheckOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CCA1DFFEDC8004B24FD /* CheckOrderViewController.m */; };
+		543E0CCF1E002960004B24FD /* BindingMailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CCE1E002960004B24FD /* BindingMailView.m */; };
+		543E0CD41E00297E004B24FD /* BindingMailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CD31E00297E004B24FD /* BindingMailViewController.m */; };
 		544C15121DC73ADA00F59F86 /* selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 544C15111DC73ADA00F59F86 /* selected.png */; };
 		544C15141DC7414000F59F86 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 544C15131DC7414000F59F86 /* back.png */; };
 		544E0CDB1DD0806900884F31 /* YZSquareMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CDA1DD0806900884F31 /* YZSquareMenuCell.m */; };
@@ -502,6 +504,10 @@
 		543E0CC71DFFEDBD004B24FD /* CheckOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckOrderView.m; sourceTree = "<group>"; };
 		543E0CC91DFFEDC8004B24FD /* CheckOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckOrderViewController.h; sourceTree = "<group>"; };
 		543E0CCA1DFFEDC8004B24FD /* CheckOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckOrderViewController.m; sourceTree = "<group>"; };
+		543E0CCD1E002960004B24FD /* BindingMailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailView.h; sourceTree = "<group>"; };
+		543E0CCE1E002960004B24FD /* BindingMailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindingMailView.m; sourceTree = "<group>"; };
+		543E0CD21E00297E004B24FD /* BindingMailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailViewController.h; sourceTree = "<group>"; };
+		543E0CD31E00297E004B24FD /* BindingMailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindingMailViewController.m; sourceTree = "<group>"; };
 		544C15111DC73ADA00F59F86 /* selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selected.png; sourceTree = "<group>"; };
 		544C15131DC7414000F59F86 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		544E0CD91DD0806900884F31 /* YZSquareMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZSquareMenuCell.h; sourceTree = "<group>"; };
@@ -1464,6 +1470,33 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		543E0CCC1E002930004B24FD /* 绑定邮箱 */ = {
+			isa = PBXGroup;
+			children = (
+				543E0CD11E002964004B24FD /* View */,
+				543E0CD01E002963004B24FD /* Controller */,
+			);
+			name = "绑定邮箱";
+			sourceTree = "<group>";
+		};
+		543E0CD01E002963004B24FD /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				543E0CD21E00297E004B24FD /* BindingMailViewController.h */,
+				543E0CD31E00297E004B24FD /* BindingMailViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		543E0CD11E002964004B24FD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				543E0CCD1E002960004B24FD /* BindingMailView.h */,
+				543E0CCE1E002960004B24FD /* BindingMailView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		545162B61DF50D62000BD17A /* 修改密码 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2191,6 +2224,7 @@
 		54AB48B11DED2CF1008E3BC5 /* 安全管理 */ = {
 			isa = PBXGroup;
 			children = (
+				543E0CCC1E002930004B24FD /* 绑定邮箱 */,
 				54FB1DD01DF1AB9000BA9A3C /* 安全管理 */,
 				545162B61DF50D62000BD17A /* 修改密码 */,
 				54CB26571DEFFB7800AE7414 /* 绑定手机 */,
@@ -3733,6 +3767,7 @@
 				54B73D041DE3E85A00B7A7EB /* ChineseString.m in Sources */,
 				549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */,
 				54B73CFB1DE3E40300B7A7EB /* MembersListView.m in Sources */,
+				543E0CCF1E002960004B24FD /* BindingMailView.m in Sources */,
 				54FCBAFC1DD5DCEE0094BF58 /* Members.m in Sources */,
 				544E0CE11DD090A700884F31 /* RecommandClassCollectionViewCell.m in Sources */,
 				54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */,
@@ -3760,6 +3795,7 @@
 				54AA307C1DF9427D009E0D04 /* NSString+TimeStamp.m in Sources */,
 				5413D26B1DF7C76B00A8FDEC /* PaymentTableViewCell.m in Sources */,
 				54A153AD1DC6F09D0070B508 /* AppDelegate.m in Sources */,
+				543E0CD41E00297E004B24FD /* BindingMailViewController.m in Sources */,
 				544E0CE41DD09FAE00884F31 /* IndexHeaderPageView.m in Sources */,
 				54294C7C1DDB373400677333 /* NELivePlayerControl.m in Sources */,
 				5413D2651DF7C74F00A8FDEC /* RechargeTableViewCell.m in Sources */,
