@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PaidOrderView.h"
 
-@interface CanceldOrderView : UITableView
+@interface CanceldOrderView : UIView
+
+@property(nonatomic,strong) UITableView *tableView ;
 
 @end

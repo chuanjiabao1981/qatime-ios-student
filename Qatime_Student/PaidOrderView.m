@@ -10,16 +10,17 @@
 
 @implementation PaidOrderView
 
--(instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style{
-    self = [super initWithFrame:frame style:style];
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
     if (self) {
         
-        self.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        
-        
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, self.height_sd) style:UITableViewStylePlain];
+        [self addSubview:_tableView];
+        _tableView.backgroundColor = [UIColor whiteColor];
+                
         
     }
-    
     return self;
 }
 

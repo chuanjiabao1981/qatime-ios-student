@@ -90,6 +90,17 @@
          contextName = "__46-[TutoriumInfoViewController switchClassData:]_block_invoke:TutoriumInfoViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[MyOrderViewController scrollViewWillBeginDragging:]:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.view.height_sd">
+            </PersistentString>
+            <PersistentString
+               value = "_unpaidView.mj_footer.mj_y">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__45-[PersonalInfoViewController requestUserInfo]_block_invoke:PersonalInfoViewController.m">
          <PersistentStrings>
             <PersistentString

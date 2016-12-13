@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UnpaidOrderView : UITableView
+@interface UnpaidOrderView : UIView
+
+@property(nonatomic,strong) UITableView *tableView ;
 
 @end

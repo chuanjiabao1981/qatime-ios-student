@@ -18,6 +18,8 @@
 
 
 
+
+
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
 
@@ -128,7 +130,12 @@
         _.classTableView.tag =4;
         _.classTableView.delegate = self;
         _.classTableView.dataSource =self;
+        
+     
+        
         _;
+        
+        
         
     });
     

@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UnpaidOrderView.h"
 
-@interface PaidOrderView : UITableView
+@interface PaidOrderView : UIView
 
+@property(nonatomic,strong) UITableView *tableView ;
 @end
