@@ -127,7 +127,7 @@
                     break;
                 case 1:{
                     if (paidPageTime == 0) {
-                        [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+                        
                         [_paidView.mj_footer beginRefreshing];
 
                     }else{
@@ -179,7 +179,10 @@
         
 
         _.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            
+            
             if (unpaidPage ==1) {
+                
                 [self requestUnpaid];
                 unpaidPage ++;
             }else{
@@ -239,6 +242,8 @@
         .widthIs(self.view.width_sd);
         
         _.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            
+            
             if (cancelPage ==1) {
                 
                  [self requestCanceld];
@@ -292,9 +297,6 @@
             /* 获取数据成功*/
             if ([dic[@"data"] count]!=0) {
                 /* 有数据*/
-                
-               
-                
                 _unpaidView.hidden = NO;
                 
                 __block NSMutableArray *unpaidArr = [NSMutableArray arrayWithArray:dic[@"data"]];
@@ -324,6 +326,11 @@
             }else{
                 /* 没更多的数据了*/
                 
+                /* 测试数据*/
+//                 _unpaidView.hidden = YES;
+//                [_unpaidView.mj_footer endRefreshingWithNoMoreData];
+//                [self loadingHUDStopLoadingWithTitle:@"没有符合条件的订单!"];
+                
                 if (_unpaidArr.count == 0) {
                     _unpaidView.hidden = YES;
                 }
@@ -337,8 +344,10 @@
         }else{
             
             /* 获取数据失败,需要用户重新登录*/
-            
+            _unpaidView.hidden = YES;
             [_unpaidView.mj_footer endRefreshingWithNoMoreData];
+            [self loadingHUDStopLoadingWithTitle:@"没有符合条件的订单!"];
+//            [_unpaidView.mj_footer endRefreshingWithNoMoreData];
         }
         
         
@@ -421,6 +430,8 @@
     
 }
 - (void) requestCanceld{
+    
+//    [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -592,6 +603,9 @@
             if (cell==nil) {
                 cell=[[CancelOrderTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
+                [cell.leftButton setTitle:@"删除订单" forState:UIControlStateNormal];
+                [cell.rightButton setTitle:@"重新购买" forState:UIControlStateNormal];
+                
                 cell.sd_tableView = tableView;
             }
             
@@ -600,6 +614,8 @@
                 cell.canceldModel = _caneldArr[indexPath.row];
                 cell.leftButton.tag = 500+indexPath.row;
                 cell.rightButton.tag = 600+indexPath.row;
+                
+                
                 
             }
             
@@ -888,6 +904,8 @@
             case 0:{
                 if (unpaidPageTime == 0) {
                     
+                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+                    
                     [_unpaidView.mj_footer beginRefreshing];
                     
                     
@@ -899,6 +917,7 @@
                 break;
             case 1:{
                 if (paidPageTime == 0) {
+                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
                     [_paidView.mj_footer beginRefreshing];
                     
                 }else{
@@ -910,6 +929,7 @@
                 break;
             case 2:{
                 if (cancelPageTime == 0) {
+                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
                     
                     [_cancelView.mj_footer beginRefreshing];
                     

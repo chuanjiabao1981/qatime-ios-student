@@ -1,20 +1,22 @@
 //
-//  CheckChargeViewController.m
+//  CheckOrderViewController.m
 //  Qatime_Student
 //
-//  Created by Shin on 2016/12/8.
+//  Created by Shin on 2016/12/13.
 //  Copyright © 2016年 WWTD. All rights reserved.
 //
 
-#import "CheckChargeViewController.h"
+#import "CheckOrderViewController.h"
 #import "NavigationBar.h"
-#import "RDVTabBarController.h"
-#import "MyWalletViewController.h"
+
+#import "TutoriumInfoViewController.h"
+
 
 #define RED [UIColor colorWithRed:0.84 green:0.13 blue:0.10 alpha:1.00]
 #define GREEN [UIColor colorWithRed:0.20 green:0.67 blue:0.15 alpha:1.00]
 
-@interface CheckChargeViewController (){
+@interface CheckOrderViewController (){
+    
     
     NavigationBar *_navigationBar;
     
@@ -32,12 +34,13 @@
     /* 支付状态*/
     
     PayStatus _paystatus;
-}
 
+}
 
 @end
 
-@implementation CheckChargeViewController
+@implementation CheckOrderViewController
+
 
 - (instancetype)initWithIDNumber:(NSString *)number andAmount:(NSString *)amount
 {
@@ -55,7 +58,7 @@
             
             _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
         }
-
+        
         
     }
     return self;
@@ -69,16 +72,16 @@
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         
         _.titleLabel.text = @"充值结果";
-//        [_.leftButton setImage:[UIImage imageNamed:@"leftArrow"] forState:UIControlStateNormal];
-//        [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+        //        [_.leftButton setImage:[UIImage imageNamed:@"leftArrow"] forState:UIControlStateNormal];
+        //        [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         
         [self.view addSubview:_];
         _;
     });
     
-    _checkChargeView =({
+    _checkOrderView =({
         
-        CheckChargeView *_=[[CheckChargeView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
+        CheckOrderView *_=[[CheckOrderView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
         [_.finishButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         
         [self.view addSubview:_];
@@ -110,9 +113,9 @@
                     _paystatus = unpaid;
                     
                     
-               
+                    
                 }else if ([dic[@"data"] isEqualToString:@"received"]){
-                
+                    
                     _paystatus = recieved;
                     
                     
@@ -128,13 +131,13 @@
                 
                 
                 _paystatus = other;
-
+                
                 
                 
             }else{
                 /* 获取数据错误,需重新登录*/
                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"查询数据错误,请重新登录" preferredStyle:UIAlertControllerStyleAlert];
-               
+                
                 UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                     
                     [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil ];
@@ -145,11 +148,11 @@
                 [alert addAction:sure];
                 
                 [self presentViewController:alert animated:YES completion:nil];
-             
+                
             }
             
             [self loadViewWithStatus:_paystatus];
-
+            
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
         }];
@@ -171,9 +174,9 @@
     __block UIColor *color = [UIColor whiteColor];
     
     
-   
+    
     switch (paystatus) {
-        
+            
         case recieved:{
             /* 查询成功,请求余额数据等信息*/
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -197,14 +200,14 @@
                 
             }];
             
-            _checkChargeView.explain.hidden =YES;
+            _checkOrderView.explain.hidden =YES;
             
             
         }
             break;
         case unpaid:{
             
-
+            
             status = @"充值结果未找到";
             color = RED;
             image = [UIImage imageNamed:@"wrong_green"];
@@ -213,14 +216,14 @@
                 chargeMoney = _amount;
             }
             
-            _checkChargeView.explain.hidden =NO;
+            _checkOrderView.explain.hidden =NO;
             
         }
             break;
-
+            
         case other:{
             
-
+            
             status = @"充值结果未找到";
             color = RED;
             image = [UIImage imageNamed:@"wrong_red"];
@@ -229,20 +232,20 @@
                 chargeMoney = _amount;
             }
             
-            _checkChargeView.explain.hidden =NO;
-
+            _checkOrderView.explain.hidden =NO;
+            
             
         }
             break;
-
+            
     }
     
-    _checkChargeView.status.textColor = color;
-    _checkChargeView.status.text = status;
-    [_checkChargeView.statusImage setImage:image];
-    _checkChargeView.balance.text = balance;
-    _checkChargeView.number.text = _numbers;
-    _checkChargeView.chargeMoney.text = chargeMoney;
+    _checkOrderView.status.textColor = color;
+    _checkOrderView.status.text = status;
+    [_checkOrderView.statusImage setImage:image];
+    _checkOrderView.balance.text = balance;
+    _checkOrderView.number.text = _numbers;
+    _checkOrderView.chargeMoney.text = chargeMoney;
     
     
     
@@ -253,22 +256,26 @@
 
 - (void)returnLastPage{
     
-    /* 跳转至我的资产页面*/
+    /* 跳转至辅导班详情页*/
     
-    MyWalletViewController *myVC = [[MyWalletViewController alloc]init];
+    TutoriumInfoViewController *tutVC = [[TutoriumInfoViewController alloc]init];
+    UIViewController *controller = nil;
     
     for (UIViewController *VC in self.navigationController.viewControllers) {
-        if ([VC isKindOfClass:[myVC class]]) {
+        if ([VC isKindOfClass:[tutVC class]]) {
             
-            [self.navigationController popToViewController:VC animated:YES];
+            controller = VC;
+            [self.navigationController popToViewController:controller animated:YES];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshTutoriumInfo" object:nil];
         }
     }
     
     
     
-
+    
     
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

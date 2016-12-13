@@ -85,8 +85,10 @@
             
             [_.payButton addTarget:self action:@selector(sureToPay) forControlEvents:UIControlEventTouchUpInside];
             
-            
         }
+        
+        
+        
         
         
         [self.view addSubview:_];
@@ -107,6 +109,7 @@
     /* 查询支付状态完毕后的消息->跳转*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(returnWalletPage) name:@"CheckDone" object:nil];
     
+    
 }
 
 
@@ -118,7 +121,6 @@
         
     }] ;
     UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
         
         
         if (dataInfo) {

@@ -42,6 +42,11 @@
 @property(nonatomic,strong) UIButton *alipayButton ;
 /* 余额支付按钮*/
 @property(nonatomic,strong) UIButton *balanceButton ;
+@property(nonatomic,strong) UILabel *balance ;
+@property(nonatomic,strong) UIImageView *balanceImage ;
+
+/* 余额*/
+@property(nonatomic,strong) UILabel *balanceLabel ;
 
 /* 总金额*/
 @property(nonatomic,strong) UILabel *totalMoneyLabel ;

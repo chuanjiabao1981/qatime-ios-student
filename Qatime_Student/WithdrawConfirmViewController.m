@@ -7,10 +7,18 @@
 //
 
 #import "WithdrawConfirmViewController.h"
+#import "NavigationBar.h"
+#import "NSString+TimeStamp.h"
+#import "UIViewController+HUD.h"
+#import "MyWalletViewController.h"
+
 
 @interface WithdrawConfirmViewController (){
     
     NSDictionary *_dataDic;
+    
+    
+    NavigationBar *_navigationBar;
     
     
 }
@@ -36,6 +44,107 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    [self loadingHUDStopLoadingWithTitle:@"申请成功!"];
+    
+    _navigationBar = ({
+    
+        NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+        
+        _.titleLabel.text = @"提现详情";
+        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+        [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_];
+        _;
+    
+    });
+    
+    _withdrawConfirmView=({
+        WithdrawConfirmView *_=[[WithdrawConfirmView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
+        
+        if (_dataDic) {
+            _.orderNumber.text = _dataDic[@"transaction_no"];
+            _.time.text = [_dataDic[@"created_at"] timeStampToDate] ;
+            
+            if ([_dataDic[@"pay_type"]isEqualToString:@"bank"]) {
+                _.method.text = @"银行账户";
+            }else if ([_dataDic[@"pay_type"]isEqualToString:@"alipay"]){
+                
+                _.method.text = @"支付宝";
+            }
+            _.money.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"amount"]];
+            _.fee.text = @"¥0.0" ;
+            
+            [_.finishButton addTarget:self action:@selector(requestWithDrawSucess) forControlEvents:UIControlEventTouchUpInside];
+            
+            
+        }else{
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"数据错误!" preferredStyle:UIAlertControllerStyleAlert];
+          
+            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+                [self.navigationController popViewControllerAnimated:YES];
+            }] ;
+            
+            
+            [alert addAction:sure];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+
+            
+            
+        }
+        
+        
+        
+        
+        [self.view addSubview:_];
+        _;
+    });
+    
+    
+    
+}
+
+/* 请求成功,弹提示框*/
+- (void)requestWithDrawSucess{
+    
+    [self loadingHUDStopLoadingWithTitle:@"提现申请成功!"];
+    
+    [self performSelector:@selector(pop) withObject:nil afterDelay:1];
+    
+    
+}
+
+- (void)pop{
+    
+    MyWalletViewController *mywVC = [MyWalletViewController new];
+    UIViewController *controller = nil;
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[mywVC class]]) {
+            
+            controller = vc;
+        }
+    }
+    
+    
+        
+        
+        [self.navigationController popToViewController:controller animated:YES];
+        
+        
+    
+
+    
+}
+
+
+- (void)returnLastPage{
+    
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
 

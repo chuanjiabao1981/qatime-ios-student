@@ -14,6 +14,9 @@
 #import "UIImageView+WebCache.h"
 #import "RDVTabBarController.h"
 
+#import "UIViewController+HUD.h"
+#import "PayConfirmViewController.h"
+
 @interface OrderViewController (){
     
     NavigationBar *_navigationBar;
@@ -21,6 +24,20 @@
     NSString *_token;
     NSString *_idNumber;
     
+    /* 保存一个比较用的价格*/
+    
+    CGFloat price;
+    
+    
+    /* 是否可以使用余额*/
+    BOOL balanceEnable;
+    
+    /* 支付方式*/
+    NSString *_payType;
+    
+    
+    /* 订单成功后,收到的数据,传入下一页*/
+    NSDictionary *dataDic;
     
 }
 
@@ -53,7 +70,6 @@
     
     _navigationBar = ({
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
-        
         _.titleLabel.text = @"订单确认";
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
@@ -67,6 +83,9 @@
     
         OrderView *_=[[OrderView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
         
+        [_.wechatButton addTarget:self action:@selector(chooseWechat:) forControlEvents:UIControlEventTouchUpInside];
+        [_.alipayButton addTarget:self action:@selector(chooseAlipay:) forControlEvents:UIControlEventTouchUpInside];
+        [_.applyButton addTarget:self action:@selector(applyOrder) forControlEvents:UIControlEventTouchUpInside];
         
         [self.view addSubview:_];
         _;
@@ -83,14 +102,18 @@
     }
 
     
+    /* 初始化*/
+    _payType = @"".mutableCopy;
+    dataDic = @{}.mutableCopy;
+    
     /* 请求课程详细信息数据*/
     [self requestClassInfo];
     
     
-    
-    
-    
 }
+
+
+
 /* 请求课程详细信息*/
 - (void)requestClassInfo{
     
@@ -137,14 +160,11 @@
                     _orderView.priceLabel.text = [NSString stringWithFormat:@"%@元",mod.price];
                     
                     _orderView.totalMoneyLabel.text =[NSString stringWithFormat:@"%@",mod.price];
-
                     
+                    price = mod.price.floatValue;
                     
-                    
-                    
-                    
-                    
-                    
+                        /* 请求一次余额 ,判断是否可以用余额支付*/
+                    [self requestBalance];
                     
                     
                 }else{
@@ -171,14 +191,250 @@
     }
     
     
+}
+
+#pragma mark- 请求余额
+- (void)requestBalance{
+    
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/payment/users/%@/cash",_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+            /* 余额请求成功*/
+            _orderView.balanceLabel.text = [NSString stringWithFormat:@"(¥%@)",dic[@"data"][@"balance"]];
+            
+            if (price) {
+                /* 判断余额是否可用*/
+                if ([dic[@"data"][@"balance"] floatValue]>=price) {
+                    
+                    balanceEnable = YES;
+                    [_orderView.balanceButton addTarget:self action:@selector(chooseBalance:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    
+                }else{
+                    
+                    /* 按钮直接不可用*/
+                    
+                    /* 留作测试使用*/
+                    
+                    balanceEnable = NO;
+//                    _orderView.balanceButton.enabled = NO;
+                    
+                    [_orderView.balanceButton addTarget:self action:@selector(chooseBalance:) forControlEvents:UIControlEventTouchUpInside];
+                    
+            ///////////////////////////////////////////////////////
+                    
+                }
+                
+            }
+            
+            
+        }else{
+            /* 余额请求失败,余额不可用*/
+            /* 余额啥的都不可用*/
+            _orderView.balanceLabel.hidden = YES;
+            _orderView.balanceButton.hidden = YES;
+            _orderView.balance.hidden = YES;
+            
+        }
+        
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
     
     
     
 }
 
+/* 使用微信支付*/
+- (void)chooseWechat:(UIButton *)sender{
+    
+    if (sender.selected ==NO) {
+        sender.selected =YES;
+        _payType = @"weixin";
+        [sender setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
+        
+        
+        _orderView.alipayButton.selected = NO;
+        [_orderView.alipayButton setImage:nil forState:UIControlStateNormal];
+        if (_orderView.balanceButton.enabled ==YES) {
+            _orderView.balanceButton.selected = NO;
+            [_orderView.balanceButton setImage:nil forState:UIControlStateNormal];
+
+        }else{
+            
+        }
+        
+    }else{
+        sender.selected = NO;
+        [sender setImage:nil forState:UIControlStateNormal];
+        
+    }
+    
+    
+}
+
+/* 使用支付宝支付*/
+- (void)chooseAlipay:(UIButton *)sender{
+    
+    if (sender.selected ==NO) {
+        sender.selected =YES;
+        _payType = @"alipay";
+        [sender setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
+        
+        _orderView.wechatButton.selected = NO;
+        [_orderView.wechatButton setImage:nil forState:UIControlStateNormal];
+        if (_orderView.balanceButton.enabled ==YES) {
+            _orderView.balanceButton.selected = NO;
+            [_orderView.balanceButton setImage:nil forState:UIControlStateNormal];
+            
+        }else{
+            
+        }
+
+    }else{
+        sender.selected = NO;
+        [sender setImage:nil forState:UIControlStateNormal];
+        
+    }
+
+    
+}
 
 
+/* 在可以使用余额的情况下 使用余额支付*/
+- (void)chooseBalance:(UIButton *)sender{
+    
+    if (balanceEnable == YES) {
+        
+        if (sender.selected ==NO) {
+            sender.selected =YES;
+            _payType = @"account";
+            [sender setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
+            _orderView.wechatButton.selected = NO;
+            [_orderView.wechatButton setImage:nil forState:UIControlStateNormal];
+            _orderView.alipayButton.selected = NO;
+            [_orderView.alipayButton setImage:nil forState:UIControlStateNormal];
+            
+            
+        }else{
+            sender.selected = NO;
+            [sender setImage:nil forState:UIControlStateNormal];
+            
+        }
+    }
 
+}
+#pragma mark- 确认订单无误  提交按钮
+- (void)applyOrder{
+    
+    if (balanceEnable==NO) {
+        
+        if (_orderView.wechatButton.selected==NO&&_orderView.alipayButton.selected==NO) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择支付方式!" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+            }] ;
+            [alert addAction:sure];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+
+        }else{
+            
+            /* 就直接提交订单*/
+            [self finishAndCommit];
+            
+        }
+    }else{
+        if (_orderView.wechatButton.selected==NO&&_orderView.alipayButton.selected==NO&&_orderView.balanceButton.selected==NO) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择支付方式!" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+            }] ;
+            [alert addAction:sure];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+            
+        }else{
+            
+            /* 就直接提交订单*/
+            [self finishAndCommit];
+            
+        }
+ 
+    }
+    
+  
+    
+    
+    
+    
+}
+
+#pragma mark- 提交课程订单
+- (void)finishAndCommit{
+    
+    if (![_payType isEqualToString:@""]) {
+        if (_classID&&_token) {
+            
+            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+            [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+            [manager POST:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses/%@/orders",_classID] parameters:@{@"pay_type":_payType} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+               
+                NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                
+                if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+                   /* 下单成功*/
+                    
+                    dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
+                    
+                    [self loadingHUDStopLoadingWithTitle:@"订单申请成功!"];
+                    [self performSelector:@selector(turnToPayPage) withObject:nil afterDelay:1];
+                    
+                    
+                }else{
+                    
+                    [self loadingHUDStopLoadingWithTitle:@"订单申请失败!"];
+                    
+                }
+                
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                
+            }];
+            
+            
+            
+            
+            
+        }
+        
+        
+    }
+    
+    
+}
+
+#pragma mark- 跳转到支付确认页面
+- (void)turnToPayPage{
+    
+    if (dataDic) {
+        
+        PayConfirmViewController *confirm = [[PayConfirmViewController alloc]initWithData:dataDic];
+        
+        [self.navigationController pushViewController:confirm animated:YES];
+        
+        
+    }
+    
+    
+}
 
 
 

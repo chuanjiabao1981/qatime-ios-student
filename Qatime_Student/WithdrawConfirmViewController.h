@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WithdrawConfirmView.h"
 
 @interface WithdrawConfirmViewController : UIViewController
+
+@property(nonatomic,strong) WithdrawConfirmView *withdrawConfirmView ;
 
 - (instancetype)initWithData:(NSDictionary *)datadic;
 

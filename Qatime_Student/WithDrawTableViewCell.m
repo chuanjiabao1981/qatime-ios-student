@@ -173,12 +173,13 @@
     
     if ([model.status isEqualToString:@"init"]) {
         _status.text = @"审核中";
-    }else {
-       
+    }else if([model.status isEqualToString:@"canceled"]) {
+       _status.text = @"已取消";
         
     }
-    /* 预留充值状态接口*/
     
+    /* 预留提现状态接口*/
+   
     
 }
 

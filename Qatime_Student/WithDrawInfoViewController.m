@@ -13,6 +13,8 @@
 
 #import "LoginAgainViewController.h"
 #import "WithdrawConfirmViewController.h"
+#import "MyWalletViewController.h"
+#import "WithdrawConfirmViewController.h"
 
 
 @interface WithDrawInfoViewController (){
@@ -156,17 +158,15 @@
         if (_idNumber&&_token) {
             if (_payType&&_amount) {
                 
+                [self loadingHUDStartLoadingWithTitle:@"正在提交申请"];
                 
                 NSDictionary *dataDic = @{@"amount":_amount,
                                           @"pay_type":_payType,
                                           @"account":_withDrawInfoView.accountText.text,
                                           @"name":_withDrawInfoView.nameText.text,
                                           @"verify":_withDrawInfoView.keyCodeText.text
+                                          
                                           };
-                
-                
-                
-                
                 
                 AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
                 manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -176,13 +176,63 @@
                     
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                     
+                    
                     if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                         /* 请求成功*/
                         
-//                        WithdrawConfirmViewController *conVC = [[WithdrawConfirmViewController alloc]initWithData:dataDic];
-//                        
-//                        [self.navigationController pushViewController:conVC animated:YES];
+                        [self loadingHUDStopLoadingWithTitle:@"提现申请成功!"];
                         
+                        
+                        WithdrawConfirmViewController *conVC = [[WithdrawConfirmViewController alloc]initWithData:dic[@"data"]];
+                        
+                        [self.navigationController pushViewController:conVC animated:YES];
+                        
+                    }else if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:0]]&&[dic[@"error"][@"code"]isEqual:[NSNumber numberWithInteger:3003]]){
+                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您已有一笔提现申请正在审核中,请稍后再试" preferredStyle:UIAlertControllerStyleAlert];
+                        
+                      
+                        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                            
+                            [self loadingHUDStartLoadingWithTitle:@"正在取消..."];
+                            MyWalletViewController *mwVC = [[MyWalletViewController alloc]init];
+                            UIViewController *vc = nil;
+                            
+                            for (UIViewController *controller in self.navigationController.viewControllers) {
+                                
+                                if ([controller isKindOfClass:[mwVC class]]) {
+                                    
+                                    vc = controller;
+                                }
+                            }
+                            if (vc) {
+                                
+                                [self .navigationController popToViewController:vc animated:YES];
+                                
+                            }
+                            
+                            
+                        }] ;
+                        
+                        
+                        [alert addAction:sure];
+                        
+                        [self presentViewController:alert animated:YES completion:nil];
+
+                        
+                    }else if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:0]]&&[dic[@"error"][@"code"]isEqual:[NSNumber numberWithInteger:2003]]){
+                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"验证码错误!" preferredStyle:UIAlertControllerStyleAlert];
+                      
+                        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                            
+                            [self loadingHUDStopLoadingWithTitle:@"提交失败"];
+                            
+                        }] ;
+                        
+                        
+                        [alert addAction:sure];
+                        
+                        [self presentViewController:alert animated:YES completion:nil];
+
                         
                     }
                     

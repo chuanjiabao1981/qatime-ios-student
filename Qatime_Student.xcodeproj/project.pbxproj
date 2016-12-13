@@ -90,6 +90,10 @@
 		543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20801DC6F6B00086B04B /* TutoriumViewController.m */; };
 		543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20831DC6F6BE0086B04B /* ClassTimeViewController.m */; };
 		543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20861DC703CA0086B04B /* PersonalViewController.m */; };
+		543E0CBE1DFFDA77004B24FD /* PayConfirmView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CBD1DFFDA77004B24FD /* PayConfirmView.m */; };
+		543E0CC11DFFDA82004B24FD /* PayConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CC01DFFDA82004B24FD /* PayConfirmViewController.m */; };
+		543E0CC81DFFEDBD004B24FD /* CheckOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CC71DFFEDBD004B24FD /* CheckOrderView.m */; };
+		543E0CCB1DFFEDC8004B24FD /* CheckOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CCA1DFFEDC8004B24FD /* CheckOrderViewController.m */; };
 		544C15121DC73ADA00F59F86 /* selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 544C15111DC73ADA00F59F86 /* selected.png */; };
 		544C15141DC7414000F59F86 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 544C15131DC7414000F59F86 /* back.png */; };
 		544E0CDB1DD0806900884F31 /* YZSquareMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CDA1DD0806900884F31 /* YZSquareMenuCell.m */; };
@@ -490,6 +494,14 @@
 		543C20831DC6F6BE0086B04B /* ClassTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassTimeViewController.m; sourceTree = "<group>"; };
 		543C20851DC703CA0086B04B /* PersonalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalViewController.h; sourceTree = "<group>"; };
 		543C20861DC703CA0086B04B /* PersonalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalViewController.m; sourceTree = "<group>"; };
+		543E0CBC1DFFDA77004B24FD /* PayConfirmView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayConfirmView.h; sourceTree = "<group>"; };
+		543E0CBD1DFFDA77004B24FD /* PayConfirmView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayConfirmView.m; sourceTree = "<group>"; };
+		543E0CBF1DFFDA82004B24FD /* PayConfirmViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayConfirmViewController.h; sourceTree = "<group>"; };
+		543E0CC01DFFDA82004B24FD /* PayConfirmViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayConfirmViewController.m; sourceTree = "<group>"; };
+		543E0CC61DFFEDBD004B24FD /* CheckOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckOrderView.h; sourceTree = "<group>"; };
+		543E0CC71DFFEDBD004B24FD /* CheckOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckOrderView.m; sourceTree = "<group>"; };
+		543E0CC91DFFEDC8004B24FD /* CheckOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckOrderViewController.h; sourceTree = "<group>"; };
+		543E0CCA1DFFEDC8004B24FD /* CheckOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckOrderViewController.m; sourceTree = "<group>"; };
 		544C15111DC73ADA00F59F86 /* selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selected.png; sourceTree = "<group>"; };
 		544C15131DC7414000F59F86 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		544E0CD91DD0806900884F31 /* YZSquareMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZSquareMenuCell.h; sourceTree = "<group>"; };
@@ -1379,6 +1391,77 @@
 				541F91D91DC9BB8D00180BE8 /* 导航栏 */,
 			);
 			name = Util;
+			sourceTree = "<group>";
+		};
+		543E0CB81DFFDA23004B24FD /* 订单支付确认页面 */ = {
+			isa = PBXGroup;
+			children = (
+				543E0CC21DFFED88004B24FD /* 订单支付查询页面 */,
+				543E0CBB1DFFDA4D004B24FD /* Model */,
+				543E0CBA1DFFDA4C004B24FD /* View */,
+				543E0CB91DFFDA4B004B24FD /* Controller */,
+			);
+			name = "订单支付确认页面";
+			sourceTree = "<group>";
+		};
+		543E0CB91DFFDA4B004B24FD /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				543E0CBF1DFFDA82004B24FD /* PayConfirmViewController.h */,
+				543E0CC01DFFDA82004B24FD /* PayConfirmViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		543E0CBA1DFFDA4C004B24FD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				543E0CBC1DFFDA77004B24FD /* PayConfirmView.h */,
+				543E0CBD1DFFDA77004B24FD /* PayConfirmView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		543E0CBB1DFFDA4D004B24FD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		543E0CC21DFFED88004B24FD /* 订单支付查询页面 */ = {
+			isa = PBXGroup;
+			children = (
+				543E0CC51DFFEDA3004B24FD /* Model */,
+				543E0CC41DFFEDA2004B24FD /* View */,
+				543E0CC31DFFEDA0004B24FD /* Controller */,
+			);
+			name = "订单支付查询页面";
+			sourceTree = "<group>";
+		};
+		543E0CC31DFFEDA0004B24FD /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				543E0CC91DFFEDC8004B24FD /* CheckOrderViewController.h */,
+				543E0CCA1DFFEDC8004B24FD /* CheckOrderViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		543E0CC41DFFEDA2004B24FD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				543E0CC61DFFEDBD004B24FD /* CheckOrderView.h */,
+				543E0CC71DFFEDBD004B24FD /* CheckOrderView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		543E0CC51DFFEDA3004B24FD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		545162B61DF50D62000BD17A /* 修改密码 */ = {
@@ -2659,6 +2742,7 @@
 		54ECFEBE1DFE8D34001A98CE /* 课程购买页 */ = {
 			isa = PBXGroup;
 			children = (
+				543E0CB81DFFDA23004B24FD /* 订单支付确认页面 */,
 				54ECFEC21DFE8D4E001A98CE /* Model */,
 				54ECFEC11DFE8D4C001A98CE /* View */,
 				54ECFEC01DFE8D4A001A98CE /* Controller */,
@@ -3558,6 +3642,7 @@
 				548328E81DDC6F360053AB29 /* Mp3Recorder.m in Sources */,
 				54AB48E41DED5415008E3BC5 /* MyClassView.m in Sources */,
 				54AA30971DF98CD5009E0D04 /* CanceldOrderView.m in Sources */,
+				543E0CCB1DFFEDC8004B24FD /* CheckOrderViewController.m in Sources */,
 				5413D2521DF7B5CD00A8FDEC /* CashRecordView.m in Sources */,
 				54D66F6F1DEBF5ED00ED2EBC /* NotClassView.m in Sources */,
 				546978561DC723B5001695F4 /* LoginViewController.m in Sources */,
@@ -3597,6 +3682,7 @@
 				54FB1DD71DF1AC2C00BA9A3C /* ParentView.m in Sources */,
 				54294C701DDB062000677333 /* Teacher.m in Sources */,
 				54AB49001DEDABCC008E3BC5 /* EndedTableViewCell.m in Sources */,
+				543E0CBE1DFFDA77004B24FD /* PayConfirmView.m in Sources */,
 				5435D9401DD3125800DD4FCC /* TeachersPublicViewController.m in Sources */,
 				541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */,
 				54AA30941DF98CC7009E0D04 /* PaidOrderView.m in Sources */,
@@ -3665,6 +3751,7 @@
 				54B9CAF91DFE4A9D003961FF /* WithdrawConfirmView.m in Sources */,
 				54E428B41DE2DC6100AF5980 /* UIControl+RemoveTarget.m in Sources */,
 				54652E421DEEC25200F4607C /* MessageSettingViewController.m in Sources */,
+				543E0CC81DFFEDBD004B24FD /* CheckOrderView.m in Sources */,
 				5413D25B1DF7BC7900A8FDEC /* RechargeTableView.m in Sources */,
 				54F3BA181DFC3013003998D0 /* UIViewController+Login.m in Sources */,
 				5413D2781DF7D0DF00A8FDEC /* UIViewController+Token.m in Sources */,
@@ -3717,6 +3804,7 @@
 				54B73CFE1DE3E42700B7A7EB /* MemberListTableViewCell.m in Sources */,
 				54294F541DDB400E00677333 /* ReleaseNote.md in Sources */,
 				548328EA1DDC6F360053AB29 /* UUImageAvatarBrowser.m in Sources */,
+				543E0CC11DFFDA82004B24FD /* PayConfirmViewController.m in Sources */,
 				542C17381DFA50460088DB3F /* PaidOrderTableViewCell.m in Sources */,
 				542C173E1DFA50760088DB3F /* Unpaid.m in Sources */,
 				54DBA4BA1DE442D900A67A90 /* YZInputView.m in Sources */,

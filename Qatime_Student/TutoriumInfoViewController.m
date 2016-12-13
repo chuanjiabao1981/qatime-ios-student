@@ -152,8 +152,15 @@
     
     [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
     
+    /* 注册重新加载页面数据的通知*/
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"RefreshTutoriumInfo" object:nil];
+    
     
 }
+
+
+
 
 /* 根据初始化传值进来的id 进行网络请求*/
 - (void)requestClassesInfoWith:(NSString *)classid{
@@ -582,6 +589,14 @@
 //    [cell setupAutoHeightWithBottomView:cell.classDate bottomMargin:20];
     
     return  cell;
+    
+}
+
+/* 刷新页面*/
+- (void)refreshPage{
+    
+    [self requestClassesInfoWith:_classID];
+    
     
 }
 

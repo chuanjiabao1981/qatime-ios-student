@@ -19,6 +19,8 @@
 #import "WithDraw.h"
 #import "Payment.h"
 
+#import "UIViewController+HUD.h"
+
 
 
 
@@ -296,7 +298,7 @@
                
                 
                 [_cashRecordView.withDrawView reloadData];
-                [_cashRecordView.withDrawView setNeedsDisplay];
+//                [_cashRecordView.withDrawView setNeedsDisplay];
                 [self loadingHUDStopLoadingWithTitle:@"加载成功!"];
                 
                 
@@ -471,6 +473,9 @@
             if (_withDrawArr.count >indexPath.row) {
                 
                 cell.model  = _withDrawArr[indexPath.row];
+                
+                
+                
             }
             
             return  cell;
@@ -561,6 +566,91 @@
     
     
     return 1;
+    
+}
+
+
+
+#pragma mark- tableview delegate -  didselected
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    /* 提现页面*/
+    if (tableView.tag ==2) {
+        
+        WithDrawTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        if ([cell.model.status isEqualToString:@"canceled"]) {
+            
+        }else{
+        
+        
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否取消该提现申请?" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }] ;
+            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+                /* 发送取消订单申请*/
+                [self cancelWithDrawRequest:cell.model.transaction_no];
+                
+                
+            }] ;
+            
+            [alert addAction:cancel];
+            [alert addAction:sure];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+            
+        
+        }
+    }
+    
+}
+
+#pragma mark- 取消提现申请
+- (void)cancelWithDrawRequest:(NSString *)orderNumber{
+    
+    if (_idNumber&&orderNumber) {
+        
+        
+        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+        [manager PUT:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/payment/users/%@/withdraws/%@/cancel",_idNumber,orderNumber] parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            
+            NSLog(@"%@",dic);
+            if ([dic[@"satatus"]isEqual:[NSNumber numberWithInteger:1]]) {
+                /* 删除成功*/
+                [self loadingHUDStopLoadingWithTitle:@"删除成功!"];
+               
+                [self requestWithDraw];
+                
+                
+            }else{
+                
+                [self loadingHUDStopLoadingWithTitle:@"删除失败!"];
+            }
+            
+            
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+            [self loadingHUDStopLoadingWithTitle:@"请求失败,请重试"];
+            
+        }];
+    
+    }else{
+        [self loadingHUDStopLoadingWithTitle:@"请求失败,请重试"];
+
+    }
+    
+    
+    
+    
+    
     
 }
 

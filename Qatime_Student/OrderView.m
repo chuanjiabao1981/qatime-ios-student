@@ -6,7 +6,12 @@
 //  Copyright © 2016年 WWTD. All rights reserved.
 //
 
+
 #import "OrderView.h"
+
+#define LINESPACE self.height_sd/80.0
+
+
 
 @implementation OrderView
 
@@ -155,11 +160,14 @@
         _balanceButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _balanceButton.layer.borderWidth = 0.8;
         
-        UIImageView *balanceImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"money"]];
+        _balanceImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"money"]];
         
-        UILabel *balance = [UILabel new];
-        balance.textColor = TITLECOLOR;
-        balance.text = @"余额支付";
+        _balance = [UILabel new];
+        _balance.textColor = TITLECOLOR;
+        _balance.text = @"余额";
+        
+        _balanceLabel = [UILabel new];
+        _balanceLabel.textColor = TITLECOLOR;
         
         
         /* 支付部分视图*/
@@ -193,7 +201,7 @@
         
         
         [_scrollView sd_addSubviews:@[className,_className,classinfo,_classImage,subject,_subjectLabel,grade,_gradeLabel,teacher,_teacheNameLabel,classtime,_classTimeLabel,startTime,_startTimeLabel,endTime,_endTimeLabel,stats,_statusLabel,type,_typeLabel,price,_priceLabel,line]];
-        [chosenView sd_addSubviews:@[payWay,_wechatButton,wechatImage,wechat,_alipayButton,alipayImage,alipay,_balanceButton,balanceImage,balance,payView]];
+        [chosenView sd_addSubviews:@[payWay,_wechatButton,wechatImage,wechat,_alipayButton,alipayImage,alipay,_balanceButton,_balanceImage,_balance,_balanceLabel,payView]];
         
         [payView sd_addSubviews:@[price_tot,yuan,_totalMoneyLabel,_applyButton]];
         
@@ -216,9 +224,6 @@
         
         
         
-        
-        
-        
         /* 课程名*/
         className.sd_layout
         .leftSpaceToView(_scrollView,10)
@@ -236,7 +241,7 @@
         /* 课程信息*/
         classinfo.sd_layout
         .leftEqualToView(className)
-        .topSpaceToView(className,self.height_sd/200.0)
+        .topSpaceToView(className,LINESPACE)
         .autoHeightRatio(0);
         [classinfo setSingleLineAutoResizeWithMaxWidth:500];
         
@@ -249,7 +254,7 @@
         
         /* 科目*/
         subject.sd_layout
-        .topSpaceToView(_classImage,self.height_sd/200.0)
+        .topSpaceToView(_classImage,LINESPACE)
         .leftEqualToView(_classImage)
         .autoHeightRatio(0);
         [subject setSingleLineAutoResizeWithMaxWidth:500];
@@ -263,7 +268,7 @@
 
         /* 年级*/
         grade.sd_layout
-        .topSpaceToView(subject,self.height_sd/200.0)
+        .topSpaceToView(subject,LINESPACE)
         .leftEqualToView(subject)
         .autoHeightRatio(0);
         [grade setSingleLineAutoResizeWithMaxWidth:500];
@@ -277,7 +282,7 @@
         
         /* 授课老师*/
         teacher.sd_layout
-        .topSpaceToView(grade,self.height_sd/200.0)
+        .topSpaceToView(grade,LINESPACE)
         .leftEqualToView(grade)
         .autoHeightRatio(0);
         [teacher setSingleLineAutoResizeWithMaxWidth:500];
@@ -290,7 +295,7 @@
 
         /* 课时总数*/
         classtime.sd_layout
-        .topSpaceToView(teacher,self.height_sd/200.0)
+        .topSpaceToView(teacher,LINESPACE)
         .leftEqualToView(teacher)
         .autoHeightRatio(0);
         [classtime setSingleLineAutoResizeWithMaxWidth:500];
@@ -303,7 +308,7 @@
         
         /* 开课时间*/
         startTime.sd_layout
-        .topSpaceToView(classtime,self.height_sd/200.0)
+        .topSpaceToView(classtime,LINESPACE)
         .leftEqualToView(_classImage)
         .autoHeightRatio(0);
         [startTime setSingleLineAutoResizeWithMaxWidth:500];
@@ -317,7 +322,7 @@
 
         /* 结束时间*/
         endTime.sd_layout
-        .topSpaceToView(startTime,self.height_sd/200.0)
+        .topSpaceToView(startTime,LINESPACE)
         .leftEqualToView(startTime)
         .autoHeightRatio(0);
         [endTime setSingleLineAutoResizeWithMaxWidth:500];
@@ -330,7 +335,7 @@
         
         /* 当前状态*/
         stats.sd_layout
-        .topSpaceToView(endTime,self.height_sd/200.0)
+        .topSpaceToView(endTime,LINESPACE)
         .leftEqualToView(endTime)
         .autoHeightRatio(0);
         [stats setSingleLineAutoResizeWithMaxWidth:500];
@@ -343,7 +348,7 @@
         
         /* 授课方式*/
         type.sd_layout
-        .topSpaceToView(stats,self.height_sd/200.0)
+        .topSpaceToView(stats,LINESPACE)
         .leftEqualToView(stats)
         .autoHeightRatio(0);
         [type setSingleLineAutoResizeWithMaxWidth:500];
@@ -356,7 +361,7 @@
         
         /* 价格*/
         price.sd_layout
-        .topSpaceToView(type,self.height_sd/200.0)
+        .topSpaceToView(type,LINESPACE)
         .leftEqualToView(type)
         .autoHeightRatio(0);
         [price setSingleLineAutoResizeWithMaxWidth:500];
@@ -435,17 +440,23 @@
         .heightRatioToView(_alipayButton,1.0);
         _balanceButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
         
-        balanceImage.sd_layout
+        _balanceImage.sd_layout
         .leftSpaceToView(_balanceButton,10)
         .centerYEqualToView(_balanceButton)
         .heightRatioToView(_balanceButton,1.0)
         .widthEqualToHeight();
         
-        balance.sd_layout
-        .leftSpaceToView(balanceImage,5)
-        .topEqualToView(balanceImage)
-        .bottomEqualToView(balanceImage);
-        [balance setSingleLineAutoResizeWithMaxWidth:500];
+        _balance.sd_layout
+        .leftSpaceToView(_balanceImage,5)
+        .topEqualToView(_balanceImage)
+        .bottomEqualToView(_balanceImage);
+        [_balance setSingleLineAutoResizeWithMaxWidth:500];
+        
+        _balanceLabel.sd_layout
+        .topEqualToView(_balance)
+        .bottomEqualToView(_balance)
+        .leftSpaceToView(_balance,3);
+        [_balanceLabel setSingleLineAutoResizeWithMaxWidth:500.0];
 
         
         
@@ -454,7 +465,7 @@
         .leftEqualToView(self)
         .rightEqualToView(self)
         .bottomEqualToView(chosenView)
-        .topSpaceToView(balance,10);
+        .topSpaceToView(_balance,10);
         
         /* 确认按钮*/
         _applyButton.sd_layout
