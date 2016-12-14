@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 
 @property (nonatomic, assign) BOOL showDateLabel;
 
-- (void)setWithDict:(NSDictionary *)dict;
+- (void)setWithDict:(NSDictionary *)dic;
 
 - (void)minuteOffSetStart:(NSString *)start end:(NSString *)end;
 

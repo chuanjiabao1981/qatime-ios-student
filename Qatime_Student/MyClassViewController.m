@@ -165,7 +165,7 @@
     
     if (_token&&_idNumber) {
         
-        requestURL = [NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/students/%@/courses?status=%@",_idNumber,status];
+        requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?status=%@",Request_Header,_idNumber,status];
         
         
         

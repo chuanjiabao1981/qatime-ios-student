@@ -13,12 +13,14 @@
 
 
 /* 制作出一条消息*/
-- (void)setWithDict:(NSDictionary *)dict{
+- (void)setWithDict:(NSDictionary *)dic{
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:dic];
     
     self.strIcon = dict[@"strIcon"];
     
     if (dict[@"strName"] ==nil) {
-        [dict setValue:@"" forKey:@"strName" ];
+        dict[@"strName"] =@"";
     }
     self.strName = dict[@"strName"];
     self.strId = dict[@"strId"];

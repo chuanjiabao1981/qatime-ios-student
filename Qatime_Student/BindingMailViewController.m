@@ -9,6 +9,7 @@
 #import "BindingMailViewController.h"
 #import "NavigationBar.h"
 #import "UIViewController+HUD.h"
+#import "BindingMailInfoViewController.h"
 
 @interface BindingMailViewController (){
     
@@ -88,18 +89,22 @@
 #pragma mark- 下一步
 - (void)nextStep{
     
+    [self loadingHUDStartLoadingWithTitle:@"正在验证"];
+    
     if (![_bindingMailView.keyCodeText.text isEqualToString:@""]) {
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-        [manager POST:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/captcha/verify"] parameters:@{@"send_to":_phoneNumber,@"captcha":_bindingMailView.keyCodeText.text} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha/verify",Request_Header] parameters:@{@"send_to":_phoneNumber,@"captcha":_bindingMailView.keyCodeText.text} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 /* 验证成功*/
                 /* 跳转到下一页*/
+                [self loadingHUDStopLoadingWithTitle:@"验证成功!"];
                 
+                [self performSelector:@selector(nextPage) withObject:nil afterDelay:1];
                 
                 
             }else{
@@ -123,6 +128,14 @@
     
 }
 
+#pragma mark- 跳转至下一页
+- (void)nextPage{
+    
+    BindingMailInfoViewController *bindingVC = [BindingMailInfoViewController new];
+    [self.navigationController pushViewController:bindingVC animated:YES];
+    
+}
+
 
 
 
@@ -134,7 +147,7 @@
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager POST:@"http://testing.qatime.cn/api/v1/captcha" parameters:@{@"send_to":_phoneNumber,@"key":@"send_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header] parameters:@{@"send_to":_phoneNumber,@"key":@"send_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             

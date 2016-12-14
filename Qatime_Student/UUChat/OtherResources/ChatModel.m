@@ -93,11 +93,14 @@ static int dateNum = 10;
     int randomNum = UUMessageTypeText;
         /* 消息类型是文字 */
         randomNum = UUMessageTypeText;
+    
+   
+    if (text == nil) {
+        text = @"";
+    }
+    
         [dictionary setObject:text forKey:@"strContent"];
     
-    if (text == nil) {
-        
-    }
     
     
     NSDate *date = [[NSDate date]dateByAddingTimeInterval:arc4random()%1000*(dateNum++) ];

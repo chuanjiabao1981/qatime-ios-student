@@ -58,7 +58,7 @@
 //        [manager.requestSerializer setValue:remember_token forHTTPHeaderField:@"Remember-Token"];
 //        
 //        
-//        [manager GET:@"http://testing.qatime.cn/api/v1/live_studio/courses" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        [manager GET:@"%@/api/v1/live_studio/courses" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 //            
 //            NSDictionary *modelDic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
 //            

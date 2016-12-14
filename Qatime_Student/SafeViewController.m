@@ -15,6 +15,8 @@
 #import "ChangePasswordViewController.h"
 #import "ChangePhoneGetCodeViewController.h"
 
+#import "BindingMailViewController.h"
+
 @interface SafeViewController ()
 {
     
@@ -124,7 +126,7 @@
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/students/%@/info",_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/students/%@/info",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSMutableDictionary *getDic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([getDic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
@@ -300,6 +302,9 @@
                 }
                     break;
                 case 1:{
+                    BindingMailViewController *binVC = [[BindingMailViewController alloc]init];
+                    [self.navigationController pushViewController:binVC animated:YES];
+                    
                     
                 }
                     break;

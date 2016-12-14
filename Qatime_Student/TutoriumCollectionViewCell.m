@@ -55,8 +55,7 @@
         .leftEqualToView(_classImage)
         .rightEqualToView(_classImage)
         .topSpaceToView(_classImage,5)
-        .autoHeightRatio(0);
-        
+        .heightIs(20);
         
         
         

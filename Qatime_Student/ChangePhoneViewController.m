@@ -100,7 +100,7 @@
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         [manager .requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-        [manager PUT:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/users/%@/login_mobile",_idNumber] parameters:@{@"login_mobile":_changePhoneView.phoneNumber.text,@"captcha_confirmation":_changePhoneView.keyCode.text} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager PUT:[NSString stringWithFormat:@"%@/api/v1/users/%@/login_mobile",Request_Header,_idNumber] parameters:@{@"login_mobile":_changePhoneView.phoneNumber.text,@"captcha_confirmation":_changePhoneView.keyCode.text} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             

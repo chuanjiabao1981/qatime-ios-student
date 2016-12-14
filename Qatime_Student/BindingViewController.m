@@ -186,7 +186,7 @@
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-            [manager POST:@"http://testing.qatime.cn/api/v1/user/wechat_regsiter" parameters:signUpInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [manager POST:[NSString stringWithFormat:@"%@/api/v1/user/wechat_regsiter",Request_Header] parameters:signUpInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 NSDictionary *codeState = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                 NSLog(@"%@",codeState);
@@ -275,7 +275,7 @@
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         
-        [manager POST:@"http://testing.qatime.cn/api/v1/captcha" parameters:@{@"send_to":_bindingView.phoneNumber.text,@"key":@"register_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header ] parameters:@{@"send_to":_bindingView.phoneNumber.text,@"key":@"register_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             /* 发送成功提示框*/
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];

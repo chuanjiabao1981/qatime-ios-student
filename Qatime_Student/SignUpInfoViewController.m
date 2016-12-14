@@ -140,7 +140,7 @@
 //    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
 //    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
 //    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-//    [manager PUT:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/students/%@/profile",userDic[@"id"] ] parameters:uploadDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//    [manager PUT:[NSString stringWithFormat:@"%@/api/v1/students/%@/profile",userDic[@"id"] ] parameters:uploadDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 //        
 //        NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
 //        NSLog(@"%@",dic);

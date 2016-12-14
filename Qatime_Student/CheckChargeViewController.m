@@ -99,7 +99,7 @@
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remeber-Token"];
-        [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/payment/orders/%@/result",_numbers] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/result",Request_Header,_numbers] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
@@ -180,7 +180,7 @@
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
             [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-            [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/payment/users/%@/cash",_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     balance = [NSString stringWithFormat:@"最新余额 %@",dic[@"data"][@"balance"]];

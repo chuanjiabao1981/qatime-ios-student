@@ -1,26 +1,28 @@
 //
-//  BindingMailView.m
+//  BindingMailInfoView.m
 //  Qatime_Student
 //
-//  Created by Shin on 2016/12/13.
+//  Created by Shin on 2016/12/14.
 //  Copyright © 2016年 WWTD. All rights reserved.
 //
 
-#import "BindingMailView.h"
+#import "BindingMailInfoView.h"
 
-@implementation BindingMailView
+@implementation BindingMailInfoView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
+       
+        UILabel *mailSquare = [UILabel new];
+        mailSquare.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        mailSquare.layer.borderWidth = 0.8;
         
-        UILabel *phone = [UILabel new];
-        phone.text = @"当前绑定手机";
-        phone.textColor = TITLECOLOR;
         
-        _phoneLabel = [UILabel new];
-        _phoneLabel.textColor = TITLECOLOR;
+        _mailText = [[UITextField alloc]init];
+        _mailText.placeholder = @"输入新的邮箱账号";
+        
         
         UIView *square = [[UIView alloc]init];
         square.layer.borderColor = [UIColor lightGrayColor].CGColor;
@@ -42,28 +44,34 @@
         [_nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_nextStepButton setTitle:@"下一步" forState:UIControlStateNormal];
         
-        
         /*布局*/
         
-        [self sd_addSubviews:@[phone,_phoneLabel,square,_getKeyCodeButton,_nextStepButton]];
+        [mailSquare addSubview:_mailText];
+        
         [square addSubview:_keyCodeText];
         
+        [self sd_addSubviews:@[mailSquare,square,_getKeyCodeButton,_nextStepButton]];
         
-        phone.sd_layout
+        
+        
+        mailSquare.sd_layout
         .topSpaceToView(self,20)
         .leftSpaceToView(self,20)
-        .autoHeightRatio(0);
-        [phone setSingleLineAutoResizeWithMaxWidth:400];
+        .rightSpaceToView(self,20)
+        .heightIs(self.height_sd*0.065);
         
-        _phoneLabel.sd_layout
-        .leftSpaceToView(phone,20)
-        .topEqualToView(phone)
-        .bottomEqualToView(phone);
-        [_phoneLabel setSingleLineAutoResizeWithMaxWidth:1000];
+        
+        _mailText.sd_layout
+        .leftSpaceToView(mailSquare,10)
+        .topSpaceToView(mailSquare,10)
+        .rightSpaceToView(mailSquare,10)
+        .bottomSpaceToView(mailSquare,10);
+        
+        
         
         square.sd_layout
-        .leftEqualToView(phone)
-        .topSpaceToView(phone,20)
+        .leftEqualToView(mailSquare)
+        .topSpaceToView(mailSquare,20)
         .widthIs(self.width_sd*2/3-40)
         .heightIs(self.height_sd*0.065);
         
@@ -84,11 +92,6 @@
         .rightSpaceToView(self,20)
         .topSpaceToView(_getKeyCodeButton,30)
         .heightRatioToView(_getKeyCodeButton,1.0);
-        
-        
-        
-        
-        
         
     }
     return self;

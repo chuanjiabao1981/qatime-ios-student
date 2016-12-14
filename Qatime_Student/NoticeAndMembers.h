@@ -12,6 +12,6 @@
 
 @property(nonatomic,strong) NSMutableArray  *announcements;
 
-@property(nonatomic,strong) NSMutableArray  *members ;
+@property(nonatomic,strong) NSMutableArray  *accounts ;
 
 @end

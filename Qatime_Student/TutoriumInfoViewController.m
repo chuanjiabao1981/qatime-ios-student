@@ -106,8 +106,6 @@
         
     
     
-    
-    
     _tutoriumInfoView.scrollView.delegate = self;
     _tutoriumInfoView.classesListTableView.scrollEnabled =NO;
     
@@ -171,7 +169,7 @@
     [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
     
     
-    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses/%@",classid] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@",Request_Header,classid] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         /* 拿到数据字典*/
         NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -305,7 +303,6 @@
 - (void)switchClassData:(NSDictionary *)data{
     /* 先判断is_tasting / is_bought / tasted 的状态*/
     
-    
     if ([_dataDic[@"is_bought"]boolValue]==NO) {
         
         /* 还没购买的情况下*/
@@ -316,6 +313,17 @@
                 [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
                 [_buyBar.listenButton setBackgroundColor:BUTTONRED];
                 [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                
+                if (![data[@"status"] isEqualToString:@"finished"]&&![data[@"status"] isEqualToString:@"competed"]){
+                    
+                    [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
+                    
+                }else{
+                    /* 课程已结束*/
+                    [_buyBar.listenButton addTarget:self action:@selector(addClosedListen) forControlEvents:UIControlEventTouchUpInside];
+                    
+                }
+
                 
                 
             }else{
@@ -333,9 +341,7 @@
             
             /* 如果课程还没结束*/
             
-            
             if (![data[@"status"] isEqualToString:@"finished"]&&![data[@"status"] isEqualToString:@"competed"]){
-                
                 
             [_buyBar.listenButton addTarget:self action:@selector(addListen) forControlEvents:UIControlEventTouchUpInside];
             
@@ -406,7 +412,7 @@
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses/%@/taste",_dataDic[@"id"]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/taste",Request_Header,_dataDic[@"id"]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
@@ -415,7 +421,10 @@
             
             [_buyBar.listenButton removeTarget:self action:@selector(addListen) forControlEvents:UIControlEventTouchUpInside];
             
-            [_buyBar.listenButton setTitle:@"立即试听" forState:UIControlStateNormal];
+            [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
+            [_buyBar.listenButton setBackgroundColor:BUTTONRED];
+            [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
             
             [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
             
@@ -434,7 +443,7 @@
 
 #pragma mark- 立即试听
 - (void)listen{
- 
+     
     NELivePlayerViewController *neVC = [[NELivePlayerViewController alloc]initWithClassID:_dataDic[@"id"]];
     
             [self.navigationController pushViewController:neVC animated:YES];
@@ -476,7 +485,6 @@
     
     OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:_dataDic[@"id"]];
     [self.navigationController pushViewController:orderVC animated:YES];
-    
     
     
     

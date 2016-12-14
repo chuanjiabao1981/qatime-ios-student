@@ -39,7 +39,7 @@
     
     
     
-    
+    /* 头视图的尺寸*/
     CGSize headerSize;
     
 }
@@ -119,10 +119,7 @@
     
     _teachersPublicCollectionView.delegate = self;
     _teachersPublicCollectionView.dataSource = self;
-        
-
-    
-    
+            
     _publicClasses = @[].mutableCopy;
     
     
@@ -213,9 +210,7 @@
     NSString *CellIdentifier = @"headerId";
     //从缓存中获取 Headercell
 
-    
     UICollectionReusableView *header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-    
     
     
     [header addSubview:_teachersPublicHeaderView];
@@ -233,7 +228,7 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/teachers/%@/profile",teacherID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/teachers/%@/profile",Request_Header,teacherID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
@@ -296,10 +291,6 @@
         
         [self sizeToFitHeight];
     
-        
-
-        
-        
         
         
     headerSize = CGSizeMake(CGRectGetWidth(_teachersPublicHeaderView.frame), CGRectGetHeight( _teachersPublicHeaderView.frame));

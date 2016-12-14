@@ -82,6 +82,8 @@
     _settingView.menuTableView.dataSource = self;
     _settingView.menuTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     
+    _settingView.menuTableView.tableFooterView = [[UIView alloc]init];
+    
     /* 获取当前软件版本*/
     
     _version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
@@ -163,7 +165,7 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager GET:@"http://testing.qatime.cn/api/v1/system/check_update?category=student_client&platform=ios" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/system/check_update?category=student_client&platform=ios",Request_Header ] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         

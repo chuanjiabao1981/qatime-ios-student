@@ -106,7 +106,7 @@
         .bottomEqualToView(view1)
         .leftEqualToView(view1)
         .rightEqualToView(view1);
-
+        _noticeTabelView.tableFooterView = [[UIView alloc]init];
         
         
 //        #pragma mark- view3的滚动视图

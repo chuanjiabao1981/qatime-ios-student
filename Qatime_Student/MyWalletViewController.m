@@ -105,7 +105,8 @@
 
 - (void)requestWallet{
     
-    NSString *urlStr =[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/payment/users/%@/cash",_idNumber];
+    NSString *urlStr =[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header
+                       ,_idNumber];
     
 //    NSString *urlString = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     

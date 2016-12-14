@@ -87,9 +87,6 @@
          contextName = "-[BarrageWalkTextSprite bindingView]:BarrageWalkTextSprite.m">
       </ContextState>
       <ContextState
-         contextName = "__46-[TutoriumInfoViewController switchClassData:]_block_invoke:TutoriumInfoViewController.m">
-      </ContextState>
-      <ContextState
          contextName = "-[MyOrderViewController scrollViewWillBeginDragging:]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -99,6 +96,9 @@
                value = "_unpaidView.mj_footer.mj_y">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__46-[TutoriumInfoViewController switchClassData:]_block_invoke:TutoriumInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "__45-[PersonalInfoViewController requestUserInfo]_block_invoke:PersonalInfoViewController.m">
@@ -241,7 +241,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__46-[NELivePlayerViewController requestClassInfo]_block_invoke:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_session">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__38-[OrderViewController finishAndCommit]_block_invoke:OrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__39-[BindingMailInfoViewController finish]_block_invoke_2:BindingMailInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[CashRecordViewController viewDidLoad]:CashRecordViewController.m">
@@ -288,6 +299,14 @@
          <PersistentStrings>
             <PersistentString
                value = "unpaidPage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[IndexPageViewController collectionView:viewForSupplementaryElementOfKind:atIndexPath:]:IndexPageViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_headerView.conmmandView.centerY_sd">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

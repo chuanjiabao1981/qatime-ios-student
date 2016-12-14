@@ -28,7 +28,7 @@
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager GET:@"http://testing.qatime.cn/api/v1/app_constant/grades" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager GET:[NSString stringWithFormat:@"%@/api/v1/app_constant/grades",Request_Header] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             _grade = [[NSArray alloc]initWithArray:[[[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] valueForKey:@"data"]valueForKey:@"grades"]];
             

@@ -48,7 +48,7 @@
 //        "completed_lessons_count": 10,
 //        "live_start_time": "2016-09-12 11:33",
 //        "live_end_time": "2016-10-11 17:24",
-//        "publicize": "http://testing.qatime.cn/imgs/no_img.png"
+//        "publicize": "%@/imgs/no_img.png"
 //    }
 //},
 

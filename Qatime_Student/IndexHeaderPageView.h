@@ -11,7 +11,7 @@
 #import "YZSquareMenu.h"
 #import "YZSquareMenuCell.h"
 #import "IndexHeaderPageView.h"
-#import "SquareView.h"
+#import "TeacherView.h"
 
 @interface IndexHeaderPageView : UICollectionReusableView
 
@@ -29,7 +29,7 @@
 
 
 /* 名师入驻 滚动视图*/
-@property(nonatomic,strong) SquareView *teacherScrollView ;
+@property(nonatomic,strong) TeacherView *teacherScrollView ;
 
 /* 名师入驻的header*/
 @property(nonatomic,strong) UIView *teacherScrollHeader ;
@@ -40,6 +40,8 @@
 
 
 /* 全部辅导推荐按钮*/
+
+@property(nonatomic,strong) UIView *conmmandView ;
 @property(nonatomic,strong) UIButton *recommandAllButton ;
 
 @property(nonatomic,strong) UIButton *allArrowButton ;

@@ -138,7 +138,7 @@
 		546F5C591DFD760000528F79 /* WithDrawInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546F5C581DFD760000528F79 /* WithDrawInfoViewController.m */; };
 		547A7EF71DD411DB00F1282B /* TeachersPublic_Classes.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EF61DD411DB00F1282B /* TeachersPublic_Classes.m */; };
 		547A7EFD1DD416F100F1282B /* ListenAndBuyTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EFC1DD416F100F1282B /* ListenAndBuyTabBar.m */; };
-		547E89841DD1705100749366 /* SquareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E89831DD1705100749366 /* SquareView.m */; };
+		547E89841DD1705100749366 /* TeacherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E89831DD1705100749366 /* TeacherView.m */; };
 		547E898A1DD1BC9900749366 /* RecommandTeacher.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E89891DD1BC9900749366 /* RecommandTeacher.m */; };
 		547E898D1DD1D01B00749366 /* TutoriumInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E898C1DD1D01B00749366 /* TutoriumInfoView.m */; };
 		547E89901DD1D03100749366 /* TutoriumInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E898F1DD1D03100749366 /* TutoriumInfoViewController.m */; };
@@ -192,6 +192,8 @@
 		549A051A1DC86EBB00B3564D /* MXSCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05161DC86EBB00B3564D /* MXSCycleScrollView.m */; };
 		549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05181DC86EBB00B3564D /* UIColor+HcdCustom.m */; };
 		549A051E1DC892E500B3564D /* GradeList.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A051D1DC892E500B3564D /* GradeList.m */; };
+		549AE7621E013DAC001DD2ED /* BindingMailInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */; };
+		549AE7651E013DBD001DD2ED /* BindingMailInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AE7641E013DBD001DD2ED /* BindingMailInfoViewController.m */; };
 		54A153AA1DC6F09D0070B508 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153A91DC6F09D0070B508 /* main.m */; };
 		54A153AD1DC6F09D0070B508 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153AC1DC6F09D0070B508 /* AppDelegate.m */; };
 		54A153B01DC6F09D0070B508 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153AF1DC6F09D0070B508 /* ViewController.m */; };
@@ -625,8 +627,8 @@
 		547A81221DD4737D00F1282B /* libyuv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libyuv.a; path = "../../../Desktop/LiveStreaming_iOS_SDK_V1.2.2 2/滤镜版本/libs/libyuv.a"; sourceTree = "<group>"; };
 		547A81231DD4737D00F1282B /* LSMediaCapture.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = LSMediaCapture.bundle; path = "../../../Desktop/LiveStreaming_iOS_SDK_V1.2.2 2/滤镜版本/libs/LSMediaCapture.bundle"; sourceTree = "<group>"; };
 		547A81311DD474B300F1282B /* libNELivePlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNELivePlayer.a; path = ../../../Desktop/LivePlayer_iOS_Demo_v1.2.1/Demo/NELivePlayer/libs/libNELivePlayer.a; sourceTree = "<group>"; };
-		547E89821DD1705100749366 /* SquareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SquareView.h; sourceTree = "<group>"; };
-		547E89831DD1705100749366 /* SquareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SquareView.m; sourceTree = "<group>"; };
+		547E89821DD1705100749366 /* TeacherView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeacherView.h; sourceTree = "<group>"; };
+		547E89831DD1705100749366 /* TeacherView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeacherView.m; sourceTree = "<group>"; };
 		547E89881DD1BC9900749366 /* RecommandTeacher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommandTeacher.h; sourceTree = "<group>"; };
 		547E89891DD1BC9900749366 /* RecommandTeacher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommandTeacher.m; sourceTree = "<group>"; };
 		547E898B1DD1D01B00749366 /* TutoriumInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumInfoView.h; sourceTree = "<group>"; };
@@ -761,6 +763,10 @@
 		549A05181DC86EBB00B3564D /* UIColor+HcdCustom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HcdCustom.m"; sourceTree = "<group>"; };
 		549A051C1DC892E500B3564D /* GradeList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradeList.h; sourceTree = "<group>"; };
 		549A051D1DC892E500B3564D /* GradeList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradeList.m; sourceTree = "<group>"; };
+		549AE7601E013DAC001DD2ED /* BindingMailInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailInfoView.h; sourceTree = "<group>"; };
+		549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindingMailInfoView.m; sourceTree = "<group>"; };
+		549AE7631E013DBD001DD2ED /* BindingMailInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailInfoViewController.h; sourceTree = "<group>"; };
+		549AE7641E013DBD001DD2ED /* BindingMailInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindingMailInfoViewController.m; sourceTree = "<group>"; };
 		54A153A51DC6F09D0070B508 /* Qatime_Student.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Qatime_Student.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54A153A91DC6F09D0070B508 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		54A153AB1DC6F09D0070B508 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1484,6 +1490,8 @@
 			children = (
 				543E0CD21E00297E004B24FD /* BindingMailViewController.h */,
 				543E0CD31E00297E004B24FD /* BindingMailViewController.m */,
+				549AE7631E013DBD001DD2ED /* BindingMailInfoViewController.h */,
+				549AE7641E013DBD001DD2ED /* BindingMailInfoViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1493,6 +1501,8 @@
 			children = (
 				543E0CCD1E002960004B24FD /* BindingMailView.h */,
 				543E0CCE1E002960004B24FD /* BindingMailView.m */,
+				549AE7601E013DAC001DD2ED /* BindingMailInfoView.h */,
+				549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -3033,8 +3043,8 @@
 			children = (
 				54D661231DD048F500C9A0FF /* IndexPageView.h */,
 				54D661241DD048F500C9A0FF /* IndexPageView.m */,
-				547E89821DD1705100749366 /* SquareView.h */,
-				547E89831DD1705100749366 /* SquareView.m */,
+				547E89821DD1705100749366 /* TeacherView.h */,
+				547E89831DD1705100749366 /* TeacherView.m */,
 				544E0CE21DD09FAE00884F31 /* IndexHeaderPageView.h */,
 				544E0CE31DD09FAE00884F31 /* IndexHeaderPageView.m */,
 				54FCBAB11DD58AB10094BF58 /* Cell */,
@@ -3700,7 +3710,7 @@
 				54FB1DDA1DF1AC3D00BA9A3C /* ParentViewController.m in Sources */,
 				54652E3A1DEEBE2800F4607C /* ClassSettingViewController.m in Sources */,
 				54AA30851DF950DB009E0D04 /* CheckChargeViewController.m in Sources */,
-				547E89841DD1705100749366 /* SquareView.m in Sources */,
+				547E89841DD1705100749366 /* TeacherView.m in Sources */,
 				5407C98E1DE7DDED00DB04C8 /* NSString+YYAdd.m in Sources */,
 				54D661251DD048F500C9A0FF /* IndexPageView.m in Sources */,
 				545162C11DF53DE6000BD17A /* ChangePhoneGetCodeView.m in Sources */,
@@ -3771,6 +3781,7 @@
 				54FCBAFC1DD5DCEE0094BF58 /* Members.m in Sources */,
 				544E0CE11DD090A700884F31 /* RecommandClassCollectionViewCell.m in Sources */,
 				54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */,
+				549AE7621E013DAC001DD2ED /* BindingMailInfoView.m in Sources */,
 				544E0CDB1DD0806900884F31 /* YZSquareMenuCell.m in Sources */,
 				54A153B01DC6F09D0070B508 /* ViewController.m in Sources */,
 				54B9CAFC1DFE4AAC003961FF /* WithdrawConfirmViewController.m in Sources */,
@@ -3848,6 +3859,7 @@
 				541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */,
 				546A54771DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.m in Sources */,
 				545162C41DF53DF9000BD17A /* ChangePhoneGetCodeViewController.m in Sources */,
+				549AE7651E013DBD001DD2ED /* BindingMailInfoViewController.m in Sources */,
 				54D661221DD040EF00C9A0FF /* UIViewController+HUD.m in Sources */,
 				545162CE1DF5598E000BD17A /* PersonalInfoViewController.m in Sources */,
 				5413D25E1DF7BC8A00A8FDEC /* WidthDrawTableView.m in Sources */,
@@ -4100,7 +4112,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Qatime_Student/Qatime_Student.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

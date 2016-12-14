@@ -127,7 +127,7 @@
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/students/%@/info",_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/students/%@/info",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
        _dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         /* 获取成功*/
@@ -189,7 +189,23 @@
 - (void)changeHeadImage:(UITapGestureRecognizer *)sender{
     
     
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        NSLog(@"支持相机");
+    }
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+    {
+        NSLog(@"支持图库");
+    }
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
+    {
+        NSLog(@"支持相片库");
+    }
+    
+    
+    
     UIImagePickerController *picker = [[UIImagePickerController alloc]init];
+    picker.allowsEditing = YES;
     picker.delegate = self;
     
     
@@ -201,10 +217,16 @@
         
          [self presentViewController:picker animated:YES completion:nil];
     }] ;
-    UIAlertAction *library = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *library = [UIAlertAction actionWithTitle:@"图库" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
          picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         
          [self presentViewController:picker animated:YES completion:nil];
+        
+    }] ;
+    UIAlertAction *photos = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        
+        [self presentViewController:picker animated:YES completion:nil];
         
     }] ;
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -215,6 +237,7 @@
     
     [alert addAction:camera];
     [alert addAction:library];
+    [alert addAction:photos];
     [alert addAction:cancel];
     
     [self presentViewController:alert animated:YES completion:nil];
@@ -480,8 +503,6 @@
 
             };
             
-            
-            
         }
             break;
             
@@ -501,8 +522,6 @@
         }
             
             break;
-            
-       
     }
     
 }
@@ -549,15 +568,10 @@
     [self presentViewController:alert animated:YES completion:nil];
 
     
-    
-    
-    
 }
 
 /* 代理传值 从上一个页面修改完成之后 该页面个人简介值发生变化*/
 - (void) changeUserDesc:(NSString *)desc{
-    
-    
     
     NSLog(@"%@",desc);
     
@@ -616,13 +630,17 @@
     }else{
         
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否保存?" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"不保存" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+            [self returnFrontPage];
             
         }] ;
         UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
             
             [self updateUserInfo];
+            
+            [self loadingHUDStartLoadingWithTitle:@"正在提交个人信息"];
             
         }] ;
         
@@ -633,10 +651,6 @@
 
         
     }
-    
-    
-    
-    
     
     
 }
@@ -666,61 +680,40 @@
     
     
     
-    
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager PUT:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/students/%@",_idNumber] parameters:dic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager PUT:[NSString stringWithFormat:@"%@/api/v1/students/%@",Request_Header,_idNumber] parameters:dic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         NSLog(@"%@",dic);
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 修改成功*/
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"修改成功!" preferredStyle:UIAlertControllerStyleAlert];
-           
-            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
-                [self.navigationController popViewControllerAnimated:YES];
-                [self.rdv_tabBarController setTabBarHidden:NO];
-
-                
-            }] ;
+         
+            [self loadingHUDStopLoadingWithTitle:@"修改成功!"];
             
+            [self performSelector:@selector(returnFrontPage) withObject:nil afterDelay:1];
             
-            [alert addAction:sure];
+        }else{
             
-            [self presentViewController:alert animated:YES completion:nil];
-
+            [self loadingHUDStopLoadingWithTitle:@"修改失败!"];
             
-            
-            
-                    }else{
-            
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"修改失败!请检查信息是否正确" preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
-            }] ;
-            
-            
-            [alert addAction:sure];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-
-            
-            
+            [self performSelector:@selector(returnFrontPage) withObject:nil afterDelay:1];
             
         }
-        
         
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
     
+}
+
+- (void)returnFrontPage{
     
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
 

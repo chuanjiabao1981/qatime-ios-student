@@ -48,7 +48,7 @@
         
         /* banner页布局*/
         
-        _cycleScrollView =[SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, CGRectGetWidth(_headerContentView.frame), CGRectGetWidth(_headerContentView.frame)*316/1190) imageURLStringsGroup:@[@"http://testing.qatime.cn/assets/banner-016c8e1cde7b776617bd6e93c128dd61.jpg",@"http://testing.qatime.cn/assets/banner2-149105719fc13d02b78770a0e9e1fd05.jpg",@"http://testing.qatime.cn/assets/banner3-873b7627ebd8fc13d9de61ff53c110b5.jpg"]];
+        _cycleScrollView =[SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, CGRectGetWidth(_headerContentView.frame), CGRectGetWidth(_headerContentView.frame)*316/1190) imageURLStringsGroup:@[[NSString stringWithFormat:@"%@/assets/banner-016c8e1cde7b776617bd6e93c128dd61.jpg",Request_Header],[NSString stringWithFormat:@"%@/assets/banner2-149105719fc13d02b78770a0e9e1fd05.jpg",Request_Header],[NSString stringWithFormat:@"%@/assets/banner3-873b7627ebd8fc13d9de61ff53c110b5.jpg",Request_Header]]];
         
         
         [_headerContentView addSubview:_cycleScrollView];
@@ -65,8 +65,9 @@
             UIView *btn = [[UIView alloc]initWithFrame:CGRectMake(i*CGRectGetWidth(_squareMenu.bounds)/5, 0, CGRectGetWidth(_squareMenu.bounds)/5, CGRectGetWidth(_squareMenu.bounds)/5) ];
             UIImageView *iconImage=[[UIImageView alloc]initWithFrame:CGRectMake(btn.frame.size.width/3/2+5, 15, btn.frame.size.width*2/3-10, btn.frame.size.width*2/3-10)];
             
-            UILabel *iconLabel =[[UILabel alloc]initWithFrame:CGRectMake(0, btn.frame.size.width*3/4, btn.frame.size.width, btn.frame.size.width/4)];
+            UILabel *iconLabel =[[UILabel alloc]initWithFrame:CGRectMake(0, btn.frame.size.width*3/4+2, btn.frame.size.width, btn.frame.size.width/4-2)];
             iconLabel.textAlignment = NSTextAlignmentCenter;
+            iconLabel.font = [UIFont systemFontOfSize:16];
             [btn addSubview:iconImage];
             [btn addSubview:iconLabel];
             
@@ -88,8 +89,9 @@
             UIView *btn = [[UIView alloc]initWithFrame:CGRectMake((i-5)*CGRectGetWidth(_squareMenu.bounds)/5, CGRectGetWidth(_squareMenu.bounds)/5, CGRectGetWidth(_squareMenu.bounds)/5, CGRectGetWidth(_squareMenu.bounds)/5) ];
             UIImageView *iconImage=[[UIImageView alloc]initWithFrame:CGRectMake(btn.frame.size.width/3/2+5, 15, btn.frame.size.width*2/3-10, btn.frame.size.width*2/3-10)];
             
-            UILabel *iconLabel =[[UILabel alloc]initWithFrame:CGRectMake(0, btn.frame.size.width*3/4, btn.frame.size.width, btn.frame.size.width/4)];
+            UILabel *iconLabel =[[UILabel alloc]initWithFrame:CGRectMake(0, btn.frame.size.width*3/4+2, btn.frame.size.width, btn.frame.size.width/4-2)];
             iconLabel.textAlignment = NSTextAlignmentCenter;
+            iconLabel.font = [UIFont systemFontOfSize:16];
             [btn addSubview:iconImage];
             [btn addSubview:iconLabel];
             
@@ -140,7 +142,7 @@
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
         
-        _teacherScrollView = [[SquareView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_teacherScrollHeader.frame), CGRectGetWidth(_headerContentView.frame), CGRectGetHeight(_squareMenu.frame)/2) collectionViewLayout:layout];
+        _teacherScrollView = [[TeacherView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_teacherScrollHeader.frame), CGRectGetWidth(_headerContentView.frame), CGRectGetHeight(_squareMenu.frame)/2) collectionViewLayout:layout];
         [_headerContentView addSubview:_teacherScrollView];
         _teacherScrollView.backgroundColor = [UIColor whiteColor];
         _teacherScrollView.showsVerticalScrollIndicator = NO;
@@ -158,37 +160,37 @@
         /* 推荐header 2*/
         
         /* 暂时写死2*/
-        UIView *conmmandView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(line2.frame), CGRectGetWidth(_headerContentView.frame), 40)];
-        [_headerContentView addSubview:conmmandView];
+        _conmmandView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(line2.frame), CGRectGetWidth(_headerContentView.frame), 40)];
+        [_headerContentView addSubview:_conmmandView];
         
         
         /* 辅导推荐图标*/
         UIImageView *commandImage=[[UIImageView alloc]init];
         [commandImage setImage:[UIImage imageNamed:@"老师"]];
-        [conmmandView addSubview:commandImage];
-        commandImage.sd_layout.leftSpaceToView(conmmandView,20).topSpaceToView(conmmandView,10).bottomSpaceToView(conmmandView,10).widthEqualToHeight();
+        [_conmmandView addSubview:commandImage];
+        commandImage.sd_layout.leftSpaceToView(_conmmandView,20).topSpaceToView(_conmmandView,10).bottomSpaceToView(_conmmandView,10).widthEqualToHeight();
         
         /* 辅导推荐label*/
         UILabel *commandLabel=[[UILabel alloc]init];
         commandLabel .text =@"辅导推荐" ;
-        [conmmandView addSubview:commandLabel];
-        commandLabel.sd_layout.leftSpaceToView(commandImage,5).topEqualToView(commandImage).bottomSpaceToView(conmmandView,10);
+        [_conmmandView addSubview:commandLabel];
+        commandLabel.sd_layout.leftSpaceToView(commandImage,5).topEqualToView(commandImage).bottomSpaceToView(_conmmandView,10);
         
         [commandLabel setSingleLineAutoResizeWithMaxWidth:100];
         
         
         /* 全部辅导课程推荐按钮和箭头按钮*/
         _recommandAllButton = [[UIButton alloc]init];
-        [conmmandView addSubview:_recommandAllButton];
+        [_conmmandView addSubview:_recommandAllButton];
         [_recommandAllButton setTitle:@"全部" forState:UIControlStateNormal];
         [_recommandAllButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         
         
         _allArrowButton = [[UIButton alloc]init];
-        [conmmandView addSubview:_allArrowButton];
+        [_conmmandView addSubview:_allArrowButton];
         [_allArrowButton setImage:[UIImage imageNamed:@"rightArrow"] forState:UIControlStateNormal];
         
-        _allArrowButton.sd_layout.rightSpaceToView(conmmandView,20).topSpaceToView(conmmandView,10).bottomSpaceToView(conmmandView,10).widthEqualToHeight();
+        _allArrowButton.sd_layout.rightSpaceToView(_conmmandView,20).topSpaceToView(_conmmandView,10).bottomSpaceToView(_conmmandView,10).widthEqualToHeight();
         
         _recommandAllButton .sd_layout.rightSpaceToView(_allArrowButton,0).topEqualToView(_allArrowButton).bottomEqualToView(_allArrowButton).widthIs(50);
         
@@ -198,7 +200,7 @@
         
         
         
-        CGFloat maxy = CGRectGetMaxY(conmmandView.frame);
+        CGFloat maxy = CGRectGetMaxY(_conmmandView.frame);
         
                 
         

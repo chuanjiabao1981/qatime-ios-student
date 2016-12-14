@@ -30,7 +30,7 @@
     NSArray *menuImages;
     NSArray *menuTitiels;
     
-    UIScrollView *contentScrollView;
+//    UIScrollView *contentScrollView;
     
     
     /* 页数*/
@@ -59,6 +59,9 @@
     /* token*/
     NSString *_remember_token;
     
+    /* 头视图的尺寸*/
+    CGSize headerSize;
+    
 }
 
 @end
@@ -70,36 +73,28 @@
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
+    /* 导航栏加载*/
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 64)];
+    [self .view addSubview:_navigationBar];
+
     
     
     /* 取出token*/
     _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
-    
-    contentScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)-64-64)];
-    [self.view addSubview:contentScrollView];
-    
-    contentScrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*1.8f);
-    contentScrollView.showsVerticalScrollIndicator = NO;
-    
-    
+
     menuImages = @[[UIImage imageNamed:@"语文"],[UIImage imageNamed:@"数学"],[UIImage imageNamed:@"英语"],[UIImage imageNamed:@"物理"],[UIImage imageNamed:@"化学"],[UIImage imageNamed:@"生物"],[UIImage imageNamed:@"历史"],[UIImage imageNamed:@"地理"],[UIImage imageNamed:@"政治"],[UIImage imageNamed:@"科学"]];
     menuTitiels = @[@"语文",@"数学",@"英语",@"物理",@"化学",@"生物",@"历史",@"地理",@"政治",@"科学"];
     
     
-    /* 导航栏加载*/
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 64)];
-    [self .view addSubview:_navigationBar];
-//    _navigationBar.backgroundColor = [UIColor redColor];
-    
-    
-    
     /* 头视图*/
-    _headerView = [[IndexHeaderPageView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*3.1/5.0f)];
+    _headerView = [[IndexHeaderPageView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd*3.1/5.0)];
     
     _headerView.teacherScrollView.tag =0;
     
-    
+    /* 注册推荐教师滚动视图*/
     [_headerView.teacherScrollView registerClass:[YZSquareMenuCell class] forCellWithReuseIdentifier:@"CollectionCell"];
+    
+    
     /* 头视图的10个科目按钮加手势*/
     for (int i=0; i<_headerView.squareMenuArr.count; i++) {
         
@@ -118,13 +113,9 @@
     _headerView.teacherScrollView.delegate = self;
     _headerView.teacherScrollView.dataSource = self;
     
-    
-    [contentScrollView addSubview:_headerView];
-    
     /* 主页的collection*/
-    _indexPageView = [[IndexPageView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_headerView.bounds), CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)) ];
-    _indexPageView.recommandClassCollectionView.scrollEnabled =NO;
-    _indexPageView.recommandClassCollectionView.scrollsToTop = YES;
+    _indexPageView = [[IndexPageView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-49) ];
+    headerSize = CGSizeMake(self.view.width_sd, 600);
     
     /* 指定代理*/
     
@@ -135,9 +126,14 @@
     
     [_indexPageView.recommandClassCollectionView registerClass:[RecommandClassCollectionViewCell class] forCellWithReuseIdentifier:@"RecommandCell"];
     
+    
+    [_indexPageView.recommandClassCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerCell"];
+    
+    
+    
     _indexPageView.recommandClassCollectionView.tag =1;
     
-    [contentScrollView addSubview:_indexPageView];
+    [self.view addSubview:_indexPageView];
     
     if (!([[NSUserDefaults standardUserDefaults]objectForKey:@"SubjectChosen"]==NULL)) {
         
@@ -178,7 +174,8 @@
     
     
     
-    
+    /* 添加headerview尺寸变化的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sizeToFitHeight) name:@"SizeChange" object:nil];
     
     
     
@@ -192,7 +189,7 @@
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     //    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
-    [manager GET:@"http://testing.qatime.cn/api/v1/recommend/positions" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/recommend/positions",Request_Header ] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         
         NSDictionary *keeDic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -257,7 +254,7 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/recommend/positions/%@/items?page=%ld&per_page=%ld",_kee_class,page,per_page] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/recommend/positions/%@/items?page=%ld&per_page=%ld",Request_Header,_kee_class,page,per_page] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *classDic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         NSLog( @"%@",classDic);
@@ -285,53 +282,14 @@
                 [_classes addObject:reclass];
                 
                 
-                /* 调试代码*/
-                //"id": 38,
-                //"name": "初三化学秋季精品高分班",
-                //"subject": "化学",
-                //"grade": "初三",
-                //"teacher_name": "赵雪琴",
-                //"price": 760,
-                //"chat_team_id": "7965148",
-                //"buy_tickets_count": 0,
-                //"preset_lesson_count": 4,
-                //"completed_lesson_count": 0,
-                //"live_start_time": "2016-09-03 09:30",
-                //"live_end_time": "2016-09-11 11:00",
-                //"publicize": "http://qatime-testing.oss-cn-beijing.aliyuncs.com/courses/publicize/list_d67ff91843999033d8ce1d08ca13aa8b.jpg"
-//                NSLog(@"\n{\nid:%@\name:n%@,subject:%@\n,grade:%@\n,teacher_name:%@\n,price:%@\n,chat_team_id:%@\n,buy_tickets_count:%@\n,preset_lesson_count:%@\n,completed_lesson_count:%@\n,live_start_time:%@\n,live_end_time:%@\n,publicize:%@\n}",reclass.classID,reclass.name,reclass.subject,reclass.grade,reclass.teacher_name,reclass.price,reclass.chat_team_id,reclass.buy_tickets_count,reclass.preset_lesson_count,reclass.completed_lesson_count,reclass.live_start_time,reclass.live_end_time,reclass.publicize);
-                
-                
-                
-//                RecommandTeacher *retech=[[RecommandTeacher alloc]init];
-//                                
-//                retech.teacherID = [teacherarr[i][@"teacher"] valueForKey:@"id"];
-//                retech.teacherName =[teacherarr[i][@"teacher"] valueForKey:@"name"];
-//                retech.avatar_url =[teacherarr[i][@"teacher"] valueForKey:@"avatar_url"];
-//                
-//                if (retech.teacherID ==NULL) {
-//                    retech.teacherID =@"";
-//                }if (retech.teacherName ==NULL) {
-//                    retech.teacherName =@"";
-//                }if (retech.avatar_url ==NULL) {
-//                    retech.avatar_url =@"";
-//                }
-//                
-//                
-//                [_teachers addObject:retech];
-//                
-//                
-//                
-//                NSLog(@"\n%@---%@---%@",retech.teacherID,retech.teacherName,retech.avatar_url);
+               
                 
             }
             
             
             [self reloadData];
             
-            
-            /* 因数据中有null 不能存plist*/
-            //            [[NSUserDefaults standardUserDefaults]setValue:@{@"recommandTeachers":_teachers} forKey:@"RecommandTeachers"];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"SizeChange" object:nil];
             
             
             
@@ -357,7 +315,7 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/recommend/positions/%@/items?page=%ld&per_page=%ld",_kee_teacher,page,per_page] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/recommend/positions/%@/items?page=%ld&per_page=%ld",Request_Header,_kee_teacher,page,per_page] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *teacherDic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         NSLog( @"%@",teacherDic);
@@ -685,20 +643,59 @@
         }
         
         
-        
-        
     }
+    /* 推荐课程,预留点击事件*/
     if (collectionView.tag ==1) {
         
     }
 
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
+   
     
+    NSString *cellID = @"headerCell";
+    UICollectionReusableView *header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:cellID forIndexPath:indexPath];
     
-    
+    if (collectionView.tag==1) {
+        //从缓存中获取 Headercell
+        
+        [header addSubview:_headerView];
+        
+    }
+    return header;
     
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
+    
+    CGSize size;
+    
+    if (collectionView.tag==1) {
+        
+        return headerSize;
+    }else if (collectionView.tag==0){
+        
+        return CGSizeMake(0, 0);
+    }
+    
+    return  size;
+    
+}
 
+#pragma mark- headerView自适应高度方法
+- (void)sizeToFitHeight{
+    
+    CGRect rect = CGRectMake(0, 0, self.view.width_sd, _headerView.conmmandView.centerY_sd+_headerView.conmmandView.height_sd/2);
+    
+    headerSize = CGSizeMake(self.view.width_sd, rect.size.height);
+    
+    
+    [_indexPageView.recommandClassCollectionView reloadData];
+    [_indexPageView.recommandClassCollectionView setNeedsLayout];
+    [_indexPageView.recommandClassCollectionView setNeedsDisplay];
+    
+}
 
 
 

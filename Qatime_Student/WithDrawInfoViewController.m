@@ -172,7 +172,7 @@
                 manager.requestSerializer = [AFHTTPRequestSerializer serializer];
                 manager.responseSerializer =[AFHTTPResponseSerializer serializer];
                 [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-                [manager POST:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/payment/users/%@/withdraws",_idNumber] parameters:dataDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                [manager POST:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/withdraws",Request_Header,_idNumber] parameters:dataDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                     
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                     
@@ -263,7 +263,7 @@
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         
-        [manager POST:@"http://testing.qatime.cn/api/v1/captcha" parameters:@{@"send_to":mobile,@"key":@"withdraw_cash"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header] parameters:@{@"send_to":mobile,@"key":@"withdraw_cash"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             /* 发送成功提示框*/
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];

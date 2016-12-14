@@ -99,7 +99,7 @@
     }else{
         
         
-        [manager PUT:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/students/%@/parent_phone", _idNumber] parameters:@{@"current_password":_parentView.password.text,@"parent_phone":_parentView.parentPhoneText.text,@"captcha_confirmation":_parentView.keyCodeText.text} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager PUT:[NSString stringWithFormat:@"%@/api/v1/students/%@/parent_phone",Request_Header, _idNumber] parameters:@{@"current_password":_parentView.password.text,@"parent_phone":_parentView.parentPhoneText.text,@"captcha_confirmation":_parentView.keyCodeText.text} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary  *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             NSLog(@"%@",dic);
@@ -185,7 +185,7 @@
         
         else{
             
-            [manager POST:@"http://testing.qatime.cn/api/v1/captcha" parameters:@{@"send_to":_parentView.parentPhoneText.text,@"key":@"send_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header] parameters:@{@"send_to":_parentView.parentPhoneText.text,@"key":@"send_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 [self loadingHUDStopLoadingWithTitle:@"发送成功"];
                 

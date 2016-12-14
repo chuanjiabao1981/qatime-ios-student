@@ -165,22 +165,6 @@
     
     
          
-    
-    /* 测试用按钮2*/
-    
-    UIButton *playerButton2=({
-        
-        UIButton *_ = [[UIButton alloc]initWithFrame:CGRectMake(20, CGRectGetHeight(self.view.frame)-40, CGRectGetWidth(self.view.frame)-40,40 )];
-        
-        _.backgroundColor = [UIColor orangeColor];
-        
-        [_ setTitle:@"播放视频2" forState:UIControlStateNormal];
-        
-        [self.view addSubview:_];
-        
-        _;
-    });
-    [ playerButton2 addTarget:self action:@selector(playVideo2) forControlEvents:UIControlEventTouchUpInside];
    
     /* 获取余额*/
     [self getCash];
@@ -205,13 +189,15 @@
 }
 
 
+/* 获取余额信息*/
 
 - (void)getCash{
+    
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/payment/users/%@/cash",_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
@@ -437,14 +423,7 @@
 
 
 
-- (void)playVideo2{
-    
-    neVideoVC =[[NELivePlayerViewController alloc]initWithClassID:@"34"];
-    
-     [self.navigationController pushViewController:neVideoVC animated:YES];
-    
-    
-}
+
 
 
 

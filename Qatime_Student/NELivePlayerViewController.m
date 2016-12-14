@@ -58,6 +58,8 @@
 #import "NSMutableAttributedString+Extention.h"
 #import "NSAttributedString+YYtext.h"
 
+#import "UIViewController+HUD.h"
+
 
 
 
@@ -173,9 +175,8 @@ typedef enum : NSUInteger {
     NSMutableArray *_faces;
     
     
-  
-    
-    
+    /* 聊天框点击和出现次数*/
+    NSInteger chatTime;
     
     
     /* 弹幕*/
@@ -185,6 +186,12 @@ typedef enum : NSUInteger {
     
     BOOL barrageRunning;
     
+    
+    
+    /* 覆盖层*/
+    UIView *_maskView;
+    
+    
 }
 
 /* 在线聊天成员姓名排序所需的属性*/
@@ -193,9 +200,6 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, strong) UILabel *sectionTitleView;
 @property (nonatomic, strong) NSTimer *timer;
-
-
-
 
 
 
@@ -289,14 +293,14 @@ bool ismute     = NO;
     self = [super init];
     if (self) {
         
-//        _classID = [NSString stringWithFormat:@"%@",classID];
-//        _boardPullAddress = boardPullAddress;
-//        _teacherPullAddress = teacherPullAddress;
+        //        _classID = [NSString stringWithFormat:@"%@",classID];
+        //        _boardPullAddress = boardPullAddress;
+        //        _teacherPullAddress = teacherPullAddress;
         
         
     }
     return self;
-
+    
 }
 
 
@@ -318,14 +322,14 @@ bool ismute     = NO;
     
     
     
-
+    
     
     /* 添加视图层级的监听*/
     
     /* 变为非平级视图的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(viewLevelChangDifferent:) name:@"DifferentLevel" object:nil];
     /* 变为平级视图的监听*/
-     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(viewLevelChangSame:) name:@"SameLevel" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(viewLevelChangSame:) name:@"SameLevel" object:nil];
     
     /* 变为全屏后的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnFullScreen:) name:@"FullScreen" object:nil];
@@ -342,8 +346,17 @@ bool ismute     = NO;
     
     /* 初始化弹幕*/
     
+    _aBarrage = [[BarrageRenderer alloc]init];
+    [self.teacherPlayerView addSubview: _aBarrage.view];
+    
+    _descriptor = [[BarrageDescriptor alloc]init];
+   
+    /* 默认弹幕开启*/
+    [_aBarrage start];
+    
+    
     [self setupBarrage];
-
+    
     
 }
 
@@ -618,8 +631,8 @@ bool ismute     = NO;
     
     /* 刷新点击事件*/
     [refresh_FS addTarget:self action:@selector(refreshVideo:) forControlEvents:UIControlEventTouchUpInside];
-
- 
+    
+    
     
 }
 
@@ -639,7 +652,7 @@ bool ismute     = NO;
         .topEqualToView(_teacherPlayerView)
         .bottomEqualToView(_teacherPlayerView);
     }
-   
+    
     _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:_boardPullAddress];
     
     if (_liveplayerBoard == nil) {
@@ -657,10 +670,10 @@ bool ismute     = NO;
     
     
     
-
+    
 }
 
-#pragma mark- 加载弹幕
+#pragma mark- 弹幕开启关闭按钮的设置
 
 - (void)setupBarrage{
     
@@ -686,8 +699,8 @@ bool ismute     = NO;
     [_barrage addTarget:self action:@selector(barragesSwitch) forControlEvents:UIControlEventTouchUpInside];
     
     
-
-
+    
+    
     
 }
 
@@ -718,6 +731,8 @@ bool ismute     = NO;
 
 - (void)turnFullScreen:(NSNotification *)notification{
     
+    [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:5];
+    
     isFullScreen = YES;
     
     /* 在全屏播放状态下*/
@@ -731,7 +746,7 @@ bool ismute     = NO;
         [_boardPlayerView addSubview:_aBarrage.view];
         [_boardPlayerView bringSubviewToFront:_aBarrage.view];
         _aBarrage.view.hidden = NO;
-//        [_aBarrage start];
+        //        [_aBarrage start];
         
         [self mediaControlTurnToFullScreenModeWithMainView:_boardPlayerView];
         
@@ -741,7 +756,7 @@ bool ismute     = NO;
         
         [_teacherPlayerView addSubview:_aBarrage.view];
         [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
-//        [_aBarrage start];
+        //        [_aBarrage start];
         _aBarrage.view.hidden = NO;
         
         [self mediaControlTurnToFullScreenModeWithMainView:_teacherPlayerView];
@@ -749,7 +764,7 @@ bool ismute     = NO;
         
     }
     
-   
+    
     /* 全屏页面布局的变化*/
     
     refresh_FS .hidden = NO;
@@ -758,7 +773,7 @@ bool ismute     = NO;
     _barrageText.hidden = NO;
     
     
-
+    
     
     
 }
@@ -780,7 +795,7 @@ bool ismute     = NO;
         
         [_aBarrage start];
     }
-   
+    
     
 }
 
@@ -798,7 +813,7 @@ bool ismute     = NO;
     
     
     isFullScreen = NO;
-   
+    
     /* 如果是在平级视图*/
     if (_viewsArrangementMode == SameLevel) {
         
@@ -813,7 +828,7 @@ bool ismute     = NO;
             
         }else if(_teacherPlayerView.becomeMainPlayer == YES){
             
-             [self mediaControlTurnDownFullScreenModeWithMainView:_teacherPlayerView];
+            [self mediaControlTurnDownFullScreenModeWithMainView:_teacherPlayerView];
             
         }
         
@@ -830,17 +845,17 @@ bool ismute     = NO;
         }else if(_teacherPlayerView.becomeMainPlayer == YES){
             
             [self mediaControlTurnDownFullScreenModeWithMainView:_teacherPlayerView];
-         
+            
             [self makeFloatingPlayer:_boardPlayerView];
         }
-
+        
     }
     
     refresh_FS.hidden = YES;
     
     _scaleModeBtn.hidden = NO;
     _tileScreen.hidden =NO;
-
+    
     
     _barrageText.hidden = YES;
     
@@ -868,13 +883,13 @@ bool ismute     = NO;
     .leftEqualToView(playerView)
     .rightEqualToView(playerView);
     [_mediaControl updateLayout];
-
+    
     
 }
 
 /* 控制层切回竖屏模式的方法*/
 - (void)mediaControlTurnDownFullScreenModeWithMainView:(FJFloatingView *)playerView{
-
+    
     
     /* 取消延迟隐藏的delay selector*/
     if ([self performSelector:@selector(controlOverlayHide) ]) {
@@ -916,7 +931,14 @@ bool ismute     = NO;
 
 
 #pragma mark- 切换分屏(平铺)点击事件
-- (void)changeLevels:(UIButton *)sender{
+
+
+/**
+ 
+ 切换分屏(平铺)按钮 点击事件  .infoview的覆盖层的点击事件同此
+ @param sender 点击来源
+ */
+- (void)changeLevels:(id)sender{
     
     /* 条件1：在平级视图情况下切换分屏*/
     if (_viewsArrangementMode == SameLevel) {
@@ -939,7 +961,7 @@ bool ismute     = NO;
         }
         
         [self changInfoViewContentSizeToBig];
-     
+        
         if ( _viewsArrangementMode == DifferentLevel) {
             
         }else {
@@ -950,19 +972,19 @@ bool ismute     = NO;
         }
         
         
-        
+        _maskView.hidden = YES;
         
     }
     
     
     
-//    /* 条件2：在非平级视图情况下切换分屏*/
-//    
+    //    /* 条件2：在非平级视图情况下切换分屏*/
+    //
     else if (_viewsArrangementMode == DifferentLevel) {
         /* 条件2-1：如果白板是主视图*/
         if (_boardPlayerView.becomeMainPlayer == YES) {
             /* 教室切换为副视图*/
-
+            
             [_teacherPlayerView sd_clearAutoLayoutSettings];
             [self makeSecondPlayer:_teacherPlayerView];
             [self makeFirstPlayer:_boardPlayerView];
@@ -976,10 +998,10 @@ bool ismute     = NO;
             [self makeSecondPlayer:_boardPlayerView];
             [self changInfoViewsWithTopView:_boardPlayerView];
             [self changInfoViewContentSizeToSmall];
-
+            
             
         }
-    
+        
         if (_viewsArrangementMode == SameLevel) {
             
         }else{
@@ -989,12 +1011,10 @@ bool ismute     = NO;
             
         }
         
-        
+        _aBarrage.view.hidden = NO;
+        _maskView.hidden = NO;
         
     }
-    
-    
-    
     
     
 }
@@ -1025,7 +1045,7 @@ bool ismute     = NO;
         [self changeArrangement];
         
     }
-     /* 条件2：如果现在是非平级视图，两个非平级视图进行切换（大变小、小变大）*/
+    /* 条件2：如果现在是非平级视图，两个非平级视图进行切换（大变小、小变大）*/
     if (_viewsArrangementMode == DifferentLevel){
         
         [self changePlayersMode];
@@ -1041,25 +1061,25 @@ bool ismute     = NO;
     /* 条件1：如果老师是主视图*/
     if (_boardPlayerView.becomeMainPlayer ==NO) {
         [self makeFirstPlayer:_boardPlayerView];
-//        [self.view bringSubviewToFront:_boardPlayerView];
-
+        //        [self.view bringSubviewToFront:_boardPlayerView];
+        
         [self changInfoViewsWithTopView:_boardPlayerView];
-//        [self.view bringSubviewToFront:_mediaControl];
-
+        //        [self.view bringSubviewToFront:_mediaControl];
+        
         [self makeFloatingPlayer:_teacherPlayerView];
     }
     
-        /* 条件2 ：如果白板是主视图*/
-        else if (_teacherPlayerView.becomeMainPlayer ==NO) {
-            [self makeFirstPlayer:_teacherPlayerView];
-//            [self.view bringSubviewToFront:_teacherPlayerView];
-            
-            [self changInfoViewsWithTopView:_teacherPlayerView];
-//            [self.view bringSubviewToFront:_mediaControl];
-
-            [self makeFloatingPlayer:_boardPlayerView];
-    
-        }
+    /* 条件2 ：如果白板是主视图*/
+    else if (_teacherPlayerView.becomeMainPlayer ==NO) {
+        [self makeFirstPlayer:_teacherPlayerView];
+        //            [self.view bringSubviewToFront:_teacherPlayerView];
+        
+        [self changInfoViewsWithTopView:_teacherPlayerView];
+        //            [self.view bringSubviewToFront:_mediaControl];
+        
+        [self makeFloatingPlayer:_boardPlayerView];
+        
+    }
     
     if ( _viewsArrangementMode == DifferentLevel) {
         
@@ -1103,14 +1123,14 @@ bool ismute     = NO;
         }
         
     }
-
+    
 }
 
 
 
 
 
-    
+
 
 #pragma mark- 悬浮视图的拓展方法-实现部分
 /* 变成主视图*/
@@ -1128,7 +1148,7 @@ bool ismute     = NO;
     .autoHeightRatio(9/16.0f);
     [playerView updateLayout];
     
-      [self.view bringSubviewToFront:_mediaControl];
+    [self.view bringSubviewToFront:_mediaControl];
     
     
 }
@@ -1141,7 +1161,7 @@ bool ismute     = NO;
     playerView.canMove =NO;
     [playerView removeGestureRecognizer:playerView.pan];
     
-        [playerView sd_clearAutoLayoutSettings];
+    [playerView sd_clearAutoLayoutSettings];
     playerView.sd_layout
     .topSpaceToView (self.view,CGRectGetWidth(self.view.frame)/16*9.0+20)
     .leftEqualToView(self.view)
@@ -1159,7 +1179,7 @@ bool ismute     = NO;
     playerView.becomeMainPlayer = NO;
     playerView.canMove = YES;
     [playerView addGestureRecognizer:playerView.pan];
-        [playerView sd_clearAutoLayoutSettings];
+    [playerView sd_clearAutoLayoutSettings];
     /* 副视图变小*/
     dispatch_queue_t small = dispatch_queue_create("small", DISPATCH_QUEUE_SERIAL);
     dispatch_sync(small, ^{
@@ -1173,7 +1193,7 @@ bool ismute     = NO;
     
     /* 把可移动的这个视图放到self.view的最上层*/
     [self.view bringSubviewToFront:playerView];
-
+    
 }
 
 /* 改变infoview的top和位置*/
@@ -1338,16 +1358,16 @@ bool ismute     = NO;
             
             if (orientation ==UIInterfaceOrientationLandscapeRight) {
                 
-
+                
                 [self interfaceOrientation:UIInterfaceOrientationPortrait];
                 
             }else{
                 [self interfaceOrientation:UIInterfaceOrientationPortrait];
-
+                
             }
             self.scaleModeBtn.titleLabel.tag = 0;
             break;
-
+            
     }
 }
 
@@ -1355,7 +1375,7 @@ bool ismute     = NO;
 
 - (void)interfaceOrientation:(UIInterfaceOrientation)orientation
 {
-   
+    
     if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
         SEL selector = NSSelectorFromString(@"setOrientation:");
         NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
@@ -1367,7 +1387,7 @@ bool ismute     = NO;
         [invocation invoke];
     }
     
-
+    
 }
 
 //全屏播放视频后，播放器的适配和全屏旋转
@@ -1397,14 +1417,14 @@ bool ismute     = NO;
             [self makeFirstPlayer:_boardPlayerView];
             if (_viewsArrangementMode == SameLevel) {
                 
-
+                
             }
             if (_viewsArrangementMode == DifferentLevel){
                 
                 [self makeFloatingPlayer:_teacherPlayerView];
             }
             
-      
+            
             
             
         }else if(_teacherPlayerView.becomeMainPlayer == YES){
@@ -1421,11 +1441,11 @@ bool ismute     = NO;
                 [self makeFloatingPlayer:_boardPlayerView];
             }
             
-          
-
+            
+            
         }
         
-
+        
         [[NSNotificationCenter defaultCenter]postNotificationName:@"TurnDownFullScreen" object:nil];
         
         
@@ -1447,7 +1467,7 @@ bool ismute     = NO;
             [_teacherPlayerView removeFromSuperview];
             [_boardPlayerView updateLayout];
             [_teacherPlayerView updateLayout];
-
+            
             
             
         }else if(_teacherPlayerView.becomeMainPlayer == YES){
@@ -1456,14 +1476,14 @@ bool ismute     = NO;
             [_boardPlayerView removeFromSuperview];
             [_boardPlayerView updateLayout];
             [_teacherPlayerView updateLayout];
-
+            
             
         }
-
+        
         
         /* 全屏状态  发送消息通知*/
         [[NSNotificationCenter defaultCenter]postNotificationName:@"FullScreen" object:nil];
-       
+        
         
         
         
@@ -1484,7 +1504,7 @@ bool ismute     = NO;
     if (isFullScreen == NO) {
         
         [self.navigationController popViewControllerAnimated:YES];
-        [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+//        [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
         
         NSLog(@"click back!");
         [self syncUIStatus:YES];
@@ -1532,32 +1552,42 @@ bool ismute     = NO;
 - (void)onClickOverlay:(id)sender
 {
     NSLog(@"click overlay");
-        self.controlOverlay.hidden = YES;
+    self.controlOverlay.hidden = YES;
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlOverlayHide) object:nil];
     
-     [_barrageText.TextViewInput resignFirstResponder];
+    [_barrageText.TextViewInput resignFirstResponder];
 }
 
 - (void)onClickMediaControl:(id)sender
 {
     NSLog(@"click mediacontrol");
     self.controlOverlay.hidden = NO;
+    self.controlOverlay.alpha = 1.0;
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlOverlayHide) object:nil];
     [self syncUIStatus:NO];
-   
+    
     [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:5];
     
 }
 
 - (void)controlOverlayHide
 {
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.controlOverlay.alpha = 0;
+        NSLog(@"控制栏隐藏了");
+    }];
+    
+    [self performSelector:@selector(hideControlOverlay) withObject:nil afterDelay:0.5];
+}
+
+- (void)hideControlOverlay{
     self.controlOverlay.hidden = YES;
-    NSLog(@"控制栏隐藏了");
 }
 
 - (void)syncUIStatus:(BOOL)isSync
 {
-   
+    
     
     if ([self.liveplayerBoard playbackState] == NELPMoviePlaybackStatePlaying) {
         self.playBtn.hidden = YES;
@@ -1580,8 +1610,8 @@ bool ismute     = NO;
     NSLog(@"NELivePlayerDidPreparedToPlay");
     [self syncUIStatus:NO];
     
-//    [self.liveplayerBoard play]; //开始播放
-//    [self.liveplayerTeacher play]; //开始播放
+    //    [self.liveplayerBoard play]; //开始播放
+    //    [self.liveplayerTeacher play]; //开始播放
 }
 
 
@@ -1605,7 +1635,7 @@ bool ismute     = NO;
                 
             }else if ([notification object]==_liveplayerTeacher){
                 
-                  [_liveplayerTeacher stop];
+                [_liveplayerTeacher stop];
                 
             }
             
@@ -1651,7 +1681,7 @@ bool ismute     = NO;
 {
     NSLog(@"resource release success!!!");
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayerTeacher];
-      [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayerBoard];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayerBoard];
 }
 
 
@@ -1666,10 +1696,6 @@ bool ismute     = NO;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    
-    /* 建立会话消息*/
-    _session = [NIMSession session:@"7962752" type:NIMSessionTypeTeam];
     
     
     /* TabBar单例隐藏*/
@@ -1712,7 +1738,7 @@ bool ismute     = NO;
     
     
     
-    #pragma mark- 加载课程数据请求
+#pragma mark- 加载课程数据请求
     /* 根据token和传来的id 发送课程内容请求。*/
     
     dispatch_queue_t requestQueue = dispatch_queue_create("request", DISPATCH_QUEUE_SERIAL);
@@ -1721,13 +1747,13 @@ bool ismute     = NO;
         [self requestClassInfo];
         
     }) ;
-
     
     
     
     
     
-   
+    
+    
     
     
     
@@ -1739,8 +1765,8 @@ bool ismute     = NO;
     /* 取出token*/
     
     _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
-//        测试用id
-//        _classID = @"25" ;
+    //        测试用id
+    //        _classID = @"25" ;
     
 #pragma mark- 课程信息视图
     
@@ -1758,6 +1784,23 @@ bool ismute     = NO;
     typeof(self) __weak weakSelf = self;
     [ _videoInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
         [weakSelf.videoInfoView.scrollView scrollRectToVisible:CGRectMake(CGRectGetWidth(self.view.bounds) * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
+        
+        
+        if (index == 1) {
+            if (chatTime==0) {
+                
+                if (weakSelf.chatTableView) {
+                    
+                    [weakSelf.chatTableView.mj_header beginRefreshing];
+                    
+                }
+                
+            }
+            
+        }
+        
+        
+        
     }];
     
     _videoInfoView.scrollView.delegate = self;
@@ -1833,7 +1876,7 @@ bool ismute     = NO;
     membersName = @[].mutableCopy;
     
     
-    #pragma mark- 在线成员列表页
+#pragma mark- 在线成员列表页
     
     _memberListView = [[MembersListView alloc]init];
     [_videoInfoView.view4 addSubview:_memberListView];
@@ -1846,9 +1889,10 @@ bool ismute     = NO;
     _memberListView.memberListTableView.delegate = self;
     _memberListView.memberListTableView.dataSource = self;
     _memberListView.memberListTableView.tag =10;
+    _memberListView.memberListTableView.tableFooterView = [[UIView alloc]init];
     
-
-    /* 中间的筛选后的 那个view*/
+    
+    /* 在线人员,中间的筛选后的 那个view*/
     self.sectionTitleView = ({
         UILabel *sectionTitleView = [[UILabel alloc] initWithFrame:CGRectMake((APP_WIDTH-100)/2, (APP_HEIGHT-100)/2,100,100)];
         sectionTitleView.textAlignment = NSTextAlignmentCenter;
@@ -1859,12 +1903,12 @@ bool ismute     = NO;
         sectionTitleView.layer.borderWidth = 1.f/[UIScreen mainScreen].scale;
         _sectionTitleView.layer.borderColor = [UIColor groupTableViewBackgroundColor].CGColor;
         sectionTitleView.shadowColor = [UIColor blackColor];
-        sectionTitleView.shadowOffset = CGSizeMake(10, 10);
+        sectionTitleView.shadowOffset = CGSizeMake(2, 2);
         sectionTitleView;
     });
     [self.navigationController.view addSubview:self.sectionTitleView];
     self.sectionTitleView.hidden = YES;
-
+    
     
     
     
@@ -1885,18 +1929,75 @@ bool ismute     = NO;
     
     
 #pragma mark- 自定义表情包的名字初始化
-
-  NSString *plistPath = [[NSBundle mainBundle]pathForResource:@"emotionToText" ofType:@"plist"];
+    
+    NSString *plistPath = [[NSBundle mainBundle]pathForResource:@"emotionToText" ofType:@"plist"];
     
     NSDictionary *dat  = [NSDictionary dictionaryWithContentsOfFile:plistPath];
     
     NSLog(@"%@",dat);
-   
+    
     
     _faces = [NSMutableArray arrayWithArray:[dat allValues]];
     
     
     
+    
+    
+    
+    /* 白板视图放到subview数组里最上一层*/
+    //    [self.view bringSubviewToFront:_boardPlayerView];
+    
+    
+    
+    
+    
+    
+#pragma mark- 视频播放状态查询功能
+    
+    
+    /* 每隔30秒请求一次数据*/
+    
+    //    [self requestPullStatus];
+    
+    [self checkVideoStatus];
+    
+    
+    
+    /* 最后,添加一个覆盖层.在视频播放器为平级视图的时候,上方的视频播放器可以点击,下方不可以点击*/
+    
+    _maskView = ({
+        
+        
+        UIView *_= [[UIView alloc]init];
+        [_videoInfoView addSubview:_];
+        if (_videoInfoView&&_viewsArrangementMode==SameLevel) {
+            _.sd_layout
+            .leftEqualToView(_videoInfoView)
+            .rightEqualToView(_videoInfoView)
+            .topEqualToView(_videoInfoView)
+            .bottomEqualToView(_videoInfoView);
+            
+        }
+        
+        UITapGestureRecognizer *maskTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeLevels:)];
+        
+        [_ addGestureRecognizer:maskTap];
+        _;
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}
+
+/* 初始化聊天sdk*/
+- (void)initNIMSDK{
     
     
 #pragma mark- 聊天功能初始化和自动登录
@@ -1910,40 +2011,25 @@ bool ismute     = NO;
         if (error == NULL) {
             
             
-            
-            
         }
         
     }];
     
-    /* 白板视图放到subview数组里最上一层*/
-    //    [self.view bringSubviewToFront:_boardPlayerView];
+    
+    /* 给聊天页面添加下拉方法*/
+    MJRefreshStateHeader *header  = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+        //聊天页面的下拉刷新，也是请求历史数据
+        
+        
+        [self requestHistoryChatList];
+        
+    }];
     
     
-    
-    
-    
-    
-    #pragma mark- 视频播放状态查询功能
-    
-    
-    /* 每隔30秒请求一次数据*/
-    
-//    [self requestPullStatus];
-    
-    [self checkVideoStatus];
-    
-    
-    
-    
-    
-    
+    _chatTableView.mj_header = header;
     
 }
-
-
-
-
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
@@ -1970,197 +2056,182 @@ bool ismute     = NO;
                                                  name:UIKeyboardWillHideNotification
      
                                                object:nil];
-    
-    
-    
-    
-/* 请求历史聊天记录*/
-    /* 该方法目前有bug*/
-//    [self requestHistoryChatList];
-    
-    
-    /* 给聊天页面添加下拉方法*/
-   MJRefreshStateHeader *header  = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-       
-       
-//       聊天页面的下拉刷新，也是请求历史数据
-       [self requestHistoryChatList];
-       
-       
-   }];
   
-    
-    _chatTableView.mj_header = header;
-    
- 
-    
     
     
 }
-
 
 
 #pragma mark- 请求历史数据的方法
 
 - (void)requestHistoryChatList{
     
-    NIMHistoryMessageSearchOption *historyOption = [[NIMHistoryMessageSearchOption  alloc]init];
-    historyOption.limit = 100;
-    historyOption.order = NIMMessageSearchOrderDesc;
-    
-    
-    /* 获取聊天的历史消息*/
-    
-    
-    [[NIMSDK sharedSDK].conversationManager fetchMessageHistory:_session option:historyOption result:^(NSError * _Nullable error, NSArray<NIMMessage *> * _Nullable messages) {
+    if (chatTime == 0) {
         
-        /* 取出云信的accid和token进行字段比较 ，判断是谁发的消息*/
+        [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
         
-        for (NIMMessage *message in messages) {
+        NIMHistoryMessageSearchOption *historyOption = [[NIMHistoryMessageSearchOption  alloc]init];
+        historyOption.limit = 100;
+        historyOption.order = NIMMessageSearchOrderDesc;
+        
+        
+        /* 获取聊天的历史消息*/
+        
+        if (_session.sessionId) {
             
-            NSLog(@"%@",message.from);
-            NSLog(@"%@",_chat_Account.token);
-            
-            
-            
-            /* 如果消息是自己发的*/
-            if ([message.from isEqualToString:_chat_Account.accid]) {
-                /* 在本地创建自己的消息*/
+            [[NIMSDK sharedSDK].conversationManager fetchMessageHistory:_session option:historyOption result:^(NSError * _Nullable error, NSArray<NIMMessage *> * _Nullable messages) {
                 
-                NSString *title = message.text;
+                /* 取出云信的accid和token进行字段比较 ，判断是谁发的消息*/
                 
-                //创建一个可变的属性字符串
-                NSMutableAttributedString *text = [NSMutableAttributedString new];
-                [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
-                
-                
-                /* 正则匹配*/
-                NSString * pattern = @"\\[em_\\d{1,2}\\]";
-                NSError *error = nil;
-                NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
-                
-                if (!re) {
-                    NSLog(@"%@", [error localizedDescription]);
-                }
-                
-                //通过正则表达式来匹配字符串
-                NSArray *resultArray = [re matchesInString:title options:0 range:NSMakeRange(0, title.length)];
-                NSLog(@"%@",resultArray);
-                
-                
-                
-                /* 先取出来表情*/
-                
-                
-                
-                NSMutableArray *names = @[].mutableCopy;
-                
-                //根据匹配范围来用图片进行相应的替换
-                for(NSTextCheckingResult *match in resultArray){
-                    //获取数组元素中得到range
-                    NSRange range = [match range];
-                    
-                    //获取原字符串中对应的值
-                    NSString *subStr = [title substringWithRange:range];
-                    //            NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
-                    NSMutableString *faceName = @"".mutableCopy;
-                    
-                    faceName = [NSMutableString stringWithFormat:@"[%@]",[subStr substringWithRange:NSMakeRange(4, 1)]];
-                    
-                    NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
-                    [names addObject:dicc];
-                    
-                }
-                
-                
-                
-                
-                for (NSInteger i = names.count-1; i>=0; i--) {
-                    
-                    NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
-                    NSData *data = [NSData dataWithContentsOfFile:path];
-                    YYImage *image = [YYImage imageWithData:data scale:2.5];
-                    image.preloadAllAnimatedImageFrames = YES;
-                    YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
-                    
-                    NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12] alignment:YYTextVerticalAlignmentCenter];
-                    
-                    
-                    
-                    [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
-                    
-                    title = [title stringByReplacingCharactersInRange:[names [i][@"range"] rangeValue] withString:[names[i]valueForKey:@"name"]];
-                }
-                
-                
-                
-                if (title ==nil) {
-                    title = @"";
-                }
-                
-                
-                NSDictionary *dic = @{@"strContent": title,
-                                      @"type": @(UUMessageTypeText),
-                                      @"frome":@(UUMessageFromMe)};
-                
-                NSLog(@"%@",title);
-                [self dealTheFunctionData:dic];
-                
-                
-                
-                
-            }
-            
-            /* 如果消息是别人发的 */
-            else{
-                
-                
-                
-                NSLog(@"%@",message.senderName);
-                
-                
-                
-                
-                /* 在本地创建对方的消息消息*/
-                NSString *iconURL = @"".mutableCopy;
-                
-                
-                if (_chatList.count!=0) {
-                    
-                    for (int p = 0; p < _chatList.count; p++) {
+                for (NIMMessage *message in messages) {
+                    if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage) {
                         
-                        Chat_Account *temp = [Chat_Account yy_modelWithJSON:_chatList[p]];
+                        NSLog(@"%@",message.from);
+                        NSLog(@"%@",_chat_Account.token);
                         
-                        NSLog(@"%@",temp.name);
                         
-                        if ([temp.name isEqualToString:message.senderName]) {
-                            iconURL = temp.icon;
+                        
+                        /* 如果消息是自己发的*/
+                        if ([message.from isEqualToString:_chat_Account.accid]) {
+                            /* 在本地创建自己的消息*/
+                            
+                            NSString *title = message.text;
+                            
+                            //创建一个可变的属性字符串
+                            NSMutableAttributedString *text = [NSMutableAttributedString new];
+                            [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
+                            
+                            
+                            /* 正则匹配*/
+                            NSString * pattern = @"\\[em_\\d{1,2}\\]";
+                            NSError *error = nil;
+                            NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
+                            
+                            if (!re) {
+                                NSLog(@"%@", [error localizedDescription]);
+                            }
+                            
+                            //通过正则表达式来匹配字符串
+                            NSArray *resultArray = [re matchesInString:title options:0 range:NSMakeRange(0, title.length)];
+                            NSLog(@"%@",resultArray);
+                            
+                            
+                            
+                            /* 先取出来表情*/
+                            
+                            NSMutableArray *names = @[].mutableCopy;
+                            
+                            //根据匹配范围来用图片进行相应的替换
+                            for(NSTextCheckingResult *match in resultArray){
+                                //获取数组元素中得到range
+                                NSRange range = [match range];
+                                
+                                //获取原字符串中对应的值
+                                NSString *subStr = [title substringWithRange:range];
+                                //            NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+                                NSMutableString *faceName = @"".mutableCopy;
+                                
+                                faceName = [NSMutableString stringWithFormat:@"[%@]",[subStr substringWithRange:NSMakeRange(4, 1)]];
+                                
+                                NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
+                                [names addObject:dicc];
+                                
+                            }
+                            
+                            
+                            for (NSInteger i = names.count-1; i>=0; i--) {
+                                
+                                NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
+                                NSData *data = [NSData dataWithContentsOfFile:path];
+                                YYImage *image = [YYImage imageWithData:data scale:2.5];
+                                image.preloadAllAnimatedImageFrames = YES;
+                                YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
+                                
+                                NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12] alignment:YYTextVerticalAlignmentCenter];
+                                
+                                
+                                
+                                [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
+                                
+                                title = [title stringByReplacingCharactersInRange:[names [i][@"range"] rangeValue] withString:[names[i]valueForKey:@"name"]];
+                            }
+                            
+                            
+                            
+                            if (title ==nil) {
+                                title = @"";
+                            }
+                            
+                            
+                            NSDictionary *dic = @{@"strContent": title,
+                                                  @"type": @(UUMessageTypeText),
+                                                  @"frome":@(UUMessageFromMe)};
+                            
+                            NSLog(@"%@",title);
+                            [self dealTheFunctionData:dic];
+                            
+                            
                             
                         }
+                        
+                        /* 如果消息是别人发的 */
+                        else{
+                            
+                            NSLog(@"%@",message.senderName);
+                            
+                            /* 在本地创建对方的消息消息*/
+                            NSString *iconURL = @"".mutableCopy;
+                            
+                            if (_chatList.count!=0) {
+                                
+                                for (int p = 0; p < _chatList.count; p++) {
+                                    
+                                    Chat_Account *temp = [Chat_Account yy_modelWithJSON:_chatList[p]];
+                                    
+                                    NSLog(@"%@",temp.name);
+                                    
+                                    if ([temp.name isEqualToString:message.senderName]) {
+                                        iconURL = temp.icon;
+                                        
+                                    }
+                                }
+                                
+                            }
+                            
+                            //            NSLog(@"%@",iconURL);
+                            NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:message.senderName andIcon:@"www.baidu.com"]];
+                            
+                            
+                            //        [self makeOthersMessageWith:1 andMessage:message];
+                            [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
+                            
+                        }
+                        
+                        
+                        
+                        
                     }
                     
+                    
+                    
+                    
+                    [self.chatTableView reloadData];
+                    [self tableViewScrollToBottom];
+                    [_chatTableView.mj_header endRefreshing];
+                    [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                    
                 }
-                
-                //            NSLog(@"%@",iconURL);
-                NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:message.senderName andIcon:@"www.baidu.com"]];
-                
-                
-                //        [self makeOthersMessageWith:1 andMessage:message];
-                [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
-                
-                [self.chatTableView reloadData];
-                [self tableViewScrollToBottom];
-                
-                
-                
-                //                /* 同时发送弹幕*/
-                //
-                //                [self sendBarrage:message.text withAttibute:nil];
-            }
-            
+            }];
         }
-    }];
-    
+        
+        chatTime++;
+    }else{
+        
+        [self.chatTableView reloadData];
+        [self tableViewScrollToBottom];
+        [_chatTableView.mj_header endRefreshing];
+        [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+    }
     
     
 }
@@ -2246,8 +2317,6 @@ bool ismute     = NO;
     
     /* 如果白板是主视频播放器*/
     if (_boardPlayerView.becomeMainPlayer == YES) {
-        
-        
         
         
     }
@@ -2376,17 +2445,17 @@ bool ismute     = NO;
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message
 {
     
-
     
     
-   NSLog(@"%@", [funcView.TextViewInput.attributedText getPlainString]);
+    
+    NSLog(@"%@", [funcView.TextViewInput.attributedText getPlainString]);
     
     
     NSDictionary *dic = @{@"strContent": [funcView.TextViewInput.attributedText getPlainString],
                           @"type": @(UUMessageTypeText),
                           @"frome":@(UUMessageFromMe)};
-
-//    [funcView changeSendBtnWithPhoto:YES];
+    
+    //    [funcView changeSendBtnWithPhoto:YES];
     [self dealTheFunctionData:dic];
     
     NIMMessage * text_message = [[NIMMessage alloc] init];
@@ -2404,7 +2473,7 @@ bool ismute     = NO;
     [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
     
     
-        
+    
     /* 正则匹配*/
     NSString * pattern = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
     NSError *error = nil;
@@ -2441,7 +2510,7 @@ bool ismute     = NO;
         [names addObject:dicc];
         
     }
-
+    
     
     for (NSInteger i = names.count-1; i>=0; i--) {
         
@@ -2471,16 +2540,12 @@ bool ismute     = NO;
     
     //发送消息
     
+    [[NIMSDK sharedSDK].chatManager addDelegate:self];
     [[NIMSDK sharedSDK].chatManager sendMessage:text_message toSession:_session error:nil];
     
+
     
-    
-    //    [[[NIMSDK sharedSDK] chatManager] addDelegate:self];
-    [[NIMSDK sharedSDK].chatManager addDelegate:self];
-    
-    
-    
-    #pragma mark- 发消息的同时发弹幕
+#pragma mark- 发消息的同时发弹幕
     
     /* 发弹幕*/
     [self sendBarrage:barragTitle withAttibute:text];
@@ -2534,13 +2599,13 @@ bool ismute     = NO;
 
 
 
-#pragma mark- 发弹幕方法
+#pragma mark- 发送弹幕方法
 - (void)sendBarrage:(NSString *)message withAttibute:(NSAttributedString *)attribute{
     
     NSLog(@"%@",[self.view valueForKey:@"frame"]);
     
     NSLog(@"%@",message);
-   
+    
     /* 弹幕添加条件
      * 1、平铺视图在老师视频上
      * 2、在全屏视图上
@@ -2556,11 +2621,12 @@ bool ismute     = NO;
             [_aBarrage.view removeFromSuperview];
             
             [_teacherPlayerView addSubview:_aBarrage.view];
+            _aBarrage.view.hidden = NO;
             [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
             
         }else{
             
-            [_aBarrage.view removeFromSuperview];
+            _aBarrage.view.hidden = YES;
             
         }
         
@@ -2571,12 +2637,15 @@ bool ismute     = NO;
         if (_boardPlayerView .becomeMainPlayer == YES) {
             [_aBarrage.view removeFromSuperview];
             
+            
             [_boardPlayerView addSubview:_aBarrage.view];
+            _aBarrage.view.hidden = YES;
             [_boardPlayerView bringSubviewToFront:_aBarrage.view];
             
         }else if (_teacherPlayerView.becomeMainPlayer == YES){
             
-             [_teacherPlayerView addSubview:_aBarrage.view];
+            [_teacherPlayerView addSubview:_aBarrage.view];
+            _aBarrage.view.hidden = NO;
             [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
         }
         
@@ -2588,30 +2657,32 @@ bool ismute     = NO;
     _descriptor.params[@"textColor"] = [UIColor whiteColor];  //弹幕颜色
     _descriptor.params[@"side"] = BarrageWalkSideDefault;
     _descriptor.params[@"speed"] = @60;
-    _descriptor.params[@"attributedText"] = attribute;
+//    _descriptor.params[@"attributedText"] = attribute;
     
     if (isFullScreen) {
         _descriptor.params[@"fontSize"]= @22;
     }else{
-        
+        _descriptor.params[@"fontSize"]= @16;
     }
     
     
     
-    _descriptor.params[@"direction"] = @(BarrageWalkDirectionR2L);
+//    _descriptor.params[@"direction"] = @(BarrageWalkDirectionR2L);
     
     if (isFullScreen) {
         
         _aBarrage.canvasMargin = UIEdgeInsetsMake(30, 0, CGRectGetHeight(self.view.frame)/3.0f, 0);
         
     }else if (!isFullScreen){
-    _aBarrage.canvasMargin = UIEdgeInsetsMake(30, 0, (CGRectGetWidth(self.view.frame)/16*9.0f)/3.0f, 0);
+        _aBarrage.canvasMargin = UIEdgeInsetsMake(30, 0, (CGRectGetWidth(self.view.frame)/16*9.0f)/3.0f, 0);
     }
+    
+    
+//    [_aBarrage start];
     
     [_aBarrage receive:_descriptor];
     
     
-    [_aBarrage start];
     
     
 }
@@ -2739,7 +2810,7 @@ bool ismute     = NO;
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
     
-    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses/%@/play_info",_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/play_info",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         NSString *status = [NSString stringWithFormat:@"%@",[dic valueForKey:@"status"]];
@@ -2750,16 +2821,37 @@ bool ismute     = NO;
         if (![status isEqualToString:@"1"]) {
             
         }else{
+            
+            /* 建立会话消息*/
+            _session = [NIMSession session:dic[@"data"][@"chat_team_id"] type:NIMSessionTypeTeam];
+            
+            
+            
+            if (_session) {
+                [self initNIMSDK];
+            }
+            
+            
             //        使用yymodel解
-            _noticeAndMembers = [NoticeAndMembers yy_modelWithDictionary:dic[@"data"]];
-            NSLog(@"%@,@%@",_noticeAndMembers.announcements,_noticeAndMembers.members);
+            _noticeAndMembers = [NoticeAndMembers yy_modelWithDictionary:dic[@"data"][@"chat_team"]];
+            NSLog(@"%@,@%@",_noticeAndMembers.announcements,_noticeAndMembers.accounts);
             
             _noticesArr=[_noticeAndMembers valueForKey:@"announcements"];
+            
+            /* 判断通知公告数量,HUD框提示加载信息*/
+            if (_noticesArr==nil||_noticesArr.count ==0) {
+                [self loadingHUDStopLoadingWithTitle:@"暂时没有公告!"];
+            }
+            
             
             NSLog(@"%@",_noticesArr);
             
             
-            _membersArr = [_noticeAndMembers valueForKey:@"members"];
+            _membersArr = [_noticeAndMembers valueForKey:@"accounts"];
+            
+            if (_membersArr==nil||_membersArr.count==0) {
+                [self loadingHUDStopLoadingWithTitle:@"暂时没有成员加入!"];
+            }
             
             for (int i = 0; i<_membersArr.count; i++) {
                 
@@ -2786,7 +2878,7 @@ bool ismute     = NO;
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
-        [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses/%@/play_info",_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/play_info",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             NSString *status = [NSString stringWithFormat:@"%@",[dic valueForKey:@"status"]];
@@ -2855,8 +2947,8 @@ bool ismute     = NO;
                 [self updateViewsInfos];
                 
                 
-//                在这里可以修改播放器的播放地址.
-                /* 
+                //                在这里可以修改播放器的播放地址.
+                /*
                  *
                  *
                  *
@@ -2881,10 +2973,10 @@ bool ismute     = NO;
                         [alert addAction:sure];
                         
                         [self presentViewController:alert animated:YES completion:nil];
-
+                        
                         
                     }else{
-                       
+                        
                         /* 未试听过*/
                         
                         if (dataDic[@"camera_pull_stream"]==nil||[dataDic[@"camera_pull_stream"]isEqual:@""]||[dataDic[@"camera_pull_stream"] isEqual:[NSNull null]]) {
@@ -3006,7 +3098,7 @@ bool ismute     = NO;
     
     [_videoInfoView.noticeTabelView reloadData];
     [_videoInfoView.noticeTabelView setNeedsDisplay];
-    [_videoInfoView.noticeTabelView setNeedsLayout];
+    
     
 }
 
@@ -3015,15 +3107,15 @@ bool ismute     = NO;
     
     [_classList.classListTableView reloadData];
     [_classList.classListTableView  setNeedsDisplay];
-    [_classList.classListTableView  setNeedsLayout];
+    //    [_classList.classListTableView  setNeedsLayout];
     
     
 }
 
 - (void)updateMemberListViews{
     [_memberListView.memberListTableView reloadData];
-//    [_memberListView.memberListTableView setNeedsLayout];
-//    [_memberListView.memberListTableView setNeedsDisplay];
+    [_memberListView.memberListTableView setNeedsLayout];
+    //    [_memberListView.memberListTableView setNeedsDisplay];
     
     
 }
@@ -3167,10 +3259,10 @@ bool ismute     = NO;
     if (tableView.tag==10) {
         
         NSLog(@"---->%@",[[self.letterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row]);
+        /* 人名点击事件*/
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:[[self.letterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row]delegate:nil cancelButtonTitle:@"YES" otherButtonTitles:nil];
+        //        [alert show];
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:[[self.letterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row]delegate:nil cancelButtonTitle:@"YES" otherButtonTitles:nil];
-        [alert show];
-
     }
     
     
@@ -3285,20 +3377,17 @@ bool ismute     = NO;
     
 }
 
-#pragma mark -
+
 #pragma mark - UITableViewDelegate
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel *lab = [UILabel new];
-    lab.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    lab.backgroundColor = [UIColor lightGrayColor];
     lab.text = [self.indexArray objectAtIndex:section];
+    lab.textAlignment = NSTextAlignmentCenter;
     lab.textColor = [UIColor whiteColor];
     return lab;
 }
-
-
-
-
 
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index{
@@ -3322,10 +3411,15 @@ bool ismute     = NO;
     });
 }
 
+
+/* 显示姓氏筛选字母*/
 -(void)showSectionTitle:(NSString*)title{
     [self.sectionTitleView setText:title];
     self.sectionTitleView.hidden = NO;
-    self.sectionTitleView.alpha = 1;
+    self.sectionTitleView.alpha = 0.8;
+    self.sectionTitleView.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    self.sectionTitleView.layer.shadowOffset = CGSizeMake(10, 10) ;
+    
     [self.timer invalidate];
     self.timer = nil;
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerHandler:) userInfo:nil repeats:NO];
@@ -3339,19 +3433,34 @@ bool ismute     = NO;
 // segment的滑动代理
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     
-    CGFloat pageWidth = scrollView.frame.size.width;
-    NSInteger page = scrollView.contentOffset.x / pageWidth;
+    if (scrollView == _videoInfoView.scrollView) {
+        
+        CGFloat pageWidth = scrollView.frame.size.width;
+        NSInteger page = scrollView.contentOffset.x / pageWidth;
+        
+        [_videoInfoView.segmentControl setSelectedSegmentIndex:page animated:YES];
+        
+        if (_videoInfoView.segmentControl.selectedSegmentIndex ==1) {
+            if (chatTime ==0) {
+                
+                [_chatTableView.mj_header beginRefreshing];
+                
+            }
+        }
+        
+        
+        
+    }
     
-    [_videoInfoView.segmentControl setSelectedSegmentIndex:page animated:YES];
 }
 
 
 /* 文本输入框取消响应*/
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
-   
     
-//    [IFView.TextViewInput resignFirstResponder];
+    
+    //    [IFView.TextViewInput resignFirstResponder];
     [self.view endEditing:YES];
     
     
@@ -3395,19 +3504,19 @@ bool ismute     = NO;
         
         if (IFView.TextViewInput.inputView == nil) {
             IFView.TextViewInput.yz_emotionKeyboard = self.emotionKeyboard;
-             [sender setBackgroundImage:[UIImage imageNamed:@"toolbar-text"] forState:UIControlStateNormal];
-
+            [sender setBackgroundImage:[UIImage imageNamed:@"toolbar-text"] forState:UIControlStateNormal];
+            
         } else {
             IFView.TextViewInput.inputView = nil;
             [IFView.TextViewInput reloadInputViews];
-             [sender setBackgroundImage:[UIImage imageNamed:@"face"] forState:UIControlStateNormal];
-
+            [sender setBackgroundImage:[UIImage imageNamed:@"face"] forState:UIControlStateNormal];
+            
         }
-
+        
         
         
         /* ifview的输入框作为表情键盘的输入框*/
-
+        
         
     }
 }
@@ -3438,30 +3547,30 @@ bool ismute     = NO;
     CGFloat offsety =  endRect.origin.y - beginRect.origin.y ;
     
     NSLog(@"键盘高度:%f 高度差:%f\n",beginRect.origin.y,offsety);
-
+    
     
     
     // 约束动画
     [UIView animateWithDuration:duration animations:^{
         
         
-            NSLog(@"%@",[NSThread currentThread]);
-            _chatTableView.sd_layout
-            .topEqualToView(_videoInfoView.view2)
-            .leftEqualToView(_videoInfoView.view2)
-            .rightEqualToView(_videoInfoView.view2)
-            .bottomSpaceToView(_videoInfoView.view2,-offsety+46);
+        NSLog(@"%@",[NSThread currentThread]);
+        _chatTableView.sd_layout
+        .topEqualToView(_videoInfoView.view2)
+        .leftEqualToView(_videoInfoView.view2)
+        .rightEqualToView(_videoInfoView.view2)
+        .bottomSpaceToView(_videoInfoView.view2,-offsety+46);
         
-            IFView.sd_layout
-            .bottomSpaceToView(_videoInfoView.view2,-offsety);
+        IFView.sd_layout
+        .bottomSpaceToView(_videoInfoView.view2,-offsety);
         
         
-            [_chatTableView updateLayout];
-            [IFView updateLayout];
+        [_chatTableView updateLayout];
+        [IFView updateLayout];
         [self tableViewScrollToBottom];
         
         
-    
+        
     }];
     
     
@@ -3477,27 +3586,27 @@ bool ismute     = NO;
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses/%@/live_status",_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/live_status",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dataDic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         NSLog(@"向服务器请求视频直播状态成功!");
         
-//        地址:
-//        未直播 0
-//        直播中 1
-//        已关闭 2
-//        GET /api/v1/live_studio/courses/:id/live_status
-//        GET /live_studio/courses/:id/live_status
-//        返回值:
-//        {
-//            
-//            "status": 1,
-//            "data": {
-//                "board": 1, 
-//                "camera": 0 
-//            }
-//        }
+        //        地址:
+        //        未直播 0
+        //        直播中 1
+        //        已关闭 2
+        //        GET /api/v1/live_studio/courses/:id/live_status
+        //        GET /live_studio/courses/:id/live_status
+        //        返回值:
+        //        {
+        //
+        //            "status": 1,
+        //            "data": {
+        //                "board": 1,
+        //                "camera": 0
+        //            }
+        //        }
         
         
         if ([dataDic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
@@ -3540,7 +3649,7 @@ bool ismute     = NO;
         }
         
     }
-
+    
     
     /* 如果有一个播放器是未直播状态*/
     if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:0]]||[statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:0]]) {
@@ -3574,7 +3683,7 @@ bool ismute     = NO;
             
             [_liveplayerTeacher play];
         }
-
+        
         
         
         
@@ -3592,7 +3701,7 @@ bool ismute     = NO;
             
             [_liveplayerBoard stop];
             
-           
+            
             
         }
         if ([statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:2]]) {
@@ -3606,12 +3715,12 @@ bool ismute     = NO;
         
         /**
          测试 5s一次 正常值30s一次
-
+         
          @param checkVideoStatus
          @return void
          */
         [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
-   
+        
     }
     
     if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:2]]&&[statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:2]]) {
@@ -3624,7 +3733,7 @@ bool ismute     = NO;
         [self presentViewController:alertController animated:YES completion:nil];
         
         /* 两个播放流都结束之后,继续访问后台服务器直播状态*/
-      
+        
         [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
         
         
@@ -3637,37 +3746,6 @@ bool ismute     = NO;
 
 
 #pragma mark- 每隔30秒发送一次状态请求
-
-//- (void)requestPullStatus{
-//    
-////    NSLog(@"向服务器请求视频直播状态,%@",[NSDate date]);
-////    
-////    NSDate *scheduledTime = [NSDate dateWithTimeIntervalSinceNow:0.0];
-////    
-////    NSString *customUserObject = @"向服务器请求视频直播状态";
-////    
-////    NSTimer *timer = [[NSTimer alloc] initWithFireDate:scheduledTime
-////                                              interval:5
-////                                                target:self
-////                                              selector:@selector(checkVideoStatus)
-////                                              userInfo:customUserObject
-////                                               repeats:YES];
-////    
-////    _runLoop = [NSRunLoop currentRunLoop];
-////    [_runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
-////    
-////    dispatch_queue_t request = dispatch_queue_create("request", DISPATCH_QUEUE_SERIAL);
-////    dispatch_async(request, ^{
-////        
-//////        [_runLoop run];
-////    });
-//    
-//}
-
-    
-    
-    
-
 
 
 

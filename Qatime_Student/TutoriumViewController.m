@@ -190,7 +190,7 @@
     
     /* 筛选请求接口初始化字段*/
     
-    _requestUrl =[NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses?"];
+    _requestUrl =[NSString stringWithFormat:@"%@/api/v1/live_studio/courses?",Request_Header];
     
     
     _filterDic = [NSMutableDictionary dictionaryWithObjects:@[_filterGrade,_filterSubject, sort_By,_price_floor,_price_ceil,_class_date_floor,_class_date_ceil,_preset_lesson_count_floor,_preset_lesson_count_ceil,_class_status] forKeys:@[@"grade",@"subject",@"sort_by",@"price_floor",@"price_ceil",@"class_date_floor",@"class_date_ceil",@"preset_lesson_count_floor",@"preset_lesson_count_ceil",@"status"]];
@@ -270,7 +270,7 @@
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager GET:@"http://testing.qatime.cn/api/v1/app_constant/grades" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager GET:[NSString stringWithFormat:@"%@/api/v1/app_constant/grades",Request_Header] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSArray * grade = [[NSArray alloc]initWithArray:[[[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] valueForKey:@"data"]valueForKey:@"grades"]];
             
@@ -1415,17 +1415,17 @@
     
     if ([grade isEqualToString:@""]&&[subject isEqualToString:@""]) {
         
-        requestStrURL = [NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses?page=%ld&per_page=%ld",pageNumber,perPage];
+        requestStrURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/courses?page=%ld&per_page=%ld",Request_Header,pageNumber,perPage];
         
     }
     else if (![grade isEqualToString:@""]&&[subject isEqualToString:@""]) {
-        requestStrURL = [NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses?page=%ld&per_page=%ld&grade=%@",pageNumber,perPage,grade];
+        requestStrURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/courses?page=%ld&per_page=%ld&grade=%@",Request_Header,pageNumber,perPage,grade];
     }
     else if ([grade isEqualToString:@""]&&![subject isEqualToString:@""]) {
-        requestStrURL = [NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses?page=%ld&per_page=%ld&subject=%@",pageNumber,perPage,subject];
+        requestStrURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/courses?page=%ld&per_page=%ld&subject=%@",Request_Header,pageNumber,perPage,subject];
     }
     else if (![grade isEqualToString:@""]&&![subject isEqualToString:@""]) {
-        requestStrURL = [NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/live_studio/courses?page=%ld&per_page=%ld&subject=%@&grade=%@",pageNumber,perPage,subject,grade];
+        requestStrURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/courses?page=%ld&per_page=%ld&subject=%@&grade=%@",Request_Header,pageNumber,perPage,subject,grade];
     }
     
     

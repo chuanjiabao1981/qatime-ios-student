@@ -1,13 +1,15 @@
 //
-//  SquareView.h
+//  TeacherView.m
 //  Qatime_Student
 //
 //  Created by Shin on 2016/11/8.
 //  Copyright © 2016年 WWTD. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "TeacherView.h"
 
-@interface SquareView : UICollectionView
+@implementation TeacherView
+
+
 
 @end
