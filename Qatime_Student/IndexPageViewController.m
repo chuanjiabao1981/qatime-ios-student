@@ -21,6 +21,7 @@
 #import "YYModel.h"
 
 #import "TeachersPublicViewController.h"
+#import "UIViewController+HUD.h"
 
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate>{
     
@@ -68,11 +69,18 @@
 
 @implementation IndexPageViewController
 
+- (void)loadView{
+    [super loadView];
+    
+    [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
     /* 导航栏加载*/
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 64)];
     [self .view addSubview:_navigationBar];
@@ -357,12 +365,13 @@
             
             [self reloadData];
             
+            
+            
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-    
     
     
 }
@@ -376,6 +385,8 @@
     
     [_indexPageView.recommandClassCollectionView reloadData];
     [_indexPageView.recommandClassCollectionView setNeedsDisplay];
+    
+    [self loadingHUDStopLoadingWithTitle:@"数据加载完成"];
     
 }
 

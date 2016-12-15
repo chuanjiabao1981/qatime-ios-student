@@ -25,13 +25,8 @@
         .leftEqualToView(self)
         .rightEqualToView(self)
         .bottomEqualToView(self);
-        
-        
-        
-        
-        
-        
-        
+      
+
         
         
         

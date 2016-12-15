@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "CalendarView.h"
+#import "HaveNoClassView.h"
 
 @interface AllClassView : UIView
 
 @property(nonatomic,strong) CalendarView *calendarView ;
+
+
 
 @end

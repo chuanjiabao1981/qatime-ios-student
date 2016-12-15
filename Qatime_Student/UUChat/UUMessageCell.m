@@ -46,10 +46,6 @@
         
         
         
-        
-        
-        
-        
         // 1、创建时间
         self.labelTime = [[UILabel alloc] init];
         self.labelTime.textAlignment = NSTextAlignmentCenter;
@@ -130,6 +126,17 @@
         [menu setTargetRect:self.btnContent.frame inView:self.btnContent.superview];
         [menu setMenuVisible:YES animated:YES];
     }
+    /* 显示图片*/
+    else if (self.messageFrame.message.type == UUMessageTypePicture)
+    {
+        if (self.btnContent.backImageView) {
+            [UUImageAvatarBrowser showImage:self.btnContent.backImageView];
+        }
+        if ([self.delegate isKindOfClass:[UIViewController class]]) {
+            [[(UIViewController *)self.delegate view] endEditing:YES];
+        }
+    }
+
 }
 
 
@@ -175,21 +182,33 @@
     self.btnContent.frame = messageFrame.contentF;
     
     if (message.from == UUMessageFromMe) {
-        self.btnContent.isMyMessage = YES;
-        
-        
-        [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        /* YYText改写*/
-        [self.btnContent.contentTextView setTextColor:[UIColor whiteColor]];
-        self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
+        if (message.type == UUMessageTypeText) {
+            
+            self.btnContent.isMyMessage = YES;
+            
+            [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            /* YYText改写*/
+            [self.btnContent.contentTextView setTextColor:[UIColor whiteColor]];
+            self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
+        }else{
+            self.btnContent.isMyMessage = YES;
+            [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
+
+        }
     }else{
-        self.btnContent.isMyMessage = NO;
-        
-        
-        [self.btnContent setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        /* YYText改写*/
-        [self.btnContent.contentTextView setTextColor:[UIColor whiteColor]];
-        self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentLeft, ChatContentBottom, ChatContentRight);
+        if (message.type == UUMessageTypeText) {
+            
+            self.btnContent.isMyMessage = NO;
+            [self.btnContent setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            /* YYText改写*/
+            [self.btnContent.contentTextView setTextColor:[UIColor whiteColor]];
+            self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentLeft, ChatContentBottom, ChatContentRight);
+        }else{
+            self.btnContent.isMyMessage = NO;
+            [self.btnContent setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentLeft, ChatContentBottom, ChatContentRight);
+        }
     }
     
     //背景气泡图
@@ -206,12 +225,13 @@
     [self.btnContent setBackgroundImage:normal forState:UIControlStateHighlighted];
     
     
-    
-    
     if (message.from == UUMessageFromMe) {
         
         
         NSString *title = message.strContent;
+        if (title ==nil) {
+            title =@"";
+        }
         
         //创建一个可变的属性字符串
         NSMutableAttributedString *text = [NSMutableAttributedString new];
@@ -290,8 +310,12 @@
                 self.title.textAlignment = NSTextAlignmentLeft;
                 
                 break;
-            case UUMessageTypePicture:
-            {
+            case UUMessageTypePicture:{
+                self.btnContent.backImageView.hidden = NO;
+                self.btnContent.backImageView.image = message.picture;
+                self.btnContent.backImageView.frame = CGRectMake(0, 0, self.btnContent.frame.size.width, self.btnContent.frame.size.height);
+                [self makeMaskView:self.btnContent.backImageView withImage:normal];
+
             }
                 break;
             case UUMessageTypeVoice:
@@ -307,15 +331,14 @@
         
         
         NSString *title = message.strContent;
+        if (title ==nil) {
+            title =@"";
+        }
         
         //创建一个可变的属性字符串
         NSMutableAttributedString *text = [NSMutableAttributedString new];
         [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
-        
-        
-        
-        
-        
+                
         /* 正则匹配*/
         NSString * pattern = @"\\[em_\\d{1,2}\\]";
         NSError *error = nil;
@@ -326,7 +349,7 @@
         }
         
         //通过正则表达式来匹配字符串
-        NSArray *resultArray = [re matchesInString:message.strContent options:0 range:NSMakeRange(0, message.strContent.length)];
+        NSArray *resultArray = [re matchesInString:title options:0 range:NSMakeRange(0, message.strContent.length)];
         NSLog(@"%@",resultArray);
         
         
@@ -388,6 +411,11 @@
                 break;
             case UUMessageTypePicture:
             {
+                self.btnContent.backImageView.hidden = NO;
+                self.btnContent.backImageView.image = message.picture;
+                self.btnContent.backImageView.frame = CGRectMake(0, 0, self.btnContent.frame.size.width, self.btnContent.frame.size.height);
+                [self makeMaskView:self.btnContent.backImageView withImage:normal];
+
             }
                 break;
             case UUMessageTypeVoice:

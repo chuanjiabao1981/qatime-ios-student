@@ -112,6 +112,7 @@
 		545162D11DF55BEC000BD17A /* UserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162D01DF55BEC000BD17A /* UserInfoModel.m */; };
 		545162D51DF55DC7000BD17A /* Personal_HeadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162D41DF55DC7000BD17A /* Personal_HeadTableViewCell.m */; };
 		545162D81DF55DD0000BD17A /* PersonalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162D71DF55DD0000BD17A /* PersonalTableViewCell.m */; };
+		545731811E022E7700F45C03 /* HaveNoClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545731801E022E7700F45C03 /* HaveNoClassView.m */; };
 		54634D981DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 54634D871DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m */; };
 		54634D991DDEAC1F0070C0FF /* FJFloatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54634D8A1DDEAC1F0070C0FF /* FJFloatingView.m */; };
 		54652E051DEE823100F4607C /* FileService.m in Sources */ = {isa = PBXBuildFile; fileRef = 54652E041DEE823100F4607C /* FileService.m */; };
@@ -540,6 +541,8 @@
 		545162D41DF55DC7000BD17A /* Personal_HeadTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Personal_HeadTableViewCell.m; sourceTree = "<group>"; };
 		545162D61DF55DD0000BD17A /* PersonalTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalTableViewCell.h; sourceTree = "<group>"; };
 		545162D71DF55DD0000BD17A /* PersonalTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalTableViewCell.m; sourceTree = "<group>"; };
+		5457317F1E022E7700F45C03 /* HaveNoClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HaveNoClassView.h; sourceTree = "<group>"; };
+		545731801E022E7700F45C03 /* HaveNoClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HaveNoClassView.m; sourceTree = "<group>"; };
 		54634D861DDEAC1F0070C0FF /* UIGestureRecognizer+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizer+Block.h"; sourceTree = "<group>"; };
 		54634D871DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+Block.m"; sourceTree = "<group>"; };
 		54634D891DDEAC1F0070C0FF /* FJFloatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FJFloatingView.h; sourceTree = "<group>"; };
@@ -1399,6 +1402,8 @@
 		543C207A1DC6F6470086B04B /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				5457317E1E022E5A00F45C03 /* 支付密码 */,
+				5457317D1E022E4700F45C03 /* 该月无课程覆盖图 */,
 				54B9CAFD1DFE4E6C003961FF /* 试听购买栏 */,
 				541F91D91DC9BB8D00180BE8 /* 导航栏 */,
 			);
@@ -1586,6 +1591,22 @@
 				547FBF341DF6CEC800955A9E /* PersonalDescTableViewCell.m */,
 			);
 			name = Cell;
+			sourceTree = "<group>";
+		};
+		5457317D1E022E4700F45C03 /* 该月无课程覆盖图 */ = {
+			isa = PBXGroup;
+			children = (
+				5457317F1E022E7700F45C03 /* HaveNoClassView.h */,
+				545731801E022E7700F45C03 /* HaveNoClassView.m */,
+			);
+			name = "该月无课程覆盖图";
+			sourceTree = "<group>";
+		};
+		5457317E1E022E5A00F45C03 /* 支付密码 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "支付密码";
 			sourceTree = "<group>";
 		};
 		54634D7D1DDEAC1F0070C0FF /* FJFloatingView */ = {
@@ -3844,6 +3865,7 @@
 				546A54741DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m in Sources */,
 				54D66F691DEBDA5700ED2EBC /* ClassTimeTableViewCell.m in Sources */,
 				54A153AA1DC6F09D0070B508 /* main.m in Sources */,
+				545731811E022E7700F45C03 /* HaveNoClassView.m in Sources */,
 				547FBF381DF6CFD700955A9E /* MyWalletView.m in Sources */,
 				54634D991DDEAC1F0070C0FF /* FJFloatingView.m in Sources */,
 				5413D2581DF7B5F400A8FDEC /* CashRecordViewController.m in Sources */,
@@ -4051,7 +4073,7 @@
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",
 				);
 				INFOPLIST_FILE = Qatime_Student/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4133,7 +4155,7 @@
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",
 				);
 				INFOPLIST_FILE = Qatime_Student/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

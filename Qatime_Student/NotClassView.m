@@ -25,6 +25,21 @@
         .rightEqualToView(self)
         .topEqualToView(self)
         .bottomEqualToView(self);
+        
+        
+        _haveNoClassView = [[HaveNoClassView alloc]init];
+        _haveNoClassView.titleLabel.text = @"本月暂时没有课程";
+        [self addSubview:_haveNoClassView];
+        _haveNoClassView.sd_layout
+        .leftEqualToView(self)
+        .topEqualToView(self)
+        .rightEqualToView(self)
+        .bottomEqualToView(self);
+        
+        _haveNoClassView.hidden = YES;
+        
+        
+        
     
         
     }

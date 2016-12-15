@@ -77,12 +77,7 @@
         [self addSubview:_contentTextView];
         [self bringSubviewToFront:_contentTextView];
         
-
-        
         self.contentTextView.hidden = NO;
-        
-        
-        
         
     }
     return self;

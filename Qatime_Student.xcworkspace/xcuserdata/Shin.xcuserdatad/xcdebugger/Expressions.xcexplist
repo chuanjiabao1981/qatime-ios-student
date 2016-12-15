@@ -148,6 +148,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[AllClassViewController calendar:didSelectDate:]:AllClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_allClassArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[MyOrderViewController tableView:cellForRowAtIndexPath:]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -203,6 +211,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__39-[BindingMailInfoViewController finish]_block_invoke_2:BindingMailInfoViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__46-[NELivePlayerViewController checkVideoStatus]_block_invoke:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -211,15 +222,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[AppDelegate onResp:]:AppDelegate.m">
-      </ContextState>
-      <ContextState
          contextName = "-[ClassTimeViewController requestClassList]:ClassTimeViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_token">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate onResp:]:AppDelegate.m">
       </ContextState>
       <ContextState
          contextName = "__copy_helper_block_:PersonalInfoViewController.m">
@@ -241,18 +252,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__38-[OrderViewController finishAndCommit]_block_invoke:OrderViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__46-[NELivePlayerViewController requestClassInfo]_block_invoke:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_session">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__38-[OrderViewController finishAndCommit]_block_invoke:OrderViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__39-[BindingMailInfoViewController finish]_block_invoke_2:BindingMailInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[CashRecordViewController viewDidLoad]:CashRecordViewController.m">

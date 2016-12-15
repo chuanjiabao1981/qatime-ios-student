@@ -14,7 +14,7 @@
 
 
 
-@interface UUInputFunctionView ()<YYTextViewDelegate,Mp3RecorderDelegate>
+@interface UUInputFunctionView ()<YYTextViewDelegate,Mp3RecorderDelegate,UITextViewDelegate>
 {
     BOOL isbeginVoiceRecord;
     Mp3Recorder *MP3;
@@ -37,15 +37,24 @@
         MP3 = [[Mp3Recorder alloc]initWithDelegate:self];
         self.backgroundColor = [UIColor whiteColor];
         //发送消息
+//        self.btnSendMessage = [UIButton buttonWithType:UIButtonTypeCustom];
+//        self.btnSendMessage.frame = CGRectMake(Main_Screen_Width-40, 5, 30, 30);
+//        self.isAbleToSendTextMessage = NO;
+//        [self.btnSendMessage setTitle:@"发送" forState:UIControlStateNormal];
+//        [self.btnSendMessage setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+//        self.btnSendMessage.enabled = NO;
+//        self.btnSendMessage.frame = RECT_CHANGE_width(self.btnSendMessage,35);
+//        UIImage *image = [UIImage imageNamed:@"chat_send_message"];
+//        [self.btnSendMessage setBackgroundImage:image forState:UIControlStateNormal];
+//        self.btnSendMessage.titleLabel.font = [UIFont systemFontOfSize:12];
+//        [self.btnSendMessage addTarget:self action:@selector(sendMessage:) forControlEvents:UIControlEventTouchUpInside];
+//        [self addSubview:self.btnSendMessage];
+        
         self.btnSendMessage = [UIButton buttonWithType:UIButtonTypeCustom];
         self.btnSendMessage.frame = CGRectMake(Main_Screen_Width-40, 5, 30, 30);
         self.isAbleToSendTextMessage = NO;
-        [self.btnSendMessage setTitle:@"发送" forState:UIControlStateNormal];
-        [self.btnSendMessage setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        self.btnSendMessage.enabled = NO;
-        self.btnSendMessage.frame = RECT_CHANGE_width(self.btnSendMessage,35);
-        UIImage *image = [UIImage imageNamed:@"chat_send_message"];
-        [self.btnSendMessage setBackgroundImage:image forState:UIControlStateNormal];
+        [self.btnSendMessage setTitle:@"" forState:UIControlStateNormal];
+        [self.btnSendMessage setBackgroundImage:[UIImage imageNamed:@"Chat_take_picture"] forState:UIControlStateNormal];
         self.btnSendMessage.titleLabel.font = [UIFont systemFontOfSize:12];
         [self.btnSendMessage addTarget:self action:@selector(sendMessage:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.btnSendMessage];
@@ -76,6 +85,9 @@
         
         //添加通知
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textViewDidEndEditing:) name:UIKeyboardWillHideNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeSenderButton) name:@"ChatNone" object:nil] ;
+        
     }
     return self;
 }
@@ -96,44 +108,110 @@
 //发送消息（文字图片）
 - (void)sendMessage:(UIButton *)sender{
     
-    
-    NSLog(@"%@",[self.TextViewInput attributedText ]);
-    
-    
-    
-    NSString *resultStr = [self.TextViewInput.text stringByReplacingOccurrencesOfString:@"   " withString:@""];
-    [self.delegate UUInputFunctionView:self sendMessage:resultStr];
+    if (self.isAbleToSendTextMessage) {
+        NSLog(@"%@",[self.TextViewInput attributedText ]);
+        NSString *resultStr = [self.TextViewInput.text stringByReplacingOccurrencesOfString:@"   " withString:@""];
+        [self.delegate UUInputFunctionView:self sendMessage:resultStr];
+    }
+    else{
+        [self.TextViewInput resignFirstResponder];
+        UIActionSheet *actionSheet= [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Images",nil];
+        [actionSheet showInView:self.window];
+    }
+
+
     
 }
 
 
 #pragma mark - TextViewDelegate
 
-- (void)textViewDidBeginEditing:(YYTextView *)textView
-{
+- (void)textViewDidBeginEditing:(YYTextView *)textView{
+    
+    [self changeSendBtnWithPhoto:NO];
     
 }
 
-- (void)textViewDidChange:(YYTextView *)textView
-{
+- (void)textViewDidChange:(YYTextView *)textView{
     [self changeSendBtnWithPhoto:textView.text.length>0?NO:YES];
     
 }
 
-- (void)changeSendBtnWithPhoto:(BOOL)isPhoto
-{
-    self.btnSendMessage.enabled = YES;
-    [self.btnSendMessage setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+/* 发送按钮变为图片*/
+- (void)changeSendBtnWithPhoto:(BOOL)isPhoto{
+   
+    self.isAbleToSendTextMessage = !isPhoto;
+    [self.btnSendMessage setTitle:isPhoto?@"":@"send" forState:UIControlStateNormal];
+    self.btnSendMessage.frame = RECT_CHANGE_width(self.btnSendMessage, isPhoto?30:35);
+    UIImage *image = [UIImage imageNamed:isPhoto?@"Chat_take_picture":@"chat_send_message"];
+    [self.btnSendMessage setBackgroundImage:image forState:UIControlStateNormal];
+
+    
+//    self.btnSendMessage.enabled = YES;
+//    [self.btnSendMessage setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
 }
 
-- (void)textViewDidEndEditing:(YYTextView *)textView
-{
+- (void)textViewDidEndEditing:(YYTextView *)textView{
+ 
+        
+//        [self changeSendBtnWithPhoto:YES];
     
 }
+
+- (void)changeSenderButton{
+    
+    [self changeSendBtnWithPhoto:YES];
+}
+
 
 
 #pragma mark - Add Picture
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        [self addCarema];
+    }else if (buttonIndex == 1){
+        [self openPicLibrary];
+    }
+}
+-(void)addCarema{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        picker.allowsEditing = YES;
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self.superVC presentViewController:picker animated:YES completion:^{}];
+    }else{
+        //如果没有提示用户
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Tip" message:@"Your device don't have camera" delegate:nil cancelButtonTitle:@"Sure" otherButtonTitles:nil];
+        [alert show];
+    }
+}
+
+-(void)openPicLibrary{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        picker.allowsEditing = YES;
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        [self.superVC presentViewController:picker animated:YES completion:^{
+        }];
+    }
+}
+
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    UIImage *editImage = [info objectForKey:UIImagePickerControllerEditedImage];
+    [self.superVC dismissViewControllerAnimated:YES completion:^{
+        [self.delegate UUInputFunctionView:self sendPicture:editImage];
+    }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    [self.superVC dismissViewControllerAnimated:YES completion:nil];
+}
 
 
 -(void)dealloc{

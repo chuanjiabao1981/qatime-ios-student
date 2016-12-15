@@ -24,7 +24,6 @@
 
 #define Request_Header @"http://testing.qatime.cn"
 
-
 /* 全局绿色*/
 #define USERGREEN  [UIColor colorWithRed:26/255.0 green:183/255.0 blue:159/255.0 alpha:1.0]
 

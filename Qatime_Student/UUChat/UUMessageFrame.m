@@ -20,14 +20,6 @@
     
     _message = message;
     
-    
-    
-    
-  
-    
-    
-    
-    
     CGFloat screenW = [UIScreen mainScreen].bounds.size.width;
     
     // 1、计算时间的位置

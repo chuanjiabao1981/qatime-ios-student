@@ -86,22 +86,24 @@ static NSString *previousTime = nil;
 
 // 如下:群聊（groupChat）
 static int dateNum = 10;
-- (NSDictionary *)getDicWithText:(NSString *)text andName:(NSString *)name andIcon:(NSString *)URLString
+- (NSDictionary *)getDicWithText:(NSString *)text andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type
 {
     
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
-    int randomNum = UUMessageTypeText;
+    int randomNum =type;
+    
+    if (randomNum == UUMessageTypePicture){
+//        [dictionary setObject:@"" forKey:@"picture"];
+    }else{
+        
         /* 消息类型是文字 */
         randomNum = UUMessageTypeText;
-    
-   
-    if (text == nil) {
-        text = @"";
-    }
-    
+        if (text == nil) {
+            text = @"";
+        }
         [dictionary setObject:text forKey:@"strContent"];
-    
-    
+        
+    }
     
     NSDate *date = [[NSDate date]dateByAddingTimeInterval:arc4random()%1000*(dateNum++) ];
     [dictionary setObject:@(UUMessageFromOther) forKey:@"from"];

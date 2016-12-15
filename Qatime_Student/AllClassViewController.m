@@ -15,6 +15,8 @@
 #import "UIViewController_HUD.h"
 #import "UIViewController+HUD.h"
 
+#import "HaveNoClassView.h"
+
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
 
@@ -86,10 +88,17 @@
     _classTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     
+    _haveNoClassView = [[HaveNoClassView alloc]init];
+    _haveNoClassView.titleLabel.text = @"当日无课程";
     
+    [self.view addSubview:_haveNoClassView];
+    _haveNoClassView.sd_layout
+    .topEqualToView(_classTableView)
+    .bottomEqualToView(_classTableView)
+    .leftEqualToView(_classTableView)
+    .rightEqualToView(_classTableView);
     
-//    _classTableView.tableHeaderView = _allClassView;
-//    _classTableView.tableHeaderView.size = CGSizeMake(SCREENWIDTH, SCREENHEIGHT*4/5);
+    _haveNoClassView.hidden = NO;
     
     
 }
@@ -155,8 +164,6 @@
     if (_allClassArr) {
         /* 造出包含所有数据的数组*/
         
-        
-        
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init] ;
         [dateFormatter setDateFormat:@"yyyy-MM-dd"];
         
@@ -182,6 +189,7 @@
     [self updateTable];
 }
 
+/* 跟新tableview*/
 - (void)updateTable{
     
     [_classTableView reloadData];
@@ -379,17 +387,24 @@
     
     NSString *dateStr = [dateFormatter stringFromDate:date];
     
-    for (ClassTimeModel *mod in _allClassArr) {
+    if (_allClassArr.count!=0) {
         
-        if ([dateStr isEqualToString:mod.class_date]) {
+        for (ClassTimeModel *mod in _allClassArr) {
             
+            if ([dateStr isEqualToString:mod.class_date]) {
+                
+                
+                [_dataArr addObject:mod];
+                
+            }
             
-            [_dataArr addObject:mod];
             
         }
+    }else{
         
-        
+        _haveNoClassView.hidden = NO;
     }
+    
     
     [self updateTable];
     

@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "AllClassView.h"
 
+#import "HaveNoClassView.h"
 @interface AllClassViewController : UIViewController
 
 @property(nonatomic,strong) AllClassView *allClassView ;
 
 @property(nonatomic,strong) UITableView *classTableView ;
 
+
+@property(nonatomic,strong) HaveNoClassView *haveNoClassView ;
 
 @end

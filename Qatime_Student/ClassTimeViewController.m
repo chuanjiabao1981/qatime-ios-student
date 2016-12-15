@@ -19,6 +19,8 @@
 
 #import "AllClassViewController.h"
 
+
+
 /* 点击事件 -> 辅导班详情页*/
 #import "TutoriumInfoViewController.h"
 
@@ -83,8 +85,6 @@
         
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
-    
-    
     
     
     /* 课程表的视图*/
@@ -192,6 +192,7 @@
                     haveClass = NO;
                     /* 弹窗警告*/
                     [self noClassThisMonth];
+                    _classTimeView.notClassView.haveNoClassView .hidden= NO;
                     
                 }else{
                     
@@ -235,7 +236,7 @@
         
     }
     
-//     NSLog(@"%@",_unclosedArr);
+
     
     
     
@@ -261,6 +262,9 @@
                     
                     haveClass = NO;
                     [self noClassThisMonth];
+                    
+                    _classTimeView.alreadyClassView.haveNoClassView.hidden = NO;
+                    
                 }else{
                     
                     haveClass = YES;
@@ -313,6 +317,7 @@
     
     _unclosedArr = [NSMutableArray arrayWithArray:@[mod]];
      _closedArr = [NSMutableArray arrayWithArray:@[mod]];
+    
     
     
     
