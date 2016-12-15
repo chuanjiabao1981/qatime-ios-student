@@ -11,10 +11,6 @@
 #import "YYLabel.h"
 
 
-
-
-
-
 @interface UUMessageContentButton : UIButton
 
 
@@ -36,7 +32,6 @@
 
 
 @property (nonatomic, assign) BOOL isMyMessage;
-
 
 
 

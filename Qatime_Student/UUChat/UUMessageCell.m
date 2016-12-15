@@ -22,6 +22,7 @@
 #import "NSObject+YYAdd.h"
 #import "NSBundle+YYAdd.h"
 #import "NSAttributedString+YYtext.h"
+#import "UIImageView+WebCache.h"
 
 @interface UUMessageCell ()
 {
@@ -81,7 +82,7 @@
         [self.btnContent setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         self.btnContent.titleLabel.font = ChatContentFont;
         self.btnContent.titleLabel.numberOfLines = 0;
-        [self.btnContent addTarget:self action:@selector(btnContentClick)  forControlEvents:UIControlEventTouchUpInside];
+        [self.btnContent addTarget:self action:@selector(btnContentClick:)  forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:self.btnContent];
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(UUAVAudioPlayerDidFinishPlay) name:@"VoicePlayHasInterrupt" object:nil];
@@ -116,7 +117,7 @@
 }
 
 
-- (void)btnContentClick{
+- (void)btnContentClick:{
     
     // show text and gonna copy that
     if (self.messageFrame.message.type == UUMessageTypeText)
@@ -190,7 +191,7 @@
             /* YYText改写*/
             [self.btnContent.contentTextView setTextColor:[UIColor whiteColor]];
             self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
-        }else{
+        }else if(message.type == UUMessageTypePicture){
             self.btnContent.isMyMessage = YES;
             [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
@@ -204,7 +205,7 @@
             /* YYText改写*/
             [self.btnContent.contentTextView setTextColor:[UIColor whiteColor]];
             self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentLeft, ChatContentBottom, ChatContentRight);
-        }else{
+        }else if(message.type == UUMessageTypePicture){
             self.btnContent.isMyMessage = NO;
             [self.btnContent setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
             self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentLeft, ChatContentBottom, ChatContentRight);
@@ -227,99 +228,94 @@
     
     if (message.from == UUMessageFromMe) {
         
-        
-        NSString *title = message.strContent;
-        if (title ==nil) {
-            title =@"";
-        }
-        
-        //创建一个可变的属性字符串
-        NSMutableAttributedString *text = [NSMutableAttributedString new];
-        [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
-        
-        
-        
-        
-        
-        /* 正则匹配*/
-        NSString * pattern = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
-        NSError *error = nil;
-        NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
-        
-        if (!re) {
-            NSLog(@"%@", [error localizedDescription]);
-        }
-        
-        //通过正则表达式来匹配字符串
-        NSArray *resultArray = [re matchesInString:message.strContent options:0 range:NSMakeRange(0, message.strContent.length)];
-        NSLog(@"%@",resultArray);
-        
-        
-        
-        /* 先取出来表情*/
-        
-        
-        NSMutableArray *names = @[].mutableCopy;
-        
-        //根据匹配范围来用图片进行相应的替换
-        for(NSTextCheckingResult *match in resultArray){
-            //获取数组元素中得到range
-            NSRange range = [match range];
-            
-            //获取原字符串中对应的值
-            NSString *subStr = [title substringWithRange:range];
-            NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
-            NSMutableString *faceName = @"".mutableCopy;
-            
-            faceName = [NSMutableString stringWithFormat:@"em_%ld",subName.integerValue+1];
-            
-            
-            NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
-            [names addObject:dicc];
-            
-        }
-        
-        
-        
-        
-        for (NSInteger i = names.count-1; i>=0; i--) {
-            
-            NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
-            NSData *data = [NSData dataWithContentsOfFile:path];
-            YYImage *image = [YYImage imageWithData:data scale:2.5];
-            image.preloadAllAnimatedImageFrames = YES;
-            YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
-            
-            NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12] alignment:YYTextVerticalAlignmentCenter];
-            
-            
-            
-            [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
-        }
-        
-        
         switch (message.type) {
-            case UUMessageTypeText:
+                
+            case UUMessageTypeText:{
+                
+                NSString *title = message.strContent;
+                if (title ==nil) {
+                    title =@"";
+                }
+                
+                //创建一个可变的属性字符串
+                NSMutableAttributedString *text = [NSMutableAttributedString new];
+                [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
+                
+                /* 正则匹配*/
+                NSString * pattern = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
+                NSError *error = nil;
+                NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
+                
+                if (!re) {
+                    NSLog(@"%@", [error localizedDescription]);
+                }
+                
+                //通过正则表达式来匹配字符串
+                NSArray *resultArray = [re matchesInString:message.strContent options:0 range:NSMakeRange(0, message.strContent.length)];
+                NSLog(@"%@",resultArray);
+                
+                /* 先取出来表情*/
+                
+                NSMutableArray *names = @[].mutableCopy;
+                
+                //根据匹配范围来用图片进行相应的替换
+                for(NSTextCheckingResult *match in resultArray){
+                    //获取数组元素中得到range
+                    NSRange range = [match range];
+                    
+                    //获取原字符串中对应的值
+                    NSString *subStr = [title substringWithRange:range];
+                    NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+                    NSMutableString *faceName = @"".mutableCopy;
+                    
+                    faceName = [NSMutableString stringWithFormat:@"em_%ld",subName.integerValue+1];
+                    
+                    
+                    NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
+                    [names addObject:dicc];
+                    
+                }
                 
                 
+                
+                
+                for (NSInteger i = names.count-1; i>=0; i--) {
+                    
+                    NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
+                    NSData *data = [NSData dataWithContentsOfFile:path];
+                    YYImage *image = [YYImage imageWithData:data scale:2.5];
+                    image.preloadAllAnimatedImageFrames = YES;
+                    YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
+                    
+                    NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12] alignment:YYTextVerticalAlignmentCenter];
+                    
+                    
+                    
+                    [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
+                }
                 self.title.attributedText =text;
                 
                 [self.title setFrame:self.btnContent.frame];
                 
                 self.title.textContainerInset  = UIEdgeInsetsMake(0, 5, 0, 5);
                 self.title.textAlignment = NSTextAlignmentLeft;
+            }
                 
                 break;
             case UUMessageTypePicture:{
+                
+                self.title.hidden = YES;
+                self.btnContent.title.hidden = YES;
+                self.btnContent.contentTextView.hidden= YES;
                 self.btnContent.backImageView.hidden = NO;
                 self.btnContent.backImageView.image = message.picture;
                 self.btnContent.backImageView.frame = CGRectMake(0, 0, self.btnContent.frame.size.width, self.btnContent.frame.size.height);
                 [self makeMaskView:self.btnContent.backImageView withImage:normal];
-
+                
             }
+            
                 break;
-            case UUMessageTypeVoice:
-            {
+            case UUMessageTypeVoice:{
                 
             }
                 break;
@@ -329,75 +325,69 @@
         }
     }else if(message.from == UUMessageFromOther){
         
-        
-        NSString *title = message.strContent;
-        if (title ==nil) {
-            title =@"";
-        }
-        
-        //创建一个可变的属性字符串
-        NSMutableAttributedString *text = [NSMutableAttributedString new];
-        [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
-                
-        /* 正则匹配*/
-        NSString * pattern = @"\\[em_\\d{1,2}\\]";
-        NSError *error = nil;
-        NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
-        
-        if (!re) {
-            NSLog(@"%@", [error localizedDescription]);
-        }
-        
-        //通过正则表达式来匹配字符串
-        NSArray *resultArray = [re matchesInString:title options:0 range:NSMakeRange(0, message.strContent.length)];
-        NSLog(@"%@",resultArray);
-        
-        
-        
-        /* 先取出来表情*/
-        
-        
-        
-        NSMutableArray *names = @[].mutableCopy;
-        
-        //根据匹配范围来用图片进行相应的替换
-        for(NSTextCheckingResult *match in resultArray){
-            //获取数组元素中得到range
-            NSRange range = [match range];
-            
-            //获取原字符串中对应的值
-            NSString *subStr = [title substringWithRange:range];
-//            NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
-            NSMutableString *faceName = @"".mutableCopy;
-            
-            faceName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
-            
-            NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
-            [names addObject:dicc];
-            
-        }
-        
-        
-        
-        
-        for (NSInteger i = names.count-1; i>=0; i--) {
-            
-            NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
-            NSData *data = [NSData dataWithContentsOfFile:path];
-            YYImage *image = [YYImage imageWithData:data scale:2.5];
-            image.preloadAllAnimatedImageFrames = YES;
-            YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
-            
-            NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12] alignment:YYTextVerticalAlignmentCenter];
-            
-            
-            
-            [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
-        }
-        
-        
         switch (message.type) {
-            case UUMessageTypeText:
+            case UUMessageTypeText:{
+                
+                NSString *title = message.strContent;
+                if (title ==nil) {
+                    title =@"";
+                }
+                
+                //创建一个可变的属性字符串
+                NSMutableAttributedString *text = [NSMutableAttributedString new];
+                [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
+                
+                /* 正则匹配*/
+                NSString * pattern = @"\\[em_\\d{1,2}\\]";
+                NSError *error = nil;
+                NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
+                
+                if (!re) {
+                    NSLog(@"%@", [error localizedDescription]);
+                }
+                
+                //通过正则表达式来匹配字符串
+                NSArray *resultArray = [re matchesInString:title options:0 range:NSMakeRange(0, message.strContent.length)];
+                NSLog(@"%@",resultArray);
+                
+                
+                
+                /* 先取出来表情*/
+                
+                
+                
+                NSMutableArray *names = @[].mutableCopy;
+                
+                //根据匹配范围来用图片进行相应的替换
+                for(NSTextCheckingResult *match in resultArray){
+                    //获取数组元素中得到range
+                    NSRange range = [match range];
+                    
+                    //获取原字符串中对应的值
+                    NSString *subStr = [title substringWithRange:range];
+                    //            NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+                    NSMutableString *faceName = @"".mutableCopy;
+                    
+                    faceName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+                    
+                    NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
+                    [names addObject:dicc];
+                    
+                }
+                for (NSInteger i = names.count-1; i>=0; i--) {
+                    
+                    NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
+                    NSData *data = [NSData dataWithContentsOfFile:path];
+                    YYImage *image = [YYImage imageWithData:data scale:2.5];
+                    image.preloadAllAnimatedImageFrames = YES;
+                    YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
+                    
+                    NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12] alignment:YYTextVerticalAlignmentCenter];
+                    
+                    
+                    
+                    [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
+                }
                 
                 
                 self.title.attributedText =text;
@@ -406,13 +396,18 @@
                 [self.title setFrame:self.btnContent.frame];
                 
                 self.title.textContainerInset  = UIEdgeInsetsMake(0, 20, 0, 0);
-                self.title.textAlignment = NSTextAlignmentLeft;
-                
+            self.title.textAlignment = NSTextAlignmentLeft;
+            }
+        
                 break;
             case UUMessageTypePicture:
             {
+                self.title.hidden = YES;
+                self.btnContent.title.hidden = YES;
+                self.btnContent.contentTextView.hidden= YES;
                 self.btnContent.backImageView.hidden = NO;
-                self.btnContent.backImageView.image = message.picture;
+                self.btnContent.titleLabel.hidden=YES;
+                [self.btnContent.backImageView setImage:message.picture];
                 self.btnContent.backImageView.frame = CGRectMake(0, 0, self.btnContent.frame.size.width, self.btnContent.frame.size.height);
                 [self makeMaskView:self.btnContent.backImageView withImage:normal];
 

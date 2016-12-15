@@ -31,7 +31,7 @@
 - (NSDictionary *)getDicWithText:(NSString *)text andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type;
 
 /* 组成别人发送的图片消息*/
-- (NSDictionary *)getDicWithImage:(UIImage *)image andName:(NSString *)name andIcon:(NSString *)URLString ;
+- (NSDictionary *)getDicWithImage:(UIImage *)image andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type;
 
 
 - (NSArray *)additems:(NSInteger)number withDictionary:(NSDictionary *)dictionary;
