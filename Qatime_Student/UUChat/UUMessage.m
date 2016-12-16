@@ -27,6 +27,7 @@
     self.strTime = [self changeTheDateString:dict[@"strTime"]];
     self.from = [dict[@"from"] intValue];
     
+    
     switch ([dict[@"type"] integerValue]) {
         
         case 0:
@@ -40,6 +41,9 @@
         case 1:
             self.type = UUMessageTypePicture;
             self.picture = dict[@"picture"];
+            self.imagePath = dict[@"imagePath"];
+            self.thumbPath = dic[@"thumbImagePath"];
+            
             break;
         
         case 2:

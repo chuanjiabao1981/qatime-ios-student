@@ -4058,6 +4058,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student/ChatKit/Class/Tool/Vendor/VoiceLib",
 					"$(PROJECT_DIR)/Qatime_Student/Class/Tool/Vendor/VoiceLib",
+					"$(PROJECT_DIR)/Qatime_Student/YYPhotoBrowseView/YYWebImage/Vendor",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
@@ -4140,6 +4141,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student/ChatKit/Class/Tool/Vendor/VoiceLib",
 					"$(PROJECT_DIR)/Qatime_Student/Class/Tool/Vendor/VoiceLib",
+					"$(PROJECT_DIR)/Qatime_Student/YYPhotoBrowseView/YYWebImage/Vendor",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
