@@ -61,7 +61,7 @@
 }
 
 /* 创建并发送自己的图片类型的item*/
-- (void)addSpecifiedImageItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name {
+- (void)addSpecifiedImageItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name{
     UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
     UUMessage *message = [[UUMessage alloc] init];
     NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithDictionary:dic];
@@ -76,7 +76,6 @@
     }
     [dataDic setObject:name forKey:@"strName"];
     [dataDic setObject:URLStr forKey:@"strIcon"];
-    
     
     [message setWithDict:dataDic];
     [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
@@ -148,13 +147,12 @@ static int dateNum = 10;
     [dictionary setObject:name forKey:@"strName"];
     [dictionary setObject:URLString forKey:@"strIcon"];
     
-    
     return dictionary;
 }
 
 
 /* 创建别人发来的图片消息*/
-- (NSDictionary *)getDicWithImage:(UIImage *)image andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andImagePath:(NSString *)imagePath andThumbImagePath:(NSString *)thumbImagePath{
+- (NSDictionary *)getDicWithImage:(UIImage *)image andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type{
     
     
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
@@ -168,7 +166,6 @@ static int dateNum = 10;
         [dictionary setObject:@(randomNum) forKey:@"type"];
         [dictionary setObject:[date description] forKey:@"strTime"];
         
-        
         if (image==nil) {
             
         }else{
@@ -181,8 +178,7 @@ static int dateNum = 10;
         
         NSLog(@"%@",URLString);
         [dictionary setObject:URLString forKey:@"strIcon"];
-        [dictionary setObject:imagePath forKey:@"imagePath"];
-        [dictionary setObject:thumbImagePath forKey:@"thumbImagePath"];
+        
     }
     
     

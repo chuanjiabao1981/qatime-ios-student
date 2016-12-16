@@ -33,13 +33,8 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property (nonatomic, copy) NSData   *voice;
 @property (nonatomic, copy) NSString *strVoiceTime;
 
-
 @property (nonatomic, assign) MessageType type;
 @property (nonatomic, assign) MessageFrom from;
-/* 增加一个高清图片本地地址*/
-@property(nonatomic,strong) NSString *imagePath ;
-/* 增加缩略图地址*/
-@property(nonatomic,strong) NSString *thumbPath ;
 
 @property (nonatomic, assign) BOOL showDateLabel;
 

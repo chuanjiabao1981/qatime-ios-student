@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "VBFPopFlatButton.h"
 
 @interface NoticeSettingViewController : UIViewController
 

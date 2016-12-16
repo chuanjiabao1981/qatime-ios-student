@@ -21,8 +21,6 @@ pod 'MLLabel', '~> 1.10.2'
 
 pod 'FSCalendar', '~> 2.5.1'
 
-pod 'XHImageViewer', '~> 0.1.2'
-
 
 
 

@@ -2741,6 +2741,8 @@ bool ismute     = NO;
         /* 如果收到的是图片消息*/
         else if (message.messageType == NIMMessageTypeImage){
             
+           
+            
         }
         
         
@@ -2755,6 +2757,8 @@ bool ismute     = NO;
     
     [self.chatModel.dataSource addObject:message];
     
+    
+    
 }
 
 
@@ -2767,6 +2771,7 @@ bool ismute     = NO;
 - (void)fetchMessageAttachment:(NIMMessage *)message progress:(CGFloat)progress{
     
     
+    NSLog(@"进度进度进度进度:%f",progress);
     
 }
 - (void)fetchMessageAttachment:(NIMMessage *)message didCompleteWithError:(NSError *)error{
@@ -2779,10 +2784,10 @@ bool ismute     = NO;
     NSLog(@"%@",imageObject.path);
     
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.path]];
     
     
-    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath]];
+    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture]];
     
     
     [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
@@ -2809,6 +2814,7 @@ bool ismute     = NO;
 - (void)dealTheFunctionData:(NSDictionary *)dic
 {
     
+    
     if ([dic[@"type"]isEqual:[NSNumber numberWithInteger:0]]) {
         
         [self.chatModel addSpecifiedItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name ];
@@ -2821,9 +2827,15 @@ bool ismute     = NO;
         [self.chatTableView reloadData];
         [self tableViewScrollToBottom];
         
+        
+        
     }
     
+    
 }
+
+
+
 
 
 #pragma mark- 请求课程和和内容
@@ -3022,7 +3034,14 @@ bool ismute     = NO;
                     }
                     
                     
+                    
+                    
                 }
+                
+                
+                
+                
+                
                 
                 
             }
@@ -3577,8 +3596,8 @@ bool ismute     = NO;
     // 约束动画
     [UIView animateWithDuration:duration animations:^{
         
-        NSLog(@"%@",[NSThread currentThread]);
         
+        NSLog(@"%@",[NSThread currentThread]);
         _chatTableView.sd_layout
         .topEqualToView(_videoInfoView.view2)
         .leftEqualToView(_videoInfoView.view2)
@@ -3588,9 +3607,11 @@ bool ismute     = NO;
         IFView.sd_layout
         .bottomSpaceToView(_videoInfoView.view2,-offsety);
         
+        
         [_chatTableView updateLayout];
         [IFView updateLayout];
         [self tableViewScrollToBottom];
+        
         
         
     }];

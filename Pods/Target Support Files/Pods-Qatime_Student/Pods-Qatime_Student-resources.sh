@@ -81,19 +81,9 @@ EOM
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "MJRefresh/MJRefresh/MJRefresh.bundle"
-  install_resource "XHImageViewer/Source/Resources/1_1280x800-1.jpeg"
-  install_resource "XHImageViewer/Source/Resources/1_1280x800.jpeg"
-  install_resource "XHImageViewer/Source/Resources/4_1366x768.jpeg"
-  install_resource "XHImageViewer/Source/Resources/5_1280x800.jpeg"
-  install_resource "XHImageViewer/Source/Resources/placeholder.jpeg"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "MJRefresh/MJRefresh/MJRefresh.bundle"
-  install_resource "XHImageViewer/Source/Resources/1_1280x800-1.jpeg"
-  install_resource "XHImageViewer/Source/Resources/1_1280x800.jpeg"
-  install_resource "XHImageViewer/Source/Resources/4_1366x768.jpeg"
-  install_resource "XHImageViewer/Source/Resources/5_1280x800.jpeg"
-  install_resource "XHImageViewer/Source/Resources/placeholder.jpeg"
 fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
