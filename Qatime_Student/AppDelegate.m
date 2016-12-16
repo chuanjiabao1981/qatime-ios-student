@@ -99,7 +99,7 @@
     
     
     [[NIMSDK sharedSDK] registerWithAppID:@"2a24ca70e580cab2bef58b1e62478f9f"
-                                  cerName:@"QatimeStudent_aps"];
+                                  cerName:@"QatimeStudentPushDev"];
     
     
     
@@ -113,6 +113,7 @@
     [UMessage registerForRemoteNotifications];
     
     //iOS10必须加下面这段代码。
+    
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     center.delegate=self;
     UNAuthorizationOptions types10=UNAuthorizationOptionBadge|  UNAuthorizationOptionAlert|UNAuthorizationOptionSound;
@@ -132,6 +133,8 @@
     
     return YES;
 }
+
+
 
 
 #pragma mark- 推送回调
@@ -160,20 +163,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [UMessage setAutoAlert:NO];
     [UMessage didReceiveRemoteNotification:userInfo];
     
-    //    self.userInfo = userInfo;
-    //    //定制自定的的弹出框
-    //    if([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
-    //    {
-    //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"标题"
-    //                                                            message:@"Test On ApplicationStateActive"
-    //                                                           delegate:self
-    //                                                  cancelButtonTitle:@"确定"
-    //                                                  otherButtonTitles:nil];
-    //
-    //        [alertView show];
-    //
-    //    }
-}
+    }
 
 
 //iOS10新增：处理前台收到通知的代理方法

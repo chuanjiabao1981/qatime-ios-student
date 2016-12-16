@@ -54,19 +54,12 @@
             
             contentSize = [_message.strContent sizeWithFont:ChatContentFont  constrainedToSize:CGSizeMake(ChatContentW, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
             
-            
-            
- 
             /* 拿到yytext显示富文本的size*/
         NSLog(@"%f,%f",contentSize.width,contentSize.height);
-            
-            
-          
-//            NSLog(@"%f,%f,%f,%f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
            
             break;
         case UUMessageTypePicture:
-            contentSize = CGSizeMake(ChatPicWH, ChatPicWH);
+            contentSize = CGSizeMake(ChatPicWH*ScrenScale, ChatPicWH*ScrenScale);
             break;
         case UUMessageTypeVoice:
             contentSize = CGSizeMake(120, 20);

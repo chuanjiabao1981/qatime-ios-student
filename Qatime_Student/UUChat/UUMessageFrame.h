@@ -22,6 +22,8 @@
 #define ChatTimeFont [UIFont systemFontOfSize:11]   //时间字体
 #define ChatContentFont [UIFont systemFontOfSize:14]//内容字体
 
+#define ScrenScale [UIScreen mainScreen].bounds.size.width/414.0
+
 #import <Foundation/Foundation.h>
 @class UUMessage;
 

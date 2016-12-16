@@ -78,6 +78,8 @@
 		542C173E1DFA50760088DB3F /* Unpaid.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C173D1DFA50760088DB3F /* Unpaid.m */; };
 		542C17411DFA507E0088DB3F /* Paid.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C17401DFA507E0088DB3F /* Paid.m */; };
 		542C17441DFA508A0088DB3F /* Canceld.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C17431DFA508A0088DB3F /* Canceld.m */; };
+		5430DBF71E03F4970097E7B4 /* NoticeIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 5430DBF61E03F4970097E7B4 /* NoticeIndex.m */; };
+		5430DBFA1E03F4B10097E7B4 /* NoticeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5430DBF91E03F4B10097E7B4 /* NoticeViewController.m */; };
 		5435D9341DD2B42100DD4FCC /* RecommandClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9331DD2B42100DD4FCC /* RecommandClasses.m */; };
 		5435D9371DD2C12300DD4FCC /* ClassesListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9361DD2C12300DD4FCC /* ClassesListTableViewCell.m */; };
 		5435D93A1DD2C2C100DD4FCC /* ClassesInfo_Time.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9391DD2C2C100DD4FCC /* ClassesInfo_Time.m */; };
@@ -475,6 +477,10 @@
 		542C17401DFA507E0088DB3F /* Paid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Paid.m; sourceTree = "<group>"; };
 		542C17421DFA508A0088DB3F /* Canceld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Canceld.h; sourceTree = "<group>"; };
 		542C17431DFA508A0088DB3F /* Canceld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Canceld.m; sourceTree = "<group>"; };
+		5430DBF51E03F4970097E7B4 /* NoticeIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeIndex.h; sourceTree = "<group>"; };
+		5430DBF61E03F4970097E7B4 /* NoticeIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeIndex.m; sourceTree = "<group>"; };
+		5430DBF81E03F4B10097E7B4 /* NoticeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeViewController.h; sourceTree = "<group>"; };
+		5430DBF91E03F4B10097E7B4 /* NoticeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeViewController.m; sourceTree = "<group>"; };
 		5435D9321DD2B42100DD4FCC /* RecommandClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommandClasses.h; sourceTree = "<group>"; };
 		5435D9331DD2B42100DD4FCC /* RecommandClasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommandClasses.m; sourceTree = "<group>"; };
 		5435D9351DD2C12300DD4FCC /* ClassesListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassesListTableViewCell.h; sourceTree = "<group>"; };
@@ -1267,6 +1273,7 @@
 		541F91DE1DC9BBAA00180BE8 /* 主页页面 */ = {
 			isa = PBXGroup;
 			children = (
+				5430DBF11E03F4420097E7B4 /* 消息主页 */,
 				54FCBAAD1DD58A530094BF58 /* 主页 */,
 				547A7EF81DD4128C00F1282B /* 教师公开页 */,
 			);
@@ -1397,6 +1404,41 @@
 				54294F591DDB401700677333 /* NELivePlayerController.h */,
 			);
 			path = NELivePlayer;
+			sourceTree = "<group>";
+		};
+		5430DBF11E03F4420097E7B4 /* 消息主页 */ = {
+			isa = PBXGroup;
+			children = (
+				5430DBF21E03F4540097E7B4 /* Model */,
+				5430DBF41E03F45D0097E7B4 /* View */,
+				5430DBF31E03F45C0097E7B4 /* Controller */,
+			);
+			name = "消息主页";
+			sourceTree = "<group>";
+		};
+		5430DBF21E03F4540097E7B4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		5430DBF31E03F45C0097E7B4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				5430DBF81E03F4B10097E7B4 /* NoticeViewController.h */,
+				5430DBF91E03F4B10097E7B4 /* NoticeViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		5430DBF41E03F45D0097E7B4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5430DBF51E03F4970097E7B4 /* NoticeIndex.h */,
+				5430DBF61E03F4970097E7B4 /* NoticeIndex.m */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		543C207A1DC6F6470086B04B /* Util */ = {
@@ -3872,6 +3914,7 @@
 				5413D2681DF7C75D00A8FDEC /* WithDrawTableViewCell.m in Sources */,
 				54B73CFE1DE3E42700B7A7EB /* MemberListTableViewCell.m in Sources */,
 				54294F541DDB400E00677333 /* ReleaseNote.md in Sources */,
+				5430DBFA1E03F4B10097E7B4 /* NoticeViewController.m in Sources */,
 				548328EA1DDC6F360053AB29 /* UUImageAvatarBrowser.m in Sources */,
 				543E0CC11DFFDA82004B24FD /* PayConfirmViewController.m in Sources */,
 				542C17381DFA50460088DB3F /* PaidOrderTableViewCell.m in Sources */,
@@ -3893,6 +3936,7 @@
 				54CB26631DEFFBDF00AE7414 /* ChangePhoneViewController.m in Sources */,
 				54B4C18F1DF8416500E31794 /* ConfirmChargeView.m in Sources */,
 				54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */,
+				5430DBF71E03F4970097E7B4 /* NoticeIndex.m in Sources */,
 				54B4C1871DF8183800E31794 /* ChargeView.m in Sources */,
 				546F5C591DFD760000528F79 /* WithDrawInfoViewController.m in Sources */,
 				54D661291DD04DC900C9A0FF /* YZSquareMenu.m in Sources */,
@@ -4058,6 +4102,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student/ChatKit/Class/Tool/Vendor/VoiceLib",
 					"$(PROJECT_DIR)/Qatime_Student/Class/Tool/Vendor/VoiceLib",
+					"$(PROJECT_DIR)/Qatime_Student/YYPhotoBrowseView/YYWebImage/Vendor",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
@@ -4140,6 +4185,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student/ChatKit/Class/Tool/Vendor/VoiceLib",
 					"$(PROJECT_DIR)/Qatime_Student/Class/Tool/Vendor/VoiceLib",
+					"$(PROJECT_DIR)/Qatime_Student/YYPhotoBrowseView/YYWebImage/Vendor",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (

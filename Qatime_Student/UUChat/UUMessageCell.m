@@ -23,8 +23,14 @@
 #import "NSBundle+YYAdd.h"
 #import "NSAttributedString+YYtext.h"
 #import "UIImageView+WebCache.h"
+#import "XHImageViewer.h"
+#import "UIImageView+XHURLDownload.h"
 
-@interface UUMessageCell ()
+
+
+//#import "YYPhotoBrowseView.h"
+
+@interface UUMessageCell ()<XHImageViewerDelegate>
 {
     
     NSString *voiceURL;
@@ -82,10 +88,10 @@
         [self.btnContent setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         self.btnContent.titleLabel.font = ChatContentFont;
         self.btnContent.titleLabel.numberOfLines = 0;
-        [self.btnContent addTarget:self action:@selector(btnContentClick:)  forControlEvents:UIControlEventTouchUpInside];
+        [self.btnContent addTarget:self action:@selector(btnContentClick)  forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:self.btnContent];
         
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(UUAVAudioPlayerDidFinishPlay) name:@"VoicePlayHasInterrupt" object:nil];
+//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(UUAVAudioPlayerDidFinishPlay) name:@"VoicePlayHasInterrupt" object:nil];
         
         //红外线感应监听
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -117,7 +123,7 @@
 }
 
 
-- (void)btnContentClick:{
+- (void)btnContentClick{
     
     // show text and gonna copy that
     if (self.messageFrame.message.type == UUMessageTypeText)
@@ -130,14 +136,30 @@
     /* 显示图片*/
     else if (self.messageFrame.message.type == UUMessageTypePicture)
     {
-        if (self.btnContent.backImageView) {
-            [UUImageAvatarBrowser showImage:self.btnContent.backImageView];
-        }
-        if ([self.delegate isKindOfClass:[UIViewController class]]) {
-            [[(UIViewController *)self.delegate view] endEditing:YES];
-        }
+        
+        XHImageViewer *viewer = [[XHImageViewer alloc]init];
+        viewer.delegate = self;
+        UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]] ;
+        UIImageView *btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
+        
+        
+//        [btnImageView setDefaultLoadingView];
+        [btnImageView loadWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_messageFrame.message.imagePath]] placeholer:image showActivityIndicatorView:YES];
+        
+        
+        [viewer showWithImageViews:@[btnImageView] selectedView:btnImageView];
+        
+
     }
 
+}
+
+- (void)imageViewer:(XHImageViewer *)imageViewer  willDismissWithSelectedView:(UIImageView*)selectedView{
+    
+    [imageViewer removeFromSuperview];
+    selectedView.hidden = YES;
+    
+    
 }
 
 

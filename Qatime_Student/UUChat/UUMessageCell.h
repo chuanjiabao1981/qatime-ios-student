@@ -12,6 +12,7 @@
 @class UUMessageFrame;
 @class UUMessageCell;
 
+
 @protocol UUMessageCellDelegate <NSObject>
 @optional
 - (void)headImageDidClick:(UUMessageCell *)cell userId:(NSString *)userId;

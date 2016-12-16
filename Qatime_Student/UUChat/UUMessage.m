@@ -27,12 +27,13 @@
     self.strTime = [self changeTheDateString:dict[@"strTime"]];
     self.from = [dict[@"from"] intValue];
     
+    
     switch ([dict[@"type"] integerValue]) {
         
         case 0:
             self.type = UUMessageTypeText;
             if (dict[@"strContent"]==nil) {
-                [dict setValue:@"" forKey:@"strContent"];
+                [dict setValue:@"空消息" forKey:@"strContent"];
             }
             self.strContent = dict[@"strContent"];
             break;
@@ -40,6 +41,9 @@
         case 1:
             self.type = UUMessageTypePicture;
             self.picture = dict[@"picture"];
+            self.imagePath = dict[@"imagePath"];
+            self.thumbPath = dic[@"thumbImagePath"];
+            
             break;
         
         case 2:
