@@ -69,9 +69,6 @@
 @property (nonatomic, strong) void(^sendContent)(NSString *content);
 
 
-
-
-
 /**
  数据界面信息 初始化方法
 
@@ -91,8 +88,6 @@
  @return 播放器对象
  */
 //-(instancetype)initWithClassID:(NSString *)classID andBoardPullAddress:(NSURL *)boardPullAddress andTeacherPullAddress:(NSURL *)teacherPullAddress;
-
-
 
 
 

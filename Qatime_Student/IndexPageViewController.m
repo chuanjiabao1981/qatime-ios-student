@@ -12,6 +12,7 @@
 #import "YZSquareMenu.h"
 #import "RDVTabBarController.h"
 #import "TutoriumViewController.h"
+#import "NoticeIndexViewController.h"
 
 #import "RecommandTeacher.h"
 
@@ -22,6 +23,8 @@
 
 #import "TeachersPublicViewController.h"
 #import "UIViewController+HUD.h"
+
+#import "NIMSDK.h"
 
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate>{
     
@@ -84,7 +87,8 @@
     /* 导航栏加载*/
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 64)];
     [self .view addSubview:_navigationBar];
-
+    [_navigationBar.rightButton setImage:[UIImage imageNamed:@"消息"] forState:UIControlStateNormal];
+    [_navigationBar.rightButton addTarget:self action:@selector(enterNoticeCenter) forControlEvents:UIControlEventTouchUpInside];
     
     
     /* 取出token*/
@@ -175,19 +179,21 @@
     /* 初次请求成功后，直接申请推荐教师和推荐课程*/
     
     /* 请求推荐教师详情*/
-    
-    
-    
-    
-    
-    
-    
+        
     /* 添加headerview尺寸变化的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sizeToFitHeight) name:@"SizeChange" object:nil];
     
     
     
+    
+    /* 云信sdk的登录回调*/
+//    [[NIMSDK sharedSDK].loginManager addDelegate:self];
+    
+    
+    
 }
+
+
 
 #pragma mark- 请求kee
 - (void)requestKee{
@@ -708,6 +714,13 @@
     
 }
 
+/* 进入消息中心*/
+- (void)enterNoticeCenter{
+    
+    NoticeIndexViewController *noticeVC = [[NoticeIndexViewController alloc]init];
+    [self.navigationController pushViewController:noticeVC animated:YES];
+    
+}
 
 
 - (void)didReceiveMemoryWarning {

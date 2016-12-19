@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>M13BadgeView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -87,22 +92,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>01356EE8D3F222BA73E2162326ED6540</key>
+		<key>342DE230F407040A38A63494D90B81F4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1C3486F5078AD37706A27DFB76192DB4</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>2CF7E1D96B075B0A289B32933BA143D3</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>4D0218163E60B017280CA10A84E9312A</key>
+		<key>3DEFAFA1A185C36BD438FC6ACBB4FB2A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -122,6 +117,16 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>8C83BFD875A2AA5F7ABAA5084AD10805</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>90BD0FEEA56B381113BCC85DDCAB09C8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>928353533005A4198EBDA5B700D37B64</key>
 		<dict>
 			<key>primary</key>
@@ -132,17 +137,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A37D2E7D782B1DB57D392F35E2002425</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>A3F740CF9D80D240C015263935BAD310</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B75982290CBF9DA2187000FB5B06B27D</key>
+		<key>A4A08B9BE880F15A0B071498F06DD4DD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -152,17 +147,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>C108048F170C50B0420441AD2D89D5C2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>D058B89EB3B3DF45457A2DCD3971AFFE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D8D838258DC55728A030614BB9EBD2D9</key>
+		<key>D1C7D84F1AC7AD26D095B03D6C6E0948</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>ED6EBAF6B3FA781249E3F7E9B5D1BE65</key>
+		<key>E636F610086D652EE08FD4DD53484EDA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E7FA76BBA31F62A40FC95C335007C2E1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F795715659D763190204DE959D09C4C8</key>
 		<dict>
 			<key>primary</key>
 			<true/>

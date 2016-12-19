@@ -18,7 +18,7 @@
 #import <UserNotifications/UserNotifications.h>
 #endif
 
-@interface AppDelegate ()<UNUserNotificationCenterDelegate>
+@interface AppDelegate ()<UNUserNotificationCenterDelegate,NIMSystemNotificationManager,NIMLoginManagerDelegate>
 
 @end
 
@@ -51,10 +51,7 @@
         
     }
     
-    
- 
-    
-    
+    /* <# State #>*/
     
     
     
@@ -100,6 +97,24 @@
     
     [[NIMSDK sharedSDK] registerWithAppID:@"2a24ca70e580cab2bef58b1e62478f9f"
                                   cerName:@"QatimeStudentPushDev"];
+    [[NIMSDK sharedSDK].loginManager addDelegate:self];
+    /* 登录云信*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"]) {
+        
+        NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"];
+        NIMAutoLoginData *lodata = [[NIMAutoLoginData alloc]init];
+        lodata.account =chatDic [@"accid"];
+        lodata.token = chatDic[@"token"];
+        
+        [[[NIMSDK sharedSDK]loginManager]autoLogin:lodata];
+        
+        
+    }
+    
+    
+    
+    
+     
     
     
     
@@ -109,7 +124,24 @@
     [UMessage startWithAppkey:@"5846465b1c5dd042ae000732" launchOptions:launchOptions];
     
     
-    //注册通知，如果要使用category的自定义策略，可以参考demo中的代码。
+    /* 注册云信(系统)推送*/
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)])
+    {
+        UIUserNotificationType types = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound |      UIRemoteNotificationTypeAlert;
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types
+                                                                                 categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }
+    else
+    {
+        UIRemoteNotificationType types = UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound |        UIRemoteNotificationTypeBadge;
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
+    }
+
+    
+    
+    //注册友盟通知，如果要使用category的自定义策略，可以参考demo中的代码。
     [UMessage registerForRemoteNotifications];
     
     //iOS10必须加下面这段代码。
@@ -131,9 +163,28 @@
     [UMessage setLogEnabled:YES];
     
     
+    
     return YES;
 }
 
+
+/* 云信登录成功的回调 */
+- (void)onLogin:(NIMLoginStep)step{
+    
+    /* 登录成功*/
+    if (step == NIMLoginStepLoginOK) {
+        NSLog(@"%@",[[[NIMSDK sharedSDK]teamManager]allMyTeams]);
+        
+        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"NIMSDKLogin"];
+        
+    }
+    /* 聊天室信息同步完成*/
+    if (step == NIMLoginStepSyncOK) {
+         
+        
+    }
+    
+}
 
 
 
@@ -202,6 +253,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 /* 云信收到消息的回调监听*/
 - (void)onReceiveCustomSystemNotification:(NIMCustomSystemNotification *)notification{
+   
+    
+    
     
 }
 

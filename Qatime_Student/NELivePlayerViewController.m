@@ -124,9 +124,7 @@ typedef enum : NSUInteger {
     CGFloat headerHeight;
     
     ClassList *_classList;
-    
-    
-    
+        
     /* 两个视频播放器的排列方式*/
     
     ViewsArrangementMode _viewsArrangementMode;

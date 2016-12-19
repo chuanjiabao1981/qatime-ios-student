@@ -78,8 +78,6 @@
 		542C173E1DFA50760088DB3F /* Unpaid.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C173D1DFA50760088DB3F /* Unpaid.m */; };
 		542C17411DFA507E0088DB3F /* Paid.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C17401DFA507E0088DB3F /* Paid.m */; };
 		542C17441DFA508A0088DB3F /* Canceld.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C17431DFA508A0088DB3F /* Canceld.m */; };
-		5430DBF71E03F4970097E7B4 /* NoticeIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 5430DBF61E03F4970097E7B4 /* NoticeIndex.m */; };
-		5430DBFA1E03F4B10097E7B4 /* NoticeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5430DBF91E03F4B10097E7B4 /* NoticeViewController.m */; };
 		5435D9341DD2B42100DD4FCC /* RecommandClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9331DD2B42100DD4FCC /* RecommandClasses.m */; };
 		5435D9371DD2C12300DD4FCC /* ClassesListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9361DD2C12300DD4FCC /* ClassesListTableViewCell.m */; };
 		5435D93A1DD2C2C100DD4FCC /* ClassesInfo_Time.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9391DD2C2C100DD4FCC /* ClassesInfo_Time.m */; };
@@ -98,6 +96,10 @@
 		543E0CCB1DFFEDC8004B24FD /* CheckOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CCA1DFFEDC8004B24FD /* CheckOrderViewController.m */; };
 		543E0CCF1E002960004B24FD /* BindingMailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CCE1E002960004B24FD /* BindingMailView.m */; };
 		543E0CD41E00297E004B24FD /* BindingMailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CD31E00297E004B24FD /* BindingMailViewController.m */; };
+		5448AEA11E042BC8007B1DF9 /* NoticeIndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA01E042BC8007B1DF9 /* NoticeIndexViewController.m */; };
+		5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA31E042D45007B1DF9 /* NoticeIndexView.m */; };
+		5448AEA81E054C7A007B1DF9 /* ChatListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA71E054C7A007B1DF9 /* ChatListTableViewCell.m */; };
+		5448AEAB1E054CA4007B1DF9 /* NoticeListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEAA1E054CA4007B1DF9 /* NoticeListTableViewCell.m */; };
 		544C15121DC73ADA00F59F86 /* selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 544C15111DC73ADA00F59F86 /* selected.png */; };
 		544C15141DC7414000F59F86 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 544C15131DC7414000F59F86 /* back.png */; };
 		544E0CDB1DD0806900884F31 /* YZSquareMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CDA1DD0806900884F31 /* YZSquareMenuCell.m */; };
@@ -364,6 +366,8 @@
 		54F3BA241DFC4435003998D0 /* LoginAgainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA231DFC4435003998D0 /* LoginAgainViewController.m */; };
 		54F3BA2D1DFC7130003998D0 /* WithDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA2C1DFC7130003998D0 /* WithDrawView.m */; };
 		54F3BA301DFC7140003998D0 /* WithDrawViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA2F1DFC7140003998D0 /* WithDrawViewController.m */; };
+		54FA71561E07B107009D81FE /* ChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FA71551E07B107009D81FE /* ChatView.m */; };
+		54FA71591E07B111009D81FE /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FA71581E07B111009D81FE /* ChatViewController.m */; };
 		54FB1DB51DF10B9B00BA9A3C /* UIViewController+VideoStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB1DB41DF10B9B00BA9A3C /* UIViewController+VideoStatus.m */; };
 		54FB1DCA1DF172E600BA9A3C /* BindingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB1DC91DF172E600BA9A3C /* BindingView.m */; };
 		54FB1DCD1DF172F300BA9A3C /* BindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB1DCC1DF172F300BA9A3C /* BindingViewController.m */; };
@@ -477,10 +481,6 @@
 		542C17401DFA507E0088DB3F /* Paid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Paid.m; sourceTree = "<group>"; };
 		542C17421DFA508A0088DB3F /* Canceld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Canceld.h; sourceTree = "<group>"; };
 		542C17431DFA508A0088DB3F /* Canceld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Canceld.m; sourceTree = "<group>"; };
-		5430DBF51E03F4970097E7B4 /* NoticeIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeIndex.h; sourceTree = "<group>"; };
-		5430DBF61E03F4970097E7B4 /* NoticeIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeIndex.m; sourceTree = "<group>"; };
-		5430DBF81E03F4B10097E7B4 /* NoticeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeViewController.h; sourceTree = "<group>"; };
-		5430DBF91E03F4B10097E7B4 /* NoticeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeViewController.m; sourceTree = "<group>"; };
 		5435D9321DD2B42100DD4FCC /* RecommandClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommandClasses.h; sourceTree = "<group>"; };
 		5435D9331DD2B42100DD4FCC /* RecommandClasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommandClasses.m; sourceTree = "<group>"; };
 		5435D9351DD2C12300DD4FCC /* ClassesListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassesListTableViewCell.h; sourceTree = "<group>"; };
@@ -517,6 +517,14 @@
 		543E0CCE1E002960004B24FD /* BindingMailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindingMailView.m; sourceTree = "<group>"; };
 		543E0CD21E00297E004B24FD /* BindingMailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailViewController.h; sourceTree = "<group>"; };
 		543E0CD31E00297E004B24FD /* BindingMailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindingMailViewController.m; sourceTree = "<group>"; };
+		5448AE9F1E042BC8007B1DF9 /* NoticeIndexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeIndexViewController.h; sourceTree = "<group>"; };
+		5448AEA01E042BC8007B1DF9 /* NoticeIndexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeIndexViewController.m; sourceTree = "<group>"; };
+		5448AEA21E042D45007B1DF9 /* NoticeIndexView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeIndexView.h; sourceTree = "<group>"; };
+		5448AEA31E042D45007B1DF9 /* NoticeIndexView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeIndexView.m; sourceTree = "<group>"; };
+		5448AEA61E054C7A007B1DF9 /* ChatListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatListTableViewCell.h; sourceTree = "<group>"; };
+		5448AEA71E054C7A007B1DF9 /* ChatListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatListTableViewCell.m; sourceTree = "<group>"; };
+		5448AEA91E054CA4007B1DF9 /* NoticeListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeListTableViewCell.h; sourceTree = "<group>"; };
+		5448AEAA1E054CA4007B1DF9 /* NoticeListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeListTableViewCell.m; sourceTree = "<group>"; };
 		544C15111DC73ADA00F59F86 /* selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selected.png; sourceTree = "<group>"; };
 		544C15131DC7414000F59F86 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		544E0CD91DD0806900884F31 /* YZSquareMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZSquareMenuCell.h; sourceTree = "<group>"; };
@@ -1057,6 +1065,10 @@
 		54F3BA2C1DFC7130003998D0 /* WithDrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithDrawView.m; sourceTree = "<group>"; };
 		54F3BA2E1DFC7140003998D0 /* WithDrawViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithDrawViewController.h; sourceTree = "<group>"; };
 		54F3BA2F1DFC7140003998D0 /* WithDrawViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithDrawViewController.m; sourceTree = "<group>"; };
+		54FA71541E07B107009D81FE /* ChatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatView.h; sourceTree = "<group>"; };
+		54FA71551E07B107009D81FE /* ChatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatView.m; sourceTree = "<group>"; };
+		54FA71571E07B111009D81FE /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		54FA71581E07B111009D81FE /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		54FB1DB31DF10B9B00BA9A3C /* UIViewController+VideoStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VideoStatus.h"; sourceTree = "<group>"; };
 		54FB1DB41DF10B9B00BA9A3C /* UIViewController+VideoStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VideoStatus.m"; sourceTree = "<group>"; };
 		54FB1DC81DF172E600BA9A3C /* BindingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingView.h; sourceTree = "<group>"; };
@@ -1273,6 +1285,7 @@
 		541F91DE1DC9BBAA00180BE8 /* 主页页面 */ = {
 			isa = PBXGroup;
 			children = (
+				54FA714F1E07B0B4009D81FE /* 聊天页面 */,
 				5430DBF11E03F4420097E7B4 /* 消息主页 */,
 				54FCBAAD1DD58A530094BF58 /* 主页 */,
 				547A7EF81DD4128C00F1282B /* 教师公开页 */,
@@ -1426,8 +1439,8 @@
 		5430DBF31E03F45C0097E7B4 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				5430DBF81E03F4B10097E7B4 /* NoticeViewController.h */,
-				5430DBF91E03F4B10097E7B4 /* NoticeViewController.m */,
+				5448AE9F1E042BC8007B1DF9 /* NoticeIndexViewController.h */,
+				5448AEA01E042BC8007B1DF9 /* NoticeIndexViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1435,8 +1448,9 @@
 		5430DBF41E03F45D0097E7B4 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				5430DBF51E03F4970097E7B4 /* NoticeIndex.h */,
-				5430DBF61E03F4970097E7B4 /* NoticeIndex.m */,
+				5448AEA51E054C63007B1DF9 /* Cell */,
+				5448AEA21E042D45007B1DF9 /* NoticeIndexView.h */,
+				5448AEA31E042D45007B1DF9 /* NoticeIndexView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1552,6 +1566,17 @@
 				549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		5448AEA51E054C63007B1DF9 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				5448AEA61E054C7A007B1DF9 /* ChatListTableViewCell.h */,
+				5448AEA71E054C7A007B1DF9 /* ChatListTableViewCell.m */,
+				5448AEA91E054CA4007B1DF9 /* NoticeListTableViewCell.h */,
+				5448AEAA1E054CA4007B1DF9 /* NoticeListTableViewCell.m */,
+			);
+			name = Cell;
 			sourceTree = "<group>";
 		};
 		545162B61DF50D62000BD17A /* 修改密码 */ = {
@@ -2966,6 +2991,41 @@
 			name = View;
 			sourceTree = "<group>";
 		};
+		54FA714F1E07B0B4009D81FE /* 聊天页面 */ = {
+			isa = PBXGroup;
+			children = (
+				54FA71531E07B0E1009D81FE /* Model */,
+				54FA71521E07B0E0009D81FE /* View */,
+				54FA71511E07B0DF009D81FE /* Controller */,
+			);
+			name = "聊天页面";
+			sourceTree = "<group>";
+		};
+		54FA71511E07B0DF009D81FE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54FA71571E07B111009D81FE /* ChatViewController.h */,
+				54FA71581E07B111009D81FE /* ChatViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54FA71521E07B0E0009D81FE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54FA71541E07B107009D81FE /* ChatView.h */,
+				54FA71551E07B107009D81FE /* ChatView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54FA71531E07B0E1009D81FE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		54FB1DBF1DF1722500BA9A3C /* 注册完善信息 */ = {
 			isa = PBXGroup;
 			children = (
@@ -3755,6 +3815,7 @@
 				546978561DC723B5001695F4 /* LoginViewController.m in Sources */,
 				548328ED1DDC6F360053AB29 /* UUMessageCell.m in Sources */,
 				547E899D1DD1D8AD00749366 /* HMSegmentedControl.m in Sources */,
+				5448AEA11E042BC8007B1DF9 /* NoticeIndexViewController.m in Sources */,
 				54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */,
 				548328EC1DDC6F360053AB29 /* UUMessage.m in Sources */,
 				5496A3AB1DE591680096ECE5 /* NSAttributedString+EmojiExtension.m in Sources */,
@@ -3787,6 +3848,7 @@
 				54D66F871DEC406B00ED2EBC /* CalendarView.m in Sources */,
 				54DBA4B01DE4423300A67A90 /* YZEmotionCell.m in Sources */,
 				54FB1DD71DF1AC2C00BA9A3C /* ParentView.m in Sources */,
+				5448AEA81E054C7A007B1DF9 /* ChatListTableViewCell.m in Sources */,
 				54294C701DDB062000677333 /* Teacher.m in Sources */,
 				54AB49001DEDABCC008E3BC5 /* EndedTableViewCell.m in Sources */,
 				543E0CBE1DFFDA77004B24FD /* PayConfirmView.m in Sources */,
@@ -3879,6 +3941,7 @@
 				54D66F791DEC087D00ED2EBC /* NSString+StatusSwitch.m in Sources */,
 				547FBF311DF6B99600955A9E /* PersonalDescViewController.m in Sources */,
 				54294C6A1DDAFCF600677333 /* ClassList.m in Sources */,
+				5448AEAB1E054CA4007B1DF9 /* NoticeListTableViewCell.m in Sources */,
 				54AA309B1DF98D30009E0D04 /* MyOrderTableViewCell.m in Sources */,
 				54AB48ED1DED608A008E3BC5 /* EndedClassView.m in Sources */,
 				546978641DC725A5001695F4 /* NavigationBar.m in Sources */,
@@ -3904,6 +3967,7 @@
 				5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */,
 				546978691DC72A42001695F4 /* SignUpViewController.m in Sources */,
 				54FCBAE01DD5B3050094BF58 /* VideoInfoView.m in Sources */,
+				54FA71561E07B107009D81FE /* ChatView.m in Sources */,
 				546A54741DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m in Sources */,
 				54D66F691DEBDA5700ED2EBC /* ClassTimeTableViewCell.m in Sources */,
 				54A153AA1DC6F09D0070B508 /* main.m in Sources */,
@@ -3914,7 +3978,6 @@
 				5413D2681DF7C75D00A8FDEC /* WithDrawTableViewCell.m in Sources */,
 				54B73CFE1DE3E42700B7A7EB /* MemberListTableViewCell.m in Sources */,
 				54294F541DDB400E00677333 /* ReleaseNote.md in Sources */,
-				5430DBFA1E03F4B10097E7B4 /* NoticeViewController.m in Sources */,
 				548328EA1DDC6F360053AB29 /* UUImageAvatarBrowser.m in Sources */,
 				543E0CC11DFFDA82004B24FD /* PayConfirmViewController.m in Sources */,
 				542C17381DFA50460088DB3F /* PaidOrderTableViewCell.m in Sources */,
@@ -3936,8 +3999,8 @@
 				54CB26631DEFFBDF00AE7414 /* ChangePhoneViewController.m in Sources */,
 				54B4C18F1DF8416500E31794 /* ConfirmChargeView.m in Sources */,
 				54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */,
-				5430DBF71E03F4970097E7B4 /* NoticeIndex.m in Sources */,
 				54B4C1871DF8183800E31794 /* ChargeView.m in Sources */,
+				54FA71591E07B111009D81FE /* ChatViewController.m in Sources */,
 				546F5C591DFD760000528F79 /* WithDrawInfoViewController.m in Sources */,
 				54D661291DD04DC900C9A0FF /* YZSquareMenu.m in Sources */,
 				54FCBAF61DD5D4500094BF58 /* VideoClassInfo.m in Sources */,
@@ -3952,6 +4015,7 @@
 				54AB48FA1DED7C09008E3BC5 /* MyTutoriumModel.m in Sources */,
 				547A7EFD1DD416F100F1282B /* ListenAndBuyTabBar.m in Sources */,
 				54652E081DEE9D1900F4607C /* AboutUsView.m in Sources */,
+				5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */,
 				5435D9491DD3160600DD4FCC /* TeachersPublicHeaderView.m in Sources */,
 				5435D94F1DD31B4700DD4FCC /* TeachersPublicInfo.m in Sources */,
 			);
@@ -4169,6 +4233,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.qatime.QatimeStudent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 arm64 x86_64 i386";
 			};
 			name = Debug;
@@ -4252,6 +4317,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.qatime.QatimeStudent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 arm64 x86_64 i386";
 			};
 			name = Release;

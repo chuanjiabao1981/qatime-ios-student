@@ -13,6 +13,7 @@
 
 @implementation ChatModel
 
+
 - (void)populateRandomDataSource {
     self.dataSource = [NSMutableArray array];
 //    [self.dataSource addObjectsFromArray:[self additems:0]];
@@ -213,6 +214,15 @@ static int dateNum = 10;
 
     
 }
+
+-(NSMutableArray *)dataSource{
+    
+    NSMutableArray *arr = @[].mutableCopy;
+    return arr;
+}
+
+
+
 
 
 @end

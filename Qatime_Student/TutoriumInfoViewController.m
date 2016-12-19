@@ -18,6 +18,7 @@
 #import "UIViewController+HUD.h"
 
 #import "OrderViewController.h"
+#import "AppDelegate.h"
 
 
 
@@ -155,8 +156,10 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"RefreshTutoriumInfo" object:nil];
     
     
-}
 
+    
+    
+}
 
 
 
@@ -429,6 +432,10 @@
             [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
             
             [self loadingHUDStopLoadingWithTitle:@"加入成功"];
+            
+            
+            /* 发送全局通知,发送加入试听课程通知*/
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"AddNewClass" object:_dataDic];
             
             
         }
