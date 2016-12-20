@@ -51,9 +51,7 @@
     CGSize contentSize;
     switch (_message.type) {
         case UUMessageTypeText:
-            
-            contentSize = [_message.strContent sizeWithFont:ChatContentFont  constrainedToSize:CGSizeMake(ChatContentW, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-            
+            contentSize = [_message.strContent sizeWithFont:ChatContentFont  constrainedToSize:CGSizeMake(ChatContentW*ScrenScale-40, CGFLOAT_MAX*ScrenScale) lineBreakMode:NSLineBreakByWordWrapping];
             /* 拿到yytext显示富文本的size*/
         NSLog(@"%f,%f",contentSize.width,contentSize.height);
            
@@ -73,7 +71,6 @@
     _contentF = CGRectMake(contentX, contentY, contentSize.width + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);
     
     _cellHeight = MAX(CGRectGetMaxY(_contentF), CGRectGetMaxY(_nameF))  + ChatMargin;
-    /* 给消息方的yytext发送size消息*/
     
     
 }

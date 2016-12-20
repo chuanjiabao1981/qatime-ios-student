@@ -130,21 +130,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[AppDelegate jpushNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
+         contextName = "-[NoticeIndexViewController tableView:didSelectRowAtIndexPath:]:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_sendContent">
-            </PersistentString>
-            <PersistentString
-               value = "funcView.TextViewInput.attributedText.description">
-            </PersistentString>
-            <PersistentString
-               value = "funcView.TextViewInput.attributedText.string">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[ChatViewController makeMessages:]:ChatViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[VideoViewController tableView:numberOfRowsInSection:]:VideoViewController.m">
@@ -190,19 +179,38 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NoticeIndexViewController tableView:didSelectRowAtIndexPath:]:NoticeIndexViewController.m">
+         contextName = "-[AppDelegate jpushNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
       </ContextState>
       <ContextState
          contextName = "__34-[BindingViewController nextStep:]_block_invoke:BindingViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[ChatViewController makeMessages:]:ChatViewController.m">
+         contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_sendContent">
+            </PersistentString>
+            <PersistentString
+               value = "funcView.TextViewInput.attributedText.description">
+            </PersistentString>
+            <PersistentString
+               value = "funcView.TextViewInput.attributedText.string">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[ChatViewController requestChatHitstory]:ChatViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_session">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChatModel addSpecifiedItem:andIconURL:andName:]:ChatModel.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataSource">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

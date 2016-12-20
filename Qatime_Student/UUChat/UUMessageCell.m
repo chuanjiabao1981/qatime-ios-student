@@ -85,6 +85,7 @@
         
         self.btnContent.contentTextView.textColor = [UIColor blackColor];
         self.btnContent.contentTextView.font = ChatContentFont;
+        self.btnContent.contentTextView.textAlignment = NSTextAlignmentCenter;
         [self.btnContent setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         self.btnContent.titleLabel.font = ChatContentFont;
         self.btnContent.titleLabel.numberOfLines = 0;
@@ -212,6 +213,7 @@
             [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             /* YYText改写*/
             [self.btnContent.contentTextView setTextColor:[UIColor whiteColor]];
+            self.btnContent.contentTextView.textAlignment = NSTextAlignmentCenter;
             self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
         }else if(message.type == UUMessageTypePicture){
             self.btnContent.isMyMessage = YES;
@@ -226,6 +228,7 @@
             [self.btnContent setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
             /* YYText改写*/
             [self.btnContent.contentTextView setTextColor:[UIColor whiteColor]];
+            self.btnContent.contentTextView.textAlignment = NSTextAlignmentCenter;
             self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentLeft, ChatContentBottom, ChatContentRight);
         }else if(message.type == UUMessageTypePicture){
             self.btnContent.isMyMessage = NO;

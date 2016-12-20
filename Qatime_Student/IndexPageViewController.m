@@ -78,6 +78,12 @@
     [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;

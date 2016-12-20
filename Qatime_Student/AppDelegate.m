@@ -113,7 +113,6 @@
     
     
     
-    
      
     
     
@@ -286,10 +285,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (void)ChangRootToPerInfo:(NSNotification *)notification{
     
        
-    
-    
-//    BindingViewController *binVC = [BindingViewController new];
-//    [_window setRootViewController:binVC];
+
     
 }
 

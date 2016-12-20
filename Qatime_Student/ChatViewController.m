@@ -46,7 +46,7 @@
     
     /* 临时变量  保存所有的用户信息 */
     
-    NSMutableArray <Chat_Account *>*_chatList;
+    NSMutableArray <Chat_Account *>*_userList;
     
 }
 
@@ -126,9 +126,6 @@
     });
     
     
-    
-    
-    
 }
 
 - (void)viewDidLoad {
@@ -146,13 +143,21 @@
     
     _chat_Account = [Chat_Account yy_modelWithJSON:[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"]];
     
-    _chatList = @[].mutableCopy;
+    _userList = @[].mutableCopy;
+    
+    
     self.chatModel = [[ChatModel alloc]init];
+    self.chatModel.isGroupChat = YES;
+    [self.chatModel populateRandomDataSource];
+    
     
     
     if ([[NSUserDefaults standardUserDefaults]boolForKey:@"NIMSDKLogin"]) {
         
+        [[NIMSDK sharedSDK].chatManager addDelegate:self];
+        
          [self requestChatHitstory];
+        
     }else{
         
         /* 强制自动登录一次*/
@@ -161,6 +166,7 @@
         loginData.account = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"accid"];
         loginData.token =[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"token"];
         [[NIMSDK sharedSDK].loginManager autoLogin:loginData];
+        [self requestChatHitstory];
         
     }
     
@@ -171,8 +177,7 @@
     
     if (NIMLoginStepLoginOK) {
         
-       
-
+    
     }
     
 }
@@ -200,9 +205,6 @@
             
             [self makeMessages:messages];
         }
-        
-        
-        
         
     }];
     
@@ -259,13 +261,16 @@
                         NSError *error = nil;
                         NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
                         
-                        if (!re) {
-                            NSLog(@"%@", [error localizedDescription]);
+                        if (re) {
+                            /* 包含富文本的情况*/
+                            
+                        }else{
+                            /* 不包含富文本的情况*/
+                            
                         }
                         
                         //通过正则表达式来匹配字符串
                         NSArray *resultArray = [re matchesInString:title options:0 range:NSMakeRange(0, title.length)];
-//                        NSLog(@"%@",resultArray);
                         
                         /* 先取出来表情*/
                         
@@ -322,9 +327,9 @@
                         /* 在本地创建对方的消息消息*/
                         NSString *iconURL = @"".mutableCopy;
                         
-                        if (_chatList.count!=0) {
-                            for (int p = 0; p < _chatList.count; p++) {
-                                Chat_Account *temp = [Chat_Account yy_modelWithJSON:_chatList[p]];
+                        if (_userList.count!=0) {
+                            for (int p = 0; p < _userList.count; p++) {
+                                Chat_Account *temp = [Chat_Account yy_modelWithJSON:_userList[p]];
                                 if ([temp.name isEqualToString:message.senderName]) {
                                     iconURL = temp.icon;
                                     
@@ -386,12 +391,32 @@
         
     }
     
-    
-    
     [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
+    [self performSelector:@selector(sendNoticeIn) withObject:nil afterDelay:1];
     [_chatTableView reloadData];
     
     [self tableViewScrollToBottom];
+}
+
+
+
+- (BOOL)fetchMessageAttachment:(NIMMessage *)message
+                         error:(NSError **)error{
+    
+    return YES;
+}
+
+/* 发送您已加入聊天室的通知消息*/
+
+- (void)sendNoticeIn{
+    
+//    //构造消息
+//    NIMTipObject *tipObject = [NIMTipObject alloc];
+//    NIMMessage *message     = [[NIMMessage alloc] init];
+//    message.messageObject   = tipObject;
+//    //发送消息
+//    [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
+
 }
 
 /* 制作消息内容*/
@@ -410,6 +435,102 @@
     
     [self.chatTableView reloadData];
     
+    
+    
+}
+
+
+/* 接收消息*/
+- (void)onRecvMessages:(NSArray<NIMMessage *> *)messages{
+    
+    for (int i = 0; i<messages.count; i++) {
+        
+        NSString *iconURL = @"".mutableCopy;
+        NIMMessage *message =messages[i];
+        
+        /* 筛选用户信息,拿到用户名*/
+        if (_userList.count!=0) {
+            
+            for (int p = 0; p < _userList.count; p++) {
+                
+                Chat_Account *temp = [Chat_Account yy_modelWithJSON:_userList[p]];
+                
+                NSLog(@"%@",temp.name);
+                
+                if ([temp.name isEqualToString:message.senderName]) {
+                    iconURL = temp.icon;
+                    
+                }
+            }
+        }
+        
+        
+        /* 如果收到的是文本消息*/
+        if (message.messageType == NIMMessageTypeText) {
+            
+            /* 在本地创建对方的消息消息*/
+            NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:message.senderName andIcon:iconURL type:UUMessageTypeText ]];
+            
+            
+            [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
+            
+            [self.chatTableView reloadData];
+            [self tableViewScrollToBottom];
+            
+        }
+        
+        /* 如果收到的是图片消息*/
+        else if (message.messageType == NIMMessageTypeImage){
+            
+        }
+        
+    }
+
+}
+
+/* 发送消息进度*/
+- (void)sendMessage:(NIMMessage *)message progress:(CGFloat)progress{
+    
+    NSLog(@"发送进度::%f",progress);
+}
+
+
+
+
+/* 接收到消息后 ，在本地创建消息*/
+- (void)makeOthersMessageWith:(NSInteger)msgNum andMessage:(UUMessage *)message{
+    
+    [self.chatModel.dataSource addObject:message];
+    
+}
+/* 接收图片的进度回调*/
+- (void)fetchMessageAttachment:(NIMMessage *)message progress:(CGFloat)progress{
+    
+    NSLog(@"接收进度::%f",progress);
+    
+}
+
+/* 接收图片完成后的回调*/
+- (void)fetchMessageAttachment:(NIMMessage *)message didCompleteWithError:(NSError *)error{
+    
+    NSLog(@"收到图片");
+    
+    NIMImageObject *imageObject = message.messageObject;
+    
+    NSLog(@"%@",imageObject.thumbPath);
+    NSLog(@"%@",imageObject.path);
+    
+    
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
+    
+    
+    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath]];
+    
+    
+    [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
+    
+    [self.chatTableView reloadData];
+    [self tableViewScrollToBottom];
     
     
 }
@@ -437,12 +558,12 @@
     if (cell==nil) {
         cell=[[UUMessageCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
        
+        
+    }
+    if (self.chatModel.dataSource.count>indexPath.row) {
         cell.delegate = self;
         
-        if (self.chatModel.dataSource.count>indexPath.row) {
-            
-            [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
-        }
+        [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
     }
     
     return cell;

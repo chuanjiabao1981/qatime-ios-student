@@ -16,14 +16,11 @@
 
 - (void)populateRandomDataSource {
     self.dataSource = [NSMutableArray array];
-//    [self.dataSource addObjectsFromArray:[self additems:0]];
+
 }
 
 - (void)addRandomItemsToDataSource:(NSInteger)number{
     
-//    for (int i=0; i<number; i++) {
-//        [self.dataSource insertObject:[[self additems:1] firstObject] atIndex:0];
-//    }
 }
 
 // 添加自己的文本类型的item
@@ -32,8 +29,6 @@
     if (name ==nil) {
         name =@"";
     }
- 
-        
         UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
         UUMessage *message = [[UUMessage alloc] init];
         NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithDictionary:dic];
@@ -215,11 +210,7 @@ static int dateNum = 10;
     
 }
 
--(NSMutableArray *)dataSource{
-    
-    NSMutableArray *arr = @[].mutableCopy;
-    return arr;
-}
+
 
 
 

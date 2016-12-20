@@ -67,8 +67,7 @@
         [self addSubview:self.title];
         [self bringSubviewToFront:self.title];
         self.title.numberOfLines = 0;
-        
-      
+        self.title.textAlignment = NSTextAlignmentCenter;
         
         self.contentTextView = [[YYTextView alloc]init];
         
@@ -76,6 +75,7 @@
         
         [self addSubview:_contentTextView];
         [self bringSubviewToFront:_contentTextView];
+        self.contentTextView.textAlignment = NSTextAlignmentCenter;
         
         self.contentTextView.hidden = NO;
         
@@ -135,6 +135,7 @@
 - (YYLabel *)title{
     
     YYLabel *label = [[YYLabel alloc]init];
+    label.textAlignment = NSTextAlignmentCenter;
     return  label;
     
 }
