@@ -15,7 +15,7 @@
 #define ChatTimeMarginH 10  //时间文本与边框间隔高度方向
 
 #define ChatContentTop 10   //文本内容与按钮上边缘间隔
-#define ChatContentLeft 10  //文本内容与按钮左边缘间隔
+#define ChatContentLeft 15  //文本内容与按钮左边缘间隔
 #define ChatContentBottom 10 //文本内容与按钮下边缘间隔
 #define ChatContentRight 10 //文本内容与按钮右边缘间隔
 
