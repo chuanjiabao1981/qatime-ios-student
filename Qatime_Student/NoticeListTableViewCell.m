@@ -22,32 +22,48 @@
             
             [self.contentView addSubview:_];
             
-            _.sd_layout
-            .leftSpaceToView(self.contentView,20)
-            .topSpaceToView(self.contentView,10)
-            .autoHeightRatio(0);
-            [_ setSingleLineAutoResizeWithMaxWidth:1000];
             _;
         });
         
         _content = ({UILabel *_=[[UILabel alloc]init];
             
-            _.font = [UIFont systemFontOfSize:15];
+            _.font = [UIFont systemFontOfSize:16];
             
             [self.contentView addSubview:_];
-            _.sd_layout
-            .leftSpaceToView(self.contentView,20)
-            .rightSpaceToView(self.contentView,20)
-            .topSpaceToView(self.contentView,10)
-            .autoHeightRatio(0);
+          
             _;
         });
         
+        [self.contentView sd_addSubviews:@[_time,_content]];
+        
+        
+        _time.sd_layout
+        .leftSpaceToView(self.contentView,20)
+        .rightSpaceToView(self.contentView,20)
+        .topSpaceToView(self.contentView,10)
+        .autoHeightRatio(0);
+        
+        _content.sd_layout
+        .leftSpaceToView(self.contentView,20)
+        .rightSpaceToView(self.contentView,20)
+        .topSpaceToView(_time,10)
+        .autoHeightRatio(0);
+        
+        
+        [self setupAutoHeightWithBottomView:_content bottomMargin:10.0];
         
         
     }
     return self;
 
+}
+
+-(void)setModel:(SystemNotice *)model{
+    _model = model;
+    _time.text = model.created_at;
+    _content.text = model.notice_content;
+    
+    
 }
 
 - (void)awakeFromNib {

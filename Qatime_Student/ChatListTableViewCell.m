@@ -14,28 +14,12 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
-        _className = ({
-        
-            UILabel *_= [[UILabel alloc]init];
-            _.textColor = TITLECOLOR;
-            _.font = [UIFont systemFontOfSize:15];
-            
-            [self.contentView addSubview:_];
-            
-            _.sd_layout
-            .leftSpaceToView(self.contentView,20)
-            .topSpaceToView(self.contentView,10)
-            .bottomSpaceToView(self.contentView,10);
-            
-            [_ setSingleLineAutoResizeWithMaxWidth:self.contentView.width_sd-20-40];
-            
-            _;
-        });
         
         
         _badge = ({
             M13BadgeView *_=[[M13BadgeView alloc]init];
         
+            _.hidden = YES;
             [self.contentView addSubview:_];
             _.sd_layout
             .topSpaceToView(self.contentView,10)
@@ -46,6 +30,26 @@
         
         });
         
+        _className = ({
+            
+            UILabel *_= [[UILabel alloc]init];
+            _.textColor = TITLECOLOR;
+            _.font = [UIFont systemFontOfSize:15];
+            
+            [self.contentView addSubview:_];
+            
+            _.sd_layout
+            .leftSpaceToView(self.contentView,20)
+            .topSpaceToView(self.contentView,10)
+            .bottomSpaceToView(self.contentView,10)
+            .rightSpaceToView(_badge,20);
+            
+//            [_ setSingleLineAutoResizeWithMaxWidth:];
+            
+            _;
+        });
+
+        
         [self setupAutoHeightWithBottomView:_className bottomMargin:10];
         
         
@@ -54,10 +58,18 @@
     
 }
 
--(void)setModel:(TutoriumListInfo *)model{
+-(void)setModel:(ChatList *)model{
     
     _model = model;
     _className.text = model.name;
+    
+    if (model.badge>0) {
+        _badge.hidden = NO;
+        _badge.text = [NSString stringWithFormat:@"%ld",model.badge];
+    }else{
+        _badge.hidden = YES;
+    }
+    
     
     
     

@@ -95,9 +95,7 @@
     
     /* 我的订单 提现功能*/
     [_myWalletView.widthDrawButon addTarget:self action:@selector(widthDraw) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
+
 }
 
 
@@ -105,12 +103,7 @@
 
 - (void)requestWallet{
     
-    NSString *urlStr =[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header
-                       ,_idNumber];
-    
-//    NSString *urlString = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    
-//    NSLog(@"%@",urlString);
+    NSString *urlStr =[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber];
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -124,13 +117,9 @@
             _myWalletView.balance.text = [NSString stringWithFormat:@"¥%@",dic[@"data"][@"balance"]];
             _myWalletView.total.text =[NSString stringWithFormat:@"¥%@",dic[@"data"][@"total_expenditure"]];
             
-            
-            
             /* 余额数据存本地*/
             [[NSUserDefaults standardUserDefaults]setObject:dic[@"data"][@"balance"] forKey:@"balance"];
-            
-            
-            
+                        
             [_myWalletView updateLayout];
             
             [self loadingHUDStopLoadingWithTitle:@"数据加载成功!"];

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "M13BadgeView.h"
-#import "TutoriumList.h"
+#import "ChatList.h"
 
 @interface ChatListTableViewCell : UITableViewCell
 
@@ -19,7 +19,7 @@
 @property(nonatomic,strong) M13BadgeView *badge ;
 
 /* 辅导班model*/
-@property(nonatomic,strong) TutoriumListInfo *model ;
+@property(nonatomic,strong) ChatList *model ;
 
 
 

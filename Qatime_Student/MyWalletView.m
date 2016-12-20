@@ -67,7 +67,7 @@
         
         _menuTableView = [[UITableView alloc]init];
         _menuTableView.bounces = NO;
-        _menuTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, 0.8)];
+        _menuTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, 0.4)];
         _menuTableView.tableFooterView.backgroundColor = [UIColor lightGrayColor];
         
         
@@ -123,7 +123,7 @@
         .leftEqualToView(self)
         .rightEqualToView(self)
         .topSpaceToView(_widthDrawButon,10)
-        .heightIs(CGRectGetHeight(self.frame)*0.065*3);
+        .bottomEqualToView(self);
 
         
         

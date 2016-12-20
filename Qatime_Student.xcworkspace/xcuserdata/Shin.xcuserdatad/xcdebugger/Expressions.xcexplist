@@ -103,13 +103,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[CashRecordViewController requestRecharge]:CashRecordViewController.m">
+         contextName = "-[ChatModel addSpecifiedItem:andIconURL:andName:]:ChatModel.m">
          <PersistentStrings>
             <PersistentString
-               value = "self.token">
-            </PersistentString>
-            <PersistentString
-               value = "self.idNumber">
+               value = "_dataSource">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -122,10 +119,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NELivePlayerViewController updateMembersList]:NELivePlayerViewController.m">
+         contextName = "-[CashRecordViewController requestRecharge]:CashRecordViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "membersName">
+               value = "self.token">
+            </PersistentString>
+            <PersistentString
+               value = "self.idNumber">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -133,7 +133,12 @@
          contextName = "-[NoticeIndexViewController tableView:didSelectRowAtIndexPath:]:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[ChatViewController makeMessages:]:ChatViewController.m">
+         contextName = "-[NELivePlayerViewController updateMembersList]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "membersName">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[VideoViewController tableView:numberOfRowsInSection:]:VideoViewController.m">
@@ -166,7 +171,13 @@
          contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke:NoticeIndexViewController.m">
          <PersistentStrings>
             <PersistentString
+               value = "_chatListArr">
+            </PersistentString>
+            <PersistentString
                value = "_myClassArray">
+            </PersistentString>
+            <PersistentString
+               value = "_recentArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -179,10 +190,21 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[AppDelegate jpushNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
+         contextName = "-[ChatViewController makeMessages:]:ChatViewController.m">
       </ContextState>
       <ContextState
          contextName = "__34-[BindingViewController nextStep:]_block_invoke:BindingViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate jpushNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ChatViewController requestChatHitstory]:ChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_session">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
@@ -199,20 +221,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[ChatViewController requestChatHitstory]:ChatViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_session">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ChatModel addSpecifiedItem:andIconURL:andName:]:ChatModel.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataSource">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "__43-[NoticeIndexViewController requestNotices]_block_invoke:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[ChatViewController dealTheFunctionData:]:ChatViewController.m">
@@ -347,6 +356,14 @@
          contextName = "__50-[ChangePhoneViewController requestChangePasswrod]_block_invoke_2:ChangePhoneViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[NoticeIndexViewController requestMyClass]:NoticeIndexViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatListArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[UUMessageFrame setMessage:]:UUMessageFrame.m">
       </ContextState>
       <ContextState
@@ -432,6 +449,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke.204:NoticeIndexViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatListArr">
+            </PersistentString>
+            <PersistentString
+               value = "_myClassArray">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[UIViewController(HUD) loadingHUDStopLoadingWithTitle:]:UIViewController+HUD.m">
          <PersistentStrings>
             <PersistentString
@@ -466,6 +494,14 @@
          <PersistentStrings>
             <PersistentString
                value = "self.navigationController.viewControllers">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChatViewController enterLive]:ChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_tutoriumInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

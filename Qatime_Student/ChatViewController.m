@@ -29,6 +29,8 @@
 #import "YYTextAttribute.h"
 #import "YZTextAttachment.h"
 
+#import "NELivePlayerViewController.h"
+
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate>{
     
     NavigationBar *_navigationBar;
@@ -85,8 +87,12 @@
     _navigationBar = ({
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         _.titleLabel.text = _tutoriumInfo.name;
-        [_.leftButton setImage:[UIImage imageNamed:@"left_arrow"] forState:UIControlStateNormal];
+        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+        
+        [_.rightButton setImage:[UIImage imageNamed:@"Enter"] forState:UIControlStateNormal];
+        [_.rightButton addTarget:self action:@selector(enterLive) forControlEvents:UIControlEventTouchUpInside];
+        
         [self.view addSubview:_];
         _;
         
@@ -134,7 +140,6 @@
     
     [self loadingHUDStartLoadingWithTitle:@"正在加载聊天记录"];
     
-    
     /* 初始化*/
     if (_tutoriumInfo) {
         
@@ -168,6 +173,16 @@
         [[NIMSDK sharedSDK].loginManager autoLogin:loginData];
         [self requestChatHitstory];
         
+    }
+    
+    
+    NSLog(@"%ld",[[[NIMSDK sharedSDK]conversationManager] allUnreadCount]);
+    
+    if (_session) {
+        
+        [[[NIMSDK sharedSDK]conversationManager]markAllMessagesReadInSession:_session];
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"MarkAllRead" object:_session];
     }
     
 }
@@ -790,10 +805,19 @@
             
         }
         
-        
     }
 }
 
+
+#pragma mark- 进入直播
+- (void)enterLive{
+    
+    
+    NELivePlayerViewController *playerVC = [[NELivePlayerViewController alloc]initWithClassID:_tutoriumInfo.classID];
+    [self.navigationController pushViewController:playerVC animated:YES];
+    
+    
+}
 
 
 - (void)returnLastPage{

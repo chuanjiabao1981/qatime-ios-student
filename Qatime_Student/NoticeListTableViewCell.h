@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Notice.h"
+#import "SystemNotice.h"
 
 @interface NoticeListTableViewCell : UITableViewCell
 
@@ -16,6 +16,9 @@
 
 /* 消息内容*/
 @property(nonatomic,strong) UILabel *content ;
+
+/* model*/
+@property(nonatomic,strong) SystemNotice *model ;
 
 
 @end

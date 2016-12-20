@@ -33,7 +33,7 @@
     _navigationBar = ({
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         _.titleLabel.text = @"绑定邮箱";
-        [_.leftButton setImage:[UIImage imageNamed:@"left_arrow"] forState:UIControlStateNormal];
+        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_];
         _;

@@ -30,6 +30,10 @@
     NavigationBar *_navigationBar;
     
     
+    NSString  *_token;
+    NSString *_idNumber;
+
+    
     /* 保存课程列表的array*/
     NSMutableArray *_classListArray;
     
