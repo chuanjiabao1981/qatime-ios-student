@@ -59,12 +59,13 @@
 #import "NSAttributedString+YYtext.h"
 
 #import "UIViewController+HUD.h"
-
-
+#import "UIButton+Touch.h"
 
 
 #define APP_WIDTH self.view.frame.size.width
 #define APP_HEIGHT self.view.frame.size.height
+
+#define DefaultTimeInterval 0.2
 
 typedef enum : NSUInteger {
     SameLevel,
@@ -75,9 +76,7 @@ typedef enum : NSUInteger {
 
 
 
-@interface NELivePlayerViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UUInputFunctionViewDelegate,UUMessageCellDelegate,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate>{
-    
-    //    NavigationBar *_navigationBar;
+@interface NELivePlayerViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UUInputFunctionViewDelegate,UUMessageCellDelegate,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate>{
     
     
     /* token*/
@@ -176,6 +175,10 @@ typedef enum : NSUInteger {
     /* 聊天框点击和出现次数*/
     NSInteger chatTime;
     
+    /* 按钮点击间隔时间*/
+    NSTimeInterval timeInterval;
+    
+    
     
     /* 弹幕*/
     
@@ -188,6 +191,9 @@ typedef enum : NSUInteger {
     
     /* 覆盖层*/
     UIView *_maskView;
+    
+    
+    
     
     
 }
@@ -1924,7 +1930,18 @@ bool ismute     = NO;
     
     
     
+    
+    /* 聊天信息发送时间间隔*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sendeButtonCannotUse) name:@"sendButtonCannotUse" object:nil];
+    
 }
+
+/* 发送按钮在两秒内不可以重复点击*/
+- (void)sendeButtonCannotUse{
+    
+    [self loadingHUDStopLoadingWithTitle:@"请稍后发言"];
+}
+
 
 /* 初始化聊天sdk*/
 - (void)initNIMSDK{
@@ -1943,19 +1960,10 @@ bool ismute     = NO;
         }
         
     }];
+    [[NIMSDK sharedSDK].chatManager addDelegate:self];
+    [[NIMSDK sharedSDK].chatroomManager addDelegate:self];
     
     
-    /* 给聊天页面添加下拉方法*/
-    MJRefreshStateHeader *header  = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        
-        //聊天页面的下拉刷新，也是请求历史数据
-        
-        [self requestHistoryChatList];
-        
-    }];
-    
-    
-    _chatTableView.mj_header = header;
     
 }
 
