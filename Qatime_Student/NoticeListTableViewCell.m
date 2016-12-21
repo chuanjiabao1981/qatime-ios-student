@@ -28,6 +28,7 @@
         _content = ({UILabel *_=[[UILabel alloc]init];
             
             _.font = [UIFont systemFontOfSize:16];
+            _.numberOfLines = 0;
             
             [self.contentView addSubview:_];
           

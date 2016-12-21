@@ -32,7 +32,6 @@
     /* 0 为全部请求， 1 为筛选类型请求*/
     NSInteger filterStatus;
     /* 多项筛选*/
-    
     /* 价格开始区间*/
     NSString *_price_floor;
     /* 价格结束区间*/
@@ -218,11 +217,9 @@
         
         
 #pragma mark- 筛选条件状态存储
-      
-        //    [self saveFilterStatus:_filterDic];
-        
-        _requestResaultURL = [NSString string];
-        _filterArr = [NSMutableArray array];
+    
+        _requestResaultURL = @"".mutableCopy;
+        _filterArr = @[].mutableCopy;
         
         [[NSFileManager defaultManager]removeItemAtPath:_tutoriumListFilePath error:nil];
 #pragma mark- 接受数据加载完成的消息
@@ -238,7 +235,6 @@
         /* 初次请求数据 ，请求课程列表的所有数据 */
        
         NSString *sub =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"SubjectChosen"]];
-        
         
         
         [_filterDic setValue:sub forKey:@"subject"];
@@ -285,13 +281,13 @@
     
     
 #pragma mark- 导航栏
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 64)];
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
     [self.view addSubview:_navigationBar];
     [_navigationBar.titleLabel setText:@"辅导班"];
 //    _navigationBar.backgroundColor = [UIColor colorWithRed:190/255.0f green:11/255.0f blue:11/255.0f alpha:1.0f];
     
     
-    _tutoriumView = [[TutoriumView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)-64-49)];
+    _tutoriumView = [[TutoriumView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-49)];
     [self .view addSubview:_tutoriumView];
     
     /* 瀑布流视图的代理*/
@@ -407,16 +403,21 @@
     
     /* 上滑的block*/
     _tutoriumView.classesCollectionView.mj_footer =[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        
-        [_tutoriumView.classesCollectionView.mj_footer endRefreshing];
-        
+
         page ++;
         
         NSLog(@"%ld",page);
         
         /* 上滑 请求更多数据*/
-        [self requestDataWithGrade:_filterGrade andSubject:_filterSubject andPage:page andPerPage:per_Page withPull:1];
         
+        if (_filterArr.count!=0) {
+            
+            [self requestDataWithGrade:_filterGrade andSubject:_filterSubject andPage:page andPerPage:per_Page withPull:1];
+        }else{
+            
+        }
+        
+        [_tutoriumView.classesCollectionView.mj_footer endRefreshing];
         
     }];
     
@@ -440,7 +441,7 @@
     
     /* 多项筛选*/
     [_tutoriumView.filtersButton addTarget:self action:@selector(sortByMulti) forControlEvents:UIControlEventTouchUpInside];
-    _multiFilterView = [[MultiFilterView alloc]initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*2/5.0f)];
+    _multiFilterView = [[MultiFilterView alloc]initWithFrame:CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd*2/5.0f)];
     
     /* 多项筛选按钮和文本框功能实现*/
     /* 重置按钮功能实现*/
@@ -713,7 +714,7 @@
     [self.view addSubview:_multiFilterView];
     [UIView animateWithDuration:0.3 animations:^{
         
-        [_multiFilterView setFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds)*3/5.0f, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*2/5.0f)];
+        [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd*3/5.0f, self.view.width_sd, self.view.height_sd*2/5.0f)];
     }];
     
     
@@ -730,7 +731,7 @@
     
     [UIView animateWithDuration:0.3 animations:^{
         
-        [_multiFilterView setFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*2/5.0f)];
+        [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd*2/5.0f)];
     }];
 }
 
@@ -1326,7 +1327,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake((CGRectGetWidth(self.view.bounds)-40)/2, (CGRectGetWidth(self.view.bounds)-40)/2);
+    return CGSizeMake((self.view.width_sd-40)/2, (self.view.width_sd-40)/2);
 }
 
 /* 最小行间距*/

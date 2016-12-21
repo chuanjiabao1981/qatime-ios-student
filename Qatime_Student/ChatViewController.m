@@ -45,7 +45,6 @@
     Chat_Account *_chat_Account;
     
     
-    
     /* 临时变量  保存所有的用户信息 */
     
     NSMutableArray <Chat_Account *>*_userList;
@@ -161,7 +160,7 @@
         
         [[NIMSDK sharedSDK].chatManager addDelegate:self];
         
-         [self requestChatHitstory];
+        [self requestChatHitstory];
         
     }else{
         
@@ -192,7 +191,7 @@
     
     if (NIMLoginStepLoginOK) {
         
-    
+        
     }
     
 }
@@ -204,7 +203,7 @@
     NIMMessageSearchOption *option = [[NIMMessageSearchOption alloc]init];
     option.limit = 100;
     option.order = NIMMessageSearchOrderAsc;
-//    option.messageType = NIMMessageTypeText||NIMMessageTypeImage;
+    //    option.messageType = NIMMessageTypeText||NIMMessageTypeImage;
     
     [[[NIMSDK sharedSDK]conversationManager]searchMessages:_session option:option result:^(NSError * _Nullable error, NSArray<NIMMessage *> * _Nullable messages) {
         
@@ -240,7 +239,7 @@
         
     }];
     
-  
+    
 }
 
 /* 创建消息*/
@@ -368,7 +367,7 @@
                 /* 如果消息是自己发的*/
                 if ([message.from isEqualToString:_chat_Account.accid]){
                     
-//                    NSLog(@"收到对方发来的图片");
+                    //                    NSLog(@"收到对方发来的图片");
                     
                     NIMImageObject *imageObject = message.messageObject;
                     
@@ -385,7 +384,7 @@
                 else{
                     /* 本地创建对方的图片消息*/
                     
-//                    NSLog(@"收到对方发来的图片");
+                    //                    NSLog(@"收到对方发来的图片");
                     
                     NIMImageObject *imageObject = message.messageObject;
                     
@@ -425,13 +424,13 @@
 
 - (void)sendNoticeIn{
     
-//    //构造消息
-//    NIMTipObject *tipObject = [NIMTipObject alloc];
-//    NIMMessage *message     = [[NIMMessage alloc] init];
-//    message.messageObject   = tipObject;
-//    //发送消息
-//    [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
-
+    //    //构造消息
+    //    NIMTipObject *tipObject = [NIMTipObject alloc];
+    //    NIMMessage *message     = [[NIMMessage alloc] init];
+    //    message.messageObject   = tipObject;
+    //    //发送消息
+    //    [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
+    
 }
 
 /* 制作消息内容*/
@@ -500,7 +499,7 @@
         }
         
     }
-
+    
 }
 
 /* 发送消息进度*/
@@ -572,7 +571,7 @@
     UUMessageCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
     if (cell==nil) {
         cell=[[UUMessageCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-       
+        
         
     }
     if (self.chatModel.dataSource.count>indexPath.row) {
@@ -596,7 +595,7 @@
     }else{
         
     }
-
+    
     return height;
 }
 

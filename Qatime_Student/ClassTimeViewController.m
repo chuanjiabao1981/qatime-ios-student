@@ -94,7 +94,7 @@
     
     typeof(self) __weak weakSelf = self;
     [ _classTimeView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-        [weakSelf.classTimeView.scrollView scrollRectToVisible:CGRectMake(CGRectGetWidth(self.view.bounds) * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
+        [weakSelf.classTimeView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
     }];
     
     _classTimeView.scrollView.delegate = self;
@@ -104,7 +104,7 @@
     _classTimeView.scrollView.alwaysBounceVertical=NO;
     _classTimeView.scrollView.alwaysBounceHorizontal=NO;
     
-    [_classTimeView.scrollView scrollRectToVisible:CGRectMake(-CGRectGetWidth(self.view.bounds), 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)) animated:YES];
+    [_classTimeView.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
     
     _classTimeView.notClassView.notClassTableView.delegate = self;
     _classTimeView.notClassView.notClassTableView.dataSource = self;

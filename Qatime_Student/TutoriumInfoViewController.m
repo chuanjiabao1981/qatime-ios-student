@@ -120,7 +120,7 @@
     
     typeof(self) __weak weakSelf = self;
     [ _tutoriumInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-        [weakSelf.tutoriumInfoView.scrollView scrollRectToVisible:CGRectMake(CGRectGetWidth(self.view.bounds) * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
+        [weakSelf.tutoriumInfoView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
     }];
 
         self.tutoriumInfoView.scrollView.delegate = self;
@@ -128,7 +128,7 @@
          self.tutoriumInfoView.scrollView.alwaysBounceVertical=NO;
           self.tutoriumInfoView.scrollView.alwaysBounceHorizontal=NO;
         
-        [  self.tutoriumInfoView.scrollView scrollRectToVisible:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)) animated:YES];
+        [  self.tutoriumInfoView.scrollView scrollRectToVisible:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd) animated:YES];
     
     
     

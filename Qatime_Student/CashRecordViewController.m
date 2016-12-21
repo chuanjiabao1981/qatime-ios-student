@@ -125,9 +125,9 @@
     /* 滑动效果*/
     typeof(self) __weak weakSelf = self;
     [ _cashRecordView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-        [weakSelf.cashRecordView.scrollView scrollRectToVisible:CGRectMake(CGRectGetWidth(self.view.bounds) * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-40) animated:YES];
+        [weakSelf.cashRecordView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-40) animated:YES];
     }];
-    [_cashRecordView.scrollView scrollRectToVisible:CGRectMake(-CGRectGetWidth(self.view.bounds), 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)) animated:YES];
+    [_cashRecordView.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
     
     
 //    _cashRecordView.segmentControl.selectedSegmentIndex = _selectedItem.integerValue;

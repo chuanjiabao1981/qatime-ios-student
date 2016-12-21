@@ -11,6 +11,7 @@
 
 
 #import "BindingViewController.h"
+#import "GuideViewController.h"
 
 #import "UMessage.h"
 
@@ -32,26 +33,36 @@
     _window.backgroundColor = [UIColor whiteColor];
     
     
-    /* 根据本地保存的用户文件  判断是否登录*/
-     NSString *userFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
-    if (![[NSFileManager defaultManager]fileExistsAtPath:userFilePath]) {
-        
-        _loginViewController = [[LoginViewController alloc]init];
-        UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
-        
-        [_window setRootViewController:naviVC];
-    }else{
-        
-        _viewController = [[ViewController alloc]init];
-        [_window setRootViewController:_viewController];
-        
-        NSString *token= [[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
-        NSString *userid=[[NSUserDefaults standardUserDefaults]objectForKey:@"id"];
-        NSLog(@"%@,%@",token,userid);
-        
+    NSUserDefaults *useDef = [NSUserDefaults standardUserDefaults];
+    // 使用 NSUserDefaults 读取用户数据
+    if (![useDef boolForKey:@"notFirst"]) {
+        // 如果是第一次进入引导页
+        _window.rootViewController = [[GuideViewController alloc] init];
     }
-    
-    /* <# State #>*/
+    else{
+        // 否则直接进入应用
+        
+        /* 判断登录条件*/
+        /* 根据本地保存的用户文件  判断是否登录*/
+        NSString *userFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
+        if (![[NSFileManager defaultManager]fileExistsAtPath:userFilePath]) {
+            
+            /* 如果没有登录信息,登录页作为root*/
+            _loginViewController = [[LoginViewController alloc]init];
+            UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
+            
+            [_window setRootViewController:naviVC];
+        }else{
+            
+            _viewController = [[ViewController alloc]init];
+            [_window setRootViewController:_viewController];
+            
+            NSString *token= [[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
+            NSString *userid=[[NSUserDefaults standardUserDefaults]objectForKey:@"id"];
+            NSLog(@"%@,%@",token,userid);
+            
+        }
+    }
     
     
     

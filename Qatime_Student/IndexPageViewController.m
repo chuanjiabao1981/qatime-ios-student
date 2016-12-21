@@ -92,7 +92,7 @@
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     
     /* 导航栏加载*/
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 64)];
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
     [self .view addSubview:_navigationBar];
     [_navigationBar.rightButton setImage:[UIImage imageNamed:@"消息"] forState:UIControlStateNormal];
     [_navigationBar.rightButton addTarget:self action:@selector(enterNoticeCenter) forControlEvents:UIControlEventTouchUpInside];
@@ -525,7 +525,7 @@
     
     if (collectionView .tag ==1){
         
-        layoutSize = CGSizeMake((CGRectGetWidth(self.view.bounds)-40)/2, (CGRectGetWidth(self.view.bounds)-40)/2);
+        layoutSize = CGSizeMake((self.view.width_sd-40)/2, (self.view.width_sd-40)/2);
         
     }
     

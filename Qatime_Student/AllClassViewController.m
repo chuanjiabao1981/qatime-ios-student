@@ -393,13 +393,16 @@
             
             if ([dateStr isEqualToString:mod.class_date]) {
                 
-                
                 [_dataArr addObject:mod];
                 
+                _haveNoClassView.hidden = YES;
+            }else{
+                
+                _haveNoClassView.hidden = NO;
+                
             }
-            
-            
         }
+        
     }else{
         
         _haveNoClassView.hidden = NO;

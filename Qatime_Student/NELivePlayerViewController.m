@@ -1755,7 +1755,7 @@ bool ismute     = NO;
     
     typeof(self) __weak weakSelf = self;
     [ _videoInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-        [weakSelf.videoInfoView.scrollView scrollRectToVisible:CGRectMake(CGRectGetWidth(self.view.bounds) * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
+        [weakSelf.videoInfoView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
         
         
         if (index == 1) {
@@ -1780,7 +1780,7 @@ bool ismute     = NO;
     _videoInfoView.scrollView.alwaysBounceVertical=NO;
     _videoInfoView.scrollView.alwaysBounceHorizontal=NO;
     
-    [_videoInfoView.scrollView scrollRectToVisible:CGRectMake(-CGRectGetWidth(self.view.bounds), 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)) animated:YES];
+    [_videoInfoView.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
     
     _videoInfoView.noticeTabelView.tag =1;
     _videoInfoView.noticeTabelView .delegate = self;

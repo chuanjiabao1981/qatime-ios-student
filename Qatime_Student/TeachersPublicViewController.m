@@ -180,7 +180,7 @@
 /* item尺寸*/
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    return  CGSizeMake((CGRectGetWidth(self.view.bounds)-40)/2, (CGRectGetWidth(self.view.bounds)-40)/2);
+    return  CGSizeMake((self.view.width_sd-40)/2, (self.view.width_sd-40)/2);
     
 }
 

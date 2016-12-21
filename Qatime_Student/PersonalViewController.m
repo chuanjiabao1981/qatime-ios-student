@@ -152,7 +152,7 @@
     
     
     /* 个人页面菜单*/
-    _personalView = [[PersonalView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)-64-63)];
+    _personalView = [[PersonalView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-63)];
     [self.view addSubview:_personalView];
     
     _personalView.settingTableView.delegate = self;

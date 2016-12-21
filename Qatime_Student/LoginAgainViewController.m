@@ -14,6 +14,7 @@
 #import "WXApiObject.h"
 #import "UIViewController+HUD.h"
 #import "UIViewController_HUD.h"
+#import "RDVTabBarController.h"
 
 #import "Chat_Account.h"
 
@@ -66,7 +67,9 @@
 //    }
 //    return self;
 //}
-
+- (void)viewDidAppear:(BOOL)animated{
+    [self.rdv_tabBarController setTabBarHidden:YES animated:YES];
+}
 
 
 - (void)viewDidLoad {

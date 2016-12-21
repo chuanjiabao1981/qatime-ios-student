@@ -183,7 +183,7 @@
 //     添加一个模糊背景
     UIBlurEffect *effect=[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     effectview=[[UIVisualEffectView alloc]initWithEffect:effect];
-    [effectview setFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds))];
+    [effectview setFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd)];
     [self.view addSubview:effectview];
     
     
