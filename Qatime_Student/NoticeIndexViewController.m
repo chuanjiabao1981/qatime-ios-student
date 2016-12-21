@@ -338,10 +338,11 @@
             if (cell==nil) {
                 cell=[[ChatListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
             }
-            cell.sd_tableView = tableView;
             
             if (_chatListArr.count>indexPath.row) {
                 cell.model = _chatListArr[indexPath.row];
+                cell.sd_tableView = tableView;
+                cell.sd_indexPath = indexPath;
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 
             }
@@ -360,12 +361,11 @@
                 cell=[[NoticeListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
             }
             
-            cell.sd_tableView = tableView;
             
             if (_noticeArray.count>indexPath.row) {
                 
                 cell.model = _noticeArray[indexPath.row];
-                
+              
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             }
             

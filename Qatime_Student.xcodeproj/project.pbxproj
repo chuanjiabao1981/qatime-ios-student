@@ -119,6 +119,7 @@
 		545731811E022E7700F45C03 /* HaveNoClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545731801E022E7700F45C03 /* HaveNoClassView.m */; };
 		545B3BA71E0A216700751D08 /* GuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B3BA61E0A216700751D08 /* GuideViewController.m */; };
 		545B3BAA1E0A5F4900751D08 /* MMPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B3BA91E0A5F4900751D08 /* MMPickerView.m */; };
+		545B3BAD1E0AA2DD00751D08 /* GradeList.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B3BAC1E0AA2DD00751D08 /* GradeList.m */; };
 		54634D981DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 54634D871DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m */; };
 		54634D991DDEAC1F0070C0FF /* FJFloatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54634D8A1DDEAC1F0070C0FF /* FJFloatingView.m */; };
 		54652E051DEE823100F4607C /* FileService.m in Sources */ = {isa = PBXBuildFile; fileRef = 54652E041DEE823100F4607C /* FileService.m */; };
@@ -198,7 +199,6 @@
 		549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05141DC86EBB00B3564D /* HcdDateTimePickerView.m */; };
 		549A051A1DC86EBB00B3564D /* MXSCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05161DC86EBB00B3564D /* MXSCycleScrollView.m */; };
 		549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05181DC86EBB00B3564D /* UIColor+HcdCustom.m */; };
-		549A051E1DC892E500B3564D /* GradeList.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A051D1DC892E500B3564D /* GradeList.m */; };
 		549AE7621E013DAC001DD2ED /* BindingMailInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */; };
 		549AE7651E013DBD001DD2ED /* BindingMailInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AE7641E013DBD001DD2ED /* BindingMailInfoViewController.m */; };
 		54A153AA1DC6F09D0070B508 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153A91DC6F09D0070B508 /* main.m */; };
@@ -564,6 +564,8 @@
 		545B3BA61E0A216700751D08 /* GuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuideViewController.m; sourceTree = "<group>"; };
 		545B3BA81E0A5F4900751D08 /* MMPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMPickerView.h; sourceTree = "<group>"; };
 		545B3BA91E0A5F4900751D08 /* MMPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMPickerView.m; sourceTree = "<group>"; };
+		545B3BAB1E0AA2DD00751D08 /* GradeList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradeList.h; sourceTree = "<group>"; };
+		545B3BAC1E0AA2DD00751D08 /* GradeList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradeList.m; sourceTree = "<group>"; };
 		54634D861DDEAC1F0070C0FF /* UIGestureRecognizer+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizer+Block.h"; sourceTree = "<group>"; };
 		54634D871DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+Block.m"; sourceTree = "<group>"; };
 		54634D891DDEAC1F0070C0FF /* FJFloatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FJFloatingView.h; sourceTree = "<group>"; };
@@ -785,8 +787,6 @@
 		549A05161DC86EBB00B3564D /* MXSCycleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXSCycleScrollView.m; sourceTree = "<group>"; };
 		549A05171DC86EBB00B3564D /* UIColor+HcdCustom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HcdCustom.h"; sourceTree = "<group>"; };
 		549A05181DC86EBB00B3564D /* UIColor+HcdCustom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HcdCustom.m"; sourceTree = "<group>"; };
-		549A051C1DC892E500B3564D /* GradeList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradeList.h; sourceTree = "<group>"; };
-		549A051D1DC892E500B3564D /* GradeList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradeList.m; sourceTree = "<group>"; };
 		549AE7601E013DAC001DD2ED /* BindingMailInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailInfoView.h; sourceTree = "<group>"; };
 		549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindingMailInfoView.m; sourceTree = "<group>"; };
 		549AE7631E013DBD001DD2ED /* BindingMailInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailInfoViewController.h; sourceTree = "<group>"; };
@@ -3193,8 +3193,8 @@
 		54FCBAAC1DD58A280094BF58 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				549A051C1DC892E500B3564D /* GradeList.h */,
-				549A051D1DC892E500B3564D /* GradeList.m */,
+				545B3BAB1E0AA2DD00751D08 /* GradeList.h */,
+				545B3BAC1E0AA2DD00751D08 /* GradeList.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -3927,7 +3927,6 @@
 				54A153B01DC6F09D0070B508 /* ViewController.m in Sources */,
 				54B9CAFC1DFE4AAC003961FF /* WithdrawConfirmViewController.m in Sources */,
 				541F91D61DC9BB5200180BE8 /* TutoriumView.m in Sources */,
-				549A051E1DC892E500B3564D /* GradeList.m in Sources */,
 				54DBA4B21DE4423300A67A90 /* YZEmotionKeyboard.m in Sources */,
 				54AB48D81DED5183008E3BC5 /* MyWalletViewController.m in Sources */,
 				542C17441DFA508A0088DB3F /* Canceld.m in Sources */,
@@ -3975,6 +3974,7 @@
 				5413D26E1DF7CF1C00A8FDEC /* Recharge.m in Sources */,
 				548328EF1DDC6F360053AB29 /* UUMessageFrame.m in Sources */,
 				5435D9521DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m in Sources */,
+				545B3BAD1E0AA2DD00751D08 /* GradeList.m in Sources */,
 				5407C98D1DE7DDED00DB04C8 /* NSObject+YYAdd.m in Sources */,
 				54F47E851E08F77600D896DB /* UIButton+Touch.m in Sources */,
 				5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */,

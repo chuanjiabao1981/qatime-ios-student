@@ -13,6 +13,8 @@
 #import "RDVTabBarController.h"
 #import "TutoriumViewController.h"
 #import "NoticeIndexViewController.h"
+#import "YZSquareMenuCell.h"
+
 
 #import "RecommandTeacher.h"
 
@@ -25,6 +27,7 @@
 #import "UIViewController+HUD.h"
 
 #import "NIMSDK.h"
+#import "YYModel.h"
 
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate>{
     
@@ -161,7 +164,6 @@
     }
     
     
-    
 #pragma mark- 变量初始化
     page = 1;
     per_page =10;
@@ -196,6 +198,22 @@
     [self requestBasicInformation];
     
     
+    
+    /* 全部课程按钮*/
+    [_headerView.recommandAllButton addTarget:self action:@selector(choseAllTutorium) forControlEvents:UIControlEventTouchUpInside];
+    [_headerView.allArrowButton addTarget:self action:@selector(choseAllTutorium) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+}
+
+/* 请求全部课程*/
+- (void)choseAllTutorium{
+    
+    self.rdv_tabBarController.selectedIndex = 1;
+    
+    /* 发送消息 让第二个页面在初始化后 进行筛选*/
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserChoseSubject" object:nil];
+
     
 }
 
@@ -360,24 +378,21 @@
                 retech.teacherName =[teacherarr[i][@"teacher"] valueForKey:@"name"];
                 retech.avatar_url =[teacherarr[i][@"teacher"] valueForKey:@"avatar_url"];
                 
-                if (retech.teacherID ==NULL) {
+                if (retech.teacherID ==nil) {
                     retech.teacherID =@"";
-                }if (retech.teacherName ==NULL) {
+                }if (retech.teacherName ==nil) {
                     retech.teacherName =@"";
-                }if (retech.avatar_url ==NULL) {
+                }if (retech.avatar_url ==nil) {
                     retech.avatar_url =@"";
                 }
                 
                 [_teachers addObject:retech];
                 
-                NSLog(@"\n%@---%@---%@",retech.teacherID,retech.teacherName,retech.avatar_url);
             }
             
             [_recommandTeachers addObject:_teachers];
             
             [self reloadData];
-            
-            
             
         }
         
@@ -393,10 +408,8 @@
     
     /* collectionView重新加载数据*/
     [_headerView.teacherScrollView reloadData];
-    [_headerView.teacherScrollView setNeedsDisplay];
     
     [_indexPageView.recommandClassCollectionView reloadData];
-    [_indexPageView.recommandClassCollectionView setNeedsDisplay];
     
     [self loadingHUDStopLoadingWithTitle:@"数据加载完成"];
     
@@ -477,6 +490,8 @@
 
 
 #pragma mark- collectionview的代理方法
+
+#pragma mark- collectionview datasource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
     NSInteger items=0;
@@ -583,26 +598,11 @@
         
         RecommandClassCollectionViewCell *reccell=[collectionView dequeueReusableCellWithReuseIdentifier:recommandIdentifier forIndexPath:indexPath];
         
-        
-        if (_classes .count ==0) {
+        if (_classes .count >indexPath.row) {
             
-            [reccell.classImage setImage:[UIImage imageNamed:@"school"]];
-        }else{
-            RecommandClasses *cellmod = [[RecommandClasses alloc]init];
-            cellmod = _classes[indexPath.row];
-            
-            
-            [reccell.classImage sd_setImageWithURL:[NSURL URLWithString:cellmod.publicize]];
-            
-            [reccell.className setText:[NSString stringWithFormat:@"%@",cellmod.name]];
-            [reccell.grade setText:[NSString stringWithFormat:@"%@",cellmod.grade]];
-            [reccell.subjectName setText:[NSString stringWithFormat:@"%@",cellmod.subject]];
-            [reccell.saleNumber setText:[NSString stringWithFormat:@"%@",cellmod.buy_tickets_count]];
-            
-            
+            reccell.model = _classes[indexPath.row];
+            reccell.sd_indexPath = indexPath;
         }
-        
-
         
         cell=reccell ;
         
@@ -615,7 +615,7 @@
 }
 
 
-
+#pragma mark- collectionview delegate
 /* cell的四边间距*/
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
@@ -642,8 +642,6 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     if (collectionView.tag ==0) {
-        
-       
         
         if (_recommandTeachers.count==0) {
             

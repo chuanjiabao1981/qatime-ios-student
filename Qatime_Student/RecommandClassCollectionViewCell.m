@@ -7,6 +7,7 @@
 //
 
 #import "RecommandClassCollectionViewCell.h"
+#import "UIImageView+WebCache.h"
 
 @implementation RecommandClassCollectionViewCell
 
@@ -24,10 +25,6 @@
         //        [_classImage setImage:[UIImage imageNamed:@"school"]];
         [self.contentView addSubview:_classImage];
         _classImage.sd_layout.topSpaceToView(self.contentView,0).leftSpaceToView(self.contentView,0).rightSpaceToView(self.contentView,0).heightRatioToView(self.contentView,0.7);
-       
-        
-        
-        
         
         /* 教师姓名label*/
         /**** 预留label的宽度和教师姓名model源 ***/
@@ -84,23 +81,26 @@
         
         
         
-        
-        
-        
-        
     }
     return self;
 }
 
-
-
-///* 距开课时间*/
-//@property(nonatomic,strong) UILabel *timeToStart ;
-///* 价格*/
-//@property(nonatomic,strong) UILabel *price ;
-//
-///* 已购买的用户*/
-//
-//@property(nonatomic,strong) UILabel *saleNumber ;
+-(void)setModel:(TutoriumListInfo *)model{
+    
+    _model = model;
+    
+    _className.text = model.name;
+    _grade.text = model.grade;
+    _subjectName.text = model.subject;
+    _teacherName.text = model.teacher_name;
+    _saleNumber.text = model.buy_tickets_count;
+    
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"]];
+    
+    
+    
+    
+    
+}
 
 @end

@@ -134,10 +134,11 @@
     #pragma mark- 下拉刷新方法
     _classTimeView.notClassView.notClassTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         
+        
         [self loadingHUDStartLoadingWithTitle:@"正在刷新"];
         
         [self requestUnclosedClassList];
-        [self updateTablesData];
+        
         
     }];
     
@@ -145,7 +146,7 @@
         
         [self loadingHUDStartLoadingWithTitle:@"正在刷新"];
         [self requestClosedClassList];
-        [self updateTablesData];
+        
     }];
     
     
@@ -170,6 +171,8 @@
 
 #pragma mark- 请求未上课课程表数据
 - (void)requestUnclosedClassList{
+
+    _unclosedArr = @[].mutableCopy;
     
     if (_token&&_idNumber) {
         
@@ -212,8 +215,6 @@
                         
                     }
                     
-                    
-                    NSLog(@"%@",_unclosedArr);
                 }
                 
             }else{
@@ -221,10 +222,8 @@
                 /* 回复数据不正确*/
             }
             
-            [self updateTablesData];
+            [_classTimeView.notClassView.notClassTableView reloadData];
             [self endRefresh];
-            
-        
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
@@ -236,13 +235,11 @@
         
     }
     
-
-    
-    
-    
 }
 
 - (void)requestClosedClassList{
+    
+    _closedArr = @[].mutableCopy;
     if (_token&&_idNumber) {
         
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -286,15 +283,15 @@
                 }
                 
                 
-                NSLog(@"%@",_closedArr);
-                
             }else{
                 
                 /* 回复数据不正确*/
                 
                 
             }
-            [self updateTablesData];
+            
+            [_classTimeView.alreadyClassView.alreadyClassTableView reloadData];
+            
             [self endRefresh];
             
         }failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -318,24 +315,21 @@
     _unclosedArr = [NSMutableArray arrayWithArray:@[mod]];
      _closedArr = [NSMutableArray arrayWithArray:@[mod]];
     
-    
-    
-    
 }
 
 
 #pragma mark- 加载数据后，更新table的数据和视图
-- (void)updateTablesData{
-    
-    [_classTimeView.notClassView.notClassTableView reloadData];
-    [_classTimeView.notClassView.notClassTableView setNeedsDisplay];
-    
-    
-    [_classTimeView.alreadyClassView.alreadyClassTableView reloadData];
-    [_classTimeView.alreadyClassView.alreadyClassTableView setNeedsDisplay];
-    
-    
-}
+//- (void)updateTablesData{
+//    
+//    [_classTimeView.notClassView.notClassTableView reloadData];
+//    [_classTimeView.notClassView.notClassTableView setNeedsDisplay];
+//    
+//    
+//    [_classTimeView.alreadyClassView.alreadyClassTableView reloadData];
+//    [_classTimeView.alreadyClassView.alreadyClassTableView setNeedsDisplay];
+//    
+//    
+//}
 
 
 #pragma mark- tableView datasource
@@ -391,15 +385,11 @@
             if (cell==nil) {
                 
                 cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-                
-                cell.sd_tableView = tableView;
-                
-                
-                if (_unclosedArr.count!=0) {
-                    
-                    cell.model =_unclosedArr[indexPath.row];
                     
                 }
+            if (_unclosedArr.count!=0) {
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+                cell.model =_unclosedArr[indexPath.row];
                 
             }
             
@@ -414,14 +404,10 @@
                 
                 cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellID"];
                 
-                cell.sd_tableView = tableView;
-                
-                
-                if (_closedArr.count!=0) {
-                    
-                    cell.model =_closedArr[indexPath.row];
-                    
-                }
+            }
+            if (_closedArr.count!=0) {
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+                cell.model =_closedArr[indexPath.row];
                 
             }
             
@@ -451,7 +437,7 @@
         if (_unclosedArr.count !=0) {
             
             
-            height = 120;
+            height = self.view.height_sd*0.2;
             
         }
     }
@@ -460,7 +446,7 @@
         if (_closedArr.count !=0) {
             
             
-            height = 120;
+            height = self.view.height_sd*0.2;
             
         }
     }

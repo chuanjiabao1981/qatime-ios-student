@@ -94,6 +94,8 @@
         _enterButton = [[UIButton alloc]init];
         _enterButton.layer.borderColor = [UIColor orangeColor].CGColor;
         _enterButton.layer.borderWidth = 0.8;
+        [_enterButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+        [_enterButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
         
         
         
@@ -214,6 +216,13 @@
     NSLog(@"%@",[NSString statusSwitchWithStatus:model.status]);
     
     _status.text = [NSString statusSwitchWithStatus:model.status];
+    if ([_status.text isEqualToString:@"已结束"]||[_status.text isEqualToString:@"已直播"]) {
+        _enterButton.hidden = YES;
+        
+    }else if ([_status.text isEqualToString:@"待补课"]||[_status.text isEqualToString:@"待上课"]||[_status.text isEqualToString:@"直播中"]){
+        
+        [_enterButton setTitle:@"进入" forState:UIControlStateNormal];
+    }
     
     _grade.text = model.grade;
     _subject.text = model.subject;

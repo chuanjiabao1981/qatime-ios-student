@@ -11,14 +11,15 @@
 
 #import "UIViewController+HUD.h"
 #import "UIViewController_HUD.h"
-
 #import "GradeList.h"
+
+
 @interface BindingViewController ()<UIPickerViewDelegate,UIPickerViewDataSource>{
     
     NavigationBar *_navigationBar;
     
     
-    GradeList *gradelist;
+    
     UIVisualEffectView *effectView;
     UIPickerView *pickerView;
     UIView *dock;
@@ -27,6 +28,9 @@
     NSString *_openID;
     
     NSString *accept;
+    
+    /* 保存年级信息*/
+    GradeList *gradeList;
     
     
 }
@@ -68,7 +72,7 @@
     
     
     /* 加载年级信息*/
-    gradelist = [[GradeList alloc]init];
+    gradeList = [[GradeList alloc]init];
     
     //    选项
     
@@ -457,14 +461,14 @@
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
     
-    return gradelist.grade.count;
+    return gradeList.grade.count;
     
 }
 - (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
     
     
     
-    return gradelist.grade[row];
+    return gradeList.grade[row];
     
     
     
@@ -474,7 +478,10 @@
 /* 选择的*/
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
     
-    [_bindingView.gradeText setText:gradelist.grade[row] ];
+    
+    
+    
+    [_bindingView.gradeText setText:gradeList.grade[row] ];
     
     
     

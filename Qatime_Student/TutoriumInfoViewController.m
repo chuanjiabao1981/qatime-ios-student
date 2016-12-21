@@ -104,7 +104,6 @@
     
     /* 购买bar*/
     
-    
         _buyBar= [[BuyBar alloc]initWithFrame:CGRectMake(0, self.view.height_sd-49, self.view.width_sd, 49)];
     
         [self.view addSubview:_buyBar];
@@ -188,7 +187,35 @@
         
         _dataDic=[NSMutableDictionary dictionaryWithDictionary:dic[@"data"]];
         
-        NSLog(@"%@",_dataDic);
+        /* 课程页面信息赋值*/
+        _tutoriumInfoView.className.text = _dataDic[@"name"];
+        [_tutoriumInfoView.classImage sd_setImageWithURL:[NSURL URLWithString:_dataDic[@"publicize"]] placeholderImage:[UIImage imageNamed:@"school"]];
+        _tutoriumInfoView.saleNumber.text = [NSString stringWithFormat:@"%@", _dataDic[@"buy_tickets_count"]];
+        _tutoriumInfoView.priceLabel.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"price"]];
+        
+        if ([_dataDic[@"status"]isEqualToString:@"teaching"]||[_dataDic[@"status"]isEqualToString:@"pause"]||[_dataDic[@"status"]isEqualToString:@"closed"]) {
+            _tutoriumInfoView.recuitState.text = @"已开课";
+            _tutoriumInfoView.deadLine.text = [NSString stringWithFormat:@"[进度%@/%@]",_dataDic[@"completed_lesson_count"],_dataDic[@"lesson_count"]];
+            _tutoriumInfoView.onlineVideoLabel.text =@"已开课";
+            
+        }else if ([_dataDic[@"status"]isEqualToString:@"missed"]||[_dataDic[@"status"]isEqualToString:@"init"]||[_dataDic[@"status"]isEqualToString:@"ready"]){
+            _tutoriumInfoView.recuitState.text = @"未开课";
+            _tutoriumInfoView.onlineVideoLabel.text =@"未开课";
+            
+            _tutoriumInfoView.deadLine.text = [NSString stringWithFormat:@"[距开课%@/天]",[self intervalSinceNow:_dataDic[@"live_start_time"] ]];
+            
+            
+        }else if ([_dataDic[@"status"]isEqualToString:@"finished"]||[_dataDic[@"status"]isEqualToString:@"billing"]||[_dataDic[@"status"]isEqualToString:@"competed"]){
+            
+            _tutoriumInfoView.recuitState.text = @"已结课";
+            _tutoriumInfoView.onlineVideoLabel.text =@"已结课";
+            
+        }
+        
+        _tutoriumInfoView.liveStartTimeLabel.text = _dataDic[@"live_start_time"];
+        _tutoriumInfoView.liveEndTimeLabel.text = _dataDic[@"live_end_time"];
+        
+        
         
         if ([status isEqualToString:@"0"]) {
             /* 获取token错误  需要重新登录*/
@@ -196,11 +223,7 @@
             
             /* 判断课程状态*/
             
-//            [_buyBar.listenButton addTarget:self action:@selector(switchClass) forControlEvents:UIControlEventTouchUpInside];
             [self switchClassData:_dataDic];
-            
-            
-            
             
             /* 手动解析teacherModel*/
             NSDictionary *teacherDic =_dataDic[@"teacher"];
@@ -208,14 +231,12 @@
             
             /* teacherModel赋值与界面数据更新*/
             
-            _teacherModel .teacherID = [teacherDic valueForKey:@"id"];
+            _teacherModel.teacherID = [teacherDic valueForKey:@"id"];
             _teacherModel.teacherName =[teacherDic valueForKey:@"name"];
             _teacherModel.school =[teacherDic valueForKey:@"school"];
             _teacherModel.subject = [teacherDic valueForKey:@"subject"];
             _teacherModel.teaching_years =[teacherDic valueForKey:@"teaching_years"];
             _teacherModel.describe =[teacherDic valueForKey:@"desc"];
-            
-            
             
             /* 判断性别是否为空对象    预留性别判断接口*/
             if ([teacherDic valueForKey:@"gender"]!=[NSNull null]) {
@@ -240,12 +261,12 @@
             [_tutoriumInfoView.teacherNameLabel setText: _teacherModel.teacherName];
             [_tutoriumInfoView.workPlaceLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.school]];
             [_tutoriumInfoView.teacherInterviewLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.describe]];
-            [_tutoriumInfoView.workYearsLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.teaching_years]];
-            [_tutoriumInfoView.classImage sd_setImageWithURL:[NSURL URLWithString:_teacherModel.avatar_url]];
+            [_tutoriumInfoView.classImage sd_setImageWithURL:[NSURL URLWithString:_teacherModel.avatar_url] placeholderImage:[UIImage imageNamed:@"school"]];
+            [_tutoriumInfoView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacherModel.avatar_url ]];
             
-            
-            
-//            NSLog(@"%@",[teacherDic valueForKey:@"gender"]);
+            /* 判断教学年限*/
+           
+            [_tutoriumInfoView.workYearsLabel setText:@"10-20年"];
             
             
             /* 手动解析classModel*/
@@ -254,14 +275,12 @@
             _classModel.classID = _dataDic[@"id"];
             _classModel.describe = _dataDic[@"description"];
             
-//            NSLog(@"%@,%@,%@,%@,%@,%@,%@,%@,%@,%@,%@,%@,%@",_classModel.classID,_classModel.name,_classModel.subject,_classModel.grade,_classModel.teacher_name,_classModel.price,_classModel.chat_team_id,_classModel.buy_tickets_count,_classModel.preset_lesson_count,_classModel.completed_lesson_count,_classModel.live_start_time,_classModel.live_end_time,_classModel.publicize);
+
             
             /* 课程页面的label赋值*/
             [_tutoriumInfoView.subjectLabel setText:_classModel.subject];
             [_tutoriumInfoView.gradeLabel setText:_classModel.grade];
             [_tutoriumInfoView.classCount setText:_classModel.lesson_count];
-            
-            [_tutoriumInfoView.onlineVideoLabel setText:_classModel.status];
             
             [_tutoriumInfoView.classDescriptionLabel setText:_classModel.describe];
             
@@ -276,30 +295,24 @@
                 
                 _classInfoTimeModel = [ClassesInfo_Time yy_modelWithDictionary:classList[i]];
                 _classInfoTimeModel.classID =[ classList[i]valueForKey:@"id" ];
-                NSLog(@"%@",_classInfoTimeModel.classID);
                 
                 [_classListArray addObject:_classInfoTimeModel];
                 
-                
-                
                 [self updateTableView];
-                
-                
-                
                 
             }
   
         }
      
         
+        
+        
+        /* 赋值完毕,开始进行自适应高度*/
+        [self autoScrollHeight];
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-    
-    
-    
-    
-    
     
 }
 
@@ -485,7 +498,6 @@
 
         }
         
-        
     }
     
     
@@ -497,12 +509,7 @@
     OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:_dataDic[@"id"]];
     [self.navigationController pushViewController:orderVC animated:YES];
     
-    
-    
 }
-
-
-
 
 
 - (void)updateTableView{
@@ -556,7 +563,6 @@
         ClassesInfo_Time *model = _classListArray[indexPath.row];
      // 获取cell高度
         heights =[tableView cellHeightForIndexPath:indexPath model:model keyPath:@"model" cellClass:[ClassesListTableViewCell class] contentViewWidth: [UIScreen mainScreen].bounds.size.width];
-//        [tableView cellHeightForIndexPath:indexPath cellContentViewWidth:[UIScreen mainScreen].bounds.size.width];
         
         
     }
@@ -579,33 +585,15 @@
             
             
         }else{
-            
-//            ClassesInfo_Time  *mod=[[ClassesInfo_Time alloc]init];
-//            mod = _classListArray[indexPath.row];
-//            
-//            [cell.className setText:mod.name];
-//            [cell.classDate setText:mod.class_date];
-//            [cell.classTime setText:mod.live_time];
-////             直播状态 后期需要确认接口后判断状态
-//            [cell.status setText:mod.status];
-//            if ([mod.status isEqualToString:@"preview"]) {
-//                
-//                [cell.imageView setImage:[UIImage imageNamed:@"circle_green"]];
-//            }else{
-//                [cell.imageView setImage:[UIImage imageNamed:@"circle_gray"]];
-            
-//            }
+
             ClassesInfo_Time *mod = _classListArray[indexPath.row];
             cell.model = mod;
-            cell.sd_tableView = tableView;
-            cell.sd_indexPath = indexPath;
-            
-            
+
+            [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
         }
         
-        
     }
-//    [cell setupAutoHeightWithBottomView:cell.classDate bottomMargin:20];
+
     
     return  cell;
     
@@ -615,6 +603,92 @@
 - (void)refreshPage{
     
     [self requestClassesInfoWith:_classID];
+    
+    
+}
+
+
+/* 计算开课的时间差*/
+- (NSString *)intervalSinceNow: (NSString *) theDate
+{
+    NSString *timeString=@"";
+    
+    NSDateFormatter *format=[[NSDateFormatter alloc] init];
+    [format setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *fromdate=[format dateFromString:theDate];
+    NSTimeZone *fromzone = [NSTimeZone systemTimeZone];
+    NSInteger frominterval = [fromzone secondsFromGMTForDate: fromdate];
+    NSDate *fromDate = [fromdate  dateByAddingTimeInterval: frominterval];
+    
+    //获取当前时间
+    NSDate *adate = [NSDate date];
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSInteger interval = [zone secondsFromGMTForDate: adate];
+    NSDate *localeDate = [adate  dateByAddingTimeInterval: interval];
+    
+    double intervalTime = [fromDate timeIntervalSinceReferenceDate] - [localeDate timeIntervalSinceReferenceDate];
+    long lTime = labs((long)intervalTime);
+    NSInteger iSeconds =  lTime % 60;
+    NSInteger iMinutes = (lTime / 60) % 60;
+    NSInteger iHours = labs(lTime/3600);
+    NSInteger iDays = lTime/60/60/24;
+    NSInteger iMonth =lTime/60/60/24/12;
+    NSInteger iYears = lTime/60/60/24/384;
+    
+    
+    NSLog(@"相差%ld年%ld月 或者 %ld日%ld时%ld分%ld秒", iYears,iMonth,(long)iDays,(long)iHours,(long)iMinutes,(long)iSeconds);
+    
+    
+    if (iHours<1 && iMinutes>0)
+    {
+        timeString=[NSString stringWithFormat:@"%ld分",(long)iMinutes];
+        
+    }else if (iHours>0&&iDays<1 && iMinutes>0) {
+        timeString=[NSString stringWithFormat:@"%ld时%ld分",(long)iHours,(long)iMinutes];
+    }
+    else if (iHours>0&&iDays<1) {
+        timeString=[NSString stringWithFormat:@"%ld时",(long)iHours];
+    }else if (iDays>0 && iHours>0)
+    {
+        timeString=[NSString stringWithFormat:@"%ld天%ld时",(long)iDays,(long)iHours];
+    }
+    else if (iDays>0)
+    {
+        timeString=[NSString stringWithFormat:@"%ld天",(long)iDays];
+    }
+    return timeString;
+}
+
+
+#pragma mark- 根据课程详细内容 ,scrollview 的content 自适应高度
+- (void)autoScrollHeight{
+    
+    [_tutoriumInfoView.classDescriptionLabel updateLayout];
+    [_tutoriumInfoView.teacherInterviewLabel updateLayout];
+    
+    NSLog(@"%@",[_tutoriumInfoView.classDescriptionLabel valueForKey:@"frame"]);
+    NSLog(@"%@",[_tutoriumInfoView.teacherInterviewLabel valueForKey:@"frame"]);
+
+    
+    CGFloat classDesc_height = _tutoriumInfoView.classDescriptionLabel.frame.origin.y+_tutoriumInfoView.classDescriptionLabel.frame.size.height;
+    
+    CGFloat teacherDesc_height =  _tutoriumInfoView.teacherInterviewLabel.frame.origin.y+_tutoriumInfoView.teacherInterviewLabel.frame.size.height;
+    
+    
+    if (classDesc_height>teacherDesc_height) {
+        
+        [_tutoriumInfoView setContentSize:CGSizeMake(self.view.width_sd, classDesc_height+40)];
+    }else {
+         [_tutoriumInfoView setContentSize:CGSizeMake(self.view.width_sd, teacherDesc_height+40)];
+        
+    }
+    
+    
+     _tutoriumInfoView.classesListTableView.sd_resetLayout
+    .leftSpaceToView(_tutoriumInfoView.view3,0)
+    .rightSpaceToView(_tutoriumInfoView.view3,0)
+    .topSpaceToView(_tutoriumInfoView.view3,0)
+    .heightIs(_tutoriumInfoView.contentSize.height-_tutoriumInfoView.scrollView.origin.y);
     
     
 }

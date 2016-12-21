@@ -949,6 +949,7 @@
 
 
 #pragma mark- collection的代理方法
+#pragma mark- collectionview datasource
 /* item数*/
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
@@ -970,7 +971,6 @@
     
     /* 直接本地保存的存储状态，然后解析并加载数据*/
     
-    
     if ([[NSFileManager defaultManager]fileExistsAtPath:_tutoriumListFilePath]) {
         
         
@@ -989,7 +989,7 @@
         infoModel.classID =[listInfo.data[indexPath.row]valueForKey:@"id"];
         
         
-        NSLog(@"%@",infoModel.classID);
+//        NSLog(@"%@",infoModel.classID);
         
     }else{
         
@@ -1002,32 +1002,9 @@
     /* 在解析正确的情况下*/
     if (listInfo) {
         
-        /* cell按照model 加载图片*/
         
-        /* 服务器后台没有数据，使用静态图片*/
-        //    [cell.classImage sd_setImageWithURL:[NSURL URLWithString:infoModel.publicize]];
-        [cell.classImage setImage:[UIImage imageNamed:@"school"]];
-        
-        /* cell 教师姓名 赋值*/
-        [cell.teacherName setText:infoModel.teacher_name];
-        
-        /* cell 科目赋值*/
-        
-        [cell.subjectName setText:infoModel.subject];
-        
-        /* cell 年级赋值*/
-        [cell.grade setText:infoModel.grade];
-        
-        /* cell 价格赋值*/
-        [ cell.price setText:[NSString stringWithFormat:@"¥%@.00",infoModel.price]];
-        
-        /* cell 已购买的用户 赋值*/
-        [cell.saleNumber setText:infoModel.buy_tickets_count];
-        
-        /* cell 的课程id属性*/
-        cell.classID = @"" ;
-        
-        [cell.className setText: infoModel.name];
+        cell.model = infoModel;
+        cell.sd_indexPath = indexPath;
         
     }
     return cell;
@@ -1037,7 +1014,7 @@
 
 
 
-
+#pragma mark- collectionview delegate
 
 /* section数量*/
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
@@ -1091,8 +1068,7 @@
 /* item被选中的回调方法*/
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    TutoriumListInfo *mod;
+    TutoriumListInfo *mod=nil;
     if (listArr.count==0) {
         
     }else{
@@ -1237,7 +1213,7 @@
         page++;
         
         if (hadDoneFilter==YES) {
-            [_tutoriumView.classesCollectionView.mj_footer endRefreshingWithNoMoreData];
+            [_tutoriumView.classesCollectionView.mj_footer endRefreshing];
              [self loadingHUDStopLoadingWithTitle:@"加载完毕!"];
         }else{
             

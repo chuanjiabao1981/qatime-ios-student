@@ -7,6 +7,7 @@
 //
 
 #import "TutoriumCollectionViewCell.h"
+#import "TutoriumList.h"
 
 @interface RecommandClassCollectionViewCell : UICollectionViewCell
 
@@ -27,6 +28,9 @@
 
 @property(nonatomic,strong) UILabel *saleNumber ;
 
+
+/* model*/
+@property(nonatomic,strong) TutoriumListInfo *model ;
 
 
 @end

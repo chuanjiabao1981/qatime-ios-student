@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TutoriumList.h"
 
 @interface TutoriumCollectionViewCell : UICollectionViewCell
 
@@ -40,6 +41,9 @@
 /* 课程名字*/
 @property(nonatomic,strong) UILabel *className ;
 
+
+/* model*/
+@property(nonatomic,strong) TutoriumListInfo *model ;
 
 
 @end
