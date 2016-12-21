@@ -118,6 +118,7 @@
 		545162D81DF55DD0000BD17A /* PersonalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162D71DF55DD0000BD17A /* PersonalTableViewCell.m */; };
 		545731811E022E7700F45C03 /* HaveNoClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545731801E022E7700F45C03 /* HaveNoClassView.m */; };
 		545B3BA71E0A216700751D08 /* GuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B3BA61E0A216700751D08 /* GuideViewController.m */; };
+		545B3BAA1E0A5F4900751D08 /* MMPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B3BA91E0A5F4900751D08 /* MMPickerView.m */; };
 		54634D981DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 54634D871DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m */; };
 		54634D991DDEAC1F0070C0FF /* FJFloatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54634D8A1DDEAC1F0070C0FF /* FJFloatingView.m */; };
 		54652E051DEE823100F4607C /* FileService.m in Sources */ = {isa = PBXBuildFile; fileRef = 54652E041DEE823100F4607C /* FileService.m */; };
@@ -360,7 +361,6 @@
 		54ECFECA1DFE978C001A98CE /* money.png in Resources */ = {isa = PBXBuildFile; fileRef = 54ECFEC91DFE978C001A98CE /* money.png */; };
 		54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F34D7C1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m */; };
 		54F34D801DE70BA500D6FC85 /* NSString+FindFace.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F34D7E1DE70BA500D6FC85 /* NSString+FindFace.m */; };
-		54F3BA151DFC2E3D003998D0 /* MMPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA141DFC2E3D003998D0 /* MMPickerView.m */; };
 		54F3BA181DFC3013003998D0 /* UIViewController+Login.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA171DFC3013003998D0 /* UIViewController+Login.m */; };
 		54F3BA211DFC4427003998D0 /* LoginAgainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA201DFC4427003998D0 /* LoginAgainView.m */; };
 		54F3BA241DFC4435003998D0 /* LoginAgainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA231DFC4435003998D0 /* LoginAgainViewController.m */; };
@@ -562,6 +562,8 @@
 		545731801E022E7700F45C03 /* HaveNoClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HaveNoClassView.m; sourceTree = "<group>"; };
 		545B3BA51E0A216700751D08 /* GuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuideViewController.h; sourceTree = "<group>"; };
 		545B3BA61E0A216700751D08 /* GuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuideViewController.m; sourceTree = "<group>"; };
+		545B3BA81E0A5F4900751D08 /* MMPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMPickerView.h; sourceTree = "<group>"; };
+		545B3BA91E0A5F4900751D08 /* MMPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMPickerView.m; sourceTree = "<group>"; };
 		54634D861DDEAC1F0070C0FF /* UIGestureRecognizer+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizer+Block.h"; sourceTree = "<group>"; };
 		54634D871DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+Block.m"; sourceTree = "<group>"; };
 		54634D891DDEAC1F0070C0FF /* FJFloatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FJFloatingView.h; sourceTree = "<group>"; };
@@ -1057,8 +1059,6 @@
 		54F34D7C1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+Extention.m"; sourceTree = "<group>"; };
 		54F34D7D1DE70BA500D6FC85 /* NSString+FindFace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+FindFace.h"; sourceTree = "<group>"; };
 		54F34D7E1DE70BA500D6FC85 /* NSString+FindFace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FindFace.m"; sourceTree = "<group>"; };
-		54F3BA131DFC2E3D003998D0 /* MMPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMPickerView.h; sourceTree = "<group>"; };
-		54F3BA141DFC2E3D003998D0 /* MMPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMPickerView.m; sourceTree = "<group>"; };
 		54F3BA161DFC3013003998D0 /* UIViewController+Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Login.h"; sourceTree = "<group>"; };
 		54F3BA171DFC3013003998D0 /* UIViewController+Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Login.m"; sourceTree = "<group>"; };
 		54F3BA1F1DFC4427003998D0 /* LoginAgainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginAgainView.h; sourceTree = "<group>"; };
@@ -2073,8 +2073,8 @@
 		549A051F1DC89B0100B3564D /* MMPickerView */ = {
 			isa = PBXGroup;
 			children = (
-				54F3BA131DFC2E3D003998D0 /* MMPickerView.h */,
-				54F3BA141DFC2E3D003998D0 /* MMPickerView.m */,
+				545B3BA81E0A5F4900751D08 /* MMPickerView.h */,
+				545B3BA91E0A5F4900751D08 /* MMPickerView.m */,
 			);
 			path = MMPickerView;
 			sourceTree = "<group>";
@@ -3892,7 +3892,6 @@
 				547E898A1DD1BC9900749366 /* RecommandTeacher.m in Sources */,
 				549210271DCC6D0E00A65702 /* MultiFilterView.m in Sources */,
 				545162CB1DF5597E000BD17A /* PersonalInfoView.m in Sources */,
-				54F3BA151DFC2E3D003998D0 /* MMPickerView.m in Sources */,
 				54DBA4B61DE4423300A67A90 /* YZTextAttachment.m in Sources */,
 				54AB48EA1DED607B008E3BC5 /* StartedClassView.m in Sources */,
 				54294C6D1DDB051E00677333 /* Classes.m in Sources */,
@@ -3939,6 +3938,7 @@
 				54B9CAF91DFE4A9D003961FF /* WithdrawConfirmView.m in Sources */,
 				54E428B41DE2DC6100AF5980 /* UIControl+RemoveTarget.m in Sources */,
 				54652E421DEEC25200F4607C /* MessageSettingViewController.m in Sources */,
+				545B3BAA1E0A5F4900751D08 /* MMPickerView.m in Sources */,
 				543E0CC81DFFEDBD004B24FD /* CheckOrderView.m in Sources */,
 				5413D25B1DF7BC7900A8FDEC /* RechargeTableView.m in Sources */,
 				54F3BA181DFC3013003998D0 /* UIViewController+Login.m in Sources */,

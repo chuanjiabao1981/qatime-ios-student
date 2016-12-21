@@ -191,10 +191,9 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sizeToFitHeight) name:@"SizeChange" object:nil];
     
     
+    /* 请求基础信息*/
     
-    
-    /* 云信sdk的登录回调*/
-//    [[NIMSDK sharedSDK].loginManager addDelegate:self];
+    [self requestBasicInformation];
     
     
     
@@ -720,6 +719,44 @@
     [_indexPageView.recommandClassCollectionView setNeedsDisplay];
     
 }
+
+#pragma mark- 获取程序所有的基础信息
+- (void)requestBasicInformation{
+    [self loadingHUDStartLoadingWithTitle:@"正在获取基础信息"];
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/app_constant",Request_Header] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"BasicInformation"];
+            
+            NSDictionary *dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
+            [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"grades"] forKey:@"grade"];
+            [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"cities"] forKey:@"city"];
+            [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"provinces"] forKey:@"province"];
+            [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"schools"] forKey:@"school"];
+            
+            [self loadingHUDStopLoadingWithTitle:@"基础信息获取成功!"];
+            
+        }else{
+            
+            [self loadingHUDStopLoadingWithTitle:@"基础信息获取失败!"];
+        }
+        
+        
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
+    
+}
+
+
+
 
 /* 进入消息中心*/
 - (void)enterNoticeCenter{

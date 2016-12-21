@@ -14,7 +14,7 @@
 @property(nonatomic,strong) UIImageView *classImage ;
 
 /* 距开课时间*/
-@property(nonatomic,strong) UILabel *timeToStart ;
+//@property(nonatomic,strong) UILabel *timeToStart ;
 
 /* 教师姓名*/
 @property(nonatomic,strong) UILabel *teacherName ;
