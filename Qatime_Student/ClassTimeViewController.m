@@ -18,17 +18,15 @@
 #import "UIViewController+HUD.h"
 
 #import "AllClassViewController.h"
-
-
+#import "NotClassView.h"
 
 /* 点击事件 -> 辅导班详情页*/
 #import "TutoriumInfoViewController.h"
 
-
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
 
-@interface ClassTimeViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>{
+@interface ClassTimeViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIGestureRecognizerDelegate>{
     
     NSString  *_token;
     NSString *_idNumber;
@@ -44,6 +42,10 @@
     
     BOOL haveClass;
     
+    /* 是否登录*/
+    BOOL isLogin;
+    
+    HaveNoClassView *_notLoginView;
     
 }
 
@@ -53,6 +55,76 @@
 
 @implementation ClassTimeViewController
 
+- (void)loadView{
+    [super loadView];
+    
+    /* 课程表的视图*/
+    
+    _classTimeView = ({
+    
+        ClassTimeView *_ = [[ClassTimeView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT-64-63)];
+        [self.view addSubview:_];
+        _.scrollView.delegate = self;
+        _.segmentControl.selectedSegmentIndex =0;
+        _.segmentControl.selectionIndicatorHeight =2.0f;
+        _.scrollView.bounces=NO;
+        _.scrollView.alwaysBounceVertical=NO;
+        _.scrollView.alwaysBounceHorizontal=NO;
+        
+        [_.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
+        
+        typeof(self) __weak weakSelf = self;
+        [_.segmentControl setIndexChangeBlock:^(NSInteger index) {
+            [weakSelf.classTimeView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
+        }];
+
+        
+        _.notClassView.notClassTableView.delegate = self;
+        _.notClassView.notClassTableView.dataSource = self;
+        _.notClassView.notClassTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _.notClassView.notClassTableView.tag =1;
+        
+        _.alreadyClassView.alreadyClassTableView.delegate = self;
+        _.alreadyClassView.alreadyClassTableView.dataSource = self;
+        _.alreadyClassView.alreadyClassTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _.alreadyClassView.alreadyClassTableView.tag = 2;
+        _;
+    });
+    
+    
+    
+    
+    _notLoginView = ({
+    
+        
+        HaveNoClassView *_=[[HaveNoClassView alloc]init];
+        _.titleLabel.text = @"登录才能查看!";
+        [self.view addSubview:_];
+        _.sd_layout
+        .leftEqualToView(_classTimeView)
+        .topEqualToView(_classTimeView)
+        .rightEqualToView(_classTimeView)
+        .bottomEqualToView(_classTimeView);
+        
+        UIButton *__ = [[UIButton alloc]init];
+        [_ addSubview:__];
+        [__ setTitle:@"登录" forState:UIControlStateNormal];
+        [__ setTitleColor:TITLERED forState:UIControlStateNormal];
+        __.layer.borderColor = TITLERED.CGColor;
+        __.layer.borderWidth = 0.8;
+        [__ addTarget:self action:@selector(loginAgain) forControlEvents:UIControlEventTouchUpInside];
+        __.sd_layout
+        .topSpaceToView(_.titleLabel,20)
+        .centerXEqualToView(_)
+        .heightRatioToView(self.view,0.045)
+        .widthRatioToView(self.view,0.2);
+        __.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
+        
+        _;
+    
+    });
+    
+}
 
 
 - (void)viewDidLoad {
@@ -69,11 +141,10 @@
     [_navigationBar.rightButton setImage:[UIImage imageNamed:@"日历"] forState:UIControlStateNormal];
     [_navigationBar.rightButton addTarget:self action:@selector(calenderViews) forControlEvents:UIControlEventTouchUpInside];
     
-    
-    
+   
     
     #pragma mark- HUD加载数据
-    [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+//
     
     
     
@@ -86,35 +157,18 @@
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
+    /* 判断是否登录*/
+    isLogin = [[NSUserDefaults standardUserDefaults]boolForKey:@"Login"];
+    if (isLogin==YES) {
+        _notLoginView.hidden = YES;
+        [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+    }else{
+        _notLoginView.hidden = NO;
+        
+    }
     
-    /* 课程表的视图*/
     
-    _classTimeView = [[ClassTimeView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT-64-63)];
-    [self.view addSubview:_classTimeView];
     
-    typeof(self) __weak weakSelf = self;
-    [ _classTimeView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-        [weakSelf.classTimeView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
-    }];
-    
-    _classTimeView.scrollView.delegate = self;
-    _classTimeView.segmentControl.selectedSegmentIndex =0;
-    _classTimeView.segmentControl.selectionIndicatorHeight =2.0f;
-    _classTimeView.scrollView.bounces=NO;
-    _classTimeView.scrollView.alwaysBounceVertical=NO;
-    _classTimeView.scrollView.alwaysBounceHorizontal=NO;
-    
-    [_classTimeView.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
-    
-    _classTimeView.notClassView.notClassTableView.delegate = self;
-    _classTimeView.notClassView.notClassTableView.dataSource = self;
-    _classTimeView.notClassView.notClassTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _classTimeView.notClassView.notClassTableView.tag =1;
-    
-    _classTimeView.alreadyClassView.alreadyClassTableView.delegate = self;
-    _classTimeView.alreadyClassView.alreadyClassTableView.dataSource = self;
-    _classTimeView.alreadyClassView.alreadyClassTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _classTimeView.alreadyClassView.alreadyClassTableView.tag = 2;
     
     
 #pragma mark- 初始化数据
@@ -205,7 +259,6 @@
                         
                         for (NSDictionary *lessons in classDic[@"lessons"]) {
                             
-                            
                             ClassTimeModel *mod = [ClassTimeModel yy_modelWithJSON:lessons];
                             mod.classID = lessons[@"id"];
                             
@@ -219,10 +272,12 @@
                 
             }else{
                 
-                /* 回复数据不正确*/
+                /* 数据错误*/
+                
+                
             }
             
-            [_classTimeView.notClassView.notClassTableView reloadData];
+            [_classTimeView.notClassView.notClassTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             [self endRefresh];
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -231,7 +286,7 @@
         
     }else{
         
-        /* 登录报错*/
+        /* 登录错误*/
         
     }
     
@@ -290,7 +345,7 @@
                 
             }
             
-            [_classTimeView.alreadyClassView.alreadyClassTableView reloadData];
+            [_classTimeView.alreadyClassView.alreadyClassTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             
             [self endRefresh];
             
@@ -319,17 +374,7 @@
 
 
 #pragma mark- 加载数据后，更新table的数据和视图
-//- (void)updateTablesData{
-//    
-//    [_classTimeView.notClassView.notClassTableView reloadData];
-//    [_classTimeView.notClassView.notClassTableView setNeedsDisplay];
-//    
-//    
-//    [_classTimeView.alreadyClassView.alreadyClassTableView reloadData];
-//    [_classTimeView.alreadyClassView.alreadyClassTableView setNeedsDisplay];
-//    
-//    
-//}
+
 
 
 #pragma mark- tableView datasource

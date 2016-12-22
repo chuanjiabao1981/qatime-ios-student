@@ -14,22 +14,20 @@
 #import "TutoriumViewController.h"
 #import "NoticeIndexViewController.h"
 #import "YZSquareMenuCell.h"
-
-
 #import "RecommandTeacher.h"
-
 #import "UIImageView+WebCache.h"
-
 #import "RecommandClasses.h"
 #import "YYModel.h"
-
 #import "TeachersPublicViewController.h"
 #import "UIViewController+HUD.h"
-
 #import "NIMSDK.h"
 #import "YYModel.h"
+#import "TLCityPickerDelegate.h"
+#import "TLCityPickerController.h"
+#import "City.h"
+#import "ChineseString.h"
 
-@interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate>{
+@interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate>{
     
     
     //    IndexHeaderPageView *headerView ;
@@ -37,7 +35,7 @@
     NSArray *menuImages;
     NSArray *menuTitiels;
     
-//    UIScrollView *contentScrollView;
+    //    UIScrollView *contentScrollView;
     
     
     /* 页数*/
@@ -69,7 +67,15 @@
     /* 头视图的尺寸*/
     CGSize headerSize;
     
+    UIButton *_location;
+    
 }
+
+/* 定位管理器*/
+@property (nonatomic, strong) CLLocationManager* locationManager;
+
+
+
 
 @end
 
@@ -79,37 +85,68 @@
     [super loadView];
     
     [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+    
+    /* 导航栏加载*/
+    _navigationBar = ({
+        NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+        
+        [self .view addSubview:_];
+        [_.rightButton setImage:[UIImage imageNamed:@"消息"] forState:UIControlStateNormal];
+        [_.rightButton addTarget:self action:@selector(enterNoticeCenter) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIImageView *logoImage = [[UIImageView alloc]init];
+        [_ addSubview:logoImage];
+        
+        logoImage.sd_layout
+        .topSpaceToView(_,25)
+        .bottomSpaceToView(_,10)
+        .centerXEqualToView(_)
+        .widthIs((_.height_sd-10-25)*1080/208);
+        [logoImage setImage:[UIImage imageNamed:@"Logo_white"]];
+        
+        [_.leftButton setImage:[UIImage imageNamed:@"location"] forState:UIControlStateNormal];
+        
+        _location = [UIButton new];
+        [_location setTitle:@"全国" forState:UIControlStateNormal];
+        [_location setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _location.enabled = NO;
+        
+        [_ addSubview:_location];
+        _location.sd_layout
+        .leftSpaceToView(_.leftButton,0)
+        .topEqualToView(_.leftButton)
+        .bottomEqualToView(_.leftButton)
+        .rightSpaceToView(logoImage,0);
+        
+        [_location setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+        [_location addTarget:self action:@selector(choseLocation) forControlEvents:UIControlEventTouchUpInside];
+        [_.leftButton addTarget:self action:@selector(choseLocation) forControlEvents:UIControlEventTouchUpInside];
+        _.leftButton.enabled = NO;
+        
+        _;
+    });
+    
+    
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    
-    [super viewWillAppear:animated];
-   
-}
+
 
 - (void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
-     [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
-//    self.automaticallyAdjustsScrollViewInsets = NO;
+    //    self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
-    
-    /* 导航栏加载*/
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
-    [self .view addSubview:_navigationBar];
-    [_navigationBar.rightButton setImage:[UIImage imageNamed:@"消息"] forState:UIControlStateNormal];
-    [_navigationBar.rightButton addTarget:self action:@selector(enterNoticeCenter) forControlEvents:UIControlEventTouchUpInside];
-    
     
     /* 取出token*/
     _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
-
+    
     menuImages = @[[UIImage imageNamed:@"语文"],[UIImage imageNamed:@"数学"],[UIImage imageNamed:@"英语"],[UIImage imageNamed:@"物理"],[UIImage imageNamed:@"化学"],[UIImage imageNamed:@"生物"],[UIImage imageNamed:@"历史"],[UIImage imageNamed:@"地理"],[UIImage imageNamed:@"政治"],[UIImage imageNamed:@"科学"]];
     menuTitiels = @[@"语文",@"数学",@"英语",@"物理",@"化学",@"生物",@"历史",@"地理",@"政治",@"科学"];
     
@@ -194,7 +231,7 @@
     /* 初次请求成功后，直接申请推荐教师和推荐课程*/
     
     /* 请求推荐教师详情*/
-        
+    
     /* 添加headerview尺寸变化的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sizeToFitHeight) name:@"SizeChange" object:nil];
     
@@ -210,6 +247,10 @@
     [_headerView.allArrowButton addTarget:self action:@selector(choseAllTutorium) forControlEvents:UIControlEventTouchUpInside];
     
     
+    
+    
+    
+    
 }
 
 /* 请求全部课程*/
@@ -219,7 +260,7 @@
     
     /* 发送消息 让第二个页面在初始化后 进行筛选*/
     [[NSNotificationCenter defaultCenter]postNotificationName:@"UserChoseSubject" object:nil];
-
+    
     
 }
 
@@ -280,7 +321,7 @@
                 [self requestClasses];
                 
             });
-
+            
             
             
             
@@ -320,23 +361,17 @@
                 
                 NSDictionary *classinfo =[NSDictionary dictionaryWithDictionary:[classArr[i] valueForKey:@"live_studio_course"]];
                 RecommandClasses *reclass=[RecommandClasses yy_modelWithDictionary:classinfo];
-              
+                
                 reclass.classID =[[classArr[i] valueForKey:@"live_studio_course"]valueForKey:@"id"];
                 
                 [_classes addObject:reclass];
                 
                 
-               
-                
             }
-            
             
             [self reloadData];
             
             [[NSNotificationCenter defaultCenter]postNotificationName:@"SizeChange" object:nil];
-            
-            
-            
             
         }
         
@@ -346,7 +381,7 @@
     }];
     
     
-
+    
     
     
 }
@@ -575,10 +610,10 @@
         
         if (_recommandTeachers.count ==0) {
             
-        [squarecell.iconTitle setText:@"名师推荐"];
+            [squarecell.iconTitle setText:@"名师推荐"];
             
-        
-        [squarecell.iconImage setImage: [UIImage imageNamed:@"老师"]];
+            
+            [squarecell.iconImage setImage: [UIImage imageNamed:@"老师"]];
             
         }else{
             
@@ -633,7 +668,7 @@
         
     }
     
- 
+    
     if (collectionView.tag==1) {
         insets =UIEdgeInsetsMake(10, 15, 10, 10);
     }
@@ -675,11 +710,11 @@
     if (collectionView.tag ==1) {
         
     }
-
+    
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
-   
+    
     
     NSString *cellID = @"headerCell";
     UICollectionReusableView *header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:cellID forIndexPath:indexPath];
@@ -717,7 +752,6 @@
     
     headerSize = CGSizeMake(self.view.width_sd, rect.size.height);
     
-    
     [_indexPageView.recommandClassCollectionView reloadData];
     [_indexPageView.recommandClassCollectionView setNeedsLayout];
     [_indexPageView.recommandClassCollectionView setNeedsDisplay];
@@ -726,6 +760,7 @@
 
 #pragma mark- 获取程序所有的基础信息
 - (void)requestBasicInformation{
+    
     [self loadingHUDStartLoadingWithTitle:@"正在获取基础信息"];
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -742,6 +777,33 @@
             [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"provinces"] forKey:@"province"];
             [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"schools"] forKey:@"school"];
             
+            /* 把所有的城市信息提出来*/
+            
+            NSMutableArray *cities = [NSMutableArray arrayWithArray:dataDic[@"cities"]];
+            
+            dispatch_queue_t city = dispatch_queue_create("city", DISPATCH_QUEUE_SERIAL);
+            dispatch_async(city, ^{
+                
+                /* 写入完成后开始加工数据*/
+                [self makeCities:cities];
+                
+                
+                
+            });
+            
+            
+#pragma mark- 写完城市信息plist之后,开始定位
+            
+            if (YES) {
+                
+                [self getLocation];
+                
+                if ([CLLocationManager locationServicesEnabled]  //确定用户的位置服务启用
+                    &&[CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied){
+                    //位置服务是在设置中禁用
+                }
+            }
+            
             [self loadingHUDStopLoadingWithTitle:@"基础信息获取成功!"];
             
         }else{
@@ -749,17 +811,11 @@
             [self loadingHUDStopLoadingWithTitle:@"基础信息获取失败!"];
         }
         
-        
-        
-        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
     
-    
 }
-
-
 
 
 /* 进入消息中心*/
@@ -769,6 +825,230 @@
     [self.navigationController pushViewController:noticeVC animated:YES];
     
 }
+
+#pragma mark- 定位
+- (void)getLocation{
+    
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    
+    /** 由于IOS8中定位的授权机制改变 需要进行手动授权
+     * 获取授权认证，两个方法：
+     * [self.locationManager requestWhenInUseAuthorization];
+     * [self.locationManager requestAlwaysAuthorization];
+     */
+    if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+        NSLog(@"requestAlwaysAuthorization");
+        [self.locationManager requestAlwaysAuthorization];
+    }
+    
+    //开始定位，不断调用其代理方法
+    [self.locationManager startUpdatingLocation];
+    self.locationManager.delegate = self;
+    
+    NSLog(@"start gps");
+}
+
+
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error
+{
+    if (error.code == kCLErrorDenied) {
+        // 提示用户出错原因，可按住Option键点击 KCLErrorDenied的查看更多出错信息，可打印error.code值查找原因所在
+    }
+}
+
+#pragma mark Location and Delegate
+- (void)startLocation
+{
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    /** 由于IOS8中定位的授权机制改变 需要进行手动授权
+     * 获取授权认证，两个方法：
+     * [self.locationManager requestWhenInUseAuthorization];
+     * [self.locationManager requestAlwaysAuthorization];
+     */
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        NSLog(@"requestWhenInUseAuthorization");
+        //        [self.locationManager requestWhenInUseAuthorization];
+        [self.locationManager requestAlwaysAuthorization];
+    }
+    
+    
+    //开始定位，不断调用其代理方法
+    [self.locationManager startUpdatingLocation];
+    NSLog(@"start gps");
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+     didUpdateLocations:(NSArray *)locations
+{
+    // 1.获取用户位置的对象
+    CLLocation *location = [locations lastObject];
+    CLLocationCoordinate2D coordinate = location.coordinate;
+    NSLog(@"纬度:%f 经度:%f", coordinate.latitude, coordinate.longitude);
+    
+    // 获取当前所在的城市名
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    //根据经纬度反向地理编译出地址信息
+    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *array, NSError *error)
+     {
+         if (array.count > 0)
+         {
+             CLPlacemark *placemark = [array objectAtIndex:0];
+             //获取城市
+             //             NSString *city = placemark.locality;
+             NSString *subCity = placemark.subLocality;
+             [_location setTitle:subCity forState:UIControlStateNormal] ;
+             if (!subCity) {
+                 //四大直辖市的城市信息无法通过locality获得，只能通过获取省份的方法来获得（如果city为空，则可知为直辖市）
+                 subCity = placemark.administrativeArea;
+                 
+             }
+             
+         }
+         else if (error == nil && [array count] == 0)
+         {
+             NSLog(@"No results were returned.");
+         }
+         else if (error != nil)
+         {
+             NSLog(@"An error occurred = %@", error);
+         }
+     }];
+    
+    // 2.停止定位
+    [manager stopUpdatingLocation];
+}
+
+
+/* 地址选择*/
+- (void)choseLocation{
+    
+    TLCityPickerController *loactionController = [[TLCityPickerController alloc]init];
+    
+    loactionController.delegate = self;
+    
+    
+    [self .navigationController pushViewController:loactionController animated:YES];
+    
+    
+}
+
+- (void) cityPickerController:(TLCityPickerController *)cityPickerViewController
+                didSelectCity:(TLCity *)city{
+    
+    [_location setTitle:city.cityName forState:UIControlStateNormal];
+    [cityPickerViewController.navigationController popViewControllerAnimated:YES];
+    
+    
+}
+
+- (void) cityPickerControllerDidCancel:(TLCityPickerController *)cityPickerViewController{
+    
+    [cityPickerViewController.navigationController popViewControllerAnimated:YES];
+}
+
+
+/* 把获取到的城市列表进行加工,存为新的city.plist*/
+- (void)makeCities:(NSMutableArray *)citiesArray{
+    
+    /* 临时存放tlcity->mod的数组*/
+    NSMutableArray *modArr = @[].mutableCopy;
+     NSMutableArray *cityNames = @[].mutableCopy;
+    
+    /* 最终需要保存的大数组*/
+    NSMutableArray *fullCityList = @[].mutableCopy;
+    
+    
+    if (citiesArray) {
+        /* 遍历所有的城市名称*/
+        for (NSDictionary *city in citiesArray) {
+            
+            TLCity *mod = [TLCity yy_modelWithJSON:city];
+            mod.cityID = city[@"id"];
+            mod.cityName = city[@"name"];
+            mod.shortName =city[@"name"];
+            mod.pinyin  = [ChineseString sortString:city[@"name"]];
+            mod.initials = [ChineseString sortString:city[@"name"]];
+            
+            [cityNames addObject:mod.cityName];
+            
+            [modArr addObject:mod];
+            
+        }
+        
+        /* 字母顺序A-Z*/
+        NSMutableArray *cityOrder = [ChineseString IndexArray:cityNames];
+        NSLog(@"%@",cityOrder);
+        
+        /* 城市名称排序A-Z*/
+        NSMutableArray *newCityNames = [ChineseString LetterSortArray:cityNames];
+        
+        
+        NSMutableArray *groupArr = @[].mutableCopy;
+        NSMutableArray *groupArrDic = @{}.mutableCopy;
+       
+        NSMutableDictionary *citydic2 = @{}.mutableCopy;
+        NSMutableArray *cityArr2 = @[].mutableCopy;
+        
+        NSInteger letterIndex = 0;
+        for (NSArray *cityNameArr in newCityNames) {
+            NSMutableArray *cityArr3 = @[].mutableCopy;
+            for (NSString *cityName in cityNameArr) {
+                
+                for (TLCity *mod in modArr) {
+                    if ([mod.cityName isEqualToString:cityName]) {
+                        
+                        NSDictionary *dic = @{@"city_key":mod.cityID,@"city_name":mod.cityName,@"initials":mod.initials,@"pinyin":mod.pinyin,@"short_name":mod.shortName};
+                        [cityArr3 addObject:dic];
+                    }
+                    
+                }
+                [cityArr2 addObject:cityArr3];
+            }
+            [citydic2 setObject:cityArr2 forKey:@"citys"];
+            
+            [cityArr2 setValue:cityOrder[letterIndex] forKey:@"initial"];
+            letterIndex ++;
+        }
+        
+        
+        
+        
+        
+        
+        
+//        if (cityOrder.count == newCityNames.count) {
+//            
+//            for (NSInteger i = 0 ; i<cityOrder.count; i++) {
+//                
+//                NSDictionary *cityDic = @{@"citys":newCityNames[i],@"initial":cityOrder[i]};
+//                
+//                [fullCityList addObject:cityDic];
+//            }
+            
+            
+            
+            
+            
+            NSString *filePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"City.plist"];
+            //写入city.plist
+            [fullCityList writeToFile:filePath atomically:YES];
+
+//        }
+        
+    }
+    
+    _location.enabled = YES;
+    _navigationBar.leftButton.enabled = YES;
+    
+}
+
 
 
 - (void)didReceiveMemoryWarning {

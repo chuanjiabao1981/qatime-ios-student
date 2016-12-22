@@ -139,8 +139,6 @@ typedef enum : NSUInteger {
     /* 全屏模式下的刷新按钮*/
     UIButton *refresh_FS;
     
-    
-    
     /* 后台获取的直播状态存储字典*/
     NSDictionary *_statusDic;
     

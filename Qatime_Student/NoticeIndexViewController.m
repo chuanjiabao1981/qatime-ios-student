@@ -232,7 +232,7 @@
         }
         
         [self loadingHUDStopLoadingWithTitle:@"加载完成"];
-        [_noticeIndexView.chatListTableView reloadData];
+        [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -278,7 +278,7 @@
             
         }
         
-        [_noticeIndexView.noticeTableView reloadData];
+        [_noticeIndexView.noticeTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         

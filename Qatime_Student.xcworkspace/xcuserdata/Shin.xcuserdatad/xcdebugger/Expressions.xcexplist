@@ -41,10 +41,29 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[TLCityPickerController viewDidLoad]:TLCityPickerController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_titles">
+            </PersistentString>
+            <PersistentString
+               value = "_cities">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[UUMessageCell setMessageFrame:]:UUMessageCell.m">
          <PersistentStrings>
             <PersistentString
                value = "subStr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TLCityPickerController didSelctedCity:]:TLCityPickerController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.commonCitys">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -130,15 +149,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NoticeIndexViewController tableView:didSelectRowAtIndexPath:]:NoticeIndexViewController.m">
+         contextName = "__43-[NoticeIndexViewController requestNotices]_block_invoke:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[NELivePlayerViewController updateMembersList]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "membersName">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[NoticeIndexViewController tableView:didSelectRowAtIndexPath:]:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[VideoViewController tableView:numberOfRowsInSection:]:VideoViewController.m">
@@ -160,10 +174,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[ClassTimeViewController requestUnclosedClassList]:ClassTimeViewController.m">
+         contextName = "-[NELivePlayerViewController updateMembersList]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_unclosedArr">
+               value = "membersName">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -190,13 +204,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[ChatViewController makeMessages:]:ChatViewController.m">
+         contextName = "-[ClassTimeViewController requestUnclosedClassList]:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unclosedArr">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__34-[BindingViewController nextStep:]_block_invoke:BindingViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[AppDelegate jpushNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
+         contextName = "-[ChatViewController makeMessages:]:ChatViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[ChatViewController requestChatHitstory]:ChatViewController.m">
@@ -205,6 +224,9 @@
                value = "_session">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate jpushNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
@@ -221,9 +243,6 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__43-[NoticeIndexViewController requestNotices]_block_invoke:NoticeIndexViewController.m">
-      </ContextState>
-      <ContextState
          contextName = "-[ChatViewController dealTheFunctionData:]:ChatViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -233,6 +252,14 @@
       </ContextState>
       <ContextState
          contextName = "__35-[ChatViewController makeMessages:]_block_invoke:ChatViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[TLCityPickerController data]:TLCityPickerController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_data">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[PersonalInfoViewController tableView:cellForRowAtIndexPath:]:PersonalInfoViewController.m">
@@ -300,13 +327,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[MyOrderViewController scrollViewWillBeginDragging:]:MyOrderViewController.m">
+         contextName = "-[NoticeIndexViewController requestMyClass]:NoticeIndexViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "self.view.height_sd">
-            </PersistentString>
-            <PersistentString
-               value = "_unpaidView.mj_footer.mj_y">
+               value = "_chatListArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -314,10 +338,13 @@
          contextName = "__46-[NELivePlayerViewController requestClassInfo]_block_invoke_2:NELivePlayerViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[MyOrderViewController tableView:cellForRowAtIndexPath:]:MyOrderViewController.m">
+         contextName = "-[MyOrderViewController scrollViewWillBeginDragging:]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_paidArr">
+               value = "self.view.height_sd">
+            </PersistentString>
+            <PersistentString
+               value = "_unpaidView.mj_footer.mj_y">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -353,15 +380,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__50-[ChangePhoneViewController requestChangePasswrod]_block_invoke_2:ChangePhoneViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[NoticeIndexViewController requestMyClass]:NoticeIndexViewController.m">
+         contextName = "-[MyOrderViewController tableView:cellForRowAtIndexPath:]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_chatListArr">
+               value = "_paidArr">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__50-[ChangePhoneViewController requestChangePasswrod]_block_invoke_2:ChangePhoneViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[UUMessageFrame setMessage:]:UUMessageFrame.m">
@@ -376,6 +403,17 @@
       </ContextState>
       <ContextState
          contextName = "-[ChangePasswordViewController textDidChange:]:ChangePasswordViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[IndexPageViewController makeCities:]:IndexPageViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "cityOrder">
+            </PersistentString>
+            <PersistentString
+               value = "newCityNames">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__copy_helper_block_:CashRecordViewController.m">
@@ -427,18 +465,13 @@
          contextName = "__42-[ChatViewController requestServerHistory]_block_invoke:ChatViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[TLCityPickerController tableView:didSelectRowAtIndexPath:]:TLCityPickerController.m">
+      </ContextState>
+      <ContextState
          contextName = "__38-[OrderViewController finishAndCommit]_block_invoke:OrderViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController onRecvMessages:]:NELivePlayerViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "GLOBAL">
-         <PersistentStrings>
-            <PersistentString
-               value = "_chatModel">
-            </PersistentString>
-         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[NIMSessionViewController makeUI]:NIMSessionViewController.m">

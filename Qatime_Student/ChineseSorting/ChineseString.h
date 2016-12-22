@@ -24,4 +24,10 @@
 //返回一组字母排序数组(中英混排)
 +(NSMutableArray*)SortArray:(NSArray*)stringArr;
 
+
+/* 返回拼音*/
++(NSString *)sortString:(NSString *)sortStr;
+
+
+
 @end

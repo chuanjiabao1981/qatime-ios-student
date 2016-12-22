@@ -37,15 +37,17 @@
 
 - (UIButton *)leftButton{
     
-    _leftButton = [[UIButton alloc]initWithFrame:CGRectMake(10, 30, 30, 30)];
+    _leftButton = [[UIButton alloc]initWithFrame:CGRectMake(10*ScrenScale, 30, 30*ScrenScale, 30*ScrenScale)];
+    _leftButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:_leftButton];
+    
 
     return _leftButton;
 }
 
 -(UIButton *)rightButton{
     
-    _rightButton = [[UIButton alloc]initWithFrame:CGRectMake((CGRectGetWidth(self.frame)-50), 20, 40, 40)];
+    _rightButton = [[UIButton alloc]initWithFrame:CGRectMake(self.width_sd-50*ScrenScale, 30, 30*ScrenScale, 30*ScrenScale)];
     [self addSubview:_rightButton];
 
     return _rightButton;
@@ -56,7 +58,6 @@
 -(UILabel *)titleLabel{
     _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 20, CGRectGetWidth(self.frame)-120, 40)];
     [self addSubview:_titleLabel];
-    
     
     [_titleLabel setTextColor:[UIColor whiteColor]];
     [_titleLabel setTextAlignment:NSTextAlignmentCenter];

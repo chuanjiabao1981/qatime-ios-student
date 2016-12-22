@@ -30,8 +30,6 @@
         .rightEqualToView(self)
         .heightRatioToView(self,0.04);
         
-        
-        
     }
     return self;
 }
