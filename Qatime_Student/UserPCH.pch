@@ -46,10 +46,10 @@
 
 /* tabbar高度*/
 
-#define TabBar_Height 49;
+#define TabBar_Height 49
 
 /* navigation高度*/
-#define Navigation_Height 64;
+#define Navigation_Height 64
 
 
 

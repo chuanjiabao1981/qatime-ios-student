@@ -371,13 +371,13 @@
         .widthEqualToHeight();
         
         
-        
         /* 辅导课列表*/
         _classesListTableView = [[UITableView alloc]init];
         _classesListTableView.tableFooterView = [[UIView alloc]init];
         
         
         [_view3 addSubview:_classesListTableView];
+        
         _classesListTableView.sd_layout.leftSpaceToView(_view3,0).rightSpaceToView(_view3,0).topSpaceToView(_view3,0).bottomSpaceToView(_view3,0);
         
         

@@ -84,7 +84,13 @@
 - (void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
-    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+   
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear:animated];
+     [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
 }
 
 - (void)viewDidLoad {

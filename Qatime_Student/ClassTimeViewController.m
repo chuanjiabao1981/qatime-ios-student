@@ -437,7 +437,7 @@
         if (_unclosedArr.count !=0) {
             
             
-            height = self.view.height_sd*0.2;
+            height = self.view.height_sd*0.16;
             
         }
     }
@@ -446,7 +446,7 @@
         if (_closedArr.count !=0) {
             
             
-            height = self.view.height_sd*0.2;
+            height = self.view.height_sd*0.16;
             
         }
     }

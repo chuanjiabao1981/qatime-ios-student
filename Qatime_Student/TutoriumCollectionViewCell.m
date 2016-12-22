@@ -55,7 +55,8 @@
         [_teacherName setSingleLineAutoResizeWithMaxWidth:200];
         
         [_teacherName setText:@"老师姓名"];
-//        _teacherName.textAlignment = NSTextAlignmentLeft;
+        _teacherName.font = [UIFont systemFontOfSize:14];
+
         
         /* 价格label */
         /* 价格信息  预留接口model*/
@@ -68,7 +69,7 @@
         .topSpaceToView(_className,5)
         .rightSpaceToView(_teacherName,0)
         .autoHeightRatio(0);
-        
+        _price.font = [UIFont systemFontOfSize:14];
         _price.textAlignment = NSTextAlignmentLeft;
         
         

@@ -69,9 +69,6 @@
 
         NSLog(@"%@",_remember_token);
         
-        
-        
-        
     }
     return self;
 }
@@ -92,15 +89,12 @@
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     
-    
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"leftArrow"] forState:UIControlStateNormal];
     [self.view addSubview:_navigationBar];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastpage) forControlEvents:UIControlEventTouchUpInside];
     
-    
-    _tutoriumInfoView = [[TutoriumInfoView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
+    _tutoriumInfoView = [[TutoriumInfoView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64-TabBar_Height)];
     [self .view addSubview:_tutoriumInfoView];
-    
     
     /* 购买bar*/
     
@@ -111,7 +105,7 @@
     
     
     _tutoriumInfoView.scrollView.delegate = self;
-    _tutoriumInfoView.classesListTableView.scrollEnabled =NO;
+    _tutoriumInfoView.classesListTableView.scrollEnabled =YES;
     
     _tutoriumInfoView.segmentControl.selectionIndicatorHeight=2;
     _tutoriumInfoView.segmentControl.selectedSegmentIndex=0;
@@ -121,20 +115,18 @@
     [ _tutoriumInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
         [weakSelf.tutoriumInfoView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
     }];
-
-        self.tutoriumInfoView.scrollView.delegate = self;
-         self.tutoriumInfoView.scrollView.bounces=NO;
-         self.tutoriumInfoView.scrollView.alwaysBounceVertical=NO;
-          self.tutoriumInfoView.scrollView.alwaysBounceHorizontal=NO;
-        
-        [  self.tutoriumInfoView.scrollView scrollRectToVisible:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd) animated:YES];
     
+    self.tutoriumInfoView.scrollView.delegate = self;
+    self.tutoriumInfoView.scrollView.bounces=NO;
+    self.tutoriumInfoView.scrollView.alwaysBounceVertical=NO;
+    self.tutoriumInfoView.scrollView.alwaysBounceHorizontal=NO;
     
+    [  self.tutoriumInfoView.scrollView scrollRectToVisible:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd) animated:YES];
     
     _tutoriumInfoView.classesListTableView.delegate = self;
     _tutoriumInfoView.classesListTableView.dataSource = self;
     
-    _tutoriumInfoView.classesListTableView.bounces = NO;
+    _tutoriumInfoView.classesListTableView.bounces = YES;
     
     
     /* 根据传递过来的id 进行网络请求model*/
@@ -143,11 +135,7 @@
     _teacherModel = [[RecommandTeacher alloc]init];
     _classInfoTimeModel = [[ClassesInfo_Time alloc]init];
     
-    
-    
     _classListArray = @[].mutableCopy;
-    
-    
     
     [self requestClassesInfoWith:_classID];
     
@@ -157,10 +145,7 @@
     /* 注册重新加载页面数据的通知*/
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"RefreshTutoriumInfo" object:nil];
-    
-    
 
-    
     
 }
 
@@ -515,8 +500,6 @@
 - (void)updateTableView{
     
     [_tutoriumInfoView.classesListTableView reloadData];
-    [_tutoriumInfoView.classesListTableView setNeedsDisplay];
-    [_tutoriumInfoView.classesListTableView setNeedsLayout];
     
     [_navigationBar .titleLabel setText:_classModel.name];
     
@@ -525,10 +508,14 @@
 // 滑动代理
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
    
-    CGFloat pageWidth = scrollView.frame.size.width;
-    NSInteger page = scrollView.contentOffset.x / pageWidth;
+    if (scrollView == _tutoriumInfoView.scrollView) {
+        
+        CGFloat pageWidth = scrollView.frame.size.width;
+        NSInteger page = scrollView.contentOffset.x / pageWidth;
+        
+        [_tutoriumInfoView.segmentControl setSelectedSegmentIndex:page animated:YES];
+    }
     
-    [_tutoriumInfoView.segmentControl setSelectedSegmentIndex:page animated:YES];
 }
 
 
@@ -588,7 +575,7 @@
 
             ClassesInfo_Time *mod = _classListArray[indexPath.row];
             cell.model = mod;
-
+            
             [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
         }
         
@@ -677,9 +664,9 @@
     
     if (classDesc_height>teacherDesc_height) {
         
-        [_tutoriumInfoView setContentSize:CGSizeMake(self.view.width_sd, classDesc_height+40)];
+        [_tutoriumInfoView setContentSize:CGSizeMake(self.view.width_sd, classDesc_height+40+TabBar_Height)];
     }else {
-         [_tutoriumInfoView setContentSize:CGSizeMake(self.view.width_sd, teacherDesc_height+40)];
+         [_tutoriumInfoView setContentSize:CGSizeMake(self.view.width_sd, teacherDesc_height+40+TabBar_Height)];
         
     }
     
@@ -688,7 +675,7 @@
     .leftSpaceToView(_tutoriumInfoView.view3,0)
     .rightSpaceToView(_tutoriumInfoView.view3,0)
     .topSpaceToView(_tutoriumInfoView.view3,0)
-    .heightIs(_tutoriumInfoView.contentSize.height-_tutoriumInfoView.scrollView.origin.y);
+    .heightIs(_tutoriumInfoView.contentSize.height);
     
     
 }
