@@ -48,10 +48,12 @@
         if (![[NSFileManager defaultManager]fileExistsAtPath:userFilePath]) {
             
             /* 如果没有登录信息,登录页作为root*/
+            
             _loginViewController = [[LoginViewController alloc]init];
             UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
             
             [_window setRootViewController:naviVC];
+            
         }else{
             
             _viewController = [[ViewController alloc]init];
@@ -308,7 +310,12 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     _viewController = [[ViewController alloc]init];
     
-    [_window setRootViewController:_viewController];
+    [UIView transitionFromView:_window.rootViewController.view toView:_viewController.view duration:0.5 options:UIViewAnimationOptionTransitionFlipFromRight completion:^(BOOL finished) {
+        
+        [_window setRootViewController:_viewController];
+    }];
+    
+    
     
 }
 
@@ -318,9 +325,16 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Login"];
     
      _loginViewController = [[LoginViewController alloc]init];
+    
     UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
     
-    [_window setRootViewController:naviVC];
+    [UIView transitionFromView:_window.rootViewController.view toView:_loginViewController.view duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
+        
+        [_window setRootViewController:naviVC];
+    }];
+    
+    
+    
     
     
 }
@@ -395,8 +409,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             }else if (resp.errCode == -2){
                 /* 取消登录*/
                 
-                
-            
             
             
         }

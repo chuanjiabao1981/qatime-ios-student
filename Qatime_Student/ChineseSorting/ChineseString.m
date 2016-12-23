@@ -16,7 +16,6 @@
 +(NSMutableArray*)IndexArray:(NSArray*)stringArr
 {
     
-    
     NSMutableArray *tempArray = [self ReturnSortChineseArrar:stringArr];
     NSMutableArray *A_Result = [NSMutableArray array];
     NSString *tempString ;
@@ -166,4 +165,37 @@
     }
     return str;
 }
+
+
++(NSString *)sortString:(NSString *)sortStr{
+    
+    //  把汉字转换成拼音第一种方法
+    NSString *str = [[NSString alloc]initWithFormat:@"%@", sortStr];
+    // NSString 转换成 CFStringRef 型
+    CFStringRef string1 = (CFStringRef)CFBridgingRetain(str);
+//    NSLog(@"%@", str);
+    //  汉字转换成拼音
+    CFMutableStringRef string = CFStringCreateMutableCopy(NULL, 0, string1);
+    //  拼音（带声调的）
+    CFStringTransform(string, NULL, kCFStringTransformMandarinLatin, NO);
+//    NSLog(@"%@", string);
+    //  去掉声调符号
+    CFStringTransform(string, NULL, kCFStringTransformStripDiacritics, NO);
+//    NSLog(@"%@", string);
+    //  CFStringRef 转换成 NSString
+    NSString *strings = (NSString *)CFBridgingRelease(string);
+    //  去掉空格
+    NSString *cityString = [strings stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSLog(@"%@", cityString);
+    
+    return cityString;
+
+}
+
+
+
+
+
+
+
 @end

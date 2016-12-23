@@ -23,11 +23,11 @@
         
 #pragma mark- 滑动导航栏
         
-        _segmentControl = [[HMSegmentedControl alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 40)];
+        _segmentControl = [[HMSegmentedControl alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, self.height_sd*0.055)];
         [self addSubview:_segmentControl];
         _segmentControl .sectionTitles = @[@"未上课",@"已上课"];
-        _segmentControl.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor lightGrayColor]};
-        _segmentControl.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor]};
+        _segmentControl.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor lightGrayColor],NSFontAttributeName:[UIFont systemFontOfSize:16]};
+        _segmentControl.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor],NSFontAttributeName:[UIFont systemFontOfSize:16]};
         _segmentControl.type = HMSegmentedControlTypeText;
         _segmentControl.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
         _segmentControl.selectionIndicatorColor = [UIColor colorWithRed:181/255.0f green:0 blue:0 alpha:1.0f];

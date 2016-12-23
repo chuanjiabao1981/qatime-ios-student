@@ -8,8 +8,9 @@
 
 #import "SignUpInfoViewController.h"
 #import "HcdDateTimePickerView.h"
-#import "GradeList.h"
+
 #import "MMPickerView.h"
+#import "GradeList.h"
 
 
 @interface SignUpInfoViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIPickerViewDataSource,UIPickerViewDelegate>{

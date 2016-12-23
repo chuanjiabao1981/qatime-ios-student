@@ -479,19 +479,19 @@
                     
                     /* 另存一份userdefault  只存chat_account*/
                     
-                    NSDictionary *chat_accountDic = [NSDictionary dictionaryWithDictionary:[[dicGet valueForKey:@"user"]valueForKey:@"chat_account"]];
+                    NSDictionary *userDic =[NSDictionary dictionaryWithDictionary:[dicGet valueForKey:@"user"]];
                     
-                    NSLog(@"%@",chat_accountDic);
+                    NSLog(@"%@",userDic);
                     
-                    
-                    
-                    
-                    
-                    
-                    [[NSUserDefaults standardUserDefaults]setObject:chat_accountDic forKey:@"chat_account"];
-                    
-                    
-                    
+                    if ([userDic valueForKey:@"chat_account"]!=nil&&![[userDic valueForKey:@"chat_account"] isEqual:[NSNull null]]) {
+                        
+                        NSDictionary *chat_accountDic = [NSDictionary dictionaryWithDictionary:[userDic valueForKey:@"chat_account"]];
+                        
+                        NSLog(@"%@",chat_accountDic);
+                        
+                        
+                        [[NSUserDefaults standardUserDefaults]setObject:chat_accountDic forKey:@"chat_account"];
+                    }
                     
                 }else{
                     

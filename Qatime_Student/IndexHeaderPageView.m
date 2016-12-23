@@ -7,6 +7,7 @@
 //
 
 #import "IndexHeaderPageView.h"
+#import "YZSquareMenuCell.h"
 
 @interface IndexHeaderPageView ()
 /**<,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>*/

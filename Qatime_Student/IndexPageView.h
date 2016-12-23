@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SDCycleScrollView.h"
 #import "YZSquareMenu.h"
-#import "YZSquareMenuCell.h"
+
 #import "IndexHeaderPageView.h"
 
 @interface IndexPageView : UIView

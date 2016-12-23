@@ -139,8 +139,6 @@ typedef enum : NSUInteger {
     /* 全屏模式下的刷新按钮*/
     UIButton *refresh_FS;
     
-    
-    
     /* 后台获取的直播状态存储字典*/
     NSDictionary *_statusDic;
     
@@ -418,7 +416,7 @@ bool ismute     = NO;
     /* 老师摄像头的 播放器*/
     
     dispatch_queue_t teacher = dispatch_queue_create("teacher", DISPATCH_QUEUE_SERIAL);
-    dispatch_sync(teacher, ^{
+    dispatch_async(teacher, ^{
         
         
         _liveplayerTeacher = [[NELivePlayerController alloc] initWithContentURL:_teacherPullAddress];
@@ -640,11 +638,17 @@ bool ismute     = NO;
     
     _liveplayerTeacher = [[NELivePlayerController alloc] initWithContentURL:_teacherPullAddress];
     
+    [_liveplayerTeacher play];
+    
+    
+    [_teacherPlayerView addSubview:_liveplayerTeacher.view];
+    
     if (_liveplayerTeacher == nil) {
         // 返回空则表示初始化失败
         NSLog(@"player initilize failed, please tay again!");
     }else{
-        _liveplayerTeacher.view.sd_layout
+        
+        _liveplayerTeacher.view.sd_resetLayout
         .leftEqualToView(_teacherPlayerView)
         .rightEqualToView(_teacherPlayerView)
         .topEqualToView(_teacherPlayerView)
@@ -652,12 +656,15 @@ bool ismute     = NO;
     }
     
     _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:_boardPullAddress];
+    [_liveplayerBoard play];
+    [_boardPlayerView addSubview:_liveplayerBoard.view];
     
     if (_liveplayerBoard == nil) {
         // 返回空则表示初始化失败
         NSLog(@"player initilize failed, please tay again!");
     }else{
-        _liveplayerBoard.view.sd_layout
+        
+        _liveplayerBoard.view.sd_resetLayout
         .leftEqualToView(_boardPlayerView)
         .rightEqualToView(_boardPlayerView)
         .topEqualToView(_boardPlayerView)

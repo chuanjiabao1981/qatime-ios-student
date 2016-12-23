@@ -22,7 +22,7 @@
 
 /* 测试和生产环境域名的转换*/
 
-#define Request_Header @"http://testing.qatime.cn"
+#define Request_Header @"http://qatime.cn"
 
 /* 全局绿色*/
 #define USERGREEN  [UIColor colorWithRed:26/255.0 green:183/255.0 blue:159/255.0 alpha:1.0]
@@ -46,11 +46,13 @@
 
 /* tabbar高度*/
 
-#define TabBar_Height 49;
+#define TabBar_Height 49
 
 /* navigation高度*/
-#define Navigation_Height 64;
+#define Navigation_Height 64
 
+/* 屏幕适配比例*/
+#define ScrenScale [UIScreen mainScreen].bounds.size.width/414.0
 
 
 #import "UIView+FontSize.h"

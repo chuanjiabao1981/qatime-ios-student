@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RecommandTeacher.h"
 
 @interface YZSquareMenuCell : UICollectionViewCell
     
@@ -18,4 +19,6 @@
 
 /* 附加属性*/
 @property(nonatomic,strong) NSString *teacherID ;
+
+
 @end

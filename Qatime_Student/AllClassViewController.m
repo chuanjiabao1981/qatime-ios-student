@@ -192,8 +192,8 @@
 /* 跟新tableview*/
 - (void)updateTable{
     
-    [_classTableView reloadData];
-    [_classTableView setNeedsDisplay];
+    [_classTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+   
     
     [self  loadingHUDStopLoadingWithTitle:@"加载完成"];
 
@@ -395,16 +395,24 @@
                 
                 [_dataArr addObject:mod];
                 
-                _haveNoClassView.hidden = YES;
+                
             }else{
                 
-                _haveNoClassView.hidden = NO;
+                
                 
             }
         }
         
     }else{
         
+        
+    }
+    
+    if (_dataArr.count>0) {
+        
+        _haveNoClassView.hidden = YES;
+        
+    }else{
         _haveNoClassView.hidden = NO;
     }
     

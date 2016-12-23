@@ -15,7 +15,7 @@
 #import "RDVTabBarController.h"
 #import "NSString+UTF8Coding.h"
 #import "HcdDateTimePickerView.h"
-//#import "MBProgressHUD.h"
+#import "MMPickerView.h"
 #import "UIViewController_HUD.h"
 
 #import "TutoriumInfoViewController.h"
@@ -100,15 +100,12 @@
     TutoriumListInfo *infoModel;
     
     
-    /* 本地沙盒缓存路径*/
+    /* 本地沙盒缓存路径<-筛选记录*/
     NSString *_tutoriumListFilePath;
     
     
     
     /* 筛选功能*/
-    UIPickerView *_timePickerView;
-    UIPickerView *_gradePickerView;
-    UIPickerView *_subjectPickerView;
     NSMutableArray *_gradeFilterArr;
     NSArray *_subjectArr;
     
@@ -121,17 +118,18 @@
     /* 模糊背景*/
     UIVisualEffectView *effectView;
     
-    
     /* token*/
     NSString *_remember_token;
-    
-    
     
     /* 下拉还是上滑   0为下拉重载  1为上滑刷新*/
     
     NSInteger pull;
     
-
+    
+    
+    /* 是否已经做过筛选操作*/
+    BOOL hadDoneFilter;
+    
     
     
 }
@@ -144,15 +142,12 @@
     
     [super viewWillAppear:animated];
     
-    
 }
 
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self.rdv_tabBarController setTabBarHidden:NO];
-    
-    
     
     
 }
@@ -163,8 +158,6 @@
     self.navigationController.navigationBarHidden = YES;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
-
-//    [self.rdv_tabBarController setTabBarHidden:NO];
     
     [self loadingHUDStartLoadingWithTitle:@"正在加载"];
     
@@ -173,57 +166,54 @@
     
     
     /* 字段初始化*/
-    _filterGrade = [NSString string];
-    _filterSubject = [NSString string];
+    _filterGrade = @"".mutableCopy;
+    _filterSubject = @"".mutableCopy;
     
-    sort_By = [NSString string];
+    sort_By = @"".mutableCopy;
     
     /* 多选字段初始化*/
-    _price_floor =[NSString string];
-    _price_ceil = [NSString string];
-    _class_date_floor =[NSString string];
-    _class_date_ceil =[NSString string];
-    _preset_lesson_count_floor =[NSString string];
-    _preset_lesson_count_ceil =[NSString string];
-    _class_status =[NSString string];
+    _price_floor = @"".mutableCopy;
+    _price_ceil = @"".mutableCopy;
+    _class_date_floor = @"".mutableCopy;
+    _class_date_ceil = @"".mutableCopy;
+    _preset_lesson_count_floor = @"".mutableCopy;
+    _preset_lesson_count_ceil = @"".mutableCopy;
+    _class_status = @"".mutableCopy;
     
     /* 筛选请求接口初始化字段*/
     
     _requestUrl =[NSString stringWithFormat:@"%@/api/v1/live_studio/courses?",Request_Header];
     
-    
     _filterDic = [NSMutableDictionary dictionaryWithObjects:@[_filterGrade,_filterSubject, sort_By,_price_floor,_price_ceil,_class_date_floor,_class_date_ceil,_preset_lesson_count_floor,_preset_lesson_count_ceil,_class_status] forKeys:@[@"grade",@"subject",@"sort_by",@"price_floor",@"price_ceil",@"class_date_floor",@"class_date_ceil",@"preset_lesson_count_floor",@"preset_lesson_count_ceil",@"status"]];
     
+    /* 本地缓存的沙盒路径*/
+    _tutoriumListFilePath=[[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"Tutorium_List"];
     
+    [[NSFileManager defaultManager]removeItemAtPath:_tutoriumListFilePath error:nil];
     
-    
-        
+    /* 是否有过筛选记录->赋值页数*/
     if ([[NSFileManager defaultManager]fileExistsAtPath:_tutoriumListFilePath]) {
         
         NSDictionary *dic=[NSDictionary dictionaryWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithFile:_tutoriumListFilePath]];
+        
         page  = [[dic valueForKey:@"page"]integerValue ];
-        NSLog(@"%ld",page);
         
     }else{
         
         page = 1;
     }
-        per_Page = 10;
-        listArr= [[NSMutableArray alloc]init];
-        infoModel = [[TutoriumListInfo alloc]init];
-        
-        /* 本地缓存的沙盒路径*/
-        _tutoriumListFilePath=[[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"Tutorium_List"];
-        
-        
+    per_Page = 10;
+    listArr= [NSMutableArray array];
+    infoModel = [[TutoriumListInfo alloc]init];
+    
 #pragma mark- 筛选条件状态存储
     
-        _requestResaultURL = @"".mutableCopy;
-        _filterArr = @[].mutableCopy;
-        
-        [[NSFileManager defaultManager]removeItemAtPath:_tutoriumListFilePath error:nil];
+    _requestResaultURL = @"".mutableCopy;
+    _filterArr = @[].mutableCopy;
+    
+    
 #pragma mark- 接受数据加载完成的消息
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loadData:) name:@"DataLoaded" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loadData:) name:@"DataLoaded" object:nil];
 #pragma mark- 加载model数据
     
     /* 在初始化阶段 如果用户在首页选择了科目*/
@@ -233,21 +223,13 @@
     if (!([[NSUserDefaults standardUserDefaults]objectForKey:@"SubjectChosen"]== NULL)) {
         
         /* 初次请求数据 ，请求课程列表的所有数据 */
-       
+        
         NSString *sub =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"SubjectChosen"]];
-        
-        
         [_filterDic setValue:sub forKey:@"subject"];
-        
-        
-        
         [self sendFilterStatus:_filterDic];
-        
         [_tutoriumView.subjectButton setTitle:sub forState:UIControlStateNormal];
         
     }else{
-    
-    
         /* 如果本地存在缓存数据*/
         if ([[NSFileManager defaultManager]fileExistsAtPath:_tutoriumListFilePath]){
             
@@ -261,36 +243,17 @@
         }
     }
     
-#pragma mark- 加载年级信息
-        
-        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager GET:[NSString stringWithFormat:@"%@/api/v1/app_constant/grades",Request_Header] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            
-            NSArray * grade = [[NSArray alloc]initWithArray:[[[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] valueForKey:@"data"]valueForKey:@"grades"]];
-            
-            /* 年级信息归档*/
-            [[NSUserDefaults standardUserDefaults]setObject:grade forKey:@"grade"];
-            
-            
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            
-        }];
-    
-    
     
 #pragma mark- 导航栏
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
     [self.view addSubview:_navigationBar];
     [_navigationBar.titleLabel setText:@"辅导班"];
-//    _navigationBar.backgroundColor = [UIColor colorWithRed:190/255.0f green:11/255.0f blue:11/255.0f alpha:1.0f];
     
     
     _tutoriumView = [[TutoriumView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-49)];
     [self .view addSubview:_tutoriumView];
     
-    /* 瀑布流视图的代理*/
+    /* 集合视图的代理*/
     _tutoriumView.classesCollectionView.delegate = self;
     _tutoriumView.classesCollectionView.dataSource = self;
     
@@ -302,82 +265,66 @@
     
 #pragma mark- collection 下拉加载  上滑刷新
     /* collection下拉加载  上滑刷新*/
-    
     /* 下拉的block*/
     _tutoriumView.classesCollectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        
-        
         /* 在有筛选条件的情况下 进行下拉数据的重载*/
         if ([[NSUserDefaults standardUserDefaults]objectForKey:@"FilterURL"]) {
-            
             NSLog(@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"FilterURL"]);
-            
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
             [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
-            [manager GET:[[NSUserDefaults standardUserDefaults]objectForKey:@"FilterURL"] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                
+            [manager GET:[[NSUserDefaults standardUserDefaults]objectForKey:@"FilterURL"] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject){
                 /* 先判断token*/
                 if (![self isTokenRight:responseObject]) {
-                    
                     /* 需要重新登录*/
                     [self needUpdateToken];
-                    
                 }else{
-
+                    listDic =@{};
+                    [listArr removeAllObjects];
                     
-                
-                listDic =@{};
-                [listArr removeAllObjects];
-                
-                /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
-                _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
-                
-                
-                NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
-                
-                
-                
-                /* 缓存数据源添加获取的Model*/
-                [listArr addObject:_tutroiumList];
-                
-                NSLog(@"%@",listArr[0].data);
-                NSLog(@"%ld",listArr.count);
-                
-                listDic = @{@"page":@"1",
-                            @"per_page":@"1",
-                            @"filterGrade":@"",
-                            @"filterSubject":@"",
-                            @"filterStatus":@"1",
-                            @"listArr":listArr
-                            };
-                
-                /* 测试代码*/
-                TutoriumList *tu =[[TutoriumList alloc]init];
-                tu = listDic[@"listArr"];
-                
-                //        NSLog(@"%@",tu.tutoriumListInfo);
-                
-                /* 获取到的数据缓存到本地*/
-                /* 保存的数据中含有自定义对象，保存到沙盒*/
-                [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
-                
-                /* 本地状态变化*/
-                //        savedDic =[NSDictionary dictionaryWithDictionary: listDic];
-                
-                
-                
-                /* 加载数据完成后  视图重新加载数据*/
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
-                
-                [self loadData:nil];
-                
-                NSLog(@"加载数据完成。");
+                    /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
+                    _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
+                    
+                    NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
+                    
+                    /* 缓存数据源添加获取的Model*/
+                    [listArr addObject:_tutroiumList];
+                    
+                    NSLog(@"%@",listArr[0].data);
+                    NSLog(@"%ld",listArr.count);
+                    
+                    listDic = @{@"page":@"1",
+                                @"per_page":@"1",
+                                @"filterGrade":@"",
+                                @"filterSubject":@"",
+                                @"filterStatus":@"1",
+                                @"listArr":listArr
+                                };
+                    
+                    /* 测试代码*/
+                    TutoriumList *tu =[[TutoriumList alloc]init];
+                    tu = listDic[@"listArr"];
+                    
+                    //        NSLog(@"%@",tu.tutoriumListInfo);
+                    
+                    /* 获取到的数据缓存到本地*/
+                    /* 保存的数据中含有自定义对象，保存到沙盒*/
+                    [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
+                    
+                    /* 本地状态变化*/
+                    //        savedDic =[NSDictionary dictionaryWithDictionary: listDic];
+                    
+                    /* 加载数据完成后  视图重新加载数据*/
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
+                    
+                    [self loadData:nil];
+                    
+                    NSLog(@"加载数据完成。");
                 }
                 
                 
-                
+                [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
             }];
@@ -386,7 +333,6 @@
             
             
         }else{
-            
             
             /* 在没有筛选数据的情况，进行下拉加载*/
             NSDictionary *dic=[NSDictionary dictionaryWithDictionary: [NSKeyedUnarchiver unarchiveObjectWithFile:_tutoriumListFilePath]];
@@ -398,26 +344,20 @@
             
         }
         [_tutoriumView.classesCollectionView.mj_header endRefreshing];
+        [self loadingHUDStopLoadingWithTitle:@"加载完毕!"];
         
     }];
     
     /* 上滑的block*/
     _tutoriumView.classesCollectionView.mj_footer =[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-
+        
         page ++;
         
         NSLog(@"%ld",page);
         
         /* 上滑 请求更多数据*/
+        [self requestDataWithGrade:_filterGrade andSubject:_filterSubject andPage:page andPerPage:per_Page withPull:1];
         
-        if (_filterArr.count!=0) {
-            
-            [self requestDataWithGrade:_filterGrade andSubject:_filterSubject andPage:page andPerPage:per_Page withPull:1];
-        }else{
-            
-        }
-        
-        [_tutoriumView.classesCollectionView.mj_footer endRefreshing];
         
     }];
     
@@ -509,8 +449,6 @@
     
     NSString *subj =[NSString stringWithFormat:@"%@",[notification object]];
     
-    
-    
     [_filterDic setValue:subj forKey:@"subject"];
     [self sendFilterStatus:_filterDic];
     
@@ -544,10 +482,6 @@
     }
     
     
-    
-    
-    
-    
 }
 
 
@@ -558,8 +492,6 @@
     
     [_multiFilterView.lowPrice resignFirstResponder];
     [_multiFilterView.highPrice resignFirstResponder];
-//    [_multiFilterView.class_Low resignFirstResponder];
-//    [_multiFilterView.class_High resignFirstResponder];
     
     
     __block MultiFilterView *weakView = _multiFilterView;
@@ -617,16 +549,12 @@
     
     _class_date_ceil =_multiFilterView.endTime.titleLabel.text;
     
-//    _preset_lesson_count_floor =_multiFilterView.class_Low.text;
-//    
-//    _preset_lesson_count_ceil =_multiFilterView.class_High.text;
     [_filterDic setValue:_multiFilterView.lowPrice.text forKey:@"price_floor"];
     [_filterDic setValue:_multiFilterView.highPrice.text  forKey:@"price_ceil"];
     [_filterDic setValue:_multiFilterView.startTime.titleLabel.text  forKey:@"class_date_floor"];
     
     [_filterDic setValue:_multiFilterView.endTime.titleLabel.text  forKey:@"class_date_ceil"];
-//    [_filterDic setValue:_multiFilterView.class_Low.text forKey:@"preset_lesson_count_floor"];
-//    [_filterDic setValue:_multiFilterView.class_High.text forKey:@"preset_lesson_count_ceil"];
+
     
     if ([_multiFilterView.class_Begin isSelected]&&[_multiFilterView.recuit isSelected]) {
         
@@ -646,17 +574,19 @@
         
     }
     
-    
     NSLog(@"%@",_filterDic);
     
     [self sendFilterStatus:_filterDic];
     
     [self textfileRespond];
-    [effectView removeFromSuperview];
-    [_multiFilterView removeFromSuperview];
-    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
-    
-    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        effectView.alpha = 0;
+        
+        [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd*2/5.0f)];
+        [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+    }];
+
     
 }
 
@@ -692,10 +622,7 @@
     [_multiFilterView.lowPrice setText:@""];
     [_multiFilterView.highPrice resignFirstResponder];
     [_multiFilterView.highPrice setText:@""];
-//    [_multiFilterView.class_Low resignFirstResponder];
-//    [_multiFilterView.class_Low setText:@""];
-//    [_multiFilterView.class_High resignFirstResponder];
-//    [_multiFilterView.class_High setText:@""];
+    
     
 }
 
@@ -717,66 +644,50 @@
         [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd*3/5.0f, self.view.width_sd, self.view.height_sd*2/5.0f)];
     }];
     
-    
-    
 }
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
-    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
     
     [self textfileRespond];
     
-    [effectView removeFromSuperview];
-    
     [UIView animateWithDuration:0.3 animations:^{
         
+        effectView.alpha = 0;
+        
         [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd*2/5.0f)];
+        [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+    }];
+    
+    
+    [self performSelector:@selector(effectviewRemove) withObject:nil afterDelay:0.5];
+    
+    
+    [MMPickerView dismissWithCompletion:^(NSString *dismissString) {
+        
     }];
 }
 
-
+- (void)effectviewRemove{
+     effectView.alpha = 1;
+    
+    [effectView removeFromSuperview];
+}
 
 #pragma mark- 按时间、价格筛选按钮点击事件
 - (void)sortByTimeAndPrice{
     
     [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
-    _timePickerView=[[UIPickerView alloc]init];
-    _timePickerView.delegate = self;
-    _timePickerView.dataSource = self;
-    _timePickerView.backgroundColor = [UIColor whiteColor];
-    
-    
     _timeFilterStr  =@[@"按时间",@"按价格-低到高",@"按价格-高到低",@"按购买人数"];
-    /* 顶视图*/
-    UIView *barView=[[UIView alloc]init];
-    [barView setBackgroundColor:[UIColor redColor]];
-    /* 确认按钮*/
-    UIButton *yedButton = [[UIButton alloc]init];
-    
-    [yedButton setTitle:@"确定" forState:UIControlStateNormal];
-    [yedButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    UIBlurEffect *effect=[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-    effectView=[[UIVisualEffectView alloc]initWithFrame:self.view.bounds];
-    [effectView setEffect:effect];
-    [self.view addSubview:effectView];
-    
-    /* 点击确定按钮  原按钮字符变化，并发筛选请求数据*/
-    [yedButton addTarget: self action:@selector(selectedTimeFilter:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    [effectView addSubview:_timePickerView];
-    _timePickerView.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomEqualToView(self.view).heightRatioToView(self.view,0.25f);
-    [effectView addSubview:barView];
-    
-    
-    
-    barView.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomSpaceToView(_timePickerView,0).heightRatioToView(_timePickerView,0.2f);
-    [barView addSubview:yedButton];
-    yedButton.sd_layout.rightSpaceToView(barView,5).topSpaceToView(barView,0).bottomSpaceToView(barView,0).widthRatioToView(barView,0.25);
-    
-    
+    [MMPickerView showPickerViewInView:_tutoriumView withStrings:_timeFilterStr withOptions:@{MMfont:[UIFont systemFontOfSize:20]} completion:^(NSString *selectedString) {
+        
+        [_tutoriumView.timeButton setTitle:selectedString forState:UIControlStateNormal];
+        
+        [self selectedTimeFilter];
+        
+        hadDoneFilter = YES;
+    }];
     
 }
 
@@ -785,43 +696,20 @@
 - (void)sortByGrade{
     [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
-    _gradePickerView=[[UIPickerView alloc]init];
-    _gradePickerView.delegate = self;
-    _gradePickerView.dataSource = self;
-    _gradePickerView.backgroundColor = [UIColor whiteColor];
-    
     
     _gradeFilterArr =  [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"grade"]];
     
     [_gradeFilterArr insertObject:@"全部年级" atIndex:0];
     
-    /* 顶视图*/
-    UIView *barView=[[UIView alloc]init];
-    [barView setBackgroundColor:[UIColor redColor]];
-    /* 确认按钮*/
-    UIButton *yedButton = [[UIButton alloc]init];
-    
-    [yedButton setTitle:@"确定" forState:UIControlStateNormal];
-    [yedButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    UIBlurEffect *effect=[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-    effectView=[[UIVisualEffectView alloc]initWithFrame:self.view.bounds];
-    [effectView setEffect:effect];
-    [self.view addSubview:effectView];
-    
-    /* 点击确定按钮  原按钮字符变化，并发筛选请求数据*/
-    [yedButton addTarget: self action:@selector(selectedGradeFilter:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    [effectView addSubview:_gradePickerView];
-    _gradePickerView.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomEqualToView(self.view).heightRatioToView(self.view,0.25f);
-    [effectView addSubview:barView];
-    
-    
-    
-    barView.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomSpaceToView(_gradePickerView,0).heightRatioToView(_gradePickerView,0.2f);
-    [barView addSubview:yedButton];
-    yedButton.sd_layout.rightSpaceToView(barView,5).topSpaceToView(barView,0).bottomSpaceToView(barView,0).widthRatioToView(barView,0.25);
-    
+    [MMPickerView showPickerViewInView:_tutoriumView withStrings:_gradeFilterArr withOptions:@{MMfont:[UIFont systemFontOfSize:20]} completion:^(NSString *selectedString) {
+        
+        [_tutoriumView.gradeButton setTitle:selectedString forState:UIControlStateNormal];
+        
+        [self selectedGradeFilter];
+        
+        hadDoneFilter = YES;
+        
+    }];
     
     
 }
@@ -829,144 +717,25 @@
 #pragma mark- 按科目筛选
 - (void)sortBySubject{
     
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
-    
-    _subjectPickerView=[[UIPickerView alloc]init];
-    _subjectPickerView.delegate = self;
-    _subjectPickerView.dataSource = self;
-    _subjectPickerView.backgroundColor = [UIColor whiteColor];
-    
-    
     _subjectArr=@[@"全部",@"语文",@"数学",@"英语",@"物理",@"化学",@"地理",@"政治",@"历史",@"科学",@"生物"];
     
-    /* 顶视图*/
-    UIView *barView=[[UIView alloc]init];
-    [barView setBackgroundColor:[UIColor redColor]];
-    /* 确认按钮*/
-    UIButton *yedButton = [[UIButton alloc]init];
-    
-    [yedButton setTitle:@"确定" forState:UIControlStateNormal];
-    [yedButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    UIBlurEffect *effect=[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-    effectView=[[UIVisualEffectView alloc]initWithFrame:self.view.bounds];
-    [effectView setEffect:effect];
-    [self.view addSubview:effectView];
-    
-    /* 点击确定按钮  原按钮字符变化，并发筛选请求数据*/
-    [yedButton addTarget: self action:@selector(selectedSubjectFilter:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    [effectView addSubview:_subjectPickerView];
-    _subjectPickerView.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomEqualToView(self.view).heightRatioToView(self.view,0.25f);
-    [effectView addSubview:barView];
-    
-    
-    
-    barView.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomSpaceToView(_subjectPickerView,0).heightRatioToView(_subjectPickerView,0.2f);
-    [barView addSubview:yedButton];
-    yedButton.sd_layout.rightSpaceToView(barView,5).topSpaceToView(barView,0).bottomSpaceToView(barView,0).widthRatioToView(barView,0.25);
-    
-    
+    [MMPickerView showPickerViewInView:_tutoriumView withStrings:_subjectArr withOptions:@{MMfont:[UIFont systemFontOfSize:20]} completion:^(NSString *selectedString) {
+        
+        [_tutoriumView.subjectButton setTitle:selectedString forState:UIControlStateNormal];
+        
+        [self selectedSubjectFilter];
+        
+        hadDoneFilter = YES;
+        
+    }];
 }
 
 
 
 
-
-
-
-#pragma mark- pickerView的代理方法
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
-    
-    return 1;
-    
-}
-
-/* pickerView的行数*/
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
-    
-    NSInteger rows = 0;
-    
-    if (pickerView == _timePickerView) {
-        
-        rows =  4;
-        
-    }
-    if (pickerView == _gradePickerView) {
-        
-        rows = _gradeFilterArr.count;
-    }
-    if (pickerView == _subjectPickerView) {
-        rows = _subjectArr.count;
-    }
-    
-    return rows;
-}
-
-/* 每个选项的title*/
-- (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    
-    
-    NSString *rowsTitle = [NSString string];
-    if (pickerView == _timePickerView) {
-        rowsTitle =_timeFilterStr[row];
-    }
-    if (pickerView == _gradePickerView ) {
-        rowsTitle = _gradeFilterArr[row];
-    }
-    if (pickerView == _subjectPickerView) {
-        rowsTitle = _subjectArr[row];
-    }
-    
-    
-    return rowsTitle;
-    
-}
-
-/* 选择后*/
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    
-    /* 按时间价格*/
-    if (pickerView == _timePickerView) {
-        
-        NSLog(@"%@",_timeFilterStr[row]);
-        //    标题更改
-        switch (row) {
-            case 0:
-                [_tutoriumView.timeButton setTitle:[NSString stringWithFormat:@"%@∨",_timeFilterStr[row]] forState:UIControlStateNormal];
-                break;
-            case 1:
-                [_tutoriumView.timeButton setTitle:[NSString stringWithFormat:@"按价格↑"] forState:UIControlStateNormal];
-                break;
-            case 2:
-                [_tutoriumView.timeButton setTitle:[NSString stringWithFormat:@"按价格↓"] forState:UIControlStateNormal];
-                break;
-            case 3:
-                [_tutoriumView.timeButton setTitle:[NSString stringWithFormat:@"%@∨",_timeFilterStr[row]] forState:UIControlStateNormal];
-                break;
-                
-            default:
-                break;
-        }
-    }
-    
-    /* 按年级筛选*/
-    if (pickerView == _gradePickerView ) {
-        
-        [_tutoriumView.gradeButton setTitle:[NSString stringWithFormat:@"%@",_gradeFilterArr[row]] forState:UIControlStateNormal];
-        
-        
-    }
-    
-    /* 按科目筛选*/
-    if (pickerView == _subjectPickerView) {
-        [_tutoriumView.subjectButton setTitle:[NSString stringWithFormat:@"%@",_subjectArr[row]] forState:UIControlStateNormal];
-    }
-    
-}
 
 #pragma mark- 用户筛选完时间-价格条件后的点击事件
-- (void)selectedTimeFilter:(UIButton *)sender{
+- (void)selectedTimeFilter{
     
     [effectView removeFromSuperview];
     
@@ -994,21 +763,15 @@
     
     [_filterDic setValue:sort_By forKey:@"sort_by"];
     
-    
-    
     /* 发送筛选请求*/
     [self sendFilterStatus:_filterDic];
-    
-    
-    
-    
     
 }
 
 
 
 #pragma mark- 用户筛选完年级条件后的点击事件
-- (void)selectedGradeFilter:(UIButton *)sender{
+- (void)selectedGradeFilter{
     
     [effectView removeFromSuperview];
     [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
@@ -1020,8 +783,6 @@
     
     NSLog(@"%@",_filterDic);
     [self sendFilterStatus:_filterDic];
-    
-    
     
     
 }
@@ -1167,9 +928,8 @@
 
 
 #pragma mark- 用户筛选完科目条件后的点击事件
-- (void)selectedSubjectFilter:(UIButton *)sender{
+- (void)selectedSubjectFilter{
     
-    [effectView removeFromSuperview];
     [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
     
     /* 获取当前科目筛选信息 发送筛选*/
@@ -1189,6 +949,7 @@
 
 
 #pragma mark- collection的代理方法
+#pragma mark- collectionview datasource
 /* item数*/
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
@@ -1210,7 +971,6 @@
     
     /* 直接本地保存的存储状态，然后解析并加载数据*/
     
-    
     if ([[NSFileManager defaultManager]fileExistsAtPath:_tutoriumListFilePath]) {
         
         
@@ -1229,7 +989,7 @@
         infoModel.classID =[listInfo.data[indexPath.row]valueForKey:@"id"];
         
         
-        NSLog(@"%@",infoModel.classID);
+//        NSLog(@"%@",infoModel.classID);
         
     }else{
         
@@ -1242,58 +1002,9 @@
     /* 在解析正确的情况下*/
     if (listInfo) {
         
-        /* cell按照model 加载图片*/
         
-        /* 服务器后台没有数据，使用静态图片*/
-        //    [cell.classImage sd_setImageWithURL:[NSURL URLWithString:infoModel.publicize]];
-        [cell.classImage setImage:[UIImage imageNamed:@"school"]];
-        
-        
-        /* cell按照开课时间  计算和加载距离开课日期*/
-        //创建日期格式化对象
-        NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-        
-        
-        //创建了两个日期对象
-        /* 视频开始时间*/
-        NSDate *startDate=[dateFormatter dateFromString:infoModel.preview_time];
-        
-        /* 当前时间*/
-        NSDate *nowDate=[NSDate date];
-        //取两个日期对象的时间间隔：
-        //这里的NSTimeInterval 并不是对象，是基本型，其实是double类型，是由c定义的:typedef double NSTimeInterval;
-        
-        NSTimeInterval time=[nowDate timeIntervalSinceDate:startDate];
-        
-        int days=((int)time)/(3600*24);
-        //    int hours=((int)time)%(3600*24)/3600;
-        NSString *dateContent=[[NSString alloc] initWithFormat:@"距离开课%i天",days];
-        
-        
-        /* cell 的距开始天数 赋值*/
-        [cell.timeToStart setText:dateContent];
-        
-        /* cell 教师姓名 赋值*/
-        [cell.teacherName setText:infoModel.teacher_name];
-        
-        /* cell 科目赋值*/
-        
-        [cell.subjectName setText:infoModel.subject];
-        
-        /* cell 年级赋值*/
-        [cell.grade setText:infoModel.grade];
-        
-        /* cell 价格赋值*/
-        [ cell.price setText:[NSString stringWithFormat:@"¥%@.00",infoModel.price]];
-        
-        /* cell 已购买的用户 赋值*/
-        [cell.saleNumber setText:infoModel.buy_tickets_count];
-        
-        /* cell 的课程id属性*/
-        cell.classID = @"" ;
-        
-        [cell.className setText: infoModel.name];
+        cell.model = infoModel;
+        cell.sd_indexPath = indexPath;
         
     }
     return cell;
@@ -1303,7 +1014,7 @@
 
 
 
-
+#pragma mark- collectionview delegate
 
 /* section数量*/
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
@@ -1357,8 +1068,7 @@
 /* item被选中的回调方法*/
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    TutoriumListInfo *mod;
+    TutoriumListInfo *mod=nil;
     if (listArr.count==0) {
         
     }else{
@@ -1385,13 +1095,8 @@
 #pragma mark- 拿到model后的加载数据 刷新页面的 方法
 - (void)loadData:(nullable NSNotification *)notification{
     
-    [_tutoriumView.classesCollectionView removeFromSuperview];
-    
     [_tutoriumView.classesCollectionView reloadData];
-    [_tutoriumView.classesCollectionView setNeedsLayout];
-    [_tutoriumView.classesCollectionView setNeedsDisplay];
     
-    [_tutoriumView addSubview:_tutoriumView.classesCollectionView ];
     NSLog(@"重新刷新collection完成");
     
 }
@@ -1423,10 +1128,10 @@
         requestStrURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/courses?page=%ld&per_page=%ld&grade=%@",Request_Header,pageNumber,perPage,grade];
     }
     else if ([grade isEqualToString:@""]&&![subject isEqualToString:@""]) {
-        requestStrURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/courses?page=%ld&per_page=%ld&subject=%@",Request_Header,pageNumber,perPage,subject];
+        requestStrURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/courses?page=%ld&per_page=%ld&subject=%@",Request_Header,pageNumber,perPage,[NSString encodeString:subject]];
     }
     else if (![grade isEqualToString:@""]&&![subject isEqualToString:@""]) {
-        requestStrURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/courses?page=%ld&per_page=%ld&subject=%@&grade=%@",Request_Header,pageNumber,perPage,subject,grade];
+        requestStrURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/courses?page=%ld&per_page=%ld&subject=%@&grade=%@",Request_Header,pageNumber,perPage,[NSString encodeString:subject],grade];
     }
     
     
@@ -1447,53 +1152,48 @@
                     [self needUpdateToken];
                     
                 }else{
-                
-                /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
-                _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
-                
-                NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
-                
-                /* 缓存数据源添加获取的Model*/
-                
-                
-                [listArr removeAllObjects];
-                [listArr addObject:_tutroiumList];
-                
-                
-                
-                NSLog(@"%@",listArr[0].data);
-                NSLog(@"%ld",listArr.count);
-                
-                listDic = @{@"page":[NSNumber numberWithInteger:pageNumber],
-                            @"per_page":[NSNumber numberWithInteger:perPage],
-                            @"filterGrade":grade,
-                            @"filterSubject":subject,
-                            @"filterStatus":[NSNumber numberWithInteger:filterStatus],
-                            @"listArr":listArr
-                            };
-                
-                /* 测试代码*/
-                TutoriumList *tu =[[TutoriumList alloc]init];
-                tu = listDic[@"listArr"];
-                
-                
-                //        NSLog(@"%@",tu.tutoriumListInfo);
-                
-                /* 获取到的数据缓存到本地*/
-                /* 保存的数据中含有自定义对象，保存到沙盒*/
-                [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
-                
-                /* 本地状态变化*/
-                //        savedDic =[NSDictionary dictionaryWithDictionary: listDic];
-                
-                
-                
-                /* 加载数据完成后  视图重新加载数据*/
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
-                
-                [self loadData:nil];
-                
-                NSLog(@"加载数据完成。");
+                    
+                    /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
+                    _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
+                    
+                    NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
+                    
+                    /* 缓存数据源添加获取的Model*/
+                    
+                    
+                    [listArr removeAllObjects];
+                    [listArr addObject:_tutroiumList];
+                    
+                    
+                    
+                    NSLog(@"%@",listArr[0].data);
+                    NSLog(@"%ld",listArr.count);
+                    
+                    listDic = @{@"page":[NSNumber numberWithInteger:pageNumber],
+                                @"per_page":[NSNumber numberWithInteger:perPage],
+                                @"filterGrade":grade,
+                                @"filterSubject":subject,
+                                @"filterStatus":[NSNumber numberWithInteger:filterStatus],
+                                @"listArr":listArr
+                                };
+                    
+                    /* 测试代码*/
+                    TutoriumList *tu =[[TutoriumList alloc]init];
+                    tu = listDic[@"listArr"];
+                    
+                    
+                    //        NSLog(@"%@",tu.tutoriumListInfo);
+                    
+                    /* 获取到的数据缓存到本地*/
+                    /* 保存的数据中含有自定义对象，保存到沙盒*/
+                    [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
+              
+                    /* 加载数据完成后  视图重新加载数据*/
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
+                    
+                    [self loadData:nil];
+                    
+                    NSLog(@"加载数据完成。");
                 }
                 
                 [self loadingHUDStopLoadingWithTitle:@"数据加载成功"];
@@ -1509,95 +1209,79 @@
     
     /* 如果是上滑加载更多数据*/
     else if (pullState==1){
+        
         page++;
         
-        [manager GET:requestStrURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if (hadDoneFilter==YES) {
+            [_tutoriumView.classesCollectionView.mj_footer endRefreshing];
+             [self loadingHUDStopLoadingWithTitle:@"加载完毕!"];
+        }else{
             
-            /* 先判断token*/
-            if (![self isTokenRight:responseObject]) {
+            [manager GET:requestStrURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
-                /* 需要重新登录*/
-                [self needUpdateToken];
+                /* 先判断token*/
+                if (![self isTokenRight:responseObject]) {
+                    
+                    /* 需要重新登录*/
+                    [self needUpdateToken];
+                    
+                }else{
+                    
+                    /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
+                    _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
+                    
+                    //                NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
+                    
+                    /* 缓存数据源添加获取的Model*/
+                    
+                    [listArr addObject:_tutroiumList];
+                    
+                    NSLog(@"%@",listArr[0].data);
+                    NSLog(@"%ld",listArr.count);
+                    
+                    listDic = @{@"page":[NSNumber numberWithInteger:pageNumber],
+                                @"per_page":[NSNumber numberWithInteger:perPage],
+                                @"filterGrade":grade,
+                                @"filterSubject":subject,
+                                @"filterStatus":[NSNumber numberWithInteger:filterStatus],
+                                @"listArr":listArr
+                                };
+                    
+                    /* 测试代码*/
+                    TutoriumList *tu =[[TutoriumList alloc]init];
+                    tu = listDic[@"listArr"];
+                    
+                    
+                    /* 获取到的数据缓存到本地*/
+                    /* 保存的数据中含有自定义对象，保存到沙盒*/
+                    [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
+                    
+                    /* 本地状态变化*/
+                    //        savedDic =[NSDictionary dictionaryWithDictionary: listDic];
+                    
+                    
+                    /* 加载数据完成后  视图重新加载数据*/
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
+                    
+                    [self loadData:nil];
+                    
+                    NSLog(@"加载数据完成。");
+                    [self loadingHUDStopLoadingWithTitle:@"数据加载成功"];
+                }
                 
-            }else{
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
-            /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
-            _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
-            
-            NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
-            
-            /* 缓存数据源添加获取的Model*/
+            }];
             
             
-            [listArr addObject:_tutroiumList];
-            
-            
-            
-            
-            NSLog(@"%@",listArr[0].data);
-            NSLog(@"%ld",listArr.count);
-            
-            listDic = @{@"page":[NSNumber numberWithInteger:pageNumber],
-                        @"per_page":[NSNumber numberWithInteger:perPage],
-                        @"filterGrade":grade,
-                        @"filterSubject":subject,
-                        @"filterStatus":[NSNumber numberWithInteger:filterStatus],
-                        @"listArr":listArr
-                        };
-            
-            /* 测试代码*/
-            TutoriumList *tu =[[TutoriumList alloc]init];
-            tu = listDic[@"listArr"];
-            
-            
-            //        NSLog(@"%@",tu.tutoriumListInfo);
-            
-            /* 获取到的数据缓存到本地*/
-            /* 保存的数据中含有自定义对象，保存到沙盒*/
-            [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
-            
-            /* 本地状态变化*/
-            //        savedDic =[NSDictionary dictionaryWithDictionary: listDic];
-            
-            
-            /* 加载数据完成后  视图重新加载数据*/
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
-            
-            [self loadData:nil];
-            
-            NSLog(@"加载数据完成。");
-            [self loadingHUDStopLoadingWithTitle:@"数据加载成功"];
-            }
-            
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            
-        }];
+            [_tutoriumView.classesCollectionView.mj_footer endRefreshing];
+             [self loadingHUDStopLoadingWithTitle:@"加载完毕!"];
+        }
         
     }
     
     
 }
-
-//#pragma mark- 缓存数据源添加数据方法
-///* 缓存数据源添加数据*/
-//
-//- (void)listArrayIncreaseData:(NSDictionary *)data{
-//
-//
-//
-//
-//}
-//
-//
-//#pragma mark- 存储本地筛选状态
-//- (void)saveFilterStatus:(NSDictionary *)filterStatusDic{
-//
-//
-//    [[NSUserDefaults standardUserDefaults]setObject:filterStatusDic forKey:@"FilterStatus"];
-//
-//
-//}
-
 
 
 /* 键盘出现*/
@@ -1654,7 +1338,7 @@
 - (BOOL)isTokenRight:(id)responds{
     
     NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-   
+    
     NSString *status =[NSString stringWithFormat:@"%@",dic[@"status"]];
     if ([status isEqualToString:@"1"]) {
         
@@ -1664,7 +1348,6 @@
         
         return NO;
     }
-    
     
 }
 
@@ -1676,17 +1359,17 @@
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"登录过期,请重新登录！" preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *action =[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-    
+        
         /* 给appdelegate发送消息  用户退出登录  跳转到登录界面*/
         
         [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
         
         /* 清除所有用户文件*/
-         NSString *userFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
+        NSString *userFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
         
         if (userFilePath) {
             
-        [[NSFileManager defaultManager]removeItemAtPath:userFilePath error:nil];
+            [[NSFileManager defaultManager]removeItemAtPath:userFilePath error:nil];
         }
         
         [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"id"];
@@ -1706,78 +1389,6 @@
 }
 
 
-//- (MBProgressHUD *)loadingHUD{
-//    
-//    
-//    MBProgressHUD *hud=[MBProgressHUD HUDForView:self.view];
-//    
-//    
-//    return hud;
-//    
-//}
-//
-//-(MBProgressHUD *)endHUD{
-//    
-//    MBProgressHUD *hud=[MBProgressHUD HUDForView:self.view];
-//    
-//    
-//    return hud;
-//
-//}
-//
-//
-//
-//- (void)setLoadingHUD:(MBProgressHUD *)loadingHUD{
-//    
-//    
-//    
-//}
-//
-//- (void)setEndHUD:(MBProgressHUD *)endHUD{
-//    
-//    
-//}
-//
-//
-//
-//
-//
-///* HUD框 正在加载*/
-//- (void)loadingHUDStartLoadingWithTitle:(NSString *)hudTitle{
-//    
-//    
-//    /* HUD框 提示正在登陆*/
-//    self.loadingHUD=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//    self.loadingHUD.mode = MBProgressHUDModeDeterminate;
-//    self.loadingHUD.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
-//    [self.loadingHUD.label setText:hudTitle];
-//    
-//    self.loadingHUD.mode = MBProgressHUDModeIndeterminate;
-//    
-//    
-//}
-//
-//
-//
-///* HUD框 加载完成*/
-//- (void)loadingHUDStopLoadingWithTitle:(NSString *)hudTitle{
-//    
-//    [self.loadingHUD hideAnimated:YES ];
-//    
-//    self.endHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//
-//    self.endHUD.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
-//    
-//    [self.endHUD.label setText:hudTitle];
-//    
-//    self.endHUD.mode = MBProgressHUDModeText;
-//    
-//    [self.endHUD showAnimated:YES];
-//    
-//    [self.endHUD hideAnimated:YES afterDelay:1 ];
-//
-//    
-//}
 
 
 

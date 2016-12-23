@@ -7,6 +7,7 @@
 //
 
 #import "YZSquareMenuCell.h"
+#import "UIImageView+WebCache.h"
 
 @implementation YZSquareMenuCell
     
@@ -21,13 +22,13 @@
         [self.contentView addSubview:_iconImage];
         [self.contentView addSubview:_iconTitle];
         
-        [_iconImage setFrame:CGRectMake(self.frame.size.width/4/2,0,self.frame.size.width*3/4,self.frame.size.width*3/4)];
-        [_iconTitle setFrame:CGRectMake(0, self.frame.size.width*3/4, self.frame.size.width, self.frame.size.width/4)];
+        [_iconImage setFrame:CGRectMake(self.width_sd/4/2,0,self.width_sd*3/4,self.width_sd*3/4)];
+        _iconImage.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
+        
+        [_iconTitle setFrame:CGRectMake(0, self.width_sd*3/4, self.width_sd, self.width_sd/4)];
         [_iconTitle setTextColor:[UIColor blackColor]];
         [_iconTitle setFont:[UIFont systemFontOfSize:14]];
         _iconTitle.textAlignment = NSTextAlignmentCenter;
-        
-        
         
         _teacherID =[NSString string];
         
@@ -35,18 +36,12 @@
     }
     return self;
 }
-    
 
-
-    
-    
+   
     
 @end
 
 
-//
-//@property(nonatomic,strong) UIImageView *iconImage ;
-//@property(nonatomic,strong) UILabel *iconTitle ;
 
 
 

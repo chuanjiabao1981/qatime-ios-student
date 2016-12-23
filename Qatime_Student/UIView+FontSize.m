@@ -12,7 +12,7 @@
 #define IgnoreTagKey @"IgnoreTagKey"
 #define FontScaleKey @"FontScaleKey"
 
-#define ScrenScale [UIScreen mainScreen].bounds.size.width/414.0
+
 
 @implementation UIView (FontSize)
 /**
@@ -83,11 +83,11 @@
 - (id)myInitWithCoder:(NSCoder*)aDecode {
     [self myInitWithCoder:aDecode];
     if (self) {
-//        //代码创建的时候 还不能拿到之后设置的tag 所以无法判断忽略项
-//        NSArray *ignoreTags = [UIView getIgnoreTags];
-//        for (NSNumber *num in ignoreTags) {
-//            if(self.tag == num.integerValue) return self;
-//        }
+        //代码创建的时候 还不能拿到之后设置的tag 所以无法判断忽略项
+        NSArray *ignoreTags = [UIView getIgnoreTags];
+        for (NSNumber *num in ignoreTags) {
+            if(self.tag == num.integerValue) return self;
+        }
         CGFloat fontSize = self.font.pointSize;
         CGFloat scale = [UIView getFontScale];
         self.font = [self.font fontWithSize:fontSize*(scale?:ScrenScale)];
@@ -99,11 +99,11 @@
 - (id)myInitWithFrame:(CGRect)frame{
     [self myInitWithFrame:frame];
     if(self){
-//        //代码创建的时候 还不能拿到之后设置的tag 所以无法判断忽略项
-//        NSArray *ignoreTags = [UIView getIgnoreTags];
-//        for (NSNumber *num in ignoreTags) {
-//            if(self.tag == num.integerValue) return self;
-//        }
+        //代码创建的时候 还不能拿到之后设置的tag 所以无法判断忽略项
+        NSArray *ignoreTags = [UIView getIgnoreTags];
+        for (NSNumber *num in ignoreTags) {
+            if(self.tag == num.integerValue) return self;
+        }
         CGFloat fontSize = self.font.pointSize;
         CGFloat scale = [UIView getFontScale];
         self.font = [self.font fontWithSize:fontSize*(scale?:ScrenScale)];
@@ -144,11 +144,11 @@
 - (id)myInitWithFrame:(CGRect)frame{
     [self myInitWithFrame:frame];
     if(self){
-//        //代码创建的时候 还不能拿到之后设置的tag 所以无法判断忽略项
-//        NSArray *ignoreTags = [UIView getIgnoreTags];
-//        for (NSNumber *num in ignoreTags) {
-//            if(self.tag == num.integerValue) return self;
-//        }
+        //代码创建的时候 还不能拿到之后设置的tag 所以无法判断忽略项
+        NSArray *ignoreTags = [UIView getIgnoreTags];
+        for (NSNumber *num in ignoreTags) {
+            if(self.tag == num.integerValue) return self;
+        }
         CGFloat fontSize = self.titleLabel.font.pointSize;
         CGFloat scale = [UIView getFontScale];
         self.titleLabel.font = [self.titleLabel.font fontWithSize:fontSize*(scale?:ScrenScale)];
@@ -189,11 +189,11 @@
 - (id)myInitWithFrame:(CGRect)frame{
     [self myInitWithFrame:frame];
     if(self){
-//        //代码创建的时候 还不能拿到之后设置的tag 所以无法判断忽略项
-//        NSArray *ignoreTags = [UIView getIgnoreTags];
-//        for (NSNumber *num in ignoreTags) {
-//            if(self.tag == num.integerValue) return self;
-//        }
+        //代码创建的时候 还不能拿到之后设置的tag 所以无法判断忽略项
+        NSArray *ignoreTags = [UIView getIgnoreTags];
+        for (NSNumber *num in ignoreTags) {
+            if(self.tag == num.integerValue) return self;
+        }
         CGFloat fontSize = self.font.pointSize;
         CGFloat scale = [UIView getFontScale];
         self.font = [self.font fontWithSize:fontSize*(scale?:ScrenScale)];
@@ -212,9 +212,9 @@
     Method myIbImp = class_getInstanceMethod([self class], @selector(myInitWithCoder:));
     method_exchangeImplementations(ibImp, myIbImp);
     
-//    Method cmp = class_getInstanceMethod([self class], @selector(initWithFrame:));
-//    Method myCmp = class_getInstanceMethod([self class], @selector(myInitWithFrame:));
-//    method_exchangeImplementations(cmp, myCmp);
+    Method cmp = class_getInstanceMethod([self class], @selector(initWithFrame:));
+    Method myCmp = class_getInstanceMethod([self class], @selector(myInitWithFrame:));
+    method_exchangeImplementations(cmp, myCmp);
 }
 
 - (id)myInitWithCoder:(NSCoder*)aDecode {
@@ -231,15 +231,15 @@
     return self;
 }
 
-//- (id)myInitWithFrame:(CGRect)frame{
-//    [self myInitWithFrame:frame];
-//    if(self){
-//        //textView 此时的 self.font 还是 nil 所以无法修改
-//        CGFloat fontSize = self.font.pointSize;
-//        self.font = [self.font fontWithSize:fontSize*ScrenScale];
-//    }
-//    return self;
-//}
+- (id)myInitWithFrame:(CGRect)frame{
+    [self myInitWithFrame:frame];
+    if(self){
+        //textView 此时的 self.font 还是 nil 所以无法修改
+        CGFloat fontSize = self.font.pointSize;
+        self.font = [self.font fontWithSize:fontSize*ScrenScale];
+    }
+    return self;
+}
 
 
 @end

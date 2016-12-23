@@ -576,7 +576,9 @@
     }
     if (self.chatModel.dataSource.count>indexPath.row) {
         cell.delegate = self;
-        
+        cell.sd_tableView = tableView;
+        cell.sd_indexPath = indexPath;
+        [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
         [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
     }
     

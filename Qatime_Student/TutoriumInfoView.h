@@ -47,6 +47,9 @@
 
 
 /* 要传数据的所有的label 1 */
+
+@property(nonatomic,strong) UIView *view1 ;
+
 /* 科目*/
 @property(nonatomic,strong) UILabel *subjectLabel ;
 
@@ -70,6 +73,8 @@
 
 /* 要传数据的所有的label 2 */
 
+@property(nonatomic,strong) UIView *view2 ;
+
 /* 教师姓名*/
 @property(nonatomic,strong) UILabel *teacherNameLabel ;
 
@@ -84,6 +89,12 @@
 
 /* 性别*/
 @property(nonatomic,strong) NSString *gender ;
+
+/* 老师照片*/
+@property(nonatomic,strong) UIImageView *teacherHeadImage ;
+
+
+@property(nonatomic,strong) UIView *view3 ;
 
 /* 课程列表*/
 @property(nonatomic,strong) UITableView *classesListTableView ;

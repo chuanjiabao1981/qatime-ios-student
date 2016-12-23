@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "NavigationBar.h"
 #import "IndexPageView.h"
-
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 
 
 @interface IndexPageViewController : UIViewController
