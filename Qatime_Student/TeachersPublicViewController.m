@@ -309,7 +309,6 @@
 #pragma mark- label自适应高度方法
 - (void)sizeToFitHeight{
     
-    
     CGRect rect = [_teachersPublicHeaderView.selfInterview.text boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 20, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName: _teachersPublicHeaderView.selfInterview.font} context:nil];
     
     _teachersPublicHeaderView.selfInterview.frame = CGRectMake(_teachersPublicHeaderView.selfInterview.frame.origin.x, _teachersPublicHeaderView.selfInterview.frame.origin.y, CGRectGetWidth(self.view.frame)-20, rect.size.height) ;
@@ -322,12 +321,7 @@
     [_teachersPublicCollectionView reloadData];
     [_teachersPublicCollectionView setNeedsLayout];
     [_teachersPublicCollectionView setNeedsDisplay];
-//    _teachersPublicCollectionView set
-    
-    
-    
-    
-    
+
     
     
 }

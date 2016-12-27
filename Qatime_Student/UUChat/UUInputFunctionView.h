@@ -26,7 +26,12 @@
 
 @interface UUInputFunctionView : UIView <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
+
+/**
+ 发送消息按钮
+ */
 @property (nonatomic, retain) UIButton *btnSendMessage;
+
 @property (nonatomic, retain) UIButton *btnChangeVoiceState;
 @property (nonatomic, retain) UIButton *btnVoiceRecord;
 @property (nonatomic, retain) UITextView *TextViewInput;

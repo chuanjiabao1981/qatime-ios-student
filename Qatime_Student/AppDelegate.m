@@ -108,14 +108,19 @@
     /* 初始化网易云信SDK*/
     
     
-    [[NIMSDK sharedSDK] registerWithAppID:@"2a24ca70e580cab2bef58b1e62478f9f"
+    [[NIMSDK sharedSDK] registerWithAppID:@"2a24ca70e580cab2bef58b1e62478f9f_"
                                   cerName:@"QatimeStudentPushDev"];
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
+   
+    
+    
     /* 登录云信*/
+    
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"]) {
-        
+       
         NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"];
         NIMAutoLoginData *lodata = [[NIMAutoLoginData alloc]init];
+        
         lodata.account =chatDic [@"accid"];
         lodata.token = chatDic[@"token"];
         

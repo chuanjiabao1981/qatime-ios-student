@@ -22,7 +22,6 @@
         
         /* <# State #>*/
         
-                
         
         line.sd_layout
         .topEqualToView(self)
@@ -30,10 +29,7 @@
         .leftEqualToView(self)
         .heightIs(0.8);
         
-        
-        
-        
-        
+                
     }
     return self;
 }

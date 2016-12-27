@@ -31,6 +31,7 @@
 
 #import "NELivePlayerViewController.h"
 
+
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate>{
     
     NavigationBar *_navigationBar;
@@ -98,22 +99,6 @@
     });
     
     
-    _inputView = ({
-        
-        UUInputFunctionView *_=[[UUInputFunctionView alloc]initWithSuperVC:self];
-        
-        [_.btnChangeVoiceState addTarget:self action:@selector(emojiKeyboardShow:) forControlEvents:UIControlEventTouchUpInside];
-        
-        _.delegate= self;
-        
-        [self.view addSubview:_];
-        _.sd_layout
-        .leftEqualToView(self.view)
-        .bottomEqualToView(self.view)
-        .rightEqualToView(self.view)
-        .heightIs(50);
-        _;
-    });
     
     _chatTableView = ({
         UITableView *_=[[UITableView alloc]init];
@@ -122,14 +107,24 @@
         _.dataSource = self;
         [self.view addSubview:_];
         
-        _.sd_layout
-        .topSpaceToView(_navigationBar,0)
-        .leftEqualToView(self.view)
-        .rightEqualToView(self.view)
-        .bottomSpaceToView(_inputView,0);
+        _.frame = CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-50);
+        
+
         _;
     });
     
+    _inputView = ({
+        
+        UUInputFunctionView *_=[[UUInputFunctionView alloc]initWithSuperVC:self];
+        
+        _.frame = CGRectMake(0, self.view.height_sd-50, self.view.width_sd, 50);
+        [_.btnChangeVoiceState addTarget:self action:@selector(emojiKeyboardShow:) forControlEvents:UIControlEventTouchUpInside];
+        
+        _.delegate= self;
+        
+        [self.view addSubview:_];
+        _;
+    });
     
 }
 
@@ -183,6 +178,39 @@
         
         [[NSNotificationCenter defaultCenter]postNotificationName:@"MarkAllRead" object:_session];
     }
+    
+    
+    [self registerForKeyboardNotifications];
+    
+//    /* 添加键盘弹出的监听*/
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillShowNotification object:nil];
+//    
+//    
+//    /* 添加键盘收起的监听*/
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillChangeFrameBefore:) name:UIKeyboardWillHideNotification object:nil];
+    
+    
+//    [LMJKeyboardShowHiddenNotificationCenter defineCenter].delegate = self;
+    
+    
+}
+
+- (void)registerForKeyboardNotifications
+{
+    //使用NSNotificationCenter 鍵盤出現時
+    [[NSNotificationCenter defaultCenter] addObserver:self
+     
+                                             selector:@selector(keyboardWillShow:)
+     
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    
+    //使用NSNotificationCenter 鍵盤隐藏時
+    [[NSNotificationCenter defaultCenter] addObserver:self
+     
+                                             selector:@selector(keyboardWillHide:)
+     
+                                                 name:UIKeyboardWillHideNotification object:nil];
+    
     
 }
 
@@ -569,17 +597,14 @@
     /* cell的重用队列*/
     static NSString *cellIdenfier = @"cell";
     UUMessageCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-    if (cell==nil) {
+    if (!cell) {
         cell=[[UUMessageCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-        
-        
+         
     }
     if (self.chatModel.dataSource.count>indexPath.row) {
-        cell.delegate = self;
-        cell.sd_tableView = tableView;
-        cell.sd_indexPath = indexPath;
-        [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
         [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
+        cell.delegate = self;
+        [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     }
     
     return cell;
@@ -713,6 +738,8 @@
     [self tableViewScrollToBottom];
     
     
+    [funcView changeSendBtnWithPhoto:YES];
+    
     
 }
 
@@ -727,7 +754,7 @@
                           @"type": @(UUMessageTypePicture),
                           @"frome":@(UUMessageFromMe)};
     
-    //    [funcView changeSendBtnWithPhoto:YES];
+//        [funcView changeSendBtnWithPhoto:YES];
     [self dealTheFunctionData:dic];
     
     NIMImageObject * imageObject = [[NIMImageObject alloc] initWithImage:image];
@@ -786,10 +813,32 @@
     [self.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
+#pragma mark- emoji表情键盘部分的方法
+
+#pragma mark-  懒加载键盘
+- (YZEmotionKeyboard *)emotionKeyboard
+{
+    // 创建表情键盘
+    if (_emotionKeyboard == nil) {
+        
+        YZEmotionKeyboard *emotionKeyboard = [YZEmotionKeyboard emotionKeyboard];
+        
+        
+        emotionKeyboard.sendContent = ^(NSString *content){
+            // 点击发送会调用，自动把文本框内容返回给你
+            
+            NSLog(@"%@",content);
+        };
+        
+        _emotionKeyboard = emotionKeyboard;
+    }
+    return _emotionKeyboard;
+}
+
+
 
 //点击表情按钮的点击事件
-- (void)emojiKeyboardShow:(UIButton *)sender
-{
+- (void)emojiKeyboardShow:(UIButton *)sender{
     
     if (sender.superview == _inputView) {
         
@@ -801,8 +850,8 @@
             
         } else {
             _inputView.TextViewInput.inputView = nil;
-            [_inputView.TextViewInput reloadInputViews];
             [sender setBackgroundImage:[UIImage imageNamed:@"face"] forState:UIControlStateNormal];
+            [_inputView.TextViewInput reloadInputViews];
             
         }
         
@@ -813,7 +862,6 @@
 #pragma mark- 进入直播
 - (void)enterLive{
     
-    
     NELivePlayerViewController *playerVC = [[NELivePlayerViewController alloc]initWithClassID:_tutoriumInfo.classID];
     [self.navigationController pushViewController:playerVC animated:YES];
     
@@ -821,10 +869,74 @@
 }
 
 
+- (void)keyboardWillShow:(NSNotification *)notification {
+    
+    // 获取通知的信息字典
+    NSDictionary *userInfo = [notification userInfo];
+    
+    // 获取键盘弹出后的rect
+    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    
+    
+    
+    // 获取键盘弹出动画时间
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    
+    [UIView animateWithDuration:animationDuration animations:^{
+        
+        [_inputView setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height -50-keyboardRect.size.height , self.view.width_sd, 50)];
+        
+       [ _chatTableView setFrame:CGRectMake(0, 64 , self.view.width_sd, self.view.height_sd-64-50-keyboardRect.size.height)];
+
+    }];
+ 
+    [self tableViewScrollToBottom];
+    
+}
+
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    
+    // 获取通知信息字典
+    NSDictionary* userInfo = [notification userInfo];
+    
+    // 获取键盘隐藏动画时间
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    
+    [UIView animateWithDuration:animationDuration animations:^{
+        
+        [_inputView setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height -50, self.view.width_sd, 50)];
+        
+        [_chatTableView setFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-50)];
+        
+    }];
+    
+    [self tableViewScrollToBottom];
+}
+
+
 - (void)returnLastPage{
     
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
+    
+    [_inputView.TextViewInput resignFirstResponder];
+    [_inputView changeSendBtnWithPhoto:YES];
+    
+    
+}
+
+
+
 
 
 - (void)didReceiveMemoryWarning {

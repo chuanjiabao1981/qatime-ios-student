@@ -51,6 +51,9 @@
         
         _cycleScrollView =[SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, CGRectGetWidth(_headerContentView.frame), CGRectGetWidth(_headerContentView.frame)*316/1190) imageURLStringsGroup:@[[NSString stringWithFormat:@"%@/assets/banner-016c8e1cde7b776617bd6e93c128dd61.jpg",Request_Header],[NSString stringWithFormat:@"%@/assets/banner2-149105719fc13d02b78770a0e9e1fd05.jpg",Request_Header],[NSString stringWithFormat:@"%@/assets/banner3-873b7627ebd8fc13d9de61ff53c110b5.jpg",Request_Header]]];
         
+//        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:<#(CGRect)#> delegate:<#(id<SDCycleScrollViewDelegate>)#> placeholderImage:<#(UIImage *)#>]
+        
+        
         
         [_headerContentView addSubview:_cycleScrollView];
         

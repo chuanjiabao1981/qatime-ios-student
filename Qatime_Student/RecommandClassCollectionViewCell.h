@@ -32,5 +32,7 @@
 /* model*/
 @property(nonatomic,strong) TutoriumListInfo *model ;
 
+@property(nonatomic,strong) UILabel *saledLabel ;
+
 
 @end

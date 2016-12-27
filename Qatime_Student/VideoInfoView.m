@@ -30,11 +30,15 @@
         /* 滑动控制器*/
         _segmentControl = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"公告",@"聊天",@"直播详情",@"成员列表"]];
         [self addSubview:_segmentControl];
+        _segmentControl.borderType = HMSegmentedControlBorderTypeBottom;
+        _segmentControl.borderWidth = 0.6;
+        _segmentControl.borderColor = [UIColor lightGrayColor];
         
-        
-        
-        _segmentControl.sd_layout.leftEqualToView(self).rightEqualToView(self).topSpaceToView(self,5).heightIs(30);
-//        [_segmentControl setFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), 30)];
+        _segmentControl.sd_layout
+        .leftEqualToView(self)
+        .rightEqualToView(self)
+        .topEqualToView(self)
+        .heightIs(30*ScrenScale);
         
         _segmentControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
         _segmentControl.borderType = HMSegmentedControlTypeText;

@@ -31,11 +31,15 @@
         _className = [[UILabel alloc]init];
         [self.contentView addSubview:_className];
         _className.textColor = [UIColor blackColor];
-        _className.sd_layout.leftSpaceToView(self.contentView,0).topSpaceToView(_classImage,5).autoHeightRatio(0);
-        [_className setSingleLineAutoResizeWithMaxWidth:300];
-        
+        _className.sd_layout
+        .leftSpaceToView(self.contentView,0)
+        .topSpaceToView(_classImage,5)
+        .rightEqualToView(self.contentView)
+        .heightIs(20);
         [_className setText:@"课程名称"];
         _className.textAlignment = NSTextAlignmentLeft;
+        
+        _className.font = [UIFont systemFontOfSize:15];
         
         /* 年级 label*/
         _grade = [[UILabel alloc]init];
@@ -59,22 +63,20 @@
         [_subjectName setFont:[UIFont systemFontOfSize:12]];
         
         /* **人已购的label*/
-        UILabel *saledLabel =[[UILabel alloc]init];
-        [self.contentView addSubview:saledLabel];
-        [saledLabel setText:@"人已购"];
-        saledLabel.sd_layout.rightEqualToView(self.contentView).topSpaceToView(_className,0).autoHeightRatio(0);
-        [saledLabel setSingleLineAutoResizeWithMaxWidth:100];
-        [saledLabel setFont:[UIFont systemFontOfSize:12]];
+        _saledLabel =[[UILabel alloc]init];
+        [self.contentView addSubview:_saledLabel];
+        [_saledLabel setText:@"人已购"];
+        _saledLabel.sd_layout.rightEqualToView(self.contentView).topSpaceToView(_className,0).autoHeightRatio(0);
+        [_saledLabel setSingleLineAutoResizeWithMaxWidth:100];
+        [_saledLabel setFont:[UIFont systemFontOfSize:12]];
         
-        
-        
-        
+                
         /* 已购买的用户数量*/
         _saleNumber = [[UILabel alloc]init];
         [self.contentView addSubview:_saleNumber];
         _saleNumber.textColor = [UIColor lightGrayColor];
         _saleNumber.text = @"10";
-        _saleNumber.sd_layout.rightSpaceToView(saledLabel,0).topEqualToView(saledLabel).autoHeightRatio(0);
+        _saleNumber.sd_layout.rightSpaceToView(_saledLabel,0).topEqualToView(_saledLabel).autoHeightRatio(0);
         [_saleNumber setSingleLineAutoResizeWithMaxWidth:80];
         _saleNumber.textAlignment = NSTextAlignmentRight;
         [_saleNumber setFont:[UIFont systemFontOfSize:12]];

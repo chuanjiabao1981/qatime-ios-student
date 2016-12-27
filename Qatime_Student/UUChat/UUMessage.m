@@ -17,7 +17,11 @@
     
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:dic];
     
-    self.strIcon = dict[@"strIcon"];
+    if (dic[@"strIcon"]) {
+        
+        self.strIcon = dict[@"strIcon"];
+    }
+    
     
     if (dict[@"strName"] ==nil) {
         dict[@"strName"] =@"";

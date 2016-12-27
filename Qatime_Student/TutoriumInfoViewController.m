@@ -440,6 +440,11 @@
             [[NSNotificationCenter defaultCenter]postNotificationName:@"AddNewClass" object:_dataDic];
             
             
+        }else{
+            
+            /* 重新登录*/
+            
+            [self loginAgain];
         }
         
         

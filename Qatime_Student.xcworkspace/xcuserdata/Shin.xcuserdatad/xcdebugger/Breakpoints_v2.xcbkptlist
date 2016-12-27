@@ -17,38 +17,6 @@
             endingLineNumber = "57"
             landmarkName = "-touchesIconIndex:"
             landmarkType = "6">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[YZSquareMenu collectionMenu]"
-                  moduleName = "Qatime_Student"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Qatime_Student/YZSquareMenu.h"
-                  timestampString = "504183659.592874"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "64"
-                  endingLineNumber = "64"
-                  offsetFromSymbolStart = "20">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[YZSquareMenu setCollectionMenu:]"
-                  moduleName = "Qatime_Student"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Qatime_Student/YZSquareMenu.h"
-                  timestampString = "504183659.594644"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "64"
-                  endingLineNumber = "64"
-                  offsetFromSymbolStart = "64">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -234,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/AppDelegate.m"
-            timestampString = "504066535.20172"
+            timestampString = "504444978.066824"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "356"
-            endingLineNumber = "356"
+            startingLineNumber = "361"
+            endingLineNumber = "361"
             landmarkName = "-application:openURL:sourceApplication:annotation:"
             landmarkType = "7">
          </BreakpointContent>
@@ -346,12 +314,12 @@
                   moduleName = "Qatime_Student"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Pods/YYText/YYText/Utility/NSAttributedString+YYText.m"
-                  timestampString = "504183659.634846"
+                  timestampString = "504536091.404992"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1373"
                   endingLineNumber = "1373"
-                  offsetFromSymbolStart = "616">
+                  offsetFromSymbolStart = "644">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -361,12 +329,12 @@
                   moduleName = "Qatime_Student"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Pods/YYText/YYText/Utility/NSAttributedString+YYText.m"
-                  timestampString = "504183659.636806"
+                  timestampString = "504536091.40885"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1374"
-                  endingLineNumber = "1374"
-                  offsetFromSymbolStart = "72">
+                  startingLineNumber = "1373"
+                  endingLineNumber = "1373"
+                  offsetFromSymbolStart = "16">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -394,12 +362,12 @@
                   moduleName = "Qatime_Student"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Pods/YYText/YYText/String/YYTextParser.m"
-                  timestampString = "504183659.64213"
+                  timestampString = "504536091.414967"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "173"
                   endingLineNumber = "173"
-                  offsetFromSymbolStart = "464">
+                  offsetFromSymbolStart = "750">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -409,12 +377,12 @@
                   moduleName = "Qatime_Student"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Pods/YYText/YYText/String/YYTextParser.m"
-                  timestampString = "504183659.643981"
+                  timestampString = "504536091.417414"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "173"
                   endingLineNumber = "173"
-                  offsetFromSymbolStart = "24">
+                  offsetFromSymbolStart = "23">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -442,12 +410,12 @@
                   moduleName = "Qatime_Student"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Pods/YYText/YYText/String/YYTextParser.m"
-                  timestampString = "504183659.64719"
+                  timestampString = "504536091.422675"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "183"
                   endingLineNumber = "183"
-                  offsetFromSymbolStart = "740">
+                  offsetFromSymbolStart = "1165">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -457,12 +425,12 @@
                   moduleName = "Qatime_Student"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Pods/YYText/YYText/String/YYTextParser.m"
-                  timestampString = "504183659.64896"
+                  timestampString = "504536091.425402"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "183"
                   endingLineNumber = "183"
-                  offsetFromSymbolStart = "28">
+                  offsetFromSymbolStart = "25">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -490,12 +458,12 @@
                   moduleName = "Qatime_Student"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Pods/YYText/YYText/String/YYTextParser.m"
-                  timestampString = "504183659.65213"
+                  timestampString = "504536091.430472"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "221"
                   endingLineNumber = "221"
-                  offsetFromSymbolStart = "1940">
+                  offsetFromSymbolStart = "3015">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -505,12 +473,12 @@
                   moduleName = "Qatime_Student"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Pods/YYText/YYText/String/YYTextParser.m"
-                  timestampString = "504183659.653693"
+                  timestampString = "504536091.433283"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "222"
                   endingLineNumber = "222"
-                  offsetFromSymbolStart = "84">
+                  offsetFromSymbolStart = "107">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -538,12 +506,12 @@
                   moduleName = "Qatime_Student"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Qatime_Student/NSString+Emojize.m"
-                  timestampString = "504183659.660277"
+                  timestampString = "504536091.438532"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "29"
                   endingLineNumber = "29"
-                  offsetFromSymbolStart = "336">
+                  offsetFromSymbolStart = "350">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -553,12 +521,12 @@
                   moduleName = "Qatime_Student"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Qatime_Student/NSString+Emojize.m"
-                  timestampString = "504183659.665036"
+                  timestampString = "504536091.441165"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "30"
                   endingLineNumber = "30"
-                  offsetFromSymbolStart = "72">
+                  offsetFromSymbolStart = "71">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -586,12 +554,12 @@
                   moduleName = "Qatime_Student"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Pods/YYText/YYText/YYTextView.m"
-                  timestampString = "504183659.668596"
+                  timestampString = "504536091.446471"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1552"
                   endingLineNumber = "1552"
-                  offsetFromSymbolStart = "180">
+                  offsetFromSymbolStart = "164">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -601,12 +569,12 @@
                   moduleName = "Qatime_Student"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Pods/YYText/YYText/YYTextView.m"
-                  timestampString = "504183659.670142"
+                  timestampString = "504536091.449292"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1552"
                   endingLineNumber = "1552"
-                  offsetFromSymbolStart = "20">
+                  offsetFromSymbolStart = "15">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -618,11 +586,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/AppDelegate.m"
-            timestampString = "504066535.20172"
+            timestampString = "504444978.066824"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "223"
-            endingLineNumber = "223"
+            startingLineNumber = "228"
+            endingLineNumber = "228"
             landmarkName = "-application:didReceiveRemoteNotification:"
             landmarkType = "7">
          </BreakpointContent>
@@ -634,11 +602,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/AppDelegate.m"
-            timestampString = "504066535.20172"
+            timestampString = "504444978.066824"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "269"
-            endingLineNumber = "269"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
             landmarkName = "-onReceiveCustomSystemNotification:"
             landmarkType = "7">
          </BreakpointContent>
@@ -677,13 +645,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/IndexPageViewController.m"
-            timestampString = "504180699.810772"
+            filePath = "Qatime_Student/NELivePlayerViewController.m"
+            timestampString = "504535533.945777"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1057"
-            endingLineNumber = "1057"
-            landmarkName = "-changeLoacal:"
+            startingLineNumber = "3004"
+            endingLineNumber = "3004"
+            landmarkName = "-sendMessage:didCompleteWithError:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -693,13 +661,109 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/TutoriumInfoViewController.m"
-            timestampString = "504182525.852699"
+            filePath = "Qatime_Student/NELivePlayerViewController.m"
+            timestampString = "504535533.945777"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "422"
-            endingLineNumber = "422"
-            landmarkName = "-addListen"
+            startingLineNumber = "3015"
+            endingLineNumber = "3015"
+            landmarkName = "-onRecvMessages:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Qatime_Student/LoginViewController.m"
+            timestampString = "504443240.672532"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "424"
+            endingLineNumber = "424"
+            landmarkName = "-userLogin:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Qatime_Student/NELivePlayerViewController.m"
+            timestampString = "504535533.945777"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2557"
+            endingLineNumber = "2557"
+            landmarkName = "-keyboardWillShow:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[NELivePlayerViewController keyboardWillShow:]"
+                  moduleName = "Qatime_Student"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Qatime_Student/NELivePlayerViewController.m"
+                  timestampString = "504536091.481729"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "2557"
+                  endingLineNumber = "2557"
+                  offsetFromSymbolStart = "688">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__47-[NELivePlayerViewController keyboardWillShow:]_block_invoke.980"
+                  moduleName = "Qatime_Student"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Qatime_Student/NELivePlayerViewController.m"
+                  timestampString = "504536091.484404"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "2557"
+                  endingLineNumber = "2557"
+                  offsetFromSymbolStart = "15">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Qatime_Student/NELivePlayerViewController.m"
+            timestampString = "504536168.405241"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1512"
+            endingLineNumber = "1512"
+            landmarkName = "-willRotateToInterfaceOrientation:duration:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Qatime_Student/NELivePlayerViewController.m"
+            timestampString = "504536332.224885"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1523"
+            endingLineNumber = "1523"
+            landmarkName = "-willRotateToInterfaceOrientation:duration:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

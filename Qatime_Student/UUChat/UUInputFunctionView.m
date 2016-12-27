@@ -51,33 +51,49 @@
 //        [self addSubview:self.btnSendMessage];
         
         self.btnSendMessage = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.btnSendMessage.frame = CGRectMake(Main_Screen_Width-40, 5, 30, 30);
+//        self.btnSendMessage.frame = CGRectMake(Main_Screen_Width-40, 5, 30, 30);
+        
         self.isAbleToSendTextMessage = NO;
         [self.btnSendMessage setTitle:@"" forState:UIControlStateNormal];
         [self.btnSendMessage setBackgroundImage:[UIImage imageNamed:@"Chat_take_picture"] forState:UIControlStateNormal];
         self.btnSendMessage.titleLabel.font = [UIFont systemFontOfSize:12];
         [self.btnSendMessage addTarget:self action:@selector(sendMessage:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.btnSendMessage];
+        self.btnSendMessage.sd_layout
+        .rightSpaceToView(self,10)
+        .topSpaceToView(self,5)
+        .bottomSpaceToView(self,10)
+        .widthEqualToHeight();
         
         //改变状态（语音、文字） 切换表情键盘
         self.btnChangeVoiceState = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.btnChangeVoiceState.frame = CGRectMake(5, 5, 30, 30);
+        
         isbeginVoiceRecord = NO;
         [self.btnChangeVoiceState setBackgroundImage:[UIImage imageNamed:@"face"] forState:UIControlStateNormal];
         self.btnChangeVoiceState.titleLabel.font = [UIFont systemFontOfSize:12];
         
         [self addSubview:self.btnChangeVoiceState];
-        
+        self.btnChangeVoiceState.sd_layout
+        .rightSpaceToView(self.btnSendMessage,5)
+        .topSpaceToView(self,5)
+        .bottomSpaceToView(self,10)
+        .widthEqualToHeight();
         
         
         //输入框
-        self.TextViewInput = [[UITextView alloc]initWithFrame:CGRectMake(45, 5, Main_Screen_Width-2*45, 30)];
+        self.TextViewInput = [[UITextView alloc]init];
         self.TextViewInput.layer.cornerRadius = 4;
         self.TextViewInput.layer.masksToBounds = YES;
         self.TextViewInput.delegate = self;
         self.TextViewInput.layer.borderWidth = 1;
         self.TextViewInput.layer.borderColor = [[[UIColor lightGrayColor] colorWithAlphaComponent:0.4] CGColor];
         [self addSubview:self.TextViewInput];
+         self.TextViewInput.sd_layout
+        .leftSpaceToView(self,10)
+        .rightSpaceToView(self.btnChangeVoiceState,10)
+        .topSpaceToView(self,5)
+        .bottomSpaceToView(self,10);
+        
     
         //分割线
         self.layer.borderWidth = 1;
@@ -141,7 +157,7 @@
 - (void)changeSendBtnWithPhoto:(BOOL)isPhoto{
    
     self.isAbleToSendTextMessage = !isPhoto;
-    [self.btnSendMessage setTitle:isPhoto?@"":@"send" forState:UIControlStateNormal];
+    [self.btnSendMessage setTitle:isPhoto?@"":@"发送" forState:UIControlStateNormal];
     self.btnSendMessage.frame = RECT_CHANGE_width(self.btnSendMessage, isPhoto?30:35);
     UIImage *image = [UIImage imageNamed:isPhoto?@"Chat_take_picture":@"chat_send_message"];
     [self.btnSendMessage setBackgroundImage:image forState:UIControlStateNormal];

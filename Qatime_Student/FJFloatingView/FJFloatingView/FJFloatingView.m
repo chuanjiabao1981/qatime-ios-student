@@ -36,10 +36,8 @@
     {
         [self initTmpView];
       
+        _canMove = NO;
         [[UIApplication sharedApplication].keyWindow addSubview:self];
-        
-        
-        
         
         _pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
         
@@ -89,44 +87,50 @@
 
 
 #pragma mark --- 手势事件
--(void)pan:(UIPanGestureRecognizer *)sender
-{
-    switch (sender.state) {
-        case UIGestureRecognizerStateBegan:
-        {
-            beganPoint = [sender locationInView:self.superview];
-            _curPoint = self.center;
+-(void)pan:(UIPanGestureRecognizer *)sender{
+    
+    if (_canMove==YES) {
+        
+        switch (sender.state) {
+            case UIGestureRecognizerStateBegan:
+            {
+                beganPoint = [sender locationInView:self.superview];
+                _curPoint = self.center;
+            }
+                break;
+            case UIGestureRecognizerStateChanged:
+            {
+                CGPoint point = [sender locationInView:self.superview];
+                
+                NSInteger x_offset = point.x - beganPoint.x;
+                NSInteger y_offset = point.y - beganPoint.y;
+                self.tmpView.center = self.center;
+                self.tmpView.center = CGPointMake(_curPoint.x + x_offset, _curPoint.y + y_offset);
+                if (CGRectGetMinX(self.tmpView.frame) < 0){
+                    x_offset -= CGRectGetMinX(self.tmpView.frame);
+                }
+                if (CGRectGetMaxX(self.tmpView.frame) > SCREEN_WIDTH) {
+                    x_offset += SCREEN_WIDTH - CGRectGetMaxX(self.tmpView.frame);
+                }
+                if (CGRectGetMinY(self.tmpView.frame) < 0) {
+                    y_offset -= CGRectGetMinY(self.tmpView.frame);
+                }
+                if (CGRectGetMaxY(self.tmpView.frame) > SCREEN_HEIGHT) {
+                    y_offset += SCREEN_HEIGHT - CGRectGetMaxY(self.tmpView.frame);
+                }
+                self.center = CGPointMake(_curPoint.x + x_offset, _curPoint.y + y_offset);
+            }
+                break;
+                
+            case UIGestureRecognizerStateEnded:
+                break;
+            default:
+                break;
         }
-            break;
-        case UIGestureRecognizerStateChanged:
-        {
-            CGPoint point = [sender locationInView:self.superview];
-            
-            NSInteger x_offset = point.x - beganPoint.x;
-            NSInteger y_offset = point.y - beganPoint.y;
-            self.tmpView.center = self.center;
-            self.tmpView.center = CGPointMake(_curPoint.x + x_offset, _curPoint.y + y_offset);
-            if (CGRectGetMinX(self.tmpView.frame) < 0){
-                x_offset -= CGRectGetMinX(self.tmpView.frame);
-            }
-            if (CGRectGetMaxX(self.tmpView.frame) > SCREEN_WIDTH) {
-                x_offset += SCREEN_WIDTH - CGRectGetMaxX(self.tmpView.frame);
-            }
-            if (CGRectGetMinY(self.tmpView.frame) < 0) {
-                y_offset -= CGRectGetMinY(self.tmpView.frame);
-            }
-            if (CGRectGetMaxY(self.tmpView.frame) > SCREEN_HEIGHT) {
-                y_offset += SCREEN_HEIGHT - CGRectGetMaxY(self.tmpView.frame);
-            }
-            self.center = CGPointMake(_curPoint.x + x_offset, _curPoint.y + y_offset);
-        }
-            break;
-            
-        case UIGestureRecognizerStateEnded:
-            break;
-        default:
-            break;
+    }else{
+        
     }
+    
 }
 
 

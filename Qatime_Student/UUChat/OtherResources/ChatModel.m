@@ -29,6 +29,10 @@
     if (name ==nil) {
         name =@"";
     }
+    
+    if (iconURL==nil) {
+        iconURL = @"";
+    }
         UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
         UUMessage *message = [[UUMessage alloc] init];
         NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithDictionary:dic];
@@ -38,6 +42,8 @@
         [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
         
         [dataDic setObject:name forKey:@"strName"];
+    
+    
         [dataDic setObject:URLStr forKey:@"strIcon"];
         
         [message setWithDict:dataDic];
@@ -72,6 +78,9 @@
     
     if (name ==nil) {
         name =@"";
+    }
+    if (iconURL==nil) {
+        iconURL = @"";
     }
     
     if (dic[@"picture"]==nil) {
@@ -145,6 +154,9 @@ static int dateNum = 10;
         randomNum = UUMessageTypeText;
         if (text == nil) {
             text = @"";
+        }
+        if (URLString==nil) {
+            URLString = @"";
         }
         [dictionary setObject:text forKey:@"strContent"];
         

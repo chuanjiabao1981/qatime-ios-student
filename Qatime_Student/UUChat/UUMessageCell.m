@@ -175,6 +175,11 @@
     self.labelTime.frame = messageFrame.timeF;
     
     // 2、设置头像
+    
+    if (message.strIcon==nil) {
+        message.strIcon = @"";
+    }
+    
     headImageBackView.frame = messageFrame.iconF;
     self.btnHeadImage.frame = CGRectMake(2, 2, ChatIconWH-4, ChatIconWH-4);
     [self.btnHeadImage setBackgroundImageForState:UIControlStateNormal

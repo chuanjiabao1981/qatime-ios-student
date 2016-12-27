@@ -119,6 +119,8 @@
 		545162D51DF55DC7000BD17A /* Personal_HeadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162D41DF55DC7000BD17A /* Personal_HeadTableViewCell.m */; };
 		545162D81DF55DD0000BD17A /* PersonalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162D71DF55DD0000BD17A /* PersonalTableViewCell.m */; };
 		545731811E022E7700F45C03 /* HaveNoClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545731801E022E7700F45C03 /* HaveNoClassView.m */; };
+		5458AB381E0D424B00D6409F /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 547389FE1DD9A3FA00A50CCC /* libcrypto.a */; };
+		5458AB391E0D424B00D6409F /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54738A001DD9A3FA00A50CCC /* libssl.a */; };
 		545B3BA71E0A216700751D08 /* GuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B3BA61E0A216700751D08 /* GuideViewController.m */; };
 		545B3BAA1E0A5F4900751D08 /* MMPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B3BA91E0A5F4900751D08 /* MMPickerView.m */; };
 		545B3BAD1E0AA2DD00751D08 /* GradeList.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B3BAC1E0AA2DD00751D08 /* GradeList.m */; };
@@ -202,9 +204,7 @@
 		5493D4CE1E0BE1050085A39E /* TLCityPickerSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5493D4C81E0BE1050085A39E /* TLCityPickerSearchResultController.m */; };
 		54955D9B1DDBF1500079EB99 /* libNIMSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54738A051DD9A40700A50CCC /* libNIMSDK.a */; };
 		54955D9D1DDBF7130079EB99 /* libaacplus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 547389FD1DD9A3FA00A50CCC /* libaacplus.a */; };
-		54955D9E1DDBF7130079EB99 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 547389FE1DD9A3FA00A50CCC /* libcrypto.a */; };
 		54955D9F1DDBF7130079EB99 /* libevent.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 547389FF1DD9A3FA00A50CCC /* libevent.a */; };
-		54955DA21DDC027B0079EB99 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54738A001DD9A3FA00A50CCC /* libssl.a */; };
 		5496A3AB1DE591680096ECE5 /* NSAttributedString+EmojiExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 5496A3AA1DE591680096ECE5 /* NSAttributedString+EmojiExtension.m */; };
 		549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A050C1DC8396800B3564D /* SignUpInfoViewController.m */; };
 		549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A050F1DC8398300B3564D /* SignUpInfoView.m */; };
@@ -335,6 +335,8 @@
 		54B9CAF91DFE4A9D003961FF /* WithdrawConfirmView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9CAF81DFE4A9D003961FF /* WithdrawConfirmView.m */; };
 		54B9CAFC1DFE4AAC003961FF /* WithdrawConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9CAFB1DFE4AAC003961FF /* WithdrawConfirmViewController.m */; };
 		54B9CB001DFE4E8A003961FF /* BuyBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9CAFF1DFE4E8A003961FF /* BuyBar.m */; };
+		54C9A8CE1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C9A8CD1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m */; };
+		54C9A8D11E12159700B81EBF /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C9A8D01E12159700B81EBF /* PlayerView.m */; };
 		54CB26601DEFFBD300AE7414 /* ChangPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CB265F1DEFFBD300AE7414 /* ChangPhoneView.m */; };
 		54CB26631DEFFBDF00AE7414 /* ChangePhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CB26621DEFFBDF00AE7414 /* ChangePhoneViewController.m */; };
 		54CB266B1DF00BE000AE7414 /* wechat.png in Resources */ = {isa = PBXBuildFile; fileRef = 54CB266A1DF00BE000AE7414 /* wechat.png */; };
@@ -575,6 +577,8 @@
 		545162D71DF55DD0000BD17A /* PersonalTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalTableViewCell.m; sourceTree = "<group>"; };
 		5457317F1E022E7700F45C03 /* HaveNoClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HaveNoClassView.h; sourceTree = "<group>"; };
 		545731801E022E7700F45C03 /* HaveNoClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HaveNoClassView.m; sourceTree = "<group>"; };
+		5458AB321E0D411D00D6409F /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/libs/libcrypto.a; sourceTree = "<group>"; };
+		5458AB331E0D411D00D6409F /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/libs/libssl.a; sourceTree = "<group>"; };
 		545B3BA51E0A216700751D08 /* GuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuideViewController.h; sourceTree = "<group>"; };
 		545B3BA61E0A216700751D08 /* GuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuideViewController.m; sourceTree = "<group>"; };
 		545B3BA81E0A5F4900751D08 /* MMPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMPickerView.h; sourceTree = "<group>"; };
@@ -996,6 +1000,10 @@
 		54C21F8A1DDDB06E000549F2 /* Qatime_Student.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Qatime_Student.entitlements; sourceTree = "<group>"; };
 		54C21F8B1DDDB2F1000549F2 /* QatimeStudentPush_Development.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = QatimeStudentPush_Development.p12; sourceTree = "<group>"; };
 		54C21F8C1DDDB2F1000549F2 /* QatimeStudentPush_Distribution.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = QatimeStudentPush_Distribution.p12; sourceTree = "<group>"; };
+		54C9A8CC1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMJKeyboardShowHiddenNotificationCenter.h; sourceTree = "<group>"; };
+		54C9A8CD1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMJKeyboardShowHiddenNotificationCenter.m; sourceTree = "<group>"; };
+		54C9A8CF1E12159700B81EBF /* PlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
+		54C9A8D01E12159700B81EBF /* PlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerView.m; sourceTree = "<group>"; };
 		54CB265E1DEFFBD300AE7414 /* ChangPhoneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangPhoneView.h; sourceTree = "<group>"; };
 		54CB265F1DEFFBD300AE7414 /* ChangPhoneView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangPhoneView.m; sourceTree = "<group>"; };
 		54CB26611DEFFBDF00AE7414 /* ChangePhoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePhoneViewController.h; sourceTree = "<group>"; };
@@ -1144,14 +1152,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5458AB381E0D424B00D6409F /* libcrypto.a in Frameworks */,
+				5458AB391E0D424B00D6409F /* libssl.a in Frameworks */,
 				5493D4A51E0B98F70085A39E /* MapKit.framework in Frameworks */,
 				5493D48C1E0B81A40085A39E /* CoreLocation.framework in Frameworks */,
 				547FBF2A1DF681B300955A9E /* libUMessage_Sdk_1.4.0.a in Frameworks */,
 				547FBF1E1DF658C000955A9E /* UserNotifications.framework in Frameworks */,
 				54CB26731DF0302900AE7414 /* Security.framework in Frameworks */,
-				54955DA21DDC027B0079EB99 /* libssl.a in Frameworks */,
 				54955D9D1DDBF7130079EB99 /* libaacplus.a in Frameworks */,
-				54955D9E1DDBF7130079EB99 /* libcrypto.a in Frameworks */,
 				54955D9F1DDBF7130079EB99 /* libevent.a in Frameworks */,
 				54955D9B1DDBF1500079EB99 /* libNIMSDK.a in Frameworks */,
 				54294F601DDB443000677333 /* libGPUImage.a in Frameworks */,
@@ -1361,6 +1369,8 @@
 			children = (
 				54294C781DDB373400677333 /* NELivePlayerControl.h */,
 				54294C791DDB373400677333 /* NELivePlayerControl.m */,
+				54C9A8CF1E12159700B81EBF /* PlayerView.h */,
+				54C9A8D01E12159700B81EBF /* PlayerView.m */,
 				54FCBAF01DD5CB520094BF58 /* Cell */,
 				54FCBADE1DD5B3050094BF58 /* VideoInfoView.h */,
 				54FCBADF1DD5B3050094BF58 /* VideoInfoView.m */,
@@ -2704,6 +2714,15 @@
 			name = "试听购买栏";
 			sourceTree = "<group>";
 		};
+		54C9A8CB1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter */ = {
+			isa = PBXGroup;
+			children = (
+				54C9A8CC1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.h */,
+				54C9A8CD1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m */,
+			);
+			path = LMJKeyboardShowHiddenNotificationCenter;
+			sourceTree = "<group>";
+		};
 		54CB26571DEFFB7800AE7414 /* 绑定手机 */ = {
 			isa = PBXGroup;
 			children = (
@@ -3409,6 +3428,7 @@
 		54FCBABE1DD58E790094BF58 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				54C9A8CB1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter */,
 				5492101A1DCC585E00A65702 /* NSString+UTF8Coding.h */,
 				5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */,
 				54B73D091DE40B5900B7A7EB /* emojis.h */,
@@ -3520,6 +3540,8 @@
 		B493EB6DEDE6DB14F293C15A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5458AB321E0D411D00D6409F /* libcrypto.a */,
+				5458AB331E0D411D00D6409F /* libssl.a */,
 				5493D4A41E0B98F70085A39E /* MapKit.framework */,
 				5493D48B1E0B81A40085A39E /* CoreLocation.framework */,
 				547FBF291DF681B300955A9E /* libUMessage_Sdk_1.4.0.a */,
@@ -3967,6 +3989,7 @@
 				545162D11DF55BEC000BD17A /* UserInfoModel.m in Sources */,
 				5435D9341DD2B42100DD4FCC /* RecommandClasses.m in Sources */,
 				545162BE1DF50D99000BD17A /* ChangePasswordViewController.m in Sources */,
+				54C9A8D11E12159700B81EBF /* PlayerView.m in Sources */,
 				5469786C1DC72A54001695F4 /* SignUpView.m in Sources */,
 				54B73D051DE3E85A00B7A7EB /* pinyin.m in Sources */,
 				54F3BA211DFC4427003998D0 /* LoginAgainView.m in Sources */,
@@ -3982,6 +4005,7 @@
 				54B4C18A1DF8184500E31794 /* ChargeViewController.m in Sources */,
 				549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */,
 				5493D4CE1E0BE1050085A39E /* TLCityPickerSearchResultController.m in Sources */,
+				54C9A8CE1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m in Sources */,
 				54F3BA241DFC4435003998D0 /* LoginAgainViewController.m in Sources */,
 				54AB49031DEDB1BA008E3BC5 /* ListenTableViewCell.m in Sources */,
 				548328F31DDC75050053AB29 /* ChatModel.m in Sources */,
@@ -4269,8 +4293,8 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/include/NELivePlayer",
+					"$(PROJECT_DIR)/Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/include",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/includ",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/ExportHeaders",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/ExportHeaders/MessageObject",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/ExportHeaders/Chatroom",
@@ -4284,7 +4308,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs",
 					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/libs",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/Libs",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_IM_v3.1.1",
@@ -4293,6 +4316,7 @@
 					"$(PROJECT_DIR)/Qatime_Student",
 					"$(PROJECT_DIR)/Qatime_Student/JPush-iOS-SDK-3.0.0/Lib",
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",
+					"$(PROJECT_DIR)/Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs",
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",
 				);
 				ONLY_ACTIVE_ARCH = YES;
@@ -4331,7 +4355,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.qatime.QatimeStudent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 arm64 x86_64 i386";
 			};
 			name = Debug;
@@ -4354,8 +4378,8 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/include/NELivePlayer",
+					"$(PROJECT_DIR)/Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/include",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/includ",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/ExportHeaders",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/ExportHeaders/MessageObject",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/ExportHeaders/Chatroom",
@@ -4369,7 +4393,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs",
 					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/libs",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/Libs",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_IM_v3.1.1",
@@ -4378,6 +4401,7 @@
 					"$(PROJECT_DIR)/Qatime_Student",
 					"$(PROJECT_DIR)/Qatime_Student/JPush-iOS-SDK-3.0.0/Lib",
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",
+					"$(PROJECT_DIR)/Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs",
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",
 				);
 				ONLY_ACTIVE_ARCH = YES;
@@ -4416,7 +4440,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.qatime.QatimeStudent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 arm64 x86_64 i386";
 			};
 			name = Release;

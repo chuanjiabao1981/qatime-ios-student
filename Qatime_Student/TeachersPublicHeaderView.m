@@ -17,8 +17,6 @@
         
         [self setupViews];
         
-        
-        
     }
     return self;
 }
@@ -85,13 +83,7 @@
     /* 自我介绍*/
     _selfInterview= [[UILabel alloc]init];
     
-    
-    
-    
-    
-    
-    
-    
+        
     
     [self sd_addSubviews:@[_bakcgroudImage,selfIntro,selfIntroLabel,_selfInterview]];
     
@@ -185,7 +177,7 @@
 
     
     [_selfInterview setFrame:CGRectMake(10, CGRectGetMaxY(selfIntro.frame)+10, CGRectGetWidth(self.frame)-20, 60)];
-    _selfInterview .text = @"aasdfjadlskfja;lsdkjf;alskdjf" ;
+    _selfInterview .text = @"" ;
     _selfInterview.numberOfLines =0;
     [_selfInterview sizeToFit];
     
