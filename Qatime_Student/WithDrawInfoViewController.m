@@ -256,8 +256,8 @@
 
 - (void)getCheckCode:(UIButton *)sender{
     
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"login_mobile"]) {
-        NSString *mobile = [[NSUserDefaults standardUserDefaults]objectForKey:@"login_mobile"];
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]!=nil) {
+        NSString *mobile = [[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"];
 
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -286,7 +286,7 @@
     /* 手机号输入为空或错误的情况*/
     else  {
         
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请重新登录" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"获取手机号失败!\n请重新登录!" preferredStyle:UIAlertControllerStyleAlert];
        
         UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
@@ -296,7 +296,11 @@
             
         }] ;
         
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        }] ;
+        
         [alert addAction:sure];
+        [alert addAction:cancel];
         
         [self presentViewController:alert animated:YES completion:nil];
 

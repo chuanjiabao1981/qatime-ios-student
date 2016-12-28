@@ -61,6 +61,7 @@
 #import "UIButton+Touch.h"
 
 #import "UIViewController+Login.h"
+#import "NSDate+ChangeUTC.h"
 
 
 #define APP_WIDTH self.view.frame.size.width
@@ -77,7 +78,7 @@ typedef enum : NSUInteger {
 
 
 
-@interface NELivePlayerViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UUInputFunctionViewDelegate,UUMessageCellDelegate,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate>{
+@interface NELivePlayerViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UUInputFunctionViewDelegate,UUMessageCellDelegate,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate,NIMLoginManagerDelegate>{
     
     
     /* token/id*/
@@ -515,6 +516,16 @@ bool ismute     = NO;
             .bottomEqualToView(_boardPlayerView);
             
         }
+        
+        /* 白板播放器的设置*/
+         [_ isLogToFile:YES];
+        [_ setBufferStrategy:NELPLowDelay]; //直播低延时模式
+        [_ setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
+        [_ setShouldAutoplay:NO]; //设置prepareToPlay完成后是否自动播放
+        [_ setHardwareDecoder:isHardware]; //设置解码模式，是否开启硬件解码
+        [_ setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
+        [_ prepareToPlay]; //初始化视频文件
+
         _;
     });
     
@@ -537,6 +548,19 @@ bool ismute     = NO;
             .topEqualToView(_teacherPlayerView)
             .bottomEqualToView(_teacherPlayerView);
         }
+        
+       
+        [_ isLogToFile:YES];
+        
+        
+        /* 教师播放器的设置*/
+        [_ setBufferStrategy:NELPLowDelay]; //直播低延时模式
+        [_ setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
+        [_ setShouldAutoplay:NO]; //设置prepareToPlay完成后是否自动播放
+        [_ setHardwareDecoder:isHardware]; //设置解码模式，是否开启硬件解码
+        [_ setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
+        [_ prepareToPlay]; //初始化视频文件
+
         _;
     });
     
@@ -1319,6 +1343,9 @@ bool ismute     = NO;
     .widthRatioToView(self.view,2/5.0f)
     .autoHeightRatio(9/16.0);
     
+    _chatTableView.sd_layout
+    .bottomSpaceToView(_videoInfoView.view2,IFView.origin_sd.y);
+    [_chatTableView updateLayout];
     
     /* 把可移动的这个视图放到self.view的最上层*/
     [self.view bringSubviewToFront:playerView];
@@ -1372,25 +1399,6 @@ bool ismute     = NO;
     [super viewWillAppear:animated];
     NSLog(@"viewWillAppear");
     NSLog(@"Version = %@", [self.liveplayerTeacher getSDKVersion]);
-    [self.liveplayerTeacher isLogToFile:YES];
-    [self.liveplayerBoard isLogToFile:YES];
-    
-    
-    /* 白板播放器的设置*/
-    [self.liveplayerBoard setBufferStrategy:NELPLowDelay]; //直播低延时模式
-    [self.liveplayerBoard setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
-    [self.liveplayerBoard setShouldAutoplay:NO]; //设置prepareToPlay完成后是否自动播放
-    [self.liveplayerBoard setHardwareDecoder:isHardware]; //设置解码模式，是否开启硬件解码
-    [self.liveplayerBoard setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
-    [self.liveplayerBoard prepareToPlay]; //初始化视频文件
-    
-    /* 教师播放器的设置*/
-    [self.liveplayerTeacher setBufferStrategy:NELPLowDelay]; //直播低延时模式
-    [self.liveplayerTeacher setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
-    [self.liveplayerTeacher setShouldAutoplay:NO]; //设置prepareToPlay完成后是否自动播放
-    [self.liveplayerTeacher setHardwareDecoder:isHardware]; //设置解码模式，是否开启硬件解码
-    [self.liveplayerTeacher setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
-    [self.liveplayerTeacher prepareToPlay]; //初始化视频文件
     
     
 }
@@ -2258,15 +2266,25 @@ bool ismute     = NO;
     /* 取出存储的chatAccount*/
     _chat_Account =[Chat_Account yy_modelWithDictionary:[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"]];
     
-    
-    //APP主动发起自动登录
-    [[[NIMSDK sharedSDK] loginManager] login:_chat_Account.user_id token:_chat_Account.token completion:^(NSError *error) {
-        NSLog(@"%@",error);
-        if (error == NULL) {
-            
-        }
+    /* 查询登录状态*/
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:@"NIMSDKLogin"]) {
         
-    }];
+        [[NIMSDK sharedSDK].chatManager addDelegate:self];
+        
+        
+        
+    }else{
+        
+        /* 强制自动登录一次*/
+        [[NIMSDK sharedSDK].loginManager addDelegate:self];
+        NIMAutoLoginData *loginData = [[NIMAutoLoginData alloc]init];
+        loginData.account = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"accid"];
+        loginData.token =[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"token"];
+        [[NIMSDK sharedSDK].loginManager autoLogin:loginData];
+        
+        
+    }
+
     [[NIMSDK sharedSDK].chatManager addDelegate:self];
     [[NIMSDK sharedSDK].chatroomManager addDelegate:self];
     
@@ -2696,7 +2714,8 @@ bool ismute     = NO;
         
         NSDictionary *dic = @{@"strContent": [funcView.TextViewInput.attributedText getPlainString],
                               @"type": @(UUMessageTypeText),
-                              @"frome":@(UUMessageFromMe)};
+                              @"frome":@(UUMessageFromMe),
+                              @"strTime":[[NSDate date]changeUTC ]};
         
         //    [funcView changeSendBtnWithPhoto:YES];
         [self dealTheFunctionData:dic];
@@ -3060,9 +3079,7 @@ bool ismute     = NO;
             
         }
         
-        
     }
-    
     
 }
 
@@ -3604,56 +3621,7 @@ bool ismute     = NO;
     }
 }
 
-// 自定义表情键盘弹出会调用
-//- (void)keyboardWillChangeFrame:(NSNotification *)note{
-//    
-//    //获取键盘高度
-//    
-//    NSDictionary *info = [note userInfo];
-//    
-//    //获取动画时间
-//    
-//    float duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-//    
-//    //获取动画开始状态的frame
-//    
-//    CGRect beginRect = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-//    
-//    //获取动画结束状态的frame
-//    
-//    CGRect endRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue];
-//    
-//    //计算高度差
-//    
-//    CGFloat offsety =  endRect.origin.y - beginRect.origin.y ;
-//    
-//    NSLog(@"键盘高度:%f 高度差:%f\n",beginRect.origin.y,offsety);
-//    
-//    
-//    // 约束动画
-//    [UIView animateWithDuration:duration animations:^{
-//        
-//        NSLog(@"%@",[NSThread currentThread]);
-//        
-//        _chatTableView.sd_layout
-//        .topEqualToView(_videoInfoView.view2)
-//        .leftEqualToView(_videoInfoView.view2)
-//        .rightEqualToView(_videoInfoView.view2)
-//        .bottomSpaceToView(_videoInfoView.view2,-offsety+46);
-//        
-//        IFView.sd_layout
-//        .bottomSpaceToView(_videoInfoView.view2,-offsety);
-//        
-//        [_chatTableView updateLayout];
-//        [IFView updateLayout];
-//        [self tableViewScrollToBottom];
-//        
-//        
-//    }];
-//    
-//    
-//    
-//}
+
 
 
 #pragma mark- 查询播放状态功能的方法实现 --播放器初始化状态

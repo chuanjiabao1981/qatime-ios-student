@@ -587,8 +587,10 @@
 
 /* 发送消息进度*/
 - (void)sendMessage:(NIMMessage *)message progress:(CGFloat)progress{
-    
+
     NSLog(@"发送进度::%f",progress);
+
+    
 }
 
 
@@ -602,15 +604,17 @@
 }
 /* 接收图片的进度回调*/
 - (void)fetchMessageAttachment:(NIMMessage *)message progress:(CGFloat)progress{
-    
+
     NSLog(@"接收进度::%f",progress);
+
     
 }
 
 /* 接收图片完成后的回调*/
 - (void)fetchMessageAttachment:(NIMMessage *)message didCompleteWithError:(NSError *)error{
-    
+
     NSLog(@"收到图片");
+
     
     /* 在本地创建对方的消息消息*/
     NSString *iconURL = @"".mutableCopy;
@@ -623,9 +627,10 @@
     }
     
     NIMImageObject *imageObject = message.messageObject;
-    
+
     NSLog(@"%@",imageObject.thumbPath);
     NSLog(@"%@",imageObject.path);
+
     
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];

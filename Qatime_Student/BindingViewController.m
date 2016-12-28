@@ -193,7 +193,7 @@
             [manager POST:[NSString stringWithFormat:@"%@/api/v1/user/wechat_regsiter",Request_Header] parameters:signUpInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 NSDictionary *codeState = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                NSLog(@"%@",codeState);
+                
                 
                 NSDictionary *dataDic=[NSDictionary dictionaryWithDictionary: codeState[@"data"]];
                 
@@ -216,8 +216,11 @@
                     
                     NSString *tokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
                     [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
+#if defined(DEBUG)||defined(_DEBUG)
                     
                     NSLog(@"保存的数据\n%@",dataDic);
+#endif
+                    
                     /* 归档*/
                     [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
                     
@@ -235,7 +238,7 @@
                     [[NSUserDefaults standardUserDefaults]setObject:userID forKey:@"id"];
                     
                     
-                    NSLog(@"token:%@,id:%@",remember_token,userID);
+                    
                     
                     
                     /* 另存一个userdefault ，只存user的头像地址*/

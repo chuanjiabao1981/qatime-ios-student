@@ -448,7 +448,10 @@
                     /* 另存一个useerdefault 存user的name*/
                     [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"name"] forKey:@"name"];
                     
-                    
+                    /* 另存一个userdefault 存电话*/
+                    if (dicGet[@"user"][@"login_mobile"] !=nil) {
+                        [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"login_mobile"] forKey:@"login_mobile"];
+                    }
                     
                     /* 发出一条消息:账号密码方式登录*/
                     

@@ -44,6 +44,7 @@
     self = [super init];
     if (self) {
         
+        
         _numbers = [NSString stringWithFormat:@"%@",number];
         _amount = [NSString  stringWithFormat:@"%@",amount];
         
@@ -65,6 +66,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
+    self.view.backgroundColor = [UIColor whiteColor];
     _navigationBar = ({
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         

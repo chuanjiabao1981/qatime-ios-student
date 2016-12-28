@@ -48,10 +48,11 @@
     
         BindingMailView *_=[[BindingMailView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
         
-        if ([[NSUserDefaults standardUserDefaults]objectForKey:@"login_mobile"]) {
+        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]) {
         
             
-            _phoneNumber = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults]objectForKey:@"login_mobile"]];
+            _phoneNumber = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]];
+            
            
             _.phoneLabel.text =_phoneNumber;
             

@@ -52,7 +52,7 @@
         [self.view addSubview:_];
         _.titleLabel.text = @"安全设置";
        
-        [_.leftButton setImage:[UIImage imageNamed:@"leftArrow"] forState:UIControlStateNormal];
+        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         
         _;
     

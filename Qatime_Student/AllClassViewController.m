@@ -16,6 +16,7 @@
 #import "UIViewController+HUD.h"
 
 #import "HaveNoClassView.h"
+#import "RDVTabBarController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -64,7 +65,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
     [self.view addSubview:_navigationBar];
-    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"leftArrow"] forState:UIControlStateNormal];
+    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
     
@@ -75,7 +76,6 @@
     /* 日历的设置*/
     _allClassView.calendarView.calendarView.appearance.headerMinimumDissolvedAlpha = 0;
     _allClassView.calendarView.calendarView.appearance.eventDefaultColor = [UIColor redColor];
-    
     
     _classTableView = [[UITableView alloc]init];
     [self.view addSubview:_classTableView];
@@ -102,6 +102,15 @@
     
     
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [self.rdv_tabBarController setTabBarHidden:YES animated:YES];
+    
+}
+    
+    
 
 
 
@@ -173,9 +182,10 @@
         for (ClassTimeModel *model in _allClassArr) {
           
             if ([model.class_date isEqualToString:[dateFormatter stringFromDate:currentDate]]) {
-                
+#if defined(DEBUG)||defined(_DEBUG)
                 NSLog(@"%@",model.live_time);
                 NSLog(@"%@",[dateFormatter stringFromDate:currentDate]);
+#endif
                 
                 [_dataArr addObject:model];
                 
@@ -183,7 +193,10 @@
             
         }
     }
+#if defined(DEBUG)||defined(_DEBUG)
     NSLog(@"%@",_dataArr);
+    
+#endif
     /* 在刷新日历table的视图*/
 
     [self updateTable];
@@ -217,8 +230,10 @@
             
             /* 回复数据正确的情况下*/
             if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
+#if defined(DEBUG)||defined(_DEBUG)
                 
                 NSLog(@"%@",dic[@"data"]);
+#endif
                 
                 for (NSDictionary *classDic in dic[@"data"]) {
                     
@@ -238,8 +253,10 @@
                     }
                     
                 }
+#if defined(DEBUG)||defined(_DEBUG)
                 
                 NSLog(@"%@",_unclosedArr);
+#endif
                 
                 /* 在所有课程中添加该数组*/
                 
@@ -289,7 +306,7 @@
             /* 回复数据正确的情况下*/
             if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
                 
-                NSLog(@"%@",dic[@"data"]);
+                
                 
                 for (NSDictionary *classDic in dic[@"data"]) {
                     
@@ -307,7 +324,7 @@
                     
                 }
                 
-                NSLog(@"%@",_closedArr);
+                
                 
             }else{
                 
@@ -451,14 +468,14 @@
         
         cell.sd_tableView = tableView;
         
-        NSLog(@"%ld",_dataArr.count);
+        
         
     }
     if (_dataArr.count!=0) {
         
         cell.model = _dataArr[indexPath.row];
         
-        NSLog(@"%@",[cell.model course_name]);
+        
     }
     
     return  cell;

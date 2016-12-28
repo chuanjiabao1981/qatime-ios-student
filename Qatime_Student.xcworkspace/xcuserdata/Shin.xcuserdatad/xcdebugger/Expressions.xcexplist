@@ -292,18 +292,18 @@
          contextName = "__43-[NoticeIndexViewController requestNotices]_block_invoke:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__37-[SafeViewController requestUserInfo]_block_invoke:SafeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_contentArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "__41-[NELivePlayerViewController viewDidLoad]_block_invoke:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "weakSelf.view.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__37-[SafeViewController requestUserInfo]_block_invoke:SafeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_contentArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -484,6 +484,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__43-[TutoriumViewController sendFilterStatus:]_block_invoke:TutoriumViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[IndexPageViewController collectionView:didSelectItemAtIndexPath:]:IndexPageViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -493,6 +496,9 @@
       </ContextState>
       <ContextState
          contextName = "-[AppDelegate onResp:]:AppDelegate.m">
+      </ContextState>
+      <ContextState
+         contextName = "__33-[ChatViewController viewDidLoad]_block_invoke:ChatViewController.m">
       </ContextState>
       <ContextState
          contextName = "__39-[TutoriumInfoViewController addListen]_block_invoke:TutoriumInfoViewController.m">
@@ -612,6 +618,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[UUMessage setWithDict:]:UUMessage.m">
+      </ContextState>
+      <ContextState
          contextName = "__42-[ChatViewController requestServerHistory]_block_invoke:ChatViewController.m">
       </ContextState>
       <ContextState
@@ -656,6 +665,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__58-[TeachersPublicViewController requestTeachersInfoWithID:]_block_invoke:TeachersPublicViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke:NoticeIndexViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -676,6 +688,9 @@
                value = "step">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__86-[TutoriumViewController requestDataWithGrade:andSubject:andPage:andPerPage:withPull:]_block_invoke:TutoriumViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[ChatViewController requestChatHitstory]:ChatViewController.m">

@@ -60,10 +60,12 @@
     NSError *sessionError;
     [_session setCategory:AVAudioSessionCategoryPlayAndRecord error:&sessionError];
     
-    if(_session == nil)
+    if(_session == nil){
         NSLog(@"Error creating session: %@", [sessionError description]);
-    else
+    }
+    else{
         [_session setActive:YES error:nil];
+    }
 }
 
 #pragma mark - Public Methods

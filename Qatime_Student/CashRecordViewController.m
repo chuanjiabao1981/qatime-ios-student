@@ -22,15 +22,13 @@
 #import "UIViewController+HUD.h"
 
 
-
-
 @interface CashRecordViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
     NavigationBar *_navigationBar;
     
     /* 选择跳转框*/
     
-//   NSInteger selectedItem;
+    //   NSInteger selectedItem;
     
     NSString *_token;
     NSString *_idNumber;
@@ -60,7 +58,7 @@
     if (self) {
         
         _selectedItem = [NSString stringWithFormat:@"%ld",item];
-    
+        
         
     }
     return self;
@@ -74,15 +72,15 @@
     
     
     self.view.backgroundColor = [UIColor whiteColor];
-       
-     [self.rdv_tabBarController setTabBarHidden:YES];
-
+    
+    [self.rdv_tabBarController setTabBarHidden:YES];
+    
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];
     
     _navigationBar.titleLabel.text = @"资金记录";
     
-    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"leftArrow"] forState:UIControlStateNormal];
+    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
@@ -98,10 +96,9 @@
     
     /* view的初始化*/
     _cashRecordView = ({
-    
+        
         CashRecordView *_ = [[CashRecordView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
         [self.view addSubview:_];
-        
         
         
         _;
@@ -127,14 +124,13 @@
     [ _cashRecordView.segmentControl setIndexChangeBlock:^(NSInteger index) {
         [weakSelf.cashRecordView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-40) animated:YES];
     }];
-    [_cashRecordView.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
-    
-    
-//    _cashRecordView.segmentControl.selectedSegmentIndex = _selectedItem.integerValue;
     
     
     
-
+    [_cashRecordView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd*(_selectedItem.integerValue-1), 0, self.view.width_sd, self.view.height_sd) animated:YES];
+    
+    _cashRecordView.segmentControl.selectedSegmentIndex = _selectedItem.integerValue;
+    
     
     
     /* 初始化数据*/
@@ -150,7 +146,8 @@
     
     /* 请求提现记录*/
     [self requestPayment];
-
+    
+    
     
     
 }
@@ -172,18 +169,16 @@
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
             NSMutableArray *dataArr = [NSMutableArray arrayWithArray:[dic valueForKey:@"data"]];
-            NSLog(@"%@",dataArr);
+            
             if (dataArr.count !=0) {
                 
                 for (NSInteger i = 0; i<dataArr.count; i++) {
                     
-                    
-                    
                     Recharge *mod = [Recharge yy_modelWithJSON:dataArr[i]];
                     
                     mod.idNumber = [dataArr[i] valueForKey:@"id"];
-//                    mod.timeStamp
-                        
+                    //                    mod.timeStamp
+                    
                     
                     /* 目前暂不支持支付宝,预留支付宝的筛选接口*/
                     
@@ -197,7 +192,7 @@
                         
                         NSTimeInterval time=[timeStamp integerValue]+28800;//因为时差问题要加8小时 == 28800 sec
                         NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
-                        NSLog(@"date:%@",[detaildate description]);
+                        
                         //实例化一个NSDateFormatter对象
                         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
                         //设定时间格式,这里可以设置成自己需要的格式
@@ -208,12 +203,8 @@
                     }
                     
                     [_rechargeArr addObject:mod];
-                    
-                    
-                                        
-                    
+
                 }
-                
                 
                 [_cashRecordView.rechargeView reloadData];
                 [_cashRecordView.rechargeView setNeedsDisplay];
@@ -222,18 +213,7 @@
                 
                 /* 没有充值记录*/
                 
-                
             }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
             
         }else{
             
@@ -260,8 +240,8 @@
 #pragma mark- 请求提现数据
 - (void)requestWithDraw{
     
-//    _withDrawArr = @[].mutableCopy;
-//    [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+    //    _withDrawArr = @[].mutableCopy;
+    //    [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -287,7 +267,7 @@
                             
                         }
                     }
-
+                    
                     WithDraw *wiMod = [WithDraw yy_modelWithJSON:dic];
                     
                     [_withDrawArr addObject:wiMod];
@@ -295,10 +275,10 @@
                 }
                 
                 
-               
+                
                 
                 [_cashRecordView.withDrawView reloadData];
-//                [_cashRecordView.withDrawView setNeedsDisplay];
+                //                [_cashRecordView.withDrawView setNeedsDisplay];
                 [self loadingHUDStopLoadingWithTitle:@"加载成功!"];
                 
                 
@@ -318,7 +298,7 @@
         
         
     }];
-
+    
     
     
     
@@ -329,8 +309,8 @@
 - (void)requestPayment{
     
     
-//    _paymentArr = @[].mutableCopy;
-//    [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+    //    _paymentArr = @[].mutableCopy;
+    //    [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -374,12 +354,11 @@
                 
                 [self loadingHUDStopLoadingWithTitle:@"没有消费记录!"];
                 
-                
             }
             
             [_cashRecordView.paymentView reloadData];
             [_cashRecordView.paymentView setNeedsDisplay];
-
+            
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -414,7 +393,7 @@
             
         }
             break;
-
+            
         case 3:{
             if (_paymentArr.count!=0) {
                 rows = _paymentArr.count;
@@ -422,7 +401,7 @@
             
         }
             break;
-
+            
     }
     
     
@@ -434,7 +413,7 @@
     
     
     UITableViewCell *cell = [UITableViewCell new];
-   
+    
     
     switch (tableView.tag) {
         case 1:{
@@ -444,17 +423,18 @@
             RechargeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
             if (cell==nil) {
                 cell=[[RechargeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-                cell.sd_tableView = tableView;
+                
             }
             
             
             if (_rechargeArr.count >indexPath.row) {
                 
                 cell.model  = _rechargeArr[indexPath.row];
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             }
             
             return  cell;
-
+            
         }
             
             break;
@@ -466,14 +446,14 @@
             WithDrawTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
             if (cell==nil) {
                 cell=[[WithDrawTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-                cell.sd_tableView = tableView;
+                
             }
             
             
             if (_withDrawArr.count >indexPath.row) {
                 
                 cell.model  = _withDrawArr[indexPath.row];
-                
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 
                 
             }
@@ -483,7 +463,7 @@
         }
             
             break;
-
+            
         case 3:{
             
             /* cell的重用队列*/
@@ -491,23 +471,24 @@
             PaymentTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
             if (cell==nil) {
                 cell=[[PaymentTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-                cell.sd_tableView = tableView;
+                
             }
             
             
             if (_paymentArr.count> indexPath.row) {
                 
                 cell.model  = _paymentArr[indexPath.row];
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             }
             
             return  cell;
             
-        
-
+            
+            
             
         }
             break;
-       
+            
     }
     
     return cell;
@@ -529,7 +510,7 @@
                 
                 height =  [tableView cellHeightForIndexPath:indexPath model:mod keyPath:@"model" cellClass:[RechargeTableViewCell class] contentViewWidth:self.view.width_sd];
             }
-
+            
         }
         case 2:{
             if (_withDrawArr.count  >indexPath.row) {
@@ -540,7 +521,7 @@
             }
             
         }
-
+            
             
             break;
         case 3:{
@@ -554,8 +535,8 @@
         }
             
             break;
-  
-        
+            
+            
     }
     
     return  height;
@@ -582,8 +563,8 @@
         if ([cell.model.status isEqualToString:@"canceled"]) {
             
         }else{
-        
-        
+            
+            
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否取消该提现申请?" preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                 
@@ -601,7 +582,7 @@
             
             [self presentViewController:alert animated:YES completion:nil];
             
-        
+            
         }
     }
     
@@ -621,11 +602,11 @@
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
-            NSLog(@"%@",dic);
+            
             if ([dic[@"satatus"]isEqual:[NSNumber numberWithInteger:1]]) {
                 /* 删除成功*/
                 [self loadingHUDStopLoadingWithTitle:@"删除成功!"];
-               
+                
                 [self requestWithDraw];
                 
                 
@@ -641,10 +622,10 @@
             [self loadingHUDStopLoadingWithTitle:@"请求失败,请重试"];
             
         }];
-    
+        
     }else{
         [self loadingHUDStopLoadingWithTitle:@"请求失败,请重试"];
-
+        
     }
     
     
@@ -684,13 +665,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

@@ -16,9 +16,9 @@
 #import "UMessage.h"
 #import "UncaughtExceptionHandler.h"
 
-#ifdef NSFoundationVersionNumber_iOS_9_x_Max
+//#ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
-#endif
+//#endif
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate,NIMSystemNotificationManager,NIMLoginManagerDelegate>
 
@@ -62,14 +62,19 @@
             
             NSString *token= [[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
             NSString *userid=[[NSUserDefaults standardUserDefaults]objectForKey:@"id"];
+#if defined(DEBUG)||defined(_DEBUG)
+            
             NSLog(@"%@,%@",token,userid);
+#endif
             
         }
     }
     
     
+#if defined(DEBUG)||defined(_DEBUG)
     
     NSLog(@"本地沙盒存储路径：%@", NSHomeDirectory());
+#endif
     
     /* 添加消息中心监听 判断登录状态*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogOut) name:@"userLogOut" object:nil];
@@ -196,7 +201,10 @@
     
     /* 登录成功*/
     if (step == NIMLoginStepLoginOK) {
+#if defined(DEBUG)||defined(_DEBUG)
+        
         NSLog(@"%@",[[[NIMSDK sharedSDK]teamManager]allMyTeams]);
+#endif
         
         [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"NIMSDKLogin"];
         
@@ -216,10 +224,10 @@
 - (void)application:(UIApplication *)application
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
+#if defined(DEBUG)||defined(_DEBUG)
     
-    NSLog(@"%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]
-                  stringByReplacingOccurrencesOfString: @">" withString: @""]
-                 stringByReplacingOccurrencesOfString: @" " withString: @""]);
+    NSLog(@"%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]stringByReplacingOccurrencesOfString: @">" withString: @""]stringByReplacingOccurrencesOfString: @" " withString: @""]);
+#endif
     
     
     /// Required - 注册 DeviceToken
@@ -405,11 +413,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                 SendAuthResp *respdata = (SendAuthResp *)resp;
                 
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"WechatLoginSucess" object:respdata.code];
+                
+#if defined(DEBUG)||defined(_DEBUG)
+                
                 NSLog(@"%@",respdata.code);
-                
-                
-                
-                
+#endif
                 
             }else if (resp.errCode == -1){
                 /* 登录失败*/
@@ -453,8 +461,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
         
     }
+#if defined(DEBUG)||defined(_DEBUG)
     
     NSLog(@"%@,%d,%d",resp.errStr,resp.errCode,resp.type);
+#endif
     
     
     
