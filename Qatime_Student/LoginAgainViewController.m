@@ -49,8 +49,6 @@
     
     
     
-    
-    
 }
 
 @end
@@ -85,19 +83,10 @@
     _navigationBar.titleLabel.text = @"登录";
     
     [self .view addSubview:_navigationBar];
-
     
+    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     
-    
-            [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-    
-            [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-   
-    
-    
-    
-    
-    
+    [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
     
     
@@ -105,7 +94,7 @@
     _wrongTimes = 0;
     _captcha =[NSMutableString string ];
     
-    _loginAgainView = [[LoginAgainView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
+    _loginAgainView = [[LoginAgainView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
     [self.view addSubview:_loginAgainView];
     
     

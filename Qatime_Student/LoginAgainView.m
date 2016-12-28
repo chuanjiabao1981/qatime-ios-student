@@ -250,13 +250,12 @@
         
         /* 跳过登录*/
         
-        _acrossLogin.sd_layout
-        .centerXEqualToView(self)
-        .heightIs(30)
-        .widthIs(100)
-        .bottomSpaceToView(wechatLogin,25) ;
-        _acrossLogin.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
-        
+//        _acrossLogin.sd_layout
+//        .centerXEqualToView(self)
+//        .heightIs(30)
+//        .widthIs(100)
+//        .bottomSpaceToView(wechatLogin,25) ;
+//        _acrossLogin.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
         
         
         /* 验证码生成*/
@@ -277,8 +276,6 @@
         .topSpaceToView(_text3,10)
         .bottomSpaceToView(_text3,10)
         .rightSpaceToView(_text3,10);
-        
-        
         
         
     }

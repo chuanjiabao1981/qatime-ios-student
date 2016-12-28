@@ -28,7 +28,7 @@
         .centerXEqualToView(self)
         .leftEqualToView(self)
         .rightEqualToView(self)
-        .heightRatioToView(self,0.04);
+        .heightRatioToView(self,0.05);
         
     }
     return self;

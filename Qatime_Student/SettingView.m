@@ -41,7 +41,7 @@
             .leftSpaceToView(self ,10)
             .rightSpaceToView(self,10)
             .topSpaceToView(_menuTableView,60)
-            .heightRatioToView(self,0.08f);
+            .heightRatioToView(self,0.06f);
             [_ setTitle:@"退出登录" forState:UIControlStateNormal];
             _.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
             [_ setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

@@ -29,7 +29,6 @@
        
         /* 4个button的contentview  白底*/
         _buttonContentView = [[UIView alloc]init];
-       
         _buttonContentView.backgroundColor = [UIColor whiteColor];
         
         /* 分割线*/
@@ -90,7 +89,7 @@
                 
         /* contentview添加在collection的上层*/
         [self addSubview:_buttonContentView];
-        _buttonContentView.sd_layout.leftSpaceToView(self,0).rightSpaceToView(self,0).topSpaceToView(self,0).heightRatioToView(self,0.06f);
+        _buttonContentView.sd_layout.leftSpaceToView(self,0).rightSpaceToView(self,0).topSpaceToView(self,0).heightRatioToView(self,0.055f);
         
         /* collectionView的布局*/
         [self addSubview:_classesCollectionView];

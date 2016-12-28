@@ -60,11 +60,7 @@
 //        _separateLine = [[UIView alloc]init];
 //        _separateLine.backgroundColor= [UIColor lightGrayColor];
         
-        
         [self.contentView sd_addSubviews:@[_logoImage,_settingName,_balance]];
-        
-        
-        
         
         /* 布局*/
         

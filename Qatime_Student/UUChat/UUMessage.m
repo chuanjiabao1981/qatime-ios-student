@@ -9,6 +9,7 @@
 #import "UUMessage.h"
 #import "NSDate+Utils.h"
 
+#import "NSString+TimeStamp.h"
 @implementation UUMessage
 
 
@@ -22,7 +23,6 @@
         self.strIcon = dict[@"strIcon"];
     }
     
-    
     if (dict[@"strName"] ==nil) {
         dict[@"strName"] =@"";
     }
@@ -30,7 +30,6 @@
     self.strId = dict[@"strId"];
     self.strTime = [self changeTheDateString:dict[@"strTime"]];
     self.from = [dict[@"from"] intValue];
-    
     
     switch ([dict[@"type"] integerValue]) {
         
@@ -65,6 +64,10 @@
 //"昨天 上午10:09"或者"2012-08-10 凌晨07:09"
 - (NSString *)changeTheDateString:(NSString *)Str
 {
+//    Str = [Str timeStampToDate];
+    
+    
+    
     NSString *subString = [Str substringWithRange:NSMakeRange(0, 19)];
     NSDate *lastDate = [NSDate dateFromString:subString withFormat:@"yyyy-MM-dd HH:mm:ss"];
     
@@ -85,16 +88,16 @@
     
     
     if ([lastDate hour]>=5 && [lastDate hour]<12) {
-        period = @"AM";
+        period = @"上午";
         hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]];
     }else if ([lastDate hour]>=12 && [lastDate hour]<=18){
-        period = @"PM";
+        period = @"下午";
         hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]-12];
     }else if ([lastDate hour]>18 && [lastDate hour]<=23){
-        period = @"Night";
+        period = @"晚上";
         hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]-12];
     }else{
-        period = @"Dawn";
+        period = @"凌晨";
         hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]];
     }
     return [NSString stringWithFormat:@"%@ %@ %@:%02d",dateStr,period,hour,(int)[lastDate minute]];

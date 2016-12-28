@@ -16,6 +16,7 @@
 ////    "icon": "http://qatime-testing.oss-cn-beijing.aliyuncs.com/avatars/small_14c4a876183d7886ca8684a1650fa785.png"
 
 
+
 @property(nonatomic,strong) NSString *user_id ;
 @property(nonatomic,strong) NSString *accid ;
 @property(nonatomic,strong) NSString *token ;

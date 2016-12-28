@@ -18,9 +18,22 @@
 @property(nonatomic,strong) MBProgressHUD *endHUD ;
 
 
+/**
+ 加载HUD
+
+ @param hudTitle 加载文字
+ */
 - (void) loadingHUDStartLoadingWithTitle:(NSString *)hudTitle;
 
+
+
+/**
+ 结束HUD
+
+ @param hudTitle 结束文字
+ */
 - (void) loadingHUDStopLoadingWithTitle:(NSString *)hudTitle;
+
 
 + (instancetype)loadingHUD;
 

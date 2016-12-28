@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TutoriumList.h"
+#import "UIImageView+WebCache.h"
 
 @interface TeacherPublicClassCollectionViewCell : UICollectionViewCell
 
@@ -23,5 +25,8 @@
 
 /* 价格*/
 @property(nonatomic,strong) UILabel *priceLabel ;
+
+/* model*/
+@property(nonatomic,strong) TutoriumListInfo *model ;
 
 @end

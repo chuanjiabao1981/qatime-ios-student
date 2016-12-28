@@ -46,6 +46,7 @@
 #import "UITextView+YZEmotion.h"
 #import "YYTextView+YZEmotion.h"
 #import "YZTextAttachment.h"
+#import "NSString+TimeStamp.h"
 
 #import "NSAttributedString+EmojiExtension.h"
 
@@ -907,6 +908,10 @@ bool ismute     = NO;
         
     }
     
+    [self.view updateLayout];
+    [self.view layoutIfNeeded];
+    [_videoInfoView updateLayout];
+    [_videoInfoView.scrollView updateLayout];
     
     
     
@@ -939,14 +944,17 @@ bool ismute     = NO;
     [IFView sd_clearAutoLayoutSettings];
     
     IFView.backgroundColor = [UIColor clearColor];
+    [IFView clearAutoHeigtSettings];
+    
     IFView.sd_layout
     .leftSpaceToView(refresh_FS,0)
     .topSpaceToView(_bottomControlView,5)
     .bottomSpaceToView(_bottomControlView,-5)
     .rightSpaceToView(_barrage,0);
     
-
+    [IFView updateLayout];
     
+
 }
 
 /* 控制层切回竖屏模式的方法*/
@@ -1008,6 +1016,8 @@ bool ismute     = NO;
     [_videoInfoView.view2 addSubview:IFView];
    
     IFView.backgroundColor = [UIColor whiteColor];
+    
+    [IFView sd_clearAutoLayoutSettings];
     IFView.sd_layout
     .leftEqualToView(_videoInfoView.view2)
     .rightEqualToView(_videoInfoView.view2)
@@ -2433,7 +2443,7 @@ bool ismute     = NO;
                                     }
                                     
                                     //            NSLog(@"%@",iconURL);
-                                    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypeText]];
+                                    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypeText andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
                                     
                                     
                                     //        [self makeOthersMessageWith:1 andMessage:message];
@@ -2456,7 +2466,7 @@ bool ismute     = NO;
                                 UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
                                 
                                 
-                                NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath]];
+                                NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
                                 
                                 [dic setObject:@(UUMessageFromMe) forKey:@"from"];
                                 
@@ -2477,7 +2487,7 @@ bool ismute     = NO;
                                 UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
                                 
                                 
-                                NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath]];
+                                NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
                                 
                                 
                                 [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
@@ -2547,9 +2557,11 @@ bool ismute     = NO;
         
         [UIView animateWithDuration:animationDuration animations:^{
             
+            
+            
             IFView.sd_layout
             .bottomSpaceToView(_videoInfoView.view2,keyboardRect.size.height);
-            
+        
             [IFView updateLayout];
             
             _chatTableView.sd_layout
@@ -3029,7 +3041,7 @@ bool ismute     = NO;
         if (message.messageType == NIMMessageTypeText) {
             
             /* 在本地创建对方的消息消息*/
-            NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:message.senderName andIcon:iconURL type:UUMessageTypeText ]];
+            NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:message.senderName andIcon:iconURL type:UUMessageTypeText  andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
             
             
             [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
@@ -3095,7 +3107,7 @@ bool ismute     = NO;
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
     
     
-    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath]];
+    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
     
     
     [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
@@ -3571,7 +3583,7 @@ bool ismute     = NO;
     
     if (sender.superview == IFView) {
         
-        IFView.TextViewInput.text = @"" ;
+//        IFView.TextViewInput.text = @"" ;
         
         if (IFView.TextViewInput.inputView == nil) {
             IFView.TextViewInput.yz_emotionKeyboard = self.emotionKeyboard;

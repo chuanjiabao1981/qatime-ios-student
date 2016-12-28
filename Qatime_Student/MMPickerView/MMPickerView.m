@@ -94,7 +94,12 @@ NSString * const MMshowsSelectionIndicator = @"showsSelectionIndicator";
 }
 
 -(void)dismiss{
- [MMPickerView dismissWithCompletion:self.onDismissCompletion];
+// [MMPickerView dismissWithCompletion:self.onDismissCompletion];
+    [MMPickerView dismissWithCompletion:^(NSString *str) {
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"PickerViewDismiss" object:nil];
+        
+    }];
 }
 
 +(void)removePickerView{
@@ -260,18 +265,22 @@ NSString * const MMshowsSelectionIndicator = @"showsSelectionIndicator";
   
   UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
   
-  _pickerViewBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
-  _pickerViewToolBar.items = @[flexibleSpace, _pickerViewBarButtonItem];
+//  _pickerViewBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
+    
+    _pickerViewBarButtonItem = [[UIBarButtonItem alloc] init];
+    
+    _pickerViewToolBar.items = @[flexibleSpace, _pickerViewBarButtonItem];
   [_pickerViewBarButtonItem setTintColor:buttonTextColor];
   
-  //[_pickerViewBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:@"Helvetica-Neue" size:23.0], UITextAttributeFont,nil] forState:UIControlStateNormal];
+//  [_pickerViewBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:@"Helvetica-Neue" size:23.0], UITextAttributeFont,nil] forState:UIControlStateNormal];
   
-  /*
+  
    _pickerDoneButton = [[UIButton alloc] initWithFrame:CGRectMake(_pickerContainerView.frame.size.width - 80.0, 10.0, 60.0, 24.0)];
-   [_pickerDoneButton setTitle:@"Done" forState:UIControlStateNormal];
+    [_pickerDoneButton setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+   [_pickerDoneButton setTitle:@"确定" forState:UIControlStateNormal];
    [_pickerContainerView addSubview:_pickerDoneButton];
    [_pickerDoneButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
-  */
+  
   
   //Add pickerView
   _pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0.0, 44.0, winWidth, 216.0)];

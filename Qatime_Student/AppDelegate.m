@@ -14,6 +14,7 @@
 #import "GuideViewController.h"
 
 #import "UMessage.h"
+#import "UncaughtExceptionHandler.h"
 
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
@@ -108,7 +109,7 @@
     /* 初始化网易云信SDK*/
     
     
-    [[NIMSDK sharedSDK] registerWithAppID:@"2a24ca70e580cab2bef58b1e62478f9f_"
+    [[NIMSDK sharedSDK] registerWithAppID:IM_APPKEY
                                   cerName:@"QatimeStudentPushDev"];
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
    
@@ -178,6 +179,11 @@
     
     //打开日志，方便调试
     [UMessage setLogEnabled:YES];
+    
+    
+    /* 捕获异常*/
+    [UncaughtExceptionHandler installUncaughtExceptionHandler:YES showAlert:YES];
+    
     
     
     

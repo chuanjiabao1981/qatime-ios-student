@@ -28,8 +28,6 @@
     NSArray *menus;
     NavigationBar *_navigationBar;
     
-   
-    
     
     /* 版本*/
     NSString *_version;
@@ -65,11 +63,6 @@
         _;
     
     });
-    
-
-  
-   
-    
     
     
     menus = @[@"学习流程",@"提醒设置",@"检查更新",@"清理缓存",@"关于我们"];
@@ -286,7 +279,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 60;
+    return self.view.height_sd*0.08;
     
 }
 

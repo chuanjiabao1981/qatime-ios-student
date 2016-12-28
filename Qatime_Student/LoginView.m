@@ -219,7 +219,7 @@
         
         _wechatButton.sd_layout
         .centerXEqualToView(self)
-        .bottomSpaceToView(self,30)
+        .bottomSpaceToView(self,25)
         .widthIs(30)
         .heightIs(30);
         

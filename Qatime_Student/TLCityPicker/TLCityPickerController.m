@@ -61,6 +61,8 @@
         
         _.titleLabel.text = @"切换城市";
         [_.leftButton addTarget:self action:@selector(cancelButtonDown:) forControlEvents:UIControlEventTouchUpInside];
+        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+        [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_];
         _;
     });
@@ -526,6 +528,10 @@
     
 }
 
+- (void)returnLastPage{
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 
 

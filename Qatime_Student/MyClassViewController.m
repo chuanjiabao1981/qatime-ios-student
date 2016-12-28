@@ -15,6 +15,8 @@
 #import "EndedTableViewCell.h"
 #import "ListenTableViewCell.h"
 #import "YYModel.h"
+#import "HaveNoClassView.h"
+#import "UIViewController+HUD.h"
 
 
 
@@ -161,13 +163,14 @@
 #pragma mark- 请求所有课程数据
 - (void)requestTutoriumList:(NSString *)status{
     
+    
     NSString *requestURL;
     
     if (_token&&_idNumber) {
         
         requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?status=%@",Request_Header,_idNumber,status];
         
-        
+        [self loadingHUDStartLoadingWithTitle:@"正在加载"];
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -181,43 +184,77 @@
                 
                 NSLog(@"%@",dic[@"data"]);
                 
-                for (NSDictionary *classDic in dic[@"data"]) {
-                    //
-                    MyTutoriumModel *mod = [MyTutoriumModel yy_modelWithJSON:classDic];
-                    mod.classID = classDic[@"id"];
+                if ([dic[@"data"]count]!=0) {
                     
-                    /* 如果摄像头的拉流地址不是空，那么就是“我的视听”项目里的*/
-                    if (mod.is_tasting == YES) {
+                    for (NSDictionary *classDic in dic[@"data"]) {
+                        //
+                        MyTutoriumModel *mod = [MyTutoriumModel yy_modelWithJSON:classDic];
+                        mod.classID = classDic[@"id"];
                         
-                        [_listenArr addObject:mod];
+                        /* 如果摄像头的拉流地址不是空，那么就是“我的试听”项目里的*/
+                        if (mod.is_tasting == YES) {
+                            
+                            [_listenArr addObject:mod];
+                            
+                        }
+                        
+                        /* 根据不同的状态，写不同的数组*/
+                        if ([status isEqualToString:@"published"]) {
+                            
+                            /* 未开课的*/
+                            if (_unStartArr) {
+                                [_unStartArr addObject:mod];
+                            }
+                            
+                            
+                        }else if ([status isEqualToString:@"teaching"]) {
+                            /* 已开课的*/
+                            if (_startedArr) {
+                                [_startedArr addObject:mod];
+                            }
+                            
+                            
+                        }else if ([status isEqualToString:@"completed"]) {
+                            /* 已结束的*/
+                            if (_endedArr) {
+                                [_endedArr addObject:mod];
+                            }
+                            
+                            
+                        }
+                        
                     }
                     
-                    /* 根据不同的状态，写不同的数组*/
-                    if ([status isEqualToString:@"published"]) {
+                    /* 如果有空数据,那么该项所在页面添加占位图*/
+                    if (_unStartArr.count == 0) {
                         
-                        /* 未开课的*/
-                        if (_unStartArr) {
-                            [_unStartArr addObject:mod];
-                        }
-                        
-                        
-                    }else if ([status isEqualToString:@"teaching"]) {
-                        /* 已开课的*/
-                        if (_startedArr) {
-                            [_startedArr addObject:mod];
-                        }
-                        
-                        
-                    }else if ([status isEqualToString:@"completed"]) {
-                        /* 已结束的*/
-                        if (_endedArr) {
-                            [_endedArr addObject:mod];
-                        }
-                        
+                        HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _unStartClassView.height_sd)];
+                        noview.titleLabel.text  = @"没有课程";
+                        [_unStartClassView addSubview:noview];
                         
                     }
+                    if (_startedArr.count ==0) {
+                        
+                        HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _startedClassView.height_sd)];
+                        noview.titleLabel.text  = @"没有课程";
+                        [_startedClassView addSubview:noview];
+                        
+                    }
+                    if (_endedArr.count ==0) {
+                        
+                        HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _endedClassView.height_sd)];
+                        noview.titleLabel.text  = @"没有课程";
+                        [_endedClassView addSubview:noview];
+                        
+                    }
+                    
+                    [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                    
+                }else{
+                    
                     
                 }
+                
                 
                 
                 NSLog(@"%@",_allClassArr);
@@ -235,7 +272,6 @@
             //            [self endRefresh];
             /* 刷新table视图*/
             [self updateTableView];
-            
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
@@ -259,16 +295,12 @@
 - (void)updateTableView{
     
     [_unStartClassView.classTableView reloadData];
-    [_unStartClassView.classTableView setNeedsDisplay];
     
     [_startedClassView.classTableView reloadData];
-    [_startedClassView.classTableView setNeedsDisplay];
     
     [_endedClassView.classTableView reloadData];
-    [_endedClassView.classTableView setNeedsDisplay];
     
     [_listenClassView.classTableView reloadData];
-    [_listenClassView.classTableView setNeedsDisplay];
     
     
 }

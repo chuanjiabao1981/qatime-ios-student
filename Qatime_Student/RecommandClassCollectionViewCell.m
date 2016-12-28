@@ -99,10 +99,7 @@
     
     [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"]];
     
-    
-    
-    
-    
+        
 }
 
 @end

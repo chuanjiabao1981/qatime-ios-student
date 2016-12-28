@@ -39,8 +39,8 @@
         
         NSString *URLStr = iconURL;
         [dataDic setObject:@(UUMessageFromMe) forKey:@"from"];
-        [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
-        
+//        [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
+    
         [dataDic setObject:name forKey:@"strName"];
     
     
@@ -140,8 +140,7 @@ static NSString *previousTime = nil;
 static int dateNum = 10;
 
 /* 创建对方发来的文本消息*/
-- (NSDictionary *)getDicWithText:(NSString *)text andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type
-{
+- (NSDictionary *)getDicWithText:(NSString *)text andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andTime:(NSString *)time{
     
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     int randomNum =type;
@@ -162,23 +161,22 @@ static int dateNum = 10;
         
     }
     
-    NSDate *date = [[NSDate date]dateByAddingTimeInterval:arc4random()%1000*(dateNum++) ];
+//    NSDate *date = [[NSDate date]dateByAddingTimeInterval:arc4random()%1000*(dateNum++) ];
     [dictionary setObject:@(UUMessageFromOther) forKey:@"from"];
     [dictionary setObject:@(randomNum) forKey:@"type"];
-    [dictionary setObject:[date description] forKey:@"strTime"];
+    [dictionary setObject:time forKey:@"strTime"];
     if (name == nil) {
         name = @"";
     }
     [dictionary setObject:name forKey:@"strName"];
     [dictionary setObject:URLString forKey:@"strIcon"];
     
-    
     return dictionary;
 }
 
 
 /* 创建别人发来的图片消息*/
-- (NSDictionary *)getDicWithImage:(UIImage *)image andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andImagePath:(NSString *)imagePath andThumbImagePath:(NSString *)thumbImagePath{
+- (NSDictionary *)getDicWithImage:(UIImage *)image andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andImagePath:(NSString *)imagePath andThumbImagePath:(NSString *)thumbImagePath andTime:(NSString *)time{
     
     
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
@@ -196,7 +194,7 @@ static int dateNum = 10;
             [dictionary setObject:@(UUMessageFromOther) forKey:@"from"];
         }
         [dictionary setObject:@(randomNum) forKey:@"type"];
-        [dictionary setObject:[date description] forKey:@"strTime"];
+        [dictionary setObject:time forKey:@"strTime"];
         
         
         if (image==nil) {

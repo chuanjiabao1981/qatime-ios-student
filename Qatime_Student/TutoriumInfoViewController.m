@@ -154,11 +154,12 @@
 /* 根据初始化传值进来的id 进行网络请求*/
 - (void)requestClassesInfoWith:(NSString *)classid{
     
+    [self loadingHUDStartLoadingWithTitle:@"正在加载信息"];
+    
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
-    
     
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@",Request_Header,classid] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         

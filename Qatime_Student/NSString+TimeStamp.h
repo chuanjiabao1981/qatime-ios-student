@@ -10,9 +10,26 @@
 
 @interface NSString (TimeStamp)
 
+
+/**
+ 时间戳转化
+
+ @return
+ */
 - (NSString *)timeStampToDate;
 
 - (NSString *)dateToTimeStamp:(NSDate *)date;
+
+
+/**
+ 时间戳转成dateString
+
+ @return 
+ */
+- (NSString *)changeTimeStampToDateString;
+
+
+
 
 
 @end

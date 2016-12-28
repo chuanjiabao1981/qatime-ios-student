@@ -25,6 +25,8 @@
 		5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2701DF7CF2900A8FDEC /* WithDraw.m */; };
 		5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2731DF7CF3000A8FDEC /* Payment.m */; };
 		5413D2781DF7D0DF00A8FDEC /* UIViewController+Token.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */; };
+		541E20041E139967007CF5D1 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */; };
+		541E20071E13B9AF007CF5D1 /* NSDate+ChangeUTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20061E13B9AF007CF5D1 /* NSDate+ChangeUTC.m */; };
 		541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */; };
 		541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91D21DC97FFB00180BE8 /* FindPasswordView.m */; };
 		541F91D61DC9BB5200180BE8 /* TutoriumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91D51DC9BB5100180BE8 /* TutoriumView.m */; };
@@ -456,6 +458,10 @@
 		5413D2751DF7D0AE00A8FDEC /* UIViewController_Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_Token.h; sourceTree = "<group>"; };
 		5413D2761DF7D0DF00A8FDEC /* UIViewController+Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Token.h"; sourceTree = "<group>"; };
 		5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Token.m"; sourceTree = "<group>"; };
+		541E20021E139967007CF5D1 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
+		541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionHandler.m; sourceTree = "<group>"; };
+		541E20051E13B9AF007CF5D1 /* NSDate+ChangeUTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+ChangeUTC.h"; sourceTree = "<group>"; };
+		541E20061E13B9AF007CF5D1 /* NSDate+ChangeUTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+ChangeUTC.m"; sourceTree = "<group>"; };
 		541F91CE1DC97FED00180BE8 /* FindPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindPasswordViewController.h; sourceTree = "<group>"; };
 		541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindPasswordViewController.m; sourceTree = "<group>"; };
 		541F91D11DC97FFB00180BE8 /* FindPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindPasswordView.h; sourceTree = "<group>"; };
@@ -1291,6 +1297,15 @@
 			name = Cell;
 			sourceTree = "<group>";
 		};
+		541E20011E1398DB007CF5D1 /* 异常捕获 */ = {
+			isa = PBXGroup;
+			children = (
+				541E20021E139967007CF5D1 /* UncaughtExceptionHandler.h */,
+				541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */,
+			);
+			name = "异常捕获";
+			sourceTree = "<group>";
+		};
 		541F91D71DC9BB5C00180BE8 /* 辅导班页面 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1515,6 +1530,7 @@
 		543C207A1DC6F6470086B04B /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				541E20011E1398DB007CF5D1 /* 异常捕获 */,
 				5457317E1E022E5A00F45C03 /* 支付密码 */,
 				5457317D1E022E4700F45C03 /* 该月无课程覆盖图 */,
 				54B9CAFD1DFE4E6C003961FF /* 试听购买栏 */,
@@ -3460,6 +3476,8 @@
 				5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */,
 				54AA307A1DF9427D009E0D04 /* NSString+TimeStamp.h */,
 				54AA307B1DF9427D009E0D04 /* NSString+TimeStamp.m */,
+				541E20051E13B9AF007CF5D1 /* NSDate+ChangeUTC.h */,
+				541E20061E13B9AF007CF5D1 /* NSDate+ChangeUTC.m */,
 				54F3BA161DFC3013003998D0 /* UIViewController+Login.h */,
 				54F3BA171DFC3013003998D0 /* UIViewController+Login.m */,
 				54F47E831E08F77600D896DB /* UIButton+Touch.h */,
@@ -4059,6 +4077,7 @@
 				544E0CE41DD09FAE00884F31 /* IndexHeaderPageView.m in Sources */,
 				54294C7C1DDB373400677333 /* NELivePlayerControl.m in Sources */,
 				5413D2651DF7C74F00A8FDEC /* RechargeTableViewCell.m in Sources */,
+				541E20071E13B9AF007CF5D1 /* NSDate+ChangeUTC.m in Sources */,
 				5407C9991DE7DE9200DB04C8 /* UIDevice+YYAdd.m in Sources */,
 				54FCBAF91DD5DCE50094BF58 /* Notice.m in Sources */,
 				54AA30881DF98C40009E0D04 /* MyOrderView.m in Sources */,
@@ -4134,6 +4153,7 @@
 				546F5C591DFD760000528F79 /* WithDrawInfoViewController.m in Sources */,
 				54D661291DD04DC900C9A0FF /* YZSquareMenu.m in Sources */,
 				54FCBAF61DD5D4500094BF58 /* VideoClassInfo.m in Sources */,
+				541E20041E139967007CF5D1 /* UncaughtExceptionHandler.m in Sources */,
 				5435D9461DD315CD00DD4FCC /* TeachersPublicCollectionView.m in Sources */,
 				541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */,
 				54634D981DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m in Sources */,

@@ -28,10 +28,10 @@
 
 
 /* 组成别人发的消息 */
-- (NSDictionary *)getDicWithText:(NSString *)text andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type ;
+- (NSDictionary *)getDicWithText:(NSString *)text andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andTime:(NSString *)time ;
 
 /* 组成别人发送的图片消息*/
-- (NSDictionary *)getDicWithImage:(UIImage *)image andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andImagePath:(NSString *)imagePath andThumbImagePath:(NSString *)thumbImagePath;
+- (NSDictionary *)getDicWithImage:(UIImage *)image andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andImagePath:(NSString *)imagePath andThumbImagePath:(NSString *)thumbImagePath andTime:(NSString *)time;
 
 
 - (NSArray *)additems:(NSInteger)number withDictionary:(NSDictionary *)dictionary;

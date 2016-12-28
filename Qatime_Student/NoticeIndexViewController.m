@@ -262,6 +262,8 @@
                 noNotice.frame  = CGRectMake(0, 0, self.view.width_sd,_noticeIndexView.scrollView.height_sd);
                 
                 [_noticeIndexView.noticeTableView addSubview:noNotice];
+                _noticeIndexView.noticeTableView.scrollEnabled = NO;
+                
             }else{
                 /* 有数据的情况下*/
                 for (NSDictionary *dics in dataArr) {

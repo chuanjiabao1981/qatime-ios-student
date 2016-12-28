@@ -28,13 +28,20 @@
 #import "NSAttributedString+EmojiExtension.h"
 #import "YYTextAttribute.h"
 #import "YZTextAttachment.h"
+#import "NSString+TimeStamp.h"
+#import "NSDate+ChangeUTC.h"
 
 #import "NELivePlayerViewController.h"
+#import "NIMSDK.h"
 
 
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate>{
     
     NavigationBar *_navigationBar;
+    
+    NSString *_token;
+    NSString *_idNumber;
+    
     
     /* 聊天室的信息*/
     TutoriumListInfo *_tutoriumInfo;
@@ -99,7 +106,6 @@
     });
     
     
-    
     _chatTableView = ({
         UITableView *_=[[UITableView alloc]init];
         _.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -155,7 +161,7 @@
         
         [[NIMSDK sharedSDK].chatManager addDelegate:self];
         
-        [self requestChatHitstory];
+        
         
     }else{
         
@@ -165,7 +171,7 @@
         loginData.account = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"accid"];
         loginData.token =[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"token"];
         [[NIMSDK sharedSDK].loginManager autoLogin:loginData];
-        [self requestChatHitstory];
+        
         
     }
     
@@ -182,18 +188,68 @@
     
     [self registerForKeyboardNotifications];
     
-//    /* 添加键盘弹出的监听*/
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillShowNotification object:nil];
-//    
-//    
-//    /* 添加键盘收起的监听*/
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillChangeFrameBefore:) name:UIKeyboardWillHideNotification object:nil];
+    /* 提出token和学生id*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
+        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
+    }
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
+        
+        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
+    }
+
+    /* 获取一次所有成员信息*/
+    
+    [self requestChatTeamUser];
+    
+ 
     
     
-//    [LMJKeyboardShowHiddenNotificationCenter defineCenter].delegate = self;
+    
     
     
 }
+
+/* 请求聊天用户*/
+- (void)requestChatTeamUser{
+    
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses/%@",Request_Header,_idNumber,_tutoriumInfo.classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+            
+            
+            NSMutableArray *users =[NSMutableArray arrayWithArray:dic[@"data"][@"chat_team"][@"accounts"]];
+            
+            for (NSDictionary *dic in users) {
+                
+                Chat_Account *mod  = [Chat_Account yy_modelWithJSON:dic];
+                
+                /* 获取到的用户信息存到userlist里*/
+                [_userList addObject:mod];
+                
+            }
+            
+            
+            [self requestChatHitstory];
+            
+        }else{
+            /* 获取成员信息失败*/
+            
+            [self loadingHUDStopLoadingWithTitle:@"获取聊天成员信息失败!"];
+        }
+        
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
+}
+
 
 - (void)registerForKeyboardNotifications
 {
@@ -357,7 +413,8 @@
                         
                         NSDictionary *dic = @{@"strContent": title,
                                               @"type": @(UUMessageTypeText),
-                                              @"frome":@(UUMessageFromMe)};
+                                              @"frome":@(UUMessageFromMe),
+                                              @"strTime":[[NSString stringWithFormat:@"%ld",(NSInteger)message.timestamp]changeTimeStampToDateString]};
                         
                         [self dealTheFunctionData:dic];
                         
@@ -368,19 +425,16 @@
                         
                         /* 在本地创建对方的消息消息*/
                         NSString *iconURL = @"".mutableCopy;
-                        
-                        if (_userList.count!=0) {
-                            for (int p = 0; p < _userList.count; p++) {
-                                Chat_Account *temp = [Chat_Account yy_modelWithJSON:_userList[p]];
-                                if ([temp.name isEqualToString:message.senderName]) {
-                                    iconURL = temp.icon;
-                                    
-                                }
+                        NSString *senderName = @"".mutableCopy;
+                        for (Chat_Account *mod in _userList) {
+                            if ([message.from isEqualToString:mod.accid]) {
+                                iconURL = mod.icon;
+                                senderName = mod.name;
                             }
-                            
                         }
                         
-                        NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypeText]];
+                        
+                        NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:senderName andIcon:iconURL type:UUMessageTypeText andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
                         
                         [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                         
@@ -395,13 +449,13 @@
                 /* 如果消息是自己发的*/
                 if ([message.from isEqualToString:_chat_Account.accid]){
                     
-                    //                    NSLog(@"收到对方发来的图片");
+                    // NSLog(@"收到对方发来的图片");
                     
                     NIMImageObject *imageObject = message.messageObject;
                     
                     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
                     
-                    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath]];
+                    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
                     
                     [dic setObject:@(UUMessageFromMe) forKey:@"from"];
                     
@@ -414,14 +468,23 @@
                     
                     //                    NSLog(@"收到对方发来的图片");
                     
+                    /* 在本地创建对方的消息消息*/
+                    NSString *iconURL = @"".mutableCopy;
+                    NSString *senderName = @"".mutableCopy;
+                    for (Chat_Account *mod in _userList) {
+                        if ([message.from isEqualToString:mod.accid]) {
+                            iconURL = mod.icon;
+                            senderName = mod.name;
+                        }
+                    }
+                    
                     NIMImageObject *imageObject = message.messageObject;
                     
                     
                     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
                     
                     
-                    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath]];
-                    
+                    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:senderName andIcon:iconURL type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
                     
                     [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                     
@@ -487,32 +550,24 @@
     
     for (int i = 0; i<messages.count; i++) {
         
-        NSString *iconURL = @"".mutableCopy;
+        
         NIMMessage *message =messages[i];
         
         /* 筛选用户信息,拿到用户名*/
-        if (_userList.count!=0) {
-            
-            for (int p = 0; p < _userList.count; p++) {
-                
-                Chat_Account *temp = [Chat_Account yy_modelWithJSON:_userList[p]];
-                
-                NSLog(@"%@",temp.name);
-                
-                if ([temp.name isEqualToString:message.senderName]) {
-                    iconURL = temp.icon;
-                    
-                }
+        
+        NSString *iconURL = @"".mutableCopy;
+        NSString *senderName = @"".mutableCopy;
+        for (Chat_Account *mod in _userList) {
+            if ([message.from isEqualToString:mod.accid]) {
+                iconURL = mod.icon;
+                senderName = mod.name;
             }
         }
-        
-        
         /* 如果收到的是文本消息*/
         if (message.messageType == NIMMessageTypeText) {
             
             /* 在本地创建对方的消息消息*/
-            NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:message.senderName andIcon:iconURL type:UUMessageTypeText ]];
-            
+            NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:senderName andIcon:iconURL type:UUMessageTypeText andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
             
             [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
             
@@ -557,6 +612,16 @@
     
     NSLog(@"收到图片");
     
+    /* 在本地创建对方的消息消息*/
+    NSString *iconURL = @"".mutableCopy;
+    NSString *senderName = @"".mutableCopy;
+    for (Chat_Account *mod in _userList) {
+        if ([message.from isEqualToString:mod.accid]) {
+            iconURL = mod.icon;
+            senderName = mod.name;
+        }
+    }
+    
     NIMImageObject *imageObject = message.messageObject;
     
     NSLog(@"%@",imageObject.thumbPath);
@@ -565,8 +630,7 @@
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
     
-    
-    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath]];
+    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:senderName andIcon:iconURL type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
     
     
     [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
@@ -645,7 +709,8 @@
         
         NSDictionary *dic = @{@"strContent": [funcView.TextViewInput.attributedText getPlainString],
                               @"type": @(UUMessageTypeText),
-                              @"frome":@(UUMessageFromMe)};
+                              @"frome":@(UUMessageFromMe),
+                              @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]]};
         
         [self dealTheFunctionData:dic];
         
@@ -752,7 +817,9 @@
     
     NSDictionary *dic = @{@"picture": image,
                           @"type": @(UUMessageTypePicture),
-                          @"frome":@(UUMessageFromMe)};
+                          @"frome":@(UUMessageFromMe),
+                          @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
+                          @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]]};
     
 //        [funcView changeSendBtnWithPhoto:YES];
     [self dealTheFunctionData:dic];
@@ -842,7 +909,7 @@
     
     if (sender.superview == _inputView) {
         
-        _inputView.TextViewInput.text = @"" ;
+//        _inputView.TextViewInput.text = @"" ;
         
         if (_inputView.TextViewInput.inputView == nil) {
             _inputView.TextViewInput.yz_emotionKeyboard = self.emotionKeyboard;

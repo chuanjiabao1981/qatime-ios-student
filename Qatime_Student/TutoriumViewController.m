@@ -20,6 +20,8 @@
 
 #import "TutoriumInfoViewController.h"
 
+#import "NotClassView.h"
+
 @interface TutoriumViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UIGestureRecognizerDelegate>{
     
     /* 筛选条件的字段*/
@@ -130,6 +132,9 @@
     /* 是否已经做过筛选操作*/
     BOOL hadDoneFilter;
     
+    /* 没有课程的占位图*/
+    HaveNoClassView *_noView;
+    
     
     
 }
@@ -159,7 +164,7 @@
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     
-    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+//    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
     
     /* 取出token*/
     _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
@@ -224,6 +229,8 @@
         
         /* 初次请求数据 ，请求课程列表的所有数据 */
         
+        
+        
         NSString *sub =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"SubjectChosen"]];
         [_filterDic setValue:sub forKey:@"subject"];
         [self sendFilterStatus:_filterDic];
@@ -262,6 +269,12 @@
     /* collectionView 注册cell、headerID、footerId*/
     [_tutoriumView.classesCollectionView registerClass:[TutoriumCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
     
+    /* 没有课程时候的占位图*/
+    _noView= [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, _tutoriumView.classesCollectionView.origin_sd.y, self.view.width_sd, _tutoriumView.classesCollectionView.height_sd)];
+    _noView.titleLabel.text = @"没有相关课程";
+    [self.view addSubview:_noView];
+    _noView.hidden = YES;
+    
     
 #pragma mark- collection 下拉加载  上滑刷新
     /* collection下拉加载  上滑刷新*/
@@ -275,62 +288,76 @@
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
             [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
             [manager GET:[[NSUserDefaults standardUserDefaults]objectForKey:@"FilterURL"] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject){
-                /* 先判断token*/
-                if (![self isTokenRight:responseObject]) {
-                    /* 需要重新登录*/
-                    [self needUpdateToken];
-                }else{
-                    listDic =@{};
-                    [listArr removeAllObjects];
-                    
-                    /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
-                    _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
-                    
-                    NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
-                    
-                    /* 缓存数据源添加获取的Model*/
-                    [listArr addObject:_tutroiumList];
-                    
-                    NSLog(@"%@",listArr[0].data);
-                    NSLog(@"%ld",listArr.count);
-                    
-                    listDic = @{@"page":@"1",
-                                @"per_page":@"1",
-                                @"filterGrade":@"",
-                                @"filterSubject":@"",
-                                @"filterStatus":@"1",
-                                @"listArr":listArr
-                                };
-                    
-                    /* 测试代码*/
-                    TutoriumList *tu =[[TutoriumList alloc]init];
-                    tu = listDic[@"listArr"];
-                    
-                    //        NSLog(@"%@",tu.tutoriumListInfo);
-                    
-                    /* 获取到的数据缓存到本地*/
-                    /* 保存的数据中含有自定义对象，保存到沙盒*/
-                    [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
-                    
-                    /* 本地状态变化*/
-                    //        savedDic =[NSDictionary dictionaryWithDictionary: listDic];
-                    
-                    /* 加载数据完成后  视图重新加载数据*/
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
-                    
-                    [self loadData:nil];
-                    
-                    NSLog(@"加载数据完成。");
-                }
                 
+                NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+                    if ([dic[@"data"]count]!=0) {
+                        
+                            _noView.hidden = YES;
+                        
+                        /* 先判断token*/
+                        if (![self isTokenRight:responseObject]) {
+                            /* 需要重新登录*/
+                            [self needUpdateToken];
+                        }else{
+                            listDic =@{};
+                            [listArr removeAllObjects];
+                            
+                            /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
+                            _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
+                            
+                            NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
+                            
+                            /* 缓存数据源添加获取的Model*/
+                            [listArr addObject:_tutroiumList];
+                            
+                            NSLog(@"%@",listArr[0].data);
+                            NSLog(@"%ld",listArr.count);
+                            
+                            listDic = @{@"page":@"1",
+                                        @"per_page":@"1",
+                                        @"filterGrade":@"",
+                                        @"filterSubject":@"",
+                                        @"filterStatus":@"1",
+                                        @"listArr":listArr
+                                        };
+                            
+                            /* 测试代码*/
+                            TutoriumList *tu =[[TutoriumList alloc]init];
+                            tu = listDic[@"listArr"];
+                            
+                            //        NSLog(@"%@",tu.tutoriumListInfo);
+                            
+                            /* 获取到的数据缓存到本地*/
+                            /* 保存的数据中含有自定义对象，保存到沙盒*/
+                            [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
+                            
+                            /* 本地状态变化*/
+                            //        savedDic =[NSDictionary dictionaryWithDictionary: listDic];
+                            
+                            /* 加载数据完成后  视图重新加载数据*/
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
+                            
+                            [self loadData:nil];
+                            
+                            NSLog(@"加载数据完成。");
+                        }
+                        
+                    }else{
+                        /* 没查到数据*/
+                        
+                            _noView.hidden = NO;
+                      
+                    }
+                }else{
+                    /* 登录错误*/
+                    
+                }
                 
                 [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
             }];
-            
-            
-            
             
         }else{
             
@@ -437,7 +464,8 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userSelectedSubject:) name:@"UserChoseSubject" object:nil];
     
     
-    
+    /* 滚筒视图消失的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pickerViewDismiss) name:@"PickerViewDismiss" object:nil];
     
 }
 
@@ -454,13 +482,7 @@
     
     [_tutoriumView.subjectButton setTitle:subj forState:UIControlStateNormal];
     
-    
-    
-    
 }
-
-
-
 
 
 #pragma mark- 选择招生和开课状态按钮点击事件
@@ -531,9 +553,6 @@
         [self.view addSubview:_datePicker];
         [_datePicker showHcdDateTimePicker];
     }
-    
-    
-    
     
 }
 
@@ -656,7 +675,6 @@
         effectView.alpha = 0;
         
         [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd*2/5.0f)];
-        [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
     }];
     
     
@@ -664,6 +682,7 @@
     
     
     [MMPickerView dismissWithCompletion:^(NSString *dismissString) {
+        [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
         
     }];
 }
@@ -687,6 +706,8 @@
         [self selectedTimeFilter];
         
         hadDoneFilter = YES;
+        
+        
     }];
     
 }
@@ -694,8 +715,8 @@
 
 #pragma mark- 按年级筛选
 - (void)sortByGrade{
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
+    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
     _gradeFilterArr =  [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"grade"]];
     
@@ -717,6 +738,8 @@
 #pragma mark- 按科目筛选
 - (void)sortBySubject{
     
+    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+    
     _subjectArr=@[@"全部",@"语文",@"数学",@"英语",@"物理",@"化学",@"地理",@"政治",@"历史",@"科学",@"生物"];
     
     [MMPickerView showPickerViewInView:_tutoriumView withStrings:_subjectArr withOptions:@{MMfont:[UIFont systemFontOfSize:20]} completion:^(NSString *selectedString) {
@@ -737,22 +760,23 @@
 #pragma mark- 用户筛选完时间-价格条件后的点击事件
 - (void)selectedTimeFilter{
     
+    
     [effectView removeFromSuperview];
     
-    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+//    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
     
     
     sort_By  = _tutoriumView.timeButton.titleLabel.text;
     
-    if ([sort_By isEqualToString:@"按时间∨"]) {
+    if ([sort_By isEqualToString:@"按时间"]) {
         
         sort_By = @"created_at";
         
         
-    }else if ([sort_By isEqualToString:@"按价格↑"]) {
+    }else if ([sort_By isEqualToString:@"按价格-低到高"]) {
         sort_By = @"price.asc";
         
-    }else if ([sort_By isEqualToString:@"按价格↓"]){
+    }else if ([sort_By isEqualToString:@"按价格-高到低"]){
         sort_By = @"price";
         
     }else if ( [sort_By isEqualToString:@"按购买人数"]){
@@ -766,6 +790,10 @@
     /* 发送筛选请求*/
     [self sendFilterStatus:_filterDic];
     
+//    [MMPickerView dismissWithCompletion:^(NSString *str) {
+//        
+//    }];
+    
 }
 
 
@@ -774,7 +802,7 @@
 - (void)selectedGradeFilter{
     
     [effectView removeFromSuperview];
-    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+//    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
     
     /* 获取当前年级信息 发送筛选*/
     _filterGrade = _tutoriumView.gradeButton.titleLabel.text;
@@ -838,9 +866,7 @@
         }
         
     }
-    
-    
-    
+        
     NSLog(@"%@",appendStr);
     
     _requestResaultURL =[_requestUrl stringByAppendingFormat:@"%@",appendStr];
@@ -853,8 +879,6 @@
     [[NSUserDefaults standardUserDefaults]setObject:_requestResaultURL forKey:@"FilterURL"];
     
     
-    
-    
     NSLog(@"%@",_requestResaultURL);
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -865,55 +889,73 @@
     [manager GET:_requestResaultURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         
-        listDic =@{};
-        [listArr removeAllObjects];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+            
+            if ([dic[@"data"]count]!=0) {
+                
+                _noView.hidden = YES;
+                
+                listDic =@{};
+                [listArr removeAllObjects];
+                
+                /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
+                _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
+                NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
+                
+                
+                /* 缓存数据源添加获取的Model*/
+                [listArr addObject:_tutroiumList];
+                
+                NSLog(@"%@",listArr[0].data);
+                NSLog(@"%ld",listArr.count);
+                
+                listDic = @{@"page":@"1",
+                            @"per_page":@"1",
+                            @"filterGrade":@"",
+                            @"filterSubject":@"",
+                            @"filterStatus":@"1",
+                            @"listArr":listArr
+                            };
+                
+                /* 测试代码*/
+                TutoriumList *tu =[[TutoriumList alloc]init];
+                tu = listDic[@"listArr"];
+                
+                //        NSLog(@"%@",tu.tutoriumListInfo);
+                
+                /* 获取到的数据缓存到本地*/
+                
+                /* 保存的数据中含有自定义对象，保存到沙盒*/
+                [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
+                
+                /* 本地状态变化*/
+                //        savedDic =[NSDictionary dictionaryWithDictionary: listDic];
+                
+                
+                
+                /* 加载数据完成后  视图重新加载数据*/
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
+                
+                [self loadData:nil];
+                
+                NSLog(@"加载数据完成。");
+                
+            }else{
+                /* 返回数据为空*/
+                _noView= [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _tutoriumView.classesCollectionView.height_sd)];
+                _noView.titleLabel.text = @"没有相关课程";
+                [_tutoriumView.classesCollectionView addSubview:_noView];
+                
+            }
+            
+            
+        }else{
+            
+            /* 数据错误*/
+        }
         
-        /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
-        _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
-        
-        
-        
-        
-        NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
-        
-        
-        
-        /* 缓存数据源添加获取的Model*/
-        [listArr addObject:_tutroiumList];
-        
-        NSLog(@"%@",listArr[0].data);
-        NSLog(@"%ld",listArr.count);
-        
-        listDic = @{@"page":@"1",
-                    @"per_page":@"1",
-                    @"filterGrade":@"",
-                    @"filterSubject":@"",
-                    @"filterStatus":@"1",
-                    @"listArr":listArr
-                    };
-        
-        /* 测试代码*/
-        TutoriumList *tu =[[TutoriumList alloc]init];
-        tu = listDic[@"listArr"];
-        
-        //        NSLog(@"%@",tu.tutoriumListInfo);
-        
-        /* 获取到的数据缓存到本地*/
-        
-        /* 保存的数据中含有自定义对象，保存到沙盒*/
-        [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
-        
-        /* 本地状态变化*/
-        //        savedDic =[NSDictionary dictionaryWithDictionary: listDic];
-        
-        
-        
-        /* 加载数据完成后  视图重新加载数据*/
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
-        
-        [self loadData:nil];
-        
-        NSLog(@"加载数据完成。");
+    
         
         [self loadingHUDStopLoadingWithTitle:@"加载完成"];
         
@@ -930,7 +972,7 @@
 #pragma mark- 用户筛选完科目条件后的点击事件
 - (void)selectedSubjectFilter{
     
-    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+//    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
     
     /* 获取当前科目筛选信息 发送筛选*/
     _filterSubject = _tutoriumView.subjectButton.titleLabel.text;
@@ -1083,7 +1125,6 @@
     
     TutoriumInfoViewController *tutoriumInfo =[[TutoriumInfoViewController alloc]initWithClassID:mod.classID];
     
-    
     [self.navigationController pushViewController:tutoriumInfo animated:YES];
     self.rdv_tabBarController.tabBar.hidden = YES;
     
@@ -1135,65 +1176,83 @@
     }
     
     
-    
     /* 如果是下拉重载，而且页数大于等于1*/
     if (pullState ==0&&page>=1) {
         
         for (int i=1; i<=page; i++) {
             
-            
             [manager GET:requestStrURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                 
-                /* 先判断token*/
-                if (![self isTokenRight:responseObject]) {
+                if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     
-                    /* 需要重新登录*/
-                    [self needUpdateToken];
-                    
+                    if ([dic[@"data"]count]!=0) {
+                        
+                            _noView.hidden = YES;
+                        
+                        /* 先判断token*/
+                        if (![self isTokenRight:responseObject]) {
+                            
+                            /* 需要重新登录*/
+                            [self needUpdateToken];
+                            
+                        }else{
+                            
+                            
+                            /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
+                            _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
+                            
+                            NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
+                            
+                            /* 缓存数据源添加获取的Model*/
+                            
+                            
+                            [listArr removeAllObjects];
+                            [listArr addObject:_tutroiumList];
+                            
+                            
+                            
+                            NSLog(@"%@",listArr[0].data);
+                            NSLog(@"%ld",listArr.count);
+                            
+                            listDic = @{@"page":[NSNumber numberWithInteger:pageNumber],
+                                        @"per_page":[NSNumber numberWithInteger:perPage],
+                                        @"filterGrade":grade,
+                                        @"filterSubject":subject,
+                                        @"filterStatus":[NSNumber numberWithInteger:filterStatus],
+                                        @"listArr":listArr
+                                        };
+                            
+                            /* 测试代码*/
+                            TutoriumList *tu =[[TutoriumList alloc]init];
+                            tu = listDic[@"listArr"];
+                            
+                            
+                            //        NSLog(@"%@",tu.tutoriumListInfo);
+                            
+                            /* 获取到的数据缓存到本地*/
+                            /* 保存的数据中含有自定义对象，保存到沙盒*/
+                            [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
+                            
+                            /* 加载数据完成后  视图重新加载数据*/
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
+                            
+                            [self loadData:nil];
+                            
+                            NSLog(@"加载数据完成。");
+                        }
+                        
+                    }else{
+                        /* 空数据*/
+                        
+                            _noView.hidden = NO;
+                       
+                        
+                    }
                 }else{
                     
-                    /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
-                    _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
-                    
-                    NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
-                    
-                    /* 缓存数据源添加获取的Model*/
-                    
-                    
-                    [listArr removeAllObjects];
-                    [listArr addObject:_tutroiumList];
-                    
-                    
-                    
-                    NSLog(@"%@",listArr[0].data);
-                    NSLog(@"%ld",listArr.count);
-                    
-                    listDic = @{@"page":[NSNumber numberWithInteger:pageNumber],
-                                @"per_page":[NSNumber numberWithInteger:perPage],
-                                @"filterGrade":grade,
-                                @"filterSubject":subject,
-                                @"filterStatus":[NSNumber numberWithInteger:filterStatus],
-                                @"listArr":listArr
-                                };
-                    
-                    /* 测试代码*/
-                    TutoriumList *tu =[[TutoriumList alloc]init];
-                    tu = listDic[@"listArr"];
-                    
-                    
-                    //        NSLog(@"%@",tu.tutoriumListInfo);
-                    
-                    /* 获取到的数据缓存到本地*/
-                    /* 保存的数据中含有自定义对象，保存到沙盒*/
-                    [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
-              
-                    /* 加载数据完成后  视图重新加载数据*/
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
-                    
-                    [self loadData:nil];
-                    
-                    NSLog(@"加载数据完成。");
+                    /* 数据错误*/
                 }
                 
                 [self loadingHUDStopLoadingWithTitle:@"数据加载成功"];
@@ -1219,55 +1278,71 @@
             
             [manager GET:requestStrURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
-                /* 先判断token*/
-                if (![self isTokenRight:responseObject]) {
-                    
-                    /* 需要重新登录*/
-                    [self needUpdateToken];
-                    
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+                    if ([dic[@"data"]count]!=0) {
+                   
+                            _noView.hidden = YES;
+                      
+                        /* 先判断token*/
+                        if (![self isTokenRight:responseObject]) {
+                            
+                            /* 需要重新登录*/
+                            [self needUpdateToken];
+                            
+                        }else{
+                            
+                            /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
+                            _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
+                            
+                            //                NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
+                            
+                            /* 缓存数据源添加获取的Model*/
+                            
+                            [listArr addObject:_tutroiumList];
+                            
+                            NSLog(@"%@",listArr[0].data);
+                            NSLog(@"%ld",listArr.count);
+                            
+                            listDic = @{@"page":[NSNumber numberWithInteger:pageNumber],
+                                        @"per_page":[NSNumber numberWithInteger:perPage],
+                                        @"filterGrade":grade,
+                                        @"filterSubject":subject,
+                                        @"filterStatus":[NSNumber numberWithInteger:filterStatus],
+                                        @"listArr":listArr
+                                        };
+                            
+                            /* 测试代码*/
+                            TutoriumList *tu =[[TutoriumList alloc]init];
+                            tu = listDic[@"listArr"];
+                            
+                            
+                            /* 获取到的数据缓存到本地*/
+                            /* 保存的数据中含有自定义对象，保存到沙盒*/
+                            [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
+                            
+                            /* 本地状态变化*/
+                            //        savedDic =[NSDictionary dictionaryWithDictionary: listDic];
+                            
+                            
+                            /* 加载数据完成后  视图重新加载数据*/
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
+                            
+                            [self loadData:nil];
+                            
+                        }
+                    }else{
+                        /* 没有数据*/
+                        
+                            _noView.hidden = NO;
+                        
+                    }
                 }else{
-                    
-                    /* 使用YYModel解析创建model  get回来的数据是个数组内含字典 引入tag值来确定数组下标*/
-                    _tutroiumList = [TutoriumList yy_modelWithJSON:responseObject];
-                    
-                    //                NSLog(@"%@,%@",_tutroiumList.status,_tutroiumList.data);
-                    
-                    /* 缓存数据源添加获取的Model*/
-                    
-                    [listArr addObject:_tutroiumList];
-                    
-                    NSLog(@"%@",listArr[0].data);
-                    NSLog(@"%ld",listArr.count);
-                    
-                    listDic = @{@"page":[NSNumber numberWithInteger:pageNumber],
-                                @"per_page":[NSNumber numberWithInteger:perPage],
-                                @"filterGrade":grade,
-                                @"filterSubject":subject,
-                                @"filterStatus":[NSNumber numberWithInteger:filterStatus],
-                                @"listArr":listArr
-                                };
-                    
-                    /* 测试代码*/
-                    TutoriumList *tu =[[TutoriumList alloc]init];
-                    tu = listDic[@"listArr"];
-                    
-                    
-                    /* 获取到的数据缓存到本地*/
-                    /* 保存的数据中含有自定义对象，保存到沙盒*/
-                    [NSKeyedArchiver archiveRootObject:listDic toFile:_tutoriumListFilePath];
-                    
-                    /* 本地状态变化*/
-                    //        savedDic =[NSDictionary dictionaryWithDictionary: listDic];
-                    
-                    
-                    /* 加载数据完成后  视图重新加载数据*/
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"DataLoaded" object:nil];
-                    
-                    [self loadData:nil];
-                    
-                    NSLog(@"加载数据完成。");
-                    [self loadingHUDStopLoadingWithTitle:@"数据加载成功"];
+                    /* 登陆错误了*/
                 }
+                
+                NSLog(@"加载数据完成。");
+                [self loadingHUDStopLoadingWithTitle:@"数据加载成功"];
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
@@ -1332,6 +1407,11 @@
     
 }
 
+/* pickerView 消失*/
+- (void)pickerViewDismiss{
+    
+    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+}
 
 
 /* 判断token是否正确，请求数据的时候 登录是否成功*/

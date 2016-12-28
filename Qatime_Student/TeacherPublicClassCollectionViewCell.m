@@ -75,13 +75,20 @@
 
         
         
-                
-        
-        
-        
-        
     }
     return self;
+}
+
+-(void)setModel:(TutoriumListInfo *)model{
+    
+    _model = model;
+    _className.text = model.name;
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"]];
+    _grade.text = model.grade;
+    _subjectName.text = model.subject;
+    _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];
+    
+    
 }
 
 

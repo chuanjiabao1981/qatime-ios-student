@@ -21,10 +21,6 @@
 @property(nonatomic,strong) NSString *teacherID ;
 
 
-
-
-
-
 - (instancetype)initWithTeacherID:(NSString *)teacherID;
 
 @end

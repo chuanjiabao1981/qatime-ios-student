@@ -27,6 +27,7 @@
 #import "City.h"
 #import "ChineseString.h"
 #import "TutoriumList.h"
+#import "TutoriumInfoViewController.h"
 
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate>{
     
@@ -667,7 +668,7 @@
 
 
 
-#pragma mark- collectionview的代理方法
+
 
 #pragma mark- collectionview datasource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
@@ -706,7 +707,7 @@
     
 }
 
-#pragma mark- collection的section
+#pragma mark- collectionView
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     
@@ -889,6 +890,12 @@
     }
     /* 推荐课程,预留点击事件*/
     if (collectionView.tag ==1) {
+        
+        RecommandClassCollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+        
+        TutoriumInfoViewController *viewcontroller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+        [self.navigationController pushViewController:viewcontroller animated:YES];
+        
         
     }
     

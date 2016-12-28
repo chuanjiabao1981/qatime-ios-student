@@ -55,6 +55,13 @@
 
 @implementation ClassTimeViewController
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    
+    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+}
+
 - (void)loadView{
     [super loadView];
     
@@ -162,8 +169,12 @@
     if (isLogin==YES) {
         _notLoginView.hidden = YES;
         [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+        
+        
     }else{
         _notLoginView.hidden = NO;
+        
+        _navigationBar.rightButton.hidden = YES;
         
     }
     
@@ -560,11 +571,6 @@
     
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    
-    [super viewWillAppear:animated];
-    
-}
 
 
 
