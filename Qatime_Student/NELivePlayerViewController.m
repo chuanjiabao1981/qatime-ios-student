@@ -769,8 +769,6 @@ bool ismute     = NO;
     });
     
 
-    
-    
 }
 
 #pragma mark- 分屏部分
@@ -863,7 +861,6 @@ bool ismute     = NO;
 #pragma mark- 切回竖屏后的监听
 - (void)turnDownFullScreen:(NSNotification *)notification{
     
-
     isFullScreen = NO;
     
     /* 如果是在平级视图*/
@@ -876,7 +873,7 @@ bool ismute     = NO;
         .topEqualToView(_teacherPlayerView)
         .bottomEqualToView(_teacherPlayerView);
         
-        [_teacherPlayerView bringSubviewToFront:_liveplayerTeacher.view];
+//        [_teacherPlayerView bringSubviewToFront:_liveplayerTeacher.view];
         
         
         /* 判断主视图 */
@@ -1263,7 +1260,7 @@ bool ismute     = NO;
     playerView.canMove =NO;
     
     [playerView sd_clearAutoLayoutSettings];
-    playerView.sd_layout
+    playerView.sd_resetLayout
     .topSpaceToView (self.view,20)
     .leftEqualToView(self.view)
     .rightEqualToView(self.view)
@@ -1271,6 +1268,7 @@ bool ismute     = NO;
     [playerView updateLayout];
     
     [self.view bringSubviewToFront:_mediaControl];
+    
     
     
 }
@@ -1285,13 +1283,14 @@ bool ismute     = NO;
     
     [playerView sd_clearAutoLayoutSettings];
     playerView.sd_layout
-    .topSpaceToView (self.view,CGRectGetWidth(self.view.frame)/16*9.0+20)
+    .topSpaceToView (self.view,self.view.width_sd*9/16+20)
     .leftEqualToView(self.view)
     .rightEqualToView(self.view)
     .autoHeightRatio(9/16.0f);
     [playerView updateLayout];
     
     [self.view bringSubviewToFront:_mediaControl];
+    
     
 }
 
@@ -1304,11 +1303,11 @@ bool ismute     = NO;
     [playerView sd_clearAutoLayoutSettings];
     /* 副视图变小*/
    
-        playerView.sd_layout
-        .topSpaceToView(self.view,20)
-        .leftEqualToView(self.view)
-        .widthRatioToView(self.view,2/5.0f)
-        .autoHeightRatio(9/16.0);
+    playerView.sd_layout
+    .topSpaceToView(self.view,20)
+    .leftEqualToView(self.view)
+    .widthRatioToView(self.view,2/5.0f)
+    .autoHeightRatio(9/16.0);
     
     
     /* 把可移动的这个视图放到self.view的最上层*/
@@ -1332,6 +1331,7 @@ bool ismute     = NO;
         [_videoInfoView updateLayout];
         
     });
+    
     
 }
 
@@ -1456,9 +1456,7 @@ bool ismute     = NO;
             /* 强制转成竖屏*/
             [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
             
-            
             if (orientation ==UIInterfaceOrientationLandscapeRight) {
-                
                 
                 [self interfaceOrientation:UIInterfaceOrientationPortrait];
                 
@@ -1492,40 +1490,47 @@ bool ismute     = NO;
 //全屏播放视频后，播放器的适配和全屏旋转
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     
-    
     /* 切换到竖屏*/
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
         self.view.backgroundColor = [UIColor whiteColor];
         [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
         self.scaleModeBtn.titleLabel.tag = 0;
         
-        [self.view updateLayout];
-        [self.view layoutIfNeeded];
+//        [self.view updateLayout];
+//        [self.view layoutIfNeeded];
         
         
         //谁是主视图，谁就恢复到主屏
         if (_boardPlayerView.becomeMainPlayer == YES) {
-            
-            [self.view addSubview:_teacherPlayerView];
-            
+//            [self.view addSubview:_boardPlayerView];
+//            [self.view addSubview:_teacherPlayerView];
             [self makeFirstPlayer:_boardPlayerView];
+            [self changInfoViewsWithTopView:_boardPlayerView];
+            [self changInfoViewContentSizeToBig];
+            _maskView.hidden = YES;
             if (_viewsArrangementMode == SameLevel) {
                 
-                [self makeSecondPlayer:_teacherPlayerView];
-            }
-            if (_viewsArrangementMode == DifferentLevel){
+//                [self makeSecondPlayer:_teacherPlayerView];
+                [self makeFloatingPlayer:_teacherPlayerView];
                 
+                
+            }if (_viewsArrangementMode == DifferentLevel){
+
                 [self makeFloatingPlayer:_teacherPlayerView];
             }
-                        
-        }else if(_teacherPlayerView.becomeMainPlayer == YES){
             
-            [self.view addSubview:_boardPlayerView];
+        }else if(_teacherPlayerView.becomeMainPlayer == YES){
+//            [self.view addSubview:_teacherPlayerView];
+//            [self.view addSubview:_boardPlayerView];
             
             [self makeFirstPlayer:_teacherPlayerView];
+            [self changInfoViewsWithTopView:_teacherPlayerView];
+            [self changInfoViewContentSizeToBig];
+            
+            _maskView.hidden = YES;
             if (_viewsArrangementMode == SameLevel) {
-                [self makeSecondPlayer:_boardPlayerView];
-                
+//                [self makeSecondPlayer:_boardPlayerView];
+                [self makeFloatingPlayer:_boardPlayerView];
             }
             if (_viewsArrangementMode == DifferentLevel){
                 
@@ -1786,7 +1791,6 @@ bool ismute     = NO;
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    
     /* TabBar单例隐藏*/
     [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
@@ -1840,7 +1844,7 @@ bool ismute     = NO;
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnDownFullScreen:) name:@"TurnDownFullScreen" object:nil];
     
     /* 全屏弹幕框的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(barrageTextEdit:) name:@"BarrageBecomeFirstResponder" object:nil];
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(barrageTextEdit:) name:@"BarrageBecomeFirstResponder" object:nil];
     
     
     /* 提出token和学生id*/
@@ -1870,25 +1874,16 @@ bool ismute     = NO;
     
     _videoInfoView.scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width*4, [UIScreen mainScreen].bounds.size.height -  [UIScreen mainScreen].bounds.size.width*9/16.0f*2-30-4-20);
     
-    typeof(self) __weak weakSelf = self;
-    [ _videoInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-        [weakSelf.videoInfoView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
+    if (isFullScreen == NO) {
         
-        
-        if (index == 1) {
-            if (chatTime==0) {
-                
-                if (weakSelf.chatTableView) {
-                    
-                    [weakSelf.chatTableView.mj_header beginRefreshing];
-                    
-                }
-                
-            }
+        typeof(self) __weak weakSelf = self;
+        [ _videoInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
             
-        }
-        
-    }];
+            [weakSelf.videoInfoView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, weakSelf.view.width_sd, weakSelf.view.height_sd-64-49) animated:YES];
+            
+            
+        }];
+    }
     
     _videoInfoView.scrollView.delegate = self;
     _videoInfoView.segmentControl.selectedSegmentIndex =0;

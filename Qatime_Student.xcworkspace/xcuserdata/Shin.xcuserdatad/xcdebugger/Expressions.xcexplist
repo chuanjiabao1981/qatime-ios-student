@@ -109,10 +109,29 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[VideoInfoView initWithFrame:]:VideoInfoView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_segmentControl.frame">
+            </PersistentString>
+            <PersistentString
+               value = "_scrollView.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "mach_msg_trap:(null)">
          <PersistentStrings>
             <PersistentString
                value = "self">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[LoginViewController sendAuthRequest]:LoginViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "openID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -124,14 +143,6 @@
             </PersistentString>
             <PersistentString
                value = "_unpaidView.mj_footer.mj_y">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[LoginViewController sendAuthRequest]:LoginViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "openID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -151,17 +162,6 @@
          <PersistentStrings>
             <PersistentString
                value = "currentThread">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[VideoInfoView initWithFrame:]:VideoInfoView.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_segmentControl.frame">
-            </PersistentString>
-            <PersistentString
-               value = "_scrollView.frame">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -296,6 +296,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_contentArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__41-[NELivePlayerViewController viewDidLoad]_block_invoke:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "weakSelf.view.frame">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
