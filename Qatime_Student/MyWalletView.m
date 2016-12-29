@@ -27,17 +27,17 @@
         /* 余额*/
         _balance = [[UILabel alloc]init];
         _balance.textColor = [UIColor blackColor];
-        [_balance setFont:[UIFont systemFontOfSize:40]];
+        [_balance setFont:[UIFont systemFontOfSize:40*ScrenScale]];
         
         balan  = [[UILabel alloc]init];
         balan.textColor = TITLECOLOR;
-        balan.font=[UIFont systemFontOfSize:16];
+        balan.font=[UIFont systemFontOfSize:16*ScrenScale];
         balan .text = @"余额";
         
         /* 累计消费*/
         _total = [[UILabel alloc]init];
         _total.textColor = TITLECOLOR;
-        _total.font=[UIFont systemFontOfSize:16];
+        _total.font=[UIFont systemFontOfSize:16*ScrenScale];
         
         tot = [[UILabel alloc]init];
         tot.text = @"累计消费:";

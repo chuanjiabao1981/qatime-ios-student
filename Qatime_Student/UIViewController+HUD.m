@@ -40,7 +40,7 @@
     //    self.loadingHUD.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
     [self.loadingHUD setLabelText:hudTitle];
     self.loadingHUD.mode = MBProgressHUDModeIndeterminate;
-    self.loadingHUD.labelFont = [UIFont systemFontOfSize:14];
+    self.loadingHUD.labelFont = [UIFont systemFontOfSize:14*ScrenScale];
     
 }
 
@@ -55,7 +55,7 @@
     self.endHUD.mode = MBProgressHUDModeText;
     [self.endHUD show:YES];
     [self.endHUD hide:YES afterDelay:1 ];
-    self.endHUD.labelFont = [UIFont systemFontOfSize:14];
+    self.endHUD.labelFont = [UIFont systemFontOfSize:14*ScrenScale];
     
 }
 

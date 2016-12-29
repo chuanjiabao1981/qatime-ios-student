@@ -162,6 +162,7 @@
 		547FBF311DF6B99600955A9E /* PersonalDescViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF301DF6B99600955A9E /* PersonalDescViewController.m */; };
 		547FBF351DF6CEC800955A9E /* PersonalDescTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF341DF6CEC800955A9E /* PersonalDescTableViewCell.m */; };
 		547FBF381DF6CFD700955A9E /* MyWalletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF371DF6CFD700955A9E /* MyWalletView.m */; };
+		54813C4F1E14F30000D6F739 /* NoticeSwitchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54813C4E1E14F30000D6F739 /* NoticeSwitchTableViewCell.m */; };
 		548328CC1DDC6F360053AB29 /* NSDate+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 548328901DDC6F360053AB29 /* NSDate+Utils.m */; };
 		548328CD1DDC6F360053AB29 /* chat_animation1.png in Resources */ = {isa = PBXBuildFile; fileRef = 548328921DDC6F360053AB29 /* chat_animation1.png */; };
 		548328CE1DDC6F360053AB29 /* chat_animation2.png in Resources */ = {isa = PBXBuildFile; fileRef = 548328931DDC6F360053AB29 /* chat_animation2.png */; };
@@ -701,6 +702,8 @@
 		547FBF341DF6CEC800955A9E /* PersonalDescTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDescTableViewCell.m; sourceTree = "<group>"; };
 		547FBF361DF6CFD700955A9E /* MyWalletView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWalletView.h; sourceTree = "<group>"; };
 		547FBF371DF6CFD700955A9E /* MyWalletView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWalletView.m; sourceTree = "<group>"; };
+		54813C4D1E14F30000D6F739 /* NoticeSwitchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeSwitchTableViewCell.h; sourceTree = "<group>"; };
+		54813C4E1E14F30000D6F739 /* NoticeSwitchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeSwitchTableViewCell.m; sourceTree = "<group>"; };
 		5483288E1DDC6F360053AB29 /* ACMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMacros.h; sourceTree = "<group>"; };
 		5483288F1DDC6F360053AB29 /* NSDate+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Utils.h"; sourceTree = "<group>"; };
 		548328901DDC6F360053AB29 /* NSDate+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Utils.m"; sourceTree = "<group>"; };
@@ -1864,6 +1867,8 @@
 				546A54731DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m */,
 				546A54751DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.h */,
 				546A54761DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.m */,
+				54813C4D1E14F30000D6F739 /* NoticeSwitchTableViewCell.h */,
+				54813C4E1E14F30000D6F739 /* NoticeSwitchTableViewCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -3709,6 +3714,9 @@
 						DevelopmentTeam = UMV383V3WA;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -4029,6 +4037,7 @@
 				548328F31DDC75050053AB29 /* ChatModel.m in Sources */,
 				549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */,
 				54D66F7C1DEC33B100ED2EBC /* AllClassView.m in Sources */,
+				54813C4F1E14F30000D6F739 /* NoticeSwitchTableViewCell.m in Sources */,
 				5435D9371DD2C12300DD4FCC /* ClassesListTableViewCell.m in Sources */,
 				5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */,
 				542C17411DFA507E0088DB3F /* Paid.m in Sources */,

@@ -50,7 +50,7 @@
     _textView.sd_cornerRadius = [NSNumber numberWithFloat:M_PI *2];
     
     _textView.delegate = self;
-    _textView.font = [UIFont systemFontOfSize:18];
+    _textView.font = [UIFont systemFontOfSize:18*ScrenScale];
     
     UILabel *limit = [[UILabel alloc]init];
     limit.text = @"30";
@@ -76,7 +76,7 @@
     
     _letters = [[UILabel alloc]init];
     _letters.text = @"0";
-    _letters.font = [UIFont systemFontOfSize:20];
+    _letters.font = [UIFont systemFontOfSize:20*ScrenScale];
     [self.view addSubview:_letters];
     _letters.sd_layout
     .rightSpaceToView(line,0)

@@ -31,12 +31,9 @@
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];
+    [_navigationBar.titleLabel setText:@"注册"];
     
-  
-        
-        [_navigationBar.titleLabel setText:@"注册"];
-  
-        [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(backToFrontPage:) forControlEvents:UIControlEventTouchUpInside];
     
     _signUpView = [[SignUpView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
@@ -46,9 +43,9 @@
     
     [_signUpView.nextStepButton addTarget:self action:@selector(nextStep:) forControlEvents:UIControlEventTouchUpInside];
     
-   
     
-//    选项
+    
+    //    选项
     
     [_signUpView.chosenButton addTarget:self action:@selector(chosenProtocol:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -83,7 +80,7 @@
         
         
         sender.selected= NO;
-    
+        
     }
     
     
@@ -100,7 +97,7 @@
     _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
     
     [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
-
+    
     ////////////////////////////////////////////
     
     
@@ -125,10 +122,10 @@
         
     }
     
-//    if (!([_signUpView.phoneNumber.text isEqualToString:@""]&&[_signUpView.userPassword.text isEqualToString:@""]&&[_signUpView.userPasswordCompare.text isEqualToString:@""]&&[_signUpView.checkCode.text isEqualToString:@""])&&[_signUpView.unlockKey.text isEqualToString:@""]) {
-//        [self showAlertWith:@"请输入注册号"];
-//        
-//    }
+    //    if (!([_signUpView.phoneNumber.text isEqualToString:@""]&&[_signUpView.userPassword.text isEqualToString:@""]&&[_signUpView.userPasswordCompare.text isEqualToString:@""]&&[_signUpView.checkCode.text isEqualToString:@""])&&[_signUpView.unlockKey.text isEqualToString:@""]) {
+    //        [self showAlertWith:@"请输入注册号"];
+    //
+    //    }
     
     /* 所有信息都填写正确的情况*/
     if (!([_signUpView.phoneNumber.text isEqualToString:@""]&&[_signUpView.userPassword.text isEqualToString:@""]&&[_signUpView.userPasswordCompare.text isEqualToString:@""]&&[_signUpView.checkCode.text isEqualToString:@""]/*&&[_signUpView.unlockKey.text isEqualToString:@""] 注册码功能暂时去掉*/)&&[_signUpView.userPasswordCompare.text isEqualToString:_signUpView.userPassword.text]) {
@@ -183,7 +180,7 @@
                     NSString *tokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"token.data"];
                     [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
                     
-                
+                    
                     
                     /* 进入下一页*/
                     _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
@@ -333,7 +330,7 @@
                 
                 [button setTitle:@"获取校验码" forState:UIControlStateNormal];
                 [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-
+                
                 [button setEnabled:YES];
                 
                 
@@ -346,6 +343,22 @@
     
 }
 
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
+    [_signUpView.phoneNumber resignFirstResponder];
+    [_signUpView.checkCode resignFirstResponder];
+    [_signUpView.userPassword resignFirstResponder];
+    [_signUpView.userPasswordCompare resignFirstResponder];
+    [_signUpView.unlockKey resignFirstResponder];
+    
+    
+    
+    //    phoneNumber
+    //    checkCode
+    //    userPassword
+    //    userPasswordCompare
+    //    unlockKey
+}
 
 
 /* 返回上一页面*/

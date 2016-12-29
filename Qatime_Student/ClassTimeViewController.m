@@ -22,6 +22,7 @@
 
 /* 点击事件 -> 辅导班详情页*/
 #import "TutoriumInfoViewController.h"
+#import "NELivePlayerViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -32,11 +33,11 @@
     NSString *_idNumber;
     
     /* 保存未上课数据的数组*/
-  __block  NSMutableArray *_unclosedArr;
+    __block  NSMutableArray *_unclosedArr;
     
     
     /* 保存已上课数据的数组*/
-  __block  NSMutableArray *_closedArr;
+    __block  NSMutableArray *_closedArr;
     
     /* 该月份是否有课*/
     
@@ -67,42 +68,8 @@
     
     /* 课程表的视图*/
     
-    _classTimeView = ({
-    
-        ClassTimeView *_ = [[ClassTimeView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT-64-63)];
-        [self.view addSubview:_];
-        _.scrollView.delegate = self;
-        _.segmentControl.selectedSegmentIndex =0;
-        _.segmentControl.selectionIndicatorHeight =2.0f;
-        _.scrollView.bounces=NO;
-        _.scrollView.alwaysBounceVertical=NO;
-        _.scrollView.alwaysBounceHorizontal=NO;
-        
-        [_.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
-        
-        typeof(self) __weak weakSelf = self;
-        [_.segmentControl setIndexChangeBlock:^(NSInteger index) {
-            [weakSelf.classTimeView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
-        }];
-
-        
-        _.notClassView.notClassTableView.delegate = self;
-        _.notClassView.notClassTableView.dataSource = self;
-        _.notClassView.notClassTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _.notClassView.notClassTableView.tag =1;
-        
-        _.alreadyClassView.alreadyClassTableView.delegate = self;
-        _.alreadyClassView.alreadyClassTableView.dataSource = self;
-        _.alreadyClassView.alreadyClassTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _.alreadyClassView.alreadyClassTableView.tag = 2;
-        _;
-    });
-    
-    
-    
     
     _notLoginView = ({
-    
         
         HaveNoClassView *_=[[HaveNoClassView alloc]init];
         _.titleLabel.text = @"登录才能查看!";
@@ -128,7 +95,7 @@
         __.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         
         _;
-    
+        
     });
     
 }
@@ -139,7 +106,7 @@
     [self.navigationController setNavigationBarHidden:YES];
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
-
+    
     self.view.backgroundColor = [UIColor whiteColor];
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
     [self.view addSubview:_navigationBar];
@@ -148,12 +115,8 @@
     [_navigationBar.rightButton setImage:[UIImage imageNamed:@"日历"] forState:UIControlStateNormal];
     [_navigationBar.rightButton addTarget:self action:@selector(calenderViews) forControlEvents:UIControlEventTouchUpInside];
     
-   
-    
-    #pragma mark- HUD加载数据
-//
-    
-    
+#pragma mark- HUD加载数据
+    //
     
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
@@ -178,25 +141,21 @@
         
     }
     
-    
-    
-    
-    
+
 #pragma mark- 初始化数据
     _unclosedArr = @[].mutableCopy;
     _closedArr = @[].mutableCopy;
     
-    
 #pragma mark- 请求未上课课程表数据
     [self requestUnclosedClassList];
     
-#pragma mark- 请求已上课课程表数据
-    [self requestClosedClassList];
+//#pragma mark- 请求已上课课程表数据
+//    [self requestClosedClassList];
     
     
     
     
-    #pragma mark- 下拉刷新方法
+#pragma mark- 下拉刷新方法
     _classTimeView.notClassView.notClassTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         
         
@@ -213,7 +172,6 @@
         [self requestClosedClassList];
         
     }];
-    
     
     
 }
@@ -236,7 +194,7 @@
 
 #pragma mark- 请求未上课课程表数据
 - (void)requestUnclosedClassList{
-
+    
     _unclosedArr = @[].mutableCopy;
     
     if (_token&&_idNumber) {
@@ -281,6 +239,10 @@
                     
                 }
                 
+               
+#pragma mark- 请求已上课课程表数据
+                [self requestClosedClassList];
+                
             }else{
                 
                 /* 数据错误*/
@@ -288,9 +250,10 @@
                 
             }
             
-            [_classTimeView.notClassView.notClassTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-            [self endRefresh];
+//            [_classTimeView.notClassView.notClassTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             
+            [self endRefresh];
+
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
         }];
@@ -349,6 +312,8 @@
                 }
                 
                 
+                [self loadClassView];
+                
             }else{
                 
                 /* 回复数据不正确*/
@@ -356,7 +321,8 @@
                 
             }
             
-            [_classTimeView.alreadyClassView.alreadyClassTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+//            [_classTimeView.alreadyClassView.alreadyClassTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+            
             
             [self endRefresh];
             
@@ -373,13 +339,51 @@
     
 }
 
+/* 加载视图*/
+- (void)loadClassView{
+    
+    _classTimeView = ({
+        ClassTimeView *_ = [[ClassTimeView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT-64)];
+        [self.view addSubview:_];
+        _.scrollView.delegate = self;
+        _.segmentControl.selectedSegmentIndex =0;
+        _.segmentControl.selectionIndicatorHeight =2.0f;
+        _.scrollView.bounces=NO;
+        _.scrollView.alwaysBounceVertical=NO;
+        _.scrollView.alwaysBounceHorizontal=NO;
+        
+        [_.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
+        
+        typeof(self) __weak weakSelf = self;
+        [_.segmentControl setIndexChangeBlock:^(NSInteger index) {
+            [weakSelf.classTimeView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
+        }];
+        _.notClassView.notClassTableView.delegate = self;
+        _.notClassView.notClassTableView.dataSource = self;
+        _.notClassView.notClassTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _.notClassView.notClassTableView.tag =1;
+        
+        _.alreadyClassView.alreadyClassTableView.delegate = self;
+        _.alreadyClassView.alreadyClassTableView.dataSource = self;
+        _.alreadyClassView.alreadyClassTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _.alreadyClassView.alreadyClassTableView.tag = 2;
+        
+        _;
+    });
+
+    
+}
+
+
+
+
 #pragma mark- 当月无课程的情况
 - (void)noClassThisMonth{
     
     ClassTimeModel *mod = [ClassTimeModel new];
     
     _unclosedArr = [NSMutableArray arrayWithArray:@[mod]];
-     _closedArr = [NSMutableArray arrayWithArray:@[mod]];
+    _closedArr = [NSMutableArray arrayWithArray:@[mod]];
     
 }
 
@@ -400,7 +404,6 @@
     }else{
         
         if (tableView.tag ==1) {
-            
             
             if (_unclosedArr.count !=0) {
                 
@@ -427,8 +430,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-
     if (haveClass==NO) {
         
     }else{
@@ -438,17 +439,25 @@
             
             static NSString *cellIdenfier = @"cell";
             ClassTimeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-            if (cell==nil) {
+            if (!cell) {
                 
                 cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-                    
-                }
-            if (_unclosedArr.count!=0) {
-                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-                cell.model =_unclosedArr[indexPath.row];
-                
             }
-            
+            if (_unclosedArr.count>indexPath.row) {
+                
+                cell.model =_unclosedArr[indexPath.row];
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+                /* 不能进入观看*/
+                if (cell.canUse == NO){
+                    cell.enterButton.hidden = YES;
+                }else{
+                    cell.enterButton.hidden = NO;
+                }
+
+                cell.enterButton.tag = indexPath.row+10;
+                [cell.enterButton addTarget:self action:@selector(enterLive:) forControlEvents:UIControlEventTouchUpInside];
+            }
+                        
             return  cell;
         }
         
@@ -456,14 +465,13 @@
             
             static NSString *cellID = @"CellID";
             ClassTimeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-            if (cell==nil) {
-                
+            if (!cell) {
                 cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellID"];
-                
             }
-            if (_closedArr.count!=0) {
+            if (_closedArr.count>indexPath.row) {
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 cell.model =_closedArr[indexPath.row];
+                cell.enterButton.hidden = YES;
                 
             }
             
@@ -484,16 +492,15 @@
 
 -  (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-
+    
     CGFloat height = 0;
     
- 
+    
     if (tableView.tag ==1) {
         
         if (_unclosedArr.count !=0) {
             
-            
-            height = self.view.height_sd*0.16;
+            height = self.view.height_sd*0.15;
             
         }
     }
@@ -501,12 +508,11 @@
         
         if (_closedArr.count !=0) {
             
-            
-            height = self.view.height_sd*0.16;
+            height = self.view.height_sd*0.15;
             
         }
     }
-
+    
     
     
     return height;
@@ -549,8 +555,17 @@
     }
     
     
+}
+
+/* 进入直播*/
+- (void)enterLive:(UIButton *)sender{
     
+    NSIndexPath *indePath=[NSIndexPath indexPathForRow:sender.tag-20 inSection:0];
     
+    ClassTimeTableViewCell *cell = [_classTimeView.notClassView.notClassTableView cellForRowAtIndexPath:indePath];
+    
+    NELivePlayerViewController *controller = [[NELivePlayerViewController alloc]initWithClassID:cell.model.course_id];
+    [self.navigationController pushViewController:controller animated:YES];
     
 }
 

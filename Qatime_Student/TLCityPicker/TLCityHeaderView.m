@@ -41,7 +41,7 @@
 {
     if (_titleLabel == nil) {
         _titleLabel = [[UILabel alloc] init];
-        [_titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
+        [_titleLabel setFont:[UIFont systemFontOfSize:16.0f*ScrenScale]];
     }
     return _titleLabel;
 }

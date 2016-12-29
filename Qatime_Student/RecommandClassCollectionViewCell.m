@@ -39,7 +39,7 @@
         [_className setText:@"课程名称"];
         _className.textAlignment = NSTextAlignmentLeft;
         
-        _className.font = [UIFont systemFontOfSize:15];
+        _className.font = [UIFont systemFontOfSize:15*ScrenScale];
         
         /* 年级 label*/
         _grade = [[UILabel alloc]init];
@@ -49,7 +49,7 @@
         _grade.sd_layout.leftEqualToView(_className).topSpaceToView(_className,0).autoHeightRatio(0);
         [_grade setSingleLineAutoResizeWithMaxWidth:80];
         _grade.textAlignment = NSTextAlignmentRight;
-        [_grade setFont:[UIFont systemFontOfSize:12]];
+        [_grade setFont:[UIFont systemFontOfSize:12*ScrenScale]];
         
         /* 科目 label*/
         /* 科目名称  预留名称的接口model*/
@@ -60,7 +60,7 @@
         _subjectName.sd_layout.leftSpaceToView(_grade,0).topSpaceToView(_className,0).autoHeightRatio(0);
         [_subjectName setSingleLineAutoResizeWithMaxWidth:80];
         _subjectName.textAlignment = NSTextAlignmentRight;
-        [_subjectName setFont:[UIFont systemFontOfSize:12]];
+        [_subjectName setFont:[UIFont systemFontOfSize:12*ScrenScale]];
         
         /* **人已购的label*/
         _saledLabel =[[UILabel alloc]init];
@@ -68,7 +68,7 @@
         [_saledLabel setText:@"人已购"];
         _saledLabel.sd_layout.rightEqualToView(self.contentView).topSpaceToView(_className,0).autoHeightRatio(0);
         [_saledLabel setSingleLineAutoResizeWithMaxWidth:100];
-        [_saledLabel setFont:[UIFont systemFontOfSize:12]];
+        [_saledLabel setFont:[UIFont systemFontOfSize:12*ScrenScale]];
         
                 
         /* 已购买的用户数量*/
@@ -79,7 +79,7 @@
         _saleNumber.sd_layout.rightSpaceToView(_saledLabel,0).topEqualToView(_saledLabel).autoHeightRatio(0);
         [_saleNumber setSingleLineAutoResizeWithMaxWidth:80];
         _saleNumber.textAlignment = NSTextAlignmentRight;
-        [_saleNumber setFont:[UIFont systemFontOfSize:12]];
+        [_saleNumber setFont:[UIFont systemFontOfSize:12*ScrenScale]];
         
         
         

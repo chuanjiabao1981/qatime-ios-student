@@ -20,38 +20,38 @@
         
         /* 充值单号*/
         _number = [[UILabel alloc]init];
-        _number.font = [UIFont systemFontOfSize:16];
+        _number.font = [UIFont systemFontOfSize:16*ScrenScale];
         
         
         UILabel *number = [[UILabel alloc]init];
         number .text  = @"消费类型";
         number.textColor = TITLECOLOR;
-        number.font = [UIFont systemFontOfSize:16];
+        number.font = [UIFont systemFontOfSize:16*ScrenScale];
         
         /* 支付方式*/
         _mode = [[UILabel alloc]init];
-        _mode.font = [UIFont systemFontOfSize:16];
+        _mode.font = [UIFont systemFontOfSize:16*ScrenScale];
         
         UILabel *mod = [[UILabel alloc]init];
         mod .text  = @"支付方式";
         mod.textColor = TITLECOLOR;
-        mod.font = [UIFont systemFontOfSize:16];
+        mod.font = [UIFont systemFontOfSize:16*ScrenScale];
         
         /* 时间 */
         
         _time = [[UILabel alloc]init];
-        _time.font = [UIFont systemFontOfSize:16];
+        _time.font = [UIFont systemFontOfSize:16*ScrenScale];
         
         UILabel *time = [[UILabel alloc]init];
         time.text  = @"时  间";
         time.textColor = TITLECOLOR;
-        time.font = [UIFont systemFontOfSize:16];
+        time.font = [UIFont systemFontOfSize:16*ScrenScale];
         
         
         
         /* 金额*/
         _money = [[UILabel alloc]init];
-        _money.font = [UIFont systemFontOfSize:16];
+        _money.font = [UIFont systemFontOfSize:16*ScrenScale];
         _money.textColor = [UIColor redColor];
         
         /* 状态*/

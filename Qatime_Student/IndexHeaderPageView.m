@@ -71,7 +71,7 @@
             
             UILabel *iconLabel =[[UILabel alloc]initWithFrame:CGRectMake(0, btn.frame.size.width*3/4+2, btn.frame.size.width, btn.frame.size.width/4-2)];
             iconLabel.textAlignment = NSTextAlignmentCenter;
-            iconLabel.font = [UIFont systemFontOfSize:16];
+            iconLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
             [btn addSubview:iconImage];
             [btn addSubview:iconLabel];
             
@@ -95,7 +95,7 @@
             
             UILabel *iconLabel =[[UILabel alloc]initWithFrame:CGRectMake(0, btn.frame.size.width*3/4+2, btn.frame.size.width, btn.frame.size.width/4-2)];
             iconLabel.textAlignment = NSTextAlignmentCenter;
-            iconLabel.font = [UIFont systemFontOfSize:16];
+            iconLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
             [btn addSubview:iconImage];
             [btn addSubview:iconLabel];
             

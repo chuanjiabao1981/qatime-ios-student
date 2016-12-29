@@ -267,6 +267,12 @@
             <PersistentString
                value = "_classID">
             </PersistentString>
+            <PersistentString
+               value = "_teacherPullAddress">
+            </PersistentString>
+            <PersistentString
+               value = "_boardPullAddress">
+            </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
@@ -432,6 +438,14 @@
          contextName = "__35-[ChatViewController makeMessages:]_block_invoke:ChatViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[AppDelegate application:didRegisterForRemoteNotificationsWithDeviceToken:]:AppDelegate.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "deviceToken.description">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[AllClassViewController loadCurrentDay]:AllClassViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -487,18 +501,18 @@
          contextName = "__43-[TutoriumViewController sendFilterStatus:]_block_invoke:TutoriumViewController.m">
       </ContextState>
       <ContextState
+         contextName = "__33-[ChatViewController viewDidLoad]_block_invoke:ChatViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate onResp:]:AppDelegate.m">
+      </ContextState>
+      <ContextState
          contextName = "-[IndexPageViewController collectionView:didSelectItemAtIndexPath:]:IndexPageViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_teachers">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[AppDelegate onResp:]:AppDelegate.m">
-      </ContextState>
-      <ContextState
-         contextName = "__33-[ChatViewController viewDidLoad]_block_invoke:ChatViewController.m">
       </ContextState>
       <ContextState
          contextName = "__39-[TutoriumInfoViewController addListen]_block_invoke:TutoriumInfoViewController.m">

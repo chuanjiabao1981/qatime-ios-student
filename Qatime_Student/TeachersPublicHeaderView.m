@@ -33,7 +33,7 @@
     
     /* 教师姓名*/
     _teacherNameLabel =[[UILabel alloc]init];
-    _teacherNameLabel.font = [UIFont systemFontOfSize:22];
+    _teacherNameLabel.font = [UIFont systemFontOfSize:22*ScrenScale];
     /* 性别*/
     _genderImage  = [[UIImageView alloc]init];
     
@@ -41,32 +41,32 @@
     _category = [[UILabel alloc]init];
     [_category setTextColor:[UIColor whiteColor]];
     _category.backgroundColor = [UIColor orangeColor];
-    _category.font = [UIFont systemFontOfSize:16];
+    _category.font = [UIFont systemFontOfSize:16*ScrenScale];
     
     
     /* 科目*/
     _subject = [[UILabel alloc]init];
     [_subject setTextColor:[UIColor whiteColor]];
     _subject.backgroundColor = [UIColor orangeColor];
-    _subject.font = [UIFont systemFontOfSize:16];
+    _subject.font = [UIFont systemFontOfSize:16*ScrenScale];
     
 
     
     /* 教龄*/
     _teaching_year= [[UILabel alloc]init];
-    _teaching_year.font = [UIFont systemFontOfSize:16];
+    _teaching_year.font = [UIFont systemFontOfSize:16*ScrenScale];
      _teaching_year.textColor = [UIColor lightGrayColor];
     /* 省*/
     _province= [[UILabel alloc]init];
-    _province.font = [UIFont systemFontOfSize:16];
+    _province.font = [UIFont systemFontOfSize:16*ScrenScale];
      _province.textColor = [UIColor lightGrayColor];
     /* 市*/
     _city= [[UILabel alloc]init];
-    _city.font = [UIFont systemFontOfSize:16];
+    _city.font = [UIFont systemFontOfSize:16*ScrenScale];
      _city.textColor = [UIColor lightGrayColor];
     /* 学校*/
     _workPlace= [[UILabel alloc]init];
-     _workPlace.font = [UIFont systemFontOfSize:16];
+     _workPlace.font = [UIFont systemFontOfSize:16*ScrenScale];
      _workPlace.textColor = [UIColor lightGrayColor];
     
     /* 自我介绍部分*/
@@ -76,7 +76,7 @@
     /* 自我介绍标题*/
     UILabel *selfIntroLabel =[[UILabel alloc]init];
     selfIntroLabel.text =@"自我介绍";
-    selfIntroLabel.font =[UIFont systemFontOfSize:20];
+    selfIntroLabel.font =[UIFont systemFontOfSize:20*ScrenScale];
     
     
     

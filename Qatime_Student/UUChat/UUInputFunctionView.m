@@ -56,7 +56,7 @@
         self.isAbleToSendTextMessage = NO;
         [self.btnSendMessage setTitle:@"" forState:UIControlStateNormal];
         [self.btnSendMessage setBackgroundImage:[UIImage imageNamed:@"Chat_take_picture"] forState:UIControlStateNormal];
-        self.btnSendMessage.titleLabel.font = [UIFont systemFontOfSize:12];
+        self.btnSendMessage.titleLabel.font = [UIFont systemFontOfSize:12*ScrenScale];
         [self.btnSendMessage addTarget:self action:@selector(sendMessage:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.btnSendMessage];
         self.btnSendMessage.sd_layout
@@ -70,7 +70,7 @@
         
         isbeginVoiceRecord = NO;
         [self.btnChangeVoiceState setBackgroundImage:[UIImage imageNamed:@"face"] forState:UIControlStateNormal];
-        self.btnChangeVoiceState.titleLabel.font = [UIFont systemFontOfSize:12];
+        self.btnChangeVoiceState.titleLabel.font = [UIFont systemFontOfSize:12*ScrenScale];
         
         [self addSubview:self.btnChangeVoiceState];
         self.btnChangeVoiceState.sd_layout

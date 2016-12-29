@@ -100,7 +100,7 @@ typedef struct NELPAudioInfo {
 /**
  * @brief  设置缓冲策略，在播放器初始化后，prepareToPlay之前调用
  *
- * @discussion 缓冲策略有直播低延时模式和点播抗抖动模式，如果是直播，建议采用低延时模式，如果是点播或本地视频，建议采用抗抖动模式
+ * @discussion 缓冲策略有直播低延时模式、直播流畅模式以及点播抗抖动模式，如果是直播，建议采用低延时模式或流畅模式，如果是点播或本地视频，建议采用抗抖动模式
  *
  * @return 无
  */
@@ -109,7 +109,7 @@ typedef struct NELPAudioInfo {
 /**
  *	@brief	设置数据源，初始化视频文件为播放做准备，在播放前调用
  *
- *  @discussion 当prepareToPlay完成时,若shouldAutoplay 为YES，则会自动调用play进行播放，若shouldAutoplay为 NO，则需手动播放
+ *  @discussion 当prepareToPlay完成时,若shouldAutoplay 为YES，则会自动调用play进行播放，若shouldAutoplay为 NO，则需手动调用play进行播放
  *
  *	@return	无
  */
@@ -169,7 +169,9 @@ typedef struct NELPAudioInfo {
  *
  *  @discussion
  *  若设置后台暂停，则在切入后台后播放器处于暂停状态，回到前台需要手动播放\\\n
- *  若设置后台继续播放，则在切入后台后音频继续播放，回到前台后音视频正常播放
+ *  若设置后台继续播放，则在切入后台后音频继续播放，回到前台后音视频正常播放\\\n
+ *
+ *  注意：仅播放点播流时支持后台暂停；对于直播流，若在切入后台时不需要继续播放，则需要在切入后台的过程中将播放器关闭并释放相关资源，切回前台再重新开始播放。
  *
  *	@param 	pause 	YES：后台暂停 NO：继续播放
  *
@@ -202,9 +204,9 @@ typedef struct NELPAudioInfo {
 - (void)setMute: (BOOL)isMute;
 
 /**
- *	@brief	设置是否开启硬件解码，仅IOS 8.0以上支持，默认开启，如果开启失败会自动切换到软件解码
+ *	@brief	设置是否开启硬件解码，仅IOS 8.0以上支持，默认不开启
  *
- *  @param 	isOpen 	YES：开启硬件解码 NO：关闭硬件解码
+ *  @param 	isOpen 	YES：硬件解码 NO：软件解码
  *
  *	@return	无
  */
@@ -220,10 +222,10 @@ typedef struct NELPAudioInfo {
 /**
  *	@brief	获取视频信息
  *
- *	@param 	videoInfo 	保存音频信息
+ *	@param 	videoInfo 	保存视频信息
  *
  *  @discussion
- *  调用prepareToPlay方法后，播放器发出NELivePlayerDidPreparedToPlayNotification通知后，调用该方法才能获取到有效的视频信息。
+ *  调用prepareToPlay方法，播放器发出NELivePlayerDidPreparedToPlayNotification通知后，调用该方法才能获取到有效的视频信息。
  *
  *	@return	无
  */
@@ -235,16 +237,16 @@ typedef struct NELPAudioInfo {
  *	@param 	audioInfo 	保存音频信息
  *
  *  @discussion
- *  调用prepareToPlay方法后，播放器发出NELivePlayerDidPreparedToPlayNotification通知后，调用该方法才能获取到有效的音频信息。
+ *  调用prepareToPlay方法，播放器发出NELivePlayerDidPreparedToPlayNotification通知后，调用该方法才能获取到有效的音频信息。
  *
  *	@return	无
  */
 - (void)getAudioInfo :(NELPAudioInfo *)audioInfo;
 
 /**
- *	@brief	获取当前解码库版本号
+ *	@brief	获取当前SDK版本号
  *
- *	@return	解码库版本号
+ *	@return	SDK版本号
  */
 - (NSString *)getSDKVersion;
 
@@ -276,13 +278,14 @@ typedef struct NELPAudioInfo {
 /**
  * @brief 设置拉流超时时间
  *
- * @param timeout 超时时间 (单位: 毫秒 ms)
+ * @param timeout 超时时间 (单位: 毫秒 ms 范围:0 ~ 30000ms)
  *
  * @return 无
  */
 - (void)setPlaybackTimeout:(long)timeout;
 
 //- (void)getAudioQueue:(NELPAudioQueue *)audioQueue;
+
 
 /**
  *	@brief	用于显示的view (只读)

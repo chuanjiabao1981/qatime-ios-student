@@ -21,9 +21,9 @@
         
             _ .sectionTitles = @[@"充值记录",@"提现记录",@"消费记录"];
             _.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor lightGrayColor],
-                                      NSFontAttributeName:[UIFont systemFontOfSize:18]};
+                                      NSFontAttributeName:[UIFont systemFontOfSize:18*ScrenScale]};
             _.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-                                              NSFontAttributeName:[UIFont systemFontOfSize:18]};
+                                              NSFontAttributeName:[UIFont systemFontOfSize:18*ScrenScale]};
             _.type = HMSegmentedControlTypeText;
             _.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
             _.selectionIndicatorColor = [UIColor colorWithRed:181/255.0f green:0 blue:0 alpha:1.0f];

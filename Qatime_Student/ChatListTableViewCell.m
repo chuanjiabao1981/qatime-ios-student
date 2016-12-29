@@ -34,7 +34,7 @@
             
             UILabel *_= [[UILabel alloc]init];
             _.textColor = TITLECOLOR;
-            _.font = [UIFont systemFontOfSize:15];
+            _.font = [UIFont systemFontOfSize:15*ScrenScale];
             
             [self.contentView addSubview:_];
             
@@ -69,9 +69,6 @@
     }else{
         _badge.hidden = YES;
     }
-    
-    
-    
     
     
 }

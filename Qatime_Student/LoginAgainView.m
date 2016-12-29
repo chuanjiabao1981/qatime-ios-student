@@ -86,14 +86,14 @@
         [_signUpButton setTitle:@"注册账号" forState:UIControlStateNormal];
         [_signUpButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [self addSubview:_signUpButton];
-        _signUpButton.titleLabel.font = [UIFont systemFontOfSize:16];
+        _signUpButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         _signUpButton.titleLabel.textAlignment = NSTextAlignmentLeft;
         
         /* 忘记密码*/
         
         _forgottenPassorwdButton = [[UIButton alloc]init];
         [self addSubview:_forgottenPassorwdButton];
-        _forgottenPassorwdButton.titleLabel.font = [UIFont systemFontOfSize:16];
+        _forgottenPassorwdButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         [_forgottenPassorwdButton setTitle:@"找回密码" forState:UIControlStateNormal];
         [_forgottenPassorwdButton setTitleColor:[UIColor grayColor]  forState:UIControlStateNormal];
         
@@ -120,7 +120,7 @@
         UILabel *wechatLogin = [[UILabel alloc]init];
         wechatLogin.text = @"其他方式登录";
         wechatLogin.textColor = [UIColor lightGrayColor];
-        wechatLogin.font = [UIFont systemFontOfSize:16];
+        wechatLogin.font = [UIFont systemFontOfSize:16*ScrenScale];
         [self addSubview:wechatLogin];
         
         UIView *line1 = [[UIView alloc]init];
@@ -140,7 +140,7 @@
         _acrossLogin.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _acrossLogin.layer.borderWidth = 1.0f;
         [_acrossLogin setTitleColor:[UIColor colorWithRed:0.79 green:0.00 blue:0.00 alpha:1.00] forState:UIControlStateNormal];
-        _acrossLogin.titleLabel.font = [UIFont systemFontOfSize:16];
+        _acrossLogin.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         
         
         /* 验证码按钮*/
@@ -149,7 +149,7 @@
         [_keyCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self addSubview:_keyCodeButton];
         _keyCodeButton.hidden = YES;
-        _keyCodeButton.titleLabel.font = [UIFont systemFontOfSize:22];
+        _keyCodeButton.titleLabel.font = [UIFont systemFontOfSize:22*ScrenScale];
         
         /* 验证码框*/
         _text3 = [[UIView alloc]init];

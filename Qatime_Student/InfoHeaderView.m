@@ -148,7 +148,7 @@
         
         /* 教师姓名*/
         _teacherNameLabel =[[UILabel alloc]init];
-        _teacherNameLabel.font = [UIFont systemFontOfSize:22];
+        _teacherNameLabel.font = [UIFont systemFontOfSize:22*ScrenScale];
         [self addSubview:_teacherNameLabel];
         
         _teacherNameLabel.sd_layout
@@ -178,7 +178,7 @@
         UILabel *teachYear = [[UILabel alloc]init];
         teachYear.textColor = [UIColor blackColor];
         teachYear.text = @"执教年数";
-        //        teachYear.font = [UIFont systemFontOfSize:16];
+        //        teachYear.font = [UIFont systemFontOfSize:16*ScrenScale];
         [self addSubview:teachYear];
         
         
@@ -191,7 +191,7 @@
         
         
         _teaching_year= [[UILabel alloc]init];
-        //        _teaching_year.font = [UIFont systemFontOfSize:16];
+        //        _teaching_year.font = [UIFont systemFontOfSize:16*ScrenScale];
         [self addSubview:_teaching_year];
         
         

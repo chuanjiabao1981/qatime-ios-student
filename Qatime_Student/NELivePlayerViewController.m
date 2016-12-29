@@ -494,7 +494,6 @@ bool ismute     = NO;
 /* 数据加载完成 播放器二次加载*/
 - (void)reloadPlayerView{
     
-    
     /* 白板的 播放器*/
     _liveplayerBoard = ({
         
@@ -508,6 +507,7 @@ bool ismute     = NO;
         if (_ == nil) {
             // 返回空则表示初始化失败
             NSLog(@"player initilize failed, please tay again!");
+            NSLog(@"白板播放器初始化失败!!!!");
         }else{
             _.view.sd_layout
             .leftEqualToView(_boardPlayerView)
@@ -521,9 +521,9 @@ bool ismute     = NO;
          [_ isLogToFile:YES];
         [_ setBufferStrategy:NELPLowDelay]; //直播低延时模式
         [_ setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
-        [_ setShouldAutoplay:NO]; //设置prepareToPlay完成后是否自动播放
+        [_ setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
         [_ setHardwareDecoder:isHardware]; //设置解码模式，是否开启硬件解码
-        [_ setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
+        [_ setPauseInBackground:YES]; //设置切入后台时的状态，暂停还是继续播放
         [_ prepareToPlay]; //初始化视频文件
 
         _;
@@ -541,6 +541,7 @@ bool ismute     = NO;
         if (_ == nil) {
             // 返回空则表示初始化失败
             NSLog(@"player initilize failed, please tay again!");
+             NSLog(@"摄像头播放器初始化失败!!!!");
         }else{
             _.view.sd_layout
             .leftEqualToView(_teacherPlayerView)
@@ -556,9 +557,9 @@ bool ismute     = NO;
         /* 教师播放器的设置*/
         [_ setBufferStrategy:NELPLowDelay]; //直播低延时模式
         [_ setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
-        [_ setShouldAutoplay:NO]; //设置prepareToPlay完成后是否自动播放
+        [_ setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
         [_ setHardwareDecoder:isHardware]; //设置解码模式，是否开启硬件解码
-        [_ setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
+        [_ setPauseInBackground:YES]; //设置切入后台时的状态，暂停还是继续播放
         [_ prepareToPlay]; //初始化视频文件
 
         _;
@@ -887,6 +888,7 @@ bool ismute     = NO;
 - (void)turnDownFullScreen:(NSNotification *)notification{
     
     isFullScreen = NO;
+    _viewsArrangementMode = DifferentLevel;
     
     /* 如果是在平级视图*/
     if (_viewsArrangementMode == SameLevel) {
@@ -1122,7 +1124,6 @@ bool ismute     = NO;
                 [self changInfoViewsWithTopView:_boardPlayerView];
                 [self changInfoViewContentSizeToSmall];
                 
-                
             }
             
             if (_viewsArrangementMode == SameLevel) {
@@ -1184,11 +1185,13 @@ bool ismute     = NO;
             
             [self turnToFullScreenMode:_teacherPlayerView];
             [_teacherPlayerView addSubview:_aBarrage.view];
+            [_aBarrage.view sd_clearAutoLayoutSettings];
             _aBarrage.view.sd_layout
             .leftEqualToView(_teacherPlayerView)
             .rightEqualToView(_teacherPlayerView)
             .topEqualToView(_teacherPlayerView)
             .bottomEqualToView(_teacherPlayerView);
+            [_aBarrage.view updateLayout];
             [self mediaControlTurnToFullScreenModeWithMainView:_teacherPlayerView];
             [self makeFloatingPlayer:_boardPlayerView];
         
@@ -1198,11 +1201,13 @@ bool ismute     = NO;
             /* 条件2:摄像头是主屏*/
             [self turnToFullScreenMode:_boardPlayerView];
             [_boardPlayerView addSubview:_aBarrage.view];
+            [_aBarrage.view sd_clearAutoLayoutSettings];
             _aBarrage.view.sd_layout
             .leftEqualToView(_boardPlayerView)
             .rightEqualToView(_boardPlayerView)
             .topEqualToView(_boardPlayerView)
             .bottomEqualToView(_boardPlayerView);
+            [_aBarrage.view updateLayout];
              [self mediaControlTurnToFullScreenModeWithMainView:_boardPlayerView];
             [self makeFloatingPlayer:_teacherPlayerView];
           
@@ -1424,10 +1429,6 @@ bool ismute     = NO;
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstVideoDisplayedNotification object:_liveplayerTeacher];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstAudioDisplayedNotification object:_liveplayerTeacher];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerVideoParseErrorNotification object:_liveplayerTeacher];
-    
-    /* 干掉runloop*/
-    //    [_runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate date]];
-    //    [_runLoop runUntilDate:[NSDate date]];
     
     
 }
@@ -1702,7 +1703,6 @@ bool ismute     = NO;
 
 - (void)syncUIStatus:(BOOL)isSync{
     
-    
     if ([self.liveplayerBoard playbackState] == NELPMoviePlaybackStatePlaying) {
         self.playBtn.hidden = YES;
         self.pauseBtn.hidden = NO;
@@ -1733,12 +1733,10 @@ bool ismute     = NO;
 - (void)refreshVideo:(id)sender{
     
     
-    
 }
 
 #pragma mark- 直播结束的回调
 - (void)NELivePlayerPlayBackFinished:(NSNotification*)notification{
-    
     
     UIAlertController *alertController = NULL;
     UIAlertAction *action = NULL;
@@ -1987,7 +1985,7 @@ bool ismute     = NO;
     self.sectionTitleView = ({
         UILabel *sectionTitleView = [[UILabel alloc] initWithFrame:CGRectMake((APP_WIDTH-100)/2, (APP_HEIGHT-100)/2,100,100)];
         sectionTitleView.textAlignment = NSTextAlignmentCenter;
-        sectionTitleView.font = [UIFont boldSystemFontOfSize:60];
+        sectionTitleView.font = [UIFont boldSystemFontOfSize:60*ScrenScale];
         sectionTitleView.textColor = [UIColor blueColor];
         sectionTitleView.backgroundColor = [UIColor whiteColor];
         sectionTitleView.layer.cornerRadius = 6;
@@ -2029,8 +2027,6 @@ bool ismute     = NO;
     
     
     /* 每隔30秒请求一次数据*/
-    
-    //    [self requestPullStatus];
     
     [self checkVideoStatus];
     
@@ -2411,7 +2407,7 @@ bool ismute     = NO;
                                         image.preloadAllAnimatedImageFrames = YES;
                                         YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
                                         
-                                        NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12] alignment:YYTextVerticalAlignmentCenter];
+                                        NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
                                         
                                         
                                         
@@ -2787,7 +2783,7 @@ bool ismute     = NO;
             image.preloadAllAnimatedImageFrames = YES;
             YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
             
-            NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12] alignment:YYTextVerticalAlignmentCenter];
+            NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
             
             
             
@@ -2888,12 +2884,13 @@ bool ismute     = NO;
             [_aBarrage.view removeFromSuperview];
             
             [_teacherPlayerView addSubview:_aBarrage.view];
+            [_aBarrage.view sd_clearAutoLayoutSettings];
             _aBarrage.view.sd_layout
             .leftEqualToView(_teacherPlayerView)
             .rightEqualToView(_teacherPlayerView)
             .topEqualToView(_teacherPlayerView)
             .bottomEqualToView(_teacherPlayerView);
-            
+            [_aBarrage.view updateLayout];
             _aBarrage.view.hidden = NO;
             [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
             
@@ -2919,12 +2916,13 @@ bool ismute     = NO;
         }else if (_teacherPlayerView.becomeMainPlayer == YES){
             
             [_teacherPlayerView addSubview:_aBarrage.view];
-            
+            [_aBarrage.view clearAutoHeigtSettings];
             _aBarrage.view.sd_layout
             .leftEqualToView(_teacherPlayerView)
             .rightEqualToView(_teacherPlayerView)
             .topEqualToView(_teacherPlayerView)
             .bottomEqualToView(_teacherPlayerView);
+            [_aBarrage.view updateLayout];
             _aBarrage.view.hidden = NO;
             [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
         }
@@ -3596,8 +3594,6 @@ bool ismute     = NO;
 - (void)emojiKeyboardShow:(UIButton *)sender
 {
     
-    
-    
     if (sender.superview == IFView) {
         
 //        IFView.TextViewInput.text = @"" ;
@@ -3728,12 +3724,7 @@ bool ismute     = NO;
             [_liveplayerTeacher play];
         }
         
-        
-        
-        
-        
         /* 不用再向服务器发送查询请求*/
-        
     }
     
     
@@ -3779,12 +3770,11 @@ bool ismute     = NO;
         
         [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
         
-        
     }
     
 }
 
-#pragma mark- 每隔30秒发送一次状态请求
+
 
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     

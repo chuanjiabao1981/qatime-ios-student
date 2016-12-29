@@ -463,7 +463,7 @@
        
         case 2:{
             
-            [MMPickerView showPickerViewInView:self.view withStrings:@[@"男",@"女"] withOptions:@{MMfont:[UIFont systemFontOfSize:22]} completion:^(NSString *selectedString) {
+            [MMPickerView showPickerViewInView:self.view withStrings:@[@"男",@"女"] withOptions:@{MMfont:[UIFont systemFontOfSize:22*ScrenScale]} completion:^(NSString *selectedString) {
                 
                 PersonalTableViewCell *cell= [_personalInfoView cellForRowAtIndexPath:indePath];
                 cell.content.text = selectedString;
@@ -509,7 +509,7 @@
             
         case 4:{
             
-            [MMPickerView showPickerViewInView:self.view withStrings:[[NSUserDefaults standardUserDefaults]objectForKey:@"grade"] withOptions:@{MMfont:[UIFont systemFontOfSize:22]} completion:^(NSString *selectedString) {
+            [MMPickerView showPickerViewInView:self.view withStrings:[[NSUserDefaults standardUserDefaults]objectForKey:@"grade"] withOptions:@{MMfont:[UIFont systemFontOfSize:22*ScrenScale]} completion:^(NSString *selectedString) {
                 
                 PersonalTableViewCell *cell= [_personalInfoView cellForRowAtIndexPath:indePath];
                 cell.content.text = selectedString;

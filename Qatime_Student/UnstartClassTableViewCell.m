@@ -42,24 +42,24 @@
         /* 年级*/
         _grade = [[UILabel alloc]init];
         _grade.textColor = [UIColor grayColor];
-        _grade.font = [UIFont systemFontOfSize:14];
+        _grade.font = [UIFont systemFontOfSize:14*ScrenScale];
         
         
         /* 科目*/
         _subject = [[UILabel alloc]init];
         _subject.textColor = [UIColor grayColor];
-        _subject.font = [UIFont systemFontOfSize:14];
+        _subject.font = [UIFont systemFontOfSize:14*ScrenScale];
         
         /* 斜杠*/
         UILabel *line = [[UILabel alloc]init];
         line.textColor = [UIColor grayColor];
-        line.font = [UIFont systemFontOfSize:14];
+        line.font = [UIFont systemFontOfSize:14*ScrenScale];
         line.text = @"/";
         
         /* 教师姓名*/
         _teacherName = [[UILabel alloc]init];
         _teacherName.textColor = [UIColor grayColor];
-        _teacherName.font = [UIFont systemFontOfSize:14];
+        _teacherName.font = [UIFont systemFontOfSize:14*ScrenScale];
         
         
        
@@ -67,7 +67,7 @@
         /* 状态*/
         _status = [[UILabel alloc]init];
         _status.textColor = [UIColor whiteColor];
-        _status.font = [UIFont systemFontOfSize:14];
+        _status.font = [UIFont systemFontOfSize:14*ScrenScale];
         
         
         

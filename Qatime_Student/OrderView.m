@@ -184,7 +184,7 @@
 
         _totalMoneyLabel = [UILabel new];
         _totalMoneyLabel.textColor = [UIColor blackColor];
-        _totalMoneyLabel.font = [UIFont systemFontOfSize:27];
+        _totalMoneyLabel.font = [UIFont systemFontOfSize:27*ScrenScale];
         
         /* 支付按钮*/
         _applyButton = [[UIButton alloc]init];

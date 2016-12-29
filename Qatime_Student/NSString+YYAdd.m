@@ -200,7 +200,7 @@ YYSYNTH_DUMMY_CLASS(NSString_YYAdd)
 
 - (CGSize)sizeForFont:(UIFont *)font size:(CGSize)size mode:(NSLineBreakMode)lineBreakMode {
     CGSize result;
-    if (!font) font = [UIFont systemFontOfSize:12];
+    if (!font) font = [UIFont systemFontOfSize:12*ScrenScale];
     if ([self respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
         NSMutableDictionary *attr = [NSMutableDictionary new];
         attr[NSFontAttributeName] = font;

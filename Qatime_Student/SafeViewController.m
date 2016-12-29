@@ -239,7 +239,7 @@
                         
                         if ([cell.balance.text isEqualToString:@"马上绑定"]) {
                             cell.balance.text =@" 马上绑定 ";
-                            cell.balance.font = [UIFont systemFontOfSize:16];
+                            cell.balance.font = [UIFont systemFontOfSize:16*ScrenScale];
                             cell.balance.backgroundColor = [UIColor colorWithRed:0.42 green:0.79 blue:0.15 alpha:1.00];
                             cell.balance.textColor = [UIColor whiteColor];
                             

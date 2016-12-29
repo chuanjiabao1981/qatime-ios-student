@@ -362,10 +362,11 @@
             if (cell==nil) {
                 cell=[[UnStartClassTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
-                cell.sd_tableView = tableView;
+                
             }
             if (_unStartArr.count!= 0) {
                 cell.model = _unStartArr[indexPath.row];
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             }
             
             return  cell;
@@ -379,10 +380,11 @@
             if (cell==nil) {
                 cell=[[StartedTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
-                cell.sd_tableView = tableView;
+                
             }
             if (_startedArr.count!= 0) {
                 cell.model = _startedArr[indexPath.row];
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             }
             
             return  cell;
@@ -397,10 +399,11 @@
             if (cell==nil) {
                 cell=[[EndedTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
-                cell.sd_tableView = tableView;
+                
             }
             if (_endedArr.count!= 0) {
                 cell.model = _endedArr[indexPath.row];
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             }
             
             return  cell;
@@ -416,10 +419,12 @@
             if (cell==nil) {
                 cell=[[ListenTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
-                cell.sd_tableView = tableView;
+                
             }
             if (_listenArr.count!= 0) {
                 cell.model = _listenArr[indexPath.row];
+                
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             }
             
             return  cell;
@@ -437,7 +442,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     
-    return 120;
+    return self.view.height_sd*0.15;
 }
 
 

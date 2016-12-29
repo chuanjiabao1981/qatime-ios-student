@@ -10,30 +10,6 @@
 
 #import "UIView+FontSize.h"
 @interface SignUpInfoView (){
-    /* 底层视图*/
-//    UIView *_contentView;
-    
-    /* 头像label*/
-//    UILabel *headImage;
-    
-    /* 姓名label*/
-//    UILabel *userName;
-    
-    /* 性别label*/
-//    UILabel *gender;
-//    UILabel *boy;
-//    UILabel *girl;
-    
-    /* 生日label*/
-//    UILabel *birthday;
-    
-    /* 年级 label*/
-    
-//    UILabel *grade;
-    
-    
-    
-    
     
     
 }
@@ -48,9 +24,6 @@
     if (self) {
         
         self.backgroundColor = [UIColor whiteColor];
-        
-        
-        
         /* 头像*/
         
         _headImage = [[UIImageView alloc]init];
@@ -64,7 +37,7 @@
         UILabel *head = [[UILabel alloc]init];
         [self addSubview:head];
         head.textColor = [UIColor lightGrayColor];
-        head.font = [UIFont systemFontOfSize:12];
+        head.font = [UIFont systemFontOfSize:12*ScrenScale];
         head.text = @"点击图片添加头像";
         
         
@@ -79,20 +52,12 @@
         
         
         /* 姓名输入*/
-        _userName = [[YYTextView alloc]init];
+        _userName = [[UITextField alloc]init];
         [nameText addSubview:_userName];
-        _userName.placeholderText = @"输入真实姓名更方便老师联系你";
-        _userName.placeholderFont = [UIFont systemFontOfSize:18];
-        _userName.textVerticalAlignment = YYTextVerticalAlignmentCenter;
-        
+        _userName.placeholder = @"输入真实姓名更方便老师联系你";
         _userName.layer.borderColor = [UIColor lightGrayColor].CGColor;
-//        _userName.layer.borderWidth=0.6;
-//        [_userName setFont:[UIFont systemFontOfSize:14]];
         _userName.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
-        _userName.font = [UIFont systemFontOfSize:18];
-        
-        
-        
+        _userName.font = [UIFont systemFontOfSize:18*ScrenScale];
         
         /* 年级选择框*/
         UIView *gradeText = [[UIView alloc]init];
@@ -101,18 +66,10 @@
         gradeText.layer.borderColor = [UIColor lightGrayColor].CGColor;
         
         /* 年级选择器*/
-        _grade = [[YYTextView alloc]init];
+        _grade = [[UIButton alloc]init];
         [gradeText addSubview:_grade];
-//        _grade.textColor = [UIColor colorWithRed:0.78 green:0.78 blue:0.8 alpha:1.0];
-        _grade.placeholderText = @"选择所在年级";
-        _grade.placeholderFont = [UIFont systemFontOfSize:18];
-        _grade.textVerticalAlignment = YYTextVerticalAlignmentCenter;
-        _grade.font = [UIFont systemFontOfSize:18];
-        _grade.editable = NO;
-        _grade.selectable = YES;
-        _grade.userInteractionEnabled =YES;
-        
-        
+        [_grade setTitle:@"选择所在年级" forState:UIControlStateNormal];
+        [_grade setTitleColor:TITLECOLOR forState:UIControlStateNormal];
         
         
         /* 完善更多*/
@@ -122,8 +79,6 @@
         _moreButton.layer.borderWidth = 2;
         [_moreButton setTitle:@"完善更多" forState:UIControlStateNormal];
         [_moreButton setTitleColor:[UIColor colorWithRed:0.79 green:0 blue:0 alpha:1.0] forState:UIControlStateNormal];
-        
-        
         
         
         /* 立即进入*/
@@ -156,7 +111,7 @@
         .leftSpaceToView(self,20)
         .rightSpaceToView(self,20)
         .topSpaceToView(head,20)
-        .heightIs(60);
+        .heightIs(self.height_sd*0.07);
         
         _userName.sd_layout
         .leftSpaceToView(nameText,10)
@@ -191,10 +146,7 @@
         .widthRatioToView(_moreButton,1.0f);
         _enterButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
 
-        
-        
-        
-        
+                
     }
     return self;
 }

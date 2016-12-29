@@ -54,7 +54,7 @@
         _balance = [[UILabel alloc]init];
         _balance.textColor = TITLECOLOR;
         _balance.hidden = YES;
-        _balance.font = [UIFont systemFontOfSize:16];
+        _balance.font = [UIFont systemFontOfSize:16*ScrenScale];
         
         /* 分割线*/
 //        _separateLine = [[UIView alloc]init];

@@ -54,11 +54,11 @@
     
     /* 课程时间*/
     _classDate = [[UILabel alloc]init];
-    [_classDate setFont:[UIFont systemFontOfSize:14]];
+    [_classDate setFont:[UIFont systemFontOfSize:14*ScrenScale]];
     _classDate.textColor = [UIColor lightGrayColor];
     
     _classTime = [[UILabel alloc]init];
-     [_classTime setFont:[UIFont systemFontOfSize:14]];
+     [_classTime setFont:[UIFont systemFontOfSize:14*ScrenScale]];
     _classTime.textColor = [UIColor lightGrayColor];
     
     /* 课程状态*/

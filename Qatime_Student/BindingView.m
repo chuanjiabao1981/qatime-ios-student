@@ -31,9 +31,9 @@
         [self addSubview:_gradeText];
         //        _grade.textColor = [UIColor colorWithRed:0.78 green:0.78 blue:0.8 alpha:1.0];
         _gradeText.placeholderText = @"选择所在年级";
-        _gradeText.placeholderFont = [UIFont systemFontOfSize:18];
+        _gradeText.placeholderFont = [UIFont systemFontOfSize:18*ScrenScale];
         _gradeText.textVerticalAlignment = YYTextVerticalAlignmentCenter;
-        _gradeText.font = [UIFont systemFontOfSize:18];
+        _gradeText.font = [UIFont systemFontOfSize:18*ScrenScale];
         _gradeText.editable = NO;
         _gradeText.selectable = YES;
         _gradeText.userInteractionEnabled =YES;

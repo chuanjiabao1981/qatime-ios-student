@@ -18,7 +18,7 @@
         _time = ({
             UILabel *_=[[UILabel alloc]init];
             
-            _.font = [UIFont systemFontOfSize:13];
+            _.font = [UIFont systemFontOfSize:13*ScrenScale];
             
             [self.contentView addSubview:_];
             
@@ -27,7 +27,7 @@
         
         _content = ({UILabel *_=[[UILabel alloc]init];
             
-            _.font = [UIFont systemFontOfSize:16];
+            _.font = [UIFont systemFontOfSize:16*ScrenScale];
             _.numberOfLines = 0;
             
             [self.contentView addSubview:_];

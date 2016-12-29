@@ -36,8 +36,8 @@
         
             UIButton *_ = [[UIButton alloc]init];
             _.layer.masksToBounds = YES;
-            //            _.layer.borderColor = [UIColor lightGrayColor].CGColor;
-            //            _.layer.borderWidth =2;
+            _.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            _.layer.borderWidth =2;
             
             
             _.backgroundColor = [UIColor colorWithRed:0.84 green:0.33 blue:0.6 alpha:1.00];
@@ -68,9 +68,8 @@
             
             UIButton *_ = [[UIButton alloc]init];
             _.layer.masksToBounds = YES;
-            //            _.layer.borderColor = [UIColor lightGrayColor].CGColor;
-            //            _.layer.borderWidth =2;
-            
+            _.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            _.layer.borderWidth =2;
             
             _.backgroundColor = [UIColor colorWithRed:0.84 green:0.33 blue:0.6 alpha:1.00];
             [_ setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];

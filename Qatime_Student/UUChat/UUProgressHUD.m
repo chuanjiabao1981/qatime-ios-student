@@ -63,19 +63,19 @@
         self.subTitleLabel.center = CGPointMake([[UIScreen mainScreen] bounds].size.width/2,[[UIScreen mainScreen] bounds].size.height/2 + 30);
         self.subTitleLabel.text = @"Slide up to cancel";
         self.subTitleLabel.textAlignment = NSTextAlignmentCenter;
-        self.subTitleLabel.font = [UIFont boldSystemFontOfSize:14];
+        self.subTitleLabel.font = [UIFont boldSystemFontOfSize:13*ScrenScale];
         self.subTitleLabel.textColor = [UIColor whiteColor];
         
         self.titleLabel.center = CGPointMake([[UIScreen mainScreen] bounds].size.width/2,[[UIScreen mainScreen] bounds].size.height/2 - 30);
         self.titleLabel.text = @"Time Limit";
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
-        self.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+        self.titleLabel.font = [UIFont boldSystemFontOfSize:18*ScrenScale];
         self.titleLabel.textColor = [UIColor whiteColor];
         
         centerLabel.center = CGPointMake([[UIScreen mainScreen] bounds].size.width/2,[[UIScreen mainScreen] bounds].size.height/2);
         centerLabel.text = @"60";
         centerLabel.textAlignment = NSTextAlignmentCenter;
-        centerLabel.font = [UIFont systemFontOfSize:30];
+        centerLabel.font = [UIFont systemFontOfSize:30*ScrenScale];
         centerLabel.textColor = [UIColor yellowColor];
 
         

@@ -670,9 +670,9 @@
     
     if (classDesc_height>teacherDesc_height) {
         
-        [_tutoriumInfoView setContentSize:CGSizeMake(self.view.width_sd, classDesc_height+40+TabBar_Height)];
+        [_tutoriumInfoView setContentSize:CGSizeMake(self.view.width_sd, classDesc_height+40+TabBar_Height+50)];
     }else {
-         [_tutoriumInfoView setContentSize:CGSizeMake(self.view.width_sd, teacherDesc_height+40+TabBar_Height)];
+         [_tutoriumInfoView setContentSize:CGSizeMake(self.view.width_sd, teacherDesc_height+40+TabBar_Height+50)];
         
     }
     

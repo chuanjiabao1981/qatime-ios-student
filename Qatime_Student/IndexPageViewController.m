@@ -123,7 +123,7 @@
         [_location setTitle:@"全国" forState:UIControlStateNormal];
         [_location setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 
-        [_location.titleLabel setFont:[UIFont systemFontOfSize:15]];
+        [_location.titleLabel setFont:[UIFont systemFontOfSize:15*ScrenScale]];
         
         [_ addSubview:_location];
         _location.sd_layout

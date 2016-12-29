@@ -35,7 +35,7 @@
         [self addSubview:self.voiceBackView];
         self.second = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 70, 30)];
         self.second.textAlignment = NSTextAlignmentCenter;
-        self.second.font = [UIFont systemFontOfSize:14];
+        self.second.font = [UIFont systemFontOfSize:14*ScrenScale];
         self.voice = [[UIImageView alloc]initWithFrame:CGRectMake(80, 5, 20, 20)];
         self.voice.image = [UIImage imageNamed:@"chat_animation_white3"];
         self.voice.animationImages = [NSArray arrayWithObjects:

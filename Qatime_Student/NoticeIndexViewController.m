@@ -343,8 +343,7 @@
             
             if (_chatListArr.count>indexPath.row) {
                 cell.model = _chatListArr[indexPath.row];
-                cell.sd_tableView = tableView;
-                cell.sd_indexPath = indexPath;
+                
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 
             }

@@ -35,12 +35,10 @@
 /* 老师姓名*/
 @property(nonatomic,strong) UILabel *teacherName ;
 
-/* 日期*/
+/* 日期和时间*/
 @property(nonatomic,strong) UILabel *date ;
 
-/* 时间*/
 
-@property(nonatomic,strong) UILabel *time ;
 
 /* 状态*/
 
@@ -54,6 +52,9 @@
 
 /* 自动高度的model*/
 @property(nonatomic,strong) ClassTimeModel  *model ;
+
+/* 进入按钮是否能点击*/
+@property(nonatomic,assign) BOOL canUse ;
 
 /* 外框content*/
 @property(nonatomic,strong) UIView *content;

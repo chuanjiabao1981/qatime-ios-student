@@ -25,7 +25,7 @@
         
         /* 状态*/
         _status = [[UILabel alloc]init];
-        _status.font = [UIFont systemFontOfSize:26];
+        _status.font = [UIFont systemFontOfSize:26*ScrenScale];
         
         _statusImage  = [[UIImageView alloc]init];
         

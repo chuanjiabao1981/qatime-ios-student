@@ -1,5 +1,5 @@
 //
-//  ClassTimeTableViewCell.m
+//  ClassTimeTableView_m
 //  Qatime_Student
 //
 //  Created by Shin on 2016/11/28.
@@ -39,8 +39,6 @@
         
         
         
-        
-        
       /* 课程图片*/
         _classImage = [[UIImageView alloc]init];
         
@@ -52,41 +50,41 @@
         /* 年级*/
         _grade = [[UILabel alloc]init];
         _grade.textColor = [UIColor grayColor];
-        _grade.font = [UIFont systemFontOfSize:14];
+        _grade.font = [UIFont systemFontOfSize:14*ScrenScale];
         
         
         /* 科目*/
         _subject = [[UILabel alloc]init];
         _subject.textColor = [UIColor grayColor];
-        _subject.font = [UIFont systemFontOfSize:14];
+        _subject.font = [UIFont systemFontOfSize:14*ScrenScale];
         
         /* 斜杠*/
         UILabel *line = [[UILabel alloc]init];
         line.textColor = [UIColor grayColor];
-        line.font = [UIFont systemFontOfSize:14];
+        line.font = [UIFont systemFontOfSize:14*ScrenScale];
         line.text = @"/";
         
         /* 教师姓名*/
         _teacherName = [[UILabel alloc]init];
         _teacherName.textColor = [UIColor grayColor];
-        _teacherName.font = [UIFont systemFontOfSize:14];
+        _teacherName.font = [UIFont systemFontOfSize:14*ScrenScale];
         
         
         /* 日期*/
         
         _date = [[UILabel alloc]init];
         _date.textColor = [UIColor grayColor];
-        _date.font = [UIFont systemFontOfSize:14];
+        _date.font = [UIFont systemFontOfSize:14*ScrenScale];
         
         /* 时间*/
-        _time = [[UILabel alloc]init];
-        _time.textColor = [UIColor grayColor];
-        _time.font = [UIFont systemFontOfSize:14];
+//        _time = [[UILabel alloc]init];
+//        _time.textColor = [UIColor grayColor];
+//        _time.font = [UIFont systemFontOfSize:14];
         
         /* 状态*/
         _status = [[UILabel alloc]init];
         _status.textColor = [UIColor lightGrayColor];
-        _status.font = [UIFont systemFontOfSize:14];
+        _status.font = [UIFont systemFontOfSize:14*ScrenScale];
 
         
         /* 进入按钮*/
@@ -95,13 +93,13 @@
         _enterButton.layer.borderColor = [UIColor orangeColor].CGColor;
         _enterButton.layer.borderWidth = 0.8;
         [_enterButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
-        [_enterButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-        
+        [_enterButton.titleLabel setFont:[UIFont systemFontOfSize:14*ScrenScale]];
+         [_enterButton setTitle:@"进入" forState:UIControlStateNormal];
         
         
         
         /* 所有控件的布局*/
-        [_content sd_addSubviews:@[_classImage,_name,_className,_grade,_subject,line,_teacherName,_status,_date,_time,_enterButton]];
+        [_content sd_addSubviews:@[_classImage,_name,_className,_grade,_subject,line,_teacherName,_status,_date,_enterButton]];
         
         /* 课程图片布局*/
         _classImage.sd_layout
@@ -129,7 +127,7 @@
         /* 年级布局*/
         _grade .sd_layout
         .leftEqualToView(_name)
-        .centerYEqualToView(self.contentView)
+        .centerYEqualToView(_classImage)
         .autoHeightRatio(0);
         [_grade setSingleLineAutoResizeWithMaxWidth:100];
         
@@ -169,30 +167,31 @@
         
         [_status setSingleLineAutoResizeWithMaxWidth:200];
         
+        /* 进入按钮*/
+        _enterButton .sd_layout
+        .rightSpaceToView(_content,10)
+        .bottomSpaceToView(_content,5)
+        .heightIs(20)
+        .widthIs(50);
         
         /* 日期*/
         _date.sd_layout
         .leftEqualToView(_grade)
+        .rightSpaceToView(_enterButton,0)
         .bottomSpaceToView(_content,5)
         .autoHeightRatio(0);
-        [_date setSingleLineAutoResizeWithMaxWidth:200];
+        
         
         /* 时间*/
-        _time .sd_layout
-        .leftSpaceToView(_date,10)
-        .topEqualToView(_date)
-        .autoHeightRatio(0);
-        [_time setSingleLineAutoResizeWithMaxWidth:200];
-        
-        /* 进入按钮*/
-        _enterButton .sd_layout
-        .rightSpaceToView(_content,10)
-        .bottomSpaceToView(_content,10)
-        .heightIs(20)
-        .widthIs(50);
+//        _time .sd_layout
+//        .leftSpaceToView(_date,10)
+//        .topEqualToView(_date)
+//        .autoHeightRatio(0);
+//        [_time setSingleLineAutoResizeWithMaxWidth:200];
         
         
         
+//        [self setupAutoHeightWithBottomView:_content bottomMargin:5];
     }
     
     
@@ -202,35 +201,41 @@
 
 
 -(void)setModel:(ClassTimeModel *)model{
-    
     _model = model;
     [_classImage sd_setImageWithURL:[NSURL URLWithString:_model.course_publicize]];
-    
     _name .text = model.name;
     _className.text = model.course_name;
-    _date.text = model.class_date;
-    _time.text = model.live_time;
+    _date.text = [NSString stringWithFormat:@"%@ %@",model.class_date,model.live_time];
     _teacherName.text = model.teacher_name;
-    
     NSLog(@"%@",model.status);
     NSLog(@"%@",[NSString statusSwitchWithStatus:model.status]);
-    
     _status.text = [NSString statusSwitchWithStatus:model.status];
-    if ([_status.text isEqualToString:@"已结束"]||[_status.text isEqualToString:@"已直播"]) {
-        _enterButton.hidden = YES;
-        
-    }else if ([_status.text isEqualToString:@"待补课"]||[_status.text isEqualToString:@"待上课"]||[_status.text isEqualToString:@"直播中"]){
-        
-        [_enterButton setTitle:@"进入" forState:UIControlStateNormal];
-    }
-    
     _grade.text = model.grade;
     _subject.text = model.subject;
-    
-    [self setupAutoHeightWithBottomView:_content bottomMargin:5];
-    
-    
+
+    /* 不能进入观看*/
+    if ([model.status isEqualToString:@"init"]||[model.status isEqualToString:@"closed"]||[model.status isEqualToString:@"finished"]) {
+        
+        _canUse = NO;
+    }else{
+        _canUse = YES;
+    }
+
+
 }
+
+//-(void)setEnterButtonHidden:(BOOL)enterButtonHidden{
+//    
+//    _enterButtonHidden = enterButtonHidden;
+//
+//    if (_enterButtonHidden ==YES) {
+//        
+//        [self.enterButton setHidden:YES];
+//    }else{
+//        [self.enterButton setHidden:NO];
+//    }
+//    
+//}
 
 
 

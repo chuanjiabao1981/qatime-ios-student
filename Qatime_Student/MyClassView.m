@@ -23,7 +23,7 @@
         _segmentControl =({
             HMSegmentedControl *_ = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"待开课",@"已开课",@"已结束",@"我的试听"]];
             [self addSubview:_];
-            _.frame = CGRectMake(0, 0, SCREENWIDTH, 40) ;
+            _.frame = CGRectMake(0, 0, SCREENWIDTH, self.height_sd*0.07) ;
             _.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
             _.borderType = HMSegmentedControlBorderTypeBottom;
             _.borderColor = [UIColor lightGrayColor];

@@ -26,9 +26,9 @@
             _.selectionIndicatorColor = [UIColor redColor];
             _.selectionIndicatorHeight = 2;
             _.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor lightGrayColor],
-                                      NSFontAttributeName:[UIFont systemFontOfSize:15]};
+                                      NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
             _.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-                                              NSFontAttributeName:[UIFont systemFontOfSize:15]};
+                                              NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
             _.selectedSegmentIndex = 0;
             _.verticalDividerEnabled = NO;
             [self addSubview:_];

@@ -250,9 +250,8 @@
         cell.logoImage.hidden = YES;
         
         cell.settingName.sd_layout
-        .leftSpaceToView(cell.contentView,20)
-        .topSpaceToView(cell.contentView,10)
-        .bottomSpaceToView(cell.contentView,10);
+        .leftSpaceToView(cell.contentView,20);
+        
         [cell.settingName setSingleLineAutoResizeWithMaxWidth:1000];
         
         if (indexPath.row ==2) {

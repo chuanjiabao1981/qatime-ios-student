@@ -70,7 +70,7 @@
         _className.textAlignment = NSTextAlignmentLeft;
         [_className setText:@"课程名称"];
         [_className setTextColor:[UIColor blackColor]];
-        [_className setFont:[UIFont systemFontOfSize:20]];
+        [_className setFont:[UIFont systemFontOfSize:20*ScrenScale]];
         
         /* 价格*/
         _priceLabel=[[UILabel alloc]init];
@@ -80,7 +80,7 @@
         _priceLabel.textAlignment = NSTextAlignmentLeft;
         [_priceLabel setText:@"¥0.00"];
         [_priceLabel setTextColor:[UIColor redColor]];
-        [_priceLabel setFont:[UIFont systemFontOfSize:18]];
+        [_priceLabel setFont:[UIFont systemFontOfSize:18*ScrenScale]];
         
         /* 报名人数*/
 
@@ -91,7 +91,7 @@
         _saleNumber.textAlignment = NSTextAlignmentLeft;
         [_saleNumber setText:@"100"];
         [_saleNumber setTextColor:[UIColor blackColor]];
-        [_saleNumber setFont:[UIFont systemFontOfSize:18]];
+        [_saleNumber setFont:[UIFont systemFontOfSize:18*ScrenScale]];
         
         /* 报名人数 label*/
         
@@ -101,7 +101,7 @@
         [saleNum setSingleLineAutoResizeWithMaxWidth:100];
         saleNum.textAlignment = NSTextAlignmentLeft;
         [saleNum setTextColor:[UIColor blackColor]];
-        [saleNum setFont:[UIFont systemFontOfSize:18]];
+        [saleNum setFont:[UIFont systemFontOfSize:18*ScrenScale]];
         [saleNum setText:@"报名人数"];
         
         /* 分割线1*/
@@ -317,7 +317,7 @@
         _teacherNameLabel.sd_layout.leftSpaceToView(_view2,20).topSpaceToView(_view2,20).autoHeightRatio(0);
         [_teacherNameLabel setSingleLineAutoResizeWithMaxWidth:100];
         
-        _teacherNameLabel.font = [UIFont systemFontOfSize:20];
+        _teacherNameLabel.font = [UIFont systemFontOfSize:20*ScrenScale];
         [_teacherNameLabel setText:@"教师姓名"];
         
         /* 执教年数*/

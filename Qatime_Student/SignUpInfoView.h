@@ -15,7 +15,7 @@
 @property(nonatomic,strong) UIImageView *headImage ;
 
 /* 姓名*/
-@property(nonatomic,strong) YYTextView *userName ;
+@property(nonatomic,strong) UITextField *userName ;
 
 /* 性别按钮  两个*/
 //@property(nonatomic,strong) UIButton *boyButton ;
@@ -27,7 +27,7 @@
 
 /* 年级*/
 //@property(nonatomic,strong) UIButton *gradeButton ;
-@property(nonatomic,strong) YYTextView *grade ;
+@property(nonatomic,strong) UIButton *grade ;
 
 /* 完成按钮*/
 

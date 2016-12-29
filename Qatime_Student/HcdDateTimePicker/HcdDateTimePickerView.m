@@ -149,7 +149,7 @@
     
     okBtn = [[UIButton alloc]initWithFrame:CGRectMake(kScreen_Width-60, 0, 60, kTopViewHeight)];
     [okBtn setTitleColor:_buttonTitleColor forState:UIControlStateNormal];
-    okBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    okBtn.titleLabel.font = [UIFont systemFontOfSize:14*ScrenScale];
     [okBtn setBackgroundColor:[UIColor clearColor]];
     [okBtn setTitle:@"确定" forState:UIControlStateNormal];
     [okBtn addTarget:self action:@selector(selectedButtons:) forControlEvents:UIControlEventTouchUpInside];
@@ -157,7 +157,7 @@
     [self addSubview:okBtn];
     
     cancleBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, kTopViewHeight)];
-    cancleBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    cancleBtn.titleLabel.font = [UIFont systemFontOfSize:14*ScrenScale];
     [cancleBtn setTitleColor:_buttonTitleColor forState:UIControlStateNormal];
     [cancleBtn setBackgroundColor:[UIColor clearColor]];
     [cancleBtn setTitle:@"取消" forState:UIControlStateNormal];
@@ -350,21 +350,21 @@
 - (void)setAfterScrollShowView:(MXSCycleScrollView*)scrollview  andCurrentPage:(NSInteger)pageNumber
 {
     UILabel *oneLabel = [[(UILabel*)[[scrollview subviews] objectAtIndex:0] subviews] objectAtIndex:pageNumber];
-    [oneLabel setFont:[UIFont systemFontOfSize:14]];
+    [oneLabel setFont:[UIFont systemFontOfSize:14*ScrenScale]];
     [oneLabel setTextColor:[UIColor colorWithHexString:@"0xBABABA"]];
     UILabel *twoLabel = [[(UILabel*)[[scrollview subviews] objectAtIndex:0] subviews] objectAtIndex:pageNumber+1];
-    [twoLabel setFont:[UIFont systemFontOfSize:16]];
+    [twoLabel setFont:[UIFont systemFontOfSize:16*ScrenScale]];
     [twoLabel setTextColor:[UIColor colorWithHexString:@"0x717171"]];
     
     UILabel *currentLabel = [[(UILabel*)[[scrollview subviews] objectAtIndex:0] subviews] objectAtIndex:pageNumber+2];
-    [currentLabel setFont:[UIFont systemFontOfSize:18]];
+    [currentLabel setFont:[UIFont systemFontOfSize:18*ScrenScale]];
     [currentLabel setTextColor:[UIColor blackColor]];
     
     UILabel *threeLabel = [[(UILabel*)[[scrollview subviews] objectAtIndex:0] subviews] objectAtIndex:pageNumber+3];
-    [threeLabel setFont:[UIFont systemFontOfSize:16]];
+    [threeLabel setFont:[UIFont systemFontOfSize:16*ScrenScale]];
     [threeLabel setTextColor:[UIColor colorWithHexString:@"0x717171"]];
     UILabel *fourLabel = [[(UILabel*)[[scrollview subviews] objectAtIndex:0] subviews] objectAtIndex:pageNumber+4];
-    [fourLabel setFont:[UIFont systemFontOfSize:14]];
+    [fourLabel setFont:[UIFont systemFontOfSize:14*ScrenScale]];
     [fourLabel setTextColor:[UIColor colorWithHexString:@"0xBABABA"]];
 }
 #pragma mark mxccyclescrollview delegate
@@ -453,7 +453,7 @@
         else
             l.text = [NSString stringWithFormat:@"%ld秒",(long)index];
     
-    l.font = [UIFont systemFontOfSize:12];
+    l.font = [UIFont systemFontOfSize:12*ScrenScale];
     l.textAlignment = NSTextAlignmentCenter;
     l.backgroundColor = [UIColor clearColor];
     return l;

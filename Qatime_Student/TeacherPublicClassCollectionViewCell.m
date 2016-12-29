@@ -48,7 +48,7 @@
         _grade.sd_layout.leftEqualToView(_className).topSpaceToView(_className,0).autoHeightRatio(0);
         [_grade setSingleLineAutoResizeWithMaxWidth:80];
         _grade.textAlignment = NSTextAlignmentRight;
-        [_grade setFont:[UIFont systemFontOfSize:12]];
+        [_grade setFont:[UIFont systemFontOfSize:12*ScrenScale]];
         
         /* 科目 label*/
         /* 科目名称  预留名称的接口model*/
@@ -59,7 +59,7 @@
         _subjectName.sd_layout.leftSpaceToView(_grade,0).topSpaceToView(_className,0).autoHeightRatio(0);
         [_subjectName setSingleLineAutoResizeWithMaxWidth:80];
         _subjectName.textAlignment = NSTextAlignmentRight;
-        [_subjectName setFont:[UIFont systemFontOfSize:12]];
+        [_subjectName setFont:[UIFont systemFontOfSize:12*ScrenScale]];
         
        
         
@@ -71,7 +71,7 @@
         _priceLabel.sd_layout.rightSpaceToView(self.contentView,0).topEqualToView(_grade).autoHeightRatio(0);
         [_priceLabel setSingleLineAutoResizeWithMaxWidth:80];
         _priceLabel.textAlignment = NSTextAlignmentRight;
-        [_priceLabel setFont:[UIFont systemFontOfSize:12]];
+        [_priceLabel setFont:[UIFont systemFontOfSize:12*ScrenScale]];
 
         
         

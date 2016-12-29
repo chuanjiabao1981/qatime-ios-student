@@ -20,7 +20,15 @@
 #import <UserNotifications/UserNotifications.h>
 //#endif
 
-@interface AppDelegate ()<UNUserNotificationCenterDelegate,NIMSystemNotificationManager,NIMLoginManagerDelegate>
+@interface AppDelegate ()<UNUserNotificationCenterDelegate,NIMSystemNotificationManager,NIMLoginManagerDelegate>{
+    
+    
+    BOOL push_AlertON;
+    
+    BOOL push_VoiceON;
+    
+    
+}
 
 @end
 
@@ -28,6 +36,9 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    
+  
     
     _window = [[UIWindow alloc]init];
     [_window makeKeyAndVisible];
@@ -39,6 +50,10 @@
     if (![useDef boolForKey:@"notFirst"]) {
         // 如果是第一次进入引导页
         _window.rootViewController = [[GuideViewController alloc] init];
+        
+        /* 执行第一次要加载的数据*/
+        [self loadFirstLoginData];
+        
     }
     else{
         // 否则直接进入应用
@@ -62,19 +77,17 @@
             
             NSString *token= [[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
             NSString *userid=[[NSUserDefaults standardUserDefaults]objectForKey:@"id"];
-#if defined(DEBUG)||defined(_DEBUG)
+
             
             NSLog(@"%@,%@",token,userid);
-#endif
+
             
         }
     }
     
     
-#if defined(DEBUG)||defined(_DEBUG)
-    
     NSLog(@"本地沙盒存储路径：%@", NSHomeDirectory());
-#endif
+
     
     /* 添加消息中心监听 判断登录状态*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogOut) name:@"userLogOut" object:nil];
@@ -118,7 +131,10 @@
                                   cerName:@"QatimeStudentPushDev"];
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
    
-    
+    /* 本地保存云信推送的设置*/
+//    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"NotificationVoice"];
+//    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"NotificationAlert"];
+//    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"IMNotification"];
     
     /* 登录云信*/
     
@@ -137,32 +153,29 @@
     
     
     
-     
-    
-    
-    
-    
     #pragma mark- 注册系统推送
+    
+    
+    /* 默认开启推送的声音和震动*/
+    push_AlertON = YES;
+    push_VoiceON = YES;
+    
     //初始化方法,也可以使用(void)startWithAppkey:(NSString *)appKey launchOptions:(NSDictionary * )launchOptions httpsenable:(BOOL)value;这个方法，方便设置https请求。
     [UMessage startWithAppkey:@"5846465b1c5dd042ae000732" launchOptions:launchOptions];
     
-    
     /* 注册云信(系统)推送*/
-    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)])
-    {
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)]){
         UIUserNotificationType types = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound |      UIRemoteNotificationTypeAlert;
         UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types
                                                                                  categories:nil];
         [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
         [[UIApplication sharedApplication] registerForRemoteNotifications];
     }
-    else
-    {
+    else{
         UIRemoteNotificationType types = UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound |        UIRemoteNotificationTypeBadge;
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
     }
 
-    
     
     //注册友盟通知，如果要使用category的自定义策略，可以参考demo中的代码。
     [UMessage registerForRemoteNotifications];
@@ -191,9 +204,21 @@
     
     
     
+    /* 监听用户是否关闭推送声音和震动*/
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnPushSound:) name:@"NotificationSound" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnPushAlert:) name:@"NotificationAlert" object:nil];
+ 
+    
     
     return YES;
 }
+
+/* 第一次运行程序时候所要执行的操作*/
+- (void)loadFirstLoginData{
+    
+}
+
 
 
 /* 云信登录成功的回调 */
@@ -201,10 +226,9 @@
     
     /* 登录成功*/
     if (step == NIMLoginStepLoginOK) {
-#if defined(DEBUG)||defined(_DEBUG)
         
         NSLog(@"%@",[[[NIMSDK sharedSDK]teamManager]allMyTeams]);
-#endif
+
         
         [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"NIMSDKLogin"];
         
@@ -221,35 +245,74 @@
 
 #pragma mark- 推送回调
 
+//注册apns的token
 - (void)application:(UIApplication *)application
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
-#if defined(DEBUG)||defined(_DEBUG)
-    
     NSLog(@"%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]stringByReplacingOccurrencesOfString: @">" withString: @""]stringByReplacingOccurrencesOfString: @" " withString: @""]);
-#endif
-    
-    
+
     /// Required - 注册 DeviceToken
-    
     
     [[NIMSDK sharedSDK] updateApnsToken:deviceToken];
     
- 
-    
 }
 //iOS10以下使用这个方法接收通知
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-{
-    //关闭友盟自带的弹出框
-    [UMessage setAutoAlert:NO];
-    [UMessage didReceiveRemoteNotification:userInfo];
+/* 在前台*/
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler{
     
+    //当应用处于前台时提示设置，需要哪个可以设置哪一个
+    if (push_VoiceON==YES&&push_AlertON == YES) {
+        
+        completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionAlert);
     }
+    if (push_VoiceON==YES&&push_AlertON == NO) {
+        completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionBadge);
+    }
+    if (push_VoiceON==NO&&push_AlertON == YES) {
+        completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionAlert);
+    }
+    if (push_VoiceON==NO&&push_AlertON == NO) {
+        completionHandler(UNNotificationPresentationOptionBadge);
+    }
+
+    
+}
+
+
+/* 在后台*/
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler NS_AVAILABLE_IOS(7_0){
+    
+    if (userInfo){
+        completionHandler(UIBackgroundFetchResultNewData);
+        if(userInfo[@"nim"]){
+            
+            
+        }else{
+            
+            NSLog(@"%@", userInfo);
+            //关闭友盟自带的弹出框
+            [UMessage setAutoAlert:NO];
+            [UMessage didReceiveRemoteNotification:userInfo];
+        }
+        
+    }
+    
+    
+    
+}
+
+
+
+/* 点击消息后的操作*/
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler{
+    
+    
+}
 
 
 //iOS10新增：处理前台收到通知的代理方法
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
+    
     NSDictionary * userInfo = notification.request.content.userInfo;
     if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         //应用处于前台时的远程推送接受
@@ -262,11 +325,27 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         //应用处于前台时的本地推送接受
     }
     //当应用处于前台时提示设置，需要哪个可以设置哪一个
-    completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionAlert);
+    if (push_VoiceON==YES&&push_AlertON == YES) {
+        
+        completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionAlert);
+    }
+    if (push_VoiceON==YES&&push_AlertON == NO) {
+        completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionBadge);
+    }
+    if (push_VoiceON==NO&&push_AlertON == YES) {
+        completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionAlert);
+    }
+    if (push_VoiceON==NO&&push_AlertON == NO) {
+        completionHandler(UNNotificationPresentationOptionBadge);
+    }
+    
+    
 }
+
 
 //iOS10新增：处理后台点击通知的代理方法
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler{
+    
     NSDictionary * userInfo = response.notification.request.content.userInfo;
     if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         //应用处于后台时的远程推送接受
@@ -274,8 +353,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [UMessage didReceiveRemoteNotification:userInfo];
         
     }else{
-        //应用处于后台时的本地推送接受
+        //应用处于后台点击后的本地推送接受
+
     }
+   
     
 }
 
@@ -414,10 +495,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                 
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"WechatLoginSucess" object:respdata.code];
                 
-#if defined(DEBUG)||defined(_DEBUG)
-                
+
                 NSLog(@"%@",respdata.code);
-#endif
+
                 
             }else if (resp.errCode == -1){
                 /* 登录失败*/
@@ -461,12 +541,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
         
     }
-#if defined(DEBUG)||defined(_DEBUG)
-    
+
     NSLog(@"%@,%d,%d",resp.errStr,resp.errCode,resp.type);
-#endif
-    
-    
     
 }
 
@@ -478,6 +554,36 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     /* badge归零*/
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
+
+
+#pragma mark- 推送设置操作
+
+/* 用户开关推送声音*/
+- (void)turnPushSound:(NSNotification *)notification{
+    
+    UIButton *sender = [notification object];
+    if (sender.selected ==YES) {
+        push_VoiceON = YES;
+    }else{
+        push_VoiceON = NO;
+    }
+}
+
+/* 用户开关推送震动*/
+- (void)turnPushAlert:(NSNotification *)notification{
+   
+    UIButton *sender = [notification object];
+    if (sender.selected == YES) {
+        push_AlertON = YES;
+    }else{
+        push_AlertON = NO;
+    }
+    
+    
+    
+}
+
+
 
 
 

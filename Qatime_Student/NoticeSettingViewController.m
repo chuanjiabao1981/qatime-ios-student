@@ -44,9 +44,9 @@
     _menuTableView = ({
       
         UITableView * _ = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
-        
+        _.tableFooterView = [[UIView alloc]init];
         [self.view addSubview:_];
-        _.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _.bounces = NO;
         _.delegate = self;
         _.dataSource = self;
@@ -72,33 +72,33 @@
     if (cell==nil) {
         cell=[[SettingTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
         
+        cell.settingName.sd_layout
+        .leftSpaceToView(cell.contentView,20);
+        
         switch (indexPath.row) {
             case 0:{
+                
                 cell.settingName.text =@"消息提醒";
             }
                 break;
             case 1:{
+                
                 cell.settingName.text =@"课程提醒";
             }
                 break;
             
         }
         
-    
     }
     
     return  cell;
-    
-
 }
-
-
 
 #pragma mark- tableview delegate
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 60;
+    return self.view.height_sd*0.07;
     
 }
 

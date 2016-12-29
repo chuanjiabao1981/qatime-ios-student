@@ -699,7 +699,7 @@
     [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
     _timeFilterStr  =@[@"按时间",@"按价格-低到高",@"按价格-高到低",@"按购买人数"];
-    [MMPickerView showPickerViewInView:_tutoriumView withStrings:_timeFilterStr withOptions:@{MMfont:[UIFont systemFontOfSize:20]} completion:^(NSString *selectedString) {
+    [MMPickerView showPickerViewInView:_tutoriumView withStrings:_timeFilterStr withOptions:@{MMfont:[UIFont systemFontOfSize:20*ScrenScale]} completion:^(NSString *selectedString) {
         
         [_tutoriumView.timeButton setTitle:selectedString forState:UIControlStateNormal];
         
@@ -722,7 +722,7 @@
     
     [_gradeFilterArr insertObject:@"全部年级" atIndex:0];
     
-    [MMPickerView showPickerViewInView:_tutoriumView withStrings:_gradeFilterArr withOptions:@{MMfont:[UIFont systemFontOfSize:20]} completion:^(NSString *selectedString) {
+    [MMPickerView showPickerViewInView:_tutoriumView withStrings:_gradeFilterArr withOptions:@{MMfont:[UIFont systemFontOfSize:20*ScrenScale]} completion:^(NSString *selectedString) {
         
         [_tutoriumView.gradeButton setTitle:selectedString forState:UIControlStateNormal];
         
@@ -742,7 +742,7 @@
     
     _subjectArr=@[@"全部",@"语文",@"数学",@"英语",@"物理",@"化学",@"地理",@"政治",@"历史",@"科学",@"生物"];
     
-    [MMPickerView showPickerViewInView:_tutoriumView withStrings:_subjectArr withOptions:@{MMfont:[UIFont systemFontOfSize:20]} completion:^(NSString *selectedString) {
+    [MMPickerView showPickerViewInView:_tutoriumView withStrings:_subjectArr withOptions:@{MMfont:[UIFont systemFontOfSize:20*ScrenScale]} completion:^(NSString *selectedString) {
         
         [_tutoriumView.subjectButton setTitle:selectedString forState:UIControlStateNormal];
         
