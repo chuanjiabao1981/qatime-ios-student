@@ -37,9 +37,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    
-  
-    
     _window = [[UIWindow alloc]init];
     [_window makeKeyAndVisible];
     _window.backgroundColor = [UIColor whiteColor];
@@ -73,21 +70,23 @@
         }else{
             
             _viewController = [[ViewController alloc]init];
-            [_window setRootViewController:_viewController];
+            UINavigationController *viewVC = [[UINavigationController alloc]initWithRootViewController:_viewController];
+            
+            [_window setRootViewController:viewVC];
             
             NSString *token= [[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
             NSString *userid=[[NSUserDefaults standardUserDefaults]objectForKey:@"id"];
-
+            
             
             NSLog(@"%@,%@",token,userid);
-
+            
             
         }
     }
     
     
     NSLog(@"本地沙盒存储路径：%@", NSHomeDirectory());
-
+    
     
     /* 添加消息中心监听 判断登录状态*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogOut) name:@"userLogOut" object:nil];
@@ -102,12 +101,12 @@
     
     
     /* 微信登录状态的监听*/
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ChangRootToPerInfo:) name:@"WechatLoginSucess" object:nil];
+    //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ChangRootToPerInfo:) name:@"WechatLoginSucess" object:nil];
     
     
     /* 获取code成功*/
-//       [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ChangRootToPerInfo) name:@"GetCodeSucess" object:nil];
-//    
+    //       [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ChangRootToPerInfo) name:@"GetCodeSucess" object:nil];
+    //
     
     
     
@@ -116,7 +115,7 @@
     [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
     
     
-
+    
     
     /* 注册微信API*/
     
@@ -130,16 +129,16 @@
     [[NIMSDK sharedSDK] registerWithAppID:IM_APPKEY
                                   cerName:@"QatimeStudentPushDev"];
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
-   
+    
     /* 本地保存云信推送的设置*/
-//    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"NotificationVoice"];
-//    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"NotificationAlert"];
-//    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"IMNotification"];
+    //    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"NotificationVoice"];
+    //    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"NotificationAlert"];
+    //    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"IMNotification"];
     
     /* 登录云信*/
     
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"]) {
-       
+        
         NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"];
         NIMAutoLoginData *lodata = [[NIMAutoLoginData alloc]init];
         
@@ -153,7 +152,7 @@
     
     
     
-    #pragma mark- 注册系统推送
+#pragma mark- 注册系统推送
     
     
     /* 默认开启推送的声音和震动*/
@@ -161,7 +160,7 @@
     push_VoiceON = YES;
     
     //初始化方法,也可以使用(void)startWithAppkey:(NSString *)appKey launchOptions:(NSDictionary * )launchOptions httpsenable:(BOOL)value;这个方法，方便设置https请求。
-    [UMessage startWithAppkey:@"5846465b1c5dd042ae000732" launchOptions:launchOptions];
+    [UMessage startWithAppkey:@"5846465b1c5dd042ae000732" launchOptions:launchOptions httpsenable:YES];
     
     /* 注册云信(系统)推送*/
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)]){
@@ -175,7 +174,7 @@
         UIRemoteNotificationType types = UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound |        UIRemoteNotificationTypeBadge;
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
     }
-
+    
     
     //注册友盟通知，如果要使用category的自定义策略，可以参考demo中的代码。
     [UMessage registerForRemoteNotifications];
@@ -208,7 +207,7 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnPushSound:) name:@"NotificationSound" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnPushAlert:) name:@"NotificationAlert" object:nil];
- 
+    
     
     
     return YES;
@@ -228,14 +227,14 @@
     if (step == NIMLoginStepLoginOK) {
         
         NSLog(@"%@",[[[NIMSDK sharedSDK]teamManager]allMyTeams]);
-
+        
         
         [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"NIMSDKLogin"];
         
     }
     /* 聊天室信息同步完成*/
     if (step == NIMLoginStepSyncOK) {
-         
+        
         
     }
     
@@ -250,7 +249,7 @@
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     NSLog(@"%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]stringByReplacingOccurrencesOfString: @">" withString: @""]stringByReplacingOccurrencesOfString: @" " withString: @""]);
-
+    
     /// Required - 注册 DeviceToken
     
     [[NIMSDK sharedSDK] updateApnsToken:deviceToken];
@@ -274,7 +273,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     if (push_VoiceON==NO&&push_AlertON == NO) {
         completionHandler(UNNotificationPresentationOptionBadge);
     }
-
+    
     
 }
 
@@ -354,9 +353,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
     }else{
         //应用处于后台点击后的本地推送接受
-
+        
     }
-   
+    
     
 }
 
@@ -365,7 +364,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 /* 云信收到消息的回调监听*/
 - (void)onReceiveCustomSystemNotification:(NIMCustomSystemNotification *)notification{
-   
+    
     
     
     
@@ -386,7 +385,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
     }else if([type isEqualToString:@"wechat"]){
         /* 微信登录*/
-         [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
         
     }
     
@@ -397,8 +396,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 /* 微信登录成功后,rootcontroller改变*/
 - (void)ChangRootToPerInfo:(NSNotification *)notification{
     
-       
-
+    
+    
     
 }
 
@@ -409,10 +408,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (void)changeRootViewConroller:(NSNotification *)notification{
     
     _viewController = [[ViewController alloc]init];
+    UINavigationController *navVC = [[UINavigationController alloc]initWithRootViewController:_viewController];
     
     [UIView transitionFromView:_window.rootViewController.view toView:_viewController.view duration:0.5 options:UIViewAnimationOptionTransitionFlipFromRight completion:^(BOOL finished) {
         
-        [_window setRootViewController:_viewController];
+        [_window setRootViewController:navVC];
     }];
     
     
@@ -424,7 +424,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Login"];
     
-     _loginViewController = [[LoginViewController alloc]init];
+    /* 退出云信*/
+    [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error){}];
+    
+    _loginViewController = [[LoginViewController alloc]init];
     
     UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
     
@@ -454,7 +457,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     /* 微信登录成功的回调 直接跳转界面到这里.*/
     
-        
+    
     
     return [WXApi handleOpenURL:url delegate:self];
     
@@ -487,34 +490,34 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     /* 条件:拿到登录回调信息*/
     if ([resp isKindOfClass:[SendAuthResp class]]) {
-       
+        
+        
+        if (resp.errCode ==0) {
+            /* 登录成功*/
+            SendAuthResp *respdata = (SendAuthResp *)resp;
             
-            if (resp.errCode ==0) {
-                /* 登录成功*/
-                SendAuthResp *respdata = (SendAuthResp *)resp;
-                
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"WechatLoginSucess" object:respdata.code];
-                
-
-                NSLog(@"%@",respdata.code);
-
-                
-            }else if (resp.errCode == -1){
-                /* 登录失败*/
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"wechatLoginFaild" object:nil];
-
-                
-                
-            }else if (resp.errCode == -2){
-                /* 取消登录*/
-                
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"WechatLoginSucess" object:respdata.code];
+            
+            
+            NSLog(@"%@",respdata.code);
+            
+            
+        }else if (resp.errCode == -1){
+            /* 登录失败*/
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"wechatLoginFaild" object:nil];
+            
+            
+            
+        }else if (resp.errCode == -2){
+            /* 取消登录*/
+            
             
             
         }
         
         
         SendAuthResp *respData = (SendAuthResp *)resp;
-//        respData.code
+        //        respData.code
         
         
         
@@ -538,10 +541,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             
             
         }
-
+        
         
     }
-
+    
     NSLog(@"%@,%d,%d",resp.errStr,resp.errCode,resp.type);
     
 }
@@ -571,7 +574,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 /* 用户开关推送震动*/
 - (void)turnPushAlert:(NSNotification *)notification{
-   
+    
     UIButton *sender = [notification object];
     if (sender.selected == YES) {
         push_AlertON = YES;
@@ -605,9 +608,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-   
+    
     [self clearBadge];
-   
+    
     
 }
 

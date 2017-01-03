@@ -14,4 +14,8 @@
 
 @property(nonatomic,strong) SignUpInfoView *signUpInfoView ;
 @property(nonatomic,strong) NavigationBar *navigationBar ;
+
+/* 初始化传登录账号密码值*/
+-(instancetype)initWithAccount:(NSString *)account andPassword:(NSString *)password ;
+
 @end

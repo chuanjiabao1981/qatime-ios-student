@@ -16,7 +16,6 @@
 @property(nonatomic,assign) NSInteger *lines ;
 
 
-
 /* 附加属性*/
 @property(nonatomic,strong) NSString *teacherID ;
 

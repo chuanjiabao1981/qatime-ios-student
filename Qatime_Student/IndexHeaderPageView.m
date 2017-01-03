@@ -13,10 +13,7 @@
 /**<,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>*/
 
 {
-    
     UIView *_squareButton;
-    
-    
     NSArray *menuImages;
     NSArray *menuTitiels;
 }

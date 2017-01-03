@@ -18,6 +18,7 @@
 #import "PersonalDescViewController.h"
 #import "UIViewController+HUD.h"
 #import "RDVTabBarController.h"
+#import "UIAlertController+Blocks.h"
 
 
 
@@ -37,16 +38,16 @@
     NSString *_idNumber;
     
     /* 个人数据的dic*/
-   __block NSMutableDictionary *_dataDic;
+    __block NSMutableDictionary *_dataDic;
     
     /* 底下行自动高度的model*/
     UserInfoModel *_contentModel;
     
     /* */
-  __block NSMutableArray *dataArr;
+    __block NSMutableArray *dataArr;
     
     /* <# State #>*/
-  __block NSMutableDictionary *_dic;
+    __block NSMutableDictionary *_dic;
     
     /* 更换头像的点击手势*/
     
@@ -68,17 +69,62 @@
     /* 是不是改了生日*/
     BOOL changeBirthday;
     
-    
+    /* 上传头像用的数据流*/
     NSData *_avatar;
+    
+    /* 注册页面初始化传值的变量*/
+    NSString *_userName;
+    NSString *_userGrade;
+    UIImage *_userImage;
+    
+    /* 是否传值过来的?*/
+    BOOL WriteMore;
+    
     
 }
 @end
 
 @implementation PersonalInfoViewController
 
+-(instancetype)initWithName:(NSString *)name andGrade:(NSString *)chosegrade andHeadImage:(UIImage *)headImage withImageChange:(BOOL)imageChange{
+    
+    self = [super init];
+    if (self) {
+        
+        if (name!=nil) {
+            
+            _userName = [NSString stringWithFormat:@"%@",name];
+        }
+        if (chosegrade!=nil) {
+            
+            _userGrade = [NSString stringWithFormat:@"%@",chosegrade];
+        }
+        if (headImage!=nil) {
+            if (imageChange == YES) {
+                
+                _userImage = [[UIImage alloc]init];
+                _userImage  = headImage;
+                
+                /* 直接赋值照片data*/
+                _avatar = [NSData dataWithData: UIImagePNGRepresentation(headImage)];
+            }else{
+                
+            }
+        }
+        
+        
+        /* 是"完善更多场景"*/
+        
+        WriteMore = YES;
+        
+    }
+    return self;
+}
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self .view addSubview:_navigationBar];
@@ -102,19 +148,22 @@
         
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
-
+    
     _nameArr = @[@"头像",@"姓名",@"性别",@"生日",@"年级",@"地区",@"学校",@"自我介绍"];
-//    _nameArrEn = @[@"avatar_url",@"name",@"gender",@"birthday",@"grade",@"city",@"school",@"desc"];
     
-    
-    /* 请求个人信息数据*/
-    [self requestUserInfo];
-    
+    /* 如果是从注册页面传值过来的*/
+    if (WriteMore == YES) {
+        
+        [_personalInfoView reloadData];
+        
+        
+    }else{
+        /* 请求个人信息数据*/
+        [self requestUserInfo];
+        
+    }
     
     _tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeHeadImage:)];
-    
-    
-    
     
     
     
@@ -129,12 +178,11 @@
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/students/%@/info",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-       _dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        _dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         /* 获取成功*/
         _dataDic = [NSMutableDictionary dictionaryWithDictionary:_dic[@"data"]];
         
         if ([_dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-            
             
             for (NSString *key in _dic[@"data"]) {
                 
@@ -142,8 +190,6 @@
                     
                     [_dataDic setValue:@"未设置" forKey:key];
                     
-                    
-            
                 }
                 
             }
@@ -151,9 +197,9 @@
             NSLog(@"%@",_dataDic);
         }else{
             
-        
+            
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"登录超时!" preferredStyle:UIAlertControllerStyleAlert];
-         
+            
             UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
@@ -163,19 +209,16 @@
             [alert addAction:sure];
             
             [self presentViewController:alert animated:YES completion:nil];
-
+            
             
         }
         
         [_personalInfoView reloadData];
-        [_personalInfoView setNeedsDisplay];
+        
         NSLog(@"%@",_dataDic);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-    
-
-
     
     
 }
@@ -215,12 +258,12 @@
         
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         
-         [self presentViewController:picker animated:YES completion:nil];
+        [self presentViewController:picker animated:YES completion:nil];
     }] ;
     UIAlertAction *library = [UIAlertAction actionWithTitle:@"图库" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         
-         [self presentViewController:picker animated:YES completion:nil];
+        [self presentViewController:picker animated:YES completion:nil];
         
     }] ;
     UIAlertAction *photos = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -249,20 +292,16 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     
     [self dismissViewControllerAnimated:YES completion:^{
-       
-        
-//        [_dataDic setValue:info[@"UIImagePickerControllerReferenceURL"] forKey:@"avatar_url"];
         
         NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0];
         
         Personal_HeadTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:path]  ;
         
-//        [cell.image sd_setImageWithURL:info[@"UIImagePickerControllerReferenceURL"]];
         [cell.image setImage:info[@"UIImagePickerControllerOriginalImage"]];
         
         UIImage *image =info[@"UIImagePickerControllerOriginalImage"];
-        _avatar = [NSData dataWithData: UIImagePNGRepresentation(image)];
         
+        _avatar = [NSData dataWithData: UIImagePNGRepresentation(image)];
         
         changeImage = YES;
     }];
@@ -294,12 +333,24 @@
             cell.sd_tableView = tableView;
             cell.image.userInteractionEnabled = YES;
             
-            
-            
         }
-        [cell.image sd_setImageWithURL:[NSURL URLWithString:_dataDic[@"avatar_url"]]];
+        
+        /* 如果是在"完善更多"的前提下*/
+        if (WriteMore == YES) {
+            
+            /* 如果传来的图片不为nil*/
+            if (changeImage==YES) {
+                [cell.image setImage:_userImage];
+            }else{
+                [cell.image setImage:[UIImage imageNamed:@"person"]];
+            }
+            
+            /* 如果是在个人信息中心完善更多信息*/
+        }else{
+            
+            [cell.image sd_setImageWithURL:[NSURL URLWithString:_dataDic[@"avatar_url"]]];
+        }
         [cell.image addGestureRecognizer:_tap];
-
         
         return  cell;
         
@@ -317,6 +368,53 @@
             NSLog(@"%@",_dataDic);
             
         }
+        if (WriteMore==YES) {
+            
+            switch (indexPath.row) {
+                case 1:
+                    
+                    if (_userName) {
+                        
+                        cell.content.text =_userName;
+                    }else{
+                        
+                        cell.content.text = @"未设置";
+                        
+                    }
+                    break;
+                    
+                case 2:
+                    cell.content.text = @"未设置";
+                    break;
+                    
+                case 3:
+                    cell.content.text = @"未设置";
+                    break;
+                    
+                case 4:
+                    if (_userGrade) {
+                        
+                        cell.content.text = _userGrade;
+                    }else{
+                        
+                        cell.content.text = @"未设置";
+                    }
+                    break;
+                case 5:
+                    cell.content.text = @"未设置";
+                    break;
+                case 6:
+                    cell.content.text = @"未设置";
+                    break;
+                case 7:
+                    cell.content.text = @"未设置";
+                    break;
+                    
+            }
+            
+        }
+        
+        
         if ([[_dataDic allKeys]count]!=0) {
             
             switch (indexPath.row) {
@@ -329,52 +427,44 @@
                 case 2:{
                     
                     if ([[_dataDic valueForKey:@"gender"] isEqualToString:@"male"]) {
-                         cell.content.text = @"男";
+                        cell.content.text = @"男";
                     }else if ([[_dataDic valueForKey:@"gender"] isEqualToString:@"female"]){
                         
                         cell.content.text = @"女";
-
+                        
                     }
-                    
                     
                 }
                     break;
                 case 3:{
                     cell.content.text = [_dataDic valueForKey:@"birthday"];
                     
-                    
                 }
                     break;
                 case 4:{
+                    
                     cell.content.text = [_dataDic valueForKey:@"grade"];
-                    
-                    
                 }
                     break;
                 case 5:{
-                    cell.content.text = [[NSString stringWithFormat:@"%@",[_dataDic valueForKey:@"province"]]stringByAppendingString:[NSString stringWithFormat:@"  %@",[_dataDic valueForKey:@"city"]]] ;
                     
+                    cell.content.text = [[NSString stringWithFormat:@"%@",[_dataDic valueForKey:@"province"]]stringByAppendingString:[NSString stringWithFormat:@"  %@",[_dataDic valueForKey:@"city"]]] ;
                     
                 }
                     break;
                 case 6:{
                     cell.content.text = [_dataDic valueForKey:@"school"];
                     
-                    
                 }
                     break;
                     
                 case 7:{
-                   
+                    
                     cell.content.text = [_dataDic valueForKey:@"desc"];
                     [cell sd_clearAutoLayoutSettings];
                     
-                    
-                    
                 }
                     break;
-
-                    
                     
             }
         }
@@ -383,7 +473,6 @@
         
     }
     
-
     return cell;
     
 }
@@ -402,7 +491,7 @@
         
         height = CGRectGetHeight(self.view.frame)*0.15;
     }else{
-    
+        
         height =CGRectGetHeight(self.view.frame)*0.065;
     }
     return height;
@@ -422,24 +511,24 @@
             [self pickerViewShow:indexPath];
             
             break;
-
+            
         case 3:
             [self pickerViewShow:indexPath];
             break;
-
+            
         case 4:
             [self pickerViewShow:indexPath];
             break;
-
+            
         case 5:
             
             break;
-
+            
         case 6:
-              [self showAlert:indexPath];
+            [self showAlert:indexPath];
             break;
-
-         case 7:
+            
+        case 7:
         {
             PersonalDescViewController *perVC = [PersonalDescViewController new];
             perVC.delegate = self;
@@ -457,10 +546,10 @@
 
 /* 显示选择器*/
 - (void)pickerViewShow:(NSIndexPath *)indePath{
-
+    
     
     switch (indePath.row) {
-       
+            
         case 2:{
             
             [MMPickerView showPickerViewInView:self.view withStrings:@[@"男",@"女"] withOptions:@{MMfont:[UIFont systemFontOfSize:22*ScrenScale]} completion:^(NSString *selectedString) {
@@ -474,7 +563,7 @@
                     
                 }else if ([selectedString isEqualToString:@"女"]){
                     
-                     [_dataDic setObject:@"female" forKey:@"gender"];
+                    [_dataDic setObject:@"female" forKey:@"gender"];
                 }
                 
                 
@@ -490,8 +579,6 @@
             
             typeof(self) __weak weakSelf = self;
             
-            
-            
             _birthdayPicker.clickedOkBtn = ^(NSString *dateTimeStr){
                 
                 PersonalTableViewCell *cell= [weakSelf.personalInfoView cellForRowAtIndexPath:indePath];
@@ -500,7 +587,7 @@
                 [_dataDic setObject:dateTimeStr forKey:@"birthday"];
                 
                 changeBirthday = YES;
-
+                
             };
             
         }
@@ -547,7 +634,7 @@
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         
         
-        
+
     }];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
@@ -566,7 +653,7 @@
     [alert addAction:sure];
     
     [self presentViewController:alert animated:YES completion:nil];
-
+    
     
 }
 
@@ -581,11 +668,7 @@
     PersonalTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:indexPath];
     [cell.content sd_clearAutoLayoutSettings];
     
-//    [cell.content clearAutoHeigtSettings];
-   
     cell.content.text = [NSString stringWithFormat:@"%@",desc];
-    
-    
     
     [cell.contentView layoutIfNeeded];
     
@@ -606,51 +689,63 @@
 
 - (void)returnLastPage{
     
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:4 inSection:0];
-    
-    PersonalTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:indexPath];
+    NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0 ];
+    Personal_HeadTableViewCell *headcell =[_personalInfoView cellForRowAtIndexPath:path];
     
     
-    
-    if ([cell.content.text isEqualToString:@"未设置"]) {
+    if (headcell.image.image == [UIImage imageNamed:@"人"]) {
         
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择年级!" preferredStyle:UIAlertControllerStyleAlert];
-       
-        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-        }] ;
+       [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请选择头像" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
         
-        
-        [alert addAction:sure];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-
         
     }else{
         
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否保存?" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"不保存" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            
-            [self returnFrontPage];
-            
-        }] ;
-        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-            
-            [self updateUserInfo];
-            
-            [self loadingHUDStartLoadingWithTitle:@"正在提交个人信息"];
-            
-        }] ;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:4 inSection:0];
         
-        [alert addAction:cancel];
-        [alert addAction:sure];
+        PersonalTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:indexPath];
         
-        [self presentViewController:alert animated:YES completion:nil];
-
-        
+        if ([cell.content.text isEqualToString:@"未设置"]) {
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择年级!" preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+            }] ;
+            
+            
+            [alert addAction:sure];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+            
+            
+        }else{
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否保存?" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"不保存" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+                [self returnFrontPage];
+                
+            }] ;
+            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+                
+                [self updateUserInfo];
+                
+                [self loadingHUDStartLoadingWithTitle:@"正在提交个人信息"];
+                
+            }] ;
+            
+            [alert addAction:cancel];
+            [alert addAction:sure];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+            
+            
+        }
     }
+    
+    
+    
     
     
 }
@@ -658,40 +753,52 @@
 /* 更新个人信息*/
 - (void)updateUserInfo{
     
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{
-                          @"name":_dataDic[@"name"],
-                          @"gender":_dataDic[@"gender"],
-                          @"desc":_dataDic[@"desc"],
-                          @"school":_dataDic[@"school"]
-                          }];
-    if (changeImage == YES) {
+    
+//    [self loadingHUDStartLoadingWithTitle:@"正在提交信息"];
+    
+    NSMutableDictionary *dic = nil;
+    
+        dic =[NSMutableDictionary dictionaryWithDictionary: @{
+                @"name":_dataDic[@"name"]?_dataDic[@"name"]:_userName,
+                @"gender":_dataDic[@"gender"]?_dataDic[@"gender"]:@"",
+                @"desc":_dataDic[@"desc"]?_dataDic[@"desc"]:@"",
+                @"school":_dataDic[@"school"]?_dataDic[@"school"]:@""
+                
+                }];
+    
+    if (WriteMore == YES) {
+        if (changeImage == NO) {
+            _avatar = UIImagePNGRepresentation([UIImage imageNamed:@"人"]);
+            [dic setValue:_avatar forKey:@"avatar"];
+        }
+    }else{
         
-        [dic setValue:_avatar forKey:@"avatar"];
+        [dic setObject:_avatar forKey:@"avatar"];
+        
     }
     if (changeBirthday ==YES) {
-       [dic setValue:_dataDic[@"birthday"] forKey:@"birthday"];
+        [dic setValue:_dataDic[@"birthday"] forKey:@"birthday"];
     }
     if (_dataDic[@"gender"] !=nil) {
         [dic setObject:_dataDic[@"gender"] forKey:@"gender"];
     }
     if (grade == YES||![_dataDic[@"grade"] isEqualToString:@"未设置"]) {
-        [dic setObject:_dataDic[@"grade"] forKey:@"grade"];
+        [dic setObject:_dataDic[@"grade"]?_dataDic[@"grade"]:_userGrade forKey:@"grade"];
     }
-    
-    
+
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     [manager PUT:[NSString stringWithFormat:@"%@/api/v1/students/%@",Request_Header,_idNumber] parameters:dic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-       
+        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         NSLog(@"%@",dic);
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 修改成功*/
-         
+            
             [self loadingHUDStopLoadingWithTitle:@"修改成功!"];
             
             [self performSelector:@selector(returnFrontPage) withObject:nil afterDelay:1];
@@ -723,13 +830,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

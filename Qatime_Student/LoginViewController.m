@@ -220,11 +220,7 @@
             
             [self loadingHUDStopLoadingWithTitle:@"获取微信登录信息失败,请重试!"];
             
-            
         }
-        
-        
-        
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         

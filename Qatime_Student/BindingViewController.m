@@ -12,18 +12,14 @@
 #import "UIViewController+HUD.h"
 #import "UIViewController_HUD.h"
 #import "GradeList.h"
+#import "MMPickerView.h"
+#import "UIAlertController+Blocks.h"
+#import "UIViewController+HUD.h"
 
 
 @interface BindingViewController ()<UIPickerViewDelegate,UIPickerViewDataSource>{
     
     NavigationBar *_navigationBar;
-    
-    
-    
-    UIVisualEffectView *effectView;
-    UIPickerView *pickerView;
-    UIView *dock;
-    UIBlurEffect *effect;
     
     NSString *_openID;
     
@@ -59,7 +55,7 @@
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];
     [_navigationBar.titleLabel setText:@"绑定"];
-   
+    
     _bindingView = [[BindingView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
     [self.view addSubview:_bindingView];
     
@@ -77,10 +73,10 @@
     //    选项
     
     [_bindingView.chosenButton addTarget:self action:@selector(chosenProtocol:) forControlEvents:UIControlEventTouchUpInside];
-
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(chooseGrade)];
     
-    [_bindingView.gradeText addGestureRecognizer:tap];
+    
+    
+    [_bindingView.grade addTarget:self action:@selector(chooseGrade:) forControlEvents:UIControlEventTouchUpInside];
     
     
     [self loadingHUDStartLoadingWithTitle:@"正在获取年级信息"];
@@ -126,22 +122,22 @@
     
     /* 测试口  直接跳转*/
     
-//    /* 进入下一页*/
-//    _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
-//    
-//    [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
-//    
+    //    /* 进入下一页*/
+    //    _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
+    //
+    //    [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
+    //
     ////////////////////////////////////////////
     
     
     /* 有信息填写不正确*/
     if ([_bindingView.phoneNumber.text isEqualToString:@""]) {
         
-        [self showAlertWith:@"请输入手机号！"];
+        [self loadingHUDStopLoadingWithTitle:@"请输入手机号！"];
     }
     if (![self isMobileNumber:_bindingView.phoneNumber.text]) {
         
-        [self showAlertWith:@"请输入正确的手机号！"];
+        [self loadingHUDStopLoadingWithTitle:@"请输入正确的手机号！"];
         
     }
     if ([_bindingView.userPassword.text isEqualToString:@""]||![self checkPassWord: _bindingView.userPassword.text] ) {
@@ -155,10 +151,6 @@
         
     }
     
-    //    if (!([_signUpView.phoneNumber.text isEqualToString:@""]&&[_signUpView.userPassword.text isEqualToString:@""]&&[_signUpView.userPasswordCompare.text isEqualToString:@""]&&[_signUpView.checkCode.text isEqualToString:@""])&&[_signUpView.unlockKey.text isEqualToString:@""]) {
-    //        [self showAlertWith:@"请输入注册号"];
-    //
-    //    }
     
     /* 所有信息都填写正确的情况*/
     if (!([_bindingView.phoneNumber.text isEqualToString:@""]&&[_bindingView.userPassword.text isEqualToString:@""]&&[_bindingView.userPasswordCompare.text isEqualToString:@""]&&[_bindingView.checkCode.text isEqualToString:@""]/*&&[_signUpView.unlockKey.text isEqualToString:@""] 注册码功能暂时去掉*/)&&[_bindingView.userPasswordCompare.text isEqualToString:_bindingView.userPassword.text]) {
@@ -179,10 +171,9 @@
                                         @"password_confirmation":_bindingView.userPasswordCompare.text,
                                         @"accept":_bindingView.chosenButton.isSelected==YES?@"1":@"2",
                                         @"register_code_value":@"code",
-                                        
                                         @"type":@"Student",
                                         @"client_type":@"app",
-                                        @"grade":_bindingView.gradeText.text,
+                                        @"grade":_bindingView.grade.titleLabel.text,
                                         @"openid":_openID
                                         };
             
@@ -190,83 +181,109 @@
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-            [manager POST:[NSString stringWithFormat:@"%@/api/v1/user/wechat_regsiter",Request_Header] parameters:signUpInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [manager POST:[NSString stringWithFormat:@"%@/api/v1/user/wechat_register",Request_Header] parameters:signUpInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
-                NSDictionary *codeState = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                 
-                
-                NSDictionary *dataDic=[NSDictionary dictionaryWithDictionary: codeState[@"data"]];
+                //                NSDictionary *dataDic=[NSDictionary dictionaryWithDictionary: codeState[@"data"]];
                 
 #pragma mark-注册信息校验正确
                 
                 /* 注册信息校验正确*/
                 
-                if ([[dataDic allKeys]containsObject:@"remember_token"]){
+                if ([dataDic[@"status"]isEqualToNumber:@1]) {
                     
-                    /* 发送成功提示框*/
-                    
-                    
-                    [self loadingHUDStopLoadingWithTitle:@"验证成功!"];
-                    
-                    
-                    
-                    
-                    
+                    if ([[dataDic allKeys]containsObject:@"remember_token"]){
+                        
+                        /* 发送成功提示框*/
+                        
+                        [self loadingHUDStopLoadingWithTitle:@"绑定成功!"];
 #pragma mark- 把token和id(key : data)存储到本地沙盒路径
+                        
+                        NSString *tokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
+                        [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
+                        
+                        NSLog(@"保存的数据\n%@",dataDic);
+                        
+                        
+                        /* 归档*/
+                        [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
+                        
+                        
+                        /* 另存一份userdefault  只存token和id*/
+                        NSString *remember_token = [NSString stringWithFormat:@"%@",dataDic[@"remember_token"]];
+                        
+                        NSDictionary *user=[NSDictionary dictionaryWithDictionary:dataDic[@"user"]];
+                        NSLog(@"%@",user);
+                        
+                        
+                        NSString *userID = [NSString stringWithFormat:@"%@",[[dataDic valueForKey:@"user"] valueForKey:@"id"]];
+                        
+                        [[NSUserDefaults standardUserDefaults]setObject:remember_token forKey:@"remember_token"];
+                        [[NSUserDefaults standardUserDefaults]setObject:userID forKey:@"id"];
+                        
+                        /* 另存一个userdefault ，只存user的头像地址*/
+                        [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"user"][@"avatar_url"] forKey:@"avatar_url"];
+                        
+                        /* 另存一个useerdefault 存user的name*/
+                        [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"user"][@"name"] forKey:@"name"];
+                        
+                        /* 发出一条消息:账号密码方式登录*/
+                        
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"Login_Type" object:@"wechat"];
+                        
+                        /* 绑定完成后,直接登录到主页*/
+                        [self performSelector:@selector(login) withObject:nil afterDelay:1.0];
+                        
+                        
+                    }
+                    else if (![[dataDic allKeys]containsObject:@"remember_token"]){
+                        
+                        [self showAlertWith:@"验证失败！请仔细填写信息!"];
+                        
+                    }
+                }else{
                     
-                    NSString *tokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
-                    [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
-#if defined(DEBUG)||defined(_DEBUG)
-                    
-                    NSLog(@"保存的数据\n%@",dataDic);
-#endif
-                    
-                    /* 归档*/
-                    [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
-                    
-                    
-                    /* 另存一份userdefault  只存token和id*/
-                    NSString *remember_token = [NSString stringWithFormat:@"%@",dataDic[@"remember_token"]];
-                    
-                    NSDictionary *user=[NSDictionary dictionaryWithDictionary:dataDic[@"user"]];
-                    NSLog(@"%@",user);
-                    
-                    
-                    NSString *userID = [NSString stringWithFormat:@"%@",[[dataDic valueForKey:@"user"] valueForKey:@"id"]];
-                    
-                    [[NSUserDefaults standardUserDefaults]setObject:remember_token forKey:@"remember_token"];
-                    [[NSUserDefaults standardUserDefaults]setObject:userID forKey:@"id"];
-                    
-                    
-                    
-                    
-                    
-                    /* 另存一个userdefault ，只存user的头像地址*/
-                    [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"user"][@"avatar_url"] forKey:@"avatar_url"];
-                    
-                    /* 另存一个useerdefault 存user的name*/
-                    [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"user"][@"name"] forKey:@"name"];
-                    
-                    /* 发出一条消息:账号密码方式登录*/
-                    
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"Login_Type" object:@"wechat"];
-                    
+                    if (dataDic) {
+                        
+                        if ([[[dataDic valueForKey:@"error"]valueForKey:@"code"] isEqualToNumber:@3002]) {
+                            
+                            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"该手机已注册,请登录后进入个人中心>安全设置进行绑定。" cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@[@"新号码注册",@"登录"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                                
+                                if (buttonIndex ==2 ) {
+                                    _bindingView.phoneNumber.text = @"";
+                                    _bindingView.checkCode.text = @"";
+                                    _bindingView.userPassword.text = @"";
+                                    _bindingView.userPasswordCompare.text = @"";
+                                    _bindingView.unlockKey.text = @"";
+                                    
+                                    [_bindingView.phoneNumber becomeFirstResponder];
+                                    
+                                }
+                                if (buttonIndex ==3) {
+                                    [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
+                                }
+                                
+                            }];
+                        }
+                    }
                 }
-                else if (![[dataDic allKeys]containsObject:@"remember_token"]){
-                    
-                    [self showAlertWith:@"验证失败！请仔细填写信息!"];
-                    
-                }
-                
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            }failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
             }];
         }
-        
-        
     }
+}
+
+
+/* 绑定完成后登录*/
+- (void)login{
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
+    
     
 }
+
 
 
 /*点击按钮  获取验证码*/
@@ -379,8 +396,6 @@
             
             [button setEnabled:NO];
             
-            
-            
         });
         deadline--;
         
@@ -403,104 +418,25 @@
     dispatch_resume(_timer);
     
     
-    
 }
 
 
 #pragma mark- 选择年级列表
-- (void)chooseGrade{
+- (void)chooseGrade:(UIButton *)sender{
     
-    [_bindingView.checkCode resignFirstResponder];
-    [ _bindingView.userPassword resignFirstResponder];
-    [_bindingView.userPasswordCompare resignFirstResponder];
     [_bindingView.phoneNumber resignFirstResponder];
-    
-    //     添加一个模糊背景
-    effect=[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-    effectView=[[UIVisualEffectView alloc]initWithEffect:effect];
-    [effectView setFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd)];
-    [self.view addSubview:effectView];
+    [_bindingView.checkCode resignFirstResponder];
+    [_bindingView.userPassword resignFirstResponder];
+    [_bindingView.userPasswordCompare resignFirstResponder];
     
     
-    
-    pickerView=[[UIPickerView alloc]init];
-    pickerView .dataSource = self;
-    pickerView .delegate = self;
-    pickerView.backgroundColor = [UIColor whiteColor];
-    
-    [self.view addSubview:pickerView];
-    
-    pickerView.sd_layout.leftSpaceToView(self.view,0).rightSpaceToView(self.view,0).heightRatioToView(self.view,0.25).widthRatioToView(self.view,1.0f).bottomSpaceToView(self.view,0);
-    
-    /* pickerView的顶视图 确定和取消两个选项。*/
-    dock=[[UIView alloc]init];
-    [self.view addSubview:dock];
-    dock.sd_layout.leftSpaceToView(self.view,0).rightSpaceToView(self.view,0).bottomSpaceToView(pickerView,0).heightRatioToView(pickerView,0.25f);
-    dock.backgroundColor = USERGREEN;
-    
-    
-    /* 确定按钮*/
-    UIButton *sureButton=[[UIButton alloc]init];
-    [dock addSubview:sureButton];
-    [sureButton setTitle:@"确定" forState:UIControlStateNormal];
-    [sureButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    sureButton.sd_layout.heightRatioToView(dock,0.8).centerYEqualToView(dock).widthIs(60).rightSpaceToView(dock,0);
-    [sureButton addTarget:self action:@selector(sureChoseGrade) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-}
-
-/* pickerView的代理方法*/
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
-    
-    return 1;
-    
-}
-
-- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
-    
-    return 30;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
-    
-    return gradeList.grade.count;
-    
-}
-- (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
-    
-    
-    
-    return gradeList.grade[row];
-    
-    
-    
+    [MMPickerView showPickerViewInView:self.view withStrings:gradeList.grade withOptions:@{NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]} completion:^(NSString *selectedString) {
+        
+        [_bindingView.grade setTitle:selectedString forState:UIControlStateNormal];
+    } ];
 }
 
 
-/* 选择的*/
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    
-    
-    
-    
-    [_bindingView.gradeText setText:gradeList.grade[row] ];
-    
-    
-    
-}
-
-
-/* 确定选择*/
-- (void)sureChoseGrade{
-    
-    [pickerView removeFromSuperview];
-    [dock removeFromSuperview ];
-    [effectView removeFromSuperview];
-    
-    
-    
-}
 
 /* 返回上一页面*/
 
@@ -512,11 +448,9 @@
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [_bindingView.checkCode resignFirstResponder];
-   [ _bindingView.userPassword resignFirstResponder];
+    [ _bindingView.userPassword resignFirstResponder];
     [_bindingView.userPasswordCompare resignFirstResponder];
     [_bindingView.phoneNumber resignFirstResponder];
-    
-    
     
 }
 
@@ -528,13 +462,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

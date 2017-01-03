@@ -8,14 +8,14 @@
 
 #import "SignUpViewController.h"
 #import "SignUpView.h"
-#import "MBProgressHUD.h"
+
 #import "SignUpInfoViewController.h"
+#import "UIAlertController+Blocks.h"
+#import "UIViewController+HUD.h"
 
 @interface SignUpViewController (){
     
     SignUpInfoViewController *_signUpInfoViewController ;
-    
-    
     
 }
 
@@ -77,8 +77,6 @@
         [sender setImage:nil forState:UIControlStateNormal];
         sender.backgroundColor = [UIColor clearColor];
         
-        
-        
         sender.selected= NO;
         
     }
@@ -94,9 +92,9 @@
     /* 测试口  直接跳转*/
     
     /* 进入下一页*/
-    _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
+        _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
     
-    [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
+        [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
     
     ////////////////////////////////////////////
     
@@ -122,10 +120,6 @@
         
     }
     
-    //    if (!([_signUpView.phoneNumber.text isEqualToString:@""]&&[_signUpView.userPassword.text isEqualToString:@""]&&[_signUpView.userPasswordCompare.text isEqualToString:@""]&&[_signUpView.checkCode.text isEqualToString:@""])&&[_signUpView.unlockKey.text isEqualToString:@""]) {
-    //        [self showAlertWith:@"请输入注册号"];
-    //
-    //    }
     
     /* 所有信息都填写正确的情况*/
     if (!([_signUpView.phoneNumber.text isEqualToString:@""]&&[_signUpView.userPassword.text isEqualToString:@""]&&[_signUpView.userPasswordCompare.text isEqualToString:@""]&&[_signUpView.checkCode.text isEqualToString:@""]/*&&[_signUpView.unlockKey.text isEqualToString:@""] 注册码功能暂时去掉*/)&&[_signUpView.userPasswordCompare.text isEqualToString:_signUpView.userPassword.text]) {
@@ -133,6 +127,7 @@
         if (!_signUpView.chosenButton.isSelected) {
             
             [self showAlertWith:@"请遵守《答疑时间用户协议》"];
+            
         }else{
             
             /* 所有信息汇总成字典*/
@@ -148,50 +143,80 @@
                                         @"client_type":@"app"
                                         };
             
+            NSLog(@"%@", signUpInfo);
+            
             /* 验证码 请求状态*/
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-            [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha/verify",Request_Header] parameters:signUpInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [manager POST:[NSString stringWithFormat:@"%@/api/v1/user/register",Request_Header] parameters:signUpInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
-                NSDictionary *codeState = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                NSLog(@"%@",codeState);
+                NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                NSLog(@"%@",dataDic);
                 
-                NSDictionary *dataDic=[NSDictionary dictionaryWithDictionary: codeState[@"data"]];
+                //                NSDictionary *dataDic=[NSDictionary dictionaryWithDictionary: codeState[@"data"]];
                 
 #pragma mark-注册信息校验正确
                 
                 /* 注册信息校验正确*/
                 
-                if ([[dataDic allKeys]containsObject:@"remember_token"]){
+                if ([dataDic[@"status"]isEqualToNumber:@1]) {
                     
-                    /* 发送成功提示框*/
-                    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                    hud.mode = MBProgressHUDModeText;
-                    hud.labelText = @"验证成功！";
-                    hud.yOffset= 150.f;
-                    hud.removeFromSuperViewOnHide = YES;
-                    
-                    [hud hide:YES afterDelay:1.0];
-                    
-                    
+                    if (dataDic[@"data"][@"remember_token"]){
+                        
+                        /* 发送成功提示框*/
+                        [self loadingHUDStopLoadingWithTitle:@"注册成功!"];
+                        
 #pragma mark- 把token和id(key : data)存储到本地沙盒路径
-                    
-                    NSString *tokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"token.data"];
-                    [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
-                    
-                    
-                    
-                    /* 进入下一页*/
-                    _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
-                    
-                    [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
-                    
-                    
+                        
+//                        NSString *tokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"token.data"];
+//                        [NSKeyedArchiver archiveRootObject:dataDic[@"data"] toFile:tokenFilePath];
+                        
+                        
+                        /* id和token暂时不存本地*/
+                        
+                        
+                        [self performSelector:@selector(nextPage) withObject:nil afterDelay:1];
+                        
+                    }
+                    else {
+                        
+                        [self showAlertWith:@"验证失败,请重试！"];
+                        
+                    }
                 }
-                else if (![[dataDic allKeys]containsObject:@"remember_token"]){
+                else {
                     
-                    [self showAlertWith:@"验证失败！"];
+                    if (dataDic) {
+                        
+                        if ([[[dataDic valueForKey:@"error"]valueForKey:@"code"] isEqualToNumber:@3002]) {
+                            
+                            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"该手机已注册,请直接登录" cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@[@"新号码注册",@"登录"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                                
+                                if (buttonIndex ==2 ) {
+                                    _signUpView.phoneNumber.text = @"";
+                                    _signUpView.checkCode.text = @"";
+                                    _signUpView.userPassword.text = @"";
+                                    _signUpView.userPasswordCompare.text = @"";
+                                    _signUpView.unlockKey.text = @"";
+                                    
+                                    [_signUpView.phoneNumber becomeFirstResponder];
+                                    
+                                }
+                                if (buttonIndex ==3) {
+                                    [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
+                                }
+                                
+                            }];
+                            
+                        }
+                    } else{
+                        
+                        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"验证错误,请重试" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                            
+                        }];
+                        
+                    }
                     
                 }
                 
@@ -200,11 +225,18 @@
             }];
         }
         
-        
     }
     
 }
 
+/* 进入下一页*/
+- (void)nextPage{
+    /* 进入下一页*/
+    _signUpInfoViewController = [[SignUpInfoViewController alloc]initWithAccount:_signUpView.phoneNumber.text andPassword:_signUpView.userPassword.text];
+    
+    [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
+    
+}
 
 /*点击按钮  获取验证码*/
 
@@ -256,7 +288,8 @@
     //    联通号段:130/131/132/155/156/185/186/145/176
     //    移动号段:134/135/136/137/138/139/150/151/152/157/158/159/182/183/184/187/188/147/178
     //    虚拟运营商:170
-    
+
+
     NSString *MOBILE = @"^1(1[0-9]|3[0-9]|4[57]|5[0-35-9]|8[0-9]|7[06-8])\\d{8}$";
     
     NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
@@ -268,6 +301,7 @@
 
 #pragma 正则匹配用户密码 6 - 16 位数字和字母组合
 -(BOOL)checkPassWord:(NSString *)password{
+    
     //6-16位数字和字母组成
     NSString *regex = @"^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
     NSPredicate *   pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];

@@ -34,6 +34,7 @@
 		541F91E81DC9E3D200180BE8 /* students.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F91E71DC9E3D200180BE8 /* students.png */; };
 		541F91EA1DC9F1CC00180BE8 /* school.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F91E91DC9F1CC00180BE8 /* school.png */; };
 		541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91EC1DCA09CC00180BE8 /* TutoriumList.m */; };
+		5422337E1E15F6100092AB66 /* UIAlertController+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 5422337D1E15F6100092AB66 /* UIAlertController+Blocks.m */; };
 		542915911DD9DAF700EE1A70 /* libPods-Qatime_Student.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E892881DD9B3E100C47095 /* libPods-Qatime_Student.a */; };
 		542915961DD9DDB000EE1A70 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547388651DD9876E00A50CCC /* MobileCoreServices.framework */; };
 		542915971DD9DDB700EE1A70 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FBC1DD4710600F1282B /* SystemConfiguration.framework */; };
@@ -475,6 +476,8 @@
 		541F91E91DC9F1CC00180BE8 /* school.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = school.png; sourceTree = "<group>"; };
 		541F91EB1DCA09CC00180BE8 /* TutoriumList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumList.h; sourceTree = "<group>"; };
 		541F91EC1DCA09CC00180BE8 /* TutoriumList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutoriumList.m; sourceTree = "<group>"; };
+		5422337C1E15F6100092AB66 /* UIAlertController+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+Blocks.h"; sourceTree = "<group>"; };
+		5422337D1E15F6100092AB66 /* UIAlertController+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+Blocks.m"; sourceTree = "<group>"; };
 		54294C651DDAD82400677333 /* InfoHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoHeaderView.h; sourceTree = "<group>"; };
 		54294C661DDAD82400677333 /* InfoHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoHeaderView.m; sourceTree = "<group>"; };
 		54294C681DDAFCF600677333 /* ClassList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassList.h; sourceTree = "<group>"; };
@@ -3449,6 +3452,8 @@
 		54FCBABE1DD58E790094BF58 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				5422337C1E15F6100092AB66 /* UIAlertController+Blocks.h */,
+				5422337D1E15F6100092AB66 /* UIAlertController+Blocks.m */,
 				54C9A8CB1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter */,
 				5492101A1DCC585E00A65702 /* NSString+UTF8Coding.h */,
 				5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */,
@@ -4004,6 +4009,7 @@
 				5484B7421DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m in Sources */,
 				541F91E41DC9D16700180BE8 /* TutoriumCollectionViewCell.m in Sources */,
 				54652E2B1DEEB98600F4607C /* NoticeSettingViewController.m in Sources */,
+				5422337E1E15F6100092AB66 /* UIAlertController+Blocks.m in Sources */,
 				54D66F7F1DEC33C300ED2EBC /* AllClassViewController.m in Sources */,
 				548328F01DDC6F370053AB29 /* UUProgressHUD.m in Sources */,
 				54D66F6C1DEBDAA100ED2EBC /* ClassTimeModel.m in Sources */,

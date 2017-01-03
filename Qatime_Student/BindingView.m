@@ -27,19 +27,16 @@
         
         
         /* 年级选择器*/
-        _gradeText = [[YYTextView alloc]init];
-        [self addSubview:_gradeText];
+        _grade = [[UIButton alloc]init];
+        [self addSubview:_grade];
         //        _grade.textColor = [UIColor colorWithRed:0.78 green:0.78 blue:0.8 alpha:1.0];
-        _gradeText.placeholderText = @"选择所在年级";
-        _gradeText.placeholderFont = [UIFont systemFontOfSize:18*ScrenScale];
-        _gradeText.textVerticalAlignment = YYTextVerticalAlignmentCenter;
-        _gradeText.font = [UIFont systemFontOfSize:18*ScrenScale];
-        _gradeText.editable = NO;
-        _gradeText.selectable = YES;
-        _gradeText.userInteractionEnabled =YES;
+        [_grade setTitle:@"选择所在年级" forState:UIControlStateNormal];
+        _grade.titleLabel.textAlignment = NSTextAlignmentLeft;
+        _grade.titleLabel.font = [UIFont systemFontOfSize:18*ScrenScale];
+        [_grade setTitleColor:TITLECOLOR forState:UIControlStateNormal];
         
-        _gradeText.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        _gradeText.layer.borderWidth = 0.6;
+        _grade.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        _grade.layer.borderWidth = 0.6;
         
         [self.nextStepButton setTitle:@"绑定" forState:UIControlStateNormal];
         [self.nextStepButton setTitleColor:[UIColor colorWithRed:0.79 green:0.00 blue:0.00 alpha:1.00] forState:UIControlStateNormal];
@@ -82,18 +79,18 @@
         .heightRatioToView(self.userPassword,10.f);
         
         
-        _gradeText.sd_layout
+        _grade.sd_layout
         .leftEqualToView(self.userPasswordCompare)
         .rightEqualToView(self.userPasswordCompare)
         .topSpaceToView(self.userPasswordCompare,20)
         .heightRatioToView(self.userPasswordCompare,1.0f);
-        _gradeText.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
+        _grade.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         
         [self.chosenButton sd_clearAutoLayoutSettings];
         
         self.chosenButton.sd_layout
-        .topSpaceToView(self.gradeText,20)
-        .leftEqualToView(self.gradeText)
+        .topSpaceToView(self.grade,20)
+        .leftEqualToView(self.grade)
         .widthIs(20)
         .heightIs(20);
         
@@ -113,10 +110,10 @@
         
         [self.nextStepButton sd_clearAutoLayoutSettings];
         self.nextStepButton.sd_layout
-        .leftEqualToView(self.gradeText)
-        .rightEqualToView(self.gradeText)
+        .leftEqualToView(self.grade)
+        .rightEqualToView(self.grade)
         .topSpaceToView(self.chosenButton,20)
-        .heightRatioToView(self.gradeText,1.0f);
+        .heightRatioToView(self.grade,1.0f);
         
 
     }

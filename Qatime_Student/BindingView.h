@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "YYTextView.h"
+
 #import "SignUpView.h"
 
 @interface BindingView : SignUpView
 
 
 /* 年级选择框*/
-@property(nonatomic,strong) YYTextView *gradeText ;
+@property(nonatomic,strong) UIButton *grade ;
 
 @end

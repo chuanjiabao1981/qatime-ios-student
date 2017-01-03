@@ -49,6 +49,9 @@
          contextName = "-[AppDelegate application:didFinishLaunchingWithOptions:]:AppDelegate.m">
       </ContextState>
       <ContextState
+         contextName = "__34-[BindingViewController nextStep:]_block_invoke.217:BindingViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[NELivePlayerViewController mediaControlTurnToFullScreenModeWithMainView:]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -209,6 +212,12 @@
             <PersistentString
                value = "_unclosedArr">
             </PersistentString>
+            <PersistentString
+               value = "_token">
+            </PersistentString>
+            <PersistentString
+               value = "_idNumber">
+            </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
@@ -285,6 +294,14 @@
       </ContextState>
       <ContextState
          contextName = "-[UUMessageFrame setMessage:]:UUMessageFrame.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ClassTimeViewController requestClosedClassList]:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_notLoginView">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[IndexPageViewController checkCityListWithInformationChange:]:IndexPageViewController.m">
@@ -384,6 +401,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_chat_Account">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalInfoViewController updateUserInfo]:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -680,6 +705,9 @@
       </ContextState>
       <ContextState
          contextName = "__58-[TeachersPublicViewController requestTeachersInfoWithID:]_block_invoke:TeachersPublicViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__33-[SignUpViewController nextStep:]_block_invoke:SignUpViewController.m">
       </ContextState>
       <ContextState
          contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke:NoticeIndexViewController.m">

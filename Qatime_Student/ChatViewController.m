@@ -138,6 +138,8 @@
     [super viewDidLoad];
     [self.rdv_tabBarController setTabBarHidden:YES animated:YES];
     
+    
+    
     [self loadingHUDStartLoadingWithTitle:@"正在加载聊天记录"];
     
     /* 初始化*/

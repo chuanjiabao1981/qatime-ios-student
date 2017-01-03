@@ -66,14 +66,16 @@
 - (void)loadView{
     [super loadView];
     
-    /* 课程表的视图*/
+    [self loadClassView];
     
+    /* 课程表的视图*/
     
     _notLoginView = ({
         
         HaveNoClassView *_=[[HaveNoClassView alloc]init];
         _.titleLabel.text = @"登录才能查看!";
         [self.view addSubview:_];
+        
         _.sd_layout
         .leftEqualToView(_classTimeView)
         .topEqualToView(_classTimeView)
@@ -97,6 +99,7 @@
         _;
         
     });
+    
     
 }
 
@@ -129,7 +132,7 @@
     
     /* 判断是否登录*/
     isLogin = [[NSUserDefaults standardUserDefaults]boolForKey:@"Login"];
-    if (isLogin==YES) {
+    if (isLogin==YES&&_token&&_idNumber) {
         _notLoginView.hidden = YES;
         [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
         
@@ -149,9 +152,8 @@
 #pragma mark- 请求未上课课程表数据
     [self requestUnclosedClassList];
     
-//#pragma mark- 请求已上课课程表数据
-//    [self requestClosedClassList];
-    
+#pragma mark- 请求已上课课程表数据
+    [self requestClosedClassList];
     
     
     
@@ -169,7 +171,7 @@
     _classTimeView.alreadyClassView.alreadyClassTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         
         [self loadingHUDStartLoadingWithTitle:@"正在刷新"];
-        [self requestClosedClassList];
+//        [self requestClosedClassList];
         
     }];
     
@@ -209,10 +211,7 @@
             
             /* 回复数据正确的情况下*/
             if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
-                
                 NSLog(@"%@",dic[@"data"]);
-                
-                
                 if ([dic[@"data"] count] ==0) {
                     
                     haveClass = NO;
@@ -221,16 +220,11 @@
                     _classTimeView.notClassView.haveNoClassView .hidden= NO;
                     
                 }else{
-                    
                     haveClass = YES;
-                    
                     for (NSDictionary *classDic in dic[@"data"]) {
-                        
                         for (NSDictionary *lessons in classDic[@"lessons"]) {
-                            
                             ClassTimeModel *mod = [ClassTimeModel yy_modelWithJSON:lessons];
                             mod.classID = lessons[@"id"];
-                            
                             
                             [_unclosedArr addObject:mod];
                         }
@@ -243,14 +237,15 @@
 #pragma mark- 请求已上课课程表数据
                 [self requestClosedClassList];
                 
+                [_classTimeView.notClassView.notClassTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             }else{
                 
                 /* 数据错误*/
                 
                 
+                
             }
             
-//            [_classTimeView.notClassView.notClassTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             
             [self endRefresh];
 
@@ -261,6 +256,9 @@
     }else{
         
         /* 登录错误*/
+        
+        _notLoginView.hidden = NO;
+        
         
     }
     
@@ -312,17 +310,16 @@
                 }
                 
                 
-                [self loadClassView];
+//                [self loadClassView];
                 
+                [_classTimeView.alreadyClassView.alreadyClassTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             }else{
                 
                 /* 回复数据不正确*/
                 
                 
             }
-            
-//            [_classTimeView.alreadyClassView.alreadyClassTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-            
+                        
             
             [self endRefresh];
             
@@ -333,6 +330,10 @@
     }else{
         
         /* 登录报错*/
+        
+        [self.view addSubview:_notLoginView];
+        _notLoginView.frame = _classTimeView.frame;
+        _notLoginView.hidden = NO;
         
     }
     
@@ -554,8 +555,9 @@
         
     }
     
-    
 }
+
+
 
 /* 进入直播*/
 - (void)enterLive:(UIButton *)sender{

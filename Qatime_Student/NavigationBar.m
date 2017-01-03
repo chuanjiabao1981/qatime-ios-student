@@ -17,9 +17,9 @@
         
         self.backgroundColor = TITLERED;
         
-        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(frame)-0.8, CGRectGetWidth(frame), 0.8)];
-        [self addSubview:line];
-        line.backgroundColor  =[UIColor lightGrayColor];
+//        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(frame)-0.8, CGRectGetWidth(frame), 0.8)];
+//        [self addSubview:line];
+//        line.backgroundColor  =[UIColor lightGrayColor];
         
         
     

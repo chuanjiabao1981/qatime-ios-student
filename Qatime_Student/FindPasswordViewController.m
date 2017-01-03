@@ -103,8 +103,6 @@
             
             NSString *status = [NSString stringWithFormat:@"%@",codeState[@"status"]];
             
-            
-            
 #pragma mark-注册信息校验正确
             /* 注册信息校验正确*/
             
