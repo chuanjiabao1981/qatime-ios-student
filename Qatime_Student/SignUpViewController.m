@@ -43,20 +43,12 @@
     
     [_signUpView.nextStepButton addTarget:self action:@selector(nextStep:) forControlEvents:UIControlEventTouchUpInside];
     
-    
-    
     //    选项
     
     [_signUpView.chosenButton addTarget:self action:@selector(chosenProtocol:) forControlEvents:UIControlEventTouchUpInside];
     
     
-    
-    
-    
 }
-
-
-
 
 
 
@@ -92,9 +84,9 @@
     /* 测试口  直接跳转*/
     
     /* 进入下一页*/
-        _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
-    
-        [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
+//        _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
+//    
+//        [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
     
     ////////////////////////////////////////////
     

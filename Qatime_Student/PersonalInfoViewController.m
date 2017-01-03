@@ -21,9 +21,6 @@
 #import "UIAlertController+Blocks.h"
 
 
-
-
-
 @interface PersonalInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,ChangeDescDelegate>
 {
     
@@ -54,7 +51,6 @@
     UITapGestureRecognizer *_tap;
     
     
-    
     /* 选择器*/
     HcdDateTimePickerView *_birthdayPicker;
     
@@ -69,8 +65,6 @@
     /* 是不是改了生日*/
     BOOL changeBirthday;
     
-    /* 上传头像用的数据流*/
-    NSData *_avatar;
     
     /* 注册页面初始化传值的变量*/
     NSString *_userName;
@@ -79,6 +73,9 @@
     
     /* 是否传值过来的?*/
     BOOL WriteMore;
+    
+    /* 上传头像用的数据流*/
+    NSData *_avatar;
     
     
 }
@@ -106,7 +103,10 @@
                 _userImage  = headImage;
                 
                 /* 直接赋值照片data*/
-                _avatar = [NSData dataWithData: UIImagePNGRepresentation(headImage)];
+                _avatar = UIImageJPEGRepresentation(_userImage,0.8);
+                
+                changeImage = YES;
+                
             }else{
                 
             }
@@ -220,7 +220,6 @@
         
     }];
     
-    
 }
 
 
@@ -245,12 +244,9 @@
         NSLog(@"支持相片库");
     }
     
-    
-    
     UIImagePickerController *picker = [[UIImagePickerController alloc]init];
     picker.allowsEditing = YES;
     picker.delegate = self;
-    
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"上传头像" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
@@ -297,11 +293,11 @@
         
         Personal_HeadTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:path]  ;
         
-        [cell.image setImage:info[@"UIImagePickerControllerOriginalImage"]];
+        [cell.image setImage:info[@"UIImagePickerControllerEditedImage"]];
         
-        UIImage *image =info[@"UIImagePickerControllerOriginalImage"];
+        _userImage = info[@"UIImagePickerControllerEditedImage"];
         
-        _avatar = [NSData dataWithData: UIImagePNGRepresentation(image)];
+        _avatar = UIImageJPEGRepresentation(_userImage,0.8);
         
         changeImage = YES;
     }];
@@ -342,7 +338,7 @@
             if (changeImage==YES) {
                 [cell.image setImage:_userImage];
             }else{
-                [cell.image setImage:[UIImage imageNamed:@"person"]];
+                [cell.image setImage:[UIImage imageNamed:@"人"]];
             }
             
             /* 如果是在个人信息中心完善更多信息*/
@@ -674,7 +670,6 @@
     
     [cell setHeight_sd:cell.content.height_sd+20];
     
-    
     [_personalInfoView setNeedsLayout];
     
     [_dataDic setObject:desc forKey:@"desc"];
@@ -691,7 +686,6 @@
     
     NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0 ];
     Personal_HeadTableViewCell *headcell =[_personalInfoView cellForRowAtIndexPath:path];
-    
     
     if (headcell.image.image == [UIImage imageNamed:@"人"]) {
         
@@ -731,7 +725,6 @@
                 
                 [self updateUserInfo];
                 
-                [self loadingHUDStartLoadingWithTitle:@"正在提交个人信息"];
                 
             }] ;
             
@@ -744,17 +737,12 @@
         }
     }
     
-    
-    
-    
-    
 }
 
 /* 更新个人信息*/
 - (void)updateUserInfo{
     
-    
-//    [self loadingHUDStartLoadingWithTitle:@"正在提交信息"];
+    [self loadingHUDStartLoadingWithTitle:@"正在提交信息"];
     
     NSMutableDictionary *dic = nil;
     
@@ -768,7 +756,10 @@
     
     if (WriteMore == YES) {
         if (changeImage == NO) {
-            _avatar = UIImagePNGRepresentation([UIImage imageNamed:@"人"]);
+            _avatar = UIImageJPEGRepresentation([UIImage imageNamed:@"人"],1);
+            [dic setValue:_avatar forKey:@"avatar"];
+        }else{
+            
             [dic setValue:_avatar forKey:@"avatar"];
         }
     }else{
@@ -786,12 +777,13 @@
         [dic setObject:_dataDic[@"grade"]?_dataDic[@"grade"]:_userGrade forKey:@"grade"];
     }
 
+//    NSLog(@"%@", _avatar);
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager PUT:[NSString stringWithFormat:@"%@/api/v1/students/%@",Request_Header,_idNumber] parameters:dic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager PUT:[NSString stringWithFormat:@"%@/api/v1/students/%@/profile",Request_Header,_idNumber] parameters:dic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         

@@ -384,11 +384,11 @@
         /* 不需要输入验证码或者验证码输入正确的情况*/
         if (needCheckCaptcha == NO || (needCheckCaptcha == YES&&[_loginView.keyCodeText.text.lowercaseString isEqualToString:_captcha.lowercaseString])) {
             /* HUD框 提示正在登陆*/
-            MBProgressHUD *hud=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud.mode = MBProgressHUDModeDeterminate;
-            //        hud.backgroundView.style = MBProgressHUDBackgroundStyleBlur;
-            hud.labelText = @"正在登陆";
-            
+//            MBProgressHUD *hud=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//            hud.mode = MBProgressHUDModeIndeterminate;
+//            hud.labelText = @"正在登陆";
+//            [hud show:YES];
+            [self loadingHUDStartLoadingWithTitle:@"正在登陆"];
             
             /* 对应接口要上传的用户登录账号密码*/
             NSDictionary *userInfo = @{@"login_account":[NSString stringWithFormat:@"%@",_loginView.userName.text],
@@ -411,16 +411,16 @@
                 
                 NSLog(@"%@",dicGet);
                 
-                
                 /* 如果返回的字段里包含key值“remember_token“ 为登录成功*/
                 /* 如果登录成功*/
                 if ([[dicGet allKeys]containsObject:@"remember_token" ]) {
                     
-                    [self loadingHUDStopLoadingWithTitle:@"登录成功!"];
                     
                     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
+                   
                     
-                    [hud hide:YES];
+//                    [hud hide:YES];
+                    
                     
                     
 #pragma mark- 本地登录成功后 保存token文件，并且转到主页面
@@ -431,7 +431,7 @@
                     /* 归档*/
                     [NSKeyedArchiver archiveRootObject:dicGet toFile:userTokenFilePath];
                     
-//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
                     
                     /* 另存一份userdefault  只存token和id*/
                     NSString *remember_token = [NSString stringWithFormat:@"%@",dicGet[@"remember_token"]];
@@ -463,14 +463,9 @@
                     /* 发出一条消息:账号密码方式登录*/
                     
                     [[NSNotificationCenter defaultCenter]postNotificationName:@"Login_Type" object:@"Normal" ];
-                   
-                    
-                    
-                    
                     
                     
 #pragma mark- 把用户聊天账户信息存本地
-                    
                     
                     
                     /* 另存一份userdefault  只存chat_account*/
@@ -489,10 +484,12 @@
                         [[NSUserDefaults standardUserDefaults]setObject:chat_accountDic forKey:@"chat_account"];
                     }
                     
+                    [self loadingHUDStopLoadingWithTitle:@"登录成功"];
+                    
                 }else{
                     
-                    [hud hide:YES];
-                    
+//                    [hud hide:YES];
+                    [self loadingHUDStopLoadingWithTitle:@"登录失败"];
                     _wrongTimes ++;
                     if (_wrongTimes >=5) {
                         
@@ -509,18 +506,18 @@
                     
                     [self presentViewController:alert animated:YES completion:nil];
                     
-                    
-                    
                 }
                 
+                [self loadingHUDStopLoadingWithTitle:@"登录成功!"];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
                 NSLog(@"%@",error);
                 
-                MBProgressHUD *hud2=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                hud2.mode = MBProgressHUDModeText;
-                hud2.labelText = @"登陆失败";
-                
+//                MBProgressHUD *hud2=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//                hud2.mode = MBProgressHUDModeText;
+//                hud2.labelText = @"登陆失败";
+
+                [self loadingHUDStopLoadingWithTitle:@"登录失败"];
             }];
         }
 

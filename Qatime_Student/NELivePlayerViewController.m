@@ -73,7 +73,6 @@ typedef enum : NSUInteger {
     SameLevel,
     DifferentLevel,
     
-    
 } ViewsArrangementMode;
 
 
@@ -199,6 +198,12 @@ typedef enum : NSUInteger {
     
     
     
+    
+    
+    /* 播放器状态部分*/
+    BOOL boardPlayerInitSuccess;
+    BOOL teacherPlayerInitSuccess;
+    BOOL bothPlayerInitSuccess;
     
     
 }
@@ -487,12 +492,12 @@ bool ismute     = NO;
     });
     
     
-    
-    
 }
 
-/* 数据加载完成 播放器二次加载*/
-- (void)reloadPlayerView{
+/* 初始化播放器*/
+
+/* 白板播放器初始化*/
+- (void)setupBoardPlayer{
     
     /* 白板的 播放器*/
     _liveplayerBoard = ({
@@ -501,14 +506,20 @@ bool ismute     = NO;
         
         _.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
         [_ setScalingMode:NELPMovieScalingModeAspectFit];
-        [_boardPlayerView addSubview:_.view];
-        
-        
         if (_ == nil) {
             // 返回空则表示初始化失败
-            NSLog(@"player initilize failed, please tay again!");
+//            NSLog(@"player initilize failed, please tay again!");
             NSLog(@"白板播放器初始化失败!!!!");
+            [_ shutdown];
+            [self setupBoardPlayer];
+            
         }else{
+            
+            NSLog(@"白板播放器初始化成功!!!!");
+//            [self setupTeacherPlayer];
+            boardPlayerInitSuccess = YES;
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"BoardPlayerInitSuccess" object:nil];
+             [_boardPlayerView addSubview:_.view];
             _.view.sd_layout
             .leftEqualToView(_boardPlayerView)
             .rightEqualToView(_boardPlayerView)
@@ -516,33 +527,44 @@ bool ismute     = NO;
             .bottomEqualToView(_boardPlayerView);
             
         }
-        
+
         /* 白板播放器的设置*/
-         [_ isLogToFile:YES];
+        [_ isLogToFile:YES];
         [_ setBufferStrategy:NELPLowDelay]; //直播低延时模式
         [_ setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
         [_ setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
         [_ setHardwareDecoder:isHardware]; //设置解码模式，是否开启硬件解码
-        [_ setPauseInBackground:YES]; //设置切入后台时的状态，暂停还是继续播放
+        [_ setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
         [_ prepareToPlay]; //初始化视频文件
-
+        
+        
         _;
     });
+
+    
+}
+
+/* 老师播放器初始化*/
+- (void)setupTeacherPlayer{
     
     /* 老师摄像头的 播放器*/
     _liveplayerTeacher = ({
-        
         NELivePlayerController *_= [[NELivePlayerController alloc] initWithContentURL:_teacherPullAddress];
-        
+  
         _.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
         [_ setScalingMode:NELPMovieScalingModeAspectFit];
-        [_teacherPlayerView addSubview:_.view];
-        
         if (_ == nil) {
             // 返回空则表示初始化失败
-            NSLog(@"player initilize failed, please tay again!");
-             NSLog(@"摄像头播放器初始化失败!!!!");
+//            NSLog(@"player initilize failed, please tay again!");
+            NSLog(@"摄像头播放器初始化失败!!!!");
+            [_ shutdown];
+            [self setupTeacherPlayer];
         }else{
+            
+            NSLog(@"摄像头播放器初始化成功!!!!");
+            teacherPlayerInitSuccess = YES;
+             [[NSNotificationCenter defaultCenter]postNotificationName:@"TeacherPlayerInitSuccess" object:nil];
+             [_teacherPlayerView addSubview:_.view];
             _.view.sd_layout
             .leftEqualToView(_teacherPlayerView)
             .rightEqualToView(_teacherPlayerView)
@@ -550,20 +572,26 @@ bool ismute     = NO;
             .bottomEqualToView(_teacherPlayerView);
         }
         
-       
         [_ isLogToFile:YES];
-        
         
         /* 教师播放器的设置*/
         [_ setBufferStrategy:NELPLowDelay]; //直播低延时模式
         [_ setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
         [_ setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
         [_ setHardwareDecoder:isHardware]; //设置解码模式，是否开启硬件解码
-        [_ setPauseInBackground:YES]; //设置切入后台时的状态，暂停还是继续播放
+        [_ setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
         [_ prepareToPlay]; //初始化视频文件
-
+        
         _;
     });
+    
+}
+
+/* 数据加载完成 播放器二次加载*/
+- (void)reloadPlayerView{
+    [self setupBoardPlayer];
+    [self setupTeacherPlayer];
+    
     
     /* 媒体控制器*/
     _mediaControl =({
@@ -1609,6 +1637,8 @@ bool ismute     = NO;
         [self.navigationController popViewControllerAnimated:YES];
         //        [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
         
+    
+        
         NSLog(@"click back!");
         [self syncUIStatus:YES];
         if (self.presentingViewController) {
@@ -1671,6 +1701,8 @@ bool ismute     = NO;
     [UIView animateWithDuration:0.3 animations:^{
         self.controlOverlay.alpha = 0;
         NSLog(@"控制栏隐藏了");
+        
+        
     }];
     
     [self performSelector:@selector(hideControlOverlay) withObject:nil afterDelay:0.5];
@@ -1721,7 +1753,19 @@ bool ismute     = NO;
 /* 播放器准备播放的回调方法*/
 - (void)NELivePlayerDidPreparedToPlay:(NSNotification*)notification{
     //add some methods
-    NSLog(@"NELivePlayerDidPreparedToPlay");
+    
+    NELivePlayerController *livePlayer = [notification object];
+    if (livePlayer == _liveplayerBoard) {
+        
+        NSLog(@"白板播放器准备开始播放.");
+        
+        
+    }else if (livePlayer == _liveplayerTeacher){
+         NSLog(@"摄像头播放器准备开始播放.");
+    }
+    
+
+    /* 切换播放暂停按钮*/
     [self syncUIStatus:NO];
     
     //    [self.liveplayerBoard play]; //开始播放
@@ -1764,12 +1808,18 @@ bool ismute     = NO;
             
             break;
             
-        case NELPMovieFinishReasonPlaybackError:
+        case NELPMovieFinishReasonPlaybackError:{
             /* 播放错误导致失败的回调*/
             alertController = [UIAlertController alertControllerWithTitle:@"注意" message:@"播放失败" preferredStyle:UIAlertControllerStyleAlert];
-            action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){}];
+            action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            
+                [self checkVideoStatus];
+            
+            }];
             [alertController addAction:action];
             [self presentViewController:alertController animated:YES completion:nil];
+            
+        }
             break;
             
         case NELPMovieFinishReasonUserExited:
@@ -1779,23 +1829,80 @@ bool ismute     = NO;
             break;
     }
 }
+/* 播放器加载数据的回调方法*/
+- (void)NeLivePlayerloadStateChanged:(NSNotification*)notification{
+    
+    NELivePlayerController *livePlayer = [notification object];
+    
+    NELPMovieLoadState nelpLoadState = livePlayer.loadState;
+    
+    if (nelpLoadState == NELPMovieLoadStatePlaythroughOK)
+    {
+        if (livePlayer == _liveplayerBoard) {
+            
+            NSLog(@"白板播放器加载视频成功!!!");
+        }else if(livePlayer == _liveplayerTeacher){
+            NSLog(@"摄像头播放器加载视频成功!!!");
+        }
+
+    }
+    else if (nelpLoadState == NELPMovieLoadStateStalled)
+    {
+        if (livePlayer == _liveplayerBoard) {
+            
+            NSLog(@"白板播放器开始加载视频......");
+        }else if(livePlayer == _liveplayerTeacher){
+            
+            NSLog(@"摄像头播放器开始加载视频......");
+        }
+
+    }
+}
 
 - (void)NELivePlayerFirstVideoDisplayed:(NSNotification*)notification{
-    NSLog(@"first video frame rendered!");
+//    NSLog(@"first video frame rendered!");
+    
+    NELivePlayerController *livePlayer = [notification object];
+    if (livePlayer == _liveplayerBoard) {
+        
+        NSLog(@"白板播放器开始播放视频!!!");
+    }else if(livePlayer == _liveplayerTeacher){
+        NSLog(@"摄像头播放器开始播放视频!!!");
+    }
+    
 }
+
 
 - (void)NELivePlayerFirstAudioDisplayed:(NSNotification*)notification{
     NSLog(@"first audio frame rendered!");
 }
 
 - (void)NELivePlayerVideoParseError:(NSNotification*)notification{
-    NSLog(@"video parse error!");
+    NELivePlayerController *livePlayer = [notification object];
+    if (livePlayer == _liveplayerBoard) {
+        
+        NSLog(@"白板播放器视频流解析失败");
+    }else if(livePlayer == _liveplayerTeacher){
+        NSLog(@"摄像头播放器视频流解析失败");
+    }
+
 }
 
 - (void)NELivePlayerReleaseSuccess:(NSNotification*)notification{
-    NSLog(@"resource release success!!!");
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayerTeacher];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayerBoard];
+    
+    NELivePlayerController *livePlayer = [notification object];
+    if (livePlayer == _liveplayerBoard) {
+        
+        NSLog(@"白板播放器资源释放了!!!");
+    }else if (livePlayer == _liveplayerTeacher){
+        NSLog(@"摄像头播放器资源释放了!!!");
+
+    }
+    
+    
+
+//    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayerTeacher];
+//    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayerBoard];
 }
 
 
@@ -1811,12 +1918,14 @@ bool ismute     = NO;
     [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
     
-    /* 播放器的监听*/
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerDidPreparedToPlay:) name:NELivePlayerDidPreparedToPlayNotification object:_liveplayerTeacher];
-    
-    
     /* 白板播放端的通知*/
+    
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerDidPreparedToPlay:) name:NELivePlayerDidPreparedToPlayNotification object:_liveplayerBoard];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NeLivePlayerloadStateChanged:) name:NELivePlayerLoadStateChangedNotification object:_liveplayerBoard];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerPlayBackFinished:) name:NELivePlayerPlaybackFinishedNotification object:_liveplayerBoard];
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerFirstVideoDisplayed:) name:NELivePlayerFirstVideoDisplayedNotification object:_liveplayerBoard];
     
@@ -1827,6 +1936,10 @@ bool ismute     = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerVideoParseError:) name:NELivePlayerVideoParseErrorNotification object:_liveplayerBoard];
     
     /* 老师播放端的通知*/
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerDidPreparedToPlay:) name:NELivePlayerDidPreparedToPlayNotification object:_liveplayerTeacher];
+    
+      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NeLivePlayerloadStateChanged:) name:NELivePlayerLoadStateChangedNotification object:_liveplayerTeacher];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerPlayBackFinished:) name:NELivePlayerPlaybackFinishedNotification object:_liveplayerTeacher];
     
@@ -1871,6 +1984,19 @@ bool ismute     = NO;
         
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
+    
+    /* 监听播放器的初始化状态*/
+    
+    /* 白板初始化成功*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(boardPlayerInitSuccess) name:@"BoardPlayerInitSuccess" object:nil];
+    
+    /* 摄像头初始化成功*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(teacherPlayerInitSuccess) name:@"TeacherPlayerInitSuccess" object:nil];
+    
+    
+    /* 两个播放器都初始化成功*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(allPlayerInitSuccess) name:@"AllPlayerInitSuccess" object:nil];
+    
     
 #pragma mark- 加载课程数据请求
     /* 根据token和传来的id 发送课程内容请求。*/
@@ -2013,7 +2139,7 @@ bool ismute     = NO;
     
     NSDictionary *dat  = [NSDictionary dictionaryWithContentsOfFile:plistPath];
     
-    NSLog(@"%@",dat);
+    
     
     
     _faces = [NSMutableArray arrayWithArray:[dat allValues]];
@@ -2021,14 +2147,6 @@ bool ismute     = NO;
     
     /* 白板视图放到subview数组里最上一层*/
     //    [self.view bringSubviewToFront:_boardPlayerView];
-    
-    
-#pragma mark- 视频播放状态查询功能
-    
-    
-    /* 每隔30秒请求一次数据*/
-    
-    [self checkVideoStatus];
     
     
     
@@ -2062,6 +2180,48 @@ bool ismute     = NO;
     
 }
 
+
+/* 播放器加载状态的监听方法*/
+- (void)boardPlayerInitSuccess{
+    
+    if (teacherPlayerInitSuccess == YES) {
+        bothPlayerInitSuccess = YES;
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"AllPlayerInitSuccess" object:nil];
+    }else{
+        
+        
+    }
+    
+    
+    
+}
+
+/* */
+- (void)teacherPlayerInitSuccess{
+    
+    if (boardPlayerInitSuccess == YES) {
+        bothPlayerInitSuccess = YES;
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"AllPlayerInitSuccess" object:nil];
+    }
+    
+    
+}
+
+
+/* 两个播放器都加载完成后*/
+- (void)allPlayerInitSuccess{
+    
+#pragma mark- 视频播放状态查询功能
+    
+    
+    /* 两个播放器和控制层和覆盖层都加载完成后,每隔30秒请求一次数据*/
+    
+    [self checkVideoStatus];
+    
+    
+}
+
+
 #pragma mark- 请求课程和和内容
 - (void)requestClassInfo{
     
@@ -2076,7 +2236,7 @@ bool ismute     = NO;
         
         NSDictionary *dataDic=[NSDictionary dictionaryWithDictionary:dic[@"data"]];
         
-        NSLog(@"%@",dic);
+//        NSLog(@"%@",dic);
         
         if (![status isEqualToString:@"1"]) {
             /* 请求错误*/
@@ -2114,7 +2274,7 @@ bool ismute     = NO;
             
             // 使用yymodel解
             _noticeAndMembers = [NoticeAndMembers yy_modelWithDictionary:dic[@"data"][@"chat_team"]];
-            NSLog(@"%@,@%@",_noticeAndMembers.announcements,_noticeAndMembers.accounts);
+//            NSLog(@"%@,@%@",_noticeAndMembers.announcements,_noticeAndMembers.accounts);
             
             _noticesArr=[_noticeAndMembers valueForKey:@"announcements"];
             
@@ -2190,7 +2350,6 @@ bool ismute     = NO;
             [_infoHeaderView layoutIfNeeded];
             
             
-            
             /* 自动赋值高度*/
             
             NSNumber *height =[NSNumber numberWithFloat: _infoHeaderView.layoutLine.frame.origin.y];
@@ -2235,8 +2394,7 @@ bool ismute     = NO;
                     [self reloadPlayerView];
                     
                 }
-                
-                
+               
             }
             
             
@@ -2283,8 +2441,6 @@ bool ismute     = NO;
 
     [[NIMSDK sharedSDK].chatManager addDelegate:self];
     [[NIMSDK sharedSDK].chatroomManager addDelegate:self];
-    
-    
     
 }
 
@@ -2346,7 +2502,7 @@ bool ismute     = NO;
                         
                         if (message.messageType ==NIMMessageTypeText) {
                             
-                            NSLog(@"\n\n获取到的消息文本是:::%@\n\n",message.text);
+//                            NSLog(@"\n\n获取到的消息文本是:::%@\n\n",message.text);
                             
                             dispatch_queue_t mytext = dispatch_queue_create("mytext", DISPATCH_QUEUE_SERIAL);
                             dispatch_sync(mytext, ^{
@@ -2376,7 +2532,7 @@ bool ismute     = NO;
                                     
                                     //通过正则表达式来匹配字符串
                                     NSArray *resultArray = [re matchesInString:title options:0 range:NSMakeRange(0, title.length)];
-                                    NSLog(@"%@",resultArray);
+//                                    NSLog(@"%@",resultArray);
                                     
                                     /* 先取出来表情*/
                                     
@@ -2434,8 +2590,8 @@ bool ismute     = NO;
                                 
                                 /* 如果消息是别人发的 */
                                 else {
-                                    NSLog(@"%ld",message.messageType);
-                                    NSLog(@"%@",message.senderName);
+//                                    NSLog(@"%ld",message.messageType);
+//                                    NSLog(@"%@",message.senderName);
                                     
                                     /* 在本地创建对方的消息消息*/
                                     NSString *iconURL = @"".mutableCopy;
@@ -3171,13 +3327,13 @@ bool ismute     = NO;
         
         _classList.classListTableView.tableHeaderView.height_sd =headerHeight;
         
-        NSLog(@"%@", [_classList.classListTableView.tableHeaderView valueForKey:@"frame"]);
-        
-        
-        NSLog(@"%f", _infoHeaderView.layoutLine.autoHeight);
-        
-        NSLog(@"%@",[_infoHeaderView.workPlace valueForKey:@"frame"]);
-        NSLog(@"%@",[_infoHeaderView.layoutLine valueForKey:@"frame"]);
+//        NSLog(@"%@", [_classList.classListTableView.tableHeaderView valueForKey:@"frame"]);
+//        
+//        
+//        NSLog(@"%f", _infoHeaderView.layoutLine.autoHeight);
+//        
+//        NSLog(@"%@",[_infoHeaderView.workPlace valueForKey:@"frame"]);
+//        NSLog(@"%@",[_infoHeaderView.layoutLine valueForKey:@"frame"]);
         
         
         
@@ -3192,7 +3348,7 @@ bool ismute     = NO;
     
     if (membersName.count!=0) {
         
-        NSLog(@"%@",membersName);
+//        NSLog(@"%@",membersName);
         
         self.indexArray = [ChineseString IndexArray:membersName];
         self.letterResultArr = [ChineseString LetterSortArray:membersName];
@@ -3270,7 +3426,7 @@ bool ismute     = NO;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     
-    NSLog(@"rows:%lu",(unsigned long)_noticesArr.count);
+//    NSLog(@"rows:%lu",(unsigned long)_noticesArr.count);
     
     
     NSInteger rows=0;
@@ -3305,7 +3461,7 @@ bool ismute     = NO;
     
     
     
-    NSLog(@"%ld",rows);
+//    NSLog(@"%ld",rows);
     
     return rows;
 }
@@ -3358,7 +3514,7 @@ bool ismute     = NO;
     
     if (tableView.tag==10) {
         
-        NSLog(@"---->%@",[[self.letterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row]);
+//        NSLog(@"---->%@",[[self.letterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row]);
         /* 人名点击事件*/
         //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:[[self.letterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row]delegate:nil cancelButtonTitle:@"YES" otherButtonTitles:nil];
         //        [alert show];
@@ -3399,7 +3555,7 @@ bool ismute     = NO;
             }else{
                 
                 Notice *mod =[Notice yy_modelWithJSON: _noticesArr[indexPath.row]];
-                NSLog(@"%@",_noticesArr[indexPath.row]);
+//                NSLog(@"%@",_noticesArr[indexPath.row]);
                 
                 cell.model = mod;
                 cell.sd_tableView = tableView;
@@ -3425,7 +3581,7 @@ bool ismute     = NO;
             }else{
                 
                 Classes *mod =[Classes yy_modelWithJSON: _classesArr[indexPath.row]];
-                NSLog(@"%@",_classesArr[indexPath.row]);
+//                NSLog(@"%@",_classesArr[indexPath.row]);
                 
                 idcell.classModel = mod;
                 idcell.sd_tableView = tableView;
@@ -3677,15 +3833,66 @@ bool ismute     = NO;
     UIAlertController *alertController = NULL;
     UIAlertAction *action = NULL;
     
+    /* 状态都是1  都是正在直播中的时候*/
+    if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:1]]&&[statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:1]]) {
+        
+        if ([_liveplayerBoard isPlaying]) {
+            
+            [_liveplayerBoard play];
+            
+            
+        }else{
+            
+            
+            [_liveplayerBoard play];
+            
+        }
+        
+        if ([_liveplayerTeacher isPlaying]) {
+            
+            [_liveplayerTeacher play];
+            
+            
+        }else{
+            
+            [_liveplayerTeacher play];
+            
+        }
+        
+        /* 不用再向服务器发送查询请求*/
+        
+        NSLog(@"白板读取状态:%u",_liveplayerBoard.loadState);
+        NSLog(@"白板播放状态:%u",_liveplayerBoard.playbackState);
+        
+        NSLog(@"摄像头读取状态:%u",_liveplayerTeacher.loadState);
+        NSLog(@"摄像头播放状态:%u",_liveplayerTeacher.playbackState);
+        
+        
+        
+        if (_liveplayerBoard.playbackState != NELPMoviePlaybackStatePlaying) {
+            [self playVideo:_liveplayerBoard];
+        }
+        if (_liveplayerTeacher.playbackState != NELPMoviePlaybackStatePlaying){
+            
+            [self playVideo:_liveplayerTeacher];
+        }
+        
+    }
+    
+    
+    
     /* 如果有一个播放器是直播状态*/
     if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:1]]||[statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:1]]) {
         if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:1]]) {
-            [_liveplayerBoard play];
+            
+            _liveplayerBoard.shouldAutoplay = YES;
+            [_liveplayerBoard prepareToPlay];
             
         }
         if ([statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:1]]) {
             
-            [_liveplayerTeacher play];
+            _liveplayerTeacher.shouldAutoplay = YES;
+            [_liveplayerTeacher prepareToPlay];
         }
         
     }
@@ -3707,26 +3914,6 @@ bool ismute     = NO;
     }
     
     
-    /* 状态都是1  都是正在直播中的时候*/
-    if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:1]]&&[statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:1]]) {
-        
-        if ([_liveplayerBoard isPlaying]) {
-            
-        }else{
-            
-            [_liveplayerBoard play];
-        }
-        
-        if ([_liveplayerTeacher isPlaying]) {
-            
-        }else{
-            
-            [_liveplayerTeacher play];
-        }
-        
-        /* 不用再向服务器发送查询请求*/
-    }
-    
     
     /* 直播结束的状态*/
     
@@ -3741,8 +3928,6 @@ bool ismute     = NO;
         if ([statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:2]]) {
             
             [_liveplayerTeacher stop];
-            
-            
             
         }
         
@@ -3774,6 +3959,17 @@ bool ismute     = NO;
     
 }
 
+
+/* 播放器播放方法*/
+- (void)playVideo:(NELivePlayerController <NELivePlayer> *)liveplayer{
+    
+    
+    NSLog(@"尝试播放暂停的播放器");
+    [liveplayer play];
+    
+    
+    
+}
 
 
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{

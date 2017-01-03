@@ -19,6 +19,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__82-[PersonalInfoViewController imagePickerController:didFinishPickingMediaWithInfo:]_block_invoke:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_avatar">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[ChatViewController dealTheFunctionData:]:ChatViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -172,10 +180,44 @@
          contextName = "__43-[CashRecordViewController requestWithDraw]_block_invoke:CashRecordViewController.m">
       </ContextState>
       <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[NIMSessionViewController makeUI]:NIMSessionViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "self.tableView">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController switchStatuseWithDictionary:]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_liveplayerTeacher.playbackState">
+            </PersistentString>
+            <PersistentString
+               value = "_liveplayerTeacher.">
+            </PersistentString>
+            <PersistentString
+               value = "_teacherPullAddress">
+            </PersistentString>
+            <PersistentString
+               value = "_liveplayerBoard.playbackState">
+            </PersistentString>
+            <PersistentString
+               value = "_liveplayerBoard.loadState">
+            </PersistentString>
+            <PersistentString
+               value = "_boardPullAddress">
+            </PersistentString>
+            <PersistentString
+               value = "_liveplayerTeacher.loadState">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -331,6 +373,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[NELivePlayerViewController setupBoardPlayer]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_boardPullAddress">
+            </PersistentString>
+            <PersistentString
+               value = "_teacherPullAddress">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[YZEmotionKeyboard didSelectEmotion:]:YZEmotionKeyboard.m">
          <PersistentStrings>
             <PersistentString
@@ -378,6 +431,14 @@
          contextName = "__41-[ChatViewController requestChatHitstory]_block_invoke:ChatViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[PersonalInfoViewController initWithName:andGrade:andHeadImage:withImageChange:]:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_userImage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__copy_helper_block_:PersonalInfoViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -409,6 +470,12 @@
          <PersistentStrings>
             <PersistentString
                value = "_dataDic">
+            </PersistentString>
+            <PersistentString
+               value = "_avatar">
+            </PersistentString>
+            <PersistentString
+               value = "_userImage">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -607,6 +674,23 @@
          <PersistentStrings>
             <PersistentString
                value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__48-[NELivePlayerViewController controlOverlayHide]_block_invoke:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_liveplayerBoard.loadState">
+            </PersistentString>
+            <PersistentString
+               value = "_liveplayerTeacher.loadState">
+            </PersistentString>
+            <PersistentString
+               value = "_liveplayerTeacher.playbackState">
+            </PersistentString>
+            <PersistentString
+               value = "_liveplayerBoard.playbackState">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

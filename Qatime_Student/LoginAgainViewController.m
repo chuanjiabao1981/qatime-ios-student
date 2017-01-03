@@ -376,12 +376,12 @@
         
         /* 不需要输入验证码或者验证码输入正确的情况*/
         if (needCheckCaptcha == NO || (needCheckCaptcha == YES&&[_loginAgainView.keyCodeText.text.lowercaseString isEqualToString:_captcha.lowercaseString])) {
-            /* HUD框 提示正在登陆*/
-            MBProgressHUD *hud=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud.mode = MBProgressHUDModeDeterminate;
-            //        hud.backgroundView.style = MBProgressHUDBackgroundStyleBlur;
-            hud.labelText = @"正在登陆";
-            
+//            /* HUD框 提示正在登陆*/
+//            MBProgressHUD *hud=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//            hud.mode = MBProgressHUDModeDeterminate;
+//            //        hud.backgroundView.style = MBProgressHUDBackgroundStyleBlur;
+//            hud.labelText = @"正在登陆";
+            [self loadingHUDStartLoadingWithTitle:@"正在登录"];
             
             /* 对应接口要上传的用户登录账号密码*/
             NSDictionary *userInfo = @{@"login_account":[NSString stringWithFormat:@"%@",_loginAgainView.userName.text],
@@ -413,7 +413,7 @@
                     
                     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
                     
-                    [hud hide:YES];
+//                    [hud hide:YES];
                     
                     
 #pragma mark- 本地登录成功后 保存token文件，并且转到主页面
@@ -484,7 +484,7 @@
                     
                 }else{
                     
-                    [hud hide:YES];
+//                    [hud hide:YES];
                     
                     _wrongTimes ++;
                     if (_wrongTimes >=5) {

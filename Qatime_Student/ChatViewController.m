@@ -206,9 +206,6 @@
  
     
     
-    
-    
-    
 }
 
 /* 请求聊天用户*/
@@ -684,7 +681,6 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
     
     NSInteger height = 10;
     if (self.chatModel.dataSource.count>indexPath.row){

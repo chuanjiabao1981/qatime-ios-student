@@ -16,7 +16,6 @@
 @property(nonatomic,strong) PersonalInfoView *personalInfoView ;
 
 
-
 /**
  从注册页面传值跳转到个人详情页完善信息的初始化方法
 

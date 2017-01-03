@@ -20,6 +20,20 @@
                ReferencedContainer = "container:Qatime_Student.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "54A153BD1DC6F09E0070B508"
+               BuildableName = "Qatime_StudentTests.xctest"
+               BlueprintName = "Qatime_StudentTests"
+               ReferencedContainer = "container:Qatime_Student.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
