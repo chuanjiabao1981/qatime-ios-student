@@ -56,7 +56,6 @@
             UITableView *_=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, _scrollView.height_sd) style:UITableViewStylePlain];
             _.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             _.tableFooterView = [[UIView alloc]init];
-            
             [_scrollView addSubview:_];
             _;
         

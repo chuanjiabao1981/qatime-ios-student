@@ -407,6 +407,8 @@ bool ismute     = NO;
     
     /* 默认弹幕开启*/
     [_aBarrage start];
+    
+//    [self setupMediaControl];
 
 }
 
@@ -537,7 +539,6 @@ bool ismute     = NO;
         [_ setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
         [_ prepareToPlay]; //初始化视频文件
         
-        
         _;
     });
 
@@ -587,12 +588,8 @@ bool ismute     = NO;
     
 }
 
-/* 数据加载完成 播放器二次加载*/
-- (void)reloadPlayerView{
-    [self setupBoardPlayer];
-    [self setupTeacherPlayer];
-    
-    
+/* 媒体控制器初始化加载方法*/
+- (void)setupMediaControl{
     /* 媒体控制器*/
     _mediaControl =({
         
@@ -821,6 +818,19 @@ bool ismute     = NO;
         _;
         
     });
+
+}
+
+/* 数据加载完成 播放器二次加载*/
+- (void)reloadPlayerView{
+    
+    /* 加载白板播放器*/
+    [self setupBoardPlayer];
+    /* 加载摄像头播放器*/
+    [self setupTeacherPlayer];
+    /* 加载媒体控制器*/
+    [self setupMediaControl];
+    
     
 
 }
@@ -1636,8 +1646,6 @@ bool ismute     = NO;
         
         [self.navigationController popViewControllerAnimated:YES];
         //        [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
-        
-    
         
         NSLog(@"click back!");
         [self syncUIStatus:YES];

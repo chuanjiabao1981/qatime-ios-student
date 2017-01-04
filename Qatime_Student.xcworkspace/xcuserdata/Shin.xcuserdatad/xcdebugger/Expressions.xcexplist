@@ -3,10 +3,21 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "-[ChatViewController enterLive]:ChatViewController.m">
+         contextName = "-[SafeViewController tableView:cellForRowAtIndexPath:]:SafeViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfo">
+               value = "[[NSUserDefaults standardUserDefaults]valueForKey:@&quot;openID&quot;]">
+            </PersistentString>
+            <PersistentString
+               value = "_menuName">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__82-[PersonalInfoViewController imagePickerController:didFinishPickingMediaWithInfo:]_block_invoke:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_avatar">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -19,10 +30,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__82-[PersonalInfoViewController imagePickerController:didFinishPickingMediaWithInfo:]_block_invoke:PersonalInfoViewController.m">
+         contextName = "-[ChatViewController enterLive]:ChatViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_avatar">
+               value = "_tutoriumInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -169,17 +180,6 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[UIViewController(HUD) loadingHUDStopLoadingWithTitle:]:UIViewController+HUD.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "currentThread">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__43-[CashRecordViewController requestWithDraw]_block_invoke:CashRecordViewController.m">
-      </ContextState>
-      <ContextState
          contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke:PersonalInfoViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -188,10 +188,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NIMSessionViewController makeUI]:NIMSessionViewController.m">
+         contextName = "__43-[CashRecordViewController requestWithDraw]_block_invoke:CashRecordViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[UIViewController(HUD) loadingHUDStopLoadingWithTitle:]:UIViewController+HUD.m">
          <PersistentStrings>
             <PersistentString
-               value = "self.tableView">
+               value = "currentThread">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -218,6 +221,14 @@
             </PersistentString>
             <PersistentString
                value = "_liveplayerTeacher.loadState">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NIMSessionViewController makeUI]:NIMSessionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.tableView">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -338,6 +349,9 @@
          contextName = "-[UUMessageFrame setMessage:]:UUMessageFrame.m">
       </ContextState>
       <ContextState
+         contextName = "-[LoginViewController saveUserInfo:loginType:]:LoginViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[ClassTimeViewController requestClosedClassList]:ClassTimeViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -401,6 +415,9 @@
          contextName = "-[NELivePlayerViewController onRecvMessages:]:NELivePlayerViewController.m">
       </ContextState>
       <ContextState
+         contextName = "__45-[SafeViewController RequestToBindingWechat:]_block_invoke:SafeViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[MyOrderViewController requestUnpaid]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -420,10 +437,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[VideoViewController tableView:cellForRowAtIndexPath:]:VideoViewController.m">
+         contextName = "-[PersonalInfoViewController initWithName:andGrade:andHeadImage:withImageChange:]:PersonalInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "tableView.tag">
+               value = "_userImage">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -431,10 +448,10 @@
          contextName = "__41-[ChatViewController requestChatHitstory]_block_invoke:ChatViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[PersonalInfoViewController initWithName:andGrade:andHeadImage:withImageChange:]:PersonalInfoViewController.m">
+         contextName = "-[VideoViewController tableView:cellForRowAtIndexPath:]:VideoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_userImage">
+               value = "tableView.tag">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -511,6 +528,14 @@
       </ContextState>
       <ContextState
          contextName = "-[BarrageWalkTextSprite bindingView]:BarrageWalkTextSprite.m">
+      </ContextState>
+      <ContextState
+         contextName = "__45-[SafeViewController RequestToBindingWechat:]_block_invoke_2:SafeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "wechatCode">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__46-[NELivePlayerViewController requestClassInfo]_block_invoke_2:NELivePlayerViewController.m">
@@ -662,6 +687,14 @@
          contextName = "-[ChatViewController makeMessages:]:ChatViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[SafeViewController tableView:didSelectRowAtIndexPath:]:SafeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[NSUserDefaults standardUserDefaults]valueForKey:@&quot;openID&quot;]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[CashRecordViewController viewDidLoad]:CashRecordViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -678,16 +711,19 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__41-[LoginViewController wechatLoginSucess:]_block_invoke:LoginViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__48-[NELivePlayerViewController controlOverlayHide]_block_invoke:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_liveplayerBoard.loadState">
+               value = "_liveplayerTeacher.playbackState">
             </PersistentString>
             <PersistentString
                value = "_liveplayerTeacher.loadState">
             </PersistentString>
             <PersistentString
-               value = "_liveplayerTeacher.playbackState">
+               value = "_liveplayerBoard.loadState">
             </PersistentString>
             <PersistentString
                value = "_liveplayerBoard.playbackState">
@@ -823,6 +859,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_session">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[LoginViewController wechatLoginSucess:]:LoginViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "respdata.code">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

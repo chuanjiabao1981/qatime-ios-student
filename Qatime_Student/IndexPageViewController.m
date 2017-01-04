@@ -29,7 +29,7 @@
 #import "TutoriumList.h"
 #import "TutoriumInfoViewController.h"
 
-@interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate>{
+@interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate>{
     
     
     //    IndexHeaderPageView *headerView ;
@@ -155,6 +155,7 @@
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     //    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     
     /* 取出token*/
@@ -301,7 +302,7 @@
         
         NSDictionary *keeDic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
-        NSLog(@"%@",keeDic);
+//        NSLog(@"%@",keeDic);
         
         NSString *state=[NSString stringWithFormat:@"%@",keeDic[@"status"]];
         
@@ -313,7 +314,7 @@
             
             
             NSArray *keeArr=[NSArray arrayWithArray:[keeDic valueForKey:@"data"]];
-            NSLog(@"%@",keeArr);
+//            NSLog(@"%@",keeArr);
             
             if (keeArr) {
                 
@@ -384,7 +385,7 @@
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/recommend/positions/%@/items",Request_Header,_kee_banner] parameters:@{@"city_name":position,@"city_name":position} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        NSLog(@"%@",dic);
+//        NSLog(@"%@",dic);
         
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
            
@@ -433,7 +434,7 @@
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/recommend/positions/%@/items",Request_Header,_kee_class] parameters:@{@"page":[NSString stringWithFormat:@"%ld", page],@"per_page":[NSString stringWithFormat:@"%ld", per_page],@"city_name":position} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *classDic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        NSLog( @"%@",classDic);
+//        NSLog( @"%@",classDic);
         
         NSString *state =[NSString stringWithFormat:@"%@",classDic[@"status"]];
         
@@ -503,7 +504,7 @@
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/recommend/positions/%@/items",Request_Header,_kee_teacher] parameters:@{@"page":[NSString stringWithFormat:@"%ld", page],@"per_page":[NSString stringWithFormat:@"%ld", per_page],@"city_name":position} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *teacherDic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        NSLog( @"%@",teacherDic);
+//        NSLog( @"%@",teacherDic);
         
         NSString *state =[NSString stringWithFormat:@"%@",teacherDic[@"status"]];
         
@@ -563,7 +564,7 @@
  */
 - (void)refreshNoTeacherData{
     
-    NSLog(@"%@", _teachers);
+//    NSLog(@"%@", _teachers);
     _teachers = @[].mutableCopy;
     
     [_headerView.teacherScrollView reloadData];
@@ -1268,7 +1269,7 @@
     
     [cityData writeToFile:cityFilePath atomically:YES];
 
-    NSLog(@"%@",cityData);
+//    NSLog(@"%@",cityData);
 }
 
 

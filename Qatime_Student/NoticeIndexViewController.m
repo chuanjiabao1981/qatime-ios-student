@@ -22,7 +22,7 @@
 #import "ChatList.h"
 
 
-@interface NoticeIndexViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,NIMConversationManagerDelegate,NIMLoginManagerDelegate>{
+@interface NoticeIndexViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,NIMConversationManagerDelegate,NIMLoginManagerDelegate,UIGestureRecognizerDelegate>{
     
     NavigationBar *_navigationBar;
     
@@ -105,6 +105,8 @@
     [super viewDidLoad];
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     [self.rdv_tabBarController setTabBarHidden:YES animated:YES];
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {

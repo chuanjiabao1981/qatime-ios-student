@@ -28,6 +28,10 @@
     BOOL push_VoiceON;
     
     
+    BOOL bindingWechat;
+    
+    
+    
 }
 
 @end
@@ -98,6 +102,10 @@
     
     /* 监听登录方式:账号密码登录(Normal)或是微信登录(wechat)*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ChangeLoginRoot:) name:@"Login_Type" object:nil];
+    
+    /*监听 是否微信绑定状态*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(bindingWechat) name:@"BindingWechat" object:nil];
+    
     
     
     /* 微信登录状态的监听*/
@@ -218,6 +226,12 @@
     
 }
 
+/* 处在绑定微信状态下*/
+- (void)bindingWechat{
+    
+    bindingWechat  = YES;
+    
+}
 
 
 /* 云信登录成功的回调 */
@@ -383,7 +397,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         /* 发送消息,切换rootcontroller*/
         [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
         
-    }else if([type isEqualToString:@"wechat"]){
+    }else if([type isEqualToString:@"Wechat"]){
         /* 微信登录*/
         [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
         
@@ -491,12 +505,22 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     /* 条件:拿到登录回调信息*/
     if ([resp isKindOfClass:[SendAuthResp class]]) {
         
-        
         if (resp.errCode ==0) {
             /* 登录成功*/
             SendAuthResp *respdata = (SendAuthResp *)resp;
             
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"WechatLoginSucess" object:respdata.code];
+            
+            /* 如果是要绑定微信*/
+            if (bindingWechat == YES) {
+                
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"RequestToBindingWechat" object:respdata.code];
+                
+            }else{
+                /* 如果只是登录*/
+                
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"WechatLoginSucess" object:respdata.code];
+            }
+
             
             
             NSLog(@"%@",respdata.code);
@@ -512,9 +536,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             /* 取消登录*/
             
             
-            
         }
-        
         
         SendAuthResp *respData = (SendAuthResp *)resp;
         //        respData.code
@@ -539,9 +561,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         }else if (resp.errCode == -2){
             /* 取消充值*/
             
-            
         }
-        
         
     }
     

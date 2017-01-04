@@ -365,6 +365,7 @@
         [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"id"];
         [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"remember_token"];
         [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"chat_account"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"openID"];
         
         
         /* 云信退出登录*/

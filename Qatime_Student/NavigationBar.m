@@ -41,8 +41,8 @@
     _leftButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
 //    [_leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [self addSubview:_leftButton];
-    
 
+    [_leftButton setEnlargeEdge:10];
     return _leftButton;
 }
 
@@ -50,6 +50,7 @@
     
     _rightButton = [[UIButton alloc]initWithFrame:CGRectMake(self.width_sd-50*ScrenScale, 30, 30*ScrenScale, 30*ScrenScale)];
     [self addSubview:_rightButton];
+     [_rightButton setEnlargeEdge:10];
 
     return _rightButton;
     

@@ -344,7 +344,15 @@
             /* 如果是在个人信息中心完善更多信息*/
         }else{
             
-            [cell.image sd_setImageWithURL:[NSURL URLWithString:_dataDic[@"avatar_url"]]];
+            if (_dataDic[@"avatar_url"]) {
+                if (![_dataDic[@"avatar_url"]isEqual:[NSNull null]]) {
+                    
+                    [cell.image sd_setImageWithURL:[NSURL URLWithString:_dataDic[@"avatar_url"]]];
+                }else{
+                    [cell.image setImage:[UIImage imageNamed:@"人"]];
+                }
+            }
+            
         }
         [cell.image addGestureRecognizer:_tap];
         
@@ -687,55 +695,89 @@
     NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0 ];
     Personal_HeadTableViewCell *headcell =[_personalInfoView cellForRowAtIndexPath:path];
     
-    if (headcell.image.image == [UIImage imageNamed:@"人"]) {
+    if (headcell.image.image) {
         
-       [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请选择头像" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
-        
-        
-    }else{
-        
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:4 inSection:0];
-        
-        PersonalTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:indexPath];
-        
-        if ([cell.content.text isEqualToString:@"未设置"]) {
+        if (headcell.image.image == [UIImage imageNamed:@"人"]) {
             
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择年级!" preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请选择头像" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                 
-            }] ;
-            
-            
-            [alert addAction:sure];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-            
+            }];
             
         }else{
             
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否保存?" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"不保存" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                
-                [self returnFrontPage];
-                
-            }] ;
-            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
-                
-                [self updateUserInfo];
-                
-                
-            }] ;
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:4 inSection:0];
             
-            [alert addAction:cancel];
-            [alert addAction:sure];
+            PersonalTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:indexPath];
             
-            [self presentViewController:alert animated:YES completion:nil];
-            
-            
+            if ([cell.content.text isEqualToString:@"未设置"]||[cell.content.text isEqualToString:@""]) {
+                
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择年级!" preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    
+                }] ;
+                
+                
+                [alert addAction:sure];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+                
+                
+            }else{
+                
+                NSIndexPath *indexP = [NSIndexPath indexPathForRow:1 inSection:0];
+                
+                PersonalTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:indexP];
+                if ([cell.content.text isEqualToString:@"未设置"]||[cell.content.text isEqualToString:@""]) {
+                    
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入姓名!" preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        
+                    }] ;
+                    
+                    
+                    [alert addAction:sure];
+                    
+                    [self presentViewController:alert animated:YES completion:nil];
+                }else{
+                    
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否保存?" preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"不保存" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                        
+                        [self returnFrontPage];
+                        
+                    }] ;
+                    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        
+                        
+                        [self updateUserInfo];
+                        
+                        
+                    }] ;
+                    
+                    [alert addAction:cancel];
+                    [alert addAction:sure];
+                    
+                    [self presentViewController:alert animated:YES completion:nil];
+                }
+                
+                
+                
+                
+                
+                
+            }
         }
+    }else{
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请选择头像" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+            
+        }];
+
+        
     }
+    
+    
     
 }
 

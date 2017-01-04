@@ -17,6 +17,14 @@ static char rightNameKey;
 static char bottomNameKey;
 static char leftNameKey;
 
+- (void)setEnlargeEdge:(CGFloat)size
+{
+    objc_setAssociatedObject(self, &topNameKey, [NSNumber numberWithFloat:size], OBJC_ASSOCIATION_COPY_NONATOMIC);
+    objc_setAssociatedObject(self, &rightNameKey, [NSNumber numberWithFloat:size], OBJC_ASSOCIATION_COPY_NONATOMIC);
+    objc_setAssociatedObject(self, &bottomNameKey, [NSNumber numberWithFloat:size], OBJC_ASSOCIATION_COPY_NONATOMIC);
+    objc_setAssociatedObject(self, &leftNameKey, [NSNumber numberWithFloat:size], OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
 
 - (void) setEnlargeEdgeWithTop:(CGFloat) top right:(CGFloat) right bottom:(CGFloat) bottom left:(CGFloat) left
 {
@@ -43,6 +51,16 @@ static char leftNameKey;
     {
         return self.bounds;
     }
+}
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+{
+    CGRect rect = [self enlargedRect];
+    if (CGRectEqualToRect(rect, self.bounds))
+    {
+        return [super pointInside:point withEvent:event];
+    }
+    return CGRectContainsPoint(rect, point) ? YES : NO;
 }
 
 - (UIView*) hitTest:(CGPoint) point withEvent:(UIEvent*) event

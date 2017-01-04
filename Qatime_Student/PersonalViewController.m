@@ -116,7 +116,6 @@
         
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
-
     
     
     /* 导航栏*/
@@ -317,7 +316,6 @@
     
     return  cell;
     
-
 }
 
 

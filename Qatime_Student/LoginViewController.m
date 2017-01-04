@@ -17,6 +17,14 @@
 
 #import "BindingViewController.h"
 
+typedef NS_ENUM(NSUInteger, LoginType) {
+    Normal =0, //账号密码登录
+    Wechat,  //微信登录
+    
+};
+
+
+
 @interface LoginViewController ()<UITextFieldDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate>{
     
     
@@ -197,6 +205,7 @@
 #pragma mark- 微信请求code数据
 - (void)wechatLoginSucess:(NSNotification *)notification{
     
+    
     NSString *code = [notification object];
     
     __block NSString *openID  = @"".mutableCopy;
@@ -208,11 +217,27 @@
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-            /* 登录信息拉取信息成功*/
-            openID = dic[@"data"][@"openid"];
             
-            BindingViewController *bVC = [[BindingViewController alloc]initWithOpenID:openID];
-            [self.navigationController pushViewController:bVC animated:YES];
+        
+            for (NSString *key in dic[@"data"]) {
+                if ([key isEqualToString:@"remember_token"]) {
+                    /* 在后台查到该用户的信息*/
+                    
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+                    /* 保存用户信息*/
+                    [self saveUserInfo:dic[@"data"] loginType:Wechat];
+                    
+                    [self loadingHUDStopLoadingWithTitle:@"登录成功"];
+                    
+                }else{
+                    
+                    /* 登录信息拉取信息成功*/
+                    openID = dic[@"data"][@"openid"];
+                    
+                    BindingViewController *bVC = [[BindingViewController alloc]initWithOpenID:openID];
+                    [self.navigationController pushViewController:bVC animated:YES];
+                }
+            }
             
             
         }else{
@@ -415,74 +440,71 @@
                 /* 如果登录成功*/
                 if ([[dicGet allKeys]containsObject:@"remember_token" ]) {
                     
-                    
-                    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
-                   
-                    
-//                    [hud hide:YES];
-                    
-                    
-                    
-#pragma mark- 本地登录成功后 保存token文件，并且转到主页面
-                    
-                    NSString *userTokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
-                    
-                    NSLog(@"保存的数据\n%@",dicGet);
-                    /* 归档*/
-                    [NSKeyedArchiver archiveRootObject:dicGet toFile:userTokenFilePath];
-                    
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
-                    
-                    /* 另存一份userdefault  只存token和id*/
-                    NSString *remember_token = [NSString stringWithFormat:@"%@",dicGet[@"remember_token"]];
-                    
-                    NSDictionary *user=[NSDictionary dictionaryWithDictionary:dicGet[@"user"]];
-                    NSLog(@"%@",user);
-                    
-                    
-                    NSString *userID = [NSString stringWithFormat:@"%@",[[dicGet valueForKey:@"user"] valueForKey:@"id"]];
-                    
-                    [[NSUserDefaults standardUserDefaults]setObject:remember_token forKey:@"remember_token"];
-                    [[NSUserDefaults standardUserDefaults]setObject:userID forKey:@"id"];
-                    
-                    
-                    NSLog(@"token:%@,id:%@",remember_token,userID);
-                    
-                    
-                    /* 另存一个userdefault ，只存user的头像地址*/
-                    [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"avatar_url"] forKey:@"avatar_url"];
-                    
-                    /* 另存一个useerdefault 存user的name*/
-                     [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"name"] forKey:@"name"];
-                    
-                    /* 另存一个userdefault 存电话*/
-                    if (dicGet[@"user"][@"login_mobile"] !=nil) {
-                        [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"login_mobile"] forKey:@"login_mobile"];
-                    }
-                    
-                    /* 发出一条消息:账号密码方式登录*/
-                    
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"Login_Type" object:@"Normal" ];
-                    
-                    
-#pragma mark- 把用户聊天账户信息存本地
-                    
-                    
-                    /* 另存一份userdefault  只存chat_account*/
-                    
-                    NSDictionary *userDic =[NSDictionary dictionaryWithDictionary:[dicGet valueForKey:@"user"]];
-                    
-                    NSLog(@"%@",userDic);
-                    
-                    if ([userDic valueForKey:@"chat_account"]!=nil&&![[userDic valueForKey:@"chat_account"] isEqual:[NSNull null]]) {
-                        
-                        NSDictionary *chat_accountDic = [NSDictionary dictionaryWithDictionary:[userDic valueForKey:@"chat_account"]];
-                        
-                        NSLog(@"%@",chat_accountDic);
-                        
-                        
-                        [[NSUserDefaults standardUserDefaults]setObject:chat_accountDic forKey:@"chat_account"];
-                    }
+                    [self saveUserInfo:dicGet loginType:Normal];
+//                    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
+//                   
+//                    
+////                    [hud hide:YES];
+//                    
+//                    
+//                    
+//#pragma mark- 本地登录成功后 保存token文件，并且转到主页面
+//                    
+//                    NSString *userTokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
+//                    
+//                    NSLog(@"保存的数据\n%@",dicGet);
+//                    /* 归档*/
+//                    [NSKeyedArchiver archiveRootObject:dicGet toFile:userTokenFilePath];
+//                    
+//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+//                    
+//                    /* 另存一份userdefault  只存token和id*/
+//                    NSString *remember_token = [NSString stringWithFormat:@"%@",dicGet[@"remember_token"]];
+//                    
+//                    NSDictionary *user=[NSDictionary dictionaryWithDictionary:dicGet[@"user"]];
+//                    NSLog(@"%@",user);
+//                    
+//                    
+//                    NSString *userID = [NSString stringWithFormat:@"%@",[[dicGet valueForKey:@"user"] valueForKey:@"id"]];
+//                    
+//                    [[NSUserDefaults standardUserDefaults]setObject:remember_token forKey:@"remember_token"];
+//                    [[NSUserDefaults standardUserDefaults]setObject:userID forKey:@"id"];
+//                    
+//                    
+//                    NSLog(@"token:%@,id:%@",remember_token,userID);
+//                    
+//                    
+//                    /* 另存一个userdefault ，只存user的头像地址*/
+//                    [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"avatar_url"] forKey:@"avatar_url"];
+//                    
+//                    /* 另存一个useerdefault 存user的name*/
+//                     [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"name"] forKey:@"name"];
+//                    
+//                    /* 另存一个userdefault 存电话*/
+//                    if (dicGet[@"user"][@"login_mobile"] !=nil) {
+//                        [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"login_mobile"] forKey:@"login_mobile"];
+//                    }
+//                    
+//                    
+//                    
+//#pragma mark- 把用户聊天账户信息存本地
+//                    
+//                    
+//                    /* 另存一份userdefault  只存chat_account*/
+//                    
+//                    NSDictionary *userDic =[NSDictionary dictionaryWithDictionary:[dicGet valueForKey:@"user"]];
+//                    
+//                    NSLog(@"%@",userDic);
+//                    
+//                    if ([userDic valueForKey:@"chat_account"]!=nil&&![[userDic valueForKey:@"chat_account"] isEqual:[NSNull null]]) {
+//                        
+//                        NSDictionary *chat_accountDic = [NSDictionary dictionaryWithDictionary:[userDic valueForKey:@"chat_account"]];
+//                        
+//                        NSLog(@"%@",chat_accountDic);
+//                        
+//                        
+//                        [[NSUserDefaults standardUserDefaults]setObject:chat_accountDic forKey:@"chat_account"];
+//                    }
                     
                     [self loadingHUDStopLoadingWithTitle:@"登录成功"];
                     
@@ -512,10 +534,6 @@
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
                 NSLog(@"%@",error);
-                
-//                MBProgressHUD *hud2=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//                hud2.mode = MBProgressHUDModeText;
-//                hud2.labelText = @"登陆失败";
 
                 [self loadingHUDStopLoadingWithTitle:@"登录失败"];
             }];
@@ -524,6 +542,123 @@
     }
     
 }
+
+
+
+/* 登录成功后,保存用户信息*/
+- (void)saveUserInfo:(NSDictionary *)userDic loginType:(LoginType)loginType{
+    
+#pragma mark- 本地登录成功后 保存token文件，并且转到主页面
+    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
+    
+    NSString *userTokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
+    
+    NSLog(@"保存的数据\n%@",userDic);
+    /* 归档*/
+    [NSKeyedArchiver archiveRootObject:userDic toFile:userTokenFilePath];
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+    
+    /* 另存一份userdefault  只存token和id*/
+    
+    NSString *remember_token = [NSString stringWithFormat:@"%@",userDic[@"remember_token"]];
+    
+    NSDictionary *user=[NSDictionary dictionaryWithDictionary:userDic[@"user"]];
+    NSLog(@"%@",user);
+    
+    
+    NSString *userID = [NSString stringWithFormat:@"%@",[[userDic valueForKey:@"user"] valueForKey:@"id"]];
+    
+    [[NSUserDefaults standardUserDefaults]setObject:remember_token forKey:@"remember_token"];
+    [[NSUserDefaults standardUserDefaults]setObject:userID forKey:@"id"];
+    
+    
+    NSLog(@"token:%@,id:%@",remember_token,userID);
+    
+    
+    /* 另存一个userdefault ，只存user的头像地址 如果有的话*/
+    
+    if (userDic[@"user"][@"avatar_url"]) {
+        if (![userDic[@"user"][@"avatar_url"]isEqual:[NSNull null]]) {
+            
+            [[NSUserDefaults standardUserDefaults]setObject:userDic[@"user"][@"avatar_url"] forKey:@"avatar_url"];
+        }
+    }
+    
+    /* 另存一个useerdefault 存user的name 如果存在的话*/
+    if (userDic[@"user"][@"name"]) {
+        if (![userDic[@"user"][@"name"] isEqual:[NSNull null]]) {
+            
+            [[NSUserDefaults standardUserDefaults]setObject:userDic[@"user"][@"name"] forKey:@"name"];
+        }
+    }
+    
+    /* 另存一个userdefault 存电话*/
+    if (userDic[@"user"][@"login_mobile"]) {
+        if (![userDic[@"user"][@"login_mobile"] isEqual:[NSNull null]]) {
+            
+            [[NSUserDefaults standardUserDefaults]setObject:userDic[@"user"][@"login_mobile"] forKey:@"login_mobile"];
+        }
+        
+    }
+    
+    NSString *type =nil;
+    switch (loginType) {
+        case 0:
+            type = [NSString stringWithFormat:@"Normal"];
+            break;
+            
+        case 1:
+            type = [NSString stringWithFormat:@"Wechat"];
+            break;
+    }
+    
+    
+    /* 保存openID*/
+    
+    if (userDic[@"user"][@"openid"]) {
+        if ([userDic[@"user"][@"openid"]isEqual:[NSNull null]]) {
+            
+        }else{
+            /* 已经绑定了微信*/
+            [[NSUserDefaults standardUserDefaults]setObject:userDic[@"user"][@"openid"] forKey:@"openID"];
+            
+        }
+        
+    }else{
+     
+        /* 未绑定微信.*/
+        
+    }
+    
+    
+    /* 发出一条消息:登录方式*/
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"Login_Type" object:type];
+    
+    
+#pragma mark- 把用户聊天账户信息存本地
+    
+    
+    /* 另存一份userdefault  只存chat_account*/
+    
+    NSDictionary *chatAccount =[NSDictionary dictionaryWithDictionary:[userDic valueForKey:@"user"]];
+    
+    NSLog(@"%@",chatAccount);
+    
+    if ([chatAccount valueForKey:@"chat_account"]!=nil&&![[chatAccount valueForKey:@"chat_account"] isEqual:[NSNull null]]) {
+        
+        NSDictionary *chat_accountDic = [NSDictionary dictionaryWithDictionary:[chatAccount valueForKey:@"chat_account"]];
+        
+        NSLog(@"%@",chat_accountDic);
+        
+        
+        [[NSUserDefaults standardUserDefaults]setObject:chat_accountDic forKey:@"chat_account"];
+        
+    }
+    
+}
+
 
 
 

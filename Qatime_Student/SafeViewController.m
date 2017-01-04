@@ -16,6 +16,7 @@
 #import "ChangePhoneGetCodeViewController.h"
 
 #import "BindingMailViewController.h"
+#import "WXApi.h"
 
 @interface SafeViewController ()
 {
@@ -46,22 +47,22 @@
     [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
     _navigationBar = ({
-    
+        
         NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
         
         [self.view addSubview:_];
         _.titleLabel.text = @"安全设置";
-       
+        
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         
         _;
-    
+        
     });
     
-     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+    [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
     
-  
+    
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
         _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
@@ -99,6 +100,9 @@
     /* 添加一个家长手机修改成功的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeParentPhone:) name:@"ChangeParentPhoneSuccess" object:nil];
     
+    /* 添加手动绑定微信的监听*/
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(RequestToBindingWechat:) name:@"RequestToBindingWechat" object:nil];
     
     
     
@@ -112,7 +116,7 @@
         _contentArr[3] = [notification object];
     }
     
-
+    
     [_menuTableView reloadData];
     
 }
@@ -146,7 +150,7 @@
                     
                 }
                 
-               
+                
             }
             
             
@@ -157,12 +161,12 @@
             
             
             [[NSUserDefaults standardUserDefaults]setObject:chDic[@"login_mobile"] forKey:@"login_mobile"] ;
-             [[NSUserDefaults standardUserDefaults]setObject:chDic[@"email"] forKey:@"email"];
-//             [NSUserDefaults standardUserDefaults]setObject:getDic[@"data"][[@"login_mobile"] forKey:login_mobile];
-             [[NSUserDefaults standardUserDefaults]setObject:chDic[@"parent_phone"] forKey:@"parent_phone"];
+            [[NSUserDefaults standardUserDefaults]setObject:chDic[@"email"] forKey:@"email"];
+            //             [NSUserDefaults standardUserDefaults]setObject:getDic[@"data"][[@"login_mobile"] forKey:login_mobile];
+            [[NSUserDefaults standardUserDefaults]setObject:chDic[@"parent_phone"] forKey:@"parent_phone"];
             
             NSLog(@"%@",_contentArr);
-
+            
             
             [_menuTableView reloadData];
             
@@ -193,7 +197,7 @@
             
         case 1:
             return 2;
-       
+            
             break;
     }
     
@@ -237,15 +241,20 @@
                     
                     if (indexPath.row==2) {
                         
-                        if ([cell.balance.text isEqualToString:@"马上绑定"]) {
+                        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"openID"]) {
+                            cell.balance.text =@" 已绑定 ";
+                            cell.balance.font = [UIFont systemFontOfSize:16*ScrenScale];
+                            cell.balance.backgroundColor = [UIColor colorWithRed:0.42 green:0.79 blue:0.15 alpha:1.00];
+                            cell.balance.textColor = [UIColor whiteColor];
+                        }else{
+                            
                             cell.balance.text =@" 马上绑定 ";
                             cell.balance.font = [UIFont systemFontOfSize:16*ScrenScale];
                             cell.balance.backgroundColor = [UIColor colorWithRed:0.42 green:0.79 blue:0.15 alpha:1.00];
                             cell.balance.textColor = [UIColor whiteColor];
                             
-                        }else{
-                            
                         }
+                        
                     }
                     
                 }
@@ -310,6 +319,16 @@
                     break;
                 case 2:{
                     
+                    /* 去绑定微信*/
+                    if (![[NSUserDefaults standardUserDefaults]valueForKey:@"openID"]) {
+                        
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"BindingWechat" object:nil];
+                        
+                        /* 拉起微信绑定*/
+                        [self sendAuthRequest];
+                        
+                    }
+                    
                 }
                     break;
                 case 3:{
@@ -338,7 +357,7 @@
                 }
                     break;
                 case 1:{
-                   
+                    
                     ChangePasswordViewController *changVC = [ChangePasswordViewController new];
                     [self.navigationController pushViewController:changVC animated:YES];
                     
@@ -351,15 +370,7 @@
             break;
     }
     
-    
-    
-    
 }
-
-
-
-
-
 
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -388,6 +399,95 @@
 }
 
 
+-(void)sendAuthRequest
+{
+    //构造SendAuthReq结构体
+    SendAuthReq* req =[[SendAuthReq alloc ] init ]  ;
+    req.scope = @"snsapi_userinfo" ;
+    req.state = @"123" ;
+    //第三方向微信终端发送一个SendAuthReq消息结构
+    
+    
+    [WXApi sendReq:req];
+    
+    
+}
+
+/* 绑定微信*/
+- (void)RequestToBindingWechat:(NSNotification *)notification{
+    
+    [self loadingHUDStartLoadingWithTitle:@"正在绑定"];
+    NSString *wechatCode = [notification object];
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+    [manager POST:[NSString stringWithFormat:@"%@/api/v1/users/%@/wechat",Request_Header,_idNumber] parameters:@{@"code":wechatCode} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        /* <# State #>*/
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            /* 绑定成功*/
+            /* 绑定完成后,请求一次数据*/
+            
+            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+            [manager POST:[NSString stringWithFormat:@"%@/api/v1/sessions/wechat",Request_Header] parameters:@{@"code":wechatCode,@"client_cate":@"student_client",@"client_type":@"app"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                if ([dic[@"status"]isEqualToNumber:@1]) {
+                    /* 绑定成功*/
+                    if (dic[@"data"][@"user"][@"openid"]) {
+                        
+                        if ([dic[@"data"][@"user"][@"openid"]isEqual:[NSNull null]]) {
+                            
+                            [[NSUserDefaults standardUserDefaults]setValue:dic[@"data"][@"user"][@"openid"] forKey:@"openID"];
+                            
+                            [self performSelector:@selector(bindingSuccess) withObject:nil afterDelay:1];
+                            [self loadingHUDStopLoadingWithTitle:@"绑定成功!"];
+                        }
+                    }else{
+                        [self loadingHUDStopLoadingWithTitle:@"绑定申请已提交!"];
+//                        [self performSelector:@selector(bindingWaited) withObject:nil afterDelay:1];
+                    }
+                }else{
+                    
+                    /* 绑定失败*/
+                    [self loadingHUDStopLoadingWithTitle:@"绑定失败!"];
+                }
+                
+                
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                
+            }];
+            
+            
+        }else{
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        [self loadingHUDStopLoadingWithTitle:@"绑定失败!"];
+    }];
+    
+}
+
+/* 绑定成功*/
+- (void)bindingSuccess{
+    NSIndexPath *index = [NSIndexPath indexPathForRow:2 inSection:0];
+    SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:index];
+    cell.balance.text = @" 已绑定 ";
+}
+
+/* 绑定提交*/
+//- (void)bindingWaited{
+//    NSIndexPath *index = [NSIndexPath indexPathForRow:2 inSection:0];
+//    SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:index];
+//    cell.balance.text = @" 已提交 ";
+//    
+//}
 
 - (void)returnLastPage{
     
@@ -404,13 +504,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

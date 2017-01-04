@@ -117,7 +117,7 @@
             button = [[UIButton alloc] init];
             [button setBackgroundColor:[UIColor whiteColor]];
             [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-            [button.titleLabel setFont:[UIFont systemFontOfSize:14.0f*ScrenScale]];
+            [button.titleLabel setFont:[UIFont systemFontOfSize:13.0f*ScrenScale]];
             [button.layer setMasksToBounds:YES];
             [button.layer setCornerRadius:2.0f];
             [button.layer setBorderColor:[UIColor colorWithWhite:0.8 alpha:1.0].CGColor];
@@ -148,7 +148,7 @@
 {
     if (_titleLabel == nil) {
         _titleLabel = [[UILabel alloc] init];
-        [_titleLabel setFont:[UIFont systemFontOfSize:14.0*ScrenScale]];
+        [_titleLabel setFont:[UIFont systemFontOfSize:13.0*ScrenScale]];
     }
     return _titleLabel;
 }
@@ -159,7 +159,7 @@
         _noDataLabel = [[UILabel alloc] init];
         [_noDataLabel setText:@"暂无数据"];
         [_noDataLabel setTextColor:[UIColor grayColor]];
-        [_noDataLabel setFont:[UIFont systemFontOfSize:14.0f*ScrenScale]];
+        [_noDataLabel setFont:[UIFont systemFontOfSize:13.0f*ScrenScale]];
     }
     return _noDataLabel;
 }
