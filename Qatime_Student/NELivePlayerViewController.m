@@ -388,7 +388,7 @@ bool ismute     = NO;
 
 - (void)loadView {
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     
     //当前屏幕宽高
     screenWidth  = CGRectGetWidth([UIScreen mainScreen].bounds);
@@ -397,7 +397,7 @@ bool ismute     = NO;
     /* 默认的视频排列方式是平级*/
     _viewsArrangementMode = SameLevel;
     
-    /* 初始化视频播放器*/
+    /* 初始化视频播放器 的背景视图*/
     [self setupVideoPlayer];
     
     /* 初始化弹幕*/
@@ -409,6 +409,8 @@ bool ismute     = NO;
     [_aBarrage start];
     
 //    [self setupMediaControl];
+    /* 加载媒体控制器*/
+    [self setupMediaControl];
 
 }
 
@@ -586,6 +588,9 @@ bool ismute     = NO;
         _;
     });
     
+    [self.view bringSubviewToFront:_mediaControl];
+    [self.view bringSubviewToFront:_controlOverlay];
+    
 }
 
 /* 媒体控制器初始化加载方法*/
@@ -650,7 +655,7 @@ bool ismute     = NO;
         .heightRatioToView(_topControlView,1.0f)
         .widthEqualToHeight();
         _.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
-        
+        [_ setEnlargeEdge:10];
         _;
     });
     
@@ -701,6 +706,7 @@ bool ismute     = NO;
         .bottomSpaceToView(_bottomControlView,0)
         .widthEqualToHeight();
         _.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
+        [_ setEnlargeEdge:10];
         _;
     });
     
@@ -719,6 +725,7 @@ bool ismute     = NO;
         .topEqualToView(_playBtn)
         .bottomEqualToView(_playBtn);
         _.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
+        [_ setEnlargeEdge:10];
         _;
     });
     
@@ -737,6 +744,7 @@ bool ismute     = NO;
         .bottomSpaceToView(self.bottomControlView,0)
         .widthEqualToHeight();
         _.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
+        [_ setEnlargeEdge:10];
         
         _;
     });
@@ -756,6 +764,7 @@ bool ismute     = NO;
         _.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
         /* 切屏添加点击事件*/
         [_ addTarget:self action:@selector(switchBothScreen:) forControlEvents:UIControlEventTouchUpInside];
+        [_ setEnlargeEdge:10];
         _;
     });
     
@@ -774,6 +783,7 @@ bool ismute     = NO;
         _.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
         /* 添加点击事件*/
         [_ addTarget:self action:@selector(changeLevels:) forControlEvents:UIControlEventTouchUpInside];
+        [_ setEnlargeEdge:10];
         _;
     });
     
@@ -789,6 +799,7 @@ bool ismute     = NO;
         _.hidden = YES;
         [_ setImage:[UIImage imageNamed:@"refresh"] forState:UIControlStateNormal];
         
+        [_ setEnlargeEdge:10];
         /* 刷新点击事件*/
         [_ addTarget:self action:@selector(refreshVideo:) forControlEvents:UIControlEventTouchUpInside];
         _;
@@ -812,6 +823,7 @@ bool ismute     = NO;
         .widthRatioToView(_tileScreen,1.0);
         /* 默认开启弹幕*/
         barrageRunning =YES;
+        [_ setEnlargeEdge:10];
         
         /* 弹幕按钮的点击事件*/
         [_ addTarget:self action:@selector(barragesSwitch) forControlEvents:UIControlEventTouchUpInside];
@@ -828,8 +840,7 @@ bool ismute     = NO;
     [self setupBoardPlayer];
     /* 加载摄像头播放器*/
     [self setupTeacherPlayer];
-    /* 加载媒体控制器*/
-    [self setupMediaControl];
+    
     
     
 
@@ -995,7 +1006,8 @@ bool ismute     = NO;
     _bottomControlView.alpha = 0.8;
     
     [_mediaControl clearAutoHeigtSettings];
-    _mediaControl.sd_layout
+    
+    _mediaControl.sd_resetLayout
     .topEqualToView(playerView)
     .bottomEqualToView(playerView)
     .leftEqualToView(playerView)
@@ -1024,7 +1036,7 @@ bool ismute     = NO;
 /* 控制层切回竖屏模式的方法*/
 - (void)mediaControlTurnDownFullScreenModeWithMainView:(FJFloatingView *)playerView{
 
-    _mediaControl.sd_resetNewLayout
+    _mediaControl.sd_resetLayout
     .topSpaceToView(self.view,20)
     .leftEqualToView(self.view)
     .rightEqualToView(self.view)
@@ -1471,22 +1483,23 @@ bool ismute     = NO;
     
 }
 
-/* 是否支持自动转屏*/
+//支持设备自动旋转
+
 - (BOOL)shouldAutorotate{
-    return YES;
+    
+    return NO;
+    
 }
 
-/* 默认的屏幕方向*/
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
-    return UIInterfaceOrientationLandscapeRight;
-}
-
-
-// 支持哪些屏幕方向
+// 支持哪些转屏方向
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
+// 页面展示的时候默认屏幕方向（当前ViewController必须是通过模态ViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return UIInterfaceOrientationPortrait;
+}
 
 //显示模式转换
 - (void)onClickScaleMode:(id)sender{
@@ -2065,6 +2078,7 @@ bool ismute     = NO;
     //把聊天页面添加到view2上
     
     _chatTableView = [[UITableView alloc]init];
+    _chatTableView.backgroundColor = [UIColor whiteColor];
     
     [_videoInfoView.view2 addSubview:_chatTableView];
     _chatTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -2085,7 +2099,6 @@ bool ismute     = NO;
     
     /* 加入高度变化的监听*/
     [self addObserver:self forKeyPath:@"headerHeight" options:NSKeyValueObservingOptionNew context:nil];
-    
     
     _classList.classListTableView.tableHeaderView = _infoHeaderView;
     

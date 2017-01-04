@@ -140,7 +140,7 @@
     [self requestClassesInfoWith:_classID];
     
     
-    [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
+    
     
     /* 注册重新加载页面数据的通知*/
     
@@ -177,12 +177,25 @@
         _tutoriumInfoView.className.text = _dataDic[@"name"];
         [_tutoriumInfoView.classImage sd_setImageWithURL:[NSURL URLWithString:_dataDic[@"publicize"]] placeholderImage:[UIImage imageNamed:@"school"]];
         _tutoriumInfoView.saleNumber.text = [NSString stringWithFormat:@"%@", _dataDic[@"buy_tickets_count"]];
-        _tutoriumInfoView.priceLabel.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"price"]];
         
+        /* 已经开课->插班价*/
+        if ([_dataDic[@"status"]isEqualToString:@"teaching"]||[_dataDic[@"status"]isEqualToString:@"pause"]||[_dataDic[@"status"]isEqualToString:@"closed"]) {
+            
+            _tutoriumInfoView.priceLabel.text = [NSString stringWithFormat:@"¥%@(插班价)",_dataDic[@"current_price"]];
+        }else{
+            /* 未开课 总价*/
+            _tutoriumInfoView.priceLabel.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"price"]];
+        }
+        
+        /* 已开课的状态*/
         if ([_dataDic[@"status"]isEqualToString:@"teaching"]||[_dataDic[@"status"]isEqualToString:@"pause"]||[_dataDic[@"status"]isEqualToString:@"closed"]) {
             _tutoriumInfoView.recuitState.text = @"已开课";
+            
             _tutoriumInfoView.deadLine.text = [NSString stringWithFormat:@"[进度%@/%@]",_dataDic[@"completed_lesson_count"],_dataDic[@"lesson_count"]];
+            
             _tutoriumInfoView.onlineVideoLabel.text =@"已开课";
+            
+            
             
         }else if ([_dataDic[@"status"]isEqualToString:@"missed"]||[_dataDic[@"status"]isEqualToString:@"init"]||[_dataDic[@"status"]isEqualToString:@"ready"]){
             _tutoriumInfoView.recuitState.text = @"未开课";
@@ -193,8 +206,16 @@
             
         }else if ([_dataDic[@"status"]isEqualToString:@"finished"]||[_dataDic[@"status"]isEqualToString:@"billing"]||[_dataDic[@"status"]isEqualToString:@"competed"]){
             
-            _tutoriumInfoView.recuitState.text = @"已结课";
-            _tutoriumInfoView.onlineVideoLabel.text =@"已结课";
+            _tutoriumInfoView.recuitState.text = @"已结束";
+            _tutoriumInfoView.onlineVideoLabel.text =@"已结束";
+            
+            
+            
+        }else if ([_dataDic[@"status"]isEqualToString:@"public"]){
+            
+            _tutoriumInfoView.recuitState.text = @"招生中";
+            _tutoriumInfoView.onlineVideoLabel.text =@"招生中";
+            _tutoriumInfoView.deadLine.text = @"";
             
         }
         
@@ -289,12 +310,11 @@
             }
   
         }
-     
-        
-        
         
         /* 赋值完毕,开始进行自适应高度*/
         [self autoScrollHeight];
+        
+        [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -379,10 +399,7 @@
         
         [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
         
-        
-        
     }
-    
     
 }
 
@@ -395,6 +412,7 @@
     }] ;
     UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
+        /* 加入试听*/
         [self addListen];
         
     }] ;
@@ -412,56 +430,70 @@
 #pragma mark- 加入试听
 - (void)addListen{
     
-    [self loadingHUDStartLoadingWithTitle:@"正在加入试听"];
-    
-    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/taste",Request_Header,_dataDic[@"id"]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
-        if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-            /* 请求成功*/
-            
-            [_buyBar.listenButton removeTarget:self action:@selector(addListen) forControlEvents:UIControlEventTouchUpInside];
-            
-            [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
-            [_buyBar.listenButton setBackgroundColor:BUTTONRED];
-            [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-
-            
-            [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
-            
-            [self loadingHUDStopLoadingWithTitle:@"加入成功"];
-            
-            
-            /* 发送全局通知,发送加入试听课程通知*/
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"AddNewClass" object:_dataDic];
+    if (_dataDic) {
+        if ([_dataDic[@"is_tasting"]boolValue]==YES) {
+            /* 可以试听的情况*/
+            [self loadingHUDStartLoadingWithTitle:@"正在加入试听"];
+            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+            [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
+            [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/taste",Request_Header,_dataDic[@"id"]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                
+                if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+                    /* 请求成功*/
+                    
+                    [_buyBar.listenButton removeTarget:self action:@selector(addListen) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
+                    [_buyBar.listenButton setBackgroundColor:BUTTONRED];
+                    [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                    
+                    [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    [self loadingHUDStopLoadingWithTitle:@"加入成功"];
+                    
+                    
+                    /* 发送全局通知,发送加入试听课程通知*/
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"AddNewClass" object:_dataDic];
+                    
+                    
+                }else{
+                    
+                    /* 重新登录*/
+                    
+                    [self loadingHUDStopLoadingWithTitle:@"登录超时,请重新登录!"];
+                    
+                    [self performSelector:@selector(loginAgain) withObject:nil afterDelay:1];
+                    
+                }
+                
+                
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                
+            }];
             
             
         }else{
             
-            /* 重新登录*/
-            
-            [self loginAgain];
+            [self loadingHUDStopLoadingWithTitle:@"该课程不支持试听"];
         }
-        
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-    }];
-
+    }
+    
+    
+    
+    
     
 }
 
 #pragma mark- 立即试听
 - (void)listen{
-     
+    
     NELivePlayerViewController *neVC = [[NELivePlayerViewController alloc]initWithClassID:_dataDic[@"id"]];
     
-            [self.navigationController pushViewController:neVC animated:YES];
+    [self.navigationController pushViewController:neVC animated:YES];
     
 }
 
@@ -668,14 +700,14 @@
     CGFloat teacherDesc_height =  _tutoriumInfoView.teacherInterviewLabel.frame.origin.y+_tutoriumInfoView.teacherInterviewLabel.frame.size.height;
     
     
+    
     if (classDesc_height>teacherDesc_height) {
         
-        [_tutoriumInfoView setContentSize:CGSizeMake(self.view.width_sd, classDesc_height+40+TabBar_Height+50)];
+        [_tutoriumInfoView.scrollView setContentSize:CGSizeMake(self.view.width_sd*3, classDesc_height)];
     }else {
-         [_tutoriumInfoView setContentSize:CGSizeMake(self.view.width_sd, teacherDesc_height+40+TabBar_Height+50)];
+         [_tutoriumInfoView.scrollView setContentSize:CGSizeMake(self.view.width_sd*3, teacherDesc_height-_tutoriumInfoView.segmentControl.height_sd-_tutoriumInfoView.classImage.height_sd)];
         
     }
-    
     
      _tutoriumInfoView.classesListTableView.sd_resetLayout
     .leftSpaceToView(_tutoriumInfoView.view3,0)

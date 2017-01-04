@@ -59,12 +59,12 @@
         
         [_headerContentView addSubview:_squareMenu];
         
-        
         /* 遍历出第一行的5个图标*/
         for (int i =0 ; i<5; i++) {
             
             UIView *btn = [[UIView alloc]initWithFrame:CGRectMake(i*CGRectGetWidth(_squareMenu.bounds)/5, 0, CGRectGetWidth(_squareMenu.bounds)/5, CGRectGetWidth(_squareMenu.bounds)/5) ];
-            UIImageView *iconImage=[[UIImageView alloc]initWithFrame:CGRectMake(btn.frame.size.width/3/2+5, 15, btn.frame.size.width*2/3-10, btn.frame.size.width*2/3-10)];
+            UIImageView *iconImage=[[UIImageView alloc]initWithFrame:CGRectMake(btn.frame.size.width/3/2+5, 10, btn.frame.size.width*2/3-10, btn.frame.size.width*2/3-10)];
+            
             
             UILabel *iconLabel =[[UILabel alloc]initWithFrame:CGRectMake(0, btn.frame.size.width*3/4+2, btn.frame.size.width, btn.frame.size.width/4-2)];
             iconLabel.textAlignment = NSTextAlignmentCenter;
@@ -88,7 +88,7 @@
         for (int i =5 ; i<10; i++) {
             
             UIView *btn = [[UIView alloc]initWithFrame:CGRectMake((i-5)*CGRectGetWidth(_squareMenu.bounds)/5, CGRectGetWidth(_squareMenu.bounds)/5, CGRectGetWidth(_squareMenu.bounds)/5, CGRectGetWidth(_squareMenu.bounds)/5) ];
-            UIImageView *iconImage=[[UIImageView alloc]initWithFrame:CGRectMake(btn.frame.size.width/3/2+5, 15, btn.frame.size.width*2/3-10, btn.frame.size.width*2/3-10)];
+            UIImageView *iconImage=[[UIImageView alloc]initWithFrame:CGRectMake(btn.frame.size.width/3/2+5, 10, btn.frame.size.width*2/3-10, btn.frame.size.width*2/3-10)];
             
             UILabel *iconLabel =[[UILabel alloc]initWithFrame:CGRectMake(0, btn.frame.size.width*3/4+2, btn.frame.size.width, btn.frame.size.width/4-2)];
             iconLabel.textAlignment = NSTextAlignmentCenter;

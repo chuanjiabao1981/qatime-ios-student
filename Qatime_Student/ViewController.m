@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import "NELivePlayerViewController.h"
+#import "AppDelegate.h"
 
 
 @interface ViewController (){
@@ -29,6 +31,9 @@
     
     /* 图标的title*/
     NSArray *titles;
+    
+    /* 代理单例*/
+    AppDelegate *_appDelegate;
     
 }
 
@@ -110,11 +115,7 @@
     
     self.tabBar.height = TabBar_Height;
     
-   
-    
-    
-    
-    
+    _appDelegate = [[AppDelegate alloc]init];
 }
     
     
@@ -128,18 +129,36 @@
 }
 
 
+//支持设备自动旋转
 
-
+- (BOOL)shouldAutorotate{
+    
+    UIViewController *nev = (UIViewController *)self.selectedViewController.childViewControllers.lastObject;
+    if ([nev isKindOfClass:[NELivePlayerViewController class]]) {
+        return YES;
+    }
+    
+    return NO;
+}
 
 // 支持哪些转屏方向
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskAllButUpsideDown;
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    
+    UIViewController *nev = (UIViewController *)self.selectedViewController.childViewControllers.lastObject;
+    if ([nev isKindOfClass:[NELivePlayerViewController class]]) {
+        
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    }
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 // 页面展示的时候默认屏幕方向（当前ViewController必须是通过模态ViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    UIViewController *nev = (UIViewController *)self.selectedViewController.childViewControllers.lastObject;
+    if ([nev isKindOfClass:[NELivePlayerViewController class]]) {
+        
+        return UIInterfaceOrientationLandscapeRight;
+    }
     return UIInterfaceOrientationPortrait;
 }
 

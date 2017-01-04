@@ -76,7 +76,7 @@
         _priceLabel=[[UILabel alloc]init];
         [self addSubview:_priceLabel];
         _priceLabel.sd_layout. topSpaceToView(_className,5).leftEqualToView(_className).autoHeightRatio(0);
-        [_priceLabel setSingleLineAutoResizeWithMaxWidth:100];
+        [_priceLabel setSingleLineAutoResizeWithMaxWidth:500];
         _priceLabel.textAlignment = NSTextAlignmentLeft;
         [_priceLabel setText:@"¥0.00"];
         [_priceLabel setTextColor:[UIColor redColor]];

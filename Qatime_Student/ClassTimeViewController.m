@@ -171,7 +171,7 @@
     _classTimeView.alreadyClassView.alreadyClassTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         
         [self loadingHUDStartLoadingWithTitle:@"正在刷新"];
-//        [self requestClosedClassList];
+        [self requestClosedClassList];
         
     }];
     
@@ -242,8 +242,6 @@
                 
                 /* 数据错误*/
                 
-                
-                
             }
             
             
@@ -258,7 +256,6 @@
         /* 登录错误*/
         
         _notLoginView.hidden = NO;
-        
         
     }
     
@@ -344,7 +341,7 @@
 - (void)loadClassView{
     
     _classTimeView = ({
-        ClassTimeView *_ = [[ClassTimeView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT-64)];
+        ClassTimeView *_ = [[ClassTimeView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT-64-49)];
         [self.view addSubview:_];
         _.scrollView.delegate = self;
         _.segmentControl.selectedSegmentIndex =0;
