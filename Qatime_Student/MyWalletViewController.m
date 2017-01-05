@@ -17,6 +17,7 @@
 #import "ChargeViewController.h"
 
 #import "WithDrawViewController.h"
+#import "UIAlertController+Blocks.h"
 
 @interface MyWalletViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>{
     
@@ -126,12 +127,13 @@
         }else{
             
             /* 登录超时*/
-            
-            [self loadingHUDStopLoadingWithTitle:@"登录超时"];
-            sleep(2);
-            
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
-            
+            [self.loadingHUD hide:YES];
+            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录超时!\n请重新登录!" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                if (buttonIndex!=0) {
+                    
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
+                }
+            }];
             
         }
         

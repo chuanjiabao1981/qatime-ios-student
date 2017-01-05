@@ -12,8 +12,9 @@
 #import "SignUpInfoViewController.h"
 #import "UIAlertController+Blocks.h"
 #import "UIViewController+HUD.h"
+#import "UIAlertController+Blocks.h"
 
-@interface SignUpViewController (){
+@interface SignUpViewController ()<UITextFieldDelegate,UITextInputDelegate>{
     
     SignUpInfoViewController *_signUpInfoViewController ;
     
@@ -38,14 +39,16 @@
     
     _signUpView = [[SignUpView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
     [self .view addSubview:_signUpView];
-    
-    [_signUpView.getCheckCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
-    
+   
+    _signUpView.phoneNumber.delegate = self;
     [_signUpView.nextStepButton addTarget:self action:@selector(nextStep:) forControlEvents:UIControlEventTouchUpInside];
     
     //    选项
     
     [_signUpView.chosenButton addTarget:self action:@selector(chosenProtocol:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
     
     
 }
@@ -103,7 +106,7 @@
     }
     if ([_signUpView.userPassword.text isEqualToString:@""]||![self checkPassWord: _signUpView.userPassword.text] ) {
         
-        [self showAlertWith:@"请输入6-16位密码！"];
+        [self showAlertWith:@"请输入6-16位数字字母组合密码！"];
         
     }
     if ([self checkPassWord: _signUpView.userPassword.text]&&![_signUpView.userPassword.text isEqualToString:_signUpView.userPasswordCompare.text]) {
@@ -230,6 +233,46 @@
     
 }
 
+
+
+/* 输入框字符发生改变*/
+
+-(void)textDidChange:(id<UITextInput>)textInput{
+    
+    if (![_signUpView.phoneNumber.text isEqualToString:@""]) {
+        _signUpView.getCheckCodeButton.enabled = YES;
+        [_signUpView.getCheckCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_signUpView.getCheckCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        _signUpView.getCheckCodeButton.enabled = NO;
+        [_signUpView.getCheckCodeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [_signUpView.getCheckCodeButton removeTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+        
+    }
+    
+    if (_signUpView.phoneNumber.text.length > 11) {
+        _signUpView.phoneNumber.text = [_signUpView.phoneNumber.text substringToIndex:11];
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入11位手机号" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+    }
+
+    if (_signUpView.phoneNumber.text.length>0&&_signUpView.checkCode.text.length>0&&_signUpView.userPassword.text.length>0&&_signUpView.userPasswordCompare.text.length>0&&_signUpView.chosenButton.selected==YES) {
+        _signUpView.nextStepButton.enabled = YES;
+        [_signUpView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+    }else{
+        _signUpView.nextStepButton.enabled = NO;
+        [_signUpView.nextStepButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+
+    }
+    
+    
+    
+}
+
+
+
+
+
 /*点击按钮  获取验证码*/
 
 - (void)getCheckCode:(UIButton *)sender{
@@ -273,6 +316,8 @@
     
 }
 
+
+
 // 正则判断手机号码地址格式
 - (BOOL)isMobileNumber:(NSString *)mobileNum {
     
@@ -295,7 +340,8 @@
 -(BOOL)checkPassWord:(NSString *)password{
     
     //6-16位数字和字母组成
-    NSString *regex = @"^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
+//    ^[A-Za-z0-9]{6,16}$
+    NSString *regex = @"^[A-Za-z0-9]{6,16}";
     NSPredicate *   pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
     if ([pred evaluateWithObject:password]) {
         return YES ;

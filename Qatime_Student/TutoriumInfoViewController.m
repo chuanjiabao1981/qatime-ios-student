@@ -700,12 +700,11 @@
     CGFloat teacherDesc_height =  _tutoriumInfoView.teacherInterviewLabel.frame.origin.y+_tutoriumInfoView.teacherInterviewLabel.frame.size.height;
     
     
-    
     if (classDesc_height>teacherDesc_height) {
         
         [_tutoriumInfoView.scrollView setContentSize:CGSizeMake(self.view.width_sd*3, classDesc_height)];
     }else {
-         [_tutoriumInfoView.scrollView setContentSize:CGSizeMake(self.view.width_sd*3, teacherDesc_height-_tutoriumInfoView.segmentControl.height_sd-_tutoriumInfoView.classImage.height_sd)];
+         [_tutoriumInfoView.scrollView setContentSize:CGSizeMake(self.view.width_sd*3, teacherDesc_height)];
         
     }
     

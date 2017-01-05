@@ -16,6 +16,7 @@
 #import "UIViewController_HUD.h"
 
 #import "BindingViewController.h"
+#import "UIAlertController+Blocks.h"
 
 typedef NS_ENUM(NSUInteger, LoginType) {
     Normal =0, //账号密码登录
@@ -24,8 +25,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 };
 
 
-
-@interface LoginViewController ()<UITextFieldDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate>{
+@interface LoginViewController ()<UITextFieldDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate,UITextInputDelegate>{
     
     
     NavigationBar *_navigationBar;
@@ -62,18 +62,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 
 @implementation LoginViewController
 
-//-(instancetype)initWithReturnButton:(BOOL)returnButton{
-//    
-//    self = [super init];
-//    if (self) {
-//        
-//        haveReturnButton = returnButton;
-//        
-//    }
-//    return self;
-//}
-
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -96,21 +84,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     .centerXEqualToView(_navigationBar)
     .widthIs(24*1080/208.0f);
     
-    /* 判断登录是否有返回按钮*/
-//    if (haveReturnButton==YES) {
-//        
-//        [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-//        
-//        [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-//        
-//    }
-
-
-    
-    
-    
-    
-    
     
     needCheckCaptcha = NO;
     _wrongTimes = 0;
@@ -120,46 +93,12 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     [self.view addSubview:_loginView];
     
     
-    
-    
-    
-//    /* status bar的绿色*/
-//    UIView *status=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 20)];
-//    [self .view addSubview:status];
-//    [status setBackgroundColor:[UIColor colorWithRed:26/255.0 green:183/255.0 blue:159/255.0 alpha:1.0]];
-    
     [_loginView.signUpButton addTarget:self action:@selector(enterSignUpPage:) forControlEvents:UIControlEventTouchUpInside];
     
     [_loginView.loginButton addTarget:self action:@selector(userLogin:) forControlEvents:UIControlEventTouchUpInside];
     _loginView.userName.delegate = self;
     _loginView.passWord.delegate = self;
-    
-    
-    
-    
-    //增加监听，当键盘出现或改变时收出消息
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//     
-//                                             selector:@selector(keyboardWillShow:)
-//     
-//                                                 name:UIKeyboardWillShowNotification
-//     
-//                                               object:nil];
-//    
-    
-    
-    //增加监听，当键退出时收出消息
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//     
-//                                             selector:@selector(keyboardWillHide:)
-//     
-//                                                 name:UIKeyboardWillHideNotification
-//     
-//                                               object:nil];
-    
-    
+    _loginView.passWord.secureTextEntry = YES;
     
     
     /* 忘记密码按钮*/
@@ -177,9 +116,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     [_loginView.wechatButton addTarget:self action:@selector(sendAuthRequest) forControlEvents:UIControlEventTouchUpInside];
     
     
-    
-    
-    
     /**
      测试调用方法
 
@@ -187,20 +123,44 @@ typedef NS_ENUM(NSUInteger, LoginType) {
      @return
      */
 //    [_loginView.wechatButton addTarget:self action:@selector(mypage) forControlEvents:UIControlEventTouchUpInside];
-    
-    
+
     
     /* 跳过登录直接进主页的方法*/
     
     [_loginView.acrossLogin addTarget:self action:@selector(enterWithoutLogin) forControlEvents:UIControlEventTouchUpInside];
     
     
-    
     /* 添加微信登录成功的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(wechatLoginSucess:) name:@"WechatLoginSucess" object:nil];
     
+    /* 输入字符改变的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+    
+    
     
 }
+
+-(void)textDidChange:(id<UITextInput>)textInput{
+    
+    /* 验证是否有中文字符*/
+    NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @".{0,}[\u4E00-\u9FA5].{0,}"];
+    if ([regextestmobile evaluateWithObject:_loginView.userName.text]==YES) {
+        
+        [_loginView.userName.text substringFromIndex:_loginView.userName.text.length];
+        
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请勿输入中文!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+        
+    }
+    
+    if ([regextestmobile evaluateWithObject:_loginView.passWord.text]==YES) {
+        
+        [_loginView.passWord.text substringFromIndex:_loginView.passWord.text.length];
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请勿输入中文!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+    }
+        
+    
+}
+
 
 #pragma mark- 微信请求code数据
 - (void)wechatLoginSucess:(NSNotification *)notification{

@@ -113,16 +113,15 @@
                 cell.rightButton.tag = 1;
                 [cell.rightButton addTarget:self action:@selector(turnNoticeStatus:) forControlEvents:UIControlEventTouchUpInside];
                 
-                if (allowVoice==NO) {
+                if (allowAlert==NO) {
                     
-                    [self senderTurnSelected:cell.rightButton];
+                    [self senderTurnUnSelected:cell.rightButton];
                     
                 }else{
-                    [self senderTurnUnSelected:cell.rightButton];
+                    [self senderTurnSelected:cell.rightButton];
 
                 }
 
-                
             }
             return  cell;
         }
@@ -151,11 +150,10 @@
 - (void)switchNotice:(UISwitch *)sender{
     
     NIMPushNotificationSetting *setting =  [[[NIMSDK sharedSDK] apnsManager] currentSetting];
-    
+    /* 如果要打开开关*/
     if (sender.on==YES) {
         /* 开启聊天消息推送*/
         setting.noDisturbing = NO;
-        
         [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"IMNotification"];
         [[[NIMSDK sharedSDK] apnsManager] updateApnsSetting:setting
                                                  completion:^(NSError *error) {}];
@@ -164,14 +162,15 @@
         /* 关闭消息推送*/
         setting.noDisturbing = YES;
         [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"IMNotification"];
-
         [[[NIMSDK sharedSDK] apnsManager] updateApnsSetting:setting
                                                  completion:^(NSError *error) {}];
     }
     
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"Notification" object:sender];
     
 }
 
+/* 改变通知方式*/
 - (void)turnNoticeStatus:(UIButton *)sender{
     
     switch (sender.tag) {

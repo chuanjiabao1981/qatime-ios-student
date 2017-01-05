@@ -408,7 +408,6 @@ bool ismute     = NO;
     /* 默认弹幕开启*/
     [_aBarrage start];
     
-//    [self setupMediaControl];
     /* 加载媒体控制器*/
     [self setupMediaControl];
 
@@ -650,7 +649,7 @@ bool ismute     = NO;
         [_ addTarget:self action:@selector(onClickBack:) forControlEvents:UIControlEventTouchUpInside];
         [_topControlView addSubview:_];
         _.sd_layout
-        .leftSpaceToView(_topControlView,10)
+        .leftSpaceToView(_topControlView,0)
         .topEqualToView(_topControlView)
         .heightRatioToView(_topControlView,1.0f)
         .widthEqualToHeight();
@@ -838,8 +837,10 @@ bool ismute     = NO;
     
     /* 加载白板播放器*/
     [self setupBoardPlayer];
-    /* 加载摄像头播放器*/
-    [self setupTeacherPlayer];
+    
+    /*延迟0.3s 加载摄像头播放器*/
+    [self performSelector:@selector(setupTeacherPlayer) withObject:nil afterDelay:0.3];
+//    [self setupTeacherPlayer];
     
     
     
@@ -1166,6 +1167,14 @@ bool ismute     = NO;
                 [self changInfoViewsWithTopView:_teacherPlayerView];
                 [self changInfoViewContentSizeToSmall];
                 
+                [_aBarrage.view sd_clearAutoLayoutSettings];
+                _aBarrage.view.sd_layout
+                .leftEqualToView(_teacherPlayerView)
+                .rightEqualToView(_teacherPlayerView)
+                .topEqualToView(_teacherPlayerView)
+                .bottomEqualToView(_teacherPlayerView);
+                
+                
             }
             /* 条件2-2：如果教师是主视图*/
             else if(_teacherPlayerView.becomeMainPlayer == YES){
@@ -1173,6 +1182,12 @@ bool ismute     = NO;
                 [self makeSecondPlayer:_boardPlayerView];
                 [self changInfoViewsWithTopView:_boardPlayerView];
                 [self changInfoViewContentSizeToSmall];
+                [_aBarrage.view sd_clearAutoLayoutSettings];
+                _aBarrage.view.sd_layout
+                .leftEqualToView(_teacherPlayerView)
+                .rightEqualToView(_teacherPlayerView)
+                .topEqualToView(_teacherPlayerView)
+                .bottomEqualToView(_teacherPlayerView);
                 
             }
             
@@ -1273,7 +1288,6 @@ bool ismute     = NO;
 
 #pragma mark- 在非平级视图下切换两个视图（大变小、小变大）
 - (void)changePlayersMode{
-    
     
     /* 条件1：如果老师是主视图*/
     if (_boardPlayerView.becomeMainPlayer ==NO) {
@@ -1831,9 +1845,15 @@ bool ismute     = NO;
             
         case NELPMovieFinishReasonPlaybackError:{
             /* 播放错误导致失败的回调*/
-            alertController = [UIAlertController alertControllerWithTitle:@"注意" message:@"播放失败" preferredStyle:UIAlertControllerStyleAlert];
-            action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            NSString *player = nil;
+            if ([notification object]==_liveplayerBoard){
+                player = [NSString stringWithFormat:@"白板播放器"];
+            }else if ([notification object]==_liveplayerTeacher){
+                 player = [NSString stringWithFormat:@"摄像头播放器"];
+            }
             
+            alertController = [UIAlertController alertControllerWithTitle:@"注意" message:[NSString stringWithFormat:@"%@播放失败",player] preferredStyle:UIAlertControllerStyleAlert];
+            action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
                 [self checkVideoStatus];
             
             }];
@@ -1844,6 +1864,7 @@ bool ismute     = NO;
             break;
             
         case NELPMovieFinishReasonUserExited:
+            
             break;
             
         default:
@@ -1857,26 +1878,21 @@ bool ismute     = NO;
     
     NELPMovieLoadState nelpLoadState = livePlayer.loadState;
     
-    if (nelpLoadState == NELPMovieLoadStatePlaythroughOK)
-    {
+    if (nelpLoadState == NELPMovieLoadStatePlaythroughOK){
         if (livePlayer == _liveplayerBoard) {
-            
             NSLog(@"白板播放器加载视频成功!!!");
         }else if(livePlayer == _liveplayerTeacher){
             NSLog(@"摄像头播放器加载视频成功!!!");
         }
-
-    }
-    else if (nelpLoadState == NELPMovieLoadStateStalled)
-    {
+    }else if (nelpLoadState == NELPMovieLoadStateStalled){
         if (livePlayer == _liveplayerBoard) {
-            
             NSLog(@"白板播放器开始加载视频......");
         }else if(livePlayer == _liveplayerTeacher){
-            
             NSLog(@"摄像头播放器开始加载视频......");
         }
 
+    }else if (nelpLoadState == NELPMovieLoadStatePlayable){
+        
     }
 }
 
@@ -1895,7 +1911,7 @@ bool ismute     = NO;
 
 
 - (void)NELivePlayerFirstAudioDisplayed:(NSNotification*)notification{
-    NSLog(@"first audio frame rendered!");
+//    NSLog(@"first audio frame rendered!");
 }
 
 - (void)NELivePlayerVideoParseError:(NSNotification*)notification{
@@ -1913,7 +1929,6 @@ bool ismute     = NO;
     
     NELivePlayerController *livePlayer = [notification object];
     if (livePlayer == _liveplayerBoard) {
-        
         NSLog(@"白板播放器资源释放了!!!");
     }else if (livePlayer == _liveplayerTeacher){
         NSLog(@"摄像头播放器资源释放了!!!");
@@ -2199,8 +2214,18 @@ bool ismute     = NO;
     /* 聊天信息发送时间间隔*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sendeButtonCannotUse) name:@"sendButtonCannotUse" object:nil];
     
+    
+    
+    
+    /* app进入后台/回到前台的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationDidEnterBackground) name:@"ApplicationDidEnterBackground" object:nil];
+     
+     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationDidBecomeActive) name:@"ApplicationDidBecomeActive" object:nil];
 }
 
+
+      
+      
 
 /* 播放器加载状态的监听方法*/
 - (void)boardPlayerInitSuccess{
@@ -3992,6 +4017,23 @@ bool ismute     = NO;
     
 }
 
+/* 应用程序进入后台*/
+- (void)applicationDidEnterBackground{
+    
+    [_liveplayerBoard pause];
+    [_liveplayerTeacher pause];
+    
+    
+}
+
+/* 应用程序进入前台*/
+- (void) applicationDidBecomeActive{
+    
+    [_liveplayerBoard play];
+    [_liveplayerTeacher play];
+    
+    
+}
 
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     

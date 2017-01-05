@@ -1341,7 +1341,6 @@
 				54AB48B21DED2CF2008E3BC5 /* 我的辅导 */,
 				54AB48B11DED2CF1008E3BC5 /* 安全管理 */,
 				54AB48B01DED2CEF008E3BC5 /* 系统设置 */,
-				54FCBAC61DD591AA0094BF58 /* 视频播放页 */,
 			);
 			name = "个人页面";
 			sourceTree = "<group>";
@@ -1879,6 +1878,7 @@
 		546978531DC723A2001695F4 /* 登录页面 */ = {
 			isa = PBXGroup;
 			children = (
+				546978611DC7258B001695F4 /* 注册页面 */,
 				54F3BA1C1DFC43FC003998D0 /* 重新登录页面 */,
 				54CB26651DEFFE4400AE7414 /* 登录界面 */,
 				54CB26641DEFFE4100AE7414 /* 找回密码 */,
@@ -2234,12 +2234,12 @@
 			children = (
 				54C21F8A1DDDB06E000549F2 /* Qatime_Student.entitlements */,
 				543C207A1DC6F6470086B04B /* Util */,
-				546978611DC7258B001695F4 /* 注册页面 */,
 				546978531DC723A2001695F4 /* 登录页面 */,
 				541F91DE1DC9BBAA00180BE8 /* 主页页面 */,
 				541F91D71DC9BB5C00180BE8 /* 辅导班页面 */,
 				541F91DD1DC9BBA800180BE8 /* 课程表页面 */,
 				541F91DA1DC9BBA000180BE8 /* 个人页面 */,
+				54FCBAC61DD591AA0094BF58 /* 视频播放页 */,
 				54FCBABE1DD58E790094BF58 /* Category */,
 				54A153AB1DC6F09D0070B508 /* AppDelegate.h */,
 				54A153AC1DC6F09D0070B508 /* AppDelegate.m */,

@@ -44,6 +44,7 @@
             [_ setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];
             
             _.selected = YES;
+            [_ setEnlargeEdge:20];
             
             _;
             
@@ -75,6 +76,7 @@
             [_ setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];
             
             _.selected = YES;
+            [_ setEnlargeEdge:20];
             
             _;
             

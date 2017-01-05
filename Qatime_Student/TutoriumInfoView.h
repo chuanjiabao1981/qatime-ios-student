@@ -36,8 +36,6 @@
 
 
 
-
-
 /* 滑动控制器*/
 
 @property(nonatomic,strong) HMSegmentedControl *segmentControl ;

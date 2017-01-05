@@ -172,19 +172,19 @@
 #pragma mark- 跳到个人信息设置界面
 - (void)personalInfo:(id)sender{
     
-    
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
-                PersonalInfoViewController *personVC = [PersonalInfoViewController new];
-        
-        [self.navigationController pushViewController:personVC animated:YES];
-        [self.rdv_tabBarController setTabBarHidden:YES];
-        
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]== NO) {
+            [self loginAgain];
+        }else{
+            
+            PersonalInfoViewController *personVC = [PersonalInfoViewController new];
+            [self.navigationController pushViewController:personVC animated:YES];
+            [self.rdv_tabBarController setTabBarHidden:YES];
+        }
     }else{
-        
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
-        
+        [self loginAgain];
     }
-    
+
 }
 
 
@@ -205,25 +205,10 @@
             
         }else{
             
+            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Login"];
+            
+            
             /* 获取失败*/
-//            [self loadingHUDStopLoadingWithTitle:@"获取余额信息失败"];
-            
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"登录超时!\n请重新登录!" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                
-            }] ;
-            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
-                [self loginAgain];
-                
-            }] ;
-            
-            [alert addAction:cancel];
-            [alert addAction:sure];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-
-            
             
         }
         

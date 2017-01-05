@@ -65,10 +65,12 @@
         _getCheckCodeButton.layer.borderWidth=0.6;
         _getCheckCodeButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         _getCheckCodeButton.sd_layout.topSpaceToView(_phoneNumber,15).leftSpaceToView(_checkCode,0).widthIs((CGRectGetWidth(self.frame)-40)/2).heightIs(40);
-        [_getCheckCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_getCheckCodeButton setTitle:@"获取校验码" forState:UIControlStateNormal];
+        [_getCheckCodeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         
         [_getCheckCodeButton setBackgroundColor:[UIColor colorWithRed:231.0/255.0 green:151.0/255.0 blue:105.0/255.0 alpha:1]];
+        _getCheckCodeButton.enabled = NO;
+        [_getCheckCodeButton setEnlargeEdge:10];
        
         
         
@@ -119,6 +121,7 @@
         _chosenButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         
         _chosenButton.selected = NO;
+        [_chosenButton setEnlargeEdge:20];
         
         /* 同意label*/
         _accessLabel= [[UILabel alloc]init];
@@ -142,9 +145,11 @@
         _nextStepButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI] ;
         [self addSubview:_nextStepButton];
         [_nextStepButton setTitle:@"下一步" forState:UIControlStateNormal];
-        [_nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_nextStepButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         _nextStepButton.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:151.0/255.0 blue:105.0/255.0 alpha:1];
         _nextStepButton.sd_layout.leftSpaceToView(self,20).rightSpaceToView(self,20).heightIs(40).topSpaceToView(_userPolicy,30);
+        _nextStepButton.enabled = NO;
+        [_nextStepButton setEnlargeEdge:20];
         
         
     }

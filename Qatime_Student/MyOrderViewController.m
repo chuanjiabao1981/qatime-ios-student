@@ -84,6 +84,132 @@
 }
 
 
+/* 视图布局*/
+
+/* 加载滚动视图*/
+- (void)setupOrderViews{
+    /*加载页面视图*/
+    _myOrderView = ({
+        
+        MyOrderView *_ = [[MyOrderView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
+        
+        /* 设置代理*/
+        _.scrollView.delegate = self;
+        _.scrollView.tag=0;
+        
+        /* 滑动效果*/
+        typeof(self) __weak weakSelf = self;
+        [ _.segmentControl setIndexChangeBlock:^(NSInteger index) {
+            [weakSelf.myOrderView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64) animated:YES];
+            
+            switch (index) {
+                case 0:{
+                    
+                    [_unpaidView.tableView.mj_footer beginRefreshing];
+                    
+                }
+                    break;
+                case 1:{
+                    
+                    [_paidView.tableView.mj_footer beginRefreshing];
+                    
+                }
+                    break;
+                case 2:{
+                    
+                    [_cancelView.tableView.mj_footer beginRefreshing];
+                }
+                    break;
+                    
+            }
+            
+        }];
+        [_.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
+        
+        [self.view addSubview:_];
+        _;
+    });
+    
+}
+
+/* 加载未支付页面*/
+- (void)setupUnpaidViews{
+    _unpaidView = ({
+        UnpaidOrderView *_=[[UnpaidOrderView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _myOrderView.scrollView.height_sd)];
+        _.tableView.delegate = self;
+        _.tableView.dataSource = self;
+        _.tableView.tag = 1;
+        
+        [_myOrderView.scrollView addSubview:_];
+        
+        _.tableView.tableFooterView = [[UIView alloc]init];
+        _.tableView.tableHeaderView = [[UIView alloc]init];
+        _.tableView.showsVerticalScrollIndicator=NO;
+        _.tableView.showsHorizontalScrollIndicator=NO;
+        
+        _.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            [self requestUnpaid];
+        }];
+        
+        _;
+    });
+    
+    
+}
+
+
+/* 加载已支付页面*/
+
+- (void)setupPaidView{
+    
+    _paidView = ({
+        PaidOrderView *_=[[PaidOrderView alloc]initWithFrame:CGRectMake(self.view.width_sd, 0, self.view.width_sd, _myOrderView.scrollView.height_sd)];
+        _.tableView.delegate = self;
+        _.tableView.dataSource = self;
+        _.tableView.tag = 2;
+        _.tableView.tableFooterView = [[UIView alloc]init];
+        [_myOrderView.scrollView addSubview:_];
+        
+        _.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            
+            [self requestPaid];
+            
+        }];
+        
+        _;
+    });
+    
+    
+}
+
+
+/* 加载取消页*/
+- (void)setupCancelViews{
+    
+    _cancelView = ({
+        CanceldOrderView *_=[[CanceldOrderView alloc]initWithFrame:CGRectMake(self.view.width_sd*2, 0, self.view.width_sd, _myOrderView.scrollView.height_sd)];
+        _.tableView.delegate = self;
+        _.tableView.dataSource = self;
+        _.tableView.tag = 3;
+        _.tableView.tableFooterView = [[UIView alloc]init];
+        [_myOrderView.scrollView addSubview:_];
+//        _.sd_layout
+//        .leftSpaceToView(_paidView,0)
+//        .topSpaceToView(_myOrderView.scrollView,0)
+//        .bottomSpaceToView(_myOrderView.scrollView,0)
+//        .widthIs(self.view.width_sd);
+        
+        _.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+
+            [self requestCanceld];
+        }];
+        
+        _;
+    });
+    
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -98,172 +224,8 @@
         _;
     });
     
-    
-    
-    /*加载页面视图*/
-    _myOrderView = ({
-        
-        MyOrderView *_ = [[MyOrderView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
-        
-        /* 设置代理*/
-        _.scrollView.delegate = self;
-        _.scrollView.tag=0;
-        
-        
-        
-        /* 滑动效果*/
-        typeof(self) __weak weakSelf = self;
-        [ _.segmentControl setIndexChangeBlock:^(NSInteger index) {
-            [weakSelf.myOrderView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64) animated:YES];
-            
-            switch (index) {
-                case 0:{
-                    if (unpaidPageTime == 0) {
-                        
-                        [_unpaidView.tableView.mj_footer beginRefreshing];
-                        
-                        
-                        
-                    }else{
-                        
-                    }
-                    unpaidPageTime ++;
-                    //                    unpaidPage++;
-                }
-                    break;
-                case 1:{
-                    if (paidPageTime == 0) {
-                        
-                        [_paidView.tableView.mj_footer beginRefreshing];
-                        
-                    }else{
-                        
-                    }
-                    
-                    paidPageTime ++;
-                }
-                    break;
-                case 2:{
-                    if (cancelPageTime == 0) {
-                        
-                        [_cancelView.tableView.mj_footer beginRefreshing];
-                        
-                    }else{
-                        
-                    }
-                    
-                    cancelPageTime++;
-                    
-                }
-                    break;
-                    
-            }
-            
-        }];
-        [_.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
-        
-        [self.view addSubview:_];
-        _;
-    });
-    
-    
-    
-    
-    
-    
-    _unpaidView = ({
-        UnpaidOrderView *_=[[UnpaidOrderView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _myOrderView.scrollView.height_sd)];
-        _.tableView.delegate = self;
-        _.tableView.dataSource = self;
-        _.tableView.tag = 1;
-        
-        [_myOrderView.scrollView addSubview:_];
-        
-        
-        _.tableView.tableFooterView = [[UIView alloc]init];
-        _.tableView.tableHeaderView = [[UIView alloc]init];
-        _.tableView.showsVerticalScrollIndicator=NO;
-        _.tableView.showsHorizontalScrollIndicator=NO;
-        
-        
-        _.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-            
-            
-            if (unpaidPage ==1) {
-                
-                [self requestUnpaid];
-                unpaidPage ++;
-            }else{
-                unpaidPage ++;
-                [self requestUnpaid];
-            }
-            
-            
-        }];
-        
-        _;
-    });
-    
-    
-    _paidView = ({
-        PaidOrderView *_=[[PaidOrderView alloc]initWithFrame:CGRectMake(self.view.width_sd, 0, self.view.width_sd, _myOrderView.scrollView.height_sd)];
-        _.tableView.delegate = self;
-        _.tableView.dataSource = self;
-        _.tableView.tag = 2;
-        _.tableView.tableFooterView = [[UIView alloc]init];
-        [_myOrderView.scrollView addSubview:_];
-        
-        
-        
-        _.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-            
-            if (paidPage ==1) {
-                
-                [self requestPaid];
-                paidPage ++;
-            }else{
-                paidPage ++;
-                [self requestPaid];
-            }
-            
-            
-            
-        }];
-        
-        _;
-    });
-    
-    
-    
-    _cancelView = ({
-        CanceldOrderView *_=[[CanceldOrderView alloc]initWithFrame:CGRectMake(self.view.width_sd*2.0, 0, self.view.width_sd, _myOrderView.scrollView.height_sd)];
-        _.tableView.delegate = self;
-        _.tableView.dataSource = self;
-        _.tableView.tag = 3;
-        _.tableView.tableFooterView = [[UIView alloc]init];
-        [_myOrderView.scrollView addSubview:_];
-        _.sd_layout
-        .leftSpaceToView(_paidView,0)
-        .topSpaceToView(_myOrderView.scrollView,0)
-        .bottomSpaceToView(_myOrderView.scrollView,0)
-        .widthIs(self.view.width_sd);
-        
-        _.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-            if (cancelPage ==1) {
-                
-                [self requestCanceld];
-                cancelPage ++;
-                
-            }else{
-                cancelPage ++;
-                [self requestCanceld];
-            }
-            
-            
-        }];
-        
-        _;
-    });
+    /* 加载大滚动视图*/
+    [self setupOrderViews];
     
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
@@ -280,13 +242,12 @@
     /* 发起网络请求*/
     /* 请求未支付的数据*/
     [self requestUnpaid];
-    unpaidPage ++;
-    unpaidPageTime ++;
-    //    /* 请求已支付数据*/
-    //    [self requestPaid];
-    //    /* 请求取消的数据*/
-    //
-    //    [self requestCanceld];
+
+    /* 请求已支付数据*/
+    [self requestPaid];
+    /* 请求取消的数据*/
+    
+    [self requestCanceld];
     /* 微信支付成功的监听回调*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(paySucess) name:@"ChargeSucess" object:nil];
     
@@ -330,25 +291,22 @@
                     
                     [_unpaidArr addObject:mod];
                 }
-                [_unpaidView.tableView reloadData];
-                [_unpaidView.tableView setNeedsDisplay];
+                
+//                [_unpaidView.tableView reloadData];
+//                [_unpaidView.tableView setNeedsDisplay];
                 [_unpaidView.tableView.mj_footer endRefreshing];
                 [self loadingHUDStopLoadingWithTitle:@"加载完成"];
                 
+                /* 加载未支付视图*/
+                [self setupUnpaidViews];
                 
             }else{
                 /* 没更多的数据了*/
-                
-                /* 测试数据*/
-                //                 _unpaidView.hidden = YES;
-                //                [_unpaidView.mj_footer endRefreshingWithNoMoreData];
-                //                [self loadingHUDStopLoadingWithTitle:@"没有符合条件的订单!"];
-                
                 if (_unpaidArr.count == 0) {
                     _unpaidView.hidden = YES;
                 }
-                
                 [_unpaidView.tableView.mj_footer endRefreshingWithNoMoreData];
+                
                 [self loadingHUDStopLoadingWithTitle:@"没有符合条件的订单!"];
             }
             
@@ -385,32 +343,27 @@
             /* 获取数据成功*/
             if ([dic[@"data"] count]!=0) {
                 /* 有数据*/
-                
                 _paidView.hidden = NO;
-                
                 __block NSMutableArray *paidArr = [NSMutableArray arrayWithArray:dic[@"data"]];
-                
                 NSMutableArray *compArr = paidArr.copy;
-                
-                
                 for (NSInteger i = 0; i<compArr.count; i++) {
-                    
                     /* 遍历完,model赋值,写入数组*/
                     Paid *mod = [Paid yy_modelWithJSON:paidArr[i][@"product"]];
-                    
                     mod.status =paidArr[i][@"status"];
                     mod.pay_type = paidArr[i][@"pay_type"];
                     mod.appid = paidArr[i][@"app_pay_params"][@"appid"];
                     mod.timestamp = paidArr[i][@"app_pay_params"][@"timestamp"];
                     mod.orderID = paidArr[i][@"id"];
-                    
                     [_paidArr addObject:mod];
                 }
                 
-                [_paidView.tableView reloadData];
-                [_paidView.tableView setNeedsDisplay];
+//                [_paidView.tableView reloadData];
+//                [_paidView.tableView setNeedsDisplay];
                 [_paidView.tableView.mj_footer endRefreshing];
                 [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                /* 加载已支付的视图*/
+                [self setupPaidView];
+                
             }else{
                 /* 没更多的数据了*/
                 
@@ -423,7 +376,7 @@
                 
             }
             
-            //            [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+//            [self loadingHUDStopLoadingWithTitle:@"加载完成"];
             
         }else{
             
@@ -476,11 +429,13 @@
                     
                     [_caneldArr addObject:mod];
                 }
-                [_cancelView.tableView reloadData];
-                [_cancelView.tableView setNeedsDisplay];
+                //                [_cancelView.tableView reloadData];
+                //                [_cancelView.tableView setNeedsDisplay];
                 [self loadingHUDStopLoadingWithTitle:@"加载完成"];
                 [_cancelView.tableView.mj_footer endRefreshing];
                 
+                /* 加载视图*/
+                [self setupCancelViews];
                 
             }else{
                 /* 没更多的数据了*/
@@ -758,8 +713,8 @@
     [alert addAction:sure];
     
     [self presentViewController:alert animated:YES completion:nil];
-
-
+    
+    
     
     
 }
@@ -944,7 +899,7 @@
             case 0:{
                 if (unpaidPageTime == 0) {
                     
-                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+//                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
                     
                     [_unpaidView.tableView.mj_footer beginRefreshing];
                     
@@ -957,7 +912,7 @@
                 break;
             case 1:{
                 if (paidPageTime == 0) {
-                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+//                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
                     [_paidView.tableView.mj_footer beginRefreshing];
                     
                 }else{
@@ -969,7 +924,7 @@
                 break;
             case 2:{
                 if (cancelPageTime == 0) {
-                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+//                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
                     
                     [_cancelView.tableView.mj_footer beginRefreshing];
                     
@@ -990,7 +945,7 @@
         
     }
     
-      
+    
     
 }
 

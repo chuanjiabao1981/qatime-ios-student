@@ -197,18 +197,12 @@
             NSLog(@"%@",_dataDic);
         }else{
             
-            
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"登录超时!" preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录超时!\n请重新登录" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                 
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
                 
                 
-            }] ;
-            [alert addAction:sure];
-            
-            [self presentViewController:alert animated:YES completion:nil];
+            }];
             
             
         }
@@ -221,9 +215,6 @@
     }];
     
 }
-
-
-
 
 
 

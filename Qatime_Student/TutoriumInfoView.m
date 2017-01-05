@@ -31,7 +31,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.contentSize = CGSizeMake(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame)*1.5);
+        self.contentSize = CGSizeMake(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
         self.bounces = NO;
         self.showsVerticalScrollIndicator = NO;
         
@@ -131,6 +131,7 @@
        _scrollView.pagingEnabled = YES;
         _scrollView.showsHorizontalScrollIndicator = NO;
         [_scrollView scrollRectToVisible:CGRectMake(CGRectGetWidth(self.frame), 0, CGRectGetWidth(self.frame), 200) animated:NO];
+        _scrollView.backgroundColor = [UIColor whiteColor];
         
         /* 分割线2*/
         UIView *line2 =[[UIView alloc]init];
@@ -379,8 +380,6 @@
         [_view3 addSubview:_classesListTableView];
         
         _classesListTableView.sd_layout.leftSpaceToView(_view3,0).rightSpaceToView(_view3,0).topSpaceToView(_view3,0).bottomSpaceToView(_view3,0);
-        
-        
         
         
     }

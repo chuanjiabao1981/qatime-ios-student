@@ -13,9 +13,7 @@
 #import "RDVTabBarController.h"
 
 
-@interface ClassSettingViewController ()<UITableViewDelegate,UITableViewDataSource>
-
-{
+@interface ClassSettingViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
      NavigationBar *_navigtionBar;
 }

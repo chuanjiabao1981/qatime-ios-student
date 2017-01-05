@@ -48,6 +48,7 @@
         _scrollView = [[UIScrollView alloc]init];
 
         [self addSubview: _scrollView ];
+        _scrollView.backgroundColor = [UIColor whiteColor];
         
 //        _scrollView setFrame:CGRectMake(0, CGRectGetMaxY(_segmentControl.frame), , <#CGFloat height#>)
         _scrollView.sd_layout.
@@ -63,6 +64,7 @@
         
         
         UIView *view1= [[UIView alloc]init];
+        view1.backgroundColor = [UIColor whiteColor];
         [_scrollView addSubview:view1];
 //        view1.backgroundColor = [UIColor redColor];
         view1.sd_layout
@@ -72,6 +74,7 @@
         .widthRatioToView(self,1.0f);
         
         _view2= [[UIView alloc]init];
+        _view2.backgroundColor = [UIColor whiteColor];
         [_scrollView addSubview:_view2];
 //        view2.backgroundColor = [UIColor orangeColor];
 
@@ -82,6 +85,7 @@
         .widthRatioToView(self,1.0f);
         
         _view3= [[UIView alloc]init];
+        _view3.backgroundColor = [UIColor whiteColor];
         [_scrollView addSubview:_view3];
 //        view3.backgroundColor = [UIColor yellowColor];
 
@@ -92,6 +96,7 @@
         .widthRatioToView(self,1.0f);
         
         _view4= [[UIView alloc]init];
+        _view4.backgroundColor = [UIColor whiteColor];
         [_scrollView addSubview:_view4];
 //        view4.backgroundColor = [UIColor greenColor];
 

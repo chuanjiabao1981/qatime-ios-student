@@ -8,9 +8,9 @@
 
 #import "FindPasswordViewController.h"
 #import "MBProgressHUD.h"
+#import "UIAlertController+Blocks.h"
 
-
-@interface FindPasswordViewController ()
+@interface FindPasswordViewController ()<UITextFieldDelegate,UITextInputDelegate>
 
 @end
 
@@ -29,7 +29,7 @@
     
     
     
-    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(backToFrontPage:) forControlEvents:UIControlEventTouchUpInside];
     
     _findPasswordView = [[FindPasswordView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
@@ -39,9 +39,11 @@
     
     [_findPasswordView.nextStepButton addTarget:self action:@selector(nextStep:) forControlEvents:UIControlEventTouchUpInside];
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
     
     
 }
+
 
 /* 点击下一步按钮*/
 - (void)nextStep:(UIButton *)sender{
@@ -134,49 +136,48 @@
         }];
         
         
-        
-//        [manager POST:@"%@/api/v1/captcha/verify" parameters:signUpInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//            
-//            NSDictionary *codeState = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-//            
-//            NSLog(@"%@",codeState);
-//            
-//            NSString *status = [NSString stringWithFormat:@"%@",codeState[@"status"]];
-//            
-//            
-//            
-//        #pragma mark-注册信息校验正确
-//            /* 注册信息校验正确*/
-//            
-//            if ([status isEqualToString:@"1"]){
-//                
-//                /* 发送成功提示框*/
-//                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//                hud.mode = MBProgressHUDModeText;
-//                [hud.label setText:@"密码修改成功！"];
-//                hud.yOffset= 150.f;
-//                hud.removeFromSuperViewOnHide = YES;
-//                
-//                [hud hideAnimated:YES afterDelay:1.0];
-//                
-//                
-//                [self.navigationController popViewControllerAnimated:YES];
-//                
-//                
-//            }
-//            else if (![status isEqualToString:@"1"]){
-//                
-//                [self showAlertWith:@"验证失败！请输入正确的信息！"];
-//                
-//            }
-//            
-//        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//            
-//        }];
+
         
     }
     
 }
+
+/* 输入框字符发生改变*/
+
+-(void)textDidChange:(id<UITextInput>)textInput{
+    
+    if (![_findPasswordView.phoneNumber.text isEqualToString:@""]) {
+        _findPasswordView.getCheckCodeButton.enabled = YES;
+        [_findPasswordView.getCheckCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_findPasswordView.getCheckCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        _findPasswordView.getCheckCodeButton.enabled = NO;
+        [_findPasswordView.getCheckCodeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [_findPasswordView.getCheckCodeButton removeTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+        
+    }
+    
+    if (_findPasswordView.phoneNumber.text.length > 11) {
+        _findPasswordView.phoneNumber.text = [_findPasswordView.phoneNumber.text substringToIndex:11];
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入11位手机号" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+    }
+    
+    if (_findPasswordView.phoneNumber.text.length>0&&_findPasswordView.checkCode.text.length>0&&_findPasswordView.userPassword.text.length>0&&_findPasswordView.userPasswordCompare.text.length>0){
+        _findPasswordView.nextStepButton.enabled = YES;
+        [_findPasswordView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+    }else{
+        _findPasswordView.nextStepButton.enabled = NO;
+        [_findPasswordView.nextStepButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        
+    }
+    
+    
+    
+}
+
+
+
 
 
 /*点击按钮  获取验证码*/
