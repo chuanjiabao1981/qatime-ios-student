@@ -17,7 +17,7 @@
 #import "UIViewController+HUD.h"
 
 
-@interface BindingViewController ()<UIPickerViewDelegate,UIPickerViewDataSource>{
+@interface BindingViewController ()<UIPickerViewDelegate,UIPickerViewDataSource,UITextInputDelegate>{
     
     NavigationBar *_navigationBar;
     
@@ -53,10 +53,13 @@
     [super viewDidLoad];
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
+    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+    [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_navigationBar];
     [_navigationBar.titleLabel setText:@"绑定"];
     
     _bindingView = [[BindingView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
+    
     [self.view addSubview:_bindingView];
     
     
@@ -79,6 +82,9 @@
     [_bindingView.grade addTarget:self action:@selector(chooseGrade:) forControlEvents:UIControlEventTouchUpInside];
     
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+    
+    
     [self loadingHUDStartLoadingWithTitle:@"正在获取年级信息"];
     
 }
@@ -89,28 +95,74 @@
     
 }
 
+/* 输入框字符发生改变*/
+
+-(void)textDidChange:(id<UITextInput>)textInput{
+    
+    if (![_bindingView.phoneNumber.text isEqualToString:@""]) {
+        _bindingView.getCheckCodeButton.enabled = YES;
+        [_bindingView.getCheckCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_bindingView.getCheckCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        _bindingView.getCheckCodeButton.enabled = NO;
+        [_bindingView.getCheckCodeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [_bindingView.getCheckCodeButton removeTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+        
+    }
+    
+    if (_bindingView.phoneNumber.text.length > 11) {
+        _bindingView.phoneNumber.text = [_bindingView.phoneNumber.text substringToIndex:11];
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入11位手机号" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+    }
+    
+}
+
+
 /* 选择协议*/
 - (void)chosenProtocol:(UIButton *)sender{
     
     if (sender.selected ==NO) {
-        
         sender.layer.borderWidth = 0;
         sender.backgroundColor = [UIColor colorWithRed:0.84 green:0.33 blue:0.6 alpha:1.00];
         [sender setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];
-        
         sender.selected = YES;
+        if (_bindingView.phoneNumber.text.length>0&&_bindingView.checkCode.text.length>0&&_bindingView.userPassword.text.length>0&&_bindingView.userPasswordCompare.text.length>0&&_bindingView.chosenButton.selected==YES&&![_bindingView.grade.titleLabel.text isEqualToString:@"选择所在年级"]) {
+            _bindingView.nextStepButton.enabled = YES;
+            [_bindingView.nextStepButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+            _bindingView.nextStepButton.layer.borderColor = BUTTONRED.CGColor;
+        }else{
+            _bindingView.nextStepButton.enabled = NO;
+            [_bindingView.nextStepButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            _bindingView.nextStepButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            
+        }
+
+        
+        
     }else{
         
         sender.layer.borderColor =[UIColor blackColor].CGColor;
         sender.layer.borderWidth=1.0f;
         [sender setImage:nil forState:UIControlStateNormal];
         sender.backgroundColor = [UIColor clearColor];
-        
-        
-        
         sender.selected= NO;
-        
+        if (_bindingView.phoneNumber.text.length>0&&_bindingView.checkCode.text.length>0&&_bindingView.userPassword.text.length>0&&_bindingView.userPasswordCompare.text.length>0&&_bindingView.chosenButton.selected==YES) {
+            _bindingView.nextStepButton.enabled = YES;
+            [_bindingView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            _bindingView.nextStepButton.layer.borderColor = BUTTONRED.CGColor;
+        }else{
+            _bindingView.nextStepButton.enabled = NO;
+            [_bindingView.nextStepButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+            _bindingView.nextStepButton.layer.borderColor = BUTTONRED.CGColor;
+            
+        }
+
     }
+    
+    
+    
+    
+    
     
     
 }
@@ -133,11 +185,11 @@
     /* 有信息填写不正确*/
     if ([_bindingView.phoneNumber.text isEqualToString:@""]) {
         
-        [self loadingHUDStopLoadingWithTitle:@"请输入手机号！"];
+        [self showAlertWith:@"请输入手机号！"];
     }
     if (![self isMobileNumber:_bindingView.phoneNumber.text]) {
         
-        [self loadingHUDStopLoadingWithTitle:@"请输入正确的手机号！"];
+        [self showAlertWith:@"请输入正确的手机号！"];
         
     }
     if ([_bindingView.userPassword.text isEqualToString:@""]||![self checkPassWord: _bindingView.userPassword.text] ) {
@@ -151,16 +203,14 @@
         
     }
     
-    
     /* 所有信息都填写正确的情况*/
     if (!([_bindingView.phoneNumber.text isEqualToString:@""]&&[_bindingView.userPassword.text isEqualToString:@""]&&[_bindingView.userPasswordCompare.text isEqualToString:@""]&&[_bindingView.checkCode.text isEqualToString:@""]/*&&[_signUpView.unlockKey.text isEqualToString:@""] 注册码功能暂时去掉*/)&&[_bindingView.userPasswordCompare.text isEqualToString:_bindingView.userPassword.text]) {
         
         if (!_bindingView.chosenButton.isSelected) {
             
-            
             [self showAlertWith:@"请遵守《答疑时间用户协议》"];
-        }else{
             
+        }else{
             
             /* 所有信息汇总成字典*/
             
@@ -429,7 +479,6 @@
     [_bindingView.userPassword resignFirstResponder];
     [_bindingView.userPasswordCompare resignFirstResponder];
     
-    
     [MMPickerView showPickerViewInView:self.view withStrings:gradeList.grade withOptions:@{NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]} completion:^(NSString *selectedString) {
         
         [_bindingView.grade setTitle:selectedString forState:UIControlStateNormal];
@@ -451,6 +500,11 @@
     [ _bindingView.userPassword resignFirstResponder];
     [_bindingView.userPasswordCompare resignFirstResponder];
     [_bindingView.phoneNumber resignFirstResponder];
+    
+}
+- (void)returnLastPage{
+    
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
 

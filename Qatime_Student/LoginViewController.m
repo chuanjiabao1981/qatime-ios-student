@@ -112,8 +112,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     
     /* 微信按钮加点击事件 点击登录*/
-    
-    [_loginView.wechatButton addTarget:self action:@selector(sendAuthRequest) forControlEvents:UIControlEventTouchUpInside];
+//    [_loginView.wechatButton addTarget:self action:@selector(sendAuthRequest) forControlEvents:UIControlEventTouchUpInside];
     
     
     /**
@@ -122,11 +121,10 @@ typedef NS_ENUM(NSUInteger, LoginType) {
      @param sendAuthRequest
      @return
      */
-//    [_loginView.wechatButton addTarget:self action:@selector(mypage) forControlEvents:UIControlEventTouchUpInside];
+    [_loginView.wechatButton addTarget:self action:@selector(mypage) forControlEvents:UIControlEventTouchUpInside];
 
     
     /* 跳过登录直接进主页的方法*/
-    
     [_loginView.acrossLogin addTarget:self action:@selector(enterWithoutLogin) forControlEvents:UIControlEventTouchUpInside];
     
     
@@ -135,8 +133,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     /* 输入字符改变的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
-    
-    
     
 }
 
@@ -157,14 +153,12 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         [_loginView.passWord.text substringFromIndex:_loginView.passWord.text.length];
         [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请勿输入中文!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
     }
-        
     
 }
 
 
 #pragma mark- 微信请求code数据
 - (void)wechatLoginSucess:(NSNotification *)notification{
-    
     
     NSString *code = [notification object];
     

@@ -17,7 +17,7 @@
 #import "HcdDateTimePickerView.h"
 #import "MMPickerView.h"
 #import "UIViewController_HUD.h"
-
+#import "UIAlertController+Blocks.h"
 #import "TutoriumInfoViewController.h"
 
 #import "NotClassView.h"
@@ -89,6 +89,8 @@
     
     /* 保存缓存数据的数组*/
     NSMutableArray <TutoriumList *> *listArr;
+    /* 另一缓存数据数组 保存所有的辅导班数据,不动该数据,也不用该数据*/
+    NSMutableArray *listArrCopy;
     
     /* 保存页面缓存的字典*/
     NSDictionary *listDic;
@@ -209,6 +211,7 @@
     }
     per_Page = 10;
     listArr= [NSMutableArray array];
+    listArrCopy = @[].mutableCopy;
     infoModel = [[TutoriumListInfo alloc]init];
     
 #pragma mark- 筛选条件状态存储
@@ -228,8 +231,6 @@
     if (!([[NSUserDefaults standardUserDefaults]objectForKey:@"SubjectChosen"]== NULL)) {
         
         /* 初次请求数据 ，请求课程列表的所有数据 */
-        
-        
         
         NSString *sub =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"SubjectChosen"]];
         [_filterDic setValue:sub forKey:@"subject"];
@@ -260,6 +261,9 @@
     _tutoriumView = [[TutoriumView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-49)];
     [self .view addSubview:_tutoriumView];
     
+   
+
+    
     /* 集合视图的代理*/
     _tutoriumView.classesCollectionView.delegate = self;
     _tutoriumView.classesCollectionView.dataSource = self;
@@ -270,9 +274,9 @@
     [_tutoriumView.classesCollectionView registerClass:[TutoriumCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
     
     /* 没有课程时候的占位图*/
-    _noView= [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, _tutoriumView.classesCollectionView.origin_sd.y, self.view.width_sd, _tutoriumView.classesCollectionView.height_sd)];
+    _noView= [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _tutoriumView.classesCollectionView.height_sd)];
     _noView.titleLabel.text = @"没有相关课程";
-    [self.view addSubview:_noView];
+    [_tutoriumView.classesCollectionView addSubview:_noView];
     _noView.hidden = YES;
     
     
@@ -288,6 +292,7 @@
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
             [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
             [manager GET:[[NSUserDefaults standardUserDefaults]objectForKey:@"FilterURL"] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject){
+                 _noView.hidden = NO;
                 
                 NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
@@ -310,6 +315,7 @@
                             
                             /* 缓存数据源添加获取的Model*/
                             [listArr addObject:_tutroiumList];
+                            [listArrCopy addObject:_tutroiumList];
                             
                             NSLog(@"%@",listArr[0].data);
                             NSLog(@"%ld",listArr.count);
@@ -432,6 +438,11 @@
     _multiFilterView.recuit.selected = NO;
     [_multiFilterView.recuit addTarget:self action:@selector(choseClassStatus:) forControlEvents:UIControlEventTouchUpInside];
     
+//    _multiFilterView.lowPrice.delegate = self;
+//    _multiFilterView.highPrice.delegate = self;
+    [_multiFilterView.lowPrice addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
+     [_multiFilterView.highPrice addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
+    
     
     
     
@@ -467,7 +478,10 @@
     /* 滚筒视图消失的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pickerViewDismiss) name:@"PickerViewDismiss" object:nil];
     
+    
+    
 }
+
 
 
 
@@ -483,6 +497,42 @@
     [_tutoriumView.subjectButton setTitle:subj forState:UIControlStateNormal];
     
 }
+
+/* 判断输入的价格是否为非负整数*/
+-(BOOL)isPureNumber:(NSString *)number{
+    
+    NSString *sets = @"^[0-9]*$";
+    NSPredicate *predicate=[NSPredicate predicateWithFormat:@"SELF MATCHES %@", sets];
+    
+    return [predicate evaluateWithObject:number];
+    
+    
+}
+
+
+/* 检测输入框输入*/
+
+- (void)textChange:(id)sender{
+    
+    if (sender == _multiFilterView.lowPrice) {
+        if (![self isPureNumber:_multiFilterView.lowPrice.text]) {
+            
+            [_multiFilterView.lowPrice.text substringFromIndex:_multiFilterView.lowPrice.text.length];
+            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入正确的金额!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+        }
+    }else if (sender == _multiFilterView.highPrice){
+        
+         [_multiFilterView.highPrice.text substringFromIndex:_multiFilterView.highPrice.text.length];
+        if( ![self isPureNumber:_multiFilterView.highPrice.text]){
+            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入正确的金额!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+        }
+
+    }
+    
+    
+}
+
+
 
 
 #pragma mark- 选择招生和开课状态按钮点击事件
@@ -615,6 +665,9 @@
     
     [self textfileRespond];
     
+    _multiFilterView.lowPrice.text = @"";
+    _multiFilterView.highPrice.text = @"";
+    
     [_multiFilterView.startTime setTitle:@"请选择时间" forState:UIControlStateNormal];
     [_multiFilterView.endTime setTitle:@"请选择时间" forState:UIControlStateNormal];
     
@@ -638,9 +691,9 @@
 - (void)textfileRespond{
     
     [_multiFilterView.lowPrice resignFirstResponder];
-    [_multiFilterView.lowPrice setText:@""];
+//    [_multiFilterView.lowPrice setText:@""];
     [_multiFilterView.highPrice resignFirstResponder];
-    [_multiFilterView.highPrice setText:@""];
+//    [_multiFilterView.highPrice setText:@""];
     
     
 }
@@ -650,12 +703,60 @@
 #pragma mark- 多条件筛选视图弹出和取消
 - (void)sortByMulti{
     
+    /* 比较价格,小的在前,大的在后*/
+    NSInteger lowPrice = 0;
+    NSInteger highPrice = 0;
+    
+    if (![_multiFilterView.lowPrice.text isEqualToString:@""]) {
+        lowPrice =_multiFilterView.lowPrice.text.integerValue;
+        
+    }
+    if (![_multiFilterView.highPrice.text isEqualToString:@""]) {
+        highPrice =_multiFilterView.highPrice.text.integerValue;
+        
+    }
+    
+    if (lowPrice!=0&&highPrice!=0) {
+        
+        if (lowPrice>highPrice) {
+            _multiFilterView.lowPrice.text = [NSString stringWithFormat:@"%ld",highPrice];
+            _multiFilterView.highPrice.text = [NSString stringWithFormat:@"%ld",lowPrice];
+        }else if (lowPrice<highPrice) {
+            _multiFilterView.lowPrice.text = [NSString stringWithFormat:@"%ld",lowPrice];
+            _multiFilterView.highPrice.text = [NSString stringWithFormat:@"%ld",highPrice];
+        }
+    }
+    
+    NSString *earlyDay = nil;
+    
+    /* 比较日期大小,早的在前,晚的在后*/
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *dateA = [dateFormatter dateFromString:_multiFilterView.startTime.titleLabel.text];
+    NSDate *dateB = [dateFormatter dateFromString:_multiFilterView.endTime.titleLabel.text];
+    NSComparisonResult result = [dateA compare:dateB];
+    if (result == NSOrderedDescending) {
+        
+        earlyDay =_multiFilterView.endTime.titleLabel.text;
+        
+        [_multiFilterView.endTime setTitle:_multiFilterView.startTime.titleLabel.text forState:UIControlStateNormal];
+        [_multiFilterView.startTime setTitle:earlyDay forState:UIControlStateNormal];
+        
+    }
+    else if (result == NSOrderedAscending){
+        
+    }
+    
+    
     [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
     UIBlurEffect *effect=[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     effectView=[[UIVisualEffectView alloc]initWithFrame:self.view.bounds];
     [effectView setEffect:effect];
     [self.view addSubview:effectView];
+    UITapGestureRecognizer *tapt = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(filterViewHide)];
+    [effectView addGestureRecognizer:tapt];
+    effectView.userInteractionEnabled = YES;
     
     [self.view addSubview:_multiFilterView];
     [UIView animateWithDuration:0.3 animations:^{
@@ -665,26 +766,40 @@
     
 }
 
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    
-    
-    [self textfileRespond];
+/* 隐藏多项筛选视图*/
+- (void)filterViewHide{
     
     [UIView animateWithDuration:0.3 animations:^{
         
+        
+        [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd+49, self.view.width_sd, self.view.height_sd*2/5.0f)];
         effectView.alpha = 0;
-        
-        [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd*2/5.0f)];
     }];
-    
-    
+
     [self performSelector:@selector(effectviewRemove) withObject:nil afterDelay:0.5];
+     [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
     
+}
+
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
-    [MMPickerView dismissWithCompletion:^(NSString *dismissString) {
-        [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+    if ([[touches anyObject]view] == _multiFilterView) {
+        [self textfileRespond];
+    }else{
         
-    }];
+        [self textfileRespond];
+        
+        [MMPickerView dismissWithCompletion:^(NSString *dismissString) {
+            
+            [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+            
+        }];
+    }
+    
+    
+    
+    
 }
 
 - (void)effectviewRemove{
@@ -699,11 +814,15 @@
     [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
     _timeFilterStr  =@[@"按时间",@"按价格-低到高",@"按价格-高到低",@"按购买人数"];
+    
     [MMPickerView showPickerViewInView:_tutoriumView withStrings:_timeFilterStr withOptions:@{MMfont:[UIFont systemFontOfSize:20*ScrenScale]} completion:^(NSString *selectedString) {
         
+        [self selectedTimeFilterWithSort:selectedString];
+        
+        selectedString = [selectedString stringByAppendingString:@"∨"];
+
         [_tutoriumView.timeButton setTitle:selectedString forState:UIControlStateNormal];
         
-        [self selectedTimeFilter];
         
         hadDoneFilter = YES;
         
@@ -724,9 +843,11 @@
     
     [MMPickerView showPickerViewInView:_tutoriumView withStrings:_gradeFilterArr withOptions:@{MMfont:[UIFont systemFontOfSize:20*ScrenScale]} completion:^(NSString *selectedString) {
         
+        [self selectedGradeFilterWithGrade:selectedString];
+        selectedString = [selectedString stringByAppendingString:@"∨"];
+    
         [_tutoriumView.gradeButton setTitle:selectedString forState:UIControlStateNormal];
         
-        [self selectedGradeFilter];
         
         hadDoneFilter = YES;
         
@@ -744,9 +865,12 @@
     
     [MMPickerView showPickerViewInView:_tutoriumView withStrings:_subjectArr withOptions:@{MMfont:[UIFont systemFontOfSize:20*ScrenScale]} completion:^(NSString *selectedString) {
         
+        [self selectedSubjectFilterWithSubject:selectedString];
+        
+        selectedString = [selectedString stringByAppendingString:@"∨"];
+
         [_tutoriumView.subjectButton setTitle:selectedString forState:UIControlStateNormal];
         
-        [self selectedSubjectFilter];
         
         hadDoneFilter = YES;
         
@@ -758,7 +882,7 @@
 
 
 #pragma mark- 用户筛选完时间-价格条件后的点击事件
-- (void)selectedTimeFilter{
+- (void)selectedTimeFilterWithSort:(NSString *)sort{
     
     
     [effectView removeFromSuperview];
@@ -766,7 +890,7 @@
 //    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
     
     
-    sort_By  = _tutoriumView.timeButton.titleLabel.text;
+    sort_By  = sort;
     
     if ([sort_By isEqualToString:@"按时间"]) {
         
@@ -799,22 +923,20 @@
 
 
 #pragma mark- 用户筛选完年级条件后的点击事件
-- (void)selectedGradeFilter{
+- (void)selectedGradeFilterWithGrade:(NSString *)grade{
     
     [effectView removeFromSuperview];
 //    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
     
     /* 获取当前年级信息 发送筛选*/
-    _filterGrade = _tutoriumView.gradeButton.titleLabel.text;
+    _filterGrade = grade;
     
     [_filterDic setValue:_filterGrade forKey:@"grade"];
     
     NSLog(@"%@",_filterDic);
     [self sendFilterStatus:_filterDic];
     
-    
 }
-
 
 
 #pragma mark- 发送筛选请求
@@ -840,7 +962,6 @@
     for (NSString *keys in filterDic_Copy) {
         
         if ( [[_filterDic valueForKey:keys]isEqualToString:@"按科目∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"按年级∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"按时间∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"全部"]||[[_filterDic valueForKey:keys]isEqualToString:@"全部年级"]||[[_filterDic valueForKey:keys]isEqualToString:@"请选择时间"]) {
-            
             
             NSLog(@"%@,%@",keys,[_filterDic valueForKey:keys]);
             
@@ -888,7 +1009,7 @@
     
     [manager GET:_requestResaultURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        
+        _noView.hidden = NO;
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
@@ -906,6 +1027,7 @@
                 
                 /* 缓存数据源添加获取的Model*/
                 [listArr addObject:_tutroiumList];
+                [listArrCopy addObject:_tutroiumList];
                 
                 NSLog(@"%@",listArr[0].data);
                 NSLog(@"%ld",listArr.count);
@@ -943,9 +1065,13 @@
                 
             }else{
                 /* 返回数据为空*/
-                _noView= [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _tutoriumView.classesCollectionView.height_sd)];
-                _noView.titleLabel.text = @"没有相关课程";
-                [_tutoriumView.classesCollectionView addSubview:_noView];
+//                if (listArrCopy.count>0) {
+//                    
+//                }else{
+                
+                    _noView.hidden = NO;
+                    
+//                }
                 
             }
             
@@ -970,12 +1096,12 @@
 
 
 #pragma mark- 用户筛选完科目条件后的点击事件
-- (void)selectedSubjectFilter{
+- (void)selectedSubjectFilterWithSubject:(NSString *)grade{
     
 //    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
     
     /* 获取当前科目筛选信息 发送筛选*/
-    _filterSubject = _tutoriumView.subjectButton.titleLabel.text;
+    _filterSubject = grade;
     
     [_filterDic setValue:_filterSubject forKey:@"subject"];
     
@@ -984,9 +1110,6 @@
     
     
 }
-
-
-
 
 
 
@@ -1182,7 +1305,7 @@
         for (int i=1; i<=page; i++) {
             
             [manager GET:requestStrURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                
+                 _noView.hidden = NO;
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                 
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
@@ -1210,7 +1333,7 @@
                             
                             [listArr removeAllObjects];
                             [listArr addObject:_tutroiumList];
-                            
+                            [listArrCopy addObject:_tutroiumList];
                             
                             
                             NSLog(@"%@",listArr[0].data);
@@ -1246,7 +1369,12 @@
                     }else{
                         /* 空数据*/
                         
+                        if (listArrCopy.count>0) {
+                            
+                        }else{
+                            
                             _noView.hidden = NO;
+                        }
                        
                         
                     }
@@ -1300,6 +1428,7 @@
                             /* 缓存数据源添加获取的Model*/
                             
                             [listArr addObject:_tutroiumList];
+                            [listArrCopy addObject:_tutroiumList];
                             
                             NSLog(@"%@",listArr[0].data);
                             NSLog(@"%ld",listArr.count);
@@ -1334,7 +1463,12 @@
                     }else{
                         /* 没有数据*/
                         
+                        if (listArrCopy.count>0) {
+                            
+                        }else{
+                            
                             _noView.hidden = NO;
+                        }
                         
                     }
                 }else{

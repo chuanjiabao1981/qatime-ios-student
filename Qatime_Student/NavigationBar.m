@@ -42,7 +42,7 @@
 //    [_leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [self addSubview:_leftButton];
 
-    [_leftButton setEnlargeEdge:10];
+    [_leftButton setEnlargeEdge:20];
     return _leftButton;
 }
 
@@ -50,7 +50,7 @@
     
     _rightButton = [[UIButton alloc]initWithFrame:CGRectMake(self.width_sd-50*ScrenScale, 30, 30*ScrenScale, 30*ScrenScale)];
     [self addSubview:_rightButton];
-     [_rightButton setEnlargeEdge:10];
+     [_rightButton setEnlargeEdge:20];
 
     return _rightButton;
     
@@ -58,7 +58,7 @@
 }
 
 -(UILabel *)titleLabel{
-    _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 20, CGRectGetWidth(self.frame)-120, 40)];
+    _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(120, 20, self.width_sd -240, 40)];
     [self addSubview:_titleLabel];
     
     [_titleLabel setTextColor:[UIColor whiteColor]];

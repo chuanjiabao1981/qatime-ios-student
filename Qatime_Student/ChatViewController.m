@@ -30,6 +30,7 @@
 #import "YZTextAttachment.h"
 #import "NSString+TimeStamp.h"
 #import "NSDate+ChangeUTC.h"
+#import "UITextView_Placeholder.h"
 
 #import "NELivePlayerViewController.h"
 #import "NIMSDK.h"
@@ -42,7 +43,6 @@
     NSString *_token;
     NSString *_idNumber;
     
-    
     /* 聊天室的信息*/
     TutoriumListInfo *_tutoriumInfo;
     
@@ -54,7 +54,6 @@
     
     
     /* 临时变量  保存所有的用户信息 */
-    
     NSMutableArray <Chat_Account *>*_userList;
     
 }
@@ -94,6 +93,12 @@
     _navigationBar = ({
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         _.titleLabel.text = _tutoriumInfo.name;
+        
+//        UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(120, 20, self.view.width_sd -240, 40)];
+//        title.text =_tutoriumInfo.name;
+//        title.textColor = [UIColor whiteColor];
+//        [_ addSubview:title];
+//        
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         
@@ -112,10 +117,7 @@
         _.delegate = self;
         _.dataSource = self;
         [self.view addSubview:_];
-        
         _.frame = CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-50);
-        
-
         _;
     });
     
@@ -125,6 +127,7 @@
         
         _.frame = CGRectMake(0, self.view.height_sd-50, self.view.width_sd, 50);
         [_.btnChangeVoiceState addTarget:self action:@selector(emojiKeyboardShow:) forControlEvents:UIControlEventTouchUpInside];
+        _.TextViewInput.placeholder = @"请输入要发送的信息";
         
         _.delegate= self;
         

@@ -168,7 +168,6 @@
         
         NSLog(@"%@",dic);
         
-        
         NSString *status = [NSString stringWithFormat:@"%@",dic[@"status"]];
         
         _dataDic=[NSMutableDictionary dictionaryWithDictionary:dic[@"data"]];
@@ -193,8 +192,7 @@
             
             _tutoriumInfoView.deadLine.text = [NSString stringWithFormat:@"[进度%@/%@]",_dataDic[@"completed_lesson_count"],_dataDic[@"lesson_count"]];
             
-            _tutoriumInfoView.onlineVideoLabel.text =@"已开课";
-            
+            _tutoriumInfoView.onlineVideoLabel.text =@"在线直播";
             
             
         }else if ([_dataDic[@"status"]isEqualToString:@"missed"]||[_dataDic[@"status"]isEqualToString:@"init"]||[_dataDic[@"status"]isEqualToString:@"ready"]){
@@ -204,7 +202,7 @@
             _tutoriumInfoView.deadLine.text = [NSString stringWithFormat:@"[距开课%@/天]",[self intervalSinceNow:_dataDic[@"live_start_time"] ]];
             
             
-        }else if ([_dataDic[@"status"]isEqualToString:@"finished"]||[_dataDic[@"status"]isEqualToString:@"billing"]||[_dataDic[@"status"]isEqualToString:@"competed"]){
+        }else if ([_dataDic[@"status"]isEqualToString:@"finished"]||[_dataDic[@"status"]isEqualToString:@"billing"]||[_dataDic[@"status"]isEqualToString:@"completed"]){
             
             _tutoriumInfoView.recuitState.text = @"已结束";
             _tutoriumInfoView.onlineVideoLabel.text =@"已结束";
@@ -219,8 +217,8 @@
             
         }
         
-        _tutoriumInfoView.liveStartTimeLabel.text = _dataDic[@"live_start_time"];
-        _tutoriumInfoView.liveEndTimeLabel.text = _dataDic[@"live_end_time"];
+        _tutoriumInfoView.liveStartTimeLabel.text =  [_dataDic[@"live_start_time"] substringToIndex:10];
+        _tutoriumInfoView.liveEndTimeLabel.text = [_dataDic[@"live_end_time"] substringToIndex:10];
         
         
         
@@ -244,15 +242,18 @@
             _teacherModel.subject = [teacherDic valueForKey:@"subject"];
             _teacherModel.teaching_years =[teacherDic valueForKey:@"teaching_years"];
             _teacherModel.describe =[teacherDic valueForKey:@"desc"];
+            _teacherModel.gender =[teacherDic valueForKey:@"gender"];
+            _teacherModel.avatar_url =[teacherDic valueForKey:@"avatar_url"];
             
             /* 判断性别是否为空对象    预留性别判断接口*/
             if ([teacherDic valueForKey:@"gender"]!=[NSNull null]) {
                 
                 if ([_teacherModel.gender isEqualToString:@"male"]) {
                     
+                    [_tutoriumInfoView.genderImage setImage:[UIImage imageNamed:@"男"]];
                     
                 }if ([_teacherModel.gender isEqualToString:@"female"]){
-                    
+                    [_tutoriumInfoView.genderImage setImage:[UIImage imageNamed:@"女"]];
                 }
                 _teacherModel.gender = [teacherDic valueForKey:@"gender"];
                 
@@ -268,32 +269,24 @@
             [_tutoriumInfoView.teacherNameLabel setText: _teacherModel.teacherName];
             [_tutoriumInfoView.workPlaceLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.school]];
             [_tutoriumInfoView.teacherInterviewLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.describe]];
-            [_tutoriumInfoView.classImage sd_setImageWithURL:[NSURL URLWithString:_teacherModel.avatar_url] placeholderImage:[UIImage imageNamed:@"school"]];
+         
             [_tutoriumInfoView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacherModel.avatar_url ]];
             
             /* 判断教学年限*/
-           
             [_tutoriumInfoView.workYearsLabel setText:@"10-20年"];
             
-            
             /* 手动解析classModel*/
-            
             _classModel = [RecommandClasses yy_modelWithDictionary:_dataDic];
             _classModel.classID = _dataDic[@"id"];
             _classModel.describe = _dataDic[@"description"];
-            
-
             
             /* 课程页面的label赋值*/
             [_tutoriumInfoView.subjectLabel setText:_classModel.subject];
             [_tutoriumInfoView.gradeLabel setText:_classModel.grade];
             [_tutoriumInfoView.classCount setText:_classModel.lesson_count];
-            
             [_tutoriumInfoView.classDescriptionLabel setText:_classModel.describe];
             
-            
             /* 课程列表的手动解析model*/
-            
             NSMutableArray *classList = _dataDic[@"lessons"];
            
            
@@ -589,7 +582,6 @@
      // 获取cell高度
         heights =[tableView cellHeightForIndexPath:indexPath model:model keyPath:@"model" cellClass:[ClassesListTableViewCell class] contentViewWidth: [UIScreen mainScreen].bounds.size.width];
         
-        
     }
     
     return heights;
@@ -611,10 +603,10 @@
             
         }else{
 
+            [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             ClassesInfo_Time *mod = _classListArray[indexPath.row];
             cell.model = mod;
-            
-            [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+//            cell.status.text = cell.class_status;
         }
         
     }

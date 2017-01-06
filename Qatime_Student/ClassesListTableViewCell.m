@@ -113,31 +113,35 @@
 -(void)setModel:(ClassesInfo_Time *)model{
     
     _model = model;
-//    /* 状态原点图*/
-//    @property(nonatomic,strong) UIImageView *circle ;
-//    
-//    /* 课程名称*/
-//    @property(nonatomic,strong) UILabel *className ;
-//    
-//    
-//    /* 上课时间*/
-//    @property(nonatomic,strong) UILabel *classDate;
-//    
-//    @property(nonatomic,strong) UILabel *classTime ;
-//    
-//    /* 课程状态*/
-//    @property(nonatomic,strong) UILabel *status ;
-//    @property(nonatomic,strong) NSString *class_status ;
-//    
-//    
-//    /* 数据model 用来计算高度*/
-//    @property(nonatomic,strong) ClassesInfo_Time *model ;
-//    
     
     _className.text = _model.name;
     _classDate .text = _model.class_date;
     _classTime .text = _model.live_time;
-    _status.text = _model.status;
+//    _status.text = _model.status;
+    
+    /* 已开课的状态*/
+    if ([_model.status isEqualToString:@"teaching"]||[_model.status isEqualToString:@"pause"]||[ _model.status isEqualToString:@"closed"]) {
+        
+        _status.text =@"已开课";
+        _class_status = [NSString stringWithFormat:@"已开课"];
+        
+    }else if ([_model.status isEqualToString:@"missed"]||[_model.status isEqualToString:@"init"]||[_model.status isEqualToString:@"ready"]){
+        _status.text = @"未开课";
+        _class_status = [NSString stringWithFormat:@"未开课"];
+
+    }else if ([_model.status isEqualToString:@"finished"]||[_model.status isEqualToString:@"billing"]||[_model.status isEqualToString:@"completed"]){
+        
+        _status.text = @"已结束";
+        
+        _class_status = [NSString stringWithFormat:@"已结束"];
+        
+    }else if ([_model.status isEqualToString:@"public"]){
+        
+        _status.text = @"招生中";
+        _class_status = [NSString stringWithFormat:@"招生中"];
+        
+    }
+
     
     
     

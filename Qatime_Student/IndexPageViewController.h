@@ -13,6 +13,7 @@
 #import <MapKit/MapKit.h>
 
 
+
 @interface IndexPageViewController : UIViewController
 
 @property(nonatomic,strong) NavigationBar *navigationBar ;
@@ -20,5 +21,7 @@
 @property(nonatomic,strong) IndexPageView *indexPageView ;
     
 @property(nonatomic,strong) IndexHeaderPageView *headerView ;
+
+@property(nonatomic,strong) UIImageView *badge ;
     
 @end

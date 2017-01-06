@@ -387,6 +387,7 @@
 		54F47E851E08F77600D896DB /* UIButton+Touch.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F47E841E08F77600D896DB /* UIButton+Touch.m */; };
 		54F47E881E092AF100D896DB /* SystemNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F47E871E092AF100D896DB /* SystemNotice.m */; };
 		54F47E8B1E09367900D896DB /* ChatList.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F47E8A1E09367900D896DB /* ChatList.m */; };
+		54F63A161E1F9EBB00758B42 /* UITextView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F63A151E1F9EBB00758B42 /* UITextView+Placeholder.m */; };
 		54FA71561E07B107009D81FE /* ChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FA71551E07B107009D81FE /* ChatView.m */; };
 		54FA71591E07B111009D81FE /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FA71581E07B111009D81FE /* ChatViewController.m */; };
 		54FB1DB51DF10B9B00BA9A3C /* UIViewController+VideoStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB1DB41DF10B9B00BA9A3C /* UIViewController+VideoStatus.m */; };
@@ -1127,6 +1128,9 @@
 		54F47E871E092AF100D896DB /* SystemNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNotice.m; sourceTree = "<group>"; };
 		54F47E891E09367900D896DB /* ChatList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatList.h; sourceTree = "<group>"; };
 		54F47E8A1E09367900D896DB /* ChatList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatList.m; sourceTree = "<group>"; };
+		54F63A141E1F9EBB00758B42 /* UITextView+Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+Placeholder.h"; sourceTree = "<group>"; };
+		54F63A151E1F9EBB00758B42 /* UITextView+Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Placeholder.m"; sourceTree = "<group>"; };
+		54F63A1B1E1FA1B800758B42 /* UITextView_Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextView_Placeholder.h; sourceTree = "<group>"; };
 		54FA71541E07B107009D81FE /* ChatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatView.h; sourceTree = "<group>"; };
 		54FA71551E07B107009D81FE /* ChatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatView.m; sourceTree = "<group>"; };
 		54FA71571E07B111009D81FE /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
@@ -3492,6 +3496,9 @@
 				54F3BA171DFC3013003998D0 /* UIViewController+Login.m */,
 				54F47E831E08F77600D896DB /* UIButton+Touch.h */,
 				54F47E841E08F77600D896DB /* UIButton+Touch.m */,
+				54F63A1B1E1FA1B800758B42 /* UITextView_Placeholder.h */,
+				54F63A141E1F9EBB00758B42 /* UITextView+Placeholder.h */,
+				54F63A151E1F9EBB00758B42 /* UITextView+Placeholder.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -3717,6 +3724,7 @@
 					54A153A41DC6F09D0070B508 = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = UMV383V3WA;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -3967,6 +3975,7 @@
 				547E899D1DD1D8AD00749366 /* HMSegmentedControl.m in Sources */,
 				5448AEA11E042BC8007B1DF9 /* NoticeIndexViewController.m in Sources */,
 				54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */,
+				54F63A161E1F9EBB00758B42 /* UITextView+Placeholder.m in Sources */,
 				548328EC1DDC6F360053AB29 /* UUMessage.m in Sources */,
 				5496A3AB1DE591680096ECE5 /* NSAttributedString+EmojiExtension.m in Sources */,
 				54AB48C81DED2D9B008E3BC5 /* SettingView.m in Sources */,
@@ -4316,6 +4325,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Qatime_Student/Qatime_Student.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
@@ -4390,6 +4400,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.qatime.QatimeStudent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Qatime_Student/Qatime_Student-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 arm64 x86_64 i386";
 			};
@@ -4401,6 +4414,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Qatime_Student/Qatime_Student.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
@@ -4475,6 +4489,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.qatime.QatimeStudent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Qatime_Student/Qatime_Student-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 arm64 x86_64 i386";
 			};

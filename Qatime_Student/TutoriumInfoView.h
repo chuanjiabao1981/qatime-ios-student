@@ -86,7 +86,7 @@
 @property(nonatomic,strong) UILabel  *teacherInterviewLabel ;
 
 /* 性别*/
-@property(nonatomic,strong) NSString *gender ;
+@property(nonatomic,strong) UIImageView *genderImage ;
 
 /* 老师照片*/
 @property(nonatomic,strong) UIImageView *teacherHeadImage ;

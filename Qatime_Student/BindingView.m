@@ -39,12 +39,10 @@
         _grade.layer.borderWidth = 0.6;
         
         [self.nextStepButton setTitle:@"绑定" forState:UIControlStateNormal];
-        [self.nextStepButton setTitleColor:[UIColor colorWithRed:0.79 green:0.00 blue:0.00 alpha:1.00] forState:UIControlStateNormal];
+        [self.nextStepButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         self.nextStepButton.backgroundColor = [UIColor whiteColor];
-        self.nextStepButton.layer.borderColor = [UIColor colorWithRed:0.79 green:0.00 blue:0.00 alpha:1.00].CGColor;
+        self.nextStepButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
         self.nextStepButton.layer.borderWidth = 1;
-        
-        
         
         /* 布局和布局修改*/
         

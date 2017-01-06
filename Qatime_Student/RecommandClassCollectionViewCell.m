@@ -82,12 +82,23 @@
         [_saleNumber setFont:[UIFont systemFontOfSize:12*ScrenScale]];
         
         
+        /* 推荐原因*/
+        _reason = [[UILabel alloc]init];
+        [self.contentView addSubview:_reason];
+        _reason.textColor = [UIColor whiteColor];
+        _reason.font = [UIFont systemFontOfSize:15*ScrenScale];
+        _reason.sd_layout
+        .topEqualToView(self.contentView)
+        .rightEqualToView(self.contentView)
+        .autoHeightRatio(0);
+        [_reason setSingleLineAutoResizeWithMaxWidth:200];
+        
         
     }
     return self;
 }
 
--(void)setModel:(TutoriumListInfo *)model{
+-(void)setModel:(RecommandClasses *)model{
     
     _model = model;
     
@@ -98,6 +109,11 @@
     _saleNumber.text = model.buy_tickets_count;
     
     [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"]];
+    if ([model.reason isEqualToString:@"newest"]) {
+        _isNewest = YES;
+    }else if ([model.reason isEqualToString:@"hottest"]){
+        _isHottest = YES;
+    }
     
         
 }

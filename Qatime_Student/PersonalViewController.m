@@ -22,6 +22,7 @@
 #import "UIViewController_HUD.h"
 #import "UIViewController+HUD.h"
 #import "PersonalInfoViewController.h"
+#import "UIAlertController+Blocks.h"
 
 
 
@@ -174,7 +175,8 @@
     
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
         if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]== NO) {
-            [self loginAgain];
+            
+            [self logOutAlert];
         }else{
             
             PersonalInfoViewController *personVC = [PersonalInfoViewController new];
@@ -182,7 +184,8 @@
             [self.rdv_tabBarController setTabBarHidden:YES];
         }
     }else{
-        [self loginAgain];
+        
+        [self logOutAlert];
     }
 
 }
@@ -344,62 +347,78 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    switch (indexPath.section) {
-        case 0:{
-            switch (indexPath.row) {
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
+            switch (indexPath.section) {
                 case 0:{
-                    MyWalletViewController *mwVC = [MyWalletViewController new];
-                    [self.navigationController pushViewController:mwVC animated:YES];
-                    [self.rdv_tabBarController setTabBarHidden:YES];
-                }
-                    break;
-                case 1:{
-                    
-                    MyOrderViewController *moVC = [MyOrderViewController new];
-                    [self.navigationController pushViewController:moVC animated:YES];
-                    [self.rdv_tabBarController setTabBarHidden:YES];
-                }
-                    break;
-                case 2:{
-                    MyClassViewController *mcVC = [MyClassViewController new];
-                    [self.navigationController pushViewController:mcVC animated:YES];
-                    [self.rdv_tabBarController setTabBarHidden:YES];
-                }
-                    break;
-                    
-                    
-            }
-            
-        }
-            break;
-        case 1:{
-            switch (indexPath.row) {
-                    
-                case 0:{
-                    SafeViewController *sVC = [SafeViewController new];
-                    [self.navigationController pushViewController:sVC animated:YES];
-                    [self.rdv_tabBarController setTabBarHidden:YES];
+                    switch (indexPath.row) {
+                        case 0:{
+                            MyWalletViewController *mwVC = [MyWalletViewController new];
+                            [self.navigationController pushViewController:mwVC animated:YES];
+                            [self.rdv_tabBarController setTabBarHidden:YES];
+                        }
+                            break;
+                        case 1:{
+                            
+                            MyOrderViewController *moVC = [MyOrderViewController new];
+                            [self.navigationController pushViewController:moVC animated:YES];
+                            [self.rdv_tabBarController setTabBarHidden:YES];
+                        }
+                            break;
+                        case 2:{
+                            MyClassViewController *mcVC = [MyClassViewController new];
+                            [self.navigationController pushViewController:mcVC animated:YES];
+                            [self.rdv_tabBarController setTabBarHidden:YES];
+                        }
+                            break;
+                            
+                            
+                    }
                     
                 }
                     break;
                 case 1:{
-                    SettingViewController *settingVC = [SettingViewController new];
-                    [self.navigationController pushViewController:settingVC animated:YES];
-                    [self.rdv_tabBarController setTabBarHidden:YES];
+                    switch (indexPath.row) {
+                            
+                        case 0:{
+                            SafeViewController *sVC = [SafeViewController new];
+                            [self.navigationController pushViewController:sVC animated:YES];
+                            [self.rdv_tabBarController setTabBarHidden:YES];
+                            
+                        }
+                            break;
+                        case 1:{
+                            SettingViewController *settingVC = [SettingViewController new];
+                            [self.navigationController pushViewController:settingVC animated:YES];
+                            [self.rdv_tabBarController setTabBarHidden:YES];
+                        }
+                            break;
+                    }
                 }
                     break;
             }
-        }
-            break;
+        }else{
             
+            [self logOutAlert];
+        }
     }
     
+}
+
+
+/* 登录超时弹窗*/
+- (void)logOutAlert{
     
-    
-    
-    
-    
+    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录超时!\n请重新登录!" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+       
+        if (buttonIndex==0) {
+            
+        }else{
+            
+            [self loginAgain];
+        }
+        
+    }];
     
 }
 

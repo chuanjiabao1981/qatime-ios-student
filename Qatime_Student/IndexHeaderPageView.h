@@ -36,7 +36,7 @@
 
 
 /* 名师入驻刷新按钮*/
-@property(nonatomic,strong) UIButton  *refreshTeacherListButton ;
+//@property(nonatomic,strong) UIButton  *refreshTeacherListButton ;
 
 
 /* 全部辅导推荐按钮*/

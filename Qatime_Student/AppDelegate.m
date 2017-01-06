@@ -267,6 +267,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 /* 收到静默推送*/
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler{
     
+    /* 主页消息badge通知*/
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"ReceiveNewNotice" object:nil];
+
     if (notificatoin_ON == YES) {
         
         //当应用处于前台时提示设置，需要哪个可以设置哪一个
@@ -280,6 +283,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 /* 收到推送点击进入前/在前台收到推送后 的回调  /ios10收到静默推送*/
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    
+    /* 主页消息badge通知*/
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"ReceiveNewNotice" object:nil];
+
     
     if (push_VoiceON==YES&&push_AlertON == YES) {
         
@@ -329,6 +336,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
     NSDictionary * userInfo = notification.request.content.userInfo;
     
+    /* 主页消息badge通知*/
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"ReceiveNewNotice" object:nil];
+    
+    
 //    completionHandler(UNNotificationPresentationOptionAlert);
     
     if (notificatoin_ON == YES) {
@@ -353,7 +364,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 //iOS10新增：处理后台点击通知的代理方法
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler{
-    
+
     //当应用处于前台时提示设置，需要哪个可以设置哪一个
     if (push_VoiceON==YES&&push_AlertON == YES) {
         
@@ -375,6 +386,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             //应用处于后台时的远程推送接受
             //必须加这句代码
             [UMessage didReceiveRemoteNotification:userInfo];
+            /* 主页消息badge通知*/
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"ReceiveNewNotice" object:nil];
             
         }else{
             //应用处于后台点击后的本地推送接受

@@ -321,6 +321,18 @@
         _teacherNameLabel.font = [UIFont systemFontOfSize:20*ScrenScale];
         [_teacherNameLabel setText:@"教师姓名"];
         
+        
+        /* 性别图标*/
+        _genderImage  = [[UIImageView alloc]init];
+        [_view2 addSubview:_genderImage];
+        _genderImage .sd_layout
+        .leftSpaceToView(_teacherNameLabel,10)
+        .topEqualToView(_teacherNameLabel)
+        .bottomEqualToView(_teacherNameLabel)
+        .widthEqualToHeight();
+        
+        
+        
         /* 执教年数*/
         UILabel *workYears = [[UILabel alloc]init];
         [_view2 addSubview:workYears];

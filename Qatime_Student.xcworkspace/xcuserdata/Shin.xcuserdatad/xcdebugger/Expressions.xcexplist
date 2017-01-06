@@ -3,13 +3,10 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke.204:NoticeIndexViewController.m">
+         contextName = "-[AppDelegate application:didRegisterForRemoteNotificationsWithDeviceToken:]:AppDelegate.m">
          <PersistentStrings>
             <PersistentString
-               value = "_chatListArr">
-            </PersistentString>
-            <PersistentString
-               value = "_myClassArray">
+               value = "deviceToken.description">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -207,6 +204,9 @@
                value = "_session">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
       </ContextState>
       <ContextState
          contextName = "-[ChatViewController requestChatHitstory]:ChatViewController.m">
@@ -425,6 +425,14 @@
          contextName = "__39-[BindingMailInfoViewController finish]_block_invoke_2:BindingMailInfoViewController.m">
       </ContextState>
       <ContextState
+         contextName = "__53-[TutoriumInfoViewController requestClassesInfoWith:]_block_invoke:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_teacherModel">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[MyOrderViewController requestUnpaid]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -581,6 +589,9 @@
          contextName = "__58-[TeachersPublicViewController requestTeachersInfoWithID:]_block_invoke:TeachersPublicViewController.m">
       </ContextState>
       <ContextState
+         contextName = "__38-[IndexPageViewController checkNotice]_block_invoke_2:IndexPageViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__41-[NELivePlayerViewController viewDidLoad]_block_invoke:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -713,6 +724,9 @@
                value = "_rechargeArr">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumViewController textDidChange:]:TutoriumViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[CashRecordViewController viewDidLoad]:CashRecordViewController.m">
@@ -904,18 +918,21 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[TutoriumInfoViewController requestOrder]:TutoriumInfoViewController.m">
+         contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke.204:NoticeIndexViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_dataDic">
+               value = "_chatListArr">
+            </PersistentString>
+            <PersistentString
+               value = "_myClassArray">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[AppDelegate application:didRegisterForRemoteNotificationsWithDeviceToken:]:AppDelegate.m">
+         contextName = "-[TutoriumInfoViewController requestOrder]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "deviceToken.description">
+               value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

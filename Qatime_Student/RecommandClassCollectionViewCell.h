@@ -7,7 +7,7 @@
 //
 
 #import "TutoriumCollectionViewCell.h"
-#import "TutoriumList.h"
+#import "RecommandClasses.h"
 
 @interface RecommandClassCollectionViewCell : UICollectionViewCell
 
@@ -28,11 +28,17 @@
 
 @property(nonatomic,strong) UILabel *saleNumber ;
 
-
+/* 推荐原因(最新/最热)*/
+@property(nonatomic,strong) UILabel *reason ;
+/* 复用的判断属性,是否最新或者最热*/
+@property(nonatomic,assign) BOOL isNewest ;
+@property(nonatomic,assign) BOOL isHottest ;
 /* model*/
-@property(nonatomic,strong) TutoriumListInfo *model ;
+@property(nonatomic,strong) RecommandClasses *model ;
 
 @property(nonatomic,strong) UILabel *saledLabel ;
+
+
 
 
 @end

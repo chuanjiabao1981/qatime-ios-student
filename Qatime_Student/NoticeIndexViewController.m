@@ -439,7 +439,6 @@
         [_chatListArr[indexPath.row] setValue:@0 forKey:@"badge"];
         
 
-        
     }
     
     

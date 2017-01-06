@@ -235,8 +235,7 @@
         .leftSpaceToView(className,20)
         .rightSpaceToView(_scrollView,10)
         .topEqualToView(className)
-        .autoHeightRatio(0);
-        _className.numberOfLines = 0;
+        .bottomEqualToView(className);
         
         /* 课程信息*/
         classinfo.sd_layout
@@ -262,8 +261,8 @@
         _subjectLabel.sd_layout
         .leftSpaceToView(subject,10)
         .topEqualToView(subject)
-        .autoHeightRatio(0);
-        [subject setSingleLineAutoResizeWithMaxWidth:500];
+        .bottomEqualToView(subject);
+        [_subjectLabel setSingleLineAutoResizeWithMaxWidth:500];
         
 
         /* 年级*/
@@ -273,11 +272,11 @@
         .autoHeightRatio(0);
         [grade setSingleLineAutoResizeWithMaxWidth:500];
         
-        _subjectLabel.sd_layout
+        _gradeLabel.sd_layout
         .leftSpaceToView(grade,10)
         .topEqualToView(grade)
-        .autoHeightRatio(0);
-        [_subjectLabel setSingleLineAutoResizeWithMaxWidth:500];
+        .bottomEqualToView(grade);
+        [_gradeLabel setSingleLineAutoResizeWithMaxWidth:500];
 
         
         /* 授课老师*/

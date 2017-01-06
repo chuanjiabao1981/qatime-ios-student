@@ -158,9 +158,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     /* 微信按钮加点击事件 点击登录*/
     
-    [_loginAgainView.wechatButton addTarget:self action:@selector(sendAuthRequest) forControlEvents:UIControlEventTouchUpInside];
-    
-    
+//    [_loginAgainView.wechatButton addTarget:self action:@selector(sendAuthRequest) forControlEvents:UIControlEventTouchUpInside];
     
     
     
@@ -170,7 +168,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
      @param sendAuthRequest
      @return
      */
-    //    [_loginAgainView.wechatButton addTarget:self action:@selector(mypage) forControlEvents:UIControlEventTouchUpInside];
+        [_loginAgainView.wechatButton addTarget:self action:@selector(mypage) forControlEvents:UIControlEventTouchUpInside];
     
     
     

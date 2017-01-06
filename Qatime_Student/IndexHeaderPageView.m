@@ -131,10 +131,10 @@
         
         /* 名师刷新按钮*/
         
-        _refreshTeacherListButton = [[UIButton alloc]init];
-        [_teacherScrollHeader addSubview:_refreshTeacherListButton];
-        [_refreshTeacherListButton setImage:[UIImage imageNamed:@"刷新"] forState:UIControlStateNormal];
-        _refreshTeacherListButton.sd_layout.rightSpaceToView(_teacherScrollHeader,20).topSpaceToView(_teacherScrollHeader,10).bottomSpaceToView(_teacherScrollHeader,10).widthEqualToHeight();
+//        _refreshTeacherListButton = [[UIButton alloc]init];
+//        [_teacherScrollHeader addSubview:_refreshTeacherListButton];
+//        [_refreshTeacherListButton setImage:[UIImage imageNamed:@"刷新"] forState:UIControlStateNormal];
+//        _refreshTeacherListButton.sd_layout.rightSpaceToView(_teacherScrollHeader,20).topSpaceToView(_teacherScrollHeader,10).bottomSpaceToView(_teacherScrollHeader,10).widthEqualToHeight();
         
         
         
