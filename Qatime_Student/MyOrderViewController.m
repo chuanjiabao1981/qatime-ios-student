@@ -23,6 +23,7 @@
 #import "LoginAgainViewController.h"
 #import "OrderViewController.h"
 #import "MyOrderViewController.h"
+#import "DrawBackViewController.h"
 
 
 @interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
@@ -148,7 +149,7 @@
         _.tableView.showsHorizontalScrollIndicator=NO;
         
         _.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-            [self requestUnpaid];
+          [_.tableView.mj_footer endRefreshingWithNoMoreData];
         }];
         
         _;
@@ -170,9 +171,18 @@
         _.tableView.tableFooterView = [[UIView alloc]init];
         [_myOrderView.scrollView addSubview:_];
         
+        UIButton *but = [[UIButton alloc]init];
+        [but setTitle:@"haha" forState:UIControlStateNormal];
+        [but setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+        but.frame = CGRectMake(0, 100, 100, 100);
+        [_paidView addSubview:but];
+        [but addTarget:self action:@selector(repage:) forControlEvents:UIControlEventTouchUpInside];
+
+        
+        
         _.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
             
-            [self requestPaid];
+            [_.tableView.mj_footer endRefreshingWithNoMoreData];
             
         }];
         
@@ -180,6 +190,16 @@
     });
     
     
+}
+- (void)repage:(UIButton *)sender{
+    
+    NSIndexPath *index = [NSIndexPath indexPathForRow:sender.tag - 400 inSection:0];
+    
+    PaidOrderTableViewCell *cell = [_paidView.tableView cellForRowAtIndexPath:index];
+    
+    DrawBackViewController *new = [[DrawBackViewController alloc]initWithPaidOrder:cell.paidModel];
+    
+    [self.navigationController pushViewController:new animated:YES];
 }
 
 
@@ -201,7 +221,7 @@
         
         _.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
 
-            [self requestCanceld];
+            [_.tableView.mj_footer endRefreshingWithNoMoreData];
         }];
         
         _;
@@ -283,11 +303,21 @@
                     /* 遍历完,model赋值,写入数组*/
                     Unpaid *mod = [Unpaid yy_modelWithJSON:unpaidArr[i][@"product"]];
                     
-                    mod.status =unpaidArr[i][@"status"];
-                    mod.pay_type = unpaidArr[i][@"pay_type"];
-                    mod.appid = unpaidArr[i][@"app_pay_params"][@"appid"];
-                    mod.timestamp = unpaidArr[i][@"app_pay_params"][@"timestamp"];
-                    mod.orderID = unpaidArr[i][@"id"];
+                    mod.status =[unpaidArr[i][@"status"]isEqual:[NSNull null]]?@"":unpaidArr[i][@"status"];
+                    mod.pay_type = [unpaidArr[i][@"pay_type"]isEqual:[NSNull null]]?@"":unpaidArr[i][@"pay_type"];
+                    if (![unpaidArr[i][@"app_pay_params"]isEqual:[NSNull null]]) {
+                        
+                        if (unpaidArr[i][@"app_pay_params"][@"appid"]) {
+                            
+                            mod.appid = unpaidArr[i][@"app_pay_params"][@"appid"];
+                            mod.timestamp = unpaidArr[i][@"app_pay_params"][@"timestamp"];
+                        }
+                    }else{
+                        mod.appid =@"";
+                    }
+
+   
+                    mod.orderID = [unpaidArr[i][@"id"]isEqual:[NSNull null]]?@"":unpaidArr[i][@"id"];
                     
                     [_unpaidArr addObject:mod];
                 }
@@ -346,14 +376,27 @@
                 _paidView.hidden = NO;
                 __block NSMutableArray *paidArr = [NSMutableArray arrayWithArray:dic[@"data"]];
                 NSMutableArray *compArr = paidArr.copy;
+                
                 for (NSInteger i = 0; i<compArr.count; i++) {
                     /* 遍历完,model赋值,写入数组*/
                     Paid *mod = [Paid yy_modelWithJSON:paidArr[i][@"product"]];
-                    mod.status =paidArr[i][@"status"];
-                    mod.pay_type = paidArr[i][@"pay_type"];
-                    mod.appid = paidArr[i][@"app_pay_params"][@"appid"];
-                    mod.timestamp = paidArr[i][@"app_pay_params"][@"timestamp"];
-                    mod.orderID = paidArr[i][@"id"];
+                    mod.status =[paidArr[i][@"status"] isEqual:[NSNull null]]?@"":paidArr[i][@"status"];
+                    mod.pay_type = [paidArr[i][@"pay_type"]isEqual:[NSNull null]]?@"":paidArr[i][@"pay_type"];
+                    
+
+                    if (![paidArr[i][@"app_pay_params"]isEqual:[NSNull null]]) {
+                        
+                        if (paidArr[i][@"app_pay_params"][@"appid"]) {
+                            
+                            mod.appid = paidArr[i][@"app_pay_params"][@"appid"];
+                            mod.timestamp = paidArr[i][@"app_pay_params"][@"timestamp"];
+                        }
+                    }else{
+                        mod.appid =@"";
+                    }
+                    
+                    mod.orderID = [paidArr[i][@"id"]isEqual:[NSNull null]]?@"":paidArr[i][@"id"];
+
                     [_paidArr addObject:mod];
                 }
                 
@@ -387,9 +430,7 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [_paidView.tableView.mj_footer endRefreshing];
     }];
-    
-    
-    
+        
     
 }
 - (void) requestCanceld{
@@ -420,13 +461,21 @@
                     /* 遍历完,model赋值,写入数组*/
                     Canceld *mod = [Canceld yy_modelWithJSON:cancelArr[i][@"product"]];
                     
-                    mod.status =cancelArr[i][@"status"];
-                    mod.pay_type = cancelArr[i][@"pay_type"];
-                    mod.appid = cancelArr[i][@"app_pay_params"][@"appid"];
-                    mod.timestamp = cancelArr[i][@"app_pay_params"][@"timestamp"];
-                    mod.orderID = cancelArr[i][@"id"];
-                    mod.productID = cancelArr[i][@"product"][@"id"];
+                    mod.status = [cancelArr[i][@"status"] isEqual:[NSNull null]]?@"":cancelArr[i][@"status"];
+                    mod.pay_type = [cancelArr[i][@"pay_type"]isEqual:[NSNull null]]?@"":cancelArr[i][@"pay_type"];
                     
+                    if (![cancelArr[i][@"app_pay_params"]isEqual:[NSNull null]]) {
+                        
+                        if (cancelArr[i][@"app_pay_params"][@"appid"]) {
+                            
+                            mod.appid = cancelArr[i][@"app_pay_params"][@"appid"];
+                            mod.timestamp = cancelArr[i][@"app_pay_params"][@"timestamp"];
+                        }
+                    }else{
+                        mod.appid =@"";
+                    }
+
+                    mod.orderID = [cancelArr[i][@"id"]isEqual:[NSNull null]]?@"":cancelArr[i][@"id"];
                     [_caneldArr addObject:mod];
                 }
                 //                [_cancelView.tableView reloadData];
@@ -548,12 +597,12 @@
                 
                 cell.paidModel = _paidArr[indexPath.row];
                 
-                [cell.rightButton setTitle:@"重新购买" forState:UIControlStateNormal];
+                [cell.rightButton setTitle:@"申请退款" forState:UIControlStateNormal];
                 cell.leftButton.tag = 300+indexPath.row;
                 cell.rightButton.tag = 400+indexPath.row;
                 [cell.leftButton addTarget:self action:@selector(cancelOrder:) forControlEvents:UIControlEventTouchUpInside];
                 
-                
+                 [cell.rightButton addTarget:self action:@selector(repage:) forControlEvents:UIControlEventTouchUpInside];
                 
             }
             
@@ -575,9 +624,13 @@
                 [cell.leftButton setTitle:@"删除订单" forState:UIControlStateNormal];
                 [cell.rightButton setTitle:@"重新购买" forState:UIControlStateNormal];
                 
+               
+                
                 [cell.rightButton addTarget:self action:@selector(buyAgain:) forControlEvents:UIControlEventTouchUpInside];
                 
+                
                 cell.sd_tableView = tableView;
+                
             }
             
             if (_caneldArr.count>indexPath.row) {
@@ -585,6 +638,7 @@
                 cell.canceldModel = _caneldArr[indexPath.row];
                 cell.leftButton.tag = 500+indexPath.row;
                 cell.rightButton.tag = 600+indexPath.row;
+//                [cell.leftButton addTarget:self action:@selector(repage:) forControlEvents:UIControlEventTouchUpInside];
                 
                 
                 

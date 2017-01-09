@@ -31,6 +31,9 @@
     /* 地区*/
     NSString *_loaclCity;
     
+    /* 已选城市*/
+    NSString *_chosenCity;
+    
     
 }
 
@@ -53,6 +56,16 @@
 @synthesize data = _data;
 @synthesize commonCitys = _commonCitys;
 
+-(instancetype)initWithLoacatedCity:(NSString *)city{
+    
+    self = [super init];
+    if (self) {
+    
+        _chosenCity = [NSString stringWithFormat:@"%@",city];
+    }
+    return self;
+}
+
 - (void)loadView{
     
     [super loadView];
@@ -72,10 +85,11 @@
         LocalChoseView *_=[[LocalChoseView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, 44)];
         
         [self.view addSubview:_];
+        
+//        [_.city setTitle:_chosenCity forState:UIControlStateNormal];
         _;
     
     });
-    
     
     
     self.tableView = ({
@@ -102,12 +116,9 @@
     _cityFilePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"City.plist"];
     
     /* 次级导航栏的*/
-    [_localChoseView.city setTitle:@"全国" forState:UIControlStateNormal];
+    [_localChoseView.city setTitle:_chosenCity forState:UIControlStateNormal];
     
     [_localChoseView.getLocal addTarget:self action:@selector(getLocation) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
     
 }
 
@@ -118,7 +129,10 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section < 3) {
+    if (section == 0||section == 2) {
+        
+        return 0;
+    }else if (section == 1) {
         return 1;
     }
     TLCityGroup *group = [self.data objectAtIndex:section - 3];
@@ -129,16 +143,16 @@
     if (indexPath.section < 3) {
         TLCityGroupCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TLCityGroupCell"];
         if (indexPath.section == 0) {
-            [cell setTitle:@"定位城市"];
-            [cell setCityArray:self.localCityData];
+//            [cell setTitle:@"定位城市"];
+//            [cell setCityArray:self.localCityData];
         }
         else if (indexPath.section == 1) {
             [cell setTitle:@"最近访问城市"];
             [cell setCityArray:self.commonCityData];
         }
         else {
-            [cell setTitle:@"热门城市"];
-            [cell setCityArray:self.hotCityData];
+//            [cell setTitle:@"全国"];
+//            [cell setCityArray:self.hotCityData];
         }
         [cell setDelegate:self];
         return cell;
@@ -166,27 +180,25 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return [TLCityGroupCell getCellHeightOfCityArray:self.localCityData];
+//        return [TLCityGroupCell getCellHeightOfCityArray:self.localCityData];
     }
     else if (indexPath.section == 1) {
         return [TLCityGroupCell getCellHeightOfCityArray:self.commonCityData];
     }
     else if (indexPath.section == 2){
-        return [TLCityGroupCell getCellHeightOfCityArray:self.hotCityData];
+//        return [TLCityGroupCell getCellHeightOfCityArray:self.hotCityData];
     }
     return 43.0f;
 }
 
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if (section < 3) {
         return 0.0f;
     }
     return 23.5f;
 }
 
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section < 3) {
         return;
@@ -401,7 +413,7 @@
 - (NSMutableArray *) arraySection
 {
     if (_arraySection == nil) {
-        _arraySection = [[NSMutableArray alloc] initWithObjects:UITableViewIndexSearch, @"定位", @"最近", @"最热", nil];
+        _arraySection = [[NSMutableArray alloc] initWithObjects:UITableViewIndexSearch, @"定位", @"最近", nil];
     }
     return _arraySection;
 }
@@ -421,7 +433,6 @@
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    
     
     /** 由于IOS8中定位的授权机制改变 需要进行手动授权
      * 获取授权认证，两个方法：
@@ -526,6 +537,8 @@
     
     
 }
+
+
 
 - (void)returnLastPage{
     

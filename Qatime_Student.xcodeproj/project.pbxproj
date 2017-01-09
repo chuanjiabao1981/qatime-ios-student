@@ -346,6 +346,8 @@
 		54CB266B1DF00BE000AE7414 /* wechat.png in Resources */ = {isa = PBXBuildFile; fileRef = 54CB266A1DF00BE000AE7414 /* wechat.png */; };
 		54CB26711DF02FE400AE7414 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54CB266D1DF02FE400AE7414 /* libWeChatSDK.a */; };
 		54CB26731DF0302900AE7414 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54CB26721DF0302900AE7414 /* Security.framework */; };
+		54D59A741E234140006066EC /* DrawBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D59A731E234140006066EC /* DrawBackView.m */; };
+		54D59A7A1E23417B006066EC /* DrawBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D59A791E23417B006066EC /* DrawBackViewController.m */; };
 		54D661221DD040EF00C9A0FF /* UIViewController+HUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D661211DD040EF00C9A0FF /* UIViewController+HUD.m */; };
 		54D661251DD048F500C9A0FF /* IndexPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D661241DD048F500C9A0FF /* IndexPageView.m */; };
 		54D661291DD04DC900C9A0FF /* YZSquareMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D661281DD04DC900C9A0FF /* YZSquareMenu.m */; };
@@ -1027,6 +1029,10 @@
 		54CB266F1DF02FE400AE7414 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		54CB26701DF02FE400AE7414 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		54CB26721DF0302900AE7414 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		54D59A721E234140006066EC /* DrawBackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawBackView.h; sourceTree = "<group>"; };
+		54D59A731E234140006066EC /* DrawBackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawBackView.m; sourceTree = "<group>"; };
+		54D59A781E23417B006066EC /* DrawBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawBackViewController.h; sourceTree = "<group>"; };
+		54D59A791E23417B006066EC /* DrawBackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawBackViewController.m; sourceTree = "<group>"; };
 		54D6611A1DD0373100C9A0FF /* UIViewController_HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_HUD.h; sourceTree = "<group>"; };
 		54D661201DD040EF00C9A0FF /* UIViewController+HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+HUD.h"; sourceTree = "<group>"; };
 		54D661211DD040EF00C9A0FF /* UIViewController+HUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+HUD.m"; sourceTree = "<group>"; };
@@ -2471,6 +2477,7 @@
 		54AB48B31DED2CF3008E3BC5 /* 我的订单 */ = {
 			isa = PBXGroup;
 			children = (
+				54D59A711E233FFD006066EC /* 退款申请页 */,
 				54AB48C21DED2D6E008E3BC5 /* Model */,
 				54AB48C11DED2D6D008E3BC5 /* View */,
 				54AB48C01DED2D6C008E3BC5 /* Controller */,
@@ -2853,6 +2860,33 @@
 				54CB26701DF02FE400AE7414 /* WXApiObject.h */,
 			);
 			name = WeChatSDK;
+			sourceTree = "<group>";
+		};
+		54D59A711E233FFD006066EC /* 退款申请页 */ = {
+			isa = PBXGroup;
+			children = (
+				54D59A761E234145006066EC /* View */,
+				54D59A751E234145006066EC /* ViewController */,
+			);
+			name = "退款申请页";
+			sourceTree = "<group>";
+		};
+		54D59A751E234145006066EC /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				54D59A781E23417B006066EC /* DrawBackViewController.h */,
+				54D59A791E23417B006066EC /* DrawBackViewController.m */,
+			);
+			name = ViewController;
+			sourceTree = "<group>";
+		};
+		54D59A761E234145006066EC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54D59A721E234140006066EC /* DrawBackView.h */,
+				54D59A731E234140006066EC /* DrawBackView.m */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		54D661261DD04DBE00C9A0FF /* YZMenuView */ = {
@@ -4077,6 +4111,7 @@
 				54A153B01DC6F09D0070B508 /* ViewController.m in Sources */,
 				54B9CAFC1DFE4AAC003961FF /* WithdrawConfirmViewController.m in Sources */,
 				541F91D61DC9BB5200180BE8 /* TutoriumView.m in Sources */,
+				54D59A7A1E23417B006066EC /* DrawBackViewController.m in Sources */,
 				54DBA4B21DE4423300A67A90 /* YZEmotionKeyboard.m in Sources */,
 				54AB48D81DED5183008E3BC5 /* MyWalletViewController.m in Sources */,
 				542C17441DFA508A0088DB3F /* Canceld.m in Sources */,
@@ -4138,6 +4173,7 @@
 				54652E311DEEBDC300F4607C /* ClassNoticeSettingView.m in Sources */,
 				5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */,
 				546978691DC72A42001695F4 /* SignUpViewController.m in Sources */,
+				54D59A741E234140006066EC /* DrawBackView.m in Sources */,
 				54FCBAE01DD5B3050094BF58 /* VideoInfoView.m in Sources */,
 				54FA71561E07B107009D81FE /* ChatView.m in Sources */,
 				546A54741DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m in Sources */,

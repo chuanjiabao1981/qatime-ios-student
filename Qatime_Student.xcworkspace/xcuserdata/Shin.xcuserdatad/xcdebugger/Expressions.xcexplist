@@ -3,10 +3,13 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "-[AppDelegate application:didRegisterForRemoteNotificationsWithDeviceToken:]:AppDelegate.m">
+         contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke.204:NoticeIndexViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "deviceToken.description">
+               value = "_chatListArr">
+            </PersistentString>
+            <PersistentString
+               value = "_myClassArray">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -198,15 +201,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
+      </ContextState>
+      <ContextState
          contextName = "-[ChatViewController viewDidLoad]:ChatViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_session">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
       </ContextState>
       <ContextState
          contextName = "-[ChatViewController requestChatHitstory]:ChatViewController.m">
@@ -463,18 +466,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[AllClassViewController loadCurrentDay]:AllClassViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataArr">
-            </PersistentString>
-            <PersistentString
-               value = "_unclosedArr">
-            </PersistentString>
-            <PersistentString
-               value = "_closedArr">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "__38-[IndexPageViewController checkNotice]_block_invoke_2:IndexPageViewController.m">
       </ContextState>
       <ContextState
          contextName = "__46-[NELivePlayerViewController checkVideoStatus]_block_invoke:NELivePlayerViewController.m">
@@ -523,7 +515,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[AppDelegate onResp:]:AppDelegate.m">
+         contextName = "-[AllClassViewController loadCurrentDay]:AllClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataArr">
+            </PersistentString>
+            <PersistentString
+               value = "_unclosedArr">
+            </PersistentString>
+            <PersistentString
+               value = "_closedArr">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__43-[CashRecordViewController requestWithDraw]_block_invoke:CashRecordViewController.m">
@@ -554,6 +557,9 @@
                value = "tableView.tag">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate onResp:]:AppDelegate.m">
       </ContextState>
       <ContextState
          contextName = "__41-[IndexPageViewController requestBanner:]_block_invoke:IndexPageViewController.m">
@@ -589,13 +595,18 @@
          contextName = "__58-[TeachersPublicViewController requestTeachersInfoWithID:]_block_invoke:TeachersPublicViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__38-[IndexPageViewController checkNotice]_block_invoke_2:IndexPageViewController.m">
-      </ContextState>
-      <ContextState
          contextName = "__41-[NELivePlayerViewController viewDidLoad]_block_invoke:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "weakSelf.view.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke_2:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "sortArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -620,6 +631,14 @@
       </ContextState>
       <ContextState
          contextName = "__34-[BindingViewController nextStep:]_block_invoke:BindingViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unclosedArr">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__43-[NoticeIndexViewController requestNotices]_block_invoke:NoticeIndexViewController.m">
@@ -683,6 +702,9 @@
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController onRecvMessages:]:NELivePlayerViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__39-[MyOrderViewController requestCanceld]_block_invoke:MyOrderViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[PersonalInfoViewController initWithName:andGrade:andHeadImage:withImageChange:]:PersonalInfoViewController.m">
@@ -784,12 +806,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[MyOrderViewController repage:]:MyOrderViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[LoginViewController wechatLoginSucess:]:LoginViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "respdata.code">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__41-[DrawBackViewController requestDrawback]_block_invoke:DrawBackViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[VideoViewController tableView:numberOfRowsInSection:]:VideoViewController.m">
@@ -907,6 +935,22 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[TutoriumInfoViewController requestOrder]:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate application:didRegisterForRemoteNotificationsWithDeviceToken:]:AppDelegate.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "deviceToken.description">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[MyOrderViewController scrollViewWillBeginDragging:]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -914,25 +958,6 @@
             </PersistentString>
             <PersistentString
                value = "_unpaidView.mj_footer.mj_y">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke.204:NoticeIndexViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_chatListArr">
-            </PersistentString>
-            <PersistentString
-               value = "_myClassArray">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[TutoriumInfoViewController requestOrder]:TutoriumInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

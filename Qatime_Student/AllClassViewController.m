@@ -76,6 +76,26 @@
     /* 日历的设置*/
     _allClassView.calendarView.calendarView.appearance.headerMinimumDissolvedAlpha = 0;
     _allClassView.calendarView.calendarView.appearance.eventDefaultColor = [UIColor redColor];
+    _allClassView.calendarView.calendarView.appearance.adjustsFontSizeToFitContentSize = NO;
+    _allClassView.calendarView.calendarView.firstWeekday = 2;
+    
+    //创建点击跳转显示上一月和下一月button
+    UIButton *previousButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    previousButton.frame = CGRectMake(self.view.centerX -100, 13*ScrenScale, 20, 20);
+    [previousButton setImage:[UIImage imageNamed:@"lastMonth"] forState:UIControlStateNormal];
+    [previousButton addTarget:self action:@selector(previousClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [previousButton setEnlargeEdge:20];
+    [_allClassView.calendarView.calendarView addSubview:previousButton];
+    
+    UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    nextButton.frame = CGRectMake(self.view.centerX +80, 13*ScrenScale,20, 20);
+       [nextButton setImage:[UIImage imageNamed:@"nextMonth"] forState:UIControlStateNormal];
+    [nextButton addTarget:self action:@selector(nextClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [nextButton setEnlargeEdge:20];
+    [_allClassView.calendarView.calendarView addSubview:nextButton];
+    
+    
+    
     
     _classTableView = [[UITableView alloc]init];
     [self.view addSubview:_classTableView];
@@ -146,8 +166,8 @@
     
     /* 请求所有的课程表数据*/
     
-    [self requestUnclosedClassList];
-    [self requestClosedClassList];
+    [self requestUnclosedClassListWithMonth:nil];
+    [self requestClosedClassListWithMonth:nil];
     
     
     
@@ -165,11 +185,45 @@
     
 }
 
+//上一月按钮点击事件
+- (void)previousClicked:(id)sender {
+    
+    NSDate *currentMonth = _allClassView.calendarView.calendarView.currentPage;
+    NSDate *previousMonth = [_allClassView.calendarView.calendarView dateBySubstractingMonths:1 fromDate:currentMonth];
+    [_allClassView.calendarView.calendarView setCurrentPage:previousMonth animated:YES];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    formatter.dateFormat = @"yyyy-MM-dd";
+    NSString *datestr = [NSString stringWithFormat:@"%@",[formatter stringFromDate:previousMonth]];
+    
+    _allClassArr = @[].mutableCopy;
+    [self requestUnclosedClassListWithMonth:datestr];
+    [self requestClosedClassListWithMonth:datestr];
+    
+    
+}
+
+//下一月按钮点击事件
+- (void)nextClicked:(id)sender {
+    
+    NSDate *currentMonth = _allClassView.calendarView.calendarView.currentPage;
+    NSDate *nextMonth = [_allClassView.calendarView.calendarView dateByAddingMonths:1 toDate:currentMonth];
+    [_allClassView.calendarView.calendarView setCurrentPage:nextMonth animated:YES];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    formatter.dateFormat = @"yyyy-MM-dd";
+    NSString *datestr = [NSString stringWithFormat:@"%@",[formatter stringFromDate:nextMonth]];
+    
+    _allClassArr = @[].mutableCopy;
+    [self requestUnclosedClassListWithMonth:datestr];
+    [self requestClosedClassListWithMonth:datestr];
+
+}
+
 /* 加载当天的 数据*/
 - (void)loadCurrentDay{
     
-    
     [_dataArr removeAllObjects];
+    
     if (_allClassArr) {
         /* 造出包含所有数据的数组*/
         
@@ -182,10 +236,10 @@
         for (ClassTimeModel *model in _allClassArr) {
           
             if ([model.class_date isEqualToString:[dateFormatter stringFromDate:currentDate]]) {
-#if defined(DEBUG)||defined(_DEBUG)
+
                 NSLog(@"%@",model.live_time);
                 NSLog(@"%@",[dateFormatter stringFromDate:currentDate]);
-#endif
+
                 
                 [_dataArr addObject:model];
                 
@@ -193,13 +247,14 @@
             
         }
     }
-#if defined(DEBUG)||defined(_DEBUG)
+
     NSLog(@"%@",_dataArr);
-    
-#endif
+
     /* 在刷新日历table的视图*/
 
     [self updateTable];
+    
+    
 }
 
 /* 跟新tableview*/
@@ -216,33 +271,35 @@
 
 
 #pragma mark- 请求未上课课程表数据
-- (void)requestUnclosedClassList{
+- (void)requestUnclosedClassListWithMonth:(NSString * _Nullable)date{
+    
+    NSString *dateString = @"".mutableCopy;
+    
+    if (date == nil) {
+        dateString = @"";
+    }else{
+        dateString = [NSString stringWithFormat:@"&month=%@",date];
+    }
     
     if (_token&&_idNumber) {
-        
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule?state=unclosed",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule?state=unclosed%@",Request_Header,_idNumber,dateString] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
+            _unclosedArr = @[].mutableCopy;
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
             /* 回复数据正确的情况下*/
             if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
-#if defined(DEBUG)||defined(_DEBUG)
-                
+
                 NSLog(@"%@",dic[@"data"]);
-#endif
-                
                 for (NSDictionary *classDic in dic[@"data"]) {
                     
                     for (NSDictionary *lessons in classDic[@"lessons"]) {
-                        
-                        
                         ClassTimeModel *mod = [ClassTimeModel yy_modelWithJSON:lessons];
                         mod.classID = lessons[@"id"];
-                        
                         
                         [_unclosedArr addObject:mod];
                         
@@ -253,10 +310,8 @@
                     }
                     
                 }
-#if defined(DEBUG)||defined(_DEBUG)
                 
                 NSLog(@"%@",_unclosedArr);
-#endif
                 
                 /* 在所有课程中添加该数组*/
                 
@@ -292,15 +347,25 @@
     
 }
 
-- (void)requestClosedClassList{
+- (void)requestClosedClassListWithMonth:(NSString * _Nullable)date{
+    
+    NSString *dateString = @"".mutableCopy;
+    
+    if (date == nil) {
+        dateString = @"";
+    }else{
+        dateString = [NSString stringWithFormat:@"&month=%@",date];
+    }
+
+    
     if (_token&&_idNumber) {
         
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule?state=closed",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            
+        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule?state=closed%@",Request_Header,_idNumber,dateString] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            _closedArr = @[].mutableCopy;
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
             /* 回复数据正确的情况下*/
@@ -467,7 +532,6 @@
         cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
         
         cell.sd_tableView = tableView;
-        
         
         
     }

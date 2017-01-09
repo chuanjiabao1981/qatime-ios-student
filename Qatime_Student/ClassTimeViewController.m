@@ -23,6 +23,7 @@
 /* 点击事件 -> 辅导班详情页*/
 #import "TutoriumInfoViewController.h"
 #import "NELivePlayerViewController.h"
+#import "UIAlertController+Blocks.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -197,7 +198,7 @@
 #pragma mark- 请求未上课课程表数据
 - (void)requestUnclosedClassList{
     
-    _unclosedArr = @[].mutableCopy;
+   
     
     if (_token&&_idNumber) {
         
@@ -205,7 +206,7 @@
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule?state=unclosed",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule?state=unclosed&month=2016-10-01",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
@@ -221,7 +222,34 @@
                     
                 }else{
                     haveClass = YES;
-                    for (NSDictionary *classDic in dic[@"data"]) {
+                     _unclosedArr = @[].mutableCopy;
+                    NSArray *sortArr = [dic[@"data"] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                        NSDictionary *dic1 = obj1;
+                        NSDictionary *dic2 = obj2;
+                        
+                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                        
+                        [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm"];
+                        
+                        NSDate *date1= [dateFormatter dateFromString:dic1[@"date"]];
+                        NSDate *date2= [dateFormatter dateFromString:dic2[@"date"]];
+                        if (date1 == [date1 earlierDate: date2]) { //不使用intValue比较无效
+                            
+                            return NSOrderedDescending;//降序
+                            
+                        }else if (date1 == [date1 laterDate: date2]) {
+                            return NSOrderedAscending;//升序
+                            
+                        }else{  
+                            return NSOrderedSame;//相等  
+                        }
+                        
+                        
+                    }];
+                    
+                    NSLog(@"%@", sortArr);
+                    
+                    for (NSDictionary *classDic in sortArr) {
                         for (NSDictionary *lessons in classDic[@"lessons"]) {
                             ClassTimeModel *mod = [ClassTimeModel yy_modelWithJSON:lessons];
                             mod.classID = lessons[@"id"];
@@ -235,7 +263,6 @@
                 
                
 #pragma mark- 请求已上课课程表数据
-                [self requestClosedClassList];
                 
                 [_classTimeView.notClassView.notClassTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             }else{
@@ -263,7 +290,7 @@
 
 - (void)requestClosedClassList{
     
-    _closedArr = @[].mutableCopy;
+   
     if (_token&&_idNumber) {
         
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -289,8 +316,36 @@
                 }else{
                     
                     haveClass = YES;
+                     _closedArr = @[].mutableCopy;
                     
-                    for (NSDictionary *classDic in dic[@"data"]) {
+                    NSArray *sortArr = [dic[@"data"] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                        NSDictionary *dic1 = obj1;
+                        NSDictionary *dic2 = obj2;
+                        
+                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                        
+                        [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm"];
+                        
+                        NSDate *date1= [dateFormatter dateFromString:dic1[@"date"]];
+                        NSDate *date2= [dateFormatter dateFromString:dic2[@"date"]];
+                        if (date1 == [date1 earlierDate: date2]) { //不使用intValue比较无效
+                            
+                            return NSOrderedAscending;//升序
+                            
+                        }else if (date1 == [date1 laterDate: date2]) {
+                            return NSOrderedDescending;//降序
+                            
+                        }else{
+                            return NSOrderedSame;//相等
+                        }
+                        
+                        
+                    }];
+                    
+                    NSLog(@"%@", sortArr);
+
+                    
+                    for (NSDictionary *classDic in sortArr) {
                         
                         for (NSDictionary *lessons in classDic[@"lessons"]) {
                             
@@ -455,7 +510,7 @@
                 cell.enterButton.tag = indexPath.row+10;
                 [cell.enterButton addTarget:self action:@selector(enterLive:) forControlEvents:UIControlEventTouchUpInside];
             }
-                        
+            
             return  cell;
         }
         
@@ -591,8 +646,29 @@
 - (void)calenderViews{
     
     
-    AllClassViewController *allClassVC = [[AllClassViewController alloc]init];
-    [self.navigationController pushViewController:allClassVC animated:YES];
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
+            
+            AllClassViewController *allClassVC = [[AllClassViewController alloc]init];
+            [self.navigationController pushViewController:allClassVC animated:YES];
+        }else{
+            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录后才能查看!" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+               
+                if (buttonIndex!=0) {
+                    [self loginAgain];
+                }
+            }];
+            
+        }
+    }else{
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录后才能查看!" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+            
+            if (buttonIndex!=0) {
+                [self loginAgain];
+            }
+        }];
+
+    }
     
 }
 

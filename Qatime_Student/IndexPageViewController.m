@@ -1274,14 +1274,11 @@
                         /* 请求当前所在地区的数据*/
                         [self requestDataWithLocation:loaction.locality];
                         
-                        
                     }] ;
                     
                     [alert addAction:cancel];
                     [alert addAction:sure];
-                    
                     [self presentViewController:alert animated:YES completion:nil];
-                    
                     
                 }
                 
@@ -1291,9 +1288,6 @@
     }
     
 }
-
-
-
 
 /* 制作城市信息plist文件*/
 - (void)makeCityList:(NSMutableArray *)cityList{
@@ -1373,6 +1367,11 @@
     }
     
     
+    /* 最后,把"全国"这一条数据做进去*/
+    NSDictionary *contr = @{@"citys":@[@{@"city_key":@"000",@"city_name":@"全国",@"province_id":@"00",@"short_name":@"全国"}],@"initial":@"全国",@"workstations_count":@"99"};
+    
+    [cityData insertObject:contr atIndex:0];
+    
     /* 大的城市数据表已经组合完成,现在存入本地*/
     
     
@@ -1387,7 +1386,7 @@
 /* 地址选择*/
 - (void)choseLocation{
     
-    TLCityPickerController *locationController = [[TLCityPickerController alloc]init];
+    TLCityPickerController *locationController = [[TLCityPickerController alloc]initWithLoacatedCity:_location.titleLabel.text];
     
     locationController.delegate = self;
     
@@ -1403,6 +1402,7 @@
     }
     
     locationController.hotCitys = @[@"1",@"266"];
+   
     
     [self .navigationController pushViewController:locationController animated:YES];
     
@@ -1434,6 +1434,8 @@
     
     
 }
+
+
 
 
 

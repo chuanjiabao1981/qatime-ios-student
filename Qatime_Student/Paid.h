@@ -58,6 +58,7 @@
 @property(nonatomic,strong) NSString *subject ;
 @property(nonatomic,strong) NSString *grade ;
 @property(nonatomic,strong) NSString *preset_lesson_count ;
+@property(nonatomic,strong) NSString *completed_lesson_count ;
 @property(nonatomic,strong) NSString *teacher_name ;
 @property(nonatomic,strong) NSString *price ;
 /* 支付*/
