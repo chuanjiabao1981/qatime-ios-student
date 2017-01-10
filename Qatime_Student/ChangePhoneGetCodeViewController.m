@@ -49,7 +49,7 @@
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];
-    _navigationBar.titleLabel.text = @"绑定手机";
+    _navigationBar.titleLabel.text = @"绑定新手机";
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
@@ -86,7 +86,7 @@
         [self presentViewController:alert animated:YES completion:nil];
 
     }else{
-    
+        
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -94,42 +94,33 @@
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-                /* 验证码正确*/
-                [self loadingHUDStopLoadingWithTitle:@"验证码正确!"];
                 
-                ChangePhoneViewController *vc = [ChangePhoneViewController new];
-                
-                
-                [self.navigationController pushViewController:vc animated:YES];
-                
-                
-                
-                
+                if ([dic[@"data"]isEqual:[NSNull null]]) {
+                    /* 验证码正确*/
+                    [self loadingHUDStopLoadingWithTitle:@"验证码正确!"];
+                    ChangePhoneViewController *vc = [ChangePhoneViewController new];
+                    [self.navigationController pushViewController:vc animated:YES];
+                    
+                }else{
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"验证码错误!" preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        
+                    }] ;
+                    [alert addAction:sure];
+                    
+                    [self presentViewController:alert animated:YES completion:nil];
+                }
             }else{
                 
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"验证码错误!" preferredStyle:UIAlertControllerStyleAlert];
-             
-                UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    
-                }] ;
-                [alert addAction:sure];
-                
-                [self presentViewController:alert animated:YES completion:nil];
-  
+                [self loadingHUDStopLoadingWithTitle:@"数据请求错误!"];
             }
-            
-            
-            
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
         }];
     }
-    
-    
-    
-    
-    
+ 
 }
 
 

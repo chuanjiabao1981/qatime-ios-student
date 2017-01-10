@@ -18,8 +18,10 @@
 #import "Recharge.h"
 #import "WithDraw.h"
 #import "Payment.h"
+#import "HaveNoClassView.h"
 
 #import "UIViewController+HUD.h"
+#import "UIAlertController+Blocks.h"
 
 
 @interface CashRecordViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
@@ -40,7 +42,7 @@
     NSMutableArray *_paymentArr;
     
     
-    
+   
     
     
     
@@ -83,6 +85,9 @@
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_navigationBar.rightButton setImage:[UIImage imageNamed:@"phone"] forState:UIControlStateNormal];
+    [_navigationBar.rightButton addTarget:self action:@selector(callForServiece) forControlEvents:UIControlEventTouchUpInside];
     
     
     /* 提出token和学生id*/
@@ -148,7 +153,20 @@
     [self requestPayment];
     
     
+    /* 初始化无数据占位图*/
     
+    
+    
+}
+
+/* 拨打客服电话*/
+- (void)callForServiece{
+    
+    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否拨打客服电话0353-2135828?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+       
+        NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",@"0353-2135828"];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+    }];
     
 }
 
@@ -165,6 +183,13 @@
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/recharges",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
+        /* 无记录占位图*/
+        HaveNoClassView *_noDataView = [[HaveNoClassView alloc]init];
+        _noDataView.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd-64-_cashRecordView.segmentControl.height_sd);
+        _noDataView.titleLabel.text = @"暂时没有数据";
+        [_cashRecordView.rechargeView addSubview:_noDataView];
+        _noDataView.hidden = NO;
+      
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] ;
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
@@ -172,6 +197,7 @@
             
             if (dataArr.count !=0) {
                 
+                _noDataView.hidden = YES;
                 for (NSInteger i = 0; i<dataArr.count; i++) {
                     
                     Recharge *mod = [Recharge yy_modelWithJSON:dataArr[i]];
@@ -248,7 +274,14 @@
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/withdraws",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
+       
+        /* 无记录占位图*/
+        HaveNoClassView *_noDataView = [[HaveNoClassView alloc]init];
+        _noDataView.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd-64-_cashRecordView.segmentControl.height_sd);
+        _noDataView.titleLabel.text = @"暂时没有数据";
+        [_cashRecordView.withDrawView addSubview:_noDataView];
+        _noDataView.hidden = NO;
+
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] ;
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
@@ -256,6 +289,8 @@
             NSMutableArray *withDraw = [NSMutableArray arrayWithArray:dic[@"data"]];
             
             if (withDraw.count!=0) {
+                
+                _noDataView.hidden = YES;
                 
                 for (NSInteger i = 0; i<withDraw.count; i++) {
                     
@@ -318,6 +353,14 @@
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/consumption_records",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
+        /* 无记录占位图*/
+        HaveNoClassView *_noDataView = [[HaveNoClassView alloc]init];
+        _noDataView.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd-64-_cashRecordView.segmentControl.height_sd);
+        _noDataView.titleLabel.text = @"暂时没有数据";
+        [_cashRecordView.paymentView addSubview:_noDataView];
+        _noDataView.hidden = NO;
+
+        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] ;
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
@@ -325,6 +368,8 @@
             NSMutableArray *payment = [NSMutableArray arrayWithArray:dic[@"data"]];
             
             if (payment.count!=0) {
+                
+                _noDataView.hidden = YES;
                 
                 for (NSInteger i = 0; i<payment.count; i++) {
                     
@@ -627,11 +672,6 @@
         [self loadingHUDStopLoadingWithTitle:@"请求失败,请重试"];
         
     }
-    
-    
-    
-    
-    
     
 }
 

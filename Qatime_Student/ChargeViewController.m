@@ -13,6 +13,7 @@
 #import "UIViewController+HUD.h"
 #import "NSString+TimeStamp.h"
 #import "ConfirmChargeViewController.h"
+#import "UIAlertController+Blocks.h"
 
 @interface ChargeViewController ()<UITextFieldDelegate>{
     
@@ -29,8 +30,6 @@
     /* 申请后获取到的数据*/
     
     NSMutableDictionary *_dataDic;
-    
-    
     
     
 }
@@ -128,6 +127,7 @@
     if (![_chargeView.moneyText.text isEqualToString:@""]&&![_payType isEqualToString:@""]) {
         
         
+        /* 发送支付申请*/
         [self chargeWithType:_payType];
         
     }
@@ -144,47 +144,54 @@
  */
 - (void)chargeWithType:(NSString *)type{
     
-    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager POST:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/recharges",Request_Header,_idNumber] parameters:@{@"amount":_chargeView.moneyText.text,@"pay_type":_payType} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    
+    /* 支付宝暂时不可用*/
+    if ([type isEqualToString:@"weixin"]) {
         
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
-        if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-
+        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+        [manager POST:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/recharges",Request_Header,_idNumber] parameters:@{@"amount":_chargeView.moneyText.text,@"pay_type":_payType} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
-            NSString *date = [NSString stringWithFormat:@"%@",dic[@"data"][@"created_at"]];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
-            /* 订单生成成功*/
-            NSDictionary *infoDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
+            if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+                
+                
+                NSString *date = [NSString stringWithFormat:@"%@",dic[@"data"][@"created_at"]];
+                
+                /* 订单生成成功*/
+                NSDictionary *infoDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
+                
+                
+                
+                ConfirmChargeViewController *conVC = [[ConfirmChargeViewController alloc]initWithInfo:infoDic];
+                [self.navigationController pushViewController:conVC animated:YES];
+                [self.rdv_tabBarController setTabBarHidden:YES];
+                
+                
+                
+                
+            }else{
+                /* 失败*/
+                /* 订单生成失败*/
+                [self loadingHUDStopLoadingWithTitle:@"订单创建失败,请查看登录状态!"];
+                
+            }
             
             
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
-            ConfirmChargeViewController *conVC = [[ConfirmChargeViewController alloc]initWithInfo:infoDic];
-            [self.navigationController pushViewController:conVC animated:YES];
-            [self.rdv_tabBarController setTabBarHidden:YES];
-
-            
-            
-            
-        }else{
-            /* 失败*/
-            /* 订单生成失败*/
-            [self loadingHUDStopLoadingWithTitle:@"订单创建失败,请查看登录状态!"];
-        
-        }
-        
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        }];
+    }else{
+       
+        [UIAlertController showAlertInViewController:self
+    withTitle:@"提示" message:@"支付宝暂不可用,请使用其他方式充值." cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
         
     }];
-    
-    
-    
-    
-    
+        
+    }
     
 }
 
@@ -217,9 +224,6 @@
 //        
 //    }
 //    
-//
-//    
-//    
 //}
 //
 
@@ -240,8 +244,6 @@
         
     }
     
-    
-    
 }
 
 - (void)selectedAlipay:(UIButton *)sender{
@@ -258,12 +260,10 @@
         _chargeView.wechatButton.selected = NO;
         [_chargeView.wechatButton setImage:nil forState:UIControlStateNormal];
         
-        
     }
-
-    
-    
 }
+
+
 /* 检查支付结果*/
 - (void)CheckPayStatus{
     
@@ -275,7 +275,6 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    
     
     NSCharacterSet *cs;
    
@@ -303,11 +302,7 @@
     return  YES;
 }
 
-
-
-
 - (void)returnLastPage{
-    
     
     [self.navigationController popViewControllerAnimated:YES];
     

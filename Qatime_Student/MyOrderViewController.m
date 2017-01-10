@@ -24,6 +24,7 @@
 #import "OrderViewController.h"
 #import "MyOrderViewController.h"
 #import "DrawBackViewController.h"
+#import "HaveNoClassView.h"
 
 
 @interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
@@ -285,12 +286,17 @@
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/orders?cate=unpaid&per_page=6&page=%ld",Request_Header,unpaidPage] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        HaveNoClassView *noDataView = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd - 64 - _myOrderView.segmentControl.height_sd)];
+        [_unpaidView addSubview:noDataView];
+        noDataView.titleLabel.text = @"暂时没有数据";
+        noDataView.hidden = NO;
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 获取数据成功*/
             if ([dic[@"data"] count]!=0) {
                 /* 有数据*/
+                noDataView.hidden = YES;
                 _unpaidView.hidden = NO;
                 
                 __block NSMutableArray *unpaidArr = [NSMutableArray arrayWithArray:dic[@"data"]];
@@ -333,7 +339,7 @@
             }else{
                 /* 没更多的数据了*/
                 if (_unpaidArr.count == 0) {
-                    _unpaidView.hidden = YES;
+//                    _unpaidView.hidden = YES;
                 }
                 [_unpaidView.tableView.mj_footer endRefreshingWithNoMoreData];
                 
@@ -367,13 +373,18 @@
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/orders?cate=paid&per_page=6&page=%ld",Request_Header,paidPage] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
+        HaveNoClassView *noDataView = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd - 64 - _myOrderView.segmentControl.height_sd)];
+        noDataView.titleLabel.text = @"暂时没有数据";
+        [_unpaidView addSubview:noDataView];
+        noDataView.hidden = NO;
+
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 获取数据成功*/
             if ([dic[@"data"] count]!=0) {
                 /* 有数据*/
-                _paidView.hidden = NO;
+                noDataView.hidden = YES;
+//                _paidView.hidden = NO;
                 __block NSMutableArray *paidArr = [NSMutableArray arrayWithArray:dic[@"data"]];
                 NSMutableArray *compArr = paidArr.copy;
                 
@@ -411,7 +422,7 @@
                 /* 没更多的数据了*/
                 
                 if (_paidArr.count == 0) {
-                    _paidView.hidden = YES;
+//                    _paidView.hidden = YES;
                 }
                 
                 [_paidView.tableView.mj_footer endRefreshingWithNoMoreData];
@@ -443,18 +454,23 @@
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/orders?cate=canceled&per_page=6&page=%ld",Request_Header,cancelPage] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
+        HaveNoClassView *noDataView = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd - 64 - _myOrderView.segmentControl.height_sd)];
+        noDataView.titleLabel.text = @"暂时没有数据";
+        [_unpaidView addSubview:noDataView];
+        noDataView.hidden = NO;
+
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 获取数据成功*/
             if ([dic[@"data"] count]!=0) {
+                noDataView.hidden = YES;
                 /* 有数据*/
                 
-                _cancelView.hidden = NO;
+//                _cancelView.hidden = NO;
                 
                 __block NSMutableArray *cancelArr = [NSMutableArray arrayWithArray:dic[@"data"]];
                 
                 NSMutableArray *compArr = cancelArr.copy;
-                
                 
                 for (NSInteger i = 0; i<compArr.count; i++) {
                     
@@ -490,7 +506,7 @@
                 /* 没更多的数据了*/
                 
                 if (_caneldArr.count == 0) {
-                    _cancelView.hidden = YES;
+//                    _cancelView.hidden = YES;
                 }
                 [_cancelView.tableView.mj_footer endRefreshingWithNoMoreData];
                 [self loadingHUDStopLoadingWithTitle:@"没有符合条件的订单!"];

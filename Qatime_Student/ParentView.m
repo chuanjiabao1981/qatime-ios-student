@@ -65,16 +65,18 @@
         /* 获取验证码*/
         
         _getCodeButton = [[UIButton alloc]init];
-        _getCodeButton.backgroundColor = [UIColor lightGrayColor];
-        [_getCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//        _getCodeButton.backgroundColor = [UIColor lightGrayColor];
+        [_getCodeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [_getCodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
-        
+        _getCodeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        _getCodeButton.layer.borderWidth =1;
         
         /* 完成按钮*/
         
         _finishButton =[[UIButton alloc]init];
-        _finishButton.backgroundColor = [UIColor lightGrayColor];
+//        _finishButton.backgroundColor = [UIColor lightGrayColor];
         [_finishButton setTitle:@"完成" forState:UIControlStateNormal];
+        [_finishButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         _finishButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _finishButton.layer.borderWidth = 1;
                 
@@ -116,12 +118,14 @@
         .rightEqualToView(_parentPhoneText)
         .topEqualToView(_keyCodeText)
         .bottomEqualToView(_keyCodeText);
+        _getCodeButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         
         _finishButton.sd_layout
         .leftEqualToView(_keyCodeText)
         .rightEqualToView(_getCodeButton)
         .topSpaceToView(_keyCodeText,30)
         .heightRatioToView(_keyCodeText,1.0f);
+        _finishButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         
         
     }

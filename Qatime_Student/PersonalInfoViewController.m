@@ -19,6 +19,7 @@
 #import "UIViewController+HUD.h"
 #import "RDVTabBarController.h"
 #import "UIAlertController+Blocks.h"
+#import "PersonalInfoEditViewController.h"
 
 
 @interface PersonalInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,ChangeDescDelegate>
@@ -49,7 +50,6 @@
     /* 更换头像的点击手势*/
     
     UITapGestureRecognizer *_tap;
-    
     
     /* 选择器*/
     HcdDateTimePickerView *_birthdayPicker;
@@ -132,6 +132,8 @@
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+    [_navigationBar.rightButton setImage:[UIImage imageNamed:@"pen"] forState:UIControlStateNormal];
+    [_navigationBar.rightButton addTarget:self action:@selector(editInfo) forControlEvents:UIControlEventTouchUpInside];
     
     _personalInfoView = [[PersonalInfoView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
     [self.view addSubview:_personalInfoView];
@@ -149,7 +151,7 @@
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
-    _nameArr = @[@"头像",@"姓名",@"性别",@"生日",@"年级",@"地区",@"学校",@"自我介绍"];
+    _nameArr = @[@"头像",@"姓名",@"性别",@"生日",@"年级",@"学校",@"简介"];
     
     /* 如果是从注册页面传值过来的*/
     if (WriteMore == YES) {
@@ -164,8 +166,6 @@
     }
     
     _tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeHeadImage:)];
-    
-    
     
 }
 
@@ -300,7 +300,7 @@
 #pragma mark- tableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 8;
+    return 7;
     
 }
 
@@ -396,7 +396,7 @@
                     }
                     break;
                 case 5:
-                    cell.content.text = @"未设置";
+//                    cell.content.text = @"未设置";
                     break;
                 case 6:
                     cell.content.text = @"未设置";
@@ -487,7 +487,7 @@
         height = CGRectGetHeight(self.view.frame)*0.15;
     }else{
         
-        height =CGRectGetHeight(self.view.frame)*0.065;
+        height =CGRectGetHeight(self.view.frame)*0.07;
     }
     return height;
 }
@@ -672,6 +672,34 @@
     [_personalInfoView setNeedsLayout];
     
     [_dataDic setObject:desc forKey:@"desc"];
+    
+    
+}
+
+
+/* 进入编辑页面*/
+- (void)editInfo{
+    
+//    Personal_HeadTableViewCell *headcell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+//    PersonalTableViewCell *nameCell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+//    PersonalTableViewCell *headcell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+//    PersonalTableViewCell *nameCell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+//    PersonalTableViewCell *nameCell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:4]];
+//    PersonalTableViewCell *headcell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:5]];
+//    PersonalTableViewCell *nameCell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:6]];
+    
+    
+    
+    
+//    NSDictionary *info = @{
+//                           @"head":headcell.imageView.image,
+//                           @"name":nameCell.content.text
+//                           @"gender":
+//                           };
+    
+    PersonalInfoEditViewController *edit = [[PersonalInfoEditViewController alloc]init];
+    [self.navigationController pushViewController:edit animated:YES];
+    
     
     
 }

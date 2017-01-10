@@ -121,6 +121,13 @@
 		545162D11DF55BEC000BD17A /* UserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162D01DF55BEC000BD17A /* UserInfoModel.m */; };
 		545162D51DF55DC7000BD17A /* Personal_HeadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162D41DF55DC7000BD17A /* Personal_HeadTableViewCell.m */; };
 		545162D81DF55DD0000BD17A /* PersonalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162D71DF55DD0000BD17A /* PersonalTableViewCell.m */; };
+		545226021E24821400F36280 /* PersonalInfoEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545226011E24821400F36280 /* PersonalInfoEditViewController.m */; };
+		545226051E2482C800F36280 /* EditHeadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 545226041E2482C800F36280 /* EditHeadTableViewCell.m */; };
+		545226081E2482E100F36280 /* EditNameTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 545226071E2482E100F36280 /* EditNameTableViewCell.m */; };
+		5452260B1E2482EC00F36280 /* EditGenderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5452260A1E2482EC00F36280 /* EditGenderTableViewCell.m */; };
+		5452260E1E24830200F36280 /* EditBirthdayTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5452260D1E24830100F36280 /* EditBirthdayTableViewCell.m */; };
+		545226151E24CDD300F36280 /* OrderInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545226141E24CDD300F36280 /* OrderInfoView.m */; };
+		545226181E24CDE100F36280 /* OrderInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545226171E24CDE100F36280 /* OrderInfoViewController.m */; };
 		545731811E022E7700F45C03 /* HaveNoClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545731801E022E7700F45C03 /* HaveNoClassView.m */; };
 		5458AB381E0D424B00D6409F /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 547389FE1DD9A3FA00A50CCC /* libcrypto.a */; };
 		5458AB391E0D424B00D6409F /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54738A001DD9A3FA00A50CCC /* libssl.a */; };
@@ -588,6 +595,20 @@
 		545162D41DF55DC7000BD17A /* Personal_HeadTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Personal_HeadTableViewCell.m; sourceTree = "<group>"; };
 		545162D61DF55DD0000BD17A /* PersonalTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalTableViewCell.h; sourceTree = "<group>"; };
 		545162D71DF55DD0000BD17A /* PersonalTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalTableViewCell.m; sourceTree = "<group>"; };
+		545226001E24821400F36280 /* PersonalInfoEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalInfoEditViewController.h; sourceTree = "<group>"; };
+		545226011E24821400F36280 /* PersonalInfoEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalInfoEditViewController.m; sourceTree = "<group>"; };
+		545226031E2482C800F36280 /* EditHeadTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditHeadTableViewCell.h; sourceTree = "<group>"; };
+		545226041E2482C800F36280 /* EditHeadTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditHeadTableViewCell.m; sourceTree = "<group>"; };
+		545226061E2482E100F36280 /* EditNameTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditNameTableViewCell.h; sourceTree = "<group>"; };
+		545226071E2482E100F36280 /* EditNameTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNameTableViewCell.m; sourceTree = "<group>"; };
+		545226091E2482EC00F36280 /* EditGenderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditGenderTableViewCell.h; sourceTree = "<group>"; };
+		5452260A1E2482EC00F36280 /* EditGenderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditGenderTableViewCell.m; sourceTree = "<group>"; };
+		5452260C1E24830100F36280 /* EditBirthdayTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditBirthdayTableViewCell.h; sourceTree = "<group>"; };
+		5452260D1E24830100F36280 /* EditBirthdayTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditBirthdayTableViewCell.m; sourceTree = "<group>"; };
+		545226131E24CDD300F36280 /* OrderInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderInfoView.h; sourceTree = "<group>"; };
+		545226141E24CDD300F36280 /* OrderInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderInfoView.m; sourceTree = "<group>"; };
+		545226161E24CDE100F36280 /* OrderInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderInfoViewController.h; sourceTree = "<group>"; };
+		545226171E24CDE100F36280 /* OrderInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderInfoViewController.m; sourceTree = "<group>"; };
 		5457317F1E022E7700F45C03 /* HaveNoClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HaveNoClassView.h; sourceTree = "<group>"; };
 		545731801E022E7700F45C03 /* HaveNoClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HaveNoClassView.m; sourceTree = "<group>"; };
 		5458AB321E0D411D00D6409F /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/libs/libcrypto.a; sourceTree = "<group>"; };
@@ -1712,6 +1733,8 @@
 				547FBF2F1DF6B99600955A9E /* PersonalDescViewController.h */,
 				547FBF301DF6B99600955A9E /* PersonalDescViewController.m */,
 				547FBF321DF6C3B800955A9E /* ChangeDescDelegate.h */,
+				545226001E24821400F36280 /* PersonalInfoEditViewController.h */,
+				545226011E24821400F36280 /* PersonalInfoEditViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1744,8 +1767,51 @@
 				545162D71DF55DD0000BD17A /* PersonalTableViewCell.m */,
 				547FBF331DF6CEC800955A9E /* PersonalDescTableViewCell.h */,
 				547FBF341DF6CEC800955A9E /* PersonalDescTableViewCell.m */,
+				545226031E2482C800F36280 /* EditHeadTableViewCell.h */,
+				545226041E2482C800F36280 /* EditHeadTableViewCell.m */,
+				545226061E2482E100F36280 /* EditNameTableViewCell.h */,
+				545226071E2482E100F36280 /* EditNameTableViewCell.m */,
+				545226091E2482EC00F36280 /* EditGenderTableViewCell.h */,
+				5452260A1E2482EC00F36280 /* EditGenderTableViewCell.m */,
+				5452260C1E24830100F36280 /* EditBirthdayTableViewCell.h */,
+				5452260D1E24830100F36280 /* EditBirthdayTableViewCell.m */,
 			);
 			name = Cell;
+			sourceTree = "<group>";
+		};
+		5452260F1E24CD7000F36280 /* 订单详情页 */ = {
+			isa = PBXGroup;
+			children = (
+				545226121E24CD7D00F36280 /* Model */,
+				545226111E24CD7D00F36280 /* View */,
+				545226101E24CD7B00F36280 /* Controller */,
+			);
+			name = "订单详情页";
+			sourceTree = "<group>";
+		};
+		545226101E24CD7B00F36280 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				545226161E24CDE100F36280 /* OrderInfoViewController.h */,
+				545226171E24CDE100F36280 /* OrderInfoViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		545226111E24CD7D00F36280 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				545226131E24CDD300F36280 /* OrderInfoView.h */,
+				545226141E24CDD300F36280 /* OrderInfoView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		545226121E24CD7D00F36280 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		5457317D1E022E4700F45C03 /* 该月无课程覆盖图 */ = {
@@ -2477,6 +2543,7 @@
 		54AB48B31DED2CF3008E3BC5 /* 我的订单 */ = {
 			isa = PBXGroup;
 			children = (
+				5452260F1E24CD7000F36280 /* 订单详情页 */,
 				54D59A711E233FFD006066EC /* 退款申请页 */,
 				54AB48C21DED2D6E008E3BC5 /* Model */,
 				54AB48C11DED2D6D008E3BC5 /* View */,
@@ -4003,6 +4070,7 @@
 				54AA30971DF98CD5009E0D04 /* CanceldOrderView.m in Sources */,
 				543E0CCB1DFFEDC8004B24FD /* CheckOrderViewController.m in Sources */,
 				5413D2521DF7B5CD00A8FDEC /* CashRecordView.m in Sources */,
+				545226021E24821400F36280 /* PersonalInfoEditViewController.m in Sources */,
 				54D66F6F1DEBF5ED00ED2EBC /* NotClassView.m in Sources */,
 				546978561DC723B5001695F4 /* LoginViewController.m in Sources */,
 				548328ED1DDC6F360053AB29 /* UUMessageCell.m in Sources */,
@@ -4115,6 +4183,7 @@
 				54DBA4B21DE4423300A67A90 /* YZEmotionKeyboard.m in Sources */,
 				54AB48D81DED5183008E3BC5 /* MyWalletViewController.m in Sources */,
 				542C17441DFA508A0088DB3F /* Canceld.m in Sources */,
+				545226181E24CDE100F36280 /* OrderInfoViewController.m in Sources */,
 				54B73D0F1DE40E1800B7A7EB /* NSString+ContainEmoji.m in Sources */,
 				547A7EF71DD411DB00F1282B /* TeachersPublic_Classes.m in Sources */,
 				54AB48CE1DED31D3008E3BC5 /* HeadBackView.m in Sources */,
@@ -4154,6 +4223,7 @@
 				54AB48E11DED51B8008E3BC5 /* SafeViewController.m in Sources */,
 				54FB1DB51DF10B9B00BA9A3C /* UIViewController+VideoStatus.m in Sources */,
 				5413D2611DF7BC9400A8FDEC /* PaymentTableView.m in Sources */,
+				5452260B1E2482EC00F36280 /* EditGenderTableViewCell.m in Sources */,
 				54B4C1921DF8417400E31794 /* ConfirmChargeViewController.m in Sources */,
 				54AA30821DF950CA009E0D04 /* CheckChargeView.m in Sources */,
 				54FCBAF31DD5CB6B0094BF58 /* NoticeTableViewCell.m in Sources */,
@@ -4199,6 +4269,7 @@
 				549AE7651E013DBD001DD2ED /* BindingMailInfoViewController.m in Sources */,
 				54D661221DD040EF00C9A0FF /* UIViewController+HUD.m in Sources */,
 				545162CE1DF5598E000BD17A /* PersonalInfoViewController.m in Sources */,
+				545226151E24CDD300F36280 /* OrderInfoView.m in Sources */,
 				5413D25E1DF7BC8A00A8FDEC /* WidthDrawTableView.m in Sources */,
 				54CB26601DEFFBD300AE7414 /* ChangPhoneView.m in Sources */,
 				54FCBAC11DD58EB60094BF58 /* UIViewController+ZFPlayer.m in Sources */,
@@ -4207,6 +4278,7 @@
 				54652E1A1DEEB08200F4607C /* AboutUsTableViewCell.m in Sources */,
 				54CB26631DEFFBDF00AE7414 /* ChangePhoneViewController.m in Sources */,
 				54B4C18F1DF8416500E31794 /* ConfirmChargeView.m in Sources */,
+				5452260E1E24830200F36280 /* EditBirthdayTableViewCell.m in Sources */,
 				54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */,
 				54B4C1871DF8183800E31794 /* ChargeView.m in Sources */,
 				54FA71591E07B111009D81FE /* ChatViewController.m in Sources */,
@@ -4218,7 +4290,9 @@
 				541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */,
 				54634D981DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m in Sources */,
 				5493D4CB1E0BE1050085A39E /* TLCityGroupCell.m in Sources */,
+				545226051E2482C800F36280 /* EditHeadTableViewCell.m in Sources */,
 				5407C9931DE7DE7500DB04C8 /* NSData+YYAdd.m in Sources */,
+				545226081E2482E100F36280 /* EditNameTableViewCell.m in Sources */,
 				54652E051DEE823100F4607C /* FileService.m in Sources */,
 				547FBF351DF6CEC800955A9E /* PersonalDescTableViewCell.m in Sources */,
 				54AB48E71DED606F008E3BC5 /* UnStartClassView.m in Sources */,

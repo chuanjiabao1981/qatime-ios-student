@@ -71,7 +71,16 @@
         _menuTableView.tableFooterView.backgroundColor = [UIColor lightGrayColor];
         
         
-        [self sd_addSubviews:@[_balance,balan,line,_total,tot,_rechargeButton,_widthDrawButon,_menuTableView]];
+        /* 电话提示*/
+        _tips = [[UILabel alloc]init];
+        _tips.textColor = TITLECOLOR;
+        _tips.font = [UIFont systemFontOfSize:16*ScrenScale];
+        _tips.text = @"遇到问题请拨打客服电话0532-34003426";
+        NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc]initWithString:_tips.text];
+        [attStr addAttributes:@{NSForegroundColorAttributeName:[UIColor blueColor]} range:NSMakeRange(11, 13)];
+        _tips.attributedText = attStr;
+        
+        [self sd_addSubviews:@[_balance,balan,line,_total,tot,_rechargeButton,_widthDrawButon,_menuTableView,_tips]];
         
         _balance.sd_layout
         .topSpaceToView(self,self.height_sd/6.5)
@@ -126,8 +135,12 @@
         .bottomEqualToView(self);
 
         
-        
-        
+        _tips.sd_layout
+        .bottomSpaceToView(self,20)
+        .centerXEqualToView(self)
+        .autoHeightRatio(0);
+        [_tips setSingleLineAutoResizeWithMaxWidth:1000];
+         
         
     }
     return self;

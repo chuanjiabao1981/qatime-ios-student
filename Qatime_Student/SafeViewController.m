@@ -18,6 +18,7 @@
 #import "BindingMailViewController.h"
 #import "WXApi.h"
 
+#import "UIAlertController+Blocks.h"
 @interface SafeViewController ()
 {
     
@@ -104,7 +105,8 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(RequestToBindingWechat:) name:@"RequestToBindingWechat" object:nil];
     
-    
+    /* 添加解绑微信的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeWechatBindingStatus) name:@"RelieveWechat" object:nil];
     
 }
 
@@ -242,7 +244,7 @@
                     if (indexPath.row==2) {
                         
                         if ([[NSUserDefaults standardUserDefaults]valueForKey:@"openID"]) {
-                            cell.balance.text =@" 已绑定 ";
+                            cell.balance.text =@" 取消绑定 ";
                             cell.balance.font = [UIFont systemFontOfSize:16*ScrenScale];
                             cell.balance.backgroundColor = [UIColor colorWithRed:0.42 green:0.79 blue:0.15 alpha:1.00];
                             cell.balance.textColor = [UIColor whiteColor];
@@ -326,6 +328,16 @@
                         
                         /* 拉起微信绑定*/
                         [self sendAuthRequest];
+                        
+                    }else{
+                        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"取消绑定后将不能使用提现等功能，是否取消？" cancelButtonTitle:@"不取消" destructiveButtonTitle:nil otherButtonTitles:@[@"取消"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                           
+                            if (buttonIndex!=0) {
+                                /* 解绑微信*/
+                                [self relieveWechat];
+                            }
+                        }];
+                        
                         
                     }
                     
@@ -481,13 +493,62 @@
     cell.balance.text = @" 已绑定 ";
 }
 
-/* 绑定提交*/
-//- (void)bindingWaited{
-//    NSIndexPath *index = [NSIndexPath indexPathForRow:2 inSection:0];
-//    SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:index];
-//    cell.balance.text = @" 已提交 ";
-//    
-//}
+/* 解绑微信*/
+- (void)relieveWechat{
+    
+    
+    [self loadingHUDStartLoadingWithTitle:@"正在请求解绑"];
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+    [manager DELETE:[NSString stringWithFormat:@"%@/api/v1/users/%@/wechat",Request_Header,_idNumber] parameters:@{@"openid":[[NSUserDefaults standardUserDefaults]valueForKey:@"openID"]} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            if ([dic[@"data"]isEqualToString:@"ok"]) {
+                /* 解绑成功*/
+                [self loadingHUDStopLoadingWithTitle:@"解绑成功!"];
+               
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"RelieveWechat" object:nil];
+                
+            }else{
+                /* 解绑失败*/
+                [self loadingHUDStopLoadingWithTitle:@"解绑失败!"];
+            }
+            
+            
+        }else{
+            [self loadingHUDStopLoadingWithTitle:@"解绑失败!"];
+        }
+        
+        
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
+    
+}
+
+/* 解绑后的页面变化*/
+- (void)changeWechatBindingStatus{
+    
+     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"openID"];
+    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:2 inSection:0];
+    SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:indexpath];
+    
+    cell.balance.text = @" 马上绑定 ";
+    
+    
+    
+    
+    
+}
+
+
 
 - (void)returnLastPage{
     

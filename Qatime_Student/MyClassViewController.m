@@ -17,6 +17,7 @@
 #import "YYModel.h"
 #import "HaveNoClassView.h"
 #import "UIViewController+HUD.h"
+#import "TutoriumInfoViewController.h"
 
 
 
@@ -445,6 +446,43 @@
     return self.view.height_sd*0.15;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    switch (tableView.tag) {
+        case 1:{
+            UnStartClassTableViewCell *cell = [_unStartClassView.classTableView cellForRowAtIndexPath:indexPath];
+            
+            TutoriumInfoViewController *info = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+            [self.navigationController pushViewController:info animated:YES];
+        }
+            
+            break;
+        case 2:{
+            StartedTableViewCell *cell = [_startedClassView.classTableView cellForRowAtIndexPath:indexPath];
+            TutoriumInfoViewController *info = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+            [self.navigationController pushViewController:info animated:YES];
+
+        }
+            break;
+        case 3:{
+            EndedTableViewCell *cell = [_startedClassView.classTableView cellForRowAtIndexPath:indexPath];
+            TutoriumInfoViewController *info = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+            [self.navigationController pushViewController:info animated:YES];
+        }
+            
+            break;
+        case 4:{
+            ListenTableViewCell *cell = [_startedClassView.classTableView cellForRowAtIndexPath:indexPath];
+            TutoriumInfoViewController *info = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+            [self.navigationController pushViewController:info animated:YES];
+        }
+            
+            break;
+
+    }
+
+    
+}
 
 
 

@@ -29,7 +29,7 @@
         square.layer.borderWidth = 0.8;
         
         _keyCodeText = [[UITextField alloc]init];
-        _keyCodeText.placeholder = @"输入校验码";
+        _keyCodeText.placeholder = @"输入邮箱校验码";
         
         _getKeyCodeButton = [UIButton new];
         _getKeyCodeButton.backgroundColor =[UIColor lightGrayColor];

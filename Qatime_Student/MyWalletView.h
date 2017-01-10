@@ -27,7 +27,7 @@
 @property(nonatomic,strong) UITableView *menuTableView ;
 
 /* 客服电话*/
-//@property(nonatomic,strong) ;
+@property(nonatomic,strong)UILabel *tips ;
 
 
 @end

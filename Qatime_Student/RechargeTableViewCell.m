@@ -138,9 +138,6 @@
         
         [self setupAutoHeightWithBottomView:_time bottomMargin:10];
         
-        
-        
-        
     }
     return self;
     
@@ -177,7 +174,6 @@
         
     }
     /* 预留充值状态接口*/
-    
     
 }
 

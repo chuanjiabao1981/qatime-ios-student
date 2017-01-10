@@ -8,7 +8,8 @@
 
 #import "ParentViewController.h"
 #import "UIViewController+HUD.h"
-#import "UIViewController_HUD.h"
+
+#import "UIAlertController+Blocks.h"
 
 @interface ParentViewController (){
     
@@ -63,9 +64,17 @@
     [self.view addSubview:_parentView];
     
     _parentView.parentPhoneLabel.text = _parentPhone;
-    _parentView.getCodeButton.enabled = YES;
+//    _parentView.getCodeButton.enabled = YES;
+    _parentView.finishButton.enabled = NO;
+    _parentView.password.secureTextEntry = YES;
     
-    [_parentView.getCodeButton addTarget:self action:@selector(requestKeyCode:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_parentView.parentPhoneText addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
+     [_parentView.password addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
+     [_parentView.keyCodeText addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
+    
+//    [_parentView.getCodeButton addTarget:self action:@selector(requestKeyCode:) forControlEvents:UIControlEventTouchUpInside];
     
     [_parentView.finishButton addTarget:self action:@selector(requestChangeParentPhone) forControlEvents:UIControlEventTouchUpInside];
     
@@ -75,8 +84,45 @@
     
 }
 
+-(void)textDidChange:(id<UITextInput>)textInput{
+    
+    if (![_parentView.parentPhoneText.text isEqualToString:@""]) {
+        _parentView.getCodeButton.enabled = YES;
+        [_parentView.getCodeButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+        [ _parentView.getCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+        _parentView.getCodeButton.layer.borderColor = BUTTONRED.CGColor;
+        
+    }else{
+         _parentView.getCodeButton.enabled = NO;
+        [ _parentView.getCodeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [ _parentView.getCodeButton removeTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+        _parentView.getCodeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    }
+    
+    if (_parentView.parentPhoneText.text.length > 11) {
+        _parentView.parentPhoneText.text = [_parentView.parentPhoneText.text substringToIndex:11];
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入11位手机号" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+    }
+    
+    if (_parentView.parentPhoneText.text.length>0&&_parentView.keyCodeText.text.length>0&&_parentView.password.text.length>0) {
+        _parentView.finishButton.enabled = YES;
+        [_parentView.finishButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+        _parentView.finishButton.layer.borderColor = BUTTONRED.CGColor;
+        
+    }else{
+        _parentView.finishButton.enabled = NO;
+        [_parentView.finishButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        _parentView.finishButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        
+    }
+}
+
+
 #pragma mark- 向服务器请求修改家长手机号码
 - (void)requestChangeParentPhone{
+    
+    
+    
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -88,6 +134,8 @@
         UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self dismissViewControllerAnimated:YES completion:nil];
             
+            
+            
         }] ;
         
         
@@ -98,7 +146,7 @@
         
     }else{
         
-        
+        [self loadingHUDStartLoadingWithTitle:@"正在加载"];
         [manager PUT:[NSString stringWithFormat:@"%@/api/v1/students/%@/parent_phone",Request_Header, _idNumber] parameters:@{@"current_password":_parentView.password.text,@"parent_phone":_parentView.parentPhoneText.text,@"captcha_confirmation":_parentView.keyCodeText.text} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary  *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -106,49 +154,22 @@
             
             if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
                 
+                [self loadingHUDStopLoadingWithTitle:@"修改成功!"];
+                [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                 
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"修改成功!" preferredStyle:UIAlertControllerStyleAlert];
-              
-                UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    
-                    [self returnLastPage];
-                    
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangeParentPhoneSuccess" object:_parentView.parentPhoneText.text];
-                    
-                    
-                }] ;
-                
-
-                [alert addAction:sure];
-                
-                [self presentViewController:alert animated:YES completion:nil];
-
-                
-                
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangeParentPhoneSuccess" object:_parentView.parentPhoneText.text];
                 
             }
             
-            
-            
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
-            
-            
         }];
-        
-        
-        
-        
+     
     }
-    
-    
-    
-    
-    
     
 }
 #pragma mark- 请求验证码
-- (void)requestKeyCode:(UIButton *)sender{
+- (void)getCheckCode:(UIButton *)sender{
     
     if (sender.enabled == YES) {
         
@@ -176,33 +197,25 @@
                 
             }] ;
             
-            
             [alert addAction:sure];
             
             [self presentViewController:alert animated:YES completion:nil];
 
-        }
-        
-        else{
+        }else{
             
             [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header] parameters:@{@"send_to":_parentView.parentPhoneText.text,@"key":@"send_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 [self loadingHUDStopLoadingWithTitle:@"发送成功"];
-                
                 [self deadLineTimer:sender];
-                
-                
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
                 [self loadingHUDStopLoadingWithTitle:@"发送失败"];
                 
-                
             }];
             
         }
     }
-    
     
 }
 
@@ -212,7 +225,6 @@
 #pragma mark- 倒计时方法封装
 /* 倒计时方法封装*/
 - (void)deadLineTimer:(UIButton *)button{
-    
     
     /* 按钮倒计时*/
     __block int deadline=10;
@@ -230,7 +242,7 @@
             NSString *strTime = [NSString stringWithFormat:@"重发验证码(%d)",deadline];
             
             [button setTitle:strTime forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
             
             [button setEnabled:NO];
             
@@ -243,19 +255,15 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                
                 [button setTitle:@"获取校验码" forState:UIControlStateNormal];
-                [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [button setTitleColor:BUTTONRED forState:UIControlStateNormal];
                 
                 [button setEnabled:YES];
-                
                 
             });
         }
     });
     dispatch_resume(_timer);
-    
-    
     
 }
 

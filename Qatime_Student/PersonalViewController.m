@@ -54,7 +54,6 @@
     /* 用户名*/
     NSString *_name;
     
-    
     /* 是否登录*/
     BOOL login;
     
@@ -176,7 +175,7 @@
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
         if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]== NO) {
             
-            [self logOutAlert];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
         }else{
             
             PersonalInfoViewController *personVC = [PersonalInfoViewController new];

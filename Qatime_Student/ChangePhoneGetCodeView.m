@@ -44,6 +44,7 @@
     _codeText = [[UITextField alloc]init];
     _codeText.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _codeText.layer.borderWidth = 1;
+    _codeText.placeholder = @"输入收到的验证码";
     
     _getCodeButton = [[UIButton alloc]init];
     [_getCodeButton setTitleColor: [UIColor whiteColor] forState:UIControlStateNormal];

@@ -18,8 +18,9 @@
 
 #import "WithDrawViewController.h"
 #import "UIAlertController+Blocks.h"
+#import "UIAlertController+Blocks.h"
 
-@interface MyWalletViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>{
+@interface MyWalletViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIGestureRecognizerDelegate>{
     
     
     NavigationBar *_navigationBar;
@@ -63,6 +64,7 @@
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
     
+    
     _myWalletView = [[MyWalletView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
     [self.view addSubview:_myWalletView];
     
@@ -79,7 +81,7 @@
     
     [self loadingHUDStartLoadingWithTitle:@"正在获取数据"];
     
-    _menuName = @[@"充值记录",@"提现记录",@"消费记录",];
+    _menuName = @[@"充值记录",@"提现记录",@"消费记录",@"退款记录"];
     
     /* 请求钱包数据*/
     [self requestWallet];
@@ -96,10 +98,30 @@
     
     /* 我的订单 提现功能*/
     [_myWalletView.widthDrawButon addTarget:self action:@selector(widthDraw) forControlEvents:UIControlEventTouchUpInside];
+    
+    /* 拨打帮助电话*/
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(callForHelp)];
+    _myWalletView.tips.userInteractionEnabled = YES;
+    [_myWalletView.tips addGestureRecognizer:tap];
+    
 
 }
 
-
+/* 拨打帮助电话*/
+- (void)callForHelp{
+    
+    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否要拨打电话0532-34003426?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+       
+        if (buttonIndex!=0) {
+            
+            NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",@"0532-34003426"];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        }
+    }];
+    
+    
+    
+}
 
 
 - (void)requestWallet{
@@ -153,7 +175,7 @@
 #pragma mark- tableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 3;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -163,7 +185,6 @@
     PersonalTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
     if (cell==nil) {
         cell=[[PersonalTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-        
         
         cell.name.text = _menuName[indexPath.row];
         
@@ -184,7 +205,6 @@
     
     
     [self.navigationController pushViewController:cashVC animated:YES];
-    
     
     
 }

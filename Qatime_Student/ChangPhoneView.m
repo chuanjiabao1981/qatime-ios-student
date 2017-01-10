@@ -31,6 +31,7 @@
     _keyCode = [[UITextField alloc]init];
     _keyCode.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _keyCode.layer.borderWidth = 1;
+    _keyCode.placeholder = @"输入收到的验证码";
     
     _getKeyButton = [[UIButton alloc]init];
     [_getKeyButton setTitleColor: [UIColor whiteColor] forState:UIControlStateNormal];
