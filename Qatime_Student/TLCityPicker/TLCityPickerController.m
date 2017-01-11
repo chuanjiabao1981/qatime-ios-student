@@ -413,7 +413,7 @@
 - (NSMutableArray *) arraySection
 {
     if (_arraySection == nil) {
-        _arraySection = [[NSMutableArray alloc] initWithObjects:UITableViewIndexSearch, @"定位", @"最近", nil];
+        _arraySection = [[NSMutableArray alloc] initWithObjects:UITableViewIndexSearch, @"定位", @"最近",@"", nil];
     }
     return _arraySection;
 }
@@ -504,7 +504,6 @@
          {
              NSLog(@"An error occurred = %@", error);
          }
-         
          
          [self loadingHUDStopLoadingWithTitle:@"定位成功"];
          

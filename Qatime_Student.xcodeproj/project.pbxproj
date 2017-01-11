@@ -146,6 +146,7 @@
 		54652E3A1DEEBE2800F4607C /* ClassSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54652E391DEEBE2800F4607C /* ClassSettingViewController.m */; };
 		54652E3F1DEEBF0D00F4607C /* NoticeSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54652E3E1DEEBF0D00F4607C /* NoticeSettingTableViewCell.m */; };
 		54652E421DEEC25200F4607C /* MessageSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54652E411DEEC25200F4607C /* MessageSettingViewController.m */; };
+		54660F601E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m in Sources */ = {isa = PBXBuildFile; fileRef = 54660F5F1E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m */; };
 		546978561DC723B5001695F4 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546978551DC723B5001695F4 /* LoginViewController.m */; };
 		546978591DC723BD001695F4 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 546978581DC723BD001695F4 /* LoginView.m */; };
 		5469785F1DC72534001695F4 /* account.png in Resources */ = {isa = PBXBuildFile; fileRef = 5469785D1DC72534001695F4 /* account.png */; };
@@ -642,6 +643,8 @@
 		54652E3E1DEEBF0D00F4607C /* NoticeSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeSettingTableViewCell.m; sourceTree = "<group>"; };
 		54652E401DEEC25200F4607C /* MessageSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageSettingViewController.h; sourceTree = "<group>"; };
 		54652E411DEEC25200F4607C /* MessageSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageSettingViewController.m; sourceTree = "<group>"; };
+		54660F5E1E2642E6009DFB7C /* NSString+ChangeYearsToChinese.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ChangeYearsToChinese.h"; sourceTree = "<group>"; };
+		54660F5F1E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ChangeYearsToChinese.m"; sourceTree = "<group>"; };
 		546978541DC723B5001695F4 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		546978551DC723B5001695F4 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		546978571DC723BD001695F4 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
@@ -3600,6 +3603,8 @@
 				54F63A1B1E1FA1B800758B42 /* UITextView_Placeholder.h */,
 				54F63A141E1F9EBB00758B42 /* UITextView+Placeholder.h */,
 				54F63A151E1F9EBB00758B42 /* UITextView+Placeholder.m */,
+				54660F5E1E2642E6009DFB7C /* NSString+ChangeYearsToChinese.h */,
+				54660F5F1E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -4241,6 +4246,7 @@
 				54294C7D1DDB373400677333 /* NELivePlayerViewController.m in Sources */,
 				54AB48D21DED3389008E3BC5 /* SettingTableViewCell.m in Sources */,
 				54652E311DEEBDC300F4607C /* ClassNoticeSettingView.m in Sources */,
+				54660F601E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m in Sources */,
 				5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */,
 				546978691DC72A42001695F4 /* SignUpViewController.m in Sources */,
 				54D59A741E234140006066EC /* DrawBackView.m in Sources */,

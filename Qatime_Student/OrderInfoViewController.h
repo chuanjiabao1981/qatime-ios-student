@@ -7,7 +7,26 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OrderInfoView.h"
+#import "Unpaid.h"
+#import "Paid.h"
+#import "Canceld.h"
 
 @interface OrderInfoViewController : UIViewController
+
+
+@property(nonatomic,strong) OrderInfoView *orderInfoView ;
+
+/* 未付款订单详情页初始化*/
+-(instancetype)initWithUnpaid:(Unpaid *)unpaid;
+
+/* 已付款订单详情页初始化*/
+-(instancetype)initWithPaid:(Paid *)paid;
+
+/* 已取消订单详情页初始化*/
+-(instancetype)initWithCaid:(Canceld *)canceld;
+
+/* 初始化方法*/
+-(instancetype)initWithInfo:(NSDictionary *)info;
 
 @end

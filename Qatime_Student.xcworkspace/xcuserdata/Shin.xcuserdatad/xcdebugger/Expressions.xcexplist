@@ -3,13 +3,13 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke.204:NoticeIndexViewController.m">
+         contextName = "-[MyOrderViewController scrollViewWillBeginDragging:]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_chatListArr">
+               value = "self.view.height_sd">
             </PersistentString>
             <PersistentString
-               value = "_myClassArray">
+               value = "_unpaidView.mj_footer.mj_y">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -39,12 +39,23 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[MyOrderViewController tableView:didSelectRowAtIndexPath:]:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "cell.unpaidModel">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__40-[NELivePlayerViewController initNIMSDK]_block_invoke:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_chat_Account">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__42-[ClassSettingViewController saveSettings]_block_invoke:ClassSettingViewController.m">
       </ContextState>
       <ContextState
          contextName = "__43-[TutoriumViewController sendFilterStatus:]_block_invoke:TutoriumViewController.m">
@@ -236,6 +247,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[TeachersPublicViewController refreshTeacherInfoWith:]:TeachersPublicViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "teacherInfo.teaching_years">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__37-[SafeViewController requestUserInfo]_block_invoke:SafeViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -276,6 +295,14 @@
       </ContextState>
       <ContextState
          contextName = "__46-[TutoriumInfoViewController switchClassData:]_block_invoke:TutoriumInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[NSString(ChangeYearsToChinese) changeEnglishYearsToChinese]:NSString+ChangeYearsToChinese.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "years">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__43-[IndexPageViewController requestTeachers:]_block_invoke:IndexPageViewController.m">
@@ -379,6 +406,9 @@
       </ContextState>
       <ContextState
          contextName = "-[ChangePasswordViewController textDidChange:]:ChangePasswordViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__38-[ChangePasswordViewController finish]_block_invoke_4:ChangePasswordViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[UIViewController(HUD) loadingHUDStopLoadingWithTitle:]:UIViewController+HUD.m">
@@ -759,6 +789,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__50-[ClassSettingViewController requestNoticeSetting]_block_invoke:ClassSettingViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_settingDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[NELivePlayerViewController keyboardWillShow:]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -826,6 +864,9 @@
                value = "tableView.tag">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ClassSettingViewController saveSettings]:ClassSettingViewController.m">
       </ContextState>
       <ContextState
          contextName = "__copy_helper_block_:CashRecordViewController.m">
@@ -935,6 +976,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke.204:NoticeIndexViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatListArr">
+            </PersistentString>
+            <PersistentString
+               value = "_myClassArray">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[TutoriumInfoViewController requestOrder]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -947,17 +999,6 @@
          <PersistentStrings>
             <PersistentString
                value = "deviceToken.description">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[MyOrderViewController scrollViewWillBeginDragging:]:MyOrderViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.view.height_sd">
-            </PersistentString>
-            <PersistentString
-               value = "_unpaidView.mj_footer.mj_y">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

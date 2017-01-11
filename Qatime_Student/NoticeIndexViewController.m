@@ -20,6 +20,7 @@
 #import "SystemNotice.h"
 
 #import "ChatList.h"
+#import "UIAlertController+Blocks.h"
 
 
 @interface NoticeIndexViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,NIMConversationManagerDelegate,NIMLoginManagerDelegate,UIGestureRecognizerDelegate>{
@@ -200,7 +201,11 @@
                         TutoriumListInfo *info = [TutoriumListInfo yy_modelWithJSON:tutorium];
                         info.classID = tutorium[@"id"];
                         
+                       info.notify = [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.classID];
+                        
                         [_myClassArray addObject:info];
+                        
+                        
                     }
                     
                         
@@ -350,6 +355,16 @@
                 
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 
+                if (cell.noticeOn==YES) {
+                    cell.closeNotice.hidden = YES;
+                }else{
+                    cell.closeNotice.hidden = NO;
+                }
+                
+                UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(resignNotice:)];
+                
+                [cell addGestureRecognizer:press];
+                
             }
             
             return  cell;
@@ -444,6 +459,45 @@
     
 }
 
+/* 取消某一聊天组的推送信息*/
+
+- (void)resignNotice:(UILongPressGestureRecognizer *)sender{
+    
+    
+    
+    if(sender.state == UIGestureRecognizerStateBegan){
+        
+        CGPoint point = [sender locationInView:_noticeIndexView.chatListTableView];
+        NSIndexPath * indexPath = [_noticeIndexView.chatListTableView indexPathForRowAtPoint:point];
+        if(indexPath == nil) return ;
+        NSLog(@"%@", indexPath);
+        [UIAlertController showActionSheetInViewController:self withTitle:nil message:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"不再提醒"] popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
+            
+        } tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+            
+            if (buttonIndex!=0) {
+                /* 取消该聊天群的推送信息*/
+                ChatListTableViewCell *cell = [_noticeIndexView.chatListTableView cellForRowAtIndexPath:indexPath];
+                
+                [[[NIMSDK sharedSDK]teamManager]updateNotifyState:NO inTeam:cell.model.tutorium.chat_team_id completion:^(NSError * _Nullable error) {
+                   
+                    if (error == nil) {
+                        cell.closeNotice.hidden = NO;
+                        cell.noticeOn = NO;
+                    }
+                    
+                }];
+                
+                
+                
+                
+            }
+            
+        }];
+        
+    }
+    
+}
 
 
 

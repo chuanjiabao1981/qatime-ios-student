@@ -25,7 +25,9 @@
 #import "MyOrderViewController.h"
 #import "DrawBackViewController.h"
 #import "HaveNoClassView.h"
+#import "NSString+TimeStamp.h"
 
+#import "OrderInfoViewController.h"
 
 @interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
@@ -591,6 +593,7 @@
                 cell.rightButton.tag = 200+indexPath.row;
                 [cell.leftButton addTarget:self action:@selector(cancelOrder:) forControlEvents:UIControlEventTouchUpInside];
                 
+                [cell.leftButton setTitle:@"取消订单" forState:UIControlStateNormal];
             }
             
             
@@ -638,6 +641,7 @@
                 cell.rightButton.tag = 600+indexPath.row;
                 
                 [cell.leftButton setTitle:@"删除订单" forState:UIControlStateNormal];
+                cell.leftButton.hidden = YES;
                 [cell.rightButton setTitle:@"重新购买" forState:UIControlStateNormal];
                 
                
@@ -730,6 +734,97 @@
 }
 
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    switch (tableView.tag) {
+       
+        case 1:{
+            MyOrderTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+          
+            
+            NSDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{
+                                                                       @"name":cell.unpaidModel.name,
+                                                                       @"subject":cell.unpaidModel.subject,
+                                                                       @"grade":cell.unpaidModel.grade,
+                                                                       @"lessonTime":cell.unpaidModel.preset_lesson_count,
+                                                                       @"teacherName":cell.unpaidModel.teacher_name,
+                                                                       @"creatTime":cell.unpaidModel.created_at==nil?@"无":[cell.unpaidModel.created_at timeStampToDate],
+                                                                       @"payTime":cell.unpaidModel.pay_at==nil?@"无":[cell.unpaidModel.pay_at timeStampToDate],
+                                                                       @"payType":cell.unpaidModel.pay_type,
+                                                                       @"amount":cell.unpaidModel.price,
+                                                                       @"status":cell.unpaidModel.status
+                                                                       }];
+            
+            
+            OrderInfoViewController *order = [[OrderInfoViewController alloc]initWithInfo:dic];
+            [self.navigationController pushViewController:order animated:YES];
+            
+            
+        }
+            break;
+            
+        case 2:{
+            
+            PaidOrderTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            
+
+            NSDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{
+                                                                                @"name":cell.paidModel.name,
+                                                                                @"subject":cell.paidModel.subject,
+                                                                                @"grade":cell.paidModel.grade,
+                                                                                @"lessonTime":cell.paidModel.preset_lesson_count,
+                                                                                @"teacherName":cell.paidModel.teacher_name,
+                                                                                @"creatTime":cell.paidModel.created_at==nil?@"无":[cell.paidModel.created_at timeStampToDate],
+                                                                                @"payTime":cell.paidModel.pay_at==nil?@"无":[cell.paidModel.pay_at timeStampToDate],
+                                                                                @"payType":cell.paidModel.pay_type,
+                                                                                @"amount":cell.paidModel.price,
+                                                                                @"status":cell.paidModel.status
+                                                                                }];
+            
+            
+            OrderInfoViewController *order = [[OrderInfoViewController alloc]initWithInfo:dic];
+            [self.navigationController pushViewController:order animated:YES];
+
+        }
+            break;
+
+            
+        case 3: {
+            
+        CancelOrderTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+          
+
+            NSDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{
+                                                                                @"name":cell.canceldModel.name,
+                                                                                @"subject":cell.canceldModel.subject,
+                                                                                @"grade":cell.canceldModel.grade,
+                                                                                @"lessonTime":cell.canceldModel.preset_lesson_count,
+                                                                                @"teacherName":cell.canceldModel.teacher_name,
+                                                                                @"creatTime":cell.canceldModel.created_at==nil?@"无":[cell.canceldModel.created_at timeStampToDate],
+                                                                                @"payTime":cell.canceldModel.pay_at==nil?@"无":[cell.canceldModel.pay_at timeStampToDate],
+                                                                                @"payType":cell.canceldModel.pay_type,
+                                                                                @"amount":cell.canceldModel.price,
+                                                                                @"status":cell.canceldModel.status
+                                                                                }];
+            
+            
+            OrderInfoViewController *order = [[OrderInfoViewController alloc]initWithInfo:dic];
+            [self.navigationController pushViewController:order animated:YES];
+            
+    }
+            
+            break;
+
+            
+        
+    }
+    
+    
+}
+
+
+
+
 /* 再次购买功能*/
 - (void)buyAgain:(UIButton *)sender{
     
@@ -785,8 +880,6 @@
     [self presentViewController:alert animated:YES completion:nil];
     
     
-    
-    
 }
 
 
@@ -808,10 +901,7 @@
         
         [self.navigationController popToViewController:controller animated:YES];
         
-        
     }
-    
-    
     
 }
 

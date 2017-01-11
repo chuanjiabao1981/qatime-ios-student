@@ -470,7 +470,7 @@
     
     
     
-    /* 初始化完成后 用户选择科目后的跳转情况*/
+    /* 初始化完成后 用户选择 科目/所有辅导班 后的跳转情况*/
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userSelectedSubject:) name:@"UserChoseSubject" object:nil];
     
@@ -491,10 +491,17 @@
     
     NSString *subj =[NSString stringWithFormat:@"%@",[notification object]];
     
-    [_filterDic setValue:subj forKey:@"subject"];
+    _filterDic = @{}.mutableCopy;
+    if ([subj isEqualToString:@"(null)"]) {
+        
+    }else{
+        
+        [_filterDic setValue:subj forKey:@"subject"];
+        [_tutoriumView.subjectButton setTitle:subj forState:UIControlStateNormal];
+    }
+    
     [self sendFilterStatus:_filterDic];
     
-    [_tutoriumView.subjectButton setTitle:subj forState:UIControlStateNormal];
     
 }
 

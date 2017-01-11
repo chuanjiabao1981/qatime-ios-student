@@ -36,6 +36,9 @@
 @property(nonatomic,assign) BOOL is_bought ;
 @property(nonatomic,strong) NSString *status;
 
+/* 在加载消息列表页时该属性才有用,其他接口用不到*/
+@property(nonatomic,assign) BOOL notify ;
+
 @end
 
 

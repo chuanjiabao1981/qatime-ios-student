@@ -35,6 +35,7 @@
         UILabel *orderNumber = [[UILabel alloc]init];
         orderNumber.font = TITLEFONTSIZE;
         orderNumber.textColor = TITLECOLOR;
+        orderNumber.text = @"订单编号";
         
         _orderNumber= [[UILabel alloc]init];
         _orderNumber.font = TITLEFONTSIZE;
@@ -44,6 +45,7 @@
         UILabel *creatTime = [[UILabel alloc]init];
         creatTime.font = TITLEFONTSIZE;
         creatTime.textColor = TITLECOLOR;
+        creatTime.text = @"创建时间";
         
         _creatTime = [[UILabel alloc]init];
         _creatTime.font = TITLEFONTSIZE;
@@ -53,6 +55,7 @@
         UILabel *payTime = [[UILabel alloc]init];
         payTime.font = TITLEFONTSIZE;
         payTime.textColor = TITLECOLOR;
+        payTime.text = @"支付时间";
         
         _payTime = [[UILabel alloc]init];
         _payTime.font = TITLEFONTSIZE;
@@ -62,6 +65,7 @@
         UILabel *payType = [[UILabel alloc]init];
         payType.font = TITLEFONTSIZE;
         payType.textColor = TITLECOLOR;
+        payType.text = @"支付方式";
         
         _payType  = [[UILabel alloc]init];
         _payType.font = TITLEFONTSIZE;
@@ -71,6 +75,7 @@
         UILabel *amount = [[UILabel alloc]init];
         amount.font = TITLEFONTSIZE;
         amount.textColor = TITLECOLOR;
+        amount.text = @"支付金额";
         
         _amount = [[UILabel alloc]init];
         _amount.font = TITLEFONTSIZE;
@@ -96,12 +101,118 @@
         [self sd_addSubviews:@[_statusImage,_name,_subName,line,orderNumber,_orderNumber,creatTime,_creatTime,payTime,_payTime,payType,_payType,amount,_amount,_cancelButton,_payButton]];
         
         /* 状态图*/
+        _statusImage.sd_layout
+        .leftEqualToView(self)
+        .rightEqualToView(self)
+        .topEqualToView(self)
+        .heightIs(self.width_sd*288/720);
+        
+        /* 课程名*/
+        _name.sd_layout
+        .leftSpaceToView(self,10)
+        .topSpaceToView(_statusImage,10)
+        .rightSpaceToView(self,10)
+        .autoHeightRatio(0);
+        
+        /* 其他信息*/
+        _subName.sd_layout
+        .topSpaceToView(_name,10)
+        .leftEqualToView(_name)
+        .autoHeightRatio(0);
+        [_subName setSingleLineAutoResizeWithMaxWidth:1000];
+        
+        /* 分割线*/
+        line.sd_layout
+        .leftEqualToView(self)
+        .rightEqualToView(self)
+        .topSpaceToView(_subName,10)
+        .heightIs(0.5);
+        
+        /* 订单号*/
+        orderNumber.sd_layout
+        .topSpaceToView(line,10)
+        .leftSpaceToView(self,10)
+        .autoHeightRatio(0);
+        [orderNumber setSingleLineAutoResizeWithMaxWidth:300];
+        
+        _orderNumber.sd_layout
+        .topEqualToView(orderNumber)
+        .bottomEqualToView(orderNumber)
+        .leftSpaceToView(orderNumber,20)
+        .rightEqualToView(self);
+        _orderNumber.textAlignment = NSTextAlignmentLeft;
         
         
+        /* 创建时间*/
+        creatTime.sd_layout
+        .topSpaceToView(line,10)
+        .leftSpaceToView(self,10)
+        .autoHeightRatio(0);
+        [creatTime setSingleLineAutoResizeWithMaxWidth:300];
         
+        _creatTime.sd_layout
+        .topEqualToView(creatTime)
+        .bottomEqualToView(creatTime)
+        .leftSpaceToView(creatTime,20)
+        .rightEqualToView(self);
+        _creatTime.textAlignment = NSTextAlignmentLeft;
+
+        /* 支付时间*/
+        payTime.sd_layout
+        .topSpaceToView(creatTime,10)
+        .leftSpaceToView(self,10)
+        .autoHeightRatio(0);
+        [payTime setSingleLineAutoResizeWithMaxWidth:300];
         
+        _payTime.sd_layout
+        .topEqualToView(payTime)
+        .bottomEqualToView(payTime)
+        .leftSpaceToView(payTime,20)
+        .rightEqualToView(self);
+        _payTime.textAlignment = NSTextAlignmentLeft;
+
         
+        /* 支付方式*/
+        payType.sd_layout
+        .topSpaceToView(payTime,10)
+        .leftSpaceToView(self,10)
+        .autoHeightRatio(0);
+        [payType setSingleLineAutoResizeWithMaxWidth:300];
         
+        _payType.sd_layout
+        .topEqualToView(payType)
+        .bottomEqualToView(payType)
+        .leftSpaceToView(payType,20)
+        .rightEqualToView(self);
+        _payType.textAlignment = NSTextAlignmentLeft;
+        
+        /* 支付金额*/
+        amount.sd_layout
+        .topSpaceToView(payType,10)
+        .leftSpaceToView(self,10)
+        .autoHeightRatio(0);
+        [amount setSingleLineAutoResizeWithMaxWidth:300];
+        
+        _amount.sd_layout
+        .topEqualToView(amount)
+        .bottomEqualToView(amount)
+        .leftSpaceToView(amount,20)
+        .rightEqualToView(self);
+        _amount.textAlignment = NSTextAlignmentLeft;
+
+        
+        /* 取消订单*/
+        _cancelButton.sd_layout
+        .leftSpaceToView(self,20)
+        .topSpaceToView(amount,20)
+        .heightRatioToView(self,0.07)
+        .widthIs(self.width_sd/2-20-5);
+        
+        _payButton.sd_layout
+        .rightSpaceToView(self,20)
+        .topEqualToView(_cancelButton)
+        .bottomEqualToView(_cancelButton)
+        .widthRatioToView(_cancelButton,1.0);
         
         
     }

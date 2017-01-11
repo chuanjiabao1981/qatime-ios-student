@@ -163,9 +163,9 @@
 - (void)callForServiece{
     
     [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否拨打客服电话0353-2135828?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-       
-        NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",@"0353-2135828"];
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+//       
+//        NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",@"0353-2135828"];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel://0353-2135828"]];
     }];
     
 }

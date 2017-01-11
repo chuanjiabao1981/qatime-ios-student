@@ -18,6 +18,7 @@
 #import "NoticeSettingViewController.h"
 
 #import "NELivePlayerViewController.h"
+#import "UIAlertController+Blocks.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -65,7 +66,7 @@
     });
     
     
-    menus = @[@"学习流程",@"提醒设置",@"检查更新",@"清理缓存",@"关于我们"];
+    menus = @[@"提醒设置",@"检查更新",@"清理缓存",@"关于我们",@"学习流程",@"意见反馈"];
     
     _settingView = [[SettingView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT)];
     [self.view addSubview:_settingView];
@@ -138,11 +139,9 @@
     
     [self getCacheSpace];
     
-    NSIndexPath *num = [NSIndexPath indexPathForRow:3 inSection:0];
+    NSIndexPath *num = [NSIndexPath indexPathForRow:2 inSection:0];
     
     [_settingView.menuTableView reloadRowsAtIndexPaths:@[num] withRowAnimation:UITableViewRowAnimationFade];
-    
-    
     
     
 }
@@ -167,9 +166,8 @@
             if (![dic[@"data"] isEqual:[NSNull null]]) {
                 
                 /* 请求成功*/
-                _newVersion  = [NSString stringWithFormat:@"%@",dic[@"data"]];
+                _newVersion  = [NSString stringWithFormat:@"%@",dic[@"data"][@"version"]];
                 NSLog(@"%@",_newVersion);
-                
                 
                 /* 获取版本信息成功*/
                 if ([_version isEqualToString:_newVersion]) {
@@ -177,22 +175,13 @@
                 }else{
                     
                     /* 检测到有新版的时候 弹出alert 提示是否升级*/
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"检测到新版本V %@,是否更新?",_newVersion] preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:[NSString stringWithFormat:@"检测到新版本V %@,是否更新?",_newVersion] cancelButtonTitle:@"不更新" destructiveButtonTitle:nil otherButtonTitles:@[@"更新"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                         
+                        if (buttonIndex!=0) {
+                            /* 在这里进行程序更新操作*/
+                            
+                        }
                     }];
-                    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        
-                    }];
-                    
-                    [alert addAction:cancel];
-                    [alert addAction:sure];
-                    
-                    [self presentViewController:alert animated:YES completion:^{
-                        
-                    }];
-                    
                     
                     
                 }
@@ -200,8 +189,8 @@
                 
             }else{
                 
-                /* 数据错误*/
-                [self loadingHUDStopLoadingWithTitle:@"数据错误"];
+                /* 数据是空的情况下就是没有数据,目前就是最新版本*/
+                [self loadingHUDStopLoadingWithTitle:@"已是最新版本!"];
                 
             }
             
@@ -209,22 +198,14 @@
         }else{
             
 //            请求失败
-            
             [self loadingHUDStopLoadingWithTitle:@"请求数据失败"];
             
-            
-            
         }
-        
-        
         
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-    
-    
-    
     
 }
 
@@ -254,13 +235,13 @@
         
         [cell.settingName setSingleLineAutoResizeWithMaxWidth:1000];
         
-        if (indexPath.row ==2) {
+        if (indexPath.row ==1) {
     
             cell.balance.hidden = NO;
             cell.balance.text  =  [NSString stringWithFormat:@"V %@",_version];
             
         }
-        if (indexPath.row ==3) {
+        if (indexPath.row ==2) {
             cell.balance.hidden = NO;
             cell.balance.text = [NSString stringWithFormat:@"%.2f M",cache];
         }
@@ -286,55 +267,30 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
    
     switch (indexPath.row) {
+       
         case 0:{
-            
-            
-        }
-            break;
-        case 1:{
             NoticeSettingViewController *noVC = [NoticeSettingViewController new];
             [self.navigationController pushViewController:noVC animated:YES];
             
         }
             break;
-        case 2:{
+        case 1:{
             
             [self requestVersion];
         }
             break;
-        case 3:{
+        case 2:{
             
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"确定清理%.2f M的缓存?",cache] preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                
-                [self dismissViewControllerAnimated:YES completion:^{
-                    
-                }];
-                
-            }];
-            UIAlertAction *sure= [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
-                [self dismissViewControllerAnimated:YES completion:^{
-                    
-                }];
-                
-                [self clearCache];
+            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:[NSString stringWithFormat:@"确定清理%.2f M的缓存?",cache] cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+               
+                if (buttonIndex!=0) {
+                    [self clearCache];
+                }
                 
             }];
-            
-            [alert addAction:cancel];
-            [alert addAction:sure];
-            
-            [self presentViewController:alert animated:YES completion:^{
-                
-            }];
-            
-            
-            
-            
         }
             break;
-        case 4:{
+        case 3:{
             
             AboutUsViewController *abVC = [AboutUsViewController new];
             [self.navigationController pushViewController:abVC animated:YES];
@@ -342,7 +298,10 @@
         }
             break;
             
-        default:
+        case 4:{
+            
+            
+        }
             break;
     }
     

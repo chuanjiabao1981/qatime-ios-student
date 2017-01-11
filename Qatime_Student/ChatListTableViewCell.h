@@ -18,6 +18,11 @@
 /* 新消息数量*/
 @property(nonatomic,strong) M13BadgeView *badge ;
 
+/* 不接受推送的图标*/
+@property(nonatomic,strong) UIImageView *closeNotice ;
+
+@property(nonatomic,assign) BOOL noticeOn ;
+
 /* 辅导班model*/
 @property(nonatomic,strong) ChatList *model ;
 

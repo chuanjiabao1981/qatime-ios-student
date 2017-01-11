@@ -11,6 +11,7 @@
 #import "FindPasswordViewController.h"
 #import "UIViewController+HUD.h"
 #import "UIViewController_HUD.h"
+#import "UIAlertController+Blocks.h"
 
 @interface ChangePasswordViewController ()<UITextFieldDelegate>
 {
@@ -55,16 +56,13 @@
     _changePasswordView= [[ChangePasswordView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
     [self.view addSubview:_changePasswordView];
     
-    
-    /* 添加密码输入框的监听*/
-//    [_changePasswordView.newsPasswordText addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew context:nil];
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
-    
+    _changePasswordView.passwordText.secureTextEntry = YES;
+    _changePasswordView.newsPasswordText.secureTextEntry = YES;
+    _changePasswordView.comparePasswordText.secureTextEntry = YES;
     
     
-    _changePasswordView.newsPasswordText.delegate = self;
-    _changePasswordView.comparePasswordText.delegate = self;
     
+    [_changePasswordView.passwordText addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
     
     [_changePasswordView.newsPasswordText addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
     
@@ -87,10 +85,25 @@
 }
 
 
-- (void) textDidChange:(id)sender{
+- (void)textDidChange:(id)sender{
     
     UITextField *textField = (UITextField *)sender;
     
+    /* 验证是否有中文字符*/
+    NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @".{0,}[\u4E00-\u9FA5].{0,}"];
+    if ([regextestmobile evaluateWithObject:textField.text]==YES) {
+        
+        [textField.text substringFromIndex:textField.text.length];
+        
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请勿输入中文!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+        
+    }
+    
+    if ([regextestmobile evaluateWithObject:textField.text]==YES) {
+        
+        [textField.text substringFromIndex:textField.text.length];
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请勿输入中文!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+    }
     
     if (textField == _changePasswordView.newsPasswordText) {
         
@@ -120,87 +133,88 @@
     }
 
     
-    
-    
 }
 
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-     if ([string isEqualToString:@""]) return YES;
     
+    
+     if ([string isEqualToString:@""]) return YES;
     
 
     return YES;
     
+}
+
+-(BOOL)checkPassWord:(NSString *)password{
     
+    //6-16位数字和字母组成
+    //    ^[A-Za-z0-9]{6,16}$
+    NSString *regex = @"^[A-Za-z0-9]{6,16}";
+    NSPredicate *   pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    if ([pred evaluateWithObject:password]) {
+        return YES ;
+    }else
+        return NO;
 }
 
 
-#pragma mark- 发送找回密码请求
+#pragma mark- 发送修改密码请求
 - (void) finish{
     
+    /* 先验证是否输入了密码*/
     if ([_changePasswordView.passwordText.text isEqualToString:@""]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入密码!" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-        }] ;
-        [alert addAction:sure];
-        [self presentViewController:alert animated:YES completion:nil];
-
-    }
-    if (passwordSame == NO) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"两次输入不一致!" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-        }] ;
-        [alert addAction:sure];
-        [self presentViewController:alert animated:YES completion:nil];
-
-    }
-    
-    
-    if (![_changePasswordView.passwordText.text isEqualToString:@""]&&passwordSame == YES) {
+      [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入登录密码!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
         
-        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-        [manager PUT:[NSString stringWithFormat:@"%@/api/v1/users/%@/password",Request_Header,_idNumber] parameters:@{@"current_password":_changePasswordView.passwordText.text,@"password":_changePasswordView.newsPasswordText.text,@"password_confirmation":_changePasswordView.comparePasswordText.text} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-           
-            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+    }else{
+        
+        /* 检查密码是否符合要求*/
+        if ([self checkPassWord:_changePasswordView.newsPasswordText.text]==NO) {
+            /* 密码不符合要求*/
+            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入6-16位数字字母组合密码!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
             
-            if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
-                
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"密码修改成功!" preferredStyle:UIAlertControllerStyleAlert];
-              
+        }else{
+            
+            if (passwordSame == NO) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"两次输入不一致!" preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                     
-                     [self.navigationController popViewControllerAnimated:YES];
-                }] ;
-                [alert addAction:sure];
-                [self presentViewController:alert animated:YES completion:nil];
-                
-                
-                
-            }else{
-                
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您输入的信息有误!" preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 }] ;
                 [alert addAction:sure];
                 [self presentViewController:alert animated:YES completion:nil];
                 
             }
             
+            if (![_changePasswordView.passwordText.text isEqualToString:@""]&&passwordSame == YES) {
+                
+                [self loadingHUDStartLoadingWithTitle:@"正在修改密码"];
+                AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+                manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+                manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+                [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+                [manager PUT:[NSString stringWithFormat:@"%@/api/v1/users/%@/password",Request_Header,_idNumber] parameters:@{@"current_password":_changePasswordView.passwordText.text,@"password":_changePasswordView.newsPasswordText.text,@"password_confirmation":_changePasswordView.comparePasswordText.text} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                    
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                    
+                    if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
+                        [self loadingHUDStopLoadingWithTitle:@"密码修改成功"];
                         
-            
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            
-        }];
-        
-        
+                        [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
+                        
+                        
+                    }else{
+                        
+                        [self loadingHUDStopLoadingWithTitle:@"您的信息有误!"];
+                    }
+                    
+                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                    
+                }];
+                
+            }
+        }
     }
+    
     
 }
 
@@ -208,15 +222,14 @@
 #pragma mark- 找回密码页面
 - (void)findPassword{
     
-    FindPasswordViewController *find = [FindPasswordViewController new];
+    FindPasswordViewController *find = [[FindPasswordViewController alloc]initWithFindPassword];
     [self.navigationController pushViewController:find animated:YES];
+    
     
 }
 
 
 #pragma mark- textfield delegate
-
-
 
 
 /* 密码提示图片改变*/
@@ -243,6 +256,13 @@
 }
 
 
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
+    [_changePasswordView.passwordText resignFirstResponder];
+    [_changePasswordView.newsPasswordText resignFirstResponder];
+    [_changePasswordView.comparePasswordText resignFirstResponder];
+    
+}
 
 
 - (void)returnLastPage{

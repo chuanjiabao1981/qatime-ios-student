@@ -433,10 +433,10 @@
     else if (scrollView == hourScrollView)
     {
         if (index < 10) {
-            l.text = [NSString stringWithFormat:@"0%ld时",(long)index];
+            l.text = [NSString stringWithFormat:@"0%ld小时",(long)index];
         }
         else
-            l.text = [NSString stringWithFormat:@"%ld时",(long)index];
+            l.text = [NSString stringWithFormat:@"%ld小时",(long)index];
     }
     else if (scrollView == minuteScrollView)
     {

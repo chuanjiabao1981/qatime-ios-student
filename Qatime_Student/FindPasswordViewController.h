@@ -16,4 +16,7 @@
 
 @property(nonatomic,strong) FindPasswordView  *findPasswordView ;
 
+
+-(instancetype)initWithFindPassword;
+
 @end

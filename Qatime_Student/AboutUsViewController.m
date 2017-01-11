@@ -12,6 +12,7 @@
 
 #import "RDVTabBarController.h"
 #import "AboutUsTableViewCell.h"
+#import "UIAlertController+Blocks.h"
 
 @interface AboutUsViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
@@ -32,6 +33,8 @@
     
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
+    
+    _navigationBar.titleLabel.text = @"关于我们";
     [self.view addSubview:_navigationBar];
     
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
@@ -98,20 +101,16 @@
     
     if (indexPath.row ==0) {
         
+//        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否拨打电话0353-2135828?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+//           
+//            if (buttonIndex!=0) {
         
-        NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",@"0353-2135828"];
-        UIWebView *callWebview = [[UIWebView alloc] init];
-        [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
-        [self.view addSubview:callWebview];
-        
-//        NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",@"0353-2135828"];
-//        //            NSLog(@"str======%@",str);
-//        
-//        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:str] options:nil completionHandler:^(BOOL success) {
-//           NSLog(@"%d",success);
+//                NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://0353-2135828"];
+                
+//                [[UIApplication sharedApplication]openURL:[NSURL URLWithString:str]];
+        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"tel://0353-2135828"]];
+//            }
 //        }];
-//        
-//        
     }
     
 }

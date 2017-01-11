@@ -19,7 +19,6 @@
         _badge = ({
             M13BadgeView *_=[[M13BadgeView alloc]init];
             _.hidden = YES;
-//            _.frame = CGRectMake([UIScreen mainScreen].bounds.size.width-40, 10, 60, self.contentView.height_sd-20);
             [self.contentView addSubview:_];
             _.sd_layout
             .topSpaceToView(self.contentView,10)
@@ -45,14 +44,24 @@
             _.sd_layout
             .leftSpaceToView(self.contentView,20)
             .topSpaceToView(self.contentView,10)
-            .bottomSpaceToView(self.contentView,10)
-            .rightSpaceToView(_badge,20);
-            
-//            [_ setSingleLineAutoResizeWithMaxWidth:];
-            
+            .bottomSpaceToView(self.contentView,10);
+            [_ setSingleLineAutoResizeWithMaxWidth:300];
             _;
         });
-
+        
+        /* 取消提醒*/
+        _closeNotice = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"取消提醒"]];
+        [self.contentView addSubview:_closeNotice];
+        _closeNotice.hidden = NO;
+        _closeNotice.sd_layout
+        .leftSpaceToView(_className,20)
+        .centerYEqualToView(_className)
+        .heightRatioToView(_className,0.5)
+        .widthEqualToHeight();
+        
+        
+        /* 默认接受推送*/
+        _noticeOn = YES;
         
         [self setupAutoHeightWithBottomView:_className bottomMargin:10];
         
@@ -97,6 +106,13 @@
 
     }else{
         _badge.hidden = YES;
+    }
+    
+    
+    if (model.tutorium.notify==YES) {
+        _noticeOn = YES;
+    }else{
+        _noticeOn = NO;
     }
     
     

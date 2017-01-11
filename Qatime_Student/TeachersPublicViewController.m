@@ -15,6 +15,7 @@
 #import "TeachersPublic_Classes.h"
 #import "RDVTabBarController.h"
 #import "TutoriumInfoViewController.h"
+#import "NSString+ChangeYearsToChinese.h"
 
 @interface TeachersPublicViewController ()
 <UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>
@@ -284,12 +285,21 @@
         [_teachersPublicHeaderView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:teacherInfo.avatar_url]];
         _teachersPublicHeaderView.category.text = teacherInfo.category;
         _teachersPublicHeaderView.subject.text = teacherInfo.subject;
-        _teachersPublicHeaderView.teaching_year.text = teacherInfo.teaching_years;
+   
+        _teachersPublicHeaderView.teaching_year.text = [teacherInfo.teaching_years changeEnglishYearsToChinese];
         _teachersPublicHeaderView.province.text = teacherInfo.province;
         _teachersPublicHeaderView.city .text = teacherInfo.city;
         _teachersPublicHeaderView.workPlace .text = teacherInfo.school;
-        
         _teachersPublicHeaderView.selfInterview.text = teacherInfo.desc;
+        
+        if ([teacherInfo.gender isEqualToString:@"male"]) {
+            [_teachersPublicHeaderView.genderImage setImage:[UIImage imageNamed:@"男"]];
+        }else if ([teacherInfo.gender isEqualToString:@"female"]){
+            [_teachersPublicHeaderView.genderImage setImage:[UIImage imageNamed:@"女"]];
+        }else{
+            
+        }
+        
         
         [self sizeToFitHeight];
         

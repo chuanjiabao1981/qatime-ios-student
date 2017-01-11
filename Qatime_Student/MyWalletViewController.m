@@ -113,9 +113,9 @@
     [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否要拨打电话0532-34003426?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
        
         if (buttonIndex!=0) {
-            
-            NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",@"0532-34003426"];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+//            
+//            NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",@"0532-34003426"];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel://0532-34003426"]];
         }
     }];
     

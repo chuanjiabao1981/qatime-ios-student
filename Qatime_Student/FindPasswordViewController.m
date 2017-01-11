@@ -9,12 +9,31 @@
 #import "FindPasswordViewController.h"
 #import "MBProgressHUD.h"
 #import "UIAlertController+Blocks.h"
+#import "UIViewController+HUD.h"
 
-@interface FindPasswordViewController ()<UITextFieldDelegate,UITextInputDelegate>
+@interface FindPasswordViewController ()<UITextFieldDelegate,UITextInputDelegate>{
+    
+    
+    BOOL findPassword;
+    
+}
 
 @end
 
 @implementation FindPasswordViewController
+
+-(instancetype)initWithFindPassword{
+    
+    self = [super init];
+    if (self) {
+       
+        findPassword = YES;
+        
+
+    }
+    return self;
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -23,12 +42,7 @@
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];
     
-    
-    
     [_navigationBar.titleLabel setText:@"找回密码"];
-    
-    
-    
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(backToFrontPage:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -41,6 +55,13 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
     
+    
+    if (findPassword == YES) {
+        _findPasswordView.phoneNumber.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"];
+        
+        _findPasswordView.getCheckCodeButton.enabled = YES;
+        [_findPasswordView.getCheckCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }
     
 }
 
@@ -68,77 +89,73 @@
         [self showAlertWith:@"请输入正确的手机号！"];
         
     }
-    if ([_findPasswordView.userPassword.text isEqualToString:@""]||![self checkPassWord: _findPasswordView.userPassword.text] ) {
-        
-        [self showAlertWith:@"请输入6-16位密码！"];
-        
-    }
     if ([self checkPassWord: _findPasswordView.userPassword.text]&&![_findPasswordView.userPassword.text isEqualToString:_findPasswordView.userPasswordCompare.text]) {
         
         [self showAlertWith:@"前后密码不一致"];
         
     }
-    
-    
-    /* 所有信息都填写正确的情况*/
-    if (!([_findPasswordView.phoneNumber.text isEqualToString:@""]&&[_findPasswordView.userPassword.text isEqualToString:@""]&&[_findPasswordView.userPasswordCompare.text isEqualToString:@""]&&[_findPasswordView.checkCode.text isEqualToString:@""]&&[_findPasswordView.userPasswordCompare.text isEqualToString:_findPasswordView.userPassword.text])) {
+    if ([_findPasswordView.userPassword.text isEqualToString:@""]||![self checkPassWord: _findPasswordView.userPassword.text] ) {
         
-        /* 所有信息汇总成字典*/
+        [self showAlertWith:@"请输入6-16位密码！"];
         
-        NSDictionary *signUpInfo =@{
-                                    @"login_account":_findPasswordView.phoneNumber.text,
-                                    @"captcha_confirmation":_findPasswordView.checkCode.text,
-                                    @"password":_findPasswordView.userPassword.text,
-                                    @"password_confirmation":_findPasswordView.userPasswordCompare.text,
-                                    };
+    }else{
         
-        /* 验证码 请求状态*/
-        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        
-        [manager PUT:[NSString stringWithFormat:@"%@/api/v1/password",Request_Header] parameters:signUpInfo success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        /* 所有信息都填写正确的情况*/
+        if (!([_findPasswordView.phoneNumber.text isEqualToString:@""]&&[_findPasswordView.userPassword.text isEqualToString:@""]&&[_findPasswordView.userPasswordCompare.text isEqualToString:@""]&&[_findPasswordView.checkCode.text isEqualToString:@""]&&[_findPasswordView.userPasswordCompare.text isEqualToString:_findPasswordView.userPassword.text])) {
             
-            NSDictionary *codeState = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            /* 所有信息汇总成字典*/
             
-            NSLog(@"%@",codeState);
+            NSDictionary *signUpInfo =@{
+                                        @"login_account":_findPasswordView.phoneNumber.text,
+                                        @"captcha_confirmation":_findPasswordView.checkCode.text,
+                                        @"password":_findPasswordView.userPassword.text,
+                                        @"password_confirmation":_findPasswordView.userPasswordCompare.text,
+                                        };
             
-            NSString *status = [NSString stringWithFormat:@"%@",codeState[@"status"]];
+            /* 验证码 请求状态*/
+            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
             
+            [manager PUT:[NSString stringWithFormat:@"%@/api/v1/password",Request_Header] parameters:signUpInfo success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                
+                NSDictionary *codeState = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                
+                NSLog(@"%@",codeState);
+                
+                NSString *status = [NSString stringWithFormat:@"%@",codeState[@"status"]];
+                
 #pragma mark-注册信息校验正确
-            /* 注册信息校验正确*/
+                /* 注册信息校验正确*/
+                
+                if ([status isEqualToString:@"1"]){
+                    
+                    /* 发送成功提示框*/
+                    [self loadingHUDStopLoadingWithTitle:@"密码修改成功!"];
+                    
+                    
+                    [self.navigationController popViewControllerAnimated:YES];
+                    
+                    
+                }
+                else if (![status isEqualToString:@"1"]){
+                    
+                    [self showAlertWith:@"验证失败！请输入正确的信息！"];
+                    
+                }
+                
+                
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                
+            }];
             
-            if ([status isEqualToString:@"1"]){
-                
-                /* 发送成功提示框*/
-                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                hud.mode = MBProgressHUDModeText;
-                hud.labelText  = @"密码修改成功！";
-                hud.yOffset= 150.f;
-                hud.removeFromSuperViewOnHide = YES;
-                
-                [self.navigationController popViewControllerAnimated:YES];
-                
-                [hud hide:YES afterDelay:2.0];
-                
-                
-            }
-            else if (![status isEqualToString:@"1"]){
-                
-                [self showAlertWith:@"验证失败！请输入正确的信息！"];
-                
-            }
             
-
             
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
-        }];
-        
-        
-
-        
+        }
     }
+    
+    
     
 }
 

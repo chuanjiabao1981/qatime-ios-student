@@ -13,6 +13,8 @@
 #import "GuideViewController.h"
 #import "LoginViewController.h"
 
+#define SCREENWIDTH [UIScreen mainScreen].bounds.size.width
+
 
 @interface GuideViewController ()<UIScrollViewDelegate>{
     
@@ -36,9 +38,30 @@
     
     pageNumber = 3;
     
+    UIImage *guide1 = [[UIImage alloc]init];
+    UIImage *guide2 = [[UIImage alloc]init];
+    UIImage *guide3 = [[UIImage alloc]init];
+    
+    if (SCREENWIDTH==414) {
+        guide1 = [UIImage imageNamed:@"guide1_1242"];
+        guide2 = [UIImage imageNamed:@"guide2_1242"];
+        guide3 = [UIImage imageNamed:@"guide3_1242"];
+    }else if (SCREENWIDTH==375){
+        guide1 = [UIImage imageNamed:@"guide1_750"];
+        guide2 = [UIImage imageNamed:@"guide2_750"];
+        guide3 = [UIImage imageNamed:@"guide3_750"];
+        
+    }else if (SCREENWIDTH == 320){
+        guide1 = [UIImage imageNamed:@"guide1_640"];
+        guide2 = [UIImage imageNamed:@"guide2_640"];
+        guide3 = [UIImage imageNamed:@"guide3_640"];
+    }
+    
+    NSArray *imageArr = @[guide1,guide2,guide3];
+    
     UIScrollView *myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd)];
     for (int i=0; i<pageNumber; i++) {
-        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"guide%d",i+1]];
+//        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"guide%d",i+1]];
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.view.width_sd * i, 0, self.view.width_sd, self.view.height_sd)];
         // 在最后一页创建按钮
         if (i == pageNumber-1) {
@@ -55,7 +78,7 @@
             [button addTarget:self action:@selector(go:) forControlEvents:UIControlEventTouchUpInside];
             [imageView addSubview:button];
         }
-        imageView.image = image;
+        imageView.image = imageArr[i];
         [myScrollView addSubview:imageView];
     }
     myScrollView.bounces = NO;
