@@ -17,6 +17,7 @@
 
 #import "HaveNoClassView.h"
 #import "RDVTabBarController.h"
+#import "TutoriumInfoViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -77,7 +78,9 @@
     _allClassView.calendarView.calendarView.appearance.headerMinimumDissolvedAlpha = 0;
     _allClassView.calendarView.calendarView.appearance.eventDefaultColor = [UIColor redColor];
     _allClassView.calendarView.calendarView.appearance.adjustsFontSizeToFitContentSize = NO;
+    _allClassView.calendarView.calendarView.appearance.headerDateFormat = @"yyyy年MM月";
     _allClassView.calendarView.calendarView.firstWeekday = 2;
+    
     
     //创建点击跳转显示上一月和下一月button
     UIButton *previousButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -547,6 +550,16 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return 120;
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    TutoriumInfoViewController *infoVC= [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+    
+    [self.navigationController pushViewController:infoVC animated:YES];
+    
     
 }
 

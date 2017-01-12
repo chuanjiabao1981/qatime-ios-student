@@ -108,8 +108,8 @@
         }
         
         /* 分割线1*/
-        UIView *line1 =[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_squareMenu.frame)+10, CGRectGetWidth(_headerContentView.bounds), 0.6f)];
-        line1.backgroundColor =[UIColor lightGrayColor];
+        UIView *line1 =[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_squareMenu.frame)+10, CGRectGetWidth(_headerContentView.bounds), 10.0)];
+        line1.backgroundColor =[UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.00];
         [_headerContentView addSubview:line1];
         
         /* 暂时写死*/
@@ -149,12 +149,11 @@
         _teacherScrollView.showsVerticalScrollIndicator = NO;
         _teacherScrollView.showsHorizontalScrollIndicator = NO;
         
-        
         [_headerContentView addSubview:_teacherScrollView];
         
         /* 分割线2*/
-        UIView *line2 =[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_teacherScrollView.frame)+5, CGRectGetWidth(_headerContentView.frame), 0.6f)];
-        line2.backgroundColor =[UIColor lightGrayColor];
+        UIView *line2 =[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_teacherScrollView.frame)+5, CGRectGetWidth(_headerContentView.frame), 10.0f)];
+        line2.backgroundColor =[UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.00];
         [_headerContentView addSubview:line2];
         
         

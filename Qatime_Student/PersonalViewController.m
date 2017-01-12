@@ -87,6 +87,59 @@
     /* cell的图片*/
     _cellImage = @[[UIImage imageNamed:@"美元"],[UIImage imageNamed:@"订单"],[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"安全"],[UIImage imageNamed:@"设置"]];
     
+    
+    
+    /* 导航栏*/
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
+    [self.view addSubview:_navigationBar];
+    
+    _navigationBar.titleLabel.text = @"个人中心";
+    
+    _headView = [[HeadBackView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT*2/5)];
+    [self.view addSubview:_headView];
+    
+    /* 个人页面菜单*/
+    _personalView = [[PersonalView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-63)];
+    [self.view addSubview:_personalView];
+    
+    _personalView.settingTableView.delegate = self;
+    _personalView.settingTableView.dataSource = self;
+    _personalView.settingTableView.tableHeaderView = _headView;
+    _personalView.settingTableView.tableHeaderView.size = CGSizeMake(SCREENWIDTH, SCREENHEIGHT*2/5);
+    
+    _personalView.settingTableView.bounces = NO;
+    
+    
+
+    /* 加载页面方法*/
+    [self setupPages];
+    
+    /* 添加用户登录的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogin:) name:@"UserLoginAgain" object:nil];
+    
+}
+
+/* 页面加载方法*/
+- (void)setupPages{
+    
+    /* 提出token和学生id*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
+        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
+    }
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
+        
+        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
+    }
+    
+    /* 取出用户名*/
+    
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"name"]) {
+        
+        _name = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"name"]];
+        
+    }
+
+    
     /* 取出头像信息*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"avatar_url"]) {
         
@@ -99,39 +152,13 @@
     
     login = [[NSUserDefaults standardUserDefaults]boolForKey:@"Login"];
     
-    
-    /* 取出用户名*/
-    
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"name"]) {
-        
-        _name = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"name"]];
-        
-    }
-    
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-    
-    
-    /* 导航栏*/
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
-    [self.view addSubview:_navigationBar];
-    
-    _navigationBar.titleLabel.text = @"个人中心";
-    
-    _headView = [[HeadBackView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT*2/5)];
-    [self.view addSubview:_headView];
+
     
     if (login) {
         
-    [_headView.headImageView sd_setImageWithURL:[NSURL URLWithString:_avatarStr]];
-    
-    _headView.name .text = _name;
+        [_headView.headImageView sd_setImageWithURL:[NSURL URLWithString:_avatarStr]];
+        
+        _headView.name .text = _name;
     }else{
         
         [_headView.headImageView setImage:[UIImage imageNamed:@"人"]];
@@ -146,36 +173,28 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(personalInfo:)];
     [_headView.headImageView addGestureRecognizer:tap];
     
-    
-    
-    
-    
-    /* 个人页面菜单*/
-    _personalView = [[PersonalView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-63)];
-    [self.view addSubview:_personalView];
-    
-    _personalView.settingTableView.delegate = self;
-    _personalView.settingTableView.dataSource = self;
-    _personalView.settingTableView.tableHeaderView = _headView;
-    _personalView.settingTableView.tableHeaderView.size = CGSizeMake(SCREENWIDTH, SCREENHEIGHT*2/5);
-
-    _personalView.settingTableView.bounces = NO;
-//    _personalView.settingTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    
-         
-   
     /* 获取余额*/
     [self getCash];
 
 }
+
+/* 用户登陆后*/
+- (void)userLogin:(NSNotification *)notification{
+    
+    /* 重新加载页面和数据*/
+    [self setupPages];
+    
+    
+}
+
 #pragma mark- 跳到个人信息设置界面
 - (void)personalInfo:(id)sender{
     
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
         if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]== NO) {
             
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
+            [self loginAgain];
+            
         }else{
             
             PersonalInfoViewController *personVC = [PersonalInfoViewController new];
@@ -201,13 +220,18 @@
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
+            
             /* 获取cash接口的信息成功*/
             _balance = [NSString stringWithFormat:@"%@",dic[@"data"][@"balance"]];
             
+            NSIndexPath *indexpath = [NSIndexPath indexPathForRow:0 inSection:0];
+            [_personalView.settingTableView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationFade];
+            
         }else{
             
-            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Login"];
+//            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Login"];
             
             
             /* 获取失败*/

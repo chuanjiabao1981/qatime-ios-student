@@ -18,6 +18,7 @@
 #import "HaveNoClassView.h"
 #import "UIViewController+HUD.h"
 #import "TutoriumInfoViewController.h"
+#import "NELivePlayerViewController.h"
 
 
 
@@ -368,6 +369,10 @@
             if (_unStartArr.count!= 0) {
                 cell.model = _unStartArr[indexPath.row];
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+                
+                
+                
+                
             }
             
             return  cell;
@@ -380,12 +385,24 @@
             StartedTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
             if (cell==nil) {
                 cell=[[StartedTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-                
-                
             }
             if (_startedArr.count!= 0) {
                 cell.model = _startedArr[indexPath.row];
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+                
+                if (cell.canTaste == YES) {
+                    cell.enterButton.hidden = NO;
+                    [cell.enterButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+                    cell.enterButton.layer.borderColor = [UIColor darkGrayColor].CGColor;
+    
+                }else{
+                    
+                    cell.enterButton.hidden = YES;
+                }
+                
+                [cell.enterButton addTarget:self action:@selector(enterListen:) forControlEvents:UIControlEventTouchUpInside];
+                
+                cell.enterButton.tag = indexPath.row+100;
             }
             
             return  cell;
@@ -405,6 +422,10 @@
             if (_endedArr.count!= 0) {
                 cell.model = _endedArr[indexPath.row];
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+            
+            
+            
+            
             }
             
             return  cell;
@@ -426,6 +447,9 @@
                 cell.model = _listenArr[indexPath.row];
                 
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+                
+                 [cell.enterButton addTarget:self action:@selector(enterListen:) forControlEvents:UIControlEventTouchUpInside];
+                cell.enterButton.tag = indexPath.row+1000;
             }
             
             return  cell;
@@ -484,6 +508,36 @@
     
 }
 
+/* 进入试听*/
+- (void)enterListen:(UIButton *)sender{
+    
+    NSString *classID = nil;
+    
+    
+    /* 如果是在已开课列表*/
+    if (sender.tag>=100&&sender.tag<1000) {
+        
+        MyTutoriumModel *mod =_startedArr[sender.tag-100];
+        
+        classID = [NSString stringWithFormat:@"%@",mod.classID];
+        
+    }else if (sender.tag>=1000){
+        
+        MyTutoriumModel *mod = _listenArr[sender.tag - 1000];
+        
+        classID = [NSString stringWithFormat:@"%@",mod.classID];
+    }
+    
+    
+    
+    
+    NELivePlayerViewController *listen = [[NELivePlayerViewController alloc]initWithClassID:classID];
+    [self.navigationController pushViewController:listen animated:YES];
+   
+    
+    
+    
+}
 
 
 - (void)returnLastPage{

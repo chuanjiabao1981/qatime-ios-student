@@ -440,6 +440,11 @@
         
         if ([dic[@"status"]isEqualToNumber:@1]) {
             /* 绑定成功*/
+            
+//            [self loadingHUDStopLoadingWithTitle:@"绑定成功!"];
+            
+//            [self bindingSuccess];
+            
             /* 绑定完成后,请求一次数据*/
             
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -452,7 +457,7 @@
                     /* 绑定成功*/
                     if (dic[@"data"][@"user"][@"openid"]) {
                         
-                        if ([dic[@"data"][@"user"][@"openid"]isEqual:[NSNull null]]) {
+                        if (![dic[@"data"][@"user"][@"openid"]isEqual:[NSNull null]]) {
                             
                             [[NSUserDefaults standardUserDefaults]setValue:dic[@"data"][@"user"][@"openid"] forKey:@"openID"];
                             
@@ -461,7 +466,7 @@
                         }
                     }else{
                         [self loadingHUDStopLoadingWithTitle:@"绑定申请已提交!"];
-//                        [self performSelector:@selector(bindingWaited) withObject:nil afterDelay:1];
+                        //                        [self performSelector:@selector(bindingWaited) withObject:nil afterDelay:1];
                     }
                 }else{
                     
@@ -476,7 +481,7 @@
             
             
         }else{
-            
+            [self loadingHUDStopLoadingWithTitle:@"绑定失败!"];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

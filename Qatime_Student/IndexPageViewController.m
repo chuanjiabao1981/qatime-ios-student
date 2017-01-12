@@ -288,6 +288,11 @@
         NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"];
         
         [[NIMSDK sharedSDK].loginManager autoLogin:chatDic[@"accid"] token:chatDic[@"token"]];
+//        [[[NIMSDK sharedSDK]loginManager]login:chatDic[@"accid"] token:chatDic[@"token"] completion:^(NSError * _Nullable error) {
+//           
+//            
+//            
+//        }];
         
         [[[NIMSDK sharedSDK]conversationManager]addDelegate:self];
         
@@ -974,7 +979,7 @@
         
         
     }
-    /* 推荐课程,预留点击事件*/
+    /* 推荐课程点击事件*/
     if (collectionView.tag ==1) {
         
         RecommandClassCollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];

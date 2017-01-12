@@ -3,13 +3,18 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "-[MyOrderViewController scrollViewWillBeginDragging:]:MyOrderViewController.m">
+         contextName = "-[AppDelegate application:didRegisterForRemoteNotificationsWithDeviceToken:]:AppDelegate.m">
          <PersistentStrings>
             <PersistentString
-               value = "self.view.height_sd">
+               value = "deviceToken.description">
             </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MyClassViewController enterListen:]:MyClassViewController.m">
+         <PersistentStrings>
             <PersistentString
-               value = "_unpaidView.mj_footer.mj_y">
+               value = "sender.tag">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -55,7 +60,26 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_tutoriumInfoView.view2.contentSize">
+            </PersistentString>
+            <PersistentString
+               value = "_tutoriumInfoView.view1.contentSize">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__42-[ClassSettingViewController saveSettings]_block_invoke:ClassSettingViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalViewController setupPages]:PersonalViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "login">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__43-[TutoriumViewController sendFilterStatus:]_block_invoke:TutoriumViewController.m">
@@ -125,6 +149,14 @@
       </ContextState>
       <ContextState
          contextName = "__33-[ChatViewController viewDidLoad]_block_invoke:ChatViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalViewController tableView:didSelectRowAtIndexPath:]:PersonalViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[NSUserDefaults standardUserDefaults]boolForKey:@&quot;Login&quot;]">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[ChatModel getDicWithText:andName:andIcon:]:ChatModel.m">
@@ -231,6 +263,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__33-[PersonalViewController getCash]_block_invoke:PersonalViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__44-[NELivePlayerViewController viewDidAppear:]_block_invoke:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -294,15 +329,18 @@
          contextName = "-[LoginViewController saveUserInfo:loginType:]:LoginViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__46-[TutoriumInfoViewController switchClassData:]_block_invoke:TutoriumInfoViewController.m">
-      </ContextState>
-      <ContextState
          contextName = "-[NSString(ChangeYearsToChinese) changeEnglishYearsToChinese]:NSString+ChangeYearsToChinese.m">
          <PersistentStrings>
             <PersistentString
                value = "years">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__46-[TutoriumInfoViewController switchClassData:]_block_invoke:TutoriumInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ConfirmChargeViewController initWithInfo:]:ConfirmChargeViewController.m">
       </ContextState>
       <ContextState
          contextName = "__43-[IndexPageViewController requestTeachers:]_block_invoke:IndexPageViewController.m">
@@ -394,6 +432,17 @@
          contextName = "__34-[BindingViewController nextStep:]_block_invoke.217:BindingViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[ClassTimeViewController tableView:didSelectRowAtIndexPath:]:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unclosedArr">
+            </PersistentString>
+            <PersistentString
+               value = "_closedArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__45-[PersonalInfoViewController requestUserInfo]_block_invoke:PersonalInfoViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -456,6 +505,14 @@
       </ContextState>
       <ContextState
          contextName = "__39-[BindingMailInfoViewController finish]_block_invoke_2:BindingMailInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumInfoViewController addListen]:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__53-[TutoriumInfoViewController requestClassesInfoWith:]_block_invoke:TutoriumInfoViewController.m">
@@ -633,6 +690,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[OrderInfoViewController setUpViews]:OrderInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke_2:ClassTimeViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -672,6 +737,14 @@
       </ContextState>
       <ContextState
          contextName = "__43-[NoticeIndexViewController requestNotices]_block_invoke:NoticeIndexViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__34-[MyOrderViewController payOrder:]_block_invoke_2:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unpaidArr">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[AppDelegate application:didFinishLaunchingWithOptions:]:AppDelegate.m">
@@ -729,6 +802,9 @@
                value = "self.commonCitys">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__39-[OrderViewController requestClassInfo]_block_invoke:OrderViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController onRecvMessages:]:NELivePlayerViewController.m">
@@ -808,6 +884,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[ConfirmChargeViewController initWithModel:]:ConfirmChargeViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[NoticeIndexViewController requestMyClass]:NoticeIndexViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -833,15 +912,7 @@
          contextName = "__86-[TutoriumViewController requestDataWithGrade:andSubject:andPage:andPerPage:withPull:]_block_invoke:TutoriumViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[SafeViewController tableView:cellForRowAtIndexPath:]:SafeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "[[NSUserDefaults standardUserDefaults]valueForKey:@&quot;openID&quot;]">
-            </PersistentString>
-            <PersistentString
-               value = "_menuName">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[ClassSettingViewController saveSettings]:ClassSettingViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[MyOrderViewController repage:]:MyOrderViewController.m">
@@ -866,7 +937,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[ClassSettingViewController saveSettings]:ClassSettingViewController.m">
+         contextName = "-[SafeViewController tableView:cellForRowAtIndexPath:]:SafeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[NSUserDefaults standardUserDefaults]valueForKey:@&quot;openID&quot;]">
+            </PersistentString>
+            <PersistentString
+               value = "_menuName">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__copy_helper_block_:CashRecordViewController.m">
@@ -976,6 +1055,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[MyOrderViewController scrollViewWillBeginDragging:]:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.view.height_sd">
+            </PersistentString>
+            <PersistentString
+               value = "_unpaidView.mj_footer.mj_y">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke.204:NoticeIndexViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -991,14 +1081,6 @@
          <PersistentStrings>
             <PersistentString
                value = "_dataDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[AppDelegate application:didRegisterForRemoteNotificationsWithDeviceToken:]:AppDelegate.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "deviceToken.description">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

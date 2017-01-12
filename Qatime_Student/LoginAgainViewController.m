@@ -201,11 +201,12 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                 if ([key isEqualToString:@"remember_token"]) {
                     /* 在后台查到该用户的信息*/
                     
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
                     /* 保存用户信息*/
                     [self saveUserInfo:dic[@"data"] loginType:Wechat];
-                    
                     [self loadingHUDStopLoadingWithTitle:@"登录成功"];
+                    
+                    [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                     
                 }else{
                     
@@ -414,88 +415,20 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                 NSDictionary *dicGet=[NSDictionary dictionaryWithDictionary:userInfoGet[@"data"]];
                 
                 NSLog(@"%@",dicGet);
-                
-                
                 /* 如果返回的字段里包含key值“remember_token“ 为登录成功*/
                 /* 如果登录成功*/
                 if ([[dicGet allKeys]containsObject:@"remember_token" ]) {
                     
-                   [self saveUserInfo:dicGet loginType:Normal];
+                    [self saveUserInfo:dicGet loginType:Normal];
+                    //
+                    [self loadingHUDStopLoadingWithTitle:@"登录成功"];
                     
-//                    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
-//                    
-////                    [hud hide:YES];
-//                    
-//                    
-//#pragma mark- 本地登录成功后 保存token文件，并且转到主页面
-//                    
-//                    NSString *userTokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
-//                    
-//                    NSLog(@"保存的数据\n%@",dicGet);
-//                    /* 归档*/
-//                    [NSKeyedArchiver archiveRootObject:dicGet toFile:userTokenFilePath];
-//                    
-//                    //                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
-//                    
-//                    /* 另存一份userdefault  只存token和id*/
-//                    NSString *remember_token = [NSString stringWithFormat:@"%@",dicGet[@"remember_token"]];
-//                    
-//                    NSDictionary *user=[NSDictionary dictionaryWithDictionary:dicGet[@"user"]];
-//                    NSLog(@"%@",user);
-//                    
-//                    
-//                    NSString *userID = [NSString stringWithFormat:@"%@",[[dicGet valueForKey:@"user"] valueForKey:@"id"]];
-//                    
-//                    [[NSUserDefaults standardUserDefaults]setObject:remember_token forKey:@"remember_token"];
-//                    [[NSUserDefaults standardUserDefaults]setObject:userID forKey:@"id"];
-//                    
-//                    
-//                    NSLog(@"token:%@,id:%@",remember_token,userID);
-//                    
-//                    
-//                    /* 另存一个userdefault ，只存user的头像地址*/
-//                    [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"avatar_url"] forKey:@"avatar_url"];
-//                    
-//                    /* 另存一个useerdefault 存user的name*/
-//                    [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"name"] forKey:@"name"];
-//                    
-//                    /* 另存一个userdefault 存电话*/
-//                    if (dicGet[@"user"][@"login_mobile"] !=nil) {
-//                        [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"login_mobile"] forKey:@"login_mobile"];
-//                    }
-//                    
-//                    /* 发出一条消息:账号密码方式登录*/
-//                    
-//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"Login_Type" object:@"Normal" ];
-//                    
-//                    
-//                    
-//                    
-//                    
-//                    
-//#pragma mark- 把用户聊天账户信息存本地
-//                    
-//                    
-//                    
-//                    /* 另存一份userdefault  只存chat_account*/
-//                    
-//                    NSDictionary *chat_accountDic = [NSDictionary dictionaryWithDictionary:[[dicGet valueForKey:@"user"]valueForKey:@"chat_account"]];
-//                    
-//                    NSLog(@"%@",chat_accountDic);
-//                    
-//                    
-//                    
-//                    
-//                    
-//                    
-//                    [[NSUserDefaults standardUserDefaults]setObject:chat_accountDic forKey:@"chat_account"];
-//                    
-                     [self loadingHUDStopLoadingWithTitle:@"登录成功"];
+                    [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                     
                     
                 }else{
                     
-//                    [hud hide:YES];
+                    //                    [hud hide:YES];
                     
                     _wrongTimes ++;
                     if (_wrongTimes >=5) {
@@ -544,8 +477,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     NSLog(@"保存的数据\n%@",userDic);
     /* 归档*/
     [NSKeyedArchiver archiveRootObject:userDic toFile:userTokenFilePath];
-    
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
     
     /* 另存一份userdefault  只存token和id*/
     
@@ -622,7 +553,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     /* 发出一条消息:登录方式*/
     
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"Login_Type" object:type];
     
     
 #pragma mark- 把用户聊天账户信息存本地
@@ -644,6 +574,11 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         [[NSUserDefaults standardUserDefaults]setObject:chat_accountDic forKey:@"chat_account"];
         
     }
+    
+    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLoginAgain" object:nil];
+    
+//    [self.navigationController popViewControllerAnimated:YES];
     
 }
 

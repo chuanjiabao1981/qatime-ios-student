@@ -111,7 +111,7 @@
     
     if (model.tutorium.notify==YES) {
         _noticeOn = YES;
-    }else{
+    }else if (model.tutorium.notify==NO){
         _noticeOn = NO;
     }
     

@@ -22,6 +22,7 @@
 
 #import "UIViewController+HUD.h"
 #import "UIAlertController+Blocks.h"
+#import "ConfirmChargeViewController.h"
 
 
 @interface CashRecordViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
@@ -599,6 +600,27 @@
 
 #pragma mark- tableview delegate -  didselected
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (tableView.tag ==1) {
+        RechargeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        if ([cell.model.status isEqualToString:@"unpaid"]) {
+            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否支付该订单?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                
+                if (buttonIndex!=0) {
+                    
+                    ConfirmChargeViewController *pay = [[ConfirmChargeViewController alloc]initWithModel:cell.model];
+                    [self.navigationController pushViewController:pay animated:YES];
+                    
+                    
+                    
+                }
+            }];
+            
+            
+        }
+    }
+    
+    
     
     /* 提现页面*/
     if (tableView.tag ==2) {

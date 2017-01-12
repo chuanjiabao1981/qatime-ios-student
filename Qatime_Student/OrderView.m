@@ -248,8 +248,8 @@
         _classImage.sd_layout
         .topEqualToView(classinfo)
         .leftEqualToView(_className)
-        .widthRatioToView(_scrollView,1/3.5)
-        .heightEqualToWidth();
+        .widthRatioToView(self,1/2.5)
+        .autoHeightRatio(10/16.0);
         
         /* 科目*/
         subject.sd_layout

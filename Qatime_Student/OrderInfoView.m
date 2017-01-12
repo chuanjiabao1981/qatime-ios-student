@@ -29,7 +29,7 @@
         
         /* 分割线*/
         UIView *line = [[UIView alloc]init];
-        line.backgroundColor = TITLECOLOR;
+        line.backgroundColor = SEPERATELINECOLOR;
         
         /* 订单号*/
         UILabel *orderNumber = [[UILabel alloc]init];
@@ -145,7 +145,7 @@
         
         /* 创建时间*/
         creatTime.sd_layout
-        .topSpaceToView(line,10)
+        .topSpaceToView(orderNumber,10)
         .leftSpaceToView(self,10)
         .autoHeightRatio(0);
         [creatTime setSingleLineAutoResizeWithMaxWidth:300];
@@ -205,15 +205,16 @@
         _cancelButton.sd_layout
         .leftSpaceToView(self,20)
         .topSpaceToView(amount,20)
-        .heightRatioToView(self,0.07)
+        .heightRatioToView(self,0.065)
         .widthIs(self.width_sd/2-20-5);
+        _cancelButton.sd_cornerRadius = [NSNumber numberWithInteger:2];
         
         _payButton.sd_layout
         .rightSpaceToView(self,20)
         .topEqualToView(_cancelButton)
         .bottomEqualToView(_cancelButton)
         .widthRatioToView(_cancelButton,1.0);
-        
+        _payButton.sd_cornerRadius = [NSNumber numberWithInteger:2];
         
     }
     return self;

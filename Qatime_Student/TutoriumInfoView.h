@@ -46,7 +46,7 @@
 
 /* 要传数据的所有的label 1 */
 
-@property(nonatomic,strong) UIView *view1 ;
+@property(nonatomic,strong) UIScrollView *view1 ;
 
 /* 科目*/
 @property(nonatomic,strong) UILabel *subjectLabel ;
@@ -71,7 +71,7 @@
 
 /* 要传数据的所有的label 2 */
 
-@property(nonatomic,strong) UIView *view2 ;
+@property(nonatomic,strong) UIScrollView *view2 ;
 
 /* 教师姓名*/
 @property(nonatomic,strong) UILabel *teacherNameLabel ;

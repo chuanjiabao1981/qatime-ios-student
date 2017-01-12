@@ -114,10 +114,20 @@
     self.selectedIndex=0;
     
     self.tabBar.height = TabBar_Height;
+    self.tabBar.backgroundView.backgroundColor = [UIColor whiteColor];
     
     _appDelegate = [[AppDelegate alloc]init];
-}
     
+    UIView *line = [[UIView alloc]init];
+    [self.view addSubview:line];
+    line.sd_layout
+    .leftEqualToView(self.view)
+    .rightEqualToView(self.view)
+    .bottomSpaceToView(self.tabBar,0)
+    .heightIs(1);
+    line.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.00];
+    
+}
     
 - (BOOL)prefersStatusBarHidden{
     return NO;

@@ -58,6 +58,11 @@
 - (void)setUpViews{
     _orderInfoView = [[OrderInfoView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
     [self.view addSubview:_orderInfoView];
+    
+    
+    /* 判断订单状态*/
+    
+    
     /* 信息赋值*/
     if ([_dataDic[@"status"]isEqualToString:@"shipped"]) {
         /* 交易完成的*/
@@ -70,6 +75,8 @@
         [_orderInfoView.statusImage setImage:[UIImage imageNamed:@"交易关闭"]];
     }
 
+    _orderInfoView.orderNumber.text = _dataDic[@"orderNumber"];
+    
     _orderInfoView.subName.text = [NSString stringWithFormat:@"%@%@/共%@课/%@",_dataDic[@"subject"],_dataDic[@"grade"],_dataDic[@"lessonTime"],_dataDic[@"teacherName"]];
     _orderInfoView.name.text = _dataDic[@"name"];
     _orderInfoView.creatTime.text = _dataDic[@"creatTime"];

@@ -17,10 +17,12 @@
 
 #import "SDAutoLayout.h"
 #import "AFNetworking.h"
-
 #import "Masonry.h"
 
 /* 测试和生产环境域名的转换*/
+
+//http://testing.qatime.cn
+//https://qatime.cn
 
 #define Request_Header @"http://testing.qatime.cn"
 
@@ -35,6 +37,10 @@
 
 /* 背景灰色*/
 #define BACKGROUNDGRAY [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0]
+
+/* 分割线灰色*/
+#define SEPERATELINECOLOR [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0]
+
 
 /*字号*/
 #define TITLEFONTSIZE [UIFont systemFontOfSize:18*[UIScreen mainScreen].bounds.size.width/414.0]
@@ -60,7 +66,7 @@
 //#云信key
 //YunXinDebugAppKey=2a24ca70e580cab2bef58b1e62478f9f
 //YunXinReleaseAppKey=4fe3a3fba0a40a00daf011049a29d995
-#define IM_APPKEY @"2a24ca70e580cab2bef58b1e62478f9f"
+#define IM_APPKEY @"4fe3a3fba0a40a00daf011049a29d995"
 
 /* nslog的封装*/
 #ifdef DEBUG

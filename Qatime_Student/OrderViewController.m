@@ -16,6 +16,7 @@
 
 #import "UIViewController+HUD.h"
 #import "PayConfirmViewController.h"
+#import "UIAlertController+Blocks.h"
 
 @interface OrderViewController (){
     
@@ -83,6 +84,7 @@
         
         [_.wechatButton addTarget:self action:@selector(chooseWechat:) forControlEvents:UIControlEventTouchUpInside];
         [_.alipayButton addTarget:self action:@selector(chooseAlipay:) forControlEvents:UIControlEventTouchUpInside];
+        [_.balanceButton addTarget:self action:@selector(chooseBalance:) forControlEvents:UIControlEventTouchUpInside];
         [_.applyButton addTarget:self action:@selector(applyOrder) forControlEvents:UIControlEventTouchUpInside];
         
         [self.view addSubview:_];
@@ -144,7 +146,7 @@
                     NSDate *startDate = [format dateFromString:mod.live_start_time];
                     NSDate *endDate = [format dateFromString:mod.live_end_time];
                     NSDateFormatter *strFormat= [[NSDateFormatter alloc]init];
-                    strFormat.dateFormat = @"yyyy年MM月dd日";
+                    strFormat.dateFormat = @"yyyy-MM-dd";
                     
                     _orderView.startTimeLabel.text = [strFormat stringFromDate:startDate];
                     _orderView.endTimeLabel.text = [strFormat stringFromDate:endDate];
@@ -216,9 +218,8 @@
                     
                     /* 按钮直接不可用*/
                     
-                    /* 留作测试使用*/
-                    
                     balanceEnable = NO;
+                    
 //                    _orderView.balanceButton.enabled = NO;
                     
                     [_orderView.balanceButton addTarget:self action:@selector(chooseBalance:) forControlEvents:UIControlEventTouchUpInside];
@@ -325,6 +326,11 @@
             [sender setImage:nil forState:UIControlStateNormal];
             
         }
+    }else{
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"余额不足,不可使用余额支付." cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+            
+        }];
+        
     }
 
 }
@@ -388,8 +394,8 @@
                     
                     dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
                     
-                    [self loadingHUDStopLoadingWithTitle:@"订单申请成功!"];
-                    [self performSelector:@selector(turnToPayPage) withObject:nil afterDelay:1];
+//                    [self loadingHUDStopLoadingWithTitle:@"订单申请成功!"];
+                    [self performSelector:@selector(turnToPayPage) withObject:nil afterDelay:0];
                     
                     
                 }else{
@@ -402,16 +408,9 @@
                 
             }];
             
-            
-            
-            
-            
         }
         
-        
     }
-    
-    
 }
 
 #pragma mark- 跳转到支付确认页面

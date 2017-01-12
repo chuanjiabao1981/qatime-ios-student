@@ -8,11 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "ConfirmChargeView.h"
-
+#import "Recharge.h"
+#import "Unpaid.h"
 @interface ConfirmChargeViewController : UIViewController
 
 @property(nonatomic,strong) ConfirmChargeView *confirmView ;
 
+/* 传字典初始化方法*/
 - (instancetype)initWithInfo:(__kindof NSDictionary *)info;
+/* 传model初始化方法*/
+-(instancetype)initWithModel:(Recharge *)model;
+
+-(instancetype)initWithPayModel:(Unpaid *)model;
+
 
 @end

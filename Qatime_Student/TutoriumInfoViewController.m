@@ -19,8 +19,9 @@
 
 #import "OrderViewController.h"
 #import "AppDelegate.h"
+#import "NSString+ChangeYearsToChinese.h"
 
-
+#import "UIAlertController+Blocks.h"
 
 #import "NELivePlayerViewController.h"
 
@@ -94,7 +95,7 @@
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastpage) forControlEvents:UIControlEventTouchUpInside];
     
     _tutoriumInfoView = [[TutoriumInfoView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64-TabBar_Height)];
-    [self .view addSubview:_tutoriumInfoView];
+    [self.view addSubview:_tutoriumInfoView];
     
     /* 购买bar*/
     
@@ -105,7 +106,7 @@
     
     
     _tutoriumInfoView.scrollView.delegate = self;
-    _tutoriumInfoView.classesListTableView.scrollEnabled =YES;
+//    _tutoriumInfoView.classesListTableView.scrollEnabled =YES;
     
     _tutoriumInfoView.segmentControl.selectionIndicatorHeight=2;
     _tutoriumInfoView.segmentControl.selectedSegmentIndex=0;
@@ -121,7 +122,7 @@
     self.tutoriumInfoView.scrollView.alwaysBounceVertical=NO;
     self.tutoriumInfoView.scrollView.alwaysBounceHorizontal=NO;
     
-    [  self.tutoriumInfoView.scrollView scrollRectToVisible:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd) animated:YES];
+    [self.tutoriumInfoView.scrollView scrollRectToVisible:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd) animated:YES];
     
     _tutoriumInfoView.classesListTableView.delegate = self;
     _tutoriumInfoView.classesListTableView.dataSource = self;
@@ -273,7 +274,7 @@
             [_tutoriumInfoView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacherModel.avatar_url ]];
             
             /* 判断教学年限*/
-            [_tutoriumInfoView.workYearsLabel setText:@"10-20年"];
+            _tutoriumInfoView.workYearsLabel.text = [_teacherModel.teaching_years changeEnglishYearsToChinese];
             
             /* 手动解析classModel*/
             _classModel = [RecommandClasses yy_modelWithDictionary:_dataDic];
@@ -320,14 +321,14 @@
 
 #pragma mark- 判断课程状态
 - (void)switchClassData:(NSDictionary *)data{
-    /* 先判断is_tasting / is_bought / tasted 的状态*/
+    /* 先判断is_tasting(正在试听) / is_bought(已购买) / tasted() 的状态*/
     
     if ([_dataDic[@"is_bought"]boolValue]==NO) {
         
         /* 还没购买的情况下*/
         if ([_dataDic[@"is_tasting"]boolValue]==YES) {
-            /* 如果已经加入试听*/
-            if ([_dataDic[@"tasted"]boolValue]==NO) {
+            /* 如果已经加入试听,而且该课程可以试听*/
+            if ([_dataDic[@"is_tasting"]boolValue]==YES) {
                 /* 还没有试听*/
                 [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
                 [_buyBar.listenButton setBackgroundColor:BUTTONRED];
@@ -342,15 +343,9 @@
                     [_buyBar.listenButton addTarget:self action:@selector(addClosedListen) forControlEvents:UIControlEventTouchUpInside];
                     
                 }
-
-                
                 
             }else{
-                /* 已经试听了*/
-                [_buyBar.listenButton setTitle:@"试听结束" forState:UIControlStateNormal];
-                [_buyBar.listenButton setBackgroundColor:[UIColor colorWithRed:0.84 green:0.47 blue:0.44 alpha:1.0]];
-                
-                _buyBar.listenButton.enabled = NO;
+               
                 
             }
             
@@ -394,6 +389,15 @@
         
     }
     
+    if ([_dataDic[@"preset_lesson_count"]integerValue]==[_dataDic[@"completed_lesson_count"]integerValue]) {
+        
+        /* 不可以试听*/
+        [_buyBar.listenButton setTitle:@"试听结束" forState:UIControlStateNormal];
+        [_buyBar.listenButton setBackgroundColor:[UIColor colorWithRed:0.84 green:0.47 blue:0.44 alpha:1.0]];
+        [_buyBar.listenButton removeTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
+        _buyBar.listenButton.enabled = NO;
+    }
+    
 }
 
 #pragma mark- 加入到已关闭的试听
@@ -424,7 +428,7 @@
 - (void)addListen{
     
     if (_dataDic) {
-        if ([_dataDic[@"is_tasting"]boolValue]==YES) {
+        if ([_dataDic[@"taste_count"]integerValue]>0) {
             /* 可以试听的情况*/
             [self loadingHUDStartLoadingWithTitle:@"正在加入试听"];
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -451,7 +455,6 @@
                     
                     /* 发送全局通知,发送加入试听课程通知*/
                     [[NSNotificationCenter defaultCenter]postNotificationName:@"AddNewClass" object:_dataDic];
-                    
                     
                 }else{
                     
@@ -512,6 +515,13 @@
             
             [self presentViewController:alert animated:YES completion:nil];
 
+        }else{
+            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否确定购买该课程?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                if (buttonIndex!=0) {
+                    [self requestOrder];
+                }
+                
+            }];
         }
         
     }
@@ -546,8 +556,11 @@
         
         [_tutoriumInfoView.segmentControl setSelectedSegmentIndex:page animated:YES];
     }
+   
     
 }
+
+
 
 
 #pragma mark- tabelView的代理方法
@@ -692,19 +705,12 @@
     CGFloat teacherDesc_height =  _tutoriumInfoView.teacherInterviewLabel.frame.origin.y+_tutoriumInfoView.teacherInterviewLabel.frame.size.height;
     
     
-    if (classDesc_height>teacherDesc_height) {
-        
-        [_tutoriumInfoView.scrollView setContentSize:CGSizeMake(self.view.width_sd*3, classDesc_height)];
-    }else {
-         [_tutoriumInfoView.scrollView setContentSize:CGSizeMake(self.view.width_sd*3, teacherDesc_height)];
-        
-    }
+    /* 两组视图分别自适应高度*/
     
-     _tutoriumInfoView.classesListTableView.sd_resetLayout
-    .leftSpaceToView(_tutoriumInfoView.view3,0)
-    .rightSpaceToView(_tutoriumInfoView.view3,0)
-    .topSpaceToView(_tutoriumInfoView.view3,0)
-    .heightIs(_tutoriumInfoView.contentSize.height);
+    [_tutoriumInfoView.view1 setContentSize:CGSizeMake(self.view.width_sd,classDesc_height+20 )];
+    [_tutoriumInfoView.view2 setContentSize:CGSizeMake(self.view.width_sd, teacherDesc_height+20) ];
+    
+    
     
     
 }

@@ -701,8 +701,7 @@
 
 
 #pragma mark - 聊天页面 发送文字聊天信息的回调
-- (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message
-{
+- (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message{
     
     if ([funcView.TextViewInput.text isEqualToString:@""]||funcView.TextViewInput.text==nil) {
         
@@ -845,8 +844,7 @@
 
 
 // 获取表情字符串
-- (NSString *)emotionText:(UITextView *)textView
-{
+- (NSString *)emotionText:(UITextView *)textView{
     
     NSLog(@"%@",textView.attributedText);
     
@@ -895,7 +893,6 @@
         
         YZEmotionKeyboard *emotionKeyboard = [YZEmotionKeyboard emotionKeyboard];
         
-        
         emotionKeyboard.sendContent = ^(NSString *content){
             // 点击发送会调用，自动把文本框内容返回给你
             
@@ -903,6 +900,8 @@
         };
         
         _emotionKeyboard = emotionKeyboard;
+        
+        [_inputView.TextViewInput becomeFirstResponder];
     }
     return _emotionKeyboard;
 }

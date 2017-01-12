@@ -44,6 +44,37 @@
     return self;
 }
 
+-(instancetype)initWithModel:(Recharge *)model{
+    
+    if (self) {
+        self = [super init];
+        
+        if (model.pay_at==nil) {
+            model.pay_at = @"";
+        }
+        
+        dataInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"amount":model.amount,@"status":model.status,@"id":model.idNumber,@"created_at":model.created_at,@"pay_type":model.pay_type,@"pay_at":model.pay_at,@"nonce_str":model.nonce_str,@"updated_at":model.updated_at,@"prepay_id":model.prepay_id}];
+    }
+    return self;
+    
+}
+
+-(instancetype)initWithPayModel:(Unpaid *)model{
+    
+    if (self) {
+        self = [super init];
+        
+        if (model.pay_at==nil) {
+            model.pay_at = @"";
+        }
+        
+        dataInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"amount":model.price,@"status":model.status,@"id":model.orderID,@"created_at":model.created_at,@"pay_type":model.pay_type,@"pay_at":model.pay_at,@"nonce_str":model.nonce_str,@"updated_at":model.created_at,@"prepay_id":model.prepay_id}];
+    }
+    return self;
+
+    
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];

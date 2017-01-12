@@ -59,13 +59,16 @@
 @property(nonatomic,strong) NSString *preset_lesson_count ;
 @property(nonatomic,strong) NSString *teacher_name ;
 @property(nonatomic,strong) NSString *price ;
+@property(nonatomic,strong) NSString *nonce_str ;
 /* 支付*/
 @property(nonatomic,strong) NSString *appid ;
 @property(nonatomic,strong) NSString *pay_type;
 @property(nonatomic,strong) NSString *timestamp ;
 @property(nonatomic,strong) NSString *orderID ;
 @property(nonatomic,strong) NSString *created_at ;
+@property(nonatomic,strong) NSString *updated_at ;
 @property(nonatomic,strong) NSString *pay_at ;
+@property(nonatomic,strong) NSString *prepay_id ;
 
 
 @end

@@ -222,25 +222,30 @@
     [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
     
     if (model.is_tasting ==YES) {
-        /* 有试听标示*/
+        /* 有试听标示,正在试听中*/
         
-        NSLog(@"%@",model.camera_pull_stream);
-        
-        if (model.camera_pull_stream != nil) {
-            
-            _status.text = @" 试听中 ";
-            _status.backgroundColor = [UIColor orangeColor];
-            
-            
-        }else{
+        if ([model.taste_count integerValue]>0&&[model.taste_count integerValue]<=[model.preset_lesson_count integerValue]) {
             
             _status.text = @" 已试听 ";
+            _state = @"已试听";
             _status.backgroundColor = [UIColor grayColor];
-            
-            [_enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-            _enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-            
+            _canTaste = YES;
+        }else if([model.completed_lesson_count integerValue]<[model.preset_lesson_count integerValue]){
+            _status.text = @" 试听中 ";
+            _state = @"试听中";
+            _status.backgroundColor = [UIColor orangeColor];
+            _canTaste = YES;
+        }else if ([model.completed_lesson_count integerValue]==[model.preset_lesson_count integerValue]){
+            _status.text = @" 已结束 ";
+            _state = @"已结束";
+            _status.backgroundColor = [UIColor lightGrayColor];
+            _canTaste = NO;
         }
+        
+        
+        
+        
+        
         
     }else{
         /* 无试听标示*/
@@ -254,7 +259,7 @@
         
         [_enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         _enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-
+        
         
     }
     
@@ -266,8 +271,8 @@
     
     _presentCount.text = model.completed_lesson_count;
     _totalCount.text = model.preset_lesson_count;
-
-
+    
+    
     
 }
 

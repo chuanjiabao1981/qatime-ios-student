@@ -38,7 +38,8 @@
         /* 课程图*/
         _classImage = [[UIImageView alloc]init];
         [self addSubview:_classImage];
-        _classImage.sd_layout.topSpaceToView(self,0).leftEqualToView(self).rightEqualToView(self).heightRatioToView(self,1.8/5.0f);
+        _classImage.frame = CGRectMake(0, 0, self.width_sd, self.height_sd*1.8/5.0f);
+        
         [_classImage setImage:[UIImage imageNamed:@"school"]];
         
         
@@ -108,26 +109,38 @@
         UIView *line1 = [[UIView alloc]init];
         [self addSubview:line1];
         line1.sd_layout.leftSpaceToView(self,0).rightSpaceToView(self,0).topSpaceToView(saleNum,5).heightIs(1.f);
+        [line1 updateLayout];
         
-        
-
         /* 滑动控制器*/
         _segmentControl = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"辅导概况",@"教师资料",@"课程安排"]];
         [self addSubview:_segmentControl];
-        _segmentControl.sd_layout.leftEqualToView(self).rightEqualToView(self).topSpaceToView(line1,0).heightRatioToView(self,0.05);
+//        _segmentControl.sd_layout
+//        .leftEqualToView(self)
+//        .rightEqualToView(self)
+//        .topSpaceToView(line1,0)
+//        .heightRatioToView(self,0.05);
+        
+        _segmentControl.frame = CGRectMake(0, line1.origin_sd.y+line1.height_sd, self.width_sd, self.height_sd*0.05);
         _segmentControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
         _segmentControl.borderType = HMSegmentedControlTypeText;
         _segmentControl.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
         _segmentControl.borderType = HMSegmentedControlBorderTypeTop | HMSegmentedControlBorderTypeBottom;
         _segmentControl.borderWidth = 0.6;
         _segmentControl.borderColor = TITLECOLOR;
-       
+        [_segmentControl updateLayout];
         
         /* 大滑动页面*/
         _scrollView = [[UIScrollView alloc]init];
         [self addSubview: _scrollView ];
-        _scrollView.sd_layout.leftEqualToView(self).rightEqualToView(self).topSpaceToView(_segmentControl,0).heightRatioToView(self,1);
-        _scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame)*3, CGRectGetHeight(self.frame));
+        _scrollView.sd_layout
+        .leftEqualToView(self)
+        .rightEqualToView(self)
+        .topSpaceToView(_segmentControl,0)
+        .bottomEqualToView(self);
+//        _scrollView.frame = CGRectMake(0, _segmentControl.origin_sd.y+_segmentControl.height_sd, self.width_sd, self.height_sd-_segmentControl.origin_sd.y-_segmentControl.height_sd);
+        
+        [_scrollView updateLayout];
+        _scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame)*3,_scrollView.height_sd );
        _scrollView.pagingEnabled = YES;
         _scrollView.showsHorizontalScrollIndicator = NO;
         [_scrollView scrollRectToVisible:CGRectMake(CGRectGetWidth(self.frame), 0, CGRectGetWidth(self.frame), 200) animated:NO];
@@ -141,16 +154,20 @@
         
         /* 分出三个view，放不同的label，用作布局参考*/
         
-        _view1 =[[UIView alloc]init];
+        _view1 =[[UIScrollView alloc]init];
+        
         [_scrollView addSubview:_view1];
+        
         _view1.sd_layout.leftSpaceToView(_scrollView,0).rightSpaceToView(_scrollView,0).topEqualToView(_scrollView).bottomEqualToView(_scrollView);
         _view1.backgroundColor = [UIColor whiteColor];
+        _view1.contentSize = CGSizeMake(self.width_sd, 500);
         
-        _view2 =[[UIView alloc]init];
+        _view2 =[[UIScrollView alloc]init];
         [_scrollView addSubview:_view2];
         _view2.sd_layout.leftSpaceToView(_view1,0).widthIs(SCREENWIDTH).topEqualToView(_scrollView).bottomEqualToView(_scrollView);
         _view2.backgroundColor = [UIColor whiteColor];
         
+        _view2.contentSize = CGSizeMake(self.width_sd,500);
         
         _view3 =[[UIView alloc]init];
         [_scrollView addSubview:_view3];

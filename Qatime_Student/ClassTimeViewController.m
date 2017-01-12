@@ -141,7 +141,7 @@
     }else{
         _notLoginView.hidden = NO;
         
-        _navigationBar.rightButton.hidden = YES;
+//        _navigationBar.rightButton.hidden = YES;
         
     }
     
@@ -584,7 +584,7 @@
             
             if (_unclosedArr.count!=0) {
                 
-                classID  = [NSString stringWithFormat:@"%@",[_unclosedArr[indexPath.row] valueForKeyPath:@"course_id"]];
+                classID  = [NSString stringWithFormat:@"%@",[_unclosedArr[indexPath.row] valueForKeyPath:@"classID"]];
                 
             }
             
@@ -593,7 +593,7 @@
             
             if (_unclosedArr.count!=0) {
                 
-                classID  = [NSString stringWithFormat:@"%@",[_unclosedArr[indexPath.row] valueForKeyPath:@"course_id"]];
+                classID  = [NSString stringWithFormat:@"%@",[_closedArr[indexPath.row] valueForKeyPath:@"classID"]];
                 
             }
             
@@ -645,28 +645,27 @@
 
 - (void)calenderViews{
     
-    
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
         if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
             
             AllClassViewController *allClassVC = [[AllClassViewController alloc]init];
             [self.navigationController pushViewController:allClassVC animated:YES];
         }else{
-            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录后才能查看!" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-               
-                if (buttonIndex!=0) {
+//            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录后才能查看!" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+//               
+//                if (buttonIndex!=0) {
                     [self loginAgain];
-                }
-            }];
+//                }
+//            }];
             
         }
     }else{
-        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录后才能查看!" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-            
-            if (buttonIndex!=0) {
+//        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录后才能查看!" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+//            
+//            if (buttonIndex!=0) {
                 [self loginAgain];
-            }
-        }];
+//            }
+//        }];
 
     }
     

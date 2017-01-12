@@ -138,7 +138,7 @@
     
     [[[NIMSDK sharedSDK]loginManager]addDelegate:self];
     
-    NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"];
+    NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]valueForKey:@"chat_account"];
     
     [[NIMSDK sharedSDK].loginManager autoLogin:chatDic[@"accid"] token:chatDic[@"token"]];
     
@@ -202,6 +202,10 @@
                         info.classID = tutorium[@"id"];
                         
                        info.notify = [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.classID];
+                        
+                        NSLog(@"%d",info.notify);
+                        
+                       info.notify =  [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.chat_team_id];
                         
                         [_myClassArray addObject:info];
                         
@@ -353,13 +357,13 @@
             if (_chatListArr.count>indexPath.row) {
                 cell.model = _chatListArr[indexPath.row];
                 
-                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-                
                 if (cell.noticeOn==YES) {
                     cell.closeNotice.hidden = YES;
-                }else{
+                }else if(cell.noticeOn==NO){
                     cell.closeNotice.hidden = NO;
                 }
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+                
                 
                 UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(resignNotice:)];
                 
@@ -459,11 +463,9 @@
     
 }
 
-/* 取消某一聊天组的推送信息*/
+/* 取消/开启某一聊天组的推送信息*/
 
 - (void)resignNotice:(UILongPressGestureRecognizer *)sender{
-    
-    
     
     if(sender.state == UIGestureRecognizerStateBegan){
         
@@ -471,29 +473,53 @@
         NSIndexPath * indexPath = [_noticeIndexView.chatListTableView indexPathForRowAtPoint:point];
         if(indexPath == nil) return ;
         NSLog(@"%@", indexPath);
-        [UIAlertController showActionSheetInViewController:self withTitle:nil message:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"不再提醒"] popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
+        
+        /* 取消该聊天群的推送信息*/
+        ChatListTableViewCell *cell = [_noticeIndexView.chatListTableView cellForRowAtIndexPath:indexPath];
+        if (cell.noticeOn == YES) {
             
-        } tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-            
-            if (buttonIndex!=0) {
-                /* 取消该聊天群的推送信息*/
-                ChatListTableViewCell *cell = [_noticeIndexView.chatListTableView cellForRowAtIndexPath:indexPath];
+            [UIAlertController showActionSheetInViewController:self withTitle:nil message:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"不再提醒"] popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
                 
-                [[[NIMSDK sharedSDK]teamManager]updateNotifyState:NO inTeam:cell.model.tutorium.chat_team_id completion:^(NSError * _Nullable error) {
-                   
-                    if (error == nil) {
-                        cell.closeNotice.hidden = NO;
-                        cell.noticeOn = NO;
-                    }
+            } tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                
+                if (buttonIndex!=0) {
                     
-                }];
+                    [[[NIMSDK sharedSDK]teamManager]updateNotifyState:NO inTeam:cell.model.tutorium.chat_team_id completion:^(NSError * _Nullable error) {
+                        
+                        if (error == nil) {
+                            cell.closeNotice.hidden = NO;
+                            cell.noticeOn = NO;
+                            cell.model.tutorium.notify = NO;
+                        }
+                        
+                    }];
+                    
+                }
                 
+            }];
+        }else if (cell.noticeOn == NO){
+            [UIAlertController showActionSheetInViewController:self withTitle:nil message:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"恢复提醒"] popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
                 
+            } tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                 
+                if (buttonIndex!=0) {
+                    
+                    [[[NIMSDK sharedSDK]teamManager]updateNotifyState:YES inTeam:cell.model.tutorium.chat_team_id completion:^(NSError * _Nullable error) {
+                        
+                        if (error == nil) {
+                            cell.closeNotice.hidden = YES;
+                            cell.noticeOn = YES;
+                            cell.model.tutorium.notify = YES;
+                        }
+                        
+                    }];
+                    
+                }
                 
-            }
-            
-        }];
+            }];
+
+        }
+        
         
     }
     

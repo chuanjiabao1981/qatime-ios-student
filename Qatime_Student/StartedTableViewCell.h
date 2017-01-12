@@ -37,6 +37,9 @@
 /* 状态*/
 @property(nonatomic,strong) UILabel *status ;
 
+/* 状态属性*/
+@property(nonatomic,strong) NSString  *state ;
+
 
 /* 外框content*/
 @property(nonatomic,strong) UIView *content;
@@ -45,6 +48,9 @@
 /* 进入按钮*/
 
 @property(nonatomic,strong) UIButton *enterButton ;
+
+/* 是否可以进入试听*/
+@property(nonatomic,assign) BOOL canTaste ;
 
 /* 已进行课时*/
 @property(nonatomic,strong) UILabel *presentCount ;

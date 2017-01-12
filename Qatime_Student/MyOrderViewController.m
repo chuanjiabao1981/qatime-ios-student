@@ -28,6 +28,7 @@
 #import "NSString+TimeStamp.h"
 
 #import "OrderInfoViewController.h"
+#import "ConfirmChargeViewController.h"
 
 @interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
@@ -313,12 +314,19 @@
                     
                     mod.status =[unpaidArr[i][@"status"]isEqual:[NSNull null]]?@"":unpaidArr[i][@"status"];
                     mod.pay_type = [unpaidArr[i][@"pay_type"]isEqual:[NSNull null]]?@"":unpaidArr[i][@"pay_type"];
+                    mod.nonce_str =[unpaidArr[i][@"nonce_str"]isEqual:[NSNull null]]?@"":unpaidArr[i][@"nonce_str"];
+                    mod.created_at =[unpaidArr[i][@"created_at"]isEqual:[NSNull null]]?@"":unpaidArr[i][@"created_at"];
+                    mod.updated_at = [unpaidArr[i][@"updated_at"]isEqual:[NSNull null]]?@"":unpaidArr[i][@"updated_at"];
+                    mod.pay_at =[unpaidArr[i][@"pay_at"]isEqual:[NSNull null]]?@"":unpaidArr[i][@"pay_at"];
+                                                                                         
+                    
                     if (![unpaidArr[i][@"app_pay_params"]isEqual:[NSNull null]]) {
                         
                         if (unpaidArr[i][@"app_pay_params"][@"appid"]) {
                             
                             mod.appid = unpaidArr[i][@"app_pay_params"][@"appid"];
                             mod.timestamp = unpaidArr[i][@"app_pay_params"][@"timestamp"];
+                            mod.prepay_id = unpaidArr[i][@"prepay_id"];
                         }
                     }else{
                         mod.appid =@"";
@@ -592,6 +600,7 @@
                 cell.leftButton.tag = 100+indexPath.row;
                 cell.rightButton.tag = 200+indexPath.row;
                 [cell.leftButton addTarget:self action:@selector(cancelOrder:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.rightButton addTarget:self action:@selector(payOrder:) forControlEvents:UIControlEventTouchUpInside];
                 
                 [cell.leftButton setTitle:@"取消订单" forState:UIControlStateNormal];
             }
@@ -749,10 +758,11 @@
                                                                        @"lessonTime":cell.unpaidModel.preset_lesson_count,
                                                                        @"teacherName":cell.unpaidModel.teacher_name,
                                                                        @"creatTime":cell.unpaidModel.created_at==nil?@"无":[cell.unpaidModel.created_at timeStampToDate],
-                                                                       @"payTime":cell.unpaidModel.pay_at==nil?@"无":[cell.unpaidModel.pay_at timeStampToDate],
-                                                                       @"payType":cell.unpaidModel.pay_type,
+                                                                       @"payTime":cell.unpaidModel.pay_at==nil?@"无":cell.unpaidModel.pay_at,
+                                                                       @"payType":cell.unpaidModel.pay_type==nil?@"":cell.unpaidModel.pay_type,
                                                                        @"amount":cell.unpaidModel.price,
-                                                                       @"status":cell.unpaidModel.status
+                                                                       @"status":cell.unpaidModel.status,
+                                                                       @"orderNumber":cell.unpaidModel.orderID
                                                                        }];
             
             
@@ -778,7 +788,8 @@
                                                                                 @"payTime":cell.paidModel.pay_at==nil?@"无":[cell.paidModel.pay_at timeStampToDate],
                                                                                 @"payType":cell.paidModel.pay_type,
                                                                                 @"amount":cell.paidModel.price,
-                                                                                @"status":cell.paidModel.status
+                                                                                @"status":cell.paidModel.status,
+                                                                                @"orderNumber":cell.paidModel.orderID
                                                                                 }];
             
             
@@ -804,7 +815,8 @@
                                                                                 @"payTime":cell.canceldModel.pay_at==nil?@"无":[cell.canceldModel.pay_at timeStampToDate],
                                                                                 @"payType":cell.canceldModel.pay_type,
                                                                                 @"amount":cell.canceldModel.price,
-                                                                                @"status":cell.canceldModel.status
+                                                                                @"status":cell.canceldModel.status,
+                                                                                @"orderNumber":cell.canceldModel.orderID
                                                                                 }];
             
             
@@ -823,7 +835,35 @@
 }
 
 
+/* 订单付款功能*/
+- (void)payOrder:(UIButton *)sender{
+    
+    if (sender.tag>=200&&sender.tag<300) {
+        /* 取消订单的左边按钮->取消订单*/
+        
+        Unpaid *mod =_unpaidArr[sender.tag-200];
 
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否确定付款?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+        }] ;
+        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            ConfirmChargeViewController *confirm = [[ConfirmChargeViewController alloc]initWithPayModel:mod];
+            [self.navigationController pushViewController:confirm animated:YES];
+        }];
+            
+        [alert addAction:cancel];
+        [alert addAction:sure];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        
+    }
+
+}
+
+/* 付款请求*/
 
 /* 再次购买功能*/
 - (void)buyAgain:(UIButton *)sender{
@@ -912,7 +952,7 @@
 
 - (void)cancelOrder:(UIButton *)sender{
     
-    [self loadingHUDStartLoadingWithTitle:@"正在删除订单"];
+//    [self loadingHUDStartLoadingWithTitle:@"正在订单"];
     
     __block NSString *oderNumber = [NSString string];
     
@@ -982,7 +1022,7 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 数据请求成功*/
-            [self loadingHUDStopLoadingWithTitle:@"删除成功!"];
+            [self loadingHUDStopLoadingWithTitle:@"取消订单成功!"];
             
             if (tags>=100&&tags<200) {
                 _unpaidArr = @[].mutableCopy;
@@ -998,8 +1038,6 @@
                 [self requestPaid];
                 
             }
-            
-            
             
             
         }else if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:0]]){

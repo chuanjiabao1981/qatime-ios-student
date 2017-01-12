@@ -163,6 +163,8 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogOut) name:@"userLogOut" object:nil];
     /* 用户登录*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeRootViewConroller:) name:@"UserLogin" object:nil];
+    /* 用户在应用程序里登录*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLoginAgain:) name:@"UserLoginAgain" object:nil];
     /* 直接进入而没有登录*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeRootViewConroller:) name:@"EnterWithoutLogin" object:nil];
     /* 监听登录方式:账号密码登录(Normal)或是微信登录(wechat)*/
@@ -440,6 +442,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
         [_window setRootViewController:_viewController];
     }];
+    
+}
+
+/* 用户在应用程序内登录*/
+- (void)userLoginAgain:(NSNotification *)notification{
     
     
     
