@@ -12,6 +12,7 @@
 #import "UIViewController+HUD.h"
 #import "WXApi.h"
 #import "CheckChargeViewController.h"
+#import "DCPaymentView.h"
 
 
 @interface PayConfirmViewController (){
@@ -98,8 +99,6 @@
     /* 注册微信支付成功或失败的通知*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(CheckPayStatus) name:@"ChargeSucess" object:nil];
     
-    
-    
 }
 #pragma mark- 支付订单
 - (void)payForOrder{
@@ -161,6 +160,13 @@
 
 #pragma mark- 余额支付
 - (void)payWithBalance{
+    
+    [DCPaymentView showPayAlertWithTitle:@"支付订单" andDetail:@"请输入支付密码" andAmount:[_dataDic[@"amount"]  floatValue] completeHandle:^(NSString *inputPwd) {
+        /* 输入完成*/
+        
+        
+        
+    }];
     
     
 }

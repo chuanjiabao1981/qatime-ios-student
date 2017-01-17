@@ -126,7 +126,7 @@
         sender.backgroundColor = [UIColor colorWithRed:0.84 green:0.33 blue:0.6 alpha:1.00];
         [sender setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];
         sender.selected = YES;
-        if (_bindingView.phoneNumber.text.length>0&&_bindingView.checkCode.text.length>0&&_bindingView.userPassword.text.length>0&&_bindingView.userPasswordCompare.text.length>0&&_bindingView.chosenButton.selected==YES&&![_bindingView.grade.titleLabel.text isEqualToString:@"选择所在年级"]) {
+        if (_bindingView.phoneNumber.text.length>0&&_bindingView.checkCode.text.length>0&&_bindingView.userPassword.text.length>0&&_bindingView.userPasswordCompare.text.length>0&&![_bindingView.grade.titleLabel.text isEqualToString:@"选择所在年级"]) {
             _bindingView.nextStepButton.enabled = YES;
             [_bindingView.nextStepButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
             _bindingView.nextStepButton.layer.borderColor = BUTTONRED.CGColor;
@@ -137,21 +137,18 @@
             
         }
 
-        
-        
-    }else{
-        
+    }else if (sender.selected == YES){
         sender.layer.borderColor =[UIColor blackColor].CGColor;
         sender.layer.borderWidth=1.0f;
         [sender setImage:nil forState:UIControlStateNormal];
         sender.backgroundColor = [UIColor clearColor];
         sender.selected= NO;
-        if (_bindingView.phoneNumber.text.length>0&&_bindingView.checkCode.text.length>0&&_bindingView.userPassword.text.length>0&&_bindingView.userPasswordCompare.text.length>0&&_bindingView.chosenButton.selected==YES) {
-            _bindingView.nextStepButton.enabled = YES;
-            [_bindingView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            _bindingView.nextStepButton.layer.borderColor = BUTTONRED.CGColor;
-        }else{
+        if (_bindingView.phoneNumber.text.length>0&&_bindingView.checkCode.text.length>0&&_bindingView.userPassword.text.length>0&&_bindingView.userPasswordCompare.text.length>0) {
             _bindingView.nextStepButton.enabled = NO;
+            [_bindingView.nextStepButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            _bindingView.nextStepButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        }else{
+            _bindingView.nextStepButton.enabled = YES;
             [_bindingView.nextStepButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
             _bindingView.nextStepButton.layer.borderColor = BUTTONRED.CGColor;
             
@@ -227,6 +224,8 @@
                                         @"openid":_openID
                                         };
             
+            [self loadingHUDStartLoadingWithTitle:@"绑定中"];
+            
             /* 验证码 请求状态*/
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -289,6 +288,8 @@
                     }
                     else if (![[dataDic allKeys]containsObject:@"remember_token"]){
                         
+                        [self loadingHUDStopLoadingWithTitle:nil];
+                        
                         [self showAlertWith:@"验证失败！请仔细填写信息!"];
                         
                     }
@@ -297,7 +298,7 @@
                     if (dataDic) {
                         
                         if ([[[dataDic valueForKey:@"error"]valueForKey:@"code"] isEqualToNumber:@3002]) {
-                            
+                            [self loadingHUDStopLoadingWithTitle:nil];
                             [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"该手机已注册,请登录后进入个人中心>安全设置进行绑定。" cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@[@"新号码注册",@"登录"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                                 
                                 if (buttonIndex ==2 ) {
@@ -388,7 +389,6 @@
     //    虚拟运营商:170
     
     NSString *MOBILE = @"^1(1[0-9]|3[0-9]|4[57]|5[0-35-9]|8[0-9]|7[06-8])\\d{8}$";
-    
     NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
     
     return [regextestmobile evaluateWithObject:mobileNum];
@@ -399,7 +399,7 @@
 #pragma 正则匹配用户密码 6 - 16 位数字和字母组合
 -(BOOL)checkPassWord:(NSString *)password{
     //6-16位数字和字母组成
-    NSString *regex = @"^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
+    NSString *regex = @"^[A-Za-z0-9]{6,16}$";
     NSPredicate *   pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
     if ([pred evaluateWithObject:password]) {
         return YES ;

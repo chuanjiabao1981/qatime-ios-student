@@ -222,7 +222,7 @@
 #pragma mark- 找回密码页面
 - (void)findPassword{
     
-    FindPasswordViewController *find = [[FindPasswordViewController alloc]initWithFindPassword];
+    FindPasswordViewController *find = [[FindPasswordViewController alloc]init];
     [self.navigationController pushViewController:find animated:YES];
     
     

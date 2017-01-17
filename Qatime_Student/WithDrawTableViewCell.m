@@ -145,10 +145,13 @@
     
     
     if ([model.pay_type isEqualToString:@"weixin"]) {
-        _mode.text = @"微信";
+        _mode.text = @"微信支付";
     }else if([model.pay_type isEqualToString:@"alipay"]){
         
-        _mode.text = @"支付宝";
+        _mode.text = @"支付宝支付";
+    }else if (![model.pay_type isEqualToString:@"alipay"]&&![model.pay_type isEqualToString:@"weixin"]){
+        _mode.text = @"线下支付";
+        
     }
     
     //时间戳

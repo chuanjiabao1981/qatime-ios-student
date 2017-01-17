@@ -10,6 +10,7 @@
 /* 在线人员的页面*/
 #import <UIKit/UIKit.h>
 
+
 @interface MembersListView : UIView
 
 @property(nonatomic,strong) UITableView *memberListTableView ;

@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "NELivePlayerViewController.h"
+#import "LivePlayerViewController.h"
 #import "AppDelegate.h"
 
 
@@ -118,14 +118,19 @@
     
     _appDelegate = [[AppDelegate alloc]init];
     
-    UIView *line = [[UIView alloc]init];
-    [self.view addSubview:line];
-    line.sd_layout
-    .leftEqualToView(self.view)
-    .rightEqualToView(self.view)
-    .bottomSpaceToView(self.tabBar,0)
-    .heightIs(1);
-    line.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.00];
+//    UIView *line = [[UIView alloc]init];
+//    [self.view addSubview:line];
+//    line.sd_layout
+//    .leftEqualToView(self.view)
+//    .rightEqualToView(self.view)
+//    .bottomSpaceToView(self.tabBar,0)
+//    .heightIs(1);
+//    line.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.00];
+    
+    UIImageView *image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"tab_background"]];
+    image.frame = CGRectMake(0, 0, self.view.width_sd, 49) ;
+    [self.tabBar.backgroundView addSubview:image];
+    
     
 }
     
@@ -144,7 +149,7 @@
 - (BOOL)shouldAutorotate{
     
     UIViewController *nev = (UIViewController *)self.selectedViewController.childViewControllers.lastObject;
-    if ([nev isKindOfClass:[NELivePlayerViewController class]]) {
+    if ([nev isKindOfClass:[LivePlayerViewController class]]) {
         return YES;
     }
     
@@ -155,7 +160,7 @@
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations{
     
     UIViewController *nev = (UIViewController *)self.selectedViewController.childViewControllers.lastObject;
-    if ([nev isKindOfClass:[NELivePlayerViewController class]]) {
+    if ([nev isKindOfClass:[LivePlayerViewController class]]) {
         
         return UIInterfaceOrientationMaskAllButUpsideDown;
     }
@@ -165,7 +170,7 @@
 // 页面展示的时候默认屏幕方向（当前ViewController必须是通过模态ViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
     UIViewController *nev = (UIViewController *)self.selectedViewController.childViewControllers.lastObject;
-    if ([nev isKindOfClass:[NELivePlayerViewController class]]) {
+    if ([nev isKindOfClass:[LivePlayerViewController class]]) {
         
         return UIInterfaceOrientationLandscapeRight;
     }

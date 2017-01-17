@@ -21,14 +21,10 @@
         
         [self setupViews];
         
-       
-        
-        
+//        _canReplay = NO;
         
     }
-    
-    
-    
+        
     return self;
     
     
@@ -41,6 +37,7 @@
     
     /* 原点布局*/
     _circle = [[UIImageView alloc]init];
+    [_circle setImage:[UIImage imageNamed:@"redDot"]];
     
 //    [self.contentView addSubview:_circle];
 //    _circle.sd_layout.centerYEqualToView(self.contentView).leftSpaceToView(self.contentView,10).widthIs(20).heightEqualToWidth();
@@ -63,31 +60,34 @@
     
     /* 课程状态*/
     _status = [[UILabel alloc]init];
+    _status.textColor = TITLECOLOR;
+    
     _class_status = @"".mutableCopy;
     
     
     
+    /* 回放次数*/
+    _replay = [[UIButton alloc]init];
+    [_replay setTitleColor:BUTTONRED forState:UIControlStateNormal];
+    [_replay.titleLabel setFont:[UIFont systemFontOfSize:14*ScrenScale]];
+    
+    
+    
     /* 全部进行布局*/
-    [self.contentView sd_addSubviews:@[_circle,_className,_classDate,_classTime,_status]];
+    [self.contentView sd_addSubviews:@[_className,_circle,_classDate,_classTime,_status,_replay]];
+    
+    _className.sd_layout
+    .leftSpaceToView(self.contentView,30)
+    .topSpaceToView(self.contentView,10)
+    .rightSpaceToView(self.contentView,10)
+    .autoHeightRatio(0);
+    _className.numberOfLines = 0;
     
     _circle.sd_layout
     .widthIs(10)
     .heightIs(10)
-    .centerYEqualToView(self.contentView)
+    .centerYEqualToView(_className)
     .leftSpaceToView(self.contentView,10);
-    
-    _status.sd_layout
-    .rightSpaceToView(self.contentView,10)
-    .centerYEqualToView(self.contentView)
-    .autoHeightRatio(0);
-    [_status setSingleLineAutoResizeWithMaxWidth:100];
-    
-    _className.sd_layout
-    .leftSpaceToView(_circle,10)
-    .topSpaceToView(self.contentView,10)
-    .rightSpaceToView(_status,10)
-    .autoHeightRatio(0);
-    _className.numberOfLines = 0;
     
     _classDate.sd_layout
     .leftEqualToView(_className)
@@ -101,10 +101,22 @@
     .autoHeightRatio(0);
     [_classTime setSingleLineAutoResizeWithMaxWidth:300];
     
+    _status.sd_layout
+    .leftEqualToView(_className)
+    .topSpaceToView(_classDate,10)
+    .autoHeightRatio(0);
+    [_status setSingleLineAutoResizeWithMaxWidth:100];
+    
+    _replay.sd_layout
+    .centerYEqualToView(_status)
+    .rightEqualToView(_className)
+    .leftSpaceToView(_status,0)
+    .autoHeightRatio(0);
+    _replay.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     
     
     
-    [self setupAutoHeightWithBottomView:_classTime bottomMargin:10];
+    [self setupAutoHeightWithBottomView:_status bottomMargin:10];
     
     
 }
@@ -118,6 +130,7 @@
     _classDate .text = _model.class_date;
     _classTime .text = _model.live_time;
 //    _status.text = _model.status;
+    
     
     /* 已开课的状态*/
     if ([_model.status isEqualToString:@"teaching"]||[_model.status isEqualToString:@"pause"]||[ _model.status isEqualToString:@"closed"]) {
@@ -141,26 +154,59 @@
         _class_status = [NSString stringWithFormat:@"招生中"];
         
     }
-
     
+//    if (model.replayable == YES) {
+//        
+//        _canReplay = YES;
+//    }else{
+//        _canReplay = NO;
+//    }
     
+    [_replay setTitle:[NSString stringWithFormat:@"还可回放%@次›",_model.left_replay_times] forState:UIControlStateNormal];
     
 }
 
 - (void)setClassModel:(Classes *)classModel{
     
-    
     _classModel = classModel;
-    
-    _className.text = _classModel.name;
-    _classDate .text = _classModel.class_date;
-    _classTime .text = _classModel.live_time;
-    _status.text = _classModel.status;
+    _className.text = classModel.name;
+    _classDate .text = classModel.class_date;
+    _classTime .text = classModel.live_time;
+    /* 已开课的状态*/
+    if ([classModel.status isEqualToString:@"teaching"]||[classModel.status isEqualToString:@"pause"]) {
+        _status.text =@"已开课";
+        _class_status = [NSString stringWithFormat:@"已开课"];
+    }else if ([classModel.status isEqualToString:@"closed"]){
+        _status.text = @"已直播";
+        _class_status = [NSString stringWithFormat:@"已直播"];
+    }else if ([classModel.status isEqualToString:@"missed"]){
+        _status.text = @"待补课";
+        _class_status = [NSString stringWithFormat:@"待补课"];
+    }else if ([classModel.status isEqualToString:@"finished"]||[classModel.status isEqualToString:@"billing"]||[_classModel.status isEqualToString:@"completed"]){
+        _status.text = @"已结束";
+        
+        _class_status = [NSString stringWithFormat:@"已结束"];
+    }else if ([classModel.status isEqualToString:@"public"]){
+        _status.text = @"招生中";
+        _class_status = [NSString stringWithFormat:@"招生中"];
+    }else if ([classModel.status isEqualToString:@"teaching"]||[classModel.status isEqualToString:@"paused"]){
+        _status.text = @"直播中";
+        _class_status = [NSString stringWithFormat:@"直播中"];
 
+    }
+    
+//    if (classModel.replayable == YES) {
+//        
+//        _canReplay = YES;
+//    }else{
+//        _canReplay = NO;
+//    }
+    
+    
+    [_replay setTitle:[NSString stringWithFormat:@"还可回放%@次›",classModel.left_replay_times] forState:UIControlStateNormal];
+    
     
 }
-
-
 
 
 

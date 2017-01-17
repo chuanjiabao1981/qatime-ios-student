@@ -16,7 +16,8 @@
 #import "UIAlertController+Blocks.h"
 
 
-@interface ClassSettingViewController ()<UITableViewDelegate,UITableViewDataSource>{
+
+@interface ClassSettingViewController ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>{
     
      NavigationBar *_navigtionBar;
     
@@ -28,6 +29,19 @@
     
     /* 是否修改了设置*/
     BOOL changeSettings;
+    
+    /* 时间选择器*/
+    
+    UIView *_pickerBackGround;
+    UIPickerView *_timePicker;
+    
+    /* 时间数组*/
+    NSArray *_hours;
+    NSArray *_minutes;
+    
+    /* 灰色背景*/
+    UIVisualEffectView *_effect ;
+
 }
 @end
 
@@ -54,7 +68,8 @@
         
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
-
+    
+   
     
     /* 向服务器请求消息提醒设置*/
     [self requestNoticeSetting];
@@ -88,6 +103,7 @@
         }else{
             /* 请求数据失败*/
             [self loadingHUDStopLoadingWithTitle:@"加载失败!"];
+            
             [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
             
         }
@@ -110,8 +126,6 @@
         _.bounces=NO;
         _;
     });
-    
-   
     
 }
 
@@ -138,9 +152,9 @@
         }
         
         /* 修改成功*/
-        [self loadingHUDStopLoadingWithTitle:@"保存失败!"];
-        
-        [self performSelector:@selector(exit) withObject:nil afterDelay:1];
+//        [self loadingHUDStopLoadingWithTitle:@"保存失败!"];
+//        
+//        [self performSelector:@selector(exit) withObject:nil afterDelay:1];
         
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -235,24 +249,144 @@
 /* 选择时间段*/
 - (void)chooseTime:(UIButton *)sender{
     
-    HcdDateTimePickerView *timePicker = [[HcdDateTimePickerView alloc]initWithDatePickerMode:DatePickerHourMinuteMode defaultDateTime:[NSDate date]];
+    _effect = [[UIVisualEffectView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd)];
+    _effect.backgroundColor = [UIColor blackColor];
+    _effect.alpha = 0;
     
-    [self.view addSubview:timePicker];
-    [timePicker showHcdDateTimePicker];
-    timePicker.clickedOkBtn = ^(NSString *dateTimeStr){
+//    UIBlurEffect *effec=[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+//    _effect.effect = effec;
+    UITapGestureRecognizer *effectTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(resign)];
+    [_effect addGestureRecognizer:effectTap];
+    
+    [self.view addSubview:_effect];
+    
+    _hours = @[@"1小时",@"2小时",@"3小时",@"4小时",@"5小时"];
+    _minutes = @[@"10分钟",@"15分钟",@"20分钟",@"25分钟",@"30分钟",@"35分钟",@"40分钟",@"50分钟"];
+    
+    _pickerBackGround = [[UIView alloc]init];
+    _pickerBackGround.frame = CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd/5*2);
+    _pickerBackGround.backgroundColor = BUTTONRED;
+    [self.view addSubview:_pickerBackGround];
+   
+    _timePicker = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 40, _pickerBackGround.width_sd, _pickerBackGround.height_sd-40)];
+   
+    [_pickerBackGround addSubview:_timePicker];
+    _timePicker.backgroundColor= [UIColor whiteColor];
+    _timePicker.delegate = self;
+    _timePicker.dataSource = self;
+    
+//    UIView *func = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 40)];
+//    func.backgroundColor = [UIColor blueColor];
+//    [_timePicker addSubview:func];
+    
+    UIButton *sure = [[UIButton alloc]init];
+    sure.userInteractionEnabled = YES;
+    [_pickerBackGround addSubview:sure];
+    sure.sd_layout
+    .topSpaceToView(_pickerBackGround,5)
+    .rightSpaceToView(_pickerBackGround,5)
+    .heightIs(40)
+    .widthIs(80);
+    
+    
+    [sure updateLayout];
+    [sure setTitle:@"确定" forState:UIControlStateNormal];
+    [sure setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    sure.enabled = YES;
+    
+    
+    [UIView animateWithDuration:0.3 animations:^{
         
-        [sender setTitle:[NSString stringWithFormat:@"%@小时%@分钟",[dateTimeStr substringWithRange:NSMakeRange(0, 2)],[dateTimeStr substringWithRange:NSMakeRange(3, 2)]] forState:UIControlStateNormal];
+        _effect.alpha = 0.3;
+        _pickerBackGround.frame =CGRectMake(0, self.view.height_sd/5*3, self.view.width_sd, self.view.height_sd/5*2);
+        //        func.frame =CGRectMake(0, self.view.height_sd/5*3-30, self.view.width_sd, 40);
+    
         
-        [_settingDic setValue:[dateTimeStr substringWithRange:NSMakeRange(0, 2)] forKey:@"before_hours"];
+    }];
+    
+    [sure addTarget:self action:@selector(choseTime) forControlEvents:UIControlEventTouchUpInside];
+
+    
+}
+
+/* 选择时间完成后确认*/
+- (void)choseTime{
+    
+    [UIView animateWithDuration:0.3 animations:^{
+       _effect.alpha = 0;
+        _pickerBackGround.frame = CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd/5*2);
         
-        [_settingDic setValue:[dateTimeStr substringWithRange:NSMakeRange(3, 2)] forKey:@"before_minutes"];
-        changeSettings =YES;
         
-    } ;
+    }];
+}
+
+#pragma mark- pickerview datasource
+// returns the number of 'columns' to display.
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    
+    return 2;
+    
+}
+
+// returns the # of rows in each component..
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+    
+    NSInteger rows = 0;
+    switch (component) {
+        case 0:
+            rows =  _hours.count;
+            break;
+            
+        case 1:
+            rows = _minutes.count;
+            break;
+    }
+    
+    return rows;
+}
+
+#pragma mark- pickerview delegate
+- (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
+    
+    NSString *title = nil;
+    if (component == 0){
+        title = [NSString stringWithFormat:@"%@", _hours[row]];
+        
+    }
+    
+    if (component == 1){
+        title = [NSString stringWithFormat:@"%@",_minutes[row]];
+    }
+   
+    return title;
     
     
 }
 
+/* 选择器确定选择*/
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
+    
+    ClassNoticeTimeSettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    
+    NSMutableString *str =[NSMutableString stringWithFormat:@"%@",cell.timeButton.titleLabel.text];
+    
+    if (component==0) {
+        [str replaceCharactersInRange:NSMakeRange(0, 3) withString:_hours[row]];
+        [cell.timeButton setTitle:str forState:UIControlStateNormal];
+        
+        [_settingDic setValue:[_hours[row] substringWithRange:NSMakeRange(0, 1)] forKey:@"before_hours"];
+        
+        
+    }else if (component==1) {
+        
+        [str replaceCharactersInRange:NSMakeRange(3, 4) withString:_minutes[row]];
+        [cell.timeButton setTitle:str forState:UIControlStateNormal];
+        [_settingDic setValue:[_minutes[row] substringWithRange:NSMakeRange(0, 2)] forKey:@"before_minutes"];
+    }
+    
+    
+    
+}
 
 /* 设置消息提醒*/
 - (void)turnNoticeStatus:(UIButton *)sender{
@@ -322,22 +456,8 @@
 
 - (void)returnLastPage{
     
-    if (changeSettings == YES) {
-        
-        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否保存设置?" cancelButtonTitle:@"不保存" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-            if (buttonIndex==0) {
-                [self exit];
-            }else{
-               /* 保存设置*/
-                [self saveSettings];
-            }
-            
-        }];
-        
-    }else{
-        [self exit];
-    }
-    
+    /* 保存设置*/
+    [self saveSettings];
     
 }
 
@@ -345,6 +465,28 @@
     [self.navigationController popViewControllerAnimated: YES];
     [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
 
+}
+
+- (void)resign{
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        _effect.alpha = 0;
+        _pickerBackGround.frame = CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd/5*2);
+    }];
+
+    
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
+    
+    
+    [UIView animateWithDuration:0.3 animations:^{
+       
+        _effect.alpha = 0;
+        _pickerBackGround.frame = CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd/5*2);
+    }];
+    
 }
 
 - (void)didReceiveMemoryWarning {

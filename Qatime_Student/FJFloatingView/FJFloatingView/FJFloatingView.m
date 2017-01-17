@@ -119,10 +119,54 @@
                     y_offset += SCREEN_HEIGHT - CGRectGetMaxY(self.tmpView.frame);
                 }
                 self.center = CGPointMake(_curPoint.x + x_offset, _curPoint.y + y_offset);
+                
+                
+                
             }
+                
+                
                 break;
                 
-            case UIGestureRecognizerStateEnded:
+            case UIGestureRecognizerStateEnded:{
+                if (self.origin_sd.x<0) {
+                    
+                    
+                    /* 移动到屏幕边缘的时候回弹*/
+                    [UIView animateWithDuration:0.3 animations:^{
+                        self.frame = CGRectMake(0, self.origin_sd.y, self.width_sd, self.height_sd);
+                        
+                    }];
+                    
+                }
+                
+                if (self.origin_sd.x+self.width_sd>SCREEN_WIDTH) {
+                    
+                    [UIView animateWithDuration:0.3 animations:^{
+                        self.frame = CGRectMake(SCREEN_WIDTH-self.width_sd, self.origin_sd.y, self.width_sd, self.height_sd);
+                        
+                    }];
+                    
+                }
+                if (self.origin_sd.y<0) {
+                    [UIView animateWithDuration:0.3 animations:^{
+                        self.frame = CGRectMake(self.origin_sd.x, 0, self.width_sd, self.height_sd);
+                        
+                    }];
+                    
+                }
+                
+                if (self.origin_sd.y+self.height_sd>SCREEN_HEIGHT) {
+                    
+                    [UIView animateWithDuration:0.3 animations:^{
+                        self.frame = CGRectMake(self.origin_sd.x, SCREEN_HEIGHT-self.height_sd, self.width_sd, self.height_sd);
+                        
+                    }];
+                    
+                }
+
+
+                
+            }
                 break;
             default:
                 break;

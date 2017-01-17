@@ -156,15 +156,19 @@
 /* 发送按钮变为图片*/
 - (void)changeSendBtnWithPhoto:(BOOL)isPhoto{
    
-    self.isAbleToSendTextMessage = !isPhoto;
-    [self.btnSendMessage setTitle:isPhoto?@"":@"发送" forState:UIControlStateNormal];
-    self.btnSendMessage.frame = RECT_CHANGE_width(self.btnSendMessage, isPhoto?30:35);
-    UIImage *image = [UIImage imageNamed:isPhoto?@"Chat_take_picture":@"chat_send_message"];
-    [self.btnSendMessage setBackgroundImage:image forState:UIControlStateNormal];
-
-    
-//    self.btnSendMessage.enabled = YES;
-//    [self.btnSendMessage setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    if (_canNotSendImage == NO) {
+        
+        self.isAbleToSendTextMessage = !isPhoto;
+        [self.btnSendMessage setTitle:isPhoto?@"":@"发送" forState:UIControlStateNormal];
+        self.btnSendMessage.frame = RECT_CHANGE_width(self.btnSendMessage, isPhoto?30:35);
+        UIImage *image = [UIImage imageNamed:isPhoto?@"Chat_take_picture":@"chat_send_message"];
+        [self.btnSendMessage setBackgroundImage:image forState:UIControlStateNormal];
+        
+        //    self.btnSendMessage.enabled = YES;
+        //    [self.btnSendMessage setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }else{
+        
+    }
     
 }
 

@@ -15,6 +15,7 @@
 #import "WithdrawConfirmViewController.h"
 #import "MyWalletViewController.h"
 #import "WithdrawConfirmViewController.h"
+#import "DCPaymentView.h"
 
 
 @interface WithDrawInfoViewController (){
@@ -73,7 +74,7 @@
     });
     
     _withDrawInfoView= ({
-    
+        
         WithDrawInfoView *_=[[WithDrawInfoView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
         
         if ([_payType isEqualToString:@"alipay"]) {
@@ -94,7 +95,7 @@
         [self.view addSubview:_];;
         
         _;
-    
+        
     });
     
     /* 提出token和学生id*/
@@ -105,8 +106,6 @@
         
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
-
-    
     
     
 }
@@ -118,7 +117,7 @@
     
     if ([_withDrawInfoView.accountText.text isEqualToString:@""]) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入账号!" preferredStyle:UIAlertControllerStyleAlert];
-      
+        
         UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
         }] ;
@@ -127,11 +126,11 @@
         [alert addAction:sure];
         
         [self presentViewController:alert animated:YES completion:nil];
-
+        
     }
     if ([_withDrawInfoView.nameText.text isEqualToString:@""]) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入姓名!" preferredStyle:UIAlertControllerStyleAlert];
-       
+        
         UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
         }] ;
@@ -139,7 +138,7 @@
         [alert addAction:sure];
         
         [self presentViewController:alert animated:YES completion:nil];
-
+        
     }
     if ([_withDrawInfoView.keyCodeText.text isEqualToString:@""]) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入验证码!" preferredStyle:UIAlertControllerStyleAlert];
@@ -151,99 +150,132 @@
         [alert addAction:sure];
         
         [self presentViewController:alert animated:YES completion:nil];
-
+        
     }
-//    满足所有条件 发送请求
+    //    满足所有条件 发送请求
     if (![_withDrawInfoView.accountText.text isEqualToString:@""]&&![_withDrawInfoView.nameText.text isEqualToString:@""]&&![_withDrawInfoView.keyCodeText.text isEqualToString:@""]) {
         if (_idNumber&&_token) {
             if (_payType&&_amount) {
                 
-                [self loadingHUDStartLoadingWithTitle:@"正在提交申请"];
+                /* 弹窗输入支付密码*/
                 
-                NSDictionary *dataDic = @{@"amount":_amount,
-                                          @"pay_type":_payType,
-                                          @"account":_withDrawInfoView.accountText.text,
-                                          @"name":_withDrawInfoView.nameText.text,
-                                          @"verify":_withDrawInfoView.keyCodeText.text
-                                          
-                                          };
-                
-                AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-                manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-                manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-                [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-                [manager POST:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/withdraws",Request_Header,_idNumber] parameters:dataDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                [DCPaymentView showPayAlertWithTitle:@"请输入支付密码" andDetail:@"申请提现" andAmount:_amount.floatValue completeHandle:^(NSString *inputPwd) {
                     
-                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                    //                     请求验证ticket_token
                     
-                    
-                    if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-                        /* 请求成功*/
+                    [self loadingHUDStartLoadingWithTitle:@"验证支付"];
+                    __block NSString *ticket_token = nil;
+                    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+                    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+                    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+                    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+                    [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/withdraws/ticket_token",Request_Header,_idNumber] parameters:@{@"password":inputPwd} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                         
-                        [self loadingHUDStopLoadingWithTitle:@"提现申请成功!"];
-                        
-                        
-                        WithdrawConfirmViewController *conVC = [[WithdrawConfirmViewController alloc]initWithData:dic[@"data"]];
-                        
-                        [self.navigationController pushViewController:conVC animated:YES];
-                        
-                    }else if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:0]]&&[dic[@"error"][@"code"]isEqual:[NSNumber numberWithInteger:3003]]){
-                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您已有一笔提现申请正在审核中,请稍后再试" preferredStyle:UIAlertControllerStyleAlert];
-                        
-                      
-                        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        if ([dic[@"status"]isEqualToNumber:@1]) {
                             
-                            [self loadingHUDStartLoadingWithTitle:@"正在取消..."];
-                            MyWalletViewController *mwVC = [[MyWalletViewController alloc]init];
-                            UIViewController *vc = nil;
+                            ticket_token = [NSString stringWithFormat:@"%@",dic[@"data"]];
                             
-                            for (UIViewController *controller in self.navigationController.viewControllers) {
+                            //                            [self loadingHUDStopLoadingWithTitle:nil];
+                            //                            [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+                            
+                            NSDictionary *dataDic = @{@"amount":_amount,
+                                                      @"pay_type":_payType,
+                                                      @"account":_withDrawInfoView.accountText.text,
+                                                      @"name":_withDrawInfoView.nameText.text,
+                                                      @"verify":_withDrawInfoView.keyCodeText.text,
+                                                      @"ticket_token":ticket_token
+                                                      };
+                            
+                            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+                            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+                            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+                            [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+                            [manager POST:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/withdraws",Request_Header,_idNumber] parameters:dataDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                                 
-                                if ([controller isKindOfClass:[mwVC class]]) {
+                                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                                
+                                
+                                if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+                                    /* 请求成功*/
                                     
-                                    vc = controller;
+                                    [self loadingHUDStopLoadingWithTitle:@"提现申请成功!"];
+                                    
+                                    
+                                    WithdrawConfirmViewController *conVC = [[WithdrawConfirmViewController alloc]initWithData:dic[@"data"]];
+                                    
+                                    [self.navigationController pushViewController:conVC animated:YES];
+                                    
+                                }else if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:0]]&&[dic[@"error"][@"code"]isEqual:[NSNumber numberWithInteger:3003]]){
+                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您已有一笔提现申请正在审核中,请稍后再试" preferredStyle:UIAlertControllerStyleAlert];
+                                    
+                                    
+                                    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                        
+                                        [self loadingHUDStartLoadingWithTitle:@"正在取消..."];
+                                        MyWalletViewController *mwVC = [[MyWalletViewController alloc]init];
+                                        UIViewController *vc = nil;
+                                        
+                                        for (UIViewController *controller in self.navigationController.viewControllers) {
+                                            
+                                            if ([controller isKindOfClass:[mwVC class]]) {
+                                                
+                                                vc = controller;
+                                            }
+                                        }
+                                        if (vc) {
+                                            
+                                            [self .navigationController popToViewController:vc animated:YES];
+                                            
+                                        }
+                                        
+                                        
+                                    }] ;
+                                    
+                                    
+                                    [alert addAction:sure];
+                                    
+                                    [self presentViewController:alert animated:YES completion:nil];
+                                    
+                                    
+                                }else if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:0]]&&[dic[@"error"][@"code"]isEqual:[NSNumber numberWithInteger:2003]]){
+                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"验证码错误!" preferredStyle:UIAlertControllerStyleAlert];
+                                    
+                                    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                        
+                                        [self loadingHUDStopLoadingWithTitle:@"提交失败"];
+                                        
+                                    }] ;
+                                    
+                                    
+                                    [alert addAction:sure];
+                                    
+                                    [self presentViewController:alert animated:YES completion:nil];
+                                    
+                                    
                                 }
-                            }
-                            if (vc) {
                                 
-                                [self .navigationController popToViewController:vc animated:YES];
                                 
-                            }
+                                
+                                
+                            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                                
+                            }];
                             
+                        }else{
+                            [self loadingHUDStopLoadingWithTitle:@"验证错误"];
                             
-                        }] ;
+                        }
                         
                         
-                        [alert addAction:sure];
-                        
-                        [self presentViewController:alert animated:YES completion:nil];
-
-                        
-                    }else if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:0]]&&[dic[@"error"][@"code"]isEqual:[NSNumber numberWithInteger:2003]]){
-                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"验证码错误!" preferredStyle:UIAlertControllerStyleAlert];
-                      
-                        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                            
-                            [self loadingHUDStopLoadingWithTitle:@"提交失败"];
-                            
-                        }] ;
                         
                         
-                        [alert addAction:sure];
+                    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                         
-                        [self presentViewController:alert animated:YES completion:nil];
-
-                        
-                    }
+                    }];
                     
-                    
-                    
-                    
-                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                     
                 }];
-                
-                
                 
                 
             }
@@ -258,7 +290,7 @@
     
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]!=nil) {
         NSString *mobile = [[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"];
-
+        
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -287,7 +319,7 @@
     else  {
         
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"获取手机号失败!\n请重新登录!" preferredStyle:UIAlertControllerStyleAlert];
-       
+        
         UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
             LoginAgainViewController *agVC = [[LoginAgainViewController alloc]init];
@@ -303,7 +335,7 @@
         [alert addAction:cancel];
         
         [self presentViewController:alert animated:YES completion:nil];
-
+        
     }
     
     
@@ -376,13 +408,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

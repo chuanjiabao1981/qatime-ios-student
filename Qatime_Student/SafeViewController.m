@@ -19,6 +19,11 @@
 #import "WXApi.h"
 
 #import "UIAlertController+Blocks.h"
+#import "SetPayPasswordViewController.h"
+
+#import "AuthenticationViewController.h"
+#import "SetPayPasswordViewController.h"
+
 @interface SafeViewController ()
 {
     
@@ -86,18 +91,6 @@
     _menuName = @[@"绑定手机",@"绑定邮箱",@"微信绑定",@"家长手机",@"修改支付密码",@"修改登录密码"];
     
     
-    /* 菜单初始化*/
-    _menuTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
-    
-    _menuTableView.delegate = self;
-    _menuTableView.dataSource = self;
-    _menuTableView.bounces = NO;
-    _menuTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    [self.view addSubview:_menuTableView];
-    _menuTableView.backgroundColor = [UIColor clearColor];
-    _menuTableView.tableFooterView = [[UIView alloc]init];
-    
-    
     /* 添加一个家长手机修改成功的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeParentPhone:) name:@"ChangeParentPhoneSuccess" object:nil];
     
@@ -137,11 +130,13 @@
         NSMutableDictionary *getDic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([getDic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
             
-            
-            
             /* 个人信息存本地*/
             
             NSMutableDictionary * chDic = [NSMutableDictionary dictionaryWithDictionary:getDic[@"data"]];
+            
+            if (chDic[@"openid"]!=nil&&![chDic[@"openid"] isEqual:[NSNull null]]) {
+                [[NSUserDefaults standardUserDefaults]setValue:chDic[@"openid"] forKey:@"openID"];
+            }
             
             
             for (NSInteger i = 0; i< [chDic allKeys].count; i++) {
@@ -169,8 +164,19 @@
             
             NSLog(@"%@",_contentArr);
             
+            /* 菜单初始化*/
+            _menuTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
             
-            [_menuTableView reloadData];
+            _menuTableView.delegate = self;
+            _menuTableView.dataSource = self;
+            _menuTableView.bounces = NO;
+            _menuTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+            [self.view addSubview:_menuTableView];
+            _menuTableView.backgroundColor = [UIColor clearColor];
+            _menuTableView.tableFooterView = [[UIView alloc]init];
+
+//            [_menuTableView reloadData];
+            
             
         }else{
             /* 拉取个人信息失败*/
@@ -366,6 +372,37 @@
             switch (indexPath.row) {
                 case 0:{
                     
+                   [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置或修改后将在24小时内不能使用支付密码,是否继续?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"继续"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                       if (buttonIndex!=0) {
+                           
+                          
+                           if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
+                               if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==YES) {
+                                   /* 已经设置过支付密码,更改支付密码*/
+                                   SetPayPasswordViewController *setPass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
+                                   [self.navigationController pushViewController:setPass animated:YES];
+                                   
+                                   
+                               }else if([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==NO){
+                                   /* 初次设置支付密码*/
+                                   AuthenticationViewController *authentication =[[AuthenticationViewController alloc]init];
+                                   [self.navigationController pushViewController:authentication animated:YES];
+                                   
+                                   
+//                                   SetPayPasswordViewController *newpass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
+//                                   [self.navigationController pushViewController:newpass animated:YES];
+                                   
+                                   
+                               }
+                           }
+                           
+                           
+                           
+                       }
+                       
+                       
+                   }];
+                    
                 }
                     break;
                 case 1:{
@@ -441,43 +478,46 @@
         if ([dic[@"status"]isEqualToNumber:@1]) {
             /* 绑定成功*/
             
-//            [self loadingHUDStopLoadingWithTitle:@"绑定成功!"];
+            [self loadingHUDStopLoadingWithTitle:@"绑定成功!"];
             
-//            [self bindingSuccess];
+            /* 绑定成功*/
+            [self bindingSuccess];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"BindingWechat"];
+            
             
             /* 绑定完成后,请求一次数据*/
             
-            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-            [manager POST:[NSString stringWithFormat:@"%@/api/v1/sessions/wechat",Request_Header] parameters:@{@"code":wechatCode,@"client_cate":@"student_client",@"client_type":@"app"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                
-                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                if ([dic[@"status"]isEqualToNumber:@1]) {
-                    /* 绑定成功*/
-                    if (dic[@"data"][@"user"][@"openid"]) {
-                        
-                        if (![dic[@"data"][@"user"][@"openid"]isEqual:[NSNull null]]) {
-                            
-                            [[NSUserDefaults standardUserDefaults]setValue:dic[@"data"][@"user"][@"openid"] forKey:@"openID"];
-                            
-                            [self performSelector:@selector(bindingSuccess) withObject:nil afterDelay:1];
-                            [self loadingHUDStopLoadingWithTitle:@"绑定成功!"];
-                        }
-                    }else{
-                        [self loadingHUDStopLoadingWithTitle:@"绑定申请已提交!"];
-                        //                        [self performSelector:@selector(bindingWaited) withObject:nil afterDelay:1];
-                    }
-                }else{
-                    
-                    /* 绑定失败*/
-                    [self loadingHUDStopLoadingWithTitle:@"绑定失败!"];
-                }
-                
-                
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                
-            }];
+//            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+//            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+//            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+//            [manager POST:[NSString stringWithFormat:@"%@/api/v1/sessions/wechat",Request_Header] parameters:@{@"code":wechatCode,@"client_cate":@"student_client",@"client_type":@"app"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//                
+//                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+//                if ([dic[@"status"]isEqualToNumber:@1]) {
+//                    /* 绑定成功*/
+//                    if (dic[@"data"][@"user"][@"openid"]) {
+//                        
+//                        if (![dic[@"data"][@"user"][@"openid"]isEqual:[NSNull null]]) {
+//                            
+//                            [[NSUserDefaults standardUserDefaults]setValue:dic[@"data"][@"user"][@"openid"] forKey:@"openID"];
+//                            
+//                            [self performSelector:@selector(bindingSuccess) withObject:nil afterDelay:1];
+//                            [self loadingHUDStopLoadingWithTitle:@"绑定成功!"];
+//                        }
+//                    }else{
+//                        [self loadingHUDStopLoadingWithTitle:@"绑定申请已提交!"];
+//                        //                        [self performSelector:@selector(bindingWaited) withObject:nil afterDelay:1];
+//                    }
+//                }else{
+//                    
+//                    /* 绑定失败*/
+//                    [self loadingHUDStopLoadingWithTitle:@"绑定失败!"];
+//                }
+//                
+//                
+//            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//                
+//            }];
             
             
         }else{
@@ -495,7 +535,7 @@
 - (void)bindingSuccess{
     NSIndexPath *index = [NSIndexPath indexPathForRow:2 inSection:0];
     SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:index];
-    cell.balance.text = @" 已绑定 ";
+    cell.balance.text = @" 取消绑定 ";
 }
 
 /* 解绑微信*/

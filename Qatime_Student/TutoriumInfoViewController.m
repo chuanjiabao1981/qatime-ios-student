@@ -23,7 +23,7 @@
 
 #import "UIAlertController+Blocks.h"
 
-#import "NELivePlayerViewController.h"
+#import "LivePlayerViewController.h"
 
 
 @interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>{
@@ -222,7 +222,6 @@
         _tutoriumInfoView.liveEndTimeLabel.text = [_dataDic[@"live_end_time"] substringToIndex:10];
         
         
-        
         if ([status isEqualToString:@"0"]) {
             /* 获取token错误  需要重新登录*/
         }else{
@@ -236,7 +235,6 @@
             NSLog(@"%@",teacherDic);
             
             /* teacherModel赋值与界面数据更新*/
-            
             _teacherModel.teacherID = [teacherDic valueForKey:@"id"];
             _teacherModel.teacherName =[teacherDic valueForKey:@"name"];
             _teacherModel.school =[teacherDic valueForKey:@"school"];
@@ -263,10 +261,6 @@
                  _teacherModel.gender = @"";
             }
             
-            
-            NSLog(@"%@,%@,%@,%@,%@,%@,%@", _teacherModel .teacherID, _teacherModel.teacherName,_teacherModel.school , _teacherModel.subject, _teacherModel.teaching_years , _teacherModel.describe,_teacherModel.gender);
-            
-            
             [_tutoriumInfoView.teacherNameLabel setText: _teacherModel.teacherName];
             [_tutoriumInfoView.workPlaceLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.school]];
             [_tutoriumInfoView.teacherInterviewLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.describe]];
@@ -290,13 +284,12 @@
             /* 课程列表的手动解析model*/
             NSMutableArray *classList = _dataDic[@"lessons"];
            
-           
             NSLog(@"%@",classList);
             for (int i=0; i<classList.count; i++) {
                 
                 _classInfoTimeModel = [ClassesInfo_Time yy_modelWithDictionary:classList[i]];
                 _classInfoTimeModel.classID =[ classList[i]valueForKey:@"id" ];
-                
+               
                 [_classListArray addObject:_classInfoTimeModel];
                 
                 [self updateTableView];
@@ -487,7 +480,7 @@
 #pragma mark- 立即试听
 - (void)listen{
     
-    NELivePlayerViewController *neVC = [[NELivePlayerViewController alloc]initWithClassID:_dataDic[@"id"]];
+    LivePlayerViewController *neVC = [[LivePlayerViewController alloc]initWithClassID:_dataDic[@"id"]];
     
     [self.navigationController pushViewController:neVC animated:YES];
     
@@ -563,7 +556,7 @@
 
 
 
-#pragma mark- tabelView的代理方法
+#pragma mark- tabelView datasource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
@@ -582,24 +575,7 @@
     
 }
 
-/* 自适应高度计算*/
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    CGFloat heights = 0;
-    
-    if (_classListArray.count ==0) {
-        heights =10;
-    }else{
-        
-        ClassesInfo_Time *model = _classListArray[indexPath.row];
-     // 获取cell高度
-        heights =[tableView cellHeightForIndexPath:indexPath model:model keyPath:@"model" cellClass:[ClassesListTableViewCell class] contentViewWidth: [UIScreen mainScreen].bounds.size.width];
-        
-    }
-    
-    return heights;
-    
-}
+
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -609,18 +585,28 @@
     ClassesListTableViewCell * cell =[tableView dequeueReusableCellWithIdentifier:cellIdenfier];
     if (cell==nil) {
         cell=[[ClassesListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+    }
+    /* 教师课程安排的数据  如果为0的情况 。。。。预留判断*/
+    if (_classListArray.count>indexPath.row) {
         
-                /* 教师课程安排的数据  如果为0的情况 。。。。预留判断*/
-        if (_classListArray.count==0) {
-            
-            
+        ClassesInfo_Time *mod = _classListArray[indexPath.row];
+        cell.model = mod;
+        
+//        if (cell.showReplayButton == YES) {
+//            cell.replay.hidden = NO;
+//        }else {
+//            cell.replay.hidden = YES;
+//        }
+        
+        if ([cell.model.status isEqualToString:@"finished"]||[cell.model.status isEqualToString:@"billing"]||[cell.model.status isEqualToString:@"completed"]) {
+              cell.replay.hidden = NO;
         }else{
-
-            [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-            ClassesInfo_Time *mod = _classListArray[indexPath.row];
-            cell.model = mod;
-//            cell.status.text = cell.class_status;
+             cell.replay.hidden = YES;
         }
+        
+        
+        
+        [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
         
     }
 
@@ -628,6 +614,54 @@
     return  cell;
     
 }
+
+#pragma mark- tableview delegate
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    CGFloat heights = 0;
+    
+    if (_classListArray.count ==0) {
+        heights =10;
+    }else{
+        
+        ClassesInfo_Time *model = _classListArray[indexPath.row];
+        // 获取cell高度
+        heights =[tableView cellHeightForIndexPath:indexPath model:model keyPath:@"model" cellClass:[ClassesListTableViewCell class] contentViewWidth: [UIScreen mainScreen].bounds.size.width];
+        
+    }
+    
+    return heights;
+    
+}
+
+
+/* 点击课程表,进入回放的点击事件*/
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    ClassesListTableViewCell *cell = [_tutoriumInfoView.classesListTableView cellForRowAtIndexPath:indexPath];
+    
+    if (cell.model.replayable == YES) {
+        /* 可以试听的情况*/
+        if ([cell.model.left_replay_times integerValue]>0) {
+            /* 剩余试听次数大于0的情况,可以继续试听*/
+            
+            
+            
+        }else{
+            /* 剩余试听次数小于0,不可以继续试听*/
+            [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
+        }
+        
+        
+        
+    }else{
+        [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
+        
+    }
+    
+    
+}
+
 
 /* 刷新页面*/
 - (void)refreshPage{

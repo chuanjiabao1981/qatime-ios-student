@@ -61,10 +61,20 @@
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
 
-    
+    [_bindingMailInfoView.mailText addTarget:self action:@selector(checkMail:) forControlEvents:UIControlEventEditingChanged];
     
     
 }
+
+/* 检查邮箱是否规范*/
+- (void)checkMail:(UITextField *)sender{
+    
+    if ([self isValidateEmail:sender.text]) {
+        
+        
+    }
+}
+
 
 #pragma mark- finish按钮发送修改请求的点击事件
 - (void)finish{
@@ -180,8 +190,6 @@
             
         }
     }
-    
-    
     
 }
 

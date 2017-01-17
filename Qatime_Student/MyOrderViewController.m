@@ -11,10 +11,13 @@
 #import "Unpaid.h"
 #import "Paid.h"
 #import "Canceld.h"
+#import "Refund.h"
 
 #import "MyOrderTableViewCell.h"
 #import "PaidOrderTableViewCell.h"
 #import "CancelOrderTableViewCell.h"
+
+
 
 #import "UIViewController+HUD.h"
 #import "YYModel.h"
@@ -29,6 +32,7 @@
 
 #import "OrderInfoViewController.h"
 #import "ConfirmChargeViewController.h"
+#import "UIViewController+AFHTTP.h"
 
 @interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
@@ -42,6 +46,7 @@
     NSMutableArray *_unpaidArr;
     NSMutableArray *_paidArr;
     NSMutableArray *_caneldArr;
+    NSMutableArray *_refundsArr;
     
     
     /* 页数*/
@@ -53,8 +58,6 @@
     NSInteger unpaidPageTime;
     NSInteger paidPageTime;
     NSInteger cancelPageTime;
-    
-    
     
 }
 
@@ -73,6 +76,7 @@
         _unpaidArr = @[].mutableCopy;
         _paidArr = @[].mutableCopy;
         _caneldArr = @[].mutableCopy;
+        _refundsArr = @[].mutableCopy;
         
         unpaidPage = 1;
         paidPage = 1;
@@ -81,8 +85,6 @@
         unpaidPageTime = 1;
         paidPageTime = 0;
         cancelPageTime = 0;
-        
-        
         
     }
     return self;
@@ -153,7 +155,7 @@
         _.tableView.showsHorizontalScrollIndicator=NO;
         
         _.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-          [_.tableView.mj_footer endRefreshingWithNoMoreData];
+            [_.tableView.mj_footer endRefreshingWithNoMoreData];
         }];
         
         _;
@@ -181,7 +183,6 @@
         but.frame = CGRectMake(0, 100, 100, 100);
         [_paidView addSubview:but];
         [but addTarget:self action:@selector(repage:) forControlEvents:UIControlEventTouchUpInside];
-
         
         
         _.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
@@ -193,17 +194,6 @@
         _;
     });
     
-    
-}
-- (void)repage:(UIButton *)sender{
-    
-    NSIndexPath *index = [NSIndexPath indexPathForRow:sender.tag - 400 inSection:0];
-    
-    PaidOrderTableViewCell *cell = [_paidView.tableView cellForRowAtIndexPath:index];
-    
-    DrawBackViewController *new = [[DrawBackViewController alloc]initWithPaidOrder:cell.paidModel];
-    
-    [self.navigationController pushViewController:new animated:YES];
 }
 
 
@@ -217,19 +207,33 @@
         _.tableView.tag = 3;
         _.tableView.tableFooterView = [[UIView alloc]init];
         [_myOrderView.scrollView addSubview:_];
-//        _.sd_layout
-//        .leftSpaceToView(_paidView,0)
-//        .topSpaceToView(_myOrderView.scrollView,0)
-//        .bottomSpaceToView(_myOrderView.scrollView,0)
-//        .widthIs(self.view.width_sd);
+        //        _.sd_layout
+        //        .leftSpaceToView(_paidView,0)
+        //        .topSpaceToView(_myOrderView.scrollView,0)
+        //        .bottomSpaceToView(_myOrderView.scrollView,0)
+        //        .widthIs(self.view.width_sd);
         
         _.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-
+            
             [_.tableView.mj_footer endRefreshingWithNoMoreData];
         }];
         
         _;
     });
+    
+}
+
+
+
+- (void)repage:(UIButton *)sender{
+    
+    NSIndexPath *index = [NSIndexPath indexPathForRow:sender.tag - 400 inSection:0];
+    
+    PaidOrderTableViewCell *cell = [_paidView.tableView cellForRowAtIndexPath:index];
+    
+    DrawBackViewController *new = [[DrawBackViewController alloc]initWithPaidOrder:cell.paidModel];
+    
+    [self.navigationController pushViewController:new animated:YES];
     
 }
 
@@ -261,17 +265,18 @@
     }
     
     
-    
-    
     /* 发起网络请求*/
     /* 请求未支付的数据*/
     [self requestUnpaid];
-
+    
     /* 请求已支付数据*/
     [self requestPaid];
-    /* 请求取消的数据*/
     
+    /* 请求取消的数据*/
     [self requestCanceld];
+
+    
+    
     /* 微信支付成功的监听回调*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(paySucess) name:@"ChargeSucess" object:nil];
     
@@ -318,7 +323,7 @@
                     mod.created_at =[unpaidArr[i][@"created_at"]isEqual:[NSNull null]]?@"":unpaidArr[i][@"created_at"];
                     mod.updated_at = [unpaidArr[i][@"updated_at"]isEqual:[NSNull null]]?@"":unpaidArr[i][@"updated_at"];
                     mod.pay_at =[unpaidArr[i][@"pay_at"]isEqual:[NSNull null]]?@"":unpaidArr[i][@"pay_at"];
-                                                                                         
+                    
                     
                     if (![unpaidArr[i][@"app_pay_params"]isEqual:[NSNull null]]) {
                         
@@ -331,15 +336,15 @@
                     }else{
                         mod.appid =@"";
                     }
-
-   
+                    
+                    
                     mod.orderID = [unpaidArr[i][@"id"]isEqual:[NSNull null]]?@"":unpaidArr[i][@"id"];
                     
                     [_unpaidArr addObject:mod];
                 }
                 
-//                [_unpaidView.tableView reloadData];
-//                [_unpaidView.tableView setNeedsDisplay];
+                //                [_unpaidView.tableView reloadData];
+                //                [_unpaidView.tableView setNeedsDisplay];
                 [_unpaidView.tableView.mj_footer endRefreshing];
                 [self loadingHUDStopLoadingWithTitle:@"加载完成"];
                 
@@ -349,7 +354,7 @@
             }else{
                 /* 没更多的数据了*/
                 if (_unpaidArr.count == 0) {
-//                    _unpaidView.hidden = YES;
+                    //                    _unpaidView.hidden = YES;
                 }
                 [_unpaidView.tableView.mj_footer endRefreshingWithNoMoreData];
                 
@@ -387,14 +392,14 @@
         noDataView.titleLabel.text = @"暂时没有数据";
         [_unpaidView addSubview:noDataView];
         noDataView.hidden = NO;
-
+        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 获取数据成功*/
             if ([dic[@"data"] count]!=0) {
                 /* 有数据*/
                 noDataView.hidden = YES;
-//                _paidView.hidden = NO;
+                //                _paidView.hidden = NO;
                 __block NSMutableArray *paidArr = [NSMutableArray arrayWithArray:dic[@"data"]];
                 NSMutableArray *compArr = paidArr.copy;
                 
@@ -404,7 +409,7 @@
                     mod.status =[paidArr[i][@"status"] isEqual:[NSNull null]]?@"":paidArr[i][@"status"];
                     mod.pay_type = [paidArr[i][@"pay_type"]isEqual:[NSNull null]]?@"":paidArr[i][@"pay_type"];
                     
-
+                    
                     if (![paidArr[i][@"app_pay_params"]isEqual:[NSNull null]]) {
                         
                         if (paidArr[i][@"app_pay_params"][@"appid"]) {
@@ -417,12 +422,12 @@
                     }
                     
                     mod.orderID = [paidArr[i][@"id"]isEqual:[NSNull null]]?@"":paidArr[i][@"id"];
-
+                    
                     [_paidArr addObject:mod];
                 }
                 
-//                [_paidView.tableView reloadData];
-//                [_paidView.tableView setNeedsDisplay];
+                //                [_paidView.tableView reloadData];
+                //                [_paidView.tableView setNeedsDisplay];
                 [_paidView.tableView.mj_footer endRefreshing];
                 [self loadingHUDStopLoadingWithTitle:@"加载完成"];
                 /* 加载已支付的视图*/
@@ -432,7 +437,7 @@
                 /* 没更多的数据了*/
                 
                 if (_paidArr.count == 0) {
-//                    _paidView.hidden = YES;
+                    //                    _paidView.hidden = YES;
                 }
                 
                 [_paidView.tableView.mj_footer endRefreshingWithNoMoreData];
@@ -440,7 +445,7 @@
                 
             }
             
-//            [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+            //            [self loadingHUDStopLoadingWithTitle:@"加载完成"];
             
         }else{
             
@@ -451,7 +456,7 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [_paidView.tableView.mj_footer endRefreshing];
     }];
-        
+    
     
 }
 - (void) requestCanceld{
@@ -468,7 +473,7 @@
         noDataView.titleLabel.text = @"暂时没有数据";
         [_unpaidView addSubview:noDataView];
         noDataView.hidden = NO;
-
+        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 获取数据成功*/
@@ -476,7 +481,7 @@
                 noDataView.hidden = YES;
                 /* 有数据*/
                 
-//                _cancelView.hidden = NO;
+                //                _cancelView.hidden = NO;
                 
                 __block NSMutableArray *cancelArr = [NSMutableArray arrayWithArray:dic[@"data"]];
                 
@@ -500,7 +505,7 @@
                     }else{
                         mod.appid =@"";
                     }
-
+                    
                     mod.orderID = [cancelArr[i][@"id"]isEqual:[NSNull null]]?@"":cancelArr[i][@"id"];
                     [_caneldArr addObject:mod];
                 }
@@ -516,7 +521,7 @@
                 /* 没更多的数据了*/
                 
                 if (_caneldArr.count == 0) {
-//                    _cancelView.hidden = YES;
+                    //                    _cancelView.hidden = YES;
                 }
                 [_cancelView.tableView.mj_footer endRefreshingWithNoMoreData];
                 [self loadingHUDStopLoadingWithTitle:@"没有符合条件的订单!"];
@@ -538,9 +543,9 @@
     }];
     
     
-    
-    
 }
+
+
 
 
 #pragma mark- tableview datasource
@@ -571,6 +576,14 @@
             }
         }
             break;
+        case 4:{
+            
+            if (_refundsArr.count!=0) {
+                rows = _refundsArr.count;
+            }
+        }
+            break;
+            
     }
     
     
@@ -624,13 +637,14 @@
             if (_paidArr.count>indexPath.row) {
                 
                 cell.paidModel = _paidArr[indexPath.row];
-                
+                cell.leftButton.hidden= YES;
                 [cell.rightButton setTitle:@"申请退款" forState:UIControlStateNormal];
-                cell.leftButton.tag = 300+indexPath.row;
+                //                cell.leftButton.tag = 300+indexPath.row;
                 cell.rightButton.tag = 400+indexPath.row;
-                [cell.leftButton addTarget:self action:@selector(cancelOrder:) forControlEvents:UIControlEventTouchUpInside];
+                //                [cell.leftButton addTarget:self action:@selector(cancelOrder:) forControlEvents:UIControlEventTouchUpInside];
                 
-                 [cell.rightButton addTarget:self action:@selector(repage:) forControlEvents:UIControlEventTouchUpInside];
+                /* 进入退款申请页面*/
+                [cell.rightButton addTarget:self action:@selector(repage:) forControlEvents:UIControlEventTouchUpInside];
                 
             }
             
@@ -653,7 +667,7 @@
                 cell.leftButton.hidden = YES;
                 [cell.rightButton setTitle:@"重新购买" forState:UIControlStateNormal];
                 
-               
+                
                 
                 [cell.rightButton addTarget:self action:@selector(buyAgain:) forControlEvents:UIControlEventTouchUpInside];
                 
@@ -667,7 +681,7 @@
                 cell.canceldModel = _caneldArr[indexPath.row];
                 cell.leftButton.tag = 500+indexPath.row;
                 cell.rightButton.tag = 600+indexPath.row;
-//                [cell.leftButton addTarget:self action:@selector(repage:) forControlEvents:UIControlEventTouchUpInside];
+                //                [cell.leftButton addTarget:self action:@selector(repage:) forControlEvents:UIControlEventTouchUpInside];
                 
                 
                 
@@ -678,6 +692,9 @@
             
         }
             break;
+            
+            
+            
     }
     
     
@@ -736,6 +753,7 @@
             
         }
             break;
+            
     }
     
     
@@ -746,24 +764,24 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     switch (tableView.tag) {
-       
+            
         case 1:{
             MyOrderTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-          
+            
             
             NSDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                       @"name":cell.unpaidModel.name,
-                                                                       @"subject":cell.unpaidModel.subject,
-                                                                       @"grade":cell.unpaidModel.grade,
-                                                                       @"lessonTime":cell.unpaidModel.preset_lesson_count,
-                                                                       @"teacherName":cell.unpaidModel.teacher_name,
-                                                                       @"creatTime":cell.unpaidModel.created_at==nil?@"无":[cell.unpaidModel.created_at timeStampToDate],
-                                                                       @"payTime":cell.unpaidModel.pay_at==nil?@"无":cell.unpaidModel.pay_at,
-                                                                       @"payType":cell.unpaidModel.pay_type==nil?@"":cell.unpaidModel.pay_type,
-                                                                       @"amount":cell.unpaidModel.price,
-                                                                       @"status":cell.unpaidModel.status,
-                                                                       @"orderNumber":cell.unpaidModel.orderID
-                                                                       }];
+                                                                                @"name":cell.unpaidModel.name,
+                                                                                @"subject":cell.unpaidModel.subject,
+                                                                                @"grade":cell.unpaidModel.grade,
+                                                                                @"lessonTime":cell.unpaidModel.preset_lesson_count,
+                                                                                @"teacherName":cell.unpaidModel.teacher_name,
+                                                                                @"creatTime":cell.unpaidModel.created_at==nil?@"无":[cell.unpaidModel.created_at timeStampToDate],
+                                                                                @"payTime":cell.unpaidModel.pay_at==nil?@"无":cell.unpaidModel.pay_at,
+                                                                                @"payType":cell.unpaidModel.pay_type==nil?@"":cell.unpaidModel.pay_type,
+                                                                                @"amount":cell.unpaidModel.price,
+                                                                                @"status":cell.unpaidModel.status,
+                                                                                @"orderNumber":cell.unpaidModel.orderID
+                                                                                }];
             
             
             OrderInfoViewController *order = [[OrderInfoViewController alloc]initWithInfo:dic];
@@ -777,7 +795,7 @@
             
             PaidOrderTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             
-
+            
             NSDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{
                                                                                 @"name":cell.paidModel.name,
                                                                                 @"subject":cell.paidModel.subject,
@@ -795,16 +813,16 @@
             
             OrderInfoViewController *order = [[OrderInfoViewController alloc]initWithInfo:dic];
             [self.navigationController pushViewController:order animated:YES];
-
+            
         }
             break;
-
+            
             
         case 3: {
             
-        CancelOrderTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-          
-
+            CancelOrderTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            
+            
             NSDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{
                                                                                 @"name":cell.canceldModel.name,
                                                                                 @"subject":cell.canceldModel.subject,
@@ -823,12 +841,11 @@
             OrderInfoViewController *order = [[OrderInfoViewController alloc]initWithInfo:dic];
             [self.navigationController pushViewController:order animated:YES];
             
-    }
+        }
             
             break;
-
             
-        
+            
     }
     
     
@@ -842,7 +859,7 @@
         /* 取消订单的左边按钮->取消订单*/
         
         Unpaid *mod =_unpaidArr[sender.tag-200];
-
+        
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否确定付款?" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             
@@ -852,7 +869,7 @@
             ConfirmChargeViewController *confirm = [[ConfirmChargeViewController alloc]initWithPayModel:mod];
             [self.navigationController pushViewController:confirm animated:YES];
         }];
-            
+        
         [alert addAction:cancel];
         [alert addAction:sure];
         
@@ -860,7 +877,7 @@
         
         
     }
-
+    
 }
 
 /* 付款请求*/
@@ -952,7 +969,7 @@
 
 - (void)cancelOrder:(UIButton *)sender{
     
-//    [self loadingHUDStartLoadingWithTitle:@"正在订单"];
+    //    [self loadingHUDStartLoadingWithTitle:@"正在订单"];
     
     __block NSString *oderNumber = [NSString string];
     
@@ -1097,7 +1114,7 @@
             case 0:{
                 if (unpaidPageTime == 0) {
                     
-//                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+                    //                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
                     
                     [_unpaidView.tableView.mj_footer beginRefreshing];
                     
@@ -1110,7 +1127,7 @@
                 break;
             case 1:{
                 if (paidPageTime == 0) {
-//                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+                    //                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
                     [_paidView.tableView.mj_footer beginRefreshing];
                     
                 }else{
@@ -1122,7 +1139,7 @@
                 break;
             case 2:{
                 if (cancelPageTime == 0) {
-//                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+                    //                    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
                     
                     [_cancelView.tableView.mj_footer beginRefreshing];
                     

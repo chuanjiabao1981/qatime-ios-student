@@ -16,16 +16,13 @@
     if (self) {
         
         _memberListTableView = [[UITableView alloc]init];
+        _memberListTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         [self addSubview: _memberListTableView];
         _memberListTableView.sd_layout
         .leftEqualToView(self)
         .rightEqualToView(self)
         .topEqualToView(self)
         .bottomEqualToView(self);
-        
-        
-        
-        
         
         
     }

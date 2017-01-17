@@ -9,12 +9,22 @@
 
 /* 在线人数的cell*/
 #import <UIKit/UIKit.h>
+#import "Members.h"
 
 @interface MemberListTableViewCell : UITableViewCell
 
-/* */
-@property(nonatomic,strong) UIImageView *memberICon ;
+/* 用户头像 */
+@property(nonatomic,strong) UIImageView *memberIcon ;
+
+/* 用户姓名*/
 @property(nonatomic,strong) UILabel *name ;
+
+/* 角色*/
+@property(nonatomic,strong) UILabel *character;
+
+
+/* model*/
+@property(nonatomic,strong) Members *model ;
 
 
 

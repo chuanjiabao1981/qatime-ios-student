@@ -70,11 +70,20 @@
             _.tableFooterView = [[UIView alloc]init];
             _;
         });
+        _refundView=({
+            RefundTableView *_= [[RefundTableView alloc]init];
+            _.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+            
+            _.backgroundColor = [UIColor whiteColor];
+            _.tableFooterView = [[UIView alloc]init];
+            _;
+        });
+        
 
         
         
         [self sd_addSubviews:@[_segmentControl,_scrollView]];
-        [_scrollView sd_addSubviews:@[_rechargeView,_withDrawView,_paymentView]];
+        [_scrollView sd_addSubviews:@[_rechargeView,_withDrawView,_paymentView,_refundView]];
         
         
         /* 布局*/
@@ -111,7 +120,12 @@
         .bottomEqualToView(_scrollView)
         .widthRatioToView(self,1.0f);
 
-        
+        _refundView.sd_layout
+        .leftSpaceToView(_paymentView,0)
+        .topEqualToView(_scrollView)
+        .bottomEqualToView(_scrollView)
+        .widthRatioToView(self,1.0f);
+
         
         
         

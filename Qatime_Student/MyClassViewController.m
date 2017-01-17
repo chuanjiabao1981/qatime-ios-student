@@ -18,7 +18,7 @@
 #import "HaveNoClassView.h"
 #import "UIViewController+HUD.h"
 #import "TutoriumInfoViewController.h"
-#import "NELivePlayerViewController.h"
+#import "LivePlayerViewController.h"
 
 
 
@@ -531,7 +531,7 @@
     
     
     
-    NELivePlayerViewController *listen = [[NELivePlayerViewController alloc]initWithClassID:classID];
+    LivePlayerViewController *listen = [[LivePlayerViewController alloc]initWithClassID:classID];
     [self.navigationController pushViewController:listen animated:YES];
    
     

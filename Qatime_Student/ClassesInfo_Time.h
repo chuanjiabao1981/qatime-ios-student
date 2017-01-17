@@ -16,4 +16,9 @@
 @property(nonatomic,strong) NSString *class_date ;
 @property(nonatomic,strong) NSString *live_time ;
 
+@property(nonatomic,strong) NSString *board_pull_stream ;
+@property(nonatomic,strong) NSString *camera_pull_stream ;
+@property(nonatomic,assign) BOOL replayable ;
+@property(nonatomic,assign) NSString *left_replay_times ;
+
 @end

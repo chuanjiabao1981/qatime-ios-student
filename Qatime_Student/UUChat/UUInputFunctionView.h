@@ -31,6 +31,7 @@
  发送消息按钮
  */
 @property (nonatomic, retain) UIButton *btnSendMessage;
+@property(nonatomic,assign) BOOL canNotSendImage ;
 
 @property (nonatomic, retain) UIButton *btnChangeVoiceState;
 @property (nonatomic, retain) UIButton *btnVoiceRecord;

@@ -77,7 +77,7 @@
 
 
 /* 自动布局参考线*/
-@property(nonatomic,strong) UILabel *layoutLine;
+@property(nonatomic,strong) UIView *layoutLine;
 
 
 

@@ -34,6 +34,10 @@
 		541F91E81DC9E3D200180BE8 /* students.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F91E71DC9E3D200180BE8 /* students.png */; };
 		541F91EA1DC9F1CC00180BE8 /* school.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F91E91DC9F1CC00180BE8 /* school.png */; };
 		541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91EC1DCA09CC00180BE8 /* TutoriumList.m */; };
+		542020FF1E2DBE5100517A47 /* UIViewController+AFHTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 542020FE1E2DBE5100517A47 /* UIViewController+AFHTTP.m */; };
+		5420210E1E2DF7C100517A47 /* RefundTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5420210D1E2DF7C100517A47 /* RefundTableViewCell.m */; };
+		542021141E2DF7F100517A47 /* Refund.m in Sources */ = {isa = PBXBuildFile; fileRef = 542021131E2DF7F100517A47 /* Refund.m */; };
+		542021171E2DF90400517A47 /* RefundTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 542021161E2DF90400517A47 /* RefundTableView.m */; };
 		5422337E1E15F6100092AB66 /* UIAlertController+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 5422337D1E15F6100092AB66 /* UIAlertController+Blocks.m */; };
 		542915911DD9DAF700EE1A70 /* libPods-Qatime_Student.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E892881DD9B3E100C47095 /* libPods-Qatime_Student.a */; };
 		542915961DD9DDB000EE1A70 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547388651DD9876E00A50CCC /* MobileCoreServices.framework */; };
@@ -52,7 +56,7 @@
 		54294C701DDB062000677333 /* Teacher.m in Sources */ = {isa = PBXBuildFile; fileRef = 54294C6F1DDB062000677333 /* Teacher.m */; };
 		54294C731DDB071700677333 /* Chat_Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 54294C721DDB071700677333 /* Chat_Account.m */; };
 		54294C7C1DDB373400677333 /* NELivePlayerControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 54294C791DDB373400677333 /* NELivePlayerControl.m */; };
-		54294C7D1DDB373400677333 /* NELivePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54294C7B1DDB373400677333 /* NELivePlayerViewController.m */; };
+		54294C7D1DDB373400677333 /* LivePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54294C7B1DDB373400677333 /* LivePlayerViewController.m */; };
 		54294CC21DDB3AAE00677333 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FB21DD46FFB00F1282B /* libbz2.tbd */; };
 		54294CC31DDB3AC400677333 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FB61DD4701200F1282B /* libstdc++.tbd */; };
 		54294CC41DDB3ACC00677333 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FB81DD4701C00F1282B /* libiconv.tbd */; };
@@ -99,6 +103,13 @@
 		543E0CCB1DFFEDC8004B24FD /* CheckOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CCA1DFFEDC8004B24FD /* CheckOrderViewController.m */; };
 		543E0CCF1E002960004B24FD /* BindingMailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CCE1E002960004B24FD /* BindingMailView.m */; };
 		543E0CD41E00297E004B24FD /* BindingMailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CD31E00297E004B24FD /* BindingMailViewController.m */; };
+		543E233D1E2C78C800381F10 /* SetPayPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E233C1E2C78C800381F10 /* SetPayPasswordView.m */; };
+		543E23401E2C78D700381F10 /* SetPayPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E233F1E2C78D700381F10 /* SetPayPasswordViewController.m */; };
+		543E23431E2C8D1600381F10 /* AuthenticationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E23421E2C8D1600381F10 /* AuthenticationView.m */; };
+		543E23491E2C8D4000381F10 /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E23481E2C8D4000381F10 /* AuthenticationViewController.m */; };
+		543E234B1E2C9AB200381F10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 543E234A1E2C9AB200381F10 /* Assets.xcassets */; };
+		543E234E1E2CB84B00381F10 /* SetNewPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E234D1E2CB84B00381F10 /* SetNewPasswordViewController.m */; };
+		543E23521E2CE88B00381F10 /* DCPaymentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E23511E2CE88B00381F10 /* DCPaymentView.m */; };
 		54443E281E0D252F000D8E8B /* LocalChoseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54443E271E0D252F000D8E8B /* LocalChoseView.m */; };
 		54443E2A1E0D284E000D8E8B /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = 54443E291E0D284E000D8E8B /* point.png */; };
 		5448AEA11E042BC8007B1DF9 /* NoticeIndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA01E042BC8007B1DF9 /* NoticeIndexViewController.m */; };
@@ -230,7 +241,6 @@
 		54A153B01DC6F09D0070B508 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153AF1DC6F09D0070B508 /* ViewController.m */; };
 		54A153C31DC6F09E0070B508 /* Qatime_StudentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153C21DC6F09E0070B508 /* Qatime_StudentTests.m */; };
 		54A153CE1DC6F09E0070B508 /* Qatime_StudentUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153CD1DC6F09E0070B508 /* Qatime_StudentUITests.m */; };
-		54A47B651DE425EE000216D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54A47B641DE425ED000216D9 /* Assets.xcassets */; };
 		54A47BB21DE42610000216D9 /* em_1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 54A47B671DE42610000216D9 /* em_1.gif */; };
 		54A47BB31DE42610000216D9 /* em_10.gif in Resources */ = {isa = PBXBuildFile; fileRef = 54A47B681DE42610000216D9 /* em_10.gif */; };
 		54A47BB41DE42610000216D9 /* em_11.gif in Resources */ = {isa = PBXBuildFile; fileRef = 54A47B691DE42610000216D9 /* em_11.gif */; };
@@ -487,6 +497,14 @@
 		541F91E91DC9F1CC00180BE8 /* school.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = school.png; sourceTree = "<group>"; };
 		541F91EB1DCA09CC00180BE8 /* TutoriumList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumList.h; sourceTree = "<group>"; };
 		541F91EC1DCA09CC00180BE8 /* TutoriumList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutoriumList.m; sourceTree = "<group>"; };
+		542020FD1E2DBE5100517A47 /* UIViewController+AFHTTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+AFHTTP.h"; sourceTree = "<group>"; };
+		542020FE1E2DBE5100517A47 /* UIViewController+AFHTTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+AFHTTP.m"; sourceTree = "<group>"; };
+		5420210C1E2DF7C100517A47 /* RefundTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RefundTableViewCell.h; sourceTree = "<group>"; };
+		5420210D1E2DF7C100517A47 /* RefundTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RefundTableViewCell.m; sourceTree = "<group>"; };
+		542021121E2DF7F100517A47 /* Refund.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Refund.h; sourceTree = "<group>"; };
+		542021131E2DF7F100517A47 /* Refund.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Refund.m; sourceTree = "<group>"; };
+		542021151E2DF90400517A47 /* RefundTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RefundTableView.h; sourceTree = "<group>"; };
+		542021161E2DF90400517A47 /* RefundTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RefundTableView.m; sourceTree = "<group>"; };
 		5422337C1E15F6100092AB66 /* UIAlertController+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+Blocks.h"; sourceTree = "<group>"; };
 		5422337D1E15F6100092AB66 /* UIAlertController+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+Blocks.m"; sourceTree = "<group>"; };
 		54294C651DDAD82400677333 /* InfoHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoHeaderView.h; sourceTree = "<group>"; };
@@ -501,8 +519,8 @@
 		54294C721DDB071700677333 /* Chat_Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Chat_Account.m; sourceTree = "<group>"; };
 		54294C781DDB373400677333 /* NELivePlayerControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NELivePlayerControl.h; sourceTree = "<group>"; };
 		54294C791DDB373400677333 /* NELivePlayerControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NELivePlayerControl.m; sourceTree = "<group>"; };
-		54294C7A1DDB373400677333 /* NELivePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NELivePlayerViewController.h; sourceTree = "<group>"; };
-		54294C7B1DDB373400677333 /* NELivePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NELivePlayerViewController.m; sourceTree = "<group>"; };
+		54294C7A1DDB373400677333 /* LivePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LivePlayerViewController.h; sourceTree = "<group>"; };
+		54294C7B1DDB373400677333 /* LivePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LivePlayerViewController.m; sourceTree = "<group>"; };
 		54294CC51DDB3BB100677333 /* LSMediaCapture.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = LSMediaCapture.bundle; path = "LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs/LSMediaCapture.bundle"; sourceTree = "<group>"; };
 		54294EAF1DDB400E00677333 /* LSMediaCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSMediaCapture.h; sourceTree = "<group>"; };
 		54294EB01DDB400E00677333 /* nMediaLiveStreamingDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nMediaLiveStreamingDefs.h; sourceTree = "<group>"; };
@@ -555,6 +573,19 @@
 		543E0CCE1E002960004B24FD /* BindingMailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindingMailView.m; sourceTree = "<group>"; };
 		543E0CD21E00297E004B24FD /* BindingMailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailViewController.h; sourceTree = "<group>"; };
 		543E0CD31E00297E004B24FD /* BindingMailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindingMailViewController.m; sourceTree = "<group>"; };
+		543E233B1E2C78C800381F10 /* SetPayPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetPayPasswordView.h; sourceTree = "<group>"; };
+		543E233C1E2C78C800381F10 /* SetPayPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetPayPasswordView.m; sourceTree = "<group>"; };
+		543E233E1E2C78D700381F10 /* SetPayPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetPayPasswordViewController.h; sourceTree = "<group>"; };
+		543E233F1E2C78D700381F10 /* SetPayPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetPayPasswordViewController.m; sourceTree = "<group>"; };
+		543E23411E2C8D1600381F10 /* AuthenticationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationView.h; sourceTree = "<group>"; };
+		543E23421E2C8D1600381F10 /* AuthenticationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationView.m; sourceTree = "<group>"; };
+		543E23471E2C8D4000381F10 /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
+		543E23481E2C8D4000381F10 /* AuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationViewController.m; sourceTree = "<group>"; };
+		543E234A1E2C9AB200381F10 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		543E234C1E2CB84B00381F10 /* SetNewPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetNewPasswordViewController.h; sourceTree = "<group>"; };
+		543E234D1E2CB84B00381F10 /* SetNewPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetNewPasswordViewController.m; sourceTree = "<group>"; };
+		543E23501E2CE88B00381F10 /* DCPaymentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCPaymentView.h; sourceTree = "<group>"; };
+		543E23511E2CE88B00381F10 /* DCPaymentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCPaymentView.m; sourceTree = "<group>"; };
 		54443E261E0D252F000D8E8B /* LocalChoseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalChoseView.h; sourceTree = "<group>"; };
 		54443E271E0D252F000D8E8B /* LocalChoseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalChoseView.m; sourceTree = "<group>"; };
 		54443E291E0D284E000D8E8B /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = "<group>"; };
@@ -879,7 +910,6 @@
 		54A153C91DC6F09E0070B508 /* Qatime_StudentUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Qatime_StudentUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		54A153CD1DC6F09E0070B508 /* Qatime_StudentUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Qatime_StudentUITests.m; sourceTree = "<group>"; };
 		54A153CF1DC6F09E0070B508 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		54A47B641DE425ED000216D9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		54A47B671DE42610000216D9 /* em_1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = em_1.gif; sourceTree = "<group>"; };
 		54A47B681DE42610000216D9 /* em_10.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = em_10.gif; sourceTree = "<group>"; };
 		54A47B691DE42610000216D9 /* em_11.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = em_11.gif; sourceTree = "<group>"; };
@@ -1307,6 +1337,8 @@
 				5413D25D1DF7BC8A00A8FDEC /* WidthDrawTableView.m */,
 				5413D25F1DF7BC9400A8FDEC /* PaymentTableView.h */,
 				5413D2601DF7BC9400A8FDEC /* PaymentTableView.m */,
+				542021151E2DF90400517A47 /* RefundTableView.h */,
+				542021161E2DF90400517A47 /* RefundTableView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1320,6 +1352,8 @@
 				5413D2701DF7CF2900A8FDEC /* WithDraw.m */,
 				5413D2721DF7CF3000A8FDEC /* Payment.h */,
 				5413D2731DF7CF3000A8FDEC /* Payment.m */,
+				542021121E2DF7F100517A47 /* Refund.h */,
+				542021131E2DF7F100517A47 /* Refund.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1333,6 +1367,8 @@
 				5413D2671DF7C75D00A8FDEC /* WithDrawTableViewCell.m */,
 				5413D2691DF7C76B00A8FDEC /* PaymentTableViewCell.h */,
 				5413D26A1DF7C76B00A8FDEC /* PaymentTableViewCell.m */,
+				5420210C1E2DF7C100517A47 /* RefundTableViewCell.h */,
+				5420210D1E2DF7C100517A47 /* RefundTableViewCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -1399,21 +1435,21 @@
 			name = "主页页面";
 			sourceTree = "<group>";
 		};
-		54294C741DDB354400677333 /* NEPlayer */ = {
+		54294C741DDB354400677333 /* LivePlayer */ = {
 			isa = PBXGroup;
 			children = (
 				54294C771DDB355400677333 /* Model */,
 				54294C761DDB355300677333 /* View */,
 				54294C751DDB355000677333 /* Controller */,
 			);
-			name = NEPlayer;
+			name = LivePlayer;
 			sourceTree = "<group>";
 		};
 		54294C751DDB355000677333 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				54294C7A1DDB373400677333 /* NELivePlayerViewController.h */,
-				54294C7B1DDB373400677333 /* NELivePlayerViewController.m */,
+				54294C7A1DDB373400677333 /* LivePlayerViewController.h */,
+				54294C7B1DDB373400677333 /* LivePlayerViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1569,6 +1605,7 @@
 		543C207A1DC6F6470086B04B /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				543E234F1E2CE80C00381F10 /* 支付密码框 */,
 				541E20011E1398DB007CF5D1 /* 异常捕获 */,
 				5457317E1E022E5A00F45C03 /* 支付密码 */,
 				5457317D1E022E4700F45C03 /* 该月无课程覆盖图 */,
@@ -1678,6 +1715,48 @@
 				549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		543E23381E2C76DA00381F10 /* 支付密码 */ = {
+			isa = PBXGroup;
+			children = (
+				543E233A1E2C779600381F10 /* view */,
+				543E23391E2C779400381F10 /* Controller */,
+			);
+			name = "支付密码";
+			sourceTree = "<group>";
+		};
+		543E23391E2C779400381F10 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				543E23471E2C8D4000381F10 /* AuthenticationViewController.h */,
+				543E23481E2C8D4000381F10 /* AuthenticationViewController.m */,
+				543E233E1E2C78D700381F10 /* SetPayPasswordViewController.h */,
+				543E233F1E2C78D700381F10 /* SetPayPasswordViewController.m */,
+				543E234C1E2CB84B00381F10 /* SetNewPasswordViewController.h */,
+				543E234D1E2CB84B00381F10 /* SetNewPasswordViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		543E233A1E2C779600381F10 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				543E23411E2C8D1600381F10 /* AuthenticationView.h */,
+				543E23421E2C8D1600381F10 /* AuthenticationView.m */,
+				543E233B1E2C78C800381F10 /* SetPayPasswordView.h */,
+				543E233C1E2C78C800381F10 /* SetPayPasswordView.m */,
+			);
+			name = view;
+			sourceTree = "<group>";
+		};
+		543E234F1E2CE80C00381F10 /* 支付密码框 */ = {
+			isa = PBXGroup;
+			children = (
+				543E23501E2CE88B00381F10 /* DCPaymentView.h */,
+				543E23511E2CE88B00381F10 /* DCPaymentView.m */,
+			);
+			name = "支付密码框";
 			sourceTree = "<group>";
 		};
 		5448AEA51E054C63007B1DF9 /* Cell */ = {
@@ -1992,6 +2071,37 @@
 				54FCBAAE1DD58A6A0094BF58 /* Controller */,
 			);
 			name = "教师公开页";
+			sourceTree = "<group>";
+		};
+		547B6C3C1E2E14ED00C52F1B /* VideoPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				547B6C3F1E2E150100C52F1B /* Model */,
+				547B6C3E1E2E150000C52F1B /* View */,
+				547B6C3D1E2E14FE00C52F1B /* Controller */,
+			);
+			name = VideoPlayer;
+			sourceTree = "<group>";
+		};
+		547B6C3D1E2E14FE00C52F1B /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		547B6C3E1E2E150000C52F1B /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		547B6C3F1E2E150100C52F1B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		547E899A1DD1D8AD00749366 /* HMSegmentedControl */ = {
@@ -2327,8 +2437,8 @@
 				54A153AE1DC6F09D0070B508 /* ViewController.h */,
 				54A153AF1DC6F09D0070B508 /* ViewController.m */,
 				54A153B91DC6F09D0070B508 /* Info.plist */,
-				54A47B641DE425ED000216D9 /* Assets.xcassets */,
 				546978651DC726B3001695F4 /* UserPCH.pch */,
+				543E234A1E2C9AB200381F10 /* Assets.xcassets */,
 				54A153A91DC6F09D0070B508 /* main.m */,
 				54A153A81DC6F09D0070B508 /* Supporting Files */,
 			);
@@ -2524,6 +2634,7 @@
 		54AB48B11DED2CF1008E3BC5 /* 安全管理 */ = {
 			isa = PBXGroup;
 			children = (
+				543E23381E2C76DA00381F10 /* 支付密码 */,
 				543E0CCC1E002930004B24FD /* 绑定邮箱 */,
 				54FB1DD01DF1AB9000BA9A3C /* 安全管理 */,
 				545162B61DF50D62000BD17A /* 修改密码 */,
@@ -3605,6 +3716,8 @@
 				54F63A151E1F9EBB00758B42 /* UITextView+Placeholder.m */,
 				54660F5E1E2642E6009DFB7C /* NSString+ChangeYearsToChinese.h */,
 				54660F5F1E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m */,
+				542020FD1E2DBE5100517A47 /* UIViewController+AFHTTP.h */,
+				542020FE1E2DBE5100517A47 /* UIViewController+AFHTTP.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -3653,7 +3766,8 @@
 		54FCBAC61DD591AA0094BF58 /* 视频播放页 */ = {
 			isa = PBXGroup;
 			children = (
-				54294C741DDB354400677333 /* NEPlayer */,
+				54294C741DDB354400677333 /* LivePlayer */,
+				547B6C3C1E2E14ED00C52F1B /* VideoPlayer */,
 			);
 			name = "视频播放页";
 			sourceTree = "<group>";
@@ -3884,6 +3998,7 @@
 				54AF51C61DE8226900581C4A /* Emotions.bundle in Resources */,
 				54A47BB81DE42610000216D9 /* em_15.gif in Resources */,
 				54A47BD81DE42610000216D9 /* em_44.gif in Resources */,
+				543E234B1E2C9AB200381F10 /* Assets.xcassets in Resources */,
 				54A47BEE1DE42610000216D9 /* em_64.gif in Resources */,
 				54A47BB61DE42610000216D9 /* em_13.gif in Resources */,
 				544C15121DC73ADA00F59F86 /* selected.png in Resources */,
@@ -3897,7 +4012,6 @@
 				548328CF1DDC6F360053AB29 /* chat_animation3.png in Resources */,
 				54A47BE71DE42610000216D9 /* em_58.gif in Resources */,
 				54A47BF11DE42610000216D9 /* em_67.gif in Resources */,
-				54A47B651DE425EE000216D9 /* Assets.xcassets in Resources */,
 				54A47BBD1DE42610000216D9 /* em_2.gif in Resources */,
 				54294CC61DDB3BB100677333 /* LSMediaCapture.bundle in Resources */,
 				54A47BCD1DE42610000216D9 /* em_34.gif in Resources */,
@@ -4108,9 +4222,11 @@
 				54AB48F71DED6257008E3BC5 /* UnstartClassTableViewCell.m in Sources */,
 				54B73D081DE40B1800B7A7EB /* NSString+Emojize.m in Sources */,
 				546978591DC723BD001695F4 /* LoginView.m in Sources */,
+				543E234E1E2CB84B00381F10 /* SetNewPasswordViewController.m in Sources */,
 				54AB48DB1DED5196008E3BC5 /* MyOrderViewController.m in Sources */,
 				548328EE1DDC6F360053AB29 /* UUMessageContentButton.m in Sources */,
 				548328EB1DDC6F360053AB29 /* UUInputFunctionView.m in Sources */,
+				543E23401E2C78D700381F10 /* SetPayPasswordViewController.m in Sources */,
 				545162D81DF55DD0000BD17A /* PersonalTableViewCell.m in Sources */,
 				54D66F871DEC406B00ED2EBC /* CalendarView.m in Sources */,
 				54DBA4B01DE4423300A67A90 /* YZEmotionCell.m in Sources */,
@@ -4118,6 +4234,7 @@
 				5448AEA81E054C7A007B1DF9 /* ChatListTableViewCell.m in Sources */,
 				54294C701DDB062000677333 /* Teacher.m in Sources */,
 				54AB49001DEDABCC008E3BC5 /* EndedTableViewCell.m in Sources */,
+				543E23491E2C8D4000381F10 /* AuthenticationViewController.m in Sources */,
 				543E0CBE1DFFDA77004B24FD /* PayConfirmView.m in Sources */,
 				5435D9401DD3125800DD4FCC /* TeachersPublicViewController.m in Sources */,
 				541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */,
@@ -4176,6 +4293,7 @@
 				549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */,
 				54B73CFB1DE3E40300B7A7EB /* MembersListView.m in Sources */,
 				543E0CCF1E002960004B24FD /* BindingMailView.m in Sources */,
+				543E23431E2C8D1600381F10 /* AuthenticationView.m in Sources */,
 				54FCBAFC1DD5DCEE0094BF58 /* Members.m in Sources */,
 				544E0CE11DD090A700884F31 /* RecommandClassCollectionViewCell.m in Sources */,
 				54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */,
@@ -4216,6 +4334,7 @@
 				54AA30881DF98C40009E0D04 /* MyOrderView.m in Sources */,
 				54D66F791DEC087D00ED2EBC /* NSString+StatusSwitch.m in Sources */,
 				547FBF311DF6B99600955A9E /* PersonalDescViewController.m in Sources */,
+				542020FF1E2DBE5100517A47 /* UIViewController+AFHTTP.m in Sources */,
 				54294C6A1DDAFCF600677333 /* ClassList.m in Sources */,
 				5448AEAB1E054CA4007B1DF9 /* NoticeListTableViewCell.m in Sources */,
 				54AA309B1DF98D30009E0D04 /* MyOrderTableViewCell.m in Sources */,
@@ -4236,14 +4355,16 @@
 				5413D26E1DF7CF1C00A8FDEC /* Recharge.m in Sources */,
 				548328EF1DDC6F360053AB29 /* UUMessageFrame.m in Sources */,
 				5435D9521DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m in Sources */,
+				542021141E2DF7F100517A47 /* Refund.m in Sources */,
 				545B3BAD1E0AA2DD00751D08 /* GradeList.m in Sources */,
 				5407C98D1DE7DDED00DB04C8 /* NSObject+YYAdd.m in Sources */,
 				54F47E851E08F77600D896DB /* UIButton+Touch.m in Sources */,
 				5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */,
 				54443E281E0D252F000D8E8B /* LocalChoseView.m in Sources */,
 				54AB48DE1DED51A0008E3BC5 /* MyClassViewController.m in Sources */,
+				543E233D1E2C78C800381F10 /* SetPayPasswordView.m in Sources */,
 				543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */,
-				54294C7D1DDB373400677333 /* NELivePlayerViewController.m in Sources */,
+				54294C7D1DDB373400677333 /* LivePlayerViewController.m in Sources */,
 				54AB48D21DED3389008E3BC5 /* SettingTableViewCell.m in Sources */,
 				54652E311DEEBDC300F4607C /* ClassNoticeSettingView.m in Sources */,
 				54660F601E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m in Sources */,
@@ -4267,6 +4388,7 @@
 				543E0CC11DFFDA82004B24FD /* PayConfirmViewController.m in Sources */,
 				542C17381DFA50460088DB3F /* PaidOrderTableViewCell.m in Sources */,
 				542C173E1DFA50760088DB3F /* Unpaid.m in Sources */,
+				5420210E1E2DF7C100517A47 /* RefundTableViewCell.m in Sources */,
 				54DBA4BA1DE442D900A67A90 /* YZInputView.m in Sources */,
 				5407C9961DE7DE8400DB04C8 /* NSNumber+YYAdd.m in Sources */,
 				541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */,
@@ -4299,6 +4421,7 @@
 				545226051E2482C800F36280 /* EditHeadTableViewCell.m in Sources */,
 				5407C9931DE7DE7500DB04C8 /* NSData+YYAdd.m in Sources */,
 				545226081E2482E100F36280 /* EditNameTableViewCell.m in Sources */,
+				542021171E2DF90400517A47 /* RefundTableView.m in Sources */,
 				54652E051DEE823100F4607C /* FileService.m in Sources */,
 				547FBF351DF6CEC800955A9E /* PersonalDescTableViewCell.m in Sources */,
 				54AB48E71DED606F008E3BC5 /* UnStartClassView.m in Sources */,
@@ -4308,6 +4431,7 @@
 				547A7EFD1DD416F100F1282B /* ListenAndBuyTabBar.m in Sources */,
 				54652E081DEE9D1900F4607C /* AboutUsView.m in Sources */,
 				5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */,
+				543E23521E2CE88B00381F10 /* DCPaymentView.m in Sources */,
 				5435D9491DD3160600DD4FCC /* TeachersPublicHeaderView.m in Sources */,
 				5435D94F1DD31B4700DD4FCC /* TeachersPublicInfo.m in Sources */,
 			);

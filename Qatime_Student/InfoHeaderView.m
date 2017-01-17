@@ -134,17 +134,24 @@
         .autoHeightRatio(0)
         .rightSpaceToView(self,20);
         _classDescriptionLabel.numberOfLines = 0;
-        [_classDescriptionLabel setText:@"sdfasdf;dsjfl;aksdjfl;kajsdfl;kjd案例可使肌肤撒；地方就爱上了贷款；发牢骚；的看法阿里斯顿；会计法；斯蒂芬极乐空间；来得及发拉卡斯加对方；来的斯洛伐克骄傲；是打飞机了；是看得见；了解；拉伸的解放了；卡斯加对方；年教室里；大框架；爱睡懒觉了；可擦拭；地方叫阿里；斯柯达积分；爱上当减肥了；卡斯加对方；加上；的离开房间；爱的解放了；卡死的缴费；来说的缴费；拉斯柯达积分；爱上当减肥；拉斯柯达积分了；奥斯卡的风景说大法师打发"];
+        [_classDescriptionLabel setText:@""];
         
         
+        /* 分割线1*/
+        UIView *line1 =[[UIView alloc]init];
+        line1.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.00];
+        [self addSubview:line1];
         
+        line1.sd_layout
+        .leftEqualToView(self)
+        .rightEqualToView(self)
+        .topSpaceToView(_classDescriptionLabel,10)
+        .heightIs(10);
         
         
 #pragma mark- view3的下拉view  教师详情页
         
-        /* 教师头像*/
-        _teacherHeadImage = [[UIImageView alloc]init];
-        [self addSubview:_teacherHeadImage];
+        
         
         /* 教师姓名*/
         _teacherNameLabel =[[UILabel alloc]init];
@@ -153,11 +160,10 @@
         
         _teacherNameLabel.sd_layout
         .leftSpaceToView(self,20)
-        .topSpaceToView(_classDescriptionLabel,20)
+        .topSpaceToView(line1,20)
         .autoHeightRatio(0);
         [_teacherNameLabel setSingleLineAutoResizeWithMaxWidth:100];
         _teacherNameLabel.text = @"教师姓名";
-        
         
         
         
@@ -203,10 +209,11 @@
         
         
         
-        
-        
         UILabel *schools=[[UILabel alloc]init];
-        //        schools.font = [UIFont systemFontOfSize:16];
+//        schools.font = [UIFont systemFontOfSize:14*ScrenScale];
+        schools.textColor = [UIColor blackColor];
+        
+        
         
         [self addSubview:schools];
         
@@ -217,6 +224,18 @@
         .autoHeightRatio(0);
         [schools setSingleLineAutoResizeWithMaxWidth:300];
         schools.text = @"所在学校" ;
+        
+        
+        /* 教师头像*/
+        _teacherHeadImage = [[UIImageView alloc]init];
+        [self addSubview:_teacherHeadImage];
+        _teacherHeadImage.sd_layout
+        .topEqualToView(_teacherNameLabel)
+        .rightSpaceToView(self,15)
+        .bottomSpaceToView(schools,0)
+        .widthEqualToHeight();
+        
+
         
         
         
@@ -283,15 +302,15 @@
         
         
         /* 自动布局参考线*/
-        _layoutLine = [[UILabel alloc]init];
+        _layoutLine = [[UIView alloc]init];
+        _layoutLine.backgroundColor =[UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.00];
         [self addSubview:_layoutLine];
         _layoutLine.sd_layout
         .leftEqualToView(self)
         .rightEqualToView(self)
-        .topSpaceToView(_selfInterview,20)
-        .autoHeightRatio(0);
-        _layoutLine . text = @"";
-        [_layoutLine setSingleLineAutoResizeWithMaxWidth:100];
+        .topSpaceToView(_selfInterview,10)
+        .heightIs(10);
+        
         
         
         

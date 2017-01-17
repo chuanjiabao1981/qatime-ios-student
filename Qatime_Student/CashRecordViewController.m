@@ -13,16 +13,24 @@
 #import "RechargeTableViewCell.h"
 #import "WithDrawTableViewCell.h"
 #import "PaymentTableViewCell.h"
+#import "RefundTableViewCell.h"
 #import "RDVTabBarController.h"
 
 #import "Recharge.h"
 #import "WithDraw.h"
 #import "Payment.h"
+#import "Refund.h"
+
 #import "HaveNoClassView.h"
 
 #import "UIViewController+HUD.h"
 #import "UIAlertController+Blocks.h"
 #import "ConfirmChargeViewController.h"
+#import "UIViewController+AFHTTP.h"
+
+
+
+#import "DrawBackViewController.h"
 
 
 @interface CashRecordViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
@@ -41,6 +49,7 @@
     NSMutableArray *_rechargeArr;
     NSMutableArray *_withDrawArr;
     NSMutableArray *_paymentArr;
+    NSMutableArray *_refundArr;
     
     
    
@@ -122,6 +131,10 @@
     _cashRecordView.paymentView.dataSource = self;
     _cashRecordView.paymentView.tag = 3;
     
+    _cashRecordView.refundView.delegate = self;
+    _cashRecordView.refundView.dataSource = self;
+    _cashRecordView.refundView.tag = 4;
+    
     _cashRecordView.scrollView.delegate = self;
     
     
@@ -143,6 +156,7 @@
     _rechargeArr = @[].mutableCopy;
     _withDrawArr = @[].mutableCopy;
     _paymentArr = @[].mutableCopy;
+    _refundArr = @[].mutableCopy;
     
     
     /* 请求充值记录数据*/
@@ -153,6 +167,8 @@
     /* 请求提现记录*/
     [self requestPayment];
     
+    /* 请求退款记录*/
+    [self requestRefunds];
     
     /* 初始化无数据占位图*/
     
@@ -211,22 +227,27 @@
                     
                     if ([[dataArr[i] valueForKey:@"pay_type"]isEqualToString:@"alipay"]) {
                         
-                        
                         mod.timeStamp = @"无";
+                        
                     }else{
                         
                         NSString *timeStamp = [[dataArr[i] valueForKey:@"app_pay_params"]valueForKey:@"timestamp"];
                         
-                        NSTimeInterval time=[timeStamp integerValue]+28800;//因为时差问题要加8小时 == 28800 sec
-                        NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
-                        
-                        //实例化一个NSDateFormatter对象
-                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
-                        //设定时间格式,这里可以设置成自己需要的格式
-                        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-                        NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
-                        
-                        mod.timeStamp = currentDateStr;
+                        if (![timeStamp isEqual:[NSNull null]]) {
+                            
+                            NSTimeInterval time=[timeStamp integerValue]+28800;//因为时差问题要加8小时 == 28800 sec
+                            NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
+                            
+                            //实例化一个NSDateFormatter对象
+                            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+                            //设定时间格式,这里可以设置成自己需要的格式
+                            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+                            NSString *currentDateStr = [dateFormatter stringFromDate:detaildate];
+                            
+                            mod.timeStamp = currentDateStr;
+                        }else{
+                            mod.timeStamp = @"";
+                        }
                     }
                     
                     [_rechargeArr addObject:mod];
@@ -413,6 +434,70 @@
     }];
     
     
+}
+
+
+#pragma mark- 请求退款记录
+- (void)requestRefunds{
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/refunds",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+       
+        /* 无记录占位图*/
+        HaveNoClassView *_noDataView = [[HaveNoClassView alloc]init];
+        _noDataView.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd-64-_cashRecordView.segmentControl.height_sd);
+        _noDataView.titleLabel.text = @"暂时没有数据";
+        [_cashRecordView.paymentView addSubview:_noDataView];
+        _noDataView.hidden = NO;
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil] ;
+        if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+            
+            /* 获取数据成功  数据写到rechararr数组里*/
+            NSMutableArray *refund = [NSMutableArray arrayWithArray:dic[@"data"]];
+            
+            if (refund.count!=0) {
+                
+                _noDataView.hidden = YES;
+                
+                for (NSInteger i = 0; i<refund.count; i++) {
+                    
+                    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:refund[i]];
+                    for (NSString *key in refund[i]) {
+                        
+                        if ([dic valueForKey:key]==nil||[[dic valueForKey:key]isEqual:[NSNull null]]) {
+                            [dic setValue:@"" forKey:key];
+                            
+                        }
+                    }
+                    
+                    Refund *refundMod = [Refund yy_modelWithJSON:dic];
+                    
+                    refundMod.idNumber = refund[i][@"id"];
+                    
+                    
+                    [_refundArr addObject:refundMod];
+                    
+                }
+                
+                [self loadingHUDStopLoadingWithTitle:@"加载成功!"];
+                
+            }else{
+                
+                /* 数据为0条*/
+                
+                [self loadingHUDStopLoadingWithTitle:@"没有消费记录!"];
+                
+            }
+            
+            [_cashRecordView.refundView reloadData];
+            
+            
+        }
+
+        
+        
+    }];
+    
     
     
 }
@@ -443,6 +528,14 @@
         case 3:{
             if (_paymentArr.count!=0) {
                 rows = _paymentArr.count;
+            }
+            
+        }
+            break;
+            
+        case 4:{
+            if (_refundArr.count!=0) {
+                rows = _refundArr.count;
             }
             
         }
@@ -530,10 +623,33 @@
             return  cell;
             
             
+        }
+            break;
+        case 4:{
+            
+            /* cell的重用队列*/
+            static NSString *cellIdenfier = @"cell";
+            RefundTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+            if (cell==nil) {
+                cell=[[RefundTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+                
+            }
+            
+            
+            if (_refundArr.count> indexPath.row) {
+                
+                cell.model  = _refundArr[indexPath.row];
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+            }
+            
+            return  cell;
+            
+            
             
             
         }
             break;
+
             
     }
     
@@ -546,7 +662,6 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     CGFloat height = 1;
-    
     
     switch (tableView.tag) {
         case 1:{
@@ -581,6 +696,19 @@
         }
             
             break;
+            
+        case 4:{
+            if (_refundArr.count  >indexPath.row) {
+                
+                id mod = _refundArr[indexPath.row];
+                
+                height =  [tableView cellHeightForIndexPath:indexPath model:mod keyPath:@"model" cellClass:[RefundTableViewCell class] contentViewWidth:self.view.width_sd];
+            }
+            
+        }
+            
+            break;
+
             
             
     }

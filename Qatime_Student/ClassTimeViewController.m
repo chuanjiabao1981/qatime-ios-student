@@ -22,7 +22,7 @@
 
 /* 点击事件 -> 辅导班详情页*/
 #import "TutoriumInfoViewController.h"
-#import "NELivePlayerViewController.h"
+#import "LivePlayerViewController.h"
 #import "UIAlertController+Blocks.h"
 
 #define SCREENWIDTH self.view.frame.size.width
@@ -618,7 +618,7 @@
     
     ClassTimeTableViewCell *cell = [_classTimeView.notClassView.notClassTableView cellForRowAtIndexPath:indePath];
     
-    NELivePlayerViewController *controller = [[NELivePlayerViewController alloc]initWithClassID:cell.model.course_id];
+    LivePlayerViewController *controller = [[LivePlayerViewController alloc]initWithClassID:cell.model.course_id];
     [self.navigationController pushViewController:controller animated:YES];
     
 }

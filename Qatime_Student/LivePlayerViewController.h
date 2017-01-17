@@ -1,5 +1,5 @@
 //
-//  NELivePlayerViewController.h
+//  LivePlayerViewController.h
 //  NELivePlayerDemo
 //
 //  Created by NetEase on 15-10-10.
@@ -23,7 +23,7 @@
 
 
 @class NELivePlayerControl;
-@interface NELivePlayerViewController : UIViewController <NELivePlayer>
+@interface LivePlayerViewController : UIViewController <NELivePlayer>
 
 /* 播放器 的属性 */
 @property(nonatomic, strong) NSURL *url;
@@ -62,6 +62,8 @@
 /* 弹幕开关*/
 @property(nonatomic,strong) UIButton *barrage ;
 
+/* 副屏幕开关按钮*/
+@property(nonatomic,strong) UIButton *subScreenSwitch ;
 
 /**
  *  点击发送，会自动把文本框的内容传递过来

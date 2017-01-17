@@ -14,6 +14,7 @@
 #import "PaidOrderView.h"
 #import "CanceldOrderView.h"
 
+
 @interface MyOrderViewController : UIViewController
 
 @property(nonatomic,strong) MyOrderView *myOrderView ;
@@ -26,5 +27,6 @@
 @property(nonatomic,strong) PaidOrderView *paidView ;
 /* 取消列表页*/
 @property(nonatomic,strong) CanceldOrderView *cancelView ;
+
 
 @end

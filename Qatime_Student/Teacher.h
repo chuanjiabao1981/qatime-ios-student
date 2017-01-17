@@ -54,6 +54,9 @@
 @property(nonatomic,strong) NSString *school ;
 @property(nonatomic,strong) NSString *desc ;
 
+@property(nonatomic,strong) NSString *accid ;
+@property(nonatomic,strong) NSString *icon ;
+
 
 
 

@@ -17,7 +17,7 @@
 #import "AboutUsViewController.h"
 #import "NoticeSettingViewController.h"
 
-#import "NELivePlayerViewController.h"
+#import "LivePlayerViewController.h"
 #import "UIAlertController+Blocks.h"
 
 #define SCREENWIDTH self.view.frame.size.width
@@ -66,7 +66,7 @@
     });
     
     
-    menus = @[@"提醒设置",@"检查更新",@"清理缓存",@"关于我们",@"学习流程",@"意见反馈"];
+    menus = @[@"提醒设置",@"检查更新",@"清理缓存",@"关于我们",@"学习流程"];
     
     _settingView = [[SettingView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT)];
     [self.view addSubview:_settingView];
@@ -114,7 +114,7 @@
  */
 - (void)play{
     
-    NELivePlayerViewController *vc = [[NELivePlayerViewController alloc]initWithClassID:@"32"];
+    LivePlayerViewController *vc = [[LivePlayerViewController alloc]initWithClassID:@"32"];
     
     [self.navigationController pushViewController:vc animated:YES];
 }

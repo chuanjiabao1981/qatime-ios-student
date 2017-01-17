@@ -14,6 +14,8 @@
 
 @property(nonatomic,strong) DrawBackView *drawBackView ;
 
+@property(nonatomic,strong) UIButton *finishButton ;
+
 
 
 -(instancetype)initWithPaidOrder:(Paid *)paidOrder;

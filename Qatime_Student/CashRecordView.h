@@ -11,6 +11,7 @@
 #import "RechargeTableView.h"
 #import "WidthDrawTableView.h"
 #import "PaymentTableView.h"
+#import "RefundTableView.h"
 
 @interface CashRecordView : UIView
 
@@ -22,7 +23,7 @@
 @property(nonatomic,strong) UIScrollView *scrollView ;
 
 
-/* 3张图*/
+/* 4张图*/
 /* 充值记录*/
 @property(nonatomic,strong) RechargeView *rechargeView ;
 
@@ -32,4 +33,6 @@
 /* 消费记录*/
 @property(nonatomic,strong) PaymentView *paymentView ;
 
+/* 退款记录*/
+@property(nonatomic,strong) RefundTableView *refundView ;
 @end

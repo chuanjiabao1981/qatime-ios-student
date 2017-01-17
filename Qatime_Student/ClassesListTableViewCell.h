@@ -31,7 +31,8 @@
 @property(nonatomic,strong) NSString *class_status ;
 
 
-
+/* 回放次数*/
+@property(nonatomic,strong) UIButton *replay ;
 
 /* 数据model 用来计算高度*/
 @property(nonatomic,strong) ClassesInfo_Time *model ;

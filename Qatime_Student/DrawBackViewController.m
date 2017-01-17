@@ -9,8 +9,10 @@
 #import "DrawBackViewController.h"
 #import "NavigationBar.h"
 #import "UIViewController_HUD.h"
+#import "UIViewController+AFHTTP.h"
+#import "UIAlertController+Blocks.h"
 
-@interface DrawBackViewController (){
+@interface DrawBackViewController ()<UITextViewDelegate,UITextInputDelegate>{
     
     NavigationBar *_navigationBar;
     
@@ -51,6 +53,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     _navigationBar.titleLabel.text = @"退款申请";
@@ -65,12 +68,35 @@
     }
     
     _dataDic = @{}.mutableCopy;
+//    _drawBackView.userInteractionEnabled = YES;
+//    _drawBackView.reason.selectable = YES;
+    
     
     
     /* 请求数据*/
     [self requestDrawback];
     
+    //增加监听，当键盘出现或改变时收出消息
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    
+    //增加监听，当键退出时收出消息
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
+    
 }
+
+- (void)textViewDidChange:(UITextView *)textView{
+    
+    if (textView.text.length>=20) {
+        [textView.text substringToIndex:20];
+        [self loadingHUDStopLoadingWithTitle:@"最多输入20个字"];
+    }
+    
+    
+}
+
+
+
 
 /* 请求退款信息数据*/
 - (void)requestDrawback{
@@ -91,10 +117,11 @@
             
         }else{
            /* 请求数据失败*/
+            [self loadingHUDStopLoadingWithTitle:@"服务器繁忙,请稍后重试"];
             
+            [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
         }
-        
-        
+    
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -121,13 +148,99 @@
             
         }else if ([_dataDic[@"pay_type"]isEqualToString:@"alipay"]){
             _drawBackView.drawBackWay.text = @"支付宝";
-        }else if ([_dataDic[@"pay_type"]isEqualToString:@"balance"]){
+        }else if ([_dataDic[@"pay_type"]isEqualToString:@"account"]){
             _drawBackView.drawBackWay.text = @"退至余额";
             
         }
         
+    }
+    
+    [_drawBackView.finishButton addTarget:self action:@selector(requestToRefund) forControlEvents:UIControlEventTouchUpInside];
+    
+    _drawBackView.reason.delegate = self;
+
+    
+}
+
+#pragma mark- 发送申请退款请求
+- (void)requestToRefund{
+    
+    if (_drawBackView.reason.text.length==0) {
+        
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入退款原因" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+        
+    }else{
+        
+        [self loadingHUDStartLoadingWithTitle:@"正在提交申请"];
+        [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/refunds",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"order_id":_paidOrder.orderID,@"reason":_drawBackView.reason.text} completeSuccess:^(id  _Nullable responds) {
+            
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                [self loadingHUDStopLoadingWithTitle:@"申请成功!"];
+                
+                [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
+                
+                
+            }else{
+                [self loadingHUDStopLoadingWithTitle:@"服务器正忙,请稍后再试."];
+                 [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
+            }
+            
+            
+            NSLog(@"%@", dic);
+            
+        }];
+
         
     }
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    
+    // 获取通知的信息字典
+    NSDictionary *userInfo = [notification userInfo];
+    
+    // 获取键盘弹出后的rect
+    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    
+    // 获取键盘弹出动画时间
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    
+    [UIView animateWithDuration:animationDuration animations:^{
+        
+        self.view.frame = CGRectMake(0, -keyboardRect.size.height+60, self.view.width_sd, self.view.height_sd) ;
+        
+    }];
+    
+}
+
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    
+    // 获取通知信息字典
+    NSDictionary* userInfo = [notification userInfo];
+    
+    // 获取键盘隐藏动画时间
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    
+    [UIView animateWithDuration:animationDuration animations:^{
+        
+        self.view.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd);
+    }];
+    
+}
+
+
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
+    [_drawBackView.reason resignFirstResponder];
     
 }
 

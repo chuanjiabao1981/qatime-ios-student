@@ -16,6 +16,9 @@
     
     BOOL findPassword;
     
+    
+    BOOL changePassword;
+    
 }
 
 @end
@@ -28,12 +31,14 @@
     if (self) {
        
         findPassword = YES;
+        changePassword = YES;
         
 
     }
     return self;
     
 }
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -61,6 +66,10 @@
         
         _findPasswordView.getCheckCodeButton.enabled = YES;
         [_findPasswordView.getCheckCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }
+    
+    if (changePassword == YES) {
+        _findPasswordView.phoneNumber.enabled = NO;
     }
     
 }
@@ -132,9 +141,9 @@
                     
                     /* 发送成功提示框*/
                     [self loadingHUDStopLoadingWithTitle:@"密码修改成功!"];
+                    [self performSelector:@selector(backToFrontPage:) withObject:nil afterDelay:1];
                     
                     
-                    [self.navigationController popViewControllerAnimated:YES];
                     
                     
                 }
@@ -260,7 +269,7 @@
 #pragma 正则匹配用户密码 6 - 16 位数字和字母组合
 -(BOOL)checkPassWord:(NSString *)password{
     //6-16位数字和字母组成
-    NSString *regex = @"^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
+    NSString *regex = @"^[A-Za-z0-9]{6,16}$";
     NSPredicate *   pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
     if ([pred evaluateWithObject:password]) {
         return YES ;

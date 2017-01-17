@@ -8,7 +8,7 @@
 
 #import "PersonalViewController.h"
 #import "NavigationBar.h"
-#import "NELivePlayerViewController.h"
+#import "LivePlayerViewController.h"
 #import "NIMSDK.h"
 #import "UIImageView+WebCache.h"
 #import "SettingTableViewCell.h"
@@ -35,7 +35,7 @@
     NSString *_token;
     NSString *_idNumber;
     
-    NELivePlayerViewController *neVideoVC;
+    LivePlayerViewController *neVideoVC;
     
     NavigationBar *_navigationBar;
     
@@ -222,6 +222,10 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
+            
+            /* 在本地保存是否用户设置了支付密码*/
+            [[NSUserDefaults standardUserDefaults]setBool:[dic[@"data"][@"has_password"] boolValue] forKey:@"have_paypassword"];
+            
             
             /* 获取cash接口的信息成功*/
             _balance = [NSString stringWithFormat:@"%@",dic[@"data"][@"balance"]];

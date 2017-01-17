@@ -32,7 +32,7 @@
 #import "NSDate+ChangeUTC.h"
 #import "UITextView_Placeholder.h"
 
-#import "NELivePlayerViewController.h"
+#import "LivePlayerViewController.h"
 #import "NIMSDK.h"
 
 
@@ -933,7 +933,7 @@
 #pragma mark- 进入直播
 - (void)enterLive{
     
-    NELivePlayerViewController *playerVC = [[NELivePlayerViewController alloc]initWithClassID:_tutoriumInfo.classID];
+    LivePlayerViewController *playerVC = [[LivePlayerViewController alloc]initWithClassID:_tutoriumInfo.classID];
     [self.navigationController pushViewController:playerVC animated:YES];
     
     

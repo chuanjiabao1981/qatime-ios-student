@@ -51,5 +51,12 @@
 @property(nonatomic,strong) NSString *describe ;
 @property(nonatomic,strong) NSString *lesson_count ;
 
+/* 观看回放的相关属性*/
+@property(nonatomic,strong) NSString *replayable ;
+@property(nonatomic,assign) NSInteger left_replay_times ;
+
+
+
+
 
 @end

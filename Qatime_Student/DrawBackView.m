@@ -78,6 +78,7 @@
         _reason.layer.borderColor = TITLECOLOR.CGColor;
         _reason.layer.borderWidth = 0.6;
         _reason.placeholder = @"请输入退款原因(20字以内)";
+        _reason.placeholderLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         
         /* 说明*/
         UILabel *tips = [[UILabel alloc]init];
@@ -91,6 +92,8 @@
         _finishButton.layer.borderWidth =1;
         _finishButton.layer.borderColor = BUTTONRED.CGColor;
         [_finishButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+        [_finishButton setBackgroundColor:[UIColor whiteColor]];
+        
         
         /* 布局*/
         [self sd_addSubviews:@[number,_number,classname,_className,progress,_progress,price,_price,paidPrice,_paidPrice,drawBackWay,_drawBackWay,enabeldrawBackPrice,_enableDrawbackPrice,_reason,tips,_finishButton]];
@@ -212,5 +215,7 @@
     }
     return self;
 }
+
+
 
 @end
