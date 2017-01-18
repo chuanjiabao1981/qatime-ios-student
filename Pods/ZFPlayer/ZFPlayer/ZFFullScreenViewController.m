@@ -36,7 +36,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     [self.view addSubview:self.playerView];
-}
+    }
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -46,7 +46,7 @@
     }];
     if (self.orientation == UIInterfaceOrientationLandscapeLeft) {
         self.playerView.transform = CGAffineTransformMakeRotation(M_PI_2);
-    } else {
+    }else {
         self.playerView.transform = CGAffineTransformMakeRotation(-M_PI_2);
     }
     [UIView animateWithDuration:0.5 animations:^{
@@ -75,8 +75,7 @@
     return self.orientation;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
         [self dismissViewControllerAnimated:NO completion:nil];
     }

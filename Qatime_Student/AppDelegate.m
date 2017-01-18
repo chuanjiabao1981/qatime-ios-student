@@ -436,11 +436,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (void)changeRootViewConroller:(NSNotification *)notification{
     
     _viewController = [[ViewController alloc]init];
-    //    UINavigationController *navVC = [[UINavigationController alloc]initWithRootViewController:_viewController];
+        UINavigationController *navVC = [[UINavigationController alloc]initWithRootViewController:_viewController];
     
     [UIView transitionFromView:_window.rootViewController.view toView:_viewController.view duration:0.5 options:UIViewAnimationOptionTransitionFlipFromRight completion:^(BOOL finished) {
         
-        [_window setRootViewController:_viewController];
+        [_window setRootViewController:navVC];
     }];
     
 }

@@ -23,6 +23,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ZFPlayer.h"
+#import "ZFPlayerModel.h"
 
 @interface UIView (CustomControlView)
 @property (nonatomic, weak) id<ZFPlayerControlViewDelagate> delegate;

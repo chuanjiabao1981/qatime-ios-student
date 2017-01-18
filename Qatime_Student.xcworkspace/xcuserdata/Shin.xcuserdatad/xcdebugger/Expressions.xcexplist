@@ -230,10 +230,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -454,6 +454,14 @@
          contextName = "__38-[OrderViewController finishAndCommit]_block_invoke:OrderViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[VideoPlayerViewController zf_controlView:resolutionAction:]:VideoPlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "sender.tag">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[MyClassViewController enterListen:]:MyClassViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -536,6 +544,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[ViewController supportedInterfaceOrientations]:ViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "result">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[VideoViewController tableView:numberOfRowsInSection:]:VideoViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -578,6 +594,14 @@
       </ContextState>
       <ContextState
          contextName = "__42-[ChatViewController requestServerHistory]_block_invoke:ChatViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[UINavigationController(ZFPlayerRotation) supportedInterfaceOrientations]:UINavigationController+ZFPlayerRotation.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[self.visibleViewController supportedInterfaceOrientations]">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[ChatViewController requestChatHitstory]:ChatViewController.m">

@@ -24,6 +24,8 @@
 #import "UIAlertController+Blocks.h"
 
 #import "LivePlayerViewController.h"
+#import "ReplayVideoPlayerViewController.h"
+#import "VideoPlayerViewController.h"
 
 
 @interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>{
@@ -638,26 +640,34 @@
 /* 点击课程表,进入回放的点击事件*/
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    ClassesListTableViewCell *cell = [_tutoriumInfoView.classesListTableView cellForRowAtIndexPath:indexPath];
     
-    if (cell.model.replayable == YES) {
-        /* 可以试听的情况*/
-        if ([cell.model.left_replay_times integerValue]>0) {
-            /* 剩余试听次数大于0的情况,可以继续试听*/
-            
-            
-            
-        }else{
-            /* 剩余试听次数小于0,不可以继续试听*/
-            [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
-        }
+    
+    
+    NSString *playURL = nil;
+    NSString *name = nil;
+    
+    ClassesListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    
+    name = [NSString stringWithFormat:@"%@",cell.model.name];
+    playURL = [NSString stringWithFormat:@"%@",cell.model.replayable];
+    
+    
+    
+    
+    
+    NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+    [decodeParm addObject:@"hardware"];
+    [decodeParm addObject:@"videoOnDemand"];
+
+    VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:@"http://baobab.wdjcdn.com/1456117847747a_x264.mp4"] andDecodeParm:decodeParm andTitle:@"Hello World !"];
+    [self presentViewController:video animated:YES completion:^{
         
-        
-        
-    }else{
-        [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
-        
-    }
+    }];
+    
+    
+    
+    
     
     
 }

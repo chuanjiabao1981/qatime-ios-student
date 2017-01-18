@@ -378,6 +378,8 @@
 		54D66F7C1DEC33B100ED2EBC /* AllClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D66F7B1DEC33B100ED2EBC /* AllClassView.m */; };
 		54D66F7F1DEC33C300ED2EBC /* AllClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D66F7E1DEC33C300ED2EBC /* AllClassViewController.m */; };
 		54D66F871DEC406B00ED2EBC /* CalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D66F861DEC406B00ED2EBC /* CalendarView.m */; };
+		54D75FDA1E2F9074003744FE /* VideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D75FD91E2F9074003744FE /* VideoPlayerViewController.m */; };
+		54D75FDD1E2F9F87003744FE /* Replay.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D75FDC1E2F9F87003744FE /* Replay.m */; };
 		54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D8DDBA1DCB634100F0B408 /* PersonalView.m */; };
 		54DBA4AB1DE4423300A67A90 /* Emotion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 54DBA4981DE4423300A67A90 /* Emotion.bundle */; };
 		54DBA4AC1DE4423300A67A90 /* emotion.plist in Resources */ = {isa = PBXBuildFile; fileRef = 54DBA4991DE4423300A67A90 /* emotion.plist */; };
@@ -415,7 +417,6 @@
 		54FB1DCD1DF172F300BA9A3C /* BindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB1DCC1DF172F300BA9A3C /* BindingViewController.m */; };
 		54FB1DD71DF1AC2C00BA9A3C /* ParentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB1DD61DF1AC2C00BA9A3C /* ParentView.m */; };
 		54FB1DDA1DF1AC3D00BA9A3C /* ParentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB1DD91DF1AC3D00BA9A3C /* ParentViewController.m */; };
-		54FCBAC11DD58EB60094BF58 /* UIViewController+ZFPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAC01DD58EB60094BF58 /* UIViewController+ZFPlayer.m */; };
 		54FCBAE01DD5B3050094BF58 /* VideoInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBADF1DD5B3050094BF58 /* VideoInfoView.m */; };
 		54FCBAEC1DD5CA9F0094BF58 /* NoticeAndMembers.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAEB1DD5CA9F0094BF58 /* NoticeAndMembers.m */; };
 		54FCBAF31DD5CB6B0094BF58 /* NoticeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAF21DD5CB6B0094BF58 /* NoticeTableViewCell.m */; };
@@ -1112,6 +1113,10 @@
 		54D66F7E1DEC33C300ED2EBC /* AllClassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AllClassViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		54D66F851DEC406B00ED2EBC /* CalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarView.h; sourceTree = "<group>"; };
 		54D66F861DEC406B00ED2EBC /* CalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarView.m; sourceTree = "<group>"; };
+		54D75FD81E2F9074003744FE /* VideoPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayerViewController.h; sourceTree = "<group>"; };
+		54D75FD91E2F9074003744FE /* VideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewController.m; sourceTree = "<group>"; };
+		54D75FDB1E2F9F87003744FE /* Replay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Replay.h; sourceTree = "<group>"; };
+		54D75FDC1E2F9F87003744FE /* Replay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Replay.m; sourceTree = "<group>"; };
 		54D8DDB91DCB634100F0B408 /* PersonalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalView.h; sourceTree = "<group>"; };
 		54D8DDBA1DCB634100F0B408 /* PersonalView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalView.m; sourceTree = "<group>"; };
 		54DBA4981DE4423300A67A90 /* Emotion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Emotion.bundle; sourceTree = "<group>"; };
@@ -1205,8 +1210,6 @@
 		54FB1DD61DF1AC2C00BA9A3C /* ParentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentView.m; sourceTree = "<group>"; };
 		54FB1DD81DF1AC3D00BA9A3C /* ParentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentViewController.h; sourceTree = "<group>"; };
 		54FB1DD91DF1AC3D00BA9A3C /* ParentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ParentViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		54FCBABF1DD58EB60094BF58 /* UIViewController+ZFPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ZFPlayer.h"; sourceTree = "<group>"; };
-		54FCBAC01DD58EB60094BF58 /* UIViewController+ZFPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ZFPlayer.m"; sourceTree = "<group>"; };
 		54FCBADE1DD5B3050094BF58 /* VideoInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoInfoView.h; sourceTree = "<group>"; };
 		54FCBADF1DD5B3050094BF58 /* VideoInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoInfoView.m; sourceTree = "<group>"; };
 		54FCBAEA1DD5CA9F0094BF58 /* NoticeAndMembers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeAndMembers.h; sourceTree = "<group>"; };
@@ -2086,6 +2089,8 @@
 		547B6C3D1E2E14FE00C52F1B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				54D75FD81E2F9074003744FE /* VideoPlayerViewController.h */,
+				54D75FD91E2F9074003744FE /* VideoPlayerViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -2100,6 +2105,8 @@
 		547B6C3F1E2E150100C52F1B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				54D75FDB1E2F9F87003744FE /* Replay.h */,
+				54D75FDC1E2F9F87003744FE /* Replay.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -3682,8 +3689,6 @@
 				54D6611A1DD0373100C9A0FF /* UIViewController_HUD.h */,
 				54D661201DD040EF00C9A0FF /* UIViewController+HUD.h */,
 				54D661211DD040EF00C9A0FF /* UIViewController+HUD.m */,
-				54FCBABF1DD58EB60094BF58 /* UIViewController+ZFPlayer.h */,
-				54FCBAC01DD58EB60094BF58 /* UIViewController+ZFPlayer.m */,
 				54E428B21DE2DC6100AF5980 /* UIControl+RemoveTarget.h */,
 				54E428B31DE2DC6100AF5980 /* UIControl+RemoveTarget.m */,
 				54B73D0D1DE40E1800B7A7EB /* NSString+ContainEmoji.h */,
@@ -4265,6 +4270,7 @@
 				54AB48EA1DED607B008E3BC5 /* StartedClassView.m in Sources */,
 				54294C6D1DDB051E00677333 /* Classes.m in Sources */,
 				543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */,
+				54D75FDA1E2F9074003744FE /* VideoPlayerViewController.m in Sources */,
 				54F3BA301DFC7140003998D0 /* WithDrawViewController.m in Sources */,
 				5493D4A81E0BAAE00085A39E /* City.m in Sources */,
 				54B4C18A1DF8184500E31794 /* ChargeViewController.m in Sources */,
@@ -4272,6 +4278,7 @@
 				5493D4CE1E0BE1050085A39E /* TLCityPickerSearchResultController.m in Sources */,
 				54C9A8CE1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m in Sources */,
 				54F3BA241DFC4435003998D0 /* LoginAgainViewController.m in Sources */,
+				54D75FDD1E2F9F87003744FE /* Replay.m in Sources */,
 				54AB49031DEDB1BA008E3BC5 /* ListenTableViewCell.m in Sources */,
 				548328F31DDC75050053AB29 /* ChatModel.m in Sources */,
 				549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */,
@@ -4400,7 +4407,6 @@
 				545226151E24CDD300F36280 /* OrderInfoView.m in Sources */,
 				5413D25E1DF7BC8A00A8FDEC /* WidthDrawTableView.m in Sources */,
 				54CB26601DEFFBD300AE7414 /* ChangPhoneView.m in Sources */,
-				54FCBAC11DD58EB60094BF58 /* UIViewController+ZFPlayer.m in Sources */,
 				54DBA4AF1DE4423300A67A90 /* UITextView+YZEmotion.m in Sources */,
 				54652E3F1DEEBF0D00F4607C /* NoticeSettingTableViewCell.m in Sources */,
 				54652E1A1DEEB08200F4607C /* AboutUsTableViewCell.m in Sources */,

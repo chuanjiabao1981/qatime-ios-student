@@ -14,7 +14,7 @@
 
 #import "RDVTabBarController.h"
 
-#import "UIViewController+ZFPlayer.h"
+
 #import "VideoInfoView.h"
 #import "InfoHeaderView.h"
 #import "MembersListView.h"

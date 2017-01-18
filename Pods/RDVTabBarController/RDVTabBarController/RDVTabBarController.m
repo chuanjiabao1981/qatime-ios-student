@@ -66,32 +66,32 @@
     return self.selectedViewController.preferredStatusBarUpdateAnimation;
 }
 
-- (NSUInteger)supportedInterfaceOrientations {
-    UIInterfaceOrientationMask orientationMask = UIInterfaceOrientationMaskAll;
-    for (UIViewController *viewController in [self viewControllers]) {
-        if (![viewController respondsToSelector:@selector(supportedInterfaceOrientations)]) {
-            return UIInterfaceOrientationMaskPortrait;
-        }
-        
-        UIInterfaceOrientationMask supportedOrientations = [viewController supportedInterfaceOrientations];
-        
-        if (orientationMask > supportedOrientations) {
-            orientationMask = supportedOrientations;
-        }
-    }
-    
-    return orientationMask;
-}
+//- (NSUInteger)supportedInterfaceOrientations {
+//    UIInterfaceOrientationMask orientationMask = UIInterfaceOrientationMaskAll;
+//    for (UIViewController *viewController in [self viewControllers]) {
+//        if (![viewController respondsToSelector:@selector(supportedInterfaceOrientations)]) {
+//            return UIInterfaceOrientationMaskPortrait;
+//        }
+//        
+//        UIInterfaceOrientationMask supportedOrientations = [viewController supportedInterfaceOrientations];
+//        
+//        if (orientationMask > supportedOrientations) {
+//            orientationMask = supportedOrientations;
+//        }
+//    }
+//    
+//    return orientationMask;
+//}
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    for (UIViewController *viewCotroller in [self viewControllers]) {
-        if (![viewCotroller respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)] ||
-            ![viewCotroller shouldAutorotateToInterfaceOrientation:toInterfaceOrientation]) {
-            return NO;
-        }
-    }
-    return YES;
-}
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+//    for (UIViewController *viewCotroller in [self viewControllers]) {
+//        if (![viewCotroller respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)] ||
+//            ![viewCotroller shouldAutorotateToInterfaceOrientation:toInterfaceOrientation]) {
+//            return NO;
+//        }
+//    }
+//    return YES;
+//}
 
 #pragma mark - Methods
 

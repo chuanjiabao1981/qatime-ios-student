@@ -8,7 +8,9 @@
 
 #import "ViewController.h"
 #import "LivePlayerViewController.h"
+#import "ReplayVideoPlayerViewController.h"
 #import "AppDelegate.h"
+
 
 
 @interface ViewController (){
@@ -142,40 +144,27 @@
     return UIStatusBarStyleLightContent;
     
 }
-
-
-//支持设备自动旋转
-
+// 是否支持自动转屏
 - (BOOL)shouldAutorotate{
-    
-    UIViewController *nev = (UIViewController *)self.selectedViewController.childViewControllers.lastObject;
-    if ([nev isKindOfClass:[LivePlayerViewController class]]) {
-        return YES;
-    }
     
     return NO;
 }
 
-// 支持哪些转屏方向
+// 支持哪些屏幕方向
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations{
     
-    UIViewController *nev = (UIViewController *)self.selectedViewController.childViewControllers.lastObject;
-    if ([nev isKindOfClass:[LivePlayerViewController class]]) {
-        
-        return UIInterfaceOrientationMaskAllButUpsideDown;
-    }
     return UIInterfaceOrientationMaskPortrait;
+    
 }
 
-// 页面展示的时候默认屏幕方向（当前ViewController必须是通过模态ViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
+
+// 默认的屏幕方向（当前ViewController必须是通过模态出来的UIViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
-    UIViewController *nev = (UIViewController *)self.selectedViewController.childViewControllers.lastObject;
-    if ([nev isKindOfClass:[LivePlayerViewController class]]) {
-        
-        return UIInterfaceOrientationLandscapeRight;
-    }
     return UIInterfaceOrientationPortrait;
 }
+
+
+
 
 
 - (void)didReceiveMemoryWarning {

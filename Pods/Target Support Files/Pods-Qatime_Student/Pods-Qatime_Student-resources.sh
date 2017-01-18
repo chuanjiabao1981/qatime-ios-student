@@ -86,6 +86,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "XHImageViewer/Source/Resources/4_1366x768.jpeg"
   install_resource "XHImageViewer/Source/Resources/5_1280x800.jpeg"
   install_resource "XHImageViewer/Source/Resources/placeholder.jpeg"
+  install_resource "ZFPlayer/ZFPlayer/ZFPlayer.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "MJRefresh/MJRefresh/MJRefresh.bundle"
@@ -94,6 +95,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "XHImageViewer/Source/Resources/4_1366x768.jpeg"
   install_resource "XHImageViewer/Source/Resources/5_1280x800.jpeg"
   install_resource "XHImageViewer/Source/Resources/placeholder.jpeg"
+  install_resource "ZFPlayer/ZFPlayer/ZFPlayer.bundle"
 fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

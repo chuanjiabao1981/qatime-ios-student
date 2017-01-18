@@ -117,6 +117,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     [_loginAgainView.loginButton addTarget:self action:@selector(userLogin:) forControlEvents:UIControlEventTouchUpInside];
     _loginAgainView.userName.delegate = self;
     _loginAgainView.passWord.delegate = self;
+    _loginAgainView.passWord.secureTextEntry = YES;
     
     
     

@@ -64,6 +64,8 @@
 #import "NSDate+ChangeUTC.h"
 #import "NSString+ChangeYearsToChinese.h"
 
+#import "ZFPlayer.h"
+
 
 #define APP_WIDTH self.view.frame.size.width
 #define APP_HEIGHT self.view.frame.size.height
@@ -1822,21 +1824,25 @@ bool ismute     = NO;
 
 //支持设备自动旋转
 
-- (BOOL)shouldAutorotate{
-    
-    return NO;
-    
+//  是否支持自动转屏
+- (BOOL)shouldAutorotate
+{
+    // 调用ZFPlayerSingleton单例记录播放状态是否锁定屏幕方向
+    return !ZFPlayerShared.isLockScreen;
 }
 
 // 支持哪些转屏方向
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
 // 页面展示的时候默认屏幕方向（当前ViewController必须是通过模态ViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
     return UIInterfaceOrientationPortrait;
 }
+
 
 //显示模式转换
 - (void)onClickScaleMode:(id)sender{
@@ -1893,6 +1899,26 @@ bool ismute     = NO;
     
     
 }
+
+
+- (void)onDeviceOrientationChange{
+//    if (ZFPlayerShared.isLockScreen) { return; }
+//    self.lockBtn.hidden         = !self.isFullScreen;
+//    self.fullScreenBtn.selected = self.isFullScreen;
+    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+    if (orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown || orientation == UIDeviceOrientationUnknown || orientation == UIDeviceOrientationPortraitUpsideDown) { return; }
+//    if (ZFPlayerOrientationIsLandscape) {
+//        [self setOrientationLandscapeConstraint];
+//    } else {
+//        [self setOrientationPortraitConstraint];
+//    }
+    
+    
+    [self.view layoutIfNeeded];
+}
+
+
+
 
 //全屏播放视频后，播放器的适配和全屏旋转
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
@@ -2534,6 +2560,15 @@ bool ismute     = NO;
     /* 全屏模式下的双击手势*/
     _doubelTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(switchVideoOnFullScreenMode:)];
     [_doubelTap setNumberOfTapsRequired:2];
+    
+    
+    /* 全屏模式的监听-->在runtime机制下不可进行屏幕旋转的时候,强制进行屏幕旋转*/
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onDeviceOrientationChange)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil
+     ];
     
     
 }
@@ -4392,6 +4427,9 @@ bool ismute     = NO;
     [self.view endEditing:YES];
     
 }
+
+
+
 
 
 - (void)didReceiveMemoryWarning {

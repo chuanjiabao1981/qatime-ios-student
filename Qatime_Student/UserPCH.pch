@@ -81,6 +81,11 @@
 #define MyNSLog(FORMAT, ...) nil
 #endif
 
+
+
+// 1.判断是否为iOS7
+#define iOS7 ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
+
 /* 全局引用文件*/
 #import "UIView+FontSize.h"
 #import <objc/runtime.h>

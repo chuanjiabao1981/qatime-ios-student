@@ -25,6 +25,25 @@
 #import "ZFPlayer.h"
 #import "ZFPlayerControlView.h"
 #import "ZFPlayerModel.h"
+#import "ZFFullScreenViewController.h"
+#import <AVFoundation/AVFoundation.h>
+#import <MediaPlayer/MediaPlayer.h>
+
+
+// 枚举值，包含水平移动方向和垂直移动方向
+typedef NS_ENUM(NSInteger, PanDirection){
+    PanDirectionHorizontalMoved, // 横向移动
+    PanDirectionVerticalMoved    // 纵向移动
+};
+
+// 播放器的几种状态
+typedef NS_ENUM(NSInteger, ZFPlayerState) {
+    ZFPlayerStateFailed,     // 播放失败
+    ZFPlayerStateBuffering,  // 缓冲中
+    ZFPlayerStatePlaying,    // 播放中
+    ZFPlayerStateStopped,    // 停止播放
+    ZFPlayerStatePause       // 暂停播放
+};
 
 @protocol ZFPlayerDelegate <NSObject>
 @optional
@@ -49,6 +68,83 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 
 @interface ZFPlayerView : UIView <ZFPlayerControlViewDelagate>
 
+
+/** 播放属性 */
+@property (nonatomic, strong) AVPlayer               *player;
+@property (nonatomic, strong) AVPlayerItem           *playerItem;
+@property (nonatomic, strong) AVURLAsset             *urlAsset;
+@property (nonatomic, strong) AVAssetImageGenerator  *imageGenerator;
+/** playerLayer */
+@property (nonatomic, strong) AVPlayerLayer          *playerLayer;
+@property (nonatomic, strong) id                     timeObserve;
+/** 滑杆 */
+@property (nonatomic, strong) UISlider               *volumeViewSlider;
+/** 用来保存快进的总时长 */
+@property (nonatomic, assign) CGFloat                sumTime;
+/** 定义一个实例变量，保存枚举值 */
+@property (nonatomic, assign) PanDirection           panDirection;
+/** 播发器的几种状态 */
+@property (nonatomic, assign) ZFPlayerState          state;
+/** 是否为全屏 */
+@property (nonatomic, assign) BOOL                   isFullScreen;
+/** 是否锁定屏幕方向 */
+@property (nonatomic, assign) BOOL                   isLocked;
+/** 是否在调节音量*/
+@property (nonatomic, assign) BOOL                   isVolume;
+/** 是否被用户暂停 */
+@property (nonatomic, assign) BOOL                   isPauseByUser;
+/** 是否播放本地文件 */
+@property (nonatomic, assign) BOOL                   isLocalVideo;
+/** slider上次的值 */
+@property (nonatomic, assign) CGFloat                sliderLastValue;
+/** 是否再次设置URL播放视频 */
+@property (nonatomic, assign) BOOL                   repeatToPlay;
+/** 播放完了*/
+@property (nonatomic, assign) BOOL                   playDidEnd;
+/** 进入后台*/
+@property (nonatomic, assign) BOOL                   didEnterBackground;
+/** 是否自动播放 */
+@property (nonatomic, assign) BOOL                   isAutoPlay;
+/** 单击 */
+@property (nonatomic, strong) UITapGestureRecognizer *singleTap;
+/** 双击 */
+@property (nonatomic, strong) UITapGestureRecognizer *doubleTap;
+/** 视频URL的数组 */
+@property (nonatomic, strong) NSArray                *videoURLArray;
+/** slider预览图 */
+@property (nonatomic, strong) UIImage                *thumbImg;
+/** 播放器view的父视图 */
+@property (nonatomic, strong) UIView                 *fatherView;
+/** cell播放时候全屏控制器 */
+@property (nonatomic, strong) ZFFullScreenViewController *fullScreenVC;
+/** 当前的PlayerView所在的控制器 */
+@property (nonatomic, strong) UIViewController      *currentVC;
+/** 是否是模态出来的cell播放的全屏控制器 */
+@property (nonatomic, assign) BOOL                  isPresentVC;
+
+#pragma mark - UITableViewCell PlayerView
+
+/** palyer加到tableView */
+@property (nonatomic, strong) UITableView            *tableView;
+/** player所在cell的indexPath */
+@property (nonatomic, strong) NSIndexPath            *indexPath;
+/** cell上imageView的tag */
+@property (nonatomic, assign) NSInteger              cellImageViewTag;
+/** ViewController中页面是否消失 */
+@property (nonatomic, assign) BOOL                   viewDisappear;
+/** 是否在cell上播放video */
+@property (nonatomic, assign) BOOL                   isCellVideo;
+/** 是否缩小视频在底部 */
+@property (nonatomic, assign) BOOL                   isBottomVideo;
+/** 是否切换分辨率*/
+@property (nonatomic, assign) BOOL                   isChangeResolution;
+/** 是否正在拖拽 */
+@property (nonatomic, assign) BOOL                   isDragged;
+
+
+
+
+
 /** 视频model */
 @property (nonatomic, strong) ZFPlayerModel        *playerModel;
 /** 设置playerLayer的填充模式 */
@@ -62,7 +158,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 /** 设置代理 */
 @property (nonatomic, weak) id<ZFPlayerDelegate>   delegate;
 /** 是否被用户暂停 */
-@property (nonatomic, assign, readonly) BOOL       isPauseByUser;
+//@property (nonatomic, assign) BOOL       isPauseByUser;
 
 /** 从xx秒开始播放视频 */
 @property (nonatomic, assign) NSInteger            seekTime __deprecated_msg("Please use 'ZFPlayerModel.seekTime' instead");;
