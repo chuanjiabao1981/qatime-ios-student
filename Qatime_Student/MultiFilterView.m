@@ -213,6 +213,8 @@
         _class_Begin.sd_layout.leftEqualToView(_startTime).rightEqualToView(_startTime).topSpaceToView(_startTime,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(_startTime,0.9);
         _class_Begin.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
         
+
+        
         /* 招生状态*/
         _recuit =[[UIButton alloc]init];
         [self addSubview:_recuit];
@@ -223,6 +225,7 @@
         
         _recuit.sd_layout.leftEqualToView(_endTime).rightEqualToView(_endTime).topSpaceToView(_endTime,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(_endTime,0.9);
         _recuit.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
+       
 
         
         /* 当前状态*/

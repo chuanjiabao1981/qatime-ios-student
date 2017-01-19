@@ -73,15 +73,15 @@
         switch (indexPath.row) {
             case 0:
                 cell.name.text = @"客服电话";
-                cell.context.text = @"0353-2135828";
+                cell.context.text = ServersPhone;
                 cell.context.textColor = [UIColor blueColor];
-                cell.context.attributedText = [[NSAttributedString alloc]initWithString:@"0353-2135828" attributes:@{NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:1],NSUnderlineColorAttributeName:[UIColor blueColor]}];
+                cell.context.attributedText = [[NSAttributedString alloc]initWithString:ServersPhone attributes:@{NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:1],NSUnderlineColorAttributeName:[UIColor blueColor]}];
                 
                 break;
             case 1:
                 
                 cell.name.text = @"客服QQ";
-                cell.context.text = @"2436219060";
+                cell.context.text = ServerQQ;
                 
                 break;
             default:
@@ -108,7 +108,14 @@
 //                NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://0353-2135828"];
                 
 //                [[UIApplication sharedApplication]openURL:[NSURL URLWithString:str]];
-        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"tel://0353-2135828"]];
+        
+        
+        
+        NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",ServersPhone];
+        UIWebView *callWebview = [[UIWebView alloc] init];
+        [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+        [self.view addSubview:callWebview];
+//        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",ServersPhone]]];
 //            }
 //        }];
     }

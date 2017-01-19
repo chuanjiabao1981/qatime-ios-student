@@ -13,5 +13,7 @@
 
 - (void)loginAgain;
 
+- (BOOL)isLogin;
+
 
 @end

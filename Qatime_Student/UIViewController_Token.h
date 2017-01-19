@@ -13,4 +13,6 @@
 @property(nonatomic,strong) NSString *idNumber;
 
 @property(nonatomic,strong) NSString *token ;
+
+
 @end

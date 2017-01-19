@@ -12,6 +12,7 @@
 #import "SetNewPasswordViewController.h"
 #import "UIViewController+HUD.h"
 #import "AuthenticationViewController.h"
+#import "SafeViewController.h"
 
 @interface SetPayPasswordViewController (){
     
@@ -130,9 +131,21 @@
             break;
     }
     
+    /* 两次密码输入错误的时候跳转回前一页面,输入框清零*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnZero) name:@"PayPasswordTurnZero" object:nil];
     
     
+}
+
+/* 数据清零*/
+- (void)turnZero{
     
+    for (UIImageView *image in _imageArr) {
+        [image setImage:nil];
+    }
+    
+    _passwordText.text = @"";
+    [_passwordText becomeFirstResponder];
     
 }
 
@@ -268,10 +281,17 @@
 }
 
 
-/* 返回上一页*/
+/* 返回到安全管理页*/
 - (void)returnLastPage{
     
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    for (UIViewController *control in self.navigationController.viewControllers) {
+        if ([control isMemberOfClass:[SafeViewController class]]) {
+            
+            [self.navigationController popToViewController:control animated:YES];
+        }
+    }
+    
     
     
 }

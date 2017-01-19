@@ -20,7 +20,7 @@
         /* 交易号*/
         UILabel *number = [[UILabel alloc]init];
         number.font = TITLEFONTSIZE;
-        number.text = @"交易编号";
+        number.text = @"订单编号";
         
         _number = [[UILabel alloc]init];
         _number.font = TITLEFONTSIZE;
@@ -28,7 +28,7 @@
         /* 课程名/商品名称*/
         UILabel *classname = [[UILabel alloc]init];
         classname.font = TITLEFONTSIZE;
-        classname.text = @"商品名称";
+        classname.text = @"课程名称";
 
         _className = [[UILabel alloc]init];
         _className.font = TITLEFONTSIZE;
@@ -36,7 +36,7 @@
         /* 课程进度*/
         UILabel *progress = [[UILabel alloc]init];
         progress.font = TITLEFONTSIZE;
-        progress.text = @"课程进度";
+        progress.text = @"可退课时";
         
         _progress = [[UILabel alloc]init];
         _progress.font = TITLEFONTSIZE;
@@ -44,7 +44,7 @@
         /* 商品总价*/
         UILabel *price = [[UILabel alloc]init];
         price.font = TITLEFONTSIZE;
-        price.text = @"商品总价";
+        price.text = @"订单总价";
         
         _price = [[UILabel alloc]init];
         _price.font = TITLEFONTSIZE;

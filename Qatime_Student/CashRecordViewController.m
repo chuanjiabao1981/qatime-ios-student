@@ -28,8 +28,6 @@
 #import "ConfirmChargeViewController.h"
 #import "UIViewController+AFHTTP.h"
 
-
-
 #import "DrawBackViewController.h"
 
 
@@ -732,18 +730,9 @@
     if (tableView.tag ==1) {
         RechargeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         if ([cell.model.status isEqualToString:@"unpaid"]) {
-            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否支付该订单?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                
-                if (buttonIndex!=0) {
-                    
-                    ConfirmChargeViewController *pay = [[ConfirmChargeViewController alloc]initWithModel:cell.model];
-                    [self.navigationController pushViewController:pay animated:YES];
-                    
-                    
-                    
-                }
-            }];
             
+            ConfirmChargeViewController *pay = [[ConfirmChargeViewController alloc]initWithModel:cell.model];
+            [self.navigationController pushViewController:pay animated:YES];
             
         }
     }
@@ -780,6 +769,38 @@
             
         }
     }
+    
+    if (tableView.tag==4) {
+        
+        RefundTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否取消退款申请" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+           
+            if (buttonIndex!=0) {
+                
+                [self cancelRefund:cell.model.idNumber withIndexPath:indexPath];
+             
+            }
+        }];
+    }
+}
+
+#pragma mark- 取消退款申请
+- (void)cancelRefund:(NSString *)orderID withIndexPath:(NSIndexPath *)indePath{
+    
+   [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/refunds/%@/cancel",Request_Header,_idNumber,orderID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+      
+       NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+       if ([dic[@"status"]isEqualToNumber:@1]) {
+           /* 取消成功*/
+           [self loadingHUDStopLoadingWithTitle:@"取消成功"];
+           RefundTableViewCell *cell = [_cashRecordView.refundView cellForRowAtIndexPath:indePath];
+           cell.status.text = @"已取消";
+           
+       }
+       
+       
+   }];
     
 }
 

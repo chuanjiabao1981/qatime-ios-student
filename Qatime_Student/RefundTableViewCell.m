@@ -123,7 +123,7 @@
         _status.textAlignment = NSTextAlignmentRight;
 
         
-        [self setupAutoHeightWithBottomView:_time bottomMargin:10];
+        [self setupAutoHeightWithBottomView:time bottomMargin:10];
         
         
         
@@ -168,7 +168,7 @@
     
     
     /* 金额*/
-    _money.text = [NSString stringWithFormat:@"%@",model.refund_amount];
+    _money.text = [NSString stringWithFormat:@"¥%@",model.refund_amount];
     
     
     /* 状态*/

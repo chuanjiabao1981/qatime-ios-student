@@ -260,8 +260,8 @@
     
     [self.view addSubview:_effect];
     
-    _hours = @[@"1小时",@"2小时",@"3小时",@"4小时",@"5小时"];
-    _minutes = @[@"10分钟",@"15分钟",@"20分钟",@"25分钟",@"30分钟",@"35分钟",@"40分钟",@"50分钟"];
+    _hours = @[@"01小时",@"02小时",@"03小时",@"04小时",@"05小时",@"06小时",@"07小时",@"08小时",@"09小时",@"10小时",@"11小时",@"12小时",@"13小时",@"14小时",@"15小时",@"16小时",@"17小时",@"18小时",@"19小时",@"20小时",@"21小时",@"22小时",@"23小时",@"24小时"];
+    _minutes = @[@"01分钟",@"02分钟",@"03分钟",@"04分钟",@"05分钟",@"10分钟",@"15分钟",@"20分钟",@"25分钟",@"30分钟",@"40分钟",@"50分钟"];
     
     _pickerBackGround = [[UIView alloc]init];
     _pickerBackGround.frame = CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd/5*2);
@@ -371,15 +371,15 @@
     NSMutableString *str =[NSMutableString stringWithFormat:@"%@",cell.timeButton.titleLabel.text];
     
     if (component==0) {
-        [str replaceCharactersInRange:NSMakeRange(0, 3) withString:_hours[row]];
+        [str replaceCharactersInRange:NSMakeRange(0, 4) withString:_hours[row]];
         [cell.timeButton setTitle:str forState:UIControlStateNormal];
         
-        [_settingDic setValue:[_hours[row] substringWithRange:NSMakeRange(0, 1)] forKey:@"before_hours"];
+        [_settingDic setValue:[_hours[row] substringWithRange:NSMakeRange(0, 2)] forKey:@"before_hours"];
         
         
     }else if (component==1) {
         
-        [str replaceCharactersInRange:NSMakeRange(3, 4) withString:_minutes[row]];
+        [str replaceCharactersInRange:NSMakeRange(4, 4) withString:_minutes[row]];
         [cell.timeButton setTitle:str forState:UIControlStateNormal];
         [_settingDic setValue:[_minutes[row] substringWithRange:NSMakeRange(0, 2)] forKey:@"before_minutes"];
     }

@@ -132,6 +132,7 @@
     }
     
     /* 判断是否登录*/
+    
     isLogin = [[NSUserDefaults standardUserDefaults]boolForKey:@"Login"];
     if (isLogin==YES&&_token&&_idNumber) {
         _notLoginView.hidden = YES;
@@ -176,6 +177,34 @@
         
     }];
     
+    
+    /* 添加登录成功后的 监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"UserLoginAgain" object:nil];
+    
+    
+}
+
+/* 登录成功后加载数据*/
+- (void)refreshPage{
+    
+    _notLoginView.hidden = YES;
+    /* 提出token和学生id*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
+        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
+    }
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
+        
+        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
+    }
+    _unclosedArr = @[].mutableCopy;
+    _closedArr = @[].mutableCopy;
+    
+#pragma mark- 请求未上课课程表数据
+    [self requestUnclosedClassList];
+    
+#pragma mark- 请求已上课课程表数据
+    [self requestClosedClassList];
+
     
 }
 
@@ -501,6 +530,11 @@
                 cell.model =_unclosedArr[indexPath.row];
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 /* 不能进入观看*/
+                
+//                if (cell.model.status isEqualToString:@"") {
+//                    
+//                }
+                
                 if (cell.canUse == NO){
                     cell.enterButton.hidden = YES;
                 }else{

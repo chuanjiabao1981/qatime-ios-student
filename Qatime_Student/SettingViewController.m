@@ -314,7 +314,7 @@
 #pragma mark- 用户退出登录
 - (void)userLogOut{
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您真的确定退出？" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否确认切换?" preferredStyle:UIAlertControllerStyleAlert];
     /* 确定退出*/
     UIAlertAction *actionSure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         

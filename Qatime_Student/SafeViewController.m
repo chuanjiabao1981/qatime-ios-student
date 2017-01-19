@@ -23,6 +23,7 @@
 
 #import "AuthenticationViewController.h"
 #import "SetPayPasswordViewController.h"
+#import "UIViewController+AFHTTP.h"
 
 @interface SafeViewController ()
 {
@@ -38,6 +39,9 @@
     
     /* content内容*/
     NSMutableArray *_contentArr;
+    
+    /* 是否绑定了微信*/
+    BOOL wechatIsBinding;
     
 }
 
@@ -80,6 +84,9 @@
     
     
     
+    
+    
+    
     /* 请求个人详细信息*/
     
     [self requestUserInfo];
@@ -100,6 +107,15 @@
     
     /* 添加解绑微信的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeWechatBindingStatus) name:@"RelieveWechat" object:nil];
+    
+    /* 是否绑定了微信*/
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"openID"]) {
+        wechatIsBinding = YES;
+    }else{
+        wechatIsBinding = NO;
+    }
+    
+    
     
 }
 
@@ -136,6 +152,8 @@
             
             if (chDic[@"openid"]!=nil&&![chDic[@"openid"] isEqual:[NSNull null]]) {
                 [[NSUserDefaults standardUserDefaults]setValue:chDic[@"openid"] forKey:@"openID"];
+                wechatIsBinding = YES;
+                
             }
             
             
@@ -249,7 +267,7 @@
                     
                     if (indexPath.row==2) {
                         
-                        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"openID"]) {
+                        if (wechatIsBinding == YES) {
                             cell.balance.text =@" 取消绑定 ";
                             cell.balance.font = [UIFont systemFontOfSize:16*ScrenScale];
                             cell.balance.backgroundColor = [UIColor colorWithRed:0.42 green:0.79 blue:0.15 alpha:1.00];
@@ -328,7 +346,7 @@
                 case 2:{
                     
                     /* 去绑定微信*/
-                    if (![[NSUserDefaults standardUserDefaults]valueForKey:@"openID"]) {
+                    if (wechatIsBinding == NO) {
                         
                         [[NSNotificationCenter defaultCenter]postNotificationName:@"BindingWechat" object:nil];
                         
@@ -395,11 +413,8 @@
                                    
                                }
                            }
-                           
-                           
-                           
+         
                        }
-                       
                        
                    }];
                     
@@ -481,43 +496,8 @@
             [self loadingHUDStopLoadingWithTitle:@"绑定成功!"];
             
             /* 绑定成功*/
-            [self bindingSuccess];
+            [self bindingSuccess:wechatCode];
             [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"BindingWechat"];
-            
-            
-            /* 绑定完成后,请求一次数据*/
-            
-//            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-//            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-//            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-//            [manager POST:[NSString stringWithFormat:@"%@/api/v1/sessions/wechat",Request_Header] parameters:@{@"code":wechatCode,@"client_cate":@"student_client",@"client_type":@"app"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//                
-//                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-//                if ([dic[@"status"]isEqualToNumber:@1]) {
-//                    /* 绑定成功*/
-//                    if (dic[@"data"][@"user"][@"openid"]) {
-//                        
-//                        if (![dic[@"data"][@"user"][@"openid"]isEqual:[NSNull null]]) {
-//                            
-//                            [[NSUserDefaults standardUserDefaults]setValue:dic[@"data"][@"user"][@"openid"] forKey:@"openID"];
-//                            
-//                            [self performSelector:@selector(bindingSuccess) withObject:nil afterDelay:1];
-//                            [self loadingHUDStopLoadingWithTitle:@"绑定成功!"];
-//                        }
-//                    }else{
-//                        [self loadingHUDStopLoadingWithTitle:@"绑定申请已提交!"];
-//                        //                        [self performSelector:@selector(bindingWaited) withObject:nil afterDelay:1];
-//                    }
-//                }else{
-//                    
-//                    /* 绑定失败*/
-//                    [self loadingHUDStopLoadingWithTitle:@"绑定失败!"];
-//                }
-//                
-//                
-//            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//                
-//            }];
             
             
         }else{
@@ -532,15 +512,31 @@
 }
 
 /* 绑定成功*/
-- (void)bindingSuccess{
+- (void)bindingSuccess:(NSString *)code{
+    
     NSIndexPath *index = [NSIndexPath indexPathForRow:2 inSection:0];
     SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:index];
     cell.balance.text = @" 取消绑定 ";
+    
+    wechatIsBinding = YES;
+    
+    /*绑定成功后,请求一下个人信息,获取openid*/
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/students/%@/info",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            if (dic[@"data"][@"openid"]) {
+                
+                [[NSUserDefaults standardUserDefaults]setValue:dic[@"data"][@"openid"] forKey:@"openID"];
+            
+            }
+        }
+    }];
+        
 }
 
 /* 解绑微信*/
 - (void)relieveWechat{
-    
     
     [self loadingHUDStartLoadingWithTitle:@"正在请求解绑"];
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -555,6 +551,8 @@
             if ([dic[@"data"]isEqualToString:@"ok"]) {
                 /* 解绑成功*/
                 [self loadingHUDStopLoadingWithTitle:@"解绑成功!"];
+                
+                wechatIsBinding = NO;
                
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"RelieveWechat" object:nil];
                 
@@ -586,6 +584,7 @@
     SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:indexpath];
     
     cell.balance.text = @" 马上绑定 ";
+    wechatIsBinding = NO;
     
     
     

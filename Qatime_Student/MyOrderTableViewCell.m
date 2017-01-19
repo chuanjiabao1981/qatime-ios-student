@@ -16,6 +16,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         /* 课程名*/
         _name =[[UILabel alloc]init];
         _name.textColor = [UIColor blackColor];
@@ -200,6 +202,10 @@
         _status.text = @"交易完成";
     }else if ([unpaidModel.status isEqualToString:@"canceled"]){
         _status.text = @"已取消";
+    }else if ([unpaidModel.status isEqualToString:@"refunding"]){
+        _status.text = @"退款中";
+    }else if ([unpaidModel.status isEqualToString:@"completed"]){
+        _status.text = @"交易完成";
     }
     
     

@@ -60,12 +60,8 @@
     /* 排序筛选*/
     NSString *sort_By;
     
-    
     /* 日期选择器*/
-    
     HcdDateTimePickerView *_datePicker;
-    
-    
     
     /* 保存筛选数据的字典*/
     NSMutableDictionary *_filterDic;
@@ -74,8 +70,6 @@
     NSString *_requestResaultURL;
     /* 临时保存筛选key的数组*/
     NSMutableArray *_filterArr;
-    
-    
     
     /* 返回页码*/
     NSInteger page;
@@ -120,16 +114,13 @@
     
     
     /* 模糊背景*/
-    UIVisualEffectView *effectView;
+    UIView *effectView;
     
     /* token*/
     NSString *_remember_token;
     
     /* 下拉还是上滑   0为下拉重载  1为上滑刷新*/
-    
     NSInteger pull;
-    
-    
     
     /* 是否已经做过筛选操作*/
     BOOL hadDoneFilter;
@@ -261,13 +252,9 @@
     _tutoriumView = [[TutoriumView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-49)];
     [self .view addSubview:_tutoriumView];
     
-   
-
-    
     /* 集合视图的代理*/
     _tutoriumView.classesCollectionView.delegate = self;
     _tutoriumView.classesCollectionView.dataSource = self;
-    
     
     /* 瀑布流展示注册*/
     /* collectionView 注册cell、headerID、footerId*/
@@ -278,7 +265,6 @@
     _noView.titleLabel.text = @"没有相关课程";
     [_tutoriumView.classesCollectionView addSubview:_noView];
     _noView.hidden = YES;
-    
     
 #pragma mark- collection 下拉加载  上滑刷新
     /* collection下拉加载  上滑刷新*/
@@ -423,6 +409,7 @@
     [_multiFilterView.finishButton addTarget:self action:@selector(finishMultiFilter) forControlEvents:UIControlEventTouchUpInside];
     
     
+    
     /* 日期选择 的左右两个按钮 点出来日期选择器*/
     _multiFilterView.startTime.tag =1;
     _multiFilterView.endTime.tag =2;
@@ -432,11 +419,23 @@
     
     /* 已开课和招生中 两个按钮的点击事件*/
     _multiFilterView.class_Begin.tag=3;
-    _multiFilterView.class_Begin.selected = NO;
+    //默认是选中状态
+    _multiFilterView.class_Begin.selected = YES;
+    [_multiFilterView.class_Begin setBackgroundColor:[UIColor lightGrayColor]];
+    [_multiFilterView.class_Begin setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
     [_multiFilterView.class_Begin addTarget:self action:@selector(choseClassStatus:) forControlEvents:UIControlEventTouchUpInside];
     _multiFilterView.recuit.tag=4;
-    _multiFilterView.recuit.selected = NO;
+    //默认是选中状态
+    _multiFilterView.recuit.selected = YES;
+    [_multiFilterView.recuit setBackgroundColor:[UIColor lightGrayColor]];
+    [_multiFilterView.recuit setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _multiFilterView.recuit.selected = YES;
     [_multiFilterView.recuit addTarget:self action:@selector(choseClassStatus:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    
     
 //    _multiFilterView.lowPrice.delegate = self;
 //    _multiFilterView.highPrice.delegate = self;
@@ -756,10 +755,10 @@
     
     
     [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
-    
-    UIBlurEffect *effect=[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-    effectView=[[UIVisualEffectView alloc]initWithFrame:self.view.bounds];
-    [effectView setEffect:effect];
+
+    effectView=[[UIView alloc]initWithFrame:_tutoriumView.frame];
+    effectView.backgroundColor = [UIColor grayColor];
+    effectView.alpha = 0.6;
     [self.view addSubview:effectView];
     UITapGestureRecognizer *tapt = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(filterViewHide)];
     [effectView addGestureRecognizer:tapt];

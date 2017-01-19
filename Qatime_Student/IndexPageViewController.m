@@ -983,10 +983,16 @@
     /* 推荐课程点击事件*/
     if (collectionView.tag ==1) {
         
-        RecommandClassCollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+        if (_classes.count == 0) {
+            [self loadingHUDStopLoadingWithTitle:@"该地区没有推荐课程"];
+        }else{
+            
+            RecommandClassCollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+            
+            TutoriumInfoViewController *viewcontroller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+            [self.navigationController pushViewController:viewcontroller animated:YES];
+        }
         
-        TutoriumInfoViewController *viewcontroller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
-        [self.navigationController pushViewController:viewcontroller animated:YES];
         
         
     }
@@ -1126,9 +1132,20 @@
 /* 进入消息中心*/
 - (void)enterNoticeCenter{
     
-    NoticeIndexViewController *noticeVC = [[NoticeIndexViewController alloc]init];
-    [self.navigationController pushViewController:noticeVC animated:YES];
-    _badge.hidden = YES;
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
+            
+            NoticeIndexViewController *noticeVC = [[NoticeIndexViewController alloc]init];
+            [self.navigationController pushViewController:noticeVC animated:YES];
+            _badge.hidden = YES;
+        }else{
+            [self loginAgain];
+        }
+        
+    }else{
+        [self loginAgain];
+    }
+    
     
     
 }

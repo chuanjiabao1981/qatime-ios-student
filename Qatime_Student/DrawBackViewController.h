@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "DrawBackView.h"
 #import "Paid.h"
+#import "Refund.h"
 
 @interface DrawBackViewController : UIViewController
 
@@ -19,5 +20,9 @@
 
 
 -(instancetype)initWithPaidOrder:(Paid *)paidOrder;
+
+
+-(instancetype)initWithRefundOrder:(Refund *)refundOrder;
+
 
 @end

@@ -52,9 +52,9 @@
         /* 完成按钮*/
         _finishButton = [[UIButton alloc]init];
         [_finishButton setTitle:@"完成" forState:UIControlStateNormal];
-        [_finishButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+        [_finishButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         
-        _finishButton.layer.borderColor = BUTTONRED.CGColor;
+        _finishButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _finishButton.layer.borderWidth = 1;
         
         [self addSubview:_finishButton];

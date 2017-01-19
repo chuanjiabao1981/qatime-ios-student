@@ -54,11 +54,14 @@
         
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
+    
+    
 
     
     [_authenticationView.getCodeButton addTarget:self action:@selector(getCode:) forControlEvents:UIControlEventTouchUpInside];
     _authenticationView.getCodeButton.enabled = NO;
     [_authenticationView.nextStepButton addTarget:self action:@selector(nextStep) forControlEvents:UIControlEventTouchUpInside];
+    _authenticationView.nextStepButton.enabled = NO;
     
     [_authenticationView.passwordText addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
     _authenticationView.passwordText.secureTextEntry = YES;
@@ -117,8 +120,8 @@
             
         }
     }
-   
-
+    
+    
     
 }
 
@@ -150,7 +153,13 @@
                     [alert addAction:sure];
                     
                     [self presentViewController:alert animated:YES completion:nil];
+                    
+                    
+//                    [self loadingHUDStopLoadingWithTitle:@""];
                 }
+                
+                
+                
                 
                 [self deadLineTimer:sender];
                 
@@ -259,7 +268,7 @@
                     [self performSelector:@selector(nextPage) withObject:nil afterDelay:1];
                     
                 }else{
-                    [self loadingHUDStopLoadingWithTitle:@"数据错误,请核对信息!"];
+                    [self loadingHUDStopLoadingWithTitle:@"登录密码或校验码错误!"];
                     
                 }
                 

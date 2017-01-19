@@ -118,6 +118,8 @@
         _.dataSource = self;
         [self.view addSubview:_];
         _.frame = CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-50);
+        
+        
         _;
     });
     
@@ -206,6 +208,9 @@
     [self requestChatTeamUser];
     
  
+    /* 聊天信息 加个点击手势,取消输入框响应*/
+    UITapGestureRecognizer *tapSpace = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapSpace)];
+    [_chatTableView addGestureRecognizer:tapSpace];
     
     
 }
@@ -999,13 +1004,17 @@
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
-    
     [_inputView.TextViewInput resignFirstResponder];
     [_inputView changeSendBtnWithPhoto:YES];
     
-    
 }
 
+- (void)tapSpace{
+    [_inputView.TextViewInput resignFirstResponder];
+    [_inputView changeSendBtnWithPhoto:YES];
+
+    
+}
 
 
 

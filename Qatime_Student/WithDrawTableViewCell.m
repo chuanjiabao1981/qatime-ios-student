@@ -127,7 +127,7 @@
         
         
         
-        [self setupAutoHeightWithBottomView:_time bottomMargin:10];
+        [self setupAutoHeightWithBottomView:time bottomMargin:10];
         
         
         

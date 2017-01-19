@@ -14,6 +14,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         /* 课程名*/
         _name =[[UILabel alloc]init];
         _name.textColor = [UIColor blackColor];
@@ -137,8 +139,9 @@
         
         .rightSpaceToView(self.contentView,10)
         .topEqualToView(_teacherName)
+        .leftSpaceToView(_teacherName,20)
         .bottomEqualToView(_teacherName);
-        [_status setSingleLineAutoResizeWithMaxWidth:1000];
+//        [_status setSingleLineAutoResizeWithMaxWidth:1000];
         _status.textAlignment = NSTextAlignmentRight;
         
         
@@ -192,6 +195,10 @@
        _status.text = @"交易完成";
     }else if ([paidModel.status isEqualToString:@"canceled"]){
         _status.text = @"已取消";
+    }else if ([paidModel.status isEqualToString:@"refunding"]){
+        _status.text = @"退款中";
+    }else if ([paidModel.status isEqualToString:@"completed"]){
+        _status.text = @"交易完成";
     }
     
 }

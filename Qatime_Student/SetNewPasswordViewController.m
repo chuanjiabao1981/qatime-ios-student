@@ -63,9 +63,9 @@
     
     _nextButton = [[UIButton alloc]init];
     [_nextButton setTitle:@"完成" forState:UIControlStateNormal];
-    [_nextButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+    [_nextButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     _nextButton.layer.borderWidth = 1;
-    _nextButton.layer.borderColor = BUTTONRED.CGColor;
+    _nextButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
     
     [self.view addSubview:_nextButton];
@@ -114,7 +114,11 @@
             
             if ([textField.text isEqualToString:_compareStr]) {
                 
-//                 [self.finishButton addTarget:self action:@selector(requestPayPassord) forControlEvents:UIControlEventTouchUpInside];
+//                [_nextButton setTitle:@"完成" forState:UIControlStateNormal];
+                [_nextButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+                _nextButton.layer.borderWidth = 1;
+                _nextButton.layer.borderColor = BUTTONRED.CGColor;
+
                 
             }else{
                 
@@ -122,12 +126,13 @@
                     self.passwordText.text = @"";
                     [self.passwordText becomeFirstResponder];
                     
-                    
                     for (UIImageView *image in self.setPayPasswordView.imageArr) {
                         [image setImage:nil];
                     }
                     
+                    [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                     
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"PayPasswordTurnZero" object:nil];
                     
                 }];
                 
@@ -161,7 +166,6 @@
             /* 设置失败,*/
             [self loadingHUDStopLoadingWithTitle:@"密码设置失败,请核对信息!"];
             
-            
         }
         
         
@@ -184,12 +188,16 @@
             [self.navigationController popToViewController:controller animated:YES];
             
         }
-        
-        
+    
     }
     
 }
 
+
+- (void)returnLastPage{
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 
 - (void)didReceiveMemoryWarning {

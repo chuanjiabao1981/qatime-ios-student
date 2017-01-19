@@ -171,8 +171,8 @@
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-            
             
             dispatch_queue_t recent = dispatch_queue_create("recent", DISPATCH_QUEUE_SERIAL);
             dispatch_sync(recent, ^{
@@ -207,12 +207,15 @@
                         
                        info.notify =  [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.chat_team_id];
                         
-                        [_myClassArray addObject:info];
+                        /* 试听已经结束的*/
                         
+                        if ([info.taste_count integerValue]<[info.preset_lesson_count integerValue]||info.is_bought == YES) {
+                            
+                            [_myClassArray addObject:info];
+                        }
                         
                     }
                     
-                        
                         if (_myClassArray&&_recentArr) {
                             
                             /* 把badge结果遍历给chatlist的cell*/
@@ -299,7 +302,6 @@
         
     }];
     
-    
 }
 
 
@@ -332,7 +334,6 @@
         }
             
             break;
-            
     }
     
     return rows;
@@ -343,7 +344,6 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell *cell = [UITableViewCell new];
-    
     switch (tableView.tag) {
             
         case 2:{
@@ -363,7 +363,6 @@
                     cell.closeNotice.hidden = NO;
                 }
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-                
                 
                 UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(resignNotice:)];
                 
@@ -395,12 +394,9 @@
             
             return  cell;
             
-            
-            
         }
             
             break;
-            
     }
     
     return cell;
@@ -428,7 +424,6 @@
                 
             }
             
-            
         }
             break;
     }
@@ -454,13 +449,9 @@
         
         cell.badge.hidden = YES;
         
-        
         [_chatListArr[indexPath.row] setValue:@0 forKey:@"badge"];
         
-
     }
-    
-    
 }
 
 /* 取消/开启某一聊天组的推送信息*/
@@ -497,6 +488,7 @@
                 }
                 
             }];
+            
         }else if (cell.noticeOn == NO){
             [UIAlertController showActionSheetInViewController:self withTitle:nil message:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"恢复提醒"] popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
                 

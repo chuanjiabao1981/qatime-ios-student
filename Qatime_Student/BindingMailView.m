@@ -31,7 +31,7 @@
         
         _getKeyCodeButton = [UIButton new];
         _getKeyCodeButton.backgroundColor =[UIColor lightGrayColor];
-        [_getKeyCodeButton setTitle:@"获取校验码" forState:UIControlStateNormal];
+        [_getKeyCodeButton setTitle:@"获取邮箱校验码" forState:UIControlStateNormal];
         [_getKeyCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
         _nextStepButton = [UIButton new];

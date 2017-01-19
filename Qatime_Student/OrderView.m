@@ -135,6 +135,7 @@
         _wechatButton =[UIButton new];
         _wechatButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _wechatButton.layer.borderWidth = 0.8;
+        [_wechatButton setEnlargeEdge:10];
         
         UIImageView *wechatImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"wechat"]];
         
@@ -146,6 +147,7 @@
         _alipayButton =[UIButton new];
         _alipayButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _alipayButton.layer.borderWidth = 0.8;
+         [_alipayButton setEnlargeEdge:10];
         
         UIImageView *alipayImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"alipay"]];
         
@@ -154,11 +156,11 @@
         alipay.text = @"支付宝支付";
 
         
-        
         /* 余额支付*/
         _balanceButton =[UIButton new];
         _balanceButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _balanceButton.layer.borderWidth = 0.8;
+        [_balanceButton setEnlargeEdge:10];
         
         _balanceImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"money"]];
         

@@ -80,7 +80,7 @@ NSString * const kBarrageRendererContextTimestamp = @"kBarrageRendererContextTim
     __weak id weakSelf = self;
     _clock = [BarrageClock clockWithHandler:^(NSTimeInterval time){
         BarrageRenderer * strongSelf = weakSelf;
-        strongSelf->_time = time;
+//        strongSelf->_time = time;
         [strongSelf update];
     }];
 }
@@ -148,6 +148,7 @@ NSString * const kBarrageRendererContextTimestamp = @"kBarrageRendererContextTim
 {
     _startTime = nil;
     [_clock stop];
+    _pausedDuration = 0.0f;
     [_dispatcher deactiveAllSprites];
 }
 

@@ -28,6 +28,12 @@
         self.status.text = @"交易完成";
     }else if ([canceldModel.status isEqualToString:@"canceled"]){
         self.status.text = @"已取消";
+    }else if ([canceldModel.status isEqualToString:@"refunding"]){
+        self.status.text = @"退款中";
+    }else if ([canceldModel.status isEqualToString:@"completed"]){
+        self.status.text = @"交易完成";
+    }else if ([canceldModel.status isEqualToString:@"refunded"]){
+        self.status.text = @"已退款";
     }
 
     

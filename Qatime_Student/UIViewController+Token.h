@@ -11,4 +11,6 @@
 
 @interface UIViewController (Token)
 
+- (void)getToken;
+
 @end

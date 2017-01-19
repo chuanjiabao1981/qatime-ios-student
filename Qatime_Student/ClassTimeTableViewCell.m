@@ -214,7 +214,7 @@
     _subject.text = model.subject;
 
     /* 不能进入观看*/
-    if ([model.status isEqualToString:@"init"]||[model.status isEqualToString:@"closed"]||[model.status isEqualToString:@"finished"]) {
+    if ([model.status isEqualToString:@"init"]||[model.status isEqualToString:@"finished"]||[model.status isEqualToString:@"missed"]) {
         
         _canUse = NO;
     }else{

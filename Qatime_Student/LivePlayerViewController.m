@@ -64,7 +64,8 @@
 #import "NSDate+ChangeUTC.h"
 #import "NSString+ChangeYearsToChinese.h"
 
-#import "ZFPlayer.h"
+//#import "ZFPlayer.h"
+#import "VideoPlayerViewController.h"
 
 
 #define APP_WIDTH self.view.frame.size.width
@@ -94,6 +95,10 @@ typedef enum : NSUInteger {
     
     /* 通知消息model*/
     NoticeAndMembers *_noticeAndMembers;
+    
+    
+    /* 保存该页的课程信息的字典*/
+    NSMutableDictionary *_classInfoDic;
     
     
     /*消息model*/
@@ -326,8 +331,7 @@ typedef enum : NSUInteger {
 /**
  计时器
  */
-@property (nonatomic, strong) NSTimer *timer;
-
+//@property (nonatomic, strong) NSTimer *timer;
 
 
 #pragma mark- 分屏的布局拓展方法和属性更改方法,只改变布局
@@ -1820,6 +1824,10 @@ bool ismute     = NO;
     
     [self removeObserver:self forKeyPath:@"headerHeight"];
     
+    _aBarrage = nil;
+    
+    
+    
 }
 
 //支持设备自动旋转
@@ -1827,8 +1835,8 @@ bool ismute     = NO;
 //  是否支持自动转屏
 - (BOOL)shouldAutorotate
 {
-    // 调用ZFPlayerSingleton单例记录播放状态是否锁定屏幕方向
-    return !ZFPlayerShared.isLockScreen;
+    
+    return YES;
 }
 
 // 支持哪些转屏方向
@@ -2307,6 +2315,7 @@ bool ismute     = NO;
     /* TabBar单例隐藏*/
     [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
+    _videoInfoView.segmentControl.selectedSegmentIndex = 1;
     
     /* 白板播放端的通知*/
     
@@ -2461,7 +2470,8 @@ bool ismute     = NO;
     _chatTableView.delegate = self;
     _chatTableView.dataSource = self;
     _chatTableView.tag =3;
-    
+    UITapGestureRecognizer *tapSpace = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapSpace)];
+    [_chatTableView addGestureRecognizer:tapSpace];
     
     _infoHeaderView = [[InfoHeaderView alloc]initWithFrame:CGRectMake(0, 0, _videoInfoView.view3.frame.size.width, 800)];
     
@@ -2470,6 +2480,8 @@ bool ismute     = NO;
     
     _classList.classListTableView.tableHeaderView = _infoHeaderView;
     
+    /* 保存该页面所有数据的字典*/
+    _classInfoDic = @{}.mutableCopy;
     
     _notices = [[Notice alloc]init];
     _noticesArr = @[].mutableCopy;
@@ -2657,6 +2669,7 @@ bool ismute     = NO;
         NSDictionary *dataDic=[NSDictionary dictionaryWithDictionary:dic[@"data"]];
         
 //        NSLog(@"%@",dic);
+        _classInfoDic = dataDic.mutableCopy;
         
         if (![status isEqualToString:@"1"]) {
             /* 请求错误*/
@@ -3949,14 +3962,20 @@ bool ismute     = NO;
             if ([cell.model.left_replay_times integerValue]>0) {
                 /* 剩余试听次数大于0的情况,可以继续试听*/
                 
+                NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+                [decodeParm addObject:@"hardware"];
+                [decodeParm addObject:@"videoOnDemand"];
                 
+                VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:@"http://baobab.wdjcdn.com/1456117847747a_x264.mp4"] andDecodeParm:decodeParm andTitle:@"Hello World !"];
+                [self presentViewController:video animated:YES completion:^{
+                    
+                }];
+
                 
             }else{
                 /* 剩余试听次数小于0,不可以继续试听*/
                 [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
             }
-            
-            
             
         }else{
             [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
@@ -4040,11 +4059,25 @@ bool ismute     = NO;
                     idcell.classModel = mod;
                     [idcell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                     
-                    if ([idcell.classModel.status isEqualToString:@"finished"]||[idcell.classModel.status isEqualToString:@"billing"]||[idcell.classModel.status isEqualToString:@"completed"]) {
-                        idcell.replay.hidden = NO;
-                    }else{
-                        idcell.replay.hidden = YES;
+                    /* 用总的信息来判断,是否显示可以试听的按钮*/
+                    if (_classInfoDic) {
+                        if (_classInfoDic[@"is_bought"]) {
+                            if ([_classInfoDic[@"is_bought"]boolValue]==YES) {
+                                
+                                if ([idcell.classModel.status isEqualToString:@"finished"]||[idcell.classModel.status isEqualToString:@"billing"]||[idcell.classModel.status isEqualToString:@"completed"]) {
+                                    idcell.replay.hidden = NO;
+                                }else{
+                                    idcell.replay.hidden = YES;
+                                }
+                            }else{
+                                idcell.replay.hidden = YES;
+                            }
+                        }else{
+                            idcell.replay.hidden = YES;
+                        }
+                        
                     }
+                    
                     
                 }
             }
@@ -4139,8 +4172,9 @@ bool ismute     = NO;
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
     
-    
     if (![IFView.TextViewInput.text isEqualToString:@""]) {
+        
+        [IFView.TextViewInput resignFirstResponder];
         
     }else{
         
@@ -4151,6 +4185,12 @@ bool ismute     = NO;
     
     
     
+}
+
+/* 点击空白处,文本框取消响应*/
+- (void)tapSpace{
+    
+    [IFView.TextViewInput resignFirstResponder];
 }
 
 
@@ -4428,6 +4468,13 @@ bool ismute     = NO;
     
 }
 
+/* 把弹幕给释放掉*/
+-(void)dealloc{
+    
+    _aBarrage = nil;
+    NSLog(@"二次元的名器被干掉了biubiubiu~~~");
+    
+}
 
 
 

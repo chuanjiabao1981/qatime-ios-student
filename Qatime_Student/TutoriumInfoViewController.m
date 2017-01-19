@@ -26,6 +26,9 @@
 #import "LivePlayerViewController.h"
 #import "ReplayVideoPlayerViewController.h"
 #import "VideoPlayerViewController.h"
+#import "UIViewController+AFHTTP.h"
+
+#import "Replay.h"
 
 
 @interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>{
@@ -42,7 +45,7 @@
     
     
     /* token*/
-    NSString *_remember_token;
+//    NSString *_remember_token;
     
     
     /* 购买bar*/
@@ -68,9 +71,9 @@
         _classID = classID;
        
         /* 取出token*/
-        _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
+//        _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
 
-        NSLog(@"%@",_remember_token);
+//        NSLog(@"%@",_remember_token);
         
     }
     return self;
@@ -99,12 +102,26 @@
     _tutoriumInfoView = [[TutoriumInfoView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64-TabBar_Height)];
     [self.view addSubview:_tutoriumInfoView];
     
+    /* 提出token和学生id*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
+        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
+    }
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
+        
+        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
+    }
+
+    
     /* 购买bar*/
     
         _buyBar= [[BuyBar alloc]initWithFrame:CGRectMake(0, self.view.height_sd-49, self.view.width_sd, 49)];
     
         [self.view addSubview:_buyBar];
-        
+    
+    if (![self isLogin]) {
+        [_buyBar.listenButton addTarget:self action:@selector(loginAgain) forControlEvents:UIControlEventTouchUpInside];
+        [_buyBar.applyButton addTarget:self action:@selector(loginAgain) forControlEvents:UIControlEventTouchUpInside];
+    }
     
     
     _tutoriumInfoView.scrollView.delegate = self;
@@ -140,6 +157,9 @@
     
     _classListArray = @[].mutableCopy;
     
+    
+    
+    /* 请求数据*/
     [self requestClassesInfoWith:_classID];
     
     
@@ -148,10 +168,31 @@
     /* 注册重新加载页面数据的通知*/
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"RefreshTutoriumInfo" object:nil];
-
+    
+    /* 注册登录成功重新加载数据的通知*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(requestAgain) name:@"UserLoginAgain" object:nil];
     
 }
 
+/* 登录成功后,再次加载数据*/
+- (void)requestAgain{
+    [_buyBar.listenButton removeTarget:self action:@selector(loginAgain) forControlEvents:UIControlEventTouchUpInside];
+     [_buyBar.applyButton removeTarget:self action:@selector(loginAgain) forControlEvents:UIControlEventTouchUpInside];
+    
+    /* 再次尝试提出token和学生id*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
+        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
+    }
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
+        
+        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
+    }
+
+    
+    /* 请求数据*/
+    [self requestClassesInfoWith:_classID];
+    
+}
 
 
 /* 根据初始化传值进来的id 进行网络请求*/
@@ -162,7 +203,7 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
+    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@",Request_Header,classid] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -195,12 +236,10 @@
             
             _tutoriumInfoView.deadLine.text = [NSString stringWithFormat:@"[进度%@/%@]",_dataDic[@"completed_lesson_count"],_dataDic[@"lesson_count"]];
             
-            _tutoriumInfoView.onlineVideoLabel.text =@"在线直播";
-            
             
         }else if ([_dataDic[@"status"]isEqualToString:@"missed"]||[_dataDic[@"status"]isEqualToString:@"init"]||[_dataDic[@"status"]isEqualToString:@"ready"]){
             _tutoriumInfoView.recuitState.text = @"未开课";
-            _tutoriumInfoView.onlineVideoLabel.text =@"未开课";
+//            _tutoriumInfoView.onlineVideoLabel.text =@"未开课";
             
             _tutoriumInfoView.deadLine.text = [NSString stringWithFormat:@"[距开课%@/天]",[self intervalSinceNow:_dataDic[@"live_start_time"] ]];
             
@@ -208,17 +247,19 @@
         }else if ([_dataDic[@"status"]isEqualToString:@"finished"]||[_dataDic[@"status"]isEqualToString:@"billing"]||[_dataDic[@"status"]isEqualToString:@"completed"]){
             
             _tutoriumInfoView.recuitState.text = @"已结束";
-            _tutoriumInfoView.onlineVideoLabel.text =@"已结束";
+//            _tutoriumInfoView.onlineVideoLabel.text =@"已结束";
             
             
             
         }else if ([_dataDic[@"status"]isEqualToString:@"public"]){
             
             _tutoriumInfoView.recuitState.text = @"招生中";
-            _tutoriumInfoView.onlineVideoLabel.text =@"招生中";
+//            _tutoriumInfoView.onlineVideoLabel.text =@"招生中";
             _tutoriumInfoView.deadLine.text = @"";
             
         }
+        
+        _tutoriumInfoView.onlineVideoLabel.text =@"在线直播";
         
         _tutoriumInfoView.liveStartTimeLabel.text =  [_dataDic[@"live_start_time"] substringToIndex:10];
         _tutoriumInfoView.liveEndTimeLabel.text = [_dataDic[@"live_end_time"] substringToIndex:10];
@@ -310,8 +351,6 @@
     }];
     
 }
-
-
 
 
 #pragma mark- 判断课程状态
@@ -429,7 +468,7 @@
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-            [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
+            [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
             [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/taste",Request_Header,_dataDic[@"id"]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -473,10 +512,6 @@
         }
     }
     
-    
-    
-    
-    
 }
 
 #pragma mark- 立即试听
@@ -499,7 +534,6 @@
                 
             }] ;
             UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
                 
                 [self requestOrder];
                 
@@ -600,12 +634,17 @@
 //            cell.replay.hidden = YES;
 //        }
         
-        if ([cell.model.status isEqualToString:@"finished"]||[cell.model.status isEqualToString:@"billing"]||[cell.model.status isEqualToString:@"completed"]) {
-              cell.replay.hidden = NO;
+        if ([_dataDic[@"is_bought"]boolValue]==YES) {
+            
+            if ([cell.model.status isEqualToString:@"finished"]||[cell.model.status isEqualToString:@"billing"]||[cell.model.status isEqualToString:@"completed"]) {
+                cell.replay.hidden = NO;
+            }else{
+                cell.replay.hidden = YES;
+            }
         }else{
-             cell.replay.hidden = YES;
+            cell.replay.hidden = YES;
+            
         }
-        
         
         
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
@@ -640,36 +679,36 @@
 /* 点击课程表,进入回放的点击事件*/
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    
-    
-    NSString *playURL = nil;
-    NSString *name = nil;
-    
     ClassesListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    
-    name = [NSString stringWithFormat:@"%@",cell.model.name];
-    playURL = [NSString stringWithFormat:@"%@",cell.model.replayable];
-    
-    
-    
-    
-    
-    NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
-    [decodeParm addObject:@"hardware"];
-    [decodeParm addObject:@"videoOnDemand"];
-
-    VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:@"http://baobab.wdjcdn.com/1456117847747a_x264.mp4"] andDecodeParm:decodeParm andTitle:@"Hello World !"];
-    [self presentViewController:video animated:YES completion:^{
+    if ([_dataDic[@"is_bought"]boolValue]==YES) {
         
-    }];
-    
-    
-    
-    
-    
-    
+        if (cell.model.replayable == YES) {
+            
+            if ([cell.model.left_replay_times integerValue]>0) {
+                
+                NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+                [decodeParm addObject:@"hardware"];
+                [decodeParm addObject:@"videoOnDemand"];
+                
+                VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:@"http://baobab.wdjcdn.com/1456117847747a_x264.mp4"] andDecodeParm:decodeParm andTitle:@"Hello World !"];
+                [self presentViewController:video animated:YES completion:^{
+                    
+                }];
+                
+            }else{
+                [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
+            }
+            
+        }else{
+            [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
+        }
+        
+    }else{
+//        [self loadingHUDStopLoadingWithTitle:@"您尚未购买该课程!"];
+        /* 未购买,不提示*/
+        
+    }
 }
 
 

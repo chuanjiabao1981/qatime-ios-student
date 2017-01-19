@@ -41,6 +41,20 @@
     
 }
 
+-(instancetype)initWithRefundOrder:(Refund *)refundOrder{
+    
+    self = [super init];
+    if (self) {
+      
+        _paidOrder = [[Paid alloc]init] ;
+        _paidOrder.orderID = refundOrder.idNumber;
+//        _paidOrder.name = refundOrder.na
+        
+        
+    }
+    return self;
+    
+}
 
 
 
@@ -70,8 +84,6 @@
     _dataDic = @{}.mutableCopy;
 //    _drawBackView.userInteractionEnabled = YES;
 //    _drawBackView.reason.selectable = YES;
-    
-    
     
     /* 请求数据*/
     [self requestDrawback];

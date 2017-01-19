@@ -21,6 +21,10 @@
 @property(nonatomic,strong) NSString *classID ;
 @property(nonatomic,strong) NSString *name ;
 @property(nonatomic,strong) NSString *duration ;
-@property(nonatomic,strong) NSString *replayable ;
+@property(nonatomic,assign) BOOL *replayable ;
+@property(nonatomic,assign) BOOL *user_playable ;
+@property(nonatomic,strong) NSString *user_play_times ;
+@property(nonatomic,strong) NSString *left_replay_times ;
+@property(nonatomic,strong) NSString *replay ;
 
 @end

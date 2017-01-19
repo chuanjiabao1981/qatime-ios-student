@@ -92,6 +92,12 @@
     });
     
     
+    /* 默认选择微信支付*/
+    _orderView.wechatButton.selected = YES;
+    _orderView.wechatButton.selected =YES;
+    _payType = @"weixin";
+    [_orderView.wechatButton setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
+    
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
         _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
@@ -157,9 +163,9 @@
                     
                     _orderView.typeLabel.text = @"在线直播";
                     
-                    _orderView.priceLabel.text = [NSString stringWithFormat:@"%@元",mod.price];
+                    _orderView.priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",mod.price];
                     
-                    _orderView.totalMoneyLabel.text =[NSString stringWithFormat:@"%@",mod.price];
+                    _orderView.totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",mod.price];
                     
                     price = mod.price.floatValue;
                     

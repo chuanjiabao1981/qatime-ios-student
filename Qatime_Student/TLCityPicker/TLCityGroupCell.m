@@ -148,7 +148,7 @@
 {
     if (_titleLabel == nil) {
         _titleLabel = [[UILabel alloc] init];
-        [_titleLabel setFont:[UIFont systemFontOfSize:13.0*ScrenScale]];
+        [_titleLabel setFont:[UIFont systemFontOfSize:16.0*ScrenScale]];
     }
     return _titleLabel;
 }
@@ -159,7 +159,7 @@
         _noDataLabel = [[UILabel alloc] init];
         [_noDataLabel setText:@"暂无数据"];
         [_noDataLabel setTextColor:[UIColor grayColor]];
-        [_noDataLabel setFont:[UIFont systemFontOfSize:13.0f*ScrenScale]];
+        [_noDataLabel setFont:[UIFont systemFontOfSize:16.0f*ScrenScale]];
     }
     return _noDataLabel;
 }

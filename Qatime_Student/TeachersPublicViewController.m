@@ -282,6 +282,8 @@
         
         
         _teachersPublicHeaderView.teacherNameLabel.text =teacherInfo.name;
+        _navigationBar.titleLabel.text = teacherInfo.name;
+        
         [_teachersPublicHeaderView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:teacherInfo.avatar_url]];
         _teachersPublicHeaderView.category.text = teacherInfo.category;
         _teachersPublicHeaderView.subject.text = teacherInfo.subject;

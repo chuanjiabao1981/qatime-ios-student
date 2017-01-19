@@ -21,7 +21,6 @@
 //    BOOL choseTransfer;
     
     NSString *_payType;
-    
     NSString *_token;
     NSString *_idNumber;
     

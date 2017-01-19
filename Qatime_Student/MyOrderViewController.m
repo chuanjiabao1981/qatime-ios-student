@@ -33,6 +33,7 @@
 #import "OrderInfoViewController.h"
 #import "ConfirmChargeViewController.h"
 #import "UIViewController+AFHTTP.h"
+#import "UIAlertController+Blocks.h"
 
 @interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
@@ -280,10 +281,26 @@
     /* 微信支付成功的监听回调*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(paySucess) name:@"ChargeSucess" object:nil];
     
+    /* 删除完订单后,刷新视图*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"DeleteOrder" object:nil];
+    
     
     
 }
 
+/* 刷新页面*/
+- (void)refreshPage{
+    
+    /* 请求未支付的数据*/
+    [self requestUnpaid];
+    
+    /* 请求已支付数据*/
+    [self requestPaid];
+    
+    /* 请求取消的数据*/
+    [self requestCanceld];
+
+}
 
 
 #pragma mark- 请求订单数据
@@ -638,13 +655,22 @@
                 
                 cell.paidModel = _paidArr[indexPath.row];
                 cell.leftButton.hidden= YES;
-                [cell.rightButton setTitle:@"申请退款" forState:UIControlStateNormal];
-                //                cell.leftButton.tag = 300+indexPath.row;
+                
+    
                 cell.rightButton.tag = 400+indexPath.row;
-                //                [cell.leftButton addTarget:self action:@selector(cancelOrder:) forControlEvents:UIControlEventTouchUpInside];
                 
                 /* 进入退款申请页面*/
+                [cell.rightButton setTitle:@"申请退款" forState:UIControlStateNormal];
                 [cell.rightButton addTarget:self action:@selector(repage:) forControlEvents:UIControlEventTouchUpInside];
+                
+                if ([cell.paidModel.status isEqualToString:@"refunding"]){
+                    /* 取消退款申请*/
+                    [cell.rightButton setTitle:@"取消退款" forState:UIControlStateNormal];
+                    [cell.rightButton removeTarget:self action:@selector(cancelRefund:) forControlEvents:UIControlEventTouchUpInside];
+                    [cell.rightButton addTarget:self action:@selector(cancelRefund:) forControlEvents:UIControlEventTouchUpInside];
+                }else if ([cell.paidModel.status isEqualToString:@"completed"]){
+                    
+                }
                 
             }
             
@@ -795,7 +821,6 @@
             
             PaidOrderTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             
-            
             NSDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{
                                                                                 @"name":cell.paidModel.name,
                                                                                 @"subject":cell.paidModel.subject,
@@ -852,6 +877,32 @@
 }
 
 
+/* 取消退款功能*/
+- (void)cancelRefund:(UIButton *)sender{
+    
+    [self loadingHUDStartLoadingWithTitle:@"正在取消"];
+    if (sender.tag>=400&&sender.tag<500) {
+        Paid *mod = _paidArr[sender.tag-400];
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"确定取消退款?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+            if (buttonIndex!=0) {
+                
+                [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/refunds/%@/cancel",Request_Header,_idNumber,mod.orderID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+                    
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                    if ([dic[@"status"]isEqualToNumber:@1]) {
+                        [self loadingHUDStopLoadingWithTitle:@"取消成功"];
+                    }else{
+                        [self loadingHUDStopLoadingWithTitle:@"服务器正忙,取消失败"];
+                        
+                    }
+                    
+                }];
+            }
+        }];
+    }
+    
+}
+
 /* 订单付款功能*/
 - (void)payOrder:(UIButton *)sender{
     
@@ -860,20 +911,9 @@
         
         Unpaid *mod =_unpaidArr[sender.tag-200];
         
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否确定付款?" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            
-        }] ;
-        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-            ConfirmChargeViewController *confirm = [[ConfirmChargeViewController alloc]initWithPayModel:mod];
-            [self.navigationController pushViewController:confirm animated:YES];
-        }];
         
-        [alert addAction:cancel];
-        [alert addAction:sure];
-        
-        [self presentViewController:alert animated:YES completion:nil];
+        ConfirmChargeViewController *confirm = [[ConfirmChargeViewController alloc]initWithPayModel:mod];
+        [self.navigationController pushViewController:confirm animated:YES];
         
         
     }

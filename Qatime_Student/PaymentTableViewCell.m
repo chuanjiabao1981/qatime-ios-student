@@ -111,7 +111,7 @@
         .autoHeightRatio(0);
         [_money setSingleLineAutoResizeWithMaxWidth:2000];
                 
-        [self setupAutoHeightWithBottomView:_time bottomMargin:10];
+        [self setupAutoHeightWithBottomView:time bottomMargin:10];
         
         
         

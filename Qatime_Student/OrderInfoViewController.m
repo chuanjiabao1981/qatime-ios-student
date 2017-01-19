@@ -9,6 +9,9 @@
 #import "OrderInfoViewController.h"
 #import "NavigationBar.h"
 #import "NSString+TimeStamp.h"
+#import "UIViewController+AFHTTP.h"
+#import "UIAlertController+Blocks.h"
+#import "UIViewController+HUD.h"
 
 
 @interface OrderInfoViewController (){
@@ -25,6 +28,10 @@
     
     /* 保存数据的dic*/
     NSMutableDictionary *_dataDic;
+    
+    
+    NSString *_token;
+    NSString *_idNumber;
     
     
 }
@@ -73,6 +80,9 @@
         
     }else if ([_dataDic[@"status"]isEqualToString:@"canceled"]){
         [_orderInfoView.statusImage setImage:[UIImage imageNamed:@"交易关闭"]];
+    }else if ([_dataDic[@"status"]isEqualToString:@"completed"]){
+        
+        [_orderInfoView.statusImage setImage:[UIImage imageNamed:@"已退款"]];
     }
 
     _orderInfoView.orderNumber.text = _dataDic[@"orderNumber"];
@@ -91,6 +101,10 @@
     _orderInfoView.amount.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"amount"]];
     
     
+    [_orderInfoView.cancelButton addTarget:self action:@selector(cancelOrder) forControlEvents:UIControlEventTouchUpInside];
+    [_orderInfoView.payButton addTarget:self action:@selector(payOrder) forControlEvents:UIControlEventTouchUpInside];
+    
+    
 }
 
 - (void)viewDidLoad {
@@ -101,11 +115,63 @@
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     _navigationBar.titleLabel.text = @"订单详情";
     
+   
+    /* 提出token和学生id*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
+        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
+    }
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
+        
+        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
+    }
+
+    
     /* 加载数据和视图*/
     [self setUpViews];
     
+        
+}
+
+/* 取消订单*/
+- (void)cancelOrder{
+    
+    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"确定取消该订单?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+       
+        if (buttonIndex!=0) {
+            [self loadingHUDStartLoadingWithTitle:@"正在取消"];
+            [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/cancel",Request_Header,_dataDic[@"orderNumber"]] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil
+                completeSuccess:^(id  _Nullable responds) {
+                   
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                    if ([dic[@"status"]isEqualToNumber:@1]) {
+                        /* 取消成功*/
+                        [self loadingHUDStopLoadingWithTitle:@"取消成功"];
+                        [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"DeleteOrder" object:nil];
+                        
+                    }else{
+                        /* 取消失败*/
+                        [self loadingHUDStopLoadingWithTitle:@"服务正忙,请稍后重试"];
+                        [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
+                    }
+                    
+                    
+                }];
+            
+        }
+    }];
+    
+    
+    
     
 }
+
+/* 订单付款*/
+- (void)payOrder{
+    
+    
+}
+
 
 - (void)returnLastPage{
     

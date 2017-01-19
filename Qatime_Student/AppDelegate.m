@@ -438,7 +438,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     _viewController = [[ViewController alloc]init];
         UINavigationController *navVC = [[UINavigationController alloc]initWithRootViewController:_viewController];
     
-    [UIView transitionFromView:_window.rootViewController.view toView:_viewController.view duration:0.5 options:UIViewAnimationOptionTransitionFlipFromRight completion:^(BOOL finished) {
+    [UIView transitionFromView:_window.rootViewController.view toView:navVC.view duration:0.5 options:UIViewAnimationOptionTransitionFlipFromLeft completion:^(BOOL finished) {
         
         [_window setRootViewController:navVC];
     }];
@@ -527,6 +527,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             if (bindingWechat == YES) {
                 
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"RequestToBindingWechat" object:respdata.code];
+                
                 
             }else{
                 /* 如果只是登录*/

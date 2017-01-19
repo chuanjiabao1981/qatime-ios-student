@@ -136,7 +136,7 @@
 //        [_status setSingleLineAutoResizeWithMaxWidth:1000];
         
         
-        [self setupAutoHeightWithBottomView:_time bottomMargin:10];
+        [self setupAutoHeightWithBottomView:time bottomMargin:10];
         
     }
     return self;

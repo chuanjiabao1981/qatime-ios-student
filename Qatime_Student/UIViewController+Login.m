@@ -17,13 +17,23 @@
     
     [self.navigationController pushViewController:_ animated:YES];
     
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(popToSecondPage) name:@"WechatLoginSucess" object:nil];
-    
 }
 
 - (void)popToSecondPage{
     
     
+}
+
+- (BOOL)isLogin{
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
+            return YES;
+        }else{
+            return NO;
+        }
+    }else{
+        return NO;
+    }
 }
 
 

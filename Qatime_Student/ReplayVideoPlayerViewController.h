@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ZFPlayer.h"
+
 
 @interface ReplayVideoPlayerViewController : UIViewController
 
-@property(nonatomic,strong) ZFPlayerView *videoPlayer ;
+//@property(nonatomic,strong) ZFPlayerView *videoPlayer ;
 
 @property (nonatomic, assign) UIInterfaceOrientation  orientation;
 
