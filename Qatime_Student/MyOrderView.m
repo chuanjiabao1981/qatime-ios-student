@@ -40,7 +40,7 @@
         /* 大滚动视图*/
         _scrollView = ({
             UIScrollView *_=[[UIScrollView alloc]initWithFrame:CGRectMake(0, _segmentControl.height_sd, self.width_sd, self.height_sd-_segmentControl.height_sd)];
-            _.contentSize = CGSizeMake(self.width_sd*4,self.height_sd-_segmentControl.height_sd);
+            _.contentSize = CGSizeMake(self.width_sd*3,self.height_sd-_segmentControl.height_sd);
             _.pagingEnabled = YES;
             _.bounces = NO;
             _.alwaysBounceVertical = NO;

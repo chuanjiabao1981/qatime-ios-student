@@ -13,7 +13,6 @@
     
     UILabel *_before;
     UIImageView *_arrow;
-    UILabel *_noticeMe;
     
     UIView *_line;
     
@@ -37,17 +36,17 @@
         
         _before = ({
             UILabel *_ = [[UILabel alloc]init];
-            _.textColor = [UIColor blackColor];
+            _.textColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0];
             _.text = @"提前";
             _;
         });
         
         _timeButton = ({
-        
-            UIButton *_ = [[UIButton alloc]init];
-            
-            [_ setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [_ setTitle:@"00小时00分钟" forState:UIControlStateNormal];
+            UILabel *_ = [[UILabel alloc]init];
+            [_ setFont:[UIFont systemFontOfSize:15]];
+            _.textColor = BUTTONRED;
+            _.text =@"00小时00分钟" ;
+            _.userInteractionEnabled = YES;
             _;
         
         });
@@ -57,16 +56,10 @@
             [_ setImage:[UIImage imageNamed:@"下"]];
             _;
         });
-        _noticeMe = ({
-            UILabel *_ = [[UILabel alloc]init];
-            _.textColor = [UIColor blackColor];
-            _.text = @"提醒我";
-            _;
-        });
-        
+
         _line = ({
             UIView *_ = [[UIView alloc]init];
-            _.backgroundColor = [UIColor grayColor];
+            _.backgroundColor = SEPERATELINECOLOR;
             
             _;
         });
@@ -74,45 +67,39 @@
         
         /* 布局*/
         
-        [self.contentView sd_addSubviews:@[_name,_before,_timeButton,_arrow,_noticeMe,_line]];
+        [self.contentView sd_addSubviews:@[_name,_before,_timeButton,_arrow,_line]];
         
         _name.sd_layout
         .topSpaceToView(self.contentView,15)
         .bottomSpaceToView(self.contentView,15)
-        .leftSpaceToView(self.contentView,20);
+        .leftSpaceToView(self.contentView,12);
         [_name setSingleLineAutoResizeWithMaxWidth:500];
         
-        _before.sd_layout
-        .leftSpaceToView(self.contentView,self.contentView.width_sd/3.0f)
-        .centerYEqualToView(self.contentView)
-        .heightIs(20);
-        [_before setSingleLineAutoResizeWithMaxWidth:500];
-        
-        _timeButton.sd_layout
-        .leftSpaceToView(_before,5)
-        .topEqualToView(_before)
-        .bottomEqualToView(_before)
-        .widthRatioToView(self,1/3.0f);
-        
         _arrow.sd_layout
-        .leftSpaceToView(_timeButton,0)
+        .rightSpaceToView(self.contentView,12)
         .topSpaceToView(self.contentView,15)
         .bottomSpaceToView(self.contentView,15)
-        .widthIs(10);
+        .widthEqualToHeight();
+
+        _timeButton.sd_layout
+        .topSpaceToView(self.contentView,10)
+        .bottomSpaceToView(self.contentView,10)
+        .rightSpaceToView(_arrow,12);
+        [_timeButton setSingleLineAutoResizeWithMaxWidth:200];
         
-        _noticeMe.sd_layout
-        .leftSpaceToView(_arrow,10)
-        .topSpaceToView(self.contentView,15)
-        .bottomSpaceToView(self.contentView,15);
-        [_noticeMe setSingleLineAutoResizeWithMaxWidth:500];
-        
+        _before.sd_layout
+        .rightSpaceToView(_timeButton,12)
+        .topEqualToView(_timeButton)
+        .bottomEqualToView(_timeButton);
+        [_before setSingleLineAutoResizeWithMaxWidth:100];
+        _before.textAlignment = NSTextAlignmentRight;
         
         
         _line.sd_layout
         .leftEqualToView(self.contentView)
         .rightEqualToView(self.contentView)
         .bottomEqualToView(self.contentView)
-        .heightIs(0.4);
+        .heightIs(0.5);
         
         
         

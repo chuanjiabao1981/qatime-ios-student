@@ -14,6 +14,7 @@
 #import "CheckChargeViewController.h"
 #import "DCPaymentView.h"
 
+#import "UIViewController+AFHTTP.h"
 
 @interface PayConfirmViewController (){
     
@@ -22,6 +23,11 @@
     /* 订单信息*/
     NSMutableDictionary *_dataDic;
     
+    NSString *_token;
+    NSString *_idNumber;
+    
+    /* 订单支付token*/
+    NSString *_ticketToken;
     
 }
 
@@ -95,9 +101,20 @@
     
     });
     
+    /* 提出token和学生id*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
+        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
+    }
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
+        
+        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
+    }
     
     /* 注册微信支付成功或失败的通知*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(CheckPayStatus) name:@"ChargeSucess" object:nil];
+    
+   
+
     
 }
 #pragma mark- 支付订单
@@ -162,7 +179,53 @@
 - (void)payWithBalance{
     
     [DCPaymentView showPayAlertWithTitle:@"支付订单" andDetail:@"请输入支付密码" andAmount:[_dataDic[@"amount"]  floatValue] completeHandle:^(NSString *inputPwd) {
-        /* 输入完成*/
+        
+        /* 输入完成后,先访问服务器,获取tickettoken,然后在用tickettoken去请求支付*/
+        NSLog(@"%@",inputPwd);
+        [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/pay/ticket_token",Request_Header,_dataDic[@"id"]] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"password":inputPwd} completeSuccess:^(id  _Nullable responds) {
+            
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                /* 获取ticket token成功*/
+                NSLog(@"%@", dic[@"data"]);
+                
+                _ticketToken = [NSString stringWithFormat:@"%@",dic[@"data"]];
+                
+                [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/pay",Request_Header,_dataDic[@"id"]] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"ticket_token":_ticketToken} completeSuccess:^(id  _Nullable responds) {
+                   
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                    if ([dic[@"status"]isEqualToNumber:@1]) {
+                        /* 付款成功*/
+                        NSLog(@"%@",dic[@"data"]);
+                        
+                        [self loadingHUDStopLoadingWithTitle:@"购买成功!"];
+                        
+                        [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
+                        
+                    }else{
+                        /* 付款失败*/
+                         NSLog(@"%@",dic[@"data"]);
+                         [self loadingHUDStopLoadingWithTitle:@"购买失败!"];
+                        [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
+                    }
+                    
+                    
+                }];
+                
+            }else{
+                /* 验证信息错误*/
+                
+            }
+            
+            
+            
+            
+            
+            
+        }];
+        
+        
+        
         
         
         

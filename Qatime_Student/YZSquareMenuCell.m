@@ -27,8 +27,10 @@
         
         [_iconTitle setFrame:CGRectMake(0, self.width_sd*3/4, self.width_sd, self.width_sd/4)];
         [_iconTitle setTextColor:[UIColor blackColor]];
-        [_iconTitle setFont:[UIFont systemFontOfSize:14*ScrenScale]];
+//        [_iconTitle setFont:[UIFont systemFontOfSize:14*ScrenScale]];
         _iconTitle.textAlignment = NSTextAlignmentCenter;
+        _iconTitle.font = [UIFont systemFontOfSize:12];
+        _iconTitle.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
         
         _teacherID =[NSString string];
         

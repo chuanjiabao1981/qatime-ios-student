@@ -11,11 +11,7 @@
 
 @interface ListenTableViewCell (){
     
-    UILabel *line;
-    UILabel *line2;
-    UILabel *days;
-    UILabel *progress;
-    UILabel *dist;
+  
     
 }
 
@@ -62,10 +58,10 @@
         _subject.font = [UIFont systemFontOfSize:14*ScrenScale];
         
         /* 斜杠*/
-        line = [[UILabel alloc]init];
-        line.tintColor = [UIColor grayColor];
-        line.font = [UIFont systemFontOfSize:14*ScrenScale];
-        line.text = @"/";
+        _line = [[UILabel alloc]init];
+        _line.tintColor = [UIColor grayColor];
+        _line.font = [UIFont systemFontOfSize:14*ScrenScale];
+        _line.text = @"/";
         
         /* 教师姓名*/
         _teacherName = [[UILabel alloc]init];
@@ -79,21 +75,22 @@
         _status = [[UILabel alloc]init];
         _status.textColor = [UIColor whiteColor];
         _status.font = [UIFont systemFontOfSize:14*ScrenScale];
+        _status.backgroundColor = [UIColor orangeColor];
         
         
         
         
         /* 距离开课时间*/
-        dist = [[UILabel alloc]init];
-        [_content addSubview:dist];
-        dist.textColor = [UIColor blackColor];
-        dist.text = @"距开课";
+        _dist = [[UILabel alloc]init];
+        [_content addSubview:_dist];
+        _dist.textColor = [UIColor blackColor];
+        _dist.text = @"距开课";
         
-        dist.sd_layout
+        _dist.sd_layout
         .leftSpaceToView(_classImage,10)
         .bottomSpaceToView(_content,5)
         .autoHeightRatio(0);
-        [dist setSingleLineAutoResizeWithMaxWidth:200];
+        [_dist setSingleLineAutoResizeWithMaxWidth:200];
         
         
         _deadLineLabel = [[UILabel alloc]init];
@@ -101,27 +98,27 @@
         _deadLineLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         [_content addSubview: _deadLineLabel];
         _deadLineLabel.sd_layout
-        .leftSpaceToView(dist,0)
-        .topEqualToView(dist)
-        .bottomEqualToView(dist);
+        .leftSpaceToView(_dist,0)
+        .topEqualToView(_dist)
+        .bottomEqualToView(_dist);
         [_deadLineLabel setSingleLineAutoResizeWithMaxWidth:200];
         
         /* 天label*/
-        days = [[UILabel alloc]init];
-        [_content addSubview:days];
-        days.text = @"天";
-        days.textColor = [UIColor blackColor];
-        days.sd_layout
+        _days = [[UILabel alloc]init];
+        [_content addSubview:_days];
+        _days.text = @"天";
+        _days.textColor = [UIColor blackColor];
+        _days.sd_layout
         .leftSpaceToView(_deadLineLabel,0)
         .topEqualToView(_deadLineLabel)
         .bottomEqualToView(_deadLineLabel);
-        [days setSingleLineAutoResizeWithMaxWidth:200];
+        [_days setSingleLineAutoResizeWithMaxWidth:200];
         
         
         /* 进度label*/
-        progress = [[UILabel alloc]init];
-        progress.text = @"进度";
-        progress.textColor = [UIColor blackColor];
+        _progress = [[UILabel alloc]init];
+        _progress.text = @"进度";
+        _progress.textColor = [UIColor blackColor];
         
         
         /* 已进行课时*/
@@ -130,9 +127,9 @@
         
         
         /* 斜杠*/
-        line2 = [[UILabel alloc]init];
-        line2.text = @"/";
-        line2.textColor = [UIColor blackColor];
+        _line2 = [[UILabel alloc]init];
+        _line2.text = @"/";
+        _line2.textColor = [UIColor blackColor];
         
         /* 总课时*/
         _totalCount = [[UILabel alloc]init];
@@ -156,11 +153,8 @@
         [_enterButton setTitle:@"进入" forState:UIControlStateNormal];
 
         
-        
-        
-        
         /* 所有控件的布局*/
-        [_content sd_addSubviews:@[_classImage,_status,_className,_grade,_subject,line,_teacherName,progress,_presentCount,line2,_totalCount,_enterButton,_finish]];
+        [_content sd_addSubviews:@[_classImage,_status,_className,_grade,_subject,_line,_teacherName,_progress,_presentCount,_line2,_totalCount,_enterButton,_finish]];
         
         /* 课程图片布局*/
         _classImage.sd_layout
@@ -177,7 +171,6 @@
         .autoHeightRatio(0);
         
         [_status setSingleLineAutoResizeWithMaxWidth:200];
-        
         
         
         
@@ -209,51 +202,46 @@
         
         /* 斜杠布局*/
         
-        line.sd_layout
+        _line.sd_layout
         .leftSpaceToView(_subject,0)
         .heightRatioToView(_subject,1.0f)
         .topEqualToView(_subject);
-        [line setSingleLineAutoResizeWithMaxWidth:100];
+        [_line setSingleLineAutoResizeWithMaxWidth:100];
         
         
         /* 教师姓名布局*/
         
         _teacherName.sd_layout
-        .leftSpaceToView(line,0)
-        .topEqualToView(line)
-        .heightRatioToView(line,1.0);
+        .leftSpaceToView(_line,0)
+        .topEqualToView(_line)
+        .heightRatioToView(_line,1.0);
         
         [_teacherName setSingleLineAutoResizeWithMaxWidth:100];
         
         
-        
-       
-
-        
-        
         /* 课程进度布局*/
-        progress.sd_layout
+        _progress.sd_layout
         .leftSpaceToView(_classImage,10)
         .bottomSpaceToView(_content,5)
         .autoHeightRatio(0);
-        [progress setSingleLineAutoResizeWithMaxWidth:100];
+        [_progress setSingleLineAutoResizeWithMaxWidth:100];
         
         _presentCount.sd_layout
-        .leftSpaceToView(progress,0)
-        .topEqualToView(progress)
-        .bottomEqualToView(progress);
+        .leftSpaceToView(_progress,0)
+        .topEqualToView(_progress)
+        .bottomEqualToView(_progress);
         [_presentCount setSingleLineAutoResizeWithMaxWidth:100];
         
-        line2.sd_layout
+        _line2.sd_layout
         .leftSpaceToView(_presentCount,0)
         .topEqualToView(_presentCount)
         .bottomEqualToView(_presentCount);
-        [line2 setSingleLineAutoResizeWithMaxWidth:100];
+        [_line2 setSingleLineAutoResizeWithMaxWidth:100];
         
         _totalCount.sd_layout
-        .leftSpaceToView(line2,0)
-        .topEqualToView(line2)
-        .bottomEqualToView(line2);
+        .leftSpaceToView(_line2,0)
+        .topEqualToView(_line2)
+        .bottomEqualToView(_line2);
         [_totalCount setSingleLineAutoResizeWithMaxWidth:100];
         
 
@@ -291,85 +279,6 @@
     /* model数据对应的空间赋值*/
     [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
     
-    if (model.is_tasting ==YES) {
-        /* 有试听标示*/
-        
-        NSLog(@"%@",model.camera_pull_stream);
-        
-        if (model.camera_pull_stream != nil) {
-            
-            _status.text = @" 试听中 ";
-            _status.backgroundColor = [UIColor orangeColor];
-            
-            
-        }else{
-            
-            _status.text = @" 已试听 ";
-            _status.backgroundColor = [UIColor grayColor];
-            
-        }
-        
-    }else{
-        /* 无试听标示*/
-        
-        _status.hidden =YES;
-        _className.sd_layout
-        .leftSpaceToView(_classImage,10)
-        .topSpaceToView(_content,10)
-        .autoHeightRatio(0)
-        .rightSpaceToView(_content,10);
-        
-    }
-    
-    
-    
-    if ([model.status isEqualToString:@"published"]) {
-        
-        dist.hidden = NO;
-        _deadLineLabel.hidden =NO;
-        days.hidden =NO;
-        
-        progress.hidden =YES;
-        line2.hidden = YES;
-        _presentCount.hidden =YES;
-        _totalCount.hidden =YES;
-        
-        _finish.hidden =YES;
-        
-        
-    }
-   else if ([model.status isEqualToString:@"teaching"]) {
-        
-        dist.hidden = YES;
-        _deadLineLabel.hidden =YES;
-        days.hidden = YES;
-        
-        progress.hidden =NO;
-        line2.hidden = NO;
-        _presentCount.hidden = NO;
-        _totalCount.hidden = NO;
-        
-        _finish.hidden =YES;
-        
-        
-    }
-    else if ([model.status isEqualToString:@"completed"]) {
-        
-        
-        dist.hidden = YES;
-        _deadLineLabel.hidden = YES;
-        days.hidden = YES;
-        
-        progress.hidden = YES;
-        line2.hidden = YES;
-        _presentCount.hidden = YES;
-        _totalCount.hidden = YES;
-        
-        _finish.hidden = NO;
-        
-        _enterButton.hidden = YES;
-        
-    }
     
     _grade.text = model.grade;
     _subject.text = model.subject;
@@ -379,8 +288,6 @@
     _presentCount.text = model.completed_lesson_count;
     _totalCount.text = model.preset_lesson_count;
 
-    
-    
     
     /* 计算距开课时间*/
     //创建日期格式化对象

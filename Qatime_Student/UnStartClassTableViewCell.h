@@ -35,12 +35,12 @@
 /* 老师姓名*/
 @property(nonatomic,strong) UILabel *teacherName ;
 
-
 /* 状态*/
-
 @property(nonatomic,strong) UILabel *status ;
 
+/* 进入按钮*/
 
+@property(nonatomic,strong) UIButton *enterButton ;
 
 /* 外框content*/
 @property(nonatomic,strong) UIView *content;

@@ -12,6 +12,6 @@
 
 @property(nonatomic,strong) UILabel *name ;
 
-@property(nonatomic,strong) UIButton *timeButton ;
+@property(nonatomic,strong) UILabel *timeButton ;
 
 @end

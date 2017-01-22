@@ -71,7 +71,6 @@
             _viewController = [[ViewController alloc]init];
             UINavigationController *viewVC = [[UINavigationController alloc]initWithRootViewController:_viewController];
             [_window setRootViewController:viewVC];
-            
             NSString *token= [[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
             NSString *userid=[[NSUserDefaults standardUserDefaults]objectForKey:@"id"];
             NSLog(@"token:%@,id:%@",token,userid);
@@ -82,13 +81,11 @@
     
     NSLog(@"本地沙盒存储路径：%@", NSHomeDirectory());
     
-    
-    
     /* 注册微信API*/
     [WXApi registerApp:@"wxf2dfbeb5f641ce40"];
     
     /* 初始化云信SDK*/
-    [[NIMSDK sharedSDK] registerWithAppID:IM_APPKEY cerName:@"QatimeStudentPushDev"];
+    [[NIMSDK sharedSDK] registerWithAppID:IM_APPKEY cerName:PushCerName_RELEASE];
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
     
     /* 登录云信*/
@@ -124,8 +121,6 @@
     /* 友盟推送设置初始化*/
     [UMessage startWithAppkey:@"5846465b1c5dd042ae000732" launchOptions:launchOptions httpsenable:YES];
     
-    
-    
     /* 程序运行时,开启捕获异常,在程序出现不可避免的崩溃和闪退的时候,弹窗提醒而不闪退*/
     [UncaughtExceptionHandler installUncaughtExceptionHandler:YES showAlert:YES];
     
@@ -156,7 +151,6 @@
     
     /* 浅色状态栏设置*/
     [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
-    
     
     /* 添加消息中心监听 判断登录状态*/
     /* 用户登出*/
@@ -215,7 +209,6 @@
     
     //打开日志，方便调试
     [UMessage setLogEnabled:YES];
-    
 
 }
 

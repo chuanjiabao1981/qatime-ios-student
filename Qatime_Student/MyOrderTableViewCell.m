@@ -206,6 +206,8 @@
         _status.text = @"退款中";
     }else if ([unpaidModel.status isEqualToString:@"completed"]){
         _status.text = @"交易完成";
+    }else if ([unpaidModel.status isEqualToString:@"refunded"]){
+        self.status.text = @"已退款";
     }
     
     

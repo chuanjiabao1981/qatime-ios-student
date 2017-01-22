@@ -133,27 +133,61 @@
     
     
     /* 已开课的状态*/
-    if ([_model.status isEqualToString:@"teaching"]||[_model.status isEqualToString:@"pause"]||[ _model.status isEqualToString:@"closed"]) {
-        
-        _status.text =@"已开课";
-        _class_status = [NSString stringWithFormat:@"已开课"];
-        
-    }else if ([_model.status isEqualToString:@"missed"]||[_model.status isEqualToString:@"init"]||[_model.status isEqualToString:@"ready"]){
-        _status.text = @"未开课";
-        _class_status = [NSString stringWithFormat:@"未开课"];
-
-    }else if ([_model.status isEqualToString:@"finished"]||[_model.status isEqualToString:@"billing"]||[_model.status isEqualToString:@"completed"]){
-        
-        _status.text = @"已结束";
-        
+    
+    
+    if ([_model.status isEqualToString:@"init"]) {
+        _status.text =@"未开始";
+        _class_status = [NSString stringWithFormat:@"未开始"];
+    }else if([_model.status isEqualToString:@"ready"]){
+        _status.text =@"待上课";
+        _class_status = [NSString stringWithFormat:@"待上课"];
+    }else if([_model.status isEqualToString:@"teaching"]){
+        _status.text =@"直播中";
+        _class_status = [NSString stringWithFormat:@"直播中"];
+    }else if([_model.status isEqualToString:@"closed"]){
+        _status.text =@"已直播";
+        _class_status = [NSString stringWithFormat:@"已直播"];
+    }else if([_model.status isEqualToString:@"finished"]){
+        _status.text =@"已结束";
         _class_status = [NSString stringWithFormat:@"已结束"];
-        
-    }else if ([_model.status isEqualToString:@"public"]){
-        
-        _status.text = @"招生中";
-        _class_status = [NSString stringWithFormat:@"招生中"];
-        
+    }else if([_model.status isEqualToString:@"pause"]){
+        _status.text =@"暂停中";
+        _class_status = [NSString stringWithFormat:@"暂停中"];
+    }else if([_model.status isEqualToString:@"missed"]){
+        _status.text =@"待补课";
+        _class_status = [NSString stringWithFormat:@"待补课"];
+    }else if([_model.status isEqualToString:@"billing"]){
+        _status.text =@"已结束";
+        _class_status = [NSString stringWithFormat:@"已结束"];
+    }else if([_model.status isEqualToString:@"completed"]){
+        _status.text =@"已结束";
+        _class_status = [NSString stringWithFormat:@"已结束"];
     }
+    
+    
+    
+    
+//    if ([_model.status isEqualToString:@"teaching"]||[_model.status isEqualToString:@"pause"]||[ _model.status isEqualToString:@"closed"]) {
+//        
+//        _status.text =@"已开课";
+//        _class_status = [NSString stringWithFormat:@"已开课"];
+//        
+//    }else if ([_model.status isEqualToString:@"missed"]||[_model.status isEqualToString:@"init"]||[_model.status isEqualToString:@"ready"]){
+//        _status.text = @"未开课";
+//        _class_status = [NSString stringWithFormat:@"未开课"];
+//
+//    }else if ([_model.status isEqualToString:@"finished"]||[_model.status isEqualToString:@"billing"]||[_model.status isEqualToString:@"completed"]){
+//        
+//        _status.text = @"已结束";
+//        
+//        _class_status = [NSString stringWithFormat:@"已结束"];
+//        
+//    }else if ([_model.status isEqualToString:@"public"]){
+//        
+//        _status.text = @"招生中";
+//        _class_status = [NSString stringWithFormat:@"招生中"];
+//        
+//    }
     
 //    if (model.replayable == YES) {
 //        
@@ -173,27 +207,59 @@
     _classDate .text = classModel.class_date;
     _classTime .text = classModel.live_time;
     /* 已开课的状态*/
-    if ([classModel.status isEqualToString:@"teaching"]||[classModel.status isEqualToString:@"pause"]) {
-        _status.text =@"已开课";
-        _class_status = [NSString stringWithFormat:@"已开课"];
-    }else if ([classModel.status isEqualToString:@"closed"]){
-        _status.text = @"已直播";
-        _class_status = [NSString stringWithFormat:@"已直播"];
-    }else if ([classModel.status isEqualToString:@"missed"]){
-        _status.text = @"待补课";
-        _class_status = [NSString stringWithFormat:@"待补课"];
-    }else if ([classModel.status isEqualToString:@"finished"]||[classModel.status isEqualToString:@"billing"]||[_classModel.status isEqualToString:@"completed"]){
-        _status.text = @"已结束";
-        
-        _class_status = [NSString stringWithFormat:@"已结束"];
-    }else if ([classModel.status isEqualToString:@"public"]){
-        _status.text = @"招生中";
-        _class_status = [NSString stringWithFormat:@"招生中"];
-    }else if ([classModel.status isEqualToString:@"teaching"]||[classModel.status isEqualToString:@"paused"]){
-        _status.text = @"直播中";
+    
+    if ([classModel.status isEqualToString:@"init"]) {
+        _status.text =@"未开始";
+        _class_status = [NSString stringWithFormat:@"未开始"];
+    }else if([classModel.status isEqualToString:@"ready"]){
+        _status.text =@"待上课";
+        _class_status = [NSString stringWithFormat:@"待上课"];
+    }else if([classModel.status isEqualToString:@"teaching"]){
+        _status.text =@"直播中";
         _class_status = [NSString stringWithFormat:@"直播中"];
-
+    }else if([classModel.status isEqualToString:@"closed"]){
+        _status.text =@"已直播";
+        _class_status = [NSString stringWithFormat:@"已直播"];
+    }else if([classModel.status isEqualToString:@"finished"]){
+        _status.text =@"已结束";
+        _class_status = [NSString stringWithFormat:@"已结束"];
+    }else if([classModel.status isEqualToString:@"pause"]){
+        _status.text =@"暂停中";
+        _class_status = [NSString stringWithFormat:@"暂停中"];
+    }else if([classModel.status isEqualToString:@"missed"]){
+        _status.text =@"待补课";
+        _class_status = [NSString stringWithFormat:@"待补课"];
+    }else if([classModel.status isEqualToString:@"billing"]){
+        _status.text =@"已结束";
+        _class_status = [NSString stringWithFormat:@"已结束"];
+    }else if([classModel.status isEqualToString:@"completed"]){
+        _status.text =@"已结束";
+        _class_status = [NSString stringWithFormat:@"已结束"];
     }
+    
+    
+    
+//    if ([classModel.status isEqualToString:@"teaching"]||[classModel.status isEqualToString:@"pause"]) {
+//        _status.text =@"已开课";
+//        _class_status = [NSString stringWithFormat:@"已开课"];
+//    }else if ([classModel.status isEqualToString:@"closed"]){
+//        _status.text = @"已直播";
+//        _class_status = [NSString stringWithFormat:@"已直播"];
+//    }else if ([classModel.status isEqualToString:@"missed"]){
+//        _status.text = @"待补课";
+//        _class_status = [NSString stringWithFormat:@"待补课"];
+//    }else if ([classModel.status isEqualToString:@"finished"]||[classModel.status isEqualToString:@"billing"]||[_classModel.status isEqualToString:@"completed"]){
+//        _status.text = @"已结束";
+//        
+//        _class_status = [NSString stringWithFormat:@"已结束"];
+//    }else if ([classModel.status isEqualToString:@"public"]){
+//        _status.text = @"招生中";
+//        _class_status = [NSString stringWithFormat:@"招生中"];
+//    }else if ([classModel.status isEqualToString:@"teaching"]||[classModel.status isEqualToString:@"paused"]){
+//        _status.text = @"直播中";
+//        _class_status = [NSString stringWithFormat:@"直播中"];
+//
+//    }
     
 //    if (classModel.replayable == YES) {
 //        

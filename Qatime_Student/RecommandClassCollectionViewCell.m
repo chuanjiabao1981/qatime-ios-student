@@ -39,7 +39,7 @@
         [_className setText:@"课程名称"];
         _className.textAlignment = NSTextAlignmentLeft;
         
-        _className.font = [UIFont systemFontOfSize:15*ScrenScale];
+        _className.font = [UIFont systemFontOfSize:15];
         
         /* 年级 label*/
         _grade = [[UILabel alloc]init];

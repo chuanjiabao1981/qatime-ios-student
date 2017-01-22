@@ -14,6 +14,7 @@
 #import "UIViewController+HUD.h"
 #import "HcdDateTimePickerView.h"
 #import "UIAlertController+Blocks.h"
+#import "NoticeSwitchTableViewCell.h"
 
 
 
@@ -50,9 +51,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+
     _navigtionBar = ({
         NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
-        _.titleLabel.text = @"提醒设置";
+        _.titleLabel.text = @"课程提醒";
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_];
@@ -69,7 +71,7 @@
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
-   
+    self.view.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
     
     /* 向服务器请求消息提醒设置*/
     [self requestNoticeSetting];
@@ -120,6 +122,8 @@
     _menuTableView = ({
         UITableView *_=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
         [self.view addSubview:_];
+        _.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
+        _.tableFooterView = [[UIView alloc]init];
         _.delegate = self;
         _.dataSource =self;
         _.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -151,11 +155,6 @@
             
         }
         
-        /* 修改成功*/
-//        [self loadingHUDStopLoadingWithTitle:@"保存失败!"];
-//        
-//        [self performSelector:@selector(exit) withObject:nil afterDelay:1];
-        
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -169,7 +168,19 @@
 #pragma mark- tableview datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 2;
+    NSInteger rows = 0;
+    
+    switch (section) {
+        case 0:
+            rows = 2;
+            break;
+            
+        case 1:
+            rows = 1;
+            break;
+    }
+    
+    return rows;
     
 }
 
@@ -177,41 +188,56 @@
     
     UITableViewCell *cell = [UITableViewCell new];
     
-    
-    switch (indexPath.row) {
+    switch (indexPath.section) {
             
         case 0:{
             /* cell的重用队列*/
             static NSString *cellIdenfier = @"cell";
-            ClassNoticeSettingTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+            NoticeSwitchTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
             if (cell==nil) {
-                cell=[[ClassNoticeSettingTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+                cell=[[NoticeSwitchTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
-                cell.name.text = @"提醒方式";
-                cell.leftLabel.text = @"短信通知";
-                cell.rightLabel.text = @"系统通知";
-                cell.leftButton.tag = 1;
-                cell.rightButton.tag = 2;
-                
-                if (_settingDic) {
-                    if ([_settingDic[@"message"]boolValue]==YES) {
-                        cell.leftButton.selected = NO;
-                    }else{
-                        cell.leftButton.selected = YES;
+                switch (indexPath.row) {
+                    case 0:{
+                        
+                        cell.name.text = @"手机短信提醒";
+                        cell.noticeSwitch.onTintColor = BUTTONRED;
+                        if (_settingDic) {
+                            if ([_settingDic[@"message"]boolValue]==YES) {
+                                cell.noticeSwitch.selected = YES;
+                                cell.noticeSwitch.on = YES;
+                            }else{
+                                cell.noticeSwitch.selected = NO;
+                                cell.noticeSwitch.on = NO;
+                            }
+                            
+                        }
+                        cell.noticeSwitch.tag = 1;
                     }
-                    [self turnNoticeStatus:cell.leftButton];
-                    
-                    if ([_settingDic[@"notice"]boolValue]==YES) {
-                        cell.rightButton.selected = NO;
-                    }else{
-                        cell.rightButton.selected = YES;
-                    }
-                    [self turnNoticeStatus:cell.rightButton];
-                    
-                }
+                        
+                        break;
+                        
+                    case 1:{
+                        cell.name.text = @"系统消息提醒";
+                        cell.noticeSwitch.onTintColor = BUTTONRED;
+                        if (_settingDic) {
+                            if ([_settingDic[@"notice"]boolValue]==YES) {
+                                cell.noticeSwitch.selected = YES;
+                                cell.noticeSwitch.on = YES;
                                 
-                [cell.leftButton addTarget:self action:@selector(turnNoticeStatus:) forControlEvents:UIControlEventTouchUpInside];
-                [cell.rightButton addTarget:self action:@selector(turnNoticeStatus:) forControlEvents:UIControlEventTouchUpInside];
+                            }else{
+                                cell.noticeSwitch.selected = NO;
+                                cell.noticeSwitch.on = NO;
+                            }
+                            
+                        }
+                        cell.noticeSwitch.tag = 2;
+                    }
+                        break;
+                }
+                
+                [cell.noticeSwitch addTarget:self action:@selector(turnNoticeStatus:) forControlEvents:UIControlEventTouchUpInside];
+               
             }
             return cell;
             
@@ -223,11 +249,25 @@
             ClassNoticeTimeSettingTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellID];
             if (cell==nil) {
                 cell=[[ClassNoticeTimeSettingTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cellID"];
-                cell.name .text = @"设置时间";
-                [cell.timeButton addTarget:self action:@selector(chooseTime:) forControlEvents:UIControlEventTouchUpInside];
+                cell.name .text = @"提醒时间设置";
+                cell.userInteractionEnabled = YES;
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(chooseTime:)];
+                
+                [cell.timeButton addGestureRecognizer:tap];
+                
                 if (_settingDic) {
                     
-                    [cell.timeButton setTitle:[NSString stringWithFormat:@"%@小时%@分钟",_settingDic[@"before_hours"],_settingDic[@"before_minutes"]] forState:UIControlStateNormal];
+                    NSMutableString *beforhours = [NSMutableString stringWithFormat:@"%@",_settingDic[@"before_hours"]];
+                    NSMutableString *beforminutes =[NSMutableString stringWithFormat:@"%@",_settingDic[@"before_minutes"]];
+                    
+                    if (beforhours.length<2) {
+                        [beforhours insertString:@"0" atIndex:0];
+                    }
+                    if (beforminutes.length<2) {
+                        [beforminutes insertString:@"0" atIndex:0];
+                    }
+                    
+                    cell.timeButton.text = [NSString stringWithFormat:@"%@小时%@分钟",beforhours,beforminutes];
                     
                 }
                 
@@ -245,9 +285,17 @@
     
 }
 
+#pragma mark- tableview delegate
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    
+    return 2;
+}
+
+
+
 
 /* 选择时间段*/
-- (void)chooseTime:(UIButton *)sender{
+- (void)chooseTime:(UILabel *)sender{
     
     _effect = [[UIVisualEffectView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd)];
     _effect.backgroundColor = [UIColor blackColor];
@@ -345,6 +393,53 @@
     return rows;
 }
 
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    
+    
+    UIView * view = [[UIView alloc]init];
+    
+    
+    if (section == 0) {
+        view.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.00]
+        ;
+        
+        UIView *line = [[UIView alloc]init];
+        line.backgroundColor = SEPERATELINECOLOR;
+        [view addSubview:line];
+        line.sd_layout
+        .leftEqualToView(view)
+        .rightEqualToView(view)
+        .bottomEqualToView(view)
+        .heightIs(0.5);
+        
+        
+        UILabel *label = [[UILabel alloc]init];
+        [view addSubview:label];
+        label.sd_layout
+        .topSpaceToView(view,6)
+        .leftSpaceToView(view,12)
+        .rightSpaceToView(view,12)
+        .autoHeightRatio(0);
+        label.text = @"为了您能正常使用此功能，请在“系统设置”>“答疑时间”>“通知”中允许接收通知";
+        label.textColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0];
+        label.font = [UIFont systemFontOfSize:12];
+        return view;
+    }
+    
+    return view;
+    
+    
+    
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    
+    if (section == 0) {
+        
+        return 47;
+    }
+    return 0;
+}
+
 #pragma mark- pickerview delegate
 - (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
     
@@ -366,13 +461,14 @@
 /* 选择器确定选择*/
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
     
-    ClassNoticeTimeSettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    ClassNoticeTimeSettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     
-    NSMutableString *str =[NSMutableString stringWithFormat:@"%@",cell.timeButton.titleLabel.text];
+    NSMutableString *str =[NSMutableString stringWithFormat:@"%@",cell.timeButton.text];
     
     if (component==0) {
         [str replaceCharactersInRange:NSMakeRange(0, 4) withString:_hours[row]];
-        [cell.timeButton setTitle:str forState:UIControlStateNormal];
+        
+        cell.timeButton.text = str;
         
         [_settingDic setValue:[_hours[row] substringWithRange:NSMakeRange(0, 2)] forKey:@"before_hours"];
         
@@ -380,7 +476,9 @@
     }else if (component==1) {
         
         [str replaceCharactersInRange:NSMakeRange(4, 4) withString:_minutes[row]];
-        [cell.timeButton setTitle:str forState:UIControlStateNormal];
+        
+        cell.timeButton.text = str;
+        
         [_settingDic setValue:[_minutes[row] substringWithRange:NSMakeRange(0, 2)] forKey:@"before_minutes"];
     }
     
@@ -389,7 +487,7 @@
 }
 
 /* 设置消息提醒*/
-- (void)turnNoticeStatus:(UIButton *)sender{
+- (void)turnNoticeStatus:(UISwitch *)sender{
     
     switch (sender.tag) {
         case 1:{
@@ -410,13 +508,9 @@
 }
 
 #pragma mark- 声音和震动的开关方法
-- (void)switchSender:(UIButton *)sender{
+- (void)switchSender:(UISwitch *)sender{
     
     if (sender.selected ==YES) {
-        sender.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        sender.layer.borderWidth =2;
-        sender.backgroundColor = [UIColor clearColor];
-        [sender setImage:nil forState:UIControlStateNormal];
         sender.selected = NO;
         changeSettings =YES;
         if (sender.tag == 1) {
@@ -428,9 +522,6 @@
         
         
     }else if (sender.selected ==NO){
-        sender.layer.borderWidth =0;
-        sender.backgroundColor = [UIColor colorWithRed:0.84 green:0.33 blue:0.6 alpha:1.00];
-        [sender setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];
         sender.selected = YES;
         changeSettings =YES;
         if (sender.tag == 1) {
@@ -450,7 +541,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 60;
+    return 45;
 }
 
 

@@ -53,7 +53,15 @@
             model.pay_at = @"";
         }
         
-        dataInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"amount":model.amount,@"status":model.status,@"id":model.idNumber,@"created_at":model.created_at,@"pay_type":model.pay_type,@"pay_at":model.pay_at,@"nonce_str":model.nonce_str,@"updated_at":model.updated_at,@"prepay_id":model.prepay_id}];
+        dataInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"amount":model.amount,
+                                                                   @"status":model.status,
+                                                                   @"id":model.idNumber,
+                                                                   @"created_at":model.created_at,
+                                                                   @"pay_type":model.pay_type,
+                                                                   @"pay_at":model.pay_at,
+                                                                   @"nonce_str":model.nonce_str,
+                                                                   @"updated_at":model.updated_at,
+                                                                   @"prepay_id":model.prepay_id}];
     }
     return self;
     
@@ -70,11 +78,19 @@
         if (model.timestamp == nil) {
             model.timestamp = @"" ;
         }
-        dataInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"amount":model.price,@"status":model.status,@"id":model.orderID,@"created_at":model.created_at,@"pay_type":model.pay_type,@"pay_at":model.pay_at,@"nonce_str":model.nonce_str,@"updated_at":model.created_at,@"prepay_id":model.prepay_id==nil?@"":model.prepay_id}];
+        dataInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"amount":model.price,
+                                                                   @"status":model.status,
+                                                                   @"id":model.orderID,
+                                                                   @"created_at":model.created_at,
+                                                                   @"pay_type":model.pay_type,
+                                                                   @"pay_at":model.pay_at,
+                                                                   @"nonce_str":model.nonce_str,
+                                                                   @"updated_at":model.created_at,
+                                                                   @"prepay_id":model.prepay_id==nil?@"":model.prepay_id,
+                                                                   @"app_pay_params":model.app_pay_params
+                                                                   }];
     }
     return self;
-
-    
 }
 
 
@@ -119,10 +135,6 @@
             [_.payButton addTarget:self action:@selector(sureToPay) forControlEvents:UIControlEventTouchUpInside];
             
         }
-        
-        
-        
-        
         
         [self.view addSubview:_];
         _;
@@ -173,40 +185,38 @@
     [self presentViewController:alert animated:YES completion:nil];
 
     
-    
-    
 }
 
 
 #pragma mark- 发送支付跳转申请
 
 - (void)requestChargWithType:(NSString *)type andData:(NSMutableDictionary *)data{
-    
-    if ([type isEqualToString:@"weixin"]) {
         
-        PayReq *request = [[PayReq alloc] init] ;
-        
-        request.partnerId = data[@"app_pay_params"][@"partnerid"];
-        
-        request.prepayId= data[@"app_pay_params"][@"prepayid"];
-        
-        request.package = data[@"app_pay_params"][@"package"];
-        
-        request.nonceStr= data[@"app_pay_params"][@"noncestr"];
-        
-        request.timeStamp= [ data[@"app_pay_params"][@"timestamp"] intValue];
-        
-        request.sign = data[@"app_pay_params"][@"sign"];
-        
-        [WXApi sendReq:request];
-    }else if ([type isEqualToString:@"alipay"]){
-        
-        
-    }
-    
-    
-    
-    
+        if ([type isEqualToString:@"weixin"]) {
+            
+            PayReq *request = [[PayReq alloc] init] ;
+            
+            request.partnerId = data[@"app_pay_params"][@"partnerid"];
+            
+            request.prepayId= data[@"app_pay_params"][@"prepayid"];
+            
+            request.package = data[@"app_pay_params"][@"package"];
+            
+            request.nonceStr= data[@"app_pay_params"][@"noncestr"];
+            
+            request.timeStamp= [data[@"app_pay_params"][@"timestamp"] intValue];
+            
+            request.sign = data[@"app_pay_params"][@"sign"];
+            
+            [WXApi sendReq:request];
+            
+        }else if ([type isEqualToString:@"alipay"]){
+            /* 后台接口暂时未调通,暂时预留接口*/
+            
+        }else if ([type isEqualToString:@"amount"]){
+            /* 后台接口暂时未调通,暂时预留接口*/
+        }
+ 
 }
 
 #pragma mark- 查询页面退出后,直接跳转到rootcontroller

@@ -68,7 +68,8 @@
             
             UILabel *iconLabel =[[UILabel alloc]initWithFrame:CGRectMake(0, btn.frame.size.width*3/4+2, btn.frame.size.width, btn.frame.size.width/4-2)];
             iconLabel.textAlignment = NSTextAlignmentCenter;
-            iconLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
+            iconLabel.font = [UIFont systemFontOfSize:14];
+            iconLabel.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
             [btn addSubview:iconImage];
             [btn addSubview:iconLabel];
             
@@ -92,7 +93,8 @@
             
             UILabel *iconLabel =[[UILabel alloc]initWithFrame:CGRectMake(0, btn.frame.size.width*3/4+2, btn.frame.size.width, btn.frame.size.width/4-2)];
             iconLabel.textAlignment = NSTextAlignmentCenter;
-            iconLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
+            iconLabel.font = [UIFont systemFontOfSize:14];
+            iconLabel.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
             [btn addSubview:iconImage];
             [btn addSubview:iconLabel];
             
@@ -118,13 +120,14 @@
         
         /* 入驻名师图标*/
         UIImageView *teacherHead=[[UIImageView alloc]init];
-        [teacherHead setImage:[UIImage imageNamed:@"老师"]];
+        [teacherHead setImage:[UIImage imageNamed:@"名师推荐"]];
         [_teacherScrollHeader addSubview:teacherHead];
-        teacherHead.sd_layout.leftSpaceToView(_teacherScrollHeader,20).topSpaceToView(_teacherScrollHeader,10).bottomSpaceToView(_teacherScrollHeader,10).widthEqualToHeight();
+        teacherHead.sd_layout.leftSpaceToView(_teacherScrollHeader,12).topSpaceToView(_teacherScrollHeader,10).bottomSpaceToView(_teacherScrollHeader,10).widthEqualToHeight();
         
         /* 入住名师label*/
         UILabel *teacherLabel=[[UILabel alloc]init];
         teacherLabel .text =@"名师入驻" ;
+        teacherLabel.font = [UIFont systemFontOfSize:17];
         [_teacherScrollHeader addSubview:teacherLabel];
         teacherLabel.sd_layout.leftSpaceToView(teacherHead,5).topEqualToView(teacherHead).bottomEqualToView(teacherHead);
         [teacherLabel setSingleLineAutoResizeWithMaxWidth:100];
@@ -166,13 +169,14 @@
         
         /* 辅导推荐图标*/
         UIImageView *commandImage=[[UIImageView alloc]init];
-        [commandImage setImage:[UIImage imageNamed:@"老师"]];
+        [commandImage setImage:[UIImage imageNamed:@"辅导推荐"]];
         [_conmmandView addSubview:commandImage];
-        commandImage.sd_layout.leftSpaceToView(_conmmandView,20).topSpaceToView(_conmmandView,10).bottomSpaceToView(_conmmandView,10).widthEqualToHeight();
+        commandImage.sd_layout.leftSpaceToView(_conmmandView,12).topSpaceToView(_conmmandView,10).bottomSpaceToView(_conmmandView,10).widthEqualToHeight();
         
         /* 辅导推荐label*/
         UILabel *commandLabel=[[UILabel alloc]init];
         commandLabel .text =@"辅导推荐" ;
+        commandLabel.font = [UIFont systemFontOfSize:17];
         [_conmmandView addSubview:commandLabel];
         commandLabel.sd_layout.leftSpaceToView(commandImage,5).topEqualToView(commandImage).bottomSpaceToView(_conmmandView,10);
         
@@ -183,16 +187,19 @@
         _recommandAllButton = [[UIButton alloc]init];
         [_conmmandView addSubview:_recommandAllButton];
         [_recommandAllButton setTitle:@"全部" forState:UIControlStateNormal];
-        [_recommandAllButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [_recommandAllButton setTitleColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0] forState:UIControlStateNormal];
+        [_recommandAllButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
+        _recommandAllButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         
         
         _allArrowButton = [[UIButton alloc]init];
         [_conmmandView addSubview:_allArrowButton];
         [_allArrowButton setImage:[UIImage imageNamed:@"rightArrow"] forState:UIControlStateNormal];
         
-        _allArrowButton.sd_layout.rightSpaceToView(_conmmandView,20).topSpaceToView(_conmmandView,10).bottomSpaceToView(_conmmandView,10).widthEqualToHeight();
+        _allArrowButton.sd_layout.rightSpaceToView(_conmmandView,20).topSpaceToView(_conmmandView,15).bottomSpaceToView(_conmmandView,15).widthEqualToHeight();
         
-        _recommandAllButton .sd_layout.rightSpaceToView(_allArrowButton,0).topEqualToView(_allArrowButton).bottomEqualToView(_allArrowButton).widthIs(50);
+        _recommandAllButton .sd_layout.rightSpaceToView(_allArrowButton,0).centerYEqualToView(_allArrowButton).widthIs(50);
+        
         
         
         
@@ -210,56 +217,6 @@
 
 
 
-
-//    /* section数量*/
-//- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
-//
-//    return 1;
-//
-//}
-//
-//
-//
-//-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-//
-//    return 10;
-//}
-//
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-//
-//
-//    CGSize layoutSize = CGSizeZero ;
-//
-//
-//        layoutSize =CGSizeMake(CGRectGetWidth(self.frame)/5-10, CGRectGetWidth(self.frame)/5-10);
-//
-//
-//    return layoutSize;
-//}
-//
-//
-//- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-//
-//
-//
-//    static NSString * CellIdentifier = @"CollectionCell";
-////    static NSString * recommandIdentifier = @"RecommandCell";
-//
-//    /* 教师推荐的横滑视图*/
-//
-//        YZSquareMenuCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-//
-//        [cell.iconTitle setText:@"名师推荐"];
-//
-//        [cell.iconImage setImage: [UIImage imageNamed:@"老师"]];
-//        cell.iconImage.layer.masksToBounds = YES;
-//        cell.iconImage.layer.cornerRadius = cell.iconImage.frame.size.height/2.0f;
-//
-//
-//
-//    return cell;
-//
-//}
 
 
 

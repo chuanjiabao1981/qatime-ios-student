@@ -33,9 +33,6 @@
         /* logoImage*/
         _logoImage = [[UIImageView alloc]init];
         
-        
-        
-        
         /* 菜单名*/
         _settingName = [[UILabel alloc]init];
         _settingName.textColor = TITLECOLOR;
@@ -43,10 +40,8 @@
         
         
         /* 箭头*/
-        
-//        _arrow = [[UIImageView alloc]init];
-//        [_arrow setImage:[UIImage imageNamed:@"rightArrow"]];
-        
+        _arrow = [[UIImageView alloc]init];
+        [_arrow setImage:[UIImage imageNamed:@"rightArrow"]];
         
        
         /* 余额*/
@@ -57,10 +52,10 @@
         _balance.font = [UIFont systemFontOfSize:16*ScrenScale];
         
         /* 分割线*/
-//        _separateLine = [[UIView alloc]init];
-//        _separateLine.backgroundColor= [UIColor lightGrayColor];
+        _separateLine = [[UIView alloc]init];
+        _separateLine.backgroundColor= SEPERATELINECOLOR;
         
-        [self.contentView sd_addSubviews:@[_logoImage,_settingName,_balance]];
+        [self.contentView sd_addSubviews:@[_logoImage,_settingName,_balance,_separateLine,_arrow]];
         
         /* 布局*/
         
@@ -76,11 +71,11 @@
         .leftSpaceToView(_logoImage,20);
         [_settingName setSingleLineAutoResizeWithMaxWidth:200];
         
-//        _arrow.sd_layout
-//        .topSpaceToView(self.contentView,15)
-//        .bottomSpaceToView(self.contentView,15)
-//        .rightSpaceToView(self.contentView,20)
-//        .widthEqualToHeight();
+        _arrow.sd_layout
+        .topSpaceToView(self.contentView,15)
+        .bottomSpaceToView(self.contentView,15)
+        .rightSpaceToView(self.contentView,20)
+        .widthEqualToHeight();
         
         _balance.sd_layout
         .rightSpaceToView(self.contentView,15)
@@ -88,11 +83,11 @@
         .bottomSpaceToView(self.contentView,10);
         [_balance setSingleLineAutoResizeWithMaxWidth:200];
         
-//        _separateLine.sd_layout
-//        .leftSpaceToView(self.contentView,10)
-//        .rightEqualToView(self.contentView)
-//        .bottomEqualToView(self.contentView)
-//        .heightIs(0.4);
+        _separateLine.sd_layout
+        .leftSpaceToView(self.contentView,0)
+        .rightEqualToView(self.contentView)
+        .bottomEqualToView(self.contentView)
+        .heightIs(0.5);
         
         
     }

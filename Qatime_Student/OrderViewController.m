@@ -163,11 +163,22 @@
                     
                     _orderView.typeLabel.text = @"在线直播";
                     
-                    _orderView.priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",mod.price];
+                    if ([mod.current_price containsString:@"."]) {
+                        
+                        _orderView.priceLabel.text = [NSString stringWithFormat:@"¥%@元",mod.current_price];
+                        
+                        _orderView.totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",mod.current_price];
+                        
+                        price = mod.current_price.floatValue;
+                    }else{
+                        _orderView.priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",mod.current_price];
+                        
+                        _orderView.totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",mod.current_price];
+                        
+                        price = mod.current_price.floatValue;
+
+                    }
                     
-                    _orderView.totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",mod.price];
-                    
-                    price = mod.price.floatValue;
                     
                         /* 请求一次余额 ,判断是否可以用余额支付*/
                     [self requestBalance];
@@ -333,6 +344,7 @@
             
         }
     }else{
+        
         [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"余额不足,不可使用余额支付." cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
             
         }];

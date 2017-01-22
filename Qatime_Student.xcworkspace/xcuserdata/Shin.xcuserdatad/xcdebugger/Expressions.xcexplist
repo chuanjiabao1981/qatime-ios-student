@@ -3,6 +3,9 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "-[OrderInfoViewController initWithUnpaid:]:OrderInfoViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke:ClassTimeViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -116,6 +119,9 @@
          contextName = "__35-[ChatViewController makeMessages:]_block_invoke:ChatViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[ConfirmChargeViewController requestChargWithType:andData:]:ConfirmChargeViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[SafeViewController tableView:didSelectRowAtIndexPath:]:SafeViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -146,6 +152,9 @@
                value = "self.tableView">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MyOrderViewController payOrder:]:MyOrderViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[AppDelegate jpushNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
@@ -225,6 +234,9 @@
                value = "_myClassArray">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__34-[MyOrderViewController buyAgain:]_block_invoke_3:MyOrderViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
@@ -326,6 +338,14 @@
          contextName = "-[ChatViewController makeMessages:]:ChatViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[ClassSettingViewController tableView:cellForRowAtIndexPath:]:ClassSettingViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_settingDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__40-[NELivePlayerViewController initNIMSDK]_block_invoke:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -338,6 +358,14 @@
       </ContextState>
       <ContextState
          contextName = "__39-[BindingMailInfoViewController finish]_block_invoke_2:BindingMailInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[OrderInfoViewController requestForPay]:OrderInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__45-[SafeViewController RequestToBindingWechat:]_block_invoke_2:SafeViewController.m">
@@ -440,6 +468,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__34-[MyOrderViewController buyAgain:]_block_invoke_2:MyOrderViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__43-[CashRecordViewController requestRecharge]_block_invoke:CashRecordViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -520,6 +551,9 @@
                value = "_chat_Account">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__42-[PayConfirmViewController payWithBalance]_block_invoke_2:PayConfirmViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[MessageSettingViewController tableView:cellForRowAtIndexPath:]:MessageSettingViewController.m">
@@ -620,6 +654,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[LivePlayerViewController tableView:didSelectRowAtIndexPath:]:LivePlayerViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[CashRecordViewController tableView:heightForRowAtIndexPath:]:CashRecordViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -638,6 +675,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_headerView.conmmandView.centerY_sd">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__62-[LivePlayerViewController tableView:didSelectRowAtIndexPath:]_block_invoke:LivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "cell">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -725,6 +770,9 @@
                value = "_liveplayerBoard.playbackState">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MyOrderViewController cancelRefund:]:MyOrderViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[CashRecordViewController initWithSelectedItem:]:CashRecordViewController.m">
@@ -951,6 +999,22 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[OrderInfoViewController viewDidLoad]:OrderInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NSString(ChangeYearsToChinese) changeEnglishYearsToChinese]:NSString+ChangeYearsToChinese.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "years">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke:NoticeIndexViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -965,18 +1029,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NSString(ChangeYearsToChinese) changeEnglishYearsToChinese]:NSString+ChangeYearsToChinese.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "years">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "-[ChatModel getDicWithText:andName:andIcon:]:ChatModel.m">
       </ContextState>
       <ContextState
-         contextName = "__34-[BindingViewController nextStep:]_block_invoke:BindingViewController.m">
+         contextName = "-[TutoriumInfoViewController listen]:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[IndexPageViewController makeCities:]:IndexPageViewController.m">
@@ -988,6 +1049,9 @@
                value = "newCityNames">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__34-[BindingViewController nextStep:]_block_invoke:BindingViewController.m">
       </ContextState>
       <ContextState
          contextName = "__39-[MyOrderViewController requestCanceld]_block_invoke:MyOrderViewController.m">
@@ -1009,6 +1073,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[OrderInfoViewController initWithPaid:]:OrderInfoViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[TLCityPickerController data]:TLCityPickerController.m">
          <PersistentStrings>
             <PersistentString
@@ -1023,6 +1090,14 @@
          contextName = "-[UUMessage setWithDict:]:UUMessage.m">
       </ContextState>
       <ContextState
+         contextName = "-[OrderInfoViewController initWithInfo:]:OrderInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__42-[ClassSettingViewController saveSettings]_block_invoke:ClassSettingViewController.m">
       </ContextState>
       <ContextState
@@ -1030,6 +1105,17 @@
          <PersistentStrings>
             <PersistentString
                value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke:LivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classesArr">
+            </PersistentString>
+            <PersistentString
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1043,6 +1129,9 @@
                value = "self.origin_sd.x">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__45-[OrderInfoViewController requestForBuyAgain]_block_invoke_3:OrderInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "__38-[ChangePasswordViewController finish]_block_invoke_4:ChangePasswordViewController.m">
@@ -1076,6 +1165,9 @@
                value = "[NSUserDefaults standardUserDefaults]boolForKey:@&quot;Login&quot;]">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__42-[PayConfirmViewController payWithBalance]_block_invoke_3:PayConfirmViewController.m">
       </ContextState>
       <ContextState
          contextName = "__43-[TutoriumViewController sendFilterStatus:]_block_invoke:TutoriumViewController.m">
@@ -1112,6 +1204,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_selectedItem">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ConfirmChargeViewController viewDidLoad]:ConfirmChargeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "dataInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1165,7 +1265,26 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__64-[TutoriumInfoViewController tableView:didSelectRowAtIndexPath:]_block_invoke:TutoriumInfoViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__53-[MyClassViewController requestTutoriumListCompleted]_block_invoke:MyClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_endedArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__42-[PayConfirmViewController payWithBalance]_block_invoke:PayConfirmViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic[@&quot;id&quot;]">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__43-[NoticeIndexViewController requestNotices]_block_invoke:NoticeIndexViewController.m">

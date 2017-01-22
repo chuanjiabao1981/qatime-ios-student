@@ -43,10 +43,6 @@
         [_backGroundView addSubview:line];
         line.backgroundColor = [UIColor lightGrayColor];
         
-        
-        
-        
-        
         _headImageView.sd_layout
         .centerXEqualToView(_backGroundView)
         .centerYEqualToView(_backGroundView)
@@ -60,7 +56,7 @@
         .topSpaceToView(_headImageView,5)
         .centerXEqualToView(_headImageView)
         .autoHeightRatio(0);
-        [_name setSingleLineAutoResizeWithMaxWidth:500];
+        [_name setSingleLineAutoResizeWithMaxWidth:self.width_sd/3];
         
         
         line.sd_layout

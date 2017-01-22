@@ -83,10 +83,6 @@
     }
     
     
-    
-    
-    
-    
     /* 请求个人详细信息*/
     
     [self requestUserInfo];
@@ -188,7 +184,7 @@
             _menuTableView.delegate = self;
             _menuTableView.dataSource = self;
             _menuTableView.bounces = NO;
-            _menuTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+            _menuTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             [self.view addSubview:_menuTableView];
             _menuTableView.backgroundColor = [UIColor clearColor];
             _menuTableView.tableFooterView = [[UIView alloc]init];
@@ -259,6 +255,9 @@
                 
                 
             }
+            
+            
+            cell.arrow.hidden = YES;
             switch (indexPath.section) {
                 case 0:{
                     

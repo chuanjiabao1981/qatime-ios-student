@@ -21,9 +21,6 @@
 #import "LivePlayerViewController.h"
 
 
-
-
-
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
 
@@ -36,11 +33,9 @@
     NSString *_idNumber;
     
     
-    
     /* 保存课程数据的数组们*/
     
     NSMutableArray *_allClassArr;
-    
     
     NSMutableArray *_unStartArr;
     NSMutableArray *_startedArr;
@@ -100,7 +95,36 @@
     _listenArr = @[].mutableCopy;
     
     
+    
+    
+    /* 请求课程数据*/
+    
+    /* 请求待开课数据*/
+    //    [self requestTutoriumList:@"published"];
+    [self requestTutoriumListPublished];
+    
+    
+    /* 请求已开课数据*/
+    //    [self requestTutoriumList:@"teaching"];
+    [self requestTutoriumListTeaching];
+    //
+    //    /* 请求已结束数据*/
+    //    [self requestTutoriumList:@"completed"];
+    [self requestTutoriumListCompleted];
+    //
+    //    //    /* 请求视听数据*/
+    //         [self requestTutoriumList:@"taste"];
+    [self requestTutoriumListTaste];
+    
+    
+    //  辅导班状态 published: 待开课; teaching: 已开课; completed: 已结束  试听:taste
+    
+}
+
 #pragma mark- 滑动图的几个view的初始化等
+
+/* 加载未开课数据*/
+- (void)setupUnstartView{
     _unStartClassView = ({
         UnStartClassView *_ = [[UnStartClassView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT-64-40)];
         [_myClassView.scrollView addSubview:_];
@@ -110,6 +134,11 @@
         _;
         
     });
+    
+}
+
+/* 加载已开课数据*/
+- (void)setupStartedView{
     _startedClassView = ({
         StartedClassView *_ = [[StartedClassView alloc]initWithFrame:CGRectMake(SCREENWIDTH, 0, SCREENWIDTH, SCREENHEIGHT-64-40)];
         [_myClassView.scrollView addSubview:_];
@@ -119,6 +148,11 @@
         _;
         
     });
+    
+}
+/* 加载已结束视图*/
+- (void)setupEndedView{
+    
     _endedClassView = ({
         EndedClassView *_ = [[EndedClassView alloc]initWithFrame:CGRectMake(SCREENWIDTH*2, 0, SCREENWIDTH, SCREENHEIGHT-64-40)];
         [_myClassView.scrollView addSubview:_];
@@ -128,6 +162,11 @@
         _;
         
     });
+}
+
+/* 加载试听视图*/
+- (void)setupListenView{
+    
     _listenClassView = ({
         ListenClassView *_ = [[ListenClassView alloc]initWithFrame:CGRectMake(SCREENWIDTH*3, 0, SCREENWIDTH, SCREENHEIGHT-64-40)];
         [_myClassView.scrollView addSubview:_];
@@ -135,44 +174,258 @@
         _.classTableView.delegate = self;
         _.classTableView.dataSource =self;
         
-     
-        
         _;
         
-        
-        
     });
+}
+
+
+#pragma mark- 请求待开课数据
+- (void)requestTutoriumListPublished{
     
-    /* 请求课程数据*/
+    NSString *requestURL;
     
-    /* 请求待开课数据*/
-    [self requestTutoriumList:@"published"];
-    
-    /* 请求已开课数据*/
-    [self requestTutoriumList:@"teaching"];
-    
-    /* 请求已结束数据*/
-    [self requestTutoriumList:@"completed"];
-    
-    //    /* 请求视听数据*/
-    //     [self requestTutoriumList:@"taste"];
-    
-    
-    //  辅导班状态 published: 待开课; teaching: 已开课; completed: 已结束  试听:taste
+    if (_token&&_idNumber) {
+        
+        requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?status=%@",Request_Header,_idNumber,@"published"];
+        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+        [manager GET:requestURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _unStartClassView.height_sd)];
+            noview.titleLabel.text  = @"没有课程";
+            [_unStartClassView addSubview:noview];
+            
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            
+            /* 回复数据正确的情况下*/
+            if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
+                
+                NSLog(@"%@",dic[@"data"]);
+                
+                if ([dic[@"data"]count]!=0) {
+                    
+                    for (NSDictionary *classDic in dic[@"data"]) {
+                        //
+                        MyTutoriumModel *mod = [MyTutoriumModel yy_modelWithJSON:classDic];
+                        mod.classID = classDic[@"id"];
+                        
+                        /* 未开课的*/
+                        if (_unStartArr) {
+                            [_unStartArr addObject:mod];
+                        }
+                        
+                    }
+                    
+                    /* 如果有空数据,那么该项所在页面添加占位图*/
+                    if (_unStartArr.count != 0) {
+                        
+                        noview.hidden = YES;
+                    }
+                    
+                    [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                    
+                }else{
+                    
+                }
+                
+                
+                /* 加载数据*/
+                
+                [self setupUnstartView];
+                
+            }else{
+                
+                /* 回复数据不正确*/
+            }
+            
+            /* 刷新table视图*/
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+        }];
+        
+    }else{
+        
+        /* 登录报错*/
+        
+    }
     
 }
 
-#pragma mark- 请求所有课程数据
-- (void)requestTutoriumList:(NSString *)status{
+- (void)requestTutoriumListTeaching{
     
     
     NSString *requestURL;
     
     if (_token&&_idNumber) {
         
-        requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?status=%@",Request_Header,_idNumber,status];
+        requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?status=%@",Request_Header,_idNumber,@"teaching"];
         
-//        [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+        //        [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+        [manager GET:requestURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            
+            HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _startedClassView.height_sd)];
+            noview.titleLabel.text  = @"没有课程";
+            [_startedClassView addSubview:noview];
+            
+            
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            
+            /* 回复数据正确的情况下*/
+            if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
+                
+                NSLog(@"%@",dic[@"data"]);
+                
+                if ([dic[@"data"]count]!=0) {
+                    
+                    for (NSDictionary *classDic in dic[@"data"]) {
+                        //
+                        MyTutoriumModel *mod = [MyTutoriumModel yy_modelWithJSON:classDic];
+                        mod.classID = classDic[@"id"];
+             
+                        /* 已开课的*/
+                        if (_startedArr) {
+                            [_startedArr addObject:mod];
+                        }
+                    }
+                    
+                    /* 如果有空数据,那么该项所在页面添加占位图*/
+                    if (_startedArr.count !=0) {
+                        noview.hidden = YES;
+                        
+                        
+                    }
+                    [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                    
+                }else{
+                    
+                    
+                }
+                
+                NSLog(@"%@",_allClassArr);
+
+                [self setupStartedView];
+//                [_startedClassView.classTableView reloadData];
+                
+            }else{
+                
+                /* 回复数据不正确*/
+            }
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+        }];
+        
+    }else{
+        
+        /* 登录报错*/
+        
+    }
+    
+}
+
+- (void)requestTutoriumListCompleted{
+    
+    NSString *requestURL;
+    
+    if (_token&&_idNumber) {
+        
+        requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?status=%@",Request_Header,_idNumber,@"completed"];
+        
+        //        [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+        [manager GET:requestURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            
+            HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _startedClassView.height_sd)];
+            noview.titleLabel.text  = @"没有课程";
+            [_startedClassView addSubview:noview];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            
+            /* 回复数据正确的情况下*/
+            if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
+                
+                NSLog(@"%@",dic[@"data"]);
+                
+                if ([dic[@"data"]count]!=0) {
+                    
+                    for (NSDictionary *classDic in dic[@"data"]) {
+                        //
+                        MyTutoriumModel *mod = [MyTutoriumModel yy_modelWithJSON:classDic];
+                        mod.classID = classDic[@"id"];
+                        
+                        /* 已结束的*/
+                        if (_endedArr) {
+                            
+                            if (mod.is_bought == YES) {
+                                
+                                [_endedArr addObject:mod];
+                            }
+                        }
+                        
+                    }
+                    
+                    
+                    if (_endedArr.count !=0) {
+                        
+                        noview.hidden = YES;
+                    }
+                    
+                    [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                    
+                }else{
+                    
+                    
+                }
+                
+                
+                
+                NSLog(@"%@",_allClassArr);
+                
+                [self setupEndedView];
+//                [_endedClassView.classTableView reloadData];
+                
+            }else{
+                
+                /* 回复数据不正确*/
+            }
+            
+       
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+        }];
+        
+    }else{
+        
+        /* 登录报错*/
+        
+    }
+    
+    //     NSLog(@"%@",_unclosedArr);
+    
+}
+
+- (void)requestTutoriumListTaste{
+    
+    NSString *requestURL;
+    
+    if (_token&&_idNumber) {
+        
+        requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?cate=%@",Request_Header,_idNumber,@"taste"];
+        
+        //        [self loadingHUDStartLoadingWithTitle:@"正在加载"];
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -193,60 +446,22 @@
                         MyTutoriumModel *mod = [MyTutoriumModel yy_modelWithJSON:classDic];
                         mod.classID = classDic[@"id"];
                         
-                        /* 如果摄像头的拉流地址不是空，那么就是“我的试听”项目里的*/
-                        if (mod.is_tasting == YES) {
+                        if(_listenArr){
                             
-                            [_listenArr addObject:mod];
-                            
-                        }
-                        
-                        /* 根据不同的状态，写不同的数组*/
-                        if ([status isEqualToString:@"published"]) {
-                            
-                            /* 未开课的*/
-                            if (_unStartArr) {
-                                [_unStartArr addObject:mod];
+                            if (![mod.status isEqualToString:@"completed"]) {
+                                
+                                [_listenArr addObject:mod];
                             }
-                            
-                            
-                        }else if ([status isEqualToString:@"teaching"]) {
-                            /* 已开课的*/
-                            if (_startedArr) {
-                                [_startedArr addObject:mod];
-                            }
-                            
-                            
-                        }else if ([status isEqualToString:@"completed"]) {
-                            /* 已结束的*/
-                            if (_endedArr) {
-                                [_endedArr addObject:mod];
-                            }
-                            
-                            
                         }
                         
                     }
                     
                     /* 如果有空数据,那么该项所在页面添加占位图*/
-                    if (_unStartArr.count == 0) {
+                    if (_listenArr.count == 0) {
                         
                         HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _unStartClassView.height_sd)];
                         noview.titleLabel.text  = @"没有课程";
-                        [_unStartClassView addSubview:noview];
-                        
-                    }
-                    if (_startedArr.count ==0) {
-                        
-                        HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _startedClassView.height_sd)];
-                        noview.titleLabel.text  = @"没有课程";
-                        [_startedClassView addSubview:noview];
-                        
-                    }
-                    if (_endedArr.count ==0) {
-                        
-                        HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _endedClassView.height_sd)];
-                        noview.titleLabel.text  = @"没有课程";
-                        [_endedClassView addSubview:noview];
+                        [_listenClassView addSubview:noview];
                         
                     }
                     
@@ -256,24 +471,12 @@
                     
                     
                 }
-                
-                
-                
-                NSLog(@"%@",_allClassArr);
-                /* 筛选课程类型和分组*/
-                //                [self filterAndGroup];
-                
-                
+                [self setupListenView];
                 
             }else{
                 
                 /* 回复数据不正确*/
             }
-            
-            //            [self updateTablesData];
-            //            [self endRefresh];
-            /* 刷新table视图*/
-            [self updateTableView];
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
@@ -284,30 +487,7 @@
         /* 登录报错*/
         
     }
-    
-    //     NSLog(@"%@",_unclosedArr);
-    
-    
-    
-}
-
-
-
-#pragma mark- 刷新tableview视图
-- (void)updateTableView{
-    
-    [_unStartClassView.classTableView reloadData];
-    
-    [_startedClassView.classTableView reloadData];
-    
-    [_endedClassView.classTableView reloadData];
-    
-    [_listenClassView.classTableView reloadData];
-    
-    
-}
-
-
+ }
 
 #pragma mark- tableview datasource
 
@@ -364,15 +544,29 @@
             if (cell==nil) {
                 cell=[[UnStartClassTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
-                
             }
-            if (_unStartArr.count!= 0) {
+            if (_unStartArr.count>indexPath.row) {
                 cell.model = _unStartArr[indexPath.row];
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 
-                
-                
-                
+                /* 已购买的*/
+                if (cell.model.is_bought == YES) {
+                    cell.status.hidden = YES;
+                    
+                    [cell.className sd_clearAutoLayoutSettings];
+                    cell.className.sd_resetLayout
+                    .leftSpaceToView(cell.classImage,10)
+                    .topSpaceToView(cell.content,10)
+                    .autoHeightRatio(0)
+                    .rightSpaceToView(cell.content,10);
+                    [cell.className updateLayout];
+//                    [cell.className setSingleLineAutoResizeWithMaxWidth:2000];
+                    cell.enterButton.enabled = NO;
+                    
+                }else{
+                    cell.status.text = @" 试听中 ";
+                    cell.enterButton.enabled = NO;
+                }
             }
             
             return  cell;
@@ -386,18 +580,43 @@
             if (cell==nil) {
                 cell=[[StartedTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
             }
-            if (_startedArr.count!= 0) {
+            if (_startedArr.count>indexPath.row) {
                 cell.model = _startedArr[indexPath.row];
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 
-                if (cell.canTaste == YES) {
+                if (cell.model.is_bought == YES) {
+                   
+                    cell.status.hidden = YES;
+
                     cell.enterButton.hidden = NO;
-                    [cell.enterButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-                    cell.enterButton.layer.borderColor = [UIColor darkGrayColor].CGColor;
-    
-                }else{
+                    cell.enterButton.layer.borderColor = BUTTONRED.CGColor;
+                    [cell.enterButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
                     
-                    cell.enterButton.hidden = YES;
+                    [cell.className sd_clearAutoLayoutSettings];
+                    cell.className.sd_resetLayout
+                    .leftSpaceToView(cell.classImage,10)
+                    .topSpaceToView(cell.content,10)
+                    .autoHeightRatio(0)
+                    .rightSpaceToView(cell.content,10);
+                    
+                    [cell.className updateLayout];
+                }else{
+                    cell.status.hidden = NO;
+                    cell.status.text = @" 试听中 ";
+                    
+                    cell.enterButton.hidden = NO;
+                    cell.enterButton.layer.borderColor = BUTTONRED.CGColor;
+                    [cell.enterButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+                    
+                    [cell.className sd_clearAutoLayoutSettings];
+                    cell.className.sd_layout
+                    .leftSpaceToView(cell.status,2)
+                    .topEqualToView(cell.status)
+                    .rightSpaceToView(cell.content,10)
+                    .bottomEqualToView(cell.status);
+                    
+                    [cell.className updateLayout];
+
                 }
                 
                 [cell.enterButton addTarget:self action:@selector(enterListen:) forControlEvents:UIControlEventTouchUpInside];
@@ -419,13 +638,10 @@
                 
                 
             }
-            if (_endedArr.count!= 0) {
+            if (_endedArr.count>indexPath.row) {
                 cell.model = _endedArr[indexPath.row];
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-            
-            
-            
-            
+                
             }
             
             return  cell;
@@ -443,14 +659,97 @@
                 
                 
             }
-            if (_listenArr.count!= 0) {
+            if (_listenArr.count>indexPath.row) {
                 cell.model = _listenArr[indexPath.row];
-                
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-                
-                 [cell.enterButton addTarget:self action:@selector(enterListen:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.enterButton addTarget:self action:@selector(enterListen:) forControlEvents:UIControlEventTouchUpInside];
                 cell.enterButton.tag = indexPath.row+1000;
+                
+                /* 试听中*/
+                if (cell.model.is_tasting==YES) {
+                    
+                    if ([cell.model.status isEqualToString:@"published"]) {
+                        cell.dist.hidden = NO;
+                        cell.deadLineLabel.hidden =NO;
+                        cell.days.hidden =NO;
+                        cell.progress.hidden =YES;
+                        cell.line2.hidden = YES;
+                        cell.presentCount.hidden =YES;
+                        cell.totalCount.hidden =YES;
+                        cell.finish.hidden =YES;
+                        
+                        cell.enterButton.hidden =YES;
+                        cell.enterButton.enabled = NO;
+                        cell.status.text = @" 试听中 ";
+                        
+                        [cell.className sd_clearAutoLayoutSettings];
+                        cell.className.sd_layout
+                        .leftSpaceToView(cell.status,2)
+                        .topEqualToView(cell.status)
+                        .rightSpaceToView(cell.content,10)
+                        .bottomEqualToView(cell.status);
+                        
+                        [cell.className updateLayout];
+
+                        
+                    }
+                    else if ([cell.model.status isEqualToString:@"teaching"]) {
+                        
+                        cell.dist.hidden = YES;
+                        cell.deadLineLabel.hidden =YES;
+                        cell.days.hidden = YES;
+                        cell.progress.hidden =NO;
+                        cell.line2.hidden = NO;
+                        cell.presentCount.hidden = NO;
+                        cell.totalCount.hidden = NO;
+                        cell.finish.hidden =YES;
+                        
+                        cell.enterButton.hidden=NO;
+                        cell.enterButton.enabled = YES;
+                        cell.enterButton.layer.borderColor = BUTTONRED.CGColor;
+                        [cell.enterButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+                        cell.status.text = @" 试听中 ";
+                        
+                        [cell.className sd_clearAutoLayoutSettings];
+                        cell.className.sd_layout
+                        .leftSpaceToView(cell.status,2)
+                        .topEqualToView(cell.status)
+                        .rightSpaceToView(cell.content,10)
+                        .bottomEqualToView(cell.status);
+                        
+                        [cell.className updateLayout];
+
+                        
+                    }
+                }else{
+                
+                }
+                /* 已试听的*/
+                if (cell.model.tasted == YES) {
+                    if ([cell.model.status isEqualToString:@"teaching"]) {
+                        
+                        cell.status.text = @" 已试听 ";
+                        cell.enterButton.hidden = NO;
+                        cell.enterButton.enabled= NO;
+                        cell.enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+                        [cell.enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+                        
+                        [cell.className sd_clearAutoLayoutSettings];
+                        cell.className.sd_layout
+                        .leftSpaceToView(cell.status,2)
+                        .topEqualToView(cell.status)
+                        .rightSpaceToView(cell.content,10)
+                        .bottomEqualToView(cell.status);
+                        
+                        [cell.className updateLayout];
+
+                        
+                    }
+                }else{
+                    
+                }
             }
+           
             
             return  cell;
         }
@@ -485,7 +784,7 @@
             StartedTableViewCell *cell = [_startedClassView.classTableView cellForRowAtIndexPath:indexPath];
             TutoriumInfoViewController *info = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
             [self.navigationController pushViewController:info animated:YES];
-
+            
         }
             break;
         case 3:{
@@ -502,9 +801,9 @@
         }
             
             break;
-
+            
     }
-
+    
     
 }
 
@@ -512,7 +811,6 @@
 - (void)enterListen:(UIButton *)sender{
     
     NSString *classID = nil;
-    
     
     /* 如果是在已开课列表*/
     if (sender.tag>=100&&sender.tag<1000) {
@@ -533,7 +831,7 @@
     
     LivePlayerViewController *listen = [[LivePlayerViewController alloc]initWithClassID:classID];
     [self.navigationController pushViewController:listen animated:YES];
-   
+    
     
     
     
@@ -559,11 +857,11 @@
     if (scrollView == _myClassView.scrollView) {
         
         
-    CGFloat pageWidth = scrollView.frame.size.width;
-    NSInteger page = scrollView.contentOffset.x / pageWidth;
-    
-    [_myClassView.segmentControl setSelectedSegmentIndex:page animated:YES];
-    
+        CGFloat pageWidth = scrollView.frame.size.width;
+        NSInteger page = scrollView.contentOffset.x / pageWidth;
+        
+        [_myClassView.segmentControl setSelectedSegmentIndex:page animated:YES];
+        
     }
     
     

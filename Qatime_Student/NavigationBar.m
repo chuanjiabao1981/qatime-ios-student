@@ -17,11 +17,10 @@
         
         self.backgroundColor = TITLERED;
         
-//        UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(frame)-0.8, CGRectGetWidth(frame), 0.8)];
-//        [self addSubview:line];
-//        line.backgroundColor  =[UIColor lightGrayColor];
+        UIView *lanView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, 20)];
+        lanView.backgroundColor = [UIColor blackColor];
         
-        
+//        [self addSubview:lanView];
     
     }
     return self;
@@ -54,7 +53,6 @@
 
     return _rightButton;
     
-    
 }
 
 -(UILabel *)titleLabel{
@@ -64,7 +62,6 @@
     [_titleLabel setTextColor:[UIColor whiteColor]];
     [_titleLabel setTextAlignment:NSTextAlignmentCenter];
     [_titleLabel setFont:[UIFont systemFontOfSize:20*ScrenScale]];
-    
     
     return  _titleLabel;
     

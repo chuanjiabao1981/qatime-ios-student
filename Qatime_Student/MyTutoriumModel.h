@@ -54,6 +54,7 @@
 @property(nonatomic,strong) NSString * preview_time ;
 @property(nonatomic,assign) BOOL is_tasting ;
 @property(nonatomic,assign) BOOL is_bought ;
+@property(nonatomic,assign) BOOL tasted ;
 
 @property(nonatomic,strong) NSString *taste_count ;
 

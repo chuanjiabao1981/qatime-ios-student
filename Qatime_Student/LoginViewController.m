@@ -18,6 +18,8 @@
 #import "BindingViewController.h"
 #import "UIAlertController+Blocks.h"
 
+#import "NIMSDK.h"
+
 typedef NS_ENUM(NSUInteger, LoginType) {
     Normal =0, //账号密码登录
     Wechat,  //微信登录
@@ -609,6 +611,17 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         
         [[NSUserDefaults standardUserDefaults]setObject:chat_accountDic forKey:@"chat_account"];
         
+        /* 登录云信*/
+        if ([[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"]) {
+            NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"];
+            NIMAutoLoginData *lodata = [[NIMAutoLoginData alloc]init];
+            lodata.account =chatDic [@"accid"];
+            lodata.token = chatDic[@"token"];
+            [[[NIMSDK sharedSDK]loginManager]autoLogin:lodata];
+            
+        }
+
+        
     }
     
 }
@@ -681,27 +694,17 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 }
 
 #pragma mark- 微信直接拉起请求
--(void)sendAuthRequest
-{
+-(void)sendAuthRequest{
     //构造SendAuthReq结构体
     SendAuthReq* req =[[SendAuthReq alloc ] init ]  ;
     req.scope = @"snsapi_userinfo" ;
     req.state = @"123" ;
     //第三方向微信终端发送一个SendAuthReq消息结构
-    
-    
+
     [WXApi sendReq:req];
     
     
 }
-
-//- (void)returnLastPage{
-//    
-//    [self.navigationController popViewControllerAnimated:YES];
-//}
-
-
-
 
 
 

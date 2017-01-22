@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "app_pay_params.h"
 
 @interface Paid : NSObject
+
 //
 //{
 //    "id": "201610111014520082",
@@ -52,13 +54,13 @@
 //    }
 //},
 
-
+@property(nonatomic,strong) NSString *amount ;
 @property(nonatomic,strong) NSString *status ;
 @property(nonatomic,strong) NSString *name ;
 @property(nonatomic,strong) NSString *subject ;
 @property(nonatomic,strong) NSString *grade ;
 @property(nonatomic,strong) NSString *preset_lesson_count ;
-@property(nonatomic,strong) NSString *completed_lesson_count ;
+@property(nonatomic,strong) NSString *completed_lessons_count ;
 @property(nonatomic,strong) NSString *teacher_name ;
 @property(nonatomic,strong) NSString *price ;
 /* 支付*/
@@ -68,5 +70,8 @@
 @property(nonatomic,strong) NSString *orderID ;
 @property(nonatomic,strong) NSString *created_at ;
 @property(nonatomic,strong) NSString *pay_at ;
+@property(nonatomic,strong) NSString *updated_at ;
+
+@property(nonatomic,strong) NSDictionary *app_pay_params ;
 
 @end

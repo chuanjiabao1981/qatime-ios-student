@@ -63,6 +63,7 @@
 #import "UIViewController+Login.h"
 #import "NSDate+ChangeUTC.h"
 #import "NSString+ChangeYearsToChinese.h"
+#import "UIViewController+AFHTTP.h"
 
 //#import "ZFPlayer.h"
 #import "VideoPlayerViewController.h"
@@ -2822,40 +2823,50 @@ bool ismute     = NO;
             
             if (dataDic) {
                 
-                /* 已经试听过*/
-                if ([dataDic[@"tasted"]boolValue ]==YES) {
+                if ([dataDic[@"is_bought"]boolValue]==NO) {
+                    /* 如果用户还没有购买该课程*/
+                    /* 已经试听过*/
+//                    if ([dataDic[@"taste_count"]integerValue]>[dataDic[@"lesson_count"] integerValue]) {
+//                        
+//                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您已试听过该课程!" preferredStyle:UIAlertControllerStyleAlert];
+//                        
+//                        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                            
+//                            [self.navigationController popViewControllerAnimated:YES];
+//                        }] ;
+//                        
+//                        
+//                        [alert addAction:sure];
+//                        
+//                        [self presentViewController:alert animated:YES completion:nil];
                     
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您已试听过该课程!" preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                         
-                        [self.navigationController popViewControllerAnimated:YES];
-                    }] ;
+//                    }else{
                     
+                        /* 可以试听*/
+                        
+                        if (dataDic[@"camera_pull_stream"]==nil||[dataDic[@"camera_pull_stream"]isEqual:@""]||[dataDic[@"camera_pull_stream"] isEqual:[NSNull null]]) {
+                            
+                            _teacherPullAddress =[NSURL URLWithString:@""];
+                        }else{
+                            _teacherPullAddress =[NSURL URLWithString:dataDic[@"camera_pull_stream"]];
+                        }
                     
-                    [alert addAction:sure];
-                    
-                    [self presentViewController:alert animated:YES completion:nil];
-                    
-                    
+                        _boardPullAddress = [NSURL URLWithString:dataDic[@"board_pull_stream"]];
+                        
+                        /* 重新加载播放器*/
+                        [self reloadPlayerView];
+                        
+//                    }
                 }else{
                     
-                    /* 未试听过*/
-                    
-                    if (dataDic[@"camera_pull_stream"]==nil||[dataDic[@"camera_pull_stream"]isEqual:@""]||[dataDic[@"camera_pull_stream"] isEqual:[NSNull null]]) {
-                        
-                        _teacherPullAddress =[NSURL URLWithString:@""];
-                    }else{
-                        _teacherPullAddress =[NSURL URLWithString:dataDic[@"camera_pull_stream"]];
-                    }
-                    
-                    _boardPullAddress = [NSURL URLWithString:dataDic[@"board_pull_stream"]];
-                    
-                    /* 重新加载播放器*/
-                    [self reloadPlayerView];
-                    
                 }
+                
                
+            }else{
+                /* 用户已购买该课程,可以随意试听*/
+                /* 重新加载播放器*/
+                [self reloadPlayerView];
             }
             
             
@@ -3955,33 +3966,81 @@ bool ismute     = NO;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (tableView.tag == 2) {
+        
         ClassesListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         
-        if (cell.model.replayable == YES) {
-            /* 可以试听的情况*/
-            if ([cell.model.left_replay_times integerValue]>0) {
-                /* 剩余试听次数大于0的情况,可以继续试听*/
+        if ([_classInfoDic[@"is_bought"]boolValue]==YES) {
+            /* 已购买*/
+            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/lessons/%@/replay",Request_Header,cell.classModel.classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
                 
-                NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
-                [decodeParm addObject:@"hardware"];
-                [decodeParm addObject:@"videoOnDemand"];
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
                 
-                VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:@"http://baobab.wdjcdn.com/1456117847747a_x264.mp4"] andDecodeParm:decodeParm andTitle:@"Hello World !"];
-                [self presentViewController:video animated:YES completion:^{
+                if ([dic[@"status"]isEqualToNumber:@1]) {
                     
-                }];
-
+                    if ([dic[@"data"][@"replayable"]boolValue]== YES) {
+                        
+                        if ([dic[@"data"][@"left_replay_times"]integerValue]>0) {
+                            
+                            if (dic[@"data"][@"replay"]!=nil) {
+                                
+                            }else{
+                                
+                                NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+                                [decodeParm addObject:@"hardware"];
+                                [decodeParm addObject:@"videoOnDemand"];
+                                
+                                VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+                                [self presentViewController:video animated:YES completion:^{
+                                    
+                                }];
+                            }
+                        }else{
+                            [self loadingHUDStopLoadingWithTitle:@"服务器正忙,请稍后再试"];
+                            
+                        }
+                        
+                    }else{
+//                        [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
+                    }
+                }else{
+//                    [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
+                }
                 
-            }else{
-                /* 剩余试听次数小于0,不可以继续试听*/
-                [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
-            }
+            }];
+
             
         }else{
-            [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
-            
+//            [self loadingHUDStopLoadingWithTitle:@"您尚未购买该课程!"];
         }
-
+        
+        
+        
+        
+//        if (cell.model.replayable == YES) {
+//            /* 可以试听的情况*/
+//            if ([cell.model.left_replay_times integerValue]>0) {
+//                /* 剩余试听次数大于0的情况,可以继续试听*/
+//                
+//                NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+//                [decodeParm addObject:@"hardware"];
+//                [decodeParm addObject:@"videoOnDemand"];
+//                
+//                VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:@"http://baobab.wdjcdn.com/1456117847747a_x264.mp4"] andDecodeParm:decodeParm andTitle:@"Hello World !"];
+//                [self presentViewController:video animated:YES completion:^{
+//                    
+//                }];
+//
+//                
+//            }else{
+//                /* 剩余试听次数小于0,不可以继续试听*/
+//                [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
+//            }
+//            
+//        }else{
+//            [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
+//            
+//        }
+//
     }
     
     
@@ -4055,6 +4114,8 @@ bool ismute     = NO;
                     
                     Classes *mod =[Classes yy_modelWithJSON: _classesArr[indexPath.row]];
                     //                NSLog(@"%@",_classesArr[indexPath.row]);
+                    
+                    mod.classID =_classesArr[indexPath.row][@"id"];
                     
                     idcell.classModel = mod;
                     [idcell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];

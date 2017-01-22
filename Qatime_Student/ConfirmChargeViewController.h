@@ -14,6 +14,8 @@
 
 @property(nonatomic,strong) ConfirmChargeView *confirmView ;
 
+@property(nonatomic,assign) BOOL forCharge ;
+
 /* 传字典初始化方法*/
 - (instancetype)initWithInfo:(__kindof NSDictionary *)info;
 /* 传model初始化方法*/

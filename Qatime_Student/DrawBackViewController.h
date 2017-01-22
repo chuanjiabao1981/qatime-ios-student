@@ -17,7 +17,7 @@
 
 @property(nonatomic,strong) UIButton *finishButton ;
 
-
+-(instancetype)initWithOrderNumber:(NSString *)orderNumber;
 
 -(instancetype)initWithPaidOrder:(Paid *)paidOrder;
 

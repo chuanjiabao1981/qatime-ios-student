@@ -161,7 +161,7 @@
                 
                 [DCPaymentView showPayAlertWithTitle:@"请输入支付密码" andDetail:@"申请提现" andAmount:_amount.floatValue completeHandle:^(NSString *inputPwd) {
                     
-                    //                     请求验证ticket_token
+                    //请求验证ticket_token
                     
                     [self loadingHUDStartLoadingWithTitle:@"验证支付"];
                     __block NSString *ticket_token = nil;
@@ -175,9 +175,6 @@
                         if ([dic[@"status"]isEqualToNumber:@1]) {
                             
                             ticket_token = [NSString stringWithFormat:@"%@",dic[@"data"]];
-                            
-                            //                            [self loadingHUDStopLoadingWithTitle:nil];
-                            //                            [self loadingHUDStartLoadingWithTitle:@"正在加载"];
                             
                             NSDictionary *dataDic = @{@"amount":_amount,
                                                       @"pay_type":_payType,
@@ -347,7 +344,7 @@
     
     
     /* 按钮倒计时*/
-    __block int deadline=10;
+    __block int deadline=CheckCodeTime;
     
     /* 子线程 倒计时*/
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);

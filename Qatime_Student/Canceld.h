@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "app_pay_params.h"
 
 @interface Canceld : NSObject
 
@@ -26,6 +27,8 @@
 @property(nonatomic,strong) NSString *orderID ;
 @property(nonatomic,strong) NSString *created_at ;
 @property(nonatomic,strong) NSString *pay_at ;
+
+@property(nonatomic,strong) NSDictionary *app_pay_params ;
 
 
 @end

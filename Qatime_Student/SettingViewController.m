@@ -58,6 +58,7 @@
         _.titleLabel.text = @"系统设置";
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         
+        
         [self.view addSubview:_];
         
         
@@ -74,7 +75,7 @@
     
     _settingView.menuTableView.delegate = self;
     _settingView.menuTableView.dataSource = self;
-    _settingView.menuTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    _settingView.menuTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     _settingView.menuTableView.tableFooterView = [[UIView alloc]init];
     
@@ -235,6 +236,7 @@
         
         [cell.settingName setSingleLineAutoResizeWithMaxWidth:1000];
         
+        cell.arrow.hidden = YES;
         if (indexPath.row ==1) {
     
             cell.balance.hidden = NO;

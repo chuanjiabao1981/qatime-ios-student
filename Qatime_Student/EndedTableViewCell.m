@@ -153,17 +153,12 @@
     /* model数据对应的空间赋值*/
     [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
     
-    
-    
     _grade.text = model.grade;
     _subject.text = model.subject;
     _teacherName.text = model.teacher_name;
     _className.text = model.name;
     
-    
-    
-    
-    
+  
     
 }
 

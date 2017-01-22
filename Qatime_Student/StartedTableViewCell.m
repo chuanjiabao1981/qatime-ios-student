@@ -67,7 +67,7 @@
         _status = [[UILabel alloc]init];
         _status.textColor = [UIColor whiteColor];
         _status.font = [UIFont systemFontOfSize:14*ScrenScale];
-        
+        _status.backgroundColor = [UIColor orangeColor];
         
         /* 进度label*/
         UILabel *progress = [[UILabel alloc]init];
@@ -220,48 +220,6 @@
     
     /* model数据对应的空间赋值*/
     [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
-    
-    if (model.is_tasting ==YES) {
-        /* 有试听标示,正在试听中*/
-        
-        if ([model.taste_count integerValue]>0&&[model.taste_count integerValue]<=[model.preset_lesson_count integerValue]) {
-            
-            _status.text = @" 已试听 ";
-            _state = @"已试听";
-            _status.backgroundColor = [UIColor grayColor];
-            _canTaste = YES;
-        }else if([model.completed_lesson_count integerValue]<[model.preset_lesson_count integerValue]){
-            _status.text = @" 试听中 ";
-            _state = @"试听中";
-            _status.backgroundColor = [UIColor orangeColor];
-            _canTaste = YES;
-        }else if ([model.completed_lesson_count integerValue]==[model.preset_lesson_count integerValue]){
-            _status.text = @" 已结束 ";
-            _state = @"已结束";
-            _status.backgroundColor = [UIColor lightGrayColor];
-            _canTaste = NO;
-        }
-        
-        
-        
-        
-        
-        
-    }else{
-        /* 无试听标示*/
-        
-        _status.hidden =YES;
-        _className.sd_layout
-        .leftSpaceToView(_classImage,10)
-        .topSpaceToView(_content,10)
-        .autoHeightRatio(0)
-        .rightSpaceToView(_content,10);
-        
-        [_enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        _enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        
-        
-    }
     
     
     _grade.text = model.grade;

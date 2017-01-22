@@ -10,6 +10,8 @@
 
 @interface NoticeSwitchTableViewCell : UITableViewCell
 
+@property(nonatomic,strong) UILabel *name ;
+
 @property(nonatomic,strong) UISwitch *noticeSwitch ;
 
 @end

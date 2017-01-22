@@ -68,4 +68,18 @@
 @property(nonatomic,strong) MyTutoriumModel *model ;
 
 
+
+
+@property(nonatomic,strong)UILabel *line;
+@property(nonatomic,strong)UILabel *line2;
+
+/*天 label*/
+@property(nonatomic,strong)UILabel *days;
+/* 当前进度*/
+@property(nonatomic,strong)UILabel *progress;
+
+/* 距离开课时间*/
+@property(nonatomic,strong)UILabel *dist;
+
+
 @end

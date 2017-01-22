@@ -11,14 +11,16 @@
 #import "RDVTabBarController.h"
 #import "ClassNoticeSettingTableViewCell.h"
 #import "NIMSDK.h"
+
 #import "NoticeSwitchTableViewCell.h"
+#import "NoticeWaysTableViewCell.h"
 
 @interface MessageSettingViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     NavigationBar *_navigtionBar;
     
-    BOOL allowVoice;
-    BOOL allowAlert;
+//    BOOL allowVoice;
+//    BOOL allowAlert;
     BOOL allowNotification;
 }
 
@@ -46,25 +48,14 @@
         _.delegate = self;
         _.dataSource =self;
         _.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:0.97];
         _.bounces=NO;
         _;
     });
     
     
     /* 读取本地保存的按钮和开关状态*/
-    
-    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"NotificationVoice"]) {
-        allowVoice =[[NSUserDefaults standardUserDefaults]boolForKey:@"NotificationVoice"];
-    }else{
-        allowVoice = YES;
-        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"NotificationVoice"];
-    }
-    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"NotificationAlert"]) {
-        allowAlert =[[NSUserDefaults standardUserDefaults]boolForKey:@"NotificationAlert"];
-    }else{
-        allowAlert = YES;
-        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"NotificationAlert"];
-    }
+
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"IMNotification"]) {
         allowNotification =[[NSUserDefaults standardUserDefaults]boolForKey:@"IMNotification"];
     }else{
@@ -91,37 +82,11 @@
     
     switch (indexPath.row) {
         case 0:{
-            ClassNoticeSettingTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+            NoticeWaysTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
             if (cell==nil) {
-                cell=[[ClassNoticeSettingTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-                
+                cell=[[NoticeWaysTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 cell.name.text = @"通知方式";
-                cell.leftLabel.text = @"声音";
-                cell.rightLabel.text = @"震动";
-                
-                cell.leftButton.tag = 0;
-                [cell.leftButton addTarget:self action:@selector(turnNoticeStatus:) forControlEvents:UIControlEventTouchUpInside];
-                if (allowVoice==NO) {
-                    
-                    [self senderTurnUnSelected:cell.leftButton];
-                    
-                }else{
-                    [self senderTurnSelected:cell.leftButton];
-
-                }
-                
-                cell.rightButton.tag = 1;
-                [cell.rightButton addTarget:self action:@selector(turnNoticeStatus:) forControlEvents:UIControlEventTouchUpInside];
-                
-                if (allowAlert==NO) {
-                    
-                    [self senderTurnUnSelected:cell.rightButton];
-                    
-                }else{
-                    [self senderTurnSelected:cell.rightButton];
-
-                }
-
+                cell.content.text = @"已跟随手机设置";
             }
             return  cell;
         }
@@ -131,9 +96,9 @@
             NoticeSwitchTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
             if (cell==nil) {
                 cell=[[NoticeSwitchTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cellID"];
-                
+                cell.noticeSwitch.onTintColor = BUTTONRED;
                 [cell.noticeSwitch addTarget:self action:@selector(switchNotice:) forControlEvents:UIControlEventTouchUpInside];
-                
+                cell.name.text = @"接收辅导班消息通知";
                [cell.noticeSwitch setOn:allowNotification==YES?YES:NO];
                 
             }
@@ -170,87 +135,56 @@
     
 }
 
-/* 改变通知方式*/
-- (void)turnNoticeStatus:(UIButton *)sender{
-    
-    switch (sender.tag) {
-        case 0:{
-            /* 关闭/开启提醒声音*/
-            [self switchSender:sender];
-            
-            [[NSUserDefaults standardUserDefaults]setBool:sender.selected forKey:@"NotificationVoice"];
-            
-            /* 开启/关闭推送声音的通知*/
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"NotificationSound" object:sender];
-            
-        }
-            break;
-        case 1:{
-            /* 关闭/开启提醒震动*/
-             [self switchSender:sender];
-            
-             [[NSUserDefaults standardUserDefaults]setBool:sender.selected forKey:@"NotificationAlert"];
-            
-            /* 开启/关闭推送声音的通知*/
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"NotificationAlert" object:sender];
-        }
-            break;
-  
-    }
-    
-}
-
-#pragma mark- 声音和震动的开关方法
-- (void)switchSender:(UIButton *)sender{
-    
-    if (sender.selected ==YES) {
-        
-        [self senderTurnUnSelected:sender];
-
-    }else if (sender.selected ==NO){
-        [self senderTurnSelected:sender];
-        
-    }
-    
-}
-
-/* 按钮变成选中状态*/
-- (void)senderTurnSelected:(UIButton *)sender{
-    
-    sender.layer.borderWidth =0;
-    sender.backgroundColor = [UIColor colorWithRed:0.84 green:0.33 blue:0.6 alpha:1.00];
-    [sender setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];
-    sender.selected = YES;
-    
-}
-
-/* 按钮变成未选中状态*/
-- (void)senderTurnUnSelected:(UIButton *)sender{
-    
-    sender.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    sender.layer.borderWidth =2;
-    sender.backgroundColor = [UIColor clearColor];
-    [sender setImage:nil forState:UIControlStateNormal];
-    sender.selected = NO;
-
-    
-}
-
 
 
 #pragma mark- tableview delegate
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return self.view.height_sd*0.07;
+    return 45;
 }
 
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    
+    UIView * view = [[UIView alloc]init];
+    
+    view.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.00]
+    ;
+    
+//    UIView *line = [[UIView alloc]init];
+//    line.backgroundColor = SEPERATELINECOLOR;
+//    [view addSubview:line];
+//    line.sd_layout
+//    .leftEqualToView(view)
+//    .rightEqualToView(view)
+//    .bottomEqualToView(view)
+//    .heightIs(0.5);
+    
+    UILabel *label = [[UILabel alloc]init];
+    [view addSubview:label];
+    label.sd_layout
+    .topSpaceToView(view,6)
+    .leftSpaceToView(view,12)
+    .rightSpaceToView(view,12)
+    .autoHeightRatio(0);
+    label.text = @"为了您能正常使用此功能，请在“系统设置”>“答疑时间”>“通知”中允许接收通知";
+    label.textColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0];
+    label.font = [UIFont systemFontOfSize:12];
+    return view;
+    
+    
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    
+    return 46;
+}
 
 
 - (void)returnLastPage{
     
     [self.navigationController popViewControllerAnimated:YES];
-    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
     
 }

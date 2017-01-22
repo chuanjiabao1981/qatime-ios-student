@@ -25,6 +25,7 @@
 		5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2701DF7CF2900A8FDEC /* WithDraw.m */; };
 		5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2731DF7CF3000A8FDEC /* Payment.m */; };
 		5413D2781DF7D0DF00A8FDEC /* UIViewController+Token.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */; };
+		5417C48C1E31B85000DD0795 /* app_pay_params.m in Sources */ = {isa = PBXBuildFile; fileRef = 5417C48B1E31B85000DD0795 /* app_pay_params.m */; };
 		541E20041E139967007CF5D1 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */; };
 		541E20071E13B9AF007CF5D1 /* NSDate+ChangeUTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20061E13B9AF007CF5D1 /* NSDate+ChangeUTC.m */; };
 		541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */; };
@@ -316,6 +317,7 @@
 		54A47BFA1DE42610000216D9 /* em_75.gif in Resources */ = {isa = PBXBuildFile; fileRef = 54A47BAF1DE42610000216D9 /* em_75.gif */; };
 		54A47BFB1DE42610000216D9 /* em_8.gif in Resources */ = {isa = PBXBuildFile; fileRef = 54A47BB01DE42610000216D9 /* em_8.gif */; };
 		54A47BFC1DE42610000216D9 /* em_9.gif in Resources */ = {isa = PBXBuildFile; fileRef = 54A47BB11DE42610000216D9 /* em_9.gif */; };
+		54A991851E34BCB20001D3D9 /* NoticeWaysTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A991841E34BCB20001D3D9 /* NoticeWaysTableViewCell.m */; };
 		54AA307C1DF9427D009E0D04 /* NSString+TimeStamp.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA307B1DF9427D009E0D04 /* NSString+TimeStamp.m */; };
 		54AA30821DF950CA009E0D04 /* CheckChargeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30811DF950CA009E0D04 /* CheckChargeView.m */; };
 		54AA30851DF950DB009E0D04 /* CheckChargeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30841DF950DB009E0D04 /* CheckChargeViewController.m */; };
@@ -482,6 +484,8 @@
 		5413D2751DF7D0AE00A8FDEC /* UIViewController_Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_Token.h; sourceTree = "<group>"; };
 		5413D2761DF7D0DF00A8FDEC /* UIViewController+Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Token.h"; sourceTree = "<group>"; };
 		5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Token.m"; sourceTree = "<group>"; };
+		5417C48A1E31B85000DD0795 /* app_pay_params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_pay_params.h; sourceTree = "<group>"; };
+		5417C48B1E31B85000DD0795 /* app_pay_params.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = app_pay_params.m; sourceTree = "<group>"; };
 		541E20021E139967007CF5D1 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
 		541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionHandler.m; sourceTree = "<group>"; };
 		541E20051E13B9AF007CF5D1 /* NSDate+ChangeUTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+ChangeUTC.h"; sourceTree = "<group>"; };
@@ -986,6 +990,8 @@
 		54A47BAF1DE42610000216D9 /* em_75.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = em_75.gif; sourceTree = "<group>"; };
 		54A47BB01DE42610000216D9 /* em_8.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = em_8.gif; sourceTree = "<group>"; };
 		54A47BB11DE42610000216D9 /* em_9.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = em_9.gif; sourceTree = "<group>"; };
+		54A991831E34BCB20001D3D9 /* NoticeWaysTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeWaysTableViewCell.h; sourceTree = "<group>"; };
+		54A991841E34BCB20001D3D9 /* NoticeWaysTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeWaysTableViewCell.m; sourceTree = "<group>"; };
 		54AA307A1DF9427D009E0D04 /* NSString+TimeStamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TimeStamp.h"; sourceTree = "<group>"; };
 		54AA307B1DF9427D009E0D04 /* NSString+TimeStamp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TimeStamp.m"; sourceTree = "<group>"; };
 		54AA30801DF950CA009E0D04 /* CheckChargeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckChargeView.h; sourceTree = "<group>"; };
@@ -2032,6 +2038,8 @@
 				546A54761DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.m */,
 				54813C4D1E14F30000D6F739 /* NoticeSwitchTableViewCell.h */,
 				54813C4E1E14F30000D6F739 /* NoticeSwitchTableViewCell.m */,
+				54A991831E34BCB20001D3D9 /* NoticeWaysTableViewCell.h */,
+				54A991841E34BCB20001D3D9 /* NoticeWaysTableViewCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -2800,6 +2808,8 @@
 				542C17401DFA507E0088DB3F /* Paid.m */,
 				542C17421DFA508A0088DB3F /* Canceld.h */,
 				542C17431DFA508A0088DB3F /* Canceld.m */,
+				5417C48A1E31B85000DD0795 /* app_pay_params.h */,
+				5417C48B1E31B85000DD0795 /* app_pay_params.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -4335,6 +4345,7 @@
 				544E0CE41DD09FAE00884F31 /* IndexHeaderPageView.m in Sources */,
 				54294C7C1DDB373400677333 /* NELivePlayerControl.m in Sources */,
 				5413D2651DF7C74F00A8FDEC /* RechargeTableViewCell.m in Sources */,
+				5417C48C1E31B85000DD0795 /* app_pay_params.m in Sources */,
 				541E20071E13B9AF007CF5D1 /* NSDate+ChangeUTC.m in Sources */,
 				5407C9991DE7DE9200DB04C8 /* UIDevice+YYAdd.m in Sources */,
 				54FCBAF91DD5DCE50094BF58 /* Notice.m in Sources */,
@@ -4374,6 +4385,7 @@
 				54294C7D1DDB373400677333 /* LivePlayerViewController.m in Sources */,
 				54AB48D21DED3389008E3BC5 /* SettingTableViewCell.m in Sources */,
 				54652E311DEEBDC300F4607C /* ClassNoticeSettingView.m in Sources */,
+				54A991851E34BCB20001D3D9 /* NoticeWaysTableViewCell.m in Sources */,
 				54660F601E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m in Sources */,
 				5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */,
 				546978691DC72A42001695F4 /* SignUpViewController.m in Sources */,

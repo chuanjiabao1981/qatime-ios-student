@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "app_pay_params.h"
 
 @interface Unpaid : NSObject
 
@@ -51,7 +52,7 @@
 //}
 //},
 
-
+@property(nonatomic,strong) NSString *amount ;
 @property(nonatomic,strong) NSString *status ;
 @property(nonatomic,strong) NSString *name ;
 @property(nonatomic,strong) NSString *subject ;
@@ -70,5 +71,6 @@
 @property(nonatomic,strong) NSString *pay_at ;
 @property(nonatomic,strong) NSString *prepay_id ;
 
+@property(nonatomic,strong) NSDictionary *app_pay_params ;
 
 @end

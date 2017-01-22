@@ -68,14 +68,22 @@
         _status = [[UILabel alloc]init];
         _status.textColor = [UIColor whiteColor];
         _status.font = [UIFont systemFontOfSize:14*ScrenScale];
+        _status.backgroundColor = [UIColor orangeColor];
         
+        /* 进入按钮*/
         
-        
+        _enterButton  = [[UIButton alloc]init];
+        [_enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        _enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        _enterButton.layer.borderWidth = 0.8f;
+        _enterButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
+        [_enterButton setTitle:@"进入" forState:UIControlStateNormal];
+       
         
         
         
         /* 所有控件的布局*/
-        [_content sd_addSubviews:@[_classImage,_status,_className,_grade,_subject,line,_teacherName]];
+        [_content sd_addSubviews:@[_classImage,_status,_className,_grade,_subject,line,_teacherName,_enterButton]];
         
         /* 课程图片布局*/
         _classImage.sd_layout
@@ -177,6 +185,13 @@
         .bottomEqualToView(_deadLineLabel);
         [days setSingleLineAutoResizeWithMaxWidth:200];
         
+        /* 进入按钮*/
+        _enterButton.sd_layout
+        .rightSpaceToView(_content,10)
+        .bottomSpaceToView(_content,10)
+        .heightIs(20)
+        .widthIs(60);
+        
         
     
         
@@ -190,42 +205,10 @@
 
 - (void)setModel:(MyTutoriumModel *)model{
     
-    
     _model = model;
     
     /* model数据对应的空间赋值*/
     [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
-    
-    if (model.is_tasting ==YES) {
-        /* 有试听标示*/
-        
-        NSLog(@"%@",model.camera_pull_stream);
-        
-        if (model.camera_pull_stream != nil) {
-            
-            _status.text = @" 试听中 ";
-            _status.backgroundColor = [UIColor orangeColor];
-            
-            
-        }else{
-            
-            _status.text = @" 已试听 ";
-            _status.backgroundColor = [UIColor grayColor];
-            
-        }
-        
-    }else{
-        /* 无试听标示*/
-        
-        _status.hidden =YES;
-        _className.sd_layout
-        .leftSpaceToView(_classImage,10)
-        .topSpaceToView(_content,10)
-        .autoHeightRatio(0)
-        .rightSpaceToView(_content,10);
-        
-    }
-    
     
     _grade.text = model.grade;
     _subject.text = model.subject;

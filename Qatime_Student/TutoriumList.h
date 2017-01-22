@@ -21,6 +21,7 @@
 @property(nonatomic,strong) NSString *grade ;
 @property(nonatomic,strong) NSString *teacher_name ;
 @property(nonatomic,strong) NSString *price ;
+@property(nonatomic,strong) NSString *current_price ;
 @property(nonatomic,strong) NSString *chat_team_id ;
 @property(nonatomic,strong) NSString *buy_tickets_count ;
 @property(nonatomic,strong) NSString *preset_lesson_count ;

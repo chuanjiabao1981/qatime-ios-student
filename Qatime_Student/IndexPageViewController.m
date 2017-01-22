@@ -813,12 +813,12 @@
     
     
     if (collectionView.tag==0){
-        layoutSize = CGSizeMake(CGRectGetWidth(self.view.frame)/5-10, CGRectGetWidth(self.view.frame)/5-10);
+        layoutSize = CGSizeMake(CGRectGetWidth(self.view.frame)/5-10, CGRectGetWidth(self.view.frame)/5);
     }
     
     if (collectionView .tag ==1){
         
-        layoutSize = CGSizeMake((self.view.width_sd-40)/2, (self.view.width_sd-40)/2);
+        layoutSize = CGSizeMake((self.view.width_sd-36)/2, (self.view.width_sd-36)/2);
         
     }
     
@@ -943,7 +943,7 @@
     
     
     if (collectionView.tag==1) {
-        insets =UIEdgeInsetsMake(10, 15, 10, 10);
+        insets =UIEdgeInsetsMake(0, 12, 0, 12);
     }
     
     return insets;

@@ -99,18 +99,17 @@
     [self.view addSubview:_headView];
     
     /* 个人页面菜单*/
-    _personalView = [[PersonalView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-63)];
+    _personalView = [[PersonalView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-TabBar_Height)];
     [self.view addSubview:_personalView];
     
     _personalView.settingTableView.delegate = self;
     _personalView.settingTableView.dataSource = self;
     _personalView.settingTableView.tableHeaderView = _headView;
     _personalView.settingTableView.tableHeaderView.size = CGSizeMake(SCREENWIDTH, SCREENHEIGHT*2/5);
-    
+    _personalView.settingTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _personalView.settingTableView.bounces = NO;
+    _personalView.settingTableView.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
     
-    
-
     /* 加载页面方法*/
     [self setupPages];
     
@@ -285,6 +284,7 @@
                 
                 [cell.logoImage setImage:_cellImage[indexPath.row]];
                   cell.settingName.text = _settingName[indexPath.row];
+                cell.arrow.hidden = YES;
                 
             }
                 break;
@@ -292,16 +292,17 @@
                 
                 [cell.logoImage setImage:_cellImage[indexPath.row+3]];
                 cell.settingName.text = _settingName[indexPath.row+3];
+                cell.arrow.hidden = YES;
             }
                 
                 break;
                 
         }
         
-        
         if (indexPath.section ==0) {
             
             if (indexPath.row ==0) {
+                cell.arrow.hidden = YES;
                 
                 if (login) {
                     
@@ -319,11 +320,13 @@
                 }
             }
             if (indexPath.row ==2) {
-                cell.separateLine.hidden = YES;
+                cell.arrow.hidden = YES;
+//                cell.separateLine.hidden = YES;
             }
         }if (indexPath.section ==1) {
             if (indexPath.row ==1) {
-                cell.separateLine.hidden = YES;
+                cell.arrow.hidden = YES;
+//                cell.separateLine.hidden = YES;
             }
         }
         
@@ -360,8 +363,7 @@
     
     if (indexPath.section ==1) {
         if (indexPath.row==1) {
-            
-//            _personalView.settingTableView.frame = CGRectMake(0,64,CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)/12*5+20);
+
             
         }
     }

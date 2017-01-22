@@ -46,7 +46,7 @@
         UITableView * _ = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
         _.tableFooterView = [[UIView alloc]init];
         [self.view addSubview:_];
-        _.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _.separatorStyle = UITableViewCellSeparatorStyleNone;
         _.bounces = NO;
         _.delegate = self;
         _.dataSource = self;
@@ -78,12 +78,14 @@
         switch (indexPath.row) {
             case 0:{
                 
-                cell.settingName.text =@"消息提醒";
+                cell.settingName.text =@"系统通知";
+                [cell.arrow setImage:[UIImage imageNamed:@"rightArrow"]];
             }
                 break;
             case 1:{
                 
                 cell.settingName.text =@"课程提醒";
+                [cell.arrow setImage:[UIImage imageNamed:@"rightArrow"]];
             }
                 break;
             

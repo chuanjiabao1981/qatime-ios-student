@@ -11,6 +11,8 @@
 #import "UIViewController_HUD.h"
 #import "UIViewController+AFHTTP.h"
 #import "UIAlertController+Blocks.h"
+#import "YYModel.h"
+#import "MyOrderViewController.h"
 
 @interface DrawBackViewController ()<UITextViewDelegate,UITextInputDelegate>{
     
@@ -23,6 +25,9 @@
     Paid *_paidOrder;
     /* 取消订单数据的字典*/
     NSMutableDictionary *_dataDic;
+    
+    /* 订单号*/
+    NSString *_orderNumber ;
     
 }
 
@@ -56,6 +61,18 @@
     
 }
 
+
+-(instancetype)initWithOrderNumber:(NSString *)orderNumber{
+    self = [super init];
+    if (self) {
+       
+        
+        _orderNumber = [NSString stringWithFormat:@"%@",orderNumber];
+        
+    }
+    return self;
+
+}
 
 
 -(void)loadView{
@@ -97,6 +114,14 @@
     
 }
 
+
+/* 判断两个按钮应该是什么状态的方法*/
+
+- (void)switchButtonStatus{
+    
+    
+}
+
 - (void)textViewDidChange:(UITextView *)textView{
     
     if (textView.text.length>=20) {
@@ -123,6 +148,8 @@
         if ([dic[@"status"]isEqualToNumber:@1]) {
             /* 请求数据成功*/
             _dataDic = [dic[@"data"] mutableCopy];
+//            _paidOrder = [Paid yy_modelWithJSON:_dataDic];
+            
             [self setupView];
             
             [self loadingHUDStopLoadingWithTitle:@"加载完成"];
@@ -150,7 +177,7 @@
     if (_dataDic) {
         _drawBackView.number.text = _paidOrder.orderID;
         _drawBackView.className.text = _paidOrder.name;
-        _drawBackView.progress.text =  [NSString stringWithFormat:@"%@/%@",_paidOrder.completed_lesson_count,_paidOrder.preset_lesson_count];
+        _drawBackView.progress.text =  [NSString stringWithFormat:@"%@/%@",_paidOrder.completed_lessons_count,_paidOrder.preset_lesson_count];
         _drawBackView.price.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"amount"]];
         _drawBackView.enableDrawbackPrice.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"refund_amount"]];
         _drawBackView.paidPrice.text = [NSString stringWithFormat:@"%ld",[_dataDic[@"amount"] integerValue]-[_dataDic[@"refund_amount"] integerValue]];
@@ -258,7 +285,14 @@
 
 /* 返回上一页*/
 - (void)returnLastPage{
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isMemberOfClass:[MyOrderViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+        }
+    }
+
+//    [self.navigationController popViewControllerAnimated:YES];
     
     
 }

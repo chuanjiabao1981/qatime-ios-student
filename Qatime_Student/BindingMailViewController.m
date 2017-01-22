@@ -185,7 +185,7 @@
     
     
     /* 按钮倒计时*/
-    __block int deadline=10;
+    __block int deadline=CheckCodeTime;
     
     /* 子线程 倒计时*/
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);

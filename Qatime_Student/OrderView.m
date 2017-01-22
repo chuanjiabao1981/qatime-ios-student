@@ -149,11 +149,17 @@
         _alipayButton.layer.borderWidth = 0.8;
          [_alipayButton setEnlargeEdge:10];
         
+        _alipayButton.hidden = YES;
+        
         UIImageView *alipayImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"alipay"]];
+        
+        alipayImage.hidden = YES;
         
         UILabel *alipay = [UILabel new];
         alipay.textColor = TITLECOLOR;
         alipay.text = @"支付宝支付";
+        
+        alipay.hidden = YES;
 
         
         /* 余额支付*/
@@ -435,10 +441,10 @@
         /* 余额支付*/
         
         _balanceButton.sd_layout
-        .leftEqualToView(_alipayButton)
-        .topSpaceToView(_alipayButton,10)
-        .rightEqualToView(_alipayButton)
-        .heightRatioToView(_alipayButton,1.0);
+        .leftEqualToView(_wechatButton)
+        .topSpaceToView(_wechatButton,20)
+        .rightEqualToView(_wechatButton)
+        .heightRatioToView(_wechatButton,1.0);
         _balanceButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
         
         _balanceImage.sd_layout
@@ -466,7 +472,7 @@
         .leftEqualToView(self)
         .rightEqualToView(self)
         .bottomEqualToView(chosenView)
-        .topSpaceToView(_balance,10);
+        .topSpaceToView(_balance,20);
         
         /* 确认按钮*/
         _applyButton.sd_layout

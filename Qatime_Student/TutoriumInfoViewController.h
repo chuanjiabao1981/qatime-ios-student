@@ -25,13 +25,9 @@
 /* 三个页面的不同Model*/
 @property(nonatomic,strong) RecommandTeacher *teacherModel;
 
-
 @property(nonatomic,strong) RecommandClasses *classModel  ;
 
-
 @property(nonatomic,strong) ClassesInfo_Time *classInfoTimeModel ;
-
-
 
 
 - (instancetype)initWithClassID:(NSString *)classID;

@@ -112,7 +112,6 @@
             }
         }
         
-        
         /* 是"完善更多场景"*/
         
         WriteMore = YES;
@@ -134,13 +133,13 @@
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     [_navigationBar.rightButton setImage:[UIImage imageNamed:@"pen"] forState:UIControlStateNormal];
     [_navigationBar.rightButton addTarget:self action:@selector(editInfo) forControlEvents:UIControlEventTouchUpInside];
+    _navigationBar.rightButton.hidden = YES;
     
     _personalInfoView = [[PersonalInfoView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
     [self.view addSubview:_personalInfoView];
     _personalInfoView.delegate = self;
     _personalInfoView.dataSource = self;
     _personalInfoView.tableFooterView = [UIView new];
-    
     
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
@@ -151,7 +150,7 @@
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
-    _nameArr = @[@"头像",@"姓名",@"性别",@"生日",@"年级",@"学校",@"简介"];
+    _nameArr = @[@"头像",@"姓名",@"性别",@"生日",@"年级"/*,@"学校"*/,@"简介"];
     
     /* 如果是从注册页面传值过来的*/
     if (WriteMore == YES) {
@@ -300,7 +299,7 @@
 #pragma mark- tableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 7;
+    return 6;
     
 }
 
@@ -447,13 +446,13 @@
                     
                 }
                     break;
+//                case 6:{
+//                    cell.content.text = [_dataDic valueForKey:@"school"];
+//                    
+//                }
+//                    break;
+                    
                 case 6:{
-                    cell.content.text = [_dataDic valueForKey:@"school"];
-                    
-                }
-                    break;
-                    
-                case 7:{
                     
                     cell.content.text = [_dataDic valueForKey:@"desc"];
                     [cell sd_clearAutoLayoutSettings];
@@ -519,11 +518,11 @@
             
             break;
             
-        case 6:
-            [self showAlert:indexPath];
-            break;
+//        case 6:
+//            [self showAlert:indexPath];
+//            break;
             
-        case 7:
+        case 6:
         {
             PersonalDescViewController *perVC = [PersonalDescViewController new];
             perVC.delegate = self;
@@ -618,10 +617,10 @@
             message =@"修改姓名";
             break;
             
-        case 6:
-            message = @"修改学校";
-            
-            break;
+//        case 6:
+//            message = @"修改学校";
+//            
+//            break;
     }
     
     
@@ -761,30 +760,10 @@
                     [self presentViewController:alert animated:YES completion:nil];
                 }else{
                     
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否保存?" preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"不保存" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                        
-                        [self returnFrontPage];
-                        
-                    }] ;
-                    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        
-                        
-                        [self updateUserInfo];
-                        
-                        
-                    }] ;
+                    [self updateUserInfo];
+                    [self returnFrontPage];
                     
-                    [alert addAction:cancel];
-                    [alert addAction:sure];
-                    
-                    [self presentViewController:alert animated:YES completion:nil];
                 }
-                
-                
-                
-                
-                
                 
             }
         }
@@ -803,7 +782,7 @@
 /* 更新个人信息*/
 - (void)updateUserInfo{
     
-    [self loadingHUDStartLoadingWithTitle:@"正在提交信息"];
+//    [self loadingHUDStartLoadingWithTitle:@"正在提交信息"];
     
     NSMutableDictionary *dic = nil;
     
@@ -811,19 +790,22 @@
                 @"name":_dataDic[@"name"]?_dataDic[@"name"]:_userName,
                 @"gender":_dataDic[@"gender"]?_dataDic[@"gender"]:@"",
                 @"desc":_dataDic[@"desc"]?_dataDic[@"desc"]:@"",
-                @"school":_dataDic[@"school"]?_dataDic[@"school"]:@""
+//                @"school":_dataDic[@"school"]?_dataDic[@"school"]:@""
                 
                 }];
     
     if (WriteMore == YES) {
         if (changeImage == NO) {
-            _avatar = UIImageJPEGRepresentation([UIImage imageNamed:@"人"],1);
+//            _avatar = UIImageJPEGRepresentation([UIImage imageNamed:@"人"],1);
             [dic setValue:_avatar forKey:@"avatar"];
         }else{
             
             [dic setValue:_avatar forKey:@"avatar"];
         }
     }else{
+        
+        Personal_HeadTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0 ]];
+        _avatar = UIImagePNGRepresentation(cell.image.image);
         
         [dic setObject:_avatar forKey:@"avatar"];
         
@@ -852,13 +834,13 @@
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 修改成功*/
             
-            [self loadingHUDStopLoadingWithTitle:@"修改成功!"];
+//            [self loadingHUDStopLoadingWithTitle:@"修改成功!"];
             
             [self performSelector:@selector(returnFrontPage) withObject:nil afterDelay:1];
             
         }else{
             
-            [self loadingHUDStopLoadingWithTitle:@"修改失败!"];
+//            [self loadingHUDStopLoadingWithTitle:@"修改失败!"];
             
             [self performSelector:@selector(returnFrontPage) withObject:nil afterDelay:1];
             
