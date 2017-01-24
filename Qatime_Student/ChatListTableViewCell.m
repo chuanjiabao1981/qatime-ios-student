@@ -20,15 +20,14 @@
             M13BadgeView *_=[[M13BadgeView alloc]init];
             _.hidden = YES;
             [self.contentView addSubview:_];
-            _.sd_layout
-            .topSpaceToView(self.contentView,10)
-            .bottomSpaceToView(self.contentView,10)
-            .rightSpaceToView(self.contentView,10)
-            .widthIs(self.contentView.height_sd-20);
+            _badge.hidesWhenZero = YES;
+            
+            _badge.frame = CGRectMake(self.contentView.width_sd, 10, self.contentView.height_sd-20, self.contentView.height_sd-20);
             _.verticalAlignment = M13BadgeViewVerticalAlignmentMiddle;
             _.horizontalAlignment = M13BadgeViewHorizontalAlignmentNone;
             _.pixelPerfectText = YES;
-            _.alignmentShift = CGSizeMake(20, 0);
+            _.alignmentShift = CGSizeMake(60, 0);
+            _.maximumWidth = 40;
             _;
         
         });
@@ -76,39 +75,11 @@
     _model = model;
     _className.text = model.name;
     
-    if (model.badge>0) {
-        _badge.hidden = NO;
-        _badge.text = [NSString stringWithFormat:@"%ld",model.badge];
-        if (model.badge>999) {
-            _badge.text = @"999+";
-        }
-        
-        NSInteger len = 1;
-        switch ([NSString stringWithFormat:@"%ld",model.badge].length) {
-       
-            case 2:
-                len = 1.2;
-                break;
-            case 3:
-                len = 1.4;
-                break;
-            case 4:
-                len = 1.6;
-                break;
-            
-        }
-        
-        _badge.sd_layout
-        .topSpaceToView(self.contentView,10)
-        .bottomSpaceToView(self.contentView,10)
-        .rightSpaceToView(self.contentView,10)
-        .widthIs((self.contentView.height_sd-20)*len);
-
-    }else{
-        _badge.hidden = YES;
+    self.badge.text = [NSString stringWithFormat:@"%ld",self.model.badge];
+    if (self.model.badge>999) {
+        self.badge.text = @"999+";
     }
-    
-    
+
     if (model.tutorium.notify==YES) {
         _noticeOn = YES;
     }else if (model.tutorium.notify==NO){

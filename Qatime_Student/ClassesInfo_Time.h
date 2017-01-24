@@ -20,5 +20,6 @@
 @property(nonatomic,strong) NSString *camera_pull_stream ;
 @property(nonatomic,assign) BOOL replayable ;
 @property(nonatomic,assign) NSString *left_replay_times ;
+@property(nonatomic,strong) NSString *replay ;
 
 @end

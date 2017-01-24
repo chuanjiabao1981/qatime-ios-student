@@ -17,10 +17,10 @@
 @property(nonatomic,strong) UITextField *nameText ;
 
 /* 验证码*/
-@property(nonatomic,strong) UITextField *keyCodeText ;
+//@property(nonatomic,strong) UITextField *keyCodeText ;
 
 /* 获取验证码*/
-@property(nonatomic,strong) UIButton *getKeyCodeButton ;
+//@property(nonatomic,strong) UIButton *getKeyCodeButton ;
 
 
 /* 申请按钮*/

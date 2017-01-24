@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SetPayPasswordView.h"
-
+#import "NavigationBar.h"
 typedef NS_ENUM(NSUInteger, SetPayPassordType) {
     VerifyPassword = 0, //验证密码
     SetNewPassword,     //设置新密码
@@ -17,6 +17,8 @@ typedef NS_ENUM(NSUInteger, SetPayPassordType) {
 
 
 @interface SetPayPasswordViewController : UIViewController
+
+@property(nonatomic,strong) NavigationBar *navigationBar;
 
 /* 页面风格(页面用途)*/
 @property(nonatomic,assign) SetPayPassordType pageType ;

@@ -16,10 +16,6 @@
 
 @interface SetPayPasswordViewController (){
     
-
-    NavigationBar *_navigationBar;
-    
-    
     /* 保存密码图框的 数组*/
     NSMutableArray <UIImageView *>*_imageArr;
     
@@ -289,6 +285,9 @@
         if ([control isMemberOfClass:[SafeViewController class]]) {
             
             [self.navigationController popToViewController:control animated:YES];
+        }else{
+            
+            [self.navigationController popViewControllerAnimated:YES];
         }
     }
     

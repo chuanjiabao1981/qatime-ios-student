@@ -13,7 +13,8 @@
 #import "WXApi.h"
 #import "CheckChargeViewController.h"
 #import "DCPaymentView.h"
-
+#import "UIAlertController+Blocks.h"
+#import "AuthenticationViewController.h"
 #import "UIViewController+AFHTTP.h"
 
 @interface PayConfirmViewController (){
@@ -214,20 +215,44 @@
                 
             }else{
                 /* 验证信息错误*/
-                
+//                "code" :2005
+//                "msg":"APIErrors::PasswordInvalid"  密码错误
+//
+//                "code": 2008,
+//                "msg": "APIErrors::PasswordDissatisfy"
+                if (dic[@"error"]) {
+                    if ([dic[@"error"][@"code"]integerValue]==2005) {
+                        //支付密码错误
+                        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"支付密码错误" cancelButtonTitle:@"重试" destructiveButtonTitle:nil otherButtonTitles:@[@"找回支付密码"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                            
+                            if (buttonIndex!=0) {
+                                
+                                [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置或修改后将在24小时内不能使用支付密码,是否继续?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"继续"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                                    if (buttonIndex!=0) {
+                                        
+                                        AuthenticationViewController *controller = [[AuthenticationViewController alloc]init];
+                                        [self.navigationController pushViewController:controller animated:YES];
+                                    }
+                                    
+                                }];
+                                
+                                
+                            }
+                            
+                        }];
+                    }else if ([dic[@"error"][@"code"]integerValue]==2008){
+                        //新设置密码,未过24小时
+                        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置的支付密码未满24小时，为保证账户安全暂不可用。 " cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                           
+                           
+                        }];
+                        
+                        
+                    }
+                }
             }
             
-            
-            
-            
-            
-            
         }];
-        
-        
-        
-        
-        
         
     }];
     

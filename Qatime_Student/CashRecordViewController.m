@@ -330,8 +330,6 @@
                 }
                 
                 
-                
-                
                 [_cashRecordView.withDrawView reloadData];
                 //                [_cashRecordView.withDrawView setNeedsDisplay];
                 [self loadingHUDStopLoadingWithTitle:@"加载成功!"];
@@ -756,7 +754,7 @@
             UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 
                 /* 发送取消订单申请*/
-                [self cancelWithDrawRequest:cell.model.transaction_no];
+                [self cancelWithDrawRequest:cell.model.transaction_no andIndexPath:indexPath];
                 
                 
             }] ;
@@ -805,7 +803,7 @@
 }
 
 #pragma mark- 取消提现申请
-- (void)cancelWithDrawRequest:(NSString *)orderNumber{
+- (void)cancelWithDrawRequest:(NSString *)orderNumber andIndexPath:(NSIndexPath *)indexPath{
     
     if (_idNumber&&orderNumber) {
         
@@ -819,16 +817,20 @@
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
             
-            if ([dic[@"satatus"]isEqual:[NSNumber numberWithInteger:1]]) {
+            if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 /* 删除成功*/
-                [self loadingHUDStopLoadingWithTitle:@"删除成功!"];
+                [self loadingHUDStopLoadingWithTitle:@"取消成功!"];
                 
-                [self requestWithDraw];
+                WithDrawTableViewCell *cell = [_cashRecordView.withDrawView cellForRowAtIndexPath:indexPath];
+                cell.status.text = @"已取消";
+                
+                
+//                [self requestWithDraw];
                 
                 
             }else{
                 
-                [self loadingHUDStopLoadingWithTitle:@"删除失败!"];
+                [self loadingHUDStopLoadingWithTitle:@"取消失败!"];
             }
             
             

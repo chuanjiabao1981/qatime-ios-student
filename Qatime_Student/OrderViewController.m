@@ -92,11 +92,6 @@
     });
     
     
-    /* 默认选择微信支付*/
-    _orderView.wechatButton.selected = YES;
-    _orderView.wechatButton.selected =YES;
-    _payType = @"weixin";
-    [_orderView.wechatButton setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
     
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
@@ -111,6 +106,13 @@
     /* 初始化*/
     _payType = @"".mutableCopy;
     dataDic = @{}.mutableCopy;
+    
+    /* 默认选择微信支付*/
+    _orderView.wechatButton.selected = YES;
+    
+    _payType = @"weixin";
+    [_orderView.wechatButton setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
+
     
     /* 请求课程详细信息数据*/
     [self requestClassInfo];

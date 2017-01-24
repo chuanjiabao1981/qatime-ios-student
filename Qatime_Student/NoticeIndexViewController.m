@@ -34,7 +34,7 @@
     NSMutableArray *_myClassArray;
     
     /* 聊天列表*/
-    NSMutableArray *_chatListArr;
+    NSMutableArray <ChatList *>*_chatListArr;
     
     /* 最近会话的数组*/
     NSMutableArray *_recentArr;
@@ -72,6 +72,7 @@
     
     _noticeIndexView = ({
         NoticeIndexView *_=[[NoticeIndexView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
+        _.scrollView.scrollEnabled = NO;
         
         _.scrollView.delegate = self;
         _.scrollView.tag=1;
@@ -356,18 +357,23 @@
             
             if (_chatListArr.count>indexPath.row) {
                 cell.model = _chatListArr[indexPath.row];
-                
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 if (cell.noticeOn==YES) {
                     cell.closeNotice.hidden = YES;
                 }else if(cell.noticeOn==NO){
                     cell.closeNotice.hidden = NO;
                 }
-                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 
-                UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(resignNotice:)];
+//                UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(resignNotice:)];
+//                
+//                [cell addGestureRecognizer:press];
                 
-                [cell addGestureRecognizer:press];
-                
+                if (cell.model.badge>0) {
+                    cell.badge.hidden = NO;
+                }else if(cell.model.badge==0){
+                    cell.badge.hidden = YES;
+                }
+                            
             }
             
             return  cell;
@@ -454,67 +460,73 @@
     }
 }
 
-/* 取消/开启某一聊天组的推送信息*/
+/* 聊天室的滑动编辑*/
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (tableView.tag == 2 ) {
+        return YES;
+    }
+    return NO;
+}
 
-- (void)resignNotice:(UILongPressGestureRecognizer *)sender{
+-(NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if(sender.state == UIGestureRecognizerStateBegan){
+    if (tableView.tag == 2) {
         
-        CGPoint point = [sender locationInView:_noticeIndexView.chatListTableView];
-        NSIndexPath * indexPath = [_noticeIndexView.chatListTableView indexPathForRowAtPoint:point];
-        if(indexPath == nil) return ;
-        NSLog(@"%@", indexPath);
-        
-        /* 取消该聊天群的推送信息*/
         ChatListTableViewCell *cell = [_noticeIndexView.chatListTableView cellForRowAtIndexPath:indexPath];
+        
+        NSString *title ;
+        
         if (cell.noticeOn == YES) {
             
-            [UIAlertController showActionSheetInViewController:self withTitle:nil message:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"不再提醒"] popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
-                
-            } tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                
-                if (buttonIndex!=0) {
-                    
-                    [[[NIMSDK sharedSDK]teamManager]updateNotifyState:NO inTeam:cell.model.tutorium.chat_team_id completion:^(NSError * _Nullable error) {
-                        
-                        if (error == nil) {
-                            cell.closeNotice.hidden = NO;
-                            cell.noticeOn = NO;
-                            cell.model.tutorium.notify = NO;
-                        }
-                        
-                    }];
-                    
-                }
-                
-            }];
-            
-        }else if (cell.noticeOn == NO){
-            [UIAlertController showActionSheetInViewController:self withTitle:nil message:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"恢复提醒"] popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
-                
-            } tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                
-                if (buttonIndex!=0) {
-                    
-                    [[[NIMSDK sharedSDK]teamManager]updateNotifyState:YES inTeam:cell.model.tutorium.chat_team_id completion:^(NSError * _Nullable error) {
-                        
-                        if (error == nil) {
-                            cell.closeNotice.hidden = YES;
-                            cell.noticeOn = YES;
-                            cell.model.tutorium.notify = YES;
-                        }
-                        
-                    }];
-                    
-                }
-                
-            }];
-
+            title= @"不再提醒";
+        }else{
+            title = @"恢复提醒";
         }
         
-        
+        UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:title handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+            
+            if (cell.noticeOn == YES) {
+                
+                [[[NIMSDK sharedSDK]teamManager]updateNotifyState:NO inTeam:cell.model.tutorium.chat_team_id completion:^(NSError * _Nullable error) {
+                    
+                    if (error == nil) {
+                        cell.closeNotice.hidden = NO;
+                        cell.noticeOn = NO;
+                        cell.model.tutorium.notify = NO;
+                        
+                        _chatListArr[indexPath.row].tutorium.notify = NO;
+                        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                    }
+                    
+                }];
+                
+                
+                
+                
+            }else{
+                
+                [[[NIMSDK sharedSDK]teamManager]updateNotifyState:YES inTeam:cell.model.tutorium.chat_team_id completion:^(NSError * _Nullable error) {
+                    
+                    if (error == nil) {
+                        cell.closeNotice.hidden = YES;
+                        cell.noticeOn = YES;
+                        cell.model.tutorium.notify = YES;
+                        _chatListArr[indexPath.row].tutorium.notify = YES;
+                        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                    }
+                    
+                }];
+                
+                
+            }
+            
+            
+            
+        }];
+        return @[action];
     }
     
+    return @[];
 }
 
 

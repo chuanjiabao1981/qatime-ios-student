@@ -21,6 +21,8 @@
 #import <UserNotifications/UserNotifications.h>
 //#endif
 
+#import <sys/utsname.h>
+
 @interface AppDelegate ()<UNUserNotificationCenterDelegate,NIMSystemNotificationManager,NIMLoginManagerDelegate>{
     
     /* 推送的设置*/
@@ -75,9 +77,15 @@
             NSString *userid=[[NSUserDefaults standardUserDefaults]objectForKey:@"id"];
             NSLog(@"token:%@,id:%@",token,userid);
             
+            /* 上传用户信息*/
+            dispatch_queue_t info = dispatch_queue_create("info", DISPATCH_QUEUE_SERIAL);
+            dispatch_async(info, ^{
+                [self sendDeviceInfo];
+                
+            });
+            
         }
     }
-    
     
     NSLog(@"本地沙盒存储路径：%@", NSHomeDirectory());
     
@@ -85,7 +93,7 @@
     [WXApi registerApp:@"wxf2dfbeb5f641ce40"];
     
     /* 初始化云信SDK*/
-    [[NIMSDK sharedSDK] registerWithAppID:IM_APPKEY cerName:PushCerName_RELEASE];
+    [[NIMSDK sharedSDK] registerWithAppID:IM_APPKEY cerName:PushCerName];
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
     
     /* 登录云信*/
@@ -255,7 +263,13 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     [[NIMSDK sharedSDK] updateApnsToken:deviceToken];
     
+    /* 拿到devicetoken后,写本地*/
+    [[NSUserDefaults standardUserDefaults]setValue:deviceToken forKey:@"Device-Token"];
+    
 }
+
+
+
 //iOS10以下使用这个方法接收通知
 
 
@@ -436,12 +450,28 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [_window setRootViewController:navVC];
     }];
     
+    /*登录成功后,上传设备信息*/
+    dispatch_queue_t info = dispatch_queue_create("info", DISPATCH_QUEUE_SERIAL);
+    dispatch_async(info, ^{
+        
+        [self sendDeviceInfo];
+        
+    });
+    
+    
 }
 
 /* 用户在应用程序内登录*/
 - (void)userLoginAgain:(NSNotification *)notification{
     
-    
+    /*登录成功后,上传设备信息*/
+    dispatch_queue_t info = dispatch_queue_create("info", DISPATCH_QUEUE_SERIAL);
+    dispatch_async(info, ^{
+        
+        [self sendDeviceInfo];
+        
+    });
+
     
 }
 
@@ -624,8 +654,156 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
 }
 
+/* 向服务器发送用户设备信息*/
+- (void)sendDeviceInfo{
+    
+//    user_id         //用户id
+//    device_token    //device token
+//    device_model    //设备型号
+//    app_name        //应用名称
+//    app_version     //应用版本
+    
+    NSString *idNumber;
+    NSString *device_token;
+    NSString *device_model;
+    NSString *app_version;
+    
+    /* 提出学生id*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
+        idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
+    }
+    
+    /* 提出device token*/
+    device_token = [[NSUserDefaults standardUserDefaults]valueForKey:@"Device-Token"];
+
+    /* 获取设备型号*/
+    device_model =  [NSString stringWithFormat:@"%@",[self iphoneType]];
+    
+    /* 应用版本*/
+   app_version =[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager POST:[NSString stringWithFormat:@"%@/api/v1/system/device_info",Request_Header] parameters:@{@"user_id":idNumber,@"device_token":device_token,@"device_model":device_model,@"app_name":@"Qatime_Student",@"app_version":app_version} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
+}
 
 
+- (NSString *)iphoneType {
+
+    struct utsname systemInfo;
+    
+    uname(&systemInfo);
+    
+    NSString *platform = [NSString stringWithCString:systemInfo.machine encoding:NSASCIIStringEncoding];
+    
+    if ([platform isEqualToString:@"iPhone1,1"]) return @"iPhone 2G";
+    
+    if ([platform isEqualToString:@"iPhone1,2"]) return @"iPhone 3G";
+    
+    if ([platform isEqualToString:@"iPhone2,1"]) return @"iPhone 3GS";
+    
+    if ([platform isEqualToString:@"iPhone3,1"]) return @"iPhone 4";
+    
+    if ([platform isEqualToString:@"iPhone3,2"]) return @"iPhone 4";
+    
+    if ([platform isEqualToString:@"iPhone3,3"]) return @"iPhone 4";
+    
+    if ([platform isEqualToString:@"iPhone4,1"]) return @"iPhone 4S";
+    
+    if ([platform isEqualToString:@"iPhone5,1"]) return @"iPhone 5";
+    
+    if ([platform isEqualToString:@"iPhone5,2"]) return @"iPhone 5";
+    
+    if ([platform isEqualToString:@"iPhone5,3"]) return @"iPhone 5c";
+    
+    if ([platform isEqualToString:@"iPhone5,4"]) return @"iPhone 5c";
+    
+    if ([platform isEqualToString:@"iPhone6,1"]) return @"iPhone 5s";
+    
+    if ([platform isEqualToString:@"iPhone6,2"]) return @"iPhone 5s";
+    
+    if ([platform isEqualToString:@"iPhone7,1"]) return @"iPhone 6 Plus";
+    
+    if ([platform isEqualToString:@"iPhone7,2"]) return @"iPhone 6";
+    
+    if ([platform isEqualToString:@"iPhone8,1"]) return @"iPhone 6s";
+    
+    if ([platform isEqualToString:@"iPhone8,2"]) return @"iPhone 6s Plus";
+    
+    if ([platform isEqualToString:@"iPhone8,4"]) return @"iPhone SE";
+    
+    if ([platform isEqualToString:@"iPhone9,1"]) return @"iPhone 7";
+    
+    if ([platform isEqualToString:@"iPhone9,2"]) return @"iPhone 7 Plus";
+    
+    if ([platform isEqualToString:@"iPod1,1"])   return @"iPod Touch 1G";
+    
+    if ([platform isEqualToString:@"iPod2,1"])   return @"iPod Touch 2G";
+    
+    if ([platform isEqualToString:@"iPod3,1"])   return @"iPod Touch 3G";
+    
+    if ([platform isEqualToString:@"iPod4,1"])   return @"iPod Touch 4G";
+    
+    if ([platform isEqualToString:@"iPod5,1"])   return @"iPod Touch 5G";
+    
+    if ([platform isEqualToString:@"iPad1,1"])   return @"iPad 1G";
+    
+    if ([platform isEqualToString:@"iPad2,1"])   return @"iPad 2";
+    
+    if ([platform isEqualToString:@"iPad2,2"])   return @"iPad 2";
+    
+    if ([platform isEqualToString:@"iPad2,3"])   return @"iPad 2";
+    
+    if ([platform isEqualToString:@"iPad2,4"])   return @"iPad 2";
+    
+    if ([platform isEqualToString:@"iPad2,5"])   return @"iPad Mini 1G";
+    
+    if ([platform isEqualToString:@"iPad2,6"])   return @"iPad Mini 1G";
+    
+    if ([platform isEqualToString:@"iPad2,7"])   return @"iPad Mini 1G";
+    
+    if ([platform isEqualToString:@"iPad3,1"])   return @"iPad 3";
+    
+    if ([platform isEqualToString:@"iPad3,2"])   return @"iPad 3";
+    
+    if ([platform isEqualToString:@"iPad3,3"])   return @"iPad 3";
+    
+    if ([platform isEqualToString:@"iPad3,4"])   return @"iPad 4";
+    
+    if ([platform isEqualToString:@"iPad3,5"])   return @"iPad 4";
+    
+    if ([platform isEqualToString:@"iPad3,6"])   return @"iPad 4";
+    
+    if ([platform isEqualToString:@"iPad4,1"])   return @"iPad Air";
+    
+    if ([platform isEqualToString:@"iPad4,2"])   return @"iPad Air";
+    
+    if ([platform isEqualToString:@"iPad4,3"])   return @"iPad Air";
+    
+    if ([platform isEqualToString:@"iPad4,4"])   return @"iPad Mini 2G";
+    
+    if ([platform isEqualToString:@"iPad4,5"])   return @"iPad Mini 2G";
+    
+    if ([platform isEqualToString:@"iPad4,6"])   return @"iPad Mini 2G";
+    
+    if ([platform isEqualToString:@"i386"])      return @"iPhone Simulator";
+    
+    if ([platform isEqualToString:@"x86_64"])    return @"iPhone Simulator";
+    
+    return platform;
+    
+}
 
 
 

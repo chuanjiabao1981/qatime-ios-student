@@ -792,10 +792,18 @@
     
     if ([[touches anyObject]view] == _multiFilterView) {
         [self textfileRespond];
-    }else{
+    }else if([[touches anyObject]view] == effectView) {
         
         [self textfileRespond];
         
+        [MMPickerView dismissWithCompletion:^(NSString *dismissString) {
+            
+            [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+            
+        }];
+    }else if ([[touches anyObject]view].origin_sd.y>self.view.height_sd/2){
+        
+    }else{
         [MMPickerView dismissWithCompletion:^(NSString *dismissString) {
             
             [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
@@ -809,6 +817,13 @@
 }
 
 - (void)effectviewRemove{
+    
+    [MMPickerView dismissWithCompletion:^(NSString *dismissString) {
+        
+        [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+        
+    }];
+
      effectView.alpha = 1;
     
     [effectView removeFromSuperview];
@@ -889,7 +904,6 @@
 
 #pragma mark- 用户筛选完时间-价格条件后的点击事件
 - (void)selectedTimeFilterWithSort:(NSString *)sort{
-    
     
     [effectView removeFromSuperview];
     

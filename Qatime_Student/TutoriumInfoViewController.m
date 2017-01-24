@@ -646,19 +646,22 @@
         ClassesInfo_Time *mod = _classListArray[indexPath.row];
         cell.model = mod;
         
-//        if (cell.showReplayButton == YES) {
-//            cell.replay.hidden = NO;
-//        }else {
-//            cell.replay.hidden = YES;
-//        }
-        
         if ([_dataDic[@"is_bought"]boolValue]==YES) {
             
-            if ([cell.model.status isEqualToString:@"finished"]||[cell.model.status isEqualToString:@"billing"]||[cell.model.status isEqualToString:@"completed"]) {
-                cell.replay.hidden = NO;
-            }else{
+            if (cell.model.replay == nil) {
+                
                 cell.replay.hidden = YES;
+                
+            }else{
+                
+                if ([cell.model.status isEqualToString:@"finished"]||[cell.model.status isEqualToString:@"billing"]||[cell.model.status isEqualToString:@"completed"]) {
+                    cell.replay.hidden = NO;
+                }else{
+                    cell.replay.hidden = YES;
+                }
             }
+            
+            
         }else{
             cell.replay.hidden = YES;
             
@@ -710,20 +713,15 @@
                 if ([dic[@"data"][@"replayable"]boolValue]== YES) {
                     if ([dic[@"data"][@"left_replay_times"]integerValue]>0) {
                         
-                        if (dic[@"data"][@"replay"]!=nil) {
-                            
-                        }else{
-                            
-                            NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
-                            [decodeParm addObject:@"hardware"];
-                            [decodeParm addObject:@"videoOnDemand"];
-                            
-                            VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
-                            [self presentViewController:video animated:YES completion:^{
-                                
-                            }];
-                        }
+                        NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+                        [decodeParm addObject:@"hardware"];
+                        [decodeParm addObject:@"videoOnDemand"];
                         
+                        VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+                        [self presentViewController:video animated:YES completion:^{
+                            
+                        }];
+
                     }else{
                         
                         [self loadingHUDStopLoadingWithTitle:@"服务器正忙,请稍后再试"];

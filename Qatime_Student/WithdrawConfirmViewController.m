@@ -112,7 +112,7 @@
 /* 请求成功,弹提示框*/
 - (void)requestWithDrawSucess{
     
-    [self loadingHUDStopLoadingWithTitle:@"提现申请成功!"];
+//    [self loadingHUDStopLoadingWithTitle:@"提现申请成功!"];
     
     [self performSelector:@selector(pop) withObject:nil afterDelay:1];
     
@@ -144,7 +144,24 @@
 
 - (void)returnLastPage{
     
-    [self.navigationController popViewControllerAnimated:YES];
+    MyWalletViewController *mywVC = [MyWalletViewController new];
+    UIViewController *controller = nil;
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[mywVC class]]) {
+            
+            controller = vc;
+            [self.navigationController popToViewController:controller animated:YES];
+       
+        }else{
+            
+//            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
+    
+    
+    
+    
+
     
 }
 

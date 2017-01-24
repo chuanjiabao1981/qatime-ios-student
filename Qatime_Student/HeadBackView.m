@@ -55,8 +55,10 @@
         _name.sd_layout
         .topSpaceToView(_headImageView,5)
         .centerXEqualToView(_headImageView)
-        .autoHeightRatio(0);
-        [_name setSingleLineAutoResizeWithMaxWidth:self.width_sd/3];
+        .heightIs (40)
+        .widthRatioToView(self,1/3.0f);
+        _name.textAlignment = NSTextAlignmentCenter;
+        
         
         
         line.sd_layout

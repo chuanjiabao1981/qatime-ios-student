@@ -11,6 +11,10 @@
 #import "WithDrawInfoViewController.h"
 
 #import "UIViewController+HUD.h"
+#import "DCPaymentView.h"
+#import "UIViewController+AFHTTP.h"
+#import "UIAlertController+Blocks.h"
+#import "AuthenticationViewController.h"
 
 @interface WithDrawViewController ()<UITextFieldDelegate>{
     
@@ -26,6 +30,8 @@
     
     /*余额*/
     NSString *_balance;
+    
+
     
 }
 
@@ -87,51 +93,43 @@
 /* 下一步*/
 - (void)nextStep{
     
-    if ([_withDrawView.moneyText.text isEqualToString:@""]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入提现金额!" preferredStyle:UIAlertControllerStyleAlert];
-       
-        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-        }] ;
-        
-        [alert addAction:sure];
-        [self presentViewController:alert animated:YES completion:nil];
-
-    }
-    if (_withDrawView.alipayButton.selected ==NO&&_withDrawView.transferButton.selected == NO) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择体现方式!" preferredStyle:UIAlertControllerStyleAlert];
-       
-        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-        }] ;
-        [alert addAction:sure];
-        [self presentViewController:alert animated:YES completion:nil];
-
-    }
+    __block NSString *ticket_token;
     
-    /* 输入金额正确,而且选择提现方式的前提下,发起提现申请,先查余额*/
-    if (![_withDrawView.moneyText.text isEqualToString:@""]&&(_withDrawView.transferButton.selected==YES||_withDrawView.alipayButton.selected ==YES)) {
+    
+    if ([_withDrawView.moneyText.text isEqualToString:@""]) {
+      
+        [self loadingHUDStopLoadingWithTitle:@"请输入提现金额!"];
+      
+
+    }else{
         
-        
-        if ([[NSUserDefaults standardUserDefaults]objectForKey:@"balance"]) {
+        if (_withDrawView.alipayButton.selected ==NO&&_withDrawView.transferButton.selected == NO) {
             
-            _balance = [[NSUserDefaults standardUserDefaults]objectForKey:@"balance"];
-            
-            [self compareWithBalance:_balance];
-            
+            [self loadingHUDStopLoadingWithTitle:@"请选择提现方式!"];
             
         }else{
-            /* 如果本地没有保存余额数据,向服务器请求余额数据*/
             
-            
+            /* 输入金额正确,而且选择提现方式的前提下,发起提现申请,先查余额*/
+            if (![_withDrawView.moneyText.text isEqualToString:@""]&&(_withDrawView.transferButton.selected==YES||_withDrawView.alipayButton.selected ==YES)) {
+                
+                
+                if ([[NSUserDefaults standardUserDefaults]objectForKey:@"balance"]) {
+                    
+                    _balance = [[NSUserDefaults standardUserDefaults]objectForKey:@"balance"];
+                    
+                    [self compareWithBalance:_balance];
+                    
+                    
+                }else{
+                    /* 如果本地没有保存余额数据,向服务器请求余额数据*/
+                    
+                    
+                }
+                
+            }
         }
         
-         
-        
     }
-    
-    
-    
 }
 
 
@@ -150,7 +148,7 @@
         
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             _balance = dic[@"data"][@"balance"];
-           
+            
             [self compareWithBalance:_balance];
             
         }else{
@@ -185,25 +183,68 @@
             _payType = @"alipay";
         }
         
-        WithDrawInfoViewController *infoVC = [[WithDrawInfoViewController alloc]initWithAmount:_withDrawView.moneyText.text andPayType:_payType];
+        [DCPaymentView showPayAlertWithTitle:@"请输入支付密码" andDetail:@"提现申请" andAmount:_withDrawView.moneyText.text.floatValue completeHandle:^(NSString *inputPwd) {
+            
+            /* 验证ticket_token*/
+            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/withdraws/ticket_token",Request_Header,_idNumber]  withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"password":inputPwd} completeSuccess:^(id  _Nullable responds) {
+                
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                if ([dic[@"status"]isEqualToNumber:@1]) {
+                    /* 支付密码验证成功,进入下一页*/
+                    WithDrawInfoViewController *infoVC = [[WithDrawInfoViewController alloc]initWithAmount:_withDrawView.moneyText.text andPayType:_payType andTicketToken:dic[@"data"]];
+                    
+                    [self.navigationController pushViewController:infoVC animated:YES];
+                    
+                    
+                }else{
+                    
+                    ///////
+                    
+                    if (dic[@"error"]) {
+                        if ([dic[@"error"][@"code"]integerValue]==2005) {
+                            //支付密码错误
+                            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"支付密码错误" cancelButtonTitle:@"重试" destructiveButtonTitle:nil otherButtonTitles:@[@"找回支付密码"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                                
+                                if (buttonIndex!=0) {
+                                    
+                                    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置或修改后将在24小时内不能使用支付密码,是否继续?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"继续"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                                        if (buttonIndex!=0) {
+                                            
+                                            AuthenticationViewController *controller = [[AuthenticationViewController alloc]init];
+                                            [self.navigationController pushViewController:controller animated:YES];
+                                        }
+                                        
+                                    }];
+                                    
+                                    
+                                }
+                                
+                            }];
+                        }else if ([dic[@"error"][@"code"]integerValue]==2008){
+                            //新设置密码,未过24小时
+                            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置的支付密码未满24小时，为保证账户安全暂不可用。 " cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                            
+                                [self returnLastPage];
+                                
+                            }];
+                            
+                            
+                        }
+                    }
+                    
+                }
+            }];
+            
+        }];
         
-        [self.navigationController pushViewController:infoVC animated:YES];
+        
     }else{
         
-        
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"余额不足!" preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [UIAlertController showAlertInViewController:self withTitle:@"提示"  message:@"余额不足!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
             
-        }] ;
-        
-        [alert addAction:sure];
-        
-        [self presentViewController:alert animated:YES completion:nil];
+        }];
         
     }
-
-    
     
     
 }

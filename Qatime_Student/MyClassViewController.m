@@ -290,10 +290,13 @@
                         //
                         MyTutoriumModel *mod = [MyTutoriumModel yy_modelWithJSON:classDic];
                         mod.classID = classDic[@"id"];
-             
+                        
                         /* 已开课的*/
                         if (_startedArr) {
+                            
+                                
                             [_startedArr addObject:mod];
+                            
                         }
                     }
                     
@@ -311,9 +314,9 @@
                 }
                 
                 NSLog(@"%@",_allClassArr);
-
+                
                 [self setupStartedView];
-//                [_startedClassView.classTableView reloadData];
+                //                [_startedClassView.classTableView reloadData];
                 
             }else{
                 
@@ -370,7 +373,11 @@
                             
                             if (mod.is_bought == YES) {
                                 
-                                [_endedArr addObject:mod];
+                                
+                                    
+                                    [_endedArr addObject:mod];
+                                
+                                
                             }
                         }
                         
@@ -394,14 +401,14 @@
                 NSLog(@"%@",_allClassArr);
                 
                 [self setupEndedView];
-//                [_endedClassView.classTableView reloadData];
+                //                [_endedClassView.classTableView reloadData];
                 
             }else{
                 
                 /* 回复数据不正确*/
             }
             
-       
+            
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
@@ -448,9 +455,15 @@
                         
                         if(_listenArr){
                             
-                            if (![mod.status isEqualToString:@"completed"]) {
+                            if (mod.is_bought==NO) {
                                 
-                                [_listenArr addObject:mod];
+                                if ([mod.status isEqualToString:@"published"]||[mod.status isEqualToString:@"teaching"]||[mod.status isEqualToString:@"completed"]) {
+                                    
+                                    [_listenArr addObject:mod];
+                                }
+                                
+                                
+                                
                             }
                         }
                         
@@ -487,7 +500,7 @@
         /* 登录报错*/
         
     }
- }
+}
 
 #pragma mark- tableview datasource
 
@@ -560,7 +573,7 @@
                     .autoHeightRatio(0)
                     .rightSpaceToView(cell.content,10);
                     [cell.className updateLayout];
-//                    [cell.className setSingleLineAutoResizeWithMaxWidth:2000];
+                    //                    [cell.className setSingleLineAutoResizeWithMaxWidth:2000];
                     cell.enterButton.enabled = NO;
                     
                 }else{
@@ -585,9 +598,9 @@
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 
                 if (cell.model.is_bought == YES) {
-                   
+                    
                     cell.status.hidden = YES;
-
+                    
                     cell.enterButton.hidden = NO;
                     cell.enterButton.layer.borderColor = BUTTONRED.CGColor;
                     [cell.enterButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
@@ -616,7 +629,7 @@
                     .bottomEqualToView(cell.status);
                     
                     [cell.className updateLayout];
-
+                    
                 }
                 
                 [cell.enterButton addTarget:self action:@selector(enterListen:) forControlEvents:UIControlEventTouchUpInside];
@@ -665,71 +678,87 @@
                 [cell.enterButton addTarget:self action:@selector(enterListen:) forControlEvents:UIControlEventTouchUpInside];
                 cell.enterButton.tag = indexPath.row+1000;
                 
-                /* 试听中*/
-                if (cell.model.is_tasting==YES) {
-                    
-                    if ([cell.model.status isEqualToString:@"published"]) {
+                /* 已试听的*/
+                if (cell.model.tasted == YES) {
+                    /* 已开课的*/
+                    if ([cell.model.status isEqualToString:@"teaching"]) {
+                        
+                        cell.dist.hidden = YES;
+                        cell.deadLineLabel.hidden =YES;
+                        cell.days.hidden =YES;
+                        
+                        cell.progress.hidden =NO;
+                        cell.line2.hidden = NO;
+                        cell.presentCount.hidden =NO;
+                        cell.totalCount.hidden =NO;
+                        
+                        cell.finish.hidden =YES;
+                        
+                        cell.status.text = @" 已试听 ";
+                        cell.status.backgroundColor = [UIColor lightGrayColor];
+                        cell.status.hidden = NO;
+                        cell.enterButton.hidden = NO;
+                        cell.enterButton.enabled= NO;
+                        
+                        cell.enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+                        [cell.enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+                        
+                        [cell.className sd_clearAutoLayoutSettings];
+                        cell.className.sd_layout
+                        .leftSpaceToView(cell.status,2)
+                        .topEqualToView(cell.status)
+                        .rightSpaceToView(cell.content,10)
+                        .bottomEqualToView(cell.status);
+                        
+                        [cell.className updateLayout];
+                        
+                    }else if ([cell.model.status isEqualToString:@"published"]){
+//                        /* 未开课的*/
                         cell.dist.hidden = NO;
                         cell.deadLineLabel.hidden =NO;
                         cell.days.hidden =NO;
+                        
                         cell.progress.hidden =YES;
                         cell.line2.hidden = YES;
                         cell.presentCount.hidden =YES;
                         cell.totalCount.hidden =YES;
+                        
                         cell.finish.hidden =YES;
-                        
-                        cell.enterButton.hidden =YES;
-                        cell.enterButton.enabled = NO;
-                        cell.status.text = @" 试听中 ";
-                        
-                        [cell.className sd_clearAutoLayoutSettings];
-                        cell.className.sd_layout
-                        .leftSpaceToView(cell.status,2)
-                        .topEqualToView(cell.status)
-                        .rightSpaceToView(cell.content,10)
-                        .bottomEqualToView(cell.status);
-                        
-                        [cell.className updateLayout];
-
-                        
-                    }
-                    else if ([cell.model.status isEqualToString:@"teaching"]) {
-                        
-                        cell.dist.hidden = YES;
-                        cell.deadLineLabel.hidden =YES;
-                        cell.days.hidden = YES;
-                        cell.progress.hidden =NO;
-                        cell.line2.hidden = NO;
-                        cell.presentCount.hidden = NO;
-                        cell.totalCount.hidden = NO;
-                        cell.finish.hidden =YES;
-                        
-                        cell.enterButton.hidden=NO;
-                        cell.enterButton.enabled = YES;
-                        cell.enterButton.layer.borderColor = BUTTONRED.CGColor;
-                        [cell.enterButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
-                        cell.status.text = @" 试听中 ";
-                        
-                        [cell.className sd_clearAutoLayoutSettings];
-                        cell.className.sd_layout
-                        .leftSpaceToView(cell.status,2)
-                        .topEqualToView(cell.status)
-                        .rightSpaceToView(cell.content,10)
-                        .bottomEqualToView(cell.status);
-                        
-                        [cell.className updateLayout];
-
-                        
-                    }
-                }else{
-                
-                }
-                /* 已试听的*/
-                if (cell.model.tasted == YES) {
-                    if ([cell.model.status isEqualToString:@"teaching"]) {
                         
                         cell.status.text = @" 已试听 ";
+                         cell.status.backgroundColor = [UIColor lightGrayColor];
+                        cell.status.hidden = YES;
                         cell.enterButton.hidden = NO;
+                        cell.enterButton.enabled= NO;
+                        cell.enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+                        [cell.enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+                        
+                        [cell.className sd_clearAutoLayoutSettings];
+                        cell.className.sd_layout
+                        .leftSpaceToView(cell.classImage,10)
+                        .topSpaceToView(cell.content,5)
+                        .rightSpaceToView(cell.content,10)
+                        .heightIs(20);
+                        
+                        [cell.className updateLayout];
+
+                    }else if ([cell.model.status isEqualToString:@"completed"]){
+                        /* 已结束的*/
+                        cell.dist.hidden = YES;
+                        cell.deadLineLabel.hidden =YES;
+                        cell.days.hidden =YES;
+                        
+                        cell.progress.hidden =YES;
+                        cell.line2.hidden = YES;
+                        cell.presentCount.hidden =YES;
+                        cell.totalCount.hidden =YES;
+                        
+                        cell.finish.hidden = NO;
+                        
+                        cell.status.text = @" 已试听 ";
+                         cell.status.backgroundColor = [UIColor lightGrayColor];
+                        cell.status.hidden = NO;
+                        cell.enterButton.hidden = YES;
                         cell.enterButton.enabled= NO;
                         cell.enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
                         [cell.enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
@@ -742,14 +771,109 @@
                         .bottomEqualToView(cell.status);
                         
                         [cell.className updateLayout];
-
                         
                     }
                 }else{
+                    /* 试听中的*/
+                    
+                    /* 待开课*/
+                    if ([cell.model.status isEqualToString:@"published"]) {
+                        cell.dist.hidden = NO;
+                        cell.deadLineLabel.hidden =NO;
+                        cell.days.hidden =NO;
+                        
+                        cell.progress.hidden =YES;
+                        cell.line2.hidden = YES;
+                        cell.presentCount.hidden =YES;
+                        cell.totalCount.hidden =YES;
+                        cell.finish.hidden =YES;
+                        
+                        cell.enterButton.hidden =NO;
+                        cell.enterButton.enabled = NO;
+                        cell.enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+                        [cell.enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+                        cell.status.text = @" 试听中 ";
+                         cell.status.backgroundColor = [UIColor orangeColor];
+                        cell.status.hidden = NO;
+                        
+                        [cell.className sd_clearAutoLayoutSettings];
+                        cell.className.sd_layout
+                        .leftSpaceToView(cell.status,2)
+                        .topEqualToView(cell.status)
+                        .rightSpaceToView(cell.content,10)
+                        .bottomEqualToView(cell.status);
+                        
+                        [cell.className updateLayout];
+                        
+                        
+                    }
+                    else if ([cell.model.status isEqualToString:@"teaching"]) {
+                        
+                        cell.dist.hidden = YES;
+                        cell.deadLineLabel.hidden =YES;
+                        cell.days.hidden = YES;
+                        
+                        cell.progress.hidden =NO;
+                        cell.line2.hidden = NO;
+                        cell.presentCount.hidden = NO;
+                        cell.totalCount.hidden = NO;
+                        cell.finish.hidden =YES;
+                        
+                        cell.enterButton.hidden=NO;
+                        cell.enterButton.enabled = YES;
+                        cell.enterButton.layer.borderColor = BUTTONRED.CGColor;
+                        [cell.enterButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+                        cell.status.text = @" 试听中 ";
+                         cell.status.backgroundColor = [UIColor orangeColor];
+                        cell.status.hidden = NO;
+                        
+                        [cell.className sd_clearAutoLayoutSettings];
+                        cell.className.sd_layout
+                        .leftSpaceToView(cell.status,2)
+                        .topEqualToView(cell.status)
+                        .rightSpaceToView(cell.content,10)
+                        .bottomEqualToView(cell.status);
+                        
+                        [cell.className updateLayout];
+                        
+                        
+                    }else if ([cell.model.status isEqualToString:@"completed"]) {
+                        
+                        cell.dist.hidden = YES;
+                        cell.deadLineLabel.hidden =YES;
+                        cell.days.hidden = YES;
+                        
+                        cell.progress.hidden =YES;
+                        cell.line2.hidden = YES;
+                        cell.presentCount.hidden = YES;
+                        cell.totalCount.hidden = YES;
+                        
+                        cell.finish.hidden =NO;
+                        
+                        cell.enterButton.hidden=YES;
+                        cell.enterButton.enabled = NO;
+                        cell.enterButton.layer.borderColor = BUTTONRED.CGColor;
+                        [cell.enterButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+                        cell.status.text = @" 试听中 ";
+                         cell.status.backgroundColor = [UIColor orangeColor];
+                        cell.status.hidden = NO;
+                        
+                        [cell.className sd_clearAutoLayoutSettings];
+                        cell.className.sd_layout
+                        .leftSpaceToView(cell.status,2)
+                        .topEqualToView(cell.status)
+                        .rightSpaceToView(cell.content,10)
+                        .bottomEqualToView(cell.status);
+                        
+                        [cell.className updateLayout];
+                        
+                        
+                    }
+
                     
                 }
             }
-           
+            
             
             return  cell;
         }

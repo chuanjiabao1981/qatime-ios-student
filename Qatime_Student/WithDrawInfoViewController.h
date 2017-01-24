@@ -13,6 +13,6 @@
 
 @property(nonatomic,strong) WithDrawInfoView *withDrawInfoView ;
 
--(instancetype)initWithAmount:(NSString *)money andPayType:(NSString *)payType;
+-(instancetype)initWithAmount:(NSString *)money andPayType:(NSString *)payType andTicketToken:(NSString *)ticketToken ;
 
 @end
