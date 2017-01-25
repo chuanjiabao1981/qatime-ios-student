@@ -194,9 +194,6 @@
         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
         [manager GET:requestURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
-            HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _unStartClassView.height_sd)];
-            noview.titleLabel.text  = @"没有课程";
-            [_unStartClassView addSubview:noview];
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
@@ -219,22 +216,24 @@
                         
                     }
                     
-                    /* 如果有空数据,那么该项所在页面添加占位图*/
-                    if (_unStartArr.count != 0) {
-                        
-                        noview.hidden = YES;
-                    }
+                    /* 加载数据*/
                     
+                    [self setupUnstartView];
+                                        /* 如果有空数据,那么该项所在页面添加占位图*/
+                    if (_unStartArr.count == 0) {
+                        
+                        HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _unStartClassView.height_sd)];
+                        noview.titleLabel.text  = @"没有课程";
+                        [_unStartClassView addSubview:noview];
+
+                    }
+
                     [self loadingHUDStopLoadingWithTitle:@"加载完成"];
                     
                 }else{
                     
                 }
                 
-                
-                /* 加载数据*/
-                
-                [self setupUnstartView];
                 
             }else{
                 
@@ -272,11 +271,6 @@
         [manager GET:requestURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             
-            HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _startedClassView.height_sd)];
-            noview.titleLabel.text  = @"没有课程";
-            [_startedClassView addSubview:noview];
-            
-            
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
             /* 回复数据正确的情况下*/
@@ -294,17 +288,19 @@
                         /* 已开课的*/
                         if (_startedArr) {
                             
-                                
                             [_startedArr addObject:mod];
                             
                         }
                     }
                     
+                     [self setupStartedView];
+                    
                     /* 如果有空数据,那么该项所在页面添加占位图*/
-                    if (_startedArr.count !=0) {
-                        noview.hidden = YES;
-                        
-                        
+                    if (_startedArr.count ==0) {
+                        HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _startedClassView.height_sd)];
+                        noview.titleLabel.text  = @"没有课程";
+                        [_startedClassView addSubview:noview];
+
                     }
                     [self loadingHUDStopLoadingWithTitle:@"加载完成"];
                     
@@ -313,9 +309,8 @@
                     
                 }
                 
-                NSLog(@"%@",_allClassArr);
                 
-                [self setupStartedView];
+               
                 //                [_startedClassView.classTableView reloadData];
                 
             }else{
@@ -350,10 +345,6 @@
         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
         [manager GET:requestURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
-            
-            HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _startedClassView.height_sd)];
-            noview.titleLabel.text  = @"没有课程";
-            [_startedClassView addSubview:noview];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
             /* 回复数据正确的情况下*/
@@ -383,10 +374,15 @@
                         
                     }
                     
+                    [self setupEndedView];
                     
-                    if (_endedArr.count !=0) {
+                    if (_endedArr.count ==0) {
                         
-                        noview.hidden = YES;
+                        HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _startedClassView.height_sd)];
+                        noview.titleLabel.text  = @"没有课程";
+                        [_endedClassView addSubview:noview];
+                        
+                        
                     }
                     
                     [self loadingHUDStopLoadingWithTitle:@"加载完成"];
@@ -396,11 +392,6 @@
                     
                 }
                 
-                
-                
-                NSLog(@"%@",_allClassArr);
-                
-                [self setupEndedView];
                 //                [_endedClassView.classTableView reloadData];
                 
             }else{
@@ -468,6 +459,7 @@
                         }
                         
                     }
+                    [self setupListenView];
                     
                     /* 如果有空数据,那么该项所在页面添加占位图*/
                     if (_listenArr.count == 0) {
@@ -484,7 +476,6 @@
                     
                     
                 }
-                [self setupListenView];
                 
             }else{
                 
@@ -867,18 +858,14 @@
                         
                         [cell.className updateLayout];
                         
-                        
                     }
-
                     
                 }
             }
             
-            
             return  cell;
         }
             break;
-            
             
     }
     

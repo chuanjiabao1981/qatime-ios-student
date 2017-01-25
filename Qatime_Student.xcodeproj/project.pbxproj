@@ -401,6 +401,7 @@
 		54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC41DFE8D67001A98CE /* OrderView.m */; };
 		54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC71DFE8D75001A98CE /* OrderViewController.m */; };
 		54ECFECA1DFE978C001A98CE /* money.png in Resources */ = {isa = PBXBuildFile; fileRef = 54ECFEC91DFE978C001A98CE /* money.png */; };
+		54F32F721E372E57000F8926 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F32F711E372E57000F8926 /* Reachability.m */; };
 		54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F34D7C1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m */; };
 		54F34D801DE70BA500D6FC85 /* NSString+FindFace.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F34D7E1DE70BA500D6FC85 /* NSString+FindFace.m */; };
 		54F3BA181DFC3013003998D0 /* UIViewController+Login.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA171DFC3013003998D0 /* UIViewController+Login.m */; };
@@ -1073,9 +1074,6 @@
 		54B9CAFB1DFE4AAC003961FF /* WithdrawConfirmViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithdrawConfirmViewController.m; sourceTree = "<group>"; };
 		54B9CAFE1DFE4E8A003961FF /* BuyBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyBar.h; sourceTree = "<group>"; };
 		54B9CAFF1DFE4E8A003961FF /* BuyBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyBar.m; sourceTree = "<group>"; };
-		54C21F8A1DDDB06E000549F2 /* Qatime_Student.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Qatime_Student.entitlements; sourceTree = "<group>"; };
-		54C21F8B1DDDB2F1000549F2 /* QatimeStudentPush_Development.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = QatimeStudentPush_Development.p12; sourceTree = "<group>"; };
-		54C21F8C1DDDB2F1000549F2 /* QatimeStudentPush_Distribution.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = QatimeStudentPush_Distribution.p12; sourceTree = "<group>"; };
 		54C9A8CC1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMJKeyboardShowHiddenNotificationCenter.h; sourceTree = "<group>"; };
 		54C9A8CD1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMJKeyboardShowHiddenNotificationCenter.m; sourceTree = "<group>"; };
 		54C9A8CF1E12159700B81EBF /* PlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
@@ -1178,6 +1176,8 @@
 		54ECFEC61DFE8D75001A98CE /* OrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
 		54ECFEC71DFE8D75001A98CE /* OrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
 		54ECFEC91DFE978C001A98CE /* money.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money.png; sourceTree = "<group>"; };
+		54F32F701E372E57000F8926 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		54F32F711E372E57000F8926 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		54F34D7A1DE70BA500D6FC85 /* Define.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Define.h; sourceTree = "<group>"; };
 		54F34D7B1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+Extention.h"; sourceTree = "<group>"; };
 		54F34D7C1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+Extention.m"; sourceTree = "<group>"; };
@@ -1614,6 +1614,7 @@
 		543C207A1DC6F6470086B04B /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				54F32F731E372E65000F8926 /* 检查网络环境 */,
 				543E234F1E2CE80C00381F10 /* 支付密码框 */,
 				541E20011E1398DB007CF5D1 /* 异常捕获 */,
 				5457317E1E022E5A00F45C03 /* 支付密码 */,
@@ -2436,7 +2437,6 @@
 		54A153A71DC6F09D0070B508 /* Qatime_Student */ = {
 			isa = PBXGroup;
 			children = (
-				54C21F8A1DDDB06E000549F2 /* Qatime_Student.entitlements */,
 				543C207A1DC6F6470086B04B /* Util */,
 				546978531DC723A2001695F4 /* 登录页面 */,
 				541F91DE1DC9BBAA00180BE8 /* 主页页面 */,
@@ -2463,9 +2463,8 @@
 		54A153A81DC6F09D0070B508 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				54F32F741E373142000F8926 /* Reachability */,
 				54B73CFF1DE3E85A00B7A7EB /* ChineseSorting */,
-				54C21F8B1DDDB2F1000549F2 /* QatimeStudentPush_Development.p12 */,
-				54C21F8C1DDDB2F1000549F2 /* QatimeStudentPush_Distribution.p12 */,
 				5493D4BC1E0BE1050085A39E /* TLCityPicker */,
 				547FBF251DF6817300955A9E /* UMessage_Sdk_1.4.0 */,
 				54CB266C1DF02FC600AE7414 /* WeChatSDK */,
@@ -3283,6 +3282,22 @@
 			children = (
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		54F32F731E372E65000F8926 /* 检查网络环境 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "检查网络环境";
+			sourceTree = "<group>";
+		};
+		54F32F741E373142000F8926 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				54F32F701E372E57000F8926 /* Reachability.h */,
+				54F32F711E372E57000F8926 /* Reachability.m */,
+			);
+			name = Reachability;
 			sourceTree = "<group>";
 		};
 		54F34D791DE70BA500D6FC85 /* LYCoreLabel */ = {
@@ -4414,6 +4429,7 @@
 				546A54771DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.m in Sources */,
 				545162C41DF53DF9000BD17A /* ChangePhoneGetCodeViewController.m in Sources */,
 				549AE7651E013DBD001DD2ED /* BindingMailInfoViewController.m in Sources */,
+				54F32F721E372E57000F8926 /* Reachability.m in Sources */,
 				54D661221DD040EF00C9A0FF /* UIViewController+HUD.m in Sources */,
 				545162CE1DF5598E000BD17A /* PersonalInfoViewController.m in Sources */,
 				545226151E24CDD300F36280 /* OrderInfoView.m in Sources */,
@@ -4508,9 +4524,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Weiwo Tongda Network Technology Co., Ltd. (UMV383V3WA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4556,9 +4574,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Weiwo Tongda Network Technology Co., Ltd. (UMV383V3WA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4585,6 +4605,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Qatime_Student/Qatime_Student.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Weiwo Tongda Network Technology Co., Ltd. (UMV383V3WA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;
@@ -4674,6 +4695,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Qatime_Student/Qatime_Student.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Weiwo Tongda Network Technology Co., Ltd. (UMV383V3WA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;

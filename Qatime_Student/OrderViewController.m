@@ -133,7 +133,7 @@
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
             [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-            [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses/%@",Request_Header,_idNumber,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
@@ -188,7 +188,7 @@
                     
                 }else{
                     /* 拉取订单信息失败*/
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"获取订单信息失败,请重试!" preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"该课程暂时不可购买!" preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                         
                         [self returnLastPage];
@@ -225,9 +225,9 @@
             /* 余额请求成功*/
             _orderView.balanceLabel.text = [NSString stringWithFormat:@"(¥%@)",dic[@"data"][@"balance"]];
             
-            if (price) {
+            if (price>=0) {
                 /* 判断余额是否可用*/
-                if ([dic[@"data"][@"balance"] floatValue]>=price) {
+                if ([dic[@"data"][@"balance"] floatValue]>price) {
                     
                     balanceEnable = YES;
                     [_orderView.balanceButton addTarget:self action:@selector(chooseBalance:) forControlEvents:UIControlEventTouchUpInside];

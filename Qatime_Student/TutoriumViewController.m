@@ -185,16 +185,22 @@
     _filterDic = [NSMutableDictionary dictionaryWithObjects:@[_filterGrade,_filterSubject, sort_By,_price_floor,_price_ceil,_class_date_floor,_class_date_ceil,_preset_lesson_count_floor,_preset_lesson_count_ceil,_class_status] forKeys:@[@"grade",@"subject",@"sort_by",@"price_floor",@"price_ceil",@"class_date_floor",@"class_date_ceil",@"preset_lesson_count_floor",@"preset_lesson_count_ceil",@"status"]];
     
     /* 本地缓存的沙盒路径*/
+
+    
     _tutoriumListFilePath=[[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"Tutorium_List"];
     
-    [[NSFileManager defaultManager]removeItemAtPath:_tutoriumListFilePath error:nil];
+    if ([[NSFileManager defaultManager]fileExistsAtPath:_tutoriumListFilePath]) {
+        
+        [[NSFileManager defaultManager]removeItemAtPath:_tutoriumListFilePath error:nil];
+    }
+    
     
     /* 是否有过筛选记录->赋值页数*/
     if ([[NSFileManager defaultManager]fileExistsAtPath:_tutoriumListFilePath]) {
         
-        NSDictionary *dic=[NSDictionary dictionaryWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithFile:_tutoriumListFilePath]];
-        
-        page  = [[dic valueForKey:@"page"]integerValue ];
+//        NSDictionary *dic=[NSDictionary dictionaryWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithFile:_tutoriumListFilePath]];
+//        
+//        page  = [[dic valueForKey:@"page"]integerValue ];
         
     }else{
         
@@ -677,18 +683,14 @@
     [_multiFilterView.startTime setTitle:@"请选择时间" forState:UIControlStateNormal];
     [_multiFilterView.endTime setTitle:@"请选择时间" forState:UIControlStateNormal];
     
-    [_multiFilterView.class_Begin setSelected:NO];
-    [_multiFilterView.class_Begin setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    _multiFilterView.class_Begin.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    [_multiFilterView.class_Begin setSelected:YES];
+    [_multiFilterView.class_Begin setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_multiFilterView.class_Begin setBackgroundColor:[UIColor lightGrayColor]];
     
-    [_multiFilterView.class_Begin setBackgroundColor:[UIColor clearColor]];
+    [_multiFilterView.recuit setSelected:YES];
+    [_multiFilterView.recuit setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
-    
-    [_multiFilterView.recuit setSelected:NO];
-    [_multiFilterView.recuit setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    _multiFilterView.recuit.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    
-    [_multiFilterView.recuit setBackgroundColor:[UIColor clearColor]];
+    [_multiFilterView.recuit setBackgroundColor:[UIColor lightGrayColor]];
     
     
     

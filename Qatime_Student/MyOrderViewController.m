@@ -275,7 +275,7 @@
     
     /* 请求取消的数据*/
     [self requestCanceld];
-
+    
     
     
     /* 微信支付成功的监听回调*/
@@ -299,7 +299,7 @@
     
     /* 请求取消的数据*/
     [self requestCanceld];
-
+    
 }
 
 
@@ -311,22 +311,19 @@
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/orders?cate=unpaid&per_page=6&page=%ld",Request_Header,unpaidPage] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        HaveNoClassView *noDataView = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd - 64 - _myOrderView.segmentControl.height_sd)];
-        [_unpaidView addSubview:noDataView];
-        noDataView.titleLabel.text = @"暂时没有数据";
-        noDataView.hidden = NO;
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+            
+            __block NSMutableArray *unpaidArr = [NSMutableArray arrayWithArray:dic[@"data"]];
+            NSMutableArray *compArr = unpaidArr.copy;
+            
             /* 获取数据成功*/
-            if ([dic[@"data"] count]!=0) {
+            if (unpaidArr.count !=0) {
                 /* 有数据*/
-                noDataView.hidden = YES;
-                _unpaidView.hidden = NO;
                 
-                __block NSMutableArray *unpaidArr = [NSMutableArray arrayWithArray:dic[@"data"]];
+                //                _unpaidView.hidden = NO;
                 
-                NSMutableArray *compArr = unpaidArr.copy;
                 
                 
                 for (NSInteger i = 0; i<compArr.count; i++) {
@@ -335,17 +332,6 @@
                     Unpaid *mod = [Unpaid yy_modelWithJSON:unpaidArr[i][@"product"]];
                     if (unpaidArr[i][@"app_pay_params"]) {
                         
-//                        mod.app_pay_params = [NSDictionary dictionaryWithDictionary:unpaidArr[i][@"app_pay_params"]];
-                        
-//                        mod.app_pay_params = @{
-//                                               @"appid":unpaidArr[i][@"app_pay_params"][@"appid"],
-//                                               @"partnerid":unpaidArr[i][@"app_pay_params"][@"partnerid"],
-//                                               @"package":unpaidArr[i][@"app_pay_params"][@"package"],
-//                                               @"timestamp":unpaidArr[i][@"app_pay_params"][@"timestamp"],
-//                                               @"prepayid":unpaidArr[i][@"app_pay_params"][@"prepayid"],
-//                                               @"noncestr":unpaidArr[i][@"app_pay_params"][@"noncestr"],
-//                                               @"sign":unpaidArr[i][@"app_pay_params"][@"sign"]
-//                                               };
                     }
                     
                     
@@ -380,10 +366,6 @@
                     NSLog(@"%@",_unpaidArr[i]);
                 }
                 
-                
-                
-                //                [_unpaidView.tableView reloadData];
-                //                [_unpaidView.tableView setNeedsDisplay];
                 [_unpaidView.tableView.mj_footer endRefreshing];
                 [self loadingHUDStopLoadingWithTitle:@"加载完成"];
                 
@@ -392,9 +374,11 @@
                 
             }else{
                 /* 没更多的数据了*/
-                if (_unpaidArr.count == 0) {
-                    //                    _unpaidView.hidden = YES;
-                }
+                
+                HaveNoClassView *noDataView = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd - 64 - _myOrderView.segmentControl.height_sd)];
+                noDataView.titleLabel.text = @"暂时没有数据";
+                [_myOrderView.scrollView addSubview:noDataView];
+                
                 [_unpaidView.tableView.mj_footer endRefreshingWithNoMoreData];
                 
                 [self loadingHUDStopLoadingWithTitle:@"没有符合条件的订单!"];
@@ -427,17 +411,13 @@
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/orders?cate=paid&per_page=6&page=%ld",Request_Header,paidPage] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        HaveNoClassView *noDataView = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd - 64 - _myOrderView.segmentControl.height_sd)];
-        noDataView.titleLabel.text = @"暂时没有数据";
-        [_unpaidView addSubview:noDataView];
-        noDataView.hidden = NO;
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 获取数据成功*/
             if ([dic[@"data"] count]!=0) {
                 /* 有数据*/
-                noDataView.hidden = YES;
+                
                 //                _paidView.hidden = NO;
                 __block NSMutableArray *paidArr = [NSMutableArray arrayWithArray:dic[@"data"]];
                 NSMutableArray *compArr = paidArr.copy;
@@ -448,26 +428,15 @@
                     
                     if (paidArr[i][@"app_pay_params"]&&![paidArr[i][@"app_pay_params"]isEqual:[NSNull null]]) {
                         
-//                         mod.app_pay_params = [NSDictionary dictionaryWithDictionary:paidArr[i][@"app_pay_params"]];
-                        
-//                        mod.app_pay_params = @{
-//                                               @"appid":paidArr[i][@"app_pay_params"][@"appid"],
-//                                               @"partnerid":paidArr[i][@"app_pay_params"][@"partnerid"],
-//                                               @"package":paidArr[i][@"app_pay_params"][@"package"],
-//                                               @"timestamp":paidArr[i][@"app_pay_params"][@"timestamp"],
-//                                               @"prepayid":paidArr[i][@"app_pay_params"][@"prepayid"],
-//                                               @"noncestr":paidArr[i][@"app_pay_params"][@"noncestr"],
-//                                               @"sign":paidArr[i][@"app_pay_params"][@"sign"]
-//                                               };
                     }
                     
-
+                    
                     mod.status =[paidArr[i][@"status"] isEqual:[NSNull null]]?@"":paidArr[i][@"status"];
                     mod.pay_type = [paidArr[i][@"pay_type"]isEqual:[NSNull null]]?@"":paidArr[i][@"pay_type"];
                     
                     mod.created_at = [paidArr[i][@"created_at"]isEqual:[NSNull null]]?@"":paidArr[i][@"created_at"];
                     mod.pay_at =[paidArr[i][@"pay_at"]isEqual:[NSNull null]]?@"":paidArr[i][@"pay_at"];
-                     mod.updated_at =[paidArr[i][@"updated_at"]isEqual:[NSNull null]]?@"":paidArr[i][@"updated_at"];
+                    mod.updated_at =[paidArr[i][@"updated_at"]isEqual:[NSNull null]]?@"":paidArr[i][@"updated_at"];
                     
                     
                     if (![paidArr[i][@"app_pay_params"]isEqual:[NSNull null]]) {
@@ -477,7 +446,7 @@
                             mod.appid = paidArr[i][@"app_pay_params"][@"appid"];
                             mod.timestamp = paidArr[i][@"app_pay_params"][@"timestamp"];
                             
-                             mod.app_pay_params =paidArr[i][@"app_pay_params"];
+                            mod.app_pay_params =paidArr[i][@"app_pay_params"];
                         }
                     }else{
                         mod.appid =@"";
@@ -496,12 +465,16 @@
                 [self loadingHUDStopLoadingWithTitle:@"加载完成"];
                 /* 加载已支付的视图*/
                 [self setupPaidView];
+                /* 没更多的数据了*/
                 
             }else{
                 /* 没更多的数据了*/
                 
                 if (_paidArr.count == 0) {
-                    //                    _paidView.hidden = YES;
+                    HaveNoClassView *noDataView = [[HaveNoClassView alloc]initWithFrame:CGRectMake(self.view.width_sd, 0, self.view.width_sd, self.view.height_sd - 64 - _myOrderView.segmentControl.height_sd)];
+                    noDataView.titleLabel.text = @"暂时没有数据";
+                    [_myOrderView.scrollView addSubview:noDataView];
+                    
                 }
                 
                 [_paidView.tableView.mj_footer endRefreshingWithNoMoreData];
@@ -533,19 +506,12 @@
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/orders?cate=canceled&per_page=6&page=%ld",Request_Header,cancelPage] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        HaveNoClassView *noDataView = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd - 64 - _myOrderView.segmentControl.height_sd)];
-        noDataView.titleLabel.text = @"暂时没有数据";
-        [_unpaidView addSubview:noDataView];
-        noDataView.hidden = NO;
-        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 获取数据成功*/
             if ([dic[@"data"] count]!=0) {
-                noDataView.hidden = YES;
-                /* 有数据*/
                 
-                //                _cancelView.hidden = NO;
+                /* 有数据*/
                 
                 __block NSMutableArray *cancelArr = [NSMutableArray arrayWithArray:dic[@"data"]];
                 
@@ -555,24 +521,10 @@
                     
                     /* 遍历完,model赋值,写入数组*/
                     Canceld *mod = [Canceld yy_modelWithJSON:cancelArr[i][@"product"]];
-                 
+                    
                     if (cancelArr[i][@"app_pay_params"]&&![cancelArr[i][@"app_pay_params"]isEqual:[NSNull null]]) {
                         
-//                         mod.app_pay_params = [NSDictionary dictionaryWithDictionary:cancelArr[i][@"app_pay_params"]];
-                        
-//                        mod.app_pay_params = @{
-//                                               @"appid":cancelArr[i][@"app_pay_params"][@"appid"],
-//                                               @"partnerid":cancelArr[i][@"app_pay_params"][@"partnerid"],
-//                                               @"package":cancelArr[i][@"app_pay_params"][@"package"],
-//                                               @"timestamp":cancelArr[i][@"app_pay_params"][@"timestamp"],
-//                                               @"prepayid":cancelArr[i][@"app_pay_params"][@"prepayid"],
-//                                               @"noncestr":cancelArr[i][@"app_pay_params"][@"noncestr"],
-//                                               @"sign":cancelArr[i][@"app_pay_params"][@"sign"]
-//                                               };
                     }
-                    
-                    
-
                     mod.status = [cancelArr[i][@"status"] isEqual:[NSNull null]]?@"":cancelArr[i][@"status"];
                     mod.pay_type = [cancelArr[i][@"pay_type"]isEqual:[NSNull null]]?@"":cancelArr[i][@"pay_type"];
                     
@@ -583,7 +535,7 @@
                             mod.appid = cancelArr[i][@"app_pay_params"][@"appid"];
                             mod.timestamp = cancelArr[i][@"app_pay_params"][@"timestamp"];
                             
-                             mod.app_pay_params =cancelArr[i][@"app_pay_params"];
+                            mod.app_pay_params =cancelArr[i][@"app_pay_params"];
                         }
                     }else{
                         mod.appid =@"";
@@ -592,19 +544,22 @@
                     mod.orderID = [cancelArr[i][@"id"]isEqual:[NSNull null]]?@"":cancelArr[i][@"id"];
                     [_caneldArr addObject:mod];
                 }
-                //                [_cancelView.tableView reloadData];
-                //                [_cancelView.tableView setNeedsDisplay];
+                
                 [self loadingHUDStopLoadingWithTitle:@"加载完成"];
                 [_cancelView.tableView.mj_footer endRefreshing];
                 
                 /* 加载视图*/
                 [self setupCancelViews];
+                /* 没更多的数据了*/
                 
             }else{
                 /* 没更多的数据了*/
                 
                 if (_caneldArr.count == 0) {
-                    //                    _cancelView.hidden = YES;
+                    HaveNoClassView *noDataView = [[HaveNoClassView alloc]initWithFrame:CGRectMake(self.view.width_sd*2, 0, self.view.width_sd, self.view.height_sd - 64 - _myOrderView.segmentControl.height_sd)];
+                    noDataView.titleLabel.text = @"暂时没有数据";
+                    [_myOrderView.scrollView addSubview:noDataView];
+                    
                 }
                 [_cancelView.tableView.mj_footer endRefreshingWithNoMoreData];
                 [self loadingHUDStopLoadingWithTitle:@"没有符合条件的订单!"];
@@ -722,7 +677,7 @@
                 cell.paidModel = _paidArr[indexPath.row];
                 cell.leftButton.hidden= YES;
                 
-    
+                
                 cell.rightButton.tag = 400+indexPath.row;
                 
                 /* 进入退款申请页面*/
@@ -862,21 +817,21 @@
             MyOrderTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             
             
-//            NSDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{
-//                                                                                @"name":cell.unpaidModel.name,
-//                                                                                @"subject":cell.unpaidModel.subject,
-//                                                                                @"grade":cell.unpaidModel.grade,
-//                                                                                @"lessonTime":cell.unpaidModel.preset_lesson_count,
-//                                                                                @"teacherName":cell.unpaidModel.teacher_name,
-//                                                                                @"creatTime":cell.unpaidModel.created_at==nil?@"无":[cell.unpaidModel.created_at timeStampToDate],
-//                                                                                @"payTime":cell.unpaidModel.pay_at==nil?@"无":cell.unpaidModel.pay_at,
-//                                                                                @"payType":cell.unpaidModel.pay_type==nil?@"":cell.unpaidModel.pay_type,
-//                                                                                @"amount":cell.unpaidModel.price,
-//                                                                                @"status":cell.unpaidModel.status,
-//                                                                                @"orderNumber":cell.unpaidModel.orderID,
-//                                                                                @"app_pay_params":
-//                                                                                   cell.unpaidModel.app_pay_params==nil?@"":cell.unpaidModel.app_pay_params
-//                                                                                }];
+            //            NSDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{
+            //                                                                                @"name":cell.unpaidModel.name,
+            //                                                                                @"subject":cell.unpaidModel.subject,
+            //                                                                                @"grade":cell.unpaidModel.grade,
+            //                                                                                @"lessonTime":cell.unpaidModel.preset_lesson_count,
+            //                                                                                @"teacherName":cell.unpaidModel.teacher_name,
+            //                                                                                @"creatTime":cell.unpaidModel.created_at==nil?@"无":[cell.unpaidModel.created_at timeStampToDate],
+            //                                                                                @"payTime":cell.unpaidModel.pay_at==nil?@"无":cell.unpaidModel.pay_at,
+            //                                                                                @"payType":cell.unpaidModel.pay_type==nil?@"":cell.unpaidModel.pay_type,
+            //                                                                                @"amount":cell.unpaidModel.price,
+            //                                                                                @"status":cell.unpaidModel.status,
+            //                                                                                @"orderNumber":cell.unpaidModel.orderID,
+            //                                                                                @"app_pay_params":
+            //                                                                                   cell.unpaidModel.app_pay_params==nil?@"":cell.unpaidModel.app_pay_params
+            //                                                                                }];
             
             
             OrderInfoViewController *order = [[OrderInfoViewController alloc]initWithUnpaid:cell.unpaidModel];
@@ -890,19 +845,19 @@
             
             PaidOrderTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             
-//            NSDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{
-//                                                                                @"name":cell.paidModel.name,
-//                                                                                @"subject":cell.paidModel.subject,
-//                                                                                @"grade":cell.paidModel.grade,
-//                                                                                @"lessonTime":cell.paidModel.preset_lesson_count,
-//                                                                                @"teacherName":cell.paidModel.teacher_name,
-//                                                                                @"creatTime":cell.paidModel.created_at==nil?@"无":[cell.paidModel.created_at timeStampToDate],
-//                                                                                @"payTime":cell.paidModel.pay_at==nil?@"无":[cell.paidModel.pay_at timeStampToDate],
-//                                                                                @"payType":cell.paidModel.pay_type,
-//                                                                                @"amount":cell.paidModel.price,
-//                                                                                @"status":cell.paidModel.status,
-//                                                                                @"orderNumber":cell.paidModel.orderID,
-//                                                                                @"app_pay_params":               cell.paidModel.app_pay_params==nil?@"":cell.paidModel.app_pay_params                                                                             }];
+            //            NSDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{
+            //                                                                                @"name":cell.paidModel.name,
+            //                                                                                @"subject":cell.paidModel.subject,
+            //                                                                                @"grade":cell.paidModel.grade,
+            //                                                                                @"lessonTime":cell.paidModel.preset_lesson_count,
+            //                                                                                @"teacherName":cell.paidModel.teacher_name,
+            //                                                                                @"creatTime":cell.paidModel.created_at==nil?@"无":[cell.paidModel.created_at timeStampToDate],
+            //                                                                                @"payTime":cell.paidModel.pay_at==nil?@"无":[cell.paidModel.pay_at timeStampToDate],
+            //                                                                                @"payType":cell.paidModel.pay_type,
+            //                                                                                @"amount":cell.paidModel.price,
+            //                                                                                @"status":cell.paidModel.status,
+            //                                                                                @"orderNumber":cell.paidModel.orderID,
+            //                                                                                @"app_pay_params":               cell.paidModel.app_pay_params==nil?@"":cell.paidModel.app_pay_params                                                                             }];
             
             
             OrderInfoViewController *order = [[OrderInfoViewController alloc]initWithPaid:cell.paidModel];
@@ -950,7 +905,7 @@
 /* 取消退款功能*/
 - (void)cancelRefund:(UIButton *)sender{
     
-//    [self loadingHUDStartLoadingWithTitle:@"正在取消"];
+    //    [self loadingHUDStartLoadingWithTitle:@"正在取消"];
     if (sender.tag>=400&&sender.tag<500) {
         Paid *mod = _paidArr[sender.tag-400];
         [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"确定取消退款?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
@@ -1190,7 +1145,7 @@
             }
             
         }
-
+        
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         

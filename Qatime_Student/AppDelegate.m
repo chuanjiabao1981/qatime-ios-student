@@ -22,6 +22,7 @@
 //#endif
 
 #import <sys/utsname.h>
+#import "RealReachability.h"
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate,NIMSystemNotificationManager,NIMLoginManagerDelegate>{
     
@@ -132,6 +133,17 @@
     /* 程序运行时,开启捕获异常,在程序出现不可避免的崩溃和闪退的时候,弹窗提醒而不闪退*/
     [UncaughtExceptionHandler installUncaughtExceptionHandler:YES showAlert:YES];
     
+    /* 动态检测网络状态*/
+    GLobalRealReachability.hostForPing = Request_Header;
+    [GLobalRealReachability startNotifier];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(networkChanged:)
+                                                 name:kRealReachabilityChangedNotification
+                                               object:nil];
+
+    
+    
+    
     /* 推送是否需要关闭*/
     if (notificatoin_ON == NO) {
         /* 注销推送*/
@@ -179,6 +191,9 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnPushSound:) name:@"NotificationSound" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnPushAlert:) name:@"NotificationAlert" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnNotification:) name:@"Notification" object:nil];
+    
+    
+    
 
     return YES;
 }
@@ -404,6 +419,38 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         }
     }else{
         
+    }
+    
+}
+
+
+
+
+/* 网络状态发生变化的时候,触发该方法*/
+- (void)networkChanged:(NSNotification *)notification{
+    
+    RealReachability *reachability = (RealReachability *)notification.object;
+    ReachabilityStatus status = [reachability currentReachabilityStatus];
+    NSLog(@"currentStatus:%@",@(status));
+    switch (status) {
+        case RealStatusUnknown:{
+            
+        }
+            break;
+            
+        case RealStatusViaWWAN:{
+            //  case ReachableViaWWAN handler
+            /* 预留功能*/
+//            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"当前处于2G/3G网络环境下,是否切换至wifi网络?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"设置", nil];
+//            [alert show];
+        }
+            break;
+        case RealStatusViaWiFi:{
+            //  case ReachableViaWiFi handler
+            /* 预留功能.*/
+            
+        }
+            break;
     }
     
 }
@@ -669,12 +716,13 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSString *app_version;
     
     /* 提出学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"id"]) {
         idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
     /* 提出device token*/
     device_token = [[NSUserDefaults standardUserDefaults]valueForKey:@"Device-Token"];
+    
 
     /* 获取设备型号*/
     device_model =  [NSString stringWithFormat:@"%@",[self iphoneType]];
@@ -685,7 +733,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager POST:[NSString stringWithFormat:@"%@/api/v1/system/device_info",Request_Header] parameters:@{@"user_id":idNumber,@"device_token":device_token,@"device_model":device_model,@"app_name":@"Qatime_Student",@"app_version":app_version} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@/api/v1/system/device_info",Request_Header] parameters:@{@"user_id":idNumber==nil?@"":idNumber,@"device_token":device_token==nil?@"":device_token,@"device_model":device_model==nil?@"":device_model,@"app_name":@"Qatime_Student",@"app_version":app_version==nil?@"":app_version} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {

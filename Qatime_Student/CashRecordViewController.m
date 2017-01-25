@@ -177,11 +177,16 @@
 /* 拨打客服电话*/
 - (void)callForServiece{
     
-    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否拨打客服电话0353-2135828?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-//       
-//        NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",@"0353-2135828"];
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel://0353-2135828"]];
-    }];
+//    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否拨打客服电话0353-2135828?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+////       
+////        NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",@"0353-2135828"];
+//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel://0353-2135828"]];
+//    }];
+    
+    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",@"0353-2135828"];
+    UIWebView * callWebview = [[UIWebView alloc] init];
+    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+    [self.view addSubview:callWebview];
     
 }
 

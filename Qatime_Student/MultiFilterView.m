@@ -246,7 +246,7 @@
         
         _resetButton.sd_layout
         .leftEqualToView(stateNow)
-        .topSpaceToView(_class_Begin,CGRectGetWidth(self.bounds)/17.0f)
+        .bottomSpaceToView(self,40)
         .widthRatioToView(self,0.42f)
         .heightRatioToView(self,0.15f);
         _resetButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];

@@ -29,6 +29,7 @@
 #import "UIViewController+AFHTTP.h"
 
 #import "Replay.h"
+#import "UIControl+RemoveTarget.h"
 
 
 @interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>{
@@ -163,8 +164,6 @@
     [self requestClassesInfoWith:_classID];
     
     
-    
-    
     /* 注册重新加载页面数据的通知*/
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"RefreshTutoriumInfo" object:nil];
@@ -172,10 +171,13 @@
     /* 注册登录成功重新加载数据的通知*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(requestAgain) name:@"UserLoginAgain" object:nil];
     
+   
+    
 }
 
 /* 登录成功后,再次加载数据*/
 - (void)requestAgain{
+    
     [_buyBar.listenButton removeTarget:self action:@selector(loginAgain) forControlEvents:UIControlEventTouchUpInside];
      [_buyBar.applyButton removeTarget:self action:@selector(loginAgain) forControlEvents:UIControlEventTouchUpInside];
     
@@ -420,7 +422,9 @@
         _buyBar.listenButton.backgroundColor = BUTTONRED;
         [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
+        
         [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
+        
         
     }
     
@@ -536,9 +540,6 @@
         }
     }
     
-    
-    
-    
 }
 
 
@@ -579,7 +580,7 @@
 #pragma mark- 收集订单信息,并传入下一页,开始提交订单
 - (void)requestOrder{
     
-    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:_dataDic[@"id"]];
+    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:_classID];
     [self.navigationController pushViewController:orderVC animated:YES];
     
 }
@@ -747,6 +748,9 @@
 
 /* 刷新页面*/
 - (void)refreshPage{
+    
+    [_buyBar.listenButton removeAllTargets];
+    [_buyBar.applyButton removeAllTargets];
     
     [self requestClassesInfoWith:_classID];
     

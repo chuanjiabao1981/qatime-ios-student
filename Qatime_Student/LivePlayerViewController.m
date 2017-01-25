@@ -1825,6 +1825,8 @@ bool ismute     = NO;
     
     [self removeObserver:self forKeyPath:@"headerHeight"];
     
+    /* 避免内存泄漏,弹幕必须调用stop方法*/
+    [_aBarrage stop];
     _aBarrage = nil;
     
     
@@ -3253,8 +3255,10 @@ bool ismute     = NO;
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
+
 
 
 #pragma mark- 聊天功能的方法
@@ -4534,7 +4538,7 @@ bool ismute     = NO;
 -(void)dealloc{
     
     _aBarrage = nil;
-    NSLog(@"二次元的名器被干掉了biubiubiu~~~");
+    NSLog(@"干掉弹幕");
     
 }
 

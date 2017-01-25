@@ -16,6 +16,7 @@
 #import "UIAlertController+Blocks.h"
 #import "AuthenticationViewController.h"
 #import "UIViewController+AFHTTP.h"
+#import "TutoriumInfoViewController.h"
 
 @interface PayConfirmViewController (){
     
@@ -201,13 +202,15 @@
                         
                         [self loadingHUDStopLoadingWithTitle:@"购买成功!"];
                         
-                        [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
+                        [self performSelector:@selector(returnInfoPage) withObject:nil afterDelay:1];
+                        
+                        [[NSNotificationCenter defaultCenter ]postNotificationName:@"RefreshTutoriumInfo" object:nil];
                         
                     }else{
                         /* 付款失败*/
                          NSLog(@"%@",dic[@"data"]);
                          [self loadingHUDStopLoadingWithTitle:@"购买失败!"];
-                        [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
+                        [self performSelector:@selector(returnInfoPage) withObject:nil afterDelay:1];
                     }
                     
                     
@@ -268,14 +271,26 @@
         
     }
     
-    
 }
 
 
 - (void)returnLastPage{
     
+    
     [self.navigationController popViewControllerAnimated:YES];
     
+}
+
+- (void)returnInfoPage{
+    
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isMemberOfClass:[TutoriumInfoViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+            
+        }
+    }
+    
+
 }
 
 - (void)didReceiveMemoryWarning {

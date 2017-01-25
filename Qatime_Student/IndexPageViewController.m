@@ -1160,12 +1160,12 @@
     
     /** 由于IOS8中定位的授权机制改变 需要进行手动授权
      * 获取授权认证，两个方法：
-     * [self.locationManager requestWhenInUseAuthorization];
      * [self.locationManager requestAlwaysAuthorization];
      */
-    if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
-        NSLog(@"requestAlwaysAuthorization");
-        [self.locationManager requestAlwaysAuthorization];
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        NSLog(@"requestWhenInUseAuthorization");
+        [self.locationManager requestWhenInUseAuthorization];
+        
     }
     
     //开始定位，不断调用其代理方法

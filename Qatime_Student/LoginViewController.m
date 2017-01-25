@@ -109,6 +109,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     /* 错误次数达到5次的监听*/
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyCodeAppear) name:@"FivethWrongTime" object:nil];
+    
     /* 验证码按钮的点击事件*/
     [_loginView.keyCodeButton addTarget:self action:@selector(makeCaptcha) forControlEvents:UIControlEventTouchUpInside];
     
@@ -522,7 +523,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     NSDictionary *user=[NSDictionary dictionaryWithDictionary:userDic[@"user"]];
     NSLog(@"%@",user);
     
-    
     NSString *userID = [NSString stringWithFormat:@"%@",[[userDic valueForKey:@"user"] valueForKey:@"id"]];
     
     [[NSUserDefaults standardUserDefaults]setObject:remember_token forKey:@"remember_token"];
@@ -604,10 +604,16 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     if ([chatAccount valueForKey:@"chat_account"]!=nil&&![[chatAccount valueForKey:@"chat_account"] isEqual:[NSNull null]]) {
         
-        NSDictionary *chat_accountDic = [NSDictionary dictionaryWithDictionary:[chatAccount valueForKey:@"chat_account"]];
+        NSMutableDictionary *chat_accountDic = [NSMutableDictionary dictionaryWithDictionary:[chatAccount valueForKey:@"chat_account"]];
         
         NSLog(@"%@",chat_accountDic);
+        NSDictionary *chat = chat_accountDic.mutableCopy;
         
+        for (NSString *key in chat) {
+            if ([chat_accountDic[key] isEqual:[NSNull null]]||chat_accountDic[key]==nil) {
+                chat_accountDic[key] = @"";
+            }
+        }
         
         [[NSUserDefaults standardUserDefaults]setObject:chat_accountDic forKey:@"chat_account"];
         
