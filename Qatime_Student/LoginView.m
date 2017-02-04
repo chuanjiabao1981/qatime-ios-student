@@ -57,7 +57,7 @@
         /* 用户名输入框*/
         _userName = [[UITextField alloc]init];
         [text1 addSubview:_userName];
-        _userName.placeholder = @"请输入手机号码或邮箱";
+        _userName.placeholder = NSLocalizedString(@"请输入手机号码或邮箱",comment: "");
         
         
         /* 框2 输入密码*/
@@ -74,26 +74,28 @@
         /* 用户名输入框*/
         _passWord = [[UITextField alloc]init];
         [_text2 addSubview:_passWord];
-        _passWord.placeholder = @"请输入密码";
+        _passWord.placeholder = NSLocalizedString(@"请输入密码", comment:"");
+        
         
         
         /* 注册按钮*/
         
         _signUpButton = [[UIButton alloc]init];
-        [_signUpButton setTitle:@"注册账号" forState:UIControlStateNormal];
+        [_signUpButton setTitle:NSLocalizedString(@"注册账号", comment:"") forState:UIControlStateNormal];
         [_signUpButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [self addSubview:_signUpButton];
         _signUpButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         _signUpButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+        [_signUpButton setEnlargeEdge:20];
         
         /* 忘记密码*/
         
         _forgottenPassorwdButton = [[UIButton alloc]init];
         [self addSubview:_forgottenPassorwdButton];
         _forgottenPassorwdButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
-        [_forgottenPassorwdButton setTitle:@"找回密码" forState:UIControlStateNormal];
+        [_forgottenPassorwdButton setTitle:NSLocalizedString(@"找回密码", comment:"") forState:UIControlStateNormal];
         [_forgottenPassorwdButton setTitleColor:[UIColor grayColor]  forState:UIControlStateNormal];
-
+        [_forgottenPassorwdButton setEnlargeEdge:20];
         
         
         
@@ -102,7 +104,7 @@
         _loginButton.layer.borderColor =[UIColor colorWithRed:0.79 green:0.0 blue:0.0 alpha:1.00].CGColor;
         _loginButton.layer.borderWidth = 1.0f;
         
-        [_loginButton setTitle:@"登录" forState:UIControlStateNormal];
+        [_loginButton setTitle:NSLocalizedString(@"登录", comment:"") forState:UIControlStateNormal];
         [_loginButton setTitleColor:[UIColor colorWithRed:0.79 green:0.0 blue:0.0 alpha:1.00] forState:UIControlStateNormal];
         [self addSubview:_loginButton];
         
@@ -115,7 +117,7 @@
         
         /* 其他方式登录label和view*/
         UILabel *wechatLogin = [[UILabel alloc]init];
-        wechatLogin.text = @"其他方式登录";
+        wechatLogin.text = NSLocalizedString(@"其他方式登录", comment:"");
         wechatLogin.textColor = [UIColor lightGrayColor];
         wechatLogin.font = [UIFont systemFontOfSize:16*ScrenScale];
         [self addSubview:wechatLogin];
@@ -132,7 +134,7 @@
         /* 跳过登录*/
         _acrossLogin = [[UIButton alloc]init];
         [self addSubview:_acrossLogin];
-        [_acrossLogin setTitle:@"跳过登录" forState:UIControlStateNormal];
+        [_acrossLogin setTitle:NSLocalizedString(@"跳过登录", comment:"") forState:UIControlStateNormal];
         _acrossLogin.layer.masksToBounds = YES;
         _acrossLogin.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _acrossLogin.layer.borderWidth = 1.0f;

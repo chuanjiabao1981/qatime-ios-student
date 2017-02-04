@@ -98,7 +98,7 @@
 - (void)loadView{
     [super loadView];
     
-    [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+    [self loadingHUDStartLoadingWithTitle:NSLocalizedString(@"正在加载数据", nil)];
     
     /* 导航栏加载*/
     _navigationBar = ({
@@ -163,6 +163,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     //    self.automaticallyAdjustsScrollViewInsets = NO;
@@ -180,7 +181,8 @@
 
     
     menuImages = @[[UIImage imageNamed:@"语文"],[UIImage imageNamed:@"数学"],[UIImage imageNamed:@"英语"],[UIImage imageNamed:@"物理"],[UIImage imageNamed:@"化学"],[UIImage imageNamed:@"生物"],[UIImage imageNamed:@"历史"],[UIImage imageNamed:@"地理"],[UIImage imageNamed:@"政治"],[UIImage imageNamed:@"科学"]];
-    menuTitiels = @[@"语文",@"数学",@"英语",@"物理",@"化学",@"生物",@"历史",@"地理",@"政治",@"科学"];
+//    menuTitiels = @[@"语文",@"数学",@"英语",@"物理",@"化学",@"生物",@"历史",@"地理",@"政治",@"科学"];
+  menuTitiels = @[NSLocalizedString(@"语文", nil),NSLocalizedString(@"数学", nil),NSLocalizedString(@"英语", nil),NSLocalizedString(@"物理", nil),NSLocalizedString(@"化学", nil),NSLocalizedString(@"生物", nil),NSLocalizedString(@"历史", nil),NSLocalizedString(@"地理", nil),NSLocalizedString(@"政治", nil),NSLocalizedString(@"科学", nil)];
     
     /* 头视图*/
     _headerView = [[IndexHeaderPageView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd*3.1/5.0)];
@@ -620,7 +622,7 @@
                     if (retech.teacherID ==nil) {
                         retech.teacherID =@"";
                     }if (retech.teacherName ==nil) {
-                        retech.teacherName =@"推荐教师";
+                        retech.teacherName =NSLocalizedString(@"推荐教师", nil);
                     }if (retech.avatar_url ==nil) {
                         retech.avatar_url =@"";
                     }
@@ -677,7 +679,7 @@
     
     [_indexPageView.recommandClassCollectionView reloadData];
     
-    [self loadingHUDStopLoadingWithTitle:@"数据加载完成"];
+    [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"数据加载完成", nil)];
     
 }
 
@@ -849,7 +851,7 @@
         
         if (_teachers.count ==0) {
             
-            [squarecell.iconTitle setText:@"名师推荐"];
+            [squarecell.iconTitle setText:NSLocalizedString(@"名师推荐", nil)];
             [squarecell.iconImage setImage: [UIImage imageNamed:@"老师"]];
             
         }else if(_teachers.count>indexPath.row) {
@@ -869,10 +871,10 @@
             
             if (tech.teacherName!=nil) {
                 
-                [squarecell.iconTitle setText:tech.teacherName];
+                [squarecell.iconTitle setText:NSLocalizedString(tech.teacherName, nil)];
             }else{
                 
-                [squarecell.iconTitle setText:@"推荐教师"];
+                [squarecell.iconTitle setText:NSLocalizedString(@"推荐教师", nil)];
                 
             }
             
@@ -890,9 +892,6 @@
         
         RecommandClassCollectionViewCell *reccell=[collectionView dequeueReusableCellWithReuseIdentifier:recommandIdentifier forIndexPath:indexPath];
         
-        reccell.sd_indexPath = indexPath;
-        
-        
         if (_classes .count >indexPath.row) {
             
             reccell.model = _classes[indexPath.row];
@@ -904,18 +903,18 @@
             reccell.model = [[RecommandClasses alloc]init];
             
             [reccell.classImage setImage:[UIImage imageNamed:@"school"]];
-            reccell.className.text = @"当前无课程";
+            reccell.className.text =NSLocalizedString(@"当前无课程", nil) ;
             
             reccell.saledLabel.hidden = YES;
             
         }
         
         if (reccell.isNewest==YES) {
-            reccell.reason.text = @" 最新 ";
+            reccell.reason.text = NSLocalizedString(@" 最新 ", nil);
             reccell.reason.backgroundColor = [UIColor colorWithRed:0.4 green:0.8 blue:1.0 alpha:1.0];
         }
         if (reccell.isHottest == YES) {
-            reccell.reason.text = @" 最热 ";
+            reccell.reason.text = NSLocalizedString(@" 最热 ", nil);
             reccell.reason.backgroundColor = [UIColor colorWithRed:1.0 green:0.6 blue:0.6 alpha:1.0];
         }
         
@@ -961,7 +960,7 @@
             
             /* 数据请求错误*/
             
-            [self loadingHUDStopLoadingWithTitle:@"该地区没有推荐教师"];
+            [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"该地区没有推荐教师", nil)];
             
             
         }else{
@@ -984,7 +983,7 @@
     if (collectionView.tag ==1) {
         
         if (_classes.count == 0) {
-            [self loadingHUDStopLoadingWithTitle:@"该地区没有推荐课程"];
+            [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"该地区没有推荐课程", nil)];
         }else{
             
             RecommandClassCollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
@@ -1047,7 +1046,7 @@
 #pragma mark- 获取程序所有的基础信息
 - (void)requestBasicInformation{
     
-    [self loadingHUDStartLoadingWithTitle:@"正在获取基础信息"];
+    [self loadingHUDStartLoadingWithTitle:NSLocalizedString(@"正在获取基础信息", nil)];
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -1091,11 +1090,11 @@
                 }
             }
             
-            [self loadingHUDStopLoadingWithTitle:@"基础信息获取成功!"];
+            [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"基础信息获取成功", nil)];
             
         }else{
             
-            [self loadingHUDStopLoadingWithTitle:@"基础信息获取失败!"];
+            [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"基础信息获取失败", nil)];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -1160,12 +1159,12 @@
     
     /** 由于IOS8中定位的授权机制改变 需要进行手动授权
      * 获取授权认证，两个方法：
+     * [self.locationManager requestWhenInUseAuthorization];
      * [self.locationManager requestAlwaysAuthorization];
      */
     if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
         NSLog(@"requestWhenInUseAuthorization");
         [self.locationManager requestWhenInUseAuthorization];
-        
     }
     
     //开始定位，不断调用其代理方法
@@ -1259,11 +1258,11 @@
                         
                         /* 在定位城市地址当地有工作产的情况下*/
                         
-                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"当前定位地点在%@,是否切换?",loaction.subLocality] preferredStyle:UIAlertControllerStyleAlert];
-                        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"提示", nil) message:[NSString stringWithFormat:@"%@%@,%@",NSLocalizedString(@"当前定位地点在", nil), loaction.subLocality,NSLocalizedString(@"是否切换至该地区?", nil)] preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"取消", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                             
                         }] ;
-                        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        UIAlertAction *sure = [UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                             
                             [_location setTitle:loaction.subLocality forState:UIControlStateNormal];
                             
@@ -1286,11 +1285,11 @@
                     
                     /* 如果最第一级的城市位置没有的话,对应上一级*/
                     
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"当前定位地点在%@,是否切换?",loaction.locality] preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"提示", nil) message:[NSString stringWithFormat:@"%@%@,%@",NSLocalizedString(@"当前定位地点在", nil), loaction.subLocality,NSLocalizedString(@"是否切换至该地区?", nil)] preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"取消", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                         
                     }] ;
-                    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    UIAlertAction *sure = [UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                         
                         [_location setTitle:loaction.locality forState:UIControlStateNormal];
                         
@@ -1440,7 +1439,7 @@
     
     [self requestDataWithLocation:city.cityName];
     
-    [self loadingHUDStopLoadingWithTitle:[NSString stringWithFormat:@"已切换到%@",city.cityName]];
+    [self loadingHUDStopLoadingWithTitle:[NSString stringWithFormat:@"%@%@",NSLocalizedString(@"已切换到", nil),city.cityName]];
     
 }
 

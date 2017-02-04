@@ -86,12 +86,13 @@
                       [UIImage imageNamed:@"tab_me_h"]
                       ];
     
+    
     /* 选项卡的标题*/
     titles = @[
-               @"首页",
-               @"辅导班",
-               @"课程表",
-               @"个人"
+               NSLocalizedString(@"首页", comment:""),
+               NSLocalizedString(@"辅导班", comment:""),
+               NSLocalizedString(@"课程表", comment:""),
+               NSLocalizedString(@"个人", comment:"")
                ];
     
     /* 遍历选项卡按钮*/

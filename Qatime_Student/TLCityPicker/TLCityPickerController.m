@@ -49,7 +49,6 @@
 /* 定位管理器*/
 @property (nonatomic, strong) CLLocationManager* locationManager;
 
-
 @end
 
 @implementation TLCityPickerController
@@ -81,12 +80,8 @@
     });
     
     _localChoseView = ({
-    
         LocalChoseView *_=[[LocalChoseView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, 44)];
-        
         [self.view addSubview:_];
-        
-//        [_.city setTitle:_chosenCity forState:UIControlStateNormal];
         _;
     
     });

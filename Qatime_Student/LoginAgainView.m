@@ -60,7 +60,7 @@
         /* 用户名输入框*/
         _userName = [[UITextField alloc]init];
         [text1 addSubview:_userName];
-        _userName.placeholder = @"请输入手机号码或邮箱";
+        _userName.placeholder = NSLocalizedString(@"请输入手机号码或邮箱",comment: "");
         
         
         /* 框2 输入密码*/

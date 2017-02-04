@@ -34,7 +34,8 @@
         
         
         menuImages = @[[UIImage imageNamed:@"语文"],[UIImage imageNamed:@"数学"],[UIImage imageNamed:@"英语"],[UIImage imageNamed:@"物理"],[UIImage imageNamed:@"化学"],[UIImage imageNamed:@"生物"],[UIImage imageNamed:@"历史"],[UIImage imageNamed:@"地理"],[UIImage imageNamed:@"政治"],[UIImage imageNamed:@"科学"]];
-        menuTitiels = @[@"语文",@"数学",@"英语",@"物理",@"化学",@"生物",@"历史",@"地理",@"政治",@"科学"];
+//        menuTitiels = @[@"语文",@"数学",@"英语",@"物理",@"化学",@"生物",@"历史",@"地理",@"政治",@"科学"];
+        menuTitiels = @[NSLocalizedString(@"语文", nil),NSLocalizedString(@"数学", nil),NSLocalizedString(@"英语", nil),NSLocalizedString(@"物理", nil),NSLocalizedString(@"化学", nil),NSLocalizedString(@"生物", nil),NSLocalizedString(@"历史", nil),NSLocalizedString(@"地理", nil),NSLocalizedString(@"政治", nil),NSLocalizedString(@"科学", nil)];
         
         
         /* 底层content视图 headerView视图初始化*/
@@ -126,11 +127,11 @@
         
         /* 入住名师label*/
         UILabel *teacherLabel=[[UILabel alloc]init];
-        teacherLabel .text =@"名师入驻" ;
+        teacherLabel .text =NSLocalizedString(@"名师入驻", nil) ;
         teacherLabel.font = [UIFont systemFontOfSize:17];
         [_teacherScrollHeader addSubview:teacherLabel];
         teacherLabel.sd_layout.leftSpaceToView(teacherHead,5).topEqualToView(teacherHead).bottomEqualToView(teacherHead);
-        [teacherLabel setSingleLineAutoResizeWithMaxWidth:100];
+        [teacherLabel setSingleLineAutoResizeWithMaxWidth:200];
         
         /* 名师刷新按钮*/
         
@@ -175,7 +176,7 @@
         
         /* 辅导推荐label*/
         UILabel *commandLabel=[[UILabel alloc]init];
-        commandLabel .text =@"辅导推荐" ;
+        commandLabel .text =NSLocalizedString(@"辅导推荐", nil);
         commandLabel.font = [UIFont systemFontOfSize:17];
         [_conmmandView addSubview:commandLabel];
         commandLabel.sd_layout.leftSpaceToView(commandImage,5).topEqualToView(commandImage).bottomSpaceToView(_conmmandView,10);
@@ -186,7 +187,7 @@
         /* 全部辅导课程推荐按钮和箭头按钮*/
         _recommandAllButton = [[UIButton alloc]init];
         [_conmmandView addSubview:_recommandAllButton];
-        [_recommandAllButton setTitle:@"全部" forState:UIControlStateNormal];
+        [_recommandAllButton setTitle:NSLocalizedString(@"全部", nil) forState:UIControlStateNormal];
         [_recommandAllButton setTitleColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0] forState:UIControlStateNormal];
         [_recommandAllButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
         _recommandAllButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -207,7 +208,7 @@
         
         
         
-        CGFloat maxy = CGRectGetMaxY(_conmmandView.frame);
+//        CGFloat maxy = CGRectGetMaxY(_conmmandView.frame);
         
                 
         

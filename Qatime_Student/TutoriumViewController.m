@@ -252,7 +252,7 @@
 #pragma mark- 导航栏
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
     [self.view addSubview:_navigationBar];
-    [_navigationBar.titleLabel setText:@"辅导班"];
+    [_navigationBar.titleLabel setText:NSLocalizedString(@"辅导班", nil)];
     
     
     _tutoriumView = [[TutoriumView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-49)];
@@ -268,7 +268,7 @@
     
     /* 没有课程时候的占位图*/
     _noView= [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _tutoriumView.classesCollectionView.height_sd)];
-    _noView.titleLabel.text = @"没有相关课程";
+    _noView.titleLabel.text = NSLocalizedString(@"没有相关课程", nil);
     [_tutoriumView.classesCollectionView addSubview:_noView];
     _noView.hidden = YES;
     
@@ -352,7 +352,7 @@
                     
                 }
                 
-                [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
+                [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"加载完成!", nil)];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
             }];
@@ -369,7 +369,7 @@
             
         }
         [_tutoriumView.classesCollectionView.mj_header endRefreshing];
-        [self loadingHUDStopLoadingWithTitle:@"加载完毕!"];
+        [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"加载完成!", nil)];
         
     }];
     
@@ -438,13 +438,7 @@
     [_multiFilterView.recuit setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _multiFilterView.recuit.selected = YES;
     [_multiFilterView.recuit addTarget:self action:@selector(choseClassStatus:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
-    
-    
-//    _multiFilterView.lowPrice.delegate = self;
-//    _multiFilterView.highPrice.delegate = self;
+
     [_multiFilterView.lowPrice addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
      [_multiFilterView.highPrice addTarget:self action:@selector(textChange:) forControlEvents:UIControlEventEditingChanged];
     
@@ -453,26 +447,13 @@
     
     //增加监听，当键盘出现或改变时收出消息
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-     
-                                             selector:@selector(keyboardWillShow:)
-     
-                                                 name:UIKeyboardWillShowNotification
-     
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     
     
     
     //增加监听，当键退出时收出消息
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-     
-                                             selector:@selector(keyboardWillHide:)
-     
-                                                 name:UIKeyboardWillHideNotification
-     
-                                               object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     
     /* 初始化完成后 用户选择 科目/所有辅导班 后的跳转情况*/
@@ -484,10 +465,7 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pickerViewDismiss) name:@"PickerViewDismiss" object:nil];
     
     
-    
 }
-
-
 
 
 
@@ -530,13 +508,13 @@
         if (![self isPureNumber:_multiFilterView.lowPrice.text]) {
             
             [_multiFilterView.lowPrice.text substringFromIndex:_multiFilterView.lowPrice.text.length];
-            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入正确的金额!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+            [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请输入正确的金额!", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
         }
     }else if (sender == _multiFilterView.highPrice){
         
          [_multiFilterView.highPrice.text substringFromIndex:_multiFilterView.highPrice.text.length];
         if( ![self isPureNumber:_multiFilterView.highPrice.text]){
-            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入正确的金额!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+            [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请输入正确的金额!", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
         }
 
     }
@@ -680,8 +658,8 @@
     _multiFilterView.lowPrice.text = @"";
     _multiFilterView.highPrice.text = @"";
     
-    [_multiFilterView.startTime setTitle:@"请选择时间" forState:UIControlStateNormal];
-    [_multiFilterView.endTime setTitle:@"请选择时间" forState:UIControlStateNormal];
+    [_multiFilterView.startTime setTitle:NSLocalizedString(@"请选择时间", nil) forState:UIControlStateNormal];
+    [_multiFilterView.endTime setTitle:NSLocalizedString(@"请选择时间", nil) forState:UIControlStateNormal];
     
     [_multiFilterView.class_Begin setSelected:YES];
     [_multiFilterView.class_Begin setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -836,7 +814,7 @@
     
     [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
-    _timeFilterStr  =@[@"按时间",@"按价格-低到高",@"按价格-高到低",@"按购买人数"];
+    _timeFilterStr  =@[NSLocalizedString(@"按时间", nil),NSLocalizedString(@"按价格-低到高", nil),NSLocalizedString(@"按价格-高到低", nil), NSLocalizedString(@"按购买人数", nil)];
     
     [MMPickerView showPickerViewInView:_tutoriumView withStrings:_timeFilterStr withOptions:@{MMfont:[UIFont systemFontOfSize:20*ScrenScale]} completion:^(NSString *selectedString) {
         
@@ -862,7 +840,7 @@
     
     _gradeFilterArr =  [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"grade"]];
     
-    [_gradeFilterArr insertObject:@"全部年级" atIndex:0];
+    [_gradeFilterArr insertObject:NSLocalizedString(@"全部年级", nil) atIndex:0];
     
     [MMPickerView showPickerViewInView:_tutoriumView withStrings:_gradeFilterArr withOptions:@{MMfont:[UIFont systemFontOfSize:20*ScrenScale]} completion:^(NSString *selectedString) {
         
@@ -884,7 +862,8 @@
     
     [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
-    _subjectArr=@[@"全部",@"语文",@"数学",@"英语",@"物理",@"化学",@"地理",@"政治",@"历史",@"科学",@"生物"];
+    _subjectArr=@[NSLocalizedString(@"全部", nil),NSLocalizedString(@"语文", nil),NSLocalizedString(@"数学", nil),NSLocalizedString(@"英语", nil),NSLocalizedString(@"物理", nil),NSLocalizedString(@"化学", nil),NSLocalizedString(@"地理", nil),NSLocalizedString(@"政治", nil),NSLocalizedString(@"历史", nil),NSLocalizedString(@"科学", nil),NSLocalizedString(@"生物", nil)];
+    
     
     [MMPickerView showPickerViewInView:_tutoriumView withStrings:_subjectArr withOptions:@{MMfont:[UIFont systemFontOfSize:20*ScrenScale]} completion:^(NSString *selectedString) {
         
@@ -914,18 +893,18 @@
     
     sort_By  = sort;
     
-    if ([sort_By isEqualToString:@"按时间"]) {
+    if ([sort_By isEqualToString:NSLocalizedString(@"按时间", nil)]) {
         
         sort_By = @"created_at";
         
         
-    }else if ([sort_By isEqualToString:@"按价格-低到高"]) {
+    }else if ([sort_By isEqualToString: NSLocalizedString(@"按价格-低到高", nil)]) {
         sort_By = @"price.asc";
         
-    }else if ([sort_By isEqualToString:@"按价格-高到低"]){
+    }else if ([sort_By isEqualToString:NSLocalizedString(@"按价格-高到低", nil)]){
         sort_By = @"price";
         
-    }else if ( [sort_By isEqualToString:@"按购买人数"]){
+    }else if ( [sort_By isEqualToString: NSLocalizedString(@"按购买人数", nil)]){
         
         sort_By = @"buy_count";
     }
@@ -965,7 +944,7 @@
 - (void)sendFilterStatus:(NSDictionary *)filterstatusDic{
     
     
-    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+    [self loadingHUDStartLoadingWithTitle:NSLocalizedString(@"正在加载", nil)];
     
     page = 0;
     
@@ -983,7 +962,7 @@
     
     for (NSString *keys in filterDic_Copy) {
         
-        if ( [[_filterDic valueForKey:keys]isEqualToString:@"按科目∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"按年级∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"按时间∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"全部"]||[[_filterDic valueForKey:keys]isEqualToString:@"全部年级"]||[[_filterDic valueForKey:keys]isEqualToString:@"请选择时间"]) {
+        if ( [[_filterDic valueForKey:keys]isEqualToString:NSLocalizedString(@"按科目∨", nil)]||[[_filterDic valueForKey:keys]isEqualToString:NSLocalizedString(@"按年级∨", nil)]||[[_filterDic valueForKey:keys]isEqualToString:NSLocalizedString(@"按时间∨", nil)]||[[_filterDic valueForKey:keys]isEqualToString:NSLocalizedString(@"全部", nil)]||[[_filterDic valueForKey:keys]isEqualToString:NSLocalizedString(@"全部年级", nil)]||[[_filterDic valueForKey:keys]isEqualToString:NSLocalizedString(@"请选择时间", nil)]) {
             
             NSLog(@"%@,%@",keys,[_filterDic valueForKey:keys]);
             
@@ -1105,7 +1084,7 @@
         
     
         
-        [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+        [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"加载完成!", nil)];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -1118,12 +1097,36 @@
 
 
 #pragma mark- 用户筛选完科目条件后的点击事件
-- (void)selectedSubjectFilterWithSubject:(NSString *)grade{
+- (void)selectedSubjectFilterWithSubject:(NSString *)subject{
     
 //    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+        /* 获取当前科目筛选信息 发送筛选*/
     
-    /* 获取当前科目筛选信息 发送筛选*/
-    _filterSubject = grade;
+    if ([subject isEqualToString:NSLocalizedString(@"语文", nil)]) {
+        _filterSubject = @"语文";
+    }else if ([subject isEqualToString:NSLocalizedString(@"数学", nil)]) {
+        _filterSubject = @"数学";
+    }else if ([subject isEqualToString:NSLocalizedString(@"英语", nil)]) {
+        _filterSubject = @"英语";
+    }else if ([subject isEqualToString:NSLocalizedString(@"物理", nil)]) {
+        _filterSubject = @"物理";
+    }else if ([subject isEqualToString:NSLocalizedString(@"化学", nil)]) {
+        _filterSubject = @"化学";
+    }else if ([subject isEqualToString:NSLocalizedString(@"生物", nil)]) {
+        _filterSubject = @"生物";
+    }else if ([subject isEqualToString:NSLocalizedString(@"历史", nil)]) {
+        _filterSubject = @"历史";
+    }else if ([subject isEqualToString:NSLocalizedString(@"地理", nil)]) {
+        _filterSubject = @"地理";
+    }else if ([subject isEqualToString:NSLocalizedString(@"政治", nil)]) {
+        _filterSubject = @"政治";
+    }else if ([subject isEqualToString:NSLocalizedString(@"科学", nil)]) {
+        _filterSubject = @"科学";
+    }
+    
+    
+    
+//    _filterSubject = subject;
     
     [_filterDic setValue:_filterSubject forKey:@"subject"];
     
@@ -1162,6 +1165,7 @@
         
         
         NSLog(@"数据本地化存储完成");
+        
         savedDic = [NSDictionary dictionaryWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithFile:_tutoriumListFilePath]];
         
         

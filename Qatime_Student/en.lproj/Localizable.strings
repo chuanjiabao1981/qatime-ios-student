@@ -1,0 +1,165 @@
+/* 
+  Localizable.strings
+  Qatime_Student
+
+  Created by Shin on 2017/2/4.
+  Copyright © 2017年 WWTD. All rights reserved.
+*/
+
+
+//HUD - Alert
+
+"正在登陆" = "Login...";
+"登录成功" = "Login Success";
+"登录成功!" = "Login Success!";
+"正在加载数据" = "Loading...";
+"加载数据" = "Loading...";
+"数据加载完成" = "Finish";
+"正在获取基础信息" = "Loading Base Infomation...";
+"基础信息获取成功" = "Loading Base Infomation Success";
+"基础信息获取失败" = "Loading Base Infomation Failed";
+"提示" = "Tips";
+"取消" = "Cancel";
+"确定" = "Yes";
+"当前定位地点在" = "Your location is ";
+"是否切换至该地区" = "are you sure to switch to this area";
+"已切换到" = "Your area changed to ";
+"请勿输入中文!" = "Please do not enter any Chinese letters !";
+"获取微信登录信息失败,请重试!" = "Wechat login failed,please retry!";
+"账号不能为空!" = "Please enter your account!";
+"密码不能为空!" = "Please enter your password!";
+"请输入验证码!" = "Please enter captcha!";
+"请输入正确的验证码!" = "Wrong captcha!";
+"警告" = "Warning";
+"账户名或密码错误!" = "Account or password error!";
+"加载完成!" = "Loading Success!";
+
+"请输入手机号!" = "Please enter Phone Number!";
+"请输入正确的手机号!"="Please enter the correct phone number!";
+"请输入6-16位数字字母组合密码!"="Please enter a 6-16 digit alphanumeric password!";
+"前后密码不一致" = "Inconsistent password";
+"请遵守《答疑时间用户协议》"="Please observe the <Qatime User Agreement>";
+"注册成功!" = "Register Success!";
+
+"验证失败,请重试!"="Validation failed, please try again!";
+"该手机已注册,请直接登录"="The phone is registered, please log in directly";
+"新号码注册"="Other Phone";
+"验证错误,请重试" ="Validation failed, please try again!";
+"请输入11位手机号"="Please enter Phone Number";
+"发送成功!"="Send Success!";
+"重发验证码"="Re-Send";
+
+
+//注册
+" 请输入大陆地区11位手机号" = " Please enter phone number";
+" 输入校验码" = " Please enter captcha";
+"获取校验码" = "Get captcha";
+" 输入登录密码" = " Password";
+" 确认登录密码" = " Verify password";
+"同意" = "Agree";
+"《答疑时间用户协议》" = "<Qatime User Agreement>";
+"下一步" = "Next Step";
+
+"注册" = "Register";
+
+
+
+
+
+
+
+//登录页
+"请输入手机号码或邮箱" = "Please enter phone number or E-mail" ;
+"请输入密码" = "Please enter password";
+"注册账号" = "Register";
+"找回密码" = "Find Password";
+"登录" = "Login";
+"跳过登录" = "Skip Login";
+"其他方式登录" = "Other Way Login" ;
+
+//四个选项卡
+"首页" = "Home" ;
+"辅导班" = "Tutorial" ;
+"课程表" = "ClassTime";
+"个人" = "Personal";
+
+//首页
+"语文"="Chinese";
+"数学"="Math";
+"英语"="English";
+"物理"="Physics";
+"化学"="Chemistry";
+"生物"="Biology";
+"历史"="History";
+"地理"="Geography";
+"政治"="Political";
+"科学"="Science";
+
+"全部年级" = "All Grades";
+"一年级" = "GradeOne";
+"二年级" = "GradeTwo";
+"三年级" = "GradeThree";
+"四年级" = "GradeFour";
+"五年级" = "GradeFive";
+"六年级" = "GradeSix";
+"初一" = "JuniorGradeOne";
+"初二" = "JuniorGradeTwo";
+"初三" = "JuniorGradeThree";
+"高一" = "SeniorGradeOne";
+"高二" = "SeniorGradeTwo";
+"高三" = "SeniorGradeThree";
+
+"名师入驻" = "Top Teachers";
+"辅导推荐" = "Tutorial";
+" 最新 " = " Hottest! ";
+" 最热 " = " Newst! ";
+"人已购" = "Sales";
+"全部" = "All";
+"课程名称" = "Class Name";
+"年级" = "Grade";
+"科目名称" = "Subject Name";
+"科目" = "Subject";
+"推荐教师" = "Teacher";
+"当前无课程" = "No Class Now";
+"该地区没有推荐教师" = "Sorry,there's no teachers in your area.";
+"该地区没有推荐课程" = "Sorry,there's no classes in your area.";
+
+//辅导班页
+"按时间∨"="Time∨";
+"按科目∨"="Subject∨";
+"按年级∨"="Grade∨";
+
+"按时间"="Time";
+"按科目"="Subject";
+"按年级"="Grade";
+
+"元"="yuan";
+"价格范围"="Range of price";
+"请选择时间"="Please select time ";
+"至"="to";
+"开课时间"="Start Time";
+"已开课"="Class began";
+"招生中"="Enrolling";
+"当前状态" = "State";
+"重置" = "Reset";
+
+"老师姓名" = "Teacher's name";
+"辅导班" = "Auxiliary class";
+"没有相关课程" = "No more classes";
+"请输入正确的金额!" = "Wrong price!";
+"按价格-低到高" = "Price-low to high";
+"按价格-高到低" = "Price-high to low";
+"按购买人数" = "Sales";
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -213,6 +213,8 @@
 		548328EF1DDC6F360053AB29 /* UUMessageFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 548328C91DDC6F360053AB29 /* UUMessageFrame.m */; };
 		548328F01DDC6F370053AB29 /* UUProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 548328CB1DDC6F360053AB29 /* UUProgressHUD.m */; };
 		548328F31DDC75050053AB29 /* ChatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 548328F21DDC75050053AB29 /* ChatModel.m */; };
+		5483E84A1E45730C00C3C1B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5483E84C1E45730C00C3C1B4 /* InfoPlist.strings */; };
+		5483E8511E4576BF00C3C1B4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5483E8531E4576BF00C3C1B4 /* Localizable.strings */; };
 		5484B7421DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 5484B7411DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m */; };
 		5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */; };
 		549210271DCC6D0E00A65702 /* MultiFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549210261DCC6D0E00A65702 /* MultiFilterView.m */; };
@@ -812,6 +814,12 @@
 		548328CB1DDC6F360053AB29 /* UUProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUProgressHUD.m; sourceTree = "<group>"; };
 		548328F11DDC75050053AB29 /* ChatModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChatModel.h; path = OtherResources/ChatModel.h; sourceTree = "<group>"; };
 		548328F21DDC75050053AB29 /* ChatModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChatModel.m; path = OtherResources/ChatModel.m; sourceTree = "<group>"; };
+		5483E84B1E45730C00C3C1B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5483E84D1E45731200C3C1B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5483E84E1E45731E00C3C1B4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		5483E8521E4576BF00C3C1B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		5483E8541E4576C100C3C1B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		5483E8551E4576C200C3C1B4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5484B7401DE7DC9600CF9EC0 /* YYTextView+YZEmotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "YYTextView+YZEmotion.h"; sourceTree = "<group>"; };
 		5484B7411DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YYTextView+YZEmotion.m"; sourceTree = "<group>"; };
 		5492101A1DCC585E00A65702 /* NSString+UTF8Coding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UTF8Coding.h"; sourceTree = "<group>"; };
@@ -1074,6 +1082,7 @@
 		54B9CAFB1DFE4AAC003961FF /* WithdrawConfirmViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithdrawConfirmViewController.m; sourceTree = "<group>"; };
 		54B9CAFE1DFE4E8A003961FF /* BuyBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyBar.h; sourceTree = "<group>"; };
 		54B9CAFF1DFE4E8A003961FF /* BuyBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyBar.m; sourceTree = "<group>"; };
+		54C21F8A1DDDB06E000549F2 /* Qatime_Student.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Qatime_Student.entitlements; sourceTree = "<group>"; };
 		54C9A8CC1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMJKeyboardShowHiddenNotificationCenter.h; sourceTree = "<group>"; };
 		54C9A8CD1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMJKeyboardShowHiddenNotificationCenter.m; sourceTree = "<group>"; };
 		54C9A8CF1E12159700B81EBF /* PlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
@@ -2218,6 +2227,15 @@
 			path = VoiceLib;
 			sourceTree = "<group>";
 		};
+		5483E8571E4576D200C3C1B4 /* Localizable */ = {
+			isa = PBXGroup;
+			children = (
+				5483E84C1E45730C00C3C1B4 /* InfoPlist.strings */,
+				5483E8531E4576BF00C3C1B4 /* Localizable.strings */,
+			);
+			name = Localizable;
+			sourceTree = "<group>";
+		};
 		5493D4A21E0B85DA0085A39E /* YYKit+Add */ = {
 			isa = PBXGroup;
 			children = (
@@ -2416,6 +2434,7 @@
 			isa = PBXGroup;
 			children = (
 				54A153A71DC6F09D0070B508 /* Qatime_Student */,
+				5483E8571E4576D200C3C1B4 /* Localizable */,
 				54A153C11DC6F09E0070B508 /* Qatime_StudentTests */,
 				54A153CC1DC6F09E0070B508 /* Qatime_StudentUITests */,
 				54A153A61DC6F09D0070B508 /* Products */,
@@ -2437,6 +2456,7 @@
 		54A153A71DC6F09D0070B508 /* Qatime_Student */ = {
 			isa = PBXGroup;
 			children = (
+				54C21F8A1DDDB06E000549F2 /* Qatime_Student.entitlements */,
 				543C207A1DC6F6470086B04B /* Util */,
 				546978531DC723A2001695F4 /* 登录页面 */,
 				541F91DE1DC9BBAA00180BE8 /* 主页页面 */,
@@ -4006,6 +4026,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 54A1539C1DC6F09D0070B508;
 			productRefGroup = 54A153A61DC6F09D0070B508 /* Products */;
@@ -4037,6 +4058,7 @@
 				54A47BC91DE42610000216D9 /* em_30.gif in Resources */,
 				54A47BC31DE42610000216D9 /* em_25.gif in Resources */,
 				54A47BBE1DE42610000216D9 /* em_20.gif in Resources */,
+				5483E84A1E45730C00C3C1B4 /* InfoPlist.strings in Resources */,
 				54443E2A1E0D284E000D8E8B /* point.png in Resources */,
 				54A47BC41DE42610000216D9 /* em_26.gif in Resources */,
 				548328CF1DDC6F360053AB29 /* chat_animation3.png in Resources */,
@@ -4045,6 +4067,7 @@
 				54A47BBD1DE42610000216D9 /* em_2.gif in Resources */,
 				54294CC61DDB3BB100677333 /* LSMediaCapture.bundle in Resources */,
 				54A47BCD1DE42610000216D9 /* em_34.gif in Resources */,
+				5483E8511E4576BF00C3C1B4 /* Localizable.strings in Resources */,
 				548328DB1DDC6F360053AB29 /* chatto_bg_normal.png in Resources */,
 				546978601DC72534001695F4 /* bags.png in Resources */,
 				548328D91DDC6F360053AB29 /* chatfrom_bg_normal.png in Resources */,
@@ -4502,11 +4525,37 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		5483E84C1E45730C00C3C1B4 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5483E84B1E45730C00C3C1B4 /* Base */,
+				5483E84D1E45731200C3C1B4 /* en */,
+				5483E84E1E45731E00C3C1B4 /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			path = Qatime_Student;
+			sourceTree = "<group>";
+		};
+		5483E8531E4576BF00C3C1B4 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5483E8521E4576BF00C3C1B4 /* Base */,
+				5483E8541E4576C100C3C1B4 /* en */,
+				5483E8551E4576C200C3C1B4 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			path = Qatime_Student;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		54A153D01DC6F09E0070B508 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -4524,11 +4573,9 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Weiwo Tongda Network Technology Co., Ltd. (UMV383V3WA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4557,6 +4604,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -4574,11 +4622,9 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Weiwo Tongda Network Technology Co., Ltd. (UMV383V3WA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4605,7 +4651,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Qatime_Student/Qatime_Student.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Weiwo Tongda Network Technology Co., Ltd. (UMV383V3WA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;
@@ -4695,7 +4740,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Qatime_Student/Qatime_Student.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Weiwo Tongda Network Technology Co., Ltd. (UMV383V3WA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;

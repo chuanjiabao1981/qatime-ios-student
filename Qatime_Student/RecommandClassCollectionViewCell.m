@@ -36,7 +36,7 @@
         .topSpaceToView(_classImage,5)
         .rightEqualToView(self.contentView)
         .heightIs(20);
-        [_className setText:@"课程名称"];
+        [_className setText:NSLocalizedString(@"课程名称", nil)];
         _className.textAlignment = NSTextAlignmentLeft;
         
         _className.font = [UIFont systemFontOfSize:15];
@@ -44,10 +44,10 @@
         /* 年级 label*/
         _grade = [[UILabel alloc]init];
         [self.contentView addSubview:_grade];
-        [_grade setText:@"年级"];
+        [_grade setText:NSLocalizedString(@"年级", nil)];
         _grade.textColor =[UIColor grayColor];
         _grade.sd_layout.leftEqualToView(_className).topSpaceToView(_className,0).autoHeightRatio(0);
-        [_grade setSingleLineAutoResizeWithMaxWidth:80];
+        [_grade setSingleLineAutoResizeWithMaxWidth:200];
         _grade.textAlignment = NSTextAlignmentRight;
         [_grade setFont:[UIFont systemFontOfSize:12*ScrenScale]];
         
@@ -55,7 +55,7 @@
         /* 科目名称  预留名称的接口model*/
         _subjectName = [[UILabel alloc]init];
         [self.contentView addSubview:_subjectName];
-        [_subjectName setText:@"科目名称"];
+        [_subjectName setText:NSLocalizedString(@"科目名称", nil)];
         _subjectName.textColor =[UIColor grayColor];
         _subjectName.sd_layout.leftSpaceToView(_grade,0).topSpaceToView(_className,0).autoHeightRatio(0);
         [_subjectName setSingleLineAutoResizeWithMaxWidth:80];
@@ -65,7 +65,7 @@
         /* **人已购的label*/
         _saledLabel =[[UILabel alloc]init];
         [self.contentView addSubview:_saledLabel];
-        [_saledLabel setText:@"人已购"];
+        [_saledLabel setText:NSLocalizedString(@"人已购", nil)];
         _saledLabel.sd_layout.rightEqualToView(self.contentView).topSpaceToView(_className,0).autoHeightRatio(0);
         [_saledLabel setSingleLineAutoResizeWithMaxWidth:100];
         [_saledLabel setFont:[UIFont systemFontOfSize:12*ScrenScale]];
@@ -75,7 +75,7 @@
         _saleNumber = [[UILabel alloc]init];
         [self.contentView addSubview:_saleNumber];
         _saleNumber.textColor = [UIColor lightGrayColor];
-        _saleNumber.text = @"10";
+//        _saleNumber.text = @"10";
         _saleNumber.sd_layout.rightSpaceToView(_saledLabel,0).topEqualToView(_saledLabel).autoHeightRatio(0);
         [_saleNumber setSingleLineAutoResizeWithMaxWidth:80];
         _saleNumber.textAlignment = NSTextAlignmentRight;
@@ -102,11 +102,11 @@
     
     _model = model;
     
-    _className.text = model.name;
-    _grade.text = model.grade;
-    _subjectName.text = model.subject;
-    _teacherName.text = model.teacher_name;
-    _saleNumber.text = model.buy_tickets_count;
+    _className.text = NSLocalizedString(model.name, nil);
+    _grade.text = NSLocalizedString(model.grade, nil);
+    _subjectName.text = NSLocalizedString(model.subject, nil);
+    _teacherName.text = NSLocalizedString(model.teacher_name, nil);
+    _saleNumber.text = NSLocalizedString(model.buy_tickets_count, nil);
     
     [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"]];
     if ([model.reason isEqualToString:@"newest"]) {

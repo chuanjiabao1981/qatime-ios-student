@@ -115,7 +115,7 @@
     [useDef setBool:flag forKey:@"notFirst"];
     [useDef synchronize];
     // 切换根视图控制器
-    self.view.window.rootViewController = [[LoginViewController alloc] init];
+    self.view.window.rootViewController =  [[UINavigationController alloc]initWithRootViewController:  [[LoginViewController alloc] init]];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -42,7 +42,7 @@
         /* 元2*/
         UILabel *yuan2=[[UILabel alloc]init];
         [highPriceContent addSubview:yuan2];
-        [yuan2 setText:@"元"];
+        [yuan2 setText:NSLocalizedString(@"元", nil)];
         [yuan2 setTextColor:[UIColor blackColor]];
         yuan2.sd_layout.rightSpaceToView(highPriceContent,5).topSpaceToView(highPriceContent,0).bottomSpaceToView(highPriceContent,0);
         [yuan2 setSingleLineAutoResizeWithMaxWidth:20];
@@ -69,7 +69,7 @@
         /* 元1*/
         UILabel *yuan1=[[UILabel alloc]init];
         [lowPriceContent1 addSubview:yuan1];
-        [yuan1 setText:@"元"];
+        [yuan1 setText:NSLocalizedString(@"元", nil)];
         [yuan1 setTextColor:[UIColor blackColor]];
         yuan1.sd_layout.rightSpaceToView(lowPriceContent1,5).topSpaceToView(lowPriceContent1,0).bottomSpaceToView(lowPriceContent1,0);
         [yuan1 setSingleLineAutoResizeWithMaxWidth:20];
@@ -86,7 +86,7 @@
         /* 价格范围label*/
         UILabel *priceZone = [[UILabel alloc]init];
         [self addSubview:priceZone];
-        [priceZone setText:@"价格范围"];
+        [priceZone setText:NSLocalizedString(@"价格范围", nil)];
         [priceZone setTextColor:[UIColor lightGrayColor]];
         priceZone.sd_layout.leftSpaceToView(self,20).centerYEqualToView(lowPriceContent1).autoHeightRatio(0);
         [priceZone setSingleLineAutoResizeWithMaxWidth:100];
@@ -168,14 +168,14 @@
        
         /* 开课时间 左button*/
         _startTime = [[UIButton alloc]init];
-        [_startTime setTitle:@"请选择时间" forState:UIControlStateNormal];
+        [_startTime setTitle:NSLocalizedString(@"请选择时间", nil) forState:UIControlStateNormal];
         [_startTime setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self addSubview:_startTime];
         _startTime.sd_layout.leftEqualToView(lowPriceContent1).rightEqualToView(lowPriceContent1).topSpaceToView(lowPriceContent1,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(lowPriceContent1,1.0);
         
         /* 开课时间 右button*/
         _endTime = [[UIButton alloc]init];
-        [_endTime setTitle:@"请选择时间" forState:UIControlStateNormal];
+        [_endTime setTitle:NSLocalizedString(@"请选择时间", nil) forState:UIControlStateNormal];
         [_endTime setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self addSubview:_endTime];
         _endTime.sd_layout.leftEqualToView(highPriceContent).rightEqualToView(highPriceContent).topSpaceToView(highPriceContent,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(highPriceContent,1.0);
@@ -185,7 +185,7 @@
         /* 小横线3*/
         UILabel *line3=[[UILabel alloc]init];
         [self addSubview:line3];
-        [line3 setText:@"至"];
+        [line3 setText:NSLocalizedString(@"至", nil)];
         [line3 setTextColor:[UIColor blackColor]];
         line3.textAlignment = NSTextAlignmentCenter;
         line3.sd_layout.centerYEqualToView(_startTime).rightSpaceToView(_endTime,0).leftSpaceToView(_startTime,0).heightIs(10);
@@ -196,7 +196,7 @@
         UILabel *startTime = [[UILabel alloc]init];
         [self addSubview: startTime];
         
-        [startTime setText:@"开课时间"];
+        [startTime setText:NSLocalizedString(@"开课时间", nil)];
         [startTime setTextColor:[UIColor lightGrayColor]];
         startTime.sd_layout.leftEqualToView(priceZone).rightEqualToView(priceZone).centerYEqualToView(_startTime).autoHeightRatio(0);
         
@@ -205,7 +205,7 @@
         /* 开课状态*/
         _class_Begin =[[UIButton alloc]init];
         [self addSubview:_class_Begin];
-        [_class_Begin setTitle:@"已开课" forState:UIControlStateNormal];
+        [_class_Begin setTitle:NSLocalizedString(@"已开课", nil) forState:UIControlStateNormal];
         [_class_Begin setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _class_Begin.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _class_Begin.layer.borderWidth = 0.6f;
@@ -218,7 +218,7 @@
         /* 招生状态*/
         _recuit =[[UIButton alloc]init];
         [self addSubview:_recuit];
-        [_recuit setTitle:@"招生中" forState:UIControlStateNormal];
+        [_recuit setTitle:NSLocalizedString(@"招生中", nil) forState:UIControlStateNormal];
         [_recuit setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _recuit.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _recuit.layer.borderWidth = 0.6f;
@@ -231,7 +231,7 @@
         /* 当前状态*/
         UILabel *stateNow=[[UILabel alloc]init];
         [self addSubview:stateNow];
-        [stateNow setText:@"当前状态"];
+        [stateNow setText:NSLocalizedString(@"当前状态", nil)];
         [stateNow setTextColor:[UIColor lightGrayColor]];
         stateNow.sd_layout.leftEqualToView(priceZone).rightEqualToView(priceZone).centerYEqualToView(_recuit).autoHeightRatio(0);
         
@@ -240,7 +240,7 @@
         /* 重置按钮*/
         _resetButton = [[UIButton alloc]init];
         [self addSubview:_resetButton ];
-        [_resetButton setTitle:@"重置" forState:UIControlStateNormal];
+        [_resetButton setTitle:NSLocalizedString(@"重置", nil) forState:UIControlStateNormal];
         [_resetButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_resetButton setBackgroundColor:[UIColor orangeColor]];
         
@@ -254,7 +254,7 @@
         /* 确定按钮*/
         _finishButton = [[UIButton alloc]init];
         [self addSubview:_finishButton ];
-        [_finishButton setTitle:@"确定" forState:UIControlStateNormal];
+        [_finishButton setTitle:NSLocalizedString(@"确定", nil) forState:UIControlStateNormal];
         [_finishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_finishButton setBackgroundColor:[UIColor orangeColor]];
         

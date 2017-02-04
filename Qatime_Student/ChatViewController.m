@@ -676,9 +676,11 @@
         cell=[[UUMessageCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
          
     }
+    
     if (self.chatModel.dataSource.count>indexPath.row) {
-        [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
+        
         cell.delegate = self;
+        [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     }
     

@@ -32,7 +32,7 @@
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];
-    [_navigationBar.titleLabel setText:@"注册"];
+    [_navigationBar.titleLabel setText:NSLocalizedString(@"注册", nil)];
     
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(backToFrontPage:) forControlEvents:UIControlEventTouchUpInside];
@@ -129,24 +129,24 @@
     /* 有信息填写不正确*/
     if ([_signUpView.phoneNumber.text isEqualToString:@""]) {
         
-        [self showAlertWith:@"请输入手机号！"];
+        [self showAlertWith:NSLocalizedString(@"请输入手机号!", nil)];
     }else{
         
         if (![self isMobileNumber:_signUpView.phoneNumber.text]) {
             
-            [self showAlertWith:@"请输入正确的手机号！"];
+            [self showAlertWith:NSLocalizedString(@"请输入正确的手机号!", nil)];
             
         }else{
             
             if ([_signUpView.userPassword.text isEqualToString:@""]||![self checkPassWord: _signUpView.userPassword.text] ) {
                 
-                [self showAlertWith:@"请输入6-16位数字字母组合密码！"];
+                [self showAlertWith:NSLocalizedString(@"请输入6-16位数字字母组合密码!", nil)];
                 
             }else{
                 
                 if ([self checkPassWord: _signUpView.userPassword.text]&&![_signUpView.userPassword.text isEqualToString:_signUpView.userPasswordCompare.text]) {
                     
-                    [self showAlertWith:@"前后密码不一致"];
+                    [self showAlertWith:NSLocalizedString(@"前后密码不一致", nil)];
                     
                 }else{
                     /* 所有信息都填写正确的情况*/
@@ -154,7 +154,7 @@
                         
                         if (!_signUpView.chosenButton.isSelected) {
                             
-                            [self showAlertWith:@"请遵守《答疑时间用户协议》"];
+                            [self showAlertWith:NSLocalizedString(@"请遵守《答疑时间用户协议》", nil)];
                             
                         }else{
                             
@@ -193,7 +193,7 @@
                                     if (dataDic[@"data"][@"remember_token"]){
                                         
                                         /* 发送成功提示框*/
-                                        [self loadingHUDStopLoadingWithTitle:@"注册成功!"];
+                                        [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"注册成功!", nil)];
                                         
 #pragma mark- 把token和id(key : data)存储到本地沙盒路径
                                         
@@ -209,7 +209,7 @@
                                     }
                                     else {
                                         
-                                        [self showAlertWith:@"验证失败,请重试！"];
+                                        [self showAlertWith:NSLocalizedString(@"验证失败,请重试!", nil)];
                                         
                                     }
                                 }
@@ -219,7 +219,7 @@
                                         
                                         if ([[[dataDic valueForKey:@"error"]valueForKey:@"code"] isEqualToNumber:@3002]) {
                                             
-                                            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"该手机已注册,请直接登录" cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@[@"新号码注册",@"登录"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                                            [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"该手机已注册,请直接登录", nil) cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@[NSLocalizedString(@"新号码注册", nil),NSLocalizedString(@"登录", nil)] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                                                 
                                                 if (buttonIndex ==2 ) {
                                                     _signUpView.phoneNumber.text = @"";
@@ -240,7 +240,7 @@
                                         }
                                     } else{
                                         
-                                        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"验证错误,请重试" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                                        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:NSLocalizedString(@"验证错误,请重试", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                                             
                                         }];
                                         
@@ -291,7 +291,7 @@
     
     if (_signUpView.phoneNumber.text.length > 11) {
         _signUpView.phoneNumber.text = [_signUpView.phoneNumber.text substringToIndex:11];
-        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入11位手机号" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+        [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请输入11位手机号", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
     }
 
     if (_signUpView.phoneNumber.text.length>0&&_signUpView.checkCode.text.length>0&&_signUpView.userPassword.text.length>0&&_signUpView.userPasswordCompare.text.length>0&&_signUpView.chosenButton.selected==YES) {
@@ -328,7 +328,7 @@
             /* 发送成功提示框*/
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             hud.mode = MBProgressHUDModeText;
-            [hud setLabelText:@"发送成功！"];
+            [hud setLabelText:NSLocalizedString(@"发送成功!", nil)];
             hud.yOffset= 150.f;
             hud.removeFromSuperViewOnHide = YES;
             
@@ -347,7 +347,7 @@
     /* 手机号输入为空或错误的情况*/
     else  {
         
-        [self showAlertWith:@"请输入正确的手机号！"];
+        [self showAlertWith:NSLocalizedString(@"请输入正确的手机号!", nil)];
     }
     
     
@@ -392,8 +392,8 @@
 
 /* 弹出alter封装*/
 - (void)showAlertWith:(NSString *)message{
-    UIAlertController *alert=[UIAlertController alertControllerWithTitle:@"提示" message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action=[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertController *alert=[UIAlertController alertControllerWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(message, nil) preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action=[UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
     }];
     [alert addAction:action];
@@ -418,7 +418,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            NSString *strTime = [NSString stringWithFormat:@"重发验证码(%d)",deadline];
+            NSString *strTime = [NSString stringWithFormat:@"%@(%d)",NSLocalizedString(@"重发验证码", nil),deadline];
             
             [button setTitle:strTime forState:UIControlStateNormal];
             [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
@@ -437,7 +437,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 
-                [button setTitle:@"获取校验码" forState:UIControlStateNormal];
+                [button setTitle:NSLocalizedString(@"获取校验码", nil) forState:UIControlStateNormal];
                 [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 
                 [button setEnabled:YES];

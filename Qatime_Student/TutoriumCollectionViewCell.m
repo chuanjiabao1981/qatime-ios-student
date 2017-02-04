@@ -54,7 +54,7 @@
         .autoHeightRatio(0);
         [_teacherName setSingleLineAutoResizeWithMaxWidth:200];
         
-        [_teacherName setText:@"老师姓名"];
+        [_teacherName setText:NSLocalizedString(@"老师姓名", nil)];
         _teacherName.font = [UIFont systemFontOfSize:14*ScrenScale];
 
         
@@ -89,10 +89,10 @@
     
     /* cell 科目赋值*/
     
-    [_subjectName setText:model.subject];
+    [_subjectName setText:NSLocalizedString(model.subject, nil)];
     
     /* cell 年级赋值*/
-    [_grade setText:model.grade];
+    [_grade setText:NSLocalizedString(model.grade, nil)];
     
     /* cell 价格赋值*/
     [_price setText:[NSString stringWithFormat:@"¥%@.00",model.price]];
@@ -105,9 +105,6 @@
     
     [_className setText: model.name];
 
-    
-    
-    
     
 }
 

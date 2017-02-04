@@ -40,7 +40,7 @@
         /* 按时间筛选按钮*/
         _timeButton = [[UIButton alloc]init];
         [_buttonContentView addSubview: _timeButton];
-        [_timeButton setTitle:@"按时间∨" forState:UIControlStateNormal];
+        [_timeButton setTitle:NSLocalizedString(@"按时间∨", nil) forState:UIControlStateNormal];
         [_timeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _timeButton.sd_layout.leftSpaceToView(_buttonContentView,10).topSpaceToView(_buttonContentView,0).bottomSpaceToView(_buttonContentView,0).widthRatioToView(_buttonContentView,0.2f);
         [_timeButton.titleLabel setFont:[UIFont systemFontOfSize:16*ScrenScale]];
@@ -51,7 +51,7 @@
         _subjectButton = [[UIButton alloc]init];
         [_buttonContentView addSubview:_subjectButton];
         [_subjectButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_subjectButton setTitle:@"按科目∨" forState:UIControlStateNormal];
+        [_subjectButton setTitle:NSLocalizedString(@"按科目∨", nil)   forState:UIControlStateNormal];
         _subjectButton.sd_layout.leftSpaceToView(_timeButton,CGRectGetWidth(self.bounds)/10.0f).topSpaceToView(_buttonContentView,0).bottomSpaceToView(_buttonContentView,0).widthRatioToView(_buttonContentView,0.2f);
         [_subjectButton.titleLabel setFont:[UIFont systemFontOfSize:16*ScrenScale]];
         [_subjectButton setEnlargeEdge:10];
@@ -60,7 +60,7 @@
         _gradeButton = [[UIButton alloc]init];
         [_buttonContentView addSubview:_gradeButton];
         [_gradeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_gradeButton setTitle:@"按年级∨" forState:UIControlStateNormal];
+        [_gradeButton setTitle:NSLocalizedString(@"按年级∨", nil)  forState:UIControlStateNormal];
         _gradeButton.sd_layout.leftSpaceToView(_subjectButton,CGRectGetWidth(self.bounds)/10.0f).topSpaceToView(_buttonContentView,0).bottomSpaceToView(_buttonContentView,0).widthRatioToView(_buttonContentView,0.2f);
          [_gradeButton.titleLabel setFont:[UIFont systemFontOfSize:16*ScrenScale]];
         [_gradeButton setEnlargeEdge:10];

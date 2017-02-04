@@ -147,14 +147,14 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         
         [_loginView.userName.text substringFromIndex:_loginView.userName.text.length];
         
-        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请勿输入中文!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+        [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请勿输入中文!", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
         
     }
     
     if ([regextestmobile evaluateWithObject:_loginView.passWord.text]==YES) {
         
         [_loginView.passWord.text substringFromIndex:_loginView.passWord.text.length];
-        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请勿输入中文!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+        [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请勿输入中文!", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
     }
     
 }
@@ -184,7 +184,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                     /* 保存用户信息*/
                     [self saveUserInfo:dic[@"data"] loginType:Wechat];
                     
-                    [self loadingHUDStopLoadingWithTitle:@"登录成功"];
+                    [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录成功", nil)];
                     
                 }else{
                     
@@ -200,7 +200,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         }else{
             /* 登录信息拉取失败*/
             
-            [self loadingHUDStopLoadingWithTitle:@"获取微信登录信息失败,请重试!"];
+            [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"获取微信登录信息失败,请重试!", nil)];
             
         }
         
@@ -317,8 +317,8 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     if ([_loginView.userName.text isEqualToString:@""]) {
         
         /* 弹出alert框 提示输入账户名*/
-        UIAlertController *alert =[UIAlertController alertControllerWithTitle:@"提示" message:@"账号不能为空！" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action1=[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+        UIAlertController *alert =[UIAlertController alertControllerWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"账号不能为空!", nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action1=[UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
         [alert addAction:action1];
         
         [self presentViewController:alert animated:YES completion:nil];
@@ -329,8 +329,8 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     if ([_loginView.passWord.text isEqualToString:@""]) {
         
         /* 弹出alert框 提示输入账户名*/
-        UIAlertController *alert =[UIAlertController alertControllerWithTitle:@"提示" message:@"密码不能为空！" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action1=[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+        UIAlertController *alert =[UIAlertController alertControllerWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"密码不能为空", nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action1=[UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
         [alert addAction:action1];
         
         [self presentViewController:alert animated:YES completion:nil];
@@ -345,8 +345,8 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         if (needCheckCaptcha == YES&&[_loginView.keyCodeText.text isEqualToString:@""]) {
             
             /* 弹出alert框 提示输入验证码*/
-            UIAlertController *alert =[UIAlertController alertControllerWithTitle:@"提示" message:@"请输入验证码！" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action1=[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+            UIAlertController *alert =[UIAlertController alertControllerWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请输入验证码!", nil) preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *action1=[UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
             [alert addAction:action1];
             
             [self presentViewController:alert animated:YES completion:nil];
@@ -354,8 +354,8 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         if (needCheckCaptcha == YES&&![_loginView.keyCodeText.text.lowercaseString isEqualToString:_captcha.lowercaseString]) {
             
             /* 弹出alert框 提示输入正确的验证码*/
-            UIAlertController *alert =[UIAlertController alertControllerWithTitle:@"提示" message:@"请输入正确的验证码！" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action1=[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+            UIAlertController *alert =[UIAlertController alertControllerWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请输入正确的验证码!", nil) preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *action1=[UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
             [alert addAction:action1];
             
             [self presentViewController:alert animated:YES completion:nil];
@@ -370,7 +370,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 //            hud.mode = MBProgressHUDModeIndeterminate;
 //            hud.labelText = @"正在登陆";
 //            [hud show:YES];
-            [self loadingHUDStartLoadingWithTitle:@"正在登陆"];
+            [self loadingHUDStartLoadingWithTitle:NSLocalizedString(@"正在登录", nil)];
             
             /* 对应接口要上传的用户登录账号密码*/
             NSDictionary *userInfo = @{@"login_account":[NSString stringWithFormat:@"%@",_loginView.userName.text],
@@ -463,12 +463,12 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 //                        [[NSUserDefaults standardUserDefaults]setObject:chat_accountDic forKey:@"chat_account"];
 //                    }
                     
-                    [self loadingHUDStopLoadingWithTitle:@"登录成功"];
+                    [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录成功", nil)];
                     
                 }else{
                     
 //                    [hud hide:YES];
-                    [self loadingHUDStopLoadingWithTitle:@"登录失败"];
+                    [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录失败", nil)];
                     _wrongTimes ++;
                     if (_wrongTimes >=5) {
                         
@@ -476,23 +476,22 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                         
                     }
                     
-                    
                     /* 账户名密码错误提示*/
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"警告" message:@"账户名或密码错误！" preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"警告", nil) message:NSLocalizedString(@"账户名或密码错误!", nil) preferredStyle:UIAlertControllerStyleAlert];
                     
-                    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+                    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
                     [alert addAction:action];
                     
                     [self presentViewController:alert animated:YES completion:nil];
                     
                 }
                 
-                [self loadingHUDStopLoadingWithTitle:@"登录成功!"];
+                [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录成功", nil)];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
                 NSLog(@"%@",error);
 
-                [self loadingHUDStopLoadingWithTitle:@"登录失败"];
+                [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录失败", nil)];
             }];
         }
 
@@ -706,12 +705,9 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     req.scope = @"snsapi_userinfo" ;
     req.state = @"123" ;
     //第三方向微信终端发送一个SendAuthReq消息结构
-
     [WXApi sendReq:req];
     
-    
 }
-
 
 
 - (void)didReceiveMemoryWarning {
