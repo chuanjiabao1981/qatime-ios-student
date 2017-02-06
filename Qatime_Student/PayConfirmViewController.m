@@ -157,18 +157,17 @@
         
         request.nonceStr= payDic[@"noncestr"];
         
-        request.timeStamp= payDic[@"timestamp"];
+        request.timeStamp= [payDic[@"timestamp"] intValue];
         
         request.sign= payDic[@"sign"];
+        
         [WXApi sendReq:request];
         
     }else{
         
         [self loadingHUDStopLoadingWithTitle:@"数据错误"];
     }
-    
 
-    
 }
 
 #pragma mark- 使用支付宝支付
@@ -187,6 +186,8 @@
         [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/pay/ticket_token",Request_Header,_dataDic[@"id"]] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"password":inputPwd} completeSuccess:^(id  _Nullable responds) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            
+            [self loginStates:dic];
             if ([dic[@"status"]isEqualToNumber:@1]) {
                 /* 获取ticket token成功*/
                 NSLog(@"%@", dic[@"data"]);
@@ -196,6 +197,7 @@
                 [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/pay",Request_Header,_dataDic[@"id"]] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"ticket_token":_ticketToken} completeSuccess:^(id  _Nullable responds) {
                    
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                    [self loginStates:dic];
                     if ([dic[@"status"]isEqualToNumber:@1]) {
                         /* 付款成功*/
                         NSLog(@"%@",dic[@"data"]);

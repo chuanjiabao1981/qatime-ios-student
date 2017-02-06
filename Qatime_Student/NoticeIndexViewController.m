@@ -21,6 +21,7 @@
 
 #import "ChatList.h"
 #import "UIAlertController+Blocks.h"
+#import "UIViewController+Login.h"
 
 
 @interface NoticeIndexViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,NIMConversationManagerDelegate,NIMLoginManagerDelegate,UIGestureRecognizerDelegate>{
@@ -173,6 +174,8 @@
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
+        [self loginStates:dic];
+        
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
             dispatch_queue_t recent = dispatch_queue_create("recent", DISPATCH_QUEUE_SERIAL);
@@ -268,6 +271,8 @@
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 请求成功*/
             NSMutableArray *dataArr = [NSMutableArray arrayWithArray:dic[@"data"]];

@@ -13,6 +13,8 @@
 		5407C9931DE7DE7500DB04C8 /* NSData+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C9921DE7DE7500DB04C8 /* NSData+YYAdd.m */; };
 		5407C9961DE7DE8400DB04C8 /* NSNumber+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C9951DE7DE8400DB04C8 /* NSNumber+YYAdd.m */; };
 		5407C9991DE7DE9200DB04C8 /* UIDevice+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C9981DE7DE9200DB04C8 /* UIDevice+YYAdd.m */; };
+		540A34CA1E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 540A34C71E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m */; };
+		540A34CB1E481B5F0068E049 /* UIViewController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 540A34C91E481B5F0068E049 /* UIViewController+ZFPlayerRotation.m */; };
 		5413D2521DF7B5CD00A8FDEC /* CashRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2511DF7B5CD00A8FDEC /* CashRecordView.m */; };
 		5413D2581DF7B5F400A8FDEC /* CashRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2571DF7B5F400A8FDEC /* CashRecordViewController.m */; };
 		5413D25B1DF7BC7900A8FDEC /* RechargeTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D25A1DF7BC7900A8FDEC /* RechargeTableView.m */; };
@@ -428,6 +430,7 @@
 		54FCBAF61DD5D4500094BF58 /* VideoClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAF51DD5D4500094BF58 /* VideoClassInfo.m */; };
 		54FCBAF91DD5DCE50094BF58 /* Notice.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAF81DD5DCE50094BF58 /* Notice.m */; };
 		54FCBAFC1DD5DCEE0094BF58 /* Members.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAFB1DD5DCEE0094BF58 /* Members.m */; };
+		F249EFD4707A4E4121B5BF4D /* libPods-Qatime_Student.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0908EB8F55388D2CA5802D18 /* libPods-Qatime_Student.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -462,6 +465,10 @@
 		5407C9951DE7DE8400DB04C8 /* NSNumber+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+YYAdd.m"; sourceTree = "<group>"; };
 		5407C9971DE7DE9200DB04C8 /* UIDevice+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+YYAdd.h"; sourceTree = "<group>"; };
 		5407C9981DE7DE9200DB04C8 /* UIDevice+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+YYAdd.m"; sourceTree = "<group>"; };
+		540A34C61E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+ZFPlayerRotation.h"; sourceTree = "<group>"; };
+		540A34C71E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+ZFPlayerRotation.m"; sourceTree = "<group>"; };
+		540A34C81E481B5F0068E049 /* UIViewController+ZFPlayerRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ZFPlayerRotation.h"; sourceTree = "<group>"; };
+		540A34C91E481B5F0068E049 /* UIViewController+ZFPlayerRotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ZFPlayerRotation.m"; sourceTree = "<group>"; };
 		5413D2501DF7B5CD00A8FDEC /* CashRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CashRecordView.h; sourceTree = "<group>"; };
 		5413D2511DF7B5CD00A8FDEC /* CashRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CashRecordView.m; sourceTree = "<group>"; };
 		5413D2561DF7B5F400A8FDEC /* CashRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CashRecordViewController.h; sourceTree = "<group>"; };
@@ -1291,6 +1298,7 @@
 				542915971DD9DDB700EE1A70 /* SystemConfiguration.framework in Frameworks */,
 				542915961DD9DDB000EE1A70 /* MobileCoreServices.framework in Frameworks */,
 				542915911DD9DAF700EE1A70 /* libPods-Qatime_Student.a in Frameworks */,
+				F249EFD4707A4E4121B5BF4D /* libPods-Qatime_Student.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3723,6 +3731,10 @@
 		54FCBABE1DD58E790094BF58 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				540A34C61E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.h */,
+				540A34C71E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m */,
+				540A34C81E481B5F0068E049 /* UIViewController+ZFPlayerRotation.h */,
+				540A34C91E481B5F0068E049 /* UIViewController+ZFPlayerRotation.m */,
 				5422337C1E15F6100092AB66 /* UIAlertController+Blocks.h */,
 				5422337D1E15F6100092AB66 /* UIAlertController+Blocks.m */,
 				54C9A8CB1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter */,
@@ -4430,6 +4442,7 @@
 				54D59A741E234140006066EC /* DrawBackView.m in Sources */,
 				54FCBAE01DD5B3050094BF58 /* VideoInfoView.m in Sources */,
 				54FA71561E07B107009D81FE /* ChatView.m in Sources */,
+				540A34CA1E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m in Sources */,
 				546A54741DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m in Sources */,
 				54D66F691DEBDA5700ED2EBC /* ClassTimeTableViewCell.m in Sources */,
 				545B3BA71E0A216700751D08 /* GuideViewController.m in Sources */,
@@ -4477,6 +4490,7 @@
 				5493D4CB1E0BE1050085A39E /* TLCityGroupCell.m in Sources */,
 				545226051E2482C800F36280 /* EditHeadTableViewCell.m in Sources */,
 				5407C9931DE7DE7500DB04C8 /* NSData+YYAdd.m in Sources */,
+				540A34CB1E481B5F0068E049 /* UIViewController+ZFPlayerRotation.m in Sources */,
 				545226081E2482E100F36280 /* EditNameTableViewCell.m in Sources */,
 				542021171E2DF90400517A47 /* RefundTableView.m in Sources */,
 				54652E051DEE823100F4607C /* FileService.m in Sources */,

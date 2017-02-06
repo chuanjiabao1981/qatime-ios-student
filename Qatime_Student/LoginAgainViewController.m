@@ -71,6 +71,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 //    }
 //    return self;
 //}
+
 - (void)viewDidAppear:(BOOL)animated{
     [self.rdv_tabBarController setTabBarHidden:YES animated:YES];
 }
@@ -95,17 +96,12 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
     
-    
     needCheckCaptcha = NO;
     _wrongTimes = 0;
     _captcha =[NSMutableString string ];
     
     _loginAgainView = [[LoginAgainView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
     [self.view addSubview:_loginAgainView];
-    
-    
-    
-    
     
     //    /* status bar的绿色*/
     //    UIView *status=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 20)];
@@ -143,8 +139,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     //                                                 name:UIKeyboardWillHideNotification
     //
     //                                               object:nil];
-    
-    
     
     
     /* 忘记密码按钮*/
@@ -656,9 +650,8 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     SendAuthReq* req =[[SendAuthReq alloc ] init ]  ;
     req.scope = @"snsapi_userinfo" ;
     req.state = @"123" ;
+    
     //第三方向微信终端发送一个SendAuthReq消息结构
-    
-    
     [WXApi sendReq:req];
     
     

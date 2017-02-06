@@ -219,6 +219,7 @@
     [manager POST:[NSString stringWithFormat:@"%@/api/v1/payment/cash_accounts/%@/password/ticket_token",Request_Header,_idNumber] parameters:@{@"current_pament_password":_passwordText.text} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        [self loginStates:dic];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             /* 获取成功*/
             if (dic[@"data"]!=nil) {
@@ -279,7 +280,6 @@
 
 /* 返回到安全管理页*/
 - (void)returnLastPage{
-    
     
     for (UIViewController *control in self.navigationController.viewControllers) {
         if ([control isMemberOfClass:[SafeViewController class]]) {

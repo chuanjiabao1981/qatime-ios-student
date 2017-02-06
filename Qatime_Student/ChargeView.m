@@ -10,9 +10,7 @@
 
 @interface ChargeView (){
     
-    
     UIView *text;
-    
     
 }
 
@@ -54,19 +52,19 @@
         
         
         
-        /* 微信支付按钮*/
+        /* 支付宝支付按钮*/
         
-        _alipayButton = [[UIButton alloc]init];
-        _alipayButton.selected = NO;
-        _alipayButton.layer.borderWidth = 0.6;
-        _alipayButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        
-        UIImageView *alipayImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"alipay"]];
-        
-        UILabel *aliPay = [[UILabel alloc]init];
-        aliPay.text = @"支付宝支付";
-        aliPay.textColor = [UIColor lightGrayColor];
-        
+//        _alipayButton = [[UIButton alloc]init];
+//        _alipayButton.selected = NO;
+//        _alipayButton.layer.borderWidth = 0.6;
+//        _alipayButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//        
+//        UIImageView *alipayImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"alipay"]];
+//        
+//        UILabel *aliPay = [[UILabel alloc]init];
+//        aliPay.text = @"支付宝支付";
+//        aliPay.textColor = [UIColor lightGrayColor];
+//        
         UILabel *tip = [[UILabel alloc]init];
         tip.text = @"选择支付方式:";
         tip.textColor = [UIColor lightGrayColor];
@@ -82,12 +80,10 @@
 
         
         
-        
         /* 布局*/
-        [self sd_addSubviews:@[text,_wechatButton,wechaImage,wechatPay,_alipayButton,alipayImage,aliPay,tip,_finishButton]];
+        [self sd_addSubviews:@[text,_wechatButton,wechaImage,wechatPay,/*_alipayButton,alipayImage,aliPay,*/tip,_finishButton]];
         
         [text sd_addSubviews:@[yuan,_moneyText]];
-        
         
         /* 框*/
         text.sd_layout
@@ -107,8 +103,6 @@
         .bottomSpaceToView(text,10)
         .rightSpaceToView(yuan,0)
         .leftSpaceToView(text,10);
-        
-        
         
         wechatPay.sd_layout
         .leftSpaceToView(self,self.width_sd/2)
@@ -131,7 +125,6 @@
         _wechatButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
         
         
-        
         tip.sd_layout
         .leftSpaceToView(self,20)
         .topSpaceToView(text,30)
@@ -140,32 +133,32 @@
         tip.textAlignment = NSTextAlignmentLeft;
         
         
-        alipayImage.sd_layout
-        .topSpaceToView(wechaImage,20)
-        .leftEqualToView(wechaImage)
-        .rightEqualToView(wechaImage)
-        .heightRatioToView(wechaImage,1.0f);
-        
-        aliPay.sd_layout
-        .leftEqualToView(wechatPay)
-        .centerYEqualToView(alipayImage)
-        .autoHeightRatio(0);
-        [aliPay setSingleLineAutoResizeWithMaxWidth:500];
-        
-        _alipayButton.sd_layout
-        .leftEqualToView(_wechatButton)
-        .rightEqualToView(_wechatButton)
-        .centerYEqualToView(alipayImage)
-        .heightRatioToView(_wechatButton,1.0f);
-        
-        _alipayButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
+//        alipayImage.sd_layout
+//        .topSpaceToView(wechaImage,20)
+//        .leftEqualToView(wechaImage)
+//        .rightEqualToView(wechaImage)
+//        .heightRatioToView(wechaImage,1.0f);
+//        
+//        aliPay.sd_layout
+//        .leftEqualToView(wechatPay)
+//        .centerYEqualToView(alipayImage)
+//        .autoHeightRatio(0);
+//        [aliPay setSingleLineAutoResizeWithMaxWidth:500];
+//        
+//        _alipayButton.sd_layout
+//        .leftEqualToView(_wechatButton)
+//        .rightEqualToView(_wechatButton)
+//        .centerYEqualToView(alipayImage)
+//        .heightRatioToView(_wechatButton,1.0f);
+//        
+//        _alipayButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
         
         
         
         _finishButton.sd_layout
         .leftSpaceToView(self,20)
         .rightSpaceToView(self,20)
-        .topSpaceToView(alipayImage,30)
+        .topSpaceToView(wechaImage,30)
         .heightRatioToView(text,1.0);
         _finishButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         

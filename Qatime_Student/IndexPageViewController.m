@@ -1053,6 +1053,9 @@
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/app_constant",Request_Header] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        [self loginStates:dic];
+        
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"BasicInformation"];
             

@@ -136,6 +136,7 @@
             [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                [self loginStates:dic];
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     /* 数据请求成功*/
                     TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dic[@"data"]];
@@ -221,6 +222,7 @@
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 余额请求成功*/
             _orderView.balanceLabel.text = [NSString stringWithFormat:@"(¥%@)",dic[@"data"][@"balance"]];
@@ -408,7 +410,7 @@
             [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/orders",Request_Header,_classID] parameters:@{@"pay_type":_payType} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                
                 NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                
+                [self loginStates:dic];
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                    /* 下单成功*/
                     

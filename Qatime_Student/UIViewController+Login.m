@@ -7,6 +7,7 @@
 //
 
 #import "UIViewController+Login.h"
+#import "UIAlertController+Blocks.h"
 
 
 @implementation UIViewController (Login)
@@ -19,7 +20,26 @@
     
 }
 
-- (void)popToSecondPage{
+/* 判断登录超时*/
+- (void)loginStates:(NSDictionary *)dataDic{
+    
+    if ([dataDic[@"status"]isEqualToNumber:@0]) {
+        if (dataDic[@"error"]) {
+            if ([dataDic[@"error"][@"code"]isEqualToNumber:@1002]) {
+                
+                [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录超时!\n是否重新登录?" cancelButtonTitle:@"取消" destructiveButtonTitle:@"重新登录" otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                    if (buttonIndex!=0) {
+                        
+                        [self loginAgain];
+                        
+                    }
+                    
+                }];
+                
+            }
+        }
+    }
+    
     
     
 }

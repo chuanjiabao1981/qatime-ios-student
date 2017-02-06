@@ -542,6 +542,7 @@
                     }
                     
                     mod.orderID = [cancelArr[i][@"id"]isEqual:[NSNull null]]?@"":cancelArr[i][@"id"];
+                    mod.productID = cancelArr[i][@"product"][@"id"];
                     [_caneldArr addObject:mod];
                 }
                 
@@ -884,8 +885,8 @@
                                                                                 @"amount":cell.canceldModel.price,
                                                                                 @"status":cell.canceldModel.status,
                                                                                 @"orderNumber":cell.canceldModel.orderID,
-                                                                                @"app_pay_params":               cell.canceldModel.app_pay_params==nil?@"":cell.canceldModel.app_pay_params
-                                                                                }];
+                                                                                @"app_pay_params":               cell.canceldModel.app_pay_params==nil?@"":cell.canceldModel.app_pay_params,
+                                                                                @"productID":cell.canceldModel.productID==nil?@"":cell.canceldModel.productID}];
             
             
             OrderInfoViewController *order = [[OrderInfoViewController alloc]initWithInfo:dic];
@@ -914,6 +915,7 @@
                 [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/refunds/%@/cancel",Request_Header,_idNumber,mod.orderID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
                     
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                    [self loginStates:dic];
                     if ([dic[@"status"]isEqualToNumber:@1]) {
                         [self loadingHUDStopLoadingWithTitle:@"取消成功"];
                     }else{
@@ -973,6 +975,7 @@
             [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/orders",Request_Header,productNumber] parameters:@{@"pay_type":mod.pay_type} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                [self loginStates:dic];
                 
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     /* 订单申请成功*/
@@ -1100,6 +1103,7 @@
     [manager PUT:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/cancel",Request_Header,oderNumber] parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 数据请求成功*/
             [self loadingHUDStopLoadingWithTitle:@"取消订单成功!"];

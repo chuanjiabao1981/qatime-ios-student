@@ -99,6 +99,7 @@
         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
         [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha/verify",Request_Header] parameters:@{@"send_to":_phoneNumber,@"captcha":_bindingMailView.keyCodeText.text} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            [self loginStates:dic];
             
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 /* 验证成功*/
@@ -151,6 +152,8 @@
         [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header] parameters:@{@"send_to":_phoneNumber,@"key":@"send_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            
+            [self loginStates:dic];
             
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 

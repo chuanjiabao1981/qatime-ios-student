@@ -142,6 +142,7 @@
     [manager GET:urlStr parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        [self loginStates:dic];
         if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
             /* 数据加载成功*/
             _myWalletView.balance.text = [NSString stringWithFormat:@"¥%@",dic[@"data"][@"balance"]];

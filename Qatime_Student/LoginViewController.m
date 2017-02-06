@@ -395,103 +395,46 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                 
                 /* 如果返回的字段里包含key值“remember_token“ 为登录成功*/
                 /* 如果登录成功*/
-                if ([[dicGet allKeys]containsObject:@"remember_token" ]) {
+                
+                if ([userInfoGet[@"status"]isEqualToNumber:@1]) {
                     
-                    [self saveUserInfo:dicGet loginType:Normal];
-//                    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
-//                   
-//                    
-////                    [hud hide:YES];
-//                    
-//                    
-//                    
-//#pragma mark- 本地登录成功后 保存token文件，并且转到主页面
-//                    
-//                    NSString *userTokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
-//                    
-//                    NSLog(@"保存的数据\n%@",dicGet);
-//                    /* 归档*/
-//                    [NSKeyedArchiver archiveRootObject:dicGet toFile:userTokenFilePath];
-//                    
-//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
-//                    
-//                    /* 另存一份userdefault  只存token和id*/
-//                    NSString *remember_token = [NSString stringWithFormat:@"%@",dicGet[@"remember_token"]];
-//                    
-//                    NSDictionary *user=[NSDictionary dictionaryWithDictionary:dicGet[@"user"]];
-//                    NSLog(@"%@",user);
-//                    
-//                    
-//                    NSString *userID = [NSString stringWithFormat:@"%@",[[dicGet valueForKey:@"user"] valueForKey:@"id"]];
-//                    
-//                    [[NSUserDefaults standardUserDefaults]setObject:remember_token forKey:@"remember_token"];
-//                    [[NSUserDefaults standardUserDefaults]setObject:userID forKey:@"id"];
-//                    
-//                    
-//                    NSLog(@"token:%@,id:%@",remember_token,userID);
-//                    
-//                    
-//                    /* 另存一个userdefault ，只存user的头像地址*/
-//                    [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"avatar_url"] forKey:@"avatar_url"];
-//                    
-//                    /* 另存一个useerdefault 存user的name*/
-//                     [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"name"] forKey:@"name"];
-//                    
-//                    /* 另存一个userdefault 存电话*/
-//                    if (dicGet[@"user"][@"login_mobile"] !=nil) {
-//                        [[NSUserDefaults standardUserDefaults]setObject:dicGet[@"user"][@"login_mobile"] forKey:@"login_mobile"];
-//                    }
-//                    
-//                    
-//                    
-//#pragma mark- 把用户聊天账户信息存本地
-//                    
-//                    
-//                    /* 另存一份userdefault  只存chat_account*/
-//                    
-//                    NSDictionary *userDic =[NSDictionary dictionaryWithDictionary:[dicGet valueForKey:@"user"]];
-//                    
-//                    NSLog(@"%@",userDic);
-//                    
-//                    if ([userDic valueForKey:@"chat_account"]!=nil&&![[userDic valueForKey:@"chat_account"] isEqual:[NSNull null]]) {
-//                        
-//                        NSDictionary *chat_accountDic = [NSDictionary dictionaryWithDictionary:[userDic valueForKey:@"chat_account"]];
-//                        
-//                        NSLog(@"%@",chat_accountDic);
-//                        
-//                        
-//                        [[NSUserDefaults standardUserDefaults]setObject:chat_accountDic forKey:@"chat_account"];
-//                    }
-                    
-                    [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录成功", nil)];
-                    
-                }else{
-                    
-//                    [hud hide:YES];
-                    [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录失败", nil)];
-                    _wrongTimes ++;
-                    if (_wrongTimes >=5) {
+                    if (dicGet[@"remember_token"]) {
                         
-                        [[NSNotificationCenter defaultCenter]postNotificationName:@"FivethWrongTime" object:nil];
+                        [self saveUserInfo:dicGet loginType:Normal];
+                        
+                        [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录成功", nil)];
+                        
+                    }else{
+                        /* 账户名密码错误提示*/
+                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"警告", nil) message:NSLocalizedString(@"账户名或密码错误!", nil) preferredStyle:UIAlertControllerStyleAlert];
+                        
+                        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
+                        [alert addAction:action];
+                        
+                        [self presentViewController:alert animated:YES completion:nil];
+                        
+//                        [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录失败", nil)];
+                        
+                        _wrongTimes ++;
+                        if (_wrongTimes >=5) {
+                            
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"FivethWrongTime" object:nil];
+                            
+                        }
+                        
                         
                     }
-                    
-                    /* 账户名密码错误提示*/
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"警告", nil) message:NSLocalizedString(@"账户名或密码错误!", nil) preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
-                    [alert addAction:action];
-                    
-                    [self presentViewController:alert animated:YES completion:nil];
-                    
+//                    [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录成功", nil)];
                 }
                 
-                [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录成功", nil)];
+                
+                
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
                 NSLog(@"%@",error);
-
+                
                 [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录失败", nil)];
+                
             }];
         }
 

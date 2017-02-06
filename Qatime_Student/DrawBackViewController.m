@@ -145,6 +145,7 @@
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/refunds/info",Request_Header,_idNumber] parameters:@{@"order_id":_paidOrder.orderID} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        [self loginStates:dic];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             /* 请求数据成功*/
             _dataDic = [dic[@"data"] mutableCopy];
@@ -214,6 +215,7 @@
         [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/refunds",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"order_id":_paidOrder.orderID,@"reason":_drawBackView.reason.text} completeSuccess:^(id  _Nullable responds) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            [self loginStates:dic];
             
             if ([dic[@"status"]isEqualToNumber:@1]) {
                 [self loadingHUDStopLoadingWithTitle:@"申请成功!"];

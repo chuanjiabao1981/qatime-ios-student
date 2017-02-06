@@ -406,6 +406,7 @@ bool ismute     = NO;
 
 - (void)loadView {
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
     self.view.backgroundColor = [UIColor blackColor];
     
     //当前屏幕宽高
@@ -1797,7 +1798,6 @@ bool ismute     = NO;
     self.liveplayerTeacher = nil;
     
     
-    
     /* 取消老师播放器的监听*/
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerDidPreparedToPlayNotification object:_liveplayerTeacher];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerLoadStateChangedNotification object:_liveplayerTeacher];
@@ -1829,7 +1829,8 @@ bool ismute     = NO;
     [_aBarrage stop];
     _aBarrage = nil;
     
-    
+    /* 取消全屏支持*/
+    [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"SupportedLandscape"];
     
 }
 
@@ -1936,7 +1937,7 @@ bool ismute     = NO;
     
     /* 切换到竖屏*/
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
-        self.view.backgroundColor = [UIColor whiteColor];
+        self.view.backgroundColor = [UIColor blackColor];
         [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
         self.scaleModeBtn.titleLabel.tag = 0;
         
@@ -2586,6 +2587,9 @@ bool ismute     = NO;
      ];
     
     
+    /* 支持全屏*/
+    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"SupportedLandscape"];
+    
 }
 
 
@@ -2667,19 +2671,20 @@ bool ismute     = NO;
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/play_info",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        NSString *status = [NSString stringWithFormat:@"%@",[dic valueForKey:@"status"]];
+        
+        [self loginStates:dic];
+        
         
         NSDictionary *dataDic=[NSDictionary dictionaryWithDictionary:dic[@"data"]];
         
         //        NSLog(@"%@",dic);
         _classInfoDic = dataDic.mutableCopy;
         
-        if (![status isEqualToString:@"1"]) {
+        if (![dic[@"status"]isEqualToNumber:@1]) {
             /* 请求错误*/
             if (dic[@"error"]) {
                 if ([dic[@"error"][@"code"] isEqual:[NSNumber numberWithInteger:1001]]) {
                     /* 登录错误*/
-                    
                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"登录错误!\n是否重新登录?" preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                         
@@ -2695,11 +2700,14 @@ bool ismute     = NO;
                     
                     [self presentViewController:alert animated:YES completion:nil];
                     
-                    
                 }
             }
             
         }else{
+            
+            
+            NSString *teacherID= [NSString stringWithFormat:@"%@",  dic[@"data"][@"id"]];
+            
             
             /* 建立会话消息*/
             _session = [NIMSession session:dic[@"data"][@"chat_team_id"] type:NIMSessionTypeTeam];
@@ -2729,24 +2737,8 @@ bool ismute     = NO;
                 [self loadingHUDStopLoadingWithTitle:@"暂时没有成员加入!"];
             }
             
-            //            Members *teacherMeb = [[Members alloc]init];
-            //            teacherMeb.accid = teacher.accid;
-            //            teacherMeb.name = teacher.nick_name;
-            //            teacherMeb.icon = teacher.icon;
             
-            [_membersArr insertObject:@{@"accid":teacher.accid,@"name":teacher.nick_name,@"icon":teacher.icon} atIndex:0];
-            
-            
-            //            for (int i = 0; i<_membersArr.count; i++) {
-            //
-            //                NSString *nameStr =[NSString stringWithFormat: @"%@", [_membersArr[i] valueForKey:@"name"]];
-            //
-            //                if (membersName) {
-            //
-            //                    [membersName addObject:nameStr];
-            //
-            //                }
-            //            }
+            [_membersArr insertObject:@{@"accid":teacher.accid==nil?@"":teacher.accid,@"name":teacher.name==nil?@"":teacher.name,@"icon":teacher.icon==nil?@"":teacher.icon} atIndex:0];
             
             
             /* 刷新通知信息*/
@@ -2756,13 +2748,9 @@ bool ismute     = NO;
             
             [self updateMembersList];
             
-            
-            
             /* 解析 课程 数据*/
             _videoClassInfo = [VideoClassInfo yy_modelWithDictionary:dataDic];
             
-            /* 解析 教师 数据*/
-            _teacher = [Teacher yy_modelWithDictionary:dataDic[@"teacher"]];
             
             /* 解析 聊天成员 数据*/
             
@@ -2803,12 +2791,31 @@ bool ismute     = NO;
             _infoHeaderView.classDescriptionLabel.text = _videoClassInfo.classDescription;
             
             
-            /* 教师信息 赋值*/
-            _infoHeaderView.teacherNameLabel.text =_teacher.name;
-            _infoHeaderView.teaching_year.text = [_teacher.teaching_years changeEnglishYearsToChinese];
-            _infoHeaderView.workPlace .text = _teacher.school;
-            [_infoHeaderView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacher.avatar_url]];
-            _infoHeaderView.selfInterview.text = _teacher.desc;
+            /* 请求教师详细信息*/
+            
+            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/teachers/%@/profile",Request_Header,teacherID] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
+               
+                NSDictionary *teacherDic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                
+                if ([teacherDic[@"status"]isEqualToNumber:@1]) {
+                    
+                    /* 解析 教师 数据*/
+                    _teacher = [Teacher yy_modelWithDictionary:teacherDic[@"data"]];
+                    
+                    /* 教师信息 赋值*/
+                    _infoHeaderView.teacherNameLabel.text =_teacher.name;
+                    _infoHeaderView.teaching_year.text = [_teacher.teaching_years changeEnglishYearsToChinese];
+                    _infoHeaderView.workPlace .text = _teacher.school;
+                    [_infoHeaderView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacher.avatar_url]];
+                    _infoHeaderView.selfInterview.text = _teacher.desc;
+                    
+                }else{
+                    /* 获取数据失败*/
+                    [self loadingHUDStopLoadingWithTitle:@"获取教师信息失败"];
+                }
+                
+                
+            }];
             
             
             [_infoHeaderView layoutIfNeeded];
@@ -2828,22 +2835,6 @@ bool ismute     = NO;
                 if ([dataDic[@"is_bought"]boolValue]==NO) {
                     /* 如果用户还没有购买该课程*/
                     /* 已经试听过*/
-                    //                    if ([dataDic[@"taste_count"]integerValue]>[dataDic[@"lesson_count"] integerValue]) {
-                    //
-                    //                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您已试听过该课程!" preferredStyle:UIAlertControllerStyleAlert];
-                    //
-                    //                        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    //
-                    //                            [self.navigationController popViewControllerAnimated:YES];
-                    //                        }] ;
-                    //
-                    //
-                    //                        [alert addAction:sure];
-                    //
-                    //                        [self presentViewController:alert animated:YES completion:nil];
-                    
-                    
-                    //                    }else{
                     
                     /* 可以试听*/
                     
@@ -2859,19 +2850,17 @@ bool ismute     = NO;
                     /* 重新加载播放器*/
                     [self reloadPlayerView];
                     
-                    //                    }
                 }else{
                     
                 }
-                
                 
             }else{
                 /* 用户已购买该课程,可以随意试听*/
                 /* 重新加载播放器*/
                 [self reloadPlayerView];
             }
-            
-            
+
+
         }
         
         
@@ -4117,7 +4106,6 @@ bool ismute     = NO;
                 if (_classesArr.count>indexPath.row) {
                     
                     Classes *mod =[Classes yy_modelWithJSON: _classesArr[indexPath.row]];
-                    //                NSLog(@"%@",_classesArr[indexPath.row]);
                     
                     mod.classID =_classesArr[indexPath.row][@"id"];
                     
@@ -4238,7 +4226,6 @@ bool ismute     = NO;
 /* 文本输入框取消响应*/
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
-    
     if (![IFView.TextViewInput.text isEqualToString:@""]) {
         
         [IFView.TextViewInput resignFirstResponder];
@@ -4325,6 +4312,8 @@ bool ismute     = NO;
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/live_status",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dataDic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        [self loginStates:dataDic];
         
         NSLog(@"向服务器请求视频直播状态成功!");
         

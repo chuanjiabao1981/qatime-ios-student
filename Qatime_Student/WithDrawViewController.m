@@ -146,6 +146,8 @@
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
+        [self loginStates:dic];
+        
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             _balance = dic[@"data"][@"balance"];
             
@@ -189,6 +191,7 @@
             [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/withdraws/ticket_token",Request_Header,_idNumber]  withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"password":inputPwd} completeSuccess:^(id  _Nullable responds) {
                 
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                [self loginStates:dic];
                 if ([dic[@"status"]isEqualToNumber:@1]) {
                     /* 支付密码验证成功,进入下一页*/
                     WithDrawInfoViewController *infoVC = [[WithDrawInfoViewController alloc]initWithAmount:_withDrawView.moneyText.text andPayType:_payType andTicketToken:dic[@"data"]];

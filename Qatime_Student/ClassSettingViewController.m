@@ -89,6 +89,7 @@
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications/settings",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        [self loginStates:dic];
         
         NSLog(@"%@", dic);
         
@@ -146,6 +147,7 @@
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     [manager PUT:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications/settings",Request_Header,_idNumber] parameters:saveDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        [self loginStates:dic];
         
         if ([dic[@"status"]isEqualToNumber:@1]) {
             /* 修改成功*/

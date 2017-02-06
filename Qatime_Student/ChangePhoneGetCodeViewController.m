@@ -93,6 +93,7 @@
         [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha/verify",Request_Header] parameters:@{@"send_to":phoneNumber,@"captcha":_getCodeView.codeText.text} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            [self loginStates:dic];
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 
                 if ([dic[@"data"]isEqual:[NSNull null]]) {
@@ -135,6 +136,7 @@
         [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header] parameters:@{@"send_to":phoneNumber,@"key":@"send_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            [self loginStates:dic];
             
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 

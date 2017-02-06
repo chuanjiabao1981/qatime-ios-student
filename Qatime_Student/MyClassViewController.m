@@ -196,6 +196,7 @@
             
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            [self loginStates:dic];
             
             /* 回复数据正确的情况下*/
             if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
@@ -270,9 +271,9 @@
         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
         [manager GET:requestURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
-            
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
+            [self loginStates:dic];
             /* 回复数据正确的情况下*/
             if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
                 
@@ -347,6 +348,7 @@
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
+            [self loginStates:dic];
             /* 回复数据正确的情况下*/
             if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
                 
@@ -432,6 +434,7 @@
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
+            [self loginStates:dic];
             /* 回复数据正确的情况下*/
             if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
                 

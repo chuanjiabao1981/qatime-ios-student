@@ -105,7 +105,7 @@
         [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/result",Request_Header,_numbers] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-            
+            [self loginStates:dic];
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 /* 获取状态数据成功*/
                 if ([dic[@"data"] isEqualToString:@"unpaid"]) {
@@ -185,6 +185,7 @@
             [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
             [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                [self loginStates:dic];
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     balance = [NSString stringWithFormat:@"最新余额 %@",dic[@"data"][@"balance"]];
                     status = @"支付成功";

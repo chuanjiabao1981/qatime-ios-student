@@ -227,8 +227,6 @@
 #pragma mark- 请求未上课课程表数据
 - (void)requestUnclosedClassList{
     
-   
-    
     if (_token&&_idNumber) {
         
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -238,6 +236,7 @@
         [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule?state=unclosed&month=2016-10-01",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            [self loginStates:dic];
             
             /* 回复数据正确的情况下*/
             if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
@@ -330,6 +329,7 @@
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
+            [self loginStates:dic];
             /* 回复数据正确的情况下*/
             if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
                 

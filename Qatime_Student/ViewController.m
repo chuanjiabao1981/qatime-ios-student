@@ -48,6 +48,46 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    NSInteger i = [[UIApplication sharedApplication] statusBarOrientation];
+    
+    if (i == UIInterfaceOrientationLandscapeRight){
+        
+        if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+            SEL selector = NSSelectorFromString(@"setOrientation:");
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:[UIDevice currentDevice]];
+            int val = UIInterfaceOrientationLandscapeLeft;//这里可以改变旋转的方向
+            [invocation setArgument:&val atIndex:2];
+            [invocation invoke];
+        }
+        
+    }else if (i == UIInterfaceOrientationLandscapeLeft){
+        
+        if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+            SEL selector = NSSelectorFromString(@"setOrientation:");
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:[UIDevice currentDevice]];
+            int val = UIInterfaceOrientationLandscapeRight;//这里可以改变旋转的方向
+            [invocation setArgument:&val atIndex:2];
+            [invocation invoke];
+        }
+        
+    }
+    
+    
+    /* 强制旋转成竖屏*/
+//
+    [[UIApplication sharedApplication]setStatusBarOrientation:UIInterfaceOrientationPortrait];
+//    [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationPortrait]forKey:@"orientation"];
+//    self.view.frame = CGRectMake(CGRectGetWidth([[UIScreen mainScreen]bounds]), 0, CGRectGetHeight([[UIScreen mainScreen]bounds]), CGRectGetWidth([[UIScreen mainScreen]bounds]));
+    
+    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
+    
+//    self.view.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    
     self.navigationController.navigationBar.hidden = YES;
     self.navigationController .toolbar.hidden = YES;
     self.tabBarController.tabBar.hidden = YES;
@@ -134,7 +174,6 @@
     image.frame = CGRectMake(0, 0, self.view.width_sd, 49) ;
     [self.tabBar.backgroundView addSubview:image];
     
-    
 }
     
 - (BOOL)prefersStatusBarHidden{
@@ -145,24 +184,47 @@
     return UIStatusBarStyleLightContent;
     
 }
+
+
+
 // 是否支持自动转屏
-- (BOOL)shouldAutorotate{
-    
-    return NO;
-}
-
-// 支持哪些屏幕方向
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-    
-    return UIInterfaceOrientationMaskPortrait;
-    
-}
-
-
-// 默认的屏幕方向（当前ViewController必须是通过模态出来的UIViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
-    return UIInterfaceOrientationPortrait;
-}
+//- (BOOL)shouldAutorotate{
+//    
+//    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"SupportedLandscape"]) {
+//        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"SupportedLandscape"]==YES) {
+//            return YES;
+//        }else{
+//            
+//        }
+//    }else{
+//        
+//    }
+//    return NO;
+//}
+//
+//// 支持哪些屏幕方向
+//- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+//    
+//
+//    
+//    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"SupportedLandscape"]) {
+//        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"SupportedLandscape"]==YES) {
+//            return UIInterfaceOrientationMaskAllButUpsideDown;
+//        }else{
+//            
+//        }
+//    }else{
+//        
+//    }
+//    
+//    
+//    return UIInterfaceOrientationMaskPortrait;
+//}
+//
+//// 默认的屏幕方向（当前ViewController必须是通过模态出来的UIViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
+//- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+//    return UIInterfaceOrientationPortrait;
+//}
 
 
 

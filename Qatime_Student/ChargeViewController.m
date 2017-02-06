@@ -156,6 +156,8 @@
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
+            [self loginStates:dic];
+            
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 
                 

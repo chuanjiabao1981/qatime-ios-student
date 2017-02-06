@@ -81,7 +81,6 @@
     _allClassView.calendarView.calendarView.appearance.headerDateFormat = @"yyyy年MM月";
     _allClassView.calendarView.calendarView.firstWeekday = 2;
     
-    
     //创建点击跳转显示上一月和下一月button
     UIButton *previousButton = [UIButton buttonWithType:UIButtonTypeCustom];
     previousButton.frame = CGRectMake(self.view.centerX -100, 13*ScrenScale, 20, 20);
@@ -292,6 +291,8 @@
             _unclosedArr = @[].mutableCopy;
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
+            [self loginStates:dic];
+            
             /* 回复数据正确的情况下*/
             if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
 
@@ -368,6 +369,8 @@
         [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule?state=closed%@",Request_Header,_idNumber,dateString] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             _closedArr = @[].mutableCopy;
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            
+            [self loginStates:dic];
             
             /* 回复数据正确的情况下*/
             if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
@@ -556,7 +559,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    TutoriumInfoViewController *infoVC= [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+    TutoriumInfoViewController *infoVC= [[TutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
     
     [self.navigationController pushViewController:infoVC animated:YES];
     

@@ -100,6 +100,7 @@
         [manager PUT:[NSString stringWithFormat:@"%@/api/v1/users/%@/email",Request_Header,_idNumber] parameters:@{@"email":_bindingMailInfoView.mailText.text,@"captcha_confirmation":_bindingMailInfoView.keyCodeText.text} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
            
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            [self loginStates:dic];
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 /* 绑定成功*/
                 [self loadingHUDStopLoadingWithTitle:@"绑定成功!"];
@@ -165,6 +166,7 @@
             [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header] parameters:@{@"send_to":_bindingMailInfoView.mailText.text,@"key":@"change_email_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                [self loginStates:dic];
                 
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     

@@ -282,6 +282,7 @@
                 completeSuccess:^(id  _Nullable responds) {
                    
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                    [self loginStates:dic];
                     if ([dic[@"status"]isEqualToNumber:@1]) {
                         /* 取消成功*/
                         [self loadingHUDStopLoadingWithTitle:@"取消成功"];
@@ -340,13 +341,13 @@
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
             [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-            [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/orders",Request_Header,_dataDic[@"orderNumber"]] parameters:@{@"pay_type":_dataDic[@"payType"]} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/orders",Request_Header,_dataDic[@"productID"]] parameters:@{@"pay_type":_dataDic[@"payType"]} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                
+                [self loginStates:dic];
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     /* 订单申请成功*/
-                    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:_dataDic[@"orderNumber"]];
+                    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:_dataDic[@"productID"]];
                     [self.navigationController pushViewController:orderVC animated:YES];
                     
                 }else{
@@ -389,6 +390,7 @@
             
             [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/refunds/%@/cancel",Request_Header,_idNumber,_paid.orderID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                [self loginStates:dic];
                 if ([dic[@"status"]isEqualToNumber:@1]) {
                     [self loadingHUDStopLoadingWithTitle:@"取消成功!"];
                     [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];

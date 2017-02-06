@@ -237,6 +237,8 @@
         
         NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
+        [self loginStates:dic];
+        
         NSString *status = [NSString stringWithFormat:@"%@",dic[@"status"]];
         
         

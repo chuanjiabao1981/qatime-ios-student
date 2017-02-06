@@ -17,6 +17,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[LivePlayerViewController tableView:cellForRowAtIndexPath:]:LivePlayerViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[NELivePlayerViewController keyboardWillShow:]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -163,6 +166,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__45-[OrderInfoViewController requestForBuyAgain]_block_invoke_2:OrderInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[PersonalViewController setupPages]:PersonalViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -278,6 +289,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.679:LivePlayerViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[NELivePlayerViewController mediaControlTurnToFullScreenModeWithMainView:]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -322,6 +336,11 @@
       </ContextState>
       <ContextState
          contextName = "__33-[PersonalViewController getCash]_block_invoke:PersonalViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_balance">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__50-[ChangePhoneViewController requestChangePasswrod]_block_invoke_2:ChangePhoneViewController.m">
@@ -435,13 +454,16 @@
          contextName = "-[PersonalInfoViewController updateUserInfo]:PersonalInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_dataDic">
+               value = "infodic">
+            </PersistentString>
+            <PersistentString
+               value = "_userImage">
             </PersistentString>
             <PersistentString
                value = "_avatar">
             </PersistentString>
             <PersistentString
-               value = "_userImage">
+               value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -534,6 +556,9 @@
          contextName = "__46-[NELivePlayerViewController requestClassInfo]_block_invoke_2:NELivePlayerViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[PayConfirmViewController payWithWechat]:PayConfirmViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[TutoriumViewController selectedTimeFilterWithSort:]:TutoriumViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -556,10 +581,24 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.735:LivePlayerViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__53-[TutoriumInfoViewController requestClassesInfoWith:]_block_invoke_2:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__82-[PersonalInfoViewController imagePickerController:didFinishPickingMediaWithInfo:]_block_invoke:PersonalInfoViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_avatar">
+            </PersistentString>
+            <PersistentString
+               value = "info">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -654,14 +693,6 @@
          contextName = "__42-[ChatViewController requestServerHistory]_block_invoke:ChatViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[UINavigationController(ZFPlayerRotation) supportedInterfaceOrientations]:UINavigationController+ZFPlayerRotation.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "[self.visibleViewController supportedInterfaceOrientations]">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "-[ChatViewController requestChatHitstory]:ChatViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -674,6 +705,14 @@
          <PersistentStrings>
             <PersistentString
                value = "NSUserDefaults standardUserDefaults]boolForKey:@&quot;have_paypassword&quot;]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ViewController viewDidLoad]:ViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "invocation">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -918,6 +957,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_userImage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalInfoViewController imagePickerController:didFinishPickingMediaWithInfo:]:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_imageURL">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

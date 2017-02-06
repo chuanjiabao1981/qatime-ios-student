@@ -195,7 +195,7 @@
                 [manager PUT:[NSString stringWithFormat:@"%@/api/v1/users/%@/password",Request_Header,_idNumber] parameters:@{@"current_password":_changePasswordView.passwordText.text,@"password":_changePasswordView.newsPasswordText.text,@"password_confirmation":_changePasswordView.comparePasswordText.text} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                     
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                    
+                    [self loginStates:dic];
                     if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
                         [self loadingHUDStopLoadingWithTitle:@"密码修改成功"];
                         

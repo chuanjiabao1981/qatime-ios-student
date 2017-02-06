@@ -225,6 +225,10 @@
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses/%@",Request_Header,_idNumber,_tutoriumInfo.classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        /* 检测是否登录超时*/
+        [self loginStates:dic];
+        
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
             

@@ -135,6 +135,7 @@
         [manager PUT:[NSString stringWithFormat:@"%@/api/v1/users/%@/login_mobile",Request_Header,_idNumber] parameters:@{@"login_mobile":_changePhoneView.phoneNumber.text,@"captcha_confirmation":_changePhoneView.keyCode.text} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            [self loginStates:dic];
             
             if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
                 /* 修改成功*/
@@ -198,6 +199,7 @@
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
+            [self loginStates:dic];
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 
                 [self loadingHUDStopLoadingWithTitle:@"发送申请成功!"];

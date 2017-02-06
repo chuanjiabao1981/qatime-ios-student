@@ -22,7 +22,8 @@
 #import "PersonalInfoEditViewController.h"
 
 
-@interface PersonalInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,ChangeDescDelegate>
+
+@interface PersonalInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,ChangeDescDelegate,NSURLSessionDelegate>
 {
     
     NavigationBar *_navigationBar;
@@ -77,6 +78,11 @@
     /* 上传头像用的数据流*/
     NSData *_avatar;
     
+    /* 上传数据用的字典*/
+    NSMutableDictionary *_infoDic;
+    
+    /* 照片的url*/
+    NSURL *_imageURL;
     
 }
 @end
@@ -178,6 +184,7 @@
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/students/%@/info",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         _dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        [self loginStates:_dic];
         /* 获取成功*/
         _dataDic = [NSMutableDictionary dictionaryWithDictionary:_dic[@"data"]];
         
@@ -276,6 +283,8 @@
 
 #pragma mark- ImagePicker delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
+    
+    _imageURL = info[@"UIImagePickerControllerReferenceURL"];
     
     [self dismissViewControllerAnimated:YES completion:^{
         
@@ -784,9 +793,7 @@
     
 //    [self loadingHUDStartLoadingWithTitle:@"正在提交信息"];
     
-    NSMutableDictionary *dic = nil;
-    
-        dic =[NSMutableDictionary dictionaryWithDictionary: @{
+    _infoDic =[NSMutableDictionary dictionaryWithDictionary: @{
                 @"name":_dataDic[@"name"]?_dataDic[@"name"]:_userName,
                 @"gender":_dataDic[@"gender"]?_dataDic[@"gender"]:@"",
                 @"desc":_dataDic[@"desc"]?_dataDic[@"desc"]:@"",
@@ -797,44 +804,59 @@
     if (WriteMore == YES) {
         if (changeImage == NO) {
 //            _avatar = UIImageJPEGRepresentation([UIImage imageNamed:@"人"],1);
-            [dic setValue:_avatar forKey:@"avatar"];
+            [_infoDic setValue:_avatar forKey:@"avatar"];
         }else{
             
-            [dic setValue:_avatar forKey:@"avatar"];
+            [_infoDic setValue:_avatar forKey:@"avatar"];
         }
     }else{
         
         Personal_HeadTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0 ]];
         _avatar = UIImagePNGRepresentation(cell.image.image);
+//        _avatar data
         
-        [dic setObject:_avatar forKey:@"avatar"];
+        [_infoDic setObject:_avatar forKey:@"avatar"];
         
     }
     if (changeBirthday ==YES) {
-        [dic setValue:_dataDic[@"birthday"] forKey:@"birthday"];
+        [_infoDic setValue:_dataDic[@"birthday"] forKey:@"birthday"];
     }
     if (_dataDic[@"gender"] !=nil) {
-        [dic setObject:_dataDic[@"gender"] forKey:@"gender"];
+        [_infoDic setObject:_dataDic[@"gender"] forKey:@"gender"];
     }
     if (grade == YES||![_dataDic[@"grade"] isEqualToString:@"未设置"]) {
-        [dic setObject:_dataDic[@"grade"]?_dataDic[@"grade"]:_userGrade forKey:@"grade"];
+        [_infoDic setObject:_dataDic[@"grade"]?_dataDic[@"grade"]:_userGrade forKey:@"grade"];
     }
 
 //    NSLog(@"%@", _avatar);
+    
+    
+    
+//    [self uploadData:_avatar uploadUrl:[NSString stringWithFormat:@"%@/api/v1/students/%@",Request_Header,_idNumber]];
+    
+//    [self putFile ];
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager PUT:[NSString stringWithFormat:@"%@/api/v1/students/%@/profile",Request_Header,_idNumber] parameters:dic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html",@"image/jpeg",@"image/png",@"application/octet-stream",@"text/json",nil];
+    
+    [manager PUT:[NSString stringWithFormat:@"%@/api/v1/students/%@",Request_Header,_idNumber] parameters:_infoDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        [self loginStates:dic];
         
         NSLog(@"%@",dic);
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 修改成功*/
             
 //            [self loadingHUDStopLoadingWithTitle:@"修改成功!"];
+            
+            
+            
+            
             
             [self performSelector:@selector(returnFrontPage) withObject:nil afterDelay:1];
             
@@ -853,6 +875,61 @@
     
 }
 
+///**
+// *  用PUT方法上传文件，不经过浏览器传递
+// */
+//-(void)putFile
+//{
+//    //1,url
+//    NSString *urlStr = [NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/students/%@",_idNumber];
+//
+//    NSURL *url = [NSURL URLWithString:urlStr];
+//    
+//    //2,request 请求（默认是get）
+//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+//    //1httpMethod
+//    request.HTTPMethod = @"PUT";
+//    //2网络请求授权
+//    [request setValue:_token forHTTPHeaderField:@"Remember-Token"];
+//    //3，session
+//    //1.创建会话机制
+//    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+//    NSURLSession *session =  [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:[[NSOperationQueue alloc] init]];
+//    
+//    //2 上传任务
+//    //上传的文件的路径
+//    
+////    [[session uploadTaskWithRequest:request fromFile:_imageURL] resume];
+//    
+//    //   这是不用下载进度条的方法。
+//        NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromFile:_imageURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+//            
+//            
+//            
+//            NSLog(@"en");
+//            
+//        }];
+//    [task resume];
+//}
+
+
+
+
+//-(void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didSendBodyData:(int64_t)bytesSent totalBytesSent:(int64_t)totalBytesSent totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
+//{
+//    CGFloat value = (CGFloat)totalBytesSent / totalBytesExpectedToSend;
+//    // [NSThread sleepForTimeInterval:0.2];
+//    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+////        self.progressView.progress = value;
+//    }];
+//    
+//    NSLog(@"下载进度；value = %.03lf",value);
+//}
+//
+//-(void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(NSError *)error
+//{
+//    NSLog(@"上传失败");
+//}
 - (void)returnFrontPage{
     
     [self.navigationController popViewControllerAnimated:YES];

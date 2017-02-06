@@ -139,7 +139,7 @@
             [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header] parameters:@{@"send_to":[[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"],@"key":@"update_payment_pwd"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                
+//                [self loginStates:dic];
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     
                     [self loadingHUDStopLoadingWithTitle:@"发送成功!"];
@@ -255,6 +255,8 @@
             [manager POST:[NSString stringWithFormat:@"%@/api/v1/payment/cash_accounts/%@/password/ticket_token",Request_Header,_idNumber] parameters:@{@"password":_authenticationView.passwordText.text,@"captcha_confirmation":_authenticationView.checkCodeText.text} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                
+                [self loginStates:dic];
                 
                 if ([dic[@"status"]isEqualToNumber:@1]) {
                     /* 成功*/

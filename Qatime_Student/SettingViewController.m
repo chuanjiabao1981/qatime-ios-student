@@ -161,6 +161,7 @@
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/system/check_update?category=student_client&platform=ios",Request_Header ] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        [self loginStates:dic];
         
         if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
             

@@ -165,7 +165,7 @@
                 [manager POST:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/withdraws",Request_Header,_idNumber] parameters:dataDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                     
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                    
+                    [self loginStates:dic];
                     
                     if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                         /* 请求成功*/

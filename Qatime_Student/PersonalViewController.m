@@ -69,6 +69,8 @@
     
     [self.rdv_tabBarController setTabBarHidden:NO];
     
+    
+    
 }
 
 - (void)viewDidLoad {
@@ -79,15 +81,11 @@
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
 
     
-    
-    
     /* 菜单名*/
     _settingName = @[@"我的钱包",@"我的订单",@"我的辅导",@"安全管理",@"系统设置"];
     
     /* cell的图片*/
     _cellImage = @[[UIImage imageNamed:@"美元"],[UIImage imageNamed:@"订单"],[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"安全"],[UIImage imageNamed:@"设置"]];
-    
-    
     
     /* 导航栏*/
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
@@ -116,6 +114,10 @@
     /* 添加用户登录的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogin:) name:@"UserLoginAgain" object:nil];
     
+    /* 如果是充值成功,充值成功后刷新钱包金额*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshAmount) name:@"ChargeSucess" object:nil];
+    
+
 }
 
 /* 页面加载方法*/
@@ -209,7 +211,6 @@
 
 
 /* 获取余额信息*/
-
 - (void)getCash{
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -220,17 +221,19 @@
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
+        [self loginStates:dic];
+        
         if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
             
             /* 在本地保存是否用户设置了支付密码*/
             [[NSUserDefaults standardUserDefaults]setBool:[dic[@"data"][@"has_password"] boolValue] forKey:@"have_paypassword"];
             
-            
             /* 获取cash接口的信息成功*/
             _balance = [NSString stringWithFormat:@"%@",dic[@"data"][@"balance"]];
             
             NSIndexPath *indexpath = [NSIndexPath indexPathForRow:0 inSection:0];
-            [_personalView.settingTableView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationFade];
+            SettingTableViewCell *cell = [_personalView.settingTableView cellForRowAtIndexPath:indexpath];
+            cell.balance.text = [NSString stringWithFormat:@"￥%@",_balance];
             
         }else{
             
@@ -241,14 +244,18 @@
             
         }
         
-        NSIndexPath *num = [NSIndexPath indexPathForRow:0 inSection:0];
-        [_personalView.settingTableView reloadRowsAtIndexPaths:@[num] withRowAnimation:UITableViewRowAnimationAutomatic];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
     
     
+}
+
+/* 刷新余额*/
+- (void)refreshAmount{
+    
+    [self getCash];
 }
 
 
@@ -335,6 +342,8 @@
     return  cell;
     
 }
+
+
 
 
 #pragma mark- tableview delegate
@@ -450,14 +459,6 @@
     }];
     
 }
-
-
-
-
-
-
-
-
 
 
 - (void)didReceiveMemoryWarning {

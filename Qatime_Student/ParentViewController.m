@@ -150,6 +150,7 @@
         [manager PUT:[NSString stringWithFormat:@"%@/api/v1/students/%@/parent_phone",Request_Header, _idNumber] parameters:@{@"current_password":_parentView.password.text,@"parent_phone":_parentView.parentPhoneText.text,@"captcha_confirmation":_parentView.keyCodeText.text} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary  *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            [self loginStates:dic];
             NSLog(@"%@",dic);
             
             if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {

@@ -140,6 +140,8 @@
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/students/%@/info",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSMutableDictionary *getDic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        [self loginStates:getDic];
         if ([getDic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
             
             /* 个人信息存本地*/
@@ -489,6 +491,8 @@
         /* <# State #>*/
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
+        [self loginStates:dic];
+        
         if ([dic[@"status"]isEqualToNumber:@1]) {
             /* 绑定成功*/
             
@@ -523,6 +527,7 @@
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/students/%@/info",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        [self loginStates:dic];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             if (dic[@"data"][@"openid"]) {
                 

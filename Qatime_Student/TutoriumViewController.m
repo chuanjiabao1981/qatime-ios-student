@@ -287,6 +287,9 @@
                  _noView.hidden = NO;
                 
                 NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                
+                [self loginStates:dic];
+                
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     if ([dic[@"data"]count]!=0) {
                         
@@ -1012,6 +1015,8 @@
         
         _noView.hidden = NO;
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
             if ([dic[@"data"]count]!=0) {
@@ -1333,6 +1338,8 @@
             [manager GET:requestStrURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                  _noView.hidden = NO;
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                
+                [self loginStates:dic];
                 
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     

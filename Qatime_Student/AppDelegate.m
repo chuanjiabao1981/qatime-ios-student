@@ -35,7 +35,6 @@
     /* 是否允许屏幕旋转*/
     BOOL _allowRotation;
     
-    
 }
 
 @end
@@ -44,6 +43,12 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+
+    
+    /* 默认初始方向屏幕不可旋转*/
+    [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"SupportedLandscape"];
+    
     
     _window = [[UIWindow alloc]init];
     [_window makeKeyAndVisible];
@@ -87,6 +92,11 @@
             
         }
     }
+    
+    
+    
+    
+    
     
     NSLog(@"本地沙盒存储路径：%@", NSHomeDirectory());
     
@@ -141,8 +151,7 @@
                                                  name:kRealReachabilityChangedNotification
                                                object:nil];
 
-    
-    
+
     
     /* 推送是否需要关闭*/
     if (notificatoin_ON == NO) {
@@ -197,6 +206,9 @@
 
     return YES;
 }
+
+
+
 
 #pragma mark- 注册推送
 - (void)registNotification{
@@ -592,7 +604,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             /* 登录成功*/
             SendAuthResp *respdata = (SendAuthResp *)resp;
             
-            
             /* 如果是要绑定微信*/
             if (bindingWechat == YES) {
                 
@@ -609,12 +620,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             
             NSLog(@"%@",respdata.code);
             
-            
         }else if (resp.errCode == -1){
             /* 登录失败*/
             [[NSNotificationCenter defaultCenter]postNotificationName:@"wechatLoginFaild" object:nil];
-            
-            
             
         }else if (resp.errCode == -2){
             /* 取消登录*/
@@ -636,6 +644,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             /* 充值成功*/
             
             [[NSNotificationCenter defaultCenter]postNotificationName:@"ChargeSucess" object:nil];
+            
+            
             
             
         }else if (resp.errCode == -1){

@@ -211,6 +211,8 @@
         _noDataView.hidden = NO;
       
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] ;
+        
+        [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
             NSMutableArray *dataArr = [NSMutableArray arrayWithArray:[dic valueForKey:@"data"]];
@@ -308,6 +310,7 @@
         _noDataView.hidden = NO;
 
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] ;
+        [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
             /* 获取数据成功  数据写到rechararr数组里*/
@@ -385,6 +388,8 @@
 
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] ;
+        
+        [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
             /* 获取数据成功  数据写到rechararr数组里*/
@@ -451,6 +456,7 @@
         _noDataView.hidden = NO;
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil] ;
+        [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
             /* 获取数据成功  数据写到rechararr数组里*/
@@ -794,6 +800,7 @@
    [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/refunds/%@/cancel",Request_Header,_idNumber,orderID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
       
        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+       [self loginStates:dic];
        if ([dic[@"status"]isEqualToNumber:@1]) {
            /* 取消成功*/
            [self loadingHUDStopLoadingWithTitle:@"取消成功"];
@@ -820,6 +827,8 @@
         [manager PUT:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/withdraws/%@/cancel",Request_Header,_idNumber,orderNumber] parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            
+            [self loginStates:dic];
             
             
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {

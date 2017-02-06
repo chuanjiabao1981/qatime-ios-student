@@ -159,6 +159,8 @@
     [manager POST:[NSString stringWithFormat:@"%@/api/v1/payment/cash_accounts/%@/password",Request_Header,_idNumber] parameters:@{@"ticket_token":[[NSUserDefaults standardUserDefaults]valueForKey:@"ticket_token"],@"pament_password":self.passwordText.text} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
+        [self loginStates:dic];
+        
         if ([dic[@"status"]isEqualToNumber:@1]) {
             /* 设置支付密码成功*/
             [self loadingHUDStopLoadingWithTitle:@"设置成功!"];
