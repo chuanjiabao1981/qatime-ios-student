@@ -47,8 +47,11 @@ typedef void(^ClickedOkBtn)(NSString *dateTimeStr);
 @property (nonatomic,assign) NSInteger maxYear;
 @property (nonatomic,assign) NSInteger minYear;
 
-@property (nonatomic,assign) UIColor *topViewColor;
-@property (nonatomic,assign) UIColor *buttonTitleColor;
+@property (nonatomic,strong) UIColor *topViewColor;
+@property (nonatomic,strong) UIColor *buttonTitleColor;
+@property (nonatomic,strong) UIColor *titleColor;
+
+@property (nonatomic,weak  ) NSString *title;
 
 -(instancetype)initWithDefaultDatetime:(NSDate*)dateTime;
 -(instancetype)initWithDatePickerMode:(DatePickerMode)datePickerMode defaultDateTime:(NSDate*)dateTime;

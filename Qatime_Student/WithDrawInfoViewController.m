@@ -47,6 +47,7 @@
 
 - (instancetype)initWithAmount:(NSString *)money andPayType:(NSString *)payType andTicketToken:(NSString *)ticketToken{
     self = [super init];
+    
     if (self) {
         
         _amount = [NSString stringWithFormat:@"%@",money];

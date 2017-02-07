@@ -394,7 +394,6 @@
                    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置或修改后将在24小时内不能使用支付密码,是否继续?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"继续"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                        if (buttonIndex!=0) {
                            
-                          
                            if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
                                if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==YES) {
                                    /* 已经设置过支付密码,更改支付密码*/

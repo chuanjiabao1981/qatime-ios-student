@@ -151,6 +151,7 @@
         .topSpaceToView(_status,10)
         .widthRatioToView(self.contentView,1/5.0)
         .autoHeightRatio(1/3.0);
+        _rightButton.sd_cornerRadius = [NSNumber numberWithInteger:1];
         
         
         /* 左按钮*/
@@ -160,6 +161,7 @@
         .bottomEqualToView(_rightButton)
         .heightRatioToView(_rightButton,1.0)
         .widthRatioToView(_rightButton,1.0);
+        _leftButton.sd_cornerRadius = [NSNumber numberWithInteger:1];
         
         
         /* 金额*/

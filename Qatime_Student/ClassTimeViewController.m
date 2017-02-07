@@ -618,16 +618,21 @@
             
             if (_unclosedArr.count!=0) {
                 
-                classID  = [NSString stringWithFormat:@"%@",[_unclosedArr[indexPath.row] valueForKeyPath:@"classID"]];
+            ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                classID = cell.model.course_id;
+
                 
             }
+            
             
         }
         if (tableView.tag ==2) {
             
-            if (_unclosedArr.count!=0) {
+            if (_closedArr.count!=0) {
                 
-                classID  = [NSString stringWithFormat:@"%@",[_closedArr[indexPath.row] valueForKeyPath:@"classID"]];
+                ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                classID = cell.model.course_id;
+
                 
             }
             

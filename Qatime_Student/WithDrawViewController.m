@@ -185,60 +185,80 @@
             _payType = @"alipay";
         }
         
-        [DCPaymentView showPayAlertWithTitle:@"请输入支付密码" andDetail:@"提现申请" andAmount:_withDrawView.moneyText.text.floatValue completeHandle:^(NSString *inputPwd) {
-            
-            /* 验证ticket_token*/
-            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/withdraws/ticket_token",Request_Header,_idNumber]  withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"password":inputPwd} completeSuccess:^(id  _Nullable responds) {
+        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
+            if([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==NO) {
+                /* 没有支付密码,需要用户设置支付密码*/
+                [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"您尚未设置支付密码!\n请先设置支付密码" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                   
+                    [self.navigationController popViewControllerAnimated:YES];
+                }];
                 
-                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-                [self loginStates:dic];
-                if ([dic[@"status"]isEqualToNumber:@1]) {
-                    /* 支付密码验证成功,进入下一页*/
-                    WithDrawInfoViewController *infoVC = [[WithDrawInfoViewController alloc]initWithAmount:_withDrawView.moneyText.text andPayType:_payType andTicketToken:dic[@"data"]];
+            }else{
+                [DCPaymentView showPayAlertWithTitle:@"请输入支付密码" andDetail:@"提现申请" andAmount:_withDrawView.moneyText.text.floatValue completeHandle:^(NSString *inputPwd) {
                     
-                    [self.navigationController pushViewController:infoVC animated:YES];
-                    
-                    
-                }else{
-                    
-                    ///////
-                    
-                    if (dic[@"error"]) {
-                        if ([dic[@"error"][@"code"]integerValue]==2005) {
-                            //支付密码错误
-                            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"支付密码错误" cancelButtonTitle:@"重试" destructiveButtonTitle:nil otherButtonTitles:@[@"找回支付密码"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                                
-                                if (buttonIndex!=0) {
-                                    
-                                    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置或修改后将在24小时内不能使用支付密码,是否继续?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"继续"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                    /* 验证ticket_token*/
+                    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/withdraws/ticket_token",Request_Header,_idNumber]  withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"password":inputPwd} completeSuccess:^(id  _Nullable responds) {
+                        
+                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                        [self loginStates:dic];
+                        if ([dic[@"status"]isEqualToNumber:@1]) {
+                            /* 支付密码验证成功,进入下一页*/
+                            WithDrawInfoViewController *infoVC = [[WithDrawInfoViewController alloc]initWithAmount:_withDrawView.moneyText.text andPayType:_payType andTicketToken:dic[@"data"]];
+                            [self.navigationController pushViewController:infoVC animated:YES];
+                            
+                            
+                        }else{
+                            
+                            ///////
+                            
+                            if (dic[@"error"]) {
+                                if ([dic[@"error"][@"code"]integerValue]==2005) {
+                                    //支付密码错误
+                                    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"支付密码错误" cancelButtonTitle:@"重试" destructiveButtonTitle:nil otherButtonTitles:@[@"找回支付密码"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                                        
                                         if (buttonIndex!=0) {
                                             
-                                            AuthenticationViewController *controller = [[AuthenticationViewController alloc]init];
-                                            [self.navigationController pushViewController:controller animated:YES];
+                                            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置或修改后将在24小时内不能使用支付密码,是否继续?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"继续"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                                                if (buttonIndex!=0) {
+                                                    
+                                                    AuthenticationViewController *controller = [[AuthenticationViewController alloc]init];
+                                                    [self.navigationController pushViewController:controller animated:YES];
+                                                }
+                                                
+                                            }];
+                                            
+                                            
                                         }
+                                        
+                                    }];
+                                }else if ([dic[@"error"][@"code"]integerValue]==2008){
+                                    //新设置密码,未过24小时
+                                    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置的支付密码未满24小时，为保证账户安全暂不可用。 " cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                                        
+                                        [self returnLastPage];
                                         
                                     }];
                                     
                                     
+                                }else if([dic[@"error"][@"code"]integerValue]==2006){
+                                    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"您尚未设置支付密码!\n请先设置支密码" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                                       
+                                        [self.navigationController popViewControllerAnimated:YES];
+                                        
+                                    }];
+                                    
                                 }
-                                
-                            }];
-                        }else if ([dic[@"error"][@"code"]integerValue]==2008){
-                            //新设置密码,未过24小时
-                            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置的支付密码未满24小时，为保证账户安全暂不可用。 " cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                            
-                                [self returnLastPage];
-                                
-                            }];
-                            
+                            }
                             
                         }
-                    }
+                    }];
                     
-                }
-            }];
-            
-        }];
+                }];
+                
+                
+            }
+        }
+        
         
         
     }else{

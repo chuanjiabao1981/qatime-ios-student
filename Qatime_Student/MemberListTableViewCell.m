@@ -18,6 +18,7 @@
     
     if (self) {
         
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         _memberIcon = [[UIImageView alloc]init];
         [self.contentView addSubview:_memberIcon];
         _memberIcon.sd_layout

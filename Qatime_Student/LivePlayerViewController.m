@@ -2706,8 +2706,7 @@ bool ismute     = NO;
         }else{
             
             
-            NSString *teacherID= [NSString stringWithFormat:@"%@",  dic[@"data"][@"id"]];
-            
+            NSString *teacherID= [NSString stringWithFormat:@"%@",  dic[@"data"][@"teacher"][@"id"]];
             
             /* 建立会话消息*/
             _session = [NIMSession session:dic[@"data"][@"chat_team_id"] type:NIMSessionTypeTeam];
@@ -2806,8 +2805,27 @@ bool ismute     = NO;
                     _infoHeaderView.teacherNameLabel.text =_teacher.name;
                     _infoHeaderView.teaching_year.text = [_teacher.teaching_years changeEnglishYearsToChinese];
                     _infoHeaderView.workPlace .text = _teacher.school;
+                    
+                    if (_teacher.gender!=nil) {
+                        if ([_teacher.gender isEqualToString:@"female"]) {
+                            [_infoHeaderView.genderImage setImage:[UIImage imageNamed:@"女"]];
+                        }else if ([_teacher.gender isEqualToString:@"male"]){
+                            [_infoHeaderView.genderImage setImage:[UIImage imageNamed:@"男"]];
+                        }
+                    }
+                    
                     [_infoHeaderView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacher.avatar_url]];
                     _infoHeaderView.selfInterview.text = _teacher.desc;
+                    
+                    [_infoHeaderView.selfInterview updateLayout];
+                    
+                    /* 自动赋值高度*/
+                    
+                    NSNumber *height =[NSNumber numberWithFloat: _infoHeaderView.layoutLine.frame.origin.y];
+                    
+                    [self setValue:height forKey:@"headerHeight"];
+                    
+                    [self updateViewsInfos];
                     
                 }else{
                     /* 获取数据失败*/
@@ -2821,13 +2839,7 @@ bool ismute     = NO;
             [_infoHeaderView layoutIfNeeded];
             
             
-            /* 自动赋值高度*/
-            
-            NSNumber *height =[NSNumber numberWithFloat: _infoHeaderView.layoutLine.frame.origin.y];
-            
-            [self setValue:height forKey:@"headerHeight"];
-            
-            [self updateViewsInfos];
+           
             
             
             if (dataDic) {
@@ -3974,7 +3986,7 @@ bool ismute     = NO;
                         
                         if ([dic[@"data"][@"left_replay_times"]integerValue]>0) {
                             
-                            if (dic[@"data"][@"replay"]!=nil) {
+                            if (dic[@"data"][@"replay"]==nil) {
                                 
                             }else{
                                 
@@ -3988,15 +4000,16 @@ bool ismute     = NO;
                                 }];
                             }
                         }else{
-                            [self loadingHUDStopLoadingWithTitle:@"服务器正忙,请稍后再试"];
+                           
+                              [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
                             
                         }
                         
                     }else{
-                        //                        [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
+                      [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
                     }
                 }else{
-                    //                    [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
+                     [self loadingHUDStopLoadingWithTitle:@"服务器正忙,请稍后再试"];
                 }
                 
             }];
@@ -4009,32 +4022,7 @@ bool ismute     = NO;
         
         
         
-        //        if (cell.model.replayable == YES) {
-        //            /* 可以试听的情况*/
-        //            if ([cell.model.left_replay_times integerValue]>0) {
-        //                /* 剩余试听次数大于0的情况,可以继续试听*/
-        //
-        //                NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
-        //                [decodeParm addObject:@"hardware"];
-        //                [decodeParm addObject:@"videoOnDemand"];
-        //
-        //                VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:@"http://baobab.wdjcdn.com/1456117847747a_x264.mp4"] andDecodeParm:decodeParm andTitle:@"Hello World !"];
-        //                [self presentViewController:video animated:YES completion:^{
-        //
-        //                }];
-        //
-        //
-        //            }else{
-        //                /* 剩余试听次数小于0,不可以继续试听*/
-        //                [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
-        //            }
-        //
-        //        }else{
-        //            [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
-        //
-        //        }
-        //
-    }
+           }
     
     
     if (tableView.tag ==3) {
@@ -4044,10 +4032,6 @@ bool ismute     = NO;
     
     if (tableView.tag==10) {
         
-        //        NSLog(@"---->%@",[[self.letterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row]);
-        /* 人名点击事件*/
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:[[self.letterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row]delegate:nil cancelButtonTitle:@"YES" otherButtonTitles:nil];
-        //        [alert show];
         
     }
     
@@ -4117,13 +4101,12 @@ bool ismute     = NO;
                         if (_classInfoDic[@"is_bought"]) {
                             if ([_classInfoDic[@"is_bought"]boolValue]==YES) {
                                 
-                                if ([idcell.model.status isEqualToString:@"finished"]||[idcell.model.status isEqualToString:@"billing"]||[idcell.model.status isEqualToString:@"completed"]) {
+                                if (idcell.model.replayable == YES) {
+                                    
                                     idcell.replay.hidden = NO;
                                 }else{
                                     idcell.replay.hidden = YES;
-                                    
                                 }
-                                
                             }else{
                                 idcell.replay.hidden = YES;
                             }
@@ -4132,7 +4115,6 @@ bool ismute     = NO;
                         }
                         
                     }
-                    
                     
                 }
             }
@@ -4164,7 +4146,6 @@ bool ismute     = NO;
             
             if (cell==nil) {
                 cell =[[MemberListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
-                
             }
             
             if (_membersArr.count>indexPath.row) {

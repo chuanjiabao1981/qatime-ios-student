@@ -20,6 +20,7 @@
 #import "RDVTabBarController.h"
 #import "UIAlertController+Blocks.h"
 #import "PersonalInfoEditViewController.h"
+#import "UIAlertController+Blocks.h"
 
 
 
@@ -205,7 +206,7 @@
             
             [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录超时!\n请重新登录" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                 
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
                 
                 
             }];
@@ -404,14 +405,14 @@
                     }
                     break;
                 case 5:
+                    cell.content.text = @"未设置";
+                    break;
+//                case 6:
 //                    cell.content.text = @"未设置";
-                    break;
-                case 6:
-                    cell.content.text = @"未设置";
-                    break;
-                case 7:
-                    cell.content.text = @"未设置";
-                    break;
+//                    break;
+//                case 7:
+//                    cell.content.text = @"未设置";
+//                    break;
                     
             }
             
@@ -451,23 +452,22 @@
                     break;
                 case 5:{
                     
-                    cell.content.text = [[NSString stringWithFormat:@"%@",[_dataDic valueForKey:@"province"]]stringByAppendingString:[NSString stringWithFormat:@"  %@",[_dataDic valueForKey:@"city"]]] ;
+//                    cell.content.text = [[NSString stringWithFormat:@"%@",[_dataDic valueForKey:@"province"]]stringByAppendingString:[NSString stringWithFormat:@"  %@",[_dataDic valueForKey:@"city"]]] ;
+                    cell.content.text = [_dataDic valueForKey:@"desc"];
+                    [cell sd_clearAutoLayoutSettings];
+
                     
                 }
                     break;
+                 
+                    
 //                case 6:{
-//                    cell.content.text = [_dataDic valueForKey:@"school"];
+//                    
+//                    cell.content.text = [_dataDic valueForKey:@"desc"];
+//                    [cell sd_clearAutoLayoutSettings];
 //                    
 //                }
 //                    break;
-                    
-                case 6:{
-                    
-                    cell.content.text = [_dataDic valueForKey:@"desc"];
-                    [cell sd_clearAutoLayoutSettings];
-                    
-                }
-                    break;
                     
             }
         }
@@ -523,23 +523,34 @@
             [self pickerViewShow:indexPath];
             break;
             
-        case 5:
+        case 5:{
             
-            break;
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"简介" message:@"请输入简介" preferredStyle:UIAlertControllerStyleAlert];
+            [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                
+            }];
             
-//        case 6:
-//            [self showAlert:indexPath];
-//            break;
+            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+                [self dismissViewControllerAnimated:YES
+                                         completion:^{
+                                         }];
+                [_dataDic setValue:alert.textFields[0].text forKey:@"desc"];
+                [self changeUserDesc:alert.textFields[0].text];
+                
+            }];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            [alert addAction:cancel];
+            [alert addAction:sure];
             
-        case 6:
-        {
-            PersonalDescViewController *perVC = [PersonalDescViewController new];
-            perVC.delegate = self;
-            [self.navigationController pushViewController:perVC animated:YES];
+            [self presentViewController:alert animated:YES completion:^{}];
             
             
         }
             break;
+
     }
     
     
@@ -626,10 +637,10 @@
             message =@"修改姓名";
             break;
             
-//        case 6:
-//            message = @"修改学校";
-//            
-//            break;
+            //        case 6:
+            //            message = @"修改学校";
+            //
+            //            break;
     }
     
     
@@ -637,7 +648,7 @@
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         
         
-
+        
     }];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
@@ -665,21 +676,21 @@
     
     NSLog(@"%@",desc);
     
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"changeDesc" object:nil];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"changeDesc" object:nil];
     
-    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:7 inSection:0];
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:5 inSection:0];
     PersonalTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:indexPath];
-    [cell.content sd_clearAutoLayoutSettings];
-    
+//    [cell.content sd_clearAutoLayoutSettings];
+//    
     cell.content.text = [NSString stringWithFormat:@"%@",desc];
     
-    [cell.contentView layoutIfNeeded];
+//    [cell.contentView layoutIfNeeded];
+//    
+//    [cell setHeight_sd:cell.content.height_sd+20];
+//    
+//    [_personalInfoView setNeedsLayout];
     
-    [cell setHeight_sd:cell.content.height_sd+20];
-    
-    [_personalInfoView setNeedsLayout];
-    
-    [_dataDic setObject:desc forKey:@"desc"];
+    [_dataDic setValue:desc forKey:@"desc"];
     
     
 }
@@ -688,22 +699,22 @@
 /* 进入编辑页面*/
 - (void)editInfo{
     
-//    Personal_HeadTableViewCell *headcell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//    PersonalTableViewCell *nameCell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
-//    PersonalTableViewCell *headcell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
-//    PersonalTableViewCell *nameCell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
-//    PersonalTableViewCell *nameCell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:4]];
-//    PersonalTableViewCell *headcell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:5]];
-//    PersonalTableViewCell *nameCell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:6]];
+    //    Personal_HeadTableViewCell *headcell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    //    PersonalTableViewCell *nameCell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+    //    PersonalTableViewCell *headcell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+    //    PersonalTableViewCell *nameCell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    //    PersonalTableViewCell *nameCell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:4]];
+    //    PersonalTableViewCell *headcell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:5]];
+    //    PersonalTableViewCell *nameCell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:6]];
     
     
     
     
-//    NSDictionary *info = @{
-//                           @"head":headcell.imageView.image,
-//                           @"name":nameCell.content.text
-//                           @"gender":
-//                           };
+    //    NSDictionary *info = @{
+    //                           @"head":headcell.imageView.image,
+    //                           @"name":nameCell.content.text
+    //                           @"gender":
+    //                           };
     
     PersonalInfoEditViewController *edit = [[PersonalInfoEditViewController alloc]init];
     [self.navigationController pushViewController:edit animated:YES];
@@ -780,30 +791,20 @@
         [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请选择头像" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
             
         }];
-
+        
         
     }
-    
-    
     
 }
 
 /* 更新个人信息*/
 - (void)updateUserInfo{
     
-//    [self loadingHUDStartLoadingWithTitle:@"正在提交信息"];
-    
-    _infoDic =[NSMutableDictionary dictionaryWithDictionary: @{
-                @"name":_dataDic[@"name"]?_dataDic[@"name"]:_userName,
-                @"gender":_dataDic[@"gender"]?_dataDic[@"gender"]:@"",
-                @"desc":_dataDic[@"desc"]?_dataDic[@"desc"]:@"",
-//                @"school":_dataDic[@"school"]?_dataDic[@"school"]:@""
-                
-                }];
+    _infoDic =[NSMutableDictionary dictionaryWithDictionary: @{@"name":_dataDic[@"name"]?_dataDic[@"name"]:_userName,@"gender":_dataDic[@"gender"]?_dataDic[@"gender"]:@"",@"desc":_dataDic[@"desc"]?_dataDic[@"desc"]:@"",}];
     
     if (WriteMore == YES) {
         if (changeImage == NO) {
-//            _avatar = UIImageJPEGRepresentation([UIImage imageNamed:@"人"],1);
+            //            _avatar = UIImageJPEGRepresentation([UIImage imageNamed:@"人"],1);
             [_infoDic setValue:_avatar forKey:@"avatar"];
         }else{
             
@@ -812,10 +813,10 @@
     }else{
         
         Personal_HeadTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0 ]];
-        _avatar = UIImagePNGRepresentation(cell.image.image);
-//        _avatar data
+        //        _avatar = UIImagePNGRepresentation(cell.image.image);
+        _avatar = UIImageJPEGRepresentation(cell.image.image, 0.9);
         
-        [_infoDic setObject:_avatar forKey:@"avatar"];
+//        [_infoDic setObject:_avatar forKey:@"avatar"];
         
     }
     if (changeBirthday ==YES) {
@@ -827,109 +828,57 @@
     if (grade == YES||![_dataDic[@"grade"] isEqualToString:@"未设置"]) {
         [_infoDic setObject:_dataDic[@"grade"]?_dataDic[@"grade"]:_userGrade forKey:@"grade"];
     }
-
-//    NSLog(@"%@", _avatar);
     
     
     
-//    [self uploadData:_avatar uploadUrl:[NSString stringWithFormat:@"%@/api/v1/students/%@",Request_Header,_idNumber]];
-    
-//    [self putFile ];
-    
-    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html",@"image/jpeg",@"image/png",@"application/octet-stream",@"text/json",nil];
-    
-    [manager PUT:[NSString stringWithFormat:@"%@/api/v1/students/%@",Request_Header,_idNumber] parameters:_infoDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"PUT" URLString:[NSString stringWithFormat:@"%@/api/v1/students/%@",Request_Header,_idNumber] parameters:_dataDic constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        [formData appendPartWithFileData:_avatar name:@"avatar" fileName:@"avatar.jpg" mimeType:@"image/jpeg"];
         
-        [self loginStates:dic];
+    } error:nil];
+    
+    [request addValue:_token forHTTPHeaderField:@"Remember-Token"];
+    [request addValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    //    [request setHTTPMethod:@"PUT"];
+    [request setCachePolicy:NSURLRequestReloadIgnoringCacheData];
+    [request setTimeoutInterval:15];
+    
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    NSURLSessionUploadTask *uploadTask;
+    uploadTask = [manager uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull uploadProgress) {
         
-        NSLog(@"%@",dic);
-        if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-            /* 修改成功*/
+        dispatch_async(dispatch_get_main_queue(), ^{
             
-//            [self loadingHUDStopLoadingWithTitle:@"修改成功!"];
+            NSLog(@"%f.0%@", uploadProgress.fractionCompleted*100,@"%");
             
+        });
+        
+    } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Error: %@", error);
+        } else {
+            NSLog(@"%@ %@", response, responseObject);
             
+            NSDictionary *dic = [NSDictionary dictionaryWithDictionary:responseObject];
             
+            [self loginStates:dic];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                
+                [[NSUserDefaults standardUserDefaults]setValue:dic[@"data"][@"avatar_url"] forKey:@"avatar_url"];
+                [[NSUserDefaults standardUserDefaults]setValue:dic[@"data"][@"name"] forKey:@"name"];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangeInfoSuccess" object:dic];
+            }
             
-            
-            [self performSelector:@selector(returnFrontPage) withObject:nil afterDelay:1];
-            
-        }else{
-            
-//            [self loadingHUDStopLoadingWithTitle:@"修改失败!"];
-            
-            [self performSelector:@selector(returnFrontPage) withObject:nil afterDelay:1];
             
         }
-        
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
     }];
+    
+    [uploadTask resume];
+    
     
 }
 
-///**
-// *  用PUT方法上传文件，不经过浏览器传递
-// */
-//-(void)putFile
-//{
-//    //1,url
-//    NSString *urlStr = [NSString stringWithFormat:@"http://testing.qatime.cn/api/v1/students/%@",_idNumber];
-//
-//    NSURL *url = [NSURL URLWithString:urlStr];
-//    
-//    //2,request 请求（默认是get）
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-//    //1httpMethod
-//    request.HTTPMethod = @"PUT";
-//    //2网络请求授权
-//    [request setValue:_token forHTTPHeaderField:@"Remember-Token"];
-//    //3，session
-//    //1.创建会话机制
-//    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-//    NSURLSession *session =  [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:[[NSOperationQueue alloc] init]];
-//    
-//    //2 上传任务
-//    //上传的文件的路径
-//    
-////    [[session uploadTaskWithRequest:request fromFile:_imageURL] resume];
-//    
-//    //   这是不用下载进度条的方法。
-//        NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromFile:_imageURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-//            
-//            
-//            
-//            NSLog(@"en");
-//            
-//        }];
-//    [task resume];
-//}
-
-
-
-
-//-(void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didSendBodyData:(int64_t)bytesSent totalBytesSent:(int64_t)totalBytesSent totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
-//{
-//    CGFloat value = (CGFloat)totalBytesSent / totalBytesExpectedToSend;
-//    // [NSThread sleepForTimeInterval:0.2];
-//    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-////        self.progressView.progress = value;
-//    }];
-//    
-//    NSLog(@"下载进度；value = %.03lf",value);
-//}
-//
-//-(void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(NSError *)error
-//{
-//    NSLog(@"上传失败");
-//}
 - (void)returnFrontPage{
     
     [self.navigationController popViewControllerAnimated:YES];

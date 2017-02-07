@@ -29,10 +29,11 @@
        
         /* 滑动控制器*/
         _segmentControl = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"公告",@"聊天",@"直播详情",@"成员列表"]];
-        [self addSubview:_segmentControl];
         _segmentControl.borderType = HMSegmentedControlBorderTypeBottom;
         _segmentControl.borderWidth = 0.6;
         _segmentControl.borderColor = [UIColor lightGrayColor];
+        
+        [self addSubview:_segmentControl];
         
         _segmentControl.sd_layout
         .leftEqualToView(self)

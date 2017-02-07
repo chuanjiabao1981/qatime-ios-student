@@ -3,10 +3,10 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "-[OrderInfoViewController initWithUnpaid:]:OrderInfoViewController.m">
+         contextName = "-[LivePlayerViewController tableView:cellForRowAtIndexPath:]:LivePlayerViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__33-[LoginViewController userLogin:]_block_invoke:LoginViewController.m">
+         contextName = "-[OrderInfoViewController initWithUnpaid:]:OrderInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "__46-[NELivePlayerViewController checkVideoStatus]_block_invoke:NELivePlayerViewController.m">
@@ -17,7 +17,12 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[LivePlayerViewController tableView:cellForRowAtIndexPath:]:LivePlayerViewController.m">
+         contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unclosedArr">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController keyboardWillShow:]:NELivePlayerViewController.m">
@@ -72,6 +77,12 @@
       </ContextState>
       <ContextState
          contextName = "-[UUMessageFrame setMessage:]:UUMessageFrame.m">
+      </ContextState>
+      <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke_3:PersonalInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.448:PersonalInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController updateMembersList]:NELivePlayerViewController.m">
@@ -182,6 +193,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.441:PersonalInfoViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[TutoriumInfoViewController requestOrder]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -248,10 +262,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -281,6 +295,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.679:LivePlayerViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[NELivePlayerViewController tableView:cellForRowAtIndexPath:]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -289,7 +306,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.679:LivePlayerViewController.m">
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.438:PersonalInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController mediaControlTurnToFullScreenModeWithMainView:]:NELivePlayerViewController.m">
@@ -350,6 +367,9 @@
       </ContextState>
       <ContextState
          contextName = "-[ChatViewController makeMessages:]:ChatViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalViewController changeHead:]:PersonalViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[ClassSettingViewController tableView:cellForRowAtIndexPath:]:ClassSettingViewController.m">
@@ -538,6 +558,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_chat_Account">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.856:LivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_teacher">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -854,6 +882,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke_2:PersonalInfoViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[MyOrderViewController requestUnpaid]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -953,18 +984,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[PersonalInfoViewController initWithName:andGrade:andHeadImage:withImageChange:]:PersonalInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_userImage">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "-[PersonalInfoViewController imagePickerController:didFinishPickingMediaWithInfo:]:PersonalInfoViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_imageURL">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalInfoViewController initWithName:andGrade:andHeadImage:withImageChange:]:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_userImage">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1068,6 +1099,9 @@
                value = "_teacherPullAddress">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.450:PersonalInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[OrderInfoViewController setUpViews]:OrderInfoViewController.m">
@@ -1188,13 +1222,16 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.435:PersonalInfoViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke:LivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1369,12 +1406,7 @@
          contextName = "__43-[NoticeIndexViewController requestNotices]_block_invoke:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke:ClassTimeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_unclosedArr">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "__33-[LoginViewController userLogin:]_block_invoke:LoginViewController.m">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

@@ -74,7 +74,7 @@
     /* 隐藏的但是真实存在的输入框*/
     _passwordText = [[UITextField alloc]initWithFrame:CGRectMake(-30, 100, 1, 30)];
     _passwordText.alpha = 1;
-    _passwordText.layer.borderColor = [UIColor blackColor].CGColor;
+    _passwordText.layer.borderColor = [UIColor clearColor].CGColor;
     _passwordText.layer.borderWidth = 1;
     [self.view addSubview:_passwordText];
     [_passwordText becomeFirstResponder];
@@ -282,12 +282,15 @@
 - (void)returnLastPage{
     
     for (UIViewController *control in self.navigationController.viewControllers) {
+        
         if ([control isMemberOfClass:[SafeViewController class]]) {
             
             [self.navigationController popToViewController:control animated:YES];
+            return;
         }else{
             
             [self.navigationController popViewControllerAnimated:YES];
+            return;
         }
     }
     

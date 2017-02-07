@@ -153,21 +153,21 @@
 - (void)setAfterScrollShowView:(UIScrollView*)scrollview  andCurrentPage:(NSInteger)pageNumber
 {
     UILabel *oneLabel = (UILabel*)[[scrollview subviews] objectAtIndex:pageNumber];
-    [oneLabel setFont:[UIFont systemFontOfSize:14*ScrenScale]];
+    [oneLabel setFont:[UIFont systemFontOfSize:14]];
     [oneLabel setTextColor:[UIColor colorWithHexString:@"0xBABABA"]];
     UILabel *twoLabel = (UILabel*)[[scrollview subviews] objectAtIndex:pageNumber+1];
-    [twoLabel setFont:[UIFont systemFontOfSize:16*ScrenScale]];
+    [twoLabel setFont:[UIFont systemFontOfSize:16]];
     [twoLabel setTextColor:[UIColor colorWithHexString:@"0x717171"]];
     
     UILabel *currentLabel = (UILabel*)[[scrollview subviews] objectAtIndex:pageNumber+2];
-    [currentLabel setFont:[UIFont systemFontOfSize:18*ScrenScale]];
+    [currentLabel setFont:[UIFont systemFontOfSize:18]];
     [currentLabel setTextColor:[UIColor blackColor]];
     
     UILabel *threeLabel = (UILabel*)[[scrollview subviews] objectAtIndex:pageNumber+3];
-    [threeLabel setFont:[UIFont systemFontOfSize:16*ScrenScale]];
+    [threeLabel setFont:[UIFont systemFontOfSize:16]];
     [threeLabel setTextColor:[UIColor colorWithHexString:@"0x717171"]];
     UILabel *fourLabel = (UILabel*)[[scrollview subviews] objectAtIndex:pageNumber+4];
-    [fourLabel setFont:[UIFont systemFontOfSize:14*ScrenScale]];
+    [fourLabel setFont:[UIFont systemFontOfSize:14]];
     [fourLabel setTextColor:[UIColor colorWithHexString:@"0xBABABA"]];
 }
 

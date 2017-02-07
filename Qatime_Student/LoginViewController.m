@@ -411,6 +411,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                         UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
                         [alert addAction:action];
                         
+                        [self loadingHUDStopLoadingWithTitle:nil];
                         [self presentViewController:alert animated:YES completion:nil];
                         
 //                        [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录失败", nil)];

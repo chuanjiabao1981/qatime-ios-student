@@ -176,7 +176,7 @@
         _genderImage.sd_layout
         .leftSpaceToView(_teacherNameLabel,5)
         .topEqualToView(_teacherNameLabel)
-        .heightRatioToView(_teacherNameLabel,1.0f)
+        .heightRatioToView(_teacherNameLabel,0.8f)
         .widthEqualToHeight();
         
         
@@ -210,7 +210,7 @@
         
         
         UILabel *schools=[[UILabel alloc]init];
-//        schools.font = [UIFont systemFontOfSize:14*ScrenScale];
+        //        schools.font = [UIFont systemFontOfSize:14*ScrenScale];
         schools.textColor = [UIColor blackColor];
         
         
@@ -235,7 +235,7 @@
         .bottomSpaceToView(schools,0)
         .widthEqualToHeight();
         
-
+        
         
         
         
@@ -315,7 +315,7 @@
         
         
         
-
+        
         
     }
     return self;

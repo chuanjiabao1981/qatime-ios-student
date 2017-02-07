@@ -23,6 +23,7 @@
 #import "UIViewController+HUD.h"
 #import "PersonalInfoViewController.h"
 #import "UIAlertController+Blocks.h"
+#import "UIImageView+WebCache.h"
 
 
 
@@ -116,6 +117,9 @@
     
     /* 如果是充值成功,充值成功后刷新钱包金额*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshAmount) name:@"ChargeSucess" object:nil];
+    
+    /* 修改个人信息成功后的回调*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeHead:) name:@"ChangeInfoSuccess" object:nil];
     
 
 }
@@ -440,6 +444,18 @@
             [self logOutAlert];
         }
     }
+    
+}
+
+/* 修改个人信息成功后的回调*/
+- (void)changeHead:(NSNotification *)notification{
+    
+    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:notification.object];
+    
+    [_headView.headImageView sd_setImageWithURL:[NSURL URLWithString:dic[@"data"][@"avatar_url"]]
+    ];
+    _headView.name.text = dic[@"data"][@"name"]==nil?@"":dic[@"data"][@"name"];
+    
     
 }
 

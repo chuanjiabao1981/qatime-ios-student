@@ -31,6 +31,7 @@
 {
     UIView                      *timeBroadcastView;//定时播放显示视图
     UIView                      *topView;
+    UILabel                     *titleLbl;
     MXSCycleScrollView          *yearScrollView;//年份滚动视图
     MXSCycleScrollView          *monthScrollView;//月份滚动视图
     MXSCycleScrollView          *dayScrollView;//日滚动视图
@@ -132,6 +133,17 @@
     }
 }
 
+- (void)setTitleColor:(UIColor *)titleColor
+{
+    _titleColor = titleColor;
+    titleLbl.textColor = _titleColor;
+}
+
+- (void)setTitle:(NSString *)title {
+    _title = title;
+    titleLbl.text = title;
+}
+
 #pragma mark -custompicker
 //设置自定义datepicker界面
 - (void)setTimeBroadcastView
@@ -149,7 +161,7 @@
     
     okBtn = [[UIButton alloc]initWithFrame:CGRectMake(kScreen_Width-60, 0, 60, kTopViewHeight)];
     [okBtn setTitleColor:_buttonTitleColor forState:UIControlStateNormal];
-    okBtn.titleLabel.font = [UIFont systemFontOfSize:14*ScrenScale];
+    okBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [okBtn setBackgroundColor:[UIColor clearColor]];
     [okBtn setTitle:@"确定" forState:UIControlStateNormal];
     [okBtn addTarget:self action:@selector(selectedButtons:) forControlEvents:UIControlEventTouchUpInside];
@@ -157,7 +169,7 @@
     [self addSubview:okBtn];
     
     cancleBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, kTopViewHeight)];
-    cancleBtn.titleLabel.font = [UIFont systemFontOfSize:14*ScrenScale];
+    cancleBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [cancleBtn setTitleColor:_buttonTitleColor forState:UIControlStateNormal];
     [cancleBtn setBackgroundColor:[UIColor clearColor]];
     [cancleBtn setTitle:@"取消" forState:UIControlStateNormal];
@@ -165,8 +177,13 @@
     cancleBtn.tag = kCancleBtnTag;
     [self addSubview:cancleBtn];
     
+    titleLbl = [[UILabel alloc]initWithFrame:CGRectMake(60, 0, kScreen_Width - 120, kTopViewHeight)];
+    titleLbl.textAlignment = NSTextAlignmentCenter;
+    titleLbl.font = [UIFont systemFontOfSize:14];
+    
     [topView addSubview:okBtn];
     [topView addSubview:cancleBtn];
+    [topView addSubview:titleLbl];
     
     timeBroadcastView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kTimeBroadcastViewHeight)];
     timeBroadcastView.backgroundColor = [UIColor redColor];
@@ -350,21 +367,21 @@
 - (void)setAfterScrollShowView:(MXSCycleScrollView*)scrollview  andCurrentPage:(NSInteger)pageNumber
 {
     UILabel *oneLabel = [[(UILabel*)[[scrollview subviews] objectAtIndex:0] subviews] objectAtIndex:pageNumber];
-    [oneLabel setFont:[UIFont systemFontOfSize:14*ScrenScale]];
+    [oneLabel setFont:[UIFont systemFontOfSize:14]];
     [oneLabel setTextColor:[UIColor colorWithHexString:@"0xBABABA"]];
     UILabel *twoLabel = [[(UILabel*)[[scrollview subviews] objectAtIndex:0] subviews] objectAtIndex:pageNumber+1];
-    [twoLabel setFont:[UIFont systemFontOfSize:16*ScrenScale]];
+    [twoLabel setFont:[UIFont systemFontOfSize:16]];
     [twoLabel setTextColor:[UIColor colorWithHexString:@"0x717171"]];
     
     UILabel *currentLabel = [[(UILabel*)[[scrollview subviews] objectAtIndex:0] subviews] objectAtIndex:pageNumber+2];
-    [currentLabel setFont:[UIFont systemFontOfSize:18*ScrenScale]];
+    [currentLabel setFont:[UIFont systemFontOfSize:18]];
     [currentLabel setTextColor:[UIColor blackColor]];
     
     UILabel *threeLabel = [[(UILabel*)[[scrollview subviews] objectAtIndex:0] subviews] objectAtIndex:pageNumber+3];
-    [threeLabel setFont:[UIFont systemFontOfSize:16*ScrenScale]];
+    [threeLabel setFont:[UIFont systemFontOfSize:16]];
     [threeLabel setTextColor:[UIColor colorWithHexString:@"0x717171"]];
     UILabel *fourLabel = [[(UILabel*)[[scrollview subviews] objectAtIndex:0] subviews] objectAtIndex:pageNumber+4];
-    [fourLabel setFont:[UIFont systemFontOfSize:14*ScrenScale]];
+    [fourLabel setFont:[UIFont systemFontOfSize:14]];
     [fourLabel setTextColor:[UIColor colorWithHexString:@"0xBABABA"]];
 }
 #pragma mark mxccyclescrollview delegate
@@ -433,10 +450,10 @@
     else if (scrollView == hourScrollView)
     {
         if (index < 10) {
-            l.text = [NSString stringWithFormat:@"0%ld小时",(long)index];
+            l.text = [NSString stringWithFormat:@"0%ld时",(long)index];
         }
         else
-            l.text = [NSString stringWithFormat:@"%ld小时",(long)index];
+            l.text = [NSString stringWithFormat:@"%ld时",(long)index];
     }
     else if (scrollView == minuteScrollView)
     {
@@ -453,7 +470,7 @@
         else
             l.text = [NSString stringWithFormat:@"%ld秒",(long)index];
     
-    l.font = [UIFont systemFontOfSize:12*ScrenScale];
+    l.font = [UIFont systemFontOfSize:12];
     l.textAlignment = NSTextAlignmentCenter;
     l.backgroundColor = [UIColor clearColor];
     return l;
