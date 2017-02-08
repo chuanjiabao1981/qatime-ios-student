@@ -6,4 +6,4 @@
   Copyright © 2017年 WWTD. All rights reserved.
 */
 
-//CFBundleDisplayName = "答疑时间";
+CFBundleDisplayName = "答疑时间";

@@ -51,7 +51,7 @@
 
 /*! @brief WXApi的成员函数，向微信终端程序注册第三方应用。
  *
- * 需要在每次启动第三方应用程序时调用。第一次调用后，会在微信的可用应用列表中出现，默认开启MTA数据上报。
+ * 需要在每次启动第三方应用程序时调用。第一次调用后，会在微信的可用应用列表中出现。
  * iOS7及以上系统需要调起一次微信才会出现在微信的可用应用列表中。
  * @attention 请保证在主线程中调用此函数
  * @param appid 微信开发者ID
@@ -64,13 +64,12 @@
 /*! @brief WXApi的成员函数，向微信终端程序注册第三方应用。
  *
  * 需要在每次启动第三方应用程序时调用。第一次调用后，会在微信的可用应用列表中出现。
- * iOS7及以上系统需要调起一次微信才会出现在微信的可用应用列表中。
- * @attention 请保证在主线程中调用此函数
+ * @see registerApp
  * @param appid 微信开发者ID
- * @param isEnableMTA 是否支持MTA数据上报
+ * @param appdesc 应用附加信息，长度不超过1024字节
  * @return 成功返回YES，失败返回NO。
  */
-+(BOOL) registerApp:(NSString *)appid enableMTA:(BOOL)isEnableMTA;
++(BOOL) registerApp:(NSString *)appid withDescription:(NSString *)appdesc;
 
 
 /*! @brief WXApi的成员函数，向微信终端程序注册应用支持打开的文件类型。

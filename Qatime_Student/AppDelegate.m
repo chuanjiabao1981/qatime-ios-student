@@ -45,6 +45,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
 
+    
     /* 默认初始方向屏幕不可旋转*/
     [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"SupportedLandscape"];
     
@@ -545,7 +546,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
     
-    [UIView transitionFromView:_window.rootViewController.view toView:naviVC.view duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
+    [UIView transitionFromView:_window.rootViewController.view toView:_loginViewController.view duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
         
         [_window setRootViewController:naviVC];
     }];
