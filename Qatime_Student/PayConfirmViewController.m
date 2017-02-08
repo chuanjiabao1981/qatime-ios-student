@@ -144,29 +144,36 @@
 #pragma mark- 使用微信支付
 - (void)payWithWechat{
     
-    if (_dataDic) {
+    if ([WXApi isWXAppInstalled]==YES) {
         
-        NSDictionary *payDic =[NSDictionary dictionaryWithDictionary: _dataDic[@"app_pay_params"]];
-        PayReq *request = [[PayReq alloc] init] ;
-        
-        request.partnerId = payDic[@"partnerid"];
-        
-        request.prepayId= payDic[@"prepayid"];
-        
-        request.package = payDic[@"package"];
-        
-        request.nonceStr= payDic[@"noncestr"];
-        
-        request.timeStamp= [payDic[@"timestamp"] intValue];
-        
-        request.sign= payDic[@"sign"];
-        
-        [WXApi sendReq:request];
-        
+        if (_dataDic) {
+            
+            NSDictionary *payDic =[NSDictionary dictionaryWithDictionary: _dataDic[@"app_pay_params"]];
+            PayReq *request = [[PayReq alloc] init] ;
+            
+            request.partnerId = payDic[@"partnerid"];
+            
+            request.prepayId= payDic[@"prepayid"];
+            
+            request.package = payDic[@"package"];
+            
+            request.nonceStr= payDic[@"noncestr"];
+            
+            request.timeStamp= [payDic[@"timestamp"] intValue];
+            
+            request.sign= payDic[@"sign"];
+            
+            [WXApi sendReq:request];
+            
+        }else{
+            
+            [self loadingHUDStopLoadingWithTitle:@"数据错误"];
+        }
     }else{
+        [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
         
-        [self loadingHUDStopLoadingWithTitle:@"数据错误"];
     }
+    
 
 }
 

@@ -17,6 +17,7 @@
 #import "UIViewController+HUD.h"
 #import "PayConfirmViewController.h"
 #import "UIAlertController+Blocks.h"
+#import "WXApi.h"
 
 @interface OrderViewController (){
     
@@ -400,9 +401,11 @@
 #pragma mark- 提交课程订单
 - (void)finishAndCommit{
     
+    
     if (![_payType isEqualToString:@""]) {
         if (_classID&&_token) {
             
+            [self loadingHUDStartLoadingWithTitle:@"提交订单"];
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -414,13 +417,21 @@
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                    /* 下单成功*/
                     
+                    [self loadingHUDStopLoadingWithTitle:nil];
+                    
                     dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
                     
 //                    [self loadingHUDStopLoadingWithTitle:@"订单申请成功!"];
-                    [self performSelector:@selector(turnToPayPage) withObject:nil afterDelay:0];
                     
-                    /* 下单成功,发送下单成功通知*/
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"OrderSuccess" object:nil ];
+                    if ([WXApi isWXAppInstalled]==YES) {
+                        
+                        /* 下单成功,发送下单成功通知*/
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"OrderSuccess" object:nil ];
+                        [self performSelector:@selector(turnToPayPage) withObject:nil afterDelay:0];
+                        
+                    }else{
+                        [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
+                    }
                     
                     
                 }else{
