@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 };
 
 
-@interface LoginViewController ()<UITextFieldDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate,UITextInputDelegate>{
+@interface LoginViewController ()<UITextFieldDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate,UITextInputDelegate,WXApiDelegate>{
     
     
     NavigationBar *_navigationBar;
@@ -175,8 +175,8 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
-        
             for (NSString *key in dic[@"data"]) {
+                
                 if ([key isEqualToString:@"remember_token"]) {
                     /* 在后台查到该用户的信息*/
                     
@@ -649,7 +649,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     req.scope = @"snsapi_userinfo" ;
     req.state = @"123" ;
     //第三方向微信终端发送一个SendAuthReq消息结构
-    [WXApi sendReq:req];
+    [WXApi sendAuthReq:req viewController:self delegate:self];
     
 }
 
