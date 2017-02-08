@@ -124,17 +124,19 @@
 
 /* 获取缓存大小*/
 - (void)getCacheSpace{
-    
-    NSString *cacheStr = [FileService getPath];
-    
+    /* 获取cache文件夹的缓存*/
+    NSString *cacheStr = [FileService getCachePath];
    cache  = [FileService folderSizeAtPath:cacheStr];
+    
+    /* 获取NIM日志日志文件夹的缓存*/
+    
     
 }
 /* 清除缓存*/
 - (void)clearCache{
     
     [self loadingHUDStartLoadingWithTitle:@"正在清理"];
-    NSString *cacheStr = [FileService getPath];
+    NSString *cacheStr = [FileService getCachePath];
     [FileService clearCache:cacheStr];
     [self loadingHUDStopLoadingWithTitle:@"清理完毕!"];
     

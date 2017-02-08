@@ -356,7 +356,7 @@
     }
 
 }
-#pragma mark- 确认订单无误  提交按钮
+#pragma mark- 确认订单无误 提交订单
 - (void)applyOrder{
     
     if (balanceEnable==NO) {
@@ -418,6 +418,9 @@
                     
 //                    [self loadingHUDStopLoadingWithTitle:@"订单申请成功!"];
                     [self performSelector:@selector(turnToPayPage) withObject:nil afterDelay:0];
+                    
+                    /* 下单成功,发送下单成功通知*/
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"OrderSuccess" object:nil ];
                     
                     
                 }else{

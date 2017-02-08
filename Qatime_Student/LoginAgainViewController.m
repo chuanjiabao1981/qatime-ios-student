@@ -26,7 +26,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
 };
 
-@interface LoginAgainViewController ()<UITextFieldDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate>{
+@interface LoginAgainViewController ()<UITextFieldDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate,WXApiDelegate>{
     
     
     NavigationBar *_navigationBar;
@@ -153,7 +153,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     /* 微信按钮加点击事件 点击登录*/
     
-//    [_loginAgainView.wechatButton addTarget:self action:@selector(sendAuthRequest) forControlEvents:UIControlEventTouchUpInside];
+    [_loginAgainView.wechatButton addTarget:self action:@selector(sendAuthRequest) forControlEvents:UIControlEventTouchUpInside];
     
     
     
@@ -163,7 +163,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
      @param sendAuthRequest
      @return
      */
-        [_loginAgainView.wechatButton addTarget:self action:@selector(mypage) forControlEvents:UIControlEventTouchUpInside];
+//        [_loginAgainView.wechatButton addTarget:self action:@selector(mypage) forControlEvents:UIControlEventTouchUpInside];
     
     
     
@@ -631,8 +631,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     [self cancelAllRespond];
     
-    
-    
 }
 
 /* 取消响应*/
@@ -644,15 +642,20 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 }
 
 #pragma mark- 微信直接拉起请求
--(void)sendAuthRequest
-{
-    //构造SendAuthReq结构体
-    SendAuthReq* req =[[SendAuthReq alloc ] init ]  ;
-    req.scope = @"snsapi_userinfo" ;
-    req.state = @"123" ;
+-(void)sendAuthRequest{
     
-    //第三方向微信终端发送一个SendAuthReq消息结构
-    [WXApi sendReq:req];
+    if ([WXApi isWXAppInstalled]==YES) {
+        
+        //构造SendAuthReq结构体
+        SendAuthReq* req =[[SendAuthReq alloc ] init ]  ;
+        req.scope = @"snsapi_userinfo" ;
+        req.state = @"123" ;
+        
+        //第三方向微信终端发送一个SendAuthReq消息结构
+        [WXApi sendAuthReq:req viewController:self delegate:self];
+    }else{
+        [self loadingHUDStopLoadingWithTitle:@"登录失败，请使用手机号登录"];
+    }
     
     
 }

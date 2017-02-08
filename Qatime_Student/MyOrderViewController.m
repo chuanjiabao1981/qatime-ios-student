@@ -284,12 +284,15 @@
     /* 删除完订单后,刷新视图*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"DeleteOrder" object:nil];
     
-    
-    
+    /* 监听是否有重新下单,有下单的情况要请求未支付的订单.*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"OrderSuccess" object:nil];
+
 }
 
 /* 刷新页面*/
 - (void)refreshPage{
+    
+    _unpaidArr = @[].mutableCopy;
     
     /* 请求未支付的数据*/
     [self requestUnpaid];
@@ -301,6 +304,8 @@
     [self requestCanceld];
     
 }
+
+
 
 
 #pragma mark- 请求订单数据
@@ -1052,6 +1057,10 @@
         UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
             
+            
+            
+            
+            
             [self requestCancelOrder:oderNumber withTag:sender.tag];
             
         }] ;
@@ -1109,19 +1118,30 @@
             [self loadingHUDStopLoadingWithTitle:@"取消订单成功!"];
             
             if (tags>=100&&tags<200) {
-                _unpaidArr = @[].mutableCopy;
-                unpaidPageTime = 1;
-                unpaidPage = 1;
-                [self requestUnpaid];
+//                _unpaidArr = @[].mutableCopy;
+//                unpaidPageTime = 1;
+//                unpaidPage = 1;
+                if (_unpaidArr.count==0) {
+                    [self requestUnpaid];
+                    
+                }else{
+                    
+                    [_unpaidArr removeObjectAtIndex:tags-100];
+                    [_unpaidView.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                    if (_unpaidArr.count == 0) {
+                        [self requestUnpaid];
+                    }
+                }
+                
                 
             }
-            if (tags>=300&&tags<400) {
-                _paidArr = @[].mutableCopy;
-                paidPageTime = 1;
-                paidPage = 1;
-                [self requestPaid];
-                
-            }
+//            if (tags>=300&&tags<400) {
+//                _paidArr = @[].mutableCopy;
+//                paidPageTime = 1;
+//                paidPage = 1;
+//                [self requestPaid];
+//                
+//            }
             
             
         }else if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:0]]){

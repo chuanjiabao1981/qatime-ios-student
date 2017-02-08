@@ -232,8 +232,8 @@
     //取两个日期对象的时间间隔：
     //这里的NSTimeInterval 并不是对象，是基本型，其实是double类型，是由c定义的:typedef double NSTimeInterval;
     
-    NSTimeInterval time=[nowDate timeIntervalSinceDate:startDate];
-    
+//    NSTimeInterval time=[nowDate timeIntervalSinceDate:startDate];
+      NSTimeInterval time = [startDate timeIntervalSinceDate:nowDate];
     int days=((int)time)/(3600*24);
     //    int hours=((int)time)%(3600*24)/3600;
     NSString *dateContent=[[NSString alloc] initWithFormat:@"%d",days];

@@ -15,6 +15,9 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - BarrageRenderer (1.9.1)
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
   - FSCalendar (2.5.1)
   - M13BadgeView (1.0.4)
   - Masonry (1.0.2)
@@ -43,6 +46,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
   - BarrageRenderer (~> 1.9.0)
+  - FMDB (~> 2.6.2)
   - FSCalendar (~> 2.5.1)
   - M13BadgeView (~> 1.0.4)
   - Masonry (~> 1.0.2)
@@ -62,6 +66,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   BarrageRenderer: 55bbe4557d48adbdca6c1ebdfef96946fdb5e5b2
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   FSCalendar: 8efeb4b92240937204165c7743f4375923112fb5
   M13BadgeView: 700dd0714fdc837c0cf1c8c004454963ec22441f
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
@@ -78,6 +83,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: dd1171f97fe05d1410576f320a1977dfc21e084e
+PODFILE CHECKSUM: 832e203f72fa2f18eb2ef5773b532ac6256c8a13
 
 COCOAPODS: 1.1.1

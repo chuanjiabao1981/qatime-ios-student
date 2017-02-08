@@ -26,6 +26,7 @@
 
 
 +(float)folderSizeAtPath:(NSString *)path{
+    
     NSFileManager *fileManager=[NSFileManager defaultManager];
     float folderSize;
     if ([fileManager fileExistsAtPath:path]) {
@@ -56,7 +57,7 @@
 }
 
 
-+(NSString *)getPath {
++(NSString *)getCachePath{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *path = [paths lastObject];
     return path;

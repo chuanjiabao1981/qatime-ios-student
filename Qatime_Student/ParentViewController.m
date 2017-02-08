@@ -78,10 +78,6 @@
     
     [_parentView.finishButton addTarget:self action:@selector(requestChangeParentPhone) forControlEvents:UIControlEventTouchUpInside];
     
-    
-    
-    
-    
 }
 
 -(void)textDidChange:(id<UITextInput>)textInput{
@@ -121,8 +117,6 @@
 #pragma mark- 向服务器请求修改家长手机号码
 - (void)requestChangeParentPhone{
     
-    
-    
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -158,7 +152,8 @@
                 [self loadingHUDStopLoadingWithTitle:@"修改成功!"];
                 [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                 
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangeParentPhoneSuccess" object:_parentView.parentPhoneText.text];
+                /* 修改前一页的手机号码*/
+                [self performSelector:@selector(changePaerentNumber) withObject:nil afterDelay:0];
                 
             }
             
@@ -169,6 +164,15 @@
     }
     
 }
+
+- (void)changePaerentNumber{
+    
+    [[NSUserDefaults standardUserDefaults]setValue:_parentView.parentPhoneText.text forKey:@"parent_phone"];
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangeParentPhoneSuccess" object:nil];
+
+}
+
 #pragma mark- 请求验证码
 - (void)getCheckCode:(UIButton *)sender{
     

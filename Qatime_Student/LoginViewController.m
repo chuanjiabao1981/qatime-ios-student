@@ -17,8 +17,10 @@
 
 #import "BindingViewController.h"
 #import "UIAlertController+Blocks.h"
+#import "UIViewController+HUD.h"
 
 #import "NIMSDK.h"
+
 
 typedef NS_ENUM(NSUInteger, LoginType) {
     Normal =0, //账号密码登录
@@ -27,8 +29,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 };
 
 
-@interface LoginViewController ()<UITextFieldDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate,UITextInputDelegate>{
-    
+@interface LoginViewController ()<UITextFieldDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate,UITextInputDelegate,WXApiDelegate>{
     
     NavigationBar *_navigationBar;
     
@@ -175,8 +176,8 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
-        
             for (NSString *key in dic[@"data"]) {
+                
                 if ([key isEqualToString:@"remember_token"]) {
                     /* 在后台查到该用户的信息*/
                     
@@ -644,12 +645,18 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 
 #pragma mark- 微信直接拉起请求
 -(void)sendAuthRequest{
-    //构造SendAuthReq结构体
-    SendAuthReq* req =[[SendAuthReq alloc ] init ]  ;
-    req.scope = @"snsapi_userinfo" ;
-    req.state = @"123" ;
-    //第三方向微信终端发送一个SendAuthReq消息结构
-    [WXApi sendReq:req];
+    
+    if ([WXApi isWXAppInstalled]==YES) {
+        //构造SendAuthReq结构体
+        SendAuthReq* req =[[SendAuthReq alloc ] init ]  ;
+        req.scope = @"snsapi_userinfo" ;
+        req.state = @"123" ;
+        //第三方向微信终端发送一个SendAuthReq消息结构
+        [WXApi sendAuthReq:req viewController:self delegate:self];
+    }else{
+        
+        [self loadingHUDStopLoadingWithTitle:@"登录失败，请使用手机号登录"];
+    }
     
 }
 

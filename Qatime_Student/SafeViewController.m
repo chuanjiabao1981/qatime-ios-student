@@ -25,7 +25,7 @@
 #import "SetPayPasswordViewController.h"
 #import "UIViewController+AFHTTP.h"
 
-@interface SafeViewController ()
+@interface SafeViewController ()<WXApiDelegate>
 {
     
     NavigationBar *_navigationBar;
@@ -95,7 +95,7 @@
     
     
     /* 添加一个家长手机修改成功的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeParentPhone:) name:@"ChangeParentPhoneSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeParentPhone) name:@"ChangeParentPhoneSuccess" object:nil];
     
     /* 添加手动绑定微信的监听*/
     
@@ -116,15 +116,13 @@
 }
 
 /* 如果家长手机修改成功,则在此页面进行修改家长手机*/
-- (void)changeParentPhone:(NSNotification *)notification{
+- (void)changeParentPhone{
     
-    if (_contentArr.count !=0 ) {
-        
-        _contentArr[3] = [notification object];
-    }
+    SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
+    cell.balance.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"parent_phone"];
     
+
     
-    [_menuTableView reloadData];
     
 }
 
@@ -463,16 +461,22 @@
 }
 
 
--(void)sendAuthRequest
-{
-    //构造SendAuthReq结构体
-    SendAuthReq* req =[[SendAuthReq alloc ] init ]  ;
-    req.scope = @"snsapi_userinfo" ;
-    req.state = @"123" ;
-    //第三方向微信终端发送一个SendAuthReq消息结构
+-(void)sendAuthRequest{
     
+    if ([WXApi isWXAppInstalled]==YES) {
+        //构造SendAuthReq结构体
+        SendAuthReq* req =[[SendAuthReq alloc ] init ]  ;
+        req.scope = @"snsapi_userinfo" ;
+        req.state = @"123" ;
+        //第三方向微信终端发送一个SendAuthReq消息结构
+        
+        [WXApi sendAuthReq:req viewController:self delegate:self];
+    }else{
+        
+        [self loadingHUDStopLoadingWithTitle:@"您尚未安装微信"];
+        
+    }
     
-    [WXApi sendReq:req];
     
     
 }
@@ -588,10 +592,6 @@
     
     cell.balance.text = @" 马上绑定 ";
     wechatIsBinding = NO;
-    
-    
-    
-    
     
 }
 

@@ -220,6 +220,8 @@
 		5484B7421DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 5484B7411DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m */; };
 		5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */; };
 		549210271DCC6D0E00A65702 /* MultiFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549210261DCC6D0E00A65702 /* MultiFilterView.m */; };
+		5493450C1E4B0571005849B2 /* JSPatchPlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */; };
+		5493450E1E4B058B005849B2 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5493450D1E4B058B005849B2 /* JavaScriptCore.framework */; };
 		5493D48A1E0B7FB60085A39E /* Logo_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 5493D4891E0B7FB60085A39E /* Logo_white.png */; };
 		5493D48C1E0B81A40085A39E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5493D48B1E0B81A40085A39E /* CoreLocation.framework */; };
 		5493D4A51E0B98F70085A39E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5493D4A41E0B98F70085A39E /* MapKit.framework */; };
@@ -833,6 +835,8 @@
 		5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UTF8Coding.m"; sourceTree = "<group>"; };
 		549210251DCC6D0E00A65702 /* MultiFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiFilterView.h; sourceTree = "<group>"; };
 		549210261DCC6D0E00A65702 /* MultiFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiFilterView.m; sourceTree = "<group>"; };
+		5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JSPatchPlatform.framework; sourceTree = "<group>"; };
+		5493450D1E4B058B005849B2 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		5493D4891E0B7FB60085A39E /* Logo_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo_white.png; sourceTree = "<group>"; };
 		5493D48B1E0B81A40085A39E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		5493D4A41E0B98F70085A39E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -1253,6 +1257,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5493450E1E4B058B005849B2 /* JavaScriptCore.framework in Frameworks */,
 				5458AB381E0D424B00D6409F /* libcrypto.a in Frameworks */,
 				5458AB391E0D424B00D6409F /* libssl.a in Frameworks */,
 				5493D4A51E0B98F70085A39E /* MapKit.framework in Frameworks */,
@@ -1271,6 +1276,7 @@
 				54294CCD1DDB3C7700677333 /* libLSMediaCapture_X86_64.a in Frameworks */,
 				54294CCE1DDB3C7700677333 /* libLSMediaCapture.a in Frameworks */,
 				54294CCF1DDB3C7700677333 /* libopenh264.a in Frameworks */,
+				5493450C1E4B0571005849B2 /* JSPatchPlatform.framework in Frameworks */,
 				54294CD01DDB3C7700677333 /* librtmp.a in Frameworks */,
 				54294CD21DDB3C7700677333 /* libyuv.a in Frameworks */,
 				54294CC31DDB3AC400677333 /* libstdc++.tbd in Frameworks */,
@@ -2491,6 +2497,7 @@
 		54A153A81DC6F09D0070B508 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */,
 				54F32F741E373142000F8926 /* Reachability */,
 				54B73CFF1DE3E85A00B7A7EB /* ChineseSorting */,
 				5493D4BC1E0BE1050085A39E /* TLCityPicker */,
@@ -3857,6 +3864,7 @@
 		B493EB6DEDE6DB14F293C15A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5493450D1E4B058B005849B2 /* JavaScriptCore.framework */,
 				5458AB321E0D411D00D6409F /* libcrypto.a */,
 				5458AB331E0D411D00D6409F /* libssl.a */,
 				5493D4A41E0B98F70085A39E /* MapKit.framework */,
@@ -4010,6 +4018,9 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
 								enabled = 1;
 							};
 							com.apple.Push = {
@@ -4668,11 +4679,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/Qatime_Student/ChatKit/Class/Tool/Vendor/VoiceLib",
-					"$(PROJECT_DIR)/Qatime_Student/Class/Tool/Vendor/VoiceLib",
-					"$(PROJECT_DIR)/Qatime_Student/YYPhotoBrowseView/YYWebImage/Vendor",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Qatime_Student";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/include/NELivePlayer",
@@ -4697,7 +4704,6 @@
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_UIKit/NIMKit/Vendors/NIMSDK",
 					"$(PROJECT_DIR)/Qatime_Student/UUChat/OtherResources/VoiceLib",
 					"$(PROJECT_DIR)/Qatime_Student",
-					"$(PROJECT_DIR)/Qatime_Student/JPush-iOS-SDK-3.0.0/Lib",
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",
 					"$(PROJECT_DIR)/Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs",
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",
@@ -4757,11 +4763,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/Qatime_Student/ChatKit/Class/Tool/Vendor/VoiceLib",
-					"$(PROJECT_DIR)/Qatime_Student/Class/Tool/Vendor/VoiceLib",
-					"$(PROJECT_DIR)/Qatime_Student/YYPhotoBrowseView/YYWebImage/Vendor",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Qatime_Student";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/include/NELivePlayer",
@@ -4786,7 +4788,6 @@
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_UIKit/NIMKit/Vendors/NIMSDK",
 					"$(PROJECT_DIR)/Qatime_Student/UUChat/OtherResources/VoiceLib",
 					"$(PROJECT_DIR)/Qatime_Student",
-					"$(PROJECT_DIR)/Qatime_Student/JPush-iOS-SDK-3.0.0/Lib",
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",
 					"$(PROJECT_DIR)/Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs",
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",

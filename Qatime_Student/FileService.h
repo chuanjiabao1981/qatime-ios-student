@@ -19,6 +19,6 @@
 +(void)clearCache:(NSString *)path;
 
 /* 获取cache目录*/
-+(NSString *)getPath;
++(NSString *)getCachePath;
 
 @end

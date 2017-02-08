@@ -23,6 +23,7 @@
 
 #import <sys/utsname.h>
 #import "RealReachability.h"
+#import <JSPatchPlatform/JSPatch.h>
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate,NIMSystemNotificationManager,NIMLoginManagerDelegate>{
     
@@ -45,7 +46,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
 
-    
     /* 默认初始方向屏幕不可旋转*/
     [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"SupportedLandscape"];
     
@@ -92,6 +92,11 @@
             
         }
     }
+    
+    
+    /* 增加热修复技术*/
+    [JSPatch startWithAppKey:@"f3da4b3b9ce10b8e"];
+    [JSPatch sync];
     
     
     
@@ -546,7 +551,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
     
-    [UIView transitionFromView:_window.rootViewController.view toView:_loginViewController.view duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
+    [UIView transitionFromView:_window.rootViewController.view toView:naviVC.view duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
         
         [_window setRootViewController:naviVC];
     }];

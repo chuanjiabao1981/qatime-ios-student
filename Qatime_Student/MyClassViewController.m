@@ -366,8 +366,6 @@
                             
                             if (mod.is_bought == YES) {
                                 
-                                
-                                    
                                     [_endedArr addObject:mod];
                                 
                                 
@@ -380,7 +378,7 @@
                     
                     if (_endedArr.count ==0) {
                         
-                        HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _startedClassView.height_sd)];
+                        HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _endedClassView.height_sd)];
                         noview.titleLabel.text  = @"没有课程";
                         [_endedClassView addSubview:noview];
                         
