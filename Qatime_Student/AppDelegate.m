@@ -622,7 +622,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             }
             
             
-            
             NSLog(@"%@",respdata.code);
             
         }else if (resp.errCode == -1){
@@ -638,8 +637,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         SendAuthResp *respData = (SendAuthResp *)resp;
         //        respData.code
         
-        
-        
     }
     
     /* 条件 :拿到支付回调信息*/
@@ -649,8 +646,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             /* 充值成功*/
             
             [[NSNotificationCenter defaultCenter]postNotificationName:@"ChargeSucess" object:nil];
-            
-            
             
             
         }else if (resp.errCode == -1){

@@ -34,6 +34,8 @@
 #import "ConfirmChargeViewController.h"
 #import "UIViewController+AFHTTP.h"
 #import "UIAlertController+Blocks.h"
+#import "WXApi.h"
+#import "PayConfirmViewController.h"
 
 @interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
@@ -59,6 +61,10 @@
     NSInteger unpaidPageTime;
     NSInteger paidPageTime;
     NSInteger cancelPageTime;
+    
+    
+    /* 余额*/
+    CGFloat balance;
     
 }
 
@@ -276,6 +282,8 @@
     /* 请求取消的数据*/
     [self requestCanceld];
     
+    /* 请求一次余额*/
+    [self requestBalance];
     
     
     /* 微信支付成功的监听回调*/
@@ -305,7 +313,26 @@
     
 }
 
-
+#pragma mark- 请求余额
+- (void)requestBalance{
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+       
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+            balance = [dic[@"data"][@"balance"] floatValue];
+            
+        }else{
+        
+            
+        }
+        
+        
+        
+    }];
+    
+}
 
 
 #pragma mark- 请求订单数据
@@ -901,7 +928,6 @@
             
             break;
             
-            
     }
     
     
@@ -942,9 +968,78 @@
         /* 取消订单的左边按钮->取消订单*/
         
         Unpaid *mod =_unpaidArr[sender.tag-200];
-        ConfirmChargeViewController *confirm = [[ConfirmChargeViewController alloc]initWithPayModel:mod];
-        [self.navigationController pushViewController:confirm animated:YES];
         
+        /* 如果支付类型是微信*/
+        if ([mod.pay_type isEqualToString:@"weixin"]) {
+            
+            if ([WXApi isWXAppInstalled]==YES) {
+                
+//                ConfirmChargeViewController *confirm = [[ConfirmChargeViewController alloc]initWithPayModel:mod];
+                
+                PayConfirmViewController *confirm = [[PayConfirmViewController alloc]initWithData:@{
+                                                                                                    @"id":mod.orderID==nil?@"":mod.orderID,
+                                                                                                    @"pay_at":mod.pay_at==nil?@"":mod.pay_at,
+                                                                                                    @"amount":mod.price==nil?@"":mod.price,
+                                                                                                        @"created_at":mod.created_at==nil?@"":mod.created_at,
+                                                                                                        @"source":@"app",
+                                                                                                        @"pay_type":mod.pay_type==nil?@"":mod.pay_type,
+                                                                                                        
+                                                                                                        @"nonce_str":mod.nonce_str==nil?@"":mod.nonce_str,
+                                                                                                        @"app_pay_str":@"",
+                                                                                                        @"updated_at":mod.updated_at==nil?@"":mod.updated_at,
+                                                                                                        @"prepay_id":mod.prepay_id==nil?@"":mod.prepay_id,
+                                                                                                        @"app_pay_params":mod.app_pay_params==nil?@"":mod.app_pay_params,
+                                                                                                        @"status":mod.status==nil?@"":mod.status}];
+                
+                
+                [self.navigationController pushViewController:confirm animated:YES];
+
+                
+            }else{
+                
+                [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
+            }
+            
+            
+            
+        }else if ([mod.pay_type isEqualToString:@"account"]){
+            /* 如果支付类型是余额*/
+            
+            if (balance) {
+                if (balance>=mod.price.floatValue) {
+                    PayConfirmViewController *confirm = [[PayConfirmViewController alloc]initWithData:@{
+                                                                                                        @"id":mod.orderID==nil?@"":mod.orderID,
+                                                                                                        @"pay_at":mod.pay_at==nil?@"":mod.pay_at,
+                                                                                                        @"amount":mod.price==nil?@"":mod.price,
+                                                                                                        @"created_at":mod.created_at==nil?@"":mod.created_at,
+                                                                                                        @"source":@"app",
+                                                                                                        @"pay_type":mod.pay_type==nil?@"":mod.pay_type,
+                                                                                                        
+                                                                                                        @"nonce_str":mod.nonce_str==nil?@"":mod.nonce_str,
+                                                                                                        @"app_pay_str":@"",
+                                                                                                        @"updated_at":mod.updated_at==nil?@"":mod.updated_at,
+                                                                                                        @"prepay_id":mod.prepay_id==nil?@"":mod.prepay_id,
+                                                                                                        @"app_pay_params":mod.app_pay_params==nil?@"":mod.app_pay_params,
+                                                                                                        @"status":mod.status==nil?@"":mod.status}];
+                    [self.navigationController pushViewController:confirm animated:YES];
+
+                }else{
+                    
+                    [self loadingHUDStopLoadingWithTitle:@"余额不足,请充值!"];
+                }
+            }else{
+                [self requestBalance];
+                [self loadingHUDStopLoadingWithTitle:@"正在获取余额数据,请稍后重试"];
+            }
+            
+            
+            
+        }else if ([mod.pay_type isEqualToString:@"alipay"]){
+           /* 如果支付类型是支付宝*/
+            /* 暂时不支持*/
+            [self loadingHUDStopLoadingWithTitle:@"暂不支持支付宝"];
+            
+        }
         
     }
     

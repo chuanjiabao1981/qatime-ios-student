@@ -17,6 +17,7 @@
 #import "AuthenticationViewController.h"
 #import "UIViewController+AFHTTP.h"
 #import "TutoriumInfoViewController.h"
+#import "MyOrderViewController.h"
 
 @interface PayConfirmViewController (){
     
@@ -295,9 +296,13 @@
     for (UIViewController *controller in self.navigationController.viewControllers) {
         if ([controller isMemberOfClass:[TutoriumInfoViewController class]]) {
             [self.navigationController popToViewController:controller animated:YES];
-            
+            return;
+        }else if ([controller isMemberOfClass:[MyOrderViewController class]]){
+            [self.navigationController popViewControllerAnimated:YES];
+            return;
         }
     }
+    
     
 
 }

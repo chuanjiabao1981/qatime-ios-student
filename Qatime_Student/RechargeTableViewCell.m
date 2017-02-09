@@ -156,7 +156,7 @@
         
          _mode.text = @"支付宝支付";
     }else if (![model.pay_type isEqualToString:@"alipay"]&&![model.pay_type isEqualToString:@"weixin"]){
-        _mode.text = @"线下支付";
+        _mode.text = @"余额支付";
 
     }
     

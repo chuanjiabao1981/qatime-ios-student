@@ -14,6 +14,8 @@
 #import "UIViewController+HUD.h"
 #import "CheckChargeViewController.h"
 #import "MyWalletViewController.h"
+#import "DCPaymentView.h"
+#import "UIViewController+AFHTTP.h"
 
 
 @interface ConfirmChargeViewController (){
@@ -21,6 +23,9 @@
     NavigationBar *_navigationBar;
     
     NSMutableDictionary *dataInfo;
+    
+    NSString *_token;
+    NSString *_idNumber;
     
     /* 支付方式*/
     
@@ -87,7 +92,7 @@
                                                                    @"nonce_str":model.nonce_str,
                                                                    @"updated_at":model.created_at,
                                                                    @"prepay_id":model.prepay_id==nil?@"":model.prepay_id,
-                                                                   @"app_pay_params":model.app_pay_params
+                                                                   @"app_pay_params":model.app_pay_params==nil?@"":model.app_pay_params
                                                                    }];
     }
     return self;
@@ -126,8 +131,8 @@
                 _.pay_type.text = @"微信支付";
             }else if ([dataInfo[@"pay_type"] isEqualToString:@"alipay"]){
                 _.pay_type.text = @"支付宝支付";
-            }else if ([dataInfo[@"pay_type"] isEqualToString:@"offline"]){
-                _.pay_type.text = @"线下支付";
+            }else if ([dataInfo[@"pay_type"] isEqualToString:@"account"]){
+                _.pay_type.text = @"账户余额";
             }
             
             _.money.text = [NSString stringWithFormat:@"¥%@",dataInfo[@"amount"]];
@@ -171,6 +176,7 @@
         if (dataInfo) {
             
             [self requestChargWithType:_pay_type andData:dataInfo];
+            
         }else{
             
             [self loadingHUDStopLoadingWithTitle:@"加载错误,请从新登录"];
@@ -214,7 +220,43 @@
             /* 后台接口暂时未调通,暂时预留接口*/
             
         }else if ([type isEqualToString:@"amount"]){
-            /* 后台接口暂时未调通,暂时预留接口*/
+            /* 余额支付方法*/
+            
+           __block NSString *ticketToken ;
+            
+         [DCPaymentView showPayAlertWithTitle:@"订单支付" andDetail:@"订单支付" andAmount:[dataInfo[@"amount"]floatValue] completeHandle:^(NSString *inputPwd) {
+             
+             /* 请求ticket token*/
+             [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/pay/ticket_token",Request_Header,dataInfo[@"id"]] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+                 
+                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                 if ([dic[@"status"]isEqualToNumber:@1]) {
+                     /* 获取成功*/
+                     ticketToken = dic[@"data"];
+                     /* 用ticket token 发起第二次请求*/
+                     
+                     [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/pay",Request_Header,dataInfo[@"id"] ] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+                         
+                     }];
+                 }else{
+                     
+                     
+                 }
+                 
+                 
+                 
+                 
+             }];
+             
+             
+             
+             
+         }];
+            
+            
+            
+            
+            
         }
  
 }
@@ -222,10 +264,8 @@
 #pragma mark- 查询页面退出后,直接跳转到rootcontroller
 - (void)returnWalletPage{
     
-    
-    
-    
     [self.navigationController popToRootViewControllerAnimated:YES];
+    
 }
 
 #pragma mark- 接到消息回调,进入支付状态查询页面

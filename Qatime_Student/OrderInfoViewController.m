@@ -18,7 +18,9 @@
 #import "DrawBackViewController.h"
 #import "NSDate+ChangeUTC.h"
 #import "NSString+TimeStamp.h"
-
+#import "WXApi.h"
+#import "YYModel.h"
+#import "PayConfirmViewController.h"
 
 @interface OrderInfoViewController (){
     
@@ -38,6 +40,11 @@
     
     NSString *_token;
     NSString *_idNumber;
+    
+    
+    /* 余额*/
+    CGFloat balance;
+    
     
 }
 
@@ -67,7 +74,7 @@
         _unPaid = unpaid;
         _dataDic = [NSMutableDictionary dictionaryWithDictionary:@{
                                                                    @"amount":unpaid.price,
-                                                                   @"app_pay_params":unpaid.app_pay_params,                                                                   @"creatTime":unpaid.created_at==nil?@"":[unpaid.created_at timeStampToDate],
+                                                                   @"app_pay_params":unpaid.app_pay_params==nil?@"":unpaid.appid,                                                                   @"creatTime":unpaid.created_at==nil?@"":[unpaid.created_at timeStampToDate],
                                                                    @"grade":unpaid.grade,
                                                                    @"lessonTime":unpaid.preset_lesson_count,
                                                                    @"name":unpaid.name,
@@ -234,8 +241,8 @@
         _orderInfoView.payType.text = @"微信支付";
     }else if ([_dataDic[@"payType"]isEqualToString:@"alipay"]){
         _orderInfoView.payType.text = @"支付宝";
-    }else{
-        _orderInfoView.payType.text = @"线下支付";
+    }else if([_dataDic[@"payType"]isEqualToString:@"account"]){
+        _orderInfoView.payType.text = @"余额支付";
     }
     _orderInfoView.amount.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"amount"]];
     
@@ -268,7 +275,29 @@
     /* 加载数据和视图*/
     [self setUpViews];
     
+    /* 加载余额信息*/
+    [self requestBalance];
         
+}
+
+
+/* 加载余额信息*/
+- (void) requestBalance{
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+            balance = [dic[@"data"][@"balance"] floatValue];
+            
+        }else{
+            
+            
+        }
+        
+    }];
+
 }
 
 /* 取消订单*/
@@ -306,25 +335,85 @@
 
 /* 请求付款*/
 - (void)requestForPay{
+    
+    if ([_dataDic[@"payType"]isEqualToString:@"weixin"]) {
+        /* 使用微信支付*/
+        if ([WXApi isWXAppInstalled]==YES) {
+            
+            [self confirmRequestOrder];
+        }else{
+            [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
+        }
+        
+    }else if ([_dataDic[@"payType"]isEqualToString:@"account"]){
+        
+        /* 使用余额支付*/
+        if (balance>=[_dataDic[@"amount"]floatValue]) {
+            
+            [self confirmRequestOrder];
+        }else{
+            [self loadingHUDStopLoadingWithTitle:@"余额不足,请充值!"];
+        }
+        
+        
+    }else if ([_dataDic[@"payType"]isEqualToString:@"alipay"]){
+        /* 暂不支持支付宝*/
+        [self loadingHUDStopLoadingWithTitle:@"暂不支持支付宝"];
+        
+    }
+    
 
-
-    ConfirmChargeViewController *confirm =[[ConfirmChargeViewController alloc]initWithInfo:
-  @{
-    @"amount":_dataDic[@"amount"],
-    @"status":_dataDic[@"status"],
-    @"id":_dataDic[@"orderNumber"],
-    @"created_at":_dataDic[@"app_pay_params"][@"timestamp"],
-    @"pay_type":_dataDic[@"payType"],
-    @"pay_at":@"",
-    @"nonce_str":_dataDic[@"app_pay_params"][@"noncestr"],
-    @"updated_at":_dataDic[@"creatTime"],
-    @"prepay_id":_dataDic[@"app_pay_params"][@"prepayid"],
-    @"app_pay_params":_dataDic[@"app_pay_params"]}];
-    [self.navigationController pushViewController:confirm animated:YES];
-
+   
 
 
 }
+
+/* 加工数据,并且转入支付页面*/
+- (void)confirmRequestOrder{
+    
+    if (_unPaid) {
+      
+        
+    }else{
+        _unPaid = [Unpaid yy_modelWithDictionary:_dataDic];
+        _unPaid.preset_lesson_count = @"";
+        _unPaid.teacher_name = _dataDic[@"teacherName"];
+        _unPaid.price = _dataDic[@"amount"];
+        _unPaid.nonce_str = @"";
+        _unPaid.appid = @"";
+        _unPaid.pay_type = _dataDic[@"payType"];
+        _unPaid.timestamp = @"";
+        _unPaid.orderID = _dataDic[@"orderNumber"];
+        _unPaid.created_at = _dataDic[@"creatTime"];
+        _unPaid.updated_at = _dataDic[@"creatTime"];
+        _unPaid.pay_at = @"";
+        _unPaid.prepay_id = @"";
+        _unPaid.app_pay_params = @{};
+    }
+    
+    
+    
+    
+    PayConfirmViewController *confirm = [[PayConfirmViewController alloc]initWithData:@{
+                                                                                        @"id":_unPaid.orderID==nil?@"":_unPaid.orderID,
+                                                                                        @"pay_at":_unPaid.pay_at==nil?@"":_unPaid.pay_at,
+                                                                                        @"amount":_unPaid.price==nil?@"":_unPaid.price,
+                                                                                        @"created_at":_unPaid.created_at==nil?@"":_unPaid.created_at,
+                                                                                        @"source":@"app",
+                                                                                        @"pay_type":_unPaid.pay_type==nil?@"":_unPaid.pay_type,
+                                                                                        
+                                                                                        @"nonce_str":_unPaid.nonce_str==nil?@"":_unPaid.nonce_str,
+                                                                                        @"app_pay_str":@"",
+                                                                                        @"updated_at":_unPaid.updated_at==nil?@"":_unPaid.updated_at,
+                                                                                        @"prepay_id":_unPaid.prepay_id==nil?@"":_unPaid.prepay_id,
+                                                                                        @"app_pay_params":_unPaid.app_pay_params==nil?@"":_unPaid.app_pay_params,
+                                                                                        @"status":_unPaid.status==nil?@"":_unPaid.status}];
+    
+    [self.navigationController pushViewController:confirm animated:YES];
+
+    
+}
+
 
 /* 再次购买*/
 - (void)requestForBuyAgain{

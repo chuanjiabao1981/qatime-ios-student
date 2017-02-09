@@ -331,123 +331,155 @@
 /* 在可以使用余额的情况下 使用余额支付*/
 - (void)chooseBalance:(UIButton *)sender{
     
-    if (balanceEnable == YES) {
+    if (sender.selected ==NO) {
+        sender.selected =YES;
+        _payType = @"account";
+        [sender setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
+        _orderView.wechatButton.selected = NO;
+        [_orderView.wechatButton setImage:nil forState:UIControlStateNormal];
+        _orderView.alipayButton.selected = NO;
+        [_orderView.alipayButton setImage:nil forState:UIControlStateNormal];
         
-        if (sender.selected ==NO) {
-            sender.selected =YES;
-            _payType = @"account";
-            [sender setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
-            _orderView.wechatButton.selected = NO;
-            [_orderView.wechatButton setImage:nil forState:UIControlStateNormal];
-            _orderView.alipayButton.selected = NO;
-            [_orderView.alipayButton setImage:nil forState:UIControlStateNormal];
-            
-            
-        }else{
-            sender.selected = NO;
-            [sender setImage:nil forState:UIControlStateNormal];
-            
-        }
+        
     }else{
-        
-        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"余额不足,不可使用余额支付." cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-            
-        }];
+        sender.selected = NO;
+//        _payType = @"";
+        [sender setImage:nil forState:UIControlStateNormal];
         
     }
-
+    
+   
 }
-#pragma mark- 确认订单无误 提交订单
+#pragma mark- 准备提交订单
 - (void)applyOrder{
     
-    if (balanceEnable==NO) {
+    /* 在没有选择任何支付方式的情况下*/
+    if (_orderView.wechatButton.selected==NO&&_orderView.balanceButton.selected==NO&&_orderView.alipayButton.selected == NO) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择支付方式!" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }] ;
+        [alert addAction:sure];
         
-        if (_orderView.wechatButton.selected==NO&&_orderView.alipayButton.selected==NO) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择支付方式!" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
-            }] ;
-            [alert addAction:sure];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-
-        }else{
-            
-            /* 就直接提交订单*/
-            [self finishAndCommit];
-            
-        }
+        [self presentViewController:alert animated:YES completion:nil];
+        
     }else{
-        if (_orderView.wechatButton.selected==NO&&_orderView.alipayButton.selected==NO&&_orderView.balanceButton.selected==NO) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择支付方式!" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
-            }] ;
-            [alert addAction:sure];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-            
-        }else{
-            
-            /* 就直接提交订单*/
-            [self finishAndCommit];
-            
-        }
- 
+        
+        /* 选择了支付方式,就直接提交订单*/
+        [self finishAndCommit];
+        
     }
+
+    
+    
+    
+    
+    
+    
+//    if (balanceEnable==NO) {
+//        
+//            }else{
+//        if (_orderView.wechatButton.selected==NO&&_orderView.alipayButton.selected==NO&&_orderView.balanceButton.selected==NO) {
+//            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择支付方式!" preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                
+//            }] ;
+//            [alert addAction:sure];
+//            
+//            [self presentViewController:alert animated:YES completion:nil];
+//            
+//        }else{
+//            
+//            /* 就直接提交订单*/
+//            [self finishAndCommit];
+//            
+//        }
+// 
+//    }
     
 }
 
 #pragma mark- 提交课程订单
 - (void)finishAndCommit{
     
+    if (_classID&&_token) {
+        if ([_payType isEqualToString:@"weixin"]) {
+            
+            if ([WXApi isWXAppInstalled]==YES) {
+                [self loadingHUDStartLoadingWithTitle:@"提交订单"];
+                
+                [self postOrderInfo];
+                
+            }else{
+                [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
+            }
+            
+            
+        }else if ([_payType isEqualToString:@"account"]){
+            
+            if (balanceEnable == YES) {
+                
+                [self postOrderInfo];
+                
+                
+            }else{
+                
+                [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"余额不足,不可使用余额支付." cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                    
+                }];
+                
+            }
+
+            
+            
+        }else if ([_payType isEqualToString:@"alipay"]){
+            
+            
+            
+        }
+    }
     
     if (![_payType isEqualToString:@""]) {
         if (_classID&&_token) {
-            
-            [self loadingHUDStartLoadingWithTitle:@"提交订单"];
-            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-            [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-            [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/orders",Request_Header,_classID] parameters:@{@"pay_type":_payType} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-               
-                NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                [self loginStates:dic];
-                if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-                   /* 下单成功*/
-                    
-                    [self loadingHUDStopLoadingWithTitle:nil];
-                    
-                    dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
-                    
-//                    [self loadingHUDStopLoadingWithTitle:@"订单申请成功!"];
-                    
-                    if ([WXApi isWXAppInstalled]==YES) {
-                        
-                        /* 下单成功,发送下单成功通知*/
-                        [[NSNotificationCenter defaultCenter]postNotificationName:@"OrderSuccess" object:nil ];
-                        [self performSelector:@selector(turnToPayPage) withObject:nil afterDelay:0];
-                        
-                    }else{
-                        [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
-                    }
-                    
-                    
-                }else{
-                    
-                    [self loadingHUDStopLoadingWithTitle:@"订单申请失败!"];
-                    
-                }
-                
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                
-            }];
             
         }
         
     }
 }
+
+#pragma mark- 发送请求->用户提交订单
+- (void)postOrderInfo{
+    
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+    [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/orders",Request_Header,_classID] parameters:@{@"pay_type":_payType} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        [self loginStates:dic];
+        if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+            /* 下单成功*/
+            
+            [self loadingHUDStopLoadingWithTitle:nil];
+            
+            dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
+            /* 下单成功,发送下单成功通知*/
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"OrderSuccess" object:nil ];
+            [self performSelector:@selector(turnToPayPage) withObject:nil afterDelay:0];
+            
+        }else{
+            
+            [self loadingHUDStopLoadingWithTitle:@"订单申请失败!"];
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+
+}
+
+
 
 #pragma mark- 跳转到支付确认页面
 - (void)turnToPayPage{

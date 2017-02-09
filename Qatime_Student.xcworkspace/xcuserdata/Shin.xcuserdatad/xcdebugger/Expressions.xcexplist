@@ -17,12 +17,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke:ClassTimeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_unclosedArr">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "__33-[LoginViewController userLogin:]_block_invoke:LoginViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController keyboardWillShow:]:NELivePlayerViewController.m">
@@ -164,17 +159,17 @@
       </ContextState>
       <ContextState
          contextName = "-[MyOrderViewController payOrder:]:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unpaidArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.441:PersonalInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[AppDelegate jpushNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[UUMessageCell setMessageFrame:]:UUMessageCell.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "subStr">
-            </PersistentString>
-         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__45-[OrderInfoViewController requestForBuyAgain]_block_invoke_2:OrderInfoViewController.m">
@@ -193,7 +188,12 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.441:PersonalInfoViewController.m">
+         contextName = "-[UUMessageCell setMessageFrame:]:UUMessageCell.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "subStr">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[TutoriumInfoViewController requestOrder]:TutoriumInfoViewController.m">
@@ -262,10 +262,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -298,15 +298,15 @@
          contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.679:LivePlayerViewController.m">
       </ContextState>
       <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.438:PersonalInfoViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[NELivePlayerViewController tableView:cellForRowAtIndexPath:]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_membersArr">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.438:PersonalInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController mediaControlTurnToFullScreenModeWithMainView:]:NELivePlayerViewController.m">
@@ -366,10 +366,10 @@
          contextName = "-[BarrageWalkTextSprite bindingView]:BarrageWalkTextSprite.m">
       </ContextState>
       <ContextState
-         contextName = "-[ChatViewController makeMessages:]:ChatViewController.m">
+         contextName = "-[PersonalViewController changeHead:]:PersonalViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[PersonalViewController changeHead:]:PersonalViewController.m">
+         contextName = "-[ChatViewController makeMessages:]:ChatViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[ClassSettingViewController tableView:cellForRowAtIndexPath:]:ClassSettingViewController.m">
@@ -406,6 +406,9 @@
          <PersistentStrings>
             <PersistentString
                value = "_dataDic">
+            </PersistentString>
+            <PersistentString
+               value = "balance">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -554,18 +557,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NELivePlayerViewController initNIMSDK]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_chat_Account">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.856:LivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_teacher">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController initNIMSDK]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chat_Account">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -951,6 +954,14 @@
          contextName = "-[AppDelegate onResp:]:AppDelegate.m">
       </ContextState>
       <ContextState
+         contextName = "-[OrderInfoViewController confirmRequestOrder]:OrderInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[CashRecordViewController requestRecharge]:CashRecordViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1093,15 +1104,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.450:PersonalInfoViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__46-[NELivePlayerViewController setupVideoPlayer]_block_invoke:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_teacherPullAddress">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.450:PersonalInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[OrderInfoViewController setUpViews]:OrderInfoViewController.m">
@@ -1228,10 +1239,10 @@
          contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke:LivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1406,7 +1417,12 @@
          contextName = "__43-[NoticeIndexViewController requestNotices]_block_invoke:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__33-[LoginViewController userLogin:]_block_invoke:LoginViewController.m">
+         contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unclosedArr">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
    </ContextStates>
 </VariablesViewState>
