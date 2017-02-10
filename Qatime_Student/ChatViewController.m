@@ -515,12 +515,6 @@
 
 
 
-- (BOOL)fetchMessageAttachment:(NIMMessage *)message
-                         error:(NSError **)error{
-    
-    return YES;
-}
-
 /* 发送您已加入聊天室的通知消息*/
 
 - (void)sendNoticeIn{
@@ -537,29 +531,57 @@
 /* 制作消息内容*/
 - (void)dealTheFunctionData:(NSDictionary *)dic{
     
-    
+    /* 文字类型消息*/
     if ([dic[@"type"]isEqual:[NSNumber numberWithInteger:0]]) {
         
         /* 重写了UUMolde的添加自己的item方法 */
         [self.chatModel addSpecifiedItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name ];
     }else if ([dic[@"type"]isEqual:[NSNumber numberWithInteger:1]]){
-        
+        /* 图片类型消息*/
         [self.chatModel addSpecifiedImageItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name];
         
+    }else if ([dic[@"type"]isEqualToNumber:@2]){
+        /* 语音类型消息*/
+        [self.chatModel addSpecifiedVoiceItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name];
     }
     
     [self.chatTableView reloadData];
+    [self tableViewScrollToBottom];
     
+
+}
+
+
+#pragma mark- 云信 - 发送消息的回调
+//即将发送消息回调
+- (void)willSendMessage:(NIMMessage *)message{
     
     
 }
 
+//消息发送进度回调----文本消息没有这个回调
+- (void)sendMessage:(NIMMessage *)message progress:(CGFloat)progress{
+ 
+    NSLog(@"发送进度::%f",progress);
+    
+}
 
-/* 接收消息*/
+
+//消息发送完毕回调
+- (void)sendMessage:(NIMMessage *)message didCompleteWithError:(NSError *)error{
+    
+    NSLog(@"%ld",(long)message.messageType);
+}
+//重新发送消息 主动方法
+//- (BOOL)resendMessage:(NIMMessage *)message error:(NSError **)error
+
+
+
+#pragma mark- 云信--接收消息的回调
+/* 接收消息的回调*/
 - (void)onRecvMessages:(NSArray<NIMMessage *> *)messages{
     
     for (int i = 0; i<messages.count; i++) {
-        
         
         NIMMessage *message =messages[i];
         
@@ -589,66 +611,79 @@
         /* 如果收到的是图片消息*/
         else if (message.messageType == NIMMessageTypeImage){
             
+        }else if (message.messageType == NIMMessageTypeAudio){
+            /* 如果收到的是音频消息*/
+            
+            
         }
         
     }
     
 }
-
-/* 发送消息进度*/
-- (void)sendMessage:(NIMMessage *)message progress:(CGFloat)progress{
-
-    NSLog(@"发送进度::%f",progress);
-
+//如果收到的是图片，视频等需要下载附件的消息，在回调的处理中还需要调用
+//（SDK 默认会在第一次收到消息时自动调用）
+- (BOOL)fetchMessageAttachment:(NIMMessage *)message  error:(NSError **)error{
     
+    return YES;
 }
 
 
-
-
-/* 接收到消息后 ，在本地创建消息*/
-- (void)makeOthersMessageWith:(NSInteger)msgNum andMessage:(UUMessage *)message{
-    
-    [self.chatModel.dataSource addObject:message];
-    
-}
 /* 接收图片的进度回调*/
 - (void)fetchMessageAttachment:(NIMMessage *)message progress:(CGFloat)progress{
 
-    NSLog(@"接收进度::%f",progress);
-
+    NSLog(@"接收进度:----- %f",progress);
     
 }
 
-/* 接收图片完成后的回调*/
+/* 接收到数据完成后的回调*/
 - (void)fetchMessageAttachment:(NIMMessage *)message didCompleteWithError:(NSError *)error{
 
-    NSLog(@"收到图片");
-
-    
-    /* 在本地创建对方的消息消息*/
-    NSString *iconURL = @"".mutableCopy;
-    NSString *senderName = @"".mutableCopy;
-    for (Chat_Account *mod in _userList) {
-        if ([message.from isEqualToString:mod.accid]) {
-            iconURL = mod.icon;
-            senderName = mod.name;
+    if (message.messageType == NIMMessageTypeImage) {
+        /* 收到图片*/
+        NSLog(@"收到图片");
+        
+        /* 在本地创建对方的消息消息*/
+        NSString *iconURL = @"".mutableCopy;
+        NSString *senderName = @"".mutableCopy;
+        for (Chat_Account *mod in _userList) {
+            if ([message.from isEqualToString:mod.accid]) {
+                iconURL = mod.icon;
+                senderName = mod.name;
+            }
         }
+        
+        NIMImageObject *imageObject = message.messageObject;
+        
+        NSLog(@"%@",imageObject.thumbPath);
+        NSLog(@"%@",imageObject.path);
+        
+        UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
+        
+        NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:senderName andIcon:iconURL type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
+        
+        [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
+        
+    }else if (message.messageType == NIMMessageTypeAudio){
+        /* 收到语音消息*/
+        NSLog(@"收到语音");
+        
+        /* 在本地创建对方的消息消息*/
+        NSString *iconURL = @"".mutableCopy;
+        NSString *senderName = @"".mutableCopy;
+        for (Chat_Account *mod in _userList) {
+            if ([message.from isEqualToString:mod.accid]) {
+                iconURL = mod.icon;
+                senderName = mod.name;
+            }
+        }
+        
+        NIMAudioObject *audioObject = message.messageObject;
+        //audioObject.path 本地音频地址
+        
+        
+        
     }
     
-    NIMImageObject *imageObject = message.messageObject;
-
-    NSLog(@"%@",imageObject.thumbPath);
-    NSLog(@"%@",imageObject.path);
-
-    
-    
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
-    
-    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:senderName andIcon:iconURL type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
-    
-    
-    [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
     
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
@@ -657,6 +692,12 @@
 }
 
 
+/* 接收到消息后 ，在本地创建消息*/
+- (void)makeOthersMessageWith:(NSInteger)msgNum andMessage:(UUMessage *)message{
+    
+    [self.chatModel.dataSource addObject:message];
+    
+}
 
 #pragma mark- tableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -678,7 +719,7 @@
     UUMessageCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
     if (!cell) {
         cell=[[UUMessageCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-         
+        
     }
     
     if (self.chatModel.dataSource.count>indexPath.row) {
@@ -850,6 +891,36 @@
     
     
 }
+#pragma mark- 发送语音消息的回调
+- (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendVoice:(NSData *)voice time:(NSInteger)second{
+    
+    NSDictionary *dic = @{@"voice": voice,
+                          @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)second],
+                          @"type": @(UUMessageTypeVoice)};
+    
+    [self dealTheFunctionData:dic];
+    
+    /* 云信发送语音消息*/
+    
+    
+//    声音文件只支持 aac 和 amr 类型
+     NSMutableString *tmpDir = [NSMutableString stringWithString:NSTemporaryDirectory()];
+    [tmpDir appendString:@"mp3.aac"];
+    
+    //构造消息
+    NIMAudioObject *audioObject = [[NIMAudioObject alloc] initWithSourcePath:tmpDir];
+    NIMMessage *message        = [[NIMMessage alloc] init];
+    message.messageObject      = audioObject;
+    
+    //发送消息
+    [[NIMSDK sharedSDK].chatManager addDelegate:self];
+    [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
+    
+    
+    
+    
+    
+}
 
 
 
@@ -949,6 +1020,95 @@
     
     
 }
+
+
+#pragma mark- 音频功能的所有回调
+
+//切换音频的输出设备
+//- (BOOL)switchAudioOutputDevice:(NIMAudioOutputDevice)outputDevice
+//
+//判断是否正在播放音频
+//
+//- (BOOL)isPlaying
+//
+//播放音频
+//
+//- (void)play:(NSString *)filepath;
+//
+//其中 filePath 为音频文件的路径，该操作会触发以下回调：
+//
+//初始化工作完成，准备开始播放音频的时候会触发
+//
+//- (void)playAudio:(NSString *)filePath didBeganWithError:(NSError *)error
+//
+//音频播放结束的时候会触发
+//
+//- (void)playAudio:(NSString *)filePath didCompletedWithError:(NSError *)error
+//
+//停止播放音频
+//
+//- (void)stopPlay
+//
+//该操作会触发回调：
+//
+//- (void)playAudio:(NSString *)filePath didCompletedWithError:(NSError *)error
+//
+//录制音频
+//
+//判断是否正在录制音频
+//
+//- (BOOL)isRecording
+//
+//录制音频
+//
+//- (void)recordForDuration:(NSTimeInterval)duration;
+//
+//其中 duration 限制了录音的最大时长，该操作会触发以下回调：
+//
+//初始化工作完成，准备开始录制的时候会触发
+//- (void)recordAudio:(NSString *)filePath didBeganWithError:(NSError *)error
+//
+//当到录音时长达到设置的最大时长，或者手动停止录音会触发
+//- (void)recordAudio:(NSString *)filePath didCompletedWithError:(NSError *)error
+//
+//按照一定的时间间隔触发
+//- (void)recordAudioProgress:(NSTimeInterval)currentTime
+//
+//其中 currentTime 为当前的录音时长，触发该回调的时间间隔可以通过以下属性设置，默认为 0.3 秒
+//
+//@property (nonatomic， assign) NSTimeInterval recordProgressUpdateTimeInterval
+//
+//停止录制音频
+//- (void)stopRecord
+//
+//该操作会触发
+//- (void)recordAudio:(NSString *)filePath didCompletedWithError:(NSError *)error
+//
+//取消录音
+//- (void)cancelRecord
+//
+//该操作会触发
+//- (void)recordAudioDidCancelled
+//
+//获取录音分贝
+//
+//获取峰值
+//- (float)recordPeakPower
+//
+//获取平均值
+//- (float)recordAveragePower
+//
+//来电打断
+//
+//来电时会根据正在播放音频还是录音，分别触发
+//- (void)playAudioInterruptionBegin
+//
+//- (void)recordAudioInterruptionBegin
+//
+//通话结束返回应用会分别触发
+//- (void)playAudioInterruptionEnd
+//
+//- (void)recordAudioInterruptionEnd
 
 
 - (void)keyboardWillShow:(NSNotification *)notification {

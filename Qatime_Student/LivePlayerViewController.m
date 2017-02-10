@@ -3265,6 +3265,8 @@ bool ismute     = NO;
 #pragma mark- 聊天功能的方法
 
 #pragma mark- 聊天ui的设置
+
+//
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendVoice:(NSData *)voice time:(NSInteger)second{
     NSDictionary *dic = @{@"voice": voice,
                           @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)second],

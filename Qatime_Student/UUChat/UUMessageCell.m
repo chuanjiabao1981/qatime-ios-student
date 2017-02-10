@@ -25,14 +25,17 @@
 #import "UIImageView+WebCache.h"
 #import "XHImageViewer.h"
 #import "UIImageView+XHURLDownload.h"
+#import "UUAVAudioPlayer.h"
 
 
 
 //#import "YYPhotoBrowseView.h"
 
-@interface UUMessageCell ()<XHImageViewerDelegate>
+@interface UUMessageCell ()<XHImageViewerDelegate,UUAVAudioPlayerDelegate>
 {
     
+    AVAudioPlayer *player;
+    UUAVAudioPlayer *audio;
     NSString *voiceURL;
     NSData *songData;
     
@@ -92,7 +95,7 @@
         [self.btnContent addTarget:self action:@selector(btnContentClick)  forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:self.btnContent];
         
-//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(UUAVAudioPlayerDidFinishPlay) name:@"VoicePlayHasInterrupt" object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(UUAVAudioPlayerDidFinishPlay) name:@"VoicePlayHasInterrupt" object:nil];
         
         //红外线感应监听
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -123,10 +126,10 @@
     }
 }
 
-
+//聊天气泡点击事件
 - (void)btnContentClick{
     
-    // show text and gonna copy that
+    // 显示文字
     if (self.messageFrame.message.type == UUMessageTypeText)
     {
         [self.btnContent becomeFirstResponder];
@@ -135,25 +138,50 @@
         [menu setMenuVisible:YES animated:YES];
     }
     /* 显示图片*/
-    else if (self.messageFrame.message.type == UUMessageTypePicture)
-    {
-        
+    else if (self.messageFrame.message.type == UUMessageTypePicture){
         XHImageViewer *viewer = [[XHImageViewer alloc]init];
         viewer.delegate = self;
         UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]] ;
         UIImageView *btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
-        
-        
-//        [btnImageView setDefaultLoadingView];
         [btnImageView loadWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_messageFrame.message.imagePath]] placeholer:image showActivityIndicatorView:YES];
-        
-        
         [viewer showWithImageViews:@[btnImageView] selectedView:btnImageView];
-        
+    }else if (self.messageFrame.message.type == UUMessageTypeVoice){
+        if(!contentVoiceIsPlaying){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"VoicePlayHasInterrupt" object:nil];
+            contentVoiceIsPlaying = YES;
+            audio = [UUAVAudioPlayer sharedInstance];
+            audio.delegate = self;
+            //        [audio playSongWithUrl:voiceURL];
+            [audio playSongWithData:songData];
+        }else{
+            [self UUAVAudioPlayerDidFinishPlay];
+        }
 
     }
 
 }
+
+
+#pragma mark- 音频播放类
+- (void)UUAVAudioPlayerBeiginLoadVoice
+{
+    [self.btnContent benginLoadVoice];
+}
+- (void)UUAVAudioPlayerBeiginPlay
+{
+    //开启红外线感应
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+    [self.btnContent didLoadVoice];
+}
+- (void)UUAVAudioPlayerDidFinishPlay
+{
+    //关闭红外线感应
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+    contentVoiceIsPlaying = NO;
+    [self.btnContent stopPlay];
+    [[UUAVAudioPlayer sharedInstance]stopSound];
+}
+
 
 - (void)imageViewer:(XHImageViewer *)imageViewer  willDismissWithSelectedView:(UIImageView*)selectedView{
     
@@ -212,10 +240,10 @@
     
     //判断:自己发送的消息
     if (messageFrame.message.from == UUMessageFromMe) {
+        self.btnContent.isMyMessage = YES;
         //判断:消息类型是文本
         if (messageFrame.message.type == UUMessageTypeText) {
             
-            self.btnContent.isMyMessage = YES;
             
             [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             /* YYText改写*/
@@ -224,18 +252,24 @@
             self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
             //判断:消息类型是图片
         }else if(messageFrame.message.type == UUMessageTypePicture){
-            self.btnContent.isMyMessage = YES;
+            
             [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
 
+        }else if(messageFrame.message.type == UUMessageTypePicture){
+            
+            [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
+            
         }
+
     }else{
         //判断:别人发送的消息
         
+        self.btnContent.isMyMessage = NO;
         //判断:消息类型是文本
         if (messageFrame.message.type == UUMessageTypeText) {
             
-            self.btnContent.isMyMessage = NO;
             [self.btnContent setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
             /* YYText改写*/
             [self.btnContent.contentTextView setTextColor:[UIColor whiteColor]];
@@ -243,9 +277,14 @@
             self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentLeft, ChatContentBottom, ChatContentRight);
             //判断:消息类型是图片
         }else if(messageFrame.message.type == UUMessageTypePicture){
-            self.btnContent.isMyMessage = NO;
+            
             [self.btnContent setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
             self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentLeft, ChatContentBottom, ChatContentRight);
+        }else if(messageFrame.message.type == UUMessageTypePicture){
+            
+            [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
+            
         }
     }
     
@@ -270,9 +309,10 @@
             case UUMessageTypeText:{
                 
                 self.title.hidden = NO;
-                self.btnContent.title.hidden = NO;
+                self.btnContent.title.hidden = YES;
                 self.btnContent.contentTextView.hidden= NO;
                 self.btnContent.backImageView.hidden = YES;
+                self.btnContent.voiceBackView.hidden = YES;
                 
                 NSString *title = messageFrame.message.strContent;
                 if (title ==nil) {
@@ -341,6 +381,7 @@
                 self.title.hidden = YES;
                 self.btnContent.title.hidden = YES;
                 self.btnContent.contentTextView.hidden= YES;
+                self.btnContent.voiceBackView.hidden = YES;
                 self.btnContent.backImageView.hidden = NO;
                 self.btnContent.backImageView.image = messageFrame.message.picture;
                 self.btnContent.backImageView.frame = CGRectMake(0, 0, self.btnContent.frame.size.width, self.btnContent.frame.size.height);
@@ -350,6 +391,18 @@
             
                 break;
             case UUMessageTypeVoice:{
+                
+                self.title.hidden = YES;
+                self.btnContent.title.hidden = YES;
+                self.btnContent.contentTextView.hidden= YES;
+                self.btnContent.backImageView.hidden = YES;
+                self.btnContent.titleLabel.hidden=YES;
+                self.btnContent.voiceBackView.hidden = NO;
+         
+                self.btnContent.second.textColor= [UIColor whiteColor];
+                self.btnContent.second.text = [NSString stringWithFormat:@"%@''",messageFrame.message.strVoiceTime];
+                songData = messageFrame.message.voice;
+                //            voiceURL = [NSString stringWithFormat:@"%@%@",RESOURCE_URL_HOST,message.strVoice];
                 
             }
                 break;
@@ -365,13 +418,8 @@
                 self.title.hidden = NO;
                 self.btnContent.title.hidden = NO;
                 self.btnContent.contentTextView.hidden= NO;
-//                self.btnContent.backImageView.hidden = NO;
                 self.btnContent.titleLabel.hidden=NO;
-//                [self.btnContent.backImageView setImage:messageFrame.message.picture];
-//                self.btnContent.backImageView.frame = CGRectMake(0, 0, self.btnContent.frame.size.width, self.btnContent.frame.size.height);
-//                [self makeMaskView:self.btnContent.backImageView withImage:normal];
-//
-                
+                self.btnContent.voiceBackView.hidden = YES;
                 NSString *title = messageFrame.message.strContent;
                 if (title ==nil) {
                     title =@"";
@@ -447,6 +495,7 @@
                 self.btnContent.title.hidden = YES;
                 self.btnContent.contentTextView.hidden= YES;
                 self.btnContent.backImageView.hidden = NO;
+                self.btnContent.voiceBackView.hidden = YES;
                 self.btnContent.titleLabel.hidden=YES;
                 [self.btnContent.backImageView setImage:messageFrame.message.picture];
                 self.btnContent.backImageView.frame = CGRectMake(0, 0, self.btnContent.frame.size.width, self.btnContent.frame.size.height);
@@ -454,9 +503,19 @@
 
             }
                 break;
-            case UUMessageTypeVoice:
-            {
+            case UUMessageTypeVoice:{
                 
+                self.title.hidden = YES;
+                self.btnContent.title.hidden = YES;
+                self.btnContent.contentTextView.hidden= YES;
+                self.btnContent.backImageView.hidden = YES;
+                self.btnContent.titleLabel.hidden=YES;
+                self.btnContent.voiceBackView.hidden = NO;
+                self.btnContent.second.text = [NSString stringWithFormat:@"%@''",messageFrame.message.strVoiceTime];
+                songData = messageFrame.message.voice;
+                //            voiceURL = [NSString stringWithFormat:@"%@%@",RESOURCE_URL_HOST,message.strVoice];
+
+
             }
                 break;
                 

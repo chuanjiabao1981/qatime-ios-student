@@ -193,7 +193,7 @@
 
 - (NSString *)mp3Path
 {
-    NSString *mp3Path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"mp3.caf"];
+    NSString *mp3Path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"mp3.aac"];
     return mp3Path;
 }
 

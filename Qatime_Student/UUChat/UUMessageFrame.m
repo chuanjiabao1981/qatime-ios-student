@@ -65,6 +65,7 @@
         default:
             break;
     }
+    
     if (_message.from == UUMessageFromMe) {
         contentX = iconX - contentSize.width - ChatContentLeft - ChatContentRight - ChatMargin;
     }

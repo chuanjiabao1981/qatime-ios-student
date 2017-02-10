@@ -22,6 +22,7 @@
 #import "ChatList.h"
 #import "UIAlertController+Blocks.h"
 #import "UIViewController+Login.h"
+#import "UIViewController+AFHTTP.h"
 
 
 @interface NoticeIndexViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,NIMConversationManagerDelegate,NIMLoginManagerDelegate,UIGestureRecognizerDelegate>{
@@ -43,6 +44,9 @@
     /* 通知信息数组*/
     NSMutableArray *_noticeArray;
     
+    
+    /* 是否查看了系统消息*/
+    BOOL checkedNotices ;
     
 }
 
@@ -90,6 +94,38 @@
         typeof(self) __weak weakSelf = self;
         [ _.segmentControl setIndexChangeBlock:^(NSInteger index) {
             [weakSelf.noticeIndexView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64) animated:YES];
+            
+            if (index==1) {
+                
+                if (checkedNotices==NO) {
+                    checkedNotices = YES;
+                    
+                    /* 异步线程发送已读消息请求*/
+                    dispatch_queue_t notice = dispatch_queue_create("notice", DISPATCH_QUEUE_SERIAL);
+                    dispatch_sync(notice, ^{
+                        
+                        if (_noticeArray) {
+                            
+                            if (_noticeArray.count>0) {
+                                
+                                for (SystemNotice *notice in _noticeArray) {
+                                    
+                                    if (notice.read == NO) {
+                                        
+                                        [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/notifications/%@/read",Request_Header,notice.noticeID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+                                            
+                                        }];
+                                    }
+                                }
+                            }
+                        }
+                        
+                    });
+                    
+                }else{
+                    
+                }
+            }
         }];
         [_.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
         
@@ -289,7 +325,6 @@
             }else{
                 /* 有数据的情况下*/
                 for (NSDictionary *dics in dataArr) {
-                    
                     SystemNotice *notice = [SystemNotice yy_modelWithJSON:dics];
                     notice.noticeID = dics[@"id"];
                     [_noticeArray addObject:notice];
@@ -399,7 +434,16 @@
             if (_noticeArray.count>indexPath.row) {
                 
                 cell.model = _noticeArray[indexPath.row];
-              
+                
+                if (cell.model.read == YES) {
+                    cell.content.textColor = [UIColor lightGrayColor];
+                    cell.time.textColor = [UIColor lightGrayColor];
+                }else{
+                    cell.content.textColor = [UIColor blackColor];
+                    cell.time.textColor = [UIColor blackColor];
+                    
+                }
+                
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             }
             

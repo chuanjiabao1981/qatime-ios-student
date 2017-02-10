@@ -37,6 +37,10 @@
 @property (nonatomic, retain) UIButton *btnVoiceRecord;
 @property (nonatomic, retain) UITextView *TextViewInput;
 
+//添加一个,切换语音和键盘的按钮
+@property(nonatomic,strong) UIButton *voiceSwitchTextButton ;
+
+
 @property (nonatomic, assign) BOOL isAbleToSendTextMessage;
 
 @property (nonatomic, assign) UIViewController *superVC;

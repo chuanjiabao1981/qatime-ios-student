@@ -61,23 +61,55 @@
         [self addSubview:self.btnSendMessage];
         self.btnSendMessage.sd_layout
         .rightSpaceToView(self,10)
-        .topSpaceToView(self,5)
+        .topSpaceToView(self,10)
         .bottomSpaceToView(self,10)
         .widthEqualToHeight();
         
-        //改变状态（语音、文字） 切换表情键盘
+        //切换表情键盘
         self.btnChangeVoiceState = [UIButton buttonWithType:UIButtonTypeCustom];
-        
         isbeginVoiceRecord = NO;
         [self.btnChangeVoiceState setBackgroundImage:[UIImage imageNamed:@"face"] forState:UIControlStateNormal];
         self.btnChangeVoiceState.titleLabel.font = [UIFont systemFontOfSize:12*ScrenScale];
         
         [self addSubview:self.btnChangeVoiceState];
         self.btnChangeVoiceState.sd_layout
-        .rightSpaceToView(self.btnSendMessage,5)
-        .topSpaceToView(self,5)
+        .rightSpaceToView(self.btnSendMessage,10)
+        .topSpaceToView(self,10)
         .bottomSpaceToView(self,10)
         .widthEqualToHeight();
+        
+        //切换语音和文字的按钮(输入框左侧的按钮)
+        self.voiceSwitchTextButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.voiceSwitchTextButton setImage:[UIImage imageNamed:@"chat_voice_record"] forState:UIControlStateNormal];
+        [self.voiceSwitchTextButton addTarget:self action:@selector(voiceRecord:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:self.voiceSwitchTextButton];
+        self.voiceSwitchTextButton.sd_layout
+        .leftSpaceToView(self,10)
+        .topSpaceToView(self,10)
+        .bottomSpaceToView(self,10)
+        .widthEqualToHeight();
+        
+        //语音按钮
+        //语音录入键
+        self.btnVoiceRecord = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self addSubview:self.btnVoiceRecord];
+        self.btnVoiceRecord.sd_layout
+        .leftSpaceToView(self.voiceSwitchTextButton,10)
+        .rightSpaceToView(self.btnChangeVoiceState,10)
+        .topSpaceToView(self,10)
+        .bottomSpaceToView(self,10);
+        
+        self.btnVoiceRecord.hidden = YES;
+        [self.btnVoiceRecord setBackgroundImage:[UIImage imageNamed:@"chat_message_back"] forState:UIControlStateNormal];
+        [self.btnVoiceRecord setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [self.btnVoiceRecord setTitleColor:[[UIColor lightGrayColor] colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
+        [self.btnVoiceRecord setTitle:@"按住说话" forState:UIControlStateNormal];
+        [self.btnVoiceRecord setTitle:@"松开发送" forState:UIControlStateHighlighted];
+        [self.btnVoiceRecord addTarget:self action:@selector(beginRecordVoice:) forControlEvents:UIControlEventTouchDown];
+        [self.btnVoiceRecord addTarget:self action:@selector(endRecordVoice:) forControlEvents:UIControlEventTouchUpInside];
+        [self.btnVoiceRecord addTarget:self action:@selector(cancelRecordVoice:) forControlEvents:UIControlEventTouchUpOutside | UIControlEventTouchCancel];
+        [self.btnVoiceRecord addTarget:self action:@selector(RemindDragExit:) forControlEvents:UIControlEventTouchDragExit];
+        [self.btnVoiceRecord addTarget:self action:@selector(RemindDragEnter:) forControlEvents:UIControlEventTouchDragEnter];
         
         
         //输入框
@@ -89,9 +121,9 @@
         self.TextViewInput.layer.borderColor = [[[UIColor lightGrayColor] colorWithAlphaComponent:0.4] CGColor];
         [self addSubview:self.TextViewInput];
          self.TextViewInput.sd_layout
-        .leftSpaceToView(self,10)
+        .leftSpaceToView(self.voiceSwitchTextButton,10)
         .rightSpaceToView(self.btnChangeVoiceState,10)
-        .topSpaceToView(self,5)
+        .topSpaceToView(self,10)
         .bottomSpaceToView(self,10);
         
     
@@ -112,11 +144,19 @@
 
 
 
-//改变输入与录音状态
-- (void)voiceRecord:(UIButton *)sender
-{
+//语音/文字输入切换
+- (void)voiceRecord:(UIButton *)sender{
     
-    [self.TextViewInput becomeFirstResponder];
+    self.btnVoiceRecord.hidden = !self.btnVoiceRecord.hidden;
+    self.TextViewInput.hidden  = !self.TextViewInput.hidden;
+    isbeginVoiceRecord = !isbeginVoiceRecord;
+    if (isbeginVoiceRecord) {
+        [self.voiceSwitchTextButton setImage:[UIImage imageNamed:@"chat_ipunt_message"] forState:UIControlStateNormal];
+        [self.TextViewInput resignFirstResponder];
+    }else{
+        [self.voiceSwitchTextButton setImage:[UIImage imageNamed:@"chat_voice_record"] forState:UIControlStateNormal];
+        [self.TextViewInput becomeFirstResponder];
+    }
     
     
 }
@@ -137,6 +177,79 @@
 
 
     
+}
+
+#pragma mark- 所有的有关录音的方法
+
+- (void)beginRecordVoice:(UIButton *)button
+{
+    [MP3 startRecord];
+    playTime = 0;
+    playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
+    [UUProgressHUD show];
+}
+
+- (void)endRecordVoice:(UIButton *)button
+{
+    if (playTimer) {
+        [MP3 stopRecord];
+        [playTimer invalidate];
+        playTimer = nil;
+    }
+}
+
+- (void)cancelRecordVoice:(UIButton *)button
+{
+    if (playTimer) {
+        [MP3 cancelRecord];
+        [playTimer invalidate];
+        playTimer = nil;
+    }
+    [UUProgressHUD dismissWithError:@"Cancel"];
+}
+
+- (void)RemindDragExit:(UIButton *)button
+{
+    [UUProgressHUD changeSubTitle:@"Release to cancel"];
+}
+
+- (void)RemindDragEnter:(UIButton *)button
+{
+    [UUProgressHUD changeSubTitle:@"Slide up to cancel"];
+}
+- (void)countVoiceTime
+{
+    playTime ++;
+    if (playTime>=60) {
+        [self endRecordVoice:nil];
+    }
+}
+#pragma mark - Mp3RecorderDelegate
+
+//回调录音资料
+- (void)endConvertWithData:(NSData *)voiceData{
+    
+    //音频消息发送方法
+    [self.delegate UUInputFunctionView:self sendVoice:voiceData time:playTime+1];
+    
+    [UUProgressHUD dismissWithSuccess:@"Success"];
+
+    //缓冲消失时间 (最好有block回调消失完成)
+    self.voiceSwitchTextButton.enabled = NO;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.voiceSwitchTextButton.enabled = YES;
+    });
+}
+
+- (void)failRecord
+{
+    [UUProgressHUD dismissWithSuccess:@"Too short"];
+    
+    //缓冲消失时间 (最好有block回调消失完成)
+    self.voiceSwitchTextButton.enabled = NO;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.voiceSwitchTextButton.enabled = YES;
+    });
 }
 
 

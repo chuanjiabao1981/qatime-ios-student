@@ -175,6 +175,7 @@
 		546F5C591DFD760000528F79 /* WithDrawInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546F5C581DFD760000528F79 /* WithDrawInfoViewController.m */; };
 		547A7EF71DD411DB00F1282B /* TeachersPublic_Classes.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EF61DD411DB00F1282B /* TeachersPublic_Classes.m */; };
 		547A7EFD1DD416F100F1282B /* ListenAndBuyTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EFC1DD416F100F1282B /* ListenAndBuyTabBar.m */; };
+		547AD51E1E4D6A7000239907 /* UUAVAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 547AD51D1E4D6A7000239907 /* UUAVAudioPlayer.m */; };
 		547E89841DD1705100749366 /* TeacherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E89831DD1705100749366 /* TeacherView.m */; };
 		547E898A1DD1BC9900749366 /* RecommandTeacher.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E89891DD1BC9900749366 /* RecommandTeacher.m */; };
 		547E898D1DD1D01B00749366 /* TutoriumInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E898C1DD1D01B00749366 /* TutoriumInfoView.m */; };
@@ -757,6 +758,8 @@
 		547A81221DD4737D00F1282B /* libyuv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libyuv.a; path = "../../../Desktop/LiveStreaming_iOS_SDK_V1.2.2 2/滤镜版本/libs/libyuv.a"; sourceTree = "<group>"; };
 		547A81231DD4737D00F1282B /* LSMediaCapture.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = LSMediaCapture.bundle; path = "../../../Desktop/LiveStreaming_iOS_SDK_V1.2.2 2/滤镜版本/libs/LSMediaCapture.bundle"; sourceTree = "<group>"; };
 		547A81311DD474B300F1282B /* libNELivePlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNELivePlayer.a; path = ../../../Desktop/LivePlayer_iOS_Demo_v1.2.1/Demo/NELivePlayer/libs/libNELivePlayer.a; sourceTree = "<group>"; };
+		547AD51C1E4D6A7000239907 /* UUAVAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUAVAudioPlayer.h; sourceTree = "<group>"; };
+		547AD51D1E4D6A7000239907 /* UUAVAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUAVAudioPlayer.m; sourceTree = "<group>"; };
 		547E89821DD1705100749366 /* TeacherView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeacherView.h; sourceTree = "<group>"; };
 		547E89831DD1705100749366 /* TeacherView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeacherView.m; sourceTree = "<group>"; };
 		547E89881DD1BC9900749366 /* RecommandTeacher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommandTeacher.h; sourceTree = "<group>"; };
@@ -2168,6 +2171,8 @@
 				548328F21DDC75050053AB29 /* ChatModel.m */,
 				548328BE1DDC6F360053AB29 /* UUImageAvatarBrowser.h */,
 				548328BF1DDC6F360053AB29 /* UUImageAvatarBrowser.m */,
+				547AD51C1E4D6A7000239907 /* UUAVAudioPlayer.h */,
+				547AD51D1E4D6A7000239907 /* UUAVAudioPlayer.m */,
 				548328C01DDC6F360053AB29 /* UUInputFunctionView.h */,
 				548328C11DDC6F360053AB29 /* UUInputFunctionView.m */,
 				548328C21DDC6F360053AB29 /* UUMessage.h */,
@@ -2316,7 +2321,6 @@
 			children = (
 				54F34D791DE70BA500D6FC85 /* LYCoreLabel */,
 				54DBA4961DE4423300A67A90 /* YZEmotionKeyboard */,
-				5483288C1DDC6F360053AB29 /* UUChat */,
 				54E120D11DDC2E04004F8012 /* SDK */,
 			);
 			name = "网易云信";
@@ -2505,6 +2509,7 @@
 				54CB266C1DF02FC600AE7414 /* WeChatSDK */,
 				54A47B661DE42610000216D9 /* emoji */,
 				54955D601DDBF1180079EB99 /* 网易云信 */,
+				5483288C1DDC6F360053AB29 /* UUChat */,
 				54EA9B361DD9A81A004B8040 /* 网易视频云 */,
 				547E899A1DD1D8AD00749366 /* HMSegmentedControl */,
 				54634D7D1DDEAC1F0070C0FF /* FJFloatingView */,
@@ -4429,6 +4434,7 @@
 				5452260B1E2482EC00F36280 /* EditGenderTableViewCell.m in Sources */,
 				54B4C1921DF8417400E31794 /* ConfirmChargeViewController.m in Sources */,
 				54AA30821DF950CA009E0D04 /* CheckChargeView.m in Sources */,
+				547AD51E1E4D6A7000239907 /* UUAVAudioPlayer.m in Sources */,
 				54FCBAF31DD5CB6B0094BF58 /* NoticeTableViewCell.m in Sources */,
 				542C173B1DFA50610088DB3F /* CancelOrderTableViewCell.m in Sources */,
 				5413D26E1DF7CF1C00A8FDEC /* Recharge.m in Sources */,

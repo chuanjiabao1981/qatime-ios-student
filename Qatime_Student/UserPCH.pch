@@ -28,9 +28,9 @@
 
 /* 测试和生产模式-推送证书名称*/
 
-#define PushCerName @"Push"
+#define PushCerName @"PushDevelopment"
 
-//debug模式推送证书 @"QatimeStudentPushDev"
+//debug模式推送证书 @"PushDevelopment"
 //reliease模式推送证书 @"Push"
 
 /* 云信appKey*/
