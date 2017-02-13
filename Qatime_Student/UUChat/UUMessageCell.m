@@ -55,7 +55,6 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         
-        
         // 1、创建时间
         self.labelTime = [[UILabel alloc] init];
         self.labelTime.textAlignment = NSTextAlignmentCenter;
@@ -93,6 +92,10 @@
         self.btnContent.titleLabel.font = ChatContentFont;
         self.btnContent.titleLabel.numberOfLines = 0;
         [self.btnContent addTarget:self action:@selector(btnContentClick)  forControlEvents:UIControlEventTouchUpInside];
+        
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPress:)];
+        [self.btnContent addGestureRecognizer:longPress];
+        
         [self.contentView addSubview:self.btnContent];
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(UUAVAudioPlayerDidFinishPlay) name:@"VoicePlayHasInterrupt" object:nil];
@@ -115,6 +118,12 @@
         self.title.numberOfLines = 0;
         [self.contentView addSubview:self.title];
         
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(btnContentClick)];
+        self.title.userInteractionEnabled = YES;
+        [self.title addGestureRecognizer:tap];
+
+        
+        
     }
     return self;
 }
@@ -130,12 +139,11 @@
 - (void)btnContentClick{
     
     // 显示文字
-    if (self.messageFrame.message.type == UUMessageTypeText)
-    {
-        [self.btnContent becomeFirstResponder];
-        UIMenuController *menu = [UIMenuController sharedMenuController];
-        [menu setTargetRect:self.btnContent.frame inView:self.btnContent.superview];
-        [menu setMenuVisible:YES animated:YES];
+    if (self.messageFrame.message.type == UUMessageTypeText){
+//        [self.btnContent becomeFirstResponder];
+//        UIMenuController *menu = [UIMenuController sharedMenuController];
+//        [menu setTargetRect:self.btnContent.frame inView:self.btnContent.superview];
+//        [menu setMenuVisible:YES animated:YES];
     }
     /* 显示图片*/
     else if (self.messageFrame.message.type == UUMessageTypePicture){
@@ -153,12 +161,57 @@
             audio.delegate = self;
             //        [audio playSongWithUrl:voiceURL];
             [audio playSongWithData:songData];
+            
         }else{
             [self UUAVAudioPlayerDidFinishPlay];
         }
 
     }
 
+}
+
+/* 气泡长按点击事件*/
+- (void)longPress:(UILongPressGestureRecognizer *)longPress{
+   
+//    if (self.messageFrame.message.type == UUMessageTypeVoice) {
+//        
+////        [self.btnContent becomeFirstResponder];
+//        UIMenuController *menu = [UIMenuController sharedMenuController];
+//        UIMenuItem *item = [[UIMenuItem alloc]initWithTitle:@"文字转换" action:@selector(changeVoiceToText)];
+//        menu .menuItems = @[item];
+//        [menu setTargetRect:self.btnContent.frame inView:self.btnContent.superview];
+//        [menu setMenuVisible:YES animated:YES];
+//        
+//    }
+    
+}
+
+/* 语音转换成文字*/
+- (void)changeVoiceToText{
+    
+    
+    
+}
+
+-(BOOL)canBecomeFirstResponder{
+    return YES;
+}
+
+
+/**
+ * 通过这个方法告诉UIMenuController它内部应该显示什么内容
+ * 返回YES，就代表支持action这个操作
+ */
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    NSLog(@"%@", NSStringFromSelector(action));
+    if (action == @selector(cut:)
+        || action == @selector(copy:)
+        || action == @selector(paste:)) {
+        return YES; // YES ->  代表我们只监听 cut: / copy: / paste:方法
+    }
+    return NO; // 除了上面的操作，都不支持
+//    return YES;
 }
 
 

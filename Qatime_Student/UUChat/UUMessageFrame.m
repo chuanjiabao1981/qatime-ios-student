@@ -60,6 +60,7 @@
             contentSize = CGSizeMake(ChatPicWH*ScrenScale, ChatPicWH*ScrenScale);
             break;
         case UUMessageTypeVoice:
+            //要修该语音气泡的长度.
             contentSize = CGSizeMake(120, 20);
             break;
         default:

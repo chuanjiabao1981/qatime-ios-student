@@ -1726,7 +1726,7 @@ bool ismute     = NO;
     
     
     _chatTableView.sd_layout
-    .bottomSpaceToView(_videoInfoView.view2,IFView.origin_sd.y);
+    .bottomSpaceToView(IFView,0);
     [_chatTableView updateLayout];
     
     /* 把可移动的这个视图放到self.view的最上层*/
@@ -1820,6 +1820,7 @@ bool ismute     = NO;
     //    /* 监听老师播放端是否可以移动*/
     //    [_teacherPlayerView addObserver:self forKeyPath:@"canMove" options:NSKeyValueObservingOptionNew context:nil];
     
+    /* 防止内存泄漏,移除所有监听*/
     [_boardPlayerView removeObserver:self forKeyPath:@"canMove" ];
     [_teacherPlayerView removeObserver:self forKeyPath:@"canMove" ];
     
@@ -2082,6 +2083,7 @@ bool ismute     = NO;
     
     [IFView.TextViewInput resignFirstResponder];
     //    [_barrageText.TextViewInput resignFirstResponder];
+    [IFView changeSendBtnWithPhoto:YES];
 }
 
 /* 控制层点击事件*/
@@ -2093,6 +2095,7 @@ bool ismute     = NO;
     [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:5];
     self.controlOverlay.alpha = 1.0;
     [IFView.TextViewInput resignFirstResponder];
+    [IFView changeSendBtnWithPhoto:YES];
     
 }
 
@@ -2512,11 +2515,12 @@ bool ismute     = NO;
     _memberListView.memberListTableView.tableFooterView = [[UIView alloc]init];
     
     
-    
 #pragma mark- 聊天UI初始化
     
+//    [self requestHistoryChatList];
     [self addRefreshViews];
     [self loadBaseViewsAndData];
+    
     
     
 #pragma mark- 自定义表情包的名字初始化
@@ -2612,12 +2616,7 @@ bool ismute     = NO;
     
     [self performSelector:@selector(switchBothScreen:)];
     
-    
-    
-    
 }
-
-
 
 
 /* 播放器加载状态的监听方法*/
@@ -2632,18 +2631,16 @@ bool ismute     = NO;
     }
     
     
-    
 }
 
-/* */
+/* 摄像头播放器创建成功 */
 - (void)teacherPlayerInitSuccess{
     
     if (boardPlayerInitSuccess == YES) {
         bothPlayerInitSuccess = YES;
         [[NSNotificationCenter defaultCenter]postNotificationName:@"AllPlayerInitSuccess" object:nil];
     }
-    
-    
+
 }
 
 
@@ -2652,11 +2649,8 @@ bool ismute     = NO;
     
 #pragma mark- 视频播放状态查询功能
     
-    
     /* 两个播放器和控制层和覆盖层都加载完成后,每隔30秒请求一次数据*/
-    
     [self checkVideoStatus];
-    
     
 }
 
@@ -2713,6 +2707,8 @@ bool ismute     = NO;
             
             if (_session) {
                 [self initNIMSDK];
+                
+                [self requestHistoryChatList];
             }
             
             // 使用yymodel解出所有的学生->列表
@@ -2838,10 +2834,6 @@ bool ismute     = NO;
             
             [_infoHeaderView layoutIfNeeded];
             
-            
-           
-            
-            
             if (dataDic) {
                 
                 if ([dataDic[@"is_bought"]boolValue]==NO) {
@@ -2920,46 +2912,266 @@ bool ismute     = NO;
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
-    
     //增加监听，当键盘出现或改变时收出消息
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-     
-                                             selector:@selector(keyboardWillShow:)
-     
-                                                 name:UIKeyboardWillShowNotification
-     
-                                               object:nil];
-    
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     
     //增加监听，当键退出时收出消息
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-     
-                                             selector:@selector(keyboardWillHide:)
-     
-                                                 name:UIKeyboardWillHideNotification
-     
-                                               object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(keyboardWillHide:)  name:UIKeyboardWillHideNotification  object:nil];
     
     
 }
 
 #pragma mark- 请求历史数据的方法
 
+/* 加载本地数据*/
+- (void)requestChatHitstory{
+    
+    NIMMessageSearchOption *option = [[NIMMessageSearchOption alloc]init];
+    option.limit = 100;
+    option.order = NIMMessageSearchOrderAsc;
+    option.messageType = NIMMessageTypeText|NIMMessageTypeImage|NIMMessageTypeAudio;
+    
+    [[[NIMSDK sharedSDK]conversationManager]searchMessages:_session option:option result:^(NSError * _Nullable error, NSArray<NIMMessage *> * _Nullable messages) {
+        
+        /* 如果本地没有数据,请求服务器数据,并保存到本地*/
+        if (messages.count<=2) {
+            
+            [self requestHistoryChatList];
+            
+        }else{
+            
+            NSLog(@"本地消息数量%ld",messages.count);
+            [self loadingHUDStopLoadingWithTitle:@""];
+            
+            [self makeMessages:messages];
+        }
+        
+    }];
+    
+}
+
+/* 创建消息 --  加载历史消息*/
+- (void)makeMessages:(NSArray<NIMMessage *> * ) messages{
+    
+    for (NIMMessage *message in messages) {
+        if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio) {
+            
+            /* 如果是文本消息*/
+            
+            if (message.messageType ==NIMMessageTypeText) {
+                
+                //                            NSLog(@"\n\n获取到的消息文本是:::%@\n\n",message.text);
+                
+                dispatch_queue_t mytext = dispatch_queue_create("mytext", DISPATCH_QUEUE_SERIAL);
+                dispatch_sync(mytext, ^{
+                    
+                    /* 如果消息是自己发的*/
+                    if ([message.from isEqualToString:_chat_Account.accid]) {
+                        /* 在本地创建自己的消息*/
+                        
+                        NSString *title = message.text;
+                        if (title==nil) {
+                            title =@"";
+                        }
+                        
+                        //创建一个可变的属性字符串
+                        NSMutableAttributedString *text = [NSMutableAttributedString new];
+                        [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
+                        
+                        
+                        /* 正则匹配*/
+                        NSString * pattern = @"\\[em_\\d{1,2}\\]";
+                        NSError *error = nil;
+                        NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
+                        
+                        if (!re) {
+                            NSLog(@"%@", [error localizedDescription]);
+                        }
+                        
+                        //通过正则表达式来匹配字符串
+                        NSArray *resultArray = [re matchesInString:title options:0 range:NSMakeRange(0, title.length)];
+                        //                                    NSLog(@"%@",resultArray);
+                        
+                        /* 先取出来表情*/
+                        
+                        NSMutableArray *names = @[].mutableCopy;
+                        
+                        //根据匹配范围来用图片进行相应的替换
+                        for(NSTextCheckingResult *match in resultArray){
+                            //获取数组元素中得到range
+                            NSRange range = [match range];
+                            
+                            //获取原字符串中对应的值
+                            NSString *subStr = [title substringWithRange:range];
+                            //            NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+                            NSMutableString *faceName = @"".mutableCopy;
+                            
+                            faceName = [NSMutableString stringWithFormat:@"[%@]",[subStr substringWithRange:NSMakeRange(4, 1)]];
+                            
+                            NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
+                            [names addObject:dicc];
+                            
+                        }
+                        
+                        for (NSInteger i = names.count-1; i>=0; i--) {
+                            
+                            NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
+                            NSData *data = [NSData dataWithContentsOfFile:path];
+                            YYImage *image = [YYImage imageWithData:data scale:2.5];
+                            image.preloadAllAnimatedImageFrames = YES;
+                            YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
+                            
+                            NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
+                            
+                            
+                            
+                            [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
+                            
+                            title = [title stringByReplacingCharactersInRange:[names [i][@"range"] rangeValue] withString:[names[i]valueForKey:@"name"]];
+                        }
+                        
+                        
+                        
+                        if (title ==nil) {
+                            title = @"";
+                        }
+                        
+                        
+                        NSDictionary *dic = @{@"strContent": title,
+                                              @"type": @(UUMessageTypeText),
+                                              @"frome":@(UUMessageFromMe)};
+                        
+                        //                                NSLog(@"%@",title);
+                        [self dealTheFunctionData:dic];
+                        
+                    }
+                    
+                    /* 如果消息是别人发的 */
+                    else {
+                        //                                    NSLog(@"%ld",message.messageType);
+                        //                                    NSLog(@"%@",message.senderName);
+                        
+                        /* 在本地创建对方的消息消息*/
+                        NSString *iconURL = @"".mutableCopy;
+                        
+                        if (_chatList.count!=0) {
+                            
+                            for (int p = 0; p < _chatList.count; p++) {
+                                
+                                Chat_Account *temp = [Chat_Account yy_modelWithJSON:_chatList[p]];
+                                
+                                //                                        NSLog(@"%@",temp.name);
+                                
+                                if ([temp.name isEqualToString:message.senderName]) {
+                                    iconURL = temp.icon;
+                                    
+                                }
+                            }
+                            
+                        }
+                        
+                        //            NSLog(@"%@",iconURL);
+                        NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypeText andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
+                        
+                        
+                        //        [self makeOthersMessageWith:1 andMessage:message];
+                        [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
+                        
+                    }
+                });
+                
+                
+            }else if (message.messageType ==NIMMessageTypeImage){
+                /* 如果收到的消息类型是图片的话 */
+                /* 如果消息是自己发的*/
+                if ([message.from isEqualToString:_chat_Account.accid]){
+                    
+                    NSLog(@"收到对方发来的图片");
+                    
+                    NIMImageObject *imageObject = message.messageObject;
+                    
+                    
+                    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
+                    
+                    
+                    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
+                    
+                    [dic setObject:@(UUMessageFromMe) forKey:@"from"];
+                    
+                    
+                    [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
+                    
+                    
+                }
+                /* 如果消息是别人发的 */
+                else{
+                    /* 本地创建对方的图片消息*/
+                    
+                    NSLog(@"收到对方发来的图片");
+                    
+                    NIMImageObject *imageObject = message.messageObject;
+                    
+                    
+                    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
+                    
+                    
+                    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
+                    
+                    
+                    [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
+                    
+                }
+                
+            }else if (message.messageType ==NIMMessageTypeAudio){
+                /* 如果收到的消息类型是音频的话 */
+                /* 如果消息是自己发的*/
+                if ([message.from isEqualToString:_chat_Account.accid]){
+                    
+                    // NSLog(@"收到对方发来的语音");
+                    
+                    NIMAudioObject *audioObject = message.messageObject;
+                    
+                    
+                    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]]];
+                    
+                    [dic setObject:@(UUMessageFromMe) forKey:@"from"];
+                    
+                    [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
+                    
+                }
+                /* 如果消息是别人发的 */
+                else{
+                    /* 在本地创建对方的语音消息*/
+                    
+                    NIMAudioObject *audioObject = message.messageObject;
+                    
+                    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]]];
+                    
+                    [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
+                    
+                }
+                
+                
+            }
+            
+        }
+        
+    }
+
+};
+
 - (void)requestHistoryChatList{
     
     if (chatTime == 0) {
         
-        [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
         
+        [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
         
         NIMHistoryMessageSearchOption *historyOption = [[NIMHistoryMessageSearchOption  alloc]init];
         historyOption.limit = 100;
         historyOption.order = NIMMessageSearchOrderDesc;
         historyOption.currentMessage = nil;
+        historyOption.sync = YES;
         
         /* 获取聊天的历史消息*/
         
@@ -2967,186 +3179,13 @@ bool ismute     = NO;
             
             [[NIMSDK sharedSDK].conversationManager fetchMessageHistory:_session option:historyOption result:^(NSError * _Nullable error, NSArray<NIMMessage *> * _Nullable messages) {
                 /* 取出云信的accid和token进行字段比较 ，判断是谁发的消息*/
-                
-                for (NIMMessage *message in messages) {
-                    if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage) {
-                        
-                        /* 如果是文本消息*/
-                        
-                        if (message.messageType ==NIMMessageTypeText) {
-                            
-                            //                            NSLog(@"\n\n获取到的消息文本是:::%@\n\n",message.text);
-                            
-                            dispatch_queue_t mytext = dispatch_queue_create("mytext", DISPATCH_QUEUE_SERIAL);
-                            dispatch_sync(mytext, ^{
-                                
-                                /* 如果消息是自己发的*/
-                                if ([message.from isEqualToString:_chat_Account.accid]) {
-                                    /* 在本地创建自己的消息*/
-                                    
-                                    NSString *title = message.text;
-                                    if (title==nil) {
-                                        title =@"";
-                                    }
-                                    
-                                    //创建一个可变的属性字符串
-                                    NSMutableAttributedString *text = [NSMutableAttributedString new];
-                                    [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
-                                    
-                                    
-                                    /* 正则匹配*/
-                                    NSString * pattern = @"\\[em_\\d{1,2}\\]";
-                                    NSError *error = nil;
-                                    NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
-                                    
-                                    if (!re) {
-                                        NSLog(@"%@", [error localizedDescription]);
-                                    }
-                                    
-                                    //通过正则表达式来匹配字符串
-                                    NSArray *resultArray = [re matchesInString:title options:0 range:NSMakeRange(0, title.length)];
-                                    //                                    NSLog(@"%@",resultArray);
-                                    
-                                    /* 先取出来表情*/
-                                    
-                                    NSMutableArray *names = @[].mutableCopy;
-                                    
-                                    //根据匹配范围来用图片进行相应的替换
-                                    for(NSTextCheckingResult *match in resultArray){
-                                        //获取数组元素中得到range
-                                        NSRange range = [match range];
-                                        
-                                        //获取原字符串中对应的值
-                                        NSString *subStr = [title substringWithRange:range];
-                                        //            NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
-                                        NSMutableString *faceName = @"".mutableCopy;
-                                        
-                                        faceName = [NSMutableString stringWithFormat:@"[%@]",[subStr substringWithRange:NSMakeRange(4, 1)]];
-                                        
-                                        NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
-                                        [names addObject:dicc];
-                                        
-                                    }
-                                    
-                                    for (NSInteger i = names.count-1; i>=0; i--) {
-                                        
-                                        NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
-                                        NSData *data = [NSData dataWithContentsOfFile:path];
-                                        YYImage *image = [YYImage imageWithData:data scale:2.5];
-                                        image.preloadAllAnimatedImageFrames = YES;
-                                        YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
-                                        
-                                        NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
-                                        
-                                        
-                                        
-                                        [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
-                                        
-                                        title = [title stringByReplacingCharactersInRange:[names [i][@"range"] rangeValue] withString:[names[i]valueForKey:@"name"]];
-                                    }
-                                    
-                                    
-                                    
-                                    if (title ==nil) {
-                                        title = @"";
-                                    }
-                                    
-                                    
-                                    NSDictionary *dic = @{@"strContent": title,
-                                                          @"type": @(UUMessageTypeText),
-                                                          @"frome":@(UUMessageFromMe)};
-                                    
-                                    //                                NSLog(@"%@",title);
-                                    [self dealTheFunctionData:dic];
-                                    
-                                }
-                                
-                                /* 如果消息是别人发的 */
-                                else {
-                                    //                                    NSLog(@"%ld",message.messageType);
-                                    //                                    NSLog(@"%@",message.senderName);
-                                    
-                                    /* 在本地创建对方的消息消息*/
-                                    NSString *iconURL = @"".mutableCopy;
-                                    
-                                    if (_chatList.count!=0) {
-                                        
-                                        for (int p = 0; p < _chatList.count; p++) {
-                                            
-                                            Chat_Account *temp = [Chat_Account yy_modelWithJSON:_chatList[p]];
-                                            
-                                            //                                        NSLog(@"%@",temp.name);
-                                            
-                                            if ([temp.name isEqualToString:message.senderName]) {
-                                                iconURL = temp.icon;
-                                                
-                                            }
-                                        }
-                                        
-                                    }
-                                    
-                                    //            NSLog(@"%@",iconURL);
-                                    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypeText andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
-                                    
-                                    
-                                    //        [self makeOthersMessageWith:1 andMessage:message];
-                                    [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
-                                    
-                                }
-                            });
-                            
-                            
-                        }else if (message.messageType ==NIMMessageTypeImage){
-                            /* 如果收到的消息类型是图片的话 */
-                            /* 如果消息是自己发的*/
-                            if ([message.from isEqualToString:_chat_Account.accid]){
-                                
-                                NSLog(@"收到对方发来的图片");
-                                
-                                NIMImageObject *imageObject = message.messageObject;
-                                
-                                
-                                UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
-                                
-                                
-                                NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
-                                
-                                [dic setObject:@(UUMessageFromMe) forKey:@"from"];
-                                
-                                
-                                [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
-                                
-                                
-                            }
-                            /* 如果消息是别人发的 */
-                            else{
-                                /* 本地创建对方的图片消息*/
-                                
-                                NSLog(@"收到对方发来的图片");
-                                
-                                NIMImageObject *imageObject = message.messageObject;
-                                
-                                
-                                UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
-                                
-                                
-                                NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
-                                
-                                
-                                [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
-                                
-                            }
-                            
-                        }
-                        
-                    }
-                    
-                }
+                 [self makeMessages:messages];
                 
             }];
         }
         
         chatTime++;
+        
         [self.chatTableView reloadData];
         
         [self tableViewScrollToBottom];
@@ -3159,9 +3198,6 @@ bool ismute     = NO;
         [self.chatTableView reloadData];
         [self tableViewScrollToBottom];
         [_chatTableView.mj_header endRefreshing];
-        
-        
-        
         
         [self loadingHUDStopLoadingWithTitle:@"加载完成"];
         
@@ -3266,13 +3302,6 @@ bool ismute     = NO;
 
 #pragma mark- 聊天ui的设置
 
-//
-- (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendVoice:(NSData *)voice time:(NSInteger)second{
-    NSDictionary *dic = @{@"voice": voice,
-                          @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)second],
-                          @"type": @(UUMessageTypeVoice)};
-    [self dealTheFunctionData:dic];
-}
 
 /* 聊天UI初始化 + 读取数据初始化*/
 - (void)loadBaseViewsAndData{
@@ -3292,8 +3321,8 @@ bool ismute     = NO;
     .heightIs(46);
     
     
-    [self.chatTableView reloadData];
-    [self tableViewScrollToBottom];
+//    [self.chatTableView reloadData];
+//    [self tableViewScrollToBottom];
 }
 
 /* 添加刷新view*/
@@ -3441,6 +3470,7 @@ bool ismute     = NO;
         
         [IFView.TextViewInput setText:@""];
         [IFView.TextViewInput resignFirstResponder];
+        [IFView changeSendBtnWithPhoto:YES];
         
     }
     [self.chatTableView reloadData];
@@ -3473,6 +3503,33 @@ bool ismute     = NO;
     
     //    [self.chatTableView reloadData];
     //    [self tableViewScrollToBottom];
+    
+}
+
+
+#pragma mark- 发送语音消息的回调
+- (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendVoice:(NSData *)voice time:(NSInteger)second{
+    NSDictionary *dic = @{@"voice": voice,
+                          @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)second],
+                          @"type": @(UUMessageTypeVoice)};
+    
+    [self dealTheFunctionData:dic];
+    
+    /* 云信发送语音消息*/
+    
+    
+    //    声音文件只支持 aac 和 amr 类型
+    NSMutableString *tmpDir = [NSMutableString stringWithString:NSTemporaryDirectory()];
+    [tmpDir appendString:@"mp3.aac"];
+    
+    //构造消息
+    NIMAudioObject *audioObject = [[NIMAudioObject alloc] initWithSourcePath:tmpDir];
+    NIMMessage *message        = [[NIMMessage alloc] init];
+    message.messageObject      = audioObject;
+    
+    //发送消息
+    [[NIMSDK sharedSDK].chatManager addDelegate:self];
+    [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
     
 }
 
@@ -3612,7 +3669,11 @@ bool ismute     = NO;
         [self.chatModel addSpecifiedImageItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name];
         
         
+    }else if ([dic[@"type"]isEqualToNumber:@2]){
+        /* 语音类型消息*/
+        [self.chatModel addSpecifiedVoiceItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name];
     }
+
     
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
@@ -3744,21 +3805,60 @@ bool ismute     = NO;
 /* 接收图片完成后的回调*/
 - (void)fetchMessageAttachment:(NIMMessage *)message didCompleteWithError:(NSError *)error{
     
-    NSLog(@"收到图片");
     
-    NIMImageObject *imageObject = message.messageObject;
+    if (message.messageType == NIMMessageTypeImage) {
+        NSLog(@"收到图片");
+        
+        NIMImageObject *imageObject = message.messageObject;
+        
+        NSLog(@"%@",imageObject.thumbPath);
+        NSLog(@"%@",imageObject.path);
+        
+        
+        UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
+        
+        /* 在本地创建对方的消息消息*/
+        NSString *iconURL = @"".mutableCopy;
+        NSString *senderName = @"".mutableCopy;
+        for (Members *mod in _membersArr) {
+            if ([message.from isEqualToString:[mod valueForKey:@"accid"]]) {
+                iconURL = [mod valueForKey:@"icon"];
+                senderName = [mod valueForKey:@"name"];
+            }
+        }
+
+        
+        NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:senderName andIcon:iconURL type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
+        
+        [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
+    }else if (message.messageType == NIMMessageTypeAudio){
+        /* 收到语音消息*/
+        NSLog(@"收到语音");
+        
+        /* 在本地创建对方的消息消息*/
+        NSString *iconURL = @"".mutableCopy;
+        NSString *senderName = @"".mutableCopy;
+        for (Members *mem in _membersArr) {
+            if ([message.from isEqualToString:[mem valueForKey:@"accid"]]) {
+                iconURL = [mem valueForKey:@"icon"];
+                senderName = [mem valueForKey:@"name"];
+            }
+        }
+        
+        NIMAudioObject *audioObject = message.messageObject;
+        //audioObject.path 本地音频地址
+        NSLog(@"%@",audioObject.path);
+        
+        //创建消息字典
+        
+        NSDictionary *dic = [self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:senderName andIcon:iconURL type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]];
+        
+        [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
+        
+    }
+
     
-    NSLog(@"%@",imageObject.thumbPath);
-    NSLog(@"%@",imageObject.path);
     
-    
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
-    
-    
-    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:@"www.baidu.com" type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
-    
-    
-    [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
     
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
@@ -4212,6 +4312,7 @@ bool ismute     = NO;
     if (![IFView.TextViewInput.text isEqualToString:@""]) {
         
         [IFView.TextViewInput resignFirstResponder];
+        [IFView changeSendBtnWithPhoto:YES];
         
     }else{
         
@@ -4228,6 +4329,7 @@ bool ismute     = NO;
 - (void)tapSpace{
     
     [IFView.TextViewInput resignFirstResponder];
+    [IFView changeSendBtnWithPhoto:YES];
 }
 
 
@@ -4501,6 +4603,7 @@ bool ismute     = NO;
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
     [IFView.inputView resignFirstResponder];
+    [IFView changeSendBtnWithPhoto:YES];
     
     [self.view endEditing:YES];
     

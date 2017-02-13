@@ -42,4 +42,11 @@
 - (void)addSpecifiedVoiceItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name;
 
 
+/* 别人发的语音消息*/
+
+/* 组成别人发送的图片消息*/
+- (NSDictionary *)getDicWithVoice:(NSData *)voiceData andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andVoicePath:(NSString *)voicePath andTime:(NSString *)time;
+
+
+
 @end

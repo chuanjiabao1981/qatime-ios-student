@@ -69,6 +69,7 @@
         [self bringSubviewToFront:self.title];
         self.title.numberOfLines = 0;
         self.title.textAlignment = NSTextAlignmentCenter;
+        self.title.userInteractionEnabled = YES;
         
         self.contentTextView = [[YYTextView alloc]init];
         
@@ -115,17 +116,18 @@
         self.second.textColor = [UIColor whiteColor];
     }else{
         self.backImageView.frame = CGRectMake(15, 5, 220, 220);
-        self.voiceBackView.frame = CGRectMake(25, 10, 130, 35);
-        self.second.textColor = [UIColor grayColor];
+        self.voiceBackView.frame = CGRectMake(25, 5, 130, 35);
+        self.second.textColor = [UIColor whiteColor];
     }
 }
 //添加
-- (BOOL)canBecomeFirstResponder
-{
+- (BOOL)canBecomeFirstResponder{
+    
     return YES;
 }
 -(BOOL)canPerformAction:(SEL)action withSender:(id)sender{
     return (action == @selector(copy:));
+//    return YES;
 }
 
 -(void)copy:(id)sender{

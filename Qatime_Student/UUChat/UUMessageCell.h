@@ -15,8 +15,11 @@
 
 @protocol UUMessageCellDelegate <NSObject>
 @optional
+
 - (void)headImageDidClick:(UUMessageCell *)cell userId:(NSString *)userId;
 - (void)cellContentDidClick:(UUMessageCell *)cell image:(UIImage *)contentImage;
+- (void)cellContentLongPress:(UUMessageCell *)cell voice:(NSData *)voice;
+
 @end
 
 

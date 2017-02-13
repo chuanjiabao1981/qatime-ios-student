@@ -256,6 +256,47 @@ static NSString *previousTime = nil;
 }
 
 
+//别人发送语音消息
+- (NSDictionary *)getDicWithVoice:(NSData *)voiceData andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andVoicePath:(NSString *)voicePath andTime:(NSString *)time{
+    
+    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+    
+    int randomNum =type;
+    
+    if (randomNum == UUMessageTypeVoice){
+        
+        NSDate *date = [NSDate date];
+        if ([dictionary[@"from"]isEqual:@(UUMessageFromMe)]) {
+            
+            [dictionary setObject:@(UUMessageFromMe) forKey:@"from"];
+        }else{
+            [dictionary setObject:@(UUMessageFromOther) forKey:@"from"];
+        }
+        [dictionary setObject:@(randomNum) forKey:@"type"];
+        [dictionary setObject:time forKey:@"strVoiceTime"];
+        
+        
+        if (voiceData==nil) {
+            
+        }else{
+            [dictionary setObject:voiceData forKey:@"voice"];
+        }
+        if (name == nil) {
+            name = @"";
+        }
+        [dictionary setObject:name forKey:@"strName"];
+        
+        NSLog(@"%@",URLString);
+        [dictionary setObject:URLString forKey:@"strIcon"];
+        
+        [dictionary setObject:[NSString  stringWithFormat:@"%@",date] forKey:@"strTime"];
+    
+    }
+    
+    return dictionary;
+
+}
+
 
 
 

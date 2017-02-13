@@ -36,7 +36,7 @@
 #import "NIMSDK.h"
 
 
-@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate>{
+@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate>{
     
     NavigationBar *_navigationBar;
     
@@ -94,11 +94,11 @@
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         _.titleLabel.text = _tutoriumInfo.name;
         
-//        UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(120, 20, self.view.width_sd -240, 40)];
-//        title.text =_tutoriumInfo.name;
-//        title.textColor = [UIColor whiteColor];
-//        [_ addSubview:title];
-//        
+        //        UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(120, 20, self.view.width_sd -240, 40)];
+        //        title.text =_tutoriumInfo.name;
+        //        title.textColor = [UIColor whiteColor];
+        //        [_ addSubview:title];
+        //
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         
@@ -202,12 +202,12 @@
         
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
-
+    
     /* 获取一次所有成员信息*/
     
     [self requestChatTeamUser];
     
- 
+    
     /* 聊天信息 加个点击手势,取消输入框响应*/
     UITapGestureRecognizer *tapSpace = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapSpace)];
     [_chatTableView addGestureRecognizer:tapSpace];
@@ -297,7 +297,7 @@
     NIMMessageSearchOption *option = [[NIMMessageSearchOption alloc]init];
     option.limit = 100;
     option.order = NIMMessageSearchOrderAsc;
-    //    option.messageType = NIMMessageTypeText||NIMMessageTypeImage;
+        option.messageType = NIMMessageTypeText|NIMMessageTypeImage|NIMMessageTypeAudio;
     
     [[[NIMSDK sharedSDK]conversationManager]searchMessages:_session option:option result:^(NSError * _Nullable error, NSArray<NIMMessage *> * _Nullable messages) {
         
@@ -336,11 +336,11 @@
     
 }
 
-/* 创建消息*/
+/* 创建消息 - 加载历史消息*/
 - (void)makeMessages:(NSArray<NIMMessage *> * ) messages{
     
     for (NIMMessage *message in messages) {
-        if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage) {
+        if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio) {
             
             /* 如果是文本消息*/
             
@@ -500,6 +500,46 @@
                     
                 }
                 
+            }else if (message.messageType ==NIMMessageTypeAudio){
+                /* 如果收到的消息类型是音频的话 */
+                /* 如果消息是自己发的*/
+                if ([message.from isEqualToString:_chat_Account.accid]){
+                    
+                    // NSLog(@"收到对方发来的语音");
+                    
+                    NIMAudioObject *audioObject = message.messageObject;
+                    
+                    
+                    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]]];
+                    
+                    [dic setObject:@(UUMessageFromMe) forKey:@"from"];
+                    
+                    [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
+                    
+                }
+                /* 如果消息是别人发的 */
+                else{
+                    /* 本地创建对方的图片消息*/
+                    
+                    /* 在本地创建对方的消息消息*/
+                    NSString *iconURL = @"".mutableCopy;
+                    NSString *senderName = @"".mutableCopy;
+                    for (Chat_Account *mod in _userList) {
+                        if ([message.from isEqualToString:mod.accid]) {
+                            iconURL = mod.icon;
+                            senderName = mod.name;
+                        }
+                    }
+                    
+                    NIMAudioObject *audioObject = message.messageObject;
+                    
+                    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]]];
+                    
+                    [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
+                    
+                }
+                
+                
             }
             
         }
@@ -548,7 +588,7 @@
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
     
-
+    
 }
 
 
@@ -561,7 +601,7 @@
 
 //消息发送进度回调----文本消息没有这个回调
 - (void)sendMessage:(NIMMessage *)message progress:(CGFloat)progress{
- 
+    
     NSLog(@"发送进度::%f",progress);
     
 }
@@ -577,7 +617,7 @@
 
 
 
-#pragma mark- 云信--接收消息的回调
+#pragma mark- 云信--接收(文本)消息的回调
 /* 接收消息的回调*/
 - (void)onRecvMessages:(NSArray<NIMMessage *> *)messages{
     
@@ -630,14 +670,14 @@
 
 /* 接收图片的进度回调*/
 - (void)fetchMessageAttachment:(NIMMessage *)message progress:(CGFloat)progress{
-
+    
     NSLog(@"接收进度:----- %f",progress);
     
 }
 
-/* 接收到数据完成后的回调*/
+/* 接收到 语音/图片消息 完成后的回调*/
 - (void)fetchMessageAttachment:(NIMMessage *)message didCompleteWithError:(NSError *)error{
-
+    
     if (message.messageType == NIMMessageTypeImage) {
         /* 收到图片*/
         NSLog(@"收到图片");
@@ -679,8 +719,13 @@
         
         NIMAudioObject *audioObject = message.messageObject;
         //audioObject.path 本地音频地址
+        NSLog(@"%@",audioObject.path);
         
+        //创建消息字典
         
+        NSDictionary *dic = [self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:senderName andIcon:iconURL type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]];
+        
+        [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
         
     }
     
@@ -732,6 +777,25 @@
     return cell;
     
 }
+
+////语音框长按事件  预留..
+//- (void)cellContentLongPress:(UUMessageCell *)cell voice:(NSData *)voice{
+//    
+//    [self becomeFirstResponder];
+//    
+//    UIMenuController *menu = [UIMenuController sharedMenuController];
+//    UIMenuItem *item = [[UIMenuItem alloc]initWithTitle:@"文字转换" action:@selector(changeVoiceToText)];
+//    menu.menuItems = @[item];
+//    [menu setTargetRect:self.view.frame inView:self.view];
+//    [menu setMenuVisible:YES animated:YES];
+//    
+//}
+//
+////语音转换方法
+//- (void)changeVoiceToText{
+//    
+//}
+
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -877,7 +941,7 @@
                           @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
                           @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]]};
     
-//        [funcView changeSendBtnWithPhoto:YES];
+    //        [funcView changeSendBtnWithPhoto:YES];
     [self dealTheFunctionData:dic];
     
     NIMImageObject * imageObject = [[NIMImageObject alloc] initWithImage:image];
@@ -903,8 +967,8 @@
     /* 云信发送语音消息*/
     
     
-//    声音文件只支持 aac 和 amr 类型
-     NSMutableString *tmpDir = [NSMutableString stringWithString:NSTemporaryDirectory()];
+    //    声音文件只支持 aac 和 amr 类型
+    NSMutableString *tmpDir = [NSMutableString stringWithString:NSTemporaryDirectory()];
     [tmpDir appendString:@"mp3.aac"];
     
     //构造消息
@@ -995,7 +1059,7 @@
     
     if (sender.superview == _inputView) {
         
-//        _inputView.TextViewInput.text = @"" ;
+        //        _inputView.TextViewInput.text = @"" ;
         
         if (_inputView.TextViewInput.inputView == nil) {
             _inputView.TextViewInput.yz_emotionKeyboard = self.emotionKeyboard;
@@ -1024,91 +1088,6 @@
 
 #pragma mark- 音频功能的所有回调
 
-//切换音频的输出设备
-//- (BOOL)switchAudioOutputDevice:(NIMAudioOutputDevice)outputDevice
-//
-//判断是否正在播放音频
-//
-//- (BOOL)isPlaying
-//
-//播放音频
-//
-//- (void)play:(NSString *)filepath;
-//
-//其中 filePath 为音频文件的路径，该操作会触发以下回调：
-//
-//初始化工作完成，准备开始播放音频的时候会触发
-//
-//- (void)playAudio:(NSString *)filePath didBeganWithError:(NSError *)error
-//
-//音频播放结束的时候会触发
-//
-//- (void)playAudio:(NSString *)filePath didCompletedWithError:(NSError *)error
-//
-//停止播放音频
-//
-//- (void)stopPlay
-//
-//该操作会触发回调：
-//
-//- (void)playAudio:(NSString *)filePath didCompletedWithError:(NSError *)error
-//
-//录制音频
-//
-//判断是否正在录制音频
-//
-//- (BOOL)isRecording
-//
-//录制音频
-//
-//- (void)recordForDuration:(NSTimeInterval)duration;
-//
-//其中 duration 限制了录音的最大时长，该操作会触发以下回调：
-//
-//初始化工作完成，准备开始录制的时候会触发
-//- (void)recordAudio:(NSString *)filePath didBeganWithError:(NSError *)error
-//
-//当到录音时长达到设置的最大时长，或者手动停止录音会触发
-//- (void)recordAudio:(NSString *)filePath didCompletedWithError:(NSError *)error
-//
-//按照一定的时间间隔触发
-//- (void)recordAudioProgress:(NSTimeInterval)currentTime
-//
-//其中 currentTime 为当前的录音时长，触发该回调的时间间隔可以通过以下属性设置，默认为 0.3 秒
-//
-//@property (nonatomic， assign) NSTimeInterval recordProgressUpdateTimeInterval
-//
-//停止录制音频
-//- (void)stopRecord
-//
-//该操作会触发
-//- (void)recordAudio:(NSString *)filePath didCompletedWithError:(NSError *)error
-//
-//取消录音
-//- (void)cancelRecord
-//
-//该操作会触发
-//- (void)recordAudioDidCancelled
-//
-//获取录音分贝
-//
-//获取峰值
-//- (float)recordPeakPower
-//
-//获取平均值
-//- (float)recordAveragePower
-//
-//来电打断
-//
-//来电时会根据正在播放音频还是录音，分别触发
-//- (void)playAudioInterruptionBegin
-//
-//- (void)recordAudioInterruptionBegin
-//
-//通话结束返回应用会分别触发
-//- (void)playAudioInterruptionEnd
-//
-//- (void)recordAudioInterruptionEnd
 
 
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -1131,10 +1110,10 @@
         
         [_inputView setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height -50-keyboardRect.size.height , self.view.width_sd, 50)];
         
-       [ _chatTableView setFrame:CGRectMake(0, 64 , self.view.width_sd, self.view.height_sd-64-50-keyboardRect.size.height)];
-
+        [ _chatTableView setFrame:CGRectMake(0, 64 , self.view.width_sd, self.view.height_sd-64-50-keyboardRect.size.height)];
+        
     }];
- 
+    
     [self tableViewScrollToBottom];
     
 }
@@ -1179,7 +1158,7 @@
 - (void)tapSpace{
     [_inputView.TextViewInput resignFirstResponder];
     [_inputView changeSendBtnWithPhoto:YES];
-
+    
     
 }
 
