@@ -49,6 +49,9 @@
 @property(nonatomic,strong) NSString *logo_url ;
 
 @property(nonatomic,strong) NSString *describe ;
+/* 课程信息的富文本描述*/
+@property(nonatomic,strong) NSAttributedString *attributedDescribe ;
+
 @property(nonatomic,strong) NSString *lesson_count ;
 
 /* 观看回放的相关属性*/

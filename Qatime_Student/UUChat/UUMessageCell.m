@@ -291,12 +291,12 @@
     
     self.btnContent.frame = messageFrame.contentF;
     
+    
     //判断:自己发送的消息
     if (messageFrame.message.from == UUMessageFromMe) {
         self.btnContent.isMyMessage = YES;
         //判断:消息类型是文本
         if (messageFrame.message.type == UUMessageTypeText) {
-            
             
             [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             /* YYText改写*/
@@ -424,7 +424,7 @@
                 
                 [self.title setFrame:self.btnContent.frame];
                 
-                self.title.textContainerInset  = UIEdgeInsetsMake(0, 5, 0, 5);
+                self.title.textContainerInset = UIEdgeInsetsMake(0, 0, 0, 0);
                 self.title.textAlignment = NSTextAlignmentLeft;
             }
                 
@@ -526,19 +526,16 @@
                     
                     NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
                     
-                    
-                    
                     [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
                 }
                 
                 
                 self.title.attributedText =text;
                 
-                
                 [self.title setFrame:self.btnContent.frame];
-                
+
                 self.title.textContainerInset  = UIEdgeInsetsMake(0, 20, 0, 0);
-            self.title.textAlignment = NSTextAlignmentLeft;
+                self.title.textAlignment = NSTextAlignmentLeft;
             }
         
                 break;

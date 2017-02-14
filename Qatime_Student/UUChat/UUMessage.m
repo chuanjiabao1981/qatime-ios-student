@@ -39,6 +39,7 @@
                 [dict setValue:@"空消息" forKey:@"strContent"];
             }
             self.strContent = dict[@"strContent"];
+            self.isRichText = [dict[@"isRichText"]boolValue];
             break;
         
         case 1:

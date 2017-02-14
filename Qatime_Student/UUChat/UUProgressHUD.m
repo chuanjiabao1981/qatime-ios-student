@@ -14,7 +14,9 @@
     int angle;
     
     UILabel *centerLabel;
-    UIImageView *edgeImageView;
+    //    UIImageView *edgeImageView;     //旋转的圆圈图
+    
+    
     
 }
 @property (nonatomic, strong, readonly) UIWindow *overlayWindow;
@@ -30,7 +32,8 @@
     static UUProgressHUD *sharedView;
     dispatch_once(&once, ^ {
         sharedView = [[UUProgressHUD alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-        sharedView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.5];
+//        sharedView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.5];
+                sharedView.backgroundColor = [UIColor clearColor];
     });
     return sharedView;
 }
@@ -43,6 +46,22 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         if(!self.superview)
             [self.overlayWindow addSubview:self];
+        
+        if ((!_HUDView)) {
+            _HUDView = [[UIView alloc]init];
+            _HUDView.backgroundColor =[[UIColor blackColor]colorWithAlphaComponent:0.5];
+            
+            [self addSubview:_HUDView];
+            _HUDView.sd_layout
+            .centerXEqualToView(self)
+            .centerYEqualToView(self)
+            .widthIs(self.width_sd/2)
+            .heightEqualToWidth();
+            _HUDView.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*4];
+            
+            
+        }
+        
         
         if (!centerLabel){
             centerLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 150, 40)];
@@ -57,35 +76,35 @@
             self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 150, 20)];
             self.titleLabel.backgroundColor = [UIColor clearColor];
         }
-        if (!edgeImageView)
-            edgeImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Chat_record_circle"]];
+        //        if (!edgeImageView)
+        //            edgeImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Chat_record_circle"]];
         
         self.subTitleLabel.center = CGPointMake([[UIScreen mainScreen] bounds].size.width/2,[[UIScreen mainScreen] bounds].size.height/2 + 30);
-        self.subTitleLabel.text = @"Slide up to cancel";
+        self.subTitleLabel.text = @"上滑取消发送";
         self.subTitleLabel.textAlignment = NSTextAlignmentCenter;
         self.subTitleLabel.font = [UIFont boldSystemFontOfSize:13*ScrenScale];
         self.subTitleLabel.textColor = [UIColor whiteColor];
         
         self.titleLabel.center = CGPointMake([[UIScreen mainScreen] bounds].size.width/2,[[UIScreen mainScreen] bounds].size.height/2 - 30);
-        self.titleLabel.text = @"Time Limit";
+        self.titleLabel.text = @"录音时间";
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
         self.titleLabel.font = [UIFont boldSystemFontOfSize:18*ScrenScale];
         self.titleLabel.textColor = [UIColor whiteColor];
         
         centerLabel.center = CGPointMake([[UIScreen mainScreen] bounds].size.width/2,[[UIScreen mainScreen] bounds].size.height/2);
-        centerLabel.text = @"60";
+        centerLabel.text = @"0";
         centerLabel.textAlignment = NSTextAlignmentCenter;
         centerLabel.font = [UIFont systemFontOfSize:30*ScrenScale];
         centerLabel.textColor = [UIColor yellowColor];
-
         
-        edgeImageView.frame = CGRectMake(0, 0, 154, 154);
-        edgeImageView.center = centerLabel.center;
-        [self addSubview:edgeImageView];
+        
+        //        edgeImageView.frame = CGRectMake(0, 0, 154, 154);
+        //        edgeImageView.center = centerLabel.center;
+        //        [self addSubview:edgeImageView];
         [self addSubview:centerLabel];
         [self addSubview:self.subTitleLabel];
         [self addSubview:self.titleLabel];
-
+        
         if (myTimer)
             [myTimer invalidate];
         myTimer = nil;
@@ -112,14 +131,14 @@
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.09];
     UIView.AnimationRepeatAutoreverses = YES;
-    edgeImageView.transform = CGAffineTransformMakeRotation(angle * (M_PI / 180.0f));
+    //    edgeImageView.transform = CGAffineTransformMakeRotation(angle * (M_PI / 180.0f));
     float second = [centerLabel.text floatValue];
-    if (second <= 10.0f) {
+    if (second >= 50.0f) {
         centerLabel.textColor = [UIColor redColor];
     }else{
         centerLabel.textColor = [UIColor yellowColor];
     }
-    centerLabel.text = [NSString stringWithFormat:@"%.1f",second-0.1];
+    centerLabel.text = [NSString stringWithFormat:@"%.1f",second+0.1];
     [UIView commitAnimations];
 }
 
@@ -134,11 +153,11 @@
 }
 
 + (void)dismissWithSuccess:(NSString *)str {
-	[[UUProgressHUD sharedView] dismiss:str];
+    [[UUProgressHUD sharedView] dismiss:str];
 }
 
 + (void)dismissWithError:(NSString *)str {
-	[[UUProgressHUD sharedView] dismiss:str];
+    [[UUProgressHUD sharedView] dismiss:str];
 }
 
 - (void)dismiss:(NSString *)state {
@@ -152,7 +171,7 @@
         centerLabel.textColor = [UIColor whiteColor];
         
         CGFloat timeLonger;
-        if ([state isEqualToString:@"TooShort"]) {
+        if ([state isEqualToString:@"时间太短"]) {
             timeLonger = 1;
         }else{
             timeLonger = 0.6;
@@ -167,11 +186,11 @@
                              if(self.alpha == 0) {
                                  [centerLabel removeFromSuperview];
                                  centerLabel = nil;
-                                 [edgeImageView removeFromSuperview];
-                                 edgeImageView = nil;
+                                 //                                 [edgeImageView removeFromSuperview];
+                                 //                                 edgeImageView = nil;
                                  [self.subTitleLabel removeFromSuperview];
                                  self.subTitleLabel = nil;
-
+                                 
                                  NSMutableArray *windows = [[NSMutableArray alloc] initWithArray:[UIApplication sharedApplication].windows];
                                  [windows removeObject:overlayWindow];
                                  overlayWindow = nil;

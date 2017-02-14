@@ -12,6 +12,7 @@
 #import "NSMutableAttributedString+Extention.h"
 #import "NSString+FindFace.h"
 #import "Define.h"
+#import "YYTextLayout.h"
 
 
 @implementation UUMessageFrame
@@ -20,6 +21,7 @@
     
     _message = message;
     
+    //屏幕宽
     CGFloat screenW = [UIScreen mainScreen].bounds.size.width;
     
     // 1、计算时间的位置
@@ -44,24 +46,62 @@
     _nameF = CGRectMake(iconX, iconY+ChatIconWH, ChatIconWH, 20);
     
     // 4、计算内容位置
+    //label的内容位置
     CGFloat contentX = CGRectGetMaxX(_iconF)+ChatMargin;
     CGFloat contentY = iconY;
    
     //根据种类分
+    //文字/图片内容的contentsize
     CGSize contentSize;
     switch (_message.type) {
-        case UUMessageTypeText:
-            contentSize = [_message.strContent sizeWithFont:ChatContentFont  constrainedToSize:CGSizeMake(ChatContentW*ScrenScale-40, CGFLOAT_MAX*ScrenScale) lineBreakMode:NSLineBreakByWordWrapping];
+        case UUMessageTypeText:{
+            CGSize size = CGSizeMake([UIScreen mainScreen].bounds.size.width/2, CGFLOAT_MAX);
+            
+            
+            YYTextLayout *layout = [YYTextLayout layoutWithContainerSize:size text:[[NSAttributedString alloc]initWithString:_message.strContent]];
+            
+            // 获取文本排版结果
+            NSLog(@"%@",layout);
+            [layout lineIndexForPoint:CGPointMake(10,10)];
+            [layout closestLineIndexForPoint:CGPointMake(10,10)];
+            [layout closestPositionToPoint:CGPointMake(10,10)];
+            [layout textRangeAtPoint:CGPointMake(10,10)];
+            [layout rectForRange:[YYTextRange rangeWithRange:NSMakeRange(10,2)]];
+            [layout selectionRectsForRange:[YYTextRange rangeWithRange:NSMakeRange(10,2)]];
+            
+            // 显示文本排版结果
+            contentSize = layout.textBoundingSize;
+            if (_message.from == UUMessageFromMe) {
+                
+                if (_message.isRichText == YES) {
+                    
+                    contentSize.height+=10;
+                }else{
+                    
+                }
+                
+            }else if (_message.from == UUMessageFromOther){
+                if (_message.isRichText == YES) {
+                    
+                    contentSize.width -= 20;
+                }else{
+                    
+                }
+                
+                
+            }
+            
+            
             /* 拿到yytext显示富文本的size*/
         NSLog(@"%f,%f",contentSize.width,contentSize.height);
-           
+                                     }
             break;
         case UUMessageTypePicture:
             contentSize = CGSizeMake(ChatPicWH*ScrenScale, ChatPicWH*ScrenScale);
             break;
         case UUMessageTypeVoice:
             //要修该语音气泡的长度.
-            contentSize = CGSizeMake(120, 20);
+            contentSize = CGSizeMake(100, 20);
             break;
         default:
             break;
@@ -69,7 +109,25 @@
     
     if (_message.from == UUMessageFromMe) {
         contentX = iconX - contentSize.width - ChatContentLeft - ChatContentRight - ChatMargin;
+    }else if(_message.from == UUMessageFromOther){
+        
+        
     }
+    
+    //调整过后的"气泡"尺寸
+//    if (_message.from == UUMessageFromMe) {
+//        
+//    }else if (_message.from == UUMessageFromOther){
+//        if (_message.isRichText==YES) {
+//            _contentF = CGRectMake(contentX, contentY, contentSize.width-40 + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);
+//        }else{
+//            _contentF = CGRectMake(contentX, contentY, contentSize.width + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);
+//        }
+//        
+//        
+//
+//    }
+    
     _contentF = CGRectMake(contentX, contentY, contentSize.width + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);
     
     _cellHeight = MAX(CGRectGetMaxY(_contentF), CGRectGetMaxY(_nameF))  + ChatMargin;

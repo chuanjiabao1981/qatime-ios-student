@@ -21,6 +21,7 @@
 @property(nonatomic,strong) NSString *teaching_years ;
 
 @property(nonatomic,strong) NSString *describe ;
+@property(nonatomic,strong) NSAttributedString *attributedDescribe ;
 
 
 

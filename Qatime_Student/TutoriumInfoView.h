@@ -65,7 +65,7 @@
 @property(nonatomic,strong) UILabel *liveEndTimeLabel ;
 
 /* 辅导简介*/
-
+@property(nonatomic,strong) UILabel *descriptions  ;//"辅导简介"字样,自动布局使用
 @property(nonatomic,strong) UILabel *classDescriptionLabel ;
 
 
@@ -83,6 +83,8 @@
 @property(nonatomic,strong) UILabel *workPlaceLabel ;
 
 /* 教师简介*/
+
+@property(nonatomic,strong) UILabel *descrip  ;//"教师简介"的label 布局用
 @property(nonatomic,strong) UILabel  *teacherInterviewLabel ;
 
 /* 性别*/

@@ -44,9 +44,11 @@
     /* 通知信息数组*/
     NSMutableArray *_noticeArray;
     
-    
     /* 是否查看了系统消息*/
     BOOL checkedNotices ;
+    
+    
+    
     
 }
 

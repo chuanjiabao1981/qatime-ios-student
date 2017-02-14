@@ -28,6 +28,7 @@
 		5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2731DF7CF3000A8FDEC /* Payment.m */; };
 		5413D2781DF7D0DF00A8FDEC /* UIViewController+Token.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */; };
 		5417C48C1E31B85000DD0795 /* app_pay_params.m in Sources */ = {isa = PBXBuildFile; fileRef = 5417C48B1E31B85000DD0795 /* app_pay_params.m */; };
+		541A468C1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m in Sources */ = {isa = PBXBuildFile; fileRef = 541A468B1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m */; };
 		541E20041E139967007CF5D1 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */; };
 		541E20071E13B9AF007CF5D1 /* NSDate+ChangeUTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20061E13B9AF007CF5D1 /* NSDate+ChangeUTC.m */; };
 		541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */; };
@@ -499,6 +500,8 @@
 		5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Token.m"; sourceTree = "<group>"; };
 		5417C48A1E31B85000DD0795 /* app_pay_params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_pay_params.h; sourceTree = "<group>"; };
 		5417C48B1E31B85000DD0795 /* app_pay_params.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = app_pay_params.m; sourceTree = "<group>"; };
+		541A468A1E52E7C100F0B36D /* UIViewController+CheckMicVolum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+CheckMicVolum.h"; sourceTree = "<group>"; };
+		541A468B1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+CheckMicVolum.m"; sourceTree = "<group>"; };
 		541E20021E139967007CF5D1 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
 		541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionHandler.m; sourceTree = "<group>"; };
 		541E20051E13B9AF007CF5D1 /* NSDate+ChangeUTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+ChangeUTC.h"; sourceTree = "<group>"; };
@@ -3792,6 +3795,8 @@
 				54660F5F1E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m */,
 				542020FD1E2DBE5100517A47 /* UIViewController+AFHTTP.h */,
 				542020FE1E2DBE5100517A47 /* UIViewController+AFHTTP.m */,
+				541A468A1E52E7C100F0B36D /* UIViewController+CheckMicVolum.h */,
+				541A468B1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -4508,6 +4513,7 @@
 				545226051E2482C800F36280 /* EditHeadTableViewCell.m in Sources */,
 				5407C9931DE7DE7500DB04C8 /* NSData+YYAdd.m in Sources */,
 				540A34CB1E481B5F0068E049 /* UIViewController+ZFPlayerRotation.m in Sources */,
+				541A468C1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m in Sources */,
 				545226081E2482E100F36280 /* EditNameTableViewCell.m in Sources */,
 				542021171E2DF90400517A47 /* RefundTableView.m in Sources */,
 				54652E051DEE823100F4607C /* FileService.m in Sources */,

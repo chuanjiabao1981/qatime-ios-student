@@ -13,6 +13,9 @@
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subTitleLabel;
 
+@property(nonatomic,strong) UIView *HUDView; 
+
+
 + (void)show;
 
 + (void)dismissWithSuccess:(NSString *)str;

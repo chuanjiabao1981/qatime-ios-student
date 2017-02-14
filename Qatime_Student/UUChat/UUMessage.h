@@ -33,6 +33,8 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property (nonatomic, copy) NSData   *voice;
 @property (nonatomic, copy) NSString *strVoiceTime;
 
+/* 增加一个 是否是富文本的bool值,用来加载数据和计算尺寸*/
+@property(nonatomic,assign) BOOL isRichText ;
 
 @property (nonatomic, assign) MessageType type;
 @property (nonatomic, assign) MessageFrom from;

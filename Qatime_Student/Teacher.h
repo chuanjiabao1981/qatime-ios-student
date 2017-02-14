@@ -58,6 +58,8 @@
 @property(nonatomic,strong) NSString *icon ;
 
 
+@property(nonatomic,strong) NSAttributedString  *attributedDescription ;
+
 
 
 @end

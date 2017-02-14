@@ -34,6 +34,9 @@
 
 #import "LivePlayerViewController.h"
 #import "NIMSDK.h"
+#import <AVFoundation/AVFoundation.h>
+//#import <AVFoundation/AVAudioSettings.h>
+//#import <AVFoundation/AVAudioRecorder.h>
 
 
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate>{
@@ -55,6 +58,11 @@
     
     /* 临时变量  保存所有的用户信息 */
     NSMutableArray <Chat_Account *>*_userList;
+    
+    
+    /* 录音部分*/
+    AVAudioRecorder *recorder;
+     NSTimer *levelTimer;
     
 }
 
@@ -212,8 +220,109 @@
     UITapGestureRecognizer *tapSpace = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapSpace)];
     [_chatTableView addGestureRecognizer:tapSpace];
     
+    /* 添加录音是否开始的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordStart) name:@"RecordStart" object:nil];
+    
+    /* 添加录音是否结束的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordEnd) name:@"RecordEnd" object:nil];
     
 }
+/* 开始检测麦克风声音*/
+- (void)checkMicVolum{
+   
+    /* 必须添加这句话，否则在模拟器可以，在真机上获取始终是0 */
+    [[AVAudioSession sharedInstance]
+     setCategory: AVAudioSessionCategoryPlayAndRecord error: nil];
+    
+    /* 不需要保存录音文件 */
+    NSURL *url = [NSURL fileURLWithPath:@"/dev/null"];
+    
+    NSDictionary *settings = [NSDictionary dictionaryWithObjectsAndKeys:
+                              [NSNumber numberWithFloat: 44100.0], AVSampleRateKey,
+                              [NSNumber numberWithInt: kAudioFormatAppleLossless], AVFormatIDKey,
+                              [NSNumber numberWithInt: 2], AVNumberOfChannelsKey,
+                              [NSNumber numberWithInt: AVAudioQualityMax], AVEncoderAudioQualityKey,
+                              nil];
+    
+    
+    
+    NSError *error;
+   
+    recorder = [[AVAudioRecorder alloc] initWithURL:url settings:settings error:&error];
+    if (recorder)
+    {
+        [recorder prepareToRecord];
+        recorder.meteringEnabled = YES;
+        [recorder record];
+        levelTimer = [NSTimer scheduledTimerWithTimeInterval: 0.1 target: self selector: @selector(levelTimerCallback) userInfo: nil repeats: YES];
+
+        
+    }
+    else
+    {
+        NSLog(@"%@", [error description]);
+    }
+}
+
+/* 检测系统麦克风的音量值  */
+- (void)levelTimerCallback{
+   
+    [recorder updateMeters];
+    
+    float   level;                // The linear 0.0 .. 1.0 value we need.
+    float   minDecibels = -80.0f; // Or use -60dB, which I measured in a silent room.
+    float   decibels    = [recorder averagePowerForChannel:0];
+    
+    if (decibels < minDecibels)
+    {
+        level = 0.0f;
+    }
+    else if (decibels >= 0.0f)
+    {
+        level = 1.0f;
+    }
+    else
+    {
+        float   root            = 2.0f;
+        float   minAmp          = powf(10.0f, 0.05f * minDecibels);
+        float   inverseAmpRange = 1.0f / (1.0f - minAmp);
+        float   amp             = powf(10.0f, 0.05f * decibels);
+        float   adjAmp          = (amp - minAmp) * inverseAmpRange;
+        
+        level = powf(adjAmp, 1.0f / root);
+    }
+    
+    /* level 范围[0 ~ 1], 转为[0 ~120] 之间 */
+    dispatch_async(dispatch_get_main_queue(), ^{
+//        [_textLabel setText:[NSString stringWithFormat:@"%f", level*120]];
+        
+        NSLog(@"分贝数 :%f",level*120);
+        
+    });
+}
+
+- (void)checkMic{
+    
+    [self checkMicVolum];
+    
+    
+}
+
+//开始录制的方法
+- (void)recordStart{
+    
+    [self checkMic];
+   
+}
+//语音录制结束的方法
+- (void)recordEnd{
+ 
+    [levelTimer invalidate];
+    levelTimer = nil;
+    
+}
+
+
 
 /* 请求聊天用户*/
 - (void)requestChatTeamUser{
@@ -359,8 +468,17 @@
                         if (title==nil) {
                             title =@"";
                         }
+                        /* 使用YYText*/
+                        
+                        /*
+                         *
+                         *
+                         *
+                         *
+                         */
                         
                         //创建一个可变的属性字符串
+                        
                         NSMutableAttributedString *text = [NSMutableAttributedString new];
                         [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
                         
@@ -369,62 +487,65 @@
                         NSError *error = nil;
                         NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
                         
-                        if (re) {
-                            /* 包含富文本的情况*/
-                            
-                        }else{
-                            /* 不包含富文本的情况*/
-                            
-                        }
-                        
+//                        if (re) {
+//                            
+//                            
+//                        }else{
+//                            /* 不包含富文本的情况*/
+//                            
+//                        }
+                        /* 包含富文本的情况*/
                         //通过正则表达式来匹配字符串
                         NSArray *resultArray = [re matchesInString:title options:0 range:NSMakeRange(0, title.length)];
                         
-                        /* 先取出来表情*/
-                        
-                        NSMutableArray *names = @[].mutableCopy;
-                        
-                        //根据匹配范围来用图片进行相应的替换
-                        for(NSTextCheckingResult *match in resultArray){
-                            //获取数组元素中得到range
-                            NSRange range = [match range];
+                        if (resultArray.count != 0) {
+                            /* 有表情富文本*/
                             
-                            //获取原字符串中对应的值
-                            NSString *subStr = [title substringWithRange:range];
-                            //            NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
-                            NSMutableString *faceName = @"".mutableCopy;
+                            /* 先取出来表情*/
+                            NSMutableArray *names = @[].mutableCopy;
                             
-                            faceName = [NSMutableString stringWithFormat:@"[%@]",[subStr substringWithRange:NSMakeRange(4, 1)]];
+                            //根据匹配范围来用图片进行相应的替换
+                            for(NSTextCheckingResult *match in resultArray){
+                                //获取数组元素中得到range
+                                NSRange range = [match range];
+                                //获取原字符串中对应的值
+                                NSString *subStr = [title substringWithRange:range];
+                                //            NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+                                NSMutableString *faceName = @"".mutableCopy;
+                                
+                                faceName = [NSMutableString stringWithFormat:@"[%@]",[subStr substringWithRange:NSMakeRange(4, 1)]];
+                                
+                                NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
+                                
+                                [names addObject:dicc];
+                                
+                            }
                             
-                            NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
-                            [names addObject:dicc];
+                            for (NSInteger i = names.count-1; i>=0; i--) {
+                                
+                                NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
+                                NSData *data = [NSData dataWithContentsOfFile:path];
+                                YYImage *image = [YYImage imageWithData:data scale:2.5];
+                                image.preloadAllAnimatedImageFrames = YES;
+                                YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
+                                
+                                NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
+                                
+                                [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
+                                
+                                title = [title stringByReplacingCharactersInRange:[names [i][@"range"] rangeValue] withString:[names[i]valueForKey:@"name"]];
+                            }
+                        }else{
+                           /* 没有有表情的普通文本*/
                             
-                        }
-                        
-                        for (NSInteger i = names.count-1; i>=0; i--) {
-                            
-                            NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
-                            NSData *data = [NSData dataWithContentsOfFile:path];
-                            YYImage *image = [YYImage imageWithData:data scale:2.5];
-                            image.preloadAllAnimatedImageFrames = YES;
-                            YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
-                            
-                            NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
-                            
-                            [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
-                            
-                            title = [title stringByReplacingCharactersInRange:[names [i][@"range"] rangeValue] withString:[names[i]valueForKey:@"name"]];
-                        }
-                        
-                        if (title ==nil) {
-                            title = @"";
                         }
                         
                         
                         NSDictionary *dic = @{@"strContent": title,
                                               @"type": @(UUMessageTypeText),
                                               @"frome":@(UUMessageFromMe),
-                                              @"strTime":[[NSString stringWithFormat:@"%ld",(NSInteger)message.timestamp]changeTimeStampToDateString]};
+                                              @"strTime":[[NSString stringWithFormat:@"%ld",(NSInteger)message.timestamp]changeTimeStampToDateString],
+                                              @"isRichText":@YES};
                         
                         [self dealTheFunctionData:dic];
                         
@@ -573,7 +694,6 @@
     
     /* 文字类型消息*/
     if ([dic[@"type"]isEqual:[NSNumber numberWithInteger:0]]) {
-        
         /* 重写了UUMolde的添加自己的item方法 */
         [self.chatModel addSpecifiedItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name ];
     }else if ([dic[@"type"]isEqual:[NSNumber numberWithInteger:1]]){
@@ -1160,6 +1280,16 @@
     [_inputView changeSendBtnWithPhoto:YES];
     
     
+}
+
+/* 加载图片表情*/
+- (UIImage *)imageWithName:(NSString *)name {
+    NSBundle *bundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"EmoticonQQ" ofType:@"bundle"]];
+    NSString *path = [bundle pathForScaledResource:name ofType:@"gif"];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    YYImage *image = [YYImage imageWithData:data scale:2];
+    image.preloadAllAnimatedImageFrames = YES;
+    return image;
 }
 
 

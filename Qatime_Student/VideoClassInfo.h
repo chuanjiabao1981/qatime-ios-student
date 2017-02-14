@@ -56,6 +56,7 @@
 @property(nonatomic,strong) NSString * camera_pull_stream ;
 @property(nonatomic,strong) NSString * preview_time ;
 
+@property(nonatomic,strong) NSAttributedString *attributedDescription ;
 
 
 

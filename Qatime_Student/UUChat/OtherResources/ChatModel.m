@@ -44,7 +44,6 @@
     
         [dataDic setObject:name forKey:@"strName"];
     
-    
         [dataDic setObject:URLStr forKey:@"strIcon"];
         
         [message setWithDict:dataDic];

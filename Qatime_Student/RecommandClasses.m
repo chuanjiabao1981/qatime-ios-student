@@ -28,7 +28,7 @@
         _live_end_time = @"".mutableCopy;
         _publicize = @"".mutableCopy;
         
-        
+        _attributedDescribe = [[NSAttributedString alloc]init];
         
 
         

@@ -120,17 +120,17 @@
         
         
         /* 辅导简介*/
-        UILabel *description=[[UILabel alloc]init];
-        [self addSubview:description];
-        description.sd_layout.leftEqualToView(subject).topSpaceToView(_to,20).autoHeightRatio(0);
-        [description setSingleLineAutoResizeWithMaxWidth:100.0f];
-        [description setText:@"辅导简介"];
+        _descriptions=[[UILabel alloc]init];
+        [self addSubview:_descriptions];
+        _descriptions.sd_layout.leftEqualToView(subject).topSpaceToView(_to,20).autoHeightRatio(0);
+        [_descriptions setSingleLineAutoResizeWithMaxWidth:100.0f];
+        [_descriptions setText:@"辅导简介"];
         
         _classDescriptionLabel =[[UILabel alloc]init];
         [self addSubview:_classDescriptionLabel];
         _classDescriptionLabel.sd_layout
-        .leftEqualToView(description)
-        .topSpaceToView(description,20)
+        .leftEqualToView(_descriptions)
+        .topSpaceToView(_descriptions,20)
         .autoHeightRatio(0)
         .rightSpaceToView(self,20);
         _classDescriptionLabel.numberOfLines = 0;
@@ -254,11 +254,11 @@
         
         
         /* 自我介绍标题*/
-        UILabel *selfIntroLabel =[[UILabel alloc]init];
-        selfIntroLabel.text =@"教师简介";
+        _selfIntroLabel =[[UILabel alloc]init];
+        _selfIntroLabel.text =@"教师简介";
         //        selfIntroLabel.font =[UIFont systemFontOfSize:20];
         
-        [self addSubview:selfIntroLabel];
+        [self addSubview:_selfIntroLabel];
         
         
         /* 自我介绍*/
@@ -283,16 +283,16 @@
         /* 自我介绍部分的布局*/
         
         
-        selfIntroLabel.sd_layout
+        _selfIntroLabel.sd_layout
         .leftEqualToView(schools)
         .topSpaceToView(schools,20)
         .autoHeightRatio(0);
-        [selfIntroLabel setSingleLineAutoResizeWithMaxWidth:100];
+        [_selfIntroLabel setSingleLineAutoResizeWithMaxWidth:100];
         
         
         _selfInterview.sd_layout
-        .leftEqualToView(selfIntroLabel)
-        .topSpaceToView(selfIntroLabel,20)
+        .leftEqualToView(_selfIntroLabel)
+        .topSpaceToView(_selfIntroLabel,20)
         .rightSpaceToView(self,20)
         .autoHeightRatio(0);
         _selfInterview .text = @"" ;

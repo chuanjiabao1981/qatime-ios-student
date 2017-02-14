@@ -183,10 +183,15 @@
 
 - (void)beginRecordVoice:(UIButton *)button
 {
+    
+    
     [MP3 startRecord];
     playTime = 0;
     playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
     [UUProgressHUD show];
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordStart" object:nil];
+    
 }
 
 - (void)endRecordVoice:(UIButton *)button
@@ -195,7 +200,9 @@
         [MP3 stopRecord];
         [playTimer invalidate];
         playTimer = nil;
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordEnd" object:nil];
     }
+    
 }
 
 - (void)cancelRecordVoice:(UIButton *)button
@@ -204,26 +211,36 @@
         [MP3 cancelRecord];
         [playTimer invalidate];
         playTimer = nil;
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordEnd" object:nil];
     }
-    [UUProgressHUD dismissWithError:@"Cancel"];
+    
+    [UUProgressHUD dismissWithError:@"取消发送"];
 }
 
 - (void)RemindDragExit:(UIButton *)button
 {
-    [UUProgressHUD changeSubTitle:@"Release to cancel"];
+    [UUProgressHUD changeSubTitle:@"松开取消"];
 }
 
 - (void)RemindDragEnter:(UIButton *)button
 {
-    [UUProgressHUD changeSubTitle:@"Slide up to cancel"];
+    [UUProgressHUD changeSubTitle:@"上滑取消发送"];
 }
 - (void)countVoiceTime
 {
     playTime ++;
+    
     if (playTime>=60) {
         [self endRecordVoice:nil];
     }
+    
 }
+
+
+
+
+
 #pragma mark - Mp3RecorderDelegate
 
 //回调录音资料
@@ -232,7 +249,7 @@
     //音频消息发送方法
     [self.delegate UUInputFunctionView:self sendVoice:voiceData time:playTime+1];
     
-    [UUProgressHUD dismissWithSuccess:@"Success"];
+    [UUProgressHUD dismissWithSuccess:@"发送成功"];
 
     //缓冲消失时间 (最好有block回调消失完成)
     self.voiceSwitchTextButton.enabled = NO;
@@ -243,7 +260,7 @@
 
 - (void)failRecord
 {
-    [UUProgressHUD dismissWithSuccess:@"Too short"];
+    [UUProgressHUD dismissWithSuccess:@"时间太短"];
     
     //缓冲消失时间 (最好有block回调消失完成)
     self.voiceSwitchTextButton.enabled = NO;

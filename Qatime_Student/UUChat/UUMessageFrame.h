@@ -17,7 +17,7 @@
 #define ChatContentTop 10   //文本内容与按钮上边缘间隔
 #define ChatContentLeft 15  //文本内容与按钮左边缘间隔
 #define ChatContentBottom 10 //文本内容与按钮下边缘间隔
-#define ChatContentRight 10 //文本内容与按钮右边缘间隔
+#define ChatContentRight 20 //文本内容与按钮右边缘间隔
 
 #define ChatTimeFont [UIFont systemFontOfSize:11*ScrenScale]   //时间字体
 #define ChatContentFont [UIFont systemFontOfSize:13*ScrenScale]//内容字体
@@ -32,7 +32,7 @@
 @property (nonatomic, assign, readonly) CGRect nameF;
 @property (nonatomic, assign, readonly) CGRect iconF;
 @property (nonatomic, assign, readonly) CGRect timeF;
-@property (nonatomic, assign, readonly) CGRect contentF;
+@property (nonatomic, assign, readonly) CGRect contentF;    //气泡尺寸
 
 @property (nonatomic, assign, readonly) CGFloat cellHeight;
 @property (nonatomic, strong) UUMessage *message;

@@ -67,6 +67,9 @@
 
 //#import "ZFPlayer.h"
 #import "VideoPlayerViewController.h"
+#import "YYTextLayout.h"
+
+#import <AVFoundation/AVFoundation.h>
 
 
 #define APP_WIDTH self.view.frame.size.width
@@ -218,6 +221,10 @@ typedef enum : NSUInteger {
     /* 副播放器开启/关闭*/
     BOOL subScreenON;
     
+    
+    /* 语音.. 检测音量*/
+    AVAudioRecorder *recorder;
+    NSTimer *levelTimer;
     
 }
 
@@ -1726,7 +1733,7 @@ bool ismute     = NO;
     
     
     _chatTableView.sd_layout
-    .bottomSpaceToView(IFView,0);
+    .bottomSpaceToView(_videoInfoView.view2,46);
     [_chatTableView updateLayout];
     
     /* 把可移动的这个视图放到self.view的最上层*/
@@ -2594,6 +2601,15 @@ bool ismute     = NO;
     /* 支持全屏*/
     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"SupportedLandscape"];
     
+    
+    
+    /* 添加录音是否开始的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordStart) name:@"RecordStart" object:nil];
+    
+    /* 添加录音是否结束的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordEnd) name:@"RecordEnd" object:nil];
+
+    
 }
 
 
@@ -2758,6 +2774,9 @@ bool ismute     = NO;
             
             _videoClassInfo.classDescription = [NSString  stringWithFormat:@"%@",[dataDic valueForKey:@"description"]];
             
+            /* 添加课程简介的富文本方法*/
+            _videoClassInfo.attributedDescription =[[NSAttributedString alloc] initWithData:[[dataDic valueForKey:@"description"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+
             /* 课程图的信息赋值*/
             _infoHeaderView.classNameLabel.text = _videoClassInfo.name;
             _infoHeaderView.gradeLabel.text = _videoClassInfo.grade;
@@ -2784,7 +2803,23 @@ bool ismute     = NO;
             _infoHeaderView.liveStartTimeLabel.text = [_videoClassInfo.live_start_time substringWithRange:NSMakeRange(0, 10)];
             _infoHeaderView.liveEndTimeLabel.text = [_videoClassInfo.live_end_time substringWithRange:NSMakeRange(0, 10)];;
             _infoHeaderView.classDescriptionLabel.text = _videoClassInfo.classDescription;
+            /* 课程简介,富文本赋值*/
+            _infoHeaderView.classDescriptionLabel.attributedText = _videoClassInfo.attributedDescription;
+            [_infoHeaderView.classDescriptionLabel updateLayout];
             
+            
+            /* 自适应课程简介的高度*/
+            CGSize class_size =[YYTextLayout layoutWithContainerSize:CGSizeMake(_infoHeaderView.classDescriptionLabel.width_sd, CGFLOAT_MAX) text:_videoClassInfo.attributedDescription].textBoundingSize;
+            
+            [_infoHeaderView.classDescriptionLabel sd_clearAutoLayoutSettings];
+            
+            _infoHeaderView.classDescriptionLabel.sd_layout
+            .leftEqualToView(_infoHeaderView.descriptions)
+            .topSpaceToView(_infoHeaderView.descriptions,20)
+            .widthIs(self.view.width_sd-40)
+            .heightIs(class_size.height);
+            
+            [_infoHeaderView.classDescriptionLabel updateLayout];
             
             /* 请求教师详细信息*/
             
@@ -2797,10 +2832,14 @@ bool ismute     = NO;
                     /* 解析 教师 数据*/
                     _teacher = [Teacher yy_modelWithDictionary:teacherDic[@"data"]];
                     
+                    /* 教师简介,增加富文本*/
+                    _teacher.attributedDescription = [[NSAttributedString alloc]initWithData:[_teacher.desc dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+                    
                     /* 教师信息 赋值*/
                     _infoHeaderView.teacherNameLabel.text =_teacher.name;
                     _infoHeaderView.teaching_year.text = [_teacher.teaching_years changeEnglishYearsToChinese];
                     _infoHeaderView.workPlace .text = _teacher.school;
+                    
                     
                     if (_teacher.gender!=nil) {
                         if ([_teacher.gender isEqualToString:@"female"]) {
@@ -2813,11 +2852,34 @@ bool ismute     = NO;
                     [_infoHeaderView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacher.avatar_url]];
                     _infoHeaderView.selfInterview.text = _teacher.desc;
                     
+                    /* 教师简介,使用富文本*/
+                    _infoHeaderView.selfInterview.attributedText = _teacher.attributedDescription;
+
+                    // 测试代码 _infoHeaderView.selfInterview.attributedText = [[NSAttributedString alloc]initWithData:[@"<p>halou&nbsp;halou</p><p>haleou</p><p>halekl</p><p><br /></p><p><strong><span><span><br /></span></span></strong></p><p><strong><span><span></span></span></strong></p>" dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }  documentAttributes:nil error:nil ];
+                    
                     [_infoHeaderView.selfInterview updateLayout];
                     
-                    /* 自动赋值高度*/
+                    /* 教师简介的高度自适应*/
+                    CGSize teacher_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_infoHeaderView.selfInterview.width_sd, CGFLOAT_MAX) text:_teacher.attributedDescription].textBoundingSize;
                     
-                    NSNumber *height =[NSNumber numberWithFloat: _infoHeaderView.layoutLine.frame.origin.y];
+                    [_infoHeaderView.selfInterview sd_clearAutoLayoutSettings];
+                    _infoHeaderView.selfInterview.sd_layout
+                    .leftEqualToView(_infoHeaderView.selfIntroLabel)
+                    .topSpaceToView(_infoHeaderView.selfIntroLabel,20)
+                    .widthIs(self.view.width_sd-40)
+                    .heightIs(teacher_size.height);
+                    [_infoHeaderView.selfInterview updateLayout];
+                    
+//                    _selfInterview.sd_layout
+//                    .leftEqualToView(selfIntroLabel)
+//                    .topSpaceToView(selfIntroLabel,20)
+//                    .rightSpaceToView(self,20)
+//                    .autoHeightRatio(0);
+
+                    
+                    /* 自动赋值heagerview的高度*/
+                    
+                    NSNumber *height =[NSNumber numberWithFloat: _infoHeaderView.layoutLine.frame.origin.y+10];
                     
                     [self setValue:height forKey:@"headerHeight"];
                     
@@ -2880,6 +2942,105 @@ bool ismute     = NO;
     [self loadingHUDStopLoadingWithTitle:@"请稍后"];
 }
 
+#pragma mark- 语音部分
+/* 开始检测麦克风声音*/
+- (void)checkMicVolum{
+    
+    /* 必须添加这句话，否则在模拟器可以，在真机上获取始终是0 */
+    [[AVAudioSession sharedInstance]
+     setCategory: AVAudioSessionCategoryPlayAndRecord error: nil];
+    
+    /* 不需要保存录音文件 */
+    NSURL *url = [NSURL fileURLWithPath:@"/dev/null"];
+    
+    NSDictionary *settings = [NSDictionary dictionaryWithObjectsAndKeys:
+                              [NSNumber numberWithFloat: 44100.0], AVSampleRateKey,
+                              [NSNumber numberWithInt: kAudioFormatAppleLossless], AVFormatIDKey,
+                              [NSNumber numberWithInt: 2], AVNumberOfChannelsKey,
+                              [NSNumber numberWithInt: AVAudioQualityMax], AVEncoderAudioQualityKey,
+                              nil];
+    
+    
+    
+    NSError *error;
+    
+    recorder = [[AVAudioRecorder alloc] initWithURL:url settings:settings error:&error];
+    if (recorder)
+    {
+        [recorder prepareToRecord];
+        recorder.meteringEnabled = YES;
+        [recorder record];
+        levelTimer = [NSTimer scheduledTimerWithTimeInterval: 0.1 target: self selector: @selector(levelTimerCallback) userInfo: nil repeats: YES];
+        
+        
+    }
+    else
+    {
+        NSLog(@"%@", [error description]);
+    }
+}
+
+/* 检测系统麦克风的音量值  */
+- (void)levelTimerCallback{
+    
+    [recorder updateMeters];
+    
+    float   level;                // The linear 0.0 .. 1.0 value we need.
+    float   minDecibels = -80.0f; // Or use -60dB, which I measured in a silent room.
+    float   decibels    = [recorder averagePowerForChannel:0];
+    
+    if (decibels < minDecibels)
+    {
+        level = 0.0f;
+    }
+    else if (decibels >= 0.0f)
+    {
+        level = 1.0f;
+    }
+    else
+    {
+        float   root            = 2.0f;
+        float   minAmp          = powf(10.0f, 0.05f * minDecibels);
+        float   inverseAmpRange = 1.0f / (1.0f - minAmp);
+        float   amp             = powf(10.0f, 0.05f * decibels);
+        float   adjAmp          = (amp - minAmp) * inverseAmpRange;
+        
+        level = powf(adjAmp, 1.0f / root);
+    }
+    
+    /* level 范围[0 ~ 1], 转为[0 ~120] 之间 */
+    dispatch_async(dispatch_get_main_queue(), ^{
+        //        [_textLabel setText:[NSString stringWithFormat:@"%f", level*120]];
+        
+        NSLog(@"分贝数 :%f",level*120);
+        
+    });
+}
+
+- (void)checkMic{
+    
+    [self checkMicVolum];
+    
+    
+}
+
+//开始录制的方法
+- (void)recordStart{
+    
+    [self checkMic];
+    
+}
+//语音录制结束的方法
+- (void)recordEnd{
+    
+    [levelTimer invalidate];
+    levelTimer = nil;
+    
+}
+
+
+
+#pragma mark- 聊天及sdk
 /* 初始化聊天sdk*/
 - (void)initNIMSDK{
     
@@ -3244,7 +3405,7 @@ bool ismute     = NO;
             [IFView updateLayout];
             
             _chatTableView.sd_layout
-            .bottomSpaceToView(_videoInfoView.view2,IFView.origin_sd.y);
+            .bottomSpaceToView(_videoInfoView.view2,46);
             [_chatTableView updateLayout];
             
         }];
@@ -3282,7 +3443,7 @@ bool ismute     = NO;
             .bottomSpaceToView(_videoInfoView.view2,0);
             [IFView updateLayout];
             _chatTableView.sd_layout
-            .bottomSpaceToView(IFView,0);
+            .bottomSpaceToView(_videoInfoView.view2,46);
             [_chatTableView updateLayout];
         }];
         

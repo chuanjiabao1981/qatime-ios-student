@@ -36,6 +36,7 @@
 
 
 /* 课程描述*/
+@property(nonatomic,strong) UILabel *descriptions  ; //"辅导简介"字样,做自动布局
 @property(nonatomic,strong) UILabel *classDescriptionLabel ;
 
 
@@ -73,6 +74,8 @@
 @property(nonatomic,strong) UILabel *workPlace ;
 
 /* 自我介绍*/
+
+@property(nonatomic,strong) UILabel *selfIntroLabel;    //"自我介绍"label 自适应高度布局使用
 @property(nonatomic,strong) UILabel *selfInterview ;
 
 

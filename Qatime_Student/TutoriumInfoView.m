@@ -305,27 +305,27 @@
         
         
         /* 辅导简介*/
-        UILabel *description=[[UILabel alloc]init];
-        [_view1 addSubview:description];
-        description.sd_layout.leftEqualToView(_subjectLabel).topSpaceToView(_to,20).autoHeightRatio(0);
-        [description setSingleLineAutoResizeWithMaxWidth:100.0f];
-        [description setText:@"辅导简介"];
+        _descriptions=[[UILabel alloc]init];
+        [_view1 addSubview:_descriptions];
+        _descriptions.sd_layout.leftEqualToView(_subjectLabel).topSpaceToView(_to,20).autoHeightRatio(0);
+        [_descriptions setSingleLineAutoResizeWithMaxWidth:100.0f];
+        [_descriptions setText:@"辅导简介"];
         
         
         UIView *circle6=[[UIView alloc]init];
         circle6.backgroundColor = TITLERED;
         [_view1 addSubview:circle6];
         circle6.sd_layout
-        .rightSpaceToView(description,5)
-        .centerYEqualToView(description)
-        .heightRatioToView(description,0.3)
+        .rightSpaceToView(_descriptions,5)
+        .centerYEqualToView(_descriptions)
+        .heightRatioToView(_descriptions,0.3)
         .widthEqualToHeight();
         circle6.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
 
 
         _classDescriptionLabel =[[UILabel alloc]init];
         [_view1 addSubview:_classDescriptionLabel];
-        _classDescriptionLabel.sd_layout.leftEqualToView(description).topSpaceToView(description,20).autoHeightRatio(0).rightSpaceToView(_view1,20);
+        _classDescriptionLabel.sd_layout.leftEqualToView(_descriptions).topSpaceToView(_descriptions,20).autoHeightRatio(0).rightSpaceToView(_view1,20);
         [_classDescriptionLabel setText:@""];
         
         
@@ -379,15 +379,15 @@
 
 
         /* 教师简介*/
-        UILabel *descrip =[[UILabel alloc]init];
-        [_view2 addSubview:descrip];
-        descrip.sd_layout.leftEqualToView(_teacherNameLabel).topSpaceToView(_workPlaceLabel,20).autoHeightRatio(0);
-        [descrip setSingleLineAutoResizeWithMaxWidth:200];
-        descrip.text = @"教师简介";
+        _descrip =[[UILabel alloc]init];
+        [_view2 addSubview:_descrip];
+        _descrip.sd_layout.leftEqualToView(_teacherNameLabel).topSpaceToView(_workPlaceLabel,20).autoHeightRatio(0);
+        [_descrip setSingleLineAutoResizeWithMaxWidth:200];
+        _descrip.text = @"教师简介";
         
         _teacherInterviewLabel =[[UILabel alloc]init];
         [_view2 addSubview:_teacherInterviewLabel];
-        _teacherInterviewLabel.sd_layout.leftSpaceToView(_view2,20).rightSpaceToView(_view2,20).topSpaceToView(descrip,20).autoHeightRatio(0);
+        _teacherInterviewLabel.sd_layout.leftSpaceToView(_view2,20).rightSpaceToView(_view2,20).topSpaceToView(_descrip,20).autoHeightRatio(0);
         
         _teacherInterviewLabel.text = @"" ;
         
