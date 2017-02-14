@@ -114,14 +114,14 @@
         /* 创建支持自定义表情的YYLabel类型的label*/
         self.title = [[YYLabel alloc]init];
         self.title.textAlignment = NSTextAlignmentCenter;
-        self.title.textColor  = [UIColor whiteColor];
+        self.title.textColor  = [UIColor blackColor];
         self.title.numberOfLines = 0;
         [self.contentView addSubview:self.title];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(btnContentClick)];
         self.title.userInteractionEnabled = YES;
         [self.title addGestureRecognizer:tap];
-
+        
         
         
     }
@@ -140,10 +140,10 @@
     
     // 显示文字
     if (self.messageFrame.message.type == UUMessageTypeText){
-//        [self.btnContent becomeFirstResponder];
-//        UIMenuController *menu = [UIMenuController sharedMenuController];
-//        [menu setTargetRect:self.btnContent.frame inView:self.btnContent.superview];
-//        [menu setMenuVisible:YES animated:YES];
+        //        [self.btnContent becomeFirstResponder];
+        //        UIMenuController *menu = [UIMenuController sharedMenuController];
+        //        [menu setTargetRect:self.btnContent.frame inView:self.btnContent.superview];
+        //        [menu setMenuVisible:YES animated:YES];
     }
     /* 显示图片*/
     else if (self.messageFrame.message.type == UUMessageTypePicture){
@@ -165,24 +165,24 @@
         }else{
             [self UUAVAudioPlayerDidFinishPlay];
         }
-
+        
     }
-
+    
 }
 
 /* 气泡长按点击事件*/
 - (void)longPress:(UILongPressGestureRecognizer *)longPress{
-   
-//    if (self.messageFrame.message.type == UUMessageTypeVoice) {
-//        
-////        [self.btnContent becomeFirstResponder];
-//        UIMenuController *menu = [UIMenuController sharedMenuController];
-//        UIMenuItem *item = [[UIMenuItem alloc]initWithTitle:@"文字转换" action:@selector(changeVoiceToText)];
-//        menu .menuItems = @[item];
-//        [menu setTargetRect:self.btnContent.frame inView:self.btnContent.superview];
-//        [menu setMenuVisible:YES animated:YES];
-//        
-//    }
+    
+    //    if (self.messageFrame.message.type == UUMessageTypeVoice) {
+    //
+    ////        [self.btnContent becomeFirstResponder];
+    //        UIMenuController *menu = [UIMenuController sharedMenuController];
+    //        UIMenuItem *item = [[UIMenuItem alloc]initWithTitle:@"文字转换" action:@selector(changeVoiceToText)];
+    //        menu .menuItems = @[item];
+    //        [menu setTargetRect:self.btnContent.frame inView:self.btnContent.superview];
+    //        [menu setMenuVisible:YES animated:YES];
+    //
+    //    }
     
 }
 
@@ -211,7 +211,7 @@
         return YES; // YES ->  代表我们只监听 cut: / copy: / paste:方法
     }
     return NO; // 除了上面的操作，都不支持
-//    return YES;
+    //    return YES;
 }
 
 
@@ -246,10 +246,11 @@
 
 
 //内容及Frame设置
+/* 这是聊天内容复用中最重要的方法!!!!*/
 - (void)setMessageFrame:(UUMessageFrame *)messageFrame{
     
     _messageFrame = messageFrame;
-//    UUMessage *message = messageFrame.message;
+    //    UUMessage *message = messageFrame.message;
     
     // 1、设置时间
     self.labelTime.text = messageFrame.message.strTime;
@@ -300,22 +301,24 @@
             
             [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             /* YYText改写*/
-            [self.btnContent.contentTextView setTextColor:[UIColor whiteColor]];
+            [self.btnContent.contentTextView setTextColor:[UIColor greenColor]];
             self.btnContent.contentTextView.textAlignment = NSTextAlignmentCenter;
-            self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
+            
+            self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, 30);
+            //            self.btnContent.title .textColor = [UIColor greenColor];
             //判断:消息类型是图片
         }else if(messageFrame.message.type == UUMessageTypePicture){
             
             [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
-
+            
         }else if(messageFrame.message.type == UUMessageTypePicture){
             
             [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
             
         }
-
+        
     }else{
         //判断:别人发送的消息
         
@@ -389,43 +392,73 @@
                 NSArray *resultArray = [re matchesInString:messageFrame.message.strContent options:0 range:NSMakeRange(0, messageFrame.message.strContent.length)];
                 NSLog(@"%@",resultArray);
                 
-                /* 先取出来表情*/
-                
-                NSMutableArray *names = @[].mutableCopy;
-                
-                //根据匹配范围来用图片进行相应的替换
-                for(NSTextCheckingResult *match in resultArray){
-                    //获取数组元素中得到range
-                    NSRange range = [match range];
+                //判断是不是富文本 ->在这里判断是最合适的,不会冲掉手动发送的文本
+                if (resultArray.count!=0) {
+                    /* 包含富文本*/
+                    /* 先取出来表情*/
                     
-                    //获取原字符串中对应的值
-                    NSString *subStr = [title substringWithRange:range];
-                    NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
-                    NSMutableString *faceName = @"".mutableCopy;
-                    faceName = [NSMutableString stringWithFormat:@"em_%ld",subName.integerValue+1];
-                    NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
-                    [names addObject:dicc];
+                    NSMutableArray *names = @[].mutableCopy;
                     
+                    //根据匹配范围来用图片进行相应的替换
+                    for(NSTextCheckingResult *match in resultArray){
+                        //获取数组元素中得到range
+                        NSRange range = [match range];
+                        
+                        //获取原字符串中对应的值
+                        NSString *subStr = [title substringWithRange:range];
+                        NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+                        NSMutableString *faceName = @"".mutableCopy;
+                        faceName = [NSMutableString stringWithFormat:@"em_%ld",subName.integerValue+1];
+                        NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
+                        [names addObject:dicc];
+                        
+                    }
+                    
+                    for (NSInteger i = names.count-1; i>=0; i--) {
+                        
+                        NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
+                        NSData *data = [NSData dataWithContentsOfFile:path];
+                        YYImage *image = [YYImage imageWithData:data scale:2.5];
+                        image.preloadAllAnimatedImageFrames = YES;
+                        YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
+                        
+                        NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeScaleAspectFit attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13] alignment:YYTextVerticalAlignmentCenter];
+                        
+                         
+                        [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
+                        
+                        
+                    }
+                    self.title.attributedText =text;
+                    /* 富文本的title和气泡方案*/
+                    [self.title setFrame:self.btnContent.frame];
+                    self.title.textContainerInset = UIEdgeInsetsMake(10, 5, 10, 15);
+                    self.title.textAlignment = NSTextAlignmentLeft;
+                    
+                    normal  = [normal resizableImageWithCapInsets:UIEdgeInsetsMake(35, 5, 10, 22)];
+                    self.btnContent.frame = CGRectMake(messageFrame.contentF.origin.x-20, messageFrame.contentF.origin.y, messageFrame.contentF.size.width+20, messageFrame.contentF.size.height);
+                    self.title.frame = self.btnContent.frame;
+                    
+                    
+                }else{
+                    /* 不包含富文本*/
+                    self.title.attributedText = text;
+                    
+                    [self.title setFrame:self.btnContent.frame];
+                    self.title.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 15);
+                    self.title.textAlignment = NSTextAlignmentLeft;
+                    self.btnContent.frame = messageFrame.contentF;
+                    self.title.frame = self.btnContent.frame;
                 }
                 
-                for (NSInteger i = names.count-1; i>=0; i--) {
-                    
-                    NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
-                    NSData *data = [NSData dataWithContentsOfFile:path];
-                    YYImage *image = [YYImage imageWithData:data scale:2.5];
-                    image.preloadAllAnimatedImageFrames = YES;
-                    YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
-                    
-                    NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
-                    
-                    [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
-                }
-                self.title.attributedText =text;
                 
-                [self.title setFrame:self.btnContent.frame];
                 
-                self.title.textContainerInset = UIEdgeInsetsMake(0, 0, 0, 0);
-                self.title.textAlignment = NSTextAlignmentLeft;
+                
+                
+                //                [self.title setFrame:self.btnContent.frame];
+                //
+                //                self.title.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 15);
+                //                self.title.textAlignment = NSTextAlignmentLeft;
             }
                 
                 break;
@@ -441,7 +474,7 @@
                 [self makeMaskView:self.btnContent.backImageView withImage:normal];
                 
             }
-            
+                
                 break;
             case UUMessageTypeVoice:{
                 
@@ -451,7 +484,7 @@
                 self.btnContent.backImageView.hidden = YES;
                 self.btnContent.titleLabel.hidden=YES;
                 self.btnContent.voiceBackView.hidden = NO;
-         
+                
                 self.btnContent.second.textColor= [UIColor whiteColor];
                 self.btnContent.second.text = [NSString stringWithFormat:@"%@''",messageFrame.message.strVoiceTime];
                 songData = messageFrame.message.voice;
@@ -533,11 +566,11 @@
                 self.title.attributedText =text;
                 
                 [self.title setFrame:self.btnContent.frame];
-
+                
                 self.title.textContainerInset  = UIEdgeInsetsMake(0, 20, 0, 0);
                 self.title.textAlignment = NSTextAlignmentLeft;
             }
-        
+                
                 break;
             case UUMessageTypePicture:
             {
@@ -550,7 +583,7 @@
                 [self.btnContent.backImageView setImage:messageFrame.message.picture];
                 self.btnContent.backImageView.frame = CGRectMake(0, 0, self.btnContent.frame.size.width, self.btnContent.frame.size.height);
                 [self makeMaskView:self.btnContent.backImageView withImage:normal];
-
+                
             }
                 break;
             case UUMessageTypeVoice:{
@@ -564,16 +597,16 @@
                 self.btnContent.second.text = [NSString stringWithFormat:@"%@''",messageFrame.message.strVoiceTime];
                 songData = messageFrame.message.voice;
                 //            voiceURL = [NSString stringWithFormat:@"%@%@",RESOURCE_URL_HOST,message.strVoice];
-
-
+                
+                
             }
                 break;
                 
             default:
                 break;
-        
-        
-    }
+                
+                
+        }
     }
     
 }

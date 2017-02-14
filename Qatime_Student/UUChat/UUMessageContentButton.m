@@ -70,6 +70,9 @@
         self.title.numberOfLines = 0;
         self.title.textAlignment = NSTextAlignmentCenter;
         self.title.userInteractionEnabled = YES;
+        self.title.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10);
+        
+        
         
         self.contentTextView = [[YYTextView alloc]init];
         
@@ -78,6 +81,7 @@
         [self addSubview:_contentTextView];
         [self bringSubviewToFront:_contentTextView];
         self.contentTextView.textAlignment = NSTextAlignmentCenter;
+        self.contentTextView.contentInset = UIEdgeInsetsMake(10, 10, 10, 10);
         
         self.contentTextView.hidden = NO;
         

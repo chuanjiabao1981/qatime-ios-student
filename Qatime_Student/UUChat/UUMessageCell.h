@@ -25,7 +25,9 @@
 
 @interface UUMessageCell : UITableViewCell
 
+/* 时间戳*/
 @property (nonatomic, retain)UILabel *labelTime;
+
 @property (nonatomic, retain)UILabel *labelNum;
 @property (nonatomic, retain)UIButton *btnHeadImage;
 
