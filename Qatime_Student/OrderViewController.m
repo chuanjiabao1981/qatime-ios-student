@@ -461,12 +461,17 @@
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 下单成功*/
             
-            [self loadingHUDStopLoadingWithTitle:nil];
+            [self loadingHUDStopLoadingWithTitle:@"下单成功，请使用网页端支付"];
             
-            dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
-            /* 下单成功,发送下单成功通知*/
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"OrderSuccess" object:nil ];
-            [self performSelector:@selector(turnToPayPage) withObject:nil afterDelay:0];
+            [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1.5];
+            
+            
+//            [self loadingHUDStopLoadingWithTitle:nil];
+//            
+//            dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
+//            /* 下单成功,发送下单成功通知*/
+//            [[NSNotificationCenter defaultCenter]postNotificationName:@"OrderSuccess" object:nil ];
+//            [self performSelector:@selector(turnToPayPage) withObject:nil afterDelay:0];
             
         }else{
             
@@ -484,14 +489,14 @@
 #pragma mark- 跳转到支付确认页面
 - (void)turnToPayPage{
     
-    if (dataDic) {
-        
-        PayConfirmViewController *confirm = [[PayConfirmViewController alloc]initWithData:dataDic];
-        
-        [self.navigationController pushViewController:confirm animated:YES];
-        
-        
-    }
+//    if (dataDic) {
+//        
+//        PayConfirmViewController *confirm = [[PayConfirmViewController alloc]initWithData:dataDic];
+//        
+//        [self.navigationController pushViewController:confirm animated:YES];
+//        
+//        
+//    }
     
     
 }

@@ -2170,25 +2170,25 @@
 			isa = PBXGroup;
 			children = (
 				5483288D1DDC6F360053AB29 /* OtherResources */,
-				548328F11DDC75050053AB29 /* ChatModel.h */,
-				548328F21DDC75050053AB29 /* ChatModel.m */,
 				548328BE1DDC6F360053AB29 /* UUImageAvatarBrowser.h */,
 				548328BF1DDC6F360053AB29 /* UUImageAvatarBrowser.m */,
 				547AD51C1E4D6A7000239907 /* UUAVAudioPlayer.h */,
 				547AD51D1E4D6A7000239907 /* UUAVAudioPlayer.m */,
 				548328C01DDC6F360053AB29 /* UUInputFunctionView.h */,
 				548328C11DDC6F360053AB29 /* UUInputFunctionView.m */,
+				548328F11DDC75050053AB29 /* ChatModel.h */,
+				548328F21DDC75050053AB29 /* ChatModel.m */,
 				548328C21DDC6F360053AB29 /* UUMessage.h */,
 				548328C31DDC6F360053AB29 /* UUMessage.m */,
-				548328C41DDC6F360053AB29 /* UUMessageCell.h */,
-				548328C51DDC6F360053AB29 /* UUMessageCell.m */,
-				54AF51C51DE8226900581C4A /* Emotions.bundle */,
-				548328C61DDC6F360053AB29 /* UUMessageContentButton.h */,
-				548328C71DDC6F360053AB29 /* UUMessageContentButton.m */,
 				548328C81DDC6F360053AB29 /* UUMessageFrame.h */,
 				548328C91DDC6F360053AB29 /* UUMessageFrame.m */,
+				548328C41DDC6F360053AB29 /* UUMessageCell.h */,
+				548328C51DDC6F360053AB29 /* UUMessageCell.m */,
+				548328C61DDC6F360053AB29 /* UUMessageContentButton.h */,
+				548328C71DDC6F360053AB29 /* UUMessageContentButton.m */,
 				548328CA1DDC6F360053AB29 /* UUProgressHUD.h */,
 				548328CB1DDC6F360053AB29 /* UUProgressHUD.m */,
+				54AF51C51DE8226900581C4A /* Emotions.bundle */,
 			);
 			path = UUChat;
 			sourceTree = "<group>";

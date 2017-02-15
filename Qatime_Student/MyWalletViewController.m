@@ -222,9 +222,11 @@
 #pragma mark- 进入充值页面
 - (void)recharge{
     
-    ChargeViewController *cVC = [ChargeViewController new];
     
-    [self.navigationController pushViewController:cVC animated:YES];
+    [self loadingHUDStopLoadingWithTitle:@"请使用网页端进行充值"];
+//    ChargeViewController *cVC = [ChargeViewController new];
+//    
+//    [self.navigationController pushViewController:cVC animated:YES];
     
 }
 

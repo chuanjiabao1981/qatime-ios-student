@@ -272,6 +272,7 @@
     float   level;                // The linear 0.0 .. 1.0 value we need.
     float   minDecibels = -80.0f; // Or use -60dB, which I measured in a silent room.
     float   decibels    = [recorder averagePowerForChannel:0];
+
     
     if (decibels < minDecibels)
     {
@@ -360,7 +361,6 @@
             
             [self loadingHUDStopLoadingWithTitle:@"获取聊天成员信息失败!"];
         }
-        
         
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -477,8 +477,10 @@
                          *
                          */
                         
-                        //创建一个可变的属性字符串
                         
+                        NSDictionary *dic;
+                        
+                        //创建一个可变的属性字符串
                         NSMutableAttributedString *text = [NSMutableAttributedString new];
                         [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
                         
@@ -487,15 +489,7 @@
                         NSError *error = nil;
                         NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
                         
-//                        if (re) {
-//                            
-//                            
-//                        }else{
-//                            /* 不包含富文本的情况*/
-//                            
-//                        }
-                        /* 包含富文本的情况*/
-                        //通过正则表达式来匹配字符串
+                        //通过正则表达式来匹配字符串,加载表情的同时判断是否存在富文本
                         NSArray *resultArray = [re matchesInString:title options:0 range:NSMakeRange(0, title.length)];
                         
                         if (resultArray.count != 0) {
@@ -529,25 +523,34 @@
                                 image.preloadAllAnimatedImageFrames = YES;
                                 YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
                                 
-                                NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
+                                NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeTopLeft attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13*ScrenScale] alignment:YYTextVerticalAlignmentTop];
                                 
                                 [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
                                 
                                 title = [title stringByReplacingCharactersInRange:[names [i][@"range"] rangeValue] withString:[names[i]valueForKey:@"name"]];
+                                
+                                dic = @{@"strContent": title,
+                                        @"type": @(UUMessageTypeText),
+                                        @"frome":@(UUMessageFromMe),
+                                        @"strTime":[[NSString stringWithFormat:@"%ld",(NSInteger)message.timestamp]changeTimeStampToDateString],
+                                        @"isRichText":@YES,
+                                        @"richNum":[NSString stringWithFormat:@"%ld",resultArray.count]};
                             }
                         }else{
                            /* 没有有表情的普通文本*/
+                            dic = @{@"strContent": title,
+                                    @"type": @(UUMessageTypeText),
+                                    @"frome":@(UUMessageFromMe),
+                                    @"strTime":[[NSString stringWithFormat:@"%ld",(NSInteger)message.timestamp]changeTimeStampToDateString],
+                                    @"isRichText":@NO,
+                                    @"richNum":@"0"};
                             
                         }
                         
-                        
-                        NSDictionary *dic = @{@"strContent": title,
-                                              @"type": @(UUMessageTypeText),
-                                              @"frome":@(UUMessageFromMe),
-                                              @"strTime":[[NSString stringWithFormat:@"%ld",(NSInteger)message.timestamp]changeTimeStampToDateString],
-                                              @"isRichText":@YES};
-                        
-                        [self dealTheFunctionData:dic];
+                        /* 判断和调整制作完毕后,使用dic字典制作消息*/
+                        if (dic) {
+                            [self dealTheFunctionData:dic];
+                        }
                         
                     }
                     
@@ -945,23 +948,15 @@
         
     }else{
         
-        NSLog(@"%@", [funcView.TextViewInput.attributedText getPlainString]);
-        
-        NSDictionary *dic = @{@"strContent": [funcView.TextViewInput.attributedText getPlainString],
-                              @"type": @(UUMessageTypeText),
-                              @"frome":@(UUMessageFromMe),
-                              @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]]};
-        
-        [self dealTheFunctionData:dic];
-        
-        NIMMessage * text_message = [[NIMMessage alloc] init];
-        text_message.text = [funcView.TextViewInput.attributedText getPlainString];
-        text_message.messageObject = NIMMessageTypeText;
-        text_message.apnsContent = @"发来了一条消息";
         
         /* 解析发送的字符串*/
+        //解析和云信发送
+//        NSLog(@"%@", [funcView.TextViewInput.attributedText getPlainString]);
         
-        NSString *title = text_message.text;
+        NSDictionary *dic;
+        
+        NSString *title = [funcView.TextViewInput.attributedText getPlainString];
+        
         
         if (title == nil) {
             title = @"";
@@ -984,55 +979,81 @@
         NSArray *resultArray = [re matchesInString:title options:0 range:NSMakeRange(0, title.length)];
         NSLog(@"%@",resultArray);
         
-        
-        
-        NSMutableArray *names = @[].mutableCopy;
-        
-        //根据匹配范围来用图片进行相应的替换
-        for(NSTextCheckingResult *match in resultArray){
-            //获取数组元素中得到range
-            NSRange range = [match range];
+        if (resultArray.count!=0) {
+            //如果是包含富文本
             
-            //获取原字符串中对应的值
-            NSString *subStr = [title substringWithRange:range];
-            NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
-            NSMutableString *faceName = @"".mutableCopy;
-            NSMutableString *barrageFaceName = @"".mutableCopy;
+            //本地转转换发送
             
-            faceName = [NSMutableString stringWithFormat:@"[em_%ld]",subName.integerValue+1];
-            barrageFaceName =[NSMutableString stringWithFormat:@"em_%ld",subName.integerValue+1];
+            NSMutableArray *names = @[].mutableCopy;
+            
+            //根据匹配范围来用图片进行相应的替换
+            for(NSTextCheckingResult *match in resultArray){
+                //获取数组元素中得到range
+                NSRange range = [match range];
+                
+                //获取原字符串中对应的值
+                NSString *subStr = [title substringWithRange:range];
+                NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+                NSMutableString *faceName = @"".mutableCopy;
+                NSMutableString *barrageFaceName = @"".mutableCopy;
+                
+                faceName = [NSMutableString stringWithFormat:@"[em_%ld]",subName.integerValue+1];
+                barrageFaceName =[NSMutableString stringWithFormat:@"em_%ld",subName.integerValue+1];
+                
+                
+                NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range],@"barrageName":barrageFaceName};
+                [names addObject:dicc];
+                
+            }
             
             
-            NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range],@"barrageName":barrageFaceName};
-            [names addObject:dicc];
+            for (NSInteger i = names.count-1; i>=0; i--) {
+                
+                NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
+                NSData *data = [NSData dataWithContentsOfFile:path];
+                YYImage *image = [YYImage imageWithData:data scale:2.5];
+                image.preloadAllAnimatedImageFrames = YES;
+                YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
+                
+                NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
+                
+                [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
+                
+                
+                title  = [title stringByReplacingCharactersInRange:[names [i][@"range"] rangeValue] withString:[names[i] valueForKey:@"name"]];
+                
+                
+                dic = @{@"strContent": [funcView.TextViewInput.attributedText getPlainString],
+                        @"type": @(UUMessageTypeText),
+                        @"frome":@(UUMessageFromMe),
+                        @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
+                        @"isRichText":@YES,
+                        @"richNum":[NSString stringWithFormat:@"%ld",resultArray.count]};
+                
+            }
+            
+        }else{
+            //如果不含富文本
+            
+            dic = @{@"strContent": [funcView.TextViewInput.attributedText getPlainString],
+                    @"type": @(UUMessageTypeText),
+                    @"frome":@(UUMessageFromMe),
+                    @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
+                    @"isRichText":@NO,
+                    @"richNum":@"0"};
             
         }
         
-        
-        for (NSInteger i = names.count-1; i>=0; i--) {
-            
-            NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
-            NSData *data = [NSData dataWithContentsOfFile:path];
-            YYImage *image = [YYImage imageWithData:data scale:2.5];
-            image.preloadAllAnimatedImageFrames = YES;
-            YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
-            
-            NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
-            
-            [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
-            
-            
-            title  = [title stringByReplacingCharactersInRange:[names [i][@"range"] rangeValue] withString:[names[i] valueForKey:@"name"]];
-            
-        }
-        
-        text_message.text = title;
+        [self dealTheFunctionData:dic];
         
         //发送消息
         
+        NIMMessage * text_message = [[NIMMessage alloc] init];
+        text_message.text = title;
+        text_message.messageObject = NIMMessageTypeText;
+        text_message.apnsContent = @"发来了一条消息";
         [[NIMSDK sharedSDK].chatManager addDelegate:self];
         [[NIMSDK sharedSDK].chatManager sendMessage:text_message toSession:_session error:nil];
-        
         
         [_inputView.TextViewInput setText:@""];
         [_inputView.TextViewInput resignFirstResponder];
@@ -1041,7 +1062,6 @@
     
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
-    
     
     [funcView changeSendBtnWithPhoto:YES];
     

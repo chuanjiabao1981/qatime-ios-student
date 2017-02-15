@@ -27,7 +27,9 @@
     // 1、计算时间的位置
     if (_showTime){
         CGFloat timeY = ChatMargin;
-        CGSize timeSize = [_message.strTime sizeWithFont:ChatTimeFont constrainedToSize:CGSizeMake(300, 100) lineBreakMode:NSLineBreakByWordWrapping];
+//        CGSize timeSize = [_message.strTime sizeWithFont:ChatTimeFont constrainedToSize:CGSizeMake(300, 100) lineBreakMode:NSLineBreakByWordWrapping];
+        
+        CGSize timeSize = [_message.strTime sizeWithFont:ChatTimeFont maxSize:CGSizeMake(300, 100)];
 
         CGFloat timeX = (screenW - timeSize.width) / 2;
         _timeF = CGRectMake(timeX, timeY, timeSize.width + ChatTimeMarginW, timeSize.height + ChatTimeMarginH);
@@ -35,15 +37,22 @@
     
     
     // 2、计算头像位置
+    //头像位置x
     CGFloat iconX = ChatMargin;
     if (_message.from == UUMessageFromMe) {
         iconX = screenW - ChatMargin - ChatIconWH;
     }
+    //头像位置y
     CGFloat iconY = CGRectGetMaxY(_timeF) + ChatMargin;
+    
+    //头像的frame
     _iconF = CGRectMake(iconX, iconY, ChatIconWH, ChatIconWH);
     
     // 3、计算ID位置
-    _nameF = CGRectMake(iconX, iconY+ChatIconWH, ChatIconWH, 20);
+    _nameF = CGRectMake(iconX+5, iconY+ChatIconWH, ChatIconWH, 20);
+    if (_message.from == UUMessageFromMe) {
+        _nameF = CGRectMake(iconX-10, iconY+ChatIconWH, ChatIconWH, 20);
+    }
     
     // 4、计算内容位置
     //label的内容位置
@@ -55,8 +64,8 @@
     CGSize contentSize;
     switch (_message.type) {
         case UUMessageTypeText:{
-            CGSize size = CGSizeMake([UIScreen mainScreen].bounds.size.width/2, CGFLOAT_MAX);
             
+            CGSize size = CGSizeMake([UIScreen mainScreen].bounds.size.width/2, CGFLOAT_MAX);
             
             YYTextLayout *layout = [YYTextLayout layoutWithContainerSize:size text:[[NSAttributedString alloc]initWithString:_message.strContent]];
             
@@ -70,12 +79,25 @@
             [layout selectionRectsForRange:[YYTextRange rangeWithRange:NSMakeRange(10,2)]];
             
             // 显示文本排版结果
+            
             contentSize = layout.textBoundingSize;
             if (_message.from == UUMessageFromMe) {
                 
                 if (_message.isRichText == YES) {
                     
                     contentSize.height+=10;
+                    
+                    NSInteger letterNum = _message.richNum;
+                    //气泡尺寸修正
+                    if (letterNum<3) {
+                        contentSize.width-=letterNum*5;
+                    }else if (letterNum>3&&letterNum<=8){
+                        contentSize.width+=6*letterNum;
+                    }else if (letterNum>8){
+                        contentSize.width+=5*letterNum/7;
+                        contentSize.height+=letterNum/8*15;
+                    }
+                    
                 }else{
                     
                 }
@@ -84,6 +106,10 @@
                 if (_message.isRichText == YES) {
                     
                     contentSize.width -= 20;
+                    
+                    
+                    
+                    
                 }else{
                     
                 }

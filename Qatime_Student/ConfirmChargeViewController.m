@@ -58,15 +58,15 @@
             model.pay_at = @"";
         }
         
-        dataInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"amount":model.amount,
-                                                                   @"status":model.status,
-                                                                   @"id":model.idNumber,
-                                                                   @"created_at":model.created_at,
-                                                                   @"pay_type":model.pay_type,
-                                                                   @"pay_at":model.pay_at,
-                                                                   @"nonce_str":model.nonce_str,
-                                                                   @"updated_at":model.updated_at,
-                                                                   @"prepay_id":model.prepay_id}];
+        dataInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"amount":model.amount==nil?@"":model.amount,
+                                                                   @"status":model.status==nil?@"":model.status,
+                                                                   @"id":model.idNumber==nil?@"":model.idNumber,
+                                                                   @"created_at":model.created_at==nil?@"":model.created_at,
+                                                                   @"pay_type":model.pay_type==nil?@"":model.pay_type,
+                                                                   @"pay_at":model.pay_at==nil?@"":model.pay_at,
+                                                                   @"nonce_str":model.nonce_str==nil?@"":model.nonce_str,
+                                                                   @"updated_at":model.updated_at==nil?@"":model.updated_at,
+                                                                   @"prepay_id":model.prepay_id==nil?@"":model.prepay_id}];
     }
     return self;
     

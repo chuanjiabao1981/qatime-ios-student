@@ -40,7 +40,7 @@
         _mode.font = [UIFont systemFontOfSize:16*ScrenScale];
         
         UILabel *mod = [[UILabel alloc]init];
-        mod .text  = @"支付方式";
+//        mod .text  = @"支付方式";
         mod.textColor = TITLECOLOR;
         mod.font = [UIFont systemFontOfSize:16*ScrenScale];
         
@@ -150,15 +150,15 @@
     _number.text = model.idNumber;
     
     
-    if ([model.pay_type isEqualToString:@"weixin"]) {
-        _mode.text = @"微信支付";
-    }else if([model.pay_type isEqualToString:@"alipay"]){
-        
-         _mode.text = @"支付宝支付";
-    }else if (![model.pay_type isEqualToString:@"alipay"]&&![model.pay_type isEqualToString:@"weixin"]){
-        _mode.text = @"余额支付";
-
-    }
+//    if ([model.pay_type isEqualToString:@"weixin"]) {
+//        _mode.text = @"微信支付";
+//    }else if([model.pay_type isEqualToString:@"alipay"]){
+//        
+//         _mode.text = @"支付宝支付";
+//    }else if (![model.pay_type isEqualToString:@"alipay"]&&![model.pay_type isEqualToString:@"weixin"]){
+//        _mode.text = @"余额支付";
+//
+//    }
     
     
         /* 时间戳*/

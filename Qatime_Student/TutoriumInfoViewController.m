@@ -276,9 +276,8 @@
                     
                     _tutoriumInfoView.onlineVideoLabel.text =@"在线直播";
                     
-                    _tutoriumInfoView.liveStartTimeLabel.text =  [_dataDic[@"live_start_time"] substringToIndex:10];
-                    _tutoriumInfoView.liveEndTimeLabel.text = [_dataDic[@"live_end_time"] substringToIndex:10];
-                    
+                    _tutoriumInfoView.liveStartTimeLabel.text = [_dataDic[@"live_start_time"]length]>=10?[_dataDic[@"live_start_time"] substringToIndex:10]:_dataDic[@"live_start_time"];
+                    _tutoriumInfoView.liveEndTimeLabel.text = [_dataDic[@"live_end_time"] length]>=10?[_dataDic[@"live_end_time"] substringToIndex:10]:_dataDic[@"live_end_time"];
                     
                     if ([status isEqualToString:@"0"]) {
                         /* 获取token错误  需要重新登录*/
@@ -571,7 +570,7 @@
             
             
         }else{
-            //        [self loadingHUDStopLoadingWithTitle:@"该课程不支持试听"];
+            [self loadingHUDStopLoadingWithTitle:@"试听次数用尽"];
         }
     }
     

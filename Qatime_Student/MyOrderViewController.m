@@ -746,8 +746,7 @@
                 
                 [cell.leftButton setTitle:@"删除订单" forState:UIControlStateNormal];
                 cell.leftButton.hidden = YES;
-                [cell.rightButton setTitle:@"重新购买" forState:UIControlStateNormal];
-                
+                [cell.rightButton setTitle:@"重新下单" forState:UIControlStateNormal];
                 
                 
                 [cell.rightButton addTarget:self action:@selector(buyAgain:) forControlEvents:UIControlEventTouchUpInside];
@@ -964,84 +963,85 @@
 /* 订单付款功能*/
 - (void)payOrder:(UIButton *)sender{
     
-    if (sender.tag>=200&&sender.tag<300) {
-        /* 取消订单的左边按钮->取消订单*/
-        
-        Unpaid *mod =_unpaidArr[sender.tag-200];
-        
-        /* 如果支付类型是微信*/
-        if ([mod.pay_type isEqualToString:@"weixin"]) {
-            
-            if ([WXApi isWXAppInstalled]==YES) {
-                
-//                ConfirmChargeViewController *confirm = [[ConfirmChargeViewController alloc]initWithPayModel:mod];
-                
-                PayConfirmViewController *confirm = [[PayConfirmViewController alloc]initWithData:@{
-                                                                                                    @"id":mod.orderID==nil?@"":mod.orderID,
-                                                                                                    @"pay_at":mod.pay_at==nil?@"":mod.pay_at,
-                                                                                                    @"amount":mod.price==nil?@"":mod.price,
-                                                                                                        @"created_at":mod.created_at==nil?@"":mod.created_at,
-                                                                                                        @"source":@"app",
-                                                                                                        @"pay_type":mod.pay_type==nil?@"":mod.pay_type,
-                                                                                                        
-                                                                                                        @"nonce_str":mod.nonce_str==nil?@"":mod.nonce_str,
-                                                                                                        @"app_pay_str":@"",
-                                                                                                        @"updated_at":mod.updated_at==nil?@"":mod.updated_at,
-                                                                                                        @"prepay_id":mod.prepay_id==nil?@"":mod.prepay_id,
-                                                                                                        @"app_pay_params":mod.app_pay_params==nil?@"":mod.app_pay_params,
-                                                                                                        @"status":mod.status==nil?@"":mod.status}];
-                
-                
-                [self.navigationController pushViewController:confirm animated:YES];
-
-                
-            }else{
-                
-                [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
-            }
-            
-            
-            
-        }else if ([mod.pay_type isEqualToString:@"account"]){
-            /* 如果支付类型是余额*/
-            
-            if (balance) {
-                if (balance>=mod.price.floatValue) {
-                    PayConfirmViewController *confirm = [[PayConfirmViewController alloc]initWithData:@{
-                                                                                                        @"id":mod.orderID==nil?@"":mod.orderID,
-                                                                                                        @"pay_at":mod.pay_at==nil?@"":mod.pay_at,
-                                                                                                        @"amount":mod.price==nil?@"":mod.price,
-                                                                                                        @"created_at":mod.created_at==nil?@"":mod.created_at,
-                                                                                                        @"source":@"app",
-                                                                                                        @"pay_type":mod.pay_type==nil?@"":mod.pay_type,
-                                                                                                        
-                                                                                                        @"nonce_str":mod.nonce_str==nil?@"":mod.nonce_str,
-                                                                                                        @"app_pay_str":@"",
-                                                                                                        @"updated_at":mod.updated_at==nil?@"":mod.updated_at,
-                                                                                                        @"prepay_id":mod.prepay_id==nil?@"":mod.prepay_id,
-                                                                                                        @"app_pay_params":mod.app_pay_params==nil?@"":mod.app_pay_params,
-                                                                                                        @"status":mod.status==nil?@"":mod.status}];
-                    [self.navigationController pushViewController:confirm animated:YES];
-
-                }else{
-                    
-                    [self loadingHUDStopLoadingWithTitle:@"余额不足,请充值!"];
-                }
-            }else{
-                [self requestBalance];
-                [self loadingHUDStopLoadingWithTitle:@"正在获取余额数据,请稍后重试"];
-            }
-            
-            
-            
-        }else if ([mod.pay_type isEqualToString:@"alipay"]){
-           /* 如果支付类型是支付宝*/
-            /* 暂时不支持*/
-            [self loadingHUDStopLoadingWithTitle:@"暂不支持支付宝"];
-            
-        }
-        
-    }
+    [self loadingHUDStopLoadingWithTitle:@"请使用网页端支付"];
+//    if (sender.tag>=200&&sender.tag<300) {
+//        /* 取消订单的左边按钮->取消订单*/
+//        
+//        Unpaid *mod =_unpaidArr[sender.tag-200];
+//        
+//        /* 如果支付类型是微信*/
+//        if ([mod.pay_type isEqualToString:@"weixin"]) {
+//            
+//            if ([WXApi isWXAppInstalled]==YES) {
+//                
+////                ConfirmChargeViewController *confirm = [[ConfirmChargeViewController alloc]initWithPayModel:mod];
+//                
+//                PayConfirmViewController *confirm = [[PayConfirmViewController alloc]initWithData:@{
+//                                                                                                    @"id":mod.orderID==nil?@"":mod.orderID,
+//                                                                                                    @"pay_at":mod.pay_at==nil?@"":mod.pay_at,
+//                                                                                                    @"amount":mod.price==nil?@"":mod.price,
+//                                                                                                        @"created_at":mod.created_at==nil?@"":mod.created_at,
+//                                                                                                        @"source":@"app",
+//                                                                                                        @"pay_type":mod.pay_type==nil?@"":mod.pay_type,
+//                                                                                                        
+//                                                                                                        @"nonce_str":mod.nonce_str==nil?@"":mod.nonce_str,
+//                                                                                                        @"app_pay_str":@"",
+//                                                                                                        @"updated_at":mod.updated_at==nil?@"":mod.updated_at,
+//                                                                                                        @"prepay_id":mod.prepay_id==nil?@"":mod.prepay_id,
+//                                                                                                        @"app_pay_params":mod.app_pay_params==nil?@"":mod.app_pay_params,
+//                                                                                                        @"status":mod.status==nil?@"":mod.status}];
+//                
+//                
+//                [self.navigationController pushViewController:confirm animated:YES];
+//
+//                
+//            }else{
+//                
+//                [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
+//            }
+//            
+//            
+//            
+//        }else if ([mod.pay_type isEqualToString:@"account"]){
+//            /* 如果支付类型是余额*/
+//            
+//            if (balance) {
+//                if (balance>=mod.price.floatValue) {
+//                    PayConfirmViewController *confirm = [[PayConfirmViewController alloc]initWithData:@{
+//                                                                                                        @"id":mod.orderID==nil?@"":mod.orderID,
+//                                                                                                        @"pay_at":mod.pay_at==nil?@"":mod.pay_at,
+//                                                                                                        @"amount":mod.price==nil?@"":mod.price,
+//                                                                                                        @"created_at":mod.created_at==nil?@"":mod.created_at,
+//                                                                                                        @"source":@"app",
+//                                                                                                        @"pay_type":mod.pay_type==nil?@"":mod.pay_type,
+//                                                                                                        
+//                                                                                                        @"nonce_str":mod.nonce_str==nil?@"":mod.nonce_str,
+//                                                                                                        @"app_pay_str":@"",
+//                                                                                                        @"updated_at":mod.updated_at==nil?@"":mod.updated_at,
+//                                                                                                        @"prepay_id":mod.prepay_id==nil?@"":mod.prepay_id,
+//                                                                                                        @"app_pay_params":mod.app_pay_params==nil?@"":mod.app_pay_params,
+//                                                                                                        @"status":mod.status==nil?@"":mod.status}];
+//                    [self.navigationController pushViewController:confirm animated:YES];
+//
+//                }else{
+//                    
+//                    [self loadingHUDStopLoadingWithTitle:@"余额不足,请充值!"];
+//                }
+//            }else{
+//                [self requestBalance];
+//                [self loadingHUDStopLoadingWithTitle:@"正在获取余额数据,请稍后重试"];
+//            }
+//            
+//            
+//            
+//        }else if ([mod.pay_type isEqualToString:@"alipay"]){
+//           /* 如果支付类型是支付宝*/
+//            /* 暂时不支持*/
+//            [self loadingHUDStopLoadingWithTitle:@"暂不支持支付宝"];
+//            
+//        }
+//        
+//    }
     
 }
 

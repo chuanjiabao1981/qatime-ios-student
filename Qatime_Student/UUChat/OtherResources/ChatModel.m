@@ -53,7 +53,8 @@
         
         /* 用message制作出messageframe对象*/
         [messageFrame setMessage:message];
-        
+    
+    
         if (message.showDateLabel) {
             previousTime = dataDic[@"strTime"];
         }

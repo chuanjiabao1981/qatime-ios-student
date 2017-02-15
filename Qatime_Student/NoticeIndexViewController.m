@@ -47,9 +47,6 @@
     /* 是否查看了系统消息*/
     BOOL checkedNotices ;
     
-    
-    
-    
 }
 
 @end
@@ -173,7 +170,7 @@
     /* 获取我的辅导班列表*/
     [self requestMyClass];
     
-    /* 请求通知消息*/
+    /* 请求通知消息,收到的消息存到本地数据库,文件名:notice.db*/
     [self requestNotices];
     
     [[[NIMSDK sharedSDK]loginManager]addDelegate:self];
@@ -326,6 +323,9 @@
                 
             }else{
                 /* 有数据的情况下*/
+                
+                
+                
                 for (NSDictionary *dics in dataArr) {
                     SystemNotice *notice = [SystemNotice yy_modelWithJSON:dics];
                     notice.noticeID = dics[@"id"];
@@ -346,6 +346,7 @@
     }];
     
 }
+
 
 
 

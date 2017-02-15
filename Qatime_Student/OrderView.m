@@ -183,7 +183,7 @@
         payView.backgroundColor = [UIColor colorWithRed:0.96 green:0.96 blue:0.96 alpha:1.00];
         
         UILabel *price_tot = [[UILabel alloc]init];
-        price_tot.text = @"应付金额";
+        price_tot.text = @"课程价格";
         price_tot.textColor = TITLECOLOR;
         
         UILabel *yuan = [[UILabel alloc]init];
@@ -197,7 +197,7 @@
         /* 支付按钮*/
         _applyButton = [[UIButton alloc]init];
         [_applyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_applyButton setTitle:@"立即支付" forState:UIControlStateNormal];
+        [_applyButton setTitle:@"立即报名" forState:UIControlStateNormal];
         _applyButton.backgroundColor = BUTTONRED;
         
         
@@ -209,7 +209,8 @@
         
         
         [_scrollView sd_addSubviews:@[className,_className,classinfo,_classImage,subject,_subjectLabel,grade,_gradeLabel,teacher,_teacheNameLabel,classtime,_classTimeLabel,startTime,_startTimeLabel,endTime,_endTimeLabel,stats,_statusLabel,type,_typeLabel,price,_priceLabel,line]];
-        [chosenView sd_addSubviews:@[payWay,_wechatButton,wechatImage,wechat,_alipayButton,alipayImage,alipay,_balanceButton,_balanceImage,_balance,_balanceLabel,payView]];
+//        [chosenView sd_addSubviews:@[payWay,_wechatButton,wechatImage,wechat,_alipayButton,alipayImage,alipay,_balanceButton,_balanceImage,_balance,_balanceLabel,payView]];
+        [chosenView addSubview:payView];
         
         [payView sd_addSubviews:@[price_tot,yuan,_totalMoneyLabel,_applyButton]];
         
@@ -388,82 +389,82 @@
         .heightIs(0.6);
         
         
-        /* 支付方式*/
-        payWay.sd_layout
-        .leftSpaceToView(chosenView,10)
-        .topSpaceToView(chosenView,10)
-        .autoHeightRatio(0);
-        [payWay setSingleLineAutoResizeWithMaxWidth:500];
-        
-        
-        /* 微信*/
-        
-        _wechatButton.sd_layout
-        .leftSpaceToView(payWay,20)
-        .topEqualToView(payWay)
-        .bottomEqualToView(payWay)
-        .widthEqualToHeight();
-        _wechatButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
-        
-        wechatImage.sd_layout
-        .leftSpaceToView(_wechatButton,10)
-        .centerYEqualToView(_wechatButton)
-        .heightRatioToView(_wechatButton,1.0)
-        .widthEqualToHeight();
-        
-        wechat.sd_layout
-        .leftSpaceToView(wechatImage,5)
-        .topEqualToView(payWay)
-        .bottomEqualToView(payWay);
-        [wechat setSingleLineAutoResizeWithMaxWidth:200.0];
-        
-        /* 支付宝*/
-        
-        _alipayButton.sd_layout
-        .leftEqualToView(_wechatButton)
-        .topSpaceToView(_wechatButton,10)
-        .rightEqualToView(_wechatButton)
-        .heightRatioToView(_wechatButton,1.0);
-        _alipayButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
-        
-        alipayImage.sd_layout
-        .leftSpaceToView(_alipayButton,10)
-        .centerYEqualToView(_alipayButton)
-        .heightRatioToView(_alipayButton,1.0)
-        .widthEqualToHeight();
-        
-        alipay.sd_layout
-        .leftSpaceToView(alipayImage,5)
-        .topEqualToView(alipayImage)
-        .bottomEqualToView(alipayImage);
-        [alipay setSingleLineAutoResizeWithMaxWidth:200.0];
-        
-        /* 余额支付*/
-        
-        _balanceButton.sd_layout
-        .leftEqualToView(_wechatButton)
-        .topSpaceToView(_wechatButton,20)
-        .rightEqualToView(_wechatButton)
-        .heightRatioToView(_wechatButton,1.0);
-        _balanceButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
-        
-        _balanceImage.sd_layout
-        .leftSpaceToView(_balanceButton,10)
-        .centerYEqualToView(_balanceButton)
-        .heightRatioToView(_balanceButton,1.0)
-        .widthEqualToHeight();
-        
-        _balance.sd_layout
-        .leftSpaceToView(_balanceImage,5)
-        .topEqualToView(_balanceImage)
-        .bottomEqualToView(_balanceImage);
-        [_balance setSingleLineAutoResizeWithMaxWidth:500];
-        
-        _balanceLabel.sd_layout
-        .topEqualToView(_balance)
-        .bottomEqualToView(_balance)
-        .leftSpaceToView(_balance,3);
-        [_balanceLabel setSingleLineAutoResizeWithMaxWidth:500.0];
+//        /* 支付方式*/
+//        payWay.sd_layout
+//        .leftSpaceToView(chosenView,10)
+//        .topSpaceToView(chosenView,10)
+//        .autoHeightRatio(0);
+//        [payWay setSingleLineAutoResizeWithMaxWidth:500];
+//        
+//        
+//        /* 微信*/
+//        
+//        _wechatButton.sd_layout
+//        .leftSpaceToView(payWay,20)
+//        .topEqualToView(payWay)
+//        .bottomEqualToView(payWay)
+//        .widthEqualToHeight();
+//        _wechatButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
+//        
+//        wechatImage.sd_layout
+//        .leftSpaceToView(_wechatButton,10)
+//        .centerYEqualToView(_wechatButton)
+//        .heightRatioToView(_wechatButton,1.0)
+//        .widthEqualToHeight();
+//        
+//        wechat.sd_layout
+//        .leftSpaceToView(wechatImage,5)
+//        .topEqualToView(payWay)
+//        .bottomEqualToView(payWay);
+//        [wechat setSingleLineAutoResizeWithMaxWidth:200.0];
+//        
+//        /* 支付宝*/
+//        
+//        _alipayButton.sd_layout
+//        .leftEqualToView(_wechatButton)
+//        .topSpaceToView(_wechatButton,10)
+//        .rightEqualToView(_wechatButton)
+//        .heightRatioToView(_wechatButton,1.0);
+//        _alipayButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
+//        
+//        alipayImage.sd_layout
+//        .leftSpaceToView(_alipayButton,10)
+//        .centerYEqualToView(_alipayButton)
+//        .heightRatioToView(_alipayButton,1.0)
+//        .widthEqualToHeight();
+//        
+//        alipay.sd_layout
+//        .leftSpaceToView(alipayImage,5)
+//        .topEqualToView(alipayImage)
+//        .bottomEqualToView(alipayImage);
+//        [alipay setSingleLineAutoResizeWithMaxWidth:200.0];
+//        
+//        /* 余额支付*/
+//        
+//        _balanceButton.sd_layout
+//        .leftEqualToView(_wechatButton)
+//        .topSpaceToView(_wechatButton,20)
+//        .rightEqualToView(_wechatButton)
+//        .heightRatioToView(_wechatButton,1.0);
+//        _balanceButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
+//        
+//        _balanceImage.sd_layout
+//        .leftSpaceToView(_balanceButton,10)
+//        .centerYEqualToView(_balanceButton)
+//        .heightRatioToView(_balanceButton,1.0)
+//        .widthEqualToHeight();
+//        
+//        _balance.sd_layout
+//        .leftSpaceToView(_balanceImage,5)
+//        .topEqualToView(_balanceImage)
+//        .bottomEqualToView(_balanceImage);
+//        [_balance setSingleLineAutoResizeWithMaxWidth:500];
+//        
+//        _balanceLabel.sd_layout
+//        .topEqualToView(_balance)
+//        .bottomEqualToView(_balance)
+//        .leftSpaceToView(_balance,3);
+//        [_balanceLabel setSingleLineAutoResizeWithMaxWidth:500.0];
 
         
         
@@ -471,15 +472,15 @@
         payView.sd_layout
         .leftEqualToView(self)
         .rightEqualToView(self)
-        .bottomEqualToView(chosenView)
-        .topSpaceToView(_balance,20);
+        .topSpaceToView(chosenView,1)
+        .bottomEqualToView(chosenView);
         
         /* 确认按钮*/
         _applyButton.sd_layout
         .leftSpaceToView(payView,10)
         .rightSpaceToView(payView,10)
         .bottomSpaceToView(payView,10)
-        .heightRatioToView(payView,0.4);
+        .heightIs(46);
         
         /* 总价*/
         _totalMoneyLabel.sd_layout

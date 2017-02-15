@@ -737,13 +737,13 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (tableView.tag ==1) {
-        RechargeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        if ([cell.model.status isEqualToString:@"unpaid"]) {
-            
-            ConfirmChargeViewController *pay = [[ConfirmChargeViewController alloc]initWithModel:cell.model];
-            [self.navigationController pushViewController:pay animated:YES];
-            
-        }
+//        RechargeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//        if ([cell.model.status isEqualToString:@"unpaid"]) {
+//            
+//            ConfirmChargeViewController *pay = [[ConfirmChargeViewController alloc]initWithModel:cell.model];
+//            [self.navigationController pushViewController:pay animated:YES];
+//            
+//        }
     }
     
     

@@ -24,7 +24,7 @@
 //http://testing.qatime.cn
 //https://qatime.cn
 
-#define Request_Header @"https://qatime.cn"
+#define Request_Header @"http://testing.qatime.cn"
 
 /* 测试和生产模式-推送证书名称*/
 
@@ -37,7 +37,7 @@
 //#云信key
 //YunXinDebugAppKey=2a24ca70e580cab2bef58b1e62478f9f
 //YunXinReleaseAppKey=4fe3a3fba0a40a00daf011049a29d995
-#define IM_APPKEY @"4fe3a3fba0a40a00daf011049a29d995"
+#define IM_APPKEY @"2a24ca70e580cab2bef58b1e62478f9f"
 
 
 

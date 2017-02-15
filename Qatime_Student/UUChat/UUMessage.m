@@ -8,12 +8,11 @@
 
 #import "UUMessage.h"
 #import "NSDate+Utils.h"
-
 #import "NSString+TimeStamp.h"
+
 @implementation UUMessage
 
-
-/* 制作出一条消息*/
+/* 使用数据字典,制作出一条消息*/
 - (void)setWithDict:(NSDictionary *)dic{
     
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:dic];
@@ -39,7 +38,31 @@
                 [dict setValue:@"空消息" forKey:@"strContent"];
             }
             self.strContent = dict[@"strContent"];
-            self.isRichText = [dict[@"isRichText"]boolValue];
+            if (dict[@"isRichText"]&&dict[@"richNum"]) {
+                self.from = UUMessageFromMe;
+                self.isRichText = [dict[@"isRichText"]boolValue];
+                self.richNum = [dict[@"richNum"]integerValue];
+            }else{
+                self.from = UUMessageFromOther;
+                /* 在这里进行一次判断,是否包含富文本 */
+                //创建一个可变的属性字符串
+                NSMutableAttributedString *text = [NSMutableAttributedString new];
+                [text appendAttributedString:[[NSAttributedString alloc] initWithString:dict[@"strContent"] attributes:nil]];
+                
+                /* 正则匹配*/
+                NSString * pattern = @"\\[em_\\d{1,2}\\]";
+                NSError *error = nil;
+                NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
+                
+                //通过正则表达式来匹配字符串,加载表情的同时判断是否存在富文本
+                NSArray *resultArray = [re matchesInString:dict[@"strContent"] options:0 range:NSMakeRange(0, [dict[@"strContent"] length])];
+                if (resultArray.count!=0) {
+                    
+                }else{
+                    self.isRichText = YES;
+                    self.richNum = resultArray.count;
+                } 
+            }
             break;
         
         case 1:
@@ -63,11 +86,16 @@
 
 //"08-10 晚上08:09:41.0" ->
 //"昨天 上午10:09"或者"2012-08-10 凌晨07:09"
+
+/**
+ 时间转换
+
+ @param Str 时间string
+ @return 时间格式转换结果
+ */
 - (NSString *)changeTheDateString:(NSString *)Str
 {
 //    Str = [Str timeStampToDate];
-    
-    
     
     NSString *subString = [Str substringWithRange:NSMakeRange(0, 19)];
     NSDate *lastDate = [NSDate dateFromString:subString withFormat:@"yyyy-MM-dd HH:mm:ss"];

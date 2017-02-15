@@ -1028,8 +1028,11 @@ bool ismute     = NO;
 
 #pragma mark- 变成全屏后的监听
 - (void)turnFullScreen:(NSNotification *)notification{
+    
     [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:5];
+    
     isFullScreen = YES;
+    [_aBarrage start];
     
     /* 在全屏播放状态下*/
     /* 1、先添加弹幕*/
@@ -1110,6 +1113,7 @@ bool ismute     = NO;
     
     isFullScreen = NO;
     _viewsArrangementMode = DifferentLevel;
+    [_aBarrage start];
     
     /* 如果是在平级视图*/
     if (_viewsArrangementMode == SameLevel) {
@@ -1867,6 +1871,8 @@ bool ismute     = NO;
 //显示模式转换
 - (void)onClickScaleMode:(id)sender{
     
+    [_aBarrage stop];
+    
     UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
     
     NSLog(@"%ld",(long)[UIDevice currentDevice].orientation);
@@ -1917,21 +1923,13 @@ bool ismute     = NO;
         [invocation invoke];
     }
     
-    
 }
 
 
 - (void)onDeviceOrientationChange{
-    //    if (ZFPlayerShared.isLockScreen) { return; }
-    //    self.lockBtn.hidden         = !self.isFullScreen;
-    //    self.fullScreenBtn.selected = self.isFullScreen;
+    
     UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
     if (orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown || orientation == UIDeviceOrientationUnknown || orientation == UIDeviceOrientationPortraitUpsideDown) { return; }
-    //    if (ZFPlayerOrientationIsLandscape) {
-    //        [self setOrientationLandscapeConstraint];
-    //    } else {
-    //        [self setOrientationPortraitConstraint];
-    //    }
     
     
     [self.view layoutIfNeeded];
@@ -1945,6 +1943,7 @@ bool ismute     = NO;
     
     /* 切换到竖屏*/
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
+        [_aBarrage stop];
         self.view.backgroundColor = [UIColor blackColor];
         [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
         self.scaleModeBtn.titleLabel.tag = 0;
@@ -2001,6 +2000,8 @@ bool ismute     = NO;
     
     /* 切换到横屏*/
     else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
+        
+        [_aBarrage stop];
         self.view.backgroundColor = [UIColor blackColor];
         [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
         self.scaleModeBtn.titleLabel.tag = 1;
@@ -2524,7 +2525,7 @@ bool ismute     = NO;
     
 #pragma mark- 聊天UI初始化
     
-//    [self requestHistoryChatList];
+    //    [self requestHistoryChatList];
     [self addRefreshViews];
     [self loadBaseViewsAndData];
     
@@ -2608,7 +2609,7 @@ bool ismute     = NO;
     
     /* 添加录音是否结束的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordEnd) name:@"RecordEnd" object:nil];
-
+    
     
 }
 
@@ -2656,7 +2657,7 @@ bool ismute     = NO;
         bothPlayerInitSuccess = YES;
         [[NSNotificationCenter defaultCenter]postNotificationName:@"AllPlayerInitSuccess" object:nil];
     }
-
+    
 }
 
 
@@ -2776,7 +2777,7 @@ bool ismute     = NO;
             
             /* 添加课程简介的富文本方法*/
             _videoClassInfo.attributedDescription =[[NSAttributedString alloc] initWithData:[[dataDic valueForKey:@"description"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-
+            
             /* 课程图的信息赋值*/
             _infoHeaderView.classNameLabel.text = _videoClassInfo.name;
             _infoHeaderView.gradeLabel.text = _videoClassInfo.grade;
@@ -2824,7 +2825,7 @@ bool ismute     = NO;
             /* 请求教师详细信息*/
             
             [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/teachers/%@/profile",Request_Header,teacherID] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
-               
+                
                 NSDictionary *teacherDic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
                 
                 if ([teacherDic[@"status"]isEqualToNumber:@1]) {
@@ -2854,7 +2855,7 @@ bool ismute     = NO;
                     
                     /* 教师简介,使用富文本*/
                     _infoHeaderView.selfInterview.attributedText = _teacher.attributedDescription;
-
+                    
                     // 测试代码 _infoHeaderView.selfInterview.attributedText = [[NSAttributedString alloc]initWithData:[@"<p>halou&nbsp;halou</p><p>haleou</p><p>halekl</p><p><br /></p><p><strong><span><span><br /></span></span></strong></p><p><strong><span><span></span></span></strong></p>" dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }  documentAttributes:nil error:nil ];
                     
                     [_infoHeaderView.selfInterview updateLayout];
@@ -2870,12 +2871,12 @@ bool ismute     = NO;
                     .heightIs(teacher_size.height);
                     [_infoHeaderView.selfInterview updateLayout];
                     
-//                    _selfInterview.sd_layout
-//                    .leftEqualToView(selfIntroLabel)
-//                    .topSpaceToView(selfIntroLabel,20)
-//                    .rightSpaceToView(self,20)
-//                    .autoHeightRatio(0);
-
+                    //                    _selfInterview.sd_layout
+                    //                    .leftEqualToView(selfIntroLabel)
+                    //                    .topSpaceToView(selfIntroLabel,20)
+                    //                    .rightSpaceToView(self,20)
+                    //                    .autoHeightRatio(0);
+                    
                     
                     /* 自动赋值heagerview的高度*/
                     
@@ -2925,8 +2926,8 @@ bool ismute     = NO;
                 /* 重新加载播放器*/
                 [self reloadPlayerView];
             }
-
-
+            
+            
         }
         
         
@@ -3318,7 +3319,7 @@ bool ismute     = NO;
         }
         
     }
-
+    
 };
 
 - (void)requestHistoryChatList{
@@ -3340,7 +3341,7 @@ bool ismute     = NO;
             
             [[NIMSDK sharedSDK].conversationManager fetchMessageHistory:_session option:historyOption result:^(NSError * _Nullable error, NSArray<NIMMessage *> * _Nullable messages) {
                 /* 取出云信的accid和token进行字段比较 ，判断是谁发的消息*/
-                 [self makeMessages:messages];
+                [self makeMessages:messages];
                 
             }];
         }
@@ -3482,8 +3483,8 @@ bool ismute     = NO;
     .heightIs(46);
     
     
-//    [self.chatTableView reloadData];
-//    [self tableViewScrollToBottom];
+    //    [self.chatTableView reloadData];
+    //    [self tableViewScrollToBottom];
 }
 
 /* 添加刷新view*/
@@ -3834,7 +3835,7 @@ bool ismute     = NO;
         /* 语音类型消息*/
         [self.chatModel addSpecifiedVoiceItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name];
     }
-
+    
     
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
@@ -3987,7 +3988,7 @@ bool ismute     = NO;
                 senderName = [mod valueForKey:@"name"];
             }
         }
-
+        
         
         NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:senderName andIcon:iconURL type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
         
@@ -4017,7 +4018,7 @@ bool ismute     = NO;
         [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
         
     }
-
+    
     
     
     
@@ -4263,16 +4264,16 @@ bool ismute     = NO;
                                 }];
                             }
                         }else{
-                           
-                              [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
+                            
+                            [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
                             
                         }
                         
                     }else{
-                      [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
+                        [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
                     }
                 }else{
-                     [self loadingHUDStopLoadingWithTitle:@"服务器正忙,请稍后再试"];
+                    [self loadingHUDStopLoadingWithTitle:@"服务器正忙,请稍后再试"];
                 }
                 
             }];
@@ -4285,7 +4286,7 @@ bool ismute     = NO;
         
         
         
-           }
+    }
     
     
     if (tableView.tag ==3) {

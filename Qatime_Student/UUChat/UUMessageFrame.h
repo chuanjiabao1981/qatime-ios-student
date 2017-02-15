@@ -29,13 +29,43 @@
 
 @interface UUMessageFrame : NSObject
 
+/**
+ 姓名框尺寸
+ */
 @property (nonatomic, assign, readonly) CGRect nameF;
-@property (nonatomic, assign, readonly) CGRect iconF;
-@property (nonatomic, assign, readonly) CGRect timeF;
-@property (nonatomic, assign, readonly) CGRect contentF;    //气泡尺寸
 
+
+/**
+ 头像尺寸
+ */
+@property (nonatomic, assign, readonly) CGRect iconF;
+
+/**
+ 时间戳位置
+ */
+@property (nonatomic, assign, readonly) CGRect timeF;
+
+
+/**
+ 气泡尺寸
+ */
+@property (nonatomic, assign, readonly) CGRect contentF;
+
+
+/**
+ cell的高度
+ */
 @property (nonatomic, assign, readonly) CGFloat cellHeight;
+
+/**
+ uumessage对象
+ */
 @property (nonatomic, strong) UUMessage *message;
+
+
+/**
+ 是否显示时间戳
+ */
 @property (nonatomic, assign) BOOL showTime;
 
 @end
