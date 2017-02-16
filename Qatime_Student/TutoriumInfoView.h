@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "HMSegmentedControl.h"
+#import "TTTAttributedLabel.h"
+#import "YYLabel.h"
+#import "YYTextView.h"
+#import "DTAttributedLabel.h"
 
 
 @interface TutoriumInfoView : UIScrollView
@@ -33,7 +37,6 @@
 
 /* 滑动视图*/
 @property(nonatomic,strong) UIScrollView  *scrollView ;
-
 
 
 /* 滑动控制器*/
@@ -85,7 +88,7 @@
 /* 教师简介*/
 
 @property(nonatomic,strong) UILabel *descrip  ;//"教师简介"的label 布局用
-@property(nonatomic,strong) UILabel  *teacherInterviewLabel ;
+@property(nonatomic,strong) UILabel *teacherInterviewLabel ;
 
 /* 性别*/
 @property(nonatomic,strong) UIImageView *genderImage ;

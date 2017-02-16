@@ -322,11 +322,11 @@
         .widthEqualToHeight();
         circle6.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
 
-
-        _classDescriptionLabel =[[UILabel alloc]init];
+        _classDescriptionLabel =[UILabel new];
+//        _classDescriptionLabel.editable = NO;
         [_view1 addSubview:_classDescriptionLabel];
         _classDescriptionLabel.sd_layout.leftEqualToView(_descriptions).topSpaceToView(_descriptions,20).autoHeightRatio(0).rightSpaceToView(_view1,20);
-        [_classDescriptionLabel setText:@""];
+//        [_classDescriptionLabel setText:@""];
         
         
         /* 教师简介 。。。view2*/
@@ -385,11 +385,12 @@
         [_descrip setSingleLineAutoResizeWithMaxWidth:200];
         _descrip.text = @"教师简介";
         
-        _teacherInterviewLabel =[[UILabel alloc]init];
+        _teacherInterviewLabel =[UILabel new];
+//        _teacherInterviewLabel.editable = NO;
         [_view2 addSubview:_teacherInterviewLabel];
         _teacherInterviewLabel.sd_layout.leftSpaceToView(_view2,20).rightSpaceToView(_view2,20).topSpaceToView(_descrip,20).autoHeightRatio(0);
         
-        _teacherInterviewLabel.text = @"" ;
+//        _teacherInterviewLabel.text = @"" ;
         
         /* 教师头像*/
         _teacherHeadImage = [[UIImageView alloc]init];

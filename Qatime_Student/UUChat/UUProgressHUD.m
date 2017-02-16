@@ -13,10 +13,7 @@
     NSTimer *myTimer;
     int angle;
     
-    UILabel *centerLabel;
-    //    UIImageView *edgeImageView;     //旋转的圆圈图
-    
-    
+    UILabel *timeLabel;   //录音时间
     
 }
 @property (nonatomic, strong, readonly) UIWindow *overlayWindow;
@@ -32,21 +29,53 @@
     static UUProgressHUD *sharedView;
     dispatch_once(&once, ^ {
         sharedView = [[UUProgressHUD alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//        sharedView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.5];
+
                 sharedView.backgroundColor = [UIColor clearColor];
     });
     return sharedView;
 }
 
 + (void)show {
+
     [[UUProgressHUD sharedView] show];
 }
 
+- (void)level:(NSNotification *)notification{
+    
+    if (_canHearVolum==YES) {
+        
+        NSString *levelStr = [notification object];
+        CGFloat level = levelStr.floatValue;
+        
+        
+        if (level<10) {
+            
+            [_statusImageView setImage:[UIImage imageNamed:@"v-0"]];
+            
+        }else if (level>120){
+            [_statusImageView setImage:[UIImage imageNamed:@"v-7"]];
+            
+        }else if (level>10&&level<110){
+            
+            NSLog(@"改变的格数:%ld",(NSInteger)level/14);
+            
+            [_statusImageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"v-%ld",(NSInteger)level/14]]];
+        }
+    }
+    
+    
+    
+}
+
 - (void)show {
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(level:) name:@"Volum" object:nil];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if(!self.superview)
             [self.overlayWindow addSubview:self];
         
+        //hud框
         if ((!_HUDView)) {
             _HUDView = [[UIView alloc]init];
             _HUDView.backgroundColor =[[UIColor blackColor]colorWithAlphaComponent:0.5];
@@ -62,49 +91,56 @@
             
         }
         
-        
-        if (!centerLabel){
-            centerLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 150, 40)];
-            centerLabel.backgroundColor = [UIColor clearColor];
+        //时间
+        if (!timeLabel){
+            timeLabel = [[UILabel alloc]init];
+            timeLabel.backgroundColor = [UIColor clearColor];
+            timeLabel.textAlignment = NSTextAlignmentCenter;
+            timeLabel.text = @"0";
+            timeLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
+            timeLabel.textColor = [UIColor whiteColor];
+            [_HUDView addSubview:timeLabel];
+            timeLabel.frame = CGRectMake(0, 15, _HUDView.width_sd, 25);
+            
         }
         
+        //录音状态
         if (!self.subTitleLabel){
-            self.subTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 150, 20)];
+            self.subTitleLabel = [[UILabel alloc]init];
             self.subTitleLabel.backgroundColor = [UIColor clearColor];
+            self.subTitleLabel.text = @"手指上滑,取消发送";
+            self.subTitleLabel.textAlignment = NSTextAlignmentCenter;
+            self.subTitleLabel.font = [UIFont boldSystemFontOfSize:15*ScrenScale];
+            self.subTitleLabel.textColor = [UIColor whiteColor];
+            _canHearVolum = YES;
+            [_HUDView addSubview:_subTitleLabel];
+            
+            [_HUDView updateLayout];
+            _subTitleLabel.sd_layout
+            .leftSpaceToView(_HUDView,15)
+            .rightSpaceToView(_HUDView,15)
+            .bottomSpaceToView(_HUDView,10)
+            .heightIs(_HUDView.height_sd/7.5);
+            _subTitleLabel.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
+            
         }
-        if (!self.titleLabel){
-            self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 150, 20)];
-            self.titleLabel.backgroundColor = [UIColor clearColor];
+        
+        //状态图片
+        if (!self.statusImageView) {
+            self.statusImageView = [[UIImageView alloc]init];
+            [self.statusImageView setImage:[UIImage imageNamed:@"v-0"]];
+            
+            [_HUDView addSubview:self.statusImageView];
+            _statusImageView.sd_layout
+            .leftSpaceToView(_HUDView,_HUDView.width_sd/6)
+            .topSpaceToView(timeLabel,5)
+            .bottomSpaceToView(_subTitleLabel,5)
+            .rightSpaceToView(_HUDView,_HUDView.width_sd/6);
+            
         }
-        //        if (!edgeImageView)
-        //            edgeImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Chat_record_circle"]];
-        
-        self.subTitleLabel.center = CGPointMake([[UIScreen mainScreen] bounds].size.width/2,[[UIScreen mainScreen] bounds].size.height/2 + 30);
-        self.subTitleLabel.text = @"上滑取消发送";
-        self.subTitleLabel.textAlignment = NSTextAlignmentCenter;
-        self.subTitleLabel.font = [UIFont boldSystemFontOfSize:13*ScrenScale];
-        self.subTitleLabel.textColor = [UIColor whiteColor];
-        
-        self.titleLabel.center = CGPointMake([[UIScreen mainScreen] bounds].size.width/2,[[UIScreen mainScreen] bounds].size.height/2 - 30);
-        self.titleLabel.text = @"录音时间";
-        self.titleLabel.textAlignment = NSTextAlignmentCenter;
-        self.titleLabel.font = [UIFont boldSystemFontOfSize:18*ScrenScale];
-        self.titleLabel.textColor = [UIColor whiteColor];
-        
-        centerLabel.center = CGPointMake([[UIScreen mainScreen] bounds].size.width/2,[[UIScreen mainScreen] bounds].size.height/2);
-        centerLabel.text = @"0";
-        centerLabel.textAlignment = NSTextAlignmentCenter;
-        centerLabel.font = [UIFont systemFontOfSize:30*ScrenScale];
-        centerLabel.textColor = [UIColor yellowColor];
         
         
-        //        edgeImageView.frame = CGRectMake(0, 0, 154, 154);
-        //        edgeImageView.center = centerLabel.center;
-        //        [self addSubview:edgeImageView];
-        [self addSubview:centerLabel];
-        [self addSubview:self.subTitleLabel];
-        [self addSubview:self.titleLabel];
-        
+        //计时器
         if (myTimer)
             [myTimer invalidate];
         myTimer = nil;
@@ -131,14 +167,13 @@
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.09];
     UIView.AnimationRepeatAutoreverses = YES;
-    //    edgeImageView.transform = CGAffineTransformMakeRotation(angle * (M_PI / 180.0f));
-    float second = [centerLabel.text floatValue];
+    float second = [timeLabel.text floatValue];
     if (second >= 50.0f) {
-        centerLabel.textColor = [UIColor redColor];
+        timeLabel.textColor = [UIColor redColor];
     }else{
-        centerLabel.textColor = [UIColor yellowColor];
+        timeLabel.textColor = [UIColor whiteColor];
     }
-    centerLabel.text = [NSString stringWithFormat:@"%.1f",second+0.1];
+    timeLabel.text = [NSString stringWithFormat:@"%.1f",second+0.1];
     [UIView commitAnimations];
 }
 
@@ -149,7 +184,29 @@
 
 - (void)setState:(NSString *)str
 {
+    
+    if ([str isEqualToString:@"松开手指,取消发送"]) {
+        _canHearVolum = NO;
+        _subTitleLabel.backgroundColor = [UIColor colorWithRed:0.64 green:0.21 blue:0.21 alpha:1.0];
+        [_statusImageView setImage:[UIImage imageNamed:@"repeal"]];
+
+    }else if ([str isEqualToString:@"手指上滑,取消发送"]){
+        
+        _canHearVolum = YES;
+        _subTitleLabel.backgroundColor = [UIColor clearColor];
+        
+        [_statusImageView setImage:[UIImage imageNamed:@"v-0"]];
+        
+ 
+        
+    }else{
+        _canHearVolum = YES;
+        _subTitleLabel.backgroundColor = [UIColor clearColor];
+
+    }
+    
     self.subTitleLabel.text = str;
+    
 }
 
 + (void)dismissWithSuccess:(NSString *)str {
@@ -165,17 +222,19 @@
         
         [myTimer invalidate];
         myTimer = nil;
-        self.subTitleLabel.text = nil;
-        self.titleLabel.text = nil;
-        centerLabel.text = state;
-        centerLabel.textColor = [UIColor whiteColor];
         
         CGFloat timeLonger;
-        if ([state isEqualToString:@"时间太短"]) {
+        if ([state isEqualToString:@"录音时间太短"]) {
+            _canHearVolum = NO;
+            _subTitleLabel.backgroundColor = [UIColor clearColor];
+            
+            [_statusImageView setImage:[UIImage imageNamed:@"recordTimeShort"]];
+
             timeLonger = 1;
         }else{
             timeLonger = 0.6;
         }
+        _subTitleLabel.text = state;
         [UIView animateWithDuration:timeLonger
                               delay:0
                             options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
@@ -184,12 +243,14 @@
                          }
                          completion:^(BOOL finished){
                              if(self.alpha == 0) {
-                                 [centerLabel removeFromSuperview];
-                                 centerLabel = nil;
-                                 //                                 [edgeImageView removeFromSuperview];
-                                 //                                 edgeImageView = nil;
+                                 [timeLabel removeFromSuperview];
+                                 timeLabel = nil;
+
                                  [self.subTitleLabel removeFromSuperview];
                                  self.subTitleLabel = nil;
+                                 
+                                 [self.statusImageView removeFromSuperview];
+                                 self.statusImageView = nil;
                                  
                                  NSMutableArray *windows = [[NSMutableArray alloc] initWithArray:[UIApplication sharedApplication].windows];
                                  [windows removeObject:overlayWindow];

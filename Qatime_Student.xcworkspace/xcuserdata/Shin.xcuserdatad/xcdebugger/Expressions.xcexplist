@@ -388,6 +388,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[ChatModel addSpecifiedImageItem:andIconURL:andName:]:ChatModel.m">
+      </ContextState>
+      <ContextState
          contextName = "__40-[NELivePlayerViewController initNIMSDK]_block_invoke:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -618,7 +621,7 @@
          contextName = "__53-[TutoriumInfoViewController requestClassesInfoWith:]_block_invoke_2:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "">
+               value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -979,6 +982,9 @@
                value = "self.idNumber">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__36-[OrderViewController postOrderInfo]_block_invoke:OrderViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController changePlayersMode]:NELivePlayerViewController.m">

@@ -2818,7 +2818,7 @@ bool ismute     = NO;
             .leftEqualToView(_infoHeaderView.descriptions)
             .topSpaceToView(_infoHeaderView.descriptions,20)
             .widthIs(self.view.width_sd-40)
-            .heightIs(class_size.height);
+            .heightIs(class_size.height+20);
             
             [_infoHeaderView.classDescriptionLabel updateLayout];
             
@@ -2868,7 +2868,7 @@ bool ismute     = NO;
                     .leftEqualToView(_infoHeaderView.selfIntroLabel)
                     .topSpaceToView(_infoHeaderView.selfIntroLabel,20)
                     .widthIs(self.view.width_sd-40)
-                    .heightIs(teacher_size.height);
+                    .heightIs(teacher_size.height+20);
                     [_infoHeaderView.selfInterview updateLayout];
                     
                     //                    _selfInterview.sd_layout

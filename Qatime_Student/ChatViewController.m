@@ -299,6 +299,10 @@
         
         NSLog(@"分贝数 :%f",level*120);
         
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"Volum" object:[NSString stringWithFormat:@"%f",level*120]];
+        
+        
+        
     });
 }
 

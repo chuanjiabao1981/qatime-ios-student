@@ -71,6 +71,13 @@
     /* 临时保存筛选key的数组*/
     NSMutableArray *_filterArr;
     
+    /* 选择器的筛选存储变量*/
+    NSString *selectFilter;
+    NSString *selectSubject;
+    NSString *selectGrade;
+    
+    
+    
     /* 返回页码*/
     NSInteger page;
     
@@ -821,17 +828,16 @@
     
     [MMPickerView showPickerViewInView:_tutoriumView withStrings:_timeFilterStr withOptions:@{MMfont:[UIFont systemFontOfSize:20*ScrenScale]} completion:^(NSString *selectedString) {
         
+        
         [self selectedTimeFilterWithSort:selectedString];
-        
         selectedString = [selectedString stringByAppendingString:@"∨"];
-
         [_tutoriumView.timeButton setTitle:selectedString forState:UIControlStateNormal];
-        
         
         hadDoneFilter = YES;
         
-        
     }];
+  
+    
     
 }
 

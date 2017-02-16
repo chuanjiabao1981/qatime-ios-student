@@ -31,6 +31,7 @@
 #import "Replay.h"
 #import "UIControl+RemoveTarget.h"
 #import "YYTextLayout.h"
+#import "DTCoreText.h"
 
 
 
@@ -325,7 +326,11 @@
                         [_tutoriumInfoView.workPlaceLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.school]];
                         /* 教师简介富文本赋值*/
 //                        [_tutoriumInfoView.teacherInterviewLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.describe]];
+                        
                         _tutoriumInfoView.teacherInterviewLabel.attributedText = _teacherModel.attributedDescribe;
+//                        _tutoriumInfoView.teacherInterviewLabel.attributedString = [[NSAttributedString alloc]initWithHTMLData:[_teacherModel.describe dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:nil];
+                        
+
                         
                         [_tutoriumInfoView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacherModel.avatar_url ]];
                         
@@ -338,14 +343,19 @@
                         _classModel.describe = _dataDic[@"description"];
                         
                         /* 课程描述的富文本*/
-                        _classModel.attributedDescribe = [[NSAttributedString alloc]initWithData:[_dataDic[@"description"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+                        _classModel.attributedDescribe = [[NSMutableAttributedString alloc]initWithData:[_dataDic[@"description"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+                        
+//                        [_classModel.attributedDescribe addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:20]} range:NSMakeRange(0, 17)];
                         
                         /* 课程页面的label赋值*/
                         [_tutoriumInfoView.subjectLabel setText:_classModel.subject];
                         [_tutoriumInfoView.gradeLabel setText:_classModel.grade];
                         [_tutoriumInfoView.classCount setText:_classModel.lesson_count];
-                        [_tutoriumInfoView.classDescriptionLabel setText:_classModel.describe];
+//                        [_tutoriumInfoView.classDescriptionLabel setText:_classModel.describe];
+//
                         _tutoriumInfoView.classDescriptionLabel.attributedText = _classModel.attributedDescribe;
+//                         _tutoriumInfoView.classDescriptionLabel.attributedString = [[NSAttributedString alloc]initWithHTMLData:[_classModel.describe dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:nil];
+                        
                         
                         /* 课程列表的手动解析model*/
                         NSMutableArray *classList = _dataDic[@"lessons"];
@@ -852,13 +862,13 @@
     [_tutoriumInfoView.classDescriptionLabel updateLayout];
     [_tutoriumInfoView.teacherInterviewLabel updateLayout];
     
-    
     NSLog(@"%@",[_tutoriumInfoView.classDescriptionLabel valueForKey:@"frame"]);
     NSLog(@"%@",[_tutoriumInfoView.teacherInterviewLabel valueForKey:@"frame"]);
     
     /* 使用YYText的YYTextLayout来计算富文本的size*/
     /* 课程信息的 高度自适应*/
-    CGSize classDesc_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_tutoriumInfoView.classDescriptionLabel.width_sd, CGFLOAT_MAX) text:_tutoriumInfoView.classDescriptionLabel.attributedText].textBoundingSize;
+    CGSize classDesc_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_tutoriumInfoView.classDescriptionLabel.width_sd, CGFLOAT_MAX) text:_classModel.attributedDescribe].textBoundingSize;
+    
     
     CGFloat classDesc_height = _tutoriumInfoView.classDescriptionLabel.frame.origin.y+classDesc_size.height;
     
@@ -868,14 +878,13 @@
     .leftEqualToView(_tutoriumInfoView.descriptions)
     .topSpaceToView(_tutoriumInfoView.descriptions,20)
     .rightSpaceToView(_tutoriumInfoView.view1,20)
-    .heightIs(classDesc_size.height);
+    .heightIs(classDesc_size.height+20);
     
-  
     [_tutoriumInfoView.classDescriptionLabel updateLayout];
     
     
     /* 教师简介的  高度自适应*/
-     CGSize teacherDesc_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_tutoriumInfoView.teacherInterviewLabel.width_sd, CGFLOAT_MAX) text:_tutoriumInfoView.teacherInterviewLabel.attributedText].textBoundingSize;
+     CGSize teacherDesc_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_tutoriumInfoView.teacherInterviewLabel.width_sd, CGFLOAT_MAX) text:_teacherModel.attributedDescribe].textBoundingSize;
     CGFloat teacherDesc_height =  _tutoriumInfoView.teacherInterviewLabel.frame.origin.y+teacherDesc_size.height;
     
     /* 富文本label适配自动布局高度*/
@@ -884,7 +893,7 @@
     .leftSpaceToView(_tutoriumInfoView.view2,20)
     .rightSpaceToView(_tutoriumInfoView.view2,20)
     .topSpaceToView(_tutoriumInfoView.descrip,20)
-    .heightIs(teacherDesc_size.height);
+    .heightIs(teacherDesc_size.height+20);
     
 //    _teacherInterviewLabel.sd_layout
 //    .leftSpaceToView(_view2,20)

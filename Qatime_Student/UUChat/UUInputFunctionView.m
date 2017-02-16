@@ -218,14 +218,15 @@
     [UUProgressHUD dismissWithError:@"取消发送"];
 }
 
-- (void)RemindDragExit:(UIButton *)button
-{
-    [UUProgressHUD changeSubTitle:@"松开取消"];
+- (void)RemindDragExit:(UIButton *)button{
+    
+    [UUProgressHUD changeSubTitle:@"松开手指,取消发送"];
+    
 }
 
 - (void)RemindDragEnter:(UIButton *)button
 {
-    [UUProgressHUD changeSubTitle:@"上滑取消发送"];
+    [UUProgressHUD changeSubTitle:@"上滑手指,取消发送"];
 }
 - (void)countVoiceTime
 {
@@ -260,7 +261,7 @@
 
 - (void)failRecord
 {
-    [UUProgressHUD dismissWithSuccess:@"时间太短"];
+    [UUProgressHUD dismissWithSuccess:@"录音时间太短"];
     
     //缓冲消失时间 (最好有block回调消失完成)
     self.voiceSwitchTextButton.enabled = NO;

@@ -297,7 +297,6 @@
         
     }
     
-    
 }
 
 /* 使用支付宝支付*/
@@ -405,14 +404,16 @@
     if (_classID&&_token) {
         if ([_payType isEqualToString:@"weixin"]) {
             
-            if ([WXApi isWXAppInstalled]==YES) {
-                [self loadingHUDStartLoadingWithTitle:@"提交订单"];
-                
+//            if ([WXApi isWXAppInstalled]==YES) {
+//                [self loadingHUDStartLoadingWithTitle:@"提交订单"];
+            
                 [self postOrderInfo];
                 
-            }else{
-                [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
-            }
+//            }else{
+////                [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
+//                [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
+//                
+//            }
             
             
         }else if ([_payType isEqualToString:@"account"]){

@@ -10,10 +10,24 @@
 
 @interface UUProgressHUD : UIView
 
-@property (nonatomic, strong) UILabel *titleLabel;
+//@property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subTitleLabel;
 
-@property(nonatomic,strong) UIView *HUDView; 
+@property(nonatomic,strong) UIView *HUDView;
+
+/**
+ 状态图片
+ */
+
+@property(nonatomic,strong) UIImageView *statusImageView ;
+
+
+/**
+ 是否可以监听音量()
+ */
+@property(nonatomic,assign) BOOL canHearVolum ;
+
+
 
 
 + (void)show;

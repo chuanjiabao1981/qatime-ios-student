@@ -67,6 +67,7 @@ NSString * const MMshowsSelectionIndicator = @"showsSelectionIndicator";
   
   [[self sharedView] setPickerHidden:NO callBack:nil];
   [self sharedView].onDismissCompletion = completion;
+    
   [view addSubview:[self sharedView]];
   
 }
@@ -91,6 +92,10 @@ NSString * const MMshowsSelectionIndicator = @"showsSelectionIndicator";
 
 +(void)dismissWithCompletion:(void (^)(NSString *))completion{
   [[self sharedView] setPickerHidden:YES callBack:completion];
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"MMPickerFinished" object:completion];
+    
+    
 }
 
 -(void)dismiss{
