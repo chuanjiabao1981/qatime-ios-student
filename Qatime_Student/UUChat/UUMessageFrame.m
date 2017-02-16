@@ -99,24 +99,29 @@
                     }
                     
                 }else{
-                    
                 }
                 
             }else if (_message.from == UUMessageFromOther){
                 if (_message.isRichText == YES) {
-                    
-                    contentSize.width -= 20;
-                    
-                    
+                    NSInteger letterNum = _message.richNum;
+
+                    //气泡尺寸修正
+                    if (letterNum<3) {
+                        contentSize.width-=letterNum*20;
+                    }else if (letterNum>3&&letterNum<=8){
+                        contentSize.width-=20*letterNum;
+                    }else if (letterNum>8){
+                        contentSize.width-=10*letterNum/7;
+//                        contentSize.height+=letterNum/8*15;
+                    }
                     
                     
                 }else{
                     
+                    
                 }
                 
-                
             }
-            
             
             /* 拿到yytext显示富文本的size*/
         NSLog(@"%f,%f",contentSize.width,contentSize.height);
@@ -140,19 +145,7 @@
         
     }
     
-    //调整过后的"气泡"尺寸
-//    if (_message.from == UUMessageFromMe) {
-//        
-//    }else if (_message.from == UUMessageFromOther){
-//        if (_message.isRichText==YES) {
-//            _contentF = CGRectMake(contentX, contentY, contentSize.width-40 + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);
-//        }else{
-//            _contentF = CGRectMake(contentX, contentY, contentSize.width + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);
-//        }
-//        
-//        
-//
-//    }
+
     
     _contentF = CGRectMake(contentX, contentY, contentSize.width + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);
     

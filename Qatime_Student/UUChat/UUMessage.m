@@ -58,10 +58,12 @@
                 NSArray *resultArray = [re matchesInString:dict[@"strContent"] options:0 range:NSMakeRange(0, [dict[@"strContent"] length])];
                 if (resultArray.count!=0) {
                     
-                }else{
                     self.isRichText = YES;
                     self.richNum = resultArray.count;
-                } 
+                }else{
+                    self.isRichText = NO;
+                    self.richNum = 0;
+                }
             }
             break;
         
@@ -69,7 +71,7 @@
             self.type = UUMessageTypePicture;
             self.picture = dict[@"picture"];
             self.imagePath = dict[@"imagePath"];
-            self.thumbPath = dic[@"thumbImagePath"];
+            self.thumbPath = dict[@"thumbImagePath"];
             
             break;
         

@@ -149,10 +149,37 @@
     else if (self.messageFrame.message.type == UUMessageTypePicture){
         XHImageViewer *viewer = [[XHImageViewer alloc]init];
         viewer.delegate = self;
-        UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]] ;
-        UIImageView *btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
-        [btnImageView loadWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_messageFrame.message.imagePath]] placeholer:image showActivityIndicatorView:YES];
-        [viewer showWithImageViews:@[btnImageView] selectedView:btnImageView];
+        
+        /* 展示用的图片*/
+        UIImage *image;
+        /* 图片查看器的背景view*/
+        UIImageView *btnImageView;
+        if (self.messageFrame.message.from == UUMessageFromMe) {
+            /* 自己发送的消息*/
+            if (self.messageFrame.message.thumbPath) {
+                
+                image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]];
+                btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
+                [btnImageView loadWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_messageFrame.message.imagePath]] placeholer:image showActivityIndicatorView:YES];
+            }else{
+                
+                image = self.btnContent.backImageView.image;
+                btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
+                btnImageView.image = image;
+                [btnImageView load];
+            }
+            [viewer showWithImageViews:@[btnImageView] selectedView:btnImageView];
+            
+            
+        }else{
+           /* 对方发送的消息*/
+            
+            image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]];
+            btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
+            [btnImageView loadWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_messageFrame.message.imagePath]] placeholer:image showActivityIndicatorView:YES];
+            [viewer showWithImageViews:@[btnImageView] selectedView:btnImageView];
+        }
+        
     }else if (self.messageFrame.message.type == UUMessageTypeVoice){
         if(!contentVoiceIsPlaying){
             [[NSNotificationCenter defaultCenter] postNotificationName:@"VoicePlayHasInterrupt" object:nil];

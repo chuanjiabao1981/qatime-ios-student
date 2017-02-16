@@ -97,6 +97,9 @@
     [dictionary setObject:name forKey:@"strName"];
     [dictionary setObject:URLString forKey:@"strIcon"];
     
+    
+    
+    
     return dictionary;
 }
 
@@ -155,6 +158,8 @@ static NSString *previousTime = nil;
     
     [dataDic setObject:name forKey:@"strName"];
     [dataDic setObject:URLStr forKey:@"strIcon"];
+    
+   
 //    [dataDic setObject:imagePath forKey:@"imagePath"];
 //    [dataDic setObject:thumbImagePath forKey:@"thumbImagePath"];
     
