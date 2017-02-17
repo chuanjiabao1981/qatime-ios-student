@@ -29,6 +29,7 @@
 @property (nonatomic, retain)UILabel *labelTime;
 
 @property (nonatomic, retain)UILabel *labelNum;
+
 @property (nonatomic, retain)UIButton *btnHeadImage;
 
 @property (nonatomic, retain)UUMessageContentButton *btnContent;
@@ -38,6 +39,9 @@
 @property (nonatomic, assign)id<UUMessageCellDelegate>delegate;
 
 @property(nonatomic,strong) YYLabel *title ;
+
+/* 增加一个 真正的时间label*/
+@property(nonatomic,strong) UILabel *timeLabel ;
 
 @end
 

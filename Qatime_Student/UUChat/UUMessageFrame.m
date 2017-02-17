@@ -145,11 +145,11 @@
         
     }
     
-
-    
     _contentF = CGRectMake(contentX, contentY, contentSize.width + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);
     
-    _cellHeight = MAX(CGRectGetMaxY(_contentF), CGRectGetMaxY(_nameF))  + ChatMargin;
+    
+    
+    _cellHeight = CGRectGetMaxY(_contentF) + 40;
     
     
 }

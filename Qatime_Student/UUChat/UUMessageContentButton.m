@@ -33,9 +33,10 @@
         //语音
         self.voiceBackView = [[UIView alloc]init];
         [self addSubview:self.voiceBackView];
-        self.second = [[UILabel alloc]initWithFrame:CGRectMake(5, self.voiceBackView.centerY_sd, 70, 30)];
-        self.second.textAlignment = NSTextAlignmentCenter;
-        self.second.textColor = [UIColor whiteColor];
+        self.second = [[UILabel alloc]init];
+        self.second.frame =CGRectMake(5, self.voiceBackView.centerY_sd, 70, 30);
+        self.second.textAlignment = NSTextAlignmentLeft;
+        self.second.textColor = [UIColor colorWithRed:0.43 green:0.43 blue:0.43 alpha:1.00];
         self.second.font = [UIFont systemFontOfSize:14*ScrenScale];
         self.voice = [[UIImageView alloc]initWithFrame:CGRectMake(80, 5, 20, 20)];
         self.voice.image = [UIImage imageNamed:@"chat_animation_white3"];
@@ -60,7 +61,6 @@
         self.voice.backgroundColor = [UIColor clearColor];
         self.voiceBackView.backgroundColor = [UIColor clearColor];
         
-        
         /* 使用yytext改写*/
         /* 文字*/
         
@@ -71,7 +71,6 @@
         self.title.textAlignment = NSTextAlignmentCenter;
         self.title.userInteractionEnabled = YES;
         self.title.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10);
-        
         
         
         self.contentTextView = [[YYTextView alloc]init];
@@ -91,7 +90,6 @@
 
 
 
-
 - (void)benginLoadVoice
 {
     self.voice.hidden = YES;
@@ -103,11 +101,10 @@
     [self.indicator stopAnimating];
     [self.voice startAnimating];
 }
--(void)stopPlay
-{
-
-        [self.voice stopAnimating];
-
+-(void)stopPlay{
+    
+    [self.voice stopAnimating];
+    
 }
 
 - (void)setIsMyMessage:(BOOL)isMyMessage
@@ -117,17 +114,17 @@
     if (isMyMessage) {
         self.backImageView.frame = CGRectMake(5, 5, 220, 220);
         self.voiceBackView.frame = CGRectMake(15,5 , 130, 35);
-        self.second.textColor = [UIColor whiteColor];
+        self.second.textColor = [UIColor colorWithRed:0.43 green:0.43 blue:0.43 alpha:1.00];
     }else{
-        self.backImageView.frame = CGRectMake(15, 5, 220, 220);
-        self.voiceBackView.frame = CGRectMake(25, 5, 130, 35);
-        self.second.textColor = [UIColor whiteColor];
+        self.backImageView.frame = CGRectMake(5, 5, 220, 220);
+        self.voiceBackView.frame = CGRectMake(-10, 5, 130, 35);
+        self.second.textColor = [UIColor colorWithRed:0.43 green:0.43 blue:0.43 alpha:1.00];
     }
 }
 //添加
 - (BOOL)canBecomeFirstResponder{
     
-    return YES;
+        return YES;
 }
 -(BOOL)canPerformAction:(SEL)action withSender:(id)sender{
     return (action == @selector(copy:));

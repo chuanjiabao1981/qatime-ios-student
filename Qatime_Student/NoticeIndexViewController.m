@@ -191,8 +191,6 @@
 - (void)markRead:(NSNotification *)notification{
     
     
-    
-    
 }
 
 
@@ -213,12 +211,8 @@
         
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
-            dispatch_queue_t recent = dispatch_queue_create("recent", DISPATCH_QUEUE_SERIAL);
-            dispatch_sync(recent, ^{
-                
-                /* 请求近期聊天会话*/
-                _recentArr =  [NSMutableArray arrayWithArray:[[[NIMSDK sharedSDK]conversationManager]allRecentSessions]];
-            });
+            /* 请求近期聊天会话*/
+            _recentArr =  [NSMutableArray arrayWithArray:[[[NIMSDK sharedSDK]conversationManager]allRecentSessions]];
             
             if ([dic[@"data"] count ] ==0) {
                 /* 没有加入聊天的情况*/
@@ -266,7 +260,7 @@
                                 for (NIMRecentSession *session in _recentArr) {
                                     
                                     NSLog(@"%@........%@",session.session.sessionId,info.chat_team_id);
-                                    
+
                                     if ([session.session.sessionId isEqualToString:info.chat_team_id]) {
                                         
                                         mod.badge = session.unreadCount;

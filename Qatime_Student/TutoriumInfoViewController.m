@@ -31,8 +31,6 @@
 #import "Replay.h"
 #import "UIControl+RemoveTarget.h"
 #import "YYTextLayout.h"
-#import "DTCoreText.h"
-
 
 
 @interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>{

@@ -19,9 +19,8 @@ pod 'YYText', '~> 1.0.7'
 pod 'YYImage', '~> 1.0.4'
 pod 'SDCycleScrollView', '~> 1.65'
 pod 'BarrageRenderer', '~> 1.9.0'
-pod 'TTTAttributedLabel', '~> 2.0.0'
-pod 'DTCoreText', '~> 1.6.19'
-pod 'RTLabel', '~> 1.0.1'
+pod 'DXPopover', '~> 0.1.1'
+
 
 
 pod 'MLLabel', '~> 1.10.2'

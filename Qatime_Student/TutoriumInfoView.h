@@ -8,10 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "HMSegmentedControl.h"
-#import "TTTAttributedLabel.h"
-#import "YYLabel.h"
-#import "YYTextView.h"
-#import "DTAttributedLabel.h"
+
+
 
 
 @interface TutoriumInfoView : UIScrollView

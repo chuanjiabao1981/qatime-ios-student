@@ -44,7 +44,7 @@
     
         [dataDic setObject:name forKey:@"strName"];
     
-        [dataDic setObject:URLStr forKey:@"strIcon"];
+        [dataDic setObject:URLStr==nil?@"":URLStr forKey:@"strIcon"];
         
         [message setWithDict:dataDic];
         [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
@@ -95,7 +95,7 @@
         name = @"";
     }
     [dictionary setObject:name forKey:@"strName"];
-    [dictionary setObject:URLString forKey:@"strIcon"];
+    [dictionary setObject:URLString==nil?@"":URLString forKey:@"strIcon"];
     
     
     
@@ -157,7 +157,7 @@ static NSString *previousTime = nil;
     }
     
     [dataDic setObject:name forKey:@"strName"];
-    [dataDic setObject:URLStr forKey:@"strIcon"];
+    [dataDic setObject:URLStr==nil?@"":URLStr forKey:@"strIcon"];
     
    
 //    [dataDic setObject:imagePath forKey:@"imagePath"];
@@ -211,7 +211,7 @@ static NSString *previousTime = nil;
         [dictionary setObject:name forKey:@"strName"];
         
         NSLog(@"%@",URLString);
-        [dictionary setObject:URLString forKey:@"strIcon"];
+        [dictionary setObject:URLString==nil?@"":URLString forKey:@"strIcon"];
         [dictionary setObject:imagePath forKey:@"imagePath"];
         [dictionary setObject:thumbImagePath forKey:@"thumbImagePath"];
     }
@@ -247,7 +247,7 @@ static NSString *previousTime = nil;
 //    }
     
     [dataDic setObject:name forKey:@"strName"];
-    [dataDic setObject:URLStr forKey:@"strIcon"];
+    [dataDic setObject:URLStr==nil?@"":URLStr forKey:@"strIcon"];
     
     [message setWithDict:dataDic];
     [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
@@ -292,7 +292,7 @@ static NSString *previousTime = nil;
         [dictionary setObject:name forKey:@"strName"];
         
         NSLog(@"%@",URLString);
-        [dictionary setObject:URLString forKey:@"strIcon"];
+        [dictionary setObject:URLString==nil?@"":URLString forKey:@"strIcon"];
         
         [dictionary setObject:[NSString  stringWithFormat:@"%@",date] forKey:@"strTime"];
     

@@ -60,17 +60,15 @@
         self.labelTime.textAlignment = NSTextAlignmentCenter;
         self.labelTime.textColor = [UIColor grayColor];
         self.labelTime.font = ChatTimeFont;
-        [self.contentView addSubview:self.labelTime];
+//        [self.contentView addSubview:self.labelTime];
         
         // 2、创建头像
         headImageBackView = [[UIView alloc]init];
-        headImageBackView.layer.cornerRadius = 22;
-        headImageBackView.layer.masksToBounds = YES;
+        
         headImageBackView.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
         [self.contentView addSubview:headImageBackView];
         self.btnHeadImage = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.btnHeadImage.layer.cornerRadius = 20;
-        self.btnHeadImage.layer.masksToBounds = YES;
+        
         [self.btnHeadImage addTarget:self action:@selector(btnHeadImageClick:)  forControlEvents:UIControlEventTouchUpInside];
         [headImageBackView addSubview:self.btnHeadImage];
         
@@ -107,10 +105,6 @@
                                                    object:nil];
         contentVoiceIsPlaying = NO;
         
-        
-        
-        
-        
         /* 创建支持自定义表情的YYLabel类型的label*/
         self.title = [[YYLabel alloc]init];
         self.title.textAlignment = NSTextAlignmentCenter;
@@ -123,6 +117,11 @@
         [self.title addGestureRecognizer:tap];
         
         
+        /* 5.真正的时间label*/
+        _timeLabel = [[UILabel alloc]init];
+        _timeLabel.textColor = [UIColor lightGrayColor];
+        _timeLabel.font =ChatTimeFont;
+        [self.contentView addSubview:_timeLabel];
         
     }
     return self;
@@ -140,10 +139,8 @@
     
     // 显示文字
     if (self.messageFrame.message.type == UUMessageTypeText){
-        //        [self.btnContent becomeFirstResponder];
-        //        UIMenuController *menu = [UIMenuController sharedMenuController];
-        //        [menu setTargetRect:self.btnContent.frame inView:self.btnContent.superview];
-        //        [menu setMenuVisible:YES animated:YES];
+        
+
     }
     /* 显示图片*/
     else if (self.messageFrame.message.type == UUMessageTypePicture){
@@ -200,16 +197,7 @@
 /* 气泡长按点击事件*/
 - (void)longPress:(UILongPressGestureRecognizer *)longPress{
     
-    //    if (self.messageFrame.message.type == UUMessageTypeVoice) {
-    //
-    ////        [self.btnContent becomeFirstResponder];
-    //        UIMenuController *menu = [UIMenuController sharedMenuController];
-    //        UIMenuItem *item = [[UIMenuItem alloc]initWithTitle:@"文字转换" action:@selector(changeVoiceToText)];
-    //        menu .menuItems = @[item];
-    //        [menu setTargetRect:self.btnContent.frame inView:self.btnContent.superview];
-    //        [menu setMenuVisible:YES animated:YES];
-    //
-    //    }
+    [_delegate cellContentLongPress:self voice:self.messageFrame.message.voice];
     
 }
 
@@ -280,8 +268,8 @@
     //    UUMessage *message = messageFrame.message;
     
     // 1、设置时间
-    self.labelTime.text = messageFrame.message.strTime;
-    self.labelTime.frame = messageFrame.timeF;
+//    self.labelTime.text = messageFrame.message.strTime;
+//    self.labelTime.frame = messageFrame.timeF;
     
     // 2、设置头像
     
@@ -289,23 +277,41 @@
         messageFrame.message.strIcon = @"";
     }
     
+    
     headImageBackView.frame = messageFrame.iconF;
-    self.btnHeadImage.frame = CGRectMake(2, 2, ChatIconWH-4, ChatIconWH-4);
+    self.btnHeadImage.frame = CGRectMake(0, 0, ChatIconWH, ChatIconWH);
     [self.btnHeadImage setBackgroundImageForState:UIControlStateNormal
                                           withURL:[NSURL URLWithString:messageFrame.message.strIcon]
                                  placeholderImage:[UIImage imageNamed:@"headImage.jpeg"]];
     
-    // 3、设置下标
+    // 3、发送人姓名
     if (messageFrame.message.strName == nil) {
         messageFrame.message.strName = @"";
     }
     self.labelNum.text = messageFrame.message.strName;
+    self.labelNum.textAlignment = NSTextAlignmentCenter;
+    
     if (messageFrame.nameF.origin.x > 160) {
-        self.labelNum.frame = CGRectMake(messageFrame.nameF.origin.x - 50, messageFrame.nameF.origin.y + 3, 100, messageFrame.nameF.size.height);
-        self.labelNum.textAlignment = NSTextAlignmentRight;
+//        self.labelNum.frame = CGRectMake(messageFrame.nameF.origin.x - 50, messageFrame.nameF.origin.y + 3, 100, messageFrame.nameF.size.height);
+        [self.labelNum sd_clearAutoLayoutSettings];
+        self.labelNum.sd_layout
+        .topEqualToView(headImageBackView)
+        .rightSpaceToView(headImageBackView,5)
+        .autoHeightRatio(0);
+        [self.labelNum setSingleLineAutoResizeWithMaxWidth:200];
+        [self.labelNum updateLayout];
+        
     }else{
-        self.labelNum.frame = CGRectMake(messageFrame.nameF.origin.x, messageFrame.nameF.origin.y + 3, 80, messageFrame.nameF.size.height);
-        self.labelNum.textAlignment = NSTextAlignmentLeft;
+//        self.labelNum.frame = CGRectMake(messageFrame.nameF.origin.x, messageFrame.nameF.origin.y + 3, 80, messageFrame.nameF.size.height);
+        
+        [self.labelNum sd_clearAutoLayoutSettings];
+        self.labelNum.sd_layout
+        .topEqualToView(headImageBackView)
+        .leftSpaceToView(_btnHeadImage,20)
+        .autoHeightRatio(0);
+        [self.labelNum setSingleLineAutoResizeWithMaxWidth:200];
+        [self.labelNum updateLayout];
+        
     }
     
     // 4、设置内容
@@ -317,11 +323,22 @@
     self.btnContent.voiceBackView.hidden = YES;
     self.btnContent.backImageView.hidden = YES;
     
-    self.btnContent.frame = messageFrame.contentF;
+//    self.btnContent.frame = messageFrame.contentF;
+    
     
     
     //判断:自己发送的消息
     if (messageFrame.message.from == UUMessageFromMe) {
+        
+        [self.btnContent sd_clearAutoLayoutSettings];
+        
+        self.btnContent.sd_layout
+        .topSpaceToView(self.labelNum,10)
+        .rightSpaceToView(headImageBackView,10)
+        .widthIs(messageFrame.contentF.size.width)
+        .heightIs(messageFrame.contentF.size.height);
+        [self.btnContent updateLayout];
+        
         self.btnContent.isMyMessage = YES;
         //判断:消息类型是文本
         if (messageFrame.message.type == UUMessageTypeText) {
@@ -339,15 +356,23 @@
             [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
             
-        }else if(messageFrame.message.type == UUMessageTypePicture){
-            
-            [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
+        }else if(messageFrame.message.type == UUMessageTypeVoice){
+           
             
         }
         
     }else{
         //判断:别人发送的消息
+        
+        [self.btnContent sd_clearAutoLayoutSettings];
+        
+        self.btnContent.sd_layout
+        .topSpaceToView(self.labelNum,10)
+        .leftSpaceToView(_btnHeadImage,10)
+        .widthIs(messageFrame.contentF.size.width)
+        .heightIs(messageFrame.contentF.size.height);
+        [self.btnContent updateLayout];
+
         
         self.btnContent.isMyMessage = NO;
         //判断:消息类型是文本
@@ -363,13 +388,42 @@
             
             [self.btnContent setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
             self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentLeft, ChatContentBottom, ChatContentRight);
-        }else if(messageFrame.message.type == UUMessageTypePicture){
+        }else if(messageFrame.message.type == UUMessageTypeVoice){
             
-            [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
             
         }
     }
+    
+    /* 5.设置时间戳*/
+    
+    _timeLabel.text = messageFrame.message.strTime;
+    if (messageFrame.message.from == UUMessageFromMe) {
+        [_timeLabel sd_clearAutoLayoutSettings];
+        _timeLabel.sd_layout
+        .rightSpaceToView(_labelNum,5)
+        .topEqualToView(_labelNum)
+        .bottomEqualToView(_labelNum);
+        [_timeLabel setSingleLineAutoResizeWithMaxWidth:200];
+        
+        [_timeLabel updateLayout];
+        
+    }else{
+        [_timeLabel sd_clearAutoLayoutSettings];
+        _timeLabel.sd_layout
+        .leftSpaceToView(_labelNum,5)
+        .topEqualToView(_labelNum)
+        .bottomEqualToView(_labelNum);
+        [_timeLabel setSingleLineAutoResizeWithMaxWidth:200];
+        
+        [_timeLabel updateLayout];
+
+        
+        
+        
+    }
+    
+    
+    
     
     //背景气泡图
     UIImage *normal;
@@ -458,29 +512,45 @@
                     }
                     self.title.attributedText =text;
                     /* 富文本的title和气泡方案*/
-                    [self.title setFrame:self.btnContent.frame];
+                    
+//                    [self.title setFrame:self.btnContent.frame];
+                    
                     self.title.textContainerInset = UIEdgeInsetsMake(10, 5, 10, 15);
                     self.title.textAlignment = NSTextAlignmentLeft;
                     
                     normal  = [normal resizableImageWithCapInsets:UIEdgeInsetsMake(35, 5, 10, 22)];
-                    self.btnContent.frame = CGRectMake(messageFrame.contentF.origin.x-20, messageFrame.contentF.origin.y, messageFrame.contentF.size.width+20, messageFrame.contentF.size.height);
-                    self.title.frame = self.btnContent.frame;
+//                    self.btnContent.frame = CGRectMake(messageFrame.contentF.origin.x-20, messageFrame.contentF.origin.y, messageFrame.contentF.size.width+20, messageFrame.contentF.size.height);
+//                    self.title.frame = self.btnContent.frame;
                     
+                    [self.btnContent updateLayout];
+                    
+                    [self.title sd_clearAutoLayoutSettings];
+                    self.title.sd_layout
+                    .leftEqualToView(self.btnContent)
+                    .rightEqualToView(self.btnContent)
+                    .topEqualToView(self.btnContent)
+                    .bottomEqualToView(self.btnContent);
+                    [self.title updateLayout];
                     
                 }else{
                     /* 不包含富文本*/
                     self.title.attributedText = text;
                     
-                    [self.title setFrame:self.btnContent.frame];
+                    
                     self.title.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 15);
                     self.title.textAlignment = NSTextAlignmentLeft;
-                    self.btnContent.frame = messageFrame.contentF;
-                    self.title.frame = self.btnContent.frame;
+//                    self.btnContent.frame = messageFrame.contentF;
+                    
+                    [self.btnContent updateLayout];
+                    [self.title sd_clearAutoLayoutSettings];
+                    self.title.sd_layout
+                    .leftEqualToView(self.btnContent)
+                    .rightEqualToView(self.btnContent)
+                    .topEqualToView(self.btnContent)
+                    .bottomEqualToView(self.btnContent);
+                    [self.title updateLayout];
+
                 }
-                
-                
-                
-                
                 
                 //                [self.title setFrame:self.btnContent.frame];
                 //
@@ -512,7 +582,10 @@
                 self.btnContent.titleLabel.hidden=YES;
                 self.btnContent.voiceBackView.hidden = NO;
                 
-                self.btnContent.second.textColor= [UIColor whiteColor];
+                self.btnContent.voiceBackView.transform = CGAffineTransformMakeScale(1, 1);
+                self.btnContent.second.transform = CGAffineTransformMakeScale(1, 1);
+                self.btnContent.second.textAlignment = NSTextAlignmentLeft;
+                self.btnContent.second.textColor= [UIColor colorWithRed:0.43 green:0.43 blue:0.43 alpha:1.00];;
                 self.btnContent.second.text = [NSString stringWithFormat:@"%@''",messageFrame.message.strVoiceTime];
                 songData = messageFrame.message.voice;
                 //            voiceURL = [NSString stringWithFormat:@"%@%@",RESOURCE_URL_HOST,message.strVoice];
@@ -609,6 +682,7 @@
                 self.btnContent.titleLabel.hidden=YES;
                 [self.btnContent.backImageView setImage:messageFrame.message.picture];
                 self.btnContent.backImageView.frame = CGRectMake(0, 0, self.btnContent.frame.size.width, self.btnContent.frame.size.height);
+                
                 [self makeMaskView:self.btnContent.backImageView withImage:normal];
                 
             }
@@ -621,6 +695,10 @@
                 self.btnContent.backImageView.hidden = YES;
                 self.btnContent.titleLabel.hidden=YES;
                 self.btnContent.voiceBackView.hidden = NO;
+                
+                self.btnContent.voiceBackView.transform = CGAffineTransformMakeScale(-1, 1);
+                self.btnContent.second.transform = CGAffineTransformMakeScale(-1, 1);
+                self.btnContent.second.textAlignment = NSTextAlignmentRight;
                 self.btnContent.second.text = [NSString stringWithFormat:@"%@''",messageFrame.message.strVoiceTime];
                 songData = messageFrame.message.voice;
                 //            voiceURL = [NSString stringWithFormat:@"%@%@",RESOURCE_URL_HOST,message.strVoice];
