@@ -14,4 +14,6 @@
 
 @property(nonatomic,strong) UIImageView *headImage ;
 
+
+
 @end

@@ -9,8 +9,6 @@
 #import "EditNameTableViewCell.h"
 
 @interface EditNameTableViewCell (){
-    
-    UIImageView *_arrow;
 
 }
 
@@ -36,11 +34,11 @@
         _nameText.textColor = TITLECOLOR;
         
         /* 箭头*/
-        _arrow = [[UIImageView alloc]init];
-        [_arrow setImage:[UIImage imageNamed:@"rightArrow"]];
+//        _arrow = [[UIImageView alloc]init];
+//        [_arrow setImage:[UIImage imageNamed:@"rightArrow"]];
+//        
         
-        
-        [self.contentView sd_addSubviews:@[_name,_nameText,_arrow]];
+        [self.contentView sd_addSubviews:@[_name,_nameText]];
         
         /* 布局*/
         _name.sd_layout
@@ -56,11 +54,11 @@
         .rightSpaceToView(self.contentView,20);
         
         
-        _arrow.sd_layout
-        .rightSpaceToView(self.contentView,20)
-        .centerYEqualToView(_name)
-        .heightRatioToView(_name,0.5)
-        .widthEqualToHeight();
+//        _arrow.sd_layout
+//        .rightSpaceToView(self.contentView,20)
+//        .centerYEqualToView(_name)
+//        .heightRatioToView(_name,0.5)
+//        .widthEqualToHeight();
         
         
         

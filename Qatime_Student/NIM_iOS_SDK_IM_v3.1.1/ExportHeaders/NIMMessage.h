@@ -212,7 +212,7 @@ typedef NS_ENUM(NSInteger, NIMMessageAttachmentDownloadState){
 
 /**
  *  消息发送者名字
- *  @discussion 当发送者是自己时,这个值可能为空,这个值表示的是发送者当前的昵称,而不是发送消息时的昵称
+ *  @discussion 当发送者是自己时,这个值可能为空,这个值表示的是发送者当前的昵称,而不是发送消息时的昵称。聊天室消息里，此字段无效。
  */
 @property (nullable,nonatomic,copy,readonly)         NSString *senderName;
 

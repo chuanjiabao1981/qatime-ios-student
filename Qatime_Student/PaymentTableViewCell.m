@@ -17,7 +17,6 @@
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        
         /* 充值单号*/
         _number = [[UILabel alloc]init];
         _number.font = [UIFont systemFontOfSize:16*ScrenScale];

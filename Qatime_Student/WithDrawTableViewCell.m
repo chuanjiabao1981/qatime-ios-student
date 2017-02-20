@@ -49,7 +49,6 @@
         time.font = [UIFont systemFontOfSize:16*ScrenScale];
         
         
-        
         /* 金额*/
         _money = [[UILabel alloc]init];
         _money.font = [UIFont systemFontOfSize:16*ScrenScale];
@@ -124,8 +123,6 @@
         .widthIs(200);
         
         _status.textAlignment = NSTextAlignmentRight;
-        
-        
         
         [self setupAutoHeightWithBottomView:time bottomMargin:10];
         

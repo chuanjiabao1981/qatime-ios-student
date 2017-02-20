@@ -65,8 +65,32 @@
 
 -(void)setupPlaySound{
     UIApplication *app = [UIApplication sharedApplication];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:app];
-    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: nil];
+    
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]) {
+        
+        if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]isEqualToString:@"loudspeaker"]) {
+            
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+            [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+            
+        }else if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]isEqualToString:@"earphone"]){
+            
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+            [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+            
+        }
+    }else{
+        
+        [[NSUserDefaults standardUserDefaults]setValue:@"earphone" forKey:@"AVAudioSession"];
+        
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+        [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+        
+    }
+
+//    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: nil];
 }
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag

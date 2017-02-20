@@ -180,6 +180,8 @@
         
         _status.text =@"退款中";
 
+    }else if ([model.status isEqualToString:@"ignored"]){
+        _status.text =@"退款失败";
     }
     
 }

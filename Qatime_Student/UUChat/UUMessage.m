@@ -29,6 +29,11 @@
     self.strId = dict[@"strId"];
     self.strTime = [self changeTheDateString:dict[@"strTime"]];
     self.from = [dict[@"from"] intValue];
+    self.messageID = dict[@"messageID"];
+    
+    self.sendFaild = NO;    //默认是发送成功状态,所以发送失败的bool为NO;
+    
+    self.message = dict[@"message"];
     
     switch ([dict[@"type"] integerValue]) {
         

@@ -149,22 +149,22 @@
         
         if (_dataDic) {
             
-            NSDictionary *payDic =[NSDictionary dictionaryWithDictionary: _dataDic[@"app_pay_params"]];
-            PayReq *request = [[PayReq alloc] init] ;
-            
-            request.partnerId = payDic[@"partnerid"];
-            
-            request.prepayId= payDic[@"prepayid"];
-            
-            request.package = payDic[@"package"];
-            
-            request.nonceStr= payDic[@"noncestr"];
-            
-            request.timeStamp= [payDic[@"timestamp"] intValue];
-            
-            request.sign= payDic[@"sign"];
-            
-            [WXApi sendReq:request];
+//            NSDictionary *payDic =[NSDictionary dictionaryWithDictionary: _dataDic[@"app_pay_params"]];
+//            PayReq *request = [[PayReq alloc] init] ;
+//            
+//            request.partnerId = payDic[@"partnerid"];
+//            
+//            request.prepayId= payDic[@"prepayid"];
+//            
+//            request.package = payDic[@"package"];
+//            
+//            request.nonceStr= payDic[@"noncestr"];
+//            
+//            request.timeStamp= [payDic[@"timestamp"] intValue];
+//            
+//            request.sign= payDic[@"sign"];
+//            
+//            [WXApi sendReq:request];
             
         }else{
             

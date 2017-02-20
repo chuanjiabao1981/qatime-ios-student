@@ -463,19 +463,19 @@
 
 -(void)sendAuthRequest{
     
-    if ([WXApi isWXAppInstalled]==YES) {
-        //构造SendAuthReq结构体
-        SendAuthReq* req =[[SendAuthReq alloc ] init ]  ;
-        req.scope = @"snsapi_userinfo" ;
-        req.state = @"123" ;
-        //第三方向微信终端发送一个SendAuthReq消息结构
-        
-        [WXApi sendAuthReq:req viewController:self delegate:self];
-    }else{
-        
-        [self loadingHUDStopLoadingWithTitle:@"您尚未安装微信"];
-        
-    }
+//    if ([WXApi isWXAppInstalled]==YES) {
+//    }else{
+//        
+//        [self loadingHUDStopLoadingWithTitle:@"您尚未安装微信"];
+//        
+//    }
+    //构造SendAuthReq结构体
+    SendAuthReq* req =[[SendAuthReq alloc ] init ]  ;
+    req.scope = @"snsapi_userinfo" ;
+    req.state = @"123" ;
+    //第三方向微信终端发送一个SendAuthReq消息结构
+    
+    [WXApi sendAuthReq:req viewController:self delegate:self];
     
     
     

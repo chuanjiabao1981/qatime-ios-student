@@ -28,6 +28,7 @@
         _name = [[UILabel alloc]init];
         _name.font = TITLEFONTSIZE;
         _name.textColor = TITLECOLOR;
+        _name.text = @"生日";
         
         /* 内容*/
         _content = [[UILabel alloc]init];
@@ -61,8 +62,6 @@
         .heightRatioToView(_name,0.5)
         .widthEqualToHeight();
         
-        
-    
         
     }
     return self;

@@ -54,6 +54,7 @@
         .bottomSpaceToView(self.contentView,10)
         .leftSpaceToView(_name,20)
         .widthEqualToHeight();
+        _headImage.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
         
         _arrow.sd_layout
         .rightSpaceToView(self.contentView,20)

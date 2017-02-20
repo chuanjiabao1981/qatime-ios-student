@@ -11,6 +11,7 @@
 @class NIMMessage;
 @class NIMSession;
 @class NIMMessageReceipt;
+@class NIMRevokeMessageNotification;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -49,7 +50,7 @@ typedef void(^NIMRevokeMessageBlock)(NSError * __nullable error);
  *  @param progress 进度
  */
 - (void)sendMessage:(NIMMessage *)message
-           progress:(CGFloat)progress;
+           progress:(float)progress;
 
 /**
  *  发送消息完成回调
@@ -81,10 +82,10 @@ typedef void(^NIMRevokeMessageBlock)(NSError * __nullable error);
 /**
  *  收到消息被撤回的通知
  *
- *  @param message 被撤回的消息
+ *  @param notification 被撤回的消息信息
  *  @discusssion 云信在收到消息撤回后，会先从本地数据库中找到对应消息并进行删除，之后通知上层消息已删除
  */
-- (void)onMessageRevoked:(NIMMessage *)message;
+- (void)onRecvRevokeMessageNotification:(NIMRevokeMessageNotification *)notification;
 
 
 /**
@@ -94,7 +95,7 @@ typedef void(^NIMRevokeMessageBlock)(NSError * __nullable error);
  *  @discussion 附件包括:图片,视频的缩略图,语音文件
  */
 - (void)fetchMessageAttachment:(NIMMessage *)message
-                      progress:(CGFloat)progress;
+                      progress:(float)progress;
 
 
 /**
@@ -201,7 +202,7 @@ typedef void(^NIMRevokeMessageBlock)(NSError * __nullable error);
  *
  *  @return 正在传输的消息进度,如果消息不在传输,则返回0
  */
-- (CGFloat)messageTransportProgress:(NIMMessage *)message;
+- (float)messageTransportProgress:(NIMMessage *)message;
 
 /**
  *  添加聊天委托

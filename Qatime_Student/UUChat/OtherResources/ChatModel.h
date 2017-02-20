@@ -22,16 +22,16 @@
 
 #pragma mark- 文本消息
 /* 组成自己发的文本消息*/
-- (void)addSpecifiedItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name;
+- (void)addSpecifiedItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name andMessage:(NIMMessage *)textMessage;
 /* 组成别人发的文本消息 */
-- (NSDictionary *)getDicWithText:(NSString *)text andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andTime:(NSString *)time ;
+- (NSDictionary *)getDicWithText:(NSString *)text andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andTime:(NSString *)time andMessage:(NIMMessage *)message;
 
 #pragma mark- 图片消息
 /* 组成自己发送的图片消息*/
-- (void)addSpecifiedImageItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name ;
+- (void)addSpecifiedImageItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name andMessage:(NIMMessage *)imageMessage;
 
 /* 组成别人发送的图片消息*/
-- (NSDictionary *)getDicWithImage:(UIImage *)image andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andImagePath:(NSString *)imagePath andThumbImagePath:(NSString *)thumbImagePath andTime:(NSString *)time;
+- (NSDictionary *)getDicWithImage:(UIImage *)image andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andImagePath:(NSString *)imagePath andThumbImagePath:(NSString *)thumbImagePath andTime:(NSString *)time andMessage:(NIMMessage *)message;
 
 
 //别人发的消息
@@ -39,13 +39,13 @@
 
 
 /* 自己发的语音消息*/
-- (void)addSpecifiedVoiceItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name;
+- (void)addSpecifiedVoiceItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name andMessage:(NIMMessage *)voiceMessage;
 
 
-/* 别人发的语音消息*/
 
-/* 组成别人发送的图片消息*/
-- (NSDictionary *)getDicWithVoice:(NSData *)voiceData andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andVoicePath:(NSString *)voicePath andTime:(NSString *)time;
+
+/* 组成别人发送的语音消息*/
+- (NSDictionary *)getDicWithVoice:(NSData *)voiceData andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andVoicePath:(NSString *)voicePath andTime:(NSString *)time andMessage:(NIMMessage *)message;
 
 
 

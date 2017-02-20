@@ -39,7 +39,8 @@
 #import "UIAlertController+Blocks.h"
 //#import <AVFoundation/AVAudioSettings.h>
 //#import <AVFoundation/AVAudioRecorder.h>
-
+#import "UUMessageFrame.h"
+#import "TranslateViewController.h"
 
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelgate>{
     
@@ -460,8 +461,6 @@
 /* 创建消息 - 加载历史消息*/
 - (void)makeMessages:(NSArray<NIMMessage *> * ) messages{
     
-    
-    
     for (NIMMessage *message in messages) {
         if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio) {
             
@@ -552,7 +551,8 @@
                                         @"frome":@(UUMessageFromMe),
                                         @"strTime":[[NSString stringWithFormat:@"%ld",(NSInteger)message.timestamp]changeTimeStampToDateString],
                                         @"isRichText":@YES,
-                                        @"richNum":[NSString stringWithFormat:@"%ld",resultArray.count]};
+                                        @"richNum":[NSString stringWithFormat:@"%ld",resultArray.count],
+                                        @"message":message};
                             }
                         }else{
                            /* 没有有表情的普通文本*/
@@ -561,13 +561,14 @@
                                     @"frome":@(UUMessageFromMe),
                                     @"strTime":[[NSString stringWithFormat:@"%ld",(NSInteger)message.timestamp]changeTimeStampToDateString],
                                     @"isRichText":@NO,
-                                    @"richNum":@"0"};
+                                    @"richNum":@"0",
+                                    @"message":message};
                             
                         }
                         
                         /* 判断和调整制作完毕后,使用dic字典制作消息*/
                         if (dic) {
-                            [self dealTheFunctionData:dic];
+                            [self dealTheFunctionData:dic andMessage:message];
                         }
                         
                     }
@@ -586,7 +587,7 @@
                         }
                         
                         
-                        NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:senderName andIcon:iconURL type:UUMessageTypeText andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
+                        NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:senderName andIcon:iconURL type:UUMessageTypeText andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]andMessage:message]];
                         
                         [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                         
@@ -599,7 +600,6 @@
             }else if (message.messageType ==NIMMessageTypeImage){
                 /* 如果收到的消息类型是图片的话 */
                 
-                
                     
                     /* 如果消息是自己发的*/
                     if ([message.from isEqualToString:_chat_Account.accid]){
@@ -610,7 +610,7 @@
                         
                         UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
                         
-                        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
+                        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]andMessage:message]];
                         
                         [dic setObject:@(UUMessageFromMe) forKey:@"from"];
                         
@@ -653,7 +653,7 @@
                             }
                         }
                         
-                        NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:senderName andIcon:iconURL type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
+                        NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:senderName andIcon:iconURL type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]andMessage:message]];
                         
                         [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                         
@@ -673,7 +673,7 @@
                         NIMAudioObject *audioObject = message.messageObject;
                         
                         
-                        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]]];
+                        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message]];
                         
                         [dic setObject:@(UUMessageFromMe) forKey:@"from"];
                         
@@ -696,7 +696,7 @@
                         
                         NIMAudioObject *audioObject = message.messageObject;
                         
-                        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]]];
+                        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message]];
                         
                         [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                         
@@ -731,19 +731,19 @@
 }
 
 /* 制作消息内容*/
-- (void)dealTheFunctionData:(NSDictionary *)dic{
+- (void)dealTheFunctionData:(NSDictionary *)dic andMessage:(NIMMessage *)message{
     
     /* 文字类型消息*/
     if ([dic[@"type"]isEqual:[NSNumber numberWithInteger:0]]) {
         /* 重写了UUMolde的添加自己的item方法 */
-        [self.chatModel addSpecifiedItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name ];
+        [self.chatModel addSpecifiedItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name andMessage:message];
     }else if ([dic[@"type"]isEqual:[NSNumber numberWithInteger:1]]){
         /* 图片类型消息*/
-        [self.chatModel addSpecifiedImageItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name];
+        [self.chatModel addSpecifiedImageItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name andMessage:message];
         
     }else if ([dic[@"type"]isEqualToNumber:@2]){
         /* 语音类型消息*/
-        [self.chatModel addSpecifiedVoiceItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name];
+        [self.chatModel addSpecifiedVoiceItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name andMessage:message];
     }
     
     [self.chatTableView reloadData];
@@ -763,6 +763,7 @@
 //消息发送进度回调----文本消息没有这个回调
 - (void)sendMessage:(NIMMessage *)message progress:(CGFloat)progress{
     
+    
     NSLog(@"发送进度::%f",progress);
     
 }
@@ -771,7 +772,41 @@
 //消息发送完毕回调
 - (void)sendMessage:(NIMMessage *)message didCompleteWithError:(NSError *)error{
     
-    NSLog(@"%ld",(long)message.messageType);
+    switch (message.deliveryState) {
+            //消息发送失败
+        case NIMMessageDeliveryStateFailed:{
+            
+            for (UUMessageFrame *messageFrame in _chatModel.dataSource) {
+                
+                if ([messageFrame.message.messageID isEqualToString:message.messageId]) {
+                    //找到发送失败的消息
+                    messageFrame.message.sendFaild =YES;
+                    
+                    [_chatTableView reloadData];
+                    
+                    return;
+                    
+                }
+                
+                
+            }
+            
+            
+        }
+            break;
+            //消息发送中
+        case NIMMessageDeliveryStateDelivering:{
+            
+        }
+            break;
+            //消息发送成功
+        case NIMMessageDeliveryStateDeliveried:{
+            
+        }
+            break;
+    }
+    
+    
 }
 //重新发送消息 主动方法
 //- (BOOL)resendMessage:(NIMMessage *)message error:(NSError **)error
@@ -800,7 +835,7 @@
         if (message.messageType == NIMMessageTypeText) {
             
             /* 在本地创建对方的消息消息*/
-            NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:senderName andIcon:iconURL type:UUMessageTypeText andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
+            NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:senderName andIcon:iconURL type:UUMessageTypeText andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]andMessage:message]];
             
             [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
             
@@ -860,7 +895,7 @@
         
         UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
         
-        NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:senderName andIcon:iconURL type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]]];
+        NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:senderName andIcon:iconURL type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]andMessage:message]];
         
         [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
         
@@ -884,7 +919,7 @@
         
         //创建消息字典
         
-        NSDictionary *dic = [self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:senderName andIcon:iconURL type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]];
+        NSDictionary *dic = [self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:senderName andIcon:iconURL type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message];
         
         [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
         
@@ -932,15 +967,22 @@
         
         cell.delegate = self;
         [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
+        
+        /* 消息发送状态*/
+        /* 如果消息是发送成功的*/
+        if (cell.messageFrame.message.sendFaild == NO) {
+            cell.sendfaild.hidden =YES;
+        }else{
+            cell.sendfaild.hidden = NO;
+            cell.sendfaild.tag = indexPath.row;
+            [cell.sendfaild addTarget:self action:@selector(resendMessages:) forControlEvents:UIControlEventTouchUpInside]; //让该消息可以再次发送
+        }
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     }
     
     return cell;
     
 }
-
-
-
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -956,6 +998,58 @@
     return height;
 }
 
+//重新发送消息方法
+- (void)resendMessages:(UIButton *)sender{
+    
+    UUMessageFrame *failMsg = _chatModel.dataSource[sender.tag];
+    
+    if (failMsg.message.sendFaild==YES) {
+        if (failMsg.message.from == UUMessageFromMe) {
+            
+            //制作成NIM消息
+            NIMMessage * reMessage = [[NIMMessage alloc] init];
+            switch (failMsg.message.type) {
+                case UUMessageTypeText:{
+                    reMessage.text = failMsg.message.strContent;
+                    reMessage.messageObject = NIMMessageTypeText;
+                    reMessage.apnsContent = @"发来了一条消息";
+                    [[NIMSDK sharedSDK].chatManager addDelegate:self];
+                    
+                }
+                    break;
+                    
+                case UUMessageTypePicture:{
+                    
+                    NIMImageObject * imageObject = [[NIMImageObject alloc] initWithImage:failMsg.message.picture];
+                    
+                    reMessage.messageObject= imageObject;
+                    
+                    
+                }
+                    break;
+                case UUMessageTypeVoice:{
+                    //读取音频源
+                    NIMAudioObject *audioObject = [[NIMAudioObject alloc]initWithData:failMsg.message.voice extension:@".aac"];
+
+                    reMessage.messageObject = audioObject;
+
+                    
+                }
+                    break;
+            }
+            
+            [[[NIMSDK sharedSDK]chatManager]addDelegate:self];
+            [[[NIMSDK sharedSDK]chatManager]resendMessage:reMessage error:nil];
+            
+            sender.hidden = YES;
+            [sender removeTarget:self action:@selector(resendMessages:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [_chatTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:sender.tag inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            
+        }
+    }
+}
+
 
 #pragma mark - 聊天页面 发送文字聊天信息的回调
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message{
@@ -966,6 +1060,8 @@
         
     }else{
         
+        //这是最终要向云信发送的消息,放在这里是为了使用messageID来识别消息
+        NIMMessage * text_message = [[NIMMessage alloc] init];
         
         /* 解析发送的字符串*/
         //解析和云信发送
@@ -1046,7 +1142,8 @@
                         @"frome":@(UUMessageFromMe),
                         @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
                         @"isRichText":@YES,
-                        @"richNum":[NSString stringWithFormat:@"%ld",resultArray.count]};
+                        @"richNum":[NSString stringWithFormat:@"%ld",resultArray.count],
+                        @"messageID":text_message.messageId};
                 
             }
             
@@ -1058,20 +1155,25 @@
                     @"frome":@(UUMessageFromMe),
                     @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
                     @"isRichText":@NO,
-                    @"richNum":@"0"};
+                    @"richNum":@"0",
+                    @"messageID":text_message.messageId};
             
         }
         
-        [self dealTheFunctionData:dic];
         
         //发送消息
         
-        NIMMessage * text_message = [[NIMMessage alloc] init];
         text_message.text = title;
         text_message.messageObject = NIMMessageTypeText;
         text_message.apnsContent = @"发来了一条消息";
+        
         [[NIMSDK sharedSDK].chatManager addDelegate:self];
         [[NIMSDK sharedSDK].chatManager sendMessage:text_message toSession:_session error:nil];
+        
+        //发送完消息后,再在本地制作一条消息,用来保存这个消息的id
+        
+        [self dealTheFunctionData:dic andMessage:text_message];
+        
         
         [_inputView.TextViewInput setText:@""];
         [_inputView.TextViewInput resignFirstResponder];
@@ -1090,21 +1192,23 @@
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendPicture:(UIImage *)image{
     
     
-    //    NSLog(@"%@", [funcView.TextViewInput.attributedText getPlainString]);
     
+    //创建一条云信消息
+    NIMImageObject * imageObject = [[NIMImageObject alloc] initWithImage:image];
+    NIMMessage *message = [[NIMMessage alloc] init];
+    message.messageObject= imageObject;
     
+    //创建一条本地消息
     NSDictionary *dic = @{@"picture": image,
                           @"type": @(UUMessageTypePicture),
                           @"frome":@(UUMessageFromMe),
                           @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
-                          @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]]};
+                          @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
+                          @"messageID":message.messageId};
     
-    //        [funcView changeSendBtnWithPhoto:YES];
-    [self dealTheFunctionData:dic];
     
-    NIMImageObject * imageObject = [[NIMImageObject alloc] initWithImage:image];
-    NIMMessage *message = [[NIMMessage alloc] init];
-    message.messageObject= imageObject;
+    [self dealTheFunctionData:dic andMessage:message];
+    
     
     
     //发送消息
@@ -1116,15 +1220,7 @@
 #pragma mark- 发送语音消息的回调
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendVoice:(NSData *)voice time:(NSInteger)second{
     
-    NSDictionary *dic = @{@"voice": voice,
-                          @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)second],
-                          @"type": @(UUMessageTypeVoice)};
-    
-    [self dealTheFunctionData:dic];
-    
-    /* 云信发送语音消息*/
-    
-    
+    //创建一条云信消息
     //    声音文件只支持 aac 和 amr 类型
     NSMutableString *tmpDir = [NSMutableString stringWithString:NSTemporaryDirectory()];
     [tmpDir appendString:@"mp3.aac"];
@@ -1134,13 +1230,20 @@
     NIMMessage *message        = [[NIMMessage alloc] init];
     message.messageObject      = audioObject;
     
+    //创建一条本地消息
+    NSDictionary *dic = @{@"voice": voice,
+                          @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)second],
+                          @"type": @(UUMessageTypeVoice),
+                          @"messageID":message.messageId};
+    
+    [self dealTheFunctionData:dic andMessage:message];
+    
+    /* 云信发送语音消息*/
+    
+    
     //发送消息
     [[NIMSDK sharedSDK].chatManager addDelegate:self];
     [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
-    
-    
-    
-    
     
 }
 
@@ -1246,8 +1349,6 @@
 
 #pragma mark- 音频功能的所有回调
 
-
-
 - (void)keyboardWillShow:(NSNotification *)notification {
     
     // 获取通知的信息字典
@@ -1256,7 +1357,6 @@
     // 获取键盘弹出后的rect
     NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGRect keyboardRect = [aValue CGRectValue];
-    
     
     
     // 获取键盘弹出动画时间
@@ -1338,12 +1438,57 @@
 //    UIMenuController *controller = [UIMenuController sharedMenuController];
 //    [controller setTargetRect:cell.btnContent.bounds inView:cell.btnContent];
 //    [controller setMenuVisible:YES animated:YES];
+    
+    
+    NSString *voiceSwitch ;
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]) {
+        
+        if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]isEqualToString:@"loudspeaker"]) {
+            
+            voiceSwitch = @"使用听筒播放";
+        }else if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]isEqualToString:@"earphone"]){
+            voiceSwitch = @"使用扬声器播放";
+        }
+    }else{
+        voiceSwitch = @"使用听筒播放";
+    }
+    
+    
 
-    [UIAlertController showActionSheetInViewController:self withTitle:nil message:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"文字转换"] popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
+    [UIAlertController showActionSheetInViewController:self withTitle:nil message:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"文字转换",voiceSwitch] popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
         
     } tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
        
-        if (buttonIndex!=0) {
+        if (buttonIndex==2) {
+            
+            //构造消息
+//            NIMAudioObject *audioObject = [[NIMAudioObject alloc] initWithData:voice extension:@".aac"];
+            
+            NIMMessage *message        = cell.messageFrame.message.message;
+                        
+            TranslateViewController *translate = [[TranslateViewController alloc]initWithMessage:message];
+            [self presentViewController:translate animated:YES completion:^{
+                
+            }];
+            
+            
+        }else if (buttonIndex == 3){
+            
+            if ([[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]) {
+                
+                if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]isEqualToString:@"loudspeaker"]) {
+                    
+                    [[NSUserDefaults standardUserDefaults]setValue:@"earphone" forKey:@"AVAudioSession"];
+                    
+                }else if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]isEqualToString:@"earphone"]){
+                    
+                    [[NSUserDefaults standardUserDefaults]setValue:@"loudspeaker" forKey:@"AVAudioSession"];
+                   
+                }
+            }else{
+                
+                [[NSUserDefaults standardUserDefaults]setValue:@"earphone" forKey:@"AVAudioSession"];
+            }
             
             
         }

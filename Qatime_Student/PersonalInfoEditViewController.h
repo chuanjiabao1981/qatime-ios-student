@@ -18,6 +18,8 @@
 @property(nonatomic,strong) UITableView *editTableView ;
 
 
+/* 完成按钮*/
+@property(nonatomic,strong) UIButton *finishButton ;
 
 -(instancetype)initWithInfo:(NSDictionary *)info ;
 

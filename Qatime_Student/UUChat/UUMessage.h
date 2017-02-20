@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NIMSDK.h"
 
 typedef NS_ENUM(NSInteger, MessageType) {
     UUMessageTypeText     = 0 , // 文字
@@ -22,6 +23,14 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 
 
 @interface UUMessage : NSObject
+
+
+
+/**
+ 消息ID,消息的唯一标识 ->重要
+ */
+@property(nonatomic,strong) NSString *messageID ;
+
 
 
 /**
@@ -117,6 +126,19 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
  是否显示时间戳(时间/通知类型消息)
  */
 @property (nonatomic, assign) BOOL showDateLabel;
+
+
+/**
+ 消息是否发送失败
+ */
+@property(nonatomic,assign) BOOL sendFaild ;
+
+
+
+
+/* 最强大的属性->消息直接存成属性*/
+@property(nonatomic,strong) NIMMessage *message ;
+
 
 - (void)setWithDict:(NSDictionary *)dic;
 

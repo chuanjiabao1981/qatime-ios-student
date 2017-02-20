@@ -43,5 +43,8 @@
 /* 增加一个 真正的时间label*/
 @property(nonatomic,strong) UILabel *timeLabel ;
 
+/* 增加发送失败标识图*/
+@property(nonatomic,strong) UIButton *sendfaild ;
+
 @end
 

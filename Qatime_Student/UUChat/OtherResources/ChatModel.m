@@ -16,7 +16,7 @@
 
 - (void)populateRandomDataSource {
     self.dataSource = [NSMutableArray array];
-
+    
 }
 
 - (void)addRandomItemsToDataSource:(NSInteger)number{
@@ -25,7 +25,7 @@
 
 #pragma mark- 文本消息
 // 添加自己的文本类型的item
-- (void)addSpecifiedItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name
+- (void)addSpecifiedItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name andMessage:(NIMMessage *)textMessage
 {
     if (name ==nil) {
         name =@"";
@@ -34,39 +34,40 @@
     if (iconURL==nil) {
         iconURL = @"";
     }
-        UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
-        UUMessage *message = [[UUMessage alloc] init];
-        NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithDictionary:dic];
-        
-        NSString *URLStr = iconURL;
-        [dataDic setObject:@(UUMessageFromMe) forKey:@"from"];
-//        [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
+    UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
+    UUMessage *message = [[UUMessage alloc] init];
+    NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithDictionary:dic];
     
-        [dataDic setObject:name forKey:@"strName"];
+    NSString *URLStr = iconURL;
+    [dataDic setObject:@(UUMessageFromMe) forKey:@"from"];
+    //        [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
     
-        [dataDic setObject:URLStr==nil?@"":URLStr forKey:@"strIcon"];
-        
-        [message setWithDict:dataDic];
-        [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
-        messageFrame.showTime = message.showDateLabel;
-        
-        
-        /* 用message制作出messageframe对象*/
-        [messageFrame setMessage:message];
+    [dataDic setObject:name forKey:@"strName"];
+    
+    [dataDic setObject:URLStr==nil?@"":URLStr forKey:@"strIcon"];
+    [dataDic setObject:textMessage forKey:@"message"];
+    
+    [message setWithDict:dataDic];
+    [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
+    messageFrame.showTime = message.showDateLabel;
     
     
-        if (message.showDateLabel) {
-            previousTime = dataDic[@"strTime"];
-        }
-        /* messageframe对象 添加到数据源里
-         
-         * 发送消息过程结束。
-         */
-        [self.dataSource addObject:messageFrame];
+    /* 用message制作出messageframe对象*/
+    [messageFrame setMessage:message];
+    
+    
+    if (message.showDateLabel) {
+        previousTime = dataDic[@"strTime"];
+    }
+    /* messageframe对象 添加到数据源里
+     
+     * 发送消息过程结束。
+     */
+    [self.dataSource addObject:messageFrame];
     
 }
 /* 创建对方发来的文本消息*/
-- (NSDictionary *)getDicWithText:(NSString *)text andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andTime:(NSString *)time{
+- (NSDictionary *)getDicWithText:(NSString *)text andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andTime:(NSString *)time andMessage:(NIMMessage *)message{
     
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     int randomNum =type;
@@ -96,6 +97,7 @@
     }
     [dictionary setObject:name forKey:@"strName"];
     [dictionary setObject:URLString==nil?@"":URLString forKey:@"strIcon"];
+    [dictionary setObject:message forKey:@"message"];
     
     
     
@@ -133,7 +135,7 @@ static NSString *previousTime = nil;
 #pragma mark- 图片类型消息
 
 /* 创建并发送自己的图片类型的item*/
-- (void)addSpecifiedImageItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name {
+- (void)addSpecifiedImageItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name andMessage:(NIMMessage *)imageMessage{
     UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
     UUMessage *message = [[UUMessage alloc] init];
     NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithDictionary:dic];
@@ -141,7 +143,7 @@ static NSString *previousTime = nil;
     NSString *URLStr = iconURL;
     [dataDic setObject:@(UUMessageFromMe) forKey:@"from"];
     [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
-   
+    
     
     if (name ==nil) {
         name =@"";
@@ -159,10 +161,11 @@ static NSString *previousTime = nil;
     [dataDic setObject:name forKey:@"strName"];
     [dataDic setObject:URLStr==nil?@"":URLStr forKey:@"strIcon"];
     
-   
-//    [dataDic setObject:imagePath forKey:@"imagePath"];
-//    [dataDic setObject:thumbImagePath forKey:@"thumbImagePath"];
     
+    //    [dataDic setObject:imagePath forKey:@"imagePath"];
+    //    [dataDic setObject:thumbImagePath forKey:@"thumbImagePath"];
+    
+    [dataDic setObject:imageMessage forKey:@"message"];
     
     [message setWithDict:dataDic];
     [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
@@ -173,13 +176,13 @@ static NSString *previousTime = nil;
         previousTime = dataDic[@"strTime"];
     }
     [self.dataSource addObject:messageFrame];
-
+    
     
 }
 
 
 /* 创建别人发来的图片消息*/
-- (NSDictionary *)getDicWithImage:(UIImage *)image andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andImagePath:(NSString *)imagePath andThumbImagePath:(NSString *)thumbImagePath andTime:(NSString *)time{
+- (NSDictionary *)getDicWithImage:(UIImage *)image andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andImagePath:(NSString *)imagePath andThumbImagePath:(NSString *)thumbImagePath andTime:(NSString *)time andMessage:(NIMMessage *)message{
     
     
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
@@ -203,7 +206,7 @@ static NSString *previousTime = nil;
         if (image==nil) {
             
         }else{
-        [dictionary setObject:image forKey:@"picture"];
+            [dictionary setObject:image forKey:@"picture"];
         }
         if (name == nil) {
             name = @"";
@@ -214,6 +217,7 @@ static NSString *previousTime = nil;
         [dictionary setObject:URLString==nil?@"":URLString forKey:@"strIcon"];
         [dictionary setObject:imagePath forKey:@"imagePath"];
         [dictionary setObject:thumbImagePath forKey:@"thumbImagePath"];
+        [dictionary setObject:message forKey:@"message"];
     }
     
     return dictionary;
@@ -223,7 +227,7 @@ static NSString *previousTime = nil;
 #pragma mark- 语音类型消息
 
 // 自己发送语音聊天信息
-- (void)addSpecifiedVoiceItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name{
+- (void)addSpecifiedVoiceItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name andMessage:(NIMMessage *)voiceMessage{
     UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
     UUMessage *message = [[UUMessage alloc] init];
     NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithDictionary:dic];
@@ -240,14 +244,15 @@ static NSString *previousTime = nil;
         iconURL = @"";
     }
     
-//    if (dic[@"picture"]==nil) {
-//        
-//    }else{
-//        [dataDic setObject:dic[@"picture"] forKey:@"picture"];
-//    }
+    //    if (dic[@"picture"]==nil) {
+    //
+    //    }else{
+    //        [dataDic setObject:dic[@"picture"] forKey:@"picture"];
+    //    }
     
     [dataDic setObject:name forKey:@"strName"];
     [dataDic setObject:URLStr==nil?@"":URLStr forKey:@"strIcon"];
+    [dataDic setObject:voiceMessage forKey:@"message"];
     
     [message setWithDict:dataDic];
     [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
@@ -262,7 +267,7 @@ static NSString *previousTime = nil;
 
 
 //别人发送语音消息
-- (NSDictionary *)getDicWithVoice:(NSData *)voiceData andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andVoicePath:(NSString *)voicePath andTime:(NSString *)time{
+- (NSDictionary *)getDicWithVoice:(NSData *)voiceData andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andVoicePath:(NSString *)voicePath andTime:(NSString *)time andMessage:(NIMMessage *)message{
     
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     
@@ -295,11 +300,12 @@ static NSString *previousTime = nil;
         [dictionary setObject:URLString==nil?@"":URLString forKey:@"strIcon"];
         
         [dictionary setObject:[NSString  stringWithFormat:@"%@",date] forKey:@"strTime"];
-    
+        [dictionary setObject:message forKey:@"message"];
+        
     }
     
     return dictionary;
-
+    
 }
 
 

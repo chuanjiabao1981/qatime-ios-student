@@ -98,11 +98,37 @@
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(UUAVAudioPlayerDidFinishPlay) name:@"VoicePlayHasInterrupt" object:nil];
         
-        //红外线感应监听
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(sensorStateChange:)
-                                                     name:UIDeviceProximityStateDidChangeNotification
-                                                   object:nil];
+        
+        //查询本地保存的播放设备信息,如果没有,默认使用扬声器播放
+        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]) {
+            
+            if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]isEqualToString:@"loudspeaker"]) {
+                
+                [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+                //扬声器播放情况下,增加红外线感应监听
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:)  name:UIDeviceProximityStateDidChangeNotification object:nil];
+//                [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];  //可以关闭掉红外感应
+
+            }else if([[[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]isEqualToString:@"earphone"]){
+                
+                
+                [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];  //可以关闭掉红外感应
+                [[NSNotificationCenter defaultCenter]removeObserver:self name:UIDeviceProximityStateDidChangeNotification object:nil];
+                
+                [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+            }
+        }else{
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+            
+            //扬声器播放情况下,增加红外线感应监听
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:UIDeviceProximityStateDidChangeNotification object:nil];
+//                [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];  //可以关闭掉红外感应
+            
+        }
+        
+        
+        
+        
         contentVoiceIsPlaying = NO;
         
         /* 创建支持自定义表情的YYLabel类型的label*/
@@ -122,6 +148,18 @@
         _timeLabel.textColor = [UIColor lightGrayColor];
         _timeLabel.font =ChatTimeFont;
         [self.contentView addSubview:_timeLabel];
+        
+        
+        
+        
+        /* 发送失败标示图*/
+        _sendfaild = [[UIButton alloc]init];
+        [_sendfaild setImage:[UIImage imageNamed:@"发送失败"]  forState:UIControlStateNormal];
+        [self.contentView addSubview:_sendfaild];
+        [_sendfaild setEnlargeEdge:20]; //扩大点击区域
+        _sendfaild.hidden = YES;
+        
+        
         
     }
     return self;
@@ -197,7 +235,23 @@
 /* 气泡长按点击事件*/
 - (void)longPress:(UILongPressGestureRecognizer *)longPress{
     
-    [_delegate cellContentLongPress:self voice:self.messageFrame.message.voice];
+    switch (longPress.state) {
+        case UIGestureRecognizerStateBegan:{
+            
+            [_delegate cellContentLongPress:self voice:self.messageFrame.message.voice];
+        }
+            break;
+            
+        case UIGestureRecognizerStateChanged:{
+            
+        }
+            break;
+        case UIGestureRecognizerStateEnded:{
+            
+        }
+            break;
+    }
+    
     
 }
 
@@ -235,9 +289,11 @@
 {
     [self.btnContent benginLoadVoice];
 }
+
 - (void)UUAVAudioPlayerBeiginPlay
 {
     //开启红外线感应
+   
     [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
     [self.btnContent didLoadVoice];
 }
@@ -416,12 +472,33 @@
         [_timeLabel setSingleLineAutoResizeWithMaxWidth:200];
         
         [_timeLabel updateLayout];
-
-        
-        
         
     }
     
+    
+    /* 发送失败提示*/
+    if (messageFrame.message.from == UUMessageFromMe) {
+        
+        [_sendfaild sd_clearAutoLayoutSettings];
+        _sendfaild.sd_layout
+        .centerYEqualToView(self.title)
+        .rightSpaceToView(self.title,10)
+        .widthIs(20)
+        .heightEqualToWidth();
+        [_sendfaild updateLayout];
+        
+    }else{
+        
+        [_sendfaild sd_clearAutoLayoutSettings];
+        _sendfaild.sd_layout
+        .centerYEqualToView(self.title)
+        .leftSpaceToView(self.title,10)
+        .widthIs(20)
+        .heightEqualToWidth();
+        [_sendfaild updateLayout];
+        
+    }
+
     
     
     
@@ -727,12 +804,12 @@
 -(void)sensorStateChange:(NSNotificationCenter *)notification;
 {
     if ([[UIDevice currentDevice] proximityState] == YES){
-        NSLog(@"Device is close to user");
-        //        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+        NSLog(@"靠近耳朵,使用听筒播放");
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
     }
     else{
-        NSLog(@"Device is not close to user");
-        //        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+        NSLog(@"远离耳朵,使用扬声器播放");
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     }
 }
 

@@ -54,6 +54,7 @@
  */
 #import "NIMMessage.h"
 #import "NIMSystemNotification.h"
+#import "NIMRevokeMessageNotification.h"
 
 /**
  *  推送定义
@@ -64,6 +65,11 @@
  *  登录定义
  */
 #import "NIMLoginClient.h"
+
+/**
+ *  文档转码信息
+ */
+#import "NIMDocTranscodingInfo.h"
 
 /**
  *  各个对外接口协议定义
@@ -78,5 +84,6 @@
 #import "NIMApnsManagerProtocol.h"
 #import "NIMResourceManagerProtocol.h"
 #import "NIMChatroomManagerProtocol.h"
+#import "NIMDocTranscodingManagerProtocol.h"
 
 #endif

@@ -404,6 +404,8 @@
 		54DBA4B51DE4423300A67A90 /* YZEmotionPageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBA4A81DE4423300A67A90 /* YZEmotionPageCell.m */; };
 		54DBA4B61DE4423300A67A90 /* YZTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBA4AA1DE4423300A67A90 /* YZTextAttachment.m */; };
 		54DBA4BA1DE442D900A67A90 /* YZInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBA4B91DE442D900A67A90 /* YZInputView.m */; };
+		54E00B151E5AEAD60056C74F /* TranslateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E00B141E5AEAD60056C74F /* TranslateViewController.m */; };
+		54E00B171E5AEF020056C74F /* NTESAudio2TextViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54E00B161E5AEF020056C74F /* NTESAudio2TextViewController.xib */; };
 		54E120CE1DDC2CA5004F8012 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E120CD1DDC2CA5004F8012 /* CoreText.framework */; };
 		54E428B41DE2DC6100AF5980 /* UIControl+RemoveTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E428B31DE2DC6100AF5980 /* UIControl+RemoveTarget.m */; };
 		54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC41DFE8D67001A98CE /* OrderView.m */; };
@@ -1170,6 +1172,9 @@
 		54DBA4AA1DE4423300A67A90 /* YZTextAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZTextAttachment.m; sourceTree = "<group>"; };
 		54DBA4B81DE442D900A67A90 /* YZInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZInputView.h; sourceTree = "<group>"; };
 		54DBA4B91DE442D900A67A90 /* YZInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZInputView.m; sourceTree = "<group>"; };
+		54E00B131E5AEAD60056C74F /* TranslateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TranslateViewController.h; sourceTree = "<group>"; };
+		54E00B141E5AEAD60056C74F /* TranslateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TranslateViewController.m; sourceTree = "<group>"; };
+		54E00B161E5AEF020056C74F /* NTESAudio2TextViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NTESAudio2TextViewController.xib; sourceTree = "<group>"; };
 		54E120CD1DDC2CA5004F8012 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		54E120CF1DDC2D69004F8012 /* NIMKitResouce.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = NIMKitResouce.bundle; path = Qatime_Student/NIM_iOS_UIKit/NIMKitResouce.bundle; sourceTree = "<group>"; };
 		54E428B21DE2DC6100AF5980 /* UIControl+RemoveTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIControl+RemoveTarget.h"; sourceTree = "<group>"; };
@@ -1836,14 +1841,14 @@
 			name = View;
 			sourceTree = "<group>";
 		};
-		545162C51DF55922000BD17A /* 个人信息页面 */ = {
+		545162C51DF55922000BD17A /* 个人信息浏览页面 */ = {
 			isa = PBXGroup;
 			children = (
 				545162C81DF5595C000BD17A /* Model */,
 				545162C71DF5595B000BD17A /* View */,
 				545162C61DF5595A000BD17A /* Controller */,
 			);
-			name = "个人信息页面";
+			name = "个人信息浏览页面";
 			sourceTree = "<group>";
 		};
 		545162C61DF5595A000BD17A /* Controller */ = {
@@ -1854,8 +1859,6 @@
 				547FBF2F1DF6B99600955A9E /* PersonalDescViewController.h */,
 				547FBF301DF6B99600955A9E /* PersonalDescViewController.m */,
 				547FBF321DF6C3B800955A9E /* ChangeDescDelegate.h */,
-				545226001E24821400F36280 /* PersonalInfoEditViewController.h */,
-				545226011E24821400F36280 /* PersonalInfoEditViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1888,14 +1891,6 @@
 				545162D71DF55DD0000BD17A /* PersonalTableViewCell.m */,
 				547FBF331DF6CEC800955A9E /* PersonalDescTableViewCell.h */,
 				547FBF341DF6CEC800955A9E /* PersonalDescTableViewCell.m */,
-				545226031E2482C800F36280 /* EditHeadTableViewCell.h */,
-				545226041E2482C800F36280 /* EditHeadTableViewCell.m */,
-				545226061E2482E100F36280 /* EditNameTableViewCell.h */,
-				545226071E2482E100F36280 /* EditNameTableViewCell.m */,
-				545226091E2482EC00F36280 /* EditGenderTableViewCell.h */,
-				5452260A1E2482EC00F36280 /* EditGenderTableViewCell.m */,
-				5452260C1E24830100F36280 /* EditBirthdayTableViewCell.h */,
-				5452260D1E24830100F36280 /* EditBirthdayTableViewCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -2673,7 +2668,8 @@
 				54FCBABD1DD58C040094BF58 /* Model */,
 				54FCBABC1DD58C020094BF58 /* View */,
 				54FCBABB1DD58BFA0094BF58 /* Controller */,
-				545162C51DF55922000BD17A /* 个人信息页面 */,
+				545162C51DF55922000BD17A /* 个人信息浏览页面 */,
+				54E00B0D1E5A90100056C74F /* 个人信息修改页面 */,
 			);
 			name = "个人页面";
 			sourceTree = "<group>";
@@ -3264,6 +3260,65 @@
 			path = Resource/InputView;
 			sourceTree = "<group>";
 		};
+		54E00B0D1E5A90100056C74F /* 个人信息修改页面 */ = {
+			isa = PBXGroup;
+			children = (
+				54E00B101E5A902B0056C74F /* Model */,
+				54E00B0F1E5A902A0056C74F /* View */,
+				54E00B0E1E5A90290056C74F /* Controller */,
+			);
+			name = "个人信息修改页面";
+			sourceTree = "<group>";
+		};
+		54E00B0E1E5A90290056C74F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				545226001E24821400F36280 /* PersonalInfoEditViewController.h */,
+				545226011E24821400F36280 /* PersonalInfoEditViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54E00B0F1E5A902A0056C74F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54E00B111E5A97F60056C74F /* cell */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54E00B101E5A902B0056C74F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		54E00B111E5A97F60056C74F /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				545226031E2482C800F36280 /* EditHeadTableViewCell.h */,
+				545226041E2482C800F36280 /* EditHeadTableViewCell.m */,
+				545226061E2482E100F36280 /* EditNameTableViewCell.h */,
+				545226071E2482E100F36280 /* EditNameTableViewCell.m */,
+				545226091E2482EC00F36280 /* EditGenderTableViewCell.h */,
+				5452260A1E2482EC00F36280 /* EditGenderTableViewCell.m */,
+				5452260C1E24830100F36280 /* EditBirthdayTableViewCell.h */,
+				5452260D1E24830100F36280 /* EditBirthdayTableViewCell.m */,
+			);
+			name = cell;
+			sourceTree = "<group>";
+		};
+		54E00B121E5AEABA0056C74F /* 语音转文字页面 */ = {
+			isa = PBXGroup;
+			children = (
+				54E00B131E5AEAD60056C74F /* TranslateViewController.h */,
+				54E00B141E5AEAD60056C74F /* TranslateViewController.m */,
+				54E00B161E5AEF020056C74F /* NTESAudio2TextViewController.xib */,
+			);
+			name = "语音转文字页面";
+			sourceTree = "<group>";
+		};
 		54E120D11DDC2E04004F8012 /* SDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -3423,6 +3478,7 @@
 				54FA71531E07B0E1009D81FE /* Model */,
 				54FA71521E07B0E0009D81FE /* View */,
 				54FA71511E07B0DF009D81FE /* Controller */,
+				54E00B121E5AEABA0056C74F /* 语音转文字页面 */,
 			);
 			name = "聊天页面";
 			sourceTree = "<group>";
@@ -4150,6 +4206,7 @@
 				54B4C18C1DF8294B00E31794 /* alipay.png in Resources */,
 				54A47BD01DE42610000216D9 /* em_37.gif in Resources */,
 				544C15141DC7414000F59F86 /* back.png in Resources */,
+				54E00B171E5AEF020056C74F /* NTESAudio2TextViewController.xib in Resources */,
 				541F91EA1DC9F1CC00180BE8 /* school.png in Resources */,
 				54A47BD91DE42610000216D9 /* em_45.gif in Resources */,
 				54A47BF21DE42610000216D9 /* em_68.gif in Resources */,
@@ -4386,6 +4443,7 @@
 				544E0CE11DD090A700884F31 /* RecommandClassCollectionViewCell.m in Sources */,
 				54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */,
 				549AE7621E013DAC001DD2ED /* BindingMailInfoView.m in Sources */,
+				54E00B151E5AEAD60056C74F /* TranslateViewController.m in Sources */,
 				544E0CDB1DD0806900884F31 /* YZSquareMenuCell.m in Sources */,
 				54A153B01DC6F09D0070B508 /* ViewController.m in Sources */,
 				54B9CAFC1DFE4AAC003961FF /* WithdrawConfirmViewController.m in Sources */,
