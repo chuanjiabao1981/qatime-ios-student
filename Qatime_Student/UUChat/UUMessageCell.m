@@ -161,6 +161,7 @@
         
         
         
+        
     }
     return self;
 }
@@ -478,24 +479,73 @@
     
     /* 发送失败提示*/
     if (messageFrame.message.from == UUMessageFromMe) {
-        
-        [_sendfaild sd_clearAutoLayoutSettings];
-        _sendfaild.sd_layout
-        .centerYEqualToView(self.title)
-        .rightSpaceToView(self.title,10)
-        .widthIs(20)
-        .heightEqualToWidth();
-        [_sendfaild updateLayout];
+        if (messageFrame.message.type == UUMessageTypeText) {
+            
+            [_sendfaild sd_clearAutoLayoutSettings];
+            _sendfaild.sd_layout
+            .centerYEqualToView(self.title)
+            .rightSpaceToView(self.title,10)
+            .widthIs(20)
+            .heightEqualToWidth();
+            [_sendfaild updateLayout];
+        }else if(messageFrame.message.type == UUMessageTypePicture){
+            
+            [_sendfaild sd_clearAutoLayoutSettings];
+            _sendfaild.sd_layout
+            .centerYEqualToView(self.title)
+            .rightSpaceToView(self->headImageBackView,10)
+            .widthIs(20)
+            .heightEqualToWidth();
+            [_sendfaild updateLayout];
+
+            
+        }else if(messageFrame.message.type == UUMessageTypeVoice){
+            
+            [_sendfaild sd_clearAutoLayoutSettings];
+            _sendfaild.sd_layout
+            .centerYEqualToView(self.title)
+            .rightSpaceToView(self->headImageBackView,10)
+            .widthIs(20)
+            .heightEqualToWidth();
+            [_sendfaild updateLayout];
+            
+            
+        }
+
         
     }else{
+        if (messageFrame.message.type == UUMessageFromMe) {
+            [_sendfaild sd_clearAutoLayoutSettings];
+            _sendfaild.sd_layout
+            .centerYEqualToView(self.title)
+            .leftSpaceToView(self->headImageBackView,10)
+            .widthIs(20)
+            .heightEqualToWidth();
+            [_sendfaild updateLayout];
+        }else if(messageFrame.message.type == UUMessageTypePicture){
+            
+            [_sendfaild sd_clearAutoLayoutSettings];
+            _sendfaild.sd_layout
+            .centerYEqualToView(self.title)
+            .leftSpaceToView(self->headImageBackView,10)
+            .widthIs(20)
+            .heightEqualToWidth();
+            [_sendfaild updateLayout];
+
+            
+        }else if(messageFrame.message.type == UUMessageTypeVoice){
+            
+            [_sendfaild sd_clearAutoLayoutSettings];
+            _sendfaild.sd_layout
+            .centerYEqualToView(self.title)
+            .leftSpaceToView(self->headImageBackView,10)
+            .widthIs(20)
+            .heightEqualToWidth();
+            [_sendfaild updateLayout];
+            
+            
+        }
         
-        [_sendfaild sd_clearAutoLayoutSettings];
-        _sendfaild.sd_layout
-        .centerYEqualToView(self.title)
-        .leftSpaceToView(self.title,10)
-        .widthIs(20)
-        .heightEqualToWidth();
-        [_sendfaild updateLayout];
         
     }
 

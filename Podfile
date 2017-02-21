@@ -20,6 +20,7 @@ pod 'YYImage', '~> 1.0.4'
 pod 'SDCycleScrollView', '~> 1.65'
 pod 'BarrageRenderer', '~> 1.9.0'
 pod 'DXPopover', '~> 0.1.1'
+#pod 'IQKeyboardManager', '~> 4.0.8'
 
 
 

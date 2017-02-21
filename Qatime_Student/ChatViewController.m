@@ -1032,7 +1032,6 @@
                     NIMAudioObject *audioObject = [[NIMAudioObject alloc]initWithData:failMsg.message.voice extension:@".aac"];
 
                     reMessage.messageObject = audioObject;
-
                     
                 }
                     break;

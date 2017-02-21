@@ -152,6 +152,8 @@
     
     self.shouldAnimateUserSelection = YES;
     
+    self.imageAsBadge= NO; //增加该属性赋值
+    
     self.selectionIndicatorArrowLayer = [CALayer layer];
     self.selectionIndicatorStripLayer = [CALayer layer];
     self.selectionIndicatorBoxLayer = [CALayer layer];
@@ -430,6 +432,15 @@
             if ([UIDevice currentDevice].systemVersion.floatValue < 10.0 ) {
                 titleLayer.truncationMode = kCATruncationEnd;
             }
+            
+            //增加该部分代码
+            if (self.imageAsBadge) {
+                CGRect calculation = [titleLayer.string boundingRectWithSize:textRect.size options:nil context:nil];
+                imageRect.origin.x += calculation.size.width / 2 + 10;
+                imageRect.origin.y -= calculation.size.height / 2 + 5;
+            }
+            //至此
+            
             CALayer *imageLayer = [CALayer layer];
             imageLayer.frame = imageRect;
 			

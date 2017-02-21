@@ -8,6 +8,15 @@
 
 #import "NoticeIndexView.h"
 
+
+@interface NoticeIndexView (){
+    
+    
+    
+}
+
+@end
+
 @implementation NoticeIndexView
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -16,21 +25,33 @@
     if (self) {
         
         _segmentControl = ({
-            HMSegmentedControl *_=[[HMSegmentedControl alloc]initWithSectionTitles:@[@"辅导班消息",@"系统消息"]];;
-            _.frame = CGRectMake(0, 0, self.width_sd, self.height_sd*0.05);
-            _.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
-            _.borderType = HMSegmentedControlBorderTypeBottom;
-            _.borderColor = [UIColor lightGrayColor];
-            _.borderWidth = 0.4;
-            _.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
-            _.selectionIndicatorColor = [UIColor redColor];
-            _.selectionIndicatorHeight = 2;
-            _.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor lightGrayColor],
-                                      NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
-            _.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-                                              NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
-            _.selectedSegmentIndex = 0;
-            _.verticalDividerEnabled = NO;
+//            HMSegmentedControl *_=[[HMSegmentedControl alloc]initWithSectionTitles:@[@"辅导班消息",@"系统消息"]];
+////            _.type = HMSegmentedControlTypeTextImages;
+//            _.frame = CGRectMake(0, 0, self.width_sd, self.height_sd*0.05);
+//            _.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
+//            _.borderType = HMSegmentedControlBorderTypeBottom;
+//            _.borderColor = [UIColor lightGrayColor];
+//            _.borderWidth = 0.4;
+//            _.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
+//            _.selectionIndicatorColor = [UIColor redColor];
+//            _.selectionIndicatorHeight = 2;
+//            _.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor lightGrayColor],
+//                                      NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
+//            _.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
+//                                              NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
+//            _.selectedSegmentIndex = 0;
+//            _.verticalDividerEnabled = NO;
+            
+            JTSegmentControl *_=[[JTSegmentControl alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, self.height_sd*0.05)];
+//            _.delegate = self;
+            _.items = @[@"辅导班消息",@"系统消息"];
+            _.autoScrollWhenIndexChange = NO;
+            _.itemSelectedTextColor = [UIColor blackColor];
+            _.itemTextColor = [UIColor blackColor];
+            _.font = [UIFont systemFontOfSize:15];
+            _.selectedFont = [UIFont systemFontOfSize:15];
+            _.sliderViewColor = BUTTONRED;
+            [_ setSliderViewHeight:0.5];
             [self addSubview:_];
             _;
         });

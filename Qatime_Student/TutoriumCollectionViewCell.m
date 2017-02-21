@@ -8,10 +8,11 @@
 
 #import "TutoriumCollectionViewCell.h"
 #import "UIImageView+WebCache.h"
+#import "SDWebImageManager.h"
 
 @interface TutoriumCollectionViewCell (){
   
-    
+    SDWebImageManager *manager;
 }
 
 @end
@@ -72,6 +73,8 @@
         _price.font = [UIFont systemFontOfSize:14*ScrenScale];
         _price.textAlignment = NSTextAlignmentLeft;
         
+        manager = [[SDWebImageManager alloc]init];
+        
         
     }
     return self;
@@ -82,7 +85,29 @@
     
     _model = model;
     
-    [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"]];
+    /* 如果本地已经保留了图片缓存*/
+    if ([self diskImageExistsForURL:[NSURL URLWithString:model.publicize]]==YES) {
+        [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
+    }else{
+    
+        [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+            
+        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            
+            _classImage.alpha = 0.0;
+            [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                if (image) {
+                
+                    [_classImage setImage:image];
+                }else{
+                    [_classImage setImage:[UIImage imageNamed:@"school"]];
+                }
+                _classImage.alpha = 1.0;
+            } completion:NULL];
+            
+        }];
+    }
+    
     
     /* cell 教师姓名 赋值*/
     [_teacherName setText:model.teacher_name];
@@ -106,6 +131,13 @@
     [_className setText: model.name];
 
     
+}
+
+
+
+- (BOOL)diskImageExistsForURL:(NSURL *)url {
+    NSString *key = [manager cacheKeyForURL:url];
+    return [manager.imageCache diskImageExistsWithKey:key];
 }
 
 

@@ -24,6 +24,7 @@
 #import <sys/utsname.h>
 #import "RealReachability.h"
 #import <JSPatchPlatform/JSPatch.h>
+//#import "IQKeyboardManager.h"
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate,NIMSystemNotificationManager,NIMLoginManagerDelegate>{
     
@@ -98,8 +99,8 @@
     [JSPatch startWithAppKey:@"f3da4b3b9ce10b8e"];
     [JSPatch sync];
     
-    
-    
+    /* 键盘管理器*/
+//    [[IQKeyboardManager sharedManager]setEnable:YES];
     
     
     

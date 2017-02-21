@@ -707,6 +707,7 @@ bool ismute     = NO;
         _.textAlignment = NSTextAlignmentCenter; //文字居中
         _.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
         _.font = [UIFont fontWithName:_fileName.font.fontName size:13.0];
+        _.hidden = YES;
         [_topControlView addSubview:_];
         _.sd_layout
         .centerXEqualToView(_topControlView)
@@ -1178,7 +1179,7 @@ bool ismute     = NO;
         }];
     }
     
-    
+   
     
     
 }
@@ -1189,6 +1190,7 @@ bool ismute     = NO;
     [self.view bringSubviewToFront:_mediaControl];
     
     _mediaControl.hidden  = NO;
+    _fileName.hidden = NO;
     
     _topControlView.backgroundColor = [UIColor blackColor];
     _topControlView.alpha = 0.8;
@@ -1232,6 +1234,7 @@ bool ismute     = NO;
     .leftEqualToView(self.view)
     .rightEqualToView(self.view)
     .autoHeightRatio(9/16.0);
+    _fileName.hidden = YES;
     
     [_mediaControl updateLayout];
     
@@ -2781,6 +2784,9 @@ bool ismute     = NO;
             _infoHeaderView.classCount.text = _videoClassInfo.lesson_count;
             _infoHeaderView.subjectLabel.text = _videoClassInfo.subject;
             
+            /* 课程名->播放文件名*/
+            _fileName.text = _videoClassInfo.name;
+            
             
             //            @"teaching" @"pause" @"closed" - >在线直播
             //            @"missed"-> 未开课
@@ -3313,8 +3319,6 @@ bool ismute     = NO;
             }else if (message.messageType ==NIMMessageTypeAudio){
                 /* 如果收到的消息类型是音频的话 */
                 
-                
-                
                 /* 如果消息是自己发的*/
                 
                 
@@ -3323,7 +3327,6 @@ bool ismute     = NO;
                     // NSLog(@"收到对方发来的语音");
                     
                     NIMAudioObject *audioObject = message.messageObject;
-                    
                     
                     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message]];
                     
@@ -3564,18 +3567,11 @@ bool ismute     = NO;
         
     }else{
         
-        NSLog(@"%@", [funcView.TextViewInput.attributedText getPlainString]);
-        
-        
-        //        NSDictionary *dic = @{@"strContent": [funcView.TextViewInput.attributedText getPlainString],
-        //                              @"type": @(UUMessageTypeText),
-        //                              @"frome":@(UUMessageFromMe),
-        //                              @"strTime":[[NSDate date]changeUTC ]};
-        
+        NIMMessage * text_message = [[NIMMessage alloc] init];
+        text_message.messageObject = NIMMessageTypeText;
+        text_message.apnsContent = @"发来了一条消息";
         
         NSDictionary *dic ;
-        //    [funcView changeSendBtnWithPhoto:YES];
-        
         
         /* 解析发送的字符串*/
         
@@ -3674,14 +3670,11 @@ bool ismute     = NO;
             
         }
         
-        NIMMessage * text_message = [[NIMMessage alloc] init];
+        
         text_message.text = title;
-        text_message.messageObject = NIMMessageTypeText;
-        text_message.apnsContent = @"发来了一条消息";
         
         [self dealTheFunctionData:dic andMessage:text_message];
         
-        //        text_message.text = title;
         
         //发送消息
         [[NIMSDK sharedSDK].chatManager addDelegate:self];

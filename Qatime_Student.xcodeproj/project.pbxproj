@@ -351,6 +351,8 @@
 		54AB49001DEDABCC008E3BC5 /* EndedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48FF1DEDABCC008E3BC5 /* EndedTableViewCell.m */; };
 		54AB49031DEDB1BA008E3BC5 /* ListenTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB49021DEDB1BA008E3BC5 /* ListenTableViewCell.m */; };
 		54AF51C61DE8226900581C4A /* Emotions.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 54AF51C51DE8226900581C4A /* Emotions.bundle */; };
+		54B45D141E5C33F00027F958 /* JTSegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B45D131E5C33F00027F958 /* JTSegmentControl.swift */; };
+		54B45D161E5C34110027F958 /* JTSegmentPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B45D151E5C34110027F958 /* JTSegmentPattern.swift */; };
 		54B4C1871DF8183800E31794 /* ChargeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B4C1861DF8183800E31794 /* ChargeView.m */; };
 		54B4C18A1DF8184500E31794 /* ChargeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B4C1891DF8184500E31794 /* ChargeViewController.m */; };
 		54B4C18C1DF8294B00E31794 /* alipay.png in Resources */ = {isa = PBXBuildFile; fileRef = 54B4C18B1DF8294B00E31794 /* alipay.png */; };
@@ -1071,6 +1073,9 @@
 		54AB49011DEDB1BA008E3BC5 /* ListenTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListenTableViewCell.h; sourceTree = "<group>"; };
 		54AB49021DEDB1BA008E3BC5 /* ListenTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListenTableViewCell.m; sourceTree = "<group>"; };
 		54AF51C51DE8226900581C4A /* Emotions.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Emotions.bundle; sourceTree = "<group>"; };
+		54B45D131E5C33F00027F958 /* JTSegmentControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JTSegmentControl.swift; sourceTree = "<group>"; };
+		54B45D151E5C34110027F958 /* JTSegmentPattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JTSegmentPattern.swift; sourceTree = "<group>"; };
+		54B45D171E5C34410027F958 /* Qatime_Student-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Qatime_Student-Bridging-Header.h"; path = "Qatime_Student/Qatime_Student-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		54B4C1851DF8183800E31794 /* ChargeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChargeView.h; sourceTree = "<group>"; };
 		54B4C1861DF8183800E31794 /* ChargeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChargeView.m; sourceTree = "<group>"; };
 		54B4C1881DF8184500E31794 /* ChargeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChargeViewController.h; sourceTree = "<group>"; };
@@ -2499,6 +2504,7 @@
 		54A153A81DC6F09D0070B508 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				54B45D081E5C30670027F958 /* JTSegmentControl */,
 				5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */,
 				54F32F741E373142000F8926 /* Reachability */,
 				54B73CFF1DE3E85A00B7A7EB /* ChineseSorting */,
@@ -2899,6 +2905,16 @@
 				54AB49021DEDB1BA008E3BC5 /* ListenTableViewCell.m */,
 			);
 			name = Cell;
+			sourceTree = "<group>";
+		};
+		54B45D081E5C30670027F958 /* JTSegmentControl */ = {
+			isa = PBXGroup;
+			children = (
+				54B45D131E5C33F00027F958 /* JTSegmentControl.swift */,
+				54B45D151E5C34110027F958 /* JTSegmentPattern.swift */,
+				54B45D171E5C34410027F958 /* Qatime_Student-Bridging-Header.h */,
+			);
+			path = JTSegmentControl;
 			sourceTree = "<group>";
 		};
 		54B4C1821DF8180A00E31794 /* 充值页面 */ = {
@@ -4436,6 +4452,7 @@
 				545162B11DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m in Sources */,
 				54B73D041DE3E85A00B7A7EB /* ChineseString.m in Sources */,
 				549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */,
+				54B45D161E5C34110027F958 /* JTSegmentPattern.swift in Sources */,
 				54B73CFB1DE3E40300B7A7EB /* MembersListView.m in Sources */,
 				543E0CCF1E002960004B24FD /* BindingMailView.m in Sources */,
 				543E23431E2C8D1600381F10 /* AuthenticationView.m in Sources */,
@@ -4500,6 +4517,7 @@
 				547AD51E1E4D6A7000239907 /* UUAVAudioPlayer.m in Sources */,
 				54FCBAF31DD5CB6B0094BF58 /* NoticeTableViewCell.m in Sources */,
 				542C173B1DFA50610088DB3F /* CancelOrderTableViewCell.m in Sources */,
+				54B45D141E5C33F00027F958 /* JTSegmentControl.swift in Sources */,
 				5413D26E1DF7CF1C00A8FDEC /* Recharge.m in Sources */,
 				548328EF1DDC6F360053AB29 /* UUMessageFrame.m in Sources */,
 				5435D9521DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m in Sources */,
@@ -4671,6 +4689,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4690,6 +4709,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = Qatime_Student;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4720,6 +4740,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4732,6 +4753,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = Qatime_Student;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -4908,6 +4930,7 @@
 		54A153D61DC6F09E0070B508 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 5DVPT5R6X2;
 				INFOPLIST_FILE = Qatime_StudentTests/Info.plist;
@@ -4921,6 +4944,7 @@
 		54A153D71DC6F09E0070B508 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 5DVPT5R6X2;
 				INFOPLIST_FILE = Qatime_StudentTests/Info.plist;
@@ -4934,6 +4958,7 @@
 		54A153D91DC6F09E0070B508 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = 5DVPT5R6X2;
 				INFOPLIST_FILE = Qatime_StudentUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -4946,6 +4971,7 @@
 		54A153DA1DC6F09E0070B508 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = 5DVPT5R6X2;
 				INFOPLIST_FILE = Qatime_StudentUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

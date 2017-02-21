@@ -29,10 +29,10 @@
 #import "TutoriumList.h"
 #import "TutoriumInfoViewController.h"
 #import "NIMSDK.h"
+#import "MJRefresh.h"
 
 
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate>{
-    
     
     /* token*/
     NSString *_token;
@@ -180,9 +180,27 @@
     }
 
     
-    menuImages = @[[UIImage imageNamed:@"语文"],[UIImage imageNamed:@"数学"],[UIImage imageNamed:@"英语"],[UIImage imageNamed:@"物理"],[UIImage imageNamed:@"化学"],[UIImage imageNamed:@"生物"],[UIImage imageNamed:@"历史"],[UIImage imageNamed:@"地理"],[UIImage imageNamed:@"政治"],[UIImage imageNamed:@"科学"]];
-//    menuTitiels = @[@"语文",@"数学",@"英语",@"物理",@"化学",@"生物",@"历史",@"地理",@"政治",@"科学"];
-  menuTitiels = @[NSLocalizedString(@"语文", nil),NSLocalizedString(@"数学", nil),NSLocalizedString(@"英语", nil),NSLocalizedString(@"物理", nil),NSLocalizedString(@"化学", nil),NSLocalizedString(@"生物", nil),NSLocalizedString(@"历史", nil),NSLocalizedString(@"地理", nil),NSLocalizedString(@"政治", nil),NSLocalizedString(@"科学", nil)];
+    menuImages = @[[UIImage imageNamed:@"语文"],
+                   [UIImage imageNamed:@"数学"],
+                   [UIImage imageNamed:@"英语"],
+                   [UIImage imageNamed:@"物理"],
+                   [UIImage imageNamed:@"化学"],
+                   [UIImage imageNamed:@"生物"],
+                   [UIImage imageNamed:@"历史"],
+                   [UIImage imageNamed:@"地理"],
+                   [UIImage imageNamed:@"政治"],
+                   [UIImage imageNamed:@"科学"]];
+
+  menuTitiels = @[NSLocalizedString(@"语文", nil),
+                  NSLocalizedString(@"数学", nil),
+                  NSLocalizedString(@"英语", nil),
+                  NSLocalizedString(@"物理", nil),
+                  NSLocalizedString(@"化学", nil),
+                  NSLocalizedString(@"生物", nil),
+                  NSLocalizedString(@"历史", nil),
+                  NSLocalizedString(@"地理", nil),
+                  NSLocalizedString(@"政治", nil),
+                  NSLocalizedString(@"科学", nil)];
     
     /* 头视图*/
     _headerView = [[IndexHeaderPageView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd*3.1/5.0)];
@@ -191,7 +209,6 @@
     
     /* 注册推荐教师滚动视图*/
     [_headerView.teacherScrollView registerClass:[YZSquareMenuCell class] forCellWithReuseIdentifier:@"CollectionCell"];
-    
     
     /* 头视图的10个科目按钮加手势*/
     for (int i=0; i<_headerView.squareMenuArr.count; i++) {
@@ -212,11 +229,6 @@
     _indexPageView = [[IndexPageView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-49) ];
     headerSize = CGSizeMake(self.view.width_sd, 600);
     
-    /* 指定代理*/
-    
-    _indexPageView.recommandClassCollectionView.delegate = self;
-    _indexPageView.recommandClassCollectionView.dataSource = self;
-    
     /* collectionView 注册cell、headerID*/
     
     [_indexPageView.recommandClassCollectionView registerClass:[RecommandClassCollectionViewCell class] forCellWithReuseIdentifier:@"RecommandCell"];
@@ -226,6 +238,12 @@
     
     _indexPageView.recommandClassCollectionView.tag =1;
     
+    
+    /* 指定代理*/
+    
+    _indexPageView.recommandClassCollectionView.delegate = self;
+    _indexPageView.recommandClassCollectionView.dataSource = self;
+    
     [self.view addSubview:_indexPageView];
     
     if (!([[NSUserDefaults standardUserDefaults]objectForKey:@"SubjectChosen"]==NULL)) {
@@ -233,6 +251,7 @@
         [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"SubjectChosen"];
         
     }
+    
     
     
 #pragma mark- 变量初始化
@@ -273,13 +292,15 @@
     /* 另一线程在后台请求未读消息和系统消息*/
     [self checkNotice];
     
-    
     /* 接收地址选择页面传来的地址*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeLoacal:) name:@"UseLocal" object:nil];
     
+    
+    _indexPageView.recommandClassCollectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshIndexPage)];
+    
 }
 
-/* 请求通知是否有wei*/
+/* 请求通知是否有未读消息*/
 - (void)checkNotice{
     
     dispatch_queue_t check = dispatch_queue_create("check", DISPATCH_QUEUE_SERIAL);
@@ -506,7 +527,6 @@
         position =location;
     }
     
-    
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -521,8 +541,6 @@
         
         if ([state isEqualToString:@"0"]) {
             /* 请求错误，重新发请求*/
-            
-            
             
         }else{
             
@@ -576,7 +594,7 @@
     
     _teachers = @[].mutableCopy;
     
-    NSString *position = nil;
+    NSString *position;
     if (location == nil) {
         position = @"";
     }else{
@@ -650,11 +668,9 @@
  */
 - (void)refreshNoTeacherData{
     
-    //    NSLog(@"%@", _teachers);
     _teachers = @[].mutableCopy;
     
-    [_headerView.teacherScrollView reloadData];
-    
+    [self reloadData];
 }
 
 
@@ -665,7 +681,7 @@
     
     _classes = @[].mutableCopy;
     
-    [_indexPageView.recommandClassCollectionView reloadData];
+    [self reloadData];
     
 }
 
@@ -676,10 +692,11 @@
     
     /* collectionView重新加载数据*/
     [_headerView.teacherScrollView reloadData];
-    
     [_indexPageView.recommandClassCollectionView reloadData];
     
     [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"数据加载完成", nil)];
+    
+    [_indexPageView.recommandClassCollectionView.mj_header endRefreshing];
     
 }
 
@@ -1451,6 +1468,8 @@
     [cityPickerViewController.navigationController popViewControllerAnimated:YES];
 }
 
+
+
 /* 接到上一页传来的地址信息,修改该页面的地址信息*/
 - (void)changeLoacal:(NSNotification *)notification{
     
@@ -1460,6 +1479,16 @@
     
 }
 
+
+
+#pragma mark- 下拉刷新方法 ->下拉刷新要执行的操作
+
+- (void)refreshIndexPage{
+    
+    [self requestDataWithLocation:_location.titleLabel.text];
+    
+    
+}
 
 
 

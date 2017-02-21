@@ -55,6 +55,8 @@ typedef NS_ENUM(NSInteger, HMSegmentedControlType) {
 @property (nonatomic, strong) NSArray *sectionImages;
 @property (nonatomic, strong) NSArray *sectionSelectedImages;
 
+
+
 /**
  Provide a block to be executed when selected index is changed.
  
@@ -227,6 +229,19 @@ typedef NS_ENUM(NSInteger, HMSegmentedControlType) {
  Default is YES. Set to NO to disable animation during user selection.
  */
 @property (nonatomic) BOOL shouldAnimateUserSelection;
+
+
+///**
+//  增加一个badge属性,绘制到文字旁边
+// */
+//@property (nonatomic, strong, readonly) CALayer *selectionIndicatorStripLayer;
+
+/**
+ 增加一个badge属性,绘制到文字旁边,bool判断是否可用 该情况下使用HMSegmentedControlTypeTextImages属性
+ */
+@property (nonatomic) BOOL imageAsBadge;
+
+
 
 - (id)initWithSectionTitles:(NSArray *)sectiontitles;
 - (id)initWithSectionImages:(NSArray *)sectionImages sectionSelectedImages:(NSArray *)sectionSelectedImages;

@@ -8,6 +8,14 @@
 
 #import "RecommandClassCollectionViewCell.h"
 #import "UIImageView+WebCache.h"
+#import "SDWebImageManager.h"
+
+@interface RecommandClassCollectionViewCell (){
+    
+    SDWebImageManager *manager;
+}
+
+@end
 
 @implementation RecommandClassCollectionViewCell
 
@@ -93,6 +101,9 @@
         .autoHeightRatio(0);
         [_reason setSingleLineAutoResizeWithMaxWidth:200];
         
+        manager = [[SDWebImageManager alloc]init];
+        
+        
         
     }
     return self;
@@ -108,14 +119,45 @@
     _teacherName.text = NSLocalizedString(model.teacher_name, nil);
     _saleNumber.text = NSLocalizedString(model.buy_tickets_count, nil);
     
-    [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"]];
+//    [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"]];
+    
+    /* 如果本地已经保留了图片缓存*/
+    if ([self diskImageExistsForURL:[NSURL URLWithString:model.publicize]]==YES) {
+        [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
+    }else{
+        /* 如果本地没有缓存,加载网络图片,渐变动画*/
+        [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+            
+        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            
+            _classImage.alpha = 0.0;
+            [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                if (image) {
+                    
+                    [_classImage setImage:image];
+                }else{
+                    [_classImage setImage:[UIImage imageNamed:@"school"]];
+                }
+                _classImage.alpha = 1.0;
+            } completion:NULL];
+            
+        }];
+    }
+    
+    
+    
+    
     if ([model.reason isEqualToString:@"newest"]) {
         _isNewest = YES;
     }else if ([model.reason isEqualToString:@"hottest"]){
         _isHottest = YES;
     }
     
-        
+    
+}
+- (BOOL)diskImageExistsForURL:(NSURL *)url {
+    NSString *key = [manager cacheKeyForURL:url];
+    return [manager.imageCache diskImageExistsWithKey:key];
 }
 
 @end

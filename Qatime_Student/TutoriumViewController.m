@@ -631,7 +631,7 @@
         
     }
     if (![_multiFilterView.class_Begin isSelected]&&[_multiFilterView.recuit isSelected]) {
-        [_filterDic setValue:@"preview" forKey:@"status"];
+        [_filterDic setValue:@"published" forKey:@"status"];
         
     }
     if ([_multiFilterView.class_Begin isSelected]&&![_multiFilterView.recuit isSelected]) {

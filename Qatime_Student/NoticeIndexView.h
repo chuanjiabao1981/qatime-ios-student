@@ -8,12 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "HMSegmentedControl.h"
+#import "Qatime_Student-Swift.h"
 
 
 @interface NoticeIndexView : UIView
 
+/* 另一个滑动控制器....*/
+@property(nonatomic,strong) JTSegmentControl *segmentControl ;
+
 /* 滑动控制器*/
-@property(nonatomic,strong) HMSegmentedControl *segmentControl ;
+//@property(nonatomic,strong) HMSegmentedControl *segmentControl ;
 
 
 /* 大滚动视图*/

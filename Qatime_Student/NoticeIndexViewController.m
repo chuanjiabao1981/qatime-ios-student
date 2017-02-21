@@ -25,7 +25,7 @@
 #import "UIViewController+AFHTTP.h"
 
 
-@interface NoticeIndexViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,NIMConversationManagerDelegate,NIMLoginManagerDelegate,UIGestureRecognizerDelegate>{
+@interface NoticeIndexViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,NIMConversationManagerDelegate,NIMLoginManagerDelegate,UIGestureRecognizerDelegate,JTSegmentControlDelegate>{
     
     NavigationBar *_navigationBar;
     
@@ -76,6 +76,9 @@
     
     _noticeIndexView = ({
         NoticeIndexView *_=[[NoticeIndexView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
+        
+        _.segmentControl.delegate = self;
+        
         _.scrollView.scrollEnabled = NO;
         
         _.scrollView.delegate = self;
@@ -91,41 +94,41 @@
         
         /* 滑动效果*/
         typeof(self) __weak weakSelf = self;
-        [ _.segmentControl setIndexChangeBlock:^(NSInteger index) {
-            [weakSelf.noticeIndexView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64) animated:YES];
-            
-            if (index==1) {
-                
-                if (checkedNotices==NO) {
-                    checkedNotices = YES;
-                    
-                    /* 异步线程发送已读消息请求*/
-                    dispatch_queue_t notice = dispatch_queue_create("notice", DISPATCH_QUEUE_SERIAL);
-                    dispatch_sync(notice, ^{
-                        
-                        if (_noticeArray) {
-                            
-                            if (_noticeArray.count>0) {
-                                
-                                for (SystemNotice *notice in _noticeArray) {
-                                    
-                                    if (notice.read == NO) {
-                                        
-                                        [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/notifications/%@/read",Request_Header,notice.noticeID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-                                            
-                                        }];
-                                    }
-                                }
-                            }
-                        }
-                        
-                    });
-                    
-                }else{
-                    
-                }
-            }
-        }];
+        //        [ _.segmentControl setIndexChangeBlock:^(NSInteger index) {
+        //            [weakSelf.noticeIndexView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64) animated:YES];
+        //
+        //            if (index==1) {
+        //
+        //                if (checkedNotices==NO) {
+        //                    checkedNotices = YES;
+        //
+        //                    /* 异步线程发送已读消息请求*/
+        //                    dispatch_queue_t notice = dispatch_queue_create("notice", DISPATCH_QUEUE_SERIAL);
+        //                    dispatch_sync(notice, ^{
+        //
+        //                        if (_noticeArray) {
+        //
+        //                            if (_noticeArray.count>0) {
+        //
+        //                                for (SystemNotice *notice in _noticeArray) {
+        //
+        //                                    if (notice.read == NO) {
+        //
+        //                                        [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/notifications/%@/read",Request_Header,notice.noticeID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        //
+        //                                        }];
+        //                                    }
+        //                                }
+        //                            }
+        //                        }
+        //
+        //                    });
+        //
+        //                }else{
+        //
+        //                }
+        //            }
+        //        }];
         [_.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
         
         [self.view addSubview:_];
@@ -234,11 +237,11 @@
                         TutoriumListInfo *info = [TutoriumListInfo yy_modelWithJSON:tutorium];
                         info.classID = tutorium[@"id"];
                         
-                       info.notify = [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.classID];
+                        info.notify = [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.classID];
                         
                         NSLog(@"%d",info.notify);
                         
-                       info.notify =  [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.chat_team_id];
+                        info.notify =  [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.chat_team_id];
                         
                         /* 试听已经结束的*/
                         
@@ -249,28 +252,28 @@
                         
                     }
                     
-                        if (_myClassArray&&_recentArr) {
+                    if (_myClassArray&&_recentArr) {
+                        
+                        /* 把badge结果遍历给chatlist的cell*/
+                        for (TutoriumListInfo *info in _myClassArray) {
                             
-                            /* 把badge结果遍历给chatlist的cell*/
-                            for (TutoriumListInfo *info in _myClassArray) {
+                            ChatList *mod = [[ChatList alloc]init];
+                            mod.tutorium = info;
+                            mod.name = info.name;
+                            for (NIMRecentSession *session in _recentArr) {
                                 
-                                ChatList *mod = [[ChatList alloc]init];
-                                mod.tutorium = info;
-                                mod.name = info.name;
-                                for (NIMRecentSession *session in _recentArr) {
+                                NSLog(@"%@........%@",session.session.sessionId,info.chat_team_id);
+                                
+                                if ([session.session.sessionId isEqualToString:info.chat_team_id]) {
                                     
-                                    NSLog(@"%@........%@",session.session.sessionId,info.chat_team_id);
-
-                                    if ([session.session.sessionId isEqualToString:info.chat_team_id]) {
-                                        
-                                        mod.badge = session.unreadCount;
-                                    }
-                                    
+                                    mod.badge = session.unreadCount;
                                 }
-                                [_chatListArr addObject:mod];
                                 
                             }
+                            [_chatListArr addObject:mod];
+                            
                         }
+                    }
                 }
             }
             
@@ -318,14 +321,23 @@
             }else{
                 /* 有数据的情况下*/
                 
-                
-                
                 for (NSDictionary *dics in dataArr) {
                     SystemNotice *notice = [SystemNotice yy_modelWithJSON:dics];
                     notice.noticeID = dics[@"id"];
                     [_noticeArray addObject:notice];
                     
                 }
+                
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    
+                    for (SystemNotice *notice in _noticeArray) {
+                        if (notice.read==NO) {
+                            [_noticeIndexView.segmentControl showBridgeWithShow:YES index:1];
+                            
+                        }
+                        
+                    }
+                });
             }
             
         }else{
@@ -401,16 +413,16 @@
                     cell.closeNotice.hidden = NO;
                 }
                 
-//                UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(resignNotice:)];
-//                
-//                [cell addGestureRecognizer:press];
+                //                UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(resignNotice:)];
+                //
+                //                [cell addGestureRecognizer:press];
                 
                 if (cell.model.badge>0) {
                     cell.badge.hidden = NO;
                 }else if(cell.model.badge==0){
                     cell.badge.hidden = YES;
                 }
-                            
+                
             }
             
             return  cell;
@@ -503,7 +515,16 @@
         
         [_chatListArr[indexPath.row] setValue:@0 forKey:@"badge"];
         
+    }else if (tableView.tag == 3){
+        
+        
+        
+        
     }
+    
+    
+    
+    
 }
 
 /* 聊天室的滑动编辑*/
@@ -576,21 +597,49 @@
 }
 
 
-
-#pragma mark- scrollView delegate
-// segment的滑动代理
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+/* segment的滑动回调*/
+-(void)didSelectedWithSegement:(JTSegmentControl *)segement index:(NSInteger)index{
     
-    if (scrollView == _noticeIndexView.scrollView) {
+    typeof(self) __weak weakSelf = self;
+    
+    [weakSelf.noticeIndexView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64) animated:YES];
+    
+    if (index==1) {
         
-        CGFloat pageWidth = scrollView.frame.size.width;
-        NSInteger page = scrollView.contentOffset.x / pageWidth;
-        
-        [_noticeIndexView.segmentControl setSelectedSegmentIndex:page animated:YES];
-        
+        if (checkedNotices==NO) {
+            checkedNotices = YES;
+            
+            [_noticeIndexView.segmentControl showBridgeWithShow:NO index:1];
+            /* 异步线程发送已读消息请求*/
+            dispatch_queue_t notice = dispatch_queue_create("notice", DISPATCH_QUEUE_SERIAL);
+            dispatch_sync(notice, ^{
+                
+                if (_noticeArray) {
+                    
+                    if (_noticeArray.count>0) {
+                        
+                        for (SystemNotice *notice in _noticeArray) {
+                            
+                            if (notice.read == NO) {
+                                
+                                [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/notifications/%@/read",Request_Header,notice.noticeID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+                                    
+                                }];
+                            }
+                        }
+                    }
+                }
+                
+            });
+            
+        }else{
+            
+        }
     }
     
+    
 }
+
 
 
 - (void)returnLastPage{

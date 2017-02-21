@@ -9,6 +9,14 @@
 #import "UnStartClassTableViewCell.h"
 #import "UIImageView+WebCache.h"
 
+@interface UnStartClassTableViewCell (){
+    
+    UILabel *dist;
+    UILabel *day;
+}
+
+@end
+
 @implementation UnStartClassTableViewCell
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
@@ -17,7 +25,6 @@
     if (self) {
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         
         /* contentview的裁边*/
         _content = [[UIView alloc]init];
@@ -29,7 +36,6 @@
         .bottomSpaceToView(self.contentView,5);
         _content.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _content.layer.borderWidth = 0.8f;
-        
         
         /* 课程图片*/
         _classImage = [[UIImageView alloc]init];
@@ -149,13 +155,11 @@
         [_teacherName setSingleLineAutoResizeWithMaxWidth:100];
         
         
-        
-        
         /* 距离开课时间*/
-        UILabel *dist = [[UILabel alloc]init];
+        dist = [[UILabel alloc]init];
         [_content addSubview:dist];
         dist.textColor = [UIColor blackColor];
-        dist.text = @"距开课";
+//        dist.text = @"距开课";
         
         dist.sd_layout
         .leftSpaceToView(_classImage,10)
@@ -175,15 +179,15 @@
         [_deadLineLabel setSingleLineAutoResizeWithMaxWidth:200];
         
         /* 天label*/
-        UILabel *days = [[UILabel alloc]init];
-        [_content addSubview:days];
-        days.text = @"天";
-        days.textColor = [UIColor blackColor];
-        days.sd_layout
+        day = [[UILabel alloc]init];
+        [_content addSubview:day];
+        day.text = @"天";
+        day.textColor = [UIColor blackColor];
+        day.sd_layout
         .leftSpaceToView(_deadLineLabel,0)
         .topEqualToView(_deadLineLabel)
         .bottomEqualToView(_deadLineLabel);
-        [days setSingleLineAutoResizeWithMaxWidth:200];
+        [day setSingleLineAutoResizeWithMaxWidth:200];
         
         /* 进入按钮*/
         _enterButton.sd_layout
@@ -191,9 +195,6 @@
         .bottomSpaceToView(_content,10)
         .heightIs(20)
         .widthIs(60);
-        
-        
-    
         
         
     }
@@ -214,14 +215,12 @@
     _subject.text = model.subject;
     _teacherName.text = model.teacher_name;
     _className.text = model.name;
-    
-        
+
     
     /* 计算距开课时间*/
     //创建日期格式化对象
     NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-    
     
     //创建了两个日期对象
     /* 视频开始时间*/
@@ -235,10 +234,24 @@
 //    NSTimeInterval time=[nowDate timeIntervalSinceDate:startDate];
       NSTimeInterval time = [startDate timeIntervalSinceDate:nowDate];
     int days=((int)time)/(3600*24);
-    //    int hours=((int)time)%(3600*24)/3600;
-    NSString *dateContent=[[NSString alloc] initWithFormat:@"%d",days];
-    
-    _deadLineLabel.text = dateContent;
+   
+    if (days>=1) {
+        
+        dist.text = @"距开课";
+        NSString *dateContent=[[NSString alloc] initWithFormat:@"%d",days];
+        _deadLineLabel.text = dateContent;
+        day.hidden = NO;
+        //    int hours=((int)time)%(3600*24)/3600;
+        
+        
+    }else if (days>/* DISABLES CODE */ (0)&&days<1){
+        
+        _deadLineLabel.text = @"";
+        day.hidden = YES;
+        dist.text = @"即将开课";
+        
+        
+    }
     
 }
 

@@ -149,7 +149,6 @@
     _tutoriumInfoView.classesListTableView.dataSource = self;
     _tutoriumInfoView.classesListTableView.bounces = YES;
     
-    
     /* 根据传递过来的id 进行网络请求model*/
     /* 初始化三个model*/
     _classModel = [[RecommandClasses alloc]init];
@@ -255,7 +254,7 @@
                         _tutoriumInfoView.recuitState.text = @"未开课";
                         //            _tutoriumInfoView.onlineVideoLabel.text =@"未开课";
                         
-                        _tutoriumInfoView.deadLine.text = [NSString stringWithFormat:@"[距开课%@/天]",[self intervalSinceNow:_dataDic[@"live_start_time"] ]];
+                        _tutoriumInfoView.deadLine.text = [NSString stringWithFormat:@"[距开课%@天]",[self intervalSinceNow:_dataDic[@"live_start_time"] ]];
                         
                         
                     }else if ([_dataDic[@"status"]isEqualToString:@"finished"]||[_dataDic[@"status"]isEqualToString:@"billing"]||[_dataDic[@"status"]isEqualToString:@"completed"]){
@@ -265,11 +264,32 @@
                         
                         
                         
-                    }else if ([_dataDic[@"status"]isEqualToString:@"public"]){
+                    }else if ([_dataDic[@"status"]isEqualToString:@"published"]){
                         
-                        _tutoriumInfoView.recuitState.text = @"招生中";
                         //            _tutoriumInfoView.onlineVideoLabel.text =@"招生中";
-                        _tutoriumInfoView.deadLine.text = @"";
+                        
+                        
+                        if (_dataDic[@"live_start_time"]) {
+                            if ([_dataDic[@"live_start_time"]isEqualToString:@""]||[_dataDic[@"live_start_time"]isEqualToString:@" "]) {
+                                _tutoriumInfoView.deadLine.text = @"招生中";
+                                
+                                _tutoriumInfoView.recuitState.text = @"";
+                            }else{
+                                
+                                NSInteger leftDay = [[self intervalSinceNow:_dataDic[@"live_start_time"] ]integerValue];
+                                
+                                NSString *leftDays;
+                                if (leftDay>=1) {
+                                    leftDays = [NSString stringWithFormat:@"[距开课%ld天]",leftDay];
+                                }else if (leftDay>0&&leftDay<1){
+                                    leftDays = @"[即将开课]";
+                                    
+                                }
+                                 _tutoriumInfoView.recuitState.text = @"招生中";
+                                _tutoriumInfoView.deadLine.text = leftDays;
+                            }
+                        }
+                        
                         
                     }
                     
@@ -806,9 +826,8 @@
 - (NSString *)intervalSinceNow: (NSString *) theDate
 {
     NSString *timeString=@"";
-    
     NSDateFormatter *format=[[NSDateFormatter alloc] init];
-    [format setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [format setDateFormat:@"yyyy-MM-dd HH:mm"];
     NSDate *fromdate=[format dateFromString:theDate];
     NSTimeZone *fromzone = [NSTimeZone systemTimeZone];
     NSInteger frominterval = [fromzone secondsFromGMTForDate: fromdate];
@@ -828,7 +847,6 @@
     NSInteger iDays = lTime/60/60/24;
     NSInteger iMonth =lTime/60/60/24/12;
     NSInteger iYears = lTime/60/60/24/384;
-    
     
     NSLog(@"相差%ld年%ld月 或者 %ld日%ld时%ld分%ld秒", iYears,iMonth,(long)iDays,(long)iHours,(long)iMinutes,(long)iSeconds);
     
