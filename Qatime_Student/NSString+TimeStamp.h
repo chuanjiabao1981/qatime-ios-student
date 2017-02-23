@@ -14,7 +14,7 @@
 /**
  时间戳转化
 
- @return
+ @return 时间str
  */
 - (NSString *)timeStampToDate;
 
@@ -24,7 +24,7 @@
 /**
  时间戳转成dateString
 
- @return 
+ @return  时间str
  */
 - (NSString *)changeTimeStampToDateString;
 

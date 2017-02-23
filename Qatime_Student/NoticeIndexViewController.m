@@ -25,7 +25,7 @@
 #import "UIViewController+AFHTTP.h"
 
 
-@interface NoticeIndexViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,NIMConversationManagerDelegate,NIMLoginManagerDelegate,UIGestureRecognizerDelegate,JTSegmentControlDelegate>{
+@interface NoticeIndexViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,NIMConversationManagerDelegate,NIMLoginManagerDelegate,UIGestureRecognizerDelegate,JTSegmentControlDelegate,NIMChatManagerDelegate>{
     
     NavigationBar *_navigationBar;
     
@@ -46,6 +46,10 @@
     
     /* 是否查看了系统消息*/
     BOOL checkedNotices ;
+    
+    
+    /*未读消息总数量*/
+    NSInteger unreadCont;
     
 }
 
@@ -93,7 +97,6 @@
         _.noticeTableView.tag = 3;
         
         /* 滑动效果*/
-        typeof(self) __weak weakSelf = self;
         //        [ _.segmentControl setIndexChangeBlock:^(NSInteger index) {
         //            [weakSelf.noticeIndexView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64) animated:YES];
         //
@@ -164,6 +167,8 @@
     _noticeArray = @[].mutableCopy;
     _chatListArr = @[].mutableCopy;
     
+    unreadCont = 0;
+    
     
     NSLog(@"%@",[[[NIMSDK sharedSDK]teamManager]allMyTeams]);
     
@@ -183,6 +188,7 @@
     [[NIMSDK sharedSDK].loginManager autoLogin:chatDic[@"accid"] token:chatDic[@"token"]];
     
     [[[NIMSDK sharedSDK]conversationManager]addDelegate:self];
+    [[[NIMSDK sharedSDK]chatManager]addDelegate:self];
     
     
     /* 消息变为已读的通知*/
@@ -267,7 +273,11 @@
                                 if ([session.session.sessionId isEqualToString:info.chat_team_id]) {
                                     
                                     mod.badge = session.unreadCount;
+                                    
+                                    unreadCont +=session.unreadCount;
+                                    
                                 }
+                                
                                 
                             }
                             [_chatListArr addObject:mod];
@@ -402,6 +412,8 @@
             ChatListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
             if (cell==nil) {
                 cell=[[ChatListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+                
+//                cell.badge.hidden = YES;
             }
             
             if (_chatListArr.count>indexPath.row) {
@@ -446,10 +458,10 @@
                 
                 if (cell.model.read == YES) {
                     cell.content.textColor = [UIColor lightGrayColor];
-                    cell.time.textColor = [UIColor lightGrayColor];
+//                    cell.time.textColor = [UIColor lightGrayColor];
                 }else{
                     cell.content.textColor = [UIColor blackColor];
-                    cell.time.textColor = [UIColor blackColor];
+//                    cell.time.textColor = [UIColor blackColor];
                     
                 }
                 
@@ -513,16 +525,17 @@
         
         cell.badge.hidden = YES;
         
+        unreadCont -= cell.badgeNumber;
+        
         [_chatListArr[indexPath.row] setValue:@0 forKey:@"badge"];
         
     }else if (tableView.tag == 3){
         
+        NoticeListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         
         
         
     }
-    
-    
     
     
 }
@@ -597,6 +610,61 @@
 }
 
 
+/* 接收消息和badge变化*/
+-(void)onRecvMessages:(NSArray<NIMMessage *> *)messages{
+    
+    for (NIMMessage *message in messages) {
+        
+        NSInteger index = 0;
+        for (ChatList *chat in _chatListArr) {
+            index++;
+            if ([message.session.sessionId isEqualToString:chat.tutorium.chat_team_id]){
+                chat.badge+=1;
+                
+                unreadCont +=1;
+                
+                [_noticeIndexView.chatListTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index-1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                
+            }
+        }
+
+    }
+    
+    /* badge的判断和增加*/
+    
+    if (_noticeIndexView.segmentControl.selectedIndex == 1) {
+        [_noticeIndexView.segmentControl showBridgeWithShow:YES index:0];
+    }else{
+        [_noticeIndexView.segmentControl showBridgeWithShow:NO index:0];
+    }
+    
+}
+- (BOOL)fetchMessageAttachment:(NIMMessage *)message error:(NSError **)error{
+    
+    NSInteger index = 0;
+    for (ChatList *chat in _chatListArr) {
+        index++;
+        if ([message.session.sessionId isEqualToString:chat.tutorium.chat_team_id]){
+            
+            chat.badge+=1;
+            unreadCont +=1;
+            
+            [_noticeIndexView.chatListTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index-1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            
+        }
+        
+    }
+    
+    if (_noticeIndexView.segmentControl.selectedIndex == 1) {
+        [_noticeIndexView.segmentControl showBridgeWithShow:YES index:0];
+    }else{
+        [_noticeIndexView.segmentControl showBridgeWithShow:NO index:0];
+    }
+    
+    return YES;
+}
+
+
 /* segment的滑动回调*/
 -(void)didSelectedWithSegement:(JTSegmentControl *)segement index:(NSInteger)index{
     
@@ -604,7 +672,19 @@
     
     [weakSelf.noticeIndexView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64) animated:YES];
     
+    if (index == 0) {
+        [_noticeIndexView.segmentControl showBridgeWithShow:NO index:0];
+    }
+    
     if (index==1) {
+        
+        if (unreadCont > 0) {
+           
+            [_noticeIndexView.segmentControl showBridgeWithShow:YES index:0];
+            
+        }else{
+            [_noticeIndexView.segmentControl showBridgeWithShow:NO index:0];
+        }
         
         if (checkedNotices==NO) {
             checkedNotices = YES;
@@ -633,6 +713,7 @@
             });
             
         }else{
+            
             
         }
     }

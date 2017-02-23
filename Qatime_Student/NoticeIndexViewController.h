@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "NavigationBar.h"
 #import "NoticeIndexView.h"
+#import "NIMSDK.h"
 
 @interface NoticeIndexViewController : UIViewController
 

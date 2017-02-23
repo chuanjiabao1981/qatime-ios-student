@@ -84,7 +84,6 @@
     /* 定位城市*/
     NSString *_localCity;
     
-    
 }
 
 /* 定位管理器*/
@@ -106,7 +105,7 @@
         
         [self .view addSubview:_];
         [_.rightButton setImage:[UIImage imageNamed:@"消息"] forState:UIControlStateNormal];
-      
+        
         
         UIImageView *logoImage = [[UIImageView alloc]init];
         [_ addSubview:logoImage];
@@ -154,6 +153,7 @@
 
 
 
+
 - (void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
@@ -178,7 +178,7 @@
         
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
-
+    
     
     menuImages = @[[UIImage imageNamed:@"语文"],
                    [UIImage imageNamed:@"数学"],
@@ -190,17 +190,17 @@
                    [UIImage imageNamed:@"地理"],
                    [UIImage imageNamed:@"政治"],
                    [UIImage imageNamed:@"科学"]];
-
-  menuTitiels = @[NSLocalizedString(@"语文", nil),
-                  NSLocalizedString(@"数学", nil),
-                  NSLocalizedString(@"英语", nil),
-                  NSLocalizedString(@"物理", nil),
-                  NSLocalizedString(@"化学", nil),
-                  NSLocalizedString(@"生物", nil),
-                  NSLocalizedString(@"历史", nil),
-                  NSLocalizedString(@"地理", nil),
-                  NSLocalizedString(@"政治", nil),
-                  NSLocalizedString(@"科学", nil)];
+    
+    menuTitiels = @[NSLocalizedString(@"语文", nil),
+                    NSLocalizedString(@"数学", nil),
+                    NSLocalizedString(@"英语", nil),
+                    NSLocalizedString(@"物理", nil),
+                    NSLocalizedString(@"化学", nil),
+                    NSLocalizedString(@"生物", nil),
+                    NSLocalizedString(@"历史", nil),
+                    NSLocalizedString(@"地理", nil),
+                    NSLocalizedString(@"政治", nil),
+                    NSLocalizedString(@"科学", nil)];
     
     /* 头视图*/
     _headerView = [[IndexHeaderPageView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd*3.1/5.0)];
@@ -296,7 +296,10 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeLoacal:) name:@"UseLocal" object:nil];
     
     
-    _indexPageView.recommandClassCollectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshIndexPage)];
+    _indexPageView.recommandClassCollectionView.mj_header =[MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshIndexPage)];
+    
+    
+    
     
 }
 
@@ -312,11 +315,11 @@
         NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"];
         
         [[NIMSDK sharedSDK].loginManager autoLogin:chatDic[@"accid"] token:chatDic[@"token"]];
-//        [[[NIMSDK sharedSDK]loginManager]login:chatDic[@"accid"] token:chatDic[@"token"] completion:^(NSError * _Nullable error) {
-//           
-//            
-//            
-//        }];
+        //        [[[NIMSDK sharedSDK]loginManager]login:chatDic[@"accid"] token:chatDic[@"token"] completion:^(NSError * _Nullable error) {
+        //
+        //
+        //
+        //        }];
         
         [[[NIMSDK sharedSDK]conversationManager]addDelegate:self];
         
@@ -343,6 +346,7 @@
                             
                             if ([notice[@"read"] boolValue]== NO ) {
                                 
+                                
                                 [[NSNotificationCenter defaultCenter]postNotificationName:@"ReceiveNewNotice" object:nil];
                                 return ;
                             }
@@ -357,7 +361,7 @@
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
         }];
-
+        
     });
     
 }
@@ -558,8 +562,8 @@
                     
                     NSDictionary *classinfo =[NSDictionary dictionaryWithDictionary:[classArr[i] valueForKey:@"live_studio_course"]];
                     RecommandClasses *reclass=[RecommandClasses yy_modelWithDictionary:classinfo];
-//                    reclass.title =[classArr[i] valueForKey:@"title"];
-//                    reclass.index =[[classArr[i] valueForKey:@"index"] integerValue];
+                    //                    reclass.title =[classArr[i] valueForKey:@"title"];
+                    //                    reclass.index =[[classArr[i] valueForKey:@"index"] integerValue];
                     if ([[classArr[i] valueForKey:@"reason"]isEqual:[NSNull null]]) {
                         reclass.reason = @"";
                     }else{
@@ -695,6 +699,7 @@
     [_indexPageView.recommandClassCollectionView reloadData];
     
     [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"数据加载完成", nil)];
+    
     
     [_indexPageView.recommandClassCollectionView.mj_header endRefreshing];
     
@@ -1010,7 +1015,6 @@
         }
         
         
-        
     }
     
 }
@@ -1091,7 +1095,6 @@
                 
                 /* 写入完成后开始加工数据*/
                 
-                
                 [self makeCityList:_cities];
                 
                 
@@ -1142,7 +1145,7 @@
     }else{
         
         [self loginAgain];
-
+        
     }
     
 }
@@ -1444,7 +1447,7 @@
     }
     
     locationController.hotCitys = @[@"1",@"266"];
-   
+    
     
     [self .navigationController pushViewController:locationController animated:YES];
     

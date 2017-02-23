@@ -21,7 +21,7 @@
 /**
  *  得到表情
  *
- *  @param msg
+ *  @param msg 文本
  *  @param msgArray 递归遍历
  */
 + (void)getFaceRange:(NSString *)msg msgArray:(NSMutableArray *)msgArray;

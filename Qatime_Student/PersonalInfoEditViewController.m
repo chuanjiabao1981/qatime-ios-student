@@ -72,7 +72,7 @@
 
 - (void)loadView{
     [super loadView];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = BACKGROUNDGRAY;
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
     [self.view addSubview:_navigationBar];
     
@@ -80,6 +80,7 @@
     [self.view addSubview:_editTableView];
     
     _editTableView.tableFooterView = [[UIView alloc]init];
+    _editTableView.backgroundColor = BACKGROUNDGRAY;
     
     
     /* 完成按钮*/
@@ -238,6 +239,8 @@
             EditHeadTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
             if (cell==nil) {
                 cell=[[EditHeadTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+                
+                cell.backgroundColor = [UIColor whiteColor];
                 
                 if (_infoDic) {
                     [cell.headImage setImage:_infoDic[@"head"]];
@@ -542,17 +545,27 @@
     
 //    [self loadingHUDStartLoadingWithTitle:@"正在提交"];
     
+   __block MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelFont = [UIFont systemFontOfSize:14*ScrenScale];
+    
     
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSURLSessionUploadTask *uploadTask;
     uploadTask = [manager uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull uploadProgress) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
+//
+//            [hud show:YES];
+            [hud setLabelText:[NSString stringWithFormat:@"正在提交 %ld%@",(NSInteger)uploadProgress.fractionCompleted*100,@"%"]];
+
             
-            [self loadingHUDStartLoadingWithTitle:[NSString stringWithFormat:@"正在提交 %ld%@",(NSInteger)uploadProgress.fractionCompleted*100,@"%"]];
-            
-            
+//            if ((NSInteger)uploadProgress.fractionCompleted*100==100) {
+//                [hud hide:YES];
+//            }
+//
         });
+        
         
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         if (error) {
@@ -569,6 +582,7 @@
                 [[NSUserDefaults standardUserDefaults]setValue:dic[@"data"][@"name"] forKey:@"name"];
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangeInfoSuccess" object:dic];
                 
+                [hud hide:YES];
                 [self loadingHUDStopLoadingWithTitle:@"修改成功"];
                 [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                 

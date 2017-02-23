@@ -971,12 +971,11 @@
     
     for (NSString *keys in filterDic_Copy) {
         
-        if ( [[_filterDic valueForKey:keys]isEqualToString:NSLocalizedString(@"按科目∨", nil)]||[[_filterDic valueForKey:keys]isEqualToString:NSLocalizedString(@"按年级∨", nil)]||[[_filterDic valueForKey:keys]isEqualToString:NSLocalizedString(@"按时间∨", nil)]||[[_filterDic valueForKey:keys]isEqualToString:NSLocalizedString(@"全部", nil)]||[[_filterDic valueForKey:keys]isEqualToString:NSLocalizedString(@"全部年级", nil)]||[[_filterDic valueForKey:keys]isEqualToString:NSLocalizedString(@"请选择时间", nil)]) {
+        if ( [[_filterDic valueForKey:keys]isEqualToString:@"按科目∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"按年级∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"按时间∨"]||[[_filterDic valueForKey:keys]isEqualToString:@"全部"]||[[_filterDic valueForKey:keys]isEqualToString:@"全部年级"]||[[_filterDic valueForKey:keys]isEqualToString:@"请选择时间"]) {
             
             NSLog(@"%@,%@",keys,[_filterDic valueForKey:keys]);
             
             [_filterDic setValue:@"" forKey:keys];
-            
             
             
         }
@@ -1133,7 +1132,10 @@
         _filterSubject = @"政治";
     }else if ([subject isEqualToString:NSLocalizedString(@"科学", nil)]) {
         _filterSubject = @"科学";
+    }else if ([subject isEqualToString:NSLocalizedString(@"全部", nil)]) {
+        _filterSubject = @"全部";
     }
+
     
     
     

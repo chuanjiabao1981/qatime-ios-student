@@ -30,6 +30,7 @@ pod 'FSCalendar', '~> 2.5.1'
 
 pod 'XHImageViewer', '~> 0.1.2'
 pod 'M13BadgeView', '~> 1.0.4'
+pod 'WZLBadge', '~> 1.2.5'
 #pod 'ASIHTTPRequest', '~> 1.8.2'
 
 

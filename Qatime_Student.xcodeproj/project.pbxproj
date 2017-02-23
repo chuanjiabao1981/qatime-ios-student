@@ -114,6 +114,7 @@
 		543E234B1E2C9AB200381F10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 543E234A1E2C9AB200381F10 /* Assets.xcassets */; };
 		543E234E1E2CB84B00381F10 /* SetNewPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E234D1E2CB84B00381F10 /* SetNewPasswordViewController.m */; };
 		543E23521E2CE88B00381F10 /* DCPaymentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E23511E2CE88B00381F10 /* DCPaymentView.m */; };
+		543E512C1E5D7B180001551D /* YZBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E512B1E5D7B180001551D /* YZBadge.m */; };
 		54443E281E0D252F000D8E8B /* LocalChoseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54443E271E0D252F000D8E8B /* LocalChoseView.m */; };
 		54443E2A1E0D284E000D8E8B /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = 54443E291E0D284E000D8E8B /* point.png */; };
 		5448AEA11E042BC8007B1DF9 /* NoticeIndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA01E042BC8007B1DF9 /* NoticeIndexViewController.m */; };
@@ -611,6 +612,8 @@
 		543E234D1E2CB84B00381F10 /* SetNewPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetNewPasswordViewController.m; sourceTree = "<group>"; };
 		543E23501E2CE88B00381F10 /* DCPaymentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCPaymentView.h; sourceTree = "<group>"; };
 		543E23511E2CE88B00381F10 /* DCPaymentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCPaymentView.m; sourceTree = "<group>"; };
+		543E512A1E5D7B180001551D /* YZBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZBadge.h; sourceTree = "<group>"; };
+		543E512B1E5D7B180001551D /* YZBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZBadge.m; sourceTree = "<group>"; };
 		54443E261E0D252F000D8E8B /* LocalChoseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalChoseView.h; sourceTree = "<group>"; };
 		54443E271E0D252F000D8E8B /* LocalChoseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalChoseView.m; sourceTree = "<group>"; };
 		54443E291E0D284E000D8E8B /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = "<group>"; };
@@ -1660,6 +1663,7 @@
 				5457317D1E022E4700F45C03 /* 该月无课程覆盖图 */,
 				54B9CAFD1DFE4E6C003961FF /* 试听购买栏 */,
 				541F91D91DC9BB8D00180BE8 /* 导航栏 */,
+				543E51261E5D76F80001551D /* 自定义Badge */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -1806,6 +1810,15 @@
 				543E23511E2CE88B00381F10 /* DCPaymentView.m */,
 			);
 			name = "支付密码框";
+			sourceTree = "<group>";
+		};
+		543E51261E5D76F80001551D /* 自定义Badge */ = {
+			isa = PBXGroup;
+			children = (
+				543E512A1E5D7B180001551D /* YZBadge.h */,
+				543E512B1E5D7B180001551D /* YZBadge.m */,
+			);
+			name = "自定义Badge";
 			sourceTree = "<group>";
 		};
 		5448AEA51E054C63007B1DF9 /* Cell */ = {
@@ -4513,6 +4526,7 @@
 				5413D2611DF7BC9400A8FDEC /* PaymentTableView.m in Sources */,
 				5452260B1E2482EC00F36280 /* EditGenderTableViewCell.m in Sources */,
 				54B4C1921DF8417400E31794 /* ConfirmChargeViewController.m in Sources */,
+				543E512C1E5D7B180001551D /* YZBadge.m in Sources */,
 				54AA30821DF950CA009E0D04 /* CheckChargeView.m in Sources */,
 				547AD51E1E4D6A7000239907 /* UUAVAudioPlayer.m in Sources */,
 				54FCBAF31DD5CB6B0094BF58 /* NoticeTableViewCell.m in Sources */,

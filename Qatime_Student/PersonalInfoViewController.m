@@ -147,6 +147,7 @@
     _personalInfoView.delegate = self;
     _personalInfoView.dataSource = self;
     _personalInfoView.tableFooterView = [UIView new];
+    _personalInfoView.backgroundColor = BACKGROUNDGRAY;
     
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
@@ -326,6 +327,7 @@
             cell=[[Personal_HeadTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
             
             cell.name.text = _nameArr[indexPath.row];
+            cell.backgroundColor = [UIColor whiteColor];
             
 //            cell.image.userInteractionEnabled = YES;
             

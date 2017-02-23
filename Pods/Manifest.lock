@@ -37,6 +37,7 @@ PODS:
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
+  - WZLBadge (1.2.5)
   - XHImageViewer (0.1.2)
   - YYImage (1.0.4):
     - YYImage/Core (= 1.0.4)
@@ -60,6 +61,7 @@ DEPENDENCIES:
   - SDAutoLayout (~> 2.1.7)
   - SDCycleScrollView (~> 1.65)
   - SDWebImage (~> 3.8.2)
+  - WZLBadge (~> 1.2.5)
   - XHImageViewer (~> 0.1.2)
   - YYImage (~> 1.0.4)
   - YYModel (~> 1.0.4)
@@ -81,11 +83,12 @@ SPEC CHECKSUMS:
   SDAutoLayout: e9b36d04b8c0b504762a04d76fbbe5108944297a
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  WZLBadge: 16c08aa0a645e2591690f21cbcb410a3d878c7ac
   XHImageViewer: 7b275d2aa829e56761c30303b9d51cae086a90b9
   YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 8642b09e00901f147e15c63de7edfdb77a740005
+PODFILE CHECKSUM: fb455e63a770e19bbba7d8da55978ddfba95c99b
 
 COCOAPODS: 1.1.1

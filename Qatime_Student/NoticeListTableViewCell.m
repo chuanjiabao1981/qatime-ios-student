@@ -21,6 +21,7 @@
             UILabel *_=[[UILabel alloc]init];
             
             _.font = [UIFont systemFontOfSize:13*ScrenScale];
+            _.textColor = TITLECOLOR;
             
             [self.contentView addSubview:_];
             
