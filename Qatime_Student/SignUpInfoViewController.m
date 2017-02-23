@@ -219,10 +219,6 @@
 }
 
 
-
-
-
-
 #pragma mark- 获取图片的回调方法
 /* 获取图片的回调方法*/
 
@@ -235,10 +231,8 @@
      UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     [_signUpInfoView.headImage setImage:image];
         
-        
         changeImage = YES;
-        /* 头像 轻量级存储本地*/
-        //[[NSUserDefaults standardUserDefaults]setObject:image forKey:@"userHeadImage"];
+
     
     });
     
@@ -263,7 +257,6 @@
 - (void)returnLastPage:(UIButton *)sender{
     
     [self.navigationController popViewControllerAnimated:YES];
-    
     
 }
 

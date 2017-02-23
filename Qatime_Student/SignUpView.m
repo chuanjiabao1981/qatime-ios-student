@@ -37,12 +37,6 @@
         _phoneNumber.keyboardType = UIKeyboardTypePhonePad;
         
         
-//        - (CGRect)textRectForBounds:(CGRect)bounds;
-//        - (CGRect)placeholderRectForBounds:(CGRect)bounds;
-//        - (CGRect)editingRectForBounds:(CGRect)bounds;
-        
-        
-        
         /* 手机校验码输入框*/
         _checkCode = [[UITextField alloc]init];
         [self addSubview:_checkCode];
@@ -53,7 +47,7 @@
         _checkCode.sd_layout.topSpaceToView(_phoneNumber,15).leftSpaceToView(self,20).widthIs((CGRectGetWidth(self.frame)-40)/2).heightIs(40);
         _checkCode.keyboardType = UIKeyboardTypePhonePad;
         
-
+        
         /* 获取校验码按钮*/
         _getCheckCodeButton = [[UIButton alloc]init];
         [self addSubview:_getCheckCodeButton];

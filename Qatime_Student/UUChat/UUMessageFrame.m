@@ -79,7 +79,6 @@
             [layout selectionRectsForRange:[YYTextRange rangeWithRange:NSMakeRange(10,2)]];
             
             // 显示文本排版结果
-            
             contentSize = layout.textBoundingSize;
             if (_message.from == UUMessageFromMe) {
                 
@@ -90,9 +89,14 @@
                     NSInteger letterNum = _message.richNum;
                     //气泡尺寸修正
                     if (letterNum<3) {
-                        contentSize.width-=letterNum*5;
-                    }else if (letterNum>3&&letterNum<=8){
+                        contentSize.width-=letterNum*7;
+                    }else if (letterNum>=3&&letterNum<6){
                         contentSize.width+=6*letterNum;
+                    }else if (letterNum>=6&&letterNum<8){
+                        contentSize.width+=8*letterNum;
+                    }else if (letterNum==8){
+                        contentSize.width-=20*letterNum/8;
+                        contentSize.height+=20;
                     }else if (letterNum>8){
                         contentSize.width+=5*letterNum/7;
                         contentSize.height+=letterNum/8*15;
@@ -103,16 +107,17 @@
                 
             }else if (_message.from == UUMessageFromOther){
                 if (_message.isRichText == YES) {
+                    
+                    contentSize.height+=10;
                     NSInteger letterNum = _message.richNum;
-
+                    
                     //气泡尺寸修正
                     if (letterNum<3) {
                         contentSize.width-=letterNum*20;
-                    }else if (letterNum>3&&letterNum<=8){
-                        contentSize.width-=20*letterNum;
+                    }else if (letterNum>=3&&letterNum<=8){
+                        contentSize.width-=15*letterNum;
                     }else if (letterNum>8){
                         contentSize.width-=10*letterNum/7;
-//                        contentSize.height+=letterNum/8*15;
                     }
                     
                     
@@ -146,8 +151,6 @@
     }
     
     _contentF = CGRectMake(contentX, contentY, contentSize.width + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);
-    
-    
     
     _cellHeight = CGRectGetMaxY(_contentF) + 40;
     

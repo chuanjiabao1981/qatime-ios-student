@@ -145,12 +145,17 @@
     }
     
     
-    
-    
     if ([model.reason isEqualToString:@"newest"]) {
-        _isNewest = YES;
+        self.reason.hidden = NO;
+        self.reason.text = NSLocalizedString(@" 最新 ", nil);
+        self.reason.backgroundColor = [UIColor colorWithRed:0.4 green:0.8 blue:1.0 alpha:1.0];
+        
     }else if ([model.reason isEqualToString:@"hottest"]){
-        _isHottest = YES;
+        self.reason.hidden = NO;
+        self.reason.text = NSLocalizedString(@" 最热 ", nil);
+        self.reason.backgroundColor = [UIColor colorWithRed:1.0 green:0.6 blue:0.6 alpha:1.0];
+    }else if([model.reason isEqualToString:@""]){
+        self.reason.hidden = YES;
     }
     
     

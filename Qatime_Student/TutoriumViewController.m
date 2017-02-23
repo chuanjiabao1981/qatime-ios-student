@@ -284,13 +284,13 @@
     /* 下拉的block*/
     _tutoriumView.classesCollectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         /* 在有筛选条件的情况下 进行下拉数据的重载*/
-        if ([[NSUserDefaults standardUserDefaults]objectForKey:@"FilterURL"]) {
+        if (![_requestResaultURL isEqualToString:@""]) {
             NSLog(@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"FilterURL"]);
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
             [manager.requestSerializer setValue:_remember_token forHTTPHeaderField:@"Remember-Token"];
-            [manager GET:[[NSUserDefaults standardUserDefaults]objectForKey:@"FilterURL"] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject){
+            [manager GET:_requestResaultURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject){
                  _noView.hidden = NO;
                 
                 NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -348,6 +348,7 @@
                             
                             [self loadData:nil];
                             
+                            
                             NSLog(@"加载数据完成。");
                         }
                         
@@ -361,6 +362,7 @@
                     /* 登录错误*/
                     
                 }
+                [_tutoriumView.classesCollectionView.mj_header endRefreshing];
                 
                 [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"加载完成!", nil)];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -376,10 +378,10 @@
             NSLog(@"%ld",page);
             
             [self requestDataWithGrade:dic[@"filterGrade"] andSubject:dic[@"filterSubject"] andPage:[[dic  valueForKey:@"page"]integerValue]  andPerPage:per_Page withPull:0];
-            
+            [_tutoriumView.classesCollectionView.mj_header endRefreshing];
         }
         [_tutoriumView.classesCollectionView.mj_header endRefreshing];
-        [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"加载完成!", nil)];
+//        [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"加载完成!", nil)];
         
     }];
     
@@ -1006,7 +1008,7 @@
     
     
     /* 下拉刷新专用的存储状态*/
-    [[NSUserDefaults standardUserDefaults]setObject:_requestResaultURL forKey:@"FilterURL"];
+//    [[NSUserDefaults standardUserDefaults]setObject:_requestResaultURL forKey:@"FilterURL"];
     
     
     NSLog(@"%@",_requestResaultURL);

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "UUMessageContentButton.h"
 #import "YYLabel.h"
+#import "YYTextView.h"
 @class UUMessageFrame;
 @class UUMessageCell;
 
@@ -38,7 +39,7 @@
 
 @property (nonatomic, assign)id<UUMessageCellDelegate>delegate;
 
-@property(nonatomic,strong) YYLabel *title ;
+@property(nonatomic,strong) YYTextView *title ;
 
 /* 增加一个 真正的时间label*/
 @property(nonatomic,strong) UILabel *timeLabel ;

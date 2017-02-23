@@ -16,6 +16,7 @@
 
 @interface SignUpViewController ()<UITextFieldDelegate,UITextInputDelegate>{
     
+    /* 注册详细信息的controller*/
     SignUpInfoViewController *_signUpInfoViewController ;
     
 }
@@ -24,8 +25,6 @@
 
 @implementation SignUpViewController
 
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.hidden=YES;
@@ -33,20 +32,18 @@
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];
     [_navigationBar.titleLabel setText:NSLocalizedString(@"注册", nil)];
-    
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(backToFrontPage:) forControlEvents:UIControlEventTouchUpInside];
     
+    /* 视图*/
     _signUpView = [[SignUpView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
     [self .view addSubview:_signUpView];
-   
+    
     _signUpView.phoneNumber.delegate = self;
     [_signUpView.nextStepButton addTarget:self action:@selector(nextStep:) forControlEvents:UIControlEventTouchUpInside];
     
-    //    选项
-    
+    //选项
     [_signUpView.chosenButton addTarget:self action:@selector(chosenProtocol:) forControlEvents:UIControlEventTouchUpInside];
-    
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
     
@@ -60,7 +57,7 @@
     if (sender.selected ==NO) {
         
         if (_signUpView.phoneNumber.text.length>0&&_signUpView.checkCode.text.length>0&&_signUpView.userPassword.text.length>0&&_signUpView.userPasswordCompare.text.length>0) {
-
+            
             _signUpView.nextStepButton.enabled = YES;
             [_signUpView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             
@@ -78,7 +75,7 @@
             [sender setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];
             
             sender.selected = YES;
-
+            
         }
         
         
@@ -102,7 +99,7 @@
             sender.backgroundColor = [UIColor clearColor];
             
             sender.selected= NO;
-
+            
         }
         
         
@@ -119,9 +116,9 @@
     /* 测试口  直接跳转*/
     
     /* 进入下一页*/
-//        _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
-//    
-//        [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
+    //        _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
+    //
+    //        [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
     
     ////////////////////////////////////////////
     
@@ -293,7 +290,7 @@
         _signUpView.phoneNumber.text = [_signUpView.phoneNumber.text substringToIndex:11];
         [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请输入11位手机号", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
     }
-
+    
     if (_signUpView.phoneNumber.text.length>0&&_signUpView.checkCode.text.length>0&&_signUpView.userPassword.text.length>0&&_signUpView.userPasswordCompare.text.length>0&&_signUpView.chosenButton.selected==YES) {
         _signUpView.nextStepButton.enabled = YES;
         [_signUpView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -362,12 +359,9 @@
     //    联通号段:130/131/132/155/156/185/186/145/176
     //    移动号段:134/135/136/137/138/139/150/151/152/157/158/159/182/183/184/187/188/147/178
     //    虚拟运营商:170
-
-
+    
     NSString *MOBILE = @"^1(1[0-9]|3[0-9]|4[57]|5[0-35-9]|8[0-9]|7[06-8])\\d{8}$";
-    
     NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
-    
     return [regextestmobile evaluateWithObject:mobileNum];
 }
 
@@ -377,7 +371,7 @@
 -(BOOL)checkPassWord:(NSString *)password{
     
     //6-16位数字和字母组成
-//    ^[A-Za-z0-9]{6,16}$
+    //    ^[A-Za-z0-9]{6,16}$
     NSString *regex = @"^[A-Za-z0-9\\~\\!\\/\\@\\#\\$\\%\\^\\&\\*\\(\\)\\-\\_\\=\\+\\\\\\|\\[\\{\\}\\]\\;\\:\\\'\\\"\\,\\<\\.\\>\\/\\?]{6,16}$";
     NSPredicate *   pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
     if ([pred evaluateWithObject:password]) {
@@ -422,10 +416,7 @@
             
             [button setTitle:strTime forState:UIControlStateNormal];
             [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-            
             [button setEnabled:NO];
-            
-            
             
         });
         deadline--;
@@ -433,22 +424,16 @@
         /* 倒计时结束 关闭线程*/
         if(deadline<=0){
             dispatch_source_cancel(_timer);
-            
             dispatch_async(dispatch_get_main_queue(), ^{
-                
                 
                 [button setTitle:NSLocalizedString(@"获取校验码", nil) forState:UIControlStateNormal];
                 [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                
                 [button setEnabled:YES];
-                
                 
             });
         }
     });
     dispatch_resume(_timer);
-    
-    
     
 }
 
@@ -459,14 +444,7 @@
     [_signUpView.userPassword resignFirstResponder];
     [_signUpView.userPasswordCompare resignFirstResponder];
     [_signUpView.unlockKey resignFirstResponder];
-    
-    
-    
-    //    phoneNumber
-    //    checkCode
-    //    userPassword
-    //    userPasswordCompare
-    //    unlockKey
+
 }
 
 

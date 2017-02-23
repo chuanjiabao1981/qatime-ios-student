@@ -880,6 +880,7 @@
             
             RecommandTeacher *tech = _teachers[indexPath.row];
             
+            
             /* 加载获取到的数据*/
             
             if (tech.avatar_url !=nil) {
@@ -919,26 +920,32 @@
             reccell.model = _classes[indexPath.row];
             reccell.sd_indexPath = indexPath;
             reccell.saledLabel.hidden = NO;
+            reccell.reason.hidden = NO;
             
         }else if (_classes .count==0){
             
             reccell.model = [[RecommandClasses alloc]init];
-            
             [reccell.classImage setImage:[UIImage imageNamed:@"school"]];
             reccell.className.text =NSLocalizedString(@"当前无课程", nil) ;
-            
             reccell.saledLabel.hidden = YES;
+            reccell.reason.hidden = YES;
             
         }
         
-        if (reccell.isNewest==YES) {
-            reccell.reason.text = NSLocalizedString(@" 最新 ", nil);
-            reccell.reason.backgroundColor = [UIColor colorWithRed:0.4 green:0.8 blue:1.0 alpha:1.0];
-        }
-        if (reccell.isHottest == YES) {
-            reccell.reason.text = NSLocalizedString(@" 最热 ", nil);
-            reccell.reason.backgroundColor = [UIColor colorWithRed:1.0 green:0.6 blue:0.6 alpha:1.0];
-        }
+//        if (reccell.isNewest==YES) {
+//            reccell.reason.text = NSLocalizedString(@" 最新 ", nil);
+//            reccell.reason.backgroundColor = [UIColor colorWithRed:0.4 green:0.8 blue:1.0 alpha:1.0];
+//        }else{
+//            reccell.reason.text = @"";
+//            
+//        }
+//        
+//        if (reccell.isHottest == YES) {
+//            reccell.reason.text = NSLocalizedString(@" 最热 ", nil);
+//            reccell.reason.backgroundColor = [UIColor colorWithRed:1.0 green:0.6 blue:0.6 alpha:1.0];
+//        }else{
+//            reccell.reason.text = @"";
+//        }
         
         
         cell=reccell ;

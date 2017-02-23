@@ -112,7 +112,7 @@
 */
 
 - (void)initDatas {
-    _topViewColor = [UIColor colorWithHexString:@"0x6271f3"];
+    _topViewColor = BUTTONRED;
     _buttonTitleColor = [UIColor colorWithHexString:@"0xffffff"];
 }
 

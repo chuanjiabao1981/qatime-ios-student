@@ -13,15 +13,11 @@
 #import "NavigationBar.h"
 
 
-
-
-
 @interface SignUpViewController : UIViewController
 
 @property(nonatomic,strong) NavigationBar  *navigationBar ;
 
 @property(nonatomic,strong) SignUpView  *signUpView ;
-
 
 
 @end

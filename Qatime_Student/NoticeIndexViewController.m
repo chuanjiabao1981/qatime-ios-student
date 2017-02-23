@@ -580,9 +580,6 @@
                     
                 }];
                 
-                
-                
-                
             }else{
                 
                 [[[NIMSDK sharedSDK]teamManager]updateNotifyState:YES inTeam:cell.model.tutorium.chat_team_id completion:^(NSError * _Nullable error) {
@@ -713,14 +710,11 @@
             });
             
         }else{
-            
-            
+              
         }
     }
     
-    
 }
-
 
 
 - (void)returnLastPage{

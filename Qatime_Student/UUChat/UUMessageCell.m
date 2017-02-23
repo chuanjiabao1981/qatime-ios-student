@@ -127,15 +127,18 @@
         }
         
         
-        
-        
         contentVoiceIsPlaying = NO;
         
         /* 创建支持自定义表情的YYLabel类型的label*/
-        self.title = [[YYLabel alloc]init];
+        self.title = [[YYTextView alloc]init];
         self.title.textAlignment = NSTextAlignmentCenter;
         self.title.textColor  = [UIColor blackColor];
-        self.title.numberOfLines = 0;
+        self.title.textVerticalAlignment = YYTextVerticalAlignmentCenter;
+        self.title.editable = NO;
+        self.title.scrollEnabled = NO;
+        
+        
+        
         [self.contentView addSubview:self.title];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(btnContentClick)];
@@ -148,8 +151,6 @@
         _timeLabel.textColor = [UIColor lightGrayColor];
         _timeLabel.font =ChatTimeFont;
         [self.contentView addSubview:_timeLabel];
-        
-        
         
         
         /* 发送失败标示图*/
@@ -640,14 +641,11 @@
                     self.title.attributedText =text;
                     /* 富文本的title和气泡方案*/
                     
-//                    [self.title setFrame:self.btnContent.frame];
-                    
                     self.title.textContainerInset = UIEdgeInsetsMake(10, 5, 10, 15);
                     self.title.textAlignment = NSTextAlignmentLeft;
                     
                     normal  = [normal resizableImageWithCapInsets:UIEdgeInsetsMake(35, 5, 10, 22)];
-//                    self.btnContent.frame = CGRectMake(messageFrame.contentF.origin.x-20, messageFrame.contentF.origin.y, messageFrame.contentF.size.width+20, messageFrame.contentF.size.height);
-//                    self.title.frame = self.btnContent.frame;
+
                     
                     [self.btnContent updateLayout];
                     
@@ -756,46 +754,82 @@
                 NSLog(@"%@",resultArray);
                 
                 
-                
-                /* 先取出来表情*/
-                NSMutableArray *names = @[].mutableCopy;
-                
-                //根据匹配范围来用图片进行相应的替换
-                for(NSTextCheckingResult *match in resultArray){
-                    //获取数组元素中得到range
-                    NSRange range = [match range];
+                if (resultArray.count!=0) {
+                    //有富文本
                     
-                    //获取原字符串中对应的值
-                    NSString *subStr = [title substringWithRange:range];
-                    //            NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
-                    NSMutableString *faceName = @"".mutableCopy;
+                    /* 先取出来表情*/
+                    NSMutableArray *names = @[].mutableCopy;
                     
-                    faceName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+                    //根据匹配范围来用图片进行相应的替换
+                    for(NSTextCheckingResult *match in resultArray){
+                        //获取数组元素中得到range
+                        NSRange range = [match range];
+                        
+                        //获取原字符串中对应的值
+                        NSString *subStr = [title substringWithRange:range];
+                        //            NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+                        NSMutableString *faceName = @"".mutableCopy;
+                        
+                        faceName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+                        
+                        NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
+                        [names addObject:dicc];
+                        
+                    }
+                    for (NSInteger i = names.count-1; i>=0; i--) {
+                        
+                        NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
+                        NSData *data = [NSData dataWithContentsOfFile:path];
+                        YYImage *image = [YYImage imageWithData:data scale:2.5];
+                        image.preloadAllAnimatedImageFrames = YES;
+                        YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
+                        
+                        NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
+                        
+                        [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
+                    }
                     
-                    NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range]};
-                    [names addObject:dicc];
+                    
+                    self.title.attributedText =text;
+                    
+//                    [self.title setFrame:self.btnContent.frame];
+                    
+                    [self.btnContent updateLayout];
+                    
+                    [self.title sd_clearAutoLayoutSettings];
+                    self.title.sd_layout
+                    .leftEqualToView(self.btnContent)
+                    .rightEqualToView(self.btnContent)
+                    .topEqualToView(self.btnContent)
+                    .bottomEqualToView(self.btnContent);
+                    [self.title updateLayout];
+                    
+                    
+                    self.title.textContainerInset  = UIEdgeInsetsMake(10, 20, 0, 0);
+                    self.title.textAlignment = NSTextAlignmentLeft;
+                    
+                }else{
+                    //没有富文本
+                    self.title.attributedText =text;
+                    
+                    [self.title setFrame:self.btnContent.frame];
+                    
+                    self.title.textContainerInset  = UIEdgeInsetsMake(10, 20, 0, 0);
+                    self.title.textAlignment = NSTextAlignmentLeft;
+                    
+                    [self.btnContent updateLayout];
+                    [self.title sd_clearAutoLayoutSettings];
+                    self.title.sd_layout
+                    .leftEqualToView(self.btnContent)
+                    .rightEqualToView(self.btnContent)
+                    .topEqualToView(self.btnContent)
+                    .bottomEqualToView(self.btnContent);
+                    [self.title updateLayout];
+
+
                     
                 }
-                for (NSInteger i = names.count-1; i>=0; i--) {
-                    
-                    NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
-                    NSData *data = [NSData dataWithContentsOfFile:path];
-                    YYImage *image = [YYImage imageWithData:data scale:2.5];
-                    image.preloadAllAnimatedImageFrames = YES;
-                    YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
-                    
-                    NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
-                    
-                    [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
-                }
                 
-                
-                self.title.attributedText =text;
-                
-                [self.title setFrame:self.btnContent.frame];
-                
-                self.title.textContainerInset  = UIEdgeInsetsMake(0, 20, 0, 0);
-                self.title.textAlignment = NSTextAlignmentLeft;
             }
                 
                 break;

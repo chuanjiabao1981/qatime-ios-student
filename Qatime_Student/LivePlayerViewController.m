@@ -1224,6 +1224,10 @@ bool ismute     = NO;
     [IFView updateLayout];
     
     
+    /* 语音输入按钮隐藏*/
+    IFView.voiceSwitchTextButton.hidden = YES;
+    
+    
 }
 
 /* 控制层切回竖屏模式的方法*/
@@ -1297,6 +1301,9 @@ bool ismute     = NO;
     .bottomSpaceToView(_videoInfoView.view2,0)
     .heightIs(46);
     
+    
+    /* 语音输入按钮显示*/
+    IFView.voiceSwitchTextButton.hidden = NO;
     
     
 }

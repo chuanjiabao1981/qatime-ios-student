@@ -411,6 +411,9 @@
 		54E00B171E5AEF020056C74F /* NTESAudio2TextViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54E00B161E5AEF020056C74F /* NTESAudio2TextViewController.xib */; };
 		54E120CE1DDC2CA5004F8012 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E120CD1DDC2CA5004F8012 /* CoreText.framework */; };
 		54E428B41DE2DC6100AF5980 /* UIControl+RemoveTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E428B31DE2DC6100AF5980 /* UIControl+RemoveTarget.m */; };
+		54E8B69F1E5EF06E00A9703F /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E8B69E1E5EF06E00A9703F /* iflyMSC.framework */; };
+		54E8B6A11E5EF1AF00A9703F /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E8B6A01E5EF1AF00A9703F /* Contacts.framework */; };
+		54E8B6A31E5EF1B600A9703F /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E8B6A21E5EF1B600A9703F /* AddressBook.framework */; };
 		54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC41DFE8D67001A98CE /* OrderView.m */; };
 		54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC71DFE8D75001A98CE /* OrderViewController.m */; };
 		54ECFECA1DFE978C001A98CE /* money.png in Resources */ = {isa = PBXBuildFile; fileRef = 54ECFEC91DFE978C001A98CE /* money.png */; };
@@ -1198,6 +1201,9 @@
 		54E8928C1DD9B3E100C47095 /* libSDWebImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDWebImage.a; path = "../../../Library/Developer/Xcode/DerivedData/Qatime_Student-bkkprbzrukkoqsfxcnjbfolvixqu/Build/Products/Debug-iphonesimulator/SDWebImage/libSDWebImage.a"; sourceTree = "<group>"; };
 		54E8928D1DD9B3E100C47095 /* libYYModel.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libYYModel.a; path = "../../../Library/Developer/Xcode/DerivedData/Qatime_Student-bkkprbzrukkoqsfxcnjbfolvixqu/Build/Products/Debug-iphonesimulator/YYModel/libYYModel.a"; sourceTree = "<group>"; };
 		54E8928E1DD9B3E100C47095 /* libZFPlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFPlayer.a; path = "../../../Library/Developer/Xcode/DerivedData/Qatime_Student-bkkprbzrukkoqsfxcnjbfolvixqu/Build/Products/Debug-iphonesimulator/ZFPlayer/libZFPlayer.a"; sourceTree = "<group>"; };
+		54E8B69E1E5EF06E00A9703F /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iflyMSC.framework; sourceTree = "<group>"; };
+		54E8B6A01E5EF1AF00A9703F /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
+		54E8B6A21E5EF1B600A9703F /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		54EA9B201DD9A7DF004B8040 /* libNELivePlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNELivePlayer.a; path = Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/libs/libNELivePlayer.a; sourceTree = "<group>"; };
 		54EA9B221DD9A7F1004B8040 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs/libcrypto.a"; sourceTree = "<group>"; };
 		54EA9B231DD9A7F1004B8040 /* libfdk-aac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libfdk-aac.a"; path = "Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs/libfdk-aac.a"; sourceTree = "<group>"; };
@@ -1276,6 +1282,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54E8B6A31E5EF1B600A9703F /* AddressBook.framework in Frameworks */,
+				54E8B6A11E5EF1AF00A9703F /* Contacts.framework in Frameworks */,
+				54E8B69F1E5EF06E00A9703F /* iflyMSC.framework in Frameworks */,
 				5493450E1E4B058B005849B2 /* JavaScriptCore.framework in Frameworks */,
 				5458AB381E0D424B00D6409F /* libcrypto.a in Frameworks */,
 				5458AB391E0D424B00D6409F /* libssl.a in Frameworks */,
@@ -1656,7 +1665,6 @@
 		543C207A1DC6F6470086B04B /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				54F32F731E372E65000F8926 /* 检查网络环境 */,
 				543E234F1E2CE80C00381F10 /* 支付密码框 */,
 				541E20011E1398DB007CF5D1 /* 异常捕获 */,
 				5457317E1E022E5A00F45C03 /* 支付密码 */,
@@ -2517,6 +2525,7 @@
 		54A153A81DC6F09D0070B508 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				54E8B69D1E5EF06200A9703F /* 讯飞语音识别 */,
 				54B45D081E5C30670027F958 /* JTSegmentControl */,
 				5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */,
 				54F32F741E373142000F8926 /* Reachability */,
@@ -3356,6 +3365,14 @@
 			name = SDK;
 			sourceTree = "<group>";
 		};
+		54E8B69D1E5EF06200A9703F /* 讯飞语音识别 */ = {
+			isa = PBXGroup;
+			children = (
+				54E8B69E1E5EF06E00A9703F /* iflyMSC.framework */,
+			);
+			name = "讯飞语音识别";
+			sourceTree = "<group>";
+		};
 		54EA9B361DD9A81A004B8040 /* 网易视频云 */ = {
 			isa = PBXGroup;
 			children = (
@@ -3409,13 +3426,6 @@
 			children = (
 			);
 			name = Model;
-			sourceTree = "<group>";
-		};
-		54F32F731E372E65000F8926 /* 检查网络环境 */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "检查网络环境";
 			sourceTree = "<group>";
 		};
 		54F32F741E373142000F8926 /* Reachability */ = {
@@ -3959,6 +3969,8 @@
 		B493EB6DEDE6DB14F293C15A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				54E8B6A21E5EF1B600A9703F /* AddressBook.framework */,
+				54E8B6A01E5EF1AF00A9703F /* Contacts.framework */,
 				5493450D1E4B058B005849B2 /* JavaScriptCore.framework */,
 				5458AB321E0D411D00D6409F /* libcrypto.a */,
 				5458AB331E0D411D00D6409F /* libssl.a */,

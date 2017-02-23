@@ -559,7 +559,6 @@
 //            [hud show:YES];
             [hud setLabelText:[NSString stringWithFormat:@"正在提交 %ld%@",(NSInteger)uploadProgress.fractionCompleted*100,@"%"]];
 
-            
 //            if ((NSInteger)uploadProgress.fractionCompleted*100==100) {
 //                [hud hide:YES];
 //            }
