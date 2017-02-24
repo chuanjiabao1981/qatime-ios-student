@@ -609,30 +609,32 @@
 - (void)buyClass{
     
     if (_dataDic) {
-        if ([_dataDic[@"status"] isEqualToString:@"teaching"]) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"该辅导已开课,是否继续购买?" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                
-            }] ;
-            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
-                [self requestOrder];
-                
-            }] ;
-            
-            [alert addAction:cancel];
-            [alert addAction:sure];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-            
-        }else{
-            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否确定购买该课程?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                if (buttonIndex!=0) {
-                    [self requestOrder];
-                }
-                
-            }];
-        }
+//        if ([_dataDic[@"status"] isEqualToString:@"teaching"]) {
+//            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"该辅导已开课,是否继续购买?" preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//                
+//            }] ;
+//            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                
+//                [self requestOrder];
+//                
+//            }] ;
+//            
+//            [alert addAction:cancel];
+//            [alert addAction:sure];
+//            
+//            [self presentViewController:alert animated:YES completion:nil];
+        
+//        }else{
+//            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否确定购买该课程?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+//                if (buttonIndex!=0) {
+//                    [self requestOrder];
+//                }
+//                
+//            }];
+//        }
+        
+        [self loadingHUDStopLoadingWithTitle:@"请前往网页报名"];
         
     }
     

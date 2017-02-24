@@ -73,6 +73,9 @@
         _price.font = [UIFont systemFontOfSize:14*ScrenScale];
         _price.textAlignment = NSTextAlignmentLeft;
         
+        //先隐藏
+        _price.hidden = YES;
+        
         manager = [[SDWebImageManager alloc]init];
         
         

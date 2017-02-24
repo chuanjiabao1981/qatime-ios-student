@@ -11,10 +11,12 @@
 #import "UUProgressHUD.h"
 #import "ACMacros.h"
 
+#import "NSString+YYAdd.h"
 
 
 
 @interface UUInputFunctionView ()<YYTextViewDelegate,Mp3RecorderDelegate,UITextViewDelegate>
+
 {
     BOOL isbeginVoiceRecord;
     Mp3Recorder *MP3;
@@ -37,21 +39,21 @@
         MP3 = [[Mp3Recorder alloc]initWithDelegate:self];
         self.backgroundColor = [UIColor whiteColor];
         //发送消息
-//        self.btnSendMessage = [UIButton buttonWithType:UIButtonTypeCustom];
-//        self.btnSendMessage.frame = CGRectMake(Main_Screen_Width-40, 5, 30, 30);
-//        self.isAbleToSendTextMessage = NO;
-//        [self.btnSendMessage setTitle:@"发送" forState:UIControlStateNormal];
-//        [self.btnSendMessage setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-//        self.btnSendMessage.enabled = NO;
-//        self.btnSendMessage.frame = RECT_CHANGE_width(self.btnSendMessage,35);
-//        UIImage *image = [UIImage imageNamed:@"chat_send_message"];
-//        [self.btnSendMessage setBackgroundImage:image forState:UIControlStateNormal];
-//        self.btnSendMessage.titleLabel.font = [UIFont systemFontOfSize:12];
-//        [self.btnSendMessage addTarget:self action:@selector(sendMessage:) forControlEvents:UIControlEventTouchUpInside];
-//        [self addSubview:self.btnSendMessage];
+        //        self.btnSendMessage = [UIButton buttonWithType:UIButtonTypeCustom];
+        //        self.btnSendMessage.frame = CGRectMake(Main_Screen_Width-40, 5, 30, 30);
+        //        self.isAbleToSendTextMessage = NO;
+        //        [self.btnSendMessage setTitle:@"发送" forState:UIControlStateNormal];
+        //        [self.btnSendMessage setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        //        self.btnSendMessage.enabled = NO;
+        //        self.btnSendMessage.frame = RECT_CHANGE_width(self.btnSendMessage,35);
+        //        UIImage *image = [UIImage imageNamed:@"chat_send_message"];
+        //        [self.btnSendMessage setBackgroundImage:image forState:UIControlStateNormal];
+        //        self.btnSendMessage.titleLabel.font = [UIFont systemFontOfSize:12];
+        //        [self.btnSendMessage addTarget:self action:@selector(sendMessage:) forControlEvents:UIControlEventTouchUpInside];
+        //        [self addSubview:self.btnSendMessage];
         
         self.btnSendMessage = [UIButton buttonWithType:UIButtonTypeCustom];
-//        self.btnSendMessage.frame = CGRectMake(Main_Screen_Width-40, 5, 30, 30);
+        //        self.btnSendMessage.frame = CGRectMake(Main_Screen_Width-40, 5, 30, 30);
         
         self.isAbleToSendTextMessage = NO;
         [self.btnSendMessage setTitle:@"" forState:UIControlStateNormal];
@@ -120,13 +122,13 @@
         self.TextViewInput.layer.borderWidth = 1;
         self.TextViewInput.layer.borderColor = [[[UIColor lightGrayColor] colorWithAlphaComponent:0.4] CGColor];
         [self addSubview:self.TextViewInput];
-         self.TextViewInput.sd_layout
+        self.TextViewInput.sd_layout
         .leftSpaceToView(self.voiceSwitchTextButton,10)
         .rightSpaceToView(self.btnChangeVoiceState,10)
         .topSpaceToView(self,10)
         .bottomSpaceToView(self,10);
         
-    
+        
         //分割线
         self.layer.borderWidth = 1;
         self.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.3].CGColor;
@@ -136,6 +138,8 @@
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeSenderButton) name:@"ChatNone" object:nil] ;
         
+        
+                
     }
     return self;
 }
@@ -174,18 +178,21 @@
         UIActionSheet *actionSheet= [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相机",@"来自相册",nil];
         [actionSheet showInView:self.window];
     }
-
-
+    
+    
     
 }
+
+
+
 
 #pragma mark- 所有的有关录音的方法
 
 - (void)beginRecordVoice:(UIButton *)button
 {
     
-    
     [MP3 startRecord];
+   
     playTime = 0;
     playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
     [UUProgressHUD show];
@@ -198,6 +205,7 @@
 {
     if (playTimer) {
         [MP3 stopRecord];
+        
         [playTimer invalidate];
         playTimer = nil;
         [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordEnd" object:nil];
@@ -209,10 +217,11 @@
 {
     if (playTimer) {
         [MP3 cancelRecord];
+        
         [playTimer invalidate];
         playTimer = nil;
         
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordEnd" object:nil];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordCancel" object:nil];
     }
     
     [UUProgressHUD dismissWithError:@"取消发送"];
@@ -251,7 +260,7 @@
     [self.delegate UUInputFunctionView:self sendVoice:voiceData time:playTime+1];
     
     [UUProgressHUD dismissWithSuccess:@"发送成功"];
-
+    
     //缓冲消失时间 (最好有block回调消失完成)
     self.voiceSwitchTextButton.enabled = NO;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -259,8 +268,8 @@
     });
 }
 
-- (void)failRecord
-{
+- (void)failRecord{
+    
     [UUProgressHUD dismissWithSuccess:@"录音时间太短"];
     
     //缓冲消失时间 (最好有block回调消失完成)
@@ -286,7 +295,7 @@
 
 /* 发送按钮变为图片*/
 - (void)changeSendBtnWithPhoto:(BOOL)isPhoto{
-   
+    
     if (_canNotSendImage == NO) {
         
         self.isAbleToSendTextMessage = !isPhoto;
@@ -304,9 +313,9 @@
 }
 
 - (void)textViewDidEndEditing:(YYTextView *)textView{
- 
-        
-//        [self changeSendBtnWithPhoto:YES];
+    
+    
+    //        [self changeSendBtnWithPhoto:YES];
     
 }
 

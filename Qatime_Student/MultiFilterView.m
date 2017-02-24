@@ -29,8 +29,14 @@
         [self addSubview:highPriceContent];
         highPriceContent.layer.borderColor = [UIColor lightGrayColor].CGColor;
         highPriceContent.layer.borderWidth = 0.6f;
-        highPriceContent.sd_layout.rightSpaceToView(self,20).topSpaceToView(self,20).widthRatioToView(self,1/3.5f).heightRatioToView(self,0.1f);
+        highPriceContent.sd_layout
+        .rightSpaceToView(self,20)
+        .topSpaceToView(self,20)
+        .widthRatioToView(self,1/3.5f)
+        .heightRatioToView(self,0.1f);
         highPriceContent.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
+        
+        highPriceContent.hidden = YES;
         
         /*高价输入框*/
         _highPrice = [[UITextField alloc]init];
@@ -38,6 +44,7 @@
         _highPrice.textAlignment = NSTextAlignmentCenter;
         _highPrice.sd_layout.leftSpaceToView(highPriceContent,5).topSpaceToView(highPriceContent,0).bottomSpaceToView(highPriceContent,0).widthRatioToView(highPriceContent,4/5.0f);
         _highPrice.keyboardType=UIKeyboardTypeNumberPad;
+        _highPrice.hidden=YES;
         
         /* 元2*/
         UILabel *yuan2=[[UILabel alloc]init];
@@ -46,6 +53,7 @@
         [yuan2 setTextColor:[UIColor blackColor]];
         yuan2.sd_layout.rightSpaceToView(highPriceContent,5).topSpaceToView(highPriceContent,0).bottomSpaceToView(highPriceContent,0);
         [yuan2 setSingleLineAutoResizeWithMaxWidth:20];
+        yuan2.hidden = YES;
         
         
         
@@ -57,6 +65,7 @@
         line1.textAlignment = NSTextAlignmentCenter;
         line1.sd_layout.centerYEqualToView(highPriceContent).rightSpaceToView(highPriceContent,10).heightIs(10);
         [line1 setSingleLineAutoResizeWithMaxWidth:20];
+        line1.hidden = YES;
         
         /* 低价输入框*/
         UIView *lowPriceContent1=[[UIView alloc]init];
@@ -66,6 +75,8 @@
         lowPriceContent1.sd_layout.topEqualToView(highPriceContent).rightSpaceToView(line1,10).bottomEqualToView(highPriceContent).widthRatioToView(highPriceContent,1.0f);
         lowPriceContent1.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
         
+        lowPriceContent1.hidden = YES;
+        
         /* 元1*/
         UILabel *yuan1=[[UILabel alloc]init];
         [lowPriceContent1 addSubview:yuan1];
@@ -73,7 +84,7 @@
         [yuan1 setTextColor:[UIColor blackColor]];
         yuan1.sd_layout.rightSpaceToView(lowPriceContent1,5).topSpaceToView(lowPriceContent1,0).bottomSpaceToView(lowPriceContent1,0);
         [yuan1 setSingleLineAutoResizeWithMaxWidth:20];
-        
+        yuan1.hidden = YES;
         
         
         /*低价输入框*/
@@ -82,6 +93,7 @@
         _lowPrice.textAlignment = NSTextAlignmentCenter;
         _lowPrice.sd_layout.leftSpaceToView(lowPriceContent1,5).topSpaceToView(lowPriceContent1,0).bottomSpaceToView(lowPriceContent1,0).widthRatioToView(lowPriceContent1,4/5.0f);
         _lowPrice.keyboardType=UIKeyboardTypeNumberPad;
+        _lowPrice.hidden = YES;
         
         /* 价格范围label*/
         UILabel *priceZone = [[UILabel alloc]init];
@@ -90,6 +102,7 @@
         [priceZone setTextColor:[UIColor lightGrayColor]];
         priceZone.sd_layout.leftSpaceToView(self,20).centerYEqualToView(lowPriceContent1).autoHeightRatio(0);
         [priceZone setSingleLineAutoResizeWithMaxWidth:100];
+        priceZone.hidden = YES;
 
         
         /* 课时范围输入框*/
@@ -166,21 +179,18 @@
         
         
        
-        /* 开课时间 左button*/
-        _startTime = [[UIButton alloc]init];
-        [_startTime setTitle:NSLocalizedString(@"请选择时间", nil) forState:UIControlStateNormal];
-        [_startTime setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [self addSubview:_startTime];
-        _startTime.sd_layout.leftEqualToView(lowPriceContent1).rightEqualToView(lowPriceContent1).topSpaceToView(lowPriceContent1,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(lowPriceContent1,1.0);
         
+     
         /* 开课时间 右button*/
         _endTime = [[UIButton alloc]init];
         [_endTime setTitle:NSLocalizedString(@"请选择时间", nil) forState:UIControlStateNormal];
         [_endTime setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self addSubview:_endTime];
-        _endTime.sd_layout.leftEqualToView(highPriceContent).rightEqualToView(highPriceContent).topSpaceToView(highPriceContent,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(highPriceContent,1.0);
         
-        
+        _endTime.sd_layout
+        .rightSpaceToView(self,20)
+        .widthRatioToView(self,1/3.5f)
+        .topSpaceToView(self,20);
         
         /* 小横线3*/
         UILabel *line3=[[UILabel alloc]init];
@@ -188,8 +198,24 @@
         [line3 setText:NSLocalizedString(@"至", nil)];
         [line3 setTextColor:[UIColor blackColor]];
         line3.textAlignment = NSTextAlignmentCenter;
-        line3.sd_layout.centerYEqualToView(_startTime).rightSpaceToView(_endTime,0).leftSpaceToView(_startTime,0).heightIs(10);
+        line3.sd_layout
+        .centerYEqualToView(_endTime)
+        .rightSpaceToView(_endTime,0)
+        .heightIs(10);
         [line3 setSingleLineAutoResizeWithMaxWidth:20];
+        
+        
+        /* 开课时间 左button*/
+        _startTime = [[UIButton alloc]init];
+        [_startTime setTitle:NSLocalizedString(@"请选择时间", nil) forState:UIControlStateNormal];
+        [_startTime setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [self addSubview:_startTime];
+        _startTime.sd_layout
+        .rightSpaceToView(line3,20)
+        .widthRatioToView(self,1/3.5f)
+        .topEqualToView(_endTime)
+        .bottomEqualToView(_endTime);
+        
         
         /* 开课时间label*/
      
@@ -201,6 +227,16 @@
         startTime.sd_layout.leftEqualToView(priceZone).rightEqualToView(priceZone).centerYEqualToView(_startTime).autoHeightRatio(0);
         
         /* 当前状态部分*/
+        /* 当前状态*/
+        UILabel *stateNow=[[UILabel alloc]init];
+        [self addSubview:stateNow];
+        [stateNow setText:NSLocalizedString(@"当前状态", nil)];
+        [stateNow setTextColor:[UIColor lightGrayColor]];
+        stateNow.sd_layout
+        .leftEqualToView(priceZone)
+        .rightEqualToView(priceZone)
+        .topSpaceToView(startTime,40)
+        .autoHeightRatio(0);
         
         /* 开课状态*/
         _class_Begin =[[UIButton alloc]init];
@@ -210,11 +246,14 @@
         _class_Begin.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _class_Begin.layer.borderWidth = 0.6f;
         
-        _class_Begin.sd_layout.leftEqualToView(_startTime).rightEqualToView(_startTime).topSpaceToView(_startTime,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(_startTime,0.9);
+        _class_Begin.sd_layout
+        .leftEqualToView(_startTime)
+        .rightEqualToView(_startTime)
+        .topEqualToView(stateNow)
+        .heightRatioToView(_startTime,1.4);
         _class_Begin.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
         
 
-        
         /* 招生状态*/
         _recuit =[[UIButton alloc]init];
         [self addSubview:_recuit];
@@ -223,19 +262,13 @@
         _recuit.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _recuit.layer.borderWidth = 0.6f;
         
-        _recuit.sd_layout.leftEqualToView(_endTime).rightEqualToView(_endTime).topSpaceToView(_endTime,CGRectGetWidth(self.bounds)/20.0f).heightRatioToView(_endTime,0.9);
+        _recuit.sd_layout
+        .leftEqualToView(_endTime)
+        .rightEqualToView(_endTime)
+        .topEqualToView(stateNow)
+        .heightRatioToView(_endTime,1.4);
         _recuit.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
        
-
-        
-        /* 当前状态*/
-        UILabel *stateNow=[[UILabel alloc]init];
-        [self addSubview:stateNow];
-        [stateNow setText:NSLocalizedString(@"当前状态", nil)];
-        [stateNow setTextColor:[UIColor lightGrayColor]];
-        stateNow.sd_layout.leftEqualToView(priceZone).rightEqualToView(priceZone).centerYEqualToView(_recuit).autoHeightRatio(0);
-        
-        
         
         /* 重置按钮*/
         _resetButton = [[UIButton alloc]init];
@@ -248,7 +281,7 @@
         .leftEqualToView(stateNow)
         .bottomSpaceToView(self,40)
         .widthRatioToView(self,0.42f)
-        .heightRatioToView(self,0.15f);
+        .heightRatioToView(self,0.2f);
         _resetButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
         
         /* 确定按钮*/

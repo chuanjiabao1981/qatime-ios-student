@@ -119,7 +119,7 @@
         .rightSpaceToView(self.contentView,20)
         .topSpaceToView(self.contentView,10)
         .bottomSpaceToView(self.contentView,10)
-        .widthIs((self.contentView.height_sd-20)*1.1);
+        .widthIs((self.contentView.height_sd-20)*1.2);
         _badge.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
         [_badge updateLayout];
     }else if(self.model.badge>=100&&self.model.badge<1000){
@@ -130,7 +130,7 @@
         .rightSpaceToView(self.contentView,20)
         .topSpaceToView(self.contentView,10)
         .bottomSpaceToView(self.contentView,10)
-        .heightIs((self.contentView.height_sd-20)*1.3);
+        .widthIs((self.contentView.height_sd-20)*1.5);
         _badge.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
         [_badge updateLayout];
         

@@ -91,7 +91,7 @@
     
     /* 初始化容器*/
     
-    _menuName = @[@"绑定手机",@"绑定邮箱",@"微信绑定",@"家长手机",@"修改支付密码",@"修改登录密码"];
+    _menuName = @[@"绑定手机",@"绑定邮箱",@"微信绑定",@"家长手机",/*@"修改支付密码",*/@"修改登录密码"];
     
     
     /* 添加一个家长手机修改成功的监听*/
@@ -218,7 +218,7 @@
             break;
             
         case 1:
-            return 2;
+            return 1;
             
             break;
     }
@@ -295,11 +295,11 @@
                             cell.balance.hidden = YES;
                         }
                             break;
-                        case 1:{
-                            cell.balance.hidden = YES;
-                            
-                        }
-                            break;
+//                        case 1:{
+//                            cell.balance.hidden = YES;
+//                            
+//                        }
+//                            break;
                             
                     }
                     
@@ -387,38 +387,38 @@
             
         case 1:{
             switch (indexPath.row) {
+//                case 0:{
+                    
+//                   [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置或修改后将在24小时内不能使用支付密码,是否继续?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"继续"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+//                       if (buttonIndex!=0) {
+//                           
+//                           if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
+//                               if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==YES) {
+//                                   /* 已经设置过支付密码,更改支付密码*/
+//                                   SetPayPasswordViewController *setPass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
+//                                   [self.navigationController pushViewController:setPass animated:YES];
+//                                   
+//                                   
+//                               }else if([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==NO){
+//                                   /* 初次设置支付密码*/
+//                                   AuthenticationViewController *authentication =[[AuthenticationViewController alloc]init];
+//                                   [self.navigationController pushViewController:authentication animated:YES];
+//                                   
+//                                   
+////                                   SetPayPasswordViewController *newpass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
+////                                   [self.navigationController pushViewController:newpass animated:YES];
+//                                   
+//                                   
+//                               }
+//                           }
+//         
+//                       }
+//                       
+//                   }];
+                    
+//                }
+//                    break;
                 case 0:{
-                    
-                   [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置或修改后将在24小时内不能使用支付密码,是否继续?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"继续"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                       if (buttonIndex!=0) {
-                           
-                           if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
-                               if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==YES) {
-                                   /* 已经设置过支付密码,更改支付密码*/
-                                   SetPayPasswordViewController *setPass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
-                                   [self.navigationController pushViewController:setPass animated:YES];
-                                   
-                                   
-                               }else if([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==NO){
-                                   /* 初次设置支付密码*/
-                                   AuthenticationViewController *authentication =[[AuthenticationViewController alloc]init];
-                                   [self.navigationController pushViewController:authentication animated:YES];
-                                   
-                                   
-//                                   SetPayPasswordViewController *newpass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
-//                                   [self.navigationController pushViewController:newpass animated:YES];
-                                   
-                                   
-                               }
-                           }
-         
-                       }
-                       
-                   }];
-                    
-                }
-                    break;
-                case 1:{
                     
                     ChangePasswordViewController *changVC = [ChangePasswordViewController new];
                     [self.navigationController pushViewController:changVC animated:YES];

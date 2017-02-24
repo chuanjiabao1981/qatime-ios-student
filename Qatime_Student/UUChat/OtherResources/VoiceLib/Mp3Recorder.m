@@ -38,14 +38,16 @@
     //录音格式 无法使用
     [settings setValue :[NSNumber numberWithInt:kAudioFormatLinearPCM] forKey: AVFormatIDKey];
     //采样率
-    [settings setValue :[NSNumber numberWithFloat:11025.0] forKey: AVSampleRateKey];//44100.0
+    [settings setValue :[NSNumber numberWithFloat:16000.0] forKey: AVSampleRateKey];//44100.0
     //通道数
     [settings setValue :[NSNumber numberWithInt:2] forKey: AVNumberOfChannelsKey];
     //音频质量,采样质量
     [settings setValue:[NSNumber numberWithInt:AVAudioQualityMin] forKey:AVEncoderAudioQualityKey];
-    _recorder = [[AVAudioRecorder alloc] initWithURL:url
-                                            settings:settings
-                                               error:&recorderSetupError];
+    //设置音频比特率
+    [settings setValue:[NSNumber numberWithInt:16] forKey:AVEncoderBitRateKey];
+    
+    _recorder = [[AVAudioRecorder alloc] initWithURL:url  settings:settings error:&recorderSetupError];
+    
     if (recorderSetupError) {
         NSLog(@"%@",recorderSetupError);
     }
@@ -150,7 +152,8 @@
         unsigned char mp3_buffer[MP3_SIZE];
         
         lame_t lame = lame_init();
-        lame_set_in_samplerate(lame, 11025.0);
+        lame_set_in_samplerate(lame, 16000.0);//采样率
+        lame_set_num_channels(lame, 1);//单声道
         lame_set_VBR(lame, vbr_default);
         lame_init_params(lame);
         
@@ -193,7 +196,7 @@
 
 - (NSString *)mp3Path
 {
-    NSString *mp3Path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"mp3.aac"];
+    NSString *mp3Path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"mp3.amr"];
     return mp3Path;
 }
 

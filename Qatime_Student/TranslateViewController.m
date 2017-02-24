@@ -9,6 +9,11 @@
 #import "TranslateViewController.h"
 #import "UIViewController+HUD.h"
 
+#import "UIViewController+AFHTTP.h"
+
+#import "NSData+YYAdd.h"
+#import "NSString+YYAdd.h"
+
 @interface TranslateViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -37,43 +42,75 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    [SVProgressHUD showWithStatus:@"正在转换"];
     [self loadingHUDStartLoadingWithTitle:@"正在转换"];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hide)];
     [self.textView addGestureRecognizer:tap];
-    __weak typeof(self) weakSelf = self;
     
-        
-    [[[NIMSDK sharedSDK]mediaManager]transAudioToText:_option result:^(NSError * _Nullable error, NSString * _Nullable text) {
-        
-        [self loadingHUDStopLoadingWithTitle:nil];
-        weakSelf.cancelBtn.hidden = YES;
-        [weakSelf show:error text:text];
-        if (!error) {
-            weakSelf.message.isPlayed = YES;
-        }else{
-            [weakSelf.textView removeFromSuperview];
-            [weakSelf.view addSubview:weakSelf.errorTipView];
-        }
-    }];
+    
+    _faildView = [[UIImageView alloc]init];
+    
+    
+    [_faildView setImage:[UIImage imageNamed:@"sad"]];
+    
+    [self.view addSubview:_faildView];
+    
+    _faildView.sd_layout
+    .centerYIs(self.view.centerY_sd-100)
+    .centerXEqualToView(self.view)
+    .widthIs(self.view.width_sd/3)
+    .heightEqualToWidth();
+    _faildView.hidden = YES;
+    
+    
+    NSDictionary *dics = [[NSUserDefaults standardUserDefaults]valueForKey:@"Baidu_Token"];
+    NSString *accToken = dics[@"access_token"];
+    NSData *filedata = [NSData dataWithContentsOfFile:_option.filepath];
+    NSString *speech = [filedata base64EncodedString];
+    [self POSTSessionURL:[NSString stringWithFormat:@"http://vop.baidu.com/server_api?cuid=qatime_students&token=%@",accToken]  withHeaderInfo:@"audio/amr;rate=16000" andHeaderfield:@"Content-Type" parameters:
+     @{
+       @"format":@"amr",
+       @"rate":[NSString stringWithFormat:@"%d",16000],
+       @"channel":[NSString stringWithFormat:@"%d",1],
+       @"token":accToken,
+       @"cuid":@"qatime_students",
+       @"speech":speech,
+       @"len":[NSString stringWithFormat:@"%ld",filedata.length]
+       } completeSuccess:^(id  _Nullable responds) {
+           
+           NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+           NSLog(@"%@", dic);
+           
+           for (NSString *key  in dic) {
+               if ([key isEqualToString:@"err_msg"]) {
+                   
+                   [self loadingHUDStopLoadingWithTitle:nil];
+                   
+                   _textView.hidden = YES;
+                   _faildView.hidden = NO;
+                   
+                   return ;
+               }else{
+                   [self loadingHUDStopLoadingWithTitle:nil];
+                  _textView.hidden = NO;
+                    _faildView.hidden = YES;
+               }
+           }
+           
+           
+       }];
+    
     [_textView setEditable:NO];
     
 }
 
-- (void)viewDidLayoutSubviews{
-    CGRect rect = CGRectApplyAffineTransform(self.view.frame, self.view.transform);
-    self.errorTipView.top = rect.size.height * .33f;
-    self.errorTipView.centerX = rect.size.width * .5f;
-}
 
 
 - (void)show:(NSError *)error  text:(NSString *)text
 {
     if (error) {
-//        [self.view makeToast:NSLocalizedString(@"转换失败", nil)
-//                    duration:2
-//                    position:CSToastPositionCenter];
+        [self.loadingHUD hide:YES];
+        
         
     }
     else
@@ -96,7 +133,7 @@
 }
 
 - (void)hide{
-//    [SVProgressHUD dismiss];
+    //    [SVProgressHUD dismiss];
     void (^handler)(void)  = self.completeHandler;
     [self dismissViewControllerAnimated:NO
                              completion:^{
@@ -107,7 +144,7 @@
 }
 
 - (IBAction)cancelTrans:(id)sender{
-//    [SVProgressHUD dismiss];
+    //    [SVProgressHUD dismiss];
     [self dismissViewControllerAnimated:NO
                              completion:nil];
 }
@@ -120,13 +157,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

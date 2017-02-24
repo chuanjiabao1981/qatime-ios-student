@@ -418,7 +418,7 @@
     
     /* 多项筛选*/
     [_tutoriumView.filtersButton addTarget:self action:@selector(sortByMulti) forControlEvents:UIControlEventTouchUpInside];
-    _multiFilterView = [[MultiFilterView alloc]initWithFrame:CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd*2/5.0f)];
+    _multiFilterView = [[MultiFilterView alloc]initWithFrame:CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd/5.0f)];
     
     /* 多项筛选按钮和文本框功能实现*/
     /* 重置按钮功能实现*/
@@ -654,7 +654,7 @@
         
         effectView.alpha = 0;
         
-        [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd*2/5.0f)];
+        [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd/3.0f)];
         [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
     }];
 
@@ -759,7 +759,7 @@
     [self.view addSubview:_multiFilterView];
     [UIView animateWithDuration:0.3 animations:^{
         
-        [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd*3/5.0f, self.view.width_sd, self.view.height_sd*2/5.0f)];
+        [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd-self.view.height_sd/3.0f, self.view.width_sd, self.view.height_sd/3.0f)];
     }];
     
 }
@@ -770,7 +770,7 @@
     [UIView animateWithDuration:0.3 animations:^{
         
         
-        [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd+49, self.view.width_sd, self.view.height_sd*2/5.0f)];
+        [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd+49, self.view.width_sd, self.view.height_sd/3.0f)];
         effectView.alpha = 0;
     }];
 

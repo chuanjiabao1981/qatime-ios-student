@@ -32,6 +32,8 @@
 #import "NSDate+ChangeUTC.h"
 #import "UITextView_Placeholder.h"
 
+#import "UIViewController+AFHTTP.h"
+
 #import "LivePlayerViewController.h"
 #import "NIMSDK.h"
 #import <AVFoundation/AVFoundation.h>
@@ -41,8 +43,11 @@
 //#import <AVFoundation/AVAudioRecorder.h>
 #import "UUMessageFrame.h"
 #import "TranslateViewController.h"
+//#import <iflyMSC/iflyMSC.h>
+#import "NSString+YYAdd.h"
+#import "UIViewController+TimeInterval.h"
 
-@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelgate>{
+@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelgate/*,IFlySpeechRecognizerDelegate*/>{
     
     NavigationBar *_navigationBar;
     
@@ -66,6 +71,14 @@
     /* 录音部分*/
     AVAudioRecorder *recorder;
      NSTimer *levelTimer;
+    
+    /* 语音翻译专用的message*/
+//    NIMAudioObject *voiceObjevt;
+//    NIMMessage *_voiceMessage;
+    
+    /* 语音转换*/
+//    IFlySpeechRecognizer *_iFlySpeechRecognizer;
+//    NSMutableString *speechResult;
     
 }
 
@@ -216,13 +229,11 @@
     }
     
     /* 获取一次所有成员信息*/
-    
-    
-    
     [self requestChatTeamUser];
     
-    
-    
+    /* 加载百度语音*/
+    [self iBaiduLoad];
+
     
     /* 聊天信息 加个点击手势,取消输入框响应*/
     UITapGestureRecognizer *tapSpace = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapSpace)];
@@ -234,7 +245,78 @@
     /* 添加录音是否结束的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordEnd) name:@"RecordEnd" object:nil];
     
+    /* 添加录音是否取消的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordCancel) name:@"RecordCancel" object:nil];
+    
+    /* 翻译完成的通知*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(translateFinish:) name:@"TranslateFinish" object:nil];
+
+    
 }
+
+/* 加载讯飞语音*/
+- (void)iFlyload{
+//    _iFlySpeechRecognizer = [IFlySpeechRecognizer sharedInstance]; //
+//    _iFlySpeechRecognizer.delegate = self;
+//    [_iFlySpeechRecognizer setParameter:@"cloud" forKey:[IFlySpeechConstant ENGINE_TYPE]];
+//    //iat
+//    [_iFlySpeechRecognizer setParameter:@"iat" forKey:[IFlySpeechConstant IFLY_DOMAIN]];
+//
+//    speechResult = @"".mutableCopy;
+    
+}
+
+/* 加载百度语音*/
+- (void)iBaiduLoad{
+    
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Baidu_Token"]) {
+        
+        NSDictionary *dic =[[NSUserDefaults standardUserDefaults]valueForKey:@"Baidu_Token"];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        formatter.dateFormat = @"yyyy-MM-dd";
+
+        if ([[UIViewController dateTimeDifferenceWithStartTime:dic[@"Time"] endTime:[formatter stringFromDate:[NSDate date]]]integerValue]>28) {
+            
+            
+        }else{
+            
+            [self requestBaiduToken];
+            
+        }
+        
+        
+    }else{
+        [self requestBaiduToken];
+    }
+    
+    
+}
+
+/* 请求accessToken*/
+- (void)requestBaiduToken{
+    
+    [self POSTSessionURL:@"https://openapi.baidu.com/oauth/2.0/token" withHeaderInfo:nil andHeaderfield:nil parameters:@{@"grant_type":@"client_credentials",@"client_id":@"ETA52Kd3poCZULASv7KVtZWN",@"client_secret":@"545f54900c92233dd52f32081cbc06f7",@"scope":@"public"} completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary  *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        formatter.dateFormat = @"yyyy-MM-dd";
+        //保存本地日期
+        NSMutableDictionary *dicToken = dic.mutableCopy;
+        [dicToken setValue:[formatter stringFromDate:[NSDate date]] forKey:@"Time"];
+        
+        NSLog(@"%@",dicToken);
+        
+        [[NSUserDefaults standardUserDefaults]setValue:dic forKey:@"Baidu_Token"];
+    }];
+    
+
+    
+}
+
+
+
+
 /* 开始检测麦克风声音*/
 - (void)checkMicVolum{
    
@@ -322,6 +404,7 @@
 //开始录制的方法
 - (void)recordStart{
     
+//    [_iFlySpeechRecognizer startListening];
     [self checkMic];
    
 }
@@ -330,8 +413,84 @@
  
     [levelTimer invalidate];
     levelTimer = nil;
-    
+//    [_iFlySpeechRecognizer stopListening];
 }
+//语音录制取消的方法
+- (void)recordCancel{
+    
+    [levelTimer invalidate];
+    levelTimer = nil;
+//    [_iFlySpeechRecognizer cancel];
+
+}
+
+/* 发送带翻译的语音消息*/
+- (void)translateFinish:(NSNotification *)notification{
+    
+//    NSMutableString *translate = [notification object];
+    
+//    _voiceMessage.remoteExt  = @{@"translate":translate};
+    
+    //发送带翻译的语音消息
+//    [[NIMSDK sharedSDK].chatManager addDelegate:self];
+//    [[NIMSDK sharedSDK].chatManager sendMessage:_voiceMessage toSession:_session error:nil];
+
+}
+
+/* 语音识别回调*/
+//- (void) onResults:(NSArray *) results isLast:(BOOL) isLast{
+//    
+//    NSDictionary *dic = [results objectAtIndex:0];
+//    
+//    for (NSString *key in dic) {
+//        
+//        if ([dic[key] isEqualToString:@"100"]) {
+//            
+//            NSDictionary *disc= [key jsonValueDecoded];
+//            
+//            for (NSDictionary *letterDic in disc[@"ws"]) {
+//                
+//                NSLog(@"%@",letterDic);
+//                
+//                for (NSDictionary *leArr in letterDic[@"cw"]) {
+//                    
+//                    [speechResult appendFormat:@"%@", [NSString stringWithFormat:@"%@", [NSData dataWithData:leArr[@"w"]]]];
+//                    
+////                    NSLog(@"识别消息:%@",speechResult);
+//                }
+//                
+//            }
+//            
+//            if ([disc[@"ls"]boolValue]==YES) {
+//                
+//                /* 发送翻译完毕的通知*/
+//                [[NSNotificationCenter defaultCenter]postNotificationName:@"TranslateFinish" object:speechResult];
+//                
+//                speechResult = @"".mutableCopy;
+//                
+//            }else{
+//                
+//            }
+//            
+//        }
+//    }
+//    
+//    
+//}
+//
+///* 发送一条带有翻译内容的语音消息*/
+//- (void)sendMesseges:(NIMMessage *)voiceMessage withTranslate:(NSMutableString *)translateStr{
+//    
+//    
+//    
+//    
+//}
+
+//- (void) onError:(IFlySpeechError*) error{
+//    
+//    
+//}
+
 
 
 
@@ -763,7 +922,6 @@
 //消息发送进度回调----文本消息没有这个回调
 - (void)sendMessage:(NIMMessage *)message progress:(CGFloat)progress{
     
-    
     NSLog(@"发送进度::%f",progress);
     
 }
@@ -1029,7 +1187,7 @@
                     break;
                 case UUMessageTypeVoice:{
                     //读取音频源
-                    NIMAudioObject *audioObject = [[NIMAudioObject alloc]initWithData:failMsg.message.voice extension:@".aac"];
+                    NIMAudioObject *audioObject = [[NIMAudioObject alloc]initWithData:failMsg.message.voice extension:@".amr"];
 
                     reMessage.messageObject = audioObject;
                     
@@ -1222,12 +1380,13 @@
     //创建一条云信消息
     //    声音文件只支持 aac 和 amr 类型
     NSMutableString *tmpDir = [NSMutableString stringWithString:NSTemporaryDirectory()];
-    [tmpDir appendString:@"mp3.aac"];
+    [tmpDir appendString:@"mp3.amr"];
     
     //构造消息
     NIMAudioObject *audioObject = [[NIMAudioObject alloc] initWithSourcePath:tmpDir];
-    NIMMessage *message        = [[NIMMessage alloc] init];
-    message.messageObject      = audioObject;
+    NIMMessage *message = [[NIMMessage alloc] init];
+    message.messageObject     = audioObject;
+    
     
     //创建一条本地消息
     NSDictionary *dic = @{@"voice": voice,
@@ -1237,14 +1396,14 @@
     
     [self dealTheFunctionData:dic andMessage:message];
     
-    /* 云信发送语音消息*/
-    
-    
-    //发送消息
+    /* 发送一条语音消息*/
     [[NIMSDK sharedSDK].chatManager addDelegate:self];
     [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
+
+    
     
 }
+
 
 
 

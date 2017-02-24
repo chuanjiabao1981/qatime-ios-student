@@ -3737,7 +3737,7 @@ bool ismute     = NO;
     
     //    声音文件只支持 aac 和 amr 类型
     NSMutableString *tmpDir = [NSMutableString stringWithString:NSTemporaryDirectory()];
-    [tmpDir appendString:@"mp3.aac"];
+    [tmpDir appendString:@"mp3.amr"];
     
     //构造消息
     NIMAudioObject *audioObject = [[NIMAudioObject alloc] initWithSourcePath:tmpDir];

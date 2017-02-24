@@ -88,8 +88,8 @@
                     
                     NSInteger letterNum = _message.richNum;
                     //气泡尺寸修正
-                    if (letterNum<3) {
-                        contentSize.width-=letterNum*7;
+                    if (letterNum==2) {
+                        contentSize.width+=letterNum*5;
                     }else if (letterNum>=3&&letterNum<6){
                         contentSize.width+=6*letterNum;
                     }else if (letterNum>=6&&letterNum<8){
@@ -117,7 +117,10 @@
                     }else if (letterNum>=3&&letterNum<=8){
                         contentSize.width-=15*letterNum;
                     }else if (letterNum>8){
-                        contentSize.width-=10*letterNum/7;
+//                        contentSize.width-=10*letterNum;
+//                        contentSize.height+=10*letterNum/7;
+                        contentSize.width *=3;
+                        contentSize.height*=2;
                     }
                     
                     

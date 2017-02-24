@@ -11,10 +11,11 @@
 
 @interface TranslateViewController : UIViewController
 
-@property (nonatomic,strong) IBOutlet UIButton *cancelBtn;
+@property (nonatomic,weak) IBOutlet UIButton *cancelBtn;
 
 @property (nonatomic,strong) IBOutlet UIView *errorTipView;
 
+@property(nonatomic,strong) UIImageView *faildView ;
 @property (nonatomic,copy)   void (^completeHandler)(void)  ;
 
 - (instancetype)initWithMessage:(NIMMessage *)message;

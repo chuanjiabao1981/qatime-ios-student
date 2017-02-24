@@ -24,7 +24,8 @@
 #import <sys/utsname.h>
 #import "RealReachability.h"
 #import <JSPatchPlatform/JSPatch.h>
-//#import "IQKeyboardManager.h"
+
+//#import <iflyMSC/iflyMSC.h>
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate,NIMSystemNotificationManager,NIMLoginManagerDelegate>{
     
@@ -207,6 +208,13 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnPushAlert:) name:@"NotificationAlert" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnNotification:) name:@"Notification" object:nil];
     
+    
+    
+    /* 讯飞初始化*/
+    //appid
+//    NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@", @"58aeb653"];
+//    
+//    [IFlySpeechUtility createUtility:initString];
     
     
 

@@ -83,10 +83,10 @@
 
     
     /* 菜单名*/
-    _settingName = @[@"我的钱包",@"我的订单",@"我的辅导",@"安全管理",@"系统设置"];
+    _settingName = @[/*@"我的钱包",@"我的订单",*/@"我的辅导",@"安全管理",@"系统设置"];
     
     /* cell的图片*/
-    _cellImage = @[[UIImage imageNamed:@"美元"],[UIImage imageNamed:@"订单"],[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"安全"],[UIImage imageNamed:@"设置"]];
+    _cellImage = @[/*[UIImage imageNamed:@"美元"],[UIImage imageNamed:@"订单"],*/[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"安全"],[UIImage imageNamed:@"设置"]];
     
     /* 导航栏*/
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
@@ -271,7 +271,7 @@
     NSInteger rows = 1;
     
     if (section == 0) {
-        rows = 3;
+        rows = 1;
     }else if (section ==1){
         
         rows =2;
@@ -301,8 +301,8 @@
                 break;
             case 1:{
                 
-                [cell.logoImage setImage:_cellImage[indexPath.row+3]];
-                cell.settingName.text = _settingName[indexPath.row+3];
+                [cell.logoImage setImage:_cellImage[indexPath.row+1]];
+                cell.settingName.text = _settingName[indexPath.row+1];
                 cell.arrow.hidden = YES;
             }
                 
@@ -312,25 +312,25 @@
         
         if (indexPath.section ==0) {
             
+//            if (indexPath.row ==0) {
+//                cell.arrow.hidden = YES;
+//                
+//                if (login) {
+//                    
+//                    cell.balance .hidden = NO;
+//                    
+//                }else{
+//                    
+//                }
+//                
+//                if (_balance == nil) {
+//                    
+//                }else{
+//                    
+//                    cell.balance.text = [NSString stringWithFormat:@"￥%@",_balance];
+//                }
+//            }
             if (indexPath.row ==0) {
-                cell.arrow.hidden = YES;
-                
-                if (login) {
-                    
-                    cell.balance .hidden = NO;
-                    
-                }else{
-                    
-                }
-                
-                if (_balance == nil) {
-                    
-                }else{
-                    
-                    cell.balance.text = [NSString stringWithFormat:@"￥%@",_balance];
-                }
-            }
-            if (indexPath.row ==2) {
                 cell.arrow.hidden = YES;
 //                cell.separateLine.hidden = YES;
             }
@@ -394,20 +394,20 @@
             switch (indexPath.section) {
                 case 0:{
                     switch (indexPath.row) {
+//                        case 0:{
+//                            MyWalletViewController *mwVC = [MyWalletViewController new];
+//                            [self.navigationController pushViewController:mwVC animated:YES];
+//                            [self.rdv_tabBarController setTabBarHidden:YES];
+//                        }
+//                            break;
+//                        case 1:{
+//                            
+//                            MyOrderViewController *moVC = [MyOrderViewController new];
+//                            [self.navigationController pushViewController:moVC animated:YES];
+//                            [self.rdv_tabBarController setTabBarHidden:YES];
+//                        }
+//                            break;
                         case 0:{
-                            MyWalletViewController *mwVC = [MyWalletViewController new];
-                            [self.navigationController pushViewController:mwVC animated:YES];
-                            [self.rdv_tabBarController setTabBarHidden:YES];
-                        }
-                            break;
-                        case 1:{
-                            
-                            MyOrderViewController *moVC = [MyOrderViewController new];
-                            [self.navigationController pushViewController:moVC animated:YES];
-                            [self.rdv_tabBarController setTabBarHidden:YES];
-                        }
-                            break;
-                        case 2:{
                             MyClassViewController *mcVC = [MyClassViewController new];
                             [self.navigationController pushViewController:mcVC animated:YES];
                             [self.rdv_tabBarController setTabBarHidden:YES];

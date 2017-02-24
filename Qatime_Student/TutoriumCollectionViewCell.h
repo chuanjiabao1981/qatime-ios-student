@@ -20,7 +20,6 @@
 /* 教师姓名*/
 @property(nonatomic,strong) UILabel *teacherName ;
 
-
 /* 年级*/
 @property(nonatomic,strong) UILabel *grade ;
 
@@ -31,7 +30,6 @@
 @property(nonatomic,strong) UILabel *price ;
 
 /* 已购买的用户*/
-
 @property(nonatomic,strong) UILabel *saleNumber ;
 
 /* 课程Id*/

@@ -67,7 +67,7 @@
     });
     
     
-    menus = @[@"提醒设置",@"检查更新",@"清理缓存",@"关于我们",@"学习流程"];
+    menus = @[@"提醒设置",/*@"检查更新",*/@"清理缓存",@"关于我们",@"学习流程"];
     
     _settingView = [[SettingView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT)];
     [self.view addSubview:_settingView];
@@ -142,7 +142,7 @@
     
     [self getCacheSpace];
     
-    NSIndexPath *num = [NSIndexPath indexPathForRow:2 inSection:0];
+    NSIndexPath *num = [NSIndexPath indexPathForRow:1 inSection:0];
     
     [_settingView.menuTableView reloadRowsAtIndexPaths:@[num] withRowAnimation:UITableViewRowAnimationFade];
     
@@ -240,13 +240,14 @@
         [cell.settingName setSingleLineAutoResizeWithMaxWidth:1000];
         
         cell.arrow.hidden = YES;
+       
+//        if (indexPath.row ==1) {
+//    
+//            cell.balance.hidden = NO;
+//            cell.balance.text  =  [NSString stringWithFormat:@"V %@",_version];
+//            
+//        }
         if (indexPath.row ==1) {
-    
-            cell.balance.hidden = NO;
-            cell.balance.text  =  [NSString stringWithFormat:@"V %@",_version];
-            
-        }
-        if (indexPath.row ==2) {
             cell.balance.hidden = NO;
             cell.balance.text = [NSString stringWithFormat:@"%.2f M",cache];
         }
@@ -279,12 +280,12 @@
             
         }
             break;
-        case 1:{
-            
-            [self requestVersion];
-        }
+//        case 1:{
+//            
+//            [self requestVersion];
+//        }
             break;
-        case 2:{
+        case 1:{
             
             [UIAlertController showAlertInViewController:self withTitle:@"提示" message:[NSString stringWithFormat:@"确定清理%.2f M的缓存?",cache] cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                
@@ -295,7 +296,7 @@
             }];
         }
             break;
-        case 3:{
+        case 2:{
             
             AboutUsViewController *abVC = [AboutUsViewController new];
             [self.navigationController pushViewController:abVC animated:YES];
@@ -303,7 +304,7 @@
         }
             break;
             
-        case 4:{
+        case 3:{
             
             
         }

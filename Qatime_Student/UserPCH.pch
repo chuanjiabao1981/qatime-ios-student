@@ -28,7 +28,7 @@
 
 /* 测试和生产模式-推送证书名称*/
 
-#define PushCerName @"PushDevelopment"
+#define PushCerName @"Push"
 
 //debug模式推送证书 @"PushDevelopment"
 //reliease模式推送证书 @"Push"

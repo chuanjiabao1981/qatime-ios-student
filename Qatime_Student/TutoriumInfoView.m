@@ -83,11 +83,16 @@
         [_priceLabel setTextColor:[UIColor redColor]];
         [_priceLabel setFont:[UIFont systemFontOfSize:18*ScrenScale]];
         
+        _priceLabel.hidden = YES;
+        
         /* 报名人数*/
-
         _saleNumber = [[UILabel alloc]init];
         [self addSubview:_saleNumber];
-        _saleNumber.sd_layout. bottomEqualToView(_priceLabel).rightSpaceToView(self,10).autoHeightRatio(0);
+        _saleNumber.sd_layout
+        .topSpaceToView(_className,5)
+        .rightSpaceToView(self,10)
+        .autoHeightRatio(0);
+        
         [_saleNumber setSingleLineAutoResizeWithMaxWidth:100];
         _saleNumber.textAlignment = NSTextAlignmentLeft;
         [_saleNumber setText:@"100"];
@@ -98,7 +103,7 @@
         
         UILabel *saleNum = [[UILabel alloc]init];
         [self addSubview:saleNum];
-        saleNum.sd_layout. bottomEqualToView(_priceLabel).rightSpaceToView(_saleNumber,10).autoHeightRatio(0);
+        saleNum.sd_layout. topEqualToView(_saleNumber).rightSpaceToView(_saleNumber,10).autoHeightRatio(0);
         [saleNum setSingleLineAutoResizeWithMaxWidth:100];
         saleNum.textAlignment = NSTextAlignmentLeft;
         [saleNum setTextColor:[UIColor blackColor]];
@@ -106,21 +111,24 @@
         [saleNum setText:@"报名人数"];
         
         /* 分割线1*/
+        
+        
         UIView *line1 = [[UIView alloc]init];
         [self addSubview:line1];
-        line1.sd_layout.leftSpaceToView(self,0).rightSpaceToView(self,0).topSpaceToView(saleNum,5).heightIs(1.f);
+        
+        line1.sd_layout.leftSpaceToView(self,0).rightSpaceToView(self,0).topSpaceToView(saleNum,5).heightIs(1.0f);
         [line1 updateLayout];
         
         /* 滑动控制器*/
         _segmentControl = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"辅导概况",@"教师资料",@"课程安排"]];
         [self addSubview:_segmentControl];
-//        _segmentControl.sd_layout
-//        .leftEqualToView(self)
-//        .rightEqualToView(self)
-//        .topSpaceToView(line1,0)
-//        .heightRatioToView(self,0.05);
+        _segmentControl.sd_layout
+        .leftEqualToView(self)
+        .rightEqualToView(self)
+        .topSpaceToView(line1,5)
+        .heightRatioToView(self,0.05);
         
-        _segmentControl.frame = CGRectMake(0, line1.origin_sd.y+line1.height_sd, self.width_sd, self.height_sd*0.05);
+//        _segmentControl.frame = CGRectMake(0, line1.origin_sd.y+line1.height_sd, self.width_sd, self.height_sd*0.05);
         _segmentControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
         _segmentControl.borderType = HMSegmentedControlTypeText;
         _segmentControl.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
