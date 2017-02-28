@@ -38,7 +38,7 @@
     //录音格式 无法使用
     [settings setValue :[NSNumber numberWithInt:kAudioFormatLinearPCM] forKey: AVFormatIDKey];
     //采样率
-    [settings setValue :[NSNumber numberWithFloat:16000.0] forKey: AVSampleRateKey];//44100.0
+    [settings setValue :[NSNumber numberWithFloat:8000.0] forKey: AVSampleRateKey];//8000
     //通道数
     [settings setValue :[NSNumber numberWithInt:2] forKey: AVNumberOfChannelsKey];
     //音频质量,采样质量
@@ -152,10 +152,17 @@
         unsigned char mp3_buffer[MP3_SIZE];
         
         lame_t lame = lame_init();
-        lame_set_in_samplerate(lame, 16000.0);//采样率
+        lame_set_in_samplerate(lame, 8000.0);//采样率
         lame_set_num_channels(lame, 1);//单声道
+        lame_set_mode(lame, 1);
+        lame_set_brate(lame, 128);// 压缩的比特率为128K
+        lame_set_quality(lame, 5);
         lame_set_VBR(lame, vbr_default);
+        
+        lame_set_VBR_mean_bitrate_kbps(lame, 16);
+        
         lame_init_params(lame);
+        
         
         do {
             read = fread(pcm_buffer, 2*sizeof(short int), PCM_SIZE, pcm);

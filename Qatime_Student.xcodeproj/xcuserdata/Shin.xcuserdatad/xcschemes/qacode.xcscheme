@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0810"
+   LastUpgradeVersion = "0820"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,30 +14,16 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "54A153A41DC6F09D0070B508"
-               BuildableName = "Qatime_Student.app"
-               BlueprintName = "Qatime_Student"
-               ReferencedContainer = "container:Qatime_Student.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "54A153BD1DC6F09E0070B508"
-               BuildableName = "Qatime_StudentTests.xctest"
-               BlueprintName = "Qatime_StudentTests"
+               BlueprintIdentifier = "545B86FF1E6513B400A157F0"
+               BuildableName = "qacode.app"
+               BlueprintName = "qacode"
                ReferencedContainer = "container:Qatime_Student.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
@@ -46,9 +32,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "54A153BD1DC6F09E0070B508"
-               BuildableName = "Qatime_StudentTests.xctest"
-               BlueprintName = "Qatime_StudentTests"
+               BlueprintIdentifier = "545B87171E6513B500A157F0"
+               BuildableName = "qacodeTests.xctest"
+               BlueprintName = "qacodeTests"
                ReferencedContainer = "container:Qatime_Student.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -56,9 +42,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "54A153C81DC6F09E0070B508"
-               BuildableName = "Qatime_StudentUITests.xctest"
-               BlueprintName = "Qatime_StudentUITests"
+               BlueprintIdentifier = "545B87221E6513B500A157F0"
+               BuildableName = "qacodeUITests.xctest"
+               BlueprintName = "qacodeUITests"
                ReferencedContainer = "container:Qatime_Student.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -66,9 +52,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "54A153A41DC6F09D0070B508"
-            BuildableName = "Qatime_Student.app"
-            BlueprintName = "Qatime_Student"
+            BlueprintIdentifier = "545B86FF1E6513B400A157F0"
+            BuildableName = "qacode.app"
+            BlueprintName = "qacode"
             ReferencedContainer = "container:Qatime_Student.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -89,24 +75,12 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "54A153A41DC6F09D0070B508"
-            BuildableName = "Qatime_Student.app"
-            BlueprintName = "Qatime_Student"
+            BlueprintIdentifier = "545B86FF1E6513B400A157F0"
+            BuildableName = "qacode.app"
+            BlueprintName = "qacode"
             ReferencedContainer = "container:Qatime_Student.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "NSZombieEnabled"
-            value = "YES"
-            isEnabled = "NO">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "MallocStackLoggingNoCompact"
-            value = "YES"
-            isEnabled = "NO">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -120,15 +94,15 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "54A153A41DC6F09D0070B508"
-            BuildableName = "Qatime_Student.app"
-            BlueprintName = "Qatime_Student"
+            BlueprintIdentifier = "545B86FF1E6513B400A157F0"
+            BuildableName = "qacode.app"
+            BlueprintName = "qacode"
             ReferencedContainer = "container:Qatime_Student.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Release">
+      buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"

@@ -150,6 +150,7 @@
 		545B3BA71E0A216700751D08 /* GuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B3BA61E0A216700751D08 /* GuideViewController.m */; };
 		545B3BAA1E0A5F4900751D08 /* MMPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B3BA91E0A5F4900751D08 /* MMPickerView.m */; };
 		545B3BAD1E0AA2DD00751D08 /* GradeList.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B3BAC1E0AA2DD00751D08 /* GradeList.m */; };
+		545B86FB1E650F2000A157F0 /* QRCodeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B86FA1E650F2000A157F0 /* QRCodeController.m */; };
 		54634D981DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 54634D871DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m */; };
 		54634D991DDEAC1F0070C0FF /* FJFloatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54634D8A1DDEAC1F0070C0FF /* FJFloatingView.m */; };
 		54652E051DEE823100F4607C /* FileService.m in Sources */ = {isa = PBXBuildFile; fileRef = 54652E041DEE823100F4607C /* FileService.m */; };
@@ -682,6 +683,8 @@
 		545B3BA91E0A5F4900751D08 /* MMPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMPickerView.m; sourceTree = "<group>"; };
 		545B3BAB1E0AA2DD00751D08 /* GradeList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradeList.h; sourceTree = "<group>"; };
 		545B3BAC1E0AA2DD00751D08 /* GradeList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradeList.m; sourceTree = "<group>"; };
+		545B86F91E650F2000A157F0 /* QRCodeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeController.h; sourceTree = "<group>"; };
+		545B86FA1E650F2000A157F0 /* QRCodeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCodeController.m; sourceTree = "<group>"; };
 		54634D861DDEAC1F0070C0FF /* UIGestureRecognizer+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizer+Block.h"; sourceTree = "<group>"; };
 		54634D871DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+Block.m"; sourceTree = "<group>"; };
 		54634D891DDEAC1F0070C0FF /* FJFloatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FJFloatingView.h; sourceTree = "<group>"; };
@@ -1665,6 +1668,7 @@
 		543C207A1DC6F6470086B04B /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				545B86F81E650F0E00A157F0 /* 二维码扫描 */,
 				543E234F1E2CE80C00381F10 /* 支付密码框 */,
 				541E20011E1398DB007CF5D1 /* 异常捕获 */,
 				5457317E1E022E5A00F45C03 /* 支付密码 */,
@@ -1970,6 +1974,15 @@
 			children = (
 			);
 			name = "支付密码";
+			sourceTree = "<group>";
+		};
+		545B86F81E650F0E00A157F0 /* 二维码扫描 */ = {
+			isa = PBXGroup;
+			children = (
+				545B86F91E650F2000A157F0 /* QRCodeController.h */,
+				545B86FA1E650F2000A157F0 /* QRCodeController.m */,
+			);
+			name = "二维码扫描";
 			sourceTree = "<group>";
 		};
 		54634D7D1DDEAC1F0070C0FF /* FJFloatingView */ = {
@@ -4563,6 +4576,7 @@
 				540A34CA1E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m in Sources */,
 				546A54741DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m in Sources */,
 				54D66F691DEBDA5700ED2EBC /* ClassTimeTableViewCell.m in Sources */,
+				545B86FB1E650F2000A157F0 /* QRCodeController.m in Sources */,
 				545B3BA71E0A216700751D08 /* GuideViewController.m in Sources */,
 				54A153AA1DC6F09D0070B508 /* main.m in Sources */,
 				545731811E022E7700F45C03 /* HaveNoClassView.m in Sources */,

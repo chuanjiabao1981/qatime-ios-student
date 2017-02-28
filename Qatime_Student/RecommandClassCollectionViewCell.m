@@ -73,7 +73,7 @@
         /* **人已购的label*/
         _saledLabel =[[UILabel alloc]init];
         [self.contentView addSubview:_saledLabel];
-        [_saledLabel setText:NSLocalizedString(@"人已购", nil)];
+        [_saledLabel setText:NSLocalizedString(@"人报名", nil)];
         _saledLabel.sd_layout.rightEqualToView(self.contentView).topSpaceToView(_className,0).autoHeightRatio(0);
         [_saledLabel setSingleLineAutoResizeWithMaxWidth:100];
         [_saledLabel setFont:[UIFont systemFontOfSize:12*ScrenScale]];

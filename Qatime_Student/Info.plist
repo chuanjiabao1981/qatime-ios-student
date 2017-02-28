@@ -30,6 +30,16 @@
 				<string>wxf2dfbeb5f641ce40</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Qatime</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>qatime</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>8</string>
