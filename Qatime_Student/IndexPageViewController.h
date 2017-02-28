@@ -20,7 +20,7 @@
     
 @property(nonatomic,strong) IndexHeaderPageView *headerView ;
 
-@property(nonatomic,strong) UIImageView *badge ;
+
 
     
 @end

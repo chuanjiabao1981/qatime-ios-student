@@ -8,6 +8,9 @@
 
 #import "QRCodeController.h"
 #import <AVFoundation/AVFoundation.h>
+#import "RDVTabbarController.h"
+#import "NavigationBar.h"
+#import "QRMaskView.h"
 
 /**
  *  屏幕 高 宽 边界
@@ -16,16 +19,34 @@
 #define SCREEN_WIDTH  [UIScreen mainScreen].bounds.size.width
 #define SCREEN_BOUNDS  [UIScreen mainScreen].bounds
 
-#define TOP (SCREEN_HEIGHT-220)/2
-#define LEFT (SCREEN_WIDTH-220)/2
+#define TOP (SCREEN_HEIGHT-self.view.width_sd*2/3)/2
+#define LEFT (SCREEN_WIDTH-self.view.width_sd*2/3)/2
 
-#define kScanRect CGRectMake(LEFT, TOP, 220, 220)
+#define kScanRect CGRectMake(LEFT, TOP, self.view.width_sd*2/3, self.view.width_sd*2/3)
 
-@interface QRCodeController ()<AVCaptureMetadataOutputObjectsDelegate>{
+@interface QRCodeController ()<AVCaptureMetadataOutputObjectsDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate>{
     int num;
     BOOL upOrdown;
     NSTimer * timer;
     CAShapeLayer *cropLayer;
+    
+    NavigationBar *_navigationBar;
+    
+    //二维码图
+    UIImageView *_qrcodeImage;
+    //文字说明label
+    UILabel *tipsLabel;
+    
+    
+    //手电筒按钮
+    UIButton *torchButton;
+    
+    
+    //遮盖view
+    QRMaskView *maskView;
+    
+    
+    
 }
 @property (strong,nonatomic)AVCaptureDevice * device;
 @property (strong,nonatomic)AVCaptureDeviceInput * input;
@@ -41,23 +62,124 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
     
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    
+    
+    
+    _navigationBar  = ({
+        
+        NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+        [self.view addSubview:_];
+        _.backgroundColor = [UIColor blackColor];
+        _.alpha = 0.6;
+        _.titleLabel.text = @"二维码扫描";
+        
+        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+        [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+        _;
+        
+    });
+    
+    
+    //二维码图
+    _qrcodeImage = ({
+        UIImageView *_ = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"qrcode"]];
+        _.backgroundColor = [UIColor blackColor];
+        _.alpha = 0.6;
+        [self.view addSubview:_];
+        _;
+    
+    });
+    
+    //说明
+    tipsLabel = ({
+        UILabel *_ = [[UILabel alloc]init];
+        _.textColor = [UIColor whiteColor];
+        _.text = @"将二维码置于框内即可扫描";
+        _.backgroundColor = [UIColor blackColor];
+        _.alpha = 0.6;
+        [self.view addSubview:_];
+        _;
+    
+    });
+    
+    
+    torchButton  = ({
+        UIButton  *_ = [[UIButton alloc]init];
+        _.backgroundColor = [UIColor blackColor];
+        _.alpha = 0.6;
+        [self.view addSubview:_];
+        [_ setImage:[UIImage imageNamed:@"torch"] forState:UIControlStateNormal];
+        [_ addTarget:self action:@selector(turnTorch:) forControlEvents:UIControlEventTouchUpInside];
+    
+        _;
+    });
+    
+
+    //加载扫描
     [self configView];
 }
 
 -(void)configView{
+    
     UIImageView * imageView = [[UIImageView alloc]initWithFrame:kScanRect];
     imageView.image = [UIImage imageNamed:@"pick_bg"];
     [self.view addSubview:imageView];
     
+    
     upOrdown = NO;
     num =0;
-    _line = [[UIImageView alloc] initWithFrame:CGRectMake(LEFT, TOP+10, 220, 2)];
+    _line = [[UIImageView alloc] initWithFrame:CGRectMake(LEFT, TOP+10, self.view.width_sd*2/3, 2)];
     _line.image = [UIImage imageNamed:@"line.png"];
     [self.view addSubview:_line];
     
     timer = [NSTimer scheduledTimerWithTimeInterval:.02 target:self selector:@selector(animation1) userInfo:nil repeats:YES];
+
+    
+    
+    
+    //二维码和提示文字布局
+    tipsLabel.sd_layout
+    .leftEqualToView(imageView)
+    .bottomSpaceToView(imageView,20)
+    .autoHeightRatio(0);
+    [tipsLabel setSingleLineAutoResizeWithMaxWidth:400];
+    
+    [tipsLabel updateLayout];
+    
+    //文字宽度
+    CGFloat tipsWidth = tipsLabel.width_sd;
+    //文字高度
+    CGFloat tipsHeight = tipsLabel.height_sd;
+    
+    _qrcodeImage.sd_layout
+    .leftSpaceToView(self.view,imageView.origin_sd.x+(imageView.width_sd-tipsWidth-5-tipsHeight)/2)
+    .topEqualToView(tipsLabel)
+    .bottomEqualToView(tipsLabel)
+    .widthEqualToHeight();
+    [_qrcodeImage updateLayout];
+    
+    tipsLabel.sd_layout
+    .leftSpaceToView(_qrcodeImage,5);
+    [tipsLabel updateLayout];
+    
+    //闪光灯开关按钮布局
+    torchButton.sd_layout
+    .centerXEqualToView(imageView)
+    .topSpaceToView(imageView,self.view.height_sd*0.06)
+    .widthIs(self.view.height_sd*0.06)
+    .heightEqualToWidth();
+    
+    [torchButton updateLayout];
+    
+    //最后放遮罩
+    maskView = [[QRMaskView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd)];
+    maskView.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:maskView];
+    [self.view bringSubviewToFront:maskView];
+    [self performSelector:@selector(hideMask) withObject:nil afterDelay:0.3];
     
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -65,21 +187,23 @@
     [self setCropRect:kScanRect];
     
     [self performSelector:@selector(setupCamera) withObject:nil afterDelay:0.3];
+    [self.rdv_tabBarController setTabBarHidden:YES animated:YES];
     
+
 }
 
 -(void)animation1
 {
     if (upOrdown == NO) {
         num ++;
-        _line.frame = CGRectMake(LEFT, TOP+10+2*num, 220, 2);
-        if (2*num == 200) {
+        _line.frame = CGRectMake(LEFT, TOP+10+2*num, self.view.width_sd*2/3, 2);
+        if (2*num == self.view.width_sd*2/3-20) {
             upOrdown = YES;
         }
     }
     else {
         num --;
-        _line.frame = CGRectMake(LEFT, TOP+10+2*num, 220, 2);
+        _line.frame = CGRectMake(LEFT, TOP+10+2*num, self.view.width_sd*2/3, 2);
         if (num == 0) {
             upOrdown = NO;
         }
@@ -87,19 +211,21 @@
     
 }
 
-
+//绘制半透明背景
 - (void)setCropRect:(CGRect)cropRect{
+   
     cropLayer = [[CAShapeLayer alloc] init];
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathAddRect(path, nil, cropRect);
-    CGPathAddRect(path, nil, self.view.bounds);
+    CGPathAddRect(path, nil, CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64));
+    CGPathAddRect(path, nil, _qrcodeImage.frame);
+    CGPathAddRect(path, nil, tipsLabel.frame);
+    CGPathAddRect(path, nil, torchButton.frame);
     
     [cropLayer setFillRule:kCAFillRuleEvenOdd];
     [cropLayer setPath:path];
     [cropLayer setFillColor:[UIColor blackColor].CGColor];
     [cropLayer setOpacity:0.6];
-    
-    
     [cropLayer setNeedsDisplay];
     
     [self.view.layer addSublayer:cropLayer];
@@ -129,8 +255,8 @@
     //设置扫描区域
     CGFloat top = TOP/SCREEN_HEIGHT;
     CGFloat left = LEFT/SCREEN_WIDTH;
-    CGFloat width = 220/SCREEN_WIDTH;
-    CGFloat height = 220/SCREEN_HEIGHT;
+    CGFloat width = self.view.width_sd*2/3/SCREEN_WIDTH;
+    CGFloat height = self.view.width_sd*2/3/SCREEN_HEIGHT;
     ///top 与 left 互换  width 与 height 互换
     [_output setRectOfInterest:CGRectMake(top,left, height, width)];
     
@@ -162,8 +288,8 @@
 }
 
 #pragma mark AVCaptureMetadataOutputObjectsDelegate
-- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
-{
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
+    
     NSString *stringValue;
     
     if ([metadataObjects count] >0)
@@ -188,16 +314,70 @@
                 [_session startRunning];
                 [timer setFireDate:[NSDate date]];
             }
-            
         }]];
         [self presentViewController:alert animated:YES completion:nil];
         
     } else {
-        NSLog(@"无扫描信息");
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"无扫描信息" preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            if (_session != nil && timer != nil) {
+                [_session startRunning];
+                [timer setFireDate:[NSDate date]];
+            }
+            
+        }]];
+
         return;
     }
     
 }
 
+//根据扫描出来的字符串信息,跳转至应用相关页面的方法--->预留
+- (void)jumpToPageWithQRInfo:(NSString *)qrInfo{
+    
+    
+    
+}
+
+//开启关闭闪光灯
+- (void)turnTorch:(UIButton *)sender{
+    
+    if ([_device hasTorch]) {
+        if (_device.torchMode == AVCaptureTorchModeOn) {
+            [_device lockForConfiguration:nil];
+            [_device setTorchMode: AVCaptureTorchModeOff];
+            [_device unlockForConfiguration];
+        }else if(_device.torchMode == AVCaptureTorchModeOff){
+            [_device lockForConfiguration:nil];
+            [_device setTorchMode: AVCaptureTorchModeOn];
+            [_device unlockForConfiguration];
+        }
+    }
+    
+    
+    
+}
+
+//隐藏遮盖
+- (void)hideMask{
+    
+    [UIView animateWithDuration:0.8 animations:^{
+        
+        maskView.alpha = 0;
+    }];
+    
+    [self performSelector:@selector(removeMask) withObject:nil afterDelay:1];
+    
+    
+}
+- (void)removeMask{
+    
+    maskView.hidden = YES;
+}
+
+- (void)returnLastPage{
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 @end

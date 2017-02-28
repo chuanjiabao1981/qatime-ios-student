@@ -23,6 +23,8 @@
 #import "UIAlertController+Blocks.h"
 #import "UIViewController+Login.h"
 #import "UIViewController+AFHTTP.h"
+#import "RDVTabBarItem+YZBadge.h"
+
 
 
 @interface NoticeIndexViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,NIMConversationManagerDelegate,NIMLoginManagerDelegate,UIGestureRecognizerDelegate,JTSegmentControlDelegate,NIMChatManagerDelegate>{
@@ -72,14 +74,14 @@
     _navigationBar = ({
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         _.titleLabel.text = @"消息中心";
-        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-        [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+//        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+//        [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_];
         _;
     });
     
     _noticeIndexView = ({
-        NoticeIndexView *_=[[NoticeIndexView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
+        NoticeIndexView *_=[[NoticeIndexView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-TabBar_Height)];
         
         _.segmentControl.delegate = self;
         
@@ -96,42 +98,6 @@
         _.noticeTableView.dataSource = self;
         _.noticeTableView.tag = 3;
         
-        /* 滑动效果*/
-        //        [ _.segmentControl setIndexChangeBlock:^(NSInteger index) {
-        //            [weakSelf.noticeIndexView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64) animated:YES];
-        //
-        //            if (index==1) {
-        //
-        //                if (checkedNotices==NO) {
-        //                    checkedNotices = YES;
-        //
-        //                    /* 异步线程发送已读消息请求*/
-        //                    dispatch_queue_t notice = dispatch_queue_create("notice", DISPATCH_QUEUE_SERIAL);
-        //                    dispatch_sync(notice, ^{
-        //
-        //                        if (_noticeArray) {
-        //
-        //                            if (_noticeArray.count>0) {
-        //
-        //                                for (SystemNotice *notice in _noticeArray) {
-        //
-        //                                    if (notice.read == NO) {
-        //
-        //                                        [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/notifications/%@/read",Request_Header,notice.noticeID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-        //
-        //                                        }];
-        //                                    }
-        //                                }
-        //                            }
-        //                        }
-        //
-        //                    });
-        //
-        //                }else{
-        //
-        //                }
-        //            }
-        //        }];
         [_.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
         
         [self.view addSubview:_];
@@ -139,18 +105,23 @@
         _;
         
     });
+
+}
+
+- (void)viewWillAppear:(BOOL)animated{
     
+    [super viewWillAppear:animated];
+    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
     
 }
 
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
-    [self.rdv_tabBarController setTabBarHidden:YES animated:YES];
+    
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    [self.navigationController setNavigationBarHidden:YES];
     
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
@@ -194,10 +165,19 @@
     /* 消息变为已读的通知*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(markRead:) name:@"MarkAllRead" object:nil];
     
+    
+    /* 下拉刷新功能*/
+    
+    
+    
+    
+    
 }
 
 /* 读取消息后,该页面接受通知消息,tablecell的badge数量变化*/
 - (void)markRead:(NSNotification *)notification{
+    
+    
     
     
 }
@@ -681,12 +661,16 @@
             
         }else{
             [_noticeIndexView.segmentControl showBridgeWithShow:NO index:0];
+            
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"AllMessageRead" object:nil];
+            
         }
         
         if (checkedNotices==NO) {
             checkedNotices = YES;
             
             [_noticeIndexView.segmentControl showBridgeWithShow:NO index:1];
+            
             /* 异步线程发送已读消息请求*/
             dispatch_queue_t notice = dispatch_queue_create("notice", DISPATCH_QUEUE_SERIAL);
             dispatch_sync(notice, ^{

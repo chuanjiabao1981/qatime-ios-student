@@ -30,6 +30,8 @@
 #import "TutoriumInfoViewController.h"
 #import "NIMSDK.h"
 #import "MJRefresh.h"
+#import "QRCodeController.h"
+#import "RDVTabBarItem+YZBadge.h"
 
 
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate>{
@@ -104,7 +106,7 @@
         NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         
         [self .view addSubview:_];
-        [_.rightButton setImage:[UIImage imageNamed:@"消息"] forState:UIControlStateNormal];
+        [_.rightButton setImage:[UIImage imageNamed:@"scan"] forState:UIControlStateNormal];
         
         
         UIImageView *logoImage = [[UIImageView alloc]init];
@@ -140,12 +142,9 @@
         _;
     });
     
-    _badge = [[UIImageView alloc]initWithFrame:CGRectMake(_navigationBar.rightButton.width_sd-5*ScrenScale,-5*ScrenScale, 10*ScrenScale,10*ScrenScale )];
-    [_badge setImage:[UIImage imageNamed:@"Badge"]];
-    [_navigationBar.rightButton addSubview:_badge];
-    _badge.hidden = YES;
     
-    [_navigationBar.rightButton addTarget:self action:@selector(enterNoticeCenter) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_navigationBar.rightButton addTarget:self action:@selector(enterScanPage) forControlEvents:UIControlEventTouchUpInside];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(receiveNewNotice) name:@"ReceiveNewNotice" object:nil];
     
@@ -1136,7 +1135,10 @@
 /* 收到新消息*/
 - (void)receiveNewNotice{
     
-    _badge.hidden = NO;
+    RDVTabBarItem *item = self.rdv_tabBarController.tabBar.items[3];
+    [item showBadges];
+    
+    
 }
 
 /* 是否可以进入消息中心*/
@@ -1157,27 +1159,37 @@
     
 }
 
+//
+///* 进入消息中心*/
+//- (void)enterNoticeCenter{
+//    
+//    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
+//        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
+//            
+//            NoticeIndexViewController *noticeVC = [[NoticeIndexViewController alloc]init];
+//            [self.navigationController pushViewController:noticeVC animated:YES];
+////            _badge.hidden = YES;
+//        }else{
+//            [self loginAgain];
+//        }
+//        
+//    }else{
+//        [self loginAgain];
+//    }
+//    
+//}
 
-/* 进入消息中心*/
-- (void)enterNoticeCenter{
+//进入扫描页面
+- (void)enterScanPage{
     
-    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
-        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
-            
-            NoticeIndexViewController *noticeVC = [[NoticeIndexViewController alloc]init];
-            [self.navigationController pushViewController:noticeVC animated:YES];
-            _badge.hidden = YES;
-        }else{
-            [self loginAgain];
-        }
-        
-    }else{
-        [self loginAgain];
-    }
+    QRCodeController *qrcontroller = [[QRCodeController alloc]init];
     
+    [self.navigationController pushViewController:qrcontroller animated:YES];
     
     
 }
+
+
 
 #pragma mark- 定位
 - (void)getLocation{
