@@ -17,13 +17,15 @@
 #import "UncaughtExceptionHandler.h"
 #import "LivePlayerViewController.h"
 
-//#ifdef NSFoundationVersionNumber_iOS_9_x_Max
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
 #import <UserNotifications/UserNotifications.h>
-//#endif
+#endif
 
 #import <sys/utsname.h>
 #import "RealReachability.h"
 #import <JSPatchPlatform/JSPatch.h>
+
+
 
 
 //#import <iflyMSC/iflyMSC.h>
@@ -46,9 +48,18 @@
     UINavigationController *classTimeVC ;
     UINavigationController *personalVC ;
     UINavigationController *noticeVC;
+    
+    /* 推送部分*/
+    NSDictionary *remoteNotification;
 
     
 }
+
+
+/**
+ 是否通过点击推送消息进入应用
+ */
+@property (nonatomic) BOOL isLaunchedByNotification;
 
 /* 五个选项卡的ViewController*/
 @property(nonatomic,strong) IndexPageViewController *indexPageViewController ;
@@ -232,17 +243,17 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnNotification:) name:@"Notification" object:nil];
     
     
-    
-    /* 讯飞初始化*/
-    //appid
-//    NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@", @"58aeb653"];
-//    
-//    [IFlySpeechUtility createUtility:initString];
+    /* 获取推送消息内容 10以下系统获取方法*/
+   remoteNotification =  [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     
     
-
     return YES;
 }
+
+
+
+
+
 
 /* 加载核心TabBarController*/
 - (void)setTabBarController{
@@ -377,6 +388,40 @@
         }
     }];
     
+    //如果你期望使用交互式(只有iOS 8.0及以上有)的通知，请参考下面注释部分的初始化代码
+    UIMutableUserNotificationAction *action1 = [[UIMutableUserNotificationAction alloc] init];
+    action1.identifier = @"action1_identifier";
+    action1.title=@"打开应用";
+    action1.activationMode = UIUserNotificationActivationModeForeground;//当点击的时候启动程序
+    
+    UIMutableUserNotificationAction *action2 = [[UIMutableUserNotificationAction alloc] init];  //第二按钮
+    action2.identifier = @"action2_identifier";
+    action2.title=@"忽略";
+    action2.activationMode = UIUserNotificationActivationModeBackground;//当点击的时候不启动程序，在后台处理
+    action2.authenticationRequired = YES;//需要解锁才能处理，如果action.activationMode = UIUserNotificationActivationModeForeground;则这个属性被忽略；
+    action2.destructive = YES;
+    UIMutableUserNotificationCategory *actionCategory1 = [[UIMutableUserNotificationCategory alloc] init];
+    actionCategory1.identifier = @"category1";//这组动作的唯一标示
+    [actionCategory1 setActions:@[action1,action2] forContext:(UIUserNotificationActionContextDefault)];
+    NSSet *categories = [NSSet setWithObjects:actionCategory1, nil];
+    
+    //如果要在iOS10显示交互式的通知，必须注意实现以下代码
+    if ([[[UIDevice currentDevice] systemVersion]intValue]>=10) {
+        UNNotificationAction *action1_ios10 = [UNNotificationAction actionWithIdentifier:@"action1_ios10_identifier" title:@"打开应用" options:UNNotificationActionOptionForeground];
+        UNNotificationAction *action2_ios10 = [UNNotificationAction actionWithIdentifier:@"action2_ios10_identifier" title:@"忽略" options:UNNotificationActionOptionForeground];
+        
+        //UNNotificationCategoryOptionNone
+        //UNNotificationCategoryOptionCustomDismissAction  清除通知被触发会走通知的代理方法
+        //UNNotificationCategoryOptionAllowInCarPlay       适用于行车模式
+        UNNotificationCategory *category1_ios10 = [UNNotificationCategory categoryWithIdentifier:@"category101" actions:@[action1_ios10,action2_ios10]   intentIdentifiers:@[] options:UNNotificationCategoryOptionCustomDismissAction];
+        NSSet *categories_ios10 = [NSSet setWithObjects:category1_ios10, nil];
+        [center setNotificationCategories:categories_ios10];
+    }else
+    {
+        [UMessage registerForRemoteNotifications:categories];
+    }
+
+    
     //打开日志，方便调试
     [UMessage setLogEnabled:YES];
 
@@ -416,8 +461,7 @@
 #pragma mark- 推送回调
 
 //注册apns的token
-- (void)application:(UIApplication *)application
-didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     NSLog(@"%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]stringByReplacingOccurrencesOfString: @">" withString: @""]stringByReplacingOccurrencesOfString: @" " withString: @""]);
     
@@ -440,6 +484,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     /* 主页消息badge通知*/
     [[NSNotificationCenter defaultCenter]postNotificationName:@"ReceiveNewNotice" object:nil];
+    
+   
 
     if (notificatoin_ON == YES) {
         
@@ -458,20 +504,19 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     /* 主页消息badge通知*/
     [[NSNotificationCenter defaultCenter]postNotificationName:@"ReceiveNewNotice" object:nil];
 
-    
-    if (push_VoiceON==YES&&push_AlertON == YES) {
-        
-        completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionAlert);
-    }
-    if (push_VoiceON==YES&&push_AlertON == NO) {
-        completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionBadge);
-    }
-    if (push_VoiceON==NO&&push_AlertON == YES) {
-        completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionAlert);
-    }
-    if (push_VoiceON==NO&&push_AlertON == NO) {
-        completionHandler(UNNotificationPresentationOptionBadge);
-    }
+//    if (push_VoiceON==YES&&push_AlertON == YES) {
+//        
+//        completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionAlert);
+//    }
+//    if (push_VoiceON==YES&&push_AlertON == NO) {
+//        completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionBadge);
+//    }
+//    if (push_VoiceON==NO&&push_AlertON == YES) {
+//        completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionAlert);
+//    }
+//    if (push_VoiceON==NO&&push_AlertON == NO) {
+//        completionHandler(UNNotificationPresentationOptionBadge);
+//    }
     
     if(notificatoin_ON == YES){
         
@@ -505,10 +550,13 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 //iOS10新增：处理前台收到通知的代理方法
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
+    
     NSDictionary * userInfo = notification.request.content.userInfo;
     
     /* 主页消息badge通知*/
     [[NSNotificationCenter defaultCenter]postNotificationName:@"ReceiveNewNotice" object:nil];
+    
+ 
     
     
 //    completionHandler(UNNotificationPresentationOptionAlert);
@@ -536,21 +584,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 //iOS10新增：处理后台点击通知的代理方法
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler{
 
-    //当应用处于前台时提示设置，需要哪个可以设置哪一个
-    if (push_VoiceON==YES&&push_AlertON == YES) {
-        
-        completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionAlert);
-    }
-    if (push_VoiceON==YES&&push_AlertON == NO) {
-        completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionBadge);
-    }
-    if (push_VoiceON==NO&&push_AlertON == YES) {
-        completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionAlert);
-    }
-    if (push_VoiceON==NO&&push_AlertON == NO) {
-        completionHandler(UNNotificationPresentationOptionBadge);
-    }
-    
     if (notificatoin_ON == YES) {
         NSDictionary * userInfo = response.notification.request.content.userInfo;
         if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
@@ -560,13 +593,35 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             /* 主页消息badge通知*/
             [[NSNotificationCenter defaultCenter]postNotificationName:@"ReceiveNewNotice" object:nil];
             
+            
         }else{
             //应用处于后台点击后的本地推送接受
             
         }
+        
+        //处理推送事件
+        [self pushActionWithInfo:userInfo];
+        
+        
     }else{
         
     }
+    
+}
+
+//处理推送消息
+- (void)pushActionWithInfo:(NSDictionary *)info{
+    
+    if (info[@"nim"]) {
+        
+        //接到了云信的推送消息,进入聊天列表页面
+        /* 发通知跳转到聊天页面*/
+//        [[NSNotificationCenter defaultCenter]postNotificationName:@"NIMNotification" object:info];
+        
+        _viewController.selectedIndex = 3;
+        
+    }
+    
     
 }
 

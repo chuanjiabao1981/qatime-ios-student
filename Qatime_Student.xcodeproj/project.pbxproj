@@ -464,6 +464,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		545A077F1E66CD5C004E5628 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0908EB8F55388D2CA5802D18 /* libPods-Qatime_Student.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Qatime_Student.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5407C9871DE7DDED00DB04C8 /* NSBundle+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+YYAdd.h"; sourceTree = "<group>"; };
@@ -678,6 +691,7 @@
 		545731801E022E7700F45C03 /* HaveNoClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HaveNoClassView.m; sourceTree = "<group>"; };
 		5458AB321E0D411D00D6409F /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/libs/libcrypto.a; sourceTree = "<group>"; };
 		5458AB331E0D411D00D6409F /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/libs/libssl.a; sourceTree = "<group>"; };
+		545A07891E66CE35004E5628 /* NotificationService copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "NotificationService copy-Info.plist"; path = "/Users/Shin/Documents/帷幄通达/qatime-ios-student - debug/NotificationService copy-Info.plist"; sourceTree = "<absolute>"; };
 		545B3BA51E0A216700751D08 /* GuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuideViewController.h; sourceTree = "<group>"; };
 		545B3BA61E0A216700751D08 /* GuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuideViewController.m; sourceTree = "<group>"; };
 		545B3BA81E0A5F4900751D08 /* MMPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMPickerView.h; sourceTree = "<group>"; };
@@ -2497,6 +2511,7 @@
 				54A153A61DC6F09D0070B508 /* Products */,
 				61F0B31770950FCD751F0794 /* Pods */,
 				B493EB6DEDE6DB14F293C15A /* Frameworks */,
+				545A07891E66CE35004E5628 /* NotificationService copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -4082,6 +4097,7 @@
 				54A153A31DC6F09D0070B508 /* Resources */,
 				378B33FBB5064916119D2412 /* [CP] Embed Pods Frameworks */,
 				D80A0418E1DD517D1BF5677C /* [CP] Copy Pods Resources */,
+				545A077F1E66CD5C004E5628 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);

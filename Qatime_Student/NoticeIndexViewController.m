@@ -23,7 +23,13 @@
 #import "UIAlertController+Blocks.h"
 #import "UIViewController+Login.h"
 #import "UIViewController+AFHTTP.h"
+#import "MJRefresh.h"
 
+typedef enum : NSUInteger {
+    RefreshStatePushLoadMore,
+    RefreshStatePullRefresh,
+    RefreshStateNone,
+} RefreshState;
 
 
 
@@ -52,6 +58,11 @@
     
     /*未读消息总数量*/
     NSInteger unreadCont;
+    
+    
+    /* 下拉刷新页数*/
+    NSInteger noticePage;
+    
     
 }
 
@@ -138,6 +149,7 @@
     _noticeArray = @[].mutableCopy;
     _chatListArr = @[].mutableCopy;
     
+    noticePage = 1;
     unreadCont = 0;
     
     
@@ -147,10 +159,10 @@
     /* 判断是不是第一次登陆*/
     
     /* 获取我的辅导班列表*/
-    [self requestMyClass];
+    [self requestMyClass:RefreshStateNone];
     
     /* 请求通知消息,收到的消息存到本地数据库,文件名:notice.db*/
-    [self requestNotices];
+    [self requestNotices:RefreshStateNone];
     
     [[[NIMSDK sharedSDK]loginManager]addDelegate:self];
     
@@ -168,8 +180,27 @@
     
     /* 下拉刷新功能*/
     
+    _noticeIndexView.chatListTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+        /* 辅导班列表下拉重载*/
+        [self requestMyClass:RefreshStatePullRefresh];
+        
+    }];
+    
+    _noticeIndexView.noticeTableView.mj_header  = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        /* 系统消息下拉重载*/
+        [self requestNotices:RefreshStatePullRefresh];
+    }];
     
     
+    /* 上滑加载功能*/
+    
+    _noticeIndexView.noticeTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+       
+        /* 系统消息上滑加载更多*/
+        [self requestNotices:RefreshStatePushLoadMore];
+
+    }];
     
     
 }
@@ -184,7 +215,28 @@
 
 
 /* 获取辅导班聊天列表*/
-- (void)requestMyClass{
+- (void)requestMyClass:(RefreshState)state{
+    
+    switch (state) {
+        case RefreshStatePullRefresh:{
+            
+            _myClassArray = @[].mutableCopy;
+            _chatListArr = @[].mutableCopy;
+            
+        }
+            break;
+            
+        case RefreshStatePushLoadMore:{
+            
+        }
+            break;
+            
+        case RefreshStateNone:{
+            
+        }
+            break;
+    }
+    
     
     [self loadingHUDStartLoadingWithTitle:@"正在刷新聊天列表"];
     
@@ -267,6 +319,8 @@
                 }
             }
             
+            
+            
         }else{
             /* 数据错误*/
             
@@ -274,6 +328,8 @@
         }
         
         [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+        [_noticeIndexView.chatListTableView.mj_header endRefreshing];
+        
         [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -285,13 +341,38 @@
 
 
 /* 请求通知消息*/
-- (void)requestNotices{
+- (void)requestNotices:(RefreshState)state{
+    
+    
+    switch (state) {
+        case RefreshStatePullRefresh:{
+            
+            noticePage = 1;
+            _noticeArray = @[].mutableCopy;
+            
+            [_noticeIndexView.noticeTableView.mj_footer resetNoMoreData];
+            
+        }
+            break;
+            
+        case RefreshStatePushLoadMore:{
+            noticePage++;
+            
+        }
+            break;
+            
+        case RefreshStateNone:{
+            
+        }
+            break;
+    }
+    
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications?page=%ld",Request_Header,_idNumber,noticePage] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         [self loginStates:dic];
@@ -299,14 +380,22 @@
             /* 请求成功*/
             NSMutableArray *dataArr = [NSMutableArray arrayWithArray:dic[@"data"]];
             if (dataArr.count == 0) {
-                /* 没有数据*/
-                /* 没有加入聊天的情况*/
-                HaveNoClassView *noNotice = [[HaveNoClassView  alloc]init];
-                noNotice.titleLabel.text = @"当前无通知";
-                noNotice.frame  = CGRectMake(0, 0, self.view.width_sd,_noticeIndexView.scrollView.height_sd);
                 
-                [_noticeIndexView.noticeTableView addSubview:noNotice];
-                _noticeIndexView.noticeTableView.scrollEnabled = NO;
+                if (state!=RefreshStatePushLoadMore) {
+            
+                    /* 没有数据*/
+                    /* 没有加入聊天的情况*/
+                    HaveNoClassView *noNotice = [[HaveNoClassView  alloc]init];
+                    noNotice.titleLabel.text = @"当前无通知";
+                    noNotice.frame  = CGRectMake(0, 0, self.view.width_sd,_noticeIndexView.scrollView.height_sd);
+                    
+                    [_noticeIndexView.noticeTableView addSubview:noNotice];
+                    _noticeIndexView.noticeTableView.scrollEnabled = NO;
+                }else{
+                    
+                    [_noticeIndexView.noticeTableView.mj_footer endRefreshingWithNoMoreData];
+                }
+                
                 
             }else{
                 /* 有数据的情况下*/
@@ -328,6 +417,18 @@
                         
                     }
                 });
+                
+                /* 根据不同类型的数据请求方式,加载结果不同,判断hud和数据刷新*/
+                if (state == RefreshStatePushLoadMore) {
+                    [_noticeIndexView.noticeTableView.mj_header endRefreshing];
+                    [_noticeIndexView.noticeTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                }else{
+                    [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                    [_noticeIndexView.noticeTableView.mj_header endRefreshing];
+                    [_noticeIndexView.noticeTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                }
+                
             }
             
         }else{
@@ -335,11 +436,12 @@
             
         }
         
-        [_noticeIndexView.noticeTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
+    
+    noticePage++;
     
 }
 
@@ -514,6 +616,16 @@
         
         NoticeListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         
+        if ([cell.model.type isEqualToString:@"live_studio/course"]) {
+            //教师公告,可以不跳转
+            
+        }else if ([cell.model.type isEqualToString:@"live_studio/lesson"]){
+            //辅导班开课通知
+            
+        }else if ([cell.model.type isEqualToString:@"payment/order"]){
+            //订单信息
+            
+        }
         
         
     }

@@ -11,6 +11,20 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>NotificationService copy.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>24</integer>
+		</dict>
+		<key>NotificationService.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>23</integer>
+		</dict>
 		<key>Qatime_Student.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -18,12 +32,24 @@
 		</dict>
 		<key>qacode.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
-			<integer>24</integer>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>545A07721E66CD5C004E5628</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>545A07801E66CE34004E5628</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>545B86FF1E6513B400A157F0</key>
 		<dict>
 			<key>primary</key>

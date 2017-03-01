@@ -3098,28 +3098,16 @@ bool ismute     = NO;
 /* 加载本地数据*/
 - (void)requestChatHitstory{
     
-    NIMMessageSearchOption *option = [[NIMMessageSearchOption alloc]init];
-    option.limit = 100;
-    option.order = NIMMessageSearchOrderAsc;
-    option.messageType = NIMMessageTypeText|NIMMessageTypeImage|NIMMessageTypeAudio;
-    
-    [[[NIMSDK sharedSDK]conversationManager]searchMessages:_session option:option result:^(NSError * _Nullable error, NSArray<NIMMessage *> * _Nullable messages) {
+    NSArray *messageArr = [[[NIMSDK sharedSDK]conversationManager]messagesInSession:_session message:nil limit:100];
+    /* 如果本地没有数据,请求服务器数据,并保存到本地*/
+    if (messageArr.count<=2) {
+        [self requestHistoryChatList];
+    }else{
         
-        /* 如果本地没有数据,请求服务器数据,并保存到本地*/
-        if (messages.count<=2) {
-            
-            [self requestHistoryChatList];
-            
-        }else{
-            
-            NSLog(@"本地消息数量%ld",messages.count);
-            [self loadingHUDStopLoadingWithTitle:@""];
-            
-            [self makeMessages:messages];
-            //            [self tableViewScrollToBottom];
-        }
-        
-    }];
+        _chatTableView.hidden = NO;
+        [self loadingHUDStopLoadingWithTitle:@""];
+        [self makeMessages:messageArr];
+    }
     
 }
 
@@ -3442,8 +3430,6 @@ bool ismute     = NO;
     }else{
         
         [UIView animateWithDuration:animationDuration animations:^{
-            
-            
             
             IFView.sd_layout
             .bottomSpaceToView(_videoInfoView.view2,keyboardRect.size.height);

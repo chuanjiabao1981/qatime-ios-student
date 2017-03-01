@@ -33,6 +33,8 @@
 #import "QRCodeController.h"
 #import "LCTabBar.h"
 
+#import "LivePlayerViewController.h"
+
 
 
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate,LCTabBarDelegate>{
@@ -290,6 +292,20 @@
     
     
     
+    
+    
+    //推送跳转
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNIMPage:) name:@"NIMNotification" object:nil];
+
+    
+    
+}
+
+- (void)showNIMPage:(NSNotification *)notification{
+    
+    
+    LivePlayerViewController *livew = [[LivePlayerViewController alloc]init];
+    [self.navigationController pushViewController:livew animated:YES];
     
 }
 
