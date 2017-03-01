@@ -9,7 +9,7 @@
 #import "ChargeViewController.h"
 #import "NavigationBar.h"
 #import "WXApi.h"
-#import "RDVTabBarController.h"
+ 
 #import "UIViewController+HUD.h"
 #import "NSString+TimeStamp.h"
 #import "ConfirmChargeViewController.h"
@@ -170,7 +170,7 @@
                 
                 ConfirmChargeViewController *conVC = [[ConfirmChargeViewController alloc]initWithInfo:infoDic];
                 [self.navigationController pushViewController:conVC animated:YES];
-                [self.rdv_tabBarController setTabBarHidden:YES];
+                
                 
                 
                 
@@ -271,7 +271,7 @@
     
     ConfirmChargeViewController *conVC = [ConfirmChargeViewController new];
     [self.navigationController pushViewController:conVC animated:YES];
-    [self.rdv_tabBarController setTabBarHidden:YES];
+    
     
     
 }

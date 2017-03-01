@@ -25,6 +25,7 @@
 #import "RealReachability.h"
 #import <JSPatchPlatform/JSPatch.h>
 
+
 //#import <iflyMSC/iflyMSC.h>
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate,NIMSystemNotificationManager,NIMLoginManagerDelegate>{
@@ -38,7 +39,23 @@
     /* 是否允许屏幕旋转*/
     BOOL _allowRotation;
     
+    
+    /* 5个viewcontroller的NavigationController作为根视图*/
+    UINavigationController *indexPageVC;
+    UINavigationController *tutoriumVC ;
+    UINavigationController *classTimeVC ;
+    UINavigationController *personalVC ;
+    UINavigationController *noticeVC;
+
+    
 }
+
+/* 五个选项卡的ViewController*/
+@property(nonatomic,strong) IndexPageViewController *indexPageViewController ;
+@property(nonatomic,strong) TutoriumViewController *tutoriumViewController ;
+@property(nonatomic,strong) ClassTimeViewController *classTimeViewController ;
+@property(nonatomic,strong) PersonalViewController *personalViewController ;
+@property(nonatomic,strong) NoticeIndexViewController *noticeIndexViewController ;
 
 @end
 
@@ -55,6 +72,14 @@
     _window = [[UIWindow alloc]init];
     [_window makeKeyAndVisible];
     _window.backgroundColor = [UIColor whiteColor];
+    
+    
+    /* 选项卡视图初始化*/
+    [self updateTabBarViews];
+    
+    /* 设置TabBarController*/
+    [self setTabBarController];
+    
     
     /* 判断是否是第一次进入程序,加载引导图页面*/
     NSUserDefaults *useDef = [NSUserDefaults standardUserDefaults];
@@ -78,9 +103,7 @@
             
         }else{
             /* 如果有登录信息,直接登录,并保存token和id*/
-            _viewController = [[ViewController alloc]init];
-            UINavigationController *viewVC = [[UINavigationController alloc]initWithRootViewController:_viewController];
-            [_window setRootViewController:viewVC];
+            [_window setRootViewController:_viewController];
             NSString *token= [[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
             NSString *userid=[[NSUserDefaults standardUserDefaults]objectForKey:@"id"];
             NSLog(@"token:%@,id:%@",token,userid);
@@ -220,6 +243,104 @@
 
     return YES;
 }
+
+/* 加载核心TabBarController*/
+- (void)setTabBarController{
+    
+    if (!_viewController) {
+        
+        _viewController = [[LCTabBarController alloc]init];
+        _viewController.tabBar.backgroundColor = [UIColor whiteColor];
+        _viewController.itemTitleColor = [UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:1.00];
+        _viewController.selectedItemTitleColor = TITLERED;
+        _viewController.viewControllers = @[indexPageVC,tutoriumVC,classTimeVC,noticeVC,personalVC];
+    
+    }
+    
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeItem) name:@"UserChoseSubject" object:nil];
+    
+    /* 新收到消息的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(receiveNewNotice) name:@"ReceiveNewNotice" object:nil];
+    
+    
+    /* 所有消息变为已读*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(allMessageRead) name:@"AllMessageRead" object:nil];
+    
+    
+}
+
+//收到新消息
+- (void)receiveNewNotice{
+    
+    _noticeIndexViewController.tabBarItem.badgeValue=@"";
+    
+    
+}
+
+//所有消息已读
+- (void)allMessageRead{
+    _noticeIndexViewController.tabBarItem.badgeValue = nil;
+    
+}
+
+//改变选项卡选项
+- (void)changeItem{
+    
+    [_viewController setSelectedIndex:1];
+    
+}
+
+
+
+
+/* 加载核心视图框架 使用tabbarcontroller + navigation*/
+- (void)updateTabBarViews{
+    
+    /* 初始化五个viewcontroller*/
+    _indexPageViewController = [[IndexPageViewController alloc]init];
+    _indexPageViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_home_h"];
+    _indexPageViewController.tabBarItem.image = [UIImage imageNamed:@"tab_home_n"];
+    _indexPageViewController.title = NSLocalizedString(@"首页", comment:"");
+    
+    
+    _tutoriumViewController = [[TutoriumViewController alloc]init];
+    _tutoriumViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_tutorium_h"];
+    _tutoriumViewController.tabBarItem.image = [UIImage imageNamed:@"tab_tutorium_n"];
+    _tutoriumViewController.title = NSLocalizedString(@"辅导班", comment:"");
+    
+    
+    _classTimeViewController = [[ClassTimeViewController alloc]init];
+    _classTimeViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_class_h"];
+    _classTimeViewController.tabBarItem.image = [UIImage imageNamed:@"tab_class_n"];
+    _classTimeViewController.title = NSLocalizedString(@"课程表", comment:"");
+    
+    
+    _noticeIndexViewController = [[NoticeIndexViewController alloc]init];
+    _noticeIndexViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_message_h"];
+    _noticeIndexViewController.tabBarItem.image = [UIImage imageNamed:@"tab_message_n"];
+    _noticeIndexViewController.title = NSLocalizedString(@"消息", comment:"");
+    
+    
+    _personalViewController = [[PersonalViewController alloc]init];
+    _personalViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_me_h"];
+    _personalViewController.tabBarItem.image = [UIImage imageNamed:@"tab_me_n"];
+    _personalViewController.title = NSLocalizedString(@"个人", comment:"");
+    
+
+    
+    
+    /* 初始化五个navigationcontroller*/
+    indexPageVC = [[UINavigationController alloc]initWithRootViewController:_indexPageViewController];
+    tutoriumVC = [[UINavigationController alloc]initWithRootViewController:_tutoriumViewController];
+    classTimeVC = [[UINavigationController alloc]initWithRootViewController:_classTimeViewController];
+    noticeVC = [[UINavigationController alloc]initWithRootViewController:_noticeIndexViewController];
+    personalVC = [[UINavigationController alloc]initWithRootViewController:_personalViewController];
+    
+    
+
+}
+
 
 
 
@@ -515,12 +636,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 /* 修改rootViewController为系统的主页controller*/
 - (void)changeRootViewConroller:(NSNotification *)notification{
     
-    _viewController = [[ViewController alloc]init];
-        UINavigationController *navVC = [[UINavigationController alloc]initWithRootViewController:_viewController];
-    
-    [UIView transitionFromView:_window.rootViewController.view toView:navVC.view duration:0.5 options:UIViewAnimationOptionTransitionFlipFromLeft completion:^(BOOL finished) {
+    [UIView transitionFromView:_window.rootViewController.view toView:_viewController.view duration:0.5 options:UIViewAnimationOptionTransitionFlipFromLeft completion:^(BOOL finished) {
         
-        [_window setRootViewController:navVC];
+        [_window setRootViewController:_viewController];
+        _viewController.selectedIndex = 0;
     }];
     
     /*登录成功后,上传设备信息*/

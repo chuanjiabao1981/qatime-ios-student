@@ -411,7 +411,6 @@
 		54E00B151E5AEAD60056C74F /* TranslateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E00B141E5AEAD60056C74F /* TranslateViewController.m */; };
 		54E00B171E5AEF020056C74F /* NTESAudio2TextViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54E00B161E5AEF020056C74F /* NTESAudio2TextViewController.xib */; };
 		54E120CE1DDC2CA5004F8012 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E120CD1DDC2CA5004F8012 /* CoreText.framework */; };
-		54E402231E657A14004935C2 /* RDVTabBarItem+YZBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E402221E657A14004935C2 /* RDVTabBarItem+YZBadge.m */; };
 		54E402291E65831B004935C2 /* QRMaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E402281E65831B004935C2 /* QRMaskView.m */; };
 		54E428B41DE2DC6100AF5980 /* UIControl+RemoveTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E428B31DE2DC6100AF5980 /* UIControl+RemoveTarget.m */; };
 		54E8B6A11E5EF1AF00A9703F /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E8B6A01E5EF1AF00A9703F /* Contacts.framework */; };
@@ -1193,8 +1192,6 @@
 		54E00B161E5AEF020056C74F /* NTESAudio2TextViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NTESAudio2TextViewController.xib; sourceTree = "<group>"; };
 		54E120CD1DDC2CA5004F8012 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		54E120CF1DDC2D69004F8012 /* NIMKitResouce.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = NIMKitResouce.bundle; path = Qatime_Student/NIM_iOS_UIKit/NIMKitResouce.bundle; sourceTree = "<group>"; };
-		54E402211E657A14004935C2 /* RDVTabBarItem+YZBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RDVTabBarItem+YZBadge.h"; sourceTree = "<group>"; };
-		54E402221E657A14004935C2 /* RDVTabBarItem+YZBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RDVTabBarItem+YZBadge.m"; sourceTree = "<group>"; };
 		54E402271E65831B004935C2 /* QRMaskView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRMaskView.h; sourceTree = "<group>"; };
 		54E402281E65831B004935C2 /* QRMaskView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRMaskView.m; sourceTree = "<group>"; };
 		54E428B21DE2DC6100AF5980 /* UIControl+RemoveTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIControl+RemoveTarget.h"; sourceTree = "<group>"; };
@@ -1496,9 +1493,8 @@
 		541F91DE1DC9BBAA00180BE8 /* 主页页面 */ = {
 			isa = PBXGroup;
 			children = (
-				545B86F81E650F0E00A157F0 /* 二维码扫描 */,
-				54FA714F1E07B0B4009D81FE /* 聊天页面 */,
 				54FCBAAD1DD58A530094BF58 /* 主页 */,
+				545B86F81E650F0E00A157F0 /* 二维码扫描 */,
 				547A7EF81DD4128C00F1282B /* 教师公开页 */,
 			);
 			name = "主页页面";
@@ -1631,14 +1627,13 @@
 			path = NELivePlayer;
 			sourceTree = "<group>";
 		};
-		5430DBF11E03F4420097E7B4 /* 消息主页 */ = {
+		5430DBF11E03F4420097E7B4 /* 消息页面 */ = {
 			isa = PBXGroup;
 			children = (
-				5430DBF21E03F4540097E7B4 /* Model */,
-				5430DBF41E03F45D0097E7B4 /* View */,
-				5430DBF31E03F45C0097E7B4 /* Controller */,
+				54A5A3531E66718C00EF19E3 /* 消息主页 */,
+				54FA714F1E07B0B4009D81FE /* 聊天页面 */,
 			);
-			name = "消息主页";
+			name = "消息页面";
 			sourceTree = "<group>";
 		};
 		5430DBF21E03F4540097E7B4 /* Model */ = {
@@ -2524,7 +2519,7 @@
 				541F91DE1DC9BBAA00180BE8 /* 主页页面 */,
 				541F91D71DC9BB5C00180BE8 /* 辅导班页面 */,
 				541F91DD1DC9BBA800180BE8 /* 课程表页面 */,
-				5430DBF11E03F4420097E7B4 /* 消息主页 */,
+				5430DBF11E03F4420097E7B4 /* 消息页面 */,
 				541F91DA1DC9BBA000180BE8 /* 个人页面 */,
 				54FCBAC61DD591AA0094BF58 /* 视频播放页 */,
 				54FCBABE1DD58E790094BF58 /* Category */,
@@ -2668,6 +2663,16 @@
 			);
 			name = emoji;
 			path = KeyBoard/emoji;
+			sourceTree = "<group>";
+		};
+		54A5A3531E66718C00EF19E3 /* 消息主页 */ = {
+			isa = PBXGroup;
+			children = (
+				5430DBF21E03F4540097E7B4 /* Model */,
+				5430DBF41E03F45D0097E7B4 /* View */,
+				5430DBF31E03F45C0097E7B4 /* Controller */,
+			);
+			name = "消息主页";
 			sourceTree = "<group>";
 		};
 		54AA307D1DF950A3009E0D04 /* 充值结果查询页面 */ = {
@@ -3906,8 +3911,6 @@
 				541A468B1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m */,
 				54E8B6A51E601B0300A9703F /* UIViewController+TimeInterval.h */,
 				54E8B6A61E601B0300A9703F /* UIViewController+TimeInterval.m */,
-				54E402211E657A14004935C2 /* RDVTabBarItem+YZBadge.h */,
-				54E402221E657A14004935C2 /* RDVTabBarItem+YZBadge.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -4431,7 +4434,6 @@
 				54D66F871DEC406B00ED2EBC /* CalendarView.m in Sources */,
 				54DBA4B01DE4423300A67A90 /* YZEmotionCell.m in Sources */,
 				54FB1DD71DF1AC2C00BA9A3C /* ParentView.m in Sources */,
-				54E402231E657A14004935C2 /* RDVTabBarItem+YZBadge.m in Sources */,
 				5448AEA81E054C7A007B1DF9 /* ChatListTableViewCell.m in Sources */,
 				54294C701DDB062000677333 /* Teacher.m in Sources */,
 				54AB49001DEDABCC008E3BC5 /* EndedTableViewCell.m in Sources */,
@@ -4854,7 +4856,6 @@
 					"-l\"MBProgressHUD\"",
 					"-l\"MJRefresh\"",
 					"-l\"Masonry\"",
-					"-l\"RDVTabBarController\"",
 					"-l\"SDAutoLayout\"",
 					"-l\"SDCycleScrollView\"",
 					"-l\"YYModel\"",
@@ -4936,7 +4937,6 @@
 					"-l\"MBProgressHUD\"",
 					"-l\"MJRefresh\"",
 					"-l\"Masonry\"",
-					"-l\"RDVTabBarController\"",
 					"-l\"SDAutoLayout\"",
 					"-l\"SDCycleScrollView\"",
 					"-l\"YYModel\"",

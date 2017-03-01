@@ -11,14 +11,23 @@
 #import "ViewController.h"
 #import "WXApi.h"
 
+#import "IndexPageViewController.h"
+#import "TutoriumViewController.h"
+#import "ClassTimeViewController.h"
+#import "PersonalViewController.h"
+#import "NoticeIndexViewController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,WXApiDelegate>
+#import "LCTabBarController.h"
+#import "LCTabBar.h"
+
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate,WXApiDelegate,LCTabBarDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
 @property(nonatomic,strong) LoginViewController *loginViewController ;
 
-@property(nonatomic,strong) ViewController *viewController ;
+@property(nonatomic,strong) LCTabBarController *viewController ;
 
 
 

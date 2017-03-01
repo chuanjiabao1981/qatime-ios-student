@@ -8,7 +8,7 @@
 
 #import "ChangePhoneGetCodeViewController.h"
 #import "NavigationBar.h"
-#import "RDVTabBarController.h"
+ 
 
 #import "UIViewController+HUD.h"
 #import "UIViewController_HUD.h"
@@ -44,8 +44,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    
-    [self.rdv_tabBarController setTabBarHidden:YES];
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];
@@ -219,7 +217,7 @@
 - (void)returnLastPage{
     
     [self.navigationController popViewControllerAnimated:YES];
-     [self.rdv_tabBarController setTabBarHidden:NO];
+     
     
 }
 - (void)didReceiveMemoryWarning {

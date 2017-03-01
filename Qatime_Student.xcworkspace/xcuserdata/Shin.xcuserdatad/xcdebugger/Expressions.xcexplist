@@ -17,7 +17,12 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__33-[LoginViewController userLogin:]_block_invoke:LoginViewController.m">
+         contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unclosedArr">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController keyboardWillShow:]:NELivePlayerViewController.m">
@@ -265,10 +270,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -585,18 +590,18 @@
          contextName = "__44-[PersonalInfoEditViewController updateInfo]_block_invoke.345:PersonalInfoEditViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[ClassTimeViewController requestClassList]:ClassTimeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_token">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "-[TutoriumViewController sendFilterStatus:]:TutoriumViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_filterDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ClassTimeViewController requestClassList]:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_token">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -718,6 +723,14 @@
          <PersistentStrings>
             <PersistentString
                value = "self.navigationController.viewControllers">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate setTabBarController]:AppDelegate.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_viewController">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1291,10 +1304,10 @@
          contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke:LivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1477,12 +1490,7 @@
          contextName = "__43-[NoticeIndexViewController requestNotices]_block_invoke:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke:ClassTimeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_unclosedArr">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "__33-[LoginViewController userLogin:]_block_invoke:LoginViewController.m">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

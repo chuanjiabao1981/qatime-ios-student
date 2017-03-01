@@ -7,10 +7,10 @@
 //
 
 #import "ChangePhoneViewController.h"
-#import "RDVTabBarController.h"
+ 
 #import "UIViewController+HUD.h"
 #import "UIViewController_HUD.h"
-#import "RDVTabBarController.h"
+ 
 #import "UIAlertController+Blocks.h"
 
 
@@ -46,7 +46,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+      
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     _navigationBar.titleLabel.text = @"验证绑定手机";
@@ -143,7 +143,7 @@
                 
                 sleep(2);
                 
-                [self.rdv_tabBarController setTabBarHidden:NO];
+                
                 [self.navigationController popToRootViewControllerAnimated:YES];
                 
             }else{
@@ -284,7 +284,7 @@
 //    返回上一页
     
     [self.navigationController popViewControllerAnimated:YES];
-    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+       
     
 }
 

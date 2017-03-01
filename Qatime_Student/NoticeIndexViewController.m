@@ -7,7 +7,7 @@
 //
 
 #import "NoticeIndexViewController.h"
-#import "RDVTabBarController.h"
+ 
 #import "TutoriumList.h"
 #import "YYModel.h"
 #import "ChatListTableViewCell.h"
@@ -23,7 +23,7 @@
 #import "UIAlertController+Blocks.h"
 #import "UIViewController+Login.h"
 #import "UIViewController+AFHTTP.h"
-#import "RDVTabBarItem+YZBadge.h"
+
 
 
 
@@ -111,7 +111,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
-    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+     
     
 }
 
@@ -497,6 +497,7 @@
         ChatListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         
         ChatViewController *chatVC = [[ChatViewController alloc]initWithClass:cell.model.tutorium];
+        chatVC.hidesBottomBarWhenPushed = YES;
         [self .navigationController pushViewController:chatVC animated:YES];
         
         NIMSession *recentSession = [NIMSession session:cell.model.tutorium.chat_team_id type:NIMSessionTypeTeam];

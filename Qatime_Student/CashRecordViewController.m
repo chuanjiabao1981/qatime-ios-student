@@ -14,7 +14,7 @@
 #import "WithDrawTableViewCell.h"
 #import "PaymentTableViewCell.h"
 #import "RefundTableViewCell.h"
-#import "RDVTabBarController.h"
+ 
 
 #import "Recharge.h"
 #import "WithDraw.h"
@@ -80,10 +80,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
     self.view.backgroundColor = [UIColor whiteColor];
-    
-    [self.rdv_tabBarController setTabBarHidden:YES];
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];

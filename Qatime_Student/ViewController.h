@@ -7,22 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RDVTabBarController.h"
+// 
+#import "LCTabBarController.h"
 
-#import "IndexPageViewController.h"
-#import "TutoriumViewController.h"
-#import "ClassTimeViewController.h"
-#import "PersonalViewController.h"
-#import "NoticeIndexViewController.h"
-#import "RDVTabBarItem.h"
 
-@interface ViewController : RDVTabBarController
-/* 五个选项卡的ViewController*/
-@property(nonatomic,strong) IndexPageViewController *indexPageViewController ;
-@property(nonatomic,strong) TutoriumViewController *tutoriumViewController ;
-@property(nonatomic,strong) ClassTimeViewController *classTimeViewController ;
-@property(nonatomic,strong) PersonalViewController *personalViewController ;
-@property(nonatomic,strong) NoticeIndexViewController *noticeIndexViewController ;
+@interface ViewController : LCTabBarController
+
 
 
 

@@ -10,7 +10,7 @@
 #import "RecommandClassCollectionViewCell.h"
 #import "IndexHeaderPageView.h"
 #import "YZSquareMenu.h"
-#import "RDVTabBarController.h"
+ 
 #import "TutoriumViewController.h"
 #import "NoticeIndexViewController.h"
 #import "YZSquareMenuCell.h"
@@ -31,10 +31,11 @@
 #import "NIMSDK.h"
 #import "MJRefresh.h"
 #import "QRCodeController.h"
-#import "RDVTabBarItem+YZBadge.h"
+#import "LCTabBar.h"
 
 
-@interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate>{
+
+@interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate,LCTabBarDelegate>{
     
     /* token*/
     NSString *_token;
@@ -143,21 +144,12 @@
     });
     
     
-    
     [_navigationBar.rightButton addTarget:self action:@selector(enterScanPage) forControlEvents:UIControlEventTouchUpInside];
-    
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(receiveNewNotice) name:@"ReceiveNewNotice" object:nil];
+
     
 }
 
 
-
-
-- (void)viewDidAppear:(BOOL)animated{
-    
-    [super viewDidAppear:animated];
-    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
-}
 
 
 - (void)viewDidLoad {
@@ -165,7 +157,6 @@
     
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
-    //    self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     
@@ -384,7 +375,7 @@
 /* 请求全部课程*/
 - (void)choseAllTutorium{
     
-    self.rdv_tabBarController.selectedIndex = 1;
+    
     
     /* 发送消息 让第二个页面在初始化后 进行筛选*/
     [[NSNotificationCenter defaultCenter]postNotificationName:@"UserChoseSubject" object:nil];
@@ -765,13 +756,17 @@
     
     [[NSUserDefaults standardUserDefaults]setObject:subjectStr forKey:@"SubjectChosen"];
     
-    self.rdv_tabBarController.selectedIndex = 1;
+    
     
     /* 发送消息 让第二个页面在初始化后 进行筛选*/
     [[NSNotificationCenter defaultCenter]postNotificationName:@"UserChoseSubject" object:subjectStr];
     
     
+    
+    
 }
+
+
 
 
 
@@ -1000,6 +995,8 @@
             teacherId = teach.teacherID;
             
             TeachersPublicViewController *public =[[TeachersPublicViewController alloc]initWithTeacherID:teacherId];
+            
+            public.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:public animated:YES];
             
             
@@ -1017,6 +1014,8 @@
             RecommandClassCollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
             
             TutoriumInfoViewController *viewcontroller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+            
+            viewcontroller.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:viewcontroller animated:YES];
         }
         
@@ -1132,14 +1131,6 @@
     
 }
 
-/* 收到新消息*/
-- (void)receiveNewNotice{
-    
-    RDVTabBarItem *item = self.rdv_tabBarController.tabBar.items[3];
-    [item showBadges];
-    
-    
-}
 
 /* 是否可以进入消息中心*/
 - (void)shouldEnterNoticeCenter{
@@ -1183,7 +1174,7 @@
 - (void)enterScanPage{
     
     QRCodeController *qrcontroller = [[QRCodeController alloc]init];
-    
+    qrcontroller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:qrcontroller animated:YES];
     
     
@@ -1467,7 +1458,7 @@
     
     locationController.hotCitys = @[@"1",@"266"];
     
-    
+    locationController.hidesBottomBarWhenPushed = YES;
     [self .navigationController pushViewController:locationController animated:YES];
     
     

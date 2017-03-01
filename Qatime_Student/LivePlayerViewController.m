@@ -12,7 +12,7 @@
 #import "NavigationBar.h"
 
 #import <MediaPlayer/MediaPlayer.h>
-#import "RDVTabBarController.h"
+ 
 #import "VideoClassInfo.h"
 #import "YYModel.h"
 #import "NoticeAndMembers.h"
@@ -2051,7 +2051,7 @@ bool ismute     = NO;
     if (isFullScreen == NO) {
         
         [self.navigationController popViewControllerAnimated:YES];
-        //        [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+        //           
         
         NSLog(@"click back!");
         [self syncUIStatus:YES];
@@ -2334,7 +2334,7 @@ bool ismute     = NO;
     // Do any additional setup after loading the view, typically from a nib.
     
     /* TabBar单例隐藏*/
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+      
     
     _videoInfoView.segmentControl.selectedSegmentIndex = 1;
     

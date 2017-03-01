@@ -12,7 +12,7 @@
 #import "NELivePlayer.h"
 #import "NELivePlayerController.h"
 
-#import "RDVTabBarController.h"
+ 
 
 
 #import "VideoInfoView.h"

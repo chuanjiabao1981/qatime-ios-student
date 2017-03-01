@@ -74,7 +74,7 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_resource "$PODS_CONFIGURATION_BUILD_DIR/DXPopover/DXPopover.bundle"
+  install_resource "LCTabBarController/LCTabBarController/LCTabBarController.bundle"
   install_resource "MJRefresh/MJRefresh/MJRefresh.bundle"
   install_resource "XHImageViewer/Source/Resources/1_1280x800-1.jpeg"
   install_resource "XHImageViewer/Source/Resources/1_1280x800.jpeg"
@@ -83,7 +83,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "XHImageViewer/Source/Resources/placeholder.jpeg"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_resource "$PODS_CONFIGURATION_BUILD_DIR/DXPopover/DXPopover.bundle"
+  install_resource "LCTabBarController/LCTabBarController/LCTabBarController.bundle"
   install_resource "MJRefresh/MJRefresh/MJRefresh.bundle"
   install_resource "XHImageViewer/Source/Resources/1_1280x800-1.jpeg"
   install_resource "XHImageViewer/Source/Resources/1_1280x800.jpeg"

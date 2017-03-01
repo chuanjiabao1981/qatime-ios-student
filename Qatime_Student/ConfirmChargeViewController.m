@@ -8,7 +8,7 @@
 
 #import "ConfirmChargeViewController.h"
 #import "NavigationBar.h"
-#import "RDVTabBarController.h"
+ 
 #import "NSString+TimeStamp.h"
 #import "WXApi.h"
 #import "UIViewController+HUD.h"
@@ -287,7 +287,7 @@
 - (void)returnLastPage{
     
     [self.navigationController popViewControllerAnimated:YES];
-    [self.rdv_tabBarController setTabBarHidden:NO];
+    
     
 }
 

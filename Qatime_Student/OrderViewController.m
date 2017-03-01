@@ -12,7 +12,7 @@
 #import "TutoriumList.h"
 #import "YYModel.h"
 #import "UIImageView+WebCache.h"
-#import "RDVTabBarController.h"
+ 
 
 #import "UIViewController+HUD.h"
 #import "PayConfirmViewController.h"
@@ -58,7 +58,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [self.rdv_tabBarController setTabBarHidden:YES];
+    
     
 }
 

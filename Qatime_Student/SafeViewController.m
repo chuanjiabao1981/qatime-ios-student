@@ -8,7 +8,7 @@
 
 #import "SafeViewController.h"
 #import "SettingTableViewCell.h"
-#import "RDVTabBarController.h"
+ 
 #import "UIViewController+HUD.h"
 #import "UIViewController_HUD.h"
 #import "ParentViewController.h"
@@ -54,7 +54,7 @@
     
     self.view.backgroundColor = BACKGROUNDGRAY;
     
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+      
     
     _navigationBar = ({
         
@@ -601,7 +601,7 @@
     
     [self.navigationController popViewControllerAnimated:YES];
     
-    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+       
     
 }
 

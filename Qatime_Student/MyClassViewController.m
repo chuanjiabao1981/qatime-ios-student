@@ -7,7 +7,7 @@
 //
 
 #import "MyClassViewController.h"
-#import "RDVTabBarController.h"
+ 
 #import "NavigationBar.h"
 #import "TutoriumList.h"
 #import "UnStartClassTableViewCell.h"
@@ -53,7 +53,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+      
     _navigationBar  = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
     [self.view addSubview:_navigationBar];
     _navigationBar.titleLabel.text = @"我的辅导";
@@ -953,7 +953,7 @@
 - (void)returnLastPage{
     
     [self.navigationController popViewControllerAnimated:YES];
-    [self.rdv_tabBarController setTabBarHidden:NO];
+    
     
 }
 

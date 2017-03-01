@@ -13,7 +13,7 @@
 #import "UIImageView+WebCache.h"
 #import "TeacherPublicClassCollectionViewCell.h"
 #import "TeachersPublic_Classes.h"
-#import "RDVTabBarController.h"
+ 
 #import "TutoriumInfoViewController.h"
 #import "NSString+ChangeYearsToChinese.h"
 
@@ -70,7 +70,7 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+      
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];

@@ -12,7 +12,7 @@
 #import "TutoriumList.h"
 #import "YYModel.h"
 #import "UIImageView+WebCache.h"
-#import "RDVTabBarController.h"
+ 
 #import "NSString+UTF8Coding.h"
 #import "HcdDateTimePickerView.h"
 #import "MMPickerView.h"
@@ -152,7 +152,7 @@
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [self.rdv_tabBarController setTabBarHidden:NO];
+     
     
     
 }
@@ -655,7 +655,7 @@
         effectView.alpha = 0;
         
         [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd/3.0f)];
-        [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+         
     }];
 
     
@@ -746,7 +746,7 @@
     }
     
     
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+      
 
     effectView=[[UIView alloc]initWithFrame:_tutoriumView.frame];
     effectView.backgroundColor = [UIColor grayColor];
@@ -775,7 +775,7 @@
     }];
 
     [self performSelector:@selector(effectviewRemove) withObject:nil afterDelay:0.5];
-     [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+      
     
 }
 
@@ -790,7 +790,7 @@
         
         [MMPickerView dismissWithCompletion:^(NSString *dismissString) {
             
-            [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+             
             
         }];
     }else if ([[touches anyObject]view].origin_sd.y>self.view.height_sd/2){
@@ -798,7 +798,7 @@
     }else{
         [MMPickerView dismissWithCompletion:^(NSString *dismissString) {
             
-            [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+             
             
         }];
     }
@@ -812,7 +812,7 @@
     
     [MMPickerView dismissWithCompletion:^(NSString *dismissString) {
         
-        [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+         
         
     }];
 
@@ -824,7 +824,7 @@
 #pragma mark- 按时间、价格筛选按钮点击事件
 - (void)sortByTimeAndPrice{
     
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+      
     
     _timeFilterStr  =@[NSLocalizedString(@"按时间", nil),NSLocalizedString(@"按价格-低到高", nil),NSLocalizedString(@"按价格-高到低", nil), NSLocalizedString(@"按购买人数", nil)];
     
@@ -847,7 +847,7 @@
 #pragma mark- 按年级筛选
 - (void)sortByGrade{
     
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+      
     
     _gradeFilterArr =  [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"grade"]];
     
@@ -871,7 +871,7 @@
 #pragma mark- 按科目筛选
 - (void)sortBySubject{
     
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+      
     
     _subjectArr=@[NSLocalizedString(@"全部", nil),NSLocalizedString(@"语文", nil),NSLocalizedString(@"数学", nil),NSLocalizedString(@"英语", nil),NSLocalizedString(@"物理", nil),NSLocalizedString(@"化学", nil),NSLocalizedString(@"地理", nil),NSLocalizedString(@"政治", nil),NSLocalizedString(@"历史", nil),NSLocalizedString(@"科学", nil),NSLocalizedString(@"生物", nil)];
     
@@ -899,7 +899,7 @@
     
     [effectView removeFromSuperview];
     
-//    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+//     
     
     
     sort_By  = sort;
@@ -938,7 +938,7 @@
 - (void)selectedGradeFilterWithGrade:(NSString *)grade{
     
     [effectView removeFromSuperview];
-//    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+//       
     
     /* 获取当前年级信息 发送筛选*/
     _filterGrade = grade;
@@ -1111,7 +1111,7 @@
 #pragma mark- 用户筛选完科目条件后的点击事件
 - (void)selectedSubjectFilterWithSubject:(NSString *)subject{
     
-//    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+//     
         /* 获取当前科目筛选信息 发送筛选*/
     
     if ([subject isEqualToString:NSLocalizedString(@"语文", nil)]) {
@@ -1288,9 +1288,9 @@
     }
     
     TutoriumInfoViewController *tutoriumInfo =[[TutoriumInfoViewController alloc]initWithClassID:mod.classID];
+    tutoriumInfo.hidesBottomBarWhenPushed = YES;
     
     [self.navigationController pushViewController:tutoriumInfo animated:YES];
-    self.rdv_tabBarController.tabBar.hidden = YES;
     
     
 }
@@ -1587,7 +1587,7 @@
 /* pickerView 消失*/
 - (void)pickerViewDismiss{
     
-    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+     
 }
 
 

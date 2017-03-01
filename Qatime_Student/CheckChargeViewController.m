@@ -8,7 +8,7 @@
 
 #import "CheckChargeViewController.h"
 #import "NavigationBar.h"
-#import "RDVTabBarController.h"
+ 
 #import "MyWalletViewController.h"
 
 #define RED [UIColor colorWithRed:0.84 green:0.13 blue:0.10 alpha:1.00]

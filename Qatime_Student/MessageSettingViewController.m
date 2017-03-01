@@ -8,7 +8,7 @@
 
 #import "MessageSettingViewController.h"
 #import "NoticeSettingTableViewCell.h"
-#import "RDVTabBarController.h"
+ 
 #import "ClassNoticeSettingTableViewCell.h"
 #import "NIMSDK.h"
 
@@ -30,8 +30,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
     
     _navigtionBar = ({
         NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
@@ -184,7 +182,7 @@
 - (void)returnLastPage{
     
     [self.navigationController popViewControllerAnimated:YES];
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+      
     
     
 }

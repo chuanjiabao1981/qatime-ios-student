@@ -10,7 +10,7 @@
 #import "NavigationBar.h"
 #import "ClassNoticeSettingTableViewCell.h"
 #import "ClassNoticeTimeSettingTableViewCell.h"
-#import "RDVTabBarController.h"
+ 
 #import "UIViewController+HUD.h"
 #import "HcdDateTimePickerView.h"
 #import "UIAlertController+Blocks.h"
@@ -556,7 +556,7 @@
 
 - (void)exit{
     [self.navigationController popViewControllerAnimated: YES];
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+      
 
 }
 

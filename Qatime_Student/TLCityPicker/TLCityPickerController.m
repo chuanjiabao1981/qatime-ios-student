@@ -12,7 +12,7 @@
 #import "TLCityGroupCell.h"
 
 #import "NavigationBar.h"
-#import "RDVTabBarController.h"
+ 
 #import "LocalChoseView.h"
 
 #import <MapKit/MapKit.h>
@@ -106,7 +106,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.rdv_tabBarController setTabBarHidden:YES animated:YES];
+    
     self.view.backgroundColor = [UIColor whiteColor];
     _cityFilePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"City.plist"];
     

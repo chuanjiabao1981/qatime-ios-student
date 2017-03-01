@@ -15,17 +15,16 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - BarrageRenderer (1.9.1)
-  - DXPopover (0.1.1)
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
   - FSCalendar (2.5.1)
+  - LCTabBarController (1.3.5)
   - M13BadgeView (1.0.4)
   - Masonry (1.0.2)
   - MBProgressHUD (1.0.0)
   - MJRefresh (3.1.12)
   - MLLabel (1.10.2)
-  - RDVTabBarController (1.1.9)
   - RealReachability (1.1.8):
     - RealReachability/Connection (= 1.1.8)
     - RealReachability/Ping (= 1.1.8)
@@ -48,15 +47,14 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
   - BarrageRenderer (~> 1.9.0)
-  - DXPopover (~> 0.1.1)
   - FMDB (~> 2.6.2)
   - FSCalendar (~> 2.5.1)
+  - LCTabBarController (~> 1.3.5)
   - M13BadgeView (~> 1.0.4)
   - Masonry (~> 1.0.2)
   - MBProgressHUD (~> 1.0.0)
   - MJRefresh (~> 3.1.12)
   - MLLabel (~> 1.10.2)
-  - RDVTabBarController (~> 1.1.9)
   - RealReachability (~> 1.1.8)
   - SDAutoLayout (~> 2.1.7)
   - SDCycleScrollView (~> 1.65)
@@ -70,15 +68,14 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   BarrageRenderer: 55bbe4557d48adbdca6c1ebdfef96946fdb5e5b2
-  DXPopover: 13e6bbd1a0da4e62b2190de51f43a94850769e0f
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   FSCalendar: 8efeb4b92240937204165c7743f4375923112fb5
+  LCTabBarController: 6d22654fd3d7e476428536bed5faf87d714035cf
   M13BadgeView: 700dd0714fdc837c0cf1c8c004454963ec22441f
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   MLLabel: 71315bd11dc45bebba159e07427496ea8bfc2b0a
-  RDVTabBarController: 67794f7a7a37f8e32f046f85ac67d06ab92d624a
   RealReachability: e6c8a2bbffa316006e8c282efc1ee2567d61a920
   SDAutoLayout: e9b36d04b8c0b504762a04d76fbbe5108944297a
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
@@ -89,6 +86,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: fb455e63a770e19bbba7d8da55978ddfba95c99b
+PODFILE CHECKSUM: 3daa5a961a7d1a45938077e0396da3954a1b5b60
 
 COCOAPODS: 1.1.1

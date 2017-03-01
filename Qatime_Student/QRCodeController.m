@@ -8,7 +8,7 @@
 
 #import "QRCodeController.h"
 #import <AVFoundation/AVFoundation.h>
-#import "RDVTabbarController.h"
+ 
 #import "NavigationBar.h"
 #import "QRMaskView.h"
 
@@ -187,7 +187,7 @@
     [self setCropRect:kScanRect];
     
     [self performSelector:@selector(setupCamera) withObject:nil afterDelay:0.3];
-    [self.rdv_tabBarController setTabBarHidden:YES animated:YES];
+    
     
 
 }

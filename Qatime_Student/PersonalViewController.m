@@ -64,15 +64,6 @@
 
 @implementation PersonalViewController
 
-- (void)viewWillAppear:(BOOL)animated{
-    
-    [super viewWillAppear:animated];
-    
-    [self.rdv_tabBarController setTabBarHidden:NO];
-    
-    
-    
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -203,8 +194,9 @@
         }else{
             
             PersonalInfoViewController *personVC = [PersonalInfoViewController new];
+            personVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:personVC animated:YES];
-            [self.rdv_tabBarController setTabBarHidden:YES];
+            
         }
     }else{
         
@@ -396,21 +388,23 @@
                     switch (indexPath.row) {
 //                        case 0:{
 //                            MyWalletViewController *mwVC = [MyWalletViewController new];
+                            
 //                            [self.navigationController pushViewController:mwVC animated:YES];
-//                            [self.rdv_tabBarController setTabBarHidden:YES];
+
 //                        }
 //                            break;
 //                        case 1:{
 //                            
 //                            MyOrderViewController *moVC = [MyOrderViewController new];
 //                            [self.navigationController pushViewController:moVC animated:YES];
-//                            [self.rdv_tabBarController setTabBarHidden:YES];
+
 //                        }
 //                            break;
                         case 0:{
                             MyClassViewController *mcVC = [MyClassViewController new];
+                            mcVC.hidesBottomBarWhenPushed = YES;
                             [self.navigationController pushViewController:mcVC animated:YES];
-                            [self.rdv_tabBarController setTabBarHidden:YES];
+                            
                         }
                             break;
                             
@@ -424,15 +418,17 @@
                             
                         case 0:{
                             SafeViewController *sVC = [SafeViewController new];
+                            sVC.hidesBottomBarWhenPushed = YES;
                             [self.navigationController pushViewController:sVC animated:YES];
-                            [self.rdv_tabBarController setTabBarHidden:YES];
+                             
                             
                         }
                             break;
                         case 1:{
                             SettingViewController *settingVC = [SettingViewController new];
+                            settingVC.hidesBottomBarWhenPushed = YES;
                             [self.navigationController pushViewController:settingVC animated:YES];
-                            [self.rdv_tabBarController setTabBarHidden:YES];
+                             
                         }
                             break;
                     }

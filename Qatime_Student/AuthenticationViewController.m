@@ -295,6 +295,7 @@
 - (void)nextPage{
     
     SetPayPasswordViewController *controller =[[SetPayPasswordViewController alloc]initWithPageType:SetNewPassword];
+
     [self.navigationController pushViewController:controller animated:YES];
     
 }

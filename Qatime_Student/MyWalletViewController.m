@@ -8,7 +8,7 @@
 
 #import "MyWalletViewController.h"
 #import "NavigationBar.h"
-#import "RDVTabBarController.h"
+ 
 
 #import "PersonalTableViewCell.h"
 #import "UIViewController+HUD.h"
@@ -55,7 +55,6 @@
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     
-    [self.rdv_tabBarController setTabBarHidden:YES];
     
     
     
@@ -244,7 +243,7 @@
     
 
     [self.navigationController popViewControllerAnimated:YES];
-    [self.rdv_tabBarController setTabBarHidden:NO];
+     
     
 }
 

@@ -16,7 +16,7 @@
 #import "UIViewController+HUD.h"
 
 #import "HaveNoClassView.h"
-#import "RDVTabBarController.h"
+ 
 #import "TutoriumInfoViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
@@ -125,12 +125,7 @@
     
 }
 
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    
-    [self.rdv_tabBarController setTabBarHidden:YES animated:YES];
-    
-}
+
     
     
 

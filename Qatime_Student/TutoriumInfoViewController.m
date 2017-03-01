@@ -10,7 +10,7 @@
 #import "NavigationBar.h"
 #import "ClassesListTableViewCell.h"
 #import "YYModel.h"
-#import "RDVTabBarController.h"
+ 
 #import "BuyBar.h"
 
 #import "UIImageView+WebCache.h"
@@ -84,7 +84,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     
-    [self.rdv_tabBarController setTabBarHidden:YES];
+     
     
 }
 
@@ -92,8 +92,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    
-    [self.rdv_tabBarController setTabBarHidden: YES];
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     
@@ -934,7 +932,7 @@
 - (void)returnLastpage{
     
     [self.navigationController popViewControllerAnimated:YES];
-    [self.rdv_tabBarController.tabBar setHidden:NO];
+    
 }
 
 

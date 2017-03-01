@@ -16,7 +16,7 @@
 #import "YYTextView+YZEmotion.h"
 #import "UITextView+YZEmotion.h"
 #import "UITextField+YZEmotion.h"
-#import "RDVTabBarController.h"
+ 
 #import "NIMSDK.h"
 #import "NSAttributedString+YYText.h"
 
@@ -37,7 +37,6 @@
 #import "LivePlayerViewController.h"
 #import "NIMSDK.h"
 #import <AVFoundation/AVFoundation.h>
-#import "DXPopover.h"
 #import "UIAlertController+Blocks.h"
 //#import <AVFoundation/AVAudioSettings.h>
 //#import <AVFoundation/AVAudioRecorder.h>
@@ -165,7 +164,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.rdv_tabBarController setTabBarHidden:YES animated:YES];
+    
+    
+
     self.view.backgroundColor = [UIColor whiteColor];
     
     _chatTableView.hidden = YES;

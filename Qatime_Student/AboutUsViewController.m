@@ -10,7 +10,7 @@
 
 #import "NavigationBar.h"
 
-#import "RDVTabBarController.h"
+ 
 #import "AboutUsTableViewCell.h"
 #import "UIAlertController+Blocks.h"
 
@@ -29,7 +29,7 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+      
     
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
@@ -133,7 +133,7 @@
 - (void)returnLastPage{
     
     [self.navigationController popViewControllerAnimated:YES];
-    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+       
     
 }
 

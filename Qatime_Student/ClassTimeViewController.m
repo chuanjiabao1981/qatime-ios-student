@@ -7,7 +7,7 @@
 //
 
 #import "ClassTimeViewController.h"
-#import "RDVTabBarController.h"
+ 
 #import "NavigationBar.h"
 #import "HMSegmentedControl.h"
 #import "ClassTimeTableViewCell.h"
@@ -60,8 +60,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
-    
-    [self.rdv_tabBarController setTabBarHidden:NO animated:YES];
+
 }
 
 - (void)loadView{
@@ -641,6 +640,7 @@
         NSLog(@"%@",classID);
         
         TutoriumInfoViewController *infoVC= [[TutoriumInfoViewController alloc]initWithClassID:classID];
+        infoVC.hidesBottomBarWhenPushed = YES;
         
         [self.navigationController pushViewController:infoVC animated:YES];
         
@@ -658,6 +658,7 @@
     ClassTimeTableViewCell *cell = [_classTimeView.notClassView.notClassTableView cellForRowAtIndexPath:indePath];
     
     LivePlayerViewController *controller = [[LivePlayerViewController alloc]initWithClassID:cell.model.course_id];
+    controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
     
 }
@@ -688,6 +689,8 @@
         if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
             
             AllClassViewController *allClassVC = [[AllClassViewController alloc]init];
+            allClassVC.hidesBottomBarWhenPushed = YES;
+            
             [self.navigationController pushViewController:allClassVC animated:YES];
         }else{
 //            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录后才能查看!" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {

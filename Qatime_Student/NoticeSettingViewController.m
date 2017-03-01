@@ -11,7 +11,7 @@
 #import "NavigationBar.h"
 #import "MessageSettingViewController.h"
 #import "ClassSettingViewController.h"
-#import "RDVTabBarController.h"
+ 
 
 @interface NoticeSettingViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -26,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.rdv_tabBarController setTabBarHidden:YES animated:NO];
+      
     
     _navigationBar = ({
         
@@ -133,7 +133,7 @@
 - (void)returLastPage{
     
     [self.navigationController popViewControllerAnimated:YES];
-    [self.rdv_tabBarController setTabBarHidden:NO animated:NO];
+       
     
     
 }
