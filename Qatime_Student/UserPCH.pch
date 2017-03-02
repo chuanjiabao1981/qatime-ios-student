@@ -58,6 +58,7 @@
 
 /*字号*/
 #define TITLEFONTSIZE [UIFont systemFontOfSize:18*[UIScreen mainScreen].bounds.size.width/414.0]
+
 /* 字体颜色*/
 #define TITLECOLOR [UIColor darkGrayColor]
 

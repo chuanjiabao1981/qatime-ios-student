@@ -134,7 +134,7 @@
         _segmentControl.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
         _segmentControl.borderType = HMSegmentedControlBorderTypeTop | HMSegmentedControlBorderTypeBottom;
         _segmentControl.borderWidth = 0.6;
-        _segmentControl.borderColor = TITLECOLOR;
+        _segmentControl.borderColor = SEPERATELINECOLOR;
         [_segmentControl updateLayout];
         
         /* 大滑动页面*/

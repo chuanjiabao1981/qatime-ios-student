@@ -117,6 +117,8 @@
 		543E512C1E5D7B180001551D /* YZBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E512B1E5D7B180001551D /* YZBadge.m */; };
 		54443E281E0D252F000D8E8B /* LocalChoseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54443E271E0D252F000D8E8B /* LocalChoseView.m */; };
 		54443E2A1E0D284E000D8E8B /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = 54443E291E0D284E000D8E8B /* point.png */; };
+		5444BD2B1E67BFAE00A75AD1 /* TeacherPublicClassCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5444BD2A1E67BFAE00A75AD1 /* TeacherPublicClassCollectionViewCell.swift */; };
+		5444BD2F1E68206D00A75AD1 /* UINavigationController+StatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5444BD2E1E68206D00A75AD1 /* UINavigationController+StatusBar.m */; };
 		5448AEA11E042BC8007B1DF9 /* NoticeIndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA01E042BC8007B1DF9 /* NoticeIndexViewController.m */; };
 		5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA31E042D45007B1DF9 /* NoticeIndexView.m */; };
 		5448AEA81E054C7A007B1DF9 /* ChatListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA71E054C7A007B1DF9 /* ChatListTableViewCell.m */; };
@@ -635,6 +637,9 @@
 		54443E261E0D252F000D8E8B /* LocalChoseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalChoseView.h; sourceTree = "<group>"; };
 		54443E271E0D252F000D8E8B /* LocalChoseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalChoseView.m; sourceTree = "<group>"; };
 		54443E291E0D284E000D8E8B /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = "<group>"; };
+		5444BD2A1E67BFAE00A75AD1 /* TeacherPublicClassCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeacherPublicClassCollectionViewCell.swift; sourceTree = "<group>"; };
+		5444BD2D1E68206D00A75AD1 /* UINavigationController+StatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+StatusBar.h"; sourceTree = "<group>"; };
+		5444BD2E1E68206D00A75AD1 /* UINavigationController+StatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+StatusBar.m"; sourceTree = "<group>"; };
 		5448AE9F1E042BC8007B1DF9 /* NoticeIndexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeIndexViewController.h; sourceTree = "<group>"; };
 		5448AEA01E042BC8007B1DF9 /* NoticeIndexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeIndexViewController.m; sourceTree = "<group>"; };
 		5448AEA21E042D45007B1DF9 /* NoticeIndexView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeIndexView.h; sourceTree = "<group>"; };
@@ -691,7 +696,6 @@
 		545731801E022E7700F45C03 /* HaveNoClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HaveNoClassView.m; sourceTree = "<group>"; };
 		5458AB321E0D411D00D6409F /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/libs/libcrypto.a; sourceTree = "<group>"; };
 		5458AB331E0D411D00D6409F /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/libs/libssl.a; sourceTree = "<group>"; };
-		545A07891E66CE35004E5628 /* NotificationService copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "NotificationService copy-Info.plist"; path = "/Users/Shin/Documents/帷幄通达/qatime-ios-student - debug/NotificationService copy-Info.plist"; sourceTree = "<absolute>"; };
 		545B3BA51E0A216700751D08 /* GuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuideViewController.h; sourceTree = "<group>"; };
 		545B3BA61E0A216700751D08 /* GuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuideViewController.m; sourceTree = "<group>"; };
 		545B3BA81E0A5F4900751D08 /* MMPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMPickerView.h; sourceTree = "<group>"; };
@@ -2511,7 +2515,6 @@
 				54A153A61DC6F09D0070B508 /* Products */,
 				61F0B31770950FCD751F0794 /* Pods */,
 				B493EB6DEDE6DB14F293C15A /* Frameworks */,
-				545A07891E66CE35004E5628 /* NotificationService copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2538,6 +2541,7 @@
 				541F91DA1DC9BBA000180BE8 /* 个人页面 */,
 				54FCBAC61DD591AA0094BF58 /* 视频播放页 */,
 				54FCBABE1DD58E790094BF58 /* Category */,
+				54A153A81DC6F09D0070B508 /* Supporting Files */,
 				54A153AB1DC6F09D0070B508 /* AppDelegate.h */,
 				54A153AC1DC6F09D0070B508 /* AppDelegate.m */,
 				545B3BA51E0A216700751D08 /* GuideViewController.h */,
@@ -2548,7 +2552,6 @@
 				546978651DC726B3001695F4 /* UserPCH.pch */,
 				543E234A1E2C9AB200381F10 /* Assets.xcassets */,
 				54A153A91DC6F09D0070B508 /* main.m */,
-				54A153A81DC6F09D0070B508 /* Supporting Files */,
 			);
 			path = Qatime_Student;
 			sourceTree = "<group>";
@@ -2556,6 +2559,7 @@
 		54A153A81DC6F09D0070B508 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				54B45D171E5C34410027F958 /* Qatime_Student-Bridging-Header.h */,
 				54B45D081E5C30670027F958 /* JTSegmentControl */,
 				5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */,
 				54F32F741E373142000F8926 /* Reachability */,
@@ -2974,7 +2978,6 @@
 			children = (
 				54B45D131E5C33F00027F958 /* JTSegmentControl.swift */,
 				54B45D151E5C34110027F958 /* JTSegmentPattern.swift */,
-				54B45D171E5C34410027F958 /* Qatime_Student-Bridging-Header.h */,
 			);
 			path = JTSegmentControl;
 			sourceTree = "<group>";
@@ -3799,6 +3802,7 @@
 			children = (
 				5435D9501DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.h */,
 				5435D9511DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m */,
+				5444BD2A1E67BFAE00A75AD1 /* TeacherPublicClassCollectionViewCell.swift */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -3926,6 +3930,8 @@
 				541A468B1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m */,
 				54E8B6A51E601B0300A9703F /* UIViewController+TimeInterval.h */,
 				54E8B6A61E601B0300A9703F /* UIViewController+TimeInterval.m */,
+				5444BD2D1E68206D00A75AD1 /* UINavigationController+StatusBar.h */,
+				5444BD2E1E68206D00A75AD1 /* UINavigationController+StatusBar.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -4470,6 +4476,7 @@
 				54652E0F1DEE9D4B00F4607C /* AboutUsViewController.m in Sources */,
 				54FCBAEC1DD5CA9F0094BF58 /* NoticeAndMembers.m in Sources */,
 				54FB1DCA1DF172E600BA9A3C /* BindingView.m in Sources */,
+				5444BD2B1E67BFAE00A75AD1 /* TeacherPublicClassCollectionViewCell.swift in Sources */,
 				545162D11DF55BEC000BD17A /* UserInfoModel.m in Sources */,
 				5435D9341DD2B42100DD4FCC /* RecommandClasses.m in Sources */,
 				545162BE1DF50D99000BD17A /* ChangePasswordViewController.m in Sources */,
@@ -4540,6 +4547,7 @@
 				545B3BAA1E0A5F4900751D08 /* MMPickerView.m in Sources */,
 				543E0CC81DFFEDBD004B24FD /* CheckOrderView.m in Sources */,
 				5413D25B1DF7BC7900A8FDEC /* RechargeTableView.m in Sources */,
+				5444BD2F1E68206D00A75AD1 /* UINavigationController+StatusBar.m in Sources */,
 				54F3BA181DFC3013003998D0 /* UIViewController+Login.m in Sources */,
 				5413D2781DF7D0DF00A8FDEC /* UIViewController+Token.m in Sources */,
 				54F3BA2D1DFC7130003998D0 /* WithDrawView.m in Sources */,

@@ -9,9 +9,6 @@
 #import <Foundation/Foundation.h>
 
 
-
-
-
 @interface TutoriumListInfo : NSObject
 
 /* model所包含的内容 及项目*/

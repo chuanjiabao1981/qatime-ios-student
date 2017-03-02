@@ -165,6 +165,11 @@ typedef enum : NSUInteger {
     /* 全屏模式下,双击小窗口切换视频的手势*/
     UITapGestureRecognizer *_doubelTap;
     
+    
+    /* 切换横竖屏 使用的scrollview的contentsize*/
+    CGSize scrollContentSize;
+    
+    
 #pragma mark- 聊天视图
     
     
@@ -412,6 +417,7 @@ bool ismute     = NO;
 }
 
 - (void)loadView {
+    
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.view.backgroundColor = [UIColor blackColor];
@@ -452,7 +458,7 @@ bool ismute     = NO;
         _.sd_layout
         .leftEqualToView(self.view)
         .rightEqualToView(self.view)
-        .topSpaceToView(self.view,20)
+        .topSpaceToView(self.view,0)
         .autoHeightRatio(9/16.0);
         _boardPlayerView.tag = 0;
         
@@ -647,7 +653,7 @@ bool ismute     = NO;
         _.sd_layout
         .leftEqualToView(self.view)
         .rightEqualToView(self.view)
-        .topSpaceToView(self.view,20)
+        .topSpaceToView(self.view,0)
         .autoHeightRatio(9/16.0);
         _;
     });
@@ -704,16 +710,16 @@ bool ismute     = NO;
     //文件名 、课程名
     _fileName = ({
         UILabel *_=[[UILabel alloc] init ];
-        _.textAlignment = NSTextAlignmentCenter; //文字居中
+        _.textAlignment = NSTextAlignmentLeft; //文字居左
         _.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
         _.font = [UIFont fontWithName:_fileName.font.fontName size:13.0];
         _.hidden = YES;
         [_topControlView addSubview:_];
         _.sd_layout
-        .centerXEqualToView(_topControlView)
+        .leftSpaceToView(_playQuitBtn,0)
         .topEqualToView(_topControlView)
         .bottomEqualToView(_topControlView)
-        .widthIs(screenWidth-100);
+        .rightSpaceToView(_topControlView,0);
         _;
     });
     
@@ -1169,15 +1175,15 @@ bool ismute     = NO;
     
     [self.videoInfoView.scrollView scrollRectToVisible:CGRectMake(self.videoInfoView.segmentControl.selectedSegmentIndex * self.view.width_sd, 0, self.view.width_sd, self.view.height_sd-64-49) animated:NO];
     
-    if (isFullScreen == NO) {
-        
-        typeof(self) __weak weakSelf = self;
-        [ _videoInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-            
-            NSLog(@"%ld", (long)index);
-            [weakSelf.videoInfoView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, weakSelf.view.width_sd, weakSelf.view.height_sd-64-49) animated:YES];
-        }];
-    }
+//    if (isFullScreen == NO) {
+//        
+//        typeof(self) __weak weakSelf = self;
+//        [_videoInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
+//            NSLog(@"%ld", (long)index);
+//            
+//            [weakSelf.videoInfoView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, weakSelf.view.width_sd, weakSelf.view.height_sd-64-49) animated:YES];
+//        }];
+//    }
     
    
     
@@ -1234,7 +1240,7 @@ bool ismute     = NO;
 - (void)mediaControlTurnDownFullScreenModeWithMainView:(FJFloatingView *)playerView{
     
     _mediaControl.sd_resetLayout
-    .topSpaceToView(self.view,20)
+    .topSpaceToView(self.view,0)
     .leftEqualToView(self.view)
     .rightEqualToView(self.view)
     .autoHeightRatio(9/16.0);
@@ -1424,6 +1430,7 @@ bool ismute     = NO;
 - (void)changInfoViewContentSizeToBig{
     
     _videoInfoView.scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width*4, [UIScreen mainScreen].bounds.size.height -  [UIScreen mainScreen].bounds.size.width*9/16.0f-30-4-40);
+    
     
     
 }
@@ -1654,7 +1661,7 @@ bool ismute     = NO;
     
     [playerView sd_clearAutoLayoutSettings];
     playerView.sd_resetLayout
-    .topSpaceToView (self.view,20)
+    .topSpaceToView (self.view,0)
     .leftEqualToView(self.view)
     .rightEqualToView(self.view)
     .autoHeightRatio(9/16.0f);
@@ -1676,7 +1683,7 @@ bool ismute     = NO;
     
     [playerView sd_clearAutoLayoutSettings];
     playerView.sd_layout
-    .topSpaceToView (self.view,self.view.width_sd*9/16+20)
+    .topSpaceToView (self.view,self.view.width_sd*9/16)
     .leftEqualToView(self.view)
     .rightEqualToView(self.view)
     .autoHeightRatio(9/16.0f);
@@ -1702,7 +1709,7 @@ bool ismute     = NO;
         /* 副视图变小*/
         if (_viewsArrangementMode == SameLevel) {
             playerView.sd_layout
-            .topSpaceToView(self.view,20)
+            .topSpaceToView(self.view,0)
             .leftEqualToView(self.view)
             .widthRatioToView(self.view,2/5.0f)
             .autoHeightRatio(9/16.0);
@@ -1710,7 +1717,7 @@ bool ismute     = NO;
         }else if (_viewsArrangementMode == DifferentLevel){
             
             playerView.sd_layout
-            .topSpaceToView(self.view,20)
+            .topSpaceToView(self.view,0)
             .leftEqualToView(self.view)
             .widthRatioToView(self.view,2/5.0f)
             .autoHeightRatio(9/16.0);
@@ -1737,7 +1744,7 @@ bool ismute     = NO;
         /* 在全屏视图下*/
         
         playerView.sd_layout
-        .topSpaceToView(self.view,20)
+        .topSpaceToView(self.view,0)
         .leftEqualToView(self.view)
         .widthRatioToView(self.view,2/5.0f)
         .autoHeightRatio(9/16.0);
@@ -1762,7 +1769,6 @@ bool ismute     = NO;
     dispatch_queue_t floatview = dispatch_queue_create("floatview", DISPATCH_QUEUE_SERIAL);
     dispatch_sync(floatview, ^{
         
-        
         _videoInfoView.sd_layout
         .topSpaceToView(playerView,0)
         .leftEqualToView(self.view)
@@ -1772,6 +1778,27 @@ bool ismute     = NO;
         [_videoInfoView updateLayout];
         
     });
+    
+    
+}
+
+#pragma mark- 隐藏segment和滑动视图
+- (void)hideSegementAndScrollViews{
+    
+    _videoInfoView.segmentControl.hidden = YES;
+    _videoInfoView.scrollView.hidden = YES;
+    
+}
+
+#pragma mark- 显示segment和滑动视图
+- (void)showSegmentAndScrollViews{
+    
+    _videoInfoView.segmentControl.hidden = NO;
+    _videoInfoView.scrollView.hidden = NO;
+    
+    [_videoInfoView.segmentControl updateLayout];
+    [_videoInfoView.scrollView updateLayout];
+    _videoInfoView.scrollView.contentSize = CGSizeMake(self.view.width_sd*4, _videoInfoView.scrollView.height_sd);
     
     
 }
@@ -1795,16 +1822,19 @@ bool ismute     = NO;
     
 }
 
-- (BOOL)prefersStatusBarHidden{
-    return YES;
-}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     NSLog(@"viewWillAppear");
     NSLog(@"Version = %@", [self.liveplayerTeacher getSDKVersion]);
     
+    [[UIApplication sharedApplication] setStatusBarHidden:TRUE];
     
+}
+
+- (BOOL)prefersStatusBarHidden{
+    
+    return YES;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -1954,14 +1984,8 @@ bool ismute     = NO;
         [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
         self.scaleModeBtn.titleLabel.tag = 0;
         
-        //        [self.view updateLayout];
-        //        [self.view layoutIfNeeded];
-        
-        
         //谁是主视图，谁就恢复到主屏
         if (_boardPlayerView.becomeMainPlayer == YES) {
-            //            [self.view addSubview:_boardPlayerView];
-            //            [self.view addSubview:_teacherPlayerView];
             [self makeFirstPlayer:_boardPlayerView];
             [self changInfoViewsWithTopView:_boardPlayerView];
             
@@ -1969,7 +1993,6 @@ bool ismute     = NO;
             
             if (_viewsArrangementMode == SameLevel) {
                 
-                //                [self makeSecondPlayer:_teacherPlayerView];
                 [self makeFloatingPlayer:_teacherPlayerView];
                 [self changInfoViewContentSizeToSmall];
                 
@@ -2000,6 +2023,9 @@ bool ismute     = NO;
             
         }
         
+        /* 显示segment和scrollview*/
+        [self showSegmentAndScrollViews];
+        
         [[NSNotificationCenter defaultCenter]postNotificationName:@"TurnDownFullScreen" object:nil];
         
     }
@@ -2013,15 +2039,13 @@ bool ismute     = NO;
         self.scaleModeBtn.titleLabel.tag = 1;
         
         
-        //        谁是主视图，谁就全屏
-        
+        //谁是主视图，谁就全屏
         if (_boardPlayerView.becomeMainPlayer == YES) {
             
             [self.view sendSubviewToBack:_videoInfoView];
             [self turnToFullScreenMode:_boardPlayerView];
             [_teacherPlayerView addGestureRecognizer:_doubelTap];
             
-            //            [_teacherPlayerView removeFromSuperview];
             [_boardPlayerView updateLayout];
             [_teacherPlayerView updateLayout];
             
@@ -2035,7 +2059,8 @@ bool ismute     = NO;
             
         }
         
-        
+        /* 切换到横屏 隐藏segment和scrollview*/
+        [self hideSegementAndScrollViews];
         /* 全屏状态  发送消息通知*/
         [[NSNotificationCenter defaultCenter]postNotificationName:@"FullScreen" object:nil];
         
@@ -2317,11 +2342,7 @@ bool ismute     = NO;
         NSLog(@"摄像头播放器资源释放了!!!");
         
     }
-    
-    
-    
-    //    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayerTeacher];
-    //    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayerBoard];
+
 }
 
 
@@ -2431,16 +2452,14 @@ bool ismute     = NO;
     _videoInfoView = [[VideoInfoView alloc]init];
     [self.view addSubview:_videoInfoView];
     
-    _videoInfoView.frame = CGRectMake(0,20+self.view.width_sd*9/16*2, self.view.width_sd, self.view.height_sd-_teacherPlayerView.height_sd-_boardPlayerView.height_sd);
+    _videoInfoView.frame = CGRectMake(0,self.view.width_sd*9/16*2, self.view.width_sd, self.view.height_sd-_teacherPlayerView.height_sd-_boardPlayerView.height_sd);
     
     _videoInfoView.scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width*4, [UIScreen mainScreen].bounds.size.height -  [UIScreen mainScreen].bounds.size.width*9/16.0f*2-30-4-20);
     
     if (isFullScreen == NO) {
         
         typeof(self) __weak weakSelf = self;
-        
         [ _videoInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-            
             NSLog(@"%ld", (long)index);
             [weakSelf.videoInfoView.scrollView scrollRectToVisible:CGRectMake(weakSelf.view.width_sd * index, 0, weakSelf.view.width_sd, weakSelf.view.height_sd-64-49) animated:YES];
         }];
@@ -3107,6 +3126,8 @@ bool ismute     = NO;
         _chatTableView.hidden = NO;
         [self loadingHUDStopLoadingWithTitle:@""];
         [self makeMessages:messageArr];
+        [_chatTableView reloadData];
+        [self tableViewScrollToBottom];
     }
     
 }
@@ -3194,7 +3215,6 @@ bool ismute     = NO;
                         }
                         
                         
-                        
                         if (title ==nil) {
                             title = @"";
                         }
@@ -3237,9 +3257,12 @@ bool ismute     = NO;
                         
                         //        [self makeOthersMessageWith:1 andMessage:message];
                         [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
+                        [self.chatTableView reloadData];
+//                        [self tableViewScrollToBottom];
                         
                     }
                 });
+                
                 
             }else if (message.messageType ==NIMMessageTypeImage){
                 /* 如果收到的消息类型是图片的话 */
@@ -3273,7 +3296,6 @@ bool ismute     = NO;
                     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithImage:image andName:message.senderName andIcon:_iconURL type:UUMessageTypePicture andImagePath:imageObject.url andThumbImagePath:imageObject.thumbPath andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]andMessage:message]];
                     
                     [dic setObject:@(UUMessageFromMe) forKey:@"from"];
-                    
                     
                     [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                     
@@ -3309,6 +3331,9 @@ bool ismute     = NO;
                     
                     [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                     
+                    [_chatTableView reloadData];
+//                    [self tableViewScrollToBottom];
+                    
                 }
                 
             }else if (message.messageType ==NIMMessageTypeAudio){
@@ -3329,6 +3354,7 @@ bool ismute     = NO;
                     
                     [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                     
+                    
                 }
                 /* 如果消息是别人发的 */
                 else{
@@ -3340,6 +3366,8 @@ bool ismute     = NO;
                     
                     [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                     
+                    
+                    
                 }
                 
                 
@@ -3348,17 +3376,16 @@ bool ismute     = NO;
         }
         
     }
+    [_chatTableView reloadData];
     
-    //    [self.chatTableView reloadData];
-    //    [self tableViewScrollToBottom];
-    
+    [self tableViewScrollToBottom];
+   
     
 }
 
 - (void)requestHistoryChatList{
     
     if (chatTime == 0) {
-        
         
         [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
         
@@ -3435,13 +3462,13 @@ bool ismute     = NO;
             .bottomSpaceToView(_videoInfoView.view2,keyboardRect.size.height);
             
             [IFView updateLayout];
-            
+            [_chatTableView clearAutoHeigtSettings];
             _chatTableView.sd_layout
-            .bottomSpaceToView(_videoInfoView.view2,46);
+            .bottomSpaceToView(IFView,0);
             [_chatTableView updateLayout];
             
         }];
-        
+        [_chatTableView reloadData];
         [self tableViewScrollToBottom];
     }
     
@@ -3474,11 +3501,13 @@ bool ismute     = NO;
             IFView.sd_layout
             .bottomSpaceToView(_videoInfoView.view2,0);
             [IFView updateLayout];
+            
+            [_chatTableView clearAutoHeigtSettings];
             _chatTableView.sd_layout
-            .bottomSpaceToView(_videoInfoView.view2,46);
+            .bottomSpaceToView(IFView,0);
             [_chatTableView updateLayout];
         }];
-        
+        [_chatTableView reloadData];
         [self tableViewScrollToBottom];
         
     }
@@ -3514,7 +3543,7 @@ bool ismute     = NO;
     .heightIs(46);
     
     
-    [self.chatTableView reloadData];
+//    [self.chatTableView reloadData];
 //    [self tableViewScrollToBottom];
 }
 
@@ -3549,6 +3578,7 @@ bool ismute     = NO;
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatModel.dataSource.count-1 inSection:0];
     [self.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    
 }
 
 #pragma mark - 聊天页面 发送文字聊天信息的回调
@@ -4068,8 +4098,6 @@ bool ismute     = NO;
     }
     
     
-    
-    
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
     
@@ -4097,7 +4125,6 @@ bool ismute     = NO;
             .topSpaceToView(self.teacherPlayerView,0)
             .autoHeightRatio(9/16.0);
             [_boardPlayerView updateLayout];
-            
             
         }
         
@@ -4444,6 +4471,7 @@ bool ismute     = NO;
             
             cell.delegate = self;
             [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
+            
             [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             
             return cell;
@@ -4486,14 +4514,8 @@ bool ismute     = NO;
 #pragma mark - UITableViewDelegate
 
 
-
-#pragma mark - 关于姓名排序
-
-
-
 // segment的滑动代理
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    
     
     if (isFullScreen == NO) {
         
@@ -4530,8 +4552,6 @@ bool ismute     = NO;
     }
     
     [self.view endEditing:YES];
-    
-    
     
 }
 
@@ -4819,6 +4839,7 @@ bool ismute     = NO;
     
 }
 
+
 /* 把弹幕给释放掉*/
 -(void)dealloc{
     /* 防止内存泄漏,移除所有监听*/
@@ -4829,6 +4850,7 @@ bool ismute     = NO;
     NSLog(@"干掉弹幕");
     
 }
+
 
 
 

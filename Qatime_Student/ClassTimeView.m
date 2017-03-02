@@ -35,7 +35,7 @@
         _segmentControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
         _segmentControl.borderType = HMSegmentedControlBorderTypeBottom;
         _segmentControl.borderWidth = 0.6;
-        _segmentControl.borderColor = [UIColor lightGrayColor];
+        _segmentControl.borderColor = SEPERATELINECOLOR;
         
         
         #pragma mark- 大滚动视图

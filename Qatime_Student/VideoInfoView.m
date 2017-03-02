@@ -31,15 +31,15 @@
         _segmentControl = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"公告",@"聊天",@"直播详情",@"成员列表"]];
         _segmentControl.borderType = HMSegmentedControlBorderTypeBottom;
         _segmentControl.borderWidth = 0.6;
-        _segmentControl.borderColor = [UIColor lightGrayColor];
-        
+        _segmentControl.borderColor = SEPERATELINECOLOR;
+        _segmentControl.titleTextAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:15]};
         [self addSubview:_segmentControl];
         
         _segmentControl.sd_layout
         .leftEqualToView(self)
         .rightEqualToView(self)
         .topEqualToView(self)
-        .heightIs(30*ScrenScale);
+        .heightIs(30);
         
         _segmentControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
         _segmentControl.borderType = HMSegmentedControlTypeText;
@@ -47,22 +47,18 @@
 
         /* 大滑动页面*/
         _scrollView = [[UIScrollView alloc]init];
-
+        
         [self addSubview: _scrollView ];
         _scrollView.backgroundColor = [UIColor whiteColor];
         
-//        _scrollView setFrame:CGRectMake(0, CGRectGetMaxY(_segmentControl.frame), , <#CGFloat height#>)
-        _scrollView.sd_layout.
-        leftEqualToView(self).
-        rightEqualToView(self).
-        topSpaceToView(_segmentControl,0).
-        bottomSpaceToView(self,0);
+        _scrollView.sd_layout
+        .leftEqualToView(self)
+        .rightEqualToView(self)
+        .topSpaceToView(_segmentControl,0.5)
+        .bottomSpaceToView(self,0);
 
         _scrollView.pagingEnabled = YES;
         _scrollView.showsHorizontalScrollIndicator = NO;
-//        [_scrollView scrollRectToVisible:CGRectMake(0, 0, CGRectGetWidth(self.frame), _scrollView.size.height) animated:NO];
-
-        
         
         UIView *view1= [[UIView alloc]init];
         view1.backgroundColor = [UIColor whiteColor];

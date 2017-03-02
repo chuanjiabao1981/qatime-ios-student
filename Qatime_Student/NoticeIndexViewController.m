@@ -55,7 +55,6 @@ typedef enum : NSUInteger {
     /* 是否查看了系统消息*/
     BOOL checkedNotices ;
     
-    
     /*未读消息总数量*/
     NSInteger unreadCont;
     
@@ -233,12 +232,12 @@ typedef enum : NSUInteger {
             
         case RefreshStateNone:{
             
+            [self loadingHUDStartLoadingWithTitle:@"正在刷新聊天列表"];
         }
             break;
     }
     
     
-    [self loadingHUDStartLoadingWithTitle:@"正在刷新聊天列表"];
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -320,6 +319,16 @@ typedef enum : NSUInteger {
             }
             
             
+            if (state == RefreshStatePushLoadMore) {
+                
+                [_noticeIndexView.chatListTableView.mj_header endRefreshing];
+                [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                
+            }else{
+                [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                [_noticeIndexView.chatListTableView.mj_header endRefreshing];
+                [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+            }
             
         }else{
             /* 数据错误*/
@@ -327,10 +336,6 @@ typedef enum : NSUInteger {
             [self loadingHUDStopLoadingWithTitle:@"数据失败!"];
         }
         
-        [self loadingHUDStopLoadingWithTitle:@"加载完成"];
-        [_noticeIndexView.chatListTableView.mj_header endRefreshing];
-        
-        [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         

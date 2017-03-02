@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface OrderView : UIView
+@interface OrderView : UIScrollView
 
 /* 课程名称*/
 @property(nonatomic,strong) UILabel *className ;
@@ -54,9 +54,14 @@
 /* 支付按钮*/
 @property(nonatomic,strong) UIButton *applyButton ;
 
+/* 优惠码按钮*/
+@property(nonatomic,strong) UIButton *promotionButton ;
 
-/* 滚动图*/
-/* 临时适配改动..*/
-@property(nonatomic,strong) UIView *scrollView ;
+/* 优惠码输入框*/
+@property(nonatomic,strong) UITextField *promotionText ;
+
+/* 输入优惠码确定按钮*/
+@property(nonatomic,strong) UIButton *sureButton ;
+
 
 @end

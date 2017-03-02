@@ -15,8 +15,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        
-        
         /* 白色背景*/
         [self.contentView setBackgroundColor:[UIColor whiteColor]];
         
@@ -30,12 +28,18 @@
         
         
         /* 教师姓名label*/
+        
         /**** 预留label的宽度和教师姓名model源 ***/
+        
         _className = [[UILabel alloc]init];
         [self.contentView addSubview:_className];
         _className.textColor = [UIColor blackColor];
-        _className.sd_layout.leftSpaceToView(self.contentView,0).topSpaceToView(_classImage,5).autoHeightRatio(0);
-        [_className setSingleLineAutoResizeWithMaxWidth:300];
+        _className.sd_layout
+        .leftSpaceToView(self.contentView,0)
+        .rightSpaceToView(self.contentView,0)
+        .topSpaceToView(_classImage,5)
+        .heightIs(30);
+//        [_className setSingleLineAutoResizeWithMaxWidth:300];
         
         [_className setText:@"课程名称"];
         _className.textAlignment = NSTextAlignmentLeft;
@@ -72,6 +76,7 @@
         [_priceLabel setSingleLineAutoResizeWithMaxWidth:80];
         _priceLabel.textAlignment = NSTextAlignmentRight;
         [_priceLabel setFont:[UIFont systemFontOfSize:12*ScrenScale]];
+        _priceLabel.hidden = YES;
 
         
         

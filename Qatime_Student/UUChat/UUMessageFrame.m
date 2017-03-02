@@ -70,13 +70,12 @@
             YYTextLayout *layout = [YYTextLayout layoutWithContainerSize:size text:[[NSAttributedString alloc]initWithString:_message.strContent]];
             
             // 获取文本排版结果
-            NSLog(@"%@",layout);
-            [layout lineIndexForPoint:CGPointMake(10,10)];
-            [layout closestLineIndexForPoint:CGPointMake(10,10)];
-            [layout closestPositionToPoint:CGPointMake(10,10)];
-            [layout textRangeAtPoint:CGPointMake(10,10)];
-            [layout rectForRange:[YYTextRange rangeWithRange:NSMakeRange(10,2)]];
-            [layout selectionRectsForRange:[YYTextRange rangeWithRange:NSMakeRange(10,2)]];
+//            [layout lineIndexForPoint:CGPointMake(10,10)];
+//            [layout closestLineIndexForPoint:CGPointMake(10,10)];
+//            [layout closestPositionToPoint:CGPointMake(10,10)];
+//            [layout textRangeAtPoint:CGPointMake(10,10)];
+//            [layout rectForRange:[YYTextRange rangeWithRange:NSMakeRange(10,2)]];
+//            [layout selectionRectsForRange:[YYTextRange rangeWithRange:NSMakeRange(10,2)]];
             
             // 显示文本排版结果
             contentSize = layout.textBoundingSize;
@@ -114,13 +113,17 @@
                     //气泡尺寸修正
                     if (letterNum<3) {
                         contentSize.width-=letterNum*20;
-                    }else if (letterNum>=3&&letterNum<=8){
+                    }else if (letterNum>=3&&letterNum<7){
                         contentSize.width-=15*letterNum;
-                    }else if (letterNum>8){
-//                        contentSize.width-=10*letterNum;
-//                        contentSize.height+=10*letterNum/7;
-                        contentSize.width *=3;
-                        contentSize.height*=2;
+                    }else if (letterNum==7){
+                        contentSize.width -= 5*(letterNum%7+1);
+                        contentSize.height -= 10;
+                    }else if (letterNum==8){
+                        contentSize.width -= 5*letterNum%8;
+                        contentSize.height -= 10;
+                    }else if (letterNum>=8){
+                        contentSize.width+=8*letterNum/8;
+                        contentSize.height+=5*letterNum/8;
                     }
                     
                     

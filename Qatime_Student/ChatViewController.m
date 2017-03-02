@@ -858,8 +858,8 @@
     
     [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
     [self performSelector:@selector(sendNoticeIn) withObject:nil afterDelay:1];
-    [_chatTableView reloadData];
     
+    [_chatTableView reloadData];
     [self tableViewScrollToBottom];
 }
 
