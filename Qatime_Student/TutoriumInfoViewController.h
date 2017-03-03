@@ -30,8 +30,24 @@
 @property(nonatomic,strong) ClassesInfo_Time *classInfoTimeModel ;
 
 
+/**
+ 辅导班编号初始化
+
+ @param classID 辅导班编号
+ @return 实例
+ */
 - (instancetype)initWithClassID:(NSString *)classID;
 
+
+
+/**
+ 辅导班编号/优惠码 初始化
+
+ @param classID 辅导班编号
+ @param promotionCode 优惠码
+ @return 实例
+ */
+- (instancetype)initWithClassID:(NSString *)classID andPromotionCode:(NSString *)promotionCode;
 
 
 

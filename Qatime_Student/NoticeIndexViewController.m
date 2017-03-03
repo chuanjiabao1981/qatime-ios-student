@@ -7,7 +7,7 @@
 //
 
 #import "NoticeIndexViewController.h"
- 
+
 #import "TutoriumList.h"
 #import "YYModel.h"
 #import "ChatListTableViewCell.h"
@@ -24,6 +24,7 @@
 #import "UIViewController+Login.h"
 #import "UIViewController+AFHTTP.h"
 #import "MJRefresh.h"
+#import "TutoriumInfoViewController.h"
 
 typedef enum : NSUInteger {
     RefreshStatePushLoadMore,
@@ -63,6 +64,10 @@ typedef enum : NSUInteger {
     NSInteger noticePage;
     
     
+    /* 未读消息数组*/
+    NSMutableArray *unreadArr;
+    
+    
 }
 
 @end
@@ -84,8 +89,8 @@ typedef enum : NSUInteger {
     _navigationBar = ({
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         _.titleLabel.text = @"消息中心";
-//        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-//        [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+        //        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+        //        [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_];
         _;
     });
@@ -115,13 +120,13 @@ typedef enum : NSUInteger {
         _;
         
     });
-
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
-     
+    
     
 }
 
@@ -195,10 +200,10 @@ typedef enum : NSUInteger {
     /* 上滑加载功能*/
     
     _noticeIndexView.noticeTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-       
+        
         /* 系统消息上滑加载更多*/
         [self requestNotices:RefreshStatePushLoadMore];
-
+        
     }];
     
     
@@ -372,6 +377,7 @@ typedef enum : NSUInteger {
             break;
     }
     
+    unreadArr = @[].mutableCopy;
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -387,7 +393,7 @@ typedef enum : NSUInteger {
             if (dataArr.count == 0) {
                 
                 if (state!=RefreshStatePushLoadMore) {
-            
+                    
                     /* 没有数据*/
                     /* 没有加入聊天的情况*/
                     HaveNoClassView *noNotice = [[HaveNoClassView  alloc]init];
@@ -407,6 +413,16 @@ typedef enum : NSUInteger {
                 
                 for (NSDictionary *dics in dataArr) {
                     SystemNotice *notice = [SystemNotice yy_modelWithJSON:dics];
+                    
+                    
+                    if ([notice.notificationable_type isEqualToString:@"action_record"]) {
+                        
+                        [notice.notice_content insertString:@"                " atIndex:0];
+                    }else{
+                        
+                        [notice.notice_content insertString:@"          " atIndex:0];
+                    }
+                    
                     notice.noticeID = dics[@"id"];
                     [_noticeArray addObject:notice];
                     
@@ -416,12 +432,17 @@ typedef enum : NSUInteger {
                     
                     for (SystemNotice *notice in _noticeArray) {
                         if (notice.read==NO) {
+                            
                             [_noticeIndexView.segmentControl showBridgeWithShow:YES index:1];
+                            
+                            /* 未读消息添加到这个数组*/
+                            [unreadArr addObject:notice.noticeID];
                             
                         }
                         
                     }
                 });
+                
                 
                 /* 根据不同类型的数据请求方式,加载结果不同,判断hud和数据刷新*/
                 if (state == RefreshStatePushLoadMore) {
@@ -500,7 +521,7 @@ typedef enum : NSUInteger {
             if (cell==nil) {
                 cell=[[ChatListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
-//                cell.badge.hidden = YES;
+                //                cell.badge.hidden = YES;
             }
             
             if (_chatListArr.count>indexPath.row) {
@@ -545,10 +566,10 @@ typedef enum : NSUInteger {
                 
                 if (cell.model.read == YES) {
                     cell.content.textColor = [UIColor lightGrayColor];
-//                    cell.time.textColor = [UIColor lightGrayColor];
+                    //                    cell.time.textColor = [UIColor lightGrayColor];
                 }else{
                     cell.content.textColor = [UIColor blackColor];
-//                    cell.time.textColor = [UIColor blackColor];
+                    //                    cell.time.textColor = [UIColor blackColor];
                     
                 }
                 
@@ -621,15 +642,27 @@ typedef enum : NSUInteger {
         
         NoticeListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         
-        if ([cell.model.type isEqualToString:@"live_studio/course"]) {
-            //教师公告,可以不跳转
+        UIViewController *controller ;
+        
+        if ([cell.model.notificationable_type isEqualToString:@"live_studio/course"]) {
+            //教师公告
             
-        }else if ([cell.model.type isEqualToString:@"live_studio/lesson"]){
+            controller = [[TutoriumInfoViewController alloc]initWithClassID:[cell.model.link substringFromIndex:19]];
+            
+            
+        }else if ([cell.model.notificationable_type isEqualToString:@"live_studio/lesson"]){
             //辅导班开课通知
             
-        }else if ([cell.model.type isEqualToString:@"payment/order"]){
+            controller = [[TutoriumInfoViewController alloc]initWithClassID:[cell.model.link substringFromIndex:19]];
+            
+        }else if ([cell.model.notificationable_type isEqualToString:@"payment/order"]){
             //订单信息
             
+        }
+        
+        if (controller) {
+            
+            [self.navigationController pushViewController:controller animated:YES];
         }
         
         
@@ -722,7 +755,7 @@ typedef enum : NSUInteger {
                 
             }
         }
-
+        
     }
     
     /* badge的判断和增加*/
@@ -773,9 +806,69 @@ typedef enum : NSUInteger {
     
     if (index==1) {
         
-        if (unreadCont > 0) {
-           
-            [_noticeIndexView.segmentControl showBridgeWithShow:YES index:0];
+        if (unreadArr) {
+            
+            if (unreadArr.count>0) {
+                
+                if (checkedNotices==NO) {
+                    checkedNotices = YES;
+                    
+                    /* 异步线程发送已读消息请求*/
+                    dispatch_queue_t notice = dispatch_queue_create("notice", DISPATCH_QUEUE_SERIAL);
+                    dispatch_sync(notice, ^{
+                        
+                        
+                        __block NSMutableString *idsStr = [NSMutableString string];
+                        for (NSString *ids in unreadArr) {
+                            
+                            [idsStr appendString:[NSString stringWithFormat:@"%@ ",ids]];
+                        }
+                        
+                        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+                        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+                        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+                        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+                        [manager PUT:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications/batch_read",Request_Header,_idNumber] parameters:@{@"ids":@"32393 32390"} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                            
+                            NSError *error = [[NSError alloc]init];
+                            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:&error];
+                            if ([dic[@"status"]isEqualToNumber:@1]) {
+                                
+                                [_noticeIndexView.segmentControl showBridgeWithShow:NO index:1];
+                                
+                                
+                            }else{
+                                
+                                
+                            }
+                            
+                        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                            
+                            
+                            NSLog(@"%@", error);
+                        }];
+                        //                        [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications/batch_read",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"ids":unreadArr} completeSuccess:^(id  _Nullable responds) {
+                        //
+                        //                            NSError *error = [[NSError alloc]init];
+                        //                            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:&error];
+                        //                            if ([dic[@"status"]isEqualToNumber:@1]) {
+                        //
+                        //                            }else{
+                        //
+                        //
+                        //                            }
+                        //
+                        //                        }];
+                        
+                    });
+                    
+                }else{
+                    
+                }
+                
+                
+            }
+            
             
         }else{
             [_noticeIndexView.segmentControl showBridgeWithShow:NO index:0];
@@ -784,36 +877,6 @@ typedef enum : NSUInteger {
             
         }
         
-        if (checkedNotices==NO) {
-            checkedNotices = YES;
-            
-            [_noticeIndexView.segmentControl showBridgeWithShow:NO index:1];
-            
-            /* 异步线程发送已读消息请求*/
-            dispatch_queue_t notice = dispatch_queue_create("notice", DISPATCH_QUEUE_SERIAL);
-            dispatch_sync(notice, ^{
-                
-                if (_noticeArray) {
-                    
-                    if (_noticeArray.count>0) {
-                        
-                        for (SystemNotice *notice in _noticeArray) {
-                            
-                            if (notice.read == NO) {
-                                
-                                [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/notifications/%@/read",Request_Header,notice.noticeID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-                                    
-                                }];
-                            }
-                        }
-                    }
-                }
-                
-            });
-            
-        }else{
-              
-        }
     }
     
 }

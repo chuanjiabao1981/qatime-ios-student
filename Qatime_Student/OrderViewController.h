@@ -17,6 +17,22 @@
 @property(nonatomic,strong) OrderView *orderView ;
 
 
+/**
+ 订单信息页面
+
+ @param classID 辅导班编号
+ @return 实例
+ */
 -(instancetype)initWithClassID:(NSString *)classID;
+
+
+/**
+ 订单信息页
+
+ @param classID 辅导班编号
+ @param promotionCode 优惠码
+ @return 实例
+ */
+-(instancetype)initWithClassID:(NSString *)classID andPromotionCode:(NSString *)promotionCode;
 
 @end

@@ -58,6 +58,9 @@
     NSMutableDictionary *_dataDic;
     
     
+    /* 优惠码*/
+    NSString *_promotionCode;
+    
 }
 
 @end
@@ -82,10 +85,23 @@
 }
 
 
--(void)viewDidAppear:(BOOL)animated{
+- (instancetype)initWithClassID:(NSString *)classID andPromotionCode:(NSString *)promotionCode{
     
-     
-    
+    self = [super init];
+    if (self) {
+        
+        _classID = [NSString string];
+        _classID = classID;
+        
+        _promotionCode =[NSString stringWithFormat:@"%@",promotionCode];
+        
+        /* 取出token*/
+        //        _remember_token=[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
+        
+        //        NSLog(@"%@",_remember_token);
+        
+    }
+    return self;
 }
 
 
@@ -125,7 +141,7 @@
     
     
     _tutoriumInfoView.scrollView.delegate = self;
-    //    _tutoriumInfoView.classesListTableView.scrollEnabled =YES;
+    //  _tutoriumInfoView.classesListTableView.scrollEnabled =YES;
     
     _tutoriumInfoView.segmentControl.selectionIndicatorHeight=2;
     _tutoriumInfoView.segmentControl.selectedSegmentIndex=0;
@@ -609,32 +625,32 @@
     if (_dataDic) {
         
         //砍掉
-        if ([_dataDic[@"status"] isEqualToString:@"teaching"]) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"该辅导已开课,是否继续购买?" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                
-            }] ;
-            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
-                [self requestOrder];
-                
-            }] ;
-            
-            [alert addAction:cancel];
-            [alert addAction:sure];
-            
-            [self presentViewController:alert animated:YES completion:nil];
+//        if ([_dataDic[@"status"] isEqualToString:@"teaching"]) {
+//            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"该辅导已开课,是否继续购买?" preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//                
+//            }] ;
+//            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                
+//                [self requestOrder];
+//                
+//            }] ;
+//            
+//            [alert addAction:cancel];
+//            [alert addAction:sure];
+//            
+//            [self presentViewController:alert animated:YES completion:nil];
+//        
+//        }else{
+//            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否确定购买该课程?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+//                if (buttonIndex!=0) {
+//                    [self requestOrder];
+//                }
+//                
+//            }];
+//        }
         
-        }else{
-            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否确定购买该课程?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                if (buttonIndex!=0) {
-                    [self requestOrder];
-                }
-                
-            }];
-        }
-        
-//        [self loadingHUDStopLoadingWithTitle:@"请前往网页报名"];
+        [self loadingHUDStopLoadingWithTitle:@"请前往网页报名"];
         
     }
     
@@ -643,8 +659,18 @@
 
 #pragma mark- 收集订单信息,并传入下一页,开始提交订单
 - (void)requestOrder{
+
+    OrderViewController *orderVC;
     
-    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:_classID];
+    if (_promotionCode) {
+        
+        orderVC = [[OrderViewController alloc]initWithClassID:_classID andPromotionCode:_promotionCode];
+    }else{
+        
+        orderVC= [[OrderViewController alloc]initWithClassID:_classID];
+    }
+    
+    
     [self.navigationController pushViewController:orderVC animated:YES];
     
 }
@@ -933,7 +959,16 @@
 
 - (void)returnLastpage{
     
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    if (_promotionCode) {
+        
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        
+        
+    }else{
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }
     
 }
 

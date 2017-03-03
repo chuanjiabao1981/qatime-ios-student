@@ -26,7 +26,7 @@
         className.textColor = TITLECOLOR;
         [self addSubview:className];
         className.sd_layout
-        .topSpaceToView(self,20)
+        .topSpaceToView(self,10)
         .leftSpaceToView(self,20)
         .autoHeightRatio(0);
         [className setSingleLineAutoResizeWithMaxWidth:100];
@@ -213,7 +213,6 @@
         [_statusLabel setSingleLineAutoResizeWithMaxWidth:100];
 
         
-        
         /* 授课方式*/
         UILabel *type = [UILabel new];
         type.text = @"授课方式:";
@@ -264,8 +263,6 @@
         .topSpaceToView(price,10)
         .heightIs(0.5);
         
-        /* 支付view*/
-//        UIView *chosenView = [[UIView alloc]init];
     
         /* 支付方式*/
         UILabel *payWay = [UILabel new];
@@ -367,6 +364,7 @@
         .topEqualToView(_balanceButton)
         .bottomEqualToView(_balanceButton);
         
+        
         _balance = [UILabel new];
         _balance.textColor = TITLECOLOR;
         _balance.text = @"余额";
@@ -376,6 +374,22 @@
         .topEqualToView(_balanceImage)
         .bottomEqualToView(_balanceImage);
         [_balance setSingleLineAutoResizeWithMaxWidth:180];
+        
+        
+        _balanceLabel = [UILabel new];
+        _balanceLabel.textColor = TITLECOLOR;
+        _balanceLabel.text = @"应付金额";
+        
+        [self addSubview:_balanceLabel];
+        _balanceLabel.sd_layout
+        .topEqualToView(_balance)
+        .bottomEqualToView(_balance)
+        .leftSpaceToView(_balance,2);
+        [_balanceLabel setSingleLineAutoResizeWithMaxWidth:100];
+        
+        
+        [_balanceLabel setSingleLineAutoResizeWithMaxWidth:100];
+
         
         /* 分割线2*/
         UIView *line2 = [[UIView alloc]init];
@@ -394,36 +408,63 @@
         line3.sd_layout
         .leftEqualToView(self)
         .rightEqualToView(self)
-        .topSpaceToView(line2,self.height_sd*0.07)
+        .topSpaceToView(line2,self.height_sd*0.08)
         .heightIs(0.5);
         
         /* 优惠码确定按钮*/
         _sureButton = [[UIButton alloc]init];
+        _sureButton .layer.borderColor = TITLECOLOR.CGColor;
+        _sureButton.layer.borderWidth = 0.6;
+        [_sureButton setTitle:@"确认" forState:UIControlStateNormal];
+        [_sureButton setTitleColor:TITLERED forState:UIControlStateNormal];
         [self addSubview:_sureButton];
         _sureButton.sd_layout
         .topSpaceToView(line2,10)
         .rightSpaceToView(self,20)
         .bottomSpaceToView(line3,10)
-        .autoHeightRatio(1/1.5);
-        
-        
+        .widthIs(60);
+        _sureButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         
         /* 优惠码输入框*/
+        UIView *promotionText = [[UIView alloc]init];
+        promotionText.layer.borderColor =TITLECOLOR.CGColor;
+        promotionText.layer.borderWidth = 0.6;
+        [self addSubview:promotionText];
+        promotionText.sd_layout
+        .topEqualToView(_sureButton)
+        .bottomEqualToView(_sureButton)
+        .rightSpaceToView(_sureButton,0)
+        .leftEqualToView(_balanceButton);
+        promotionText.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
+        
+        /* 优惠码输入框*/
+        _promotionText = [[UITextField alloc]init];
+        [promotionText addSubview:_promotionText];
+        _promotionText.sd_layout
+        .leftSpaceToView(promotionText,10)
+        .rightSpaceToView(promotionText,10)
+        .topSpaceToView(promotionText,5)
+        .bottomSpaceToView(promotionText,5);
+        
+        
+        /* 优惠码*/
         UILabel *promotion = [[UILabel alloc]init];
         promotion.text = @"输入优惠码";
         promotion.textColor = TITLECOLOR;
         [self addSubview:promotion];
         promotion.sd_layout
         .leftEqualToView(payWay)
-        
-        
-        
+        .centerYEqualToView(promotionText)
+        .autoHeightRatio(0);
+        [promotion setSingleLineAutoResizeWithMaxWidth:100];
         
         
         /* 优惠码按钮*/
         _promotionButton = [[UIButton alloc]init];
         [_promotionButton setTitle:@"使用优惠码" forState:UIControlStateNormal];
         [_promotionButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+        [_promotionButton setBackgroundColor:[UIColor whiteColor]];
+        
         
         [self addSubview:_promotionButton];
         _promotionButton.sd_layout
@@ -433,35 +474,15 @@
         .heightIs(self.height_sd*0.07);
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        _balanceLabel = [UILabel new];
-        _balanceLabel.textColor = TITLECOLOR;
-        
-        
-        
-        /* 支付部分视图*/
+        /* 支付部分的背景view*/
         UIView *payView = [[UIView alloc]init];
-        payView.backgroundColor = [UIColor colorWithRed:0.96 green:0.96 blue:0.96 alpha:1.00];
-        
-        UILabel *price_tot = [[UILabel alloc]init];
-        price_tot.text = @"课程价格";
-        price_tot.textColor = TITLECOLOR;
-        
-        UILabel *yuan = [[UILabel alloc]init];
-        yuan.text = @"元";
-        yuan.textColor = TITLECOLOR;
-
-        _totalMoneyLabel = [UILabel new];
-        _totalMoneyLabel.textColor = [UIColor blackColor];
-        _totalMoneyLabel.font = [UIFont systemFontOfSize:27*ScrenScale];
+        payView.backgroundColor = BACKGROUNDGRAY;
+        [self addSubview:payView];
+        payView.sd_layout
+        .leftEqualToView(self)
+        .rightEqualToView(self)
+        .topSpaceToView(line3,0)
+        .bottomSpaceToView(self,0);
         
         /* 支付按钮*/
         _applyButton = [[UIButton alloc]init];
@@ -469,14 +490,54 @@
         [_applyButton setTitle:@"立即报名" forState:UIControlStateNormal];
         _applyButton.backgroundColor = BUTTONRED;
         
+        [payView addSubview:_applyButton];
+        _applyButton.sd_layout
+        .leftSpaceToView(payView,10)
+        .rightSpaceToView(payView,10)
+        .bottomSpaceToView(payView,10)
+        .heightIs(self.height_sd*0.06);
         
+        /* 元*/
+        UILabel *yuan = [[UILabel alloc]init];
+        yuan.text = @"元";
+        yuan.textColor = TITLECOLOR;
+        [payView addSubview:yuan];
+        yuan.sd_layout
+        .bottomSpaceToView(_applyButton,10)
+        .rightEqualToView(_applyButton)
+        .autoHeightRatio(0);
+        [yuan setSingleLineAutoResizeWithMaxWidth:50];
         
-
+        /* 总价*/
+        _totalMoneyLabel = [UILabel new];
+        _totalMoneyLabel.textColor = [UIColor blackColor];
+        _totalMoneyLabel.font = [UIFont systemFontOfSize:27*ScrenScale];
+        [payView addSubview:_totalMoneyLabel];
+        _totalMoneyLabel.sd_layout
+        .rightSpaceToView(yuan,10)
+        .bottomEqualToView(yuan)
+        .autoHeightRatio(0);
+        [_totalMoneyLabel setSingleLineAutoResizeWithMaxWidth:200];
         
-
-
+        /* 应付金额*/
+        UILabel *payment = [[UILabel alloc]init];
+        payment.text = @"应付金额";
+        [payView addSubview:payment];
+        payment.sd_layout
+        .rightSpaceToView(_totalMoneyLabel,5)
+        .topEqualToView(yuan)
+        .bottomEqualToView(yuan);
+        [payment setSingleLineAutoResizeWithMaxWidth:100];
         
-        
+        /* 优惠金额*/
+        _promotionNum= [[UILabel alloc]init];
+        _promotionNum.textColor = TITLECOLOR;
+        [payView addSubview:_promotionNum];
+        _promotionNum.sd_layout
+        .leftEqualToView(_applyButton)
+        .bottomEqualToView(payment)
+        .autoHeightRatio(0);
+        [_promotionNum setSingleLineAutoResizeWithMaxWidth:200];
         
     }
     return self;

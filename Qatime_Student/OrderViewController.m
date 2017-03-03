@@ -12,12 +12,22 @@
 #import "TutoriumList.h"
 #import "YYModel.h"
 #import "UIImageView+WebCache.h"
- 
+
 
 #import "UIViewController+HUD.h"
 #import "PayConfirmViewController.h"
 #import "UIAlertController+Blocks.h"
 #import "WXApi.h"
+
+#import "UIViewController+AFHTTP.h"
+
+
+typedef enum : NSUInteger {
+    AutoWrite,  //扫码自动填写的优惠码
+    ManullyWrite,   //手动填写的优惠码
+} PromotionCodeWriteType;
+
+
 
 @interface OrderViewController (){
     
@@ -39,6 +49,13 @@
     /* 订单成功后,收到的数据,传入下一页*/
     NSDictionary *dataDic;
     
+    
+    /* 优惠码*/
+    NSString *_promotionCode;
+    
+    /* 是否隐藏"使用优惠码"按钮*/
+    BOOL hidePromotionCodeButton;
+    
 }
 
 @end
@@ -51,16 +68,29 @@
     if (self) {
         
         _classID = [NSString stringWithFormat:@"%@",classID];
+        
     }
     return self;
     
 }
 
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
+-(instancetype)initWithClassID:(NSString *)classID andPromotionCode:(NSString *)promotionCode{
+    
+    self= [super init];
+    if (self) {
+        
+        _classID = [NSString stringWithFormat:@"%@",classID];
+        
+        _promotionCode = [NSString stringWithFormat:@"%@",promotionCode];
+        
+        hidePromotionCodeButton = YES;
+        
+    }
+    return self;
     
     
 }
+
 
 
 - (void)viewDidLoad {
@@ -80,7 +110,7 @@
     
     
     _orderView = ({
-    
+        
         OrderView *_=[[OrderView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
         
         [_.wechatButton addTarget:self action:@selector(chooseWechat:) forControlEvents:UIControlEventTouchUpInside];
@@ -88,7 +118,36 @@
         [_.balanceButton addTarget:self action:@selector(chooseBalance:) forControlEvents:UIControlEventTouchUpInside];
         [_.applyButton addTarget:self action:@selector(applyOrder) forControlEvents:UIControlEventTouchUpInside];
         
+        [_.promotionButton addTarget:self action:@selector(enterPromotionCode:) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        [_.sureButton addTarget:self action:@selector(checkPromotionCode) forControlEvents:UIControlEventTouchUpInside];
+        
+        /* 一个点击空白处取消响应的方法*/
+        UITapGestureRecognizer *tap= [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(textResignFirstResponder)];
+        [_ addGestureRecognizer:tap];
+        
         [self.view addSubview:_];
+        
+        /* 是包含优惠码,是否显示和不显示使用优惠码按钮*/
+        if (hidePromotionCodeButton == YES) {
+            
+            _.promotionButton.hidden = YES;
+        }else{
+            
+        }
+        
+        if (_promotionCode && hidePromotionCodeButton == YES) {
+            
+            _.promotionText.text = _promotionCode;
+            
+            [self performSelector:@selector(checkDefaultPromotionCode) withObject:nil];
+            
+        }else{
+            
+        }
+        
+        
         _;
     });
     
@@ -102,7 +161,7 @@
         
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
-
+    
     
     /* 初始化*/
     _payType = @"".mutableCopy;
@@ -113,10 +172,17 @@
     
     _payType = @"weixin";
     [_orderView.wechatButton setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
-
+    
     
     /* 请求课程详细信息数据*/
     [self requestClassInfo];
+    
+    
+    //使用NSNotificationCenter 鍵盤出現時
+    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    
+    //使用NSNotificationCenter 鍵盤隐藏時
+    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     
 }
@@ -129,7 +195,7 @@
     if (_token&&_idNumber) {
         
         if (_classID!=nil) {
-           
+            
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -180,11 +246,11 @@
                         _orderView.totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",mod.current_price];
                         
                         price = mod.current_price.floatValue;
-
+                        
                     }
                     
                     
-                        /* 请求一次余额 ,判断是否可以用余额支付*/
+                    /* 请求一次余额 ,判断是否可以用余额支付*/
                     [self requestBalance];
                     
                     
@@ -198,7 +264,7 @@
                     [alert addAction:sure];
                     
                     [self presentViewController:alert animated:YES completion:nil];
-
+                    
                     
                 }
                 
@@ -207,7 +273,7 @@
                 
             }];
             
-        
+            
         }
     }
     
@@ -242,11 +308,11 @@
                     
                     balanceEnable = NO;
                     
-//                    _orderView.balanceButton.enabled = NO;
+                    //                    _orderView.balanceButton.enabled = NO;
                     
                     [_orderView.balanceButton addTarget:self action:@selector(chooseBalance:) forControlEvents:UIControlEventTouchUpInside];
                     
-            ///////////////////////////////////////////////////////
+                    ///////////////////////////////////////////////////////
                     
                 }
                 
@@ -269,8 +335,99 @@
     }];
     
     
+}
+
+
+/* 点击输入支付码*/
+- (void)enterPromotionCode:(UIButton *)sender{
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        sender.alpha = 0;
+    }];
+    
+    [self performSelector:@selector(promotionButtonHides:) withObject:sender afterDelay:0.6];
     
 }
+
+- (void)promotionButtonHides:(id)sender{
+    
+    _orderView.promotionButton.hidden = YES;
+    
+}
+
+
+/* 校验优惠码*/
+- (void)checkPromotionCode{
+    
+    [_orderView.promotionText resignFirstResponder];
+    
+    if (![_orderView.promotionText.text isEqualToString:@""]) {
+        //验证优惠码
+     
+        _promotionCode =_orderView.promotionText.text;
+        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+        [manager POST:[NSString stringWithFormat:@"%@/api/v1/payment/coupons/%@/verify",Request_Header,_promotionCode] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+           
+            NSError *error = [NSError new];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:&error];
+            if ([dic[@"status"] isEqualToNumber:@1]) {
+                
+                _orderView.promotionNum.text = [NSString stringWithFormat:@"已优惠 ¥%@",dic[@"data"][@"price"]];
+                
+            }else{
+                [self loadingHUDStopLoadingWithTitle:@"输入的优惠码不正确"];
+                
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+        }];
+
+    }else{
+        
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入优惠码" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+            
+        }];
+    }
+    
+}
+
+
+/* 验证扫码扫来的优惠码*/
+- (void)checkDefaultPromotionCode{
+    
+    if (_promotionCode) {
+        //验证优惠码
+        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+        [manager POST:[NSString stringWithFormat:@"%@/api/v1/payment/coupons/%@/verify",Request_Header,_promotionCode] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            NSError *error = [NSError new];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:&error];
+            if ([dic[@"status"] isEqualToNumber:@1]) {
+                
+                _orderView.promotionNum.text = [NSString stringWithFormat:@"已优惠 ¥%@",dic[@"data"][@"price"]];
+                
+            }else{
+                [self loadingHUDStopLoadingWithTitle:@"输入的优惠码不正确"];
+                
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+        }];
+        
+    }else{
+        
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入优惠码" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+            
+        }];
+    }
+
+}
+
+
 
 /* 使用微信支付*/
 - (void)chooseWechat:(UIButton *)sender{
@@ -286,7 +443,7 @@
         if (_orderView.balanceButton.enabled ==YES) {
             _orderView.balanceButton.selected = NO;
             [_orderView.balanceButton setImage:nil forState:UIControlStateNormal];
-
+            
         }else{
             
         }
@@ -316,13 +473,13 @@
         }else{
             
         }
-
+        
     }else{
         sender.selected = NO;
         [sender setImage:nil forState:UIControlStateNormal];
         
     }
-
+    
     
 }
 
@@ -342,12 +499,12 @@
         
     }else{
         sender.selected = NO;
-//        _payType = @"";
+        //        _payType = @"";
         [sender setImage:nil forState:UIControlStateNormal];
         
     }
     
-   
+    
 }
 #pragma mark- 准备提交订单
 - (void)applyOrder{
@@ -368,33 +525,33 @@
         [self finishAndCommit];
         
     }
-
     
     
     
     
     
     
-//    if (balanceEnable==NO) {
-//        
-//            }else{
-//        if (_orderView.wechatButton.selected==NO&&_orderView.alipayButton.selected==NO&&_orderView.balanceButton.selected==NO) {
-//            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择支付方式!" preferredStyle:UIAlertControllerStyleAlert];
-//            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//                
-//            }] ;
-//            [alert addAction:sure];
-//            
-//            [self presentViewController:alert animated:YES completion:nil];
-//            
-//        }else{
-//            
-//            /* 就直接提交订单*/
-//            [self finishAndCommit];
-//            
-//        }
-// 
-//    }
+    
+    //    if (balanceEnable==NO) {
+    //
+    //            }else{
+    //        if (_orderView.wechatButton.selected==NO&&_orderView.alipayButton.selected==NO&&_orderView.balanceButton.selected==NO) {
+    //            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择支付方式!" preferredStyle:UIAlertControllerStyleAlert];
+    //            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    //
+    //            }] ;
+    //            [alert addAction:sure];
+    //
+    //            [self presentViewController:alert animated:YES completion:nil];
+    //
+    //        }else{
+    //
+    //            /* 就直接提交订单*/
+    //            [self finishAndCommit];
+    //
+    //        }
+    //
+    //    }
     
 }
 
@@ -404,16 +561,16 @@
     if (_classID&&_token) {
         if ([_payType isEqualToString:@"weixin"]) {
             
-//            if ([WXApi isWXAppInstalled]==YES) {
-//                [self loadingHUDStartLoadingWithTitle:@"提交订单"];
+            //            if ([WXApi isWXAppInstalled]==YES) {
+            //                [self loadingHUDStartLoadingWithTitle:@"提交订单"];
             
-                [self postOrderInfo];
-                
-//            }else{
-////                [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
-//                [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
-//                
-//            }
+            [self postOrderInfo];
+            
+            //            }else{
+            ////                [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
+            //                [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
+            //
+            //            }
             
             
         }else if ([_payType isEqualToString:@"account"]){
@@ -430,12 +587,10 @@
                 }];
                 
             }
-
-            
             
         }else if ([_payType isEqualToString:@"alipay"]){
             
-            
+            [self loadingHUDStopLoadingWithTitle:@"暂不支持"];
             
         }
     }
@@ -467,12 +622,12 @@
             [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1.5];
             
             
-//            [self loadingHUDStopLoadingWithTitle:nil];
-//            
-//            dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
-//            /* 下单成功,发送下单成功通知*/
-//            [[NSNotificationCenter defaultCenter]postNotificationName:@"OrderSuccess" object:nil ];
-//            [self performSelector:@selector(turnToPayPage) withObject:nil afterDelay:0];
+            //            [self loadingHUDStopLoadingWithTitle:nil];
+            //
+            //            dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
+            //            /* 下单成功,发送下单成功通知*/
+            //            [[NSNotificationCenter defaultCenter]postNotificationName:@"OrderSuccess" object:nil ];
+            //            [self performSelector:@selector(turnToPayPage) withObject:nil afterDelay:0];
             
         }else{
             
@@ -482,7 +637,7 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-
+    
 }
 
 
@@ -490,23 +645,89 @@
 #pragma mark- 跳转到支付确认页面
 - (void)turnToPayPage{
     
-//    if (dataDic) {
-//        
-//        PayConfirmViewController *confirm = [[PayConfirmViewController alloc]initWithData:dataDic];
-//        
-//        [self.navigationController pushViewController:confirm animated:YES];
-//        
-//        
-//    }
+    //    if (dataDic) {
+    //
+    //        PayConfirmViewController *confirm = [[PayConfirmViewController alloc]initWithData:dataDic];
+    //
+    //        [self.navigationController pushViewController:confirm animated:YES];
+    //
+    //
+    //    }
+    
+    
+}
+
+#pragma mark- 键盘监听
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    
+    // 获取通知的信息字典
+    NSDictionary *userInfo = [notification userInfo];
+    
+    // 获取键盘弹出后的rect
+    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    
+    
+    // 获取键盘弹出动画时间
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    
+    [UIView animateWithDuration:animationDuration animations:^{
+        
+        self.view.frame = CGRectMake(0, -keyboardRect.size.height, self.view.width_sd, self.view.height_sd);
+        
+        
+    }];
+    
+    
+    
+}
+
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    
+    // 获取通知信息字典
+    NSDictionary* userInfo = [notification userInfo];
+    
+    // 获取键盘隐藏动画时间
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    
+    [UIView animateWithDuration:animationDuration animations:^{
+        
+         self.view.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd);
+     
+        
+    }];
     
     
 }
 
 
 
+- (void)textResignFirstResponder{
+    [_orderView.promotionText resignFirstResponder];
+    
+}
+
+
 - (void)returnLastPage{
     
-    [self.navigationController popViewControllerAnimated:YES];
+    if (_promotionCode) {
+        
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+        
+    }else{
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -515,13 +736,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

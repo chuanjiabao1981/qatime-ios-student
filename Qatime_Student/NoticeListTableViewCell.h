@@ -17,8 +17,12 @@
 /* 消息内容*/
 @property(nonatomic,strong) UILabel *content ;
 
+/* 消息类型*/
+@property(nonatomic,strong) UILabel *type ;
+
 /* model*/
 @property(nonatomic,strong) SystemNotice *model ;
+
 
 
 @end

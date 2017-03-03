@@ -8,9 +8,13 @@
 
 #import "QRCodeController.h"
 #import <AVFoundation/AVFoundation.h>
- 
+
 #import "NavigationBar.h"
 #import "QRMaskView.h"
+#import "UIViewController+HUD.h"
+#import "UIAlertController+Blocks.h"
+
+#import "TutoriumInfoViewController.h"
 
 /**
  *  屏幕 高 宽 边界
@@ -90,7 +94,7 @@
         _.alpha = 0.6;
         [self.view addSubview:_];
         _;
-    
+        
     });
     
     //说明
@@ -102,7 +106,7 @@
         _.alpha = 0.6;
         [self.view addSubview:_];
         _;
-    
+        
     });
     
     
@@ -113,11 +117,11 @@
         [self.view addSubview:_];
         [_ setImage:[UIImage imageNamed:@"torch"] forState:UIControlStateNormal];
         [_ addTarget:self action:@selector(turnTorch:) forControlEvents:UIControlEventTouchUpInside];
-    
+        
         _;
     });
     
-
+    
     //加载扫描
     [self configView];
 }
@@ -136,7 +140,7 @@
     [self.view addSubview:_line];
     
     timer = [NSTimer scheduledTimerWithTimeInterval:.02 target:self selector:@selector(animation1) userInfo:nil repeats:YES];
-
+    
     
     
     
@@ -189,7 +193,7 @@
     [self performSelector:@selector(setupCamera) withObject:nil afterDelay:0.3];
     
     
-
+    
 }
 
 -(void)animation1
@@ -213,7 +217,7 @@
 
 //绘制半透明背景
 - (void)setCropRect:(CGRect)cropRect{
-   
+    
     cropLayer = [[CAShapeLayer alloc] init];
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathAddRect(path, nil, cropRect);
@@ -302,31 +306,55 @@
         stringValue = metadataObject.stringValue;
         NSLog(@"扫描结果：%@",stringValue);
         
-        NSArray *arry = metadataObject.corners;
-        for (id temp in arry) {
-            NSLog(@"%@",temp);
+        //辅导班ID
+        __block NSString *courses;
+        
+        //优惠码
+        __block NSString *promotionCode;
+        
+        
+        if ([stringValue containsString:@"qatime.cn"]) {
+            
+            //正则匹配出来辅导班
+            NSRange rangeCourses = [stringValue rangeOfString:@"/\\d+\\?" options:NSRegularExpressionSearch];
+            courses = [stringValue substringWithRange:rangeCourses];
+            courses = [[courses substringToIndex:[courses length]-1]substringFromIndex:1];
+            
+            /* 分割扫码扫出来的URL,筛出来优惠码*/
+            NSRange rangeCode = [stringValue rangeOfString:@"coupon_code=" options:NSRegularExpressionSearch];
+            promotionCode = [stringValue substringFromIndex:rangeCode.location+rangeCode.length];
+            
+            TutoriumInfoViewController *controller = [[TutoriumInfoViewController alloc]initWithClassID:courses andPromotionCode:promotionCode];
+            [self.navigationController pushViewController:controller animated:YES];
+            
+//            //调试代码......
+//            if (_session != nil && timer != nil) {
+//                [_session startRunning];
+//                [timer setFireDate:[NSDate date]];
+//            }
+            
+        }else{
+            
+            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"不支持的二维码" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                
+                if (_session != nil && timer != nil) {
+                    [_session startRunning];
+                    [timer setFireDate:[NSDate date]];
+                }
+            }];
         }
         
-        
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"扫描结果" message:stringValue preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            if (_session != nil && timer != nil) {
-                [_session startRunning];
-                [timer setFireDate:[NSDate date]];
-            }
-        }]];
-        [self presentViewController:alert animated:YES completion:nil];
-        
-    } else {
+    }else {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"无扫描信息" preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
             if (_session != nil && timer != nil) {
                 [_session startRunning];
                 [timer setFireDate:[NSDate date]];
             }
             
         }]];
-
+        
         return;
     }
     

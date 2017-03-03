@@ -63,5 +63,9 @@
 /* 输入优惠码确定按钮*/
 @property(nonatomic,strong) UIButton *sureButton ;
 
+/* 优惠金额*/
+@property(nonatomic,strong) UILabel *promotionNum ;
+
+
 
 @end

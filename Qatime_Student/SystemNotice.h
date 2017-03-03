@@ -16,12 +16,18 @@
 //"notice_content": "您的课程 \"第四节\" 将于12:00开始上课，请准时参加学习",
 //"type": "live_studio/lesson",
 //"created_at": "12月09日 01:00"
+//"notificationable_id": 76,
+//"link": "live_studio/course:76",
+
 
 @property(nonatomic,strong) NSString *noticeID ;
 @property(nonatomic,assign) BOOL read ;
 @property(nonatomic,strong) NSString *action_name ;
-@property(nonatomic,strong) NSString *notice_content ;
-@property(nonatomic,strong) NSString *type ;
+@property(nonatomic,strong) NSMutableString *notice_content ;
+@property(nonatomic,strong) NSString *notificationable_type ;
 @property(nonatomic,strong) NSString *created_at ;
+
+@property(nonatomic,strong) NSString *notificationable_id ;
+@property(nonatomic,strong) NSString *link;
 
 @end
