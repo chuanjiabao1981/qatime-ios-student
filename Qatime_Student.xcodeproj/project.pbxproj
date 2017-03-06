@@ -368,6 +368,12 @@
 		54B73D051DE3E85A00B7A7EB /* pinyin.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73D031DE3E85A00B7A7EB /* pinyin.m */; };
 		54B73D081DE40B1800B7A7EB /* NSString+Emojize.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73D071DE40B1800B7A7EB /* NSString+Emojize.m */; };
 		54B73D0F1DE40E1800B7A7EB /* NSString+ContainEmoji.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73D0E1DE40E1800B7A7EB /* NSString+ContainEmoji.m */; };
+		54B9148F1E6D5B7500F377ED /* ProvinceChosenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9148E1E6D5B7500F377ED /* ProvinceChosenViewController.m */; };
+		54B914921E6D5B7F00F377ED /* CityChosenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B914911E6D5B7F00F377ED /* CityChosenViewController.m */; };
+		54B9149D1E6D676D00F377ED /* ProvinceHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9149C1E6D676D00F377ED /* ProvinceHeaderView.m */; };
+		54B914A01E6D71A100F377ED /* Province.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9149F1E6D71A100F377ED /* Province.m */; };
+		54B914A41E6D772900F377ED /* ProinceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B914A31E6D772900F377ED /* ProinceTableViewCell.m */; };
+		54B914A81E6D790500F377ED /* EditLocationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B914A71E6D790500F377ED /* EditLocationTableViewCell.m */; };
 		54B9CAF91DFE4A9D003961FF /* WithdrawConfirmView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9CAF81DFE4A9D003961FF /* WithdrawConfirmView.m */; };
 		54B9CAFC1DFE4AAC003961FF /* WithdrawConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9CAFB1DFE4AAC003961FF /* WithdrawConfirmViewController.m */; };
 		54B9CB001DFE4E8A003961FF /* BuyBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9CAFF1DFE4E8A003961FF /* BuyBar.m */; };
@@ -1126,6 +1132,18 @@
 		54B73D091DE40B5900B7A7EB /* emojis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = emojis.h; sourceTree = "<group>"; };
 		54B73D0D1DE40E1800B7A7EB /* NSString+ContainEmoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ContainEmoji.h"; sourceTree = "<group>"; };
 		54B73D0E1DE40E1800B7A7EB /* NSString+ContainEmoji.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ContainEmoji.m"; sourceTree = "<group>"; };
+		54B9148D1E6D5B7500F377ED /* ProvinceChosenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProvinceChosenViewController.h; sourceTree = "<group>"; };
+		54B9148E1E6D5B7500F377ED /* ProvinceChosenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProvinceChosenViewController.m; sourceTree = "<group>"; };
+		54B914901E6D5B7F00F377ED /* CityChosenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityChosenViewController.h; sourceTree = "<group>"; };
+		54B914911E6D5B7F00F377ED /* CityChosenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityChosenViewController.m; sourceTree = "<group>"; };
+		54B9149B1E6D676D00F377ED /* ProvinceHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProvinceHeaderView.h; sourceTree = "<group>"; };
+		54B9149C1E6D676D00F377ED /* ProvinceHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProvinceHeaderView.m; sourceTree = "<group>"; };
+		54B9149E1E6D71A100F377ED /* Province.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Province.h; sourceTree = "<group>"; };
+		54B9149F1E6D71A100F377ED /* Province.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Province.m; sourceTree = "<group>"; };
+		54B914A21E6D772900F377ED /* ProinceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProinceTableViewCell.h; sourceTree = "<group>"; };
+		54B914A31E6D772900F377ED /* ProinceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProinceTableViewCell.m; sourceTree = "<group>"; };
+		54B914A61E6D790500F377ED /* EditLocationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditLocationTableViewCell.h; sourceTree = "<group>"; };
+		54B914A71E6D790500F377ED /* EditLocationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditLocationTableViewCell.m; sourceTree = "<group>"; };
 		54B9CAF71DFE4A9D003961FF /* WithdrawConfirmView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithdrawConfirmView.h; sourceTree = "<group>"; };
 		54B9CAF81DFE4A9D003961FF /* WithdrawConfirmView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithdrawConfirmView.m; sourceTree = "<group>"; };
 		54B9CAFA1DFE4AAC003961FF /* WithdrawConfirmViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithdrawConfirmViewController.h; sourceTree = "<group>"; };
@@ -3057,6 +3075,55 @@
 			path = ChineseSorting;
 			sourceTree = "<group>";
 		};
+		54B914931E6D61FE00F377ED /* 地区选择页面 */ = {
+			isa = PBXGroup;
+			children = (
+				54B914961E6D620900F377ED /* Model */,
+				54B914951E6D620800F377ED /* View */,
+				54B914941E6D620700F377ED /* Controller */,
+			);
+			name = "地区选择页面";
+			sourceTree = "<group>";
+		};
+		54B914941E6D620700F377ED /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54B9148D1E6D5B7500F377ED /* ProvinceChosenViewController.h */,
+				54B9148E1E6D5B7500F377ED /* ProvinceChosenViewController.m */,
+				54B914901E6D5B7F00F377ED /* CityChosenViewController.h */,
+				54B914911E6D5B7F00F377ED /* CityChosenViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54B914951E6D620800F377ED /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54B914A11E6D771B00F377ED /* cell */,
+				54B9149B1E6D676D00F377ED /* ProvinceHeaderView.h */,
+				54B9149C1E6D676D00F377ED /* ProvinceHeaderView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54B914961E6D620900F377ED /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54B9149E1E6D71A100F377ED /* Province.h */,
+				54B9149F1E6D71A100F377ED /* Province.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		54B914A11E6D771B00F377ED /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				54B914A21E6D772900F377ED /* ProinceTableViewCell.h */,
+				54B914A31E6D772900F377ED /* ProinceTableViewCell.m */,
+			);
+			name = cell;
+			sourceTree = "<group>";
+		};
 		54B9CAFD1DFE4E6C003961FF /* 试听购买栏 */ = {
 			isa = PBXGroup;
 			children = (
@@ -3344,6 +3411,7 @@
 		54E00B0D1E5A90100056C74F /* 个人信息修改页面 */ = {
 			isa = PBXGroup;
 			children = (
+				54B914931E6D61FE00F377ED /* 地区选择页面 */,
 				54E00B101E5A902B0056C74F /* Model */,
 				54E00B0F1E5A902A0056C74F /* View */,
 				54E00B0E1E5A90290056C74F /* Controller */,
@@ -3386,6 +3454,8 @@
 				5452260A1E2482EC00F36280 /* EditGenderTableViewCell.m */,
 				5452260C1E24830100F36280 /* EditBirthdayTableViewCell.h */,
 				5452260D1E24830100F36280 /* EditBirthdayTableViewCell.m */,
+				54B914A61E6D790500F377ED /* EditLocationTableViewCell.h */,
+				54B914A71E6D790500F377ED /* EditLocationTableViewCell.m */,
 			);
 			name = cell;
 			sourceTree = "<group>";
@@ -4502,6 +4572,7 @@
 				54D75FDD1E2F9F87003744FE /* Replay.m in Sources */,
 				54AB49031DEDB1BA008E3BC5 /* ListenTableViewCell.m in Sources */,
 				548328F31DDC75050053AB29 /* ChatModel.m in Sources */,
+				54B9149D1E6D676D00F377ED /* ProvinceHeaderView.m in Sources */,
 				549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */,
 				54D66F7C1DEC33B100ED2EBC /* AllClassView.m in Sources */,
 				54813C4F1E14F30000D6F739 /* NoticeSwitchTableViewCell.m in Sources */,
@@ -4536,6 +4607,7 @@
 				54DBA4B21DE4423300A67A90 /* YZEmotionKeyboard.m in Sources */,
 				54AB48D81DED5183008E3BC5 /* MyWalletViewController.m in Sources */,
 				542C17441DFA508A0088DB3F /* Canceld.m in Sources */,
+				54B914A01E6D71A100F377ED /* Province.m in Sources */,
 				545226181E24CDE100F36280 /* OrderInfoViewController.m in Sources */,
 				54B73D0F1DE40E1800B7A7EB /* NSString+ContainEmoji.m in Sources */,
 				547A7EF71DD411DB00F1282B /* TeachersPublic_Classes.m in Sources */,
@@ -4598,11 +4670,13 @@
 				5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */,
 				54443E281E0D252F000D8E8B /* LocalChoseView.m in Sources */,
 				54AB48DE1DED51A0008E3BC5 /* MyClassViewController.m in Sources */,
+				54B914A41E6D772900F377ED /* ProinceTableViewCell.m in Sources */,
 				543E233D1E2C78C800381F10 /* SetPayPasswordView.m in Sources */,
 				543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */,
 				54294C7D1DDB373400677333 /* LivePlayerViewController.m in Sources */,
 				54AB48D21DED3389008E3BC5 /* SettingTableViewCell.m in Sources */,
 				54652E311DEEBDC300F4607C /* ClassNoticeSettingView.m in Sources */,
+				54B914A81E6D790500F377ED /* EditLocationTableViewCell.m in Sources */,
 				54A991851E34BCB20001D3D9 /* NoticeWaysTableViewCell.m in Sources */,
 				54660F601E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m in Sources */,
 				5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */,
@@ -4627,6 +4701,7 @@
 				543E0CC11DFFDA82004B24FD /* PayConfirmViewController.m in Sources */,
 				542C17381DFA50460088DB3F /* PaidOrderTableViewCell.m in Sources */,
 				542C173E1DFA50760088DB3F /* Unpaid.m in Sources */,
+				54B914921E6D5B7F00F377ED /* CityChosenViewController.m in Sources */,
 				5420210E1E2DF7C100517A47 /* RefundTableViewCell.m in Sources */,
 				54DBA4BA1DE442D900A67A90 /* YZInputView.m in Sources */,
 				5407C9961DE7DE8400DB04C8 /* NSNumber+YYAdd.m in Sources */,
@@ -4654,6 +4729,7 @@
 				54FCBAF61DD5D4500094BF58 /* VideoClassInfo.m in Sources */,
 				541E20041E139967007CF5D1 /* UncaughtExceptionHandler.m in Sources */,
 				5435D9461DD315CD00DD4FCC /* TeachersPublicCollectionView.m in Sources */,
+				54B9148F1E6D5B7500F377ED /* ProvinceChosenViewController.m in Sources */,
 				541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */,
 				54634D981DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m in Sources */,
 				5493D4CB1E0BE1050085A39E /* TLCityGroupCell.m in Sources */,

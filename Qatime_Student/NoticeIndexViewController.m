@@ -123,13 +123,6 @@ typedef enum : NSUInteger {
     
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    
-    [super viewWillAppear:animated];
-    
-    
-}
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -181,6 +174,9 @@ typedef enum : NSUInteger {
     /* 消息变为已读的通知*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(markRead:) name:@"MarkAllRead" object:nil];
     
+    /* 用户重新登录后的通知*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshAgain) name:@"userLoginAgain" object:nil];
+    
     
     /* 下拉刷新功能*/
     
@@ -215,6 +211,18 @@ typedef enum : NSUInteger {
     
     
     
+}
+
+
+/* 再次登录成功后获取消息*/
+- (void)refreshAgain{
+    
+    if (_noticeIndexView.chatListTableView.mj_header.state == MJRefreshStateIdle) {
+        [_noticeIndexView.chatListTableView.mj_header endRefreshing] ;
+        
+        
+        
+    }
 }
 
 
@@ -414,17 +422,23 @@ typedef enum : NSUInteger {
                 for (NSDictionary *dics in dataArr) {
                     SystemNotice *notice = [SystemNotice yy_modelWithJSON:dics];
                     
-                    
-                    if ([notice.notificationable_type isEqualToString:@"action_record"]) {
+                    //筛掉订单类型的信息
+                    if ([notice.notificationable_type isEqualToString:@"payment/order"]||[notice.action_name isEqualToString:@"refund_success"]||[notice.action_name isEqualToString:@"refund_fail"]) {
                         
-                        [notice.notice_content insertString:@"                " atIndex:0];
                     }else{
                         
-                        [notice.notice_content insertString:@"          " atIndex:0];
+                        //其他类型的信息进行加载处理
+                        if ([notice.notificationable_type isEqualToString:@"action_record"]) {
+                            
+                            [notice.notice_content insertString:@"                " atIndex:0];
+                        }else{
+                            
+                            [notice.notice_content insertString:@"          " atIndex:0];
+                        }
+                        
+                        notice.noticeID = dics[@"id"];
+                        [_noticeArray addObject:notice];
                     }
-                    
-                    notice.noticeID = dics[@"id"];
-                    [_noticeArray addObject:notice];
                     
                 }
                 

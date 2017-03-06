@@ -11,6 +11,7 @@
 #import "MMPickerView.h"
 #import "UIImageView+WebCache.h"
 #import "UIViewController+HUD.h"
+#import "ProvinceChosenViewController.h"
 
 @interface PersonalInfoEditViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate>{
     
@@ -224,7 +225,7 @@
 #pragma mark- tableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 6;
+    return 7;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -336,6 +337,28 @@
         }
             break;
         case 5:{
+            
+            /* cell的重用队列*/
+            static NSString *cellIdenfier = @"cell";
+            EditLocationTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+            if (cell==nil) {
+                cell=[[EditLocationTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+            }
+            if (_infoDic) {
+                if (_infoDic[@"province"]&&_infoDic[@"city"]) {
+                    cell.subContent.text =_infoDic[@"province"];
+                    cell.content.text =_infoDic[@"city"];
+                }
+            }
+            
+            
+            return  cell;
+            
+            
+        }
+            break;
+            
+        case 6:{
             /* cell的重用队列*/
             static NSString *cellIdenfier = @"cell";
             EditNameTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
@@ -424,6 +447,12 @@
             
         }
             break;
+        case 5:{
+            
+            ProvinceChosenViewController *controller = [[ProvinceChosenViewController alloc]init];
+            [self.navigationController pushViewController:controller animated:YES];
+            
+        }
     }
     
 }

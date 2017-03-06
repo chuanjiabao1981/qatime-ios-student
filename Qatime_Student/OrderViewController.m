@@ -528,10 +528,6 @@ typedef enum : NSUInteger {
     
     
     
-    
-    
-    
-    
     //    if (balanceEnable==NO) {
     //
     //            }else{
@@ -606,11 +602,23 @@ typedef enum : NSUInteger {
 #pragma mark- 发送请求->用户提交订单
 - (void)postOrderInfo{
     
+    //增加优惠码dictionary.
+    NSDictionary *dic ;
+    NSString *coupon_code;
+    if ([_orderView.promotionText.text isEqualToString:@""]) {
+        
+        dic = @{@"pay_type":_payType};
+    }else{
+        coupon_code = _orderView.promotionText.text;
+        dic = @{@"pay_type":_payType,@"coupon_code":coupon_code};
+        
+    }
+    
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/orders",Request_Header,_classID] parameters:@{@"pay_type":_payType} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/orders",Request_Header,_classID] parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         [self loginStates:dic];

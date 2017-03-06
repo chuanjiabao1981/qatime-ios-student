@@ -392,7 +392,6 @@
 - (void)choseAllTutorium{
     
     
-    
     /* 发送消息 让第二个页面在初始化后 进行筛选*/
     [[NSNotificationCenter defaultCenter]postNotificationName:@"UserChoseSubject" object:nil];
     
@@ -1256,7 +1255,9 @@
              _localCity = [NSString stringWithFormat:@"%@", placemark.subLocality];
              
              /* 定位信息存本地*/
-             [[NSUserDefaults standardUserDefaults]setValue:_localCity forKey:@"Location"];
+             [[NSUserDefaults standardUserDefaults]setValue:placemark.administrativeArea forKey:@"Location_Province"];
+             [[NSUserDefaults standardUserDefaults]setValue:_localCity forKey:@"Location"]; //保存区地址
+             [[NSUserDefaults standardUserDefaults]setValue:placemark.locality forKey:@"Location_City"]; //保存市地址
              
              /*
               定位完成后,跟本地信息进行比较,如果有工作站,就提示用户切换到当前城市,没有就不提示*/

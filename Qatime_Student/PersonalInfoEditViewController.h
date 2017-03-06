@@ -11,6 +11,7 @@
 #import "EditNameTableViewCell.h"
 #import "EditGenderTableViewCell.h"
 #import "EditBirthdayTableViewCell.h"
+#import "EditLocationTableViewCell.h"
 
 @interface PersonalInfoEditViewController : UIViewController
 

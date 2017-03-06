@@ -21,6 +21,8 @@
 #import "UIAlertController+Blocks.h"
 #import "PersonalInfoEditViewController.h"
 #import "UIAlertController+Blocks.h"
+#import "EditLocationTableViewCell.h"
+#import "ProvinceChosenViewController.h"
 
 
 
@@ -158,7 +160,7 @@
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
-    _nameArr = @[@"头像",@"姓名",@"性别",@"生日",@"年级"/*,@"学校"*/,@"简介"];
+    _nameArr = @[@"头像",@"姓名",@"性别",@"生日",@"年级",@"地区",@"简介"];
     
     /* 如果是从注册页面传值过来的*/
     if (WriteMore == YES) {
@@ -310,7 +312,7 @@
 #pragma mark- tableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 6;
+    return 7;
     
 }
 
@@ -360,7 +362,7 @@
         
         return  cell;
         
-    }else{
+    }else if (indexPath.row!=5&&indexPath.row!=0){
         
         /* cell的重用队列*/
         static NSString *cellIdenfier = @"cell";
@@ -406,15 +408,10 @@
                         cell.content.text = @"未设置";
                     }
                     break;
-                case 5:
+                    
+                case 6:
                     cell.content.text = @"未设置";
                     break;
-//                case 6:
-//                    cell.content.text = @"未设置";
-//                    break;
-//                case 7:
-//                    cell.content.text = @"未设置";
-//                    break;
                     
             }
             
@@ -452,7 +449,7 @@
                     cell.content.text = [_dataDic valueForKey:@"grade"];
                 }
                     break;
-                case 5:{
+                case 6:{
                     
 //                    cell.content.text = [[NSString stringWithFormat:@"%@",[_dataDic valueForKey:@"province"]]stringByAppendingString:[NSString stringWithFormat:@"  %@",[_dataDic valueForKey:@"city"]]] ;
                     
@@ -487,6 +484,34 @@
         }
         
         return  cell;
+        
+    }else if (indexPath.row == 5){
+        
+        /* cell的重用队列*/
+        static NSString *cellIdenfier = @"cell";
+        EditLocationTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+        if (cell==nil) {
+            cell=[[EditLocationTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+            
+            cell.name = _nameArr[indexPath.row];
+            
+        }
+        if (WriteMore==YES){
+            cell.content.text = @"未设置";
+            cell.subContent.text = @"未设置";
+            
+        }else{
+            
+            if ([[_dataDic allKeys]count]!=0){
+                
+                cell.content.text = [_dataDic valueForKey:@"province"]==nil?@"未设置":[_dataDic valueForKey:@"province"];
+                cell.subContent.text = [_dataDic valueForKey:@"city"]==nil?@"未设置":[_dataDic valueForKey:@"city"];
+            }
+        }
+        
+        return  cell;
+        
+
         
     }
     
@@ -714,21 +739,26 @@
 - (void)editInfo{
     
     
-    NSArray *contentArr = @[@"head",@"name",@"gender",@"birthday",@"grade",@"desc"];
+    NSArray *contentArr = @[@"head",@"name",@"gender",@"birthday",@"grade",@"location",@"desc"];
     
     
     /* 需要传入下一页面的值*/
     NSMutableDictionary *info = @{}.mutableCopy;
-    
     
     /* 遍历出所有cell中的value*/
     for (NSInteger i=0; i<contentArr.count; i++) {
         if (i==0) {
             Personal_HeadTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
             [info setValue:cell.image.image==nil?[UIImage imageNamed:@"人"]:cell.image.image forKey:contentArr[i]];
-        }else{
+        }else if (i!=0&&i!=5){
             PersonalTableViewCell *cell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
             [info setValue:cell.content.text==nil?@"":cell.content.text forKey:contentArr[i]];
+        }else if (i==5){
+            
+            EditLocationTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+            [info setValue:cell.content.text==nil?@"":cell.content.text forKey:@"city"];
+            [info setValue:cell.subContent.text==nil?@"":cell.subContent.text forKey:@"province"];
+            
         }
         
     }

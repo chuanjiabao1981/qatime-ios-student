@@ -101,7 +101,7 @@
     tipsLabel = ({
         UILabel *_ = [[UILabel alloc]init];
         _.textColor = [UIColor whiteColor];
-        _.text = @"将二维码置于框内即可扫描";
+        _.text = NSLocalizedString(@"将二维码置于框内即可扫描", nil);
         _.backgroundColor = [UIColor blackColor];
         _.alpha = 0.6;
         [self.view addSubview:_];
