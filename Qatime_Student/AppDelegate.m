@@ -243,12 +243,17 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnNotification:) name:@"Notification" object:nil];
     
     
+    /* 监听跳转到root后的tabbar变化*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(hideTabbar) name:@"PopToRoot" object:nil];
+    
+    
     /* 获取推送消息内容 10以下系统获取方法*/
    remoteNotification =  [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     
     
     return YES;
 }
+
 
 
 
@@ -736,6 +741,12 @@
         [_window setRootViewController:naviVC];
     }];
     
+    
+}
+
+- (void)hideTabbar{
+    
+    [_viewController removeOriginControls];
     
 }
 

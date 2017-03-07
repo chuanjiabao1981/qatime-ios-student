@@ -49,7 +49,6 @@ typedef enum : NSUInteger {
     /* 订单成功后,收到的数据,传入下一页*/
     NSDictionary *dataDic;
     
-    
     /* 优惠码*/
     NSString *_promotionCode;
     
@@ -210,28 +209,10 @@ typedef enum : NSUInteger {
                     
                     /* 成功后赋值*/
                     _orderView.className.text = mod.name;
-                    [_orderView.classImage sd_setImageWithURL:[NSURL URLWithString:mod.publicize]];
                     _orderView.subjectLabel.text = mod.subject;
                     _orderView.gradeLabel.text = mod.grade;
                     _orderView.teacheNameLabel.text = mod.teacher_name;
                     _orderView.classTimeLabel.text = [NSString stringWithFormat:@"共%@课",mod.preset_lesson_count];
-                    
-                    /* 日期转化*/
-                    NSDateFormatter *format = [[NSDateFormatter alloc]init];
-                    format.dateFormat = @"yyyy-MM-dd HH:mm";
-                    NSDate *startDate = [format dateFromString:mod.live_start_time];
-                    NSDate *endDate = [format dateFromString:mod.live_end_time];
-                    NSDateFormatter *strFormat= [[NSDateFormatter alloc]init];
-                    strFormat.dateFormat = @"yyyy-MM-dd";
-                    
-                    _orderView.startTimeLabel.text = [strFormat stringFromDate:startDate];
-                    _orderView.endTimeLabel.text = [strFormat stringFromDate:endDate];
-                    
-                    if ([mod.status isEqualToString:@"teaching"]) {
-                        _orderView.statusLabel.text = @"开课中";
-                    }
-                    
-                    _orderView.typeLabel.text = @"在线直播";
                     
                     if ([mod.current_price containsString:@"."]) {
                         
@@ -248,6 +229,17 @@ typedef enum : NSUInteger {
                         price = mod.current_price.floatValue;
                         
                     }
+                    
+//                    /* 高度自适应*/
+//                    [_orderView.subLine updateLayout];
+//                    CGFloat heights =_orderView.subLine.height_sd+_orderView.subLine.origin_sd.y;
+//                    [_orderView.infoView sd_clearAutoLayoutSettings];
+//                    _orderView.infoView.sd_layout
+//                    .topEqualToView(_orderView)
+//                    .leftEqualToView(_orderView)
+//                    .rightEqualToView(_orderView)
+//                    .heightIs(heights);
+//                    [_orderView.infoView updateLayout];
                     
                     
                     /* 请求一次余额 ,判断是否可以用余额支付*/
@@ -292,7 +284,7 @@ typedef enum : NSUInteger {
         [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 余额请求成功*/
-            _orderView.balanceLabel.text = [NSString stringWithFormat:@"(¥%@)",dic[@"data"][@"balance"]];
+            _orderView.balance.text = [NSString stringWithFormat:@"当前余额¥%@元",dic[@"data"][@"balance"]];
             
             if (price>=0) {
                 /* 判断余额是否可用*/
@@ -661,7 +653,6 @@ typedef enum : NSUInteger {
     //
     //
     //    }
-    
     
 }
 

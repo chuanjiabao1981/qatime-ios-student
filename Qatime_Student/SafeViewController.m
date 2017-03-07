@@ -8,7 +8,7 @@
 
 #import "SafeViewController.h"
 #import "SettingTableViewCell.h"
- 
+
 #import "UIViewController+HUD.h"
 #import "UIViewController_HUD.h"
 #import "ParentViewController.h"
@@ -54,7 +54,7 @@
     
     self.view.backgroundColor = BACKGROUNDGRAY;
     
-      
+    
     
     _navigationBar = ({
         
@@ -121,7 +121,7 @@
     SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
     cell.balance.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"parent_phone"];
     
-
+    
     
     
 }
@@ -141,17 +141,12 @@
         
         [self loginStates:getDic];
         if ([getDic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
-            
             /* 个人信息存本地*/
-            
             NSMutableDictionary * chDic = [NSMutableDictionary dictionaryWithDictionary:getDic[@"data"]];
-            
             if (chDic[@"openid"]!=nil&&![chDic[@"openid"] isEqual:[NSNull null]]) {
                 [[NSUserDefaults standardUserDefaults]setValue:chDic[@"openid"] forKey:@"openID"];
                 wechatIsBinding = YES;
-                
             }
-            
             
             for (NSInteger i = 0; i< [chDic allKeys].count; i++) {
                 
@@ -160,16 +155,12 @@
                     [chDic setValue:@"未绑定" forKey:[chDic allKeys][i]];
                     
                 }
-                
-                
             }
-            
             
             /* 拉取个人信息成功*/
             _contentArr = [NSMutableArray arrayWithArray:@[chDic[@"login_mobile"],chDic[@"email"],@"马上绑定",chDic[@"parent_phone"],@"",@""]];
             
             NSLog(@"%@",chDic);
-            
             
             [[NSUserDefaults standardUserDefaults]setObject:chDic[@"login_mobile"] forKey:@"login_mobile"] ;
             [[NSUserDefaults standardUserDefaults]setObject:chDic[@"email"] forKey:@"email"];
@@ -180,7 +171,6 @@
             
             /* 菜单初始化*/
             _menuTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
-            
             _menuTableView.delegate = self;
             _menuTableView.dataSource = self;
             _menuTableView.bounces = NO;
@@ -188,10 +178,8 @@
             [self.view addSubview:_menuTableView];
             _menuTableView.backgroundColor = [UIColor clearColor];
             _menuTableView.tableFooterView = [[UIView alloc]init];
-
-//            [_menuTableView reloadData];
             
-            
+            //            [_menuTableView reloadData];
         }else{
             /* 拉取个人信息失败*/
             [self loadingHUDStopLoadingWithTitle:@"加载失败!"];
@@ -295,11 +283,11 @@
                             cell.balance.hidden = YES;
                         }
                             break;
-//                        case 1:{
-//                            cell.balance.hidden = YES;
-//                            
-//                        }
-//                            break;
+                            //                        case 1:{
+                            //                            cell.balance.hidden = YES;
+                            //
+                            //                        }
+                            //                            break;
                             
                     }
                     
@@ -354,7 +342,7 @@
                         
                     }else{
                         [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"取消绑定后将不能使用提现等功能，是否取消？" cancelButtonTitle:@"不取消" destructiveButtonTitle:nil otherButtonTitles:@[@"取消"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                           
+                            
                             if (buttonIndex!=0) {
                                 /* 解绑微信*/
                                 [self relieveWechat];
@@ -387,37 +375,37 @@
             
         case 1:{
             switch (indexPath.row) {
-//                case 0:{
+                    //                case 0:{
                     
-//                   [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置或修改后将在24小时内不能使用支付密码,是否继续?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"继续"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-//                       if (buttonIndex!=0) {
-//                           
-//                           if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
-//                               if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==YES) {
-//                                   /* 已经设置过支付密码,更改支付密码*/
-//                                   SetPayPasswordViewController *setPass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
-//                                   [self.navigationController pushViewController:setPass animated:YES];
-//                                   
-//                                   
-//                               }else if([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==NO){
-//                                   /* 初次设置支付密码*/
-//                                   AuthenticationViewController *authentication =[[AuthenticationViewController alloc]init];
-//                                   [self.navigationController pushViewController:authentication animated:YES];
-//                                   
-//                                   
-////                                   SetPayPasswordViewController *newpass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
-////                                   [self.navigationController pushViewController:newpass animated:YES];
-//                                   
-//                                   
-//                               }
-//                           }
-//         
-//                       }
-//                       
-//                   }];
+                    //                   [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置或修改后将在24小时内不能使用支付密码,是否继续?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"继续"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                    //                       if (buttonIndex!=0) {
+                    //
+                    //                           if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
+                    //                               if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==YES) {
+                    //                                   /* 已经设置过支付密码,更改支付密码*/
+                    //                                   SetPayPasswordViewController *setPass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
+                    //                                   [self.navigationController pushViewController:setPass animated:YES];
+                    //
+                    //
+                    //                               }else if([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==NO){
+                    //                                   /* 初次设置支付密码*/
+                    //                                   AuthenticationViewController *authentication =[[AuthenticationViewController alloc]init];
+                    //                                   [self.navigationController pushViewController:authentication animated:YES];
+                    //
+                    //
+                    ////                                   SetPayPasswordViewController *newpass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
+                    ////                                   [self.navigationController pushViewController:newpass animated:YES];
+                    //
+                    //
+                    //                               }
+                    //                           }
+                    //
+                    //                       }
+                    //
+                    //                   }];
                     
-//                }
-//                    break;
+                    //                }
+                    //                    break;
                 case 0:{
                     
                     ChangePasswordViewController *changVC = [ChangePasswordViewController new];
@@ -463,12 +451,12 @@
 
 -(void)sendAuthRequest{
     
-//    if ([WXApi isWXAppInstalled]==YES) {
-//    }else{
-//        
-//        [self loadingHUDStopLoadingWithTitle:@"您尚未安装微信"];
-//        
-//    }
+    //    if ([WXApi isWXAppInstalled]==YES) {
+    //    }else{
+    //
+    //        [self loadingHUDStopLoadingWithTitle:@"您尚未安装微信"];
+    //
+    //    }
     //构造SendAuthReq结构体
     SendAuthReq* req =[[SendAuthReq alloc ] init ]  ;
     req.scope = @"snsapi_userinfo" ;
@@ -535,11 +523,11 @@
             if (dic[@"data"][@"openid"]) {
                 
                 [[NSUserDefaults standardUserDefaults]setValue:dic[@"data"][@"openid"] forKey:@"openID"];
-            
+                
             }
         }
     }];
-        
+    
 }
 
 /* 解绑微信*/
@@ -560,7 +548,7 @@
                 [self loadingHUDStopLoadingWithTitle:@"解绑成功!"];
                 
                 wechatIsBinding = NO;
-               
+                
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"RelieveWechat" object:nil];
                 
             }else{
@@ -586,7 +574,7 @@
 /* 解绑后的页面变化*/
 - (void)changeWechatBindingStatus{
     
-     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"openID"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"openID"];
     NSIndexPath *indexpath = [NSIndexPath indexPathForRow:2 inSection:0];
     SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:indexpath];
     
@@ -601,7 +589,7 @@
     
     [self.navigationController popViewControllerAnimated:YES];
     
-       
+    
     
 }
 

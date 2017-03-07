@@ -7,7 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "City.h"
+
 
 @interface CityChosenViewController : UIViewController
+
+
+@property(nonatomic,strong) UITableView *cityTableView ;
+
+
+//传进来数据 进行初始化
+-(instancetype)initWithChosenProvince:(NSString *)province andDataArr:(NSArray <City *>*)dataArr;
+
 
 @end

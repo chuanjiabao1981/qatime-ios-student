@@ -13,6 +13,7 @@
 #import "UIViewController+HUD.h"
 #import "ProvinceChosenViewController.h"
 
+
 @interface PersonalInfoEditViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate>{
     
     NavigationBar *_navigationBar;
@@ -77,7 +78,7 @@
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
     [self.view addSubview:_navigationBar];
     
-    _editTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd , self.view.height_sd*(0.15+0.07*5)+5) style:UITableViewStylePlain];
+    _editTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd , self.view.height_sd*(0.15+0.07*6)+5) style:UITableViewStylePlain];
     [self.view addSubview:_editTableView];
     
     _editTableView.tableFooterView = [[UIView alloc]init];
@@ -122,8 +123,8 @@
     _editTableView.dataSource = self;
     _editTableView.bounces = NO;
     
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(resign)];
-//    [_editTableView addGestureRecognizer:tap];
+    //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(resign)];
+    //    [_editTableView addGestureRecognizer:tap];
     
     
     /* 提出token和学生id*/
@@ -139,13 +140,12 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
-    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeLocation:) name:@"ChangeLocation" object:nil];
     
     
 }
 /* 点击头像的方法*/
 - (void)changeHeadImage:(id)sender{
-    
     
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
@@ -345,9 +345,28 @@
                 cell=[[EditLocationTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
             }
             if (_infoDic) {
+                
+                [cell.content sd_clearAutoLayoutSettings];
+                cell.content.sd_layout
+                .leftSpaceToView(cell.name,20)
+                .centerYEqualToView(cell.name)
+                .autoHeightRatio(0);
+                [cell.content setSingleLineAutoResizeWithMaxWidth:200];
+                [cell.content updateLayout];
+                
+                [cell.subContent sd_clearAutoLayoutSettings];
+                cell.subContent.sd_layout
+                .leftSpaceToView(cell.content,20)
+                .centerYEqualToView(cell.name)
+                .autoHeightRatio(0);
+                [cell.content setSingleLineAutoResizeWithMaxWidth:200];
+                [cell.content updateLayout];
+
+                
                 if (_infoDic[@"province"]&&_infoDic[@"city"]) {
                     cell.subContent.text =_infoDic[@"province"];
                     cell.content.text =_infoDic[@"city"];
+                    
                 }
             }
             
@@ -452,6 +471,12 @@
             ProvinceChosenViewController *controller = [[ProvinceChosenViewController alloc]init];
             [self.navigationController pushViewController:controller animated:YES];
             
+            //用block调结果 赋值到head视图上
+            
+            EditLocationTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            
+           
+            
         }
     }
     
@@ -459,7 +484,7 @@
 - (void)textFieldDidChange:(UITextField *)textField{
     
     EditNameTableViewCell *nameCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-    EditNameTableViewCell *descCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0]];
+    EditNameTableViewCell *descCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
     
     if (textField == nameCell.nameText) {
         
@@ -572,9 +597,9 @@
     [request setCachePolicy:NSURLRequestReloadIgnoringCacheData];
     [request setTimeoutInterval:15];
     
-//    [self loadingHUDStartLoadingWithTitle:@"正在提交"];
+    //    [self loadingHUDStartLoadingWithTitle:@"正在提交"];
     
-   __block MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    __block MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelFont = [UIFont systemFontOfSize:14*ScrenScale];
     
@@ -584,14 +609,14 @@
     uploadTask = [manager uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull uploadProgress) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
-//
-//            [hud show:YES];
+            //
+            //            [hud show:YES];
             [hud setLabelText:[NSString stringWithFormat:@"正在提交 %ld%@",(NSInteger)uploadProgress.fractionCompleted*100,@"%"]];
-
-//            if ((NSInteger)uploadProgress.fractionCompleted*100==100) {
-//                [hud hide:YES];
-//            }
-//
+            
+            //            if ((NSInteger)uploadProgress.fractionCompleted*100==100) {
+            //                [hud hide:YES];
+            //            }
+            
         });
         
         
@@ -612,8 +637,9 @@
                 
                 [hud hide:YES];
                 [self loadingHUDStopLoadingWithTitle:@"修改成功"];
-                [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                 
+                
+                [self performSelector:@selector(returnRoot) withObject:nil afterDelay:1];
                 
             }
             
@@ -622,8 +648,17 @@
     }];
     
     [uploadTask resume];
+
+}
+
+//改变地区 接监听
+- (void)changeLocation:(NSNotification *)notification{
     
+    EditLocationTableViewCell *cell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0]];
+    NSDictionary *dic = [notification object];
     
+    cell.content.text = dic[@"province"];
+    cell.subContent.text = dic[@"city"];
     
 }
 
@@ -644,7 +679,13 @@
     
 }
 
-
+- (void)returnRoot{
+    
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"PopToRoot" object:nil];
+    
+    
+}
 
 - (void)returnLastPage{
     

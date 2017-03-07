@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 
 #import "Province.h"
+#import "City.h"
 @interface ProinceTableViewCell : UITableViewCell
 
 @property(nonatomic,strong) UILabel *title ;
 
 @property(nonatomic,strong) Province *model ;
+
+@property(nonatomic,strong) City *cityModel ;
 
 @end

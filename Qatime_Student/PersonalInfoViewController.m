@@ -331,8 +331,6 @@
             cell.name.text = _nameArr[indexPath.row];
             cell.backgroundColor = [UIColor whiteColor];
             
-//            cell.image.userInteractionEnabled = YES;
-            
         }
         
         /* 如果是在"完善更多"的前提下*/
@@ -358,7 +356,6 @@
             }
             
         }
-//        [cell.image addGestureRecognizer:_tap];
         
         return  cell;
         
@@ -451,7 +448,6 @@
                     break;
                 case 6:{
                     
-//                    cell.content.text = [[NSString stringWithFormat:@"%@",[_dataDic valueForKey:@"province"]]stringByAppendingString:[NSString stringWithFormat:@"  %@",[_dataDic valueForKey:@"city"]]] ;
                     
                     
                     if ([[_dataDic valueForKey:@"desc"]isEqualToString:@""]) {
@@ -461,24 +457,11 @@
                         
                         cell.content.text = [_dataDic valueForKey:@"desc"];
                     }
-                    
-                    
-                    
-                    
-//                    [cell sd_clearAutoLayoutSettings];
 
                     
                 }
                     break;
                  
-                    
-//                case 6:{
-//                    
-//                    cell.content.text = [_dataDic valueForKey:@"desc"];
-//                    [cell sd_clearAutoLayoutSettings];
-//                    
-//                }
-//                    break;
                     
             }
         }
@@ -504,6 +487,8 @@
             
             if ([[_dataDic allKeys]count]!=0){
                 
+                cell.content.textColor = [UIColor lightGrayColor];
+                cell.subContent.textColor = [UIColor lightGrayColor];
                 cell.content.text = [_dataDic valueForKey:@"province"]==nil?@"未设置":[_dataDic valueForKey:@"province"];
                 cell.subContent.text = [_dataDic valueForKey:@"city"]==nil?@"未设置":[_dataDic valueForKey:@"city"];
             }

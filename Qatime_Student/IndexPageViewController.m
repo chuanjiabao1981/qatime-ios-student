@@ -1319,6 +1319,12 @@
                             /* 请求当前所在地区的数据*/
                             [self requestDataWithLocation:loaction.locality];
                             
+                            //定位信息存本地
+                            [[NSUserDefaults standardUserDefaults]setValue:loaction.locality forKey:@"Location"];
+                            [[NSUserDefaults standardUserDefaults]setValue:loaction.administrativeArea forKey:@"Location_Province"];
+                            
+                            [[NSUserDefaults standardUserDefaults]setValue:loaction.locality forKey:@"Location_City"];
+                            
                             
                         }] ;
                         
@@ -1345,6 +1351,12 @@
                         
                         /* 请求当前所在地区的数据*/
                         [self requestDataWithLocation:loaction.locality];
+                        
+                        //定位信息存本地
+                        [[NSUserDefaults standardUserDefaults]setValue:loaction.locality forKey:@"Location"];
+                        [[NSUserDefaults standardUserDefaults]setValue:loaction.administrativeArea forKey:@"Location_Province"];
+                        
+                        [[NSUserDefaults standardUserDefaults]setValue:loaction.locality forKey:@"Location_City"];
                         
                     }] ;
                     

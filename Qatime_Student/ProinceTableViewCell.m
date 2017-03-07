@@ -22,10 +22,10 @@
         _title.textColor = TITLECOLOR;
         [self.contentView addSubview:_title];
         _title.sd_layout
-        .leftSpaceToView(self.contentView,12)
+        .leftSpaceToView(self.contentView,20)
         .centerYEqualToView(self.contentView)
         .autoHeightRatio(0);
-        [_title setSingleLineAutoResizeWithMaxWidth:100];
+        [_title setSingleLineAutoResizeWithMaxWidth:200];
         
         
         
@@ -40,6 +40,14 @@
     _model = model;
     
     _title.text = model.name;
+    
+    
+}
+
+- (void)setCityModel:(City *)cityModel{
+    
+    _cityModel = cityModel;
+    _title.text = cityModel.name;
     
     
 }

@@ -20,7 +20,6 @@
 #import "LCTabBarController.h"
 #import "LCTabBar.h"
 
-
 @interface AppDelegate : UIResponder <UIApplicationDelegate,WXApiDelegate,LCTabBarDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

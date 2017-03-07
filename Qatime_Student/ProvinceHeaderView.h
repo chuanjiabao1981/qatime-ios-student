@@ -11,16 +11,6 @@
 @interface ProvinceHeaderView : UIView
 
 /**
- 已选省份
- */
-@property(nonatomic,strong) UILabel *chosenProvicne ;
-
-/**
- 已选城市
- */
-@property(nonatomic,strong) UILabel *chosenCity ;
-
-/**
  当前省份
  */
 @property(nonatomic,strong) UILabel *currentProvince ;

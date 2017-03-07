@@ -15,15 +15,24 @@
 
 #import "ProinceTableViewCell.h"
 
+#import "CityChosenViewController.h"
+
 
 @interface ProvinceChosenViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     
     NavigationBar *_navigationBar;
     
+    //省信息
     NSArray *_provinceArray ;
-    
+    //省model数组
     NSMutableArray *_provinceModelArr;
+    
+    //市信息
+    NSArray *_cityArray;
+    //市model数组
+    NSMutableArray *_cityModelArr;
+    
     
     
     
@@ -36,11 +45,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     _navigationBar=({
     
         NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         [self.view addSubview:_];
-        [_.leftButton setImage:[UIImage imageNamed:@"backArrow"]forState:UIControlStateNormal];
+        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"]forState:UIControlStateNormal];
         _.titleLabel.text = NSLocalizedString(@"选择地区", nil);
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         _;
@@ -57,9 +68,14 @@
 /* 制作省份/城市数据信息*/
 - (void)loadProvinceInfo{
     
+    //省信息初始化
     _provinceModelArr = @[].mutableCopy;
- 
     _provinceArray = [[NSUserDefaults standardUserDefaults]valueForKey:@"province"];
+    
+    //市信息初始化
+    _cityModelArr = @[].mutableCopy;
+    _cityArray = [NSArray arrayWithArray:[[NSUserDefaults standardUserDefaults]valueForKey:@"city"]];
+    
     
     //制作省份数据
     for (NSDictionary *province in _provinceArray) {
@@ -67,6 +83,7 @@
         mod.provinceID = province[@"id"];
         [_provinceModelArr addObject:mod];
     }
+    
   
 //    加载视图
     [self setUpViews];
@@ -78,15 +95,19 @@
 //加载视图
 - (void)setUpViews{
     
-    _provinceHeader = [[ProvinceHeaderView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, 64)];
+    _provinceHeader = [[ProvinceHeaderView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd*0.07)];
     [self.view addSubview:_provinceHeader];
     
-    _provinceTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 128, self.view.width_sd, self.view.height_sd-128) style:UITableViewStylePlain];
+    _provinceTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64+_provinceHeader.height_sd, self.view.width_sd, self.view.height_sd-(64+_provinceHeader.height_sd)) style:UITableViewStylePlain];
     [self.view addSubview:_provinceTableView];
     
     _provinceTableView.delegate = self;
     _provinceTableView.dataSource = self;
     
+    //加载位置
+    _provinceHeader.currentProvince.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"Location_Province"]==nil?@"":[[NSUserDefaults standardUserDefaults]valueForKey:@"Location_Province"];
+    
+    _provinceHeader.currentCity.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"Location_City"]==nil?@"":[[NSUserDefaults standardUserDefaults]valueForKey:@"Location_City"];
     
 }
 
@@ -119,12 +140,57 @@
 
 #pragma mark- tableview delegate
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     
-    return @"全部地区";
-    
+    return self.view.height_sd*0.065;
 }
 
+
+//header
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    
+    UIView *view = [[UIView alloc]init];
+    view.backgroundColor = [UIColor whiteColor];
+    UILabel *label = [[UILabel alloc]init];
+    label.text = @"全部地区";
+    label.textColor = [UIColor blackColor];
+    [view addSubview:label];
+    label.sd_layout
+    .leftSpaceToView(view,20)
+    .centerYEqualToView(view)
+    .autoHeightRatio(0);
+    [label setSingleLineAutoResizeWithMaxWidth:200];
+    return view;
+    
+}
+//点击cell
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    /**
+     数据逻辑:
+     "市"信息包含"省"信息的id,使用省的id去遍历市级信息,进入次级页面.
+     */
+    
+    ProinceTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    for (NSDictionary *cityDic in _cityArray) {
+        
+        City *mod = [City yy_modelWithJSON:cityDic];
+        mod.cityID = cityDic[@"id"];
+        if ([[NSString stringWithFormat:@"%@",cell.model.provinceID] isEqualToString:mod.province_id]) {
+            [_cityModelArr addObject:mod];
+        }
+    }
+    
+    _controller = [[CityChosenViewController alloc]initWithChosenProvince:cell.model.name andDataArr:_cityModelArr];
+    [self.navigationController pushViewController:_controller animated:YES];
+    
+    
+    
+    
+    
+}
 
 
 - (void)returnLastPage{

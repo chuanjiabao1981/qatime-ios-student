@@ -10,11 +10,14 @@
 
 #import <UIKit/UIKit.h>
 #import "ProvinceHeaderView.h"
+#import "CityChosenViewController.h"
 @interface ProvinceChosenViewController : UIViewController
 
 @property(nonatomic,strong) UITableView *provinceTableView ;
 
 @property(nonatomic,strong) ProvinceHeaderView *provinceHeader ;
+
+@property(nonatomic,strong) CityChosenViewController *controller ;
 
 
 @end
