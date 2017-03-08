@@ -701,6 +701,8 @@
 #pragma mark- 多条件筛选视图弹出和取消
 - (void)sortByMulti{
     
+    
+    
     /* 比较价格,小的在前,大的在后*/
     NSInteger lowPrice = 0;
     NSInteger highPrice = 0;
@@ -760,6 +762,8 @@
     [UIView animateWithDuration:0.3 animations:^{
         
         [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd-self.view.height_sd/3.0f, self.view.width_sd, self.view.height_sd/3.0f)];
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"TabbarHide" object:nil];
     }];
     
 }
@@ -769,6 +773,7 @@
     
     [UIView animateWithDuration:0.3 animations:^{
         
+         [[NSNotificationCenter defaultCenter]postNotificationName:@"TabbarShow" object:nil];
         
         [_multiFilterView setFrame:CGRectMake(0, self.view.height_sd+49, self.view.width_sd, self.view.height_sd/3.0f)];
         effectView.alpha = 0;
@@ -790,7 +795,7 @@
         
         [MMPickerView dismissWithCompletion:^(NSString *dismissString) {
             
-             
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"TabbarShow" object:nil];
             
         }];
     }else if ([[touches anyObject]view].origin_sd.y>self.view.height_sd/2){
@@ -798,7 +803,7 @@
     }else{
         [MMPickerView dismissWithCompletion:^(NSString *dismissString) {
             
-             
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"TabbarShow" object:nil];
             
         }];
     }
@@ -824,9 +829,10 @@
 #pragma mark- 按时间、价格筛选按钮点击事件
 - (void)sortByTimeAndPrice{
     
-      
     
     _timeFilterStr  =@[NSLocalizedString(@"按时间", nil),NSLocalizedString(@"按价格-低到高", nil),NSLocalizedString(@"按价格-高到低", nil), NSLocalizedString(@"按购买人数", nil)];
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"TabbarHide" object:nil];
     
     [MMPickerView showPickerViewInView:_tutoriumView withStrings:_timeFilterStr withOptions:@{MMfont:[UIFont systemFontOfSize:20*ScrenScale]} completion:^(NSString *selectedString) {
         
@@ -853,6 +859,8 @@
     
     [_gradeFilterArr insertObject:NSLocalizedString(@"全部年级", nil) atIndex:0];
     
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"TabbarHide" object:nil];
+    
     [MMPickerView showPickerViewInView:_tutoriumView withStrings:_gradeFilterArr withOptions:@{MMfont:[UIFont systemFontOfSize:20*ScrenScale]} completion:^(NSString *selectedString) {
         
         [self selectedGradeFilterWithGrade:selectedString];
@@ -875,6 +883,7 @@
     
     _subjectArr=@[NSLocalizedString(@"全部", nil),NSLocalizedString(@"语文", nil),NSLocalizedString(@"数学", nil),NSLocalizedString(@"英语", nil),NSLocalizedString(@"物理", nil),NSLocalizedString(@"化学", nil),NSLocalizedString(@"地理", nil),NSLocalizedString(@"政治", nil),NSLocalizedString(@"历史", nil),NSLocalizedString(@"科学", nil),NSLocalizedString(@"生物", nil)];
     
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"TabbarHide" object:nil];
     
     [MMPickerView showPickerViewInView:_tutoriumView withStrings:_subjectArr withOptions:@{MMfont:[UIFont systemFontOfSize:20*ScrenScale]} completion:^(NSString *selectedString) {
         
@@ -898,8 +907,6 @@
 - (void)selectedTimeFilterWithSort:(NSString *)sort{
     
     [effectView removeFromSuperview];
-    
-//     
     
     
     sort_By  = sort;

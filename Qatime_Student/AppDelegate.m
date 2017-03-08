@@ -246,6 +246,11 @@
     /* 监听跳转到root后的tabbar变化*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(hideTabbar) name:@"PopToRoot" object:nil];
     
+    /* tabbar隐藏*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabbarHide) name:@"TabbarHide" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabbarShow) name:@"TabbarShow" object:nil];
+    
+    
     
     /* 获取推送消息内容 10以下系统获取方法*/
    remoteNotification =  [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -853,6 +858,21 @@
     NSLog(@"%@,%d,%d",resp.errStr,resp.errCode,resp.type);
     
 }
+
+
+/* 隐藏选项卡*/
+- (void)tabbarHide{
+    
+    self.viewController.tabBar.hidden = YES;
+    
+}
+
+/* 显示选项卡*/
+- (void)tabbarShow{
+    self.viewController.tabBar.hidden = NO;
+    
+}
+
 
 
 

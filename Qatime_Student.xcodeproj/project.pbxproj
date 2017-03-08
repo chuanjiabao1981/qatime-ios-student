@@ -424,7 +424,6 @@
 		54E8B6A71E601B0300A9703F /* UIViewController+TimeInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E8B6A61E601B0300A9703F /* UIViewController+TimeInterval.m */; };
 		54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC41DFE8D67001A98CE /* OrderView.m */; };
 		54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC71DFE8D75001A98CE /* OrderViewController.m */; };
-		54ECFECA1DFE978C001A98CE /* money.png in Resources */ = {isa = PBXBuildFile; fileRef = 54ECFEC91DFE978C001A98CE /* money.png */; };
 		54F32F721E372E57000F8926 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F32F711E372E57000F8926 /* Reachability.m */; };
 		54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F34D7C1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m */; };
 		54F34D801DE70BA500D6FC85 /* NSString+FindFace.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F34D7E1DE70BA500D6FC85 /* NSString+FindFace.m */; };
@@ -1257,7 +1256,6 @@
 		54ECFEC41DFE8D67001A98CE /* OrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderView.m; sourceTree = "<group>"; };
 		54ECFEC61DFE8D75001A98CE /* OrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
 		54ECFEC71DFE8D75001A98CE /* OrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
-		54ECFEC91DFE978C001A98CE /* money.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money.png; sourceTree = "<group>"; };
 		54F32F701E372E57000F8926 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		54F32F711E372E57000F8926 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		54F34D7A1DE70BA500D6FC85 /* Define.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Define.h; sourceTree = "<group>"; };
@@ -2358,7 +2356,6 @@
 				546F5C521DFD6AFF00528F79 /* card.png */,
 				54CB266A1DF00BE000AE7414 /* wechat.png */,
 				54B4C18B1DF8294B00E31794 /* alipay.png */,
-				54ECFEC91DFE978C001A98CE /* money.png */,
 			);
 			name = Image;
 			sourceTree = "<group>";
@@ -4302,7 +4299,6 @@
 				548328DB1DDC6F360053AB29 /* chatto_bg_normal.png in Resources */,
 				546978601DC72534001695F4 /* bags.png in Resources */,
 				548328D91DDC6F360053AB29 /* chatfrom_bg_normal.png in Resources */,
-				54ECFECA1DFE978C001A98CE /* money.png in Resources */,
 				54A47BD31DE42610000216D9 /* em_4.gif in Resources */,
 				54A47BBA1DE42610000216D9 /* em_17.gif in Resources */,
 				54A47BBC1DE42610000216D9 /* em_19.gif in Resources */,
