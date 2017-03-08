@@ -79,7 +79,7 @@
         /* 时间*/
 //        _time = [[UILabel alloc]init];
 //        _time.textColor = [UIColor grayColor];
-//        _time.font = [UIFont systemFontOfSize:14];
+//        _time.font = [UIFont systemFontOfSize:14*ScrenScale];
         
         /* 状态*/
         _status = [[UILabel alloc]init];

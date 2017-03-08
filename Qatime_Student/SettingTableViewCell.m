@@ -7,7 +7,7 @@
 //
 
 #import "SettingTableViewCell.h"
-#import "UIView+FontSize.h"
+ 
 
 
 @interface SettingTableViewCell (){

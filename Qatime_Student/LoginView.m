@@ -11,7 +11,7 @@
 
 
 #import "LoginView.h"
-#import "UIView+FontSize.h"
+
 
 
 
@@ -20,10 +20,7 @@
     /* logo图片*/
     UIImageView *_logoImage;
     
-    
-    
-   
-    
+
     
 }
 

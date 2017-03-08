@@ -9,38 +9,42 @@
 #import <UIKit/UIKit.h>
 #import "SDCycleScrollView.h"
 #import "YZSquareMenu.h"
-
 #import "IndexHeaderPageView.h"
-#import "TeacherView.h"
+
 
 @interface IndexHeaderPageView : UICollectionReusableView
 
-
-
-/* 轮播图*/
+/**
+ 轮播图
+ */
 @property(nonatomic,strong) SDCycleScrollView *cycleScrollView ;
 
-/* 整个的headerview*/
+/**
+ 整个视图的headerview
+ */
 @property(nonatomic,strong) UIView *headerContentView ;
 
-/* 科目 Menu的视图*/
+/**
+ 科目菜单
+ */
 @property(nonatomic,strong) UIView *squareMenu ;
 @property(nonatomic,strong) NSMutableArray <UIView *> *squareMenuArr ;
 
+/**
+ 名师入驻 滚动图
+ */
+@property(nonatomic,strong) UICollectionView *teacherScrollView ;
 
-/* 名师入驻 滚动视图*/
-@property(nonatomic,strong) TeacherView *teacherScrollView ;
 
-/* 名师入驻的header*/
+/**
+ 名师入驻的header
+ */
 @property(nonatomic,strong) UIView *teacherScrollHeader ;
 
 
-/* 名师入驻刷新按钮*/
-//@property(nonatomic,strong) UIButton  *refreshTeacherListButton ;
-
-
-/* 全部辅导推荐按钮*/
-
+/**
+ 全部辅导按钮
+ */
 @property(nonatomic,strong) UIView *conmmandView ;
 @property(nonatomic,strong) UIButton *recommandAllButton ;
 

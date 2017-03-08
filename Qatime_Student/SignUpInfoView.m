@@ -8,7 +8,7 @@
 
 #import "SignUpInfoView.h"
 
-#import "UIView+FontSize.h"
+ 
 @interface SignUpInfoView (){
     
     

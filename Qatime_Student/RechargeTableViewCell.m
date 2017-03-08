@@ -58,13 +58,13 @@
         
         /* 金额*/
         _money = [[UILabel alloc]init];
-        _money.font = [UIFont systemFontOfSize:16];
+        _money.font = [UIFont systemFontOfSize:16*ScrenScale];
         _money.textColor = [UIColor redColor];
         
         /* 状态*/
 
         _status = [[UILabel alloc]init];
-        _status.font = [UIFont systemFontOfSize:16];
+        _status.font = [UIFont systemFontOfSize:16*ScrenScale];
     
         
         

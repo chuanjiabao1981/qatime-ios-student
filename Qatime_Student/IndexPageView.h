@@ -17,9 +17,6 @@
 
 /* 辅导班推荐*/
 @property(nonatomic,strong) UICollectionView *recommandClassCollectionView ;
-    
-    
-///* 头视图*/
-//@property(nonatomic,strong) IndexHeaderPageView *headerView ;
+
 
 @end

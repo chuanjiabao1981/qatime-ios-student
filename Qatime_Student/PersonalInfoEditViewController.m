@@ -455,7 +455,7 @@
             break;
             
         case 4:{
-            [MMPickerView showPickerViewInView:self.view withStrings:[[NSUserDefaults standardUserDefaults]objectForKey:@"grade"] withOptions:@{NSFontAttributeName:[UIFont systemFontOfSize:22]} completion:^(NSString *selectedString) {
+            [MMPickerView showPickerViewInView:self.view withStrings:[[NSUserDefaults standardUserDefaults]objectForKey:@"grade"] withOptions:@{NSFontAttributeName:[UIFont systemFontOfSize:22*ScrenScale]} completion:^(NSString *selectedString) {
                 
                 EditBirthdayTableViewCell *cell= [_editTableView cellForRowAtIndexPath:indexPath];
                 cell.content.text = selectedString;

@@ -15,18 +15,15 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        
         /* 课程视频列表collection*/
-        
-        UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc]init];
-
-        _recommandClassCollectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame)) collectionViewLayout:flowLayout];
-        _recommandClassCollectionView.backgroundColor = [UIColor whiteColor];
-        
-        [self addSubview:_recommandClassCollectionView];
-        
-        _recommandClassCollectionView.showsVerticalScrollIndicator = NO;
-        
+        _recommandClassCollectionView = ({
+         UICollectionView *_ = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, self.height_sd) collectionViewLayout:[UICollectionViewFlowLayout new]];
+            _.backgroundColor = [UIColor whiteColor];
+            _.showsVerticalScrollIndicator = NO;
+            [self addSubview:_];
+           
+            _;
+        });
         
         
     }

@@ -424,7 +424,7 @@
         .autoHeightRatio(0);
         label.text = @"为了您能正常使用此功能，请在“系统设置”>“答疑时间”>“通知”中允许接收通知";
         label.textColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0];
-        label.font = [UIFont systemFontOfSize:12];
+        label.font = [UIFont systemFontOfSize:12*ScrenScale];
         return view;
     }
     

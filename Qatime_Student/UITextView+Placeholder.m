@@ -90,10 +90,10 @@
 
         label = [[UILabel alloc] init];
         label.textColor = [self.class defaultPlaceholderColor];
+        label.font = [UIFont systemFontOfSize:14*ScrenScale];
         label.numberOfLines = 0;
         label.userInteractionEnabled = NO;
         objc_setAssociatedObject(self, @selector(placeholderLabel), label, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
         self.needsUpdateFont = YES;
         [self updatePlaceholderLabel];
         self.needsUpdateFont = NO;
@@ -193,7 +193,7 @@
         textContainerInset = self.textContainerInset;
     }
 #pragma deploymate pop
-
+    
     // iOS 6
     else {
         lineFragmentPadding = 5;

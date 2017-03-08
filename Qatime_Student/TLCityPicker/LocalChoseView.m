@@ -34,7 +34,7 @@
             _.layer.borderColor = BUTTONRED.CGColor;
             _.layer.borderWidth = 0.8;
             [_ setTitleColor:BUTTONRED forState:UIControlStateNormal];
-            _.titleLabel.font = [UIFont systemFontOfSize:13];
+            _.titleLabel.font = [UIFont systemFontOfSize:13*ScrenScale];
             
             [self addSubview:_];
             _.sd_layout

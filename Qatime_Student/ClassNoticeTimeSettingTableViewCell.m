@@ -43,7 +43,7 @@
         
         _timeButton = ({
             UILabel *_ = [[UILabel alloc]init];
-            [_ setFont:[UIFont systemFontOfSize:15]];
+            [_ setFont:[UIFont systemFontOfSize:15*ScrenScale]];
             _.textColor = BUTTONRED;
             _.text =@"00小时00分钟" ;
             _.userInteractionEnabled = YES;

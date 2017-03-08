@@ -18,7 +18,7 @@
         _name = [[UILabel alloc]init];
 //        _name.text =  @"辅导班消息通知";
         _name.textColor = [UIColor blackColor];
-        _name.font = [UIFont systemFontOfSize:17];
+        _name.font = [UIFont systemFontOfSize:17*ScrenScale];
         _noticeSwitch = [[UISwitch alloc]init];
         
         UIView *line = [[UIView alloc]init];

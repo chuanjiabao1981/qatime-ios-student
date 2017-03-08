@@ -16,4 +16,5 @@
 @property (nonatomic, strong) NSAttributedString *attributedPlaceholder;
 @property (nonatomic, strong) IBInspectable UIColor *placeholderColor;
 
+
 @end

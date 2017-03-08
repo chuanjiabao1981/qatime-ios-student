@@ -32,7 +32,7 @@
         _segmentControl.borderType = HMSegmentedControlBorderTypeBottom;
         _segmentControl.borderWidth = 0.6;
         _segmentControl.borderColor = SEPERATELINECOLOR;
-        _segmentControl.titleTextAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:15]};
+        _segmentControl.titleTextAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
         [self addSubview:_segmentControl];
         
         _segmentControl.sd_layout
@@ -280,7 +280,7 @@
 //        
 //        /* 教师姓名*/
 //        _teacherNameLabel =[[UILabel alloc]init];
-//        _teacherNameLabel.font = [UIFont systemFontOfSize:22];
+//        _teacherNameLabel.font = [UIFont systemFontOfSize:22*ScrenScale];
 //        [_infoScrollView addSubview:_teacherNameLabel];
 //        
 //        _teacherNameLabel.sd_layout
@@ -310,7 +310,7 @@
 //        UILabel *teachYear = [[UILabel alloc]init];
 //        teachYear.textColor = [UIColor blackColor];
 //        teachYear.text = @"执教年数";
-////        teachYear.font = [UIFont systemFontOfSize:16];
+////        teachYear.font = [UIFont systemFontOfSize:16*ScrenScale];
 //        [_infoScrollView addSubview:teachYear];
 //
 //        
@@ -323,7 +323,7 @@
 //        
 //        
 //        _teaching_year= [[UILabel alloc]init];
-////        _teaching_year.font = [UIFont systemFontOfSize:16];
+////        _teaching_year.font = [UIFont systemFontOfSize:16*ScrenScale];
 //        [_infoScrollView addSubview:_teaching_year];
 //
 //        
@@ -338,7 +338,7 @@
 //
 //        
 //        UILabel *schools=[[UILabel alloc]init];
-////        schools.font = [UIFont systemFontOfSize:16];
+////        schools.font = [UIFont systemFontOfSize:16*ScrenScale];
 //        
 //        [_infoScrollView addSubview:schools];
 //        
@@ -353,7 +353,7 @@
 //        
 //        
 //        _workPlace= [[UILabel alloc]init];
-////        _workPlace.font = [UIFont systemFontOfSize:16];
+////        _workPlace.font = [UIFont systemFontOfSize:16*ScrenScale];
 //        
 //        [_infoScrollView addSubview:_workPlace];
 //
@@ -369,7 +369,7 @@
 //        /* 自我介绍标题*/
 //        UILabel *selfIntroLabel =[[UILabel alloc]init];
 //        selfIntroLabel.text =@"教师简介";
-////        selfIntroLabel.font =[UIFont systemFontOfSize:20];
+////        selfIntroLabel.font =[UIFont systemFontOfSize:20*ScrenScale];
 //        
 //        [_infoScrollView addSubview:selfIntroLabel];
 //        

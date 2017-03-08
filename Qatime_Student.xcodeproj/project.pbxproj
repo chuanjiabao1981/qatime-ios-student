@@ -128,7 +128,6 @@
 		544E0CDB1DD0806900884F31 /* YZSquareMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CDA1DD0806900884F31 /* YZSquareMenuCell.m */; };
 		544E0CE11DD090A700884F31 /* RecommandClassCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CE01DD090A700884F31 /* RecommandClassCollectionViewCell.m */; };
 		544E0CE41DD09FAE00884F31 /* IndexHeaderPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CE31DD09FAE00884F31 /* IndexHeaderPageView.m */; };
-		545162AE1DF4FAD1000BD17A /* UIView+FontSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162AD1DF4FAD1000BD17A /* UIView+FontSize.m */; };
 		545162B11DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162B01DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m */; };
 		545162BB1DF50D85000BD17A /* ChangePasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162BA1DF50D85000BD17A /* ChangePasswordView.m */; };
 		545162BE1DF50D99000BD17A /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162BD1DF50D99000BD17A /* ChangePasswordViewController.m */; };
@@ -181,7 +180,6 @@
 		547A7EF71DD411DB00F1282B /* TeachersPublic_Classes.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EF61DD411DB00F1282B /* TeachersPublic_Classes.m */; };
 		547A7EFD1DD416F100F1282B /* ListenAndBuyTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EFC1DD416F100F1282B /* ListenAndBuyTabBar.m */; };
 		547AD51E1E4D6A7000239907 /* UUAVAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 547AD51D1E4D6A7000239907 /* UUAVAudioPlayer.m */; };
-		547E89841DD1705100749366 /* TeacherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E89831DD1705100749366 /* TeacherView.m */; };
 		547E898A1DD1BC9900749366 /* RecommandTeacher.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E89891DD1BC9900749366 /* RecommandTeacher.m */; };
 		547E898D1DD1D01B00749366 /* TutoriumInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E898C1DD1D01B00749366 /* TutoriumInfoView.m */; };
 		547E89901DD1D03100749366 /* TutoriumInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E898F1DD1D03100749366 /* TutoriumInfoViewController.m */; };
@@ -662,8 +660,6 @@
 		544E0CE01DD090A700884F31 /* RecommandClassCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommandClassCollectionViewCell.m; sourceTree = "<group>"; };
 		544E0CE21DD09FAE00884F31 /* IndexHeaderPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexHeaderPageView.h; sourceTree = "<group>"; };
 		544E0CE31DD09FAE00884F31 /* IndexHeaderPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexHeaderPageView.m; sourceTree = "<group>"; };
-		545162AC1DF4FAD1000BD17A /* UIView+FontSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FontSize.h"; sourceTree = "<group>"; };
-		545162AD1DF4FAD1000BD17A /* UIView+FontSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FontSize.m"; sourceTree = "<group>"; };
 		545162AF1DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+EnlargeTouchArea.h"; sourceTree = "<group>"; };
 		545162B01DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+EnlargeTouchArea.m"; sourceTree = "<group>"; };
 		545162B91DF50D85000BD17A /* ChangePasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordView.h; sourceTree = "<group>"; };
@@ -801,8 +797,6 @@
 		547A81311DD474B300F1282B /* libNELivePlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNELivePlayer.a; path = ../../../Desktop/LivePlayer_iOS_Demo_v1.2.1/Demo/NELivePlayer/libs/libNELivePlayer.a; sourceTree = "<group>"; };
 		547AD51C1E4D6A7000239907 /* UUAVAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUAVAudioPlayer.h; sourceTree = "<group>"; };
 		547AD51D1E4D6A7000239907 /* UUAVAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUAVAudioPlayer.m; sourceTree = "<group>"; };
-		547E89821DD1705100749366 /* TeacherView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeacherView.h; sourceTree = "<group>"; };
-		547E89831DD1705100749366 /* TeacherView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeacherView.m; sourceTree = "<group>"; };
 		547E89881DD1BC9900749366 /* RecommandTeacher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommandTeacher.h; sourceTree = "<group>"; };
 		547E89891DD1BC9900749366 /* RecommandTeacher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommandTeacher.m; sourceTree = "<group>"; };
 		547E898B1DD1D01B00749366 /* TutoriumInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumInfoView.h; sourceTree = "<group>"; };
@@ -3792,8 +3786,6 @@
 			children = (
 				54D661231DD048F500C9A0FF /* IndexPageView.h */,
 				54D661241DD048F500C9A0FF /* IndexPageView.m */,
-				547E89821DD1705100749366 /* TeacherView.h */,
-				547E89831DD1705100749366 /* TeacherView.m */,
 				544E0CE21DD09FAE00884F31 /* IndexHeaderPageView.h */,
 				544E0CE31DD09FAE00884F31 /* IndexHeaderPageView.m */,
 				54FCBAB11DD58AB10094BF58 /* Cell */,
@@ -3974,8 +3966,6 @@
 				54652E041DEE823100F4607C /* FileService.m */,
 				54FB1DB31DF10B9B00BA9A3C /* UIViewController+VideoStatus.h */,
 				54FB1DB41DF10B9B00BA9A3C /* UIViewController+VideoStatus.m */,
-				545162AC1DF4FAD1000BD17A /* UIView+FontSize.h */,
-				545162AD1DF4FAD1000BD17A /* UIView+FontSize.m */,
 				545162AF1DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.h */,
 				545162B01DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m */,
 				5413D2751DF7D0AE00A8FDEC /* UIViewController_Token.h */,
@@ -4501,7 +4491,6 @@
 				5407C98C1DE7DDED00DB04C8 /* NSBundle+YYAdd.m in Sources */,
 				545162D51DF55DC7000BD17A /* Personal_HeadTableViewCell.m in Sources */,
 				548328CC1DDC6F360053AB29 /* NSDate+Utils.m in Sources */,
-				545162AE1DF4FAD1000BD17A /* UIView+FontSize.m in Sources */,
 				543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */,
 				543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */,
 				54AA30911DF98CBC009E0D04 /* UnpaidOrderView.m in Sources */,
@@ -4510,7 +4499,6 @@
 				54652E3A1DEEBE2800F4607C /* ClassSettingViewController.m in Sources */,
 				54AA30851DF950DB009E0D04 /* CheckChargeViewController.m in Sources */,
 				54F47E881E092AF100D896DB /* SystemNotice.m in Sources */,
-				547E89841DD1705100749366 /* TeacherView.m in Sources */,
 				5407C98E1DE7DDED00DB04C8 /* NSString+YYAdd.m in Sources */,
 				54D661251DD048F500C9A0FF /* IndexPageView.m in Sources */,
 				545162C11DF53DE6000BD17A /* ChangePhoneGetCodeView.m in Sources */,

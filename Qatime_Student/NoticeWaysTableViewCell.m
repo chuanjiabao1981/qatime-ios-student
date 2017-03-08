@@ -18,14 +18,14 @@
         
         _name = [[UILabel alloc]init];
         [self.contentView addSubview:_name];
-        _name.font = [UIFont systemFontOfSize:17];
+        _name.font = [UIFont systemFontOfSize:17*ScrenScale];
         _name.textColor = [UIColor blackColor];
         
         
         
         _content = [[UILabel alloc]init];
         [self.contentView addSubview:_content];
-        _content.font = [UIFont systemFontOfSize:15];
+        _content.font = [UIFont systemFontOfSize:15*ScrenScale];
         _content.textColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0];
         
         UIView *line = [[UIView alloc]init];

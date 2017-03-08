@@ -7,7 +7,6 @@
 //
 
 #import "SignUpView.h"
-#import "UIView+FontSize.h"
 
 @interface SignUpView()<UITextFieldDelegate>{
     

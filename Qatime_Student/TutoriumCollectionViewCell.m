@@ -36,6 +36,7 @@
         
         /* 课程名*/
         _className = [[UILabel alloc]init];
+        _className.font = [UIFont systemFontOfSize:15*ScrenScale];
         [self.contentView addSubview:_className];
         _className.sd_layout
         .leftEqualToView(_classImage)

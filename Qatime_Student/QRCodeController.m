@@ -41,10 +41,8 @@
     //文字说明label
     UILabel *tipsLabel;
     
-    
     //手电筒按钮
-    UIButton *torchButton;
-    
+    UIImageView *torchButton;
     
     //遮盖view
     QRMaskView *maskView;
@@ -111,12 +109,15 @@
     
     
     torchButton  = ({
-        UIButton  *_ = [[UIButton alloc]init];
+        UIImageView *_ = [[UIImageView alloc]init];
         _.backgroundColor = [UIColor blackColor];
         _.alpha = 0.6;
         [self.view addSubview:_];
-        [_ setImage:[UIImage imageNamed:@"torch"] forState:UIControlStateNormal];
-        [_ addTarget:self action:@selector(turnTorch:) forControlEvents:UIControlEventTouchUpInside];
+        _.image = [UIImage imageNamed:@"torch"];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(turnTorch:)];
+        _.userInteractionEnabled = YES;
+        [_ addGestureRecognizer:tap];
         
         _;
     });
@@ -128,10 +129,13 @@
 
 -(void)configView{
     
+    
+     [self setCropRect:kScanRect];
+    
+    
     UIImageView * imageView = [[UIImageView alloc]initWithFrame:kScanRect];
     imageView.image = [UIImage imageNamed:@"pick_bg"];
     [self.view addSubview:imageView];
-    
     
     upOrdown = NO;
     num =0;
@@ -140,8 +144,6 @@
     [self.view addSubview:_line];
     
     timer = [NSTimer scheduledTimerWithTimeInterval:.02 target:self selector:@selector(animation1) userInfo:nil repeats:YES];
-    
-    
     
     
     //二维码和提示文字布局
@@ -188,7 +190,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     
-    [self setCropRect:kScanRect];
+   
     
     [self performSelector:@selector(setupCamera) withObject:nil afterDelay:0.3];
     
@@ -196,21 +198,26 @@
     
 }
 
--(void)animation1
-{
+-(void)animation1{
     if (upOrdown == NO) {
         num ++;
         _line.frame = CGRectMake(LEFT, TOP+10+2*num, self.view.width_sd*2/3, 2);
-        if (2*num == self.view.width_sd*2/3-20) {
+        if (2*num >= (self.view.width_sd*2/3.0f-20)) {
             upOrdown = YES;
         }
-    }
-    else {
+//        if (_line.bottom_sd >= kScanRect.size.height+kScanRect.origin.y) {
+//            upOrdown = YES;
+//        }
+        
+    }else {
         num --;
         _line.frame = CGRectMake(LEFT, TOP+10+2*num, self.view.width_sd*2/3, 2);
         if (num == 0) {
             upOrdown = NO;
         }
+//        if (_line.top_sd == kScanRect.origin.y) {
+//            upOrdown = NO;
+//        }
     }
     
 }

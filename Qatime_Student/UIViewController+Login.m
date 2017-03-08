@@ -15,6 +15,7 @@
 - (void)loginAgain{
     
     LoginAgainViewController *_ = [[LoginAgainViewController alloc]init];
+    _.hidesBottomBarWhenPushed = YES;
     
     [self.navigationController pushViewController:_ animated:YES];
     

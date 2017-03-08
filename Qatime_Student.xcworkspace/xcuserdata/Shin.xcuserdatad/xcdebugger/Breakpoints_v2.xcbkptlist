@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/IndexPageViewController.m"
-            timestampString = "510560020.351924"
+            timestampString = "510653035.768529"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1311"
-            endingLineNumber = "1311"
+            startingLineNumber = "1309"
+            endingLineNumber = "1309"
             landmarkName = "-checkCityListWithInformationChange:"
             landmarkType = "7">
          </BreakpointContent>

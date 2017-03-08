@@ -54,7 +54,7 @@
         _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, PAYMENT_WIDTH, TITLE_HEIGHT)];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.textColor = [UIColor darkGrayColor];
-        _titleLabel.font = [UIFont systemFontOfSize:17];
+        _titleLabel.font = [UIFont systemFontOfSize:17*ScrenScale];
         [_paymentAlert addSubview:_titleLabel];
         
         _headImage  = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, TITLE_HEIGHT-10, TITLE_HEIGHT-10)];
@@ -68,7 +68,7 @@
         [_closeBtn setTitle:@"╳" forState:UIControlStateNormal];
         [_closeBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
         [_closeBtn addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
-        _closeBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+        _closeBtn.titleLabel.font = [UIFont systemFontOfSize:15*ScrenScale];
         [_paymentAlert addSubview:_closeBtn];
         
         
@@ -80,13 +80,13 @@
         _detailLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, TITLE_HEIGHT+15, PAYMENT_WIDTH-30, 20)];
         _detailLabel.textAlignment = NSTextAlignmentCenter;
         _detailLabel.textColor = [UIColor darkGrayColor];
-        _detailLabel.font = [UIFont systemFontOfSize:16];
+        _detailLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         [_paymentAlert addSubview:_detailLabel];
         
         _amountLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, TITLE_HEIGHT*2, PAYMENT_WIDTH-30, 25)];
         _amountLabel.textAlignment = NSTextAlignmentCenter;
         _amountLabel.textColor = [UIColor darkGrayColor];
-        _amountLabel.font = [UIFont systemFontOfSize:33];
+        _amountLabel.font = [UIFont systemFontOfSize:33*ScrenScale];
         [_paymentAlert addSubview:_amountLabel];
         
         _inputView = [[UIView alloc]initWithFrame:CGRectMake(15, _paymentAlert.frame.size.height-(PAYMENT_WIDTH-30)/6-15, PAYMENT_WIDTH-30, (PAYMENT_WIDTH-30)/6)];

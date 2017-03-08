@@ -48,7 +48,7 @@
             _.autoScrollWhenIndexChange = NO;
             _.itemSelectedTextColor = [UIColor blackColor];
             _.itemTextColor = [UIColor blackColor];
-            _.font = [UIFont systemFontOfSize:15];
+            _.font = [UIFont systemFontOfSize:15*ScrenScale];
             _.selectedFont = [UIFont systemFontOfSize:15];
             _.sliderViewColor = BUTTONRED;
             [_ setSliderViewHeight:0.5];

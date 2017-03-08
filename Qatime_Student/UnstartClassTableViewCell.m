@@ -170,7 +170,7 @@
         
         _deadLineLabel = [[UILabel alloc]init];
         _deadLineLabel.textColor = [UIColor grayColor];
-        _deadLineLabel.font = [UIFont systemFontOfSize:16];
+        _deadLineLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         [_content addSubview: _deadLineLabel];
         _deadLineLabel.sd_layout
         .leftSpaceToView(dist,0)

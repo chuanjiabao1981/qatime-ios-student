@@ -75,7 +75,8 @@
 /* navigation高度*/
 #define Navigation_Height 64
 
-
+//系统导航栏高度
+#define NavBar_Height [[[[UIApplication sharedApplication] statusBarFrame]size]height]+self.navigationController.navigationBar.frame.size.height
 
 
 
@@ -105,7 +106,7 @@
 
 
 /* 全局引用文件*/
-#import "UIView+FontSize.h"
+
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import "UIButton+EnlargeTouchArea.h"

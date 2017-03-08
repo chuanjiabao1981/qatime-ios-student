@@ -240,7 +240,7 @@
         
         
         _workPlace= [[UILabel alloc]init];
-        //        _workPlace.font = [UIFont systemFontOfSize:16];
+        //        _workPlace.font = [UIFont systemFontOfSize:16*ScrenScale];
         
         [self addSubview:_workPlace];
         
