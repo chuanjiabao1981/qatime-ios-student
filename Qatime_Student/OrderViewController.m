@@ -170,7 +170,7 @@ typedef enum : NSUInteger {
     _orderView.wechatButton.selected = YES;
     
     _payType = @"weixin";
-    [_orderView.wechatButton setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
+    [_orderView.wechatButton setImage:[UIImage imageNamed:@"selectedCircle"] forState:UIControlStateNormal];
     
     
     /* 请求课程详细信息数据*/
@@ -229,17 +229,6 @@ typedef enum : NSUInteger {
                         price = mod.current_price.floatValue;
                         
                     }
-                    
-//                    /* 高度自适应*/
-//                    [_orderView.subLine updateLayout];
-//                    CGFloat heights =_orderView.subLine.height_sd+_orderView.subLine.origin_sd.y;
-//                    [_orderView.infoView sd_clearAutoLayoutSettings];
-//                    _orderView.infoView.sd_layout
-//                    .topEqualToView(_orderView)
-//                    .leftEqualToView(_orderView)
-//                    .rightEqualToView(_orderView)
-//                    .heightIs(heights);
-//                    [_orderView.infoView updateLayout];
                     
                     
                     /* 请求一次余额 ,判断是否可以用余额支付*/
@@ -427,14 +416,14 @@ typedef enum : NSUInteger {
     if (sender.selected ==NO) {
         sender.selected =YES;
         _payType = @"weixin";
-        [sender setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
+        [sender setImage:[UIImage imageNamed:@"selectedCircle"] forState:UIControlStateNormal];
         
         
         _orderView.alipayButton.selected = NO;
-        [_orderView.alipayButton setImage:nil forState:UIControlStateNormal];
+        [_orderView.alipayButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
         if (_orderView.balanceButton.enabled ==YES) {
             _orderView.balanceButton.selected = NO;
-            [_orderView.balanceButton setImage:nil forState:UIControlStateNormal];
+            [_orderView.balanceButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
             
         }else{
             
@@ -442,7 +431,7 @@ typedef enum : NSUInteger {
         
     }else{
         sender.selected = NO;
-        [sender setImage:nil forState:UIControlStateNormal];
+        [sender setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
         
     }
     
@@ -454,13 +443,13 @@ typedef enum : NSUInteger {
     if (sender.selected ==NO) {
         sender.selected =YES;
         _payType = @"alipay";
-        [sender setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
+        [sender setImage:[UIImage imageNamed:@"selectedCircle"] forState:UIControlStateNormal];
         
         _orderView.wechatButton.selected = NO;
-        [_orderView.wechatButton setImage:nil forState:UIControlStateNormal];
+        [_orderView.wechatButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
         if (_orderView.balanceButton.enabled ==YES) {
             _orderView.balanceButton.selected = NO;
-            [_orderView.balanceButton setImage:nil forState:UIControlStateNormal];
+            [_orderView.balanceButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
             
         }else{
             
@@ -468,7 +457,7 @@ typedef enum : NSUInteger {
         
     }else{
         sender.selected = NO;
-        [sender setImage:nil forState:UIControlStateNormal];
+        [sender setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
         
     }
     
@@ -482,17 +471,17 @@ typedef enum : NSUInteger {
     if (sender.selected ==NO) {
         sender.selected =YES;
         _payType = @"account";
-        [sender setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
+        [sender setImage:[UIImage imageNamed:@"selectedCircle"] forState:UIControlStateNormal];
         _orderView.wechatButton.selected = NO;
-        [_orderView.wechatButton setImage:nil forState:UIControlStateNormal];
+        [_orderView.wechatButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
         _orderView.alipayButton.selected = NO;
-        [_orderView.alipayButton setImage:nil forState:UIControlStateNormal];
+        [_orderView.alipayButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
         
         
     }else{
         sender.selected = NO;
         //        _payType = @"";
-        [sender setImage:nil forState:UIControlStateNormal];
+        [sender setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
         
     }
     

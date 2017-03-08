@@ -9,7 +9,15 @@
 
 #import "OrderView.h"
 
-#define LINESPACE self.height_sd/80.0
+#define LINESPACE self.height_sd/80.0*ScrenScale
+
+#define InterVal 10*ScrenScale
+
+#define NormalFont [UIFont systemFontOfSize:14*ScrenScale]
+
+#define MineShaft [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0]
+
+#define Steel [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0]
 
 
 @implementation OrderView
@@ -32,8 +40,9 @@
         
         //课程名
         _className = [UILabel new];
-        _className.textColor = TITLECOLOR;
+        _className.textColor = MineShaft;
         _className.textAlignment = NSTextAlignmentLeft;
+        _className.font = [UIFont systemFontOfSize:15*ScrenScale];
         [_infoView addSubview:_className];
         _className.sd_layout
         .leftSpaceToView(_infoView,20)
@@ -52,22 +61,22 @@
         .heightIs(0.5);
         
         
-        
         /* 科目*/
         UILabel *subject = [UILabel new];
         subject.text = @"科        目";
-        subject.textColor = [UIColor blackColor];
+        subject.textColor = MineShaft;
+        subject.font = NormalFont;
         [_infoView addSubview:subject];
         
         subject.sd_layout
-        .topSpaceToView(line1,10)
+        .topSpaceToView(line1,InterVal)
         .leftSpaceToView(_infoView,20)
         .autoHeightRatio(0);
         [subject setSingleLineAutoResizeWithMaxWidth:200];
         
-        
         _subjectLabel = [UILabel new];
-        _subjectLabel.textColor = TITLECOLOR;
+        _subjectLabel.textColor = Steel;
+        _subjectLabel.font = NormalFont;
         [_infoView addSubview:_subjectLabel];
         
         _subjectLabel.sd_layout
@@ -77,21 +86,22 @@
         [_subjectLabel setSingleLineAutoResizeWithMaxWidth:200];
         
         
-        
         /* 年级*/
         UILabel *grade = [UILabel new];
         grade.text = @"年        级";
-        grade.textColor = [UIColor blackColor];
+        grade.textColor = MineShaft;
+        grade.font = NormalFont;
         [_infoView addSubview:grade];
         
         grade.sd_layout
         .leftEqualToView(subject)
-        .topSpaceToView(subject,20)
+        .topSpaceToView(subject,InterVal)
         .autoHeightRatio(0);
         [grade setSingleLineAutoResizeWithMaxWidth:200];
         
         _gradeLabel = [UILabel new];
-        _gradeLabel.textColor = TITLECOLOR;
+        _gradeLabel.textColor = Steel;
+        _gradeLabel.font = NormalFont;
         [_infoView addSubview:_gradeLabel];
         
         _gradeLabel.sd_layout
@@ -100,21 +110,21 @@
         .bottomEqualToView(grade);
         [_gradeLabel setSingleLineAutoResizeWithMaxWidth:200];
         
-        
-        
         /* 老师*/
         UILabel *teacher = [UILabel new];
         teacher.text = @"授课老师";
-        teacher.textColor = [UIColor blackColor];
+        teacher.textColor = MineShaft;
+        teacher.font = NormalFont;
         [_infoView addSubview:teacher];
         teacher.sd_layout
         .leftEqualToView(grade)
-        .topSpaceToView(grade,20)
+        .topSpaceToView(grade,InterVal)
         .autoHeightRatio(0);
         [teacher setSingleLineAutoResizeWithMaxWidth:200];
         
         _teacheNameLabel = [UILabel new];
-        _teacheNameLabel.textColor = TITLECOLOR;
+        _teacheNameLabel.textColor = Steel;
+        _teacheNameLabel.font = NormalFont;
         [_infoView addSubview:_teacheNameLabel];
         
         _teacheNameLabel.sd_layout
@@ -127,16 +137,18 @@
         /* 课时总数*/
         UILabel *classtime = [UILabel new];
         classtime.text = @"课时总数";
-        classtime.textColor = [UIColor blackColor];
+        classtime.textColor = MineShaft;
+        classtime.font = NormalFont;
         [_infoView addSubview:classtime];
         classtime.sd_layout
         .leftEqualToView(teacher)
-        .topSpaceToView(teacher,20)
+        .topSpaceToView(teacher,InterVal)
         .autoHeightRatio(0);
         [classtime setSingleLineAutoResizeWithMaxWidth:200];
         
         _classTimeLabel = [UILabel new];
-        _classTimeLabel.textColor = TITLECOLOR;
+        _classTimeLabel.textColor = Steel;
+        _classTimeLabel.font = NormalFont;
         
         [_infoView addSubview:_classTimeLabel];
         _classTimeLabel.sd_layout
@@ -149,31 +161,34 @@
         /* 价格*/
         UILabel *price = [UILabel new];
         price.text = @"价        格";
-        price.textColor = [UIColor blackColor];
+        price.textColor = MineShaft;
+        price.font = NormalFont;
         [_infoView addSubview:price];
         price.sd_layout
         .leftEqualToView(classtime)
-        .topSpaceToView(classtime,20)
+        .topSpaceToView(classtime,InterVal)
         .autoHeightRatio(0);
         [price setSingleLineAutoResizeWithMaxWidth:200];
         
         _priceLabel = [UILabel new];
-        _priceLabel.textColor = TITLECOLOR;
+        _priceLabel.textColor = Steel;
+        _priceLabel.font = NormalFont;
+        [_infoView addSubview:_priceLabel];
         _priceLabel.sd_layout
         .leftEqualToView(_classTimeLabel)
         .topEqualToView(price)
         .bottomEqualToView(price);
         [_priceLabel setSingleLineAutoResizeWithMaxWidth:200];
         
+        [price updateLayout];
         
-        /* 辅助分割线*/
-        _subLine = [[UIView alloc]init];
-        [_infoView addSubview:_subLine];
-        _subLine.sd_layout
-        .leftEqualToView(_infoView)
-        .rightEqualToView(_infoView)
-        .topSpaceToView(price,20)
-        .heightIs(0.5);
+        /* 改变自身底视图高度*/
+        
+        [_infoView clearAutoHeigtSettings];
+        
+        _infoView.sd_layout
+        .heightIs(price.bottom_sd+30);
+        [_infoView updateLayout];
         
         
         //分割线2
@@ -205,8 +220,8 @@
         [payView addSubview:payline1];
         payline1.backgroundColor = SEPERATELINECOLOR;
         payline1.sd_layout
-        .leftSpaceToView(payView,15)
-        .rightSpaceToView(payView,15)
+        .leftSpaceToView(payView,15*ScrenScale)
+        .rightSpaceToView(payView,15*ScrenScale)
         .topSpaceToView(payView,self.height_sd*0.08)
         .heightIs(0.5);
         
@@ -214,8 +229,8 @@
         [payView addSubview:payline2];
         payline2.backgroundColor = SEPERATELINECOLOR;
         payline2.sd_layout
-        .leftSpaceToView(payView,15)
-        .rightSpaceToView(payView,15)
+        .leftSpaceToView(payView,15*ScrenScale)
+        .rightSpaceToView(payView,15*ScrenScale)
         .topSpaceToView(payline1,self.height_sd*0.08)
         .heightIs(0.5);
         
@@ -223,41 +238,40 @@
         [payView addSubview:payline3];
         payline3.backgroundColor = SEPERATELINECOLOR;
         payline3.sd_layout
-        .leftSpaceToView(payView,15)
-        .rightSpaceToView(payView,15)
+        .leftSpaceToView(payView,15*ScrenScale)
+        .rightSpaceToView(payView,15*ScrenScale)
         .topSpaceToView(payline2,self.height_sd*0.08)
         .heightIs(0.5);
-        
         
         //微信支付
         UIImageView *wechatImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"wechatPay"]];
         [payView addSubview:wechatImage];
         wechatImage.sd_layout
-        .leftSpaceToView(payView,20)
-        .topSpaceToView(payView,10)
-        .bottomSpaceToView(payline1,10)
+        .leftSpaceToView(payView,20*ScrenScale)
+        .topSpaceToView(payView,10*ScrenScale)
+        .bottomSpaceToView(payline1,10*ScrenScale)
         .widthEqualToHeight();
         
         UILabel *wechat = [[UILabel alloc]init];
         wechat.textColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0];
         wechat.text = @"微信支付";
-        wechat.font = [UIFont systemFontOfSize:14];
+        wechat.font = [UIFont systemFontOfSize:14*ScrenScale];
         [payView addSubview:wechat];
         wechat.sd_layout
-        .leftSpaceToView(wechatImage,20)
-        .topSpaceToView(payView,10)
+        .leftSpaceToView(wechatImage,20*ScrenScale)
+        .topSpaceToView(payView,10*ScrenScale)
         .autoHeightRatio(0);
         [wechat setSingleLineAutoResizeWithMaxWidth:100];
         
         UILabel *wechatTip = [[UILabel alloc]init];
         wechatTip.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
-        wechatTip.font = [UIFont systemFontOfSize:13];
+        wechatTip.font = [UIFont systemFontOfSize:13*ScrenScale];
         wechatTip.text = @"推荐安装微信5.0及以上版本";
         [payView addSubview:wechatTip];
         
         wechatTip.sd_layout
         .leftEqualToView(wechat)
-        .topSpaceToView(wechat,10)
+        .topSpaceToView(wechat,10*ScrenScale)
         .autoHeightRatio(0);
         [wechatTip setSingleLineAutoResizeWithMaxWidth:300];
         
@@ -265,22 +279,22 @@
         
         //分割线布局变化
         payline1.sd_resetLayout
-        .leftSpaceToView(payView,15)
-        .rightSpaceToView(payView,15)
-        .topSpaceToView(wechatTip,10)
+        .leftSpaceToView(payView,15*ScrenScale)
+        .rightSpaceToView(payView,15*ScrenScale)
+        .topSpaceToView(wechatTip,10*ScrenScale)
         .heightIs(0.5);
         [payline1 updateLayout];
         
         payline2.sd_resetLayout
-        .leftSpaceToView(payView,15)
-        .rightSpaceToView(payView,15)
+        .leftSpaceToView(payView,15*ScrenScale)
+        .rightSpaceToView(payView,15*ScrenScale)
         .topSpaceToView(payline1,payline1.origin_sd.y+0.5)
         .heightIs(0.5);
         [payline2 updateLayout];
        
         payline3.sd_resetLayout
-        .leftSpaceToView(payView,15)
-        .rightSpaceToView(payView,15)
+        .leftSpaceToView(payView,15*ScrenScale)
+        .rightSpaceToView(payView,15*ScrenScale)
         .topSpaceToView(payline2,payline1.origin_sd.y+0.5)
         .heightIs(0.5);
         [payline3 updateLayout];
@@ -296,12 +310,14 @@
         
 
         _wechatButton =[UIButton new];
+        
+        [_wechatButton setImage:[UIImage imageNamed:@"selectedCircle"] forState:UIControlStateNormal];
         [payView addSubview:_wechatButton];
         _wechatButton.sd_layout
         .centerYEqualToView(wechatImage)
-        .topSpaceToView(payView,15)
-        .bottomSpaceToView(payline1,15)
-        .rightSpaceToView(payView,15)
+        .topSpaceToView(payView,20*ScrenScale)
+        .bottomSpaceToView(payline1,20*ScrenScale)
+        .rightSpaceToView(payView,15*ScrenScale)
         .widthEqualToHeight();
         _wechatButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
         [_wechatButton setEnlargeEdge:10];
@@ -312,41 +328,43 @@
         
         alipayImage.sd_layout
         .leftEqualToView(wechatImage)
-        .topSpaceToView(payline1,10)
-        .bottomSpaceToView(payline2,10)
+        .topSpaceToView(payline1,10*ScrenScale)
+        .bottomSpaceToView(payline2,10*ScrenScale)
         .widthEqualToHeight();
         
         UILabel *alipay = [[UILabel alloc]init];
         [payView addSubview:alipay];
         alipay.textColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0];
         alipay.text = @"支付宝支付";
-        alipay.font = [UIFont systemFontOfSize:14];
+        alipay.font = [UIFont systemFontOfSize:14*ScrenScale];
         alipay.sd_layout
-        .leftSpaceToView(alipayImage,20)
-        .topSpaceToView(payline1,10)
+        .leftSpaceToView(alipayImage,20*ScrenScale)
+        .topSpaceToView(payline1,10*ScrenScale)
         .autoHeightRatio(0);
         [alipay setSingleLineAutoResizeWithMaxWidth:100];
         
         
         UILabel *alipayTip = [[UILabel alloc]init];
         alipayTip.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
-        alipayTip.font = [UIFont systemFontOfSize:13];
+        alipayTip.font = [UIFont systemFontOfSize:13*ScrenScale];
         alipayTip.text = @"推荐有支付宝账户的用户使用";
         [payView addSubview:alipayTip];
         
         alipayTip.sd_layout
         .leftEqualToView(alipay)
-        .topSpaceToView(alipay,10)
-        .bottomSpaceToView(payline2,10);
+        .topSpaceToView(alipay,10*ScrenScale)
+        .bottomSpaceToView(payline2,10*ScrenScale);
         [alipayTip setSingleLineAutoResizeWithMaxWidth:300];
         
         
         _alipayButton =[UIButton new];
+        [_alipayButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
         [payView addSubview:_alipayButton];
         _alipayButton.sd_layout
         .centerYEqualToView(alipayImage)
-        .topSpaceToView(payline1,15)
-        .bottomSpaceToView(payline2,15)
+        .topSpaceToView(payline1,20*ScrenScale)
+        .bottomSpaceToView(payline2,20*ScrenScale)
+        .rightSpaceToView(payView,15*ScrenScale)
         .widthEqualToHeight();
         _alipayButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
         [_alipayButton setEnlargeEdge:10];
@@ -359,39 +377,41 @@
         
         _balanceImage.sd_layout
         .leftEqualToView(alipayImage)
-        .topSpaceToView(payline2,10)
-        .bottomSpaceToView(payline3,10)
+        .topSpaceToView(payline2,10*ScrenScale)
+        .bottomSpaceToView(payline3,10*ScrenScale)
         .widthEqualToHeight();
         
         UILabel *balances = [[UILabel alloc]init];
         [payView addSubview:balances];
         balances.textColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0];
         balances.text = @"支付宝支付";
-        balances.font = [UIFont systemFontOfSize:14];
+        balances.font = [UIFont systemFontOfSize:14*ScrenScale];
         balances.sd_layout
-        .leftSpaceToView(_balanceImage,20)
-        .topSpaceToView(payline2,10)
+        .leftSpaceToView(_balanceImage,20*ScrenScale)
+        .topSpaceToView(payline2,10*ScrenScale)
         .autoHeightRatio(0);
         [balances setSingleLineAutoResizeWithMaxWidth:100];
 
         _balance = [UILabel new];
         _balance.textColor = TITLECOLOR;
-        _balance.font = [UIFont systemFontOfSize:13];
+        _balance.font = [UIFont systemFontOfSize:13*ScrenScale];
         _balance.text = @"当前余额¥0.00元";
         [payView addSubview:_balance];
         _balance.sd_layout
         .leftEqualToView(balances)
-        .topSpaceToView(balances,10)
-        .bottomSpaceToView(payline3,10);
+        .topSpaceToView(balances,10*ScrenScale)
+        .bottomSpaceToView(payline3,10*ScrenScale);
         [_balance setSingleLineAutoResizeWithMaxWidth:300];
         
         _balanceButton =[UIButton new];
+        [_balanceButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
         [payView addSubview:_balanceButton];
         
         _balanceButton.sd_layout
         .centerYEqualToView(_balanceImage)
-        .topSpaceToView(payline2,15)
-        .bottomSpaceToView(payline3,15)
+        .topSpaceToView(payline2,20*ScrenScale)
+        .bottomSpaceToView(payline3,20*ScrenScale)
+        .rightSpaceToView(payView,15*ScrenScale)
         .widthEqualToHeight();
         _balanceButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
         [_balanceButton setEnlargeEdge:10];
@@ -447,10 +467,10 @@
         [_sureButton setTitleColor:TITLERED forState:UIControlStateNormal];
         [promotionView addSubview:_sureButton];
         _sureButton.sd_layout
-        .topSpaceToView(promotionView,10)
-        .rightSpaceToView(promotionView,20)
-        .bottomSpaceToView(promotionView,10)
-        .widthIs(60);
+        .topSpaceToView(promotionView,10*ScrenScale)
+        .rightSpaceToView(promotionView,20*ScrenScale)
+        .bottomSpaceToView(promotionView,10*ScrenScale)
+        .widthIs(60*ScrenScale);
         _sureButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         
         /* 优惠码输入框*/
@@ -469,19 +489,20 @@
         _promotionText = [[UITextField alloc]init];
         [promotionText addSubview:_promotionText];
         _promotionText.sd_layout
-        .leftSpaceToView(promotionText,10)
-        .rightSpaceToView(promotionText,10)
-        .topSpaceToView(promotionText,5)
-        .bottomSpaceToView(promotionText,5);
+        .leftSpaceToView(promotionText,10*ScrenScale)
+        .rightSpaceToView(promotionText,10*ScrenScale)
+        .topSpaceToView(promotionText,5*ScrenScale)
+        .bottomSpaceToView(promotionText,5*ScrenScale);
         
         
         /* 优惠码*/
         UILabel *promotion = [[UILabel alloc]init];
         promotion.text = @"输入优惠码";
         promotion.textColor = TITLECOLOR;
+        promotion.font = NormalFont;
         [promotionView addSubview:promotion];
         promotion.sd_layout
-        .leftSpaceToView(promotionView,20)
+        .leftSpaceToView(promotionView,20*ScrenScale)
         .centerYEqualToView(promotionText)
         .autoHeightRatio(0);
         [promotion setSingleLineAutoResizeWithMaxWidth:100];
