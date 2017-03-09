@@ -179,7 +179,6 @@
             /* 拉取个人信息失败*/
             [self loadingHUDStopLoadingWithTitle:@"加载失败!"];
             
-            
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -187,9 +186,7 @@
     }];
     
     
-    
 }
-
 
 #pragma mark- tableview datasource
 
@@ -207,7 +204,6 @@
             
             break;
     }
-    
     
     return 1;
 }

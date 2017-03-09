@@ -8,14 +8,14 @@
 
 #import "TLCityGroupCell.h"
 
-#define     MIN_SPACE           8           // 城市button最小间隙
-#define     MAX_SPACE           10
+#define     MIN_SPACE           8*ScrenScale           // 城市button最小间隙
+#define     MAX_SPACE           10*ScrenScale
 
-#define     WIDTH_LEFT          13.5        // button左边距
-#define     WIDTH_RIGHT         28          // button右边距
+#define     WIDTH_LEFT          13.5*ScrenScale          // button左边距
+#define     WIDTH_RIGHT         28*ScrenScale            // button右边距
 
-#define     MIN_WIDTH_BUTTON    75
-#define     HEIGHT_BUTTON       38
+#define     MIN_WIDTH_BUTTON    75*ScrenScale
+#define     HEIGHT_BUTTON       38*ScrenScale
 
 @interface TLCityGroupCell ()
 
@@ -63,6 +63,8 @@
     for (int i = 0; i < self.arrayCityButtons.count; i ++) {
         UIButton *button = [self.arrayCityButtons objectAtIndex:i];
         [button setFrame:CGRectMake(x, y, width, HEIGHT_BUTTON)];
+        
+        
         if ((i + 1) % t == 0) {
             y += HEIGHT_BUTTON + 5;
             x = WIDTH_LEFT;

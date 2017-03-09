@@ -30,6 +30,7 @@
         [self addSubview:_currentLocation];
         _currentLocation.text = @"当前定位";
         _currentLocation.textColor = [UIColor blackColor];
+        _currentLocation.font = TITLEFONTSIZE;
         _currentLocation.sd_layout
         .leftSpaceToView(self,20)
         .centerYEqualToView(self)
@@ -49,6 +50,7 @@
         _currentProvince = [[UILabel alloc]init];
         [self addSubview:_currentProvince];
         _currentProvince.textColor = TITLECOLOR;
+        _currentProvince.font = TITLEFONTSIZE;
         _currentProvince.sd_layout
         .leftSpaceToView(_locationImage,10)
         .topEqualToView(_currentLocation)
@@ -59,6 +61,7 @@
         _currentCity = [[UILabel alloc]init];
         [self addSubview:_currentCity];
         _currentCity.textColor = TITLECOLOR;
+        _currentCity.font = TITLEFONTSIZE;
         _currentCity.sd_layout
         .leftSpaceToView(_currentProvince,20)
         .topEqualToView(_currentProvince)

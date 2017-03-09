@@ -20,6 +20,7 @@
         
         _title = [[UILabel alloc]init];
         _title.textColor = TITLECOLOR;
+        _title.font = TITLEFONTSIZE;
         [self.contentView addSubview:_title];
         _title.sd_layout
         .leftSpaceToView(self.contentView,20)

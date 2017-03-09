@@ -37,6 +37,7 @@
         
         //        _name = [[UILabel alloc]init];
         _className = [[UILabel alloc]init];
+        _className.font = TITLEFONTSIZE;
         
         /* 年级*/
         _grade = [[UILabel alloc]init];
@@ -61,8 +62,6 @@
         _teacherName.font = [UIFont systemFontOfSize:14*ScrenScale];
         
         
-        
-        
         /* 状态*/
         _status = [[UILabel alloc]init];
         _status.textColor = [UIColor whiteColor];
@@ -73,21 +72,25 @@
         UILabel *progress = [[UILabel alloc]init];
         progress.text = @"进度";
         progress.textColor = [UIColor blackColor];
+        progress.font = TITLEFONTSIZE;
         
         
         /* 已进行课时*/
         _presentCount = [[UILabel alloc]init];
         _presentCount.textColor = [UIColor blackColor];
+        _presentCount.font = TITLEFONTSIZE;
         
         
         /* 斜杠*/
         UILabel *line2 = [[UILabel alloc]init];
         line2.text = @"/";
         line2.textColor = [UIColor blackColor];
+        line2.font = TITLEFONTSIZE;
         
         /* 总课时*/
         _totalCount = [[UILabel alloc]init];
         _totalCount.textColor = [UIColor blackColor];
+        _totalCount.font = TITLEFONTSIZE;
         
         
         /* 进入按钮*/
@@ -98,8 +101,6 @@
         _enterButton.layer.borderWidth = 0.8f;
         _enterButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         [_enterButton setTitle:@"进入" forState:UIControlStateNormal];
-        
-        
         
         
         /* 所有控件的布局*/

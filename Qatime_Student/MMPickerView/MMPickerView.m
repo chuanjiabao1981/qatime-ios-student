@@ -284,6 +284,7 @@ NSString * const MMshowsSelectionIndicator = @"showsSelectionIndicator";
    _pickerDoneButton = [[UIButton alloc] initWithFrame:CGRectMake(_pickerContainerView.frame.size.width - 80.0, 10.0, 60.0, 24.0)];
     [_pickerDoneButton setTitleColor:TITLECOLOR forState:UIControlStateNormal];
    [_pickerDoneButton setTitle:@"确定" forState:UIControlStateNormal];
+    _pickerDoneButton.titleLabel.font = TITLEFONTSIZE;
    [_pickerContainerView addSubview:_pickerDoneButton];
    [_pickerDoneButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
   

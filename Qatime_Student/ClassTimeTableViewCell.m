@@ -45,7 +45,10 @@
         /* 课程名称*/
         
         _name = [[UILabel alloc]init];
+        _name.font = TITLEFONTSIZE;
         _className = [[UILabel alloc]init];
+        _className.font = TITLEFONTSIZE;
+        
         
         /* 年级*/
         _grade = [[UILabel alloc]init];

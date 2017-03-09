@@ -11,9 +11,11 @@
 #import "TLCityHeaderView.h"
 #import "TLCityGroupCell.h"
 
+
 #import "NavigationBar.h"
  
 #import "LocalChoseView.h"
+#import "CityListTableViewCell.h"
 
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
@@ -152,10 +154,18 @@
         [cell setDelegate:self];
         return cell;
     }
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
     TLCityGroup *group = [self.data objectAtIndex:indexPath.section - 3];
     TLCity *city =  [group.arrayCitys objectAtIndex:indexPath.row];
-    [cell.textLabel setText:city.cityName];
+    
+    /* cell的重用队列*/
+    static NSString *cellIdenfier = @"cell";
+    CityListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+    if (cell==nil) {
+        cell=[[CityListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+    }
+    
+
+    cell.cityName.text = city.cityName;
     
     return cell;
 }

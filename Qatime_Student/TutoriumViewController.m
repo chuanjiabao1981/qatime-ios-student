@@ -613,6 +613,8 @@
 #pragma mark- 确定多项选择
 - (void)finishMultiFilter{
     
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"TabbarShow" object:nil];
+    
     /* 筛选条件变量赋值*/
     _price_floor =_multiFilterView.lowPrice.text;
     _price_ceil =_multiFilterView.highPrice.text;

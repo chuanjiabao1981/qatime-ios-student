@@ -26,8 +26,6 @@
         [self addSubview:_backGroundView];
         _backGroundView.backgroundColor = [UIColor whiteColor];
 
-        
-        
         /* 头像*/
         
         _headImageView  = [[UIImageView alloc]init];
@@ -35,6 +33,7 @@
         
         
         _name = [[UILabel alloc]init];
+        _name.font = TITLEFONTSIZE;
         [_backGroundView addSubview:_name];
         _name.textColor = TITLECOLOR;
         

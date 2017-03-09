@@ -21,10 +21,12 @@
         /* 课程名*/
         _name =[[UILabel alloc]init];
         _name.textColor = [UIColor blackColor];
+        _name.font = TITLEFONTSIZE;
         
         /* 科目*/
         _subject=[[UILabel alloc]init];
         _subject.textColor = [UIColor lightGrayColor];
+        _subject.font = TITLEFONTSIZE;
         
         /* 年级*/
         _grade=[[UILabel alloc]init];

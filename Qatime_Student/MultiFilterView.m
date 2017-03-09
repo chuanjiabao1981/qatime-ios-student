@@ -185,6 +185,7 @@
         _endTime = [[UIButton alloc]init];
         [_endTime setTitle:NSLocalizedString(@"请选择时间", nil) forState:UIControlStateNormal];
         [_endTime setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        _endTime.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         [self addSubview:_endTime];
         
         _endTime.sd_layout
@@ -192,8 +193,10 @@
         .widthRatioToView(self,1/3.5f)
         .topSpaceToView(self,20);
         
-        /* 小横线3*/
+        
+        /* 至 */
         UILabel *line3=[[UILabel alloc]init];
+        line3.font = [UIFont systemFontOfSize:16*ScrenScale];
         [self addSubview:line3];
         [line3 setText:NSLocalizedString(@"至", nil)];
         [line3 setTextColor:[UIColor blackColor]];
@@ -207,6 +210,7 @@
         
         /* 开课时间 左button*/
         _startTime = [[UIButton alloc]init];
+        _startTime.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         [_startTime setTitle:NSLocalizedString(@"请选择时间", nil) forState:UIControlStateNormal];
         [_startTime setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self addSubview:_startTime];
@@ -222,6 +226,8 @@
         UILabel *startTime = [[UILabel alloc]init];
         [self addSubview: startTime];
         
+        startTime.font =[UIFont systemFontOfSize:16*ScrenScale];
+        
         [startTime setText:NSLocalizedString(@"开课时间", nil)];
         [startTime setTextColor:[UIColor lightGrayColor]];
         startTime.sd_layout.leftEqualToView(priceZone).rightEqualToView(priceZone).centerYEqualToView(_startTime).autoHeightRatio(0);
@@ -229,6 +235,7 @@
         /* 当前状态部分*/
         /* 当前状态*/
         UILabel *stateNow=[[UILabel alloc]init];
+        stateNow.font =[UIFont systemFontOfSize:16*ScrenScale];
         [self addSubview:stateNow];
         [stateNow setText:NSLocalizedString(@"当前状态", nil)];
         [stateNow setTextColor:[UIColor lightGrayColor]];
@@ -240,6 +247,7 @@
         
         /* 开课状态*/
         _class_Begin =[[UIButton alloc]init];
+        _class_Begin.titleLabel .font = [UIFont systemFontOfSize:16*ScrenScale];
         [self addSubview:_class_Begin];
         [_class_Begin setTitle:NSLocalizedString(@"已开课", nil) forState:UIControlStateNormal];
         [_class_Begin setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -250,12 +258,13 @@
         .leftEqualToView(_startTime)
         .rightEqualToView(_startTime)
         .topEqualToView(stateNow)
-        .heightRatioToView(_startTime,1.4);
+        .heightRatioToView(_startTime,1.4*ScrenScale);
         _class_Begin.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
         
 
         /* 招生状态*/
         _recuit =[[UIButton alloc]init];
+        _recuit.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         [self addSubview:_recuit];
         [_recuit setTitle:NSLocalizedString(@"招生中", nil) forState:UIControlStateNormal];
         [_recuit setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -266,12 +275,13 @@
         .leftEqualToView(_endTime)
         .rightEqualToView(_endTime)
         .topEqualToView(stateNow)
-        .heightRatioToView(_endTime,1.4);
+        .heightRatioToView(_endTime,1.4*ScrenScale);
         _recuit.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
        
         
         /* 重置按钮*/
         _resetButton = [[UIButton alloc]init];
+        _resetButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         [self addSubview:_resetButton ];
         [_resetButton setTitle:NSLocalizedString(@"重置", nil) forState:UIControlStateNormal];
         [_resetButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -279,13 +289,14 @@
         
         _resetButton.sd_layout
         .leftEqualToView(stateNow)
-        .bottomSpaceToView(self,40)
+        .bottomSpaceToView(self,40*ScrenScale)
         .widthRatioToView(self,0.42f)
-        .heightRatioToView(self,0.2f);
+        .heightRatioToView(self,0.18*ScrenScale);
         _resetButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
         
         /* 确定按钮*/
         _finishButton = [[UIButton alloc]init];
+        _finishButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         [self addSubview:_finishButton ];
         [_finishButton setTitle:NSLocalizedString(@"确定", nil) forState:UIControlStateNormal];
         [_finishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

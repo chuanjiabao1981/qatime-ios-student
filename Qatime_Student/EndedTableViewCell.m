@@ -37,6 +37,7 @@
         
         //        _name = [[UILabel alloc]init];
         _className = [[UILabel alloc]init];
+        _className.font = TITLEFONTSIZE;
         
         /* 年级*/
         _grade = [[UILabel alloc]init];
@@ -61,12 +62,11 @@
         _teacherName.font = [UIFont systemFontOfSize:14*ScrenScale];
         
         
-        
-        
         /* 总课时*/
         _totalCount = [[UILabel alloc]init];
         _totalCount.textColor = [UIColor blackColor];
         _totalCount .text = @"全部课程已完成";
+        _totalCount.font = TITLEFONTSIZE;
         
     
         

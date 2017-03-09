@@ -29,6 +29,7 @@
         _memberIcon.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
         
         _name = [[UILabel alloc]init];
+        _name.font = [UIFont systemFontOfSize:16*ScrenScale];
         _name.textColor = TITLECOLOR;
         
         [self.contentView addSubview:_name];
@@ -39,6 +40,7 @@
         [_name setSingleLineAutoResizeWithMaxWidth:300];
         
         _character = [[UILabel alloc]init];
+        _character.font = [UIFont systemFontOfSize:15*ScrenScale];
         _character.textColor = TITLECOLOR;
         [self.contentView addSubview:_character];
         _character.sd_layout

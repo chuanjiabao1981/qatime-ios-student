@@ -42,14 +42,14 @@
 //            _.selectedSegmentIndex = 0;
 //            _.verticalDividerEnabled = NO;
             
-            JTSegmentControl *_=[[JTSegmentControl alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, self.height_sd*0.05)];
+            JTSegmentControl *_=[[JTSegmentControl alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, self.height_sd*0.065)];
 //            _.delegate = self;
             _.items = @[@"辅导班消息",@"系统消息"];
             _.autoScrollWhenIndexChange = NO;
             _.itemSelectedTextColor = [UIColor blackColor];
             _.itemTextColor = [UIColor blackColor];
             _.font = [UIFont systemFontOfSize:15*ScrenScale];
-            _.selectedFont = [UIFont systemFontOfSize:15];
+            _.selectedFont = [UIFont systemFontOfSize:15*ScrenScale];
             _.sliderViewColor = BUTTONRED;
             [_ setSliderViewHeight:0.5];
             [self addSubview:_];

@@ -45,6 +45,7 @@
         
         //        _name = [[UILabel alloc]init];
         _className = [[UILabel alloc]init];
+        _className.font = TITLEFONTSIZE;
         
         /* 年级*/
         _grade = [[UILabel alloc]init];
@@ -67,9 +68,7 @@
         _teacherName = [[UILabel alloc]init];
         _teacherName.textColor = [UIColor grayColor];
         _teacherName.font = [UIFont systemFontOfSize:14*ScrenScale];
-        
-        
-        
+    
         
         /* 状态*/
         _status = [[UILabel alloc]init];
@@ -78,13 +77,12 @@
         _status.backgroundColor = [UIColor orangeColor];
         
         
-        
-        
         /* 距离开课时间*/
         _dist = [[UILabel alloc]init];
         [_content addSubview:_dist];
         _dist.textColor = [UIColor blackColor];
         _dist.text = @"距开课";
+        _dist.font = TITLEFONTSIZE;
         
         _dist.sd_layout
         .leftSpaceToView(_classImage,10)
@@ -108,6 +106,7 @@
         [_content addSubview:_days];
         _days.text = @"天";
         _days.textColor = [UIColor blackColor];
+        _days.font = TITLEFONTSIZE;
         _days.sd_layout
         .leftSpaceToView(_deadLineLabel,0)
         .topEqualToView(_deadLineLabel)
@@ -119,27 +118,32 @@
         _progress = [[UILabel alloc]init];
         _progress.text = @"进度";
         _progress.textColor = [UIColor blackColor];
+        _progress.font = TITLEFONTSIZE;
         
         
         /* 已进行课时*/
         _presentCount = [[UILabel alloc]init];
         _presentCount.textColor = [UIColor blackColor];
+        _presentCount.font = TITLEFONTSIZE;
         
         
         /* 斜杠*/
         _line2 = [[UILabel alloc]init];
         _line2.text = @"/";
         _line2.textColor = [UIColor blackColor];
+        _line2.font = TITLEFONTSIZE;
         
         /* 总课时*/
         _totalCount = [[UILabel alloc]init];
         _totalCount.textColor = [UIColor blackColor];
+        _totalCount.font = TITLEFONTSIZE;
         
         
         /* 结课*/
         _finish = [[UILabel alloc]init];
         _finish.textColor = [UIColor blackColor];
         _finish .text = @"全部课程已完成";
+        _finish.font = TITLEFONTSIZE;
         
         
         

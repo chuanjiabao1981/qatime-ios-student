@@ -21,6 +21,7 @@
         _listenButton.backgroundColor = [UIColor whiteColor];
         [_listenButton setTitle:@"加入试听" forState:UIControlStateNormal];
         [_listenButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+        _listenButton.titleLabel.font = TITLEFONTSIZE;
         
         _listenButton.layer.borderColor = BUTTONRED.CGColor;
         _listenButton.layer.borderWidth = 1.0;
@@ -32,6 +33,7 @@
         _applyButton.backgroundColor = [UIColor whiteColor];
         [_applyButton setTitle:@"立即报名" forState:UIControlStateNormal];
         [_applyButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+        _applyButton.titleLabel.font = TITLEFONTSIZE;
         _applyButton.layer.borderColor = BUTTONRED.CGColor;
         _applyButton.layer.borderWidth = 1.0;
         

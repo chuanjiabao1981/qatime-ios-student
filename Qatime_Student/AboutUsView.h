@@ -10,7 +10,7 @@
 
 #import "YYLabel.h"
 
-@interface AboutUsView : UIView
+@interface AboutUsView : UIScrollView
 
 @property(nonatomic,strong) UIImageView *logo ;
 

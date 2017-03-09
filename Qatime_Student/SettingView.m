@@ -36,6 +36,7 @@
         /* 退出登录按钮*/
         _logOutButton =({
             UIButton *_ =[[UIButton alloc]init];
+            _.titleLabel.font = TITLEFONTSIZE;
             [self addSubview:_];
             _ .sd_layout
             .leftSpaceToView(self ,10)

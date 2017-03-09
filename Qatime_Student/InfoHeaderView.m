@@ -25,6 +25,7 @@
         
         /* 课程名*/
         _classNameLabel = [[UILabel alloc]init];
+        _classNameLabel.font = TITLEFONTSIZE;
         [self addSubview: _classNameLabel];
         _classNameLabel.sd_layout
         .leftSpaceToView(self,20)
@@ -40,6 +41,7 @@
         /* 年级*/
         
         _gradeLabel =[[UILabel alloc]init];
+        _gradeLabel.font = TITLEFONTSIZE;
         [_gradeLabel setText:@"年级"];
         [self addSubview:_gradeLabel];
         _gradeLabel.sd_layout.leftEqualToView(_classNameLabel).topSpaceToView(_classNameLabel,20).autoHeightRatio(0);
@@ -53,14 +55,17 @@
         counted.sd_layout.leftSpaceToView(self,[UIScreen mainScreen].bounds.size.width/2).topSpaceToView(_classNameLabel,20).autoHeightRatio(0);
         [counted setSingleLineAutoResizeWithMaxWidth:100.0f];
         [counted setText:@"进度"];
+        counted.font = TITLEFONTSIZE;
         
         _completed_conunt=[[UILabel alloc]init];
+        _completed_conunt.font = TITLEFONTSIZE;
         [self addSubview:_completed_conunt];
         _completed_conunt.sd_layout.leftSpaceToView(counted,0).topEqualToView(counted).autoHeightRatio(0);
         [_completed_conunt setSingleLineAutoResizeWithMaxWidth:100.0f];
         [_completed_conunt setText:@"***"];
         
         UILabel *cut=[[UILabel alloc]init];
+        cut.font = TITLEFONTSIZE;
         [self addSubview:cut];
         cut.sd_layout.leftSpaceToView(_completed_conunt,0).topEqualToView(_completed_conunt).autoHeightRatio(0);
         [cut setSingleLineAutoResizeWithMaxWidth:100.0f];
@@ -68,6 +73,7 @@
         
         
         _classCount=[[UILabel alloc]init];
+        _classCount.font = TITLEFONTSIZE;
         [self addSubview:_classCount];
         _classCount.sd_layout.leftSpaceToView(cut,0).topEqualToView(_completed_conunt).autoHeightRatio(0);
         [_classCount setSingleLineAutoResizeWithMaxWidth:100.0f];
@@ -77,12 +83,14 @@
         
         /* 科目*/
         UILabel *subject =[[UILabel alloc]init];
+        subject.font = TITLEFONTSIZE;
         [self addSubview:subject];
         subject.sd_layout.topSpaceToView(_gradeLabel,20).leftEqualToView(_gradeLabel).autoHeightRatio(0);
         [subject setSingleLineAutoResizeWithMaxWidth:100.0f];
         [subject setText:@"科目"];
         
         _subjectLabel = [[UILabel alloc]init];
+        _subjectLabel.font = TITLEFONTSIZE;
         [self addSubview:_subjectLabel];
         _subjectLabel.sd_layout.topEqualToView(subject).leftSpaceToView(subject,20).autoHeightRatio(0);
         [_subjectLabel setSingleLineAutoResizeWithMaxWidth:100.0f];
@@ -91,6 +99,7 @@
         
         /* 在线直播*/
         _onlineVideoLabel =[[UILabel alloc]init];
+        _onlineVideoLabel.font = TITLEFONTSIZE;
         [self addSubview:_onlineVideoLabel];
         _onlineVideoLabel.sd_layout.leftEqualToView(counted).topEqualToView(subject).autoHeightRatio(0);
         [_onlineVideoLabel setSingleLineAutoResizeWithMaxWidth:100.0f];
@@ -100,18 +109,21 @@
         /* 直播时间*/
         
         _liveStartTimeLabel = [[UILabel alloc]init];
+        _liveStartTimeLabel.font = TITLEFONTSIZE;
         [self addSubview:_liveStartTimeLabel];
         _liveStartTimeLabel.sd_layout.leftEqualToView(subject).topSpaceToView(subject,20).autoHeightRatio(0);
         [_liveStartTimeLabel setSingleLineAutoResizeWithMaxWidth:100.0f];
         [_liveStartTimeLabel setText:@"2016-11-10"];
         
         UILabel *_to =[[UILabel alloc]init];
+        _to.font = TITLEFONTSIZE;
         [self addSubview:_to];
         _to.sd_layout.leftSpaceToView(_liveStartTimeLabel,2).topEqualToView(_liveStartTimeLabel).autoHeightRatio(0);
         [_to setSingleLineAutoResizeWithMaxWidth:100.0f];
         [_to setText:@"至"];
         
         _liveEndTimeLabel = [[UILabel alloc]init];
+        _liveEndTimeLabel.font = TITLEFONTSIZE;
         [self addSubview:_liveEndTimeLabel];
         _liveEndTimeLabel.sd_layout.leftSpaceToView(_to,2).topEqualToView(_liveStartTimeLabel).autoHeightRatio(0);
         [_liveEndTimeLabel setSingleLineAutoResizeWithMaxWidth:100.0f];
@@ -121,12 +133,14 @@
         
         /* 辅导简介*/
         _descriptions=[[UILabel alloc]init];
+        _descriptions.font = TITLEFONTSIZE;
         [self addSubview:_descriptions];
         _descriptions.sd_layout.leftEqualToView(subject).topSpaceToView(_to,20).autoHeightRatio(0);
         [_descriptions setSingleLineAutoResizeWithMaxWidth:100.0f];
         [_descriptions setText:@"辅导简介"];
         
         _classDescriptionLabel =[[UILabel alloc]init];
+        _classDescriptionLabel.font = TITLEFONTSIZE;
         [self addSubview:_classDescriptionLabel];
         _classDescriptionLabel.sd_layout
         .leftEqualToView(_descriptions)
@@ -155,6 +169,7 @@
         
         /* 教师姓名*/
         _teacherNameLabel =[[UILabel alloc]init];
+        _teacherNameLabel.font = TITLEFONTSIZE;
         _teacherNameLabel.font = [UIFont systemFontOfSize:22*ScrenScale];
         [self addSubview:_teacherNameLabel];
         
@@ -182,6 +197,7 @@
         
         /* 教龄*/
         UILabel *teachYear = [[UILabel alloc]init];
+        teachYear.font = TITLEFONTSIZE;
         teachYear.textColor = [UIColor blackColor];
         teachYear.text = @"执教年数";
         //        teachYear.font = [UIFont systemFontOfSize:16*ScrenScale];
@@ -197,6 +213,7 @@
         
         
         _teaching_year= [[UILabel alloc]init];
+        _teaching_year.font = TITLEFONTSIZE;
         //        _teaching_year.font = [UIFont systemFontOfSize:16*ScrenScale];
         [self addSubview:_teaching_year];
         
@@ -210,6 +227,7 @@
         
         
         UILabel *schools=[[UILabel alloc]init];
+        schools.font = TITLEFONTSIZE;
         //        schools.font = [UIFont systemFontOfSize:14*ScrenScale];
         schools.textColor = [UIColor blackColor];
         
@@ -240,6 +258,7 @@
         
         
         _workPlace= [[UILabel alloc]init];
+        _workPlace.font = TITLEFONTSIZE;
         //        _workPlace.font = [UIFont systemFontOfSize:16*ScrenScale];
         
         [self addSubview:_workPlace];
@@ -255,6 +274,7 @@
         
         /* 自我介绍标题*/
         _selfIntroLabel =[[UILabel alloc]init];
+        _selfIntroLabel.font = TITLEFONTSIZE;
         _selfIntroLabel.text =@"教师简介";
         //        selfIntroLabel.font =[UIFont systemFontOfSize:20];
         
@@ -263,6 +283,7 @@
         
         /* 自我介绍*/
         _selfInterview= [[UILabel alloc]init];
+        _selfInterview.font = TITLEFONTSIZE;
         
         [self addSubview:_selfInterview];
         /* 布局*/

@@ -23,15 +23,18 @@
         
         /* 日期*/
         _edit_at = [[UILabel alloc]init];
+        _edit_at.font = [UIFont systemFontOfSize:15*ScrenScale];
         _edit_at.textColor = [UIColor grayColor];
         
         /* 时间*/
         _time = [[UILabel alloc]init];
+        _time.font = [UIFont systemFontOfSize:15*ScrenScale];
         _time.textColor = [UIColor grayColor];
         
         
         /* 公告内容*/
         _announcement = [[UILabel alloc]init];
+        _announcement.font = [UIFont systemFontOfSize:16*ScrenScale];
         _announcement.textColor = [UIColor grayColor];
         _announcement.numberOfLines =0;
         
@@ -39,6 +42,7 @@
         /* 公告状态*/
         _status = [[UILabel alloc]init];
         _status.textColor = [UIColor redColor];
+        _status.font = [UIFont systemFontOfSize:15*ScrenScale];
         
         
         

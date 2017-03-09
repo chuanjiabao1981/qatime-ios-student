@@ -155,6 +155,7 @@
     UILabel *label = [[UILabel alloc]init];
     label.text = @"全部地区";
     label.textColor = [UIColor blackColor];
+    label.font = TITLEFONTSIZE;
     [view addSubview:label];
     label.sd_layout
     .leftSpaceToView(view,20)

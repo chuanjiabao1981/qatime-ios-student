@@ -25,9 +25,11 @@
         
         _name = [[UILabel alloc]init];
         _name.textColor = [UIColor blackColor];
+        _name.font = TITLEFONTSIZE;
         
         _context = [[UILabel alloc]init];
         _context.textColor = [UIColor blackColor];
+        _context.font = TITLEFONTSIZE;
         
         line = [[UIView alloc]init];
         line.backgroundColor = [UIColor grayColor];

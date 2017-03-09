@@ -27,6 +27,7 @@
 		5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2701DF7CF2900A8FDEC /* WithDraw.m */; };
 		5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2731DF7CF3000A8FDEC /* Payment.m */; };
 		5413D2781DF7D0DF00A8FDEC /* UIViewController+Token.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */; };
+		5417AC181E715CF70068941D /* CityListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5417AC171E715CF70068941D /* CityListTableViewCell.m */; };
 		5417C48C1E31B85000DD0795 /* app_pay_params.m in Sources */ = {isa = PBXBuildFile; fileRef = 5417C48B1E31B85000DD0795 /* app_pay_params.m */; };
 		541A468C1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m in Sources */ = {isa = PBXBuildFile; fileRef = 541A468B1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m */; };
 		541E20041E139967007CF5D1 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */; };
@@ -526,6 +527,8 @@
 		5413D2751DF7D0AE00A8FDEC /* UIViewController_Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_Token.h; sourceTree = "<group>"; };
 		5413D2761DF7D0DF00A8FDEC /* UIViewController+Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Token.h"; sourceTree = "<group>"; };
 		5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Token.m"; sourceTree = "<group>"; };
+		5417AC161E715CF70068941D /* CityListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityListTableViewCell.h; sourceTree = "<group>"; };
+		5417AC171E715CF70068941D /* CityListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityListTableViewCell.m; sourceTree = "<group>"; };
 		5417C48A1E31B85000DD0795 /* app_pay_params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_pay_params.h; sourceTree = "<group>"; };
 		5417C48B1E31B85000DD0795 /* app_pay_params.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = app_pay_params.m; sourceTree = "<group>"; };
 		541A468A1E52E7C100F0B36D /* UIViewController+CheckMicVolum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+CheckMicVolum.h"; sourceTree = "<group>"; };
@@ -2378,6 +2381,8 @@
 				5493D4C81E0BE1050085A39E /* TLCityPickerSearchResultController.m */,
 				54443E261E0D252F000D8E8B /* LocalChoseView.h */,
 				54443E271E0D252F000D8E8B /* LocalChoseView.m */,
+				5417AC161E715CF70068941D /* CityListTableViewCell.h */,
+				5417AC171E715CF70068941D /* CityListTableViewCell.m */,
 			);
 			path = TLCityPicker;
 			sourceTree = "<group>";
@@ -4563,6 +4568,7 @@
 				5435D9371DD2C12300DD4FCC /* ClassesListTableViewCell.m in Sources */,
 				5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */,
 				542C17411DFA507E0088DB3F /* Paid.m in Sources */,
+				5417AC181E715CF70068941D /* CityListTableViewCell.m in Sources */,
 				547E89901DD1D03100749366 /* TutoriumInfoViewController.m in Sources */,
 				54D66F721DEBF5FE00ED2EBC /* AlreadyClassView.m in Sources */,
 				547E898D1DD1D01B00749366 /* TutoriumInfoView.m in Sources */,

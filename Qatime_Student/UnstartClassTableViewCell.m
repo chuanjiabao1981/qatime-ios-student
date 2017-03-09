@@ -44,6 +44,7 @@
         
 //        _name = [[UILabel alloc]init];
         _className = [[UILabel alloc]init];
+        _className.font = TITLEFONTSIZE;
         
         /* 年级*/
         _grade = [[UILabel alloc]init];
@@ -67,9 +68,6 @@
         _teacherName.textColor = [UIColor grayColor];
         _teacherName.font = [UIFont systemFontOfSize:14*ScrenScale];
         
-        
-       
-        
         /* 状态*/
         _status = [[UILabel alloc]init];
         _status.textColor = [UIColor whiteColor];
@@ -84,9 +82,8 @@
         _enterButton.layer.borderWidth = 0.8f;
         _enterButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         [_enterButton setTitle:@"进入" forState:UIControlStateNormal];
+        _enterButton.sd_cornerRadius = [NSNumber numberWithInteger:1];
        
-        
-        
         
         /* 所有控件的布局*/
         [_content sd_addSubviews:@[_classImage,_status,_className,_grade,_subject,line,_teacherName,_enterButton]];

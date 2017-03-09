@@ -18,6 +18,7 @@
         UILabel *choseLabel = ({
             UILabel *_ = [[UILabel alloc]init];
             _.text = @"当前选择";
+            _.font = TITLEFONTSIZE;
             [self addSubview:_];
             _.sd_layout
             .leftSpaceToView(self,20)
@@ -34,7 +35,7 @@
             _.layer.borderColor = BUTTONRED.CGColor;
             _.layer.borderWidth = 0.8;
             [_ setTitleColor:BUTTONRED forState:UIControlStateNormal];
-            _.titleLabel.font = [UIFont systemFontOfSize:13*ScrenScale];
+            _.titleLabel.font = [UIFont systemFontOfSize:14*ScrenScale];
             
             [self addSubview:_];
             _.sd_layout
@@ -42,6 +43,11 @@
             .topSpaceToView(self,10)
             .bottomSpaceToView(self,10)
             .widthRatioToView(choseLabel,1.0);
+            
+            [_ updateLayout];
+            
+            [_ setupAutoSizeWithHorizontalPadding:10 buttonHeight:_.height_sd];
+            
             _;
         });
         
