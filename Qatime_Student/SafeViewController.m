@@ -25,8 +25,7 @@
 #import "SetPayPasswordViewController.h"
 #import "UIViewController+AFHTTP.h"
 
-@interface SafeViewController ()<WXApiDelegate>
-{
+@interface SafeViewController ()<WXApiDelegate>{
     
     NavigationBar *_navigationBar;
     
@@ -54,8 +53,6 @@
     
     self.view.backgroundColor = BACKGROUNDGRAY;
     
-    
-    
     _navigationBar = ({
         
         NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
@@ -70,7 +67,6 @@
     });
     
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-    
     
     
     /* 提出token和学生id*/
@@ -91,8 +87,7 @@
     
     /* 初始化容器*/
     
-    _menuName = @[@"绑定手机",@"绑定邮箱",@"微信绑定",@"家长手机",/*@"修改支付密码",*/@"修改登录密码"];
-    
+    _menuName = @[@"绑定手机",@"绑定邮箱",@"微信绑定",@"家长手机",@"修改支付密码",@"修改登录密码"];
     
     /* 添加一个家长手机修改成功的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeParentPhone) name:@"ChangeParentPhoneSuccess" object:nil];
@@ -206,7 +201,9 @@
             break;
             
         case 1:
-            return 1;
+            
+            //审核时修改此处
+            return 2;
             
             break;
     }
@@ -232,15 +229,11 @@
             cell.settingName.sd_layout
             .leftSpaceToView(cell.contentView,20);
             
-            
-            
             cell.balance.hidden = NO;
             
             if (![_contentArr[indexPath.row] isKindOfClass:[NSString class]]) {
-                
                 _contentArr[indexPath.row] = @"未绑定";
                 //                cell.balance.textColor = [UIColor redColor];
-                
                 
             }
             
@@ -280,15 +273,46 @@
                     switch (indexPath.row) {
                             
                         case 0:{
-                            cell.balance.hidden = YES;
+                            //根据是否设置了支付密码 判断是还不是显示
+                            
+                            if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
+                                if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==YES) {
+                                    
+                                    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"NewPayPasswordTimeStamp"]) {
+                                        
+                                        float timeInterval =[[self dateTimeDifferenceWithStartTime:[[NSUserDefaults standardUserDefaults]valueForKey:@"NewPayPasswordTimeStamp"] endTime:[self getDate]]floatValue];
+                                        if (timeInterval>24) {
+                                            
+                                            cell.balance.hidden = YES;
+                                            
+                                        }else{
+                                            cell.balance.hidden = NO;
+                                            cell.balance.text = [NSString stringWithFormat:@"新密码%d小时后可用",24-(int)timeInterval];
+                                            cell.balance.textColor = TITLECOLOR;
+                                        }
+                                        
+                                    }
+                                    
+                                }else{
+                            
+                                    cell.balance.hidden = NO;
+                                    cell.balance.textColor = BUTTONRED;
+                                    cell.balance.text = @"未设置支付密码";
+                                }
+                                
+                            }else{
+                                
+                                cell.balance.hidden = YES;
+                            }
+                            
                         }
                             break;
-                            //                        case 1:{
-                            //                            cell.balance.hidden = YES;
-                            //
-                            //                        }
-                            //                            break;
                             
+                        case 1:{
+                            cell.balance.hidden = YES;
+                            
+                        }
+                            break;
                     }
                     
                 }
@@ -375,38 +399,34 @@
             
         case 1:{
             switch (indexPath.row) {
-                    //                case 0:{
-                    
-                    //                   [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置或修改后将在24小时内不能使用支付密码,是否继续?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"继续"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                    //                       if (buttonIndex!=0) {
-                    //
-                    //                           if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
-                    //                               if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==YES) {
-                    //                                   /* 已经设置过支付密码,更改支付密码*/
-                    //                                   SetPayPasswordViewController *setPass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
-                    //                                   [self.navigationController pushViewController:setPass animated:YES];
-                    //
-                    //
-                    //                               }else if([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==NO){
-                    //                                   /* 初次设置支付密码*/
-                    //                                   AuthenticationViewController *authentication =[[AuthenticationViewController alloc]init];
-                    //                                   [self.navigationController pushViewController:authentication animated:YES];
-                    //
-                    //
-                    ////                                   SetPayPasswordViewController *newpass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
-                    ////                                   [self.navigationController pushViewController:newpass animated:YES];
-                    //
-                    //
-                    //                               }
-                    //                           }
-                    //
-                    //                       }
-                    //
-                    //                   }];
-                    
-                    //                }
-                    //                    break;
                 case 0:{
+                    
+                    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置或修改后将在24小时内不能使用支付密码,是否继续?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"继续"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                        if (buttonIndex!=0) {
+                            
+                            if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
+                                if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==YES) {
+                                    /* 已经设置过支付密码,更改支付密码*/
+                                    SetPayPasswordViewController *setPass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
+                                    [self.navigationController pushViewController:setPass animated:YES];
+                                    
+                                }else if([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==NO){
+                                    /* 初次设置支付密码*/
+                                    AuthenticationViewController *authentication =[[AuthenticationViewController alloc]init];
+                                    [self.navigationController pushViewController:authentication animated:YES];
+                                    
+                                    SetPayPasswordViewController *newpass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
+                                    [self.navigationController pushViewController:newpass animated:YES];
+                                    
+                                }
+                            }
+                        }
+                        
+                    }];
+                    
+                }
+                    break;
+                case 1:{
                     
                     ChangePasswordViewController *changVC = [ChangePasswordViewController new];
                     [self.navigationController pushViewController:changVC animated:YES];
@@ -582,6 +602,54 @@
     wechatIsBinding = NO;
     
 }
+
+/**
+ 
+ * 开始到结束的时间差
+ 
+ */
+
+- (NSString *)dateTimeDifferenceWithStartTime:(NSString *)startTime endTime:(NSString *)endTime{
+    
+    NSDateFormatter *date = [[NSDateFormatter alloc]init];
+    
+    [date setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    
+    NSDate *startD =[date dateFromString:startTime];
+    
+    NSDate *endD = [date dateFromString:endTime];
+    
+    NSTimeInterval start = [startD timeIntervalSince1970]*1;
+    
+    NSTimeInterval end = [endD timeIntervalSince1970]*1;
+    
+    NSTimeInterval value = end - start;
+    
+    float house = value/3600.0;
+    
+    NSString *str;
+    
+    str = [NSString stringWithFormat:@"%f小时",house];
+    
+    return str;
+    
+}
+
+
+/**
+ 获取当前时间的string
+
+ @return str
+ */
+- (NSString *)getDate{
+    
+    NSDateFormatter *format = [[NSDateFormatter alloc]init];
+    format.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+
+    return [format stringFromDate:[NSDate date]];
+    
+}
+
 
 
 
