@@ -20,6 +20,7 @@
         
         /* contentview的裁边*/
         _content = [[UIView alloc]init];
+        _content.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:_content];
         _content .sd_layout
         .leftSpaceToView(self.contentView,10)
@@ -28,6 +29,11 @@
         .bottomSpaceToView(self.contentView,5);
         _content.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _content.layer.borderWidth = 0.8f;
+        
+        _content.layer.shadowColor =  TITLECOLOR.CGColor;
+        _content.layer.shadowOffset = CGSizeMake(3, 2);
+        _content.layer.shadowRadius = 3;
+        _content.layer.shadowOpacity = 0.3;
         
         
         /* 课程图片*/
