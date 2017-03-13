@@ -175,7 +175,7 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(markRead:) name:@"MarkAllRead" object:nil];
     
     /* 用户重新登录后的通知*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshAgain) name:@"userLoginAgain" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshAgain) name:@"UserLoginAgain" object:nil];
     
     
     /* 下拉刷新功能*/
@@ -217,12 +217,45 @@ typedef enum : NSUInteger {
 /* 再次登录成功后获取消息*/
 - (void)refreshAgain{
     
-    if (_noticeIndexView.chatListTableView.mj_header.state == MJRefreshStateIdle) {
-        [_noticeIndexView.chatListTableView.mj_header endRefreshing] ;
-        
-        
-        
+    /* 提出token和学生id*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
+        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
     }
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
+        
+        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
+    }
+    
+    
+    /* 初始化*/
+    _myClassArray = @[].mutableCopy;
+    _noticeArray = @[].mutableCopy;
+    _chatListArr = @[].mutableCopy;
+    
+    noticePage = 1;
+    unreadCont = 0;
+    
+    
+    NSLog(@"%@",[[[NIMSDK sharedSDK]teamManager]allMyTeams]);
+    
+    /* 如果用户加入新的试听课程,或者是用户是第一次进入程序,向远程服务器拉取聊天历史记录*/
+    /* 判断是不是第一次登陆*/
+    
+    /* 获取我的辅导班列表*/
+    [self requestMyClass:RefreshStateNone];
+    
+    /* 请求通知消息,收到的消息存到本地数据库,文件名:notice.db*/
+    [self requestNotices:RefreshStateNone];
+    
+    [[[NIMSDK sharedSDK]loginManager]addDelegate:self];
+    
+    NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]valueForKey:@"chat_account"];
+    
+    [[NIMSDK sharedSDK].loginManager autoLogin:chatDic[@"accid"] token:chatDic[@"token"]];
+    
+    [[[NIMSDK sharedSDK]conversationManager]addDelegate:self];
+    [[[NIMSDK sharedSDK]chatManager]addDelegate:self];
+
 }
 
 
@@ -842,14 +875,13 @@ typedef enum : NSUInteger {
                         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
                         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
                         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-                        [manager PUT:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications/batch_read",Request_Header,_idNumber] parameters:@{@"ids":@"32393 32390"} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                        [manager PUT:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications/batch_read",Request_Header,_idNumber] parameters:@{@"ids":idsStr} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                             
                             NSError *error = [[NSError alloc]init];
                             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:&error];
                             if ([dic[@"status"]isEqualToNumber:@1]) {
                                 
                                 [_noticeIndexView.segmentControl showBridgeWithShow:NO index:1];
-                                
                                 
                             }else{
                                 
@@ -858,21 +890,11 @@ typedef enum : NSUInteger {
                             
                         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                             
+                            NSLog(@"%@", error.description);
                             
-                            NSLog(@"%@", error);
+                            
                         }];
-                        //                        [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications/batch_read",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"ids":unreadArr} completeSuccess:^(id  _Nullable responds) {
-                        //
-                        //                            NSError *error = [[NSError alloc]init];
-                        //                            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:&error];
-                        //                            if ([dic[@"status"]isEqualToNumber:@1]) {
-                        //
-                        //                            }else{
-                        //
-                        //
-                        //                            }
-                        //
-                        //                        }];
+                    
                         
                     });
                     

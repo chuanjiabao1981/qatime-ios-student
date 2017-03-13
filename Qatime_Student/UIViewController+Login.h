@@ -11,6 +11,8 @@
 
 @interface UIViewController (Login)
 
+@property (nonatomic, assign) BOOL loginAlertShow ;
+
 
 /**
  再次登录

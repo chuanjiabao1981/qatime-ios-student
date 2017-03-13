@@ -1459,8 +1459,6 @@
     
     if (sender.superview == _inputView) {
         
-        //        _inputView.TextViewInput.text = @"" ;
-        
         if (_inputView.TextViewInput.inputView == nil) {
             _inputView.TextViewInput.yz_emotionKeyboard = self.emotionKeyboard;
             [sender setBackgroundImage:[UIImage imageNamed:@"toolbar-text"] forState:UIControlStateNormal];
