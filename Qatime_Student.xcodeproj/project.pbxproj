@@ -115,6 +115,11 @@
 		543E234E1E2CB84B00381F10 /* SetNewPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E234D1E2CB84B00381F10 /* SetNewPasswordViewController.m */; };
 		543E23521E2CE88B00381F10 /* DCPaymentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E23511E2CE88B00381F10 /* DCPaymentView.m */; };
 		543E512C1E5D7B180001551D /* YZBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E512B1E5D7B180001551D /* YZBadge.m */; };
+		5442009B1E77914200797E6C /* TodayLiveCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5442009A1E77914200797E6C /* TodayLiveCollectionViewCell.m */; };
+		5442009E1E7793E900797E6C /* TodayLive.m in Sources */ = {isa = PBXBuildFile; fileRef = 5442009D1E7793E900797E6C /* TodayLive.m */; };
+		544200A11E77B6F300797E6C /* UIButton+ImageTitleSpacing.m in Sources */ = {isa = PBXBuildFile; fileRef = 544200A01E77B6F300797E6C /* UIButton+ImageTitleSpacing.m */; };
+		544200A41E77FA7400797E6C /* QualityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544200A31E77FA7400797E6C /* QualityTableViewCell.m */; };
+		544200A71E77FB6300797E6C /* QualityClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 544200A61E77FB6300797E6C /* QualityClass.m */; };
 		54443E281E0D252F000D8E8B /* LocalChoseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54443E271E0D252F000D8E8B /* LocalChoseView.m */; };
 		54443E2A1E0D284E000D8E8B /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = 54443E291E0D284E000D8E8B /* point.png */; };
 		5444BD2B1E67BFAE00A75AD1 /* TeacherPublicClassCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5444BD2A1E67BFAE00A75AD1 /* TeacherPublicClassCollectionViewCell.swift */; };
@@ -560,6 +565,16 @@
 		543E23511E2CE88B00381F10 /* DCPaymentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCPaymentView.m; sourceTree = "<group>"; };
 		543E512A1E5D7B180001551D /* YZBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZBadge.h; sourceTree = "<group>"; };
 		543E512B1E5D7B180001551D /* YZBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZBadge.m; sourceTree = "<group>"; };
+		544200991E77914200797E6C /* TodayLiveCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayLiveCollectionViewCell.h; sourceTree = "<group>"; };
+		5442009A1E77914200797E6C /* TodayLiveCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayLiveCollectionViewCell.m; sourceTree = "<group>"; };
+		5442009C1E7793E900797E6C /* TodayLive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayLive.h; sourceTree = "<group>"; };
+		5442009D1E7793E900797E6C /* TodayLive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayLive.m; sourceTree = "<group>"; };
+		5442009F1E77B6F300797E6C /* UIButton+ImageTitleSpacing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+ImageTitleSpacing.h"; sourceTree = "<group>"; };
+		544200A01E77B6F300797E6C /* UIButton+ImageTitleSpacing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+ImageTitleSpacing.m"; sourceTree = "<group>"; };
+		544200A21E77FA7400797E6C /* QualityTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QualityTableViewCell.h; sourceTree = "<group>"; };
+		544200A31E77FA7400797E6C /* QualityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QualityTableViewCell.m; sourceTree = "<group>"; };
+		544200A51E77FB6300797E6C /* QualityClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QualityClass.h; sourceTree = "<group>"; };
+		544200A61E77FB6300797E6C /* QualityClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QualityClass.m; sourceTree = "<group>"; };
 		54443E261E0D252F000D8E8B /* LocalChoseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalChoseView.h; sourceTree = "<group>"; };
 		54443E271E0D252F000D8E8B /* LocalChoseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalChoseView.m; sourceTree = "<group>"; };
 		54443E291E0D284E000D8E8B /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = "<group>"; };
@@ -3557,6 +3572,10 @@
 				545B3BAC1E0AA2DD00751D08 /* GradeList.m */,
 				5493D4A61E0BAAE00085A39E /* City.h */,
 				5493D4A71E0BAAE00085A39E /* City.m */,
+				5442009C1E7793E900797E6C /* TodayLive.h */,
+				5442009D1E7793E900797E6C /* TodayLive.m */,
+				544200A51E77FB6300797E6C /* QualityClass.h */,
+				544200A61E77FB6300797E6C /* QualityClass.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -3612,6 +3631,10 @@
 				544E0CDA1DD0806900884F31 /* YZSquareMenuCell.m */,
 				544E0CDF1DD090A700884F31 /* RecommandClassCollectionViewCell.h */,
 				544E0CE01DD090A700884F31 /* RecommandClassCollectionViewCell.m */,
+				544200991E77914200797E6C /* TodayLiveCollectionViewCell.h */,
+				5442009A1E77914200797E6C /* TodayLiveCollectionViewCell.m */,
+				544200A21E77FA7400797E6C /* QualityTableViewCell.h */,
+				544200A31E77FA7400797E6C /* QualityTableViewCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -3737,6 +3760,8 @@
 				54F6E1421E767A8F000E1D1D /* UIViewController_Login.h */,
 				54F47E831E08F77600D896DB /* UIButton+Touch.h */,
 				54F47E841E08F77600D896DB /* UIButton+Touch.m */,
+				5442009F1E77B6F300797E6C /* UIButton+ImageTitleSpacing.h */,
+				544200A01E77B6F300797E6C /* UIButton+ImageTitleSpacing.m */,
 				54F63A1B1E1FA1B800758B42 /* UITextView_Placeholder.h */,
 				54F63A141E1F9EBB00758B42 /* UITextView+Placeholder.h */,
 				54F63A151E1F9EBB00758B42 /* UITextView+Placeholder.m */,
@@ -4204,6 +4229,7 @@
 				541F91E41DC9D16700180BE8 /* TutoriumCollectionViewCell.m in Sources */,
 				54652E2B1DEEB98600F4607C /* NoticeSettingViewController.m in Sources */,
 				5422337E1E15F6100092AB66 /* UIAlertController+Blocks.m in Sources */,
+				5442009B1E77914200797E6C /* TodayLiveCollectionViewCell.m in Sources */,
 				54D66F7F1DEC33C300ED2EBC /* AllClassViewController.m in Sources */,
 				548328F01DDC6F370053AB29 /* UUProgressHUD.m in Sources */,
 				54D66F6C1DEBDAA100ED2EBC /* ClassTimeModel.m in Sources */,
@@ -4255,6 +4281,7 @@
 				5493D4CA1E0BE1050085A39E /* TLCity.m in Sources */,
 				54D66F651DEBD5C600ED2EBC /* ClassTimeView.m in Sources */,
 				545162B11DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m in Sources */,
+				544200A71E77FB6300797E6C /* QualityClass.m in Sources */,
 				54B73D041DE3E85A00B7A7EB /* ChineseString.m in Sources */,
 				549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */,
 				54B45D161E5C34110027F958 /* JTSegmentPattern.swift in Sources */,
@@ -4307,6 +4334,7 @@
 				54D66F791DEC087D00ED2EBC /* NSString+StatusSwitch.m in Sources */,
 				547FBF311DF6B99600955A9E /* PersonalDescViewController.m in Sources */,
 				542020FF1E2DBE5100517A47 /* UIViewController+AFHTTP.m in Sources */,
+				544200A41E77FA7400797E6C /* QualityTableViewCell.m in Sources */,
 				54294C6A1DDAFCF600677333 /* ClassList.m in Sources */,
 				5448AEAB1E054CA4007B1DF9 /* NoticeListTableViewCell.m in Sources */,
 				54AA309B1DF98D30009E0D04 /* MyOrderTableViewCell.m in Sources */,
@@ -4318,6 +4346,7 @@
 				54AB48F01DED60D9008E3BC5 /* ListenClassView.m in Sources */,
 				54AB48E11DED51B8008E3BC5 /* SafeViewController.m in Sources */,
 				54FB1DB51DF10B9B00BA9A3C /* UIViewController+VideoStatus.m in Sources */,
+				544200A11E77B6F300797E6C /* UIButton+ImageTitleSpacing.m in Sources */,
 				5413D2611DF7BC9400A8FDEC /* PaymentTableView.m in Sources */,
 				5452260B1E2482EC00F36280 /* EditGenderTableViewCell.m in Sources */,
 				54B4C1921DF8417400E31794 /* ConfirmChargeViewController.m in Sources */,
@@ -4333,6 +4362,7 @@
 				542021141E2DF7F100517A47 /* Refund.m in Sources */,
 				545B3BAD1E0AA2DD00751D08 /* GradeList.m in Sources */,
 				5407C98D1DE7DDED00DB04C8 /* NSObject+YYAdd.m in Sources */,
+				5442009E1E7793E900797E6C /* TodayLive.m in Sources */,
 				54F47E851E08F77600D896DB /* UIButton+Touch.m in Sources */,
 				5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */,
 				54443E281E0D252F000D8E8B /* LocalChoseView.m in Sources */,
