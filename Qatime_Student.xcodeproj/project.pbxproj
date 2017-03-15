@@ -99,6 +99,13 @@
 		5435D9521DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9511DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m */; };
 		543BCAF81E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCAF51E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.m */; };
 		543BCAF91E78F3F700AD6721 /* UIView+SDAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCAF71E78F3F700AD6721 /* UIView+SDAutoLayout.m */; };
+		543BCB001E79156300AD6721 /* ChooseGradeAndSubjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCAFF1E79156300AD6721 /* ChooseGradeAndSubjectView.m */; };
+		543BCB031E79157400AD6721 /* ChooseGradeAndSubjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB021E79157400AD6721 /* ChooseGradeAndSubjectViewController.m */; };
+		543BCB061E79158400AD6721 /* ChooseClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB051E79158400AD6721 /* ChooseClassView.m */; };
+		543BCB091E79159200AD6721 /* ChooseClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB081E79159200AD6721 /* ChooseClassViewController.m */; };
+		543BCB0E1E79173700AD6721 /* ClassSubjectCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB0D1E79173700AD6721 /* ClassSubjectCollectionViewCell.m */; };
+		543BCB111E7932AF00AD6721 /* ClassFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB101E7932AF00AD6721 /* ClassFilterView.m */; };
+		543BCB151E794AE900AD6721 /* SnailQuickMaskPopups.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB141E794AE900AD6721 /* SnailQuickMaskPopups.m */; };
 		543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C207D1DC6F66B0086B04B /* IndexPageViewController.m */; };
 		543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20801DC6F6B00086B04B /* TutoriumViewController.m */; };
 		543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20831DC6F6BE0086B04B /* ClassTimeViewController.m */; };
@@ -536,6 +543,21 @@
 		543BCAF51E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+SDAutoTableViewCellHeight.m"; sourceTree = "<group>"; };
 		543BCAF61E78F3F700AD6721 /* UIView+SDAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SDAutoLayout.h"; sourceTree = "<group>"; };
 		543BCAF71E78F3F700AD6721 /* UIView+SDAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SDAutoLayout.m"; sourceTree = "<group>"; };
+		543BCAFE1E79156300AD6721 /* ChooseGradeAndSubjectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseGradeAndSubjectView.h; sourceTree = "<group>"; };
+		543BCAFF1E79156300AD6721 /* ChooseGradeAndSubjectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseGradeAndSubjectView.m; sourceTree = "<group>"; };
+		543BCB011E79157400AD6721 /* ChooseGradeAndSubjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseGradeAndSubjectViewController.h; sourceTree = "<group>"; };
+		543BCB021E79157400AD6721 /* ChooseGradeAndSubjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseGradeAndSubjectViewController.m; sourceTree = "<group>"; };
+		543BCB041E79158400AD6721 /* ChooseClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseClassView.h; sourceTree = "<group>"; };
+		543BCB051E79158400AD6721 /* ChooseClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseClassView.m; sourceTree = "<group>"; };
+		543BCB071E79159200AD6721 /* ChooseClassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseClassViewController.h; sourceTree = "<group>"; };
+		543BCB081E79159200AD6721 /* ChooseClassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseClassViewController.m; sourceTree = "<group>"; };
+		543BCB0A1E79165200AD6721 /* ChooseGradeAndSubjectDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseGradeAndSubjectDelegate.h; sourceTree = "<group>"; };
+		543BCB0C1E79173700AD6721 /* ClassSubjectCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassSubjectCollectionViewCell.h; sourceTree = "<group>"; };
+		543BCB0D1E79173700AD6721 /* ClassSubjectCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassSubjectCollectionViewCell.m; sourceTree = "<group>"; };
+		543BCB0F1E7932AF00AD6721 /* ClassFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassFilterView.h; sourceTree = "<group>"; };
+		543BCB101E7932AF00AD6721 /* ClassFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassFilterView.m; sourceTree = "<group>"; };
+		543BCB131E794AE900AD6721 /* SnailQuickMaskPopups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnailQuickMaskPopups.h; sourceTree = "<group>"; };
+		543BCB141E794AE900AD6721 /* SnailQuickMaskPopups.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnailQuickMaskPopups.m; sourceTree = "<group>"; };
 		543C207C1DC6F66B0086B04B /* IndexPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexPageViewController.h; sourceTree = "<group>"; };
 		543C207D1DC6F66B0086B04B /* IndexPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexPageViewController.m; sourceTree = "<group>"; };
 		543C207F1DC6F6B00086B04B /* TutoriumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumViewController.h; sourceTree = "<group>"; };
@@ -1571,6 +1593,67 @@
 			path = SDAutoLayout;
 			sourceTree = "<group>";
 		};
+		543BCAFA1E79152900AD6721 /* 选课页面 */ = {
+			isa = PBXGroup;
+			children = (
+				543BCAFD1E79153800AD6721 /* Model */,
+				543BCAFC1E79153600AD6721 /* View */,
+				543BCAFB1E79153400AD6721 /* Controller */,
+			);
+			name = "选课页面";
+			sourceTree = "<group>";
+		};
+		543BCAFB1E79153400AD6721 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				543BCB011E79157400AD6721 /* ChooseGradeAndSubjectViewController.h */,
+				543BCB021E79157400AD6721 /* ChooseGradeAndSubjectViewController.m */,
+				543BCB071E79159200AD6721 /* ChooseClassViewController.h */,
+				543BCB081E79159200AD6721 /* ChooseClassViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		543BCAFC1E79153600AD6721 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				543BCB0B1E79171D00AD6721 /* cell */,
+				543BCAFE1E79156300AD6721 /* ChooseGradeAndSubjectView.h */,
+				543BCAFF1E79156300AD6721 /* ChooseGradeAndSubjectView.m */,
+				543BCB0A1E79165200AD6721 /* ChooseGradeAndSubjectDelegate.h */,
+				543BCB041E79158400AD6721 /* ChooseClassView.h */,
+				543BCB051E79158400AD6721 /* ChooseClassView.m */,
+				543BCB0F1E7932AF00AD6721 /* ClassFilterView.h */,
+				543BCB101E7932AF00AD6721 /* ClassFilterView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		543BCAFD1E79153800AD6721 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		543BCB0B1E79171D00AD6721 /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				543BCB0C1E79173700AD6721 /* ClassSubjectCollectionViewCell.h */,
+				543BCB0D1E79173700AD6721 /* ClassSubjectCollectionViewCell.m */,
+			);
+			name = cell;
+			sourceTree = "<group>";
+		};
+		543BCB121E794AE900AD6721 /* SnailQuickMaskPopups */ = {
+			isa = PBXGroup;
+			children = (
+				543BCB131E794AE900AD6721 /* SnailQuickMaskPopups.h */,
+				543BCB141E794AE900AD6721 /* SnailQuickMaskPopups.m */,
+			);
+			path = SnailQuickMaskPopups;
+			sourceTree = "<group>";
+		};
 		543C207A1DC6F6470086B04B /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -2419,6 +2502,7 @@
 				543C207A1DC6F6470086B04B /* Util */,
 				546978531DC723A2001695F4 /* 登录页面 */,
 				541F91DE1DC9BBAA00180BE8 /* 主页页面 */,
+				543BCAFA1E79152900AD6721 /* 选课页面 */,
 				541F91D71DC9BB5C00180BE8 /* 辅导班页面 */,
 				541F91DD1DC9BBA800180BE8 /* 课程表页面 */,
 				5430DBF11E03F4420097E7B4 /* 消息页面 */,
@@ -2445,6 +2529,7 @@
 			children = (
 				543BCAF21E78F3F600AD6721 /* SDAutoLayout */,
 				54B45D171E5C34410027F958 /* Qatime_Student-Bridging-Header.h */,
+				543BCB121E794AE900AD6721 /* SnailQuickMaskPopups */,
 				54B45D081E5C30670027F958 /* JTSegmentControl */,
 				5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */,
 				54F32F741E373142000F8926 /* Reachability */,
@@ -4208,6 +4293,7 @@
 				54F34D801DE70BA500D6FC85 /* NSString+FindFace.m in Sources */,
 				5407C98C1DE7DDED00DB04C8 /* NSBundle+YYAdd.m in Sources */,
 				545162D51DF55DC7000BD17A /* Personal_HeadTableViewCell.m in Sources */,
+				543BCB091E79159200AD6721 /* ChooseClassViewController.m in Sources */,
 				548328CC1DDC6F360053AB29 /* NSDate+Utils.m in Sources */,
 				543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */,
 				543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */,
@@ -4235,6 +4321,7 @@
 				5448AEA81E054C7A007B1DF9 /* ChatListTableViewCell.m in Sources */,
 				54294C701DDB062000677333 /* Teacher.m in Sources */,
 				54AB49001DEDABCC008E3BC5 /* EndedTableViewCell.m in Sources */,
+				543BCB031E79157400AD6721 /* ChooseGradeAndSubjectViewController.m in Sources */,
 				543E23491E2C8D4000381F10 /* AuthenticationViewController.m in Sources */,
 				543E0CBE1DFFDA77004B24FD /* PayConfirmView.m in Sources */,
 				5435D9401DD3125800DD4FCC /* TeachersPublicViewController.m in Sources */,
@@ -4335,6 +4422,7 @@
 				54F3BA2D1DFC7130003998D0 /* WithDrawView.m in Sources */,
 				549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */,
 				54AA307C1DF9427D009E0D04 /* NSString+TimeStamp.m in Sources */,
+				543BCB111E7932AF00AD6721 /* ClassFilterView.m in Sources */,
 				5413D26B1DF7C76B00A8FDEC /* PaymentTableViewCell.m in Sources */,
 				54A153AD1DC6F09D0070B508 /* AppDelegate.m in Sources */,
 				543E0CD41E00297E004B24FD /* BindingMailViewController.m in Sources */,
@@ -4346,6 +4434,7 @@
 				541E20071E13B9AF007CF5D1 /* NSDate+ChangeUTC.m in Sources */,
 				5407C9991DE7DE9200DB04C8 /* UIDevice+YYAdd.m in Sources */,
 				54E8B6A71E601B0300A9703F /* UIViewController+TimeInterval.m in Sources */,
+				543BCB0E1E79173700AD6721 /* ClassSubjectCollectionViewCell.m in Sources */,
 				54FCBAF91DD5DCE50094BF58 /* Notice.m in Sources */,
 				54AA30881DF98C40009E0D04 /* MyOrderView.m in Sources */,
 				54D66F791DEC087D00ED2EBC /* NSString+StatusSwitch.m in Sources */,
@@ -4353,6 +4442,7 @@
 				542020FF1E2DBE5100517A47 /* UIViewController+AFHTTP.m in Sources */,
 				544200A41E77FA7400797E6C /* QualityTableViewCell.m in Sources */,
 				54294C6A1DDAFCF600677333 /* ClassList.m in Sources */,
+				543BCB061E79158400AD6721 /* ChooseClassView.m in Sources */,
 				5448AEAB1E054CA4007B1DF9 /* NoticeListTableViewCell.m in Sources */,
 				54AA309B1DF98D30009E0D04 /* MyOrderTableViewCell.m in Sources */,
 				5493D4CD1E0BE1050085A39E /* TLCityPickerController.m in Sources */,
@@ -4395,6 +4485,7 @@
 				5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */,
 				546978691DC72A42001695F4 /* SignUpViewController.m in Sources */,
 				54D59A741E234140006066EC /* DrawBackView.m in Sources */,
+				543BCB151E794AE900AD6721 /* SnailQuickMaskPopups.m in Sources */,
 				54FCBAE01DD5B3050094BF58 /* VideoInfoView.m in Sources */,
 				54FA71561E07B107009D81FE /* ChatView.m in Sources */,
 				540A34CA1E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m in Sources */,
@@ -4452,6 +4543,7 @@
 				541A468C1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m in Sources */,
 				545226081E2482E100F36280 /* EditNameTableViewCell.m in Sources */,
 				542021171E2DF90400517A47 /* RefundTableView.m in Sources */,
+				543BCB001E79156300AD6721 /* ChooseGradeAndSubjectView.m in Sources */,
 				54652E051DEE823100F4607C /* FileService.m in Sources */,
 				54E402291E65831B004935C2 /* QRMaskView.m in Sources */,
 				547FBF351DF6CEC800955A9E /* PersonalDescTableViewCell.m in Sources */,

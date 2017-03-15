@@ -38,7 +38,6 @@
 #import "LivePlayerViewController.h"
 
 
-
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate,LCTabBarDelegate,UITableViewDelegate,UITableViewDataSource>{
     
     /* token*/
@@ -68,10 +67,8 @@
     
     /* 推荐教师的存放数组*/
     
-    
     /* 推荐老师按section的存放数组*/
     NSMutableArray *_teachers;
-    
     
     /* 推荐课程存放数组*/
     NSMutableArray *_classes;

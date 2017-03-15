@@ -17,6 +17,8 @@
 #import "PersonalViewController.h"
 #import "NoticeIndexViewController.h"
 
+#import "ChooseGradeAndSubjectViewController.h"
+
 #import "LCTabBarController.h"
 #import "LCTabBar.h"
 

@@ -41,13 +41,14 @@
     /* 是否允许屏幕旋转*/
     BOOL _allowRotation;
     
-    
     /* 5个viewcontroller的NavigationController作为根视图*/
     UINavigationController *indexPageVC;
     UINavigationController *tutoriumVC ;
     UINavigationController *classTimeVC ;
     UINavigationController *personalVC ;
     UINavigationController *noticeVC;
+    
+    UINavigationController *chooseVC;
     
     /* 推送部分*/
     NSDictionary *remoteNotification;
@@ -67,6 +68,8 @@
 @property(nonatomic,strong) ClassTimeViewController *classTimeViewController ;
 @property(nonatomic,strong) PersonalViewController *personalViewController ;
 @property(nonatomic,strong) NoticeIndexViewController *noticeIndexViewController ;
+
+@property(nonatomic,strong) ChooseGradeAndSubjectViewController *chooseClassViewController;
 
 @end
 
@@ -271,7 +274,7 @@
         _viewController.tabBar.backgroundColor = [UIColor whiteColor];
         _viewController.itemTitleColor = [UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:1.00];
         _viewController.selectedItemTitleColor = TITLERED;
-        _viewController.viewControllers = @[indexPageVC,tutoriumVC,classTimeVC,noticeVC,personalVC];
+        _viewController.viewControllers = @[indexPageVC,/*tutoriumVC,*/chooseVC,classTimeVC,noticeVC,personalVC];
     
     }
     
@@ -328,6 +331,12 @@
     _tutoriumViewController.title = NSLocalizedString(@"辅导班", comment:"");
     
     
+    _chooseClassViewController = [[ChooseGradeAndSubjectViewController alloc]init];
+    _chooseClassViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_tutorium_h"];
+    _chooseClassViewController.tabBarItem.image = [UIImage imageNamed:@"tab_tutorium_n"];
+    _chooseClassViewController.title = NSLocalizedString(@"选课", comment:"");
+    
+    
     _classTimeViewController = [[ClassTimeViewController alloc]init];
     _classTimeViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_class_h"];
     _classTimeViewController.tabBarItem.image = [UIImage imageNamed:@"tab_class_n"];
@@ -345,6 +354,9 @@
     _personalViewController.tabBarItem.image = [UIImage imageNamed:@"tab_me_n"];
     _personalViewController.title = NSLocalizedString(@"个人", comment:"");
     
+    
+    
+    
 
     
     
@@ -355,7 +367,7 @@
     noticeVC = [[UINavigationController alloc]initWithRootViewController:_noticeIndexViewController];
     personalVC = [[UINavigationController alloc]initWithRootViewController:_personalViewController];
     
-    
+    chooseVC = [[UINavigationController alloc]initWithRootViewController:_chooseClassViewController];
 
 }
 
