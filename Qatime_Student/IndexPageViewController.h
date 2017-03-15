@@ -20,8 +20,6 @@
     
 @property(nonatomic,strong) IndexHeaderPageView *headerView ;
 
-//推荐教师滑动视图
-@property (nonatomic, strong) UICollectionView *recommandTeacherScrollView;
 
 
     

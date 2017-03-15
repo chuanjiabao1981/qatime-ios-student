@@ -10,7 +10,7 @@
 #import "RecommandClassCollectionViewCell.h"
 #import "IndexHeaderPageView.h"
 #import "YZSquareMenu.h"
-
+ 
 #import "TutoriumViewController.h"
 #import "NoticeIndexViewController.h"
 #import "YZSquareMenuCell.h"
@@ -32,13 +32,12 @@
 #import "MJRefresh.h"
 #import "QRCodeController.h"
 #import "LCTabBar.h"
-#import "TodayLiveCollectionViewCell.h"
 
 #import "LivePlayerViewController.h"
 
 
 
-@interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate,LCTabBarDelegate,UITableViewDelegate,UITableViewDataSource>{
+@interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate,LCTabBarDelegate>{
     
     /* token*/
     NSString *_token;
@@ -78,11 +77,6 @@
     /* banner图片保存的数组*/
     NSMutableArray *_banners;
     
-    /* 今日直播 课程的model数组*/
-    NSMutableArray *_todayLives;
-    
-    
-    
     
     /* 头视图的尺寸*/
     CGSize headerSize;
@@ -113,10 +107,14 @@
     /* 导航栏加载*/
     _navigationBar = ({
         NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+        
         [self .view addSubview:_];
         [_.rightButton setImage:[UIImage imageNamed:@"scan"] forState:UIControlStateNormal];
+        
+        
         UIImageView *logoImage = [[UIImageView alloc]init];
         [_ addSubview:logoImage];
+        
         logoImage.sd_layout
         .topSpaceToView(_,25)
         .bottomSpaceToView(_,10)
@@ -147,7 +145,9 @@
         _;
     });
     
+    
     [_navigationBar.rightButton addTarget:self action:@selector(enterScanPage) forControlEvents:UIControlEventTouchUpInside];
+
     
 }
 
@@ -165,70 +165,76 @@
         _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
     }
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
+        
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
-    //初始化变量
-    page = 1;
-    per_page =10;
     
-    _kee_teacher = [NSString string];
-    _kee_class = [NSString string];
+    menuImages = @[[UIImage imageNamed:@"语文"],
+                   [UIImage imageNamed:@"数学"],
+                   [UIImage imageNamed:@"英语"],
+                   [UIImage imageNamed:@"物理"],
+                   [UIImage imageNamed:@"化学"],
+                   [UIImage imageNamed:@"生物"],
+                   [UIImage imageNamed:@"历史"],
+                   [UIImage imageNamed:@"地理"],
+                   [UIImage imageNamed:@"政治"],
+                   [UIImage imageNamed:@"科学"]];
     
-    _teachers =@[].mutableCopy;
-    _classes = @[].mutableCopy;
+    menuTitiels = @[NSLocalizedString(@"语文", nil),
+                    NSLocalizedString(@"数学", nil),
+                    NSLocalizedString(@"英语", nil),
+                    NSLocalizedString(@"物理", nil),
+                    NSLocalizedString(@"化学", nil),
+                    NSLocalizedString(@"生物", nil),
+                    NSLocalizedString(@"历史", nil),
+                    NSLocalizedString(@"地理", nil),
+                    NSLocalizedString(@"政治", nil),
+                    NSLocalizedString(@"科学", nil)];
     
-    _todayLives = @[].mutableCopy;
-   
+    /* 头视图*/
+    _headerView = [[IndexHeaderPageView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd*3.1/5.0)];
+    
+    _headerView.teacherScrollView.tag =0;
+    
+    /* 注册推荐教师滚动视图*/
+    [_headerView.teacherScrollView registerClass:[YZSquareMenuCell class] forCellWithReuseIdentifier:@"CollectionCell"];
+    
+    /* 头视图的10个科目按钮加手势*/
+    for (int i=0; i<_headerView.squareMenuArr.count; i++) {
+        
+        _headerView.squareMenuArr[i].tag=10+i;
+        
+        UITapGestureRecognizer *taps =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(userSelectedSubject:)];
+        
+        [_headerView.squareMenuArr[i] addGestureRecognizer:taps];
+        
+    }
+    
+    /* 推荐教师滚动视图 指定代理*/
+    _headerView.teacherScrollView.delegate = self;
+    _headerView.teacherScrollView.dataSource = self;
+    
+    /* 主页的collection*/
+    _indexPageView = [[IndexPageView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-49) ];
+    headerSize = CGSizeMake(self.view.width_sd, 600);
+    
+    /* collectionView 注册cell、headerID*/
+    
+    [_indexPageView.recommandClassCollectionView registerClass:[RecommandClassCollectionViewCell class] forCellWithReuseIdentifier:@"RecommandCell"];
     
     
+    [_indexPageView.recommandClassCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerCell"];
     
-    //加载头视图
-    _headerView = [[IndexHeaderPageView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd*3.1/5.0)];
-//    [self.view addSubview:_headerView];
-    _headerView.todayLiveScrollView.delegate = self;
-    _headerView.todayLiveScrollView.dataSource = self;
-    _headerView.todayLiveScrollView.tag = 1;        //今日直播 tag = 1
-    
-    /* 头视图的 今日直播 注册cell*/
-    [_headerView.todayLiveScrollView registerClass:[TodayLiveCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
+    _indexPageView.recommandClassCollectionView.tag =1;
     
     
-    /* 主页视图
-     三部分的tableview组成
-     1.精选内容
-     2.sectionfooter:老师推荐
-     3.近期开课+sectionheader
-     4.新科发布+sectionheader
-     */
+    /* 指定代理*/
     
-    _indexPageView  = [[IndexPageView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-49) style:UITableViewStyleGrouped];
+    _indexPageView.recommandClassCollectionView.delegate = self;
+    _indexPageView.recommandClassCollectionView.dataSource = self;
+    
     [self.view addSubview:_indexPageView];
-    _indexPageView.backgroundColor = [UIColor whiteColor];
-    _indexPageView.tableHeaderView = _headerView;
-    _indexPageView.tag = 10;
-    
-    _indexPageView.dataSource = self;
-    _indexPageView.delegate = self;
-    
-    headerSize = CGSizeMake(self.view.width_sd, _headerView.fancyView.bottom_sd);
-    
-    _indexPageView.tableHeaderView.size = headerSize;
-    
-    //推荐教师视图
-    
-    UICollectionViewFlowLayout *teacherLayout = [[UICollectionViewFlowLayout alloc]init];
-    teacherLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    _recommandTeacherScrollView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 100) collectionViewLayout:teacherLayout];
-    
-    _recommandTeacherScrollView.tag = 2;        //推荐教师 tag = 2
-    _recommandTeacherScrollView.delegate = self;
-    _recommandTeacherScrollView.dataSource = self;
-    
-    /* 推荐教师视图 注册cell */
-    [_recommandTeacherScrollView registerClass:[RecommandClassCollectionViewCell class] forCellWithReuseIdentifier:@"RecommandCell"];
-    
-    
     
     if (!([[NSUserDefaults standardUserDefaults]objectForKey:@"SubjectChosen"]==NULL)) {
         
@@ -237,11 +243,41 @@
     }
     
     
+    
+#pragma mark- 变量初始化
+    page = 1;
+    per_page =10;
+    
+    
+#pragma mark- 初始数据请求
+    
+    /* 请求kee*/
+    _kee_teacher = [NSString string];
+    _kee_class = [NSString string];
+    
+    //    _recommandTeachers =@[].mutableCopy;
+    
+    
+    _teachers =@[].mutableCopy;
+    _classes = @[].mutableCopy;
+    
     /* 请求kee 并存本地*/
     [self requestKee];
     
+    /* 初次请求成功后，直接申请推荐教师和推荐课程*/
+    
+    /* 请求推荐教师详情*/
+    
+    
+    /* 添加headerview尺寸变化的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sizeToFitHeight) name:@"SizeChange" object:nil];
+    
     /* 请求基础信息*/
     [self requestBasicInformation];
+    
+    /* 全部课程按钮*/
+    [_headerView.recommandAllButton addTarget:self action:@selector(choseAllTutorium) forControlEvents:UIControlEventTouchUpInside];
+    [_headerView.allArrowButton addTarget:self action:@selector(choseAllTutorium) forControlEvents:UIControlEventTouchUpInside];
     
     /* 另一线程在后台请求未读消息和系统消息*/
     [self checkNotice];
@@ -250,10 +286,21 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeLoacal:) name:@"UseLocal" object:nil];
     
     
+    _indexPageView.recommandClassCollectionView.mj_header =[MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshIndexPage)];
+    
+    
+    
+    
+    
+    //推送跳转
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNIMPage:) name:@"NIMNotification" object:nil];
+
+    
+    
 }
 
-//直接进入直播页
 - (void)showNIMPage:(NSNotification *)notification{
+    
     
     LivePlayerViewController *livew = [[LivePlayerViewController alloc]init];
     [self.navigationController pushViewController:livew animated:YES];
@@ -361,6 +408,8 @@
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/recommend/positions",Request_Header ] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *keeDic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        //        NSLog(@"%@",keeDic);
         
         NSString *state=[NSString stringWithFormat:@"%@",keeDic[@"status"]];
         
@@ -649,13 +698,13 @@
 - (void)reloadData{
     
     /* collectionView重新加载数据*/
-    //    [_headerView.teacherScrollView reloadData];
-    //    [_indexPageView.recommandClassCollectionView reloadData];
+    [_headerView.teacherScrollView reloadData];
+    [_indexPageView.recommandClassCollectionView reloadData];
     
     [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"数据加载完成", nil)];
     
     
-    //    [_indexPageView.recommandClassCollectionView.mj_header endRefreshing];
+    [_indexPageView.recommandClassCollectionView.mj_header endRefreshing];
     
 }
 
@@ -732,45 +781,97 @@
 
 
 
-#pragma mark- collection datasource
 
 
+
+
+
+#pragma mark- collectionview datasource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
-    NSInteger items=10;
+    NSInteger items=0;
     
+    if (collectionView.tag==0) {
+        
+        if (_teachers) {
+            if (_teachers.count > 0) {
+                items =_teachers.count;
+                
+            }else if (_teachers.count==0){
+                items = 10;
+            }
+        }
+        
+    }
+    
+    if (collectionView .tag ==1){
+        
+        if (_classes) {
+            if (_classes.count>=6) {
+                items = 6;
+            }else if(_classes.count>0&&_classes.count<6){
+                items = _classes.count;
+            }else if (_classes.count==0){
+                items = 6;
+            }
+        }
+    }
     
     return items;
     
 }
 
+#pragma mark- collectionView
+
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    
+    NSInteger sec=0;
+    
+    if (collectionView.tag==0) {
+        sec = 1;
+    }
+    if(collectionView.tag==1){
+        sec =1;
+        
+    }
+    
+    return sec;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    CGSize layoutSize = CGSizeZero ;
+    
+    
+    if (collectionView.tag==0){
+        layoutSize = CGSizeMake(CGRectGetWidth(self.view.frame)/5-10, CGRectGetWidth(self.view.frame)/5);
+    }
+    
+    if (collectionView .tag ==1){
+        
+        layoutSize = CGSizeMake((self.view.width_sd-36)/2, (self.view.width_sd-36)/2);
+        
+    }
+    
+    
+    return layoutSize;
+}
+
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
+    
     UICollectionViewCell *cell=[[UICollectionViewCell alloc]init];
-
+    
+    
     static NSString * CellIdentifier = @"CollectionCell";
     static NSString * recommandIdentifier = @"RecommandCell";
-
-    /* 今日直播的横滑视图*/
-    if (collectionView.tag == 1) {
-        
-        TodayLiveCollectionViewCell * liveCell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-        
-            [liveCell.classImageView setImage:[UIImage imageNamed:@"school"]];
-            liveCell.classNameLabel.text = @"今日直播课程";
-            liveCell.stateLabel.text = @"12:00-13:00 开始";
-        
-         cell = liveCell;
-
-    }
-
     
     
     /* 教师推荐的横滑视图*/
-    if (collectionView .tag==2) {
+    if (collectionView .tag==0) {
         
-        YZSquareMenuCell * squarecell = [collectionView dequeueReusableCellWithReuseIdentifier:recommandIdentifier forIndexPath:indexPath];
+        YZSquareMenuCell * squarecell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         
         squarecell.iconImage.layer.masksToBounds = YES;
         squarecell.iconImage.layer.cornerRadius = squarecell.iconImage.frame.size.width/2.f ;
@@ -785,6 +886,7 @@
         }else if(_teachers.count>indexPath.row) {
             
             RecommandTeacher *tech = _teachers[indexPath.row];
+            
             
             /* 加载获取到的数据*/
             
@@ -814,6 +916,48 @@
         
     }
     
+    /* 辅导课程推荐 视图*/
+    
+    if (collectionView .tag==1) {
+        
+        RecommandClassCollectionViewCell *reccell=[collectionView dequeueReusableCellWithReuseIdentifier:recommandIdentifier forIndexPath:indexPath];
+        
+        if (_classes .count >indexPath.row) {
+            
+            reccell.model = _classes[indexPath.row];
+            reccell.sd_indexPath = indexPath;
+            reccell.saledLabel.hidden = NO;
+            reccell.reason.hidden = NO;
+            
+        }else if (_classes .count==0){
+            
+            reccell.model = [[RecommandClasses alloc]init];
+            [reccell.classImage setImage:[UIImage imageNamed:@"school"]];
+            reccell.className.text =NSLocalizedString(@"当前无课程", nil) ;
+            reccell.saledLabel.hidden = YES;
+            reccell.reason.hidden = YES;
+            
+        }
+        
+//        if (reccell.isNewest==YES) {
+//            reccell.reason.text = NSLocalizedString(@" 最新 ", nil);
+//            reccell.reason.backgroundColor = [UIColor colorWithRed:0.4 green:0.8 blue:1.0 alpha:1.0];
+//        }else{
+//            reccell.reason.text = @"";
+//            
+//        }
+//        
+//        if (reccell.isHottest == YES) {
+//            reccell.reason.text = NSLocalizedString(@" 最热 ", nil);
+//            reccell.reason.backgroundColor = [UIColor colorWithRed:1.0 green:0.6 blue:0.6 alpha:1.0];
+//        }else{
+//            reccell.reason.text = @"";
+//        }
+        
+        
+        cell=reccell ;
+        
+    }
     
     return cell;
     
@@ -821,49 +965,13 @@
 
 
 #pragma mark- collectionview delegate
-
--(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
-    
-    NSInteger sec=0;
-    
-    if (collectionView.tag==2) {
-        sec = 1;
-    }
-    if(collectionView.tag==1){
-        sec =1;
-        
-    }
-    
-    return sec;
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    
-    CGSize layoutSize = CGSizeZero ;
-    
-    
-    if (collectionView.tag==2){
-        layoutSize = CGSizeMake(CGRectGetWidth(self.view.frame)/5-10, CGRectGetWidth(self.view.frame)/5);
-    }
-    
-    if (collectionView .tag ==1){
-        
-        layoutSize = CGSizeMake((self.view.width_sd-36)/2, (self.view.width_sd-36)/2);
-        
-    }
-    
-    
-    return layoutSize;
-}
-
-
 /* cell的四边间距*/
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
     //分别为上、左、下、右
     UIEdgeInsets insets = UIEdgeInsetsZero;
     
-    if (collectionView.tag ==2) {
+    if (collectionView.tag ==0) {
         insets = UIEdgeInsetsZero;
         
     }
@@ -881,8 +989,6 @@
 #pragma mark- collection的点击事件
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
     
     if (collectionView.tag ==0) {
         
@@ -912,85 +1018,67 @@
         
     }
     /* 推荐课程点击事件*/
-//    if (collectionView.tag ==1) {
-//        
-//        if (_classes.count == 0) {
-//            [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"该地区没有推荐课程", nil)];
-//        }else{
-//            
-//            RecommandClassCollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-//            
-//            TutoriumInfoViewController *viewcontroller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
-//            
-//            viewcontroller.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:viewcontroller animated:YES];
-//        }
-//    }
-    
-}
-
-
-#pragma mark- tableview datasource
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    NSInteger rows = 0;
-    switch (section) {
-        case 0:
-            rows = 4;
-            break;
+    if (collectionView.tag ==1) {
+        
+        if (_classes.count == 0) {
+            [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"该地区没有推荐课程", nil)];
+        }else{
             
-        case 1:
-            rows = 2;
-            break;
-        case 2:
-            rows = 2;
-            break;
-    }
-    return rows;
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    /* cell的重用队列*/
-    static NSString *cellIdenfier = @"cell";
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-    if (cell==nil) {
-        cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-        cell.textLabel.text = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
-        
-        
-        
-        
+            RecommandClassCollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+            
+            TutoriumInfoViewController *viewcontroller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+            
+            viewcontroller.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:viewcontroller animated:YES];
+        }
         
         
     }
     
-    return  cell;
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
+    
+    
+    NSString *cellID = @"headerCell";
+    UICollectionReusableView *header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:cellID forIndexPath:indexPath];
+    
+    if (collectionView.tag==1) {
+        //从缓存中获取 Headercell
+        
+        [header addSubview:_headerView];
+        
+    }
+    return header;
     
 }
 
-
-#pragma mark- tableview delegate
-
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
     
-    return 3;
+    CGSize size;
+    
+    if (collectionView.tag==1) {
+        
+        return headerSize;
+    }else if (collectionView.tag==0){
+        
+        return CGSizeMake(0, 0);
+    }
+    
+    return  size;
+    
 }
-
-
-
 
 #pragma mark- headerView自适应高度方法
 - (void)sizeToFitHeight{
     
-    //    CGRect rect = CGRectMake(0, 0, self.view.width_sd, _headerView.conmmandView.centerY_sd+_headerView.conmmandView.height_sd/2);
+    CGRect rect = CGRectMake(0, 0, self.view.width_sd, _headerView.conmmandView.centerY_sd+_headerView.conmmandView.height_sd/2);
     
-    //    headerSize = CGSizeMake(self.view.width_sd, rect.size.height);
+    headerSize = CGSizeMake(self.view.width_sd, rect.size.height);
     
-    //    [_indexPageView.recommandClassCollectionView reloadData];
-    //    [_indexPageView.recommandClassCollectionView setNeedsLayout];
-    //    [_indexPageView.recommandClassCollectionView setNeedsDisplay];
+    [_indexPageView.recommandClassCollectionView reloadData];
+    [_indexPageView.recommandClassCollectionView setNeedsLayout];
+    [_indexPageView.recommandClassCollectionView setNeedsDisplay];
     
 }
 
@@ -1078,21 +1166,21 @@
 //
 ///* 进入消息中心*/
 //- (void)enterNoticeCenter{
-//
+//    
 //    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
 //        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
-//
+//            
 //            NoticeIndexViewController *noticeVC = [[NoticeIndexViewController alloc]init];
 //            [self.navigationController pushViewController:noticeVC animated:YES];
 ////            _badge.hidden = YES;
 //        }else{
 //            [self loginAgain];
 //        }
-//
+//        
 //    }else{
 //        [self loginAgain];
 //    }
-//
+//    
 //}
 
 //进入扫描页面

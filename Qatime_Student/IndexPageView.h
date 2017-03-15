@@ -12,6 +12,11 @@
 
 #import "IndexHeaderPageView.h"
 
-@interface IndexPageView : UITableView
+@interface IndexPageView : UIView
+
+
+/* 辅导班推荐*/
+@property(nonatomic,strong) UICollectionView *recommandClassCollectionView ;
+
 
 @end

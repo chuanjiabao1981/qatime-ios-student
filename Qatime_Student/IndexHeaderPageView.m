@@ -8,9 +8,6 @@
 
 #import "IndexHeaderPageView.h"
 #import "YZSquareMenuCell.h"
-#import "TodayLiveCollectionViewCell.h"
-
-
 
 @interface IndexHeaderPageView (){
     
@@ -24,133 +21,178 @@
 
 @implementation IndexHeaderPageView
 
+
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.backgroundColor = [UIColor whiteColor];
+        menuImages = @[[UIImage imageNamed:@"语文"],[UIImage imageNamed:@"数学"],[UIImage imageNamed:@"英语"],[UIImage imageNamed:@"物理"],[UIImage imageNamed:@"化学"],[UIImage imageNamed:@"生物"],[UIImage imageNamed:@"历史"],[UIImage imageNamed:@"地理"],[UIImage imageNamed:@"政治"],[UIImage imageNamed:@"科学"]];
+        
+        menuTitiels = @[NSLocalizedString(@"语文", nil),NSLocalizedString(@"数学", nil),NSLocalizedString(@"英语", nil),NSLocalizedString(@"物理", nil),NSLocalizedString(@"化学", nil),NSLocalizedString(@"生物", nil),NSLocalizedString(@"历史", nil),NSLocalizedString(@"地理", nil),NSLocalizedString(@"政治", nil),NSLocalizedString(@"科学", nil)];
+        
+        _squareMenuArr = @[].mutableCopy;
+        
+        /* 底层content视图 headerView视图初始化*/
+        _headerContentView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
+        [self addSubview:_headerContentView];
         
         /* banner页布局*/
-        _cycleScrollView =[SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetWidth(self.frame)*316/1190) imageURLStringsGroup:@[]];
-        [self addSubview:_cycleScrollView];
+        _cycleScrollView =[SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, CGRectGetWidth(_headerContentView.frame), CGRectGetWidth(_headerContentView.frame)*316/1190) imageURLStringsGroup:@[]];
+        [_headerContentView addSubview:_cycleScrollView];
         
         
-        //年级筛选滑动视图
-        _gradeMenu = [[UIScrollView alloc]initWithFrame:CGRectMake(0, _cycleScrollView.bottom_sd, self.width_sd, 40)];
-        _gradeMenu.showsHorizontalScrollIndicator = NO;
+        /* 课程菜单*/
+        _squareMenu = [[UIView alloc]initWithFrame:CGRectMake(0,CGRectGetMaxY(_cycleScrollView.frame),CGRectGetWidth(_headerContentView.bounds),CGRectGetWidth(_headerContentView.frame)/5*2)];
+        
+        [_headerContentView addSubview:_squareMenu];
         
         
-        NSArray *gradeArr= @[@"高三",@"高二",@"高一",@"初三",@"初二",@"初一",@"六年级",@"五年级",@"四年级",@"三年级",@"二年级",@"一年级"];
-        
-        NSMutableArray *buttons = @[].mutableCopy;
-        //遍历按钮.
-        NSInteger index =0;
-        for (NSString *grade in gradeArr) {
-            UIButton *btn = [[UIButton alloc]init];
-            [btn setTitle:grade forState:UIControlStateNormal];
-            [btn setTitleColor:BUTTONRED forState:UIControlStateNormal];
-            btn.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
-            btn.tag = index;
-            [_gradeMenu addSubview:btn];
-        
-            btn.sd_layout
-            .topSpaceToView(_gradeMenu,10)
-            .bottomSpaceToView(_gradeMenu,10)
-            .leftSpaceToView(_gradeMenu, self.width_sd/6*index)
-            .widthIs(self.width_sd/6);
-            [btn updateLayout];
+        /* 遍历出第一行的5个图标*/
+        for (int i =0 ; i<5; i++) {
+            UIView *btn = [[UIView alloc]initWithFrame:CGRectMake(i*CGRectGetWidth(_squareMenu.bounds)/5, 0, CGRectGetWidth(_squareMenu.bounds)/5, CGRectGetWidth(_squareMenu.bounds)/5)];
+            UIImageView *iconImage=[[UIImageView alloc]initWithFrame:CGRectMake(btn.frame.size.width/3/2+5, 10, btn.frame.size.width*2/3-10, btn.frame.size.width*2/3-10)];
             
-            [buttons addObject:btn];
-            index++;
+            UILabel *iconLabel =[[UILabel alloc]initWithFrame:CGRectMake(0, btn.frame.size.width*3/4+2, btn.frame.size.width, btn.frame.size.width/4-2)];
+            iconLabel.textAlignment = NSTextAlignmentCenter;
+            iconLabel.font = [UIFont systemFontOfSize:14*ScrenScale];
+            iconLabel.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
+            [btn addSubview:iconImage];
+            [btn addSubview:iconLabel];
+            
+            [iconImage setImage:menuImages[i]];
+            [iconLabel setText:menuTitiels[i]];
+            
+            btn.tag =i+10;
+            
+            [_squareMenu addSubview:btn];
+            [_squareMenuArr addObject:btn];
+            
         }
-        [self addSubview:_gradeMenu];
-        //contentsize 自适应
-        UIButton *lastBtn = [buttons lastObject];
-        _gradeMenu.contentSize = CGSizeMake(lastBtn.origin_sd.x+lastBtn.width_sd, _gradeMenu.height_sd);
         
+        /* 遍历出第二行的5个图标*/
+        for (int i =5 ; i<10; i++) {
+            
+            UIView *btn = [[UIView alloc]initWithFrame:CGRectMake((i-5)*CGRectGetWidth(_squareMenu.bounds)/5, CGRectGetWidth(_squareMenu.bounds)/5, CGRectGetWidth(_squareMenu.bounds)/5, CGRectGetWidth(_squareMenu.bounds)/5) ];
+            UIImageView *iconImage=[[UIImageView alloc]initWithFrame:CGRectMake(btn.frame.size.width/3/2+5, 10, btn.frame.size.width*2/3-10, btn.frame.size.width*2/3-10)];
+            
+            UILabel *iconLabel =[[UILabel alloc]initWithFrame:CGRectMake(0, btn.frame.size.width*3/4+2, btn.frame.size.width, btn.frame.size.width/4-2)];
+            iconLabel.textAlignment = NSTextAlignmentCenter;
+            iconLabel.font = [UIFont systemFontOfSize:14*ScrenScale];
+            iconLabel.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
+            [btn addSubview:iconImage];
+            [btn addSubview:iconLabel];
+            
+            [iconImage setImage:menuImages[i]];
+            [iconLabel setText:menuTitiels[i]];
+            
+            btn.tag =i+10;
+            
+            
+            [_squareMenu addSubview:btn];
+            [_squareMenuArr addObject:btn];
+            
+        }
         
         /* 分割线1*/
-        UIView *line1 =[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_gradeMenu.frame), CGRectGetWidth(self.bounds), 10.0)];
+        UIView *line1 =[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_squareMenu.frame)+10, CGRectGetWidth(_headerContentView.bounds), 10.0)];
         line1.backgroundColor =[UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.00];
-        [self addSubview:line1];
+        [_headerContentView addSubview:line1];
+        
+        /* 暂时写死*/
+        _teacherScrollHeader = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(line1.frame), CGRectGetWidth(_headerContentView.frame), 40)];
+        [_headerContentView addSubview:_teacherScrollHeader];
+        
+        /* 入驻名师图标*/
+        UIImageView *teacherHead=[[UIImageView alloc]init];
+        [teacherHead setImage:[UIImage imageNamed:@"名师推荐"]];
+        [_teacherScrollHeader addSubview:teacherHead];
+        teacherHead.sd_layout.leftSpaceToView(_teacherScrollHeader,12).topSpaceToView(_teacherScrollHeader,10).bottomSpaceToView(_teacherScrollHeader,10).widthEqualToHeight();
+        
+        /* 入住名师label*/
+        UILabel *teacherLabel=[[UILabel alloc]init];
+        teacherLabel .text =NSLocalizedString(@"名师入驻", nil) ;
+        teacherLabel.font = [UIFont systemFontOfSize:17*ScrenScale];
+        [_teacherScrollHeader addSubview:teacherLabel];
+        teacherLabel.sd_layout.leftSpaceToView(teacherHead,5).topEqualToView(teacherHead).bottomEqualToView(teacherHead);
+        [teacherLabel setSingleLineAutoResizeWithMaxWidth:200];
+        
+        /* 名师入驻 滚动视图*/
+        UICollectionViewFlowLayout *layout =[[UICollectionViewFlowLayout alloc]init];
+        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
         
-        //今日直播的 栏
-        UIView *todayLiveView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(line1.frame), self.width_sd, 40)];
-        [self addSubview:todayLiveView];
+        _teacherScrollView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_teacherScrollHeader.frame), CGRectGetWidth(_headerContentView.frame), CGRectGetHeight(_squareMenu.frame)/2) collectionViewLayout:layout];
+        [_headerContentView addSubview:_teacherScrollView];
+        _teacherScrollView.backgroundColor = [UIColor whiteColor];
+        _teacherScrollView.showsVerticalScrollIndicator = NO;
+        _teacherScrollView.showsHorizontalScrollIndicator = NO;
         
-        //@"今日直播"
-        UILabel *todayLiveLabel = [[UILabel alloc]init];
-        todayLiveLabel.text = @"今日直播";
-        todayLiveLabel.font = [UIFont systemFontOfSize:17*ScrenScale];
-        todayLiveLabel.textColor = [UIColor blackColor];
-        [todayLiveView addSubview:todayLiveLabel];
-        todayLiveLabel.sd_layout
-        .topSpaceToView(todayLiveView,10)
-        .bottomSpaceToView(todayLiveView,10)
-        .leftSpaceToView(todayLiveView,12);
-        [todayLiveLabel setSingleLineAutoResizeWithMaxWidth:200];
+        [_headerContentView addSubview:_teacherScrollView];
         
-        //今日直播 滑动视图
-        UICollectionViewFlowLayout *liveFlowLayout = [[UICollectionViewFlowLayout alloc]init];
-        liveFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        _todayLiveScrollView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, todayLiveView.bottom_sd, self.width_sd,_cycleScrollView.height_sd*1.2) collectionViewLayout:liveFlowLayout];
-        _todayLiveScrollView.backgroundColor =[UIColor whiteColor];
-        [self addSubview:_todayLiveScrollView];
-        
-        
-        //分割线2
-        UIView *line2 =[[UIView alloc]initWithFrame:CGRectMake(0, _todayLiveScrollView.bottom_sd+10, CGRectGetWidth(self.bounds), 10.0)];
+        /* 分割线2*/
+        UIView *line2 =[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_teacherScrollView.frame)+5, CGRectGetWidth(_headerContentView.frame), 10.0f)];
         line2.backgroundColor =[UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.00];
-        [self addSubview:line2];
-
+        [_headerContentView addSubview:line2];
         
-        //精选内容 栏
-        _fancyView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(line2.frame), self.width_sd, 40)];
-        _fancyView.backgroundColor = [UIColor whiteColor];
-        [self addSubview:_fancyView];
         
-        //@"精选内容"
-        UILabel *fancyLabel = [[UILabel alloc]init];
-        fancyLabel.text = @"精选内容";
-        fancyLabel.font = [UIFont systemFontOfSize:17*ScrenScale];
-        fancyLabel.textColor = [UIColor blackColor];
-        [_fancyView addSubview:fancyLabel];
-        fancyLabel.sd_layout
-        .topSpaceToView(_fancyView,10)
-        .bottomSpaceToView(_fancyView,10)
-        .leftSpaceToView(_fancyView,12);
-        [fancyLabel setSingleLineAutoResizeWithMaxWidth:200];
+        /* 推荐header 2*/
         
-        //@"精选内容  更多按钮"
-        _moreFancyButton = [[UIButton alloc]init];
-        [_fancyView addSubview:_moreFancyButton];
-        [_moreFancyButton setTitle:@"更多" forState:UIControlStateNormal];
-        [_moreFancyButton setImage:[UIImage imageNamed:@"right_Arrow"] forState:UIControlStateNormal];
-        [_moreFancyButton layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleRight imageTitleSpace:10.0];
-        _moreFancyButton.titleLabel.font = [UIFont systemFontOfSize:12*ScrenScale];
-        [_moreFancyButton setTitleColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0] forState:UIControlStateNormal];
-        _moreFancyButton.sd_layout
-        .rightSpaceToView(_fancyView,12)
-        .centerYEqualToView(fancyLabel)
-        .topEqualToView(fancyLabel)
-        .bottomEqualToView(fancyLabel)
-        .widthIs(60);
+        /* 暂时写死2*/
+        _conmmandView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(line2.frame), CGRectGetWidth(_headerContentView.frame), 40)];
+        [_headerContentView addSubview:_conmmandView];
         
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeHeight:) name:@"TodayHeight" object:nil];
+        
+        /* 辅导推荐图标*/
+        UIImageView *commandImage=[[UIImageView alloc]init];
+        [commandImage setImage:[UIImage imageNamed:@"辅导推荐"]];
+        [_conmmandView addSubview:commandImage];
+        commandImage.sd_layout.leftSpaceToView(_conmmandView,12).topSpaceToView(_conmmandView,10).bottomSpaceToView(_conmmandView,10).widthEqualToHeight();
+        
+        /* 辅导推荐label*/
+        UILabel *commandLabel=[[UILabel alloc]init];
+        commandLabel .text =NSLocalizedString(@"辅导推荐", nil);
+        commandLabel.font = [UIFont systemFontOfSize:17*ScrenScale];
+        [_conmmandView addSubview:commandLabel];
+        commandLabel.sd_layout.leftSpaceToView(commandImage,5).topEqualToView(commandImage).bottomSpaceToView(_conmmandView,10);
+        
+        [commandLabel setSingleLineAutoResizeWithMaxWidth:100];
+        
+        
+        /* 全部辅导课程推荐按钮和箭头按钮*/
+        _recommandAllButton = [[UIButton alloc]init];
+        [_conmmandView addSubview:_recommandAllButton];
+        [_recommandAllButton setTitle:NSLocalizedString(@"全部", nil) forState:UIControlStateNormal];
+        [_recommandAllButton setTitleColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0] forState:UIControlStateNormal];
+        [_recommandAllButton.titleLabel setFont:[UIFont systemFontOfSize:12*ScrenScale]];
+        _recommandAllButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        
+        
+        _allArrowButton = [[UIButton alloc]init];
+        [_conmmandView addSubview:_allArrowButton];
+        [_allArrowButton setImage:[UIImage imageNamed:@"rightArrow"] forState:UIControlStateNormal];
+        
+        _allArrowButton.sd_layout.rightSpaceToView(_conmmandView,20).topSpaceToView(_conmmandView,15).bottomSpaceToView(_conmmandView,15).widthEqualToHeight();
+        
+        _recommandAllButton .sd_layout.rightSpaceToView(_allArrowButton,0).centerYEqualToView(_allArrowButton).widthIs(50);
+        
+        
+        
+        
+        [_teacherScrollView registerClass:[YZSquareMenuCell class] forCellWithReuseIdentifier:@"CollectionCell"];
+        
+        
+        
+        //        CGFloat maxy = CGRectGetMaxY(_conmmandView.frame);
+        
+        
         
     }
     return self;
 }
 
-- (void)changeHeight:(NSNotification *)notification{
-    
-    TodayLiveCollectionViewCell *cell = notification.object;
-    _todayLiveScrollView.sd_layout
-    .heightIs(cell.height_sd);
-    
-}
+
 
 
 
