@@ -24,13 +24,12 @@ PODS:
   - Masonry (1.0.2)
   - MBProgressHUD (1.0.0)
   - MJRefresh (3.1.12)
-  - MLLabel (1.10.2)
+  - MLLabel (1.10.3)
   - RealReachability (1.1.8):
     - RealReachability/Connection (= 1.1.8)
     - RealReachability/Ping (= 1.1.8)
   - RealReachability/Connection (1.1.8)
   - RealReachability/Ping (1.1.8)
-  - SDAutoLayout (2.1.7)
   - SDCycleScrollView (1.65):
     - SDWebImage (~> 3.7)
   - SDWebImage (3.8.2):
@@ -56,7 +55,6 @@ DEPENDENCIES:
   - MJRefresh (~> 3.1.12)
   - MLLabel (~> 1.10.2)
   - RealReachability (~> 1.1.8)
-  - SDAutoLayout (~> 2.1.7)
   - SDCycleScrollView (~> 1.65)
   - SDWebImage (~> 3.8.2)
   - WZLBadge (~> 1.2.5)
@@ -75,9 +73,8 @@ SPEC CHECKSUMS:
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
-  MLLabel: 71315bd11dc45bebba159e07427496ea8bfc2b0a
+  MLLabel: 3760fb38aeac53b212409b634bc4aa4bf39ab628
   RealReachability: e6c8a2bbffa316006e8c282efc1ee2567d61a920
-  SDAutoLayout: e9b36d04b8c0b504762a04d76fbbe5108944297a
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   WZLBadge: 16c08aa0a645e2591690f21cbcb410a3d878c7ac
@@ -86,6 +83,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 3daa5a961a7d1a45938077e0396da3954a1b5b60
+PODFILE CHECKSUM: 472bdc1df76719162d51e41fdd0bc8cff1b58dd7
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0

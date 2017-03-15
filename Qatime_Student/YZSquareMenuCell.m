@@ -16,6 +16,7 @@
     if (self) {
         
         self.backgroundColor = [UIColor whiteColor];
+        
         _iconImage = [[UIImageView alloc]init];
         _iconTitle = [[UILabel alloc]init];
         

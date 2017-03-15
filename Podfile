@@ -4,7 +4,7 @@ platform :ios, '8.0'
 target ‘Qatime_Student’ do
 
 #pod 'RDVTabBarController', '~> 1.1.9'
-pod 'SDAutoLayout', '~> 2.1.7'
+#pod 'SDAutoLayout', '~> 2.1.7'
 pod 'Masonry', '~> 1.0.2'
 pod 'AFNetworking', '~> 3.1.0'
 pod 'MBProgressHUD', '~> 1.0.0'

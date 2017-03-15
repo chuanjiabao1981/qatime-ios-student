@@ -24,7 +24,7 @@
 //http://testing.qatime.cn
 //https://qatime.cn
 
-#define Request_Header @"http://testing.qatime.cn"
+#define Request_Header @"https://qatime.cn"
 
 /* 测试和生产模式-推送证书名称*/
 

@@ -12,7 +12,8 @@
 #import "IndexHeaderPageView.h"
 
 
-@interface IndexHeaderPageView : UICollectionReusableView
+
+@interface IndexHeaderPageView : UIView
 
 /**
  轮播图
@@ -20,35 +21,24 @@
 @property(nonatomic,strong) SDCycleScrollView *cycleScrollView ;
 
 /**
- 整个视图的headerview
+ 年级菜单
  */
-@property(nonatomic,strong) UIView *headerContentView ;
+@property (nonatomic, strong) UIScrollView *gradeMenu ;
 
 /**
- 科目菜单
+ 今日直播 滚动视图
  */
-@property(nonatomic,strong) UIView *squareMenu ;
-@property(nonatomic,strong) NSMutableArray <UIView *> *squareMenuArr ;
+@property (nonatomic, strong) UICollectionView *todayLiveScrollView ;
 
 /**
- 名师入驻 滚动图
+ 精选内容 栏
  */
-@property(nonatomic,strong) UICollectionView *teacherScrollView ;
-
+@property (nonatomic, strong) UIView *fancyView;
 
 /**
- 名师入驻的header
+ 更多精选 按钮
  */
-@property(nonatomic,strong) UIView *teacherScrollHeader ;
-
-
-/**
- 全部辅导按钮
- */
-@property(nonatomic,strong) UIView *conmmandView ;
-@property(nonatomic,strong) UIButton *recommandAllButton ;
-
-@property(nonatomic,strong) UIButton *allArrowButton ;
+@property (nonatomic, strong) UIControl *moreFancyButton ;
 
 
 
