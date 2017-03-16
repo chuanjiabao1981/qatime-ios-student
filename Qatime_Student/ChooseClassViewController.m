@@ -11,8 +11,9 @@
 #import "UIViewController+AFHTTP.h"
 #import "QualityTableViewCell.h"
 #import "MJRefresh.h"
+#import "ClassSubjectCollectionViewCell.h"
 
-@interface ChooseClassViewController ()<UITableViewDataSource,UITableViewDelegate>{
+@interface ChooseClassViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate>{
     
     NSString *_token;
     NSString *_idNumber;
@@ -21,6 +22,12 @@
     NSString *_grade;
     NSString *_subject;
     NavigationBar *_navigationBar;
+    
+    //弹窗蒙版
+    SnailQuickMaskPopups *_pops;
+    
+    //筛选tag的存放数组
+    NSArray *tags ;
     
     //存课程数据的数组
     NSMutableArray *_classesArray;
@@ -54,6 +61,9 @@
     
     //初始化数据
     _classesArray = @[].mutableCopy;
+    tags = @[@"不限",@"高考",@"中考",@"会考",@"小升初考试",@"高考志愿",@"英语考级",@"奥数竞赛",@"历年真题",@"期中期末试卷",@"自编试题",@"暑假课",@"寒假课",@"周末课",@"国庆假期课",@"基础课",@"巩固课",@"提高课",@"外教",@"冲刺",@"重点难点"];
+    
+    
     
     //导航栏
     [self setupNavigation];
@@ -75,11 +85,6 @@
         //加载数据
         [self requestClass];
     }];
-    
-    
-   
-
-    
     
     
 }
@@ -159,6 +164,55 @@
 
 
 
+#pragma mark- collectionview datasource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    
+    return tags.count;
+    
+}
+
+
+- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    static NSString * CellIdentifier = @"CollectionCell";
+    ClassSubjectCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    cell.subject.text = tags[indexPath.row];
+    cell.subject.font = [UIFont systemFontOfSize:14*ScrenScale];
+    return cell;
+
+    
+}
+
+#pragma mark- collectionview delegate
+//item间距
+- (UIEdgeInsets) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+    
+    return UIEdgeInsetsMake(20, 20, 0, 20);
+}
+
+//行距
+- (CGFloat) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
+    
+    return 20;
+}
+
+//点击选择
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [_filterView.tagsButton setTitle:tags[indexPath.row] forState:UIControlStateNormal];
+    
+    //蒙版消失之后 ,执行操作
+    [_pops dismissWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
+        
+    }];
+    
+    
+}
+
+
+
 
 
 //加载主视图
@@ -177,14 +231,7 @@
         
         _.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
            
-            
-            
-            
-            
         }];
-        
-        
-    
         _;
     });
     
@@ -201,6 +248,7 @@
         _.titleLabel.text = [NSString stringWithFormat:@"%@%@",_grade,_subject];
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+    
         _;
 
     });
@@ -208,6 +256,78 @@
     _filterView = [[ClassFilterView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_navigationBar.frame), self.view.width_sd, 40)];
     
     [self.view addSubview:_filterView];
+    
+    [_filterView.tagsButton addTarget:self action:@selector(chooseTags:) forControlEvents:UIControlEventTouchUpInside];
+    
+}
+
+//选择标签按钮
+- (void)chooseTags:(UIButton *)sender{
+    
+    _pops = [SnailQuickMaskPopups popupsWithMaskStyle:MaskStyleBlackTranslucent aView:self.tagsFilterView];
+    
+    //已选过 和未选过的情况
+    if (![sender.titleLabel.text isEqualToString:@"标签"]) {
+        //把tag选项表的所有按钮遍历成未选中状态
+        NSInteger index = 0;
+        for (NSString *title in tags) {
+            
+            if ([sender.titleLabel.text isEqualToString:title]) {
+                
+                ClassSubjectCollectionViewCell *cell = [_tagsFilterView.tagsCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
+                
+                cell.subject.textColor = [UIColor whiteColor];
+                cell.subject.backgroundColor = [UIColor orangeColor];
+                cell.subject.layer.borderColor = [UIColor orangeColor].CGColor;
+                
+            }else{
+                ClassSubjectCollectionViewCell *cell = [_tagsFilterView.tagsCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
+                
+                cell.subject.textColor = TITLECOLOR;
+                cell.subject.backgroundColor = [UIColor whiteColor];
+                cell.subject.layer.borderColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0].CGColor;
+                
+            }
+            
+            
+            index ++;
+        }
+        
+
+    }else{
+        
+        ClassSubjectCollectionViewCell *cell = [_tagsFilterView.tagsCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+        cell.subject.textColor = [UIColor whiteColor];
+        cell.subject.backgroundColor = [UIColor orangeColor];
+        cell.subject.layer.borderColor = [UIColor orangeColor].CGColor;
+        
+    }
+    
+
+    
+    [_pops presentWithAnimated:self completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
+        
+    }];
+}
+
+
+//懒加载标签筛选列表
+-(TagsFilterView *)tagsFilterView{
+    
+    if (!_tagsFilterView) {
+        
+        _tagsFilterView = [[TagsFilterView alloc]initWithFrame:CGRectMake(40, 120, self.view.width_sd-80, (self.view.width_sd-80)*1.6)];
+        _tagsFilterView.backgroundColor = [UIColor whiteColor];
+        
+        _tagsFilterView.tagsCollection.delegate = self;
+        _tagsFilterView.tagsCollection.dataSource = self;
+        
+        [_tagsFilterView.tagsCollection registerClass:[ClassSubjectCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
+        
+    }
+    
+    return _tagsFilterView;
+    
 }
 
 

@@ -12,11 +12,6 @@
 @interface ClassFilterView : UIView
 
 /**
- 排序按钮
- */
-@property (nonatomic, strong) UIControl *sortingButton;
-
-/**
  最新按钮
  */
 @property (nonatomic, strong) UIButton *newestButton;
@@ -34,7 +29,7 @@
 /**
  标签按钮
  */
-@property (nonatomic, strong) UIControl *tagsButton ;
+@property (nonatomic, strong) UIButton *tagsButton ;
 
 /**
  条件筛选按钮

@@ -115,14 +115,10 @@
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
    
-    
-    
     ChooseClassViewController *controller = [[ChooseClassViewController alloc]initWithGrade:_selectedGrade andSubject:subjects[indexPath.row]];
     
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
-    
-    
     
 }
 

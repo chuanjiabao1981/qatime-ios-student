@@ -41,6 +41,7 @@
         NSInteger index = 0;
         for (NSString *grade in gradeArr) {
             UIButton *btn = [[UIButton alloc]init];
+            btn.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
             [_gradeView addSubview:btn];
             [btn setTitle:grade forState:UIControlStateNormal];
             [btn setTitleColor:[UIColor colorWithRed:0.61 green:0.61 blue:0.61 alpha:1.00] forState:UIControlStateNormal];

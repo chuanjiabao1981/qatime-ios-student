@@ -232,6 +232,7 @@
 		5484B7421DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 5484B7411DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m */; };
 		5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */; };
 		549210271DCC6D0E00A65702 /* MultiFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549210261DCC6D0E00A65702 /* MultiFilterView.m */; };
+		5492FC861E7A2E6800F89593 /* TagsFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492FC851E7A2E6800F89593 /* TagsFilterView.m */; };
 		5493450C1E4B0571005849B2 /* JSPatchPlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */; };
 		5493450E1E4B058B005849B2 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5493450D1E4B058B005849B2 /* JavaScriptCore.framework */; };
 		5493D48A1E0B7FB60085A39E /* Logo_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 5493D4891E0B7FB60085A39E /* Logo_white.png */; };
@@ -831,6 +832,8 @@
 		5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UTF8Coding.m"; sourceTree = "<group>"; };
 		549210251DCC6D0E00A65702 /* MultiFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiFilterView.h; sourceTree = "<group>"; };
 		549210261DCC6D0E00A65702 /* MultiFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiFilterView.m; sourceTree = "<group>"; };
+		5492FC841E7A2E6800F89593 /* TagsFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagsFilterView.h; sourceTree = "<group>"; };
+		5492FC851E7A2E6800F89593 /* TagsFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagsFilterView.m; sourceTree = "<group>"; };
 		5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JSPatchPlatform.framework; sourceTree = "<group>"; };
 		5493450D1E4B058B005849B2 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		5493D4891E0B7FB60085A39E /* Logo_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo_white.png; sourceTree = "<group>"; };
@@ -1625,6 +1628,8 @@
 				543BCB051E79158400AD6721 /* ChooseClassView.m */,
 				543BCB0F1E7932AF00AD6721 /* ClassFilterView.h */,
 				543BCB101E7932AF00AD6721 /* ClassFilterView.m */,
+				5492FC841E7A2E6800F89593 /* TagsFilterView.h */,
+				5492FC851E7A2E6800F89593 /* TagsFilterView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -4386,6 +4391,7 @@
 				544200A71E77FB6300797E6C /* QualityClass.m in Sources */,
 				54B73D041DE3E85A00B7A7EB /* ChineseString.m in Sources */,
 				549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */,
+				5492FC861E7A2E6800F89593 /* TagsFilterView.m in Sources */,
 				54B45D161E5C34110027F958 /* JTSegmentPattern.swift in Sources */,
 				54B73CFB1DE3E40300B7A7EB /* MembersListView.m in Sources */,
 				543E0CCF1E002960004B24FD /* BindingMailView.m in Sources */,

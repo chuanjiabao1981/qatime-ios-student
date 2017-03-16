@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "ClassFilterView.h"
 #import "ChooseClassView.h"
+#import "TagsFilterView.h"
+#import "SnailQuickMaskPopups.h"
 
 @interface ChooseClassViewController : UIViewController
 
@@ -26,6 +28,12 @@
  课程列表
  */
 @property (nonatomic, strong) UITableView *classTableView ;
+
+
+/**
+ 标签筛选列表
+ */
+@property (nonatomic, strong) TagsFilterView *tagsFilterView ;
 
 
 /**

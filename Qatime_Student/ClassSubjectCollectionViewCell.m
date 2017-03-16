@@ -18,11 +18,11 @@
         self.backgroundColor = [UIColor whiteColor];
         self.contentView.backgroundColor = [UIColor whiteColor];
         
-        
         _subject = ({
             UILabel *_ = [[UILabel alloc]initWithFrame:self.contentView.frame];
             [self.contentView addSubview:_];
             _.textAlignment = NSTextAlignmentCenter;
+            _.font = [UIFont systemFontOfSize:15*ScrenScale];
             _.textColor = TITLECOLOR;
             _.layer.borderWidth = 1;
             _.layer.borderColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0].CGColor;
