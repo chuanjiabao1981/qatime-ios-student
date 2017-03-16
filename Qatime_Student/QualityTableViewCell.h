@@ -10,6 +10,7 @@
 
 #import <UIKit/UIKit.h>
 #import "QualityClass.h"
+#import "TutoriumList.h"
 
 
 @interface QualityTableViewCell : UITableViewCell
@@ -46,5 +47,10 @@
  */
 @property (nonatomic, strong) QualityClass *model ;
 
+
+/**
+ classModel
+ */
+@property (nonatomic, strong) TutoriumListInfo *classModel ;
 
 @end

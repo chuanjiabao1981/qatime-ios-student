@@ -233,6 +233,9 @@
 		5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */; };
 		549210271DCC6D0E00A65702 /* MultiFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549210261DCC6D0E00A65702 /* MultiFilterView.m */; };
 		5492FC861E7A2E6800F89593 /* TagsFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492FC851E7A2E6800F89593 /* TagsFilterView.m */; };
+		5492FC891E7A6DC600F89593 /* ChooseClassTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492FC881E7A6DC600F89593 /* ChooseClassTableViewCell.m */; };
+		5492FC8C1E7A7BA800F89593 /* MultiFiltersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492FC8B1E7A7BA800F89593 /* MultiFiltersView.m */; };
+		5492FC8F1E7A7BB800F89593 /* MultifiltersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492FC8E1E7A7BB800F89593 /* MultifiltersViewController.m */; };
 		5493450C1E4B0571005849B2 /* JSPatchPlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */; };
 		5493450E1E4B058B005849B2 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5493450D1E4B058B005849B2 /* JavaScriptCore.framework */; };
 		5493D48A1E0B7FB60085A39E /* Logo_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 5493D4891E0B7FB60085A39E /* Logo_white.png */; };
@@ -834,6 +837,12 @@
 		549210261DCC6D0E00A65702 /* MultiFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiFilterView.m; sourceTree = "<group>"; };
 		5492FC841E7A2E6800F89593 /* TagsFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagsFilterView.h; sourceTree = "<group>"; };
 		5492FC851E7A2E6800F89593 /* TagsFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagsFilterView.m; sourceTree = "<group>"; };
+		5492FC871E7A6DC600F89593 /* ChooseClassTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseClassTableViewCell.h; sourceTree = "<group>"; };
+		5492FC881E7A6DC600F89593 /* ChooseClassTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseClassTableViewCell.m; sourceTree = "<group>"; };
+		5492FC8A1E7A7BA800F89593 /* MultiFiltersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiFiltersView.h; sourceTree = "<group>"; };
+		5492FC8B1E7A7BA800F89593 /* MultiFiltersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiFiltersView.m; sourceTree = "<group>"; };
+		5492FC8D1E7A7BB800F89593 /* MultifiltersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultifiltersViewController.h; sourceTree = "<group>"; };
+		5492FC8E1E7A7BB800F89593 /* MultifiltersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultifiltersViewController.m; sourceTree = "<group>"; };
 		5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JSPatchPlatform.framework; sourceTree = "<group>"; };
 		5493450D1E4B058B005849B2 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		5493D4891E0B7FB60085A39E /* Logo_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo_white.png; sourceTree = "<group>"; };
@@ -1613,6 +1622,8 @@
 				543BCB021E79157400AD6721 /* ChooseGradeAndSubjectViewController.m */,
 				543BCB071E79159200AD6721 /* ChooseClassViewController.h */,
 				543BCB081E79159200AD6721 /* ChooseClassViewController.m */,
+				5492FC8D1E7A7BB800F89593 /* MultifiltersViewController.h */,
+				5492FC8E1E7A7BB800F89593 /* MultifiltersViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1630,6 +1641,8 @@
 				543BCB101E7932AF00AD6721 /* ClassFilterView.m */,
 				5492FC841E7A2E6800F89593 /* TagsFilterView.h */,
 				5492FC851E7A2E6800F89593 /* TagsFilterView.m */,
+				5492FC8A1E7A7BA800F89593 /* MultiFiltersView.h */,
+				5492FC8B1E7A7BA800F89593 /* MultiFiltersView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1646,6 +1659,8 @@
 			children = (
 				543BCB0C1E79173700AD6721 /* ClassSubjectCollectionViewCell.h */,
 				543BCB0D1E79173700AD6721 /* ClassSubjectCollectionViewCell.m */,
+				5492FC871E7A6DC600F89593 /* ChooseClassTableViewCell.h */,
+				5492FC881E7A6DC600F89593 /* ChooseClassTableViewCell.m */,
 			);
 			name = cell;
 			sourceTree = "<group>";
@@ -4336,6 +4351,7 @@
 				541F91E41DC9D16700180BE8 /* TutoriumCollectionViewCell.m in Sources */,
 				54652E2B1DEEB98600F4607C /* NoticeSettingViewController.m in Sources */,
 				5422337E1E15F6100092AB66 /* UIAlertController+Blocks.m in Sources */,
+				5492FC8F1E7A7BB800F89593 /* MultifiltersViewController.m in Sources */,
 				5442009B1E77914200797E6C /* TodayLiveCollectionViewCell.m in Sources */,
 				54D66F7F1DEC33C300ED2EBC /* AllClassViewController.m in Sources */,
 				548328F01DDC6F370053AB29 /* UUProgressHUD.m in Sources */,
@@ -4470,6 +4486,7 @@
 				54B45D141E5C33F00027F958 /* JTSegmentControl.swift in Sources */,
 				5413D26E1DF7CF1C00A8FDEC /* Recharge.m in Sources */,
 				548328EF1DDC6F360053AB29 /* UUMessageFrame.m in Sources */,
+				5492FC8C1E7A7BA800F89593 /* MultiFiltersView.m in Sources */,
 				5435D9521DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m in Sources */,
 				542021141E2DF7F100517A47 /* Refund.m in Sources */,
 				545B3BAD1E0AA2DD00751D08 /* GradeList.m in Sources */,
@@ -4513,6 +4530,7 @@
 				542C173E1DFA50760088DB3F /* Unpaid.m in Sources */,
 				54B914921E6D5B7F00F377ED /* CityChosenViewController.m in Sources */,
 				5420210E1E2DF7C100517A47 /* RefundTableViewCell.m in Sources */,
+				5492FC891E7A6DC600F89593 /* ChooseClassTableViewCell.m in Sources */,
 				54DBA4BA1DE442D900A67A90 /* YZInputView.m in Sources */,
 				5407C9961DE7DE8400DB04C8 /* NSNumber+YYAdd.m in Sources */,
 				541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */,

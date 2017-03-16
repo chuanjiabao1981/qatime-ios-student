@@ -601,6 +601,7 @@
         default:
             break;
     }
+    
     if (_datePicker) {
         [self.view addSubview:_datePicker];
         [_datePicker showHcdDateTimePicker];

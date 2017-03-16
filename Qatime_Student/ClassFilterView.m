@@ -84,7 +84,7 @@
             .widthIs(self.height_sd*2);
             
             UILabel *label = [[UILabel alloc]init];
-            label.userInteractionEnabled = YES;
+            label.userInteractionEnabled = NO;
             [_ addSubview:label];
             label.textColor = TITLECOLOR;
             label.text = @"筛选";
@@ -96,7 +96,7 @@
             [label setSingleLineAutoResizeWithMaxWidth:100];
             
             UIImageView *image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"筛选"]];
-            image.userInteractionEnabled = YES;
+            image.userInteractionEnabled = NO;
             [_ addSubview:image];
             image.sd_layout
             .rightSpaceToView(label,0)

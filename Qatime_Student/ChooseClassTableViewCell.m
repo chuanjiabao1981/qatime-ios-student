@@ -1,32 +1,30 @@
 //
-//  QualityTableViewCell.m
+//  ChooseClassTableViewCell.m
 //  Qatime_Student
 //
-//  Created by Shin on 2017/3/14.
+//  Created by Shin on 2017/3/16.
 //  Copyright © 2017年 WWTD. All rights reserved.
 //
 
-#import "QualityTableViewCell.h"
+#import "ChooseClassTableViewCell.h"
+
 #import "UIImageView+WebCache.h"
 #import "SDWebImageManager.h"
 
-
-@interface QualityTableViewCell (){
+@interface ChooseClassTableViewCell (){
     
     UIView *_content;  //背景框
-    
-    UIImageView *_subjectImage;
     
     UIImageView *_teacherImage;
     
     //图片缓存管理器
     SDWebImageManager *manager;
-    
+
 }
 
 @end
 
-@implementation QualityTableViewCell
+@implementation ChooseClassTableViewCell
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     
@@ -56,30 +54,7 @@
         .bottomSpaceToView(_content,0)
         .autoWidthRatio(1.6);
         
-        
-        //两个状态标签
-        _left_StateLabel = [[UILabel alloc]init];
-        _left_StateLabel.textColor = [UIColor whiteColor];
-        _left_StateLabel.backgroundColor = [UIColor colorWithRed:0.4 green:0.8 blue:1.0 alpha:1.0];
-        [_classImage addSubview:_left_StateLabel];
-        _left_StateLabel.sd_layout
-        .leftSpaceToView(_classImage,0)
-        .bottomSpaceToView(_classImage,0)
-        .autoHeightRatio(0);
-        [_left_StateLabel setSingleLineAutoResizeWithMaxWidth:100];
-        
-        _right_StateLabel = [[UILabel alloc]init];
-        _right_StateLabel.textColor = [UIColor whiteColor];
-        _right_StateLabel.backgroundColor = [UIColor colorWithRed:1.0 green:0.4 blue:0.0 alpha:1.0];
-        [_classImage addSubview:_right_StateLabel];
-        _right_StateLabel.sd_layout
-        .leftSpaceToView(_left_StateLabel,0)
-        .bottomSpaceToView(_classImage,0)
-        .autoHeightRatio(0);
-        [_right_StateLabel setSingleLineAutoResizeWithMaxWidth:100];
-        
-        
-        
+    
         //课程名
         _className = [[UILabel alloc]init];
         _className.font = [UIFont systemFontOfSize:15*ScrenScale];
@@ -111,56 +86,38 @@
         .topEqualToView(_teacherImage)
         .bottomEqualToView(_teacherImage);
         [_teacherName setSingleLineAutoResizeWithMaxWidth:100];
-        
-        //年级科目图片
-        _subjectImage = [[UIImageView alloc]init];
-        [_subjectImage setImage:[UIImage imageNamed:@"book"]];
-        [_content addSubview:_subjectImage];
-        _subjectImage.sd_layout
-        .leftEqualToView(_className)
-        .bottomSpaceToView(_teacherImage,10)
-        .heightIs(12)
-        .widthEqualToHeight();
+       
         
         //年级科目label
-        _gradeAndSubject = [[UILabel alloc]init];
-        _gradeAndSubject.font = [UIFont systemFontOfSize:12*ScrenScale];
-        _gradeAndSubject.textColor = TITLECOLOR;
-        [_content addSubview:_gradeAndSubject];
-        _gradeAndSubject.sd_layout
-        .leftEqualToView(_teacherName)
-        .topEqualToView(_subjectImage)
-        .bottomEqualToView(_subjectImage);
-        [_gradeAndSubject setSingleLineAutoResizeWithMaxWidth:200];
+        _price = [[UILabel alloc]init];
+        _price.font = [UIFont systemFontOfSize:12*ScrenScale];
+        _price.textColor = BUTTONRED;
+        [_content addSubview:_price];
+        _price.sd_layout
+        .leftEqualToView(_teacherImage)
+        .bottomSpaceToView(_teacherName,10)
+        .autoHeightRatio(0);
+        [_price setSingleLineAutoResizeWithMaxWidth:200];
         
-    
+        
     }
     return self;
 }
 
 
 
--(void)setModel:(QualityClass *)model{
-    
-    
-    
-    
-}
 
-
--(void)setClassModel:(TutoriumListInfo *)classModel{
+-(void)setModel:(TutoriumListInfo *)model{
     
-    _classModel = classModel;
+    _model = model;
     
     /* 如果本地已经保留了图片缓存*/
-    if ([self diskImageExistsForURL:[NSURL URLWithString:classModel.publicize]]==YES) {
-        [_classImage sd_setImageWithURL:[NSURL URLWithString:classModel.publicize]];
+    if ([self diskImageExistsForURL:[NSURL URLWithString:model.publicize]]==YES) {
+        [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
     }else{
         
-        [_classImage sd_setImageWithURL:[NSURL URLWithString:classModel.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-            
+        [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            
             _classImage.alpha = 0.0;
             [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
                 if (image) {
@@ -177,9 +134,13 @@
     
     
     //课程名
-    _className.text = classModel.name;
-    //
+    _className.text = model.name;
+    
+    //价格
+    _price.text = [NSString stringWithFormat:@"¥%@",model.price];
 
+    //老师名字
+    _teacherName.text = model.teacher_name;
     
     
 }
@@ -203,8 +164,3 @@
 }
 
 @end
-
-
-
-
-
