@@ -22,7 +22,7 @@
             UIButton *_ = [[UIButton alloc]init];
             [self addSubview:_];
             [_ setTitle:@"最新" forState:UIControlStateNormal];
-            [_ setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+            [_ setTitleColor:SEPERATELINECOLOR forState:UIControlStateNormal];
             _.titleLabel.textColor = TITLECOLOR;
             _.titleLabel.font = [UIFont systemFontOfSize:15*ScrenScale];
             _.sd_layout
@@ -35,13 +35,25 @@
             
             _;
         });
+        //最新 筛选箭头
+        _newestArrow = ({
+            UIImageView *_=[[UIImageView alloc]init];
+            [self addSubview:_];
+            _.sd_layout
+            .centerYEqualToView(_newestButton)
+            .leftSpaceToView(_newestButton,0)
+            .heightRatioToView(_newestButton,0.3)
+            .widthIs(5);
+            _;
+        });
+        
         
         //价格按钮
         _priceButton= ({
             UIButton *_ = [[UIButton alloc]init];
             [self addSubview:_];
             [_ setTitle:@"价格" forState:UIControlStateNormal];
-            [_ setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+            [_ setTitleColor:SEPERATELINECOLOR forState:UIControlStateNormal];
             _.titleLabel.textColor = TITLECOLOR;
             _.titleLabel.font = [UIFont systemFontOfSize:15*ScrenScale];
             _.sd_layout
@@ -53,12 +65,25 @@
             _;
         });
         
+        //价格 筛选箭头
+        _priceArrow = ({
+            UIImageView *_=[[UIImageView alloc]init];
+            [self addSubview:_];
+            _.sd_layout
+            .centerYEqualToView(_priceButton)
+            .leftSpaceToView(_priceButton,0)
+            .heightRatioToView(_priceButton,0.3)
+            .widthIs(5);
+            _;
+        });
+
+        
         //人气按钮
         _popularityButton = ({
             UIButton *_ = [[UIButton alloc]init];
             [self addSubview:_];
             [_ setTitle:@"人气" forState:UIControlStateNormal];
-            [_ setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+            [_ setTitleColor:SEPERATELINECOLOR forState:UIControlStateNormal];
             _.titleLabel.textColor = TITLECOLOR;
             _.titleLabel.font = [UIFont systemFontOfSize:15*ScrenScale];
             _.sd_layout
@@ -71,6 +96,19 @@
             
             _;
         });
+        
+        //人气 筛选箭头
+        _popularityArrow = ({
+            UIImageView *_=[[UIImageView alloc]init];
+            [self addSubview:_];
+            _.sd_layout
+            .centerYEqualToView(_popularityButton)
+            .leftSpaceToView(_popularityButton,0)
+            .heightRatioToView(_popularityButton,0.3)
+            .widthIs(5);
+            _;
+        });
+
 
         
         //条件筛选按钮

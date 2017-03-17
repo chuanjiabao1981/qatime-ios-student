@@ -316,6 +316,8 @@
 		54B9CB001DFE4E8A003961FF /* BuyBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9CAFF1DFE4E8A003961FF /* BuyBar.m */; };
 		54BB2D691E55879000446141 /* chat_voice_record.png in Resources */ = {isa = PBXBuildFile; fileRef = 54BB2D681E55879000446141 /* chat_voice_record.png */; };
 		54BB2D6B1E5587B900446141 /* chat_ipunt_message.png in Resources */ = {isa = PBXBuildFile; fileRef = 54BB2D6A1E5587B900446141 /* chat_ipunt_message.png */; };
+		54C525191E7BAC000005B5A0 /* TTGTagCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C525121E7BAC000005B5A0 /* TTGTagCollectionView.m */; };
+		54C5251A1E7BAC000005B5A0 /* TTGTextTagCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C525141E7BAC000005B5A0 /* TTGTextTagCollectionView.m */; };
 		54C9A8CE1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C9A8CD1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m */; };
 		54C9A8D11E12159700B81EBF /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C9A8D01E12159700B81EBF /* PlayerView.m */; };
 		54CB26601DEFFBD300AE7414 /* ChangPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CB265F1DEFFBD300AE7414 /* ChangPhoneView.m */; };
@@ -1044,6 +1046,10 @@
 		54BB2D681E55879000446141 /* chat_voice_record.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat_voice_record.png; sourceTree = "<group>"; };
 		54BB2D6A1E5587B900446141 /* chat_ipunt_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat_ipunt_message.png; sourceTree = "<group>"; };
 		54C21F8A1DDDB06E000549F2 /* Qatime_Student.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Qatime_Student.entitlements; sourceTree = "<group>"; };
+		54C525111E7BAC000005B5A0 /* TTGTagCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTGTagCollectionView.h; sourceTree = "<group>"; };
+		54C525121E7BAC000005B5A0 /* TTGTagCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGTagCollectionView.m; sourceTree = "<group>"; };
+		54C525131E7BAC000005B5A0 /* TTGTextTagCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTGTextTagCollectionView.h; sourceTree = "<group>"; };
+		54C525141E7BAC000005B5A0 /* TTGTextTagCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGTextTagCollectionView.m; sourceTree = "<group>"; };
 		54C9A8CC1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMJKeyboardShowHiddenNotificationCenter.h; sourceTree = "<group>"; };
 		54C9A8CD1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMJKeyboardShowHiddenNotificationCenter.m; sourceTree = "<group>"; };
 		54C9A8CF1E12159700B81EBF /* PlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
@@ -2556,6 +2562,7 @@
 				54B73CFF1DE3E85A00B7A7EB /* ChineseSorting */,
 				5493D4BC1E0BE1050085A39E /* TLCityPicker */,
 				547FBF251DF6817300955A9E /* UMessage_Sdk_1.4.0 */,
+				54C525081E7BAC000005B5A0 /* TTGTagCollectionView */,
 				54CB266C1DF02FC600AE7414 /* WeChatSDK */,
 				54955D601DDBF1180079EB99 /* 网易云信 */,
 				5483288C1DDC6F360053AB29 /* UUChat */,
@@ -3019,6 +3026,17 @@
 				54B9CAFF1DFE4E8A003961FF /* BuyBar.m */,
 			);
 			name = "试听购买栏";
+			sourceTree = "<group>";
+		};
+		54C525081E7BAC000005B5A0 /* TTGTagCollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				54C525111E7BAC000005B5A0 /* TTGTagCollectionView.h */,
+				54C525121E7BAC000005B5A0 /* TTGTagCollectionView.m */,
+				54C525131E7BAC000005B5A0 /* TTGTextTagCollectionView.h */,
+				54C525141E7BAC000005B5A0 /* TTGTextTagCollectionView.m */,
+			);
+			path = TTGTagCollectionView;
 			sourceTree = "<group>";
 		};
 		54C9A8CB1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter */ = {
@@ -4460,6 +4478,7 @@
 				54FCBAF91DD5DCE50094BF58 /* Notice.m in Sources */,
 				54AA30881DF98C40009E0D04 /* MyOrderView.m in Sources */,
 				54D66F791DEC087D00ED2EBC /* NSString+StatusSwitch.m in Sources */,
+				54C5251A1E7BAC000005B5A0 /* TTGTextTagCollectionView.m in Sources */,
 				547FBF311DF6B99600955A9E /* PersonalDescViewController.m in Sources */,
 				542020FF1E2DBE5100517A47 /* UIViewController+AFHTTP.m in Sources */,
 				544200A41E77FA7400797E6C /* QualityTableViewCell.m in Sources */,
@@ -4514,6 +4533,7 @@
 				540A34CA1E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m in Sources */,
 				546A54741DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m in Sources */,
 				54D66F691DEBDA5700ED2EBC /* ClassTimeTableViewCell.m in Sources */,
+				54C525191E7BAC000005B5A0 /* TTGTagCollectionView.m in Sources */,
 				545B86FB1E650F2000A157F0 /* QRCodeController.m in Sources */,
 				545B3BA71E0A216700751D08 /* GuideViewController.m in Sources */,
 				54A153AA1DC6F09D0070B508 /* main.m in Sources */,

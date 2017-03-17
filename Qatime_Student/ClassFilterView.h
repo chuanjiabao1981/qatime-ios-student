@@ -15,16 +15,19 @@
  最新按钮
  */
 @property (nonatomic, strong) UIButton *newestButton;
+@property (nonatomic, strong) UIImageView *newestArrow ;
 
 /**
  价格按钮
  */
 @property (nonatomic, strong) UIButton *priceButton;
+@property (nonatomic, strong) UIImageView *priceArrow ;
 
 /**
  人气按钮
  */
 @property (nonatomic, strong) UIButton *popularityButton ;
+@property (nonatomic, strong) UIImageView *popularityArrow ;
 
 /**
  标签按钮

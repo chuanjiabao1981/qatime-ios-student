@@ -33,7 +33,7 @@
 #import "YYTextLayout.h"
 
 
-@interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>{
+@interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,TTGTextTagCollectionViewDelegate>{
     
     NavigationBar *_navigationBar;
     
@@ -60,6 +60,9 @@
     
     /* 优惠码*/
     NSString *_promotionCode;
+    
+    /* 标签图的config*/
+    TTGTextTagConfig *_config;
     
 }
 
@@ -145,6 +148,27 @@
     
     _tutoriumInfoView.segmentControl.selectionIndicatorHeight=2;
     _tutoriumInfoView.segmentControl.selectedSegmentIndex=0;
+    
+    _tutoriumInfoView.tagsView.delegate = self;
+    
+    _config = [[TTGTextTagConfig alloc]init];
+    _config.tagTextColor = BUTTONRED;
+    _config.tagSelectedTextColor = BUTTONRED;
+    _config.tagBackgroundColor = [UIColor whiteColor];
+    _config.tagSelectedBackgroundColor = [UIColor whiteColor];
+    _config.tagBorderColor = BUTTONRED;
+    _config.tagSelectedBorderColor = BUTTONRED;
+    _config.tagShadowColor = [UIColor clearColor];
+    _config.tagCornerRadius = 0;
+    _config.tagSelectedCornerRadius = 0;
+    _config.tagExtraSpace = CGSizeMake(10, 5);
+    
+    //测试数据
+    [_tutoriumInfoView.tagsView addTags:@[@"AutoLayout", @"dynamically", @"calculates", @"the", @"size", @"and", @"position",@"of", @"all", @"the", @"views", @"in", @"your", @"view", @"hierarchy", @"based",@"on", @"constraints", @"placed", @"on", @"those", @"views"] withConfig:_config];
+    
+    //自适应一下尺寸...
+    
+    
     
     
     typeof(self) __weak weakSelf = self;
@@ -780,6 +804,9 @@
 }
 
 
+
+
+
 /* 点击课程表,进入回放的点击事件*/
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -836,6 +863,18 @@
         
     }
 }
+
+
+#pragma mark- tagview delegate
+
+- (void)textTagCollectionView:(TTGTextTagCollectionView *)textTagCollectionView updateContentSize:(CGSize)contentSize{
+    
+    [_tutoriumInfoView.tagsView clearAutoHeigtSettings];
+    _tutoriumInfoView.tagsView.sd_layout
+    .heightIs(contentSize.height);
+
+}
+
 
 
 /* 刷新页面*/

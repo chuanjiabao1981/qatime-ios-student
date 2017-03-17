@@ -52,7 +52,6 @@
     _navigationBar.titleLabel.text = @"筛选";
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     
-    
     UIButton *rightButton = [[UIButton alloc]init];
     [_navigationBar addSubview:rightButton];
     
@@ -300,7 +299,7 @@
             UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId" forIndexPath:indexPath];
             
             UILabel *label = [[UILabel alloc]init];
-            label.text = @"status";
+            label.text = @"课程状态";
             label.textColor = TITLECOLOR;
             [header addSubview:label];
             label.sd_layout
@@ -531,7 +530,7 @@
         [_filtersDic removeObjectForKey:@"试听状态"];
     }
     
-
+    
 }
 
 

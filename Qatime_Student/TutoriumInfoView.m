@@ -319,14 +319,46 @@
         _liveEndTimeLabel.sd_layout.leftSpaceToView(_to,2).topEqualToView(_liveStartTimeLabel).autoHeightRatio(0);
         [_liveEndTimeLabel setSingleLineAutoResizeWithMaxWidth:300.0f];
         [_liveEndTimeLabel setText:@""];
-
+        
+        
+        /* 标签*/
+        UILabel *tags = [[UILabel alloc]init];
+        tags.text = @"课程标签";
+        tags.font = TITLEFONTSIZE;
+        [_view1 addSubview:tags];
+        tags.sd_layout
+        .leftEqualToView(_liveStartTimeLabel)
+        .topSpaceToView(_liveStartTimeLabel,20)
+        .autoHeightRatio(0);
+        [tags setSingleLineAutoResizeWithMaxWidth:100.0f];
+        [tags updateLayout];
+        
+        UIView *circleTag=[[UIView alloc]init];
+        circleTag.backgroundColor = TITLERED;
+        [_view1 addSubview:circleTag];
+        circleTag.sd_layout
+        .leftEqualToView(circle5)
+        .rightEqualToView(circle5)
+        .centerYEqualToView(tags)
+        .heightEqualToWidth();
+        circleTag.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
+        
+        //标签图
+        _tagsView = [[TTGTextTagCollectionView alloc]init];
+        _tagsView.alignment = TTGTagCollectionAlignmentFillByExpandingWidth;
+        [_view1 addSubview:_tagsView];
+        _tagsView.sd_layout
+        .leftSpaceToView(_view1,20)
+        .rightSpaceToView(_view1,20)
+        .topSpaceToView(tags,10)
+        .heightIs(200);
         
         
         /* 辅导简介*/
         _descriptions=[[UILabel alloc]init];
         _descriptions.font = TITLEFONTSIZE;
         [_view1 addSubview:_descriptions];
-        _descriptions.sd_layout.leftEqualToView(_subjectLabel).topSpaceToView(_to,20).autoHeightRatio(0);
+        _descriptions.sd_layout.leftEqualToView(_subjectLabel).topSpaceToView(_tagsView,20).autoHeightRatio(0);
         [_descriptions setSingleLineAutoResizeWithMaxWidth:100.0f];
         [_descriptions setText:@"辅导简介"];
         

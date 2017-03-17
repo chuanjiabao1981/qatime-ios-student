@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HMSegmentedControl.h"
 
-
+#import "TTGTextTagCollectionView.h"
 
 
 @interface TutoriumInfoView : UIScrollView
@@ -26,6 +26,7 @@
 /* 开课时间*/
 @property(nonatomic,strong) UILabel  *deadLine ;
 
+
 /* 价格*/
 @property(nonatomic,strong) UILabel *priceLabel ;
 
@@ -35,7 +36,6 @@
 
 /* 滑动视图*/
 @property(nonatomic,strong) UIScrollView  *scrollView ;
-
 
 /* 滑动控制器*/
 
@@ -64,6 +64,11 @@
 /* 直播时间*/
 @property(nonatomic,strong) UILabel *liveStartTimeLabel ;
 @property(nonatomic,strong) UILabel *liveEndTimeLabel ;
+
+/* 标签图*/
+@property (nonatomic, strong) TTGTextTagCollectionView *tagsView ;
+
+
 
 /* 辅导简介*/
 @property(nonatomic,strong) UILabel *descriptions  ;//"辅导简介"字样,自动布局使用

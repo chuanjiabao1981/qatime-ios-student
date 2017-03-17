@@ -128,14 +128,15 @@ typedef enum : NSUInteger {
         if ([_subject isEqualToString:@"全部"]) {
             
             _filterDic = [NSMutableDictionary dictionaryWithDictionary: @{@"grade":_grade,
-                          @"page":[NSString stringWithFormat:@"%ld",page],
-                          @"per_page":[NSString stringWithFormat:@"%ld",perPage]}];
+                                                                          @"page":[NSString stringWithFormat:@"%ld",page],
+                                                                          @"per_page":[NSString stringWithFormat:@"%ld",perPage],
+                                                                          @"sort_by":@"created_at"}];
         }else{
             
             _filterDic = [NSMutableDictionary dictionaryWithDictionary:@{@"subject":_subject,
-                          @"grade":_grade,
-                          @"page":[NSString stringWithFormat:@"%ld",page],
-                          @"per_page":[NSString stringWithFormat:@"%ld",perPage]}];
+                                                                         @"grade":_grade,
+                                                                         @"page":[NSString stringWithFormat:@"%ld",page],
+                                                                         @"per_page":[NSString stringWithFormat:@"%ld",perPage]}];
         }
     }else{
         
@@ -143,8 +144,6 @@ typedef enum : NSUInteger {
         
     }
     
-    
-
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:_filterDic completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
@@ -191,25 +190,19 @@ typedef enum : NSUInteger {
         }else{
             //获取数据失败
             [self loadingHUDStopLoadingWithTitle:@"加载失败,请重试"];
+            [_classTableView.mj_header endRefreshing];
+            [_classTableView.mj_footer endRefreshing];
+            
+            
         }
         
     }];
     
-
+    
     
 }
 
 
-
-/**
- 使用上滑/下拉方式 访问和加载数据
-
- @param mode 刷新模式
- @param requestDic content字典
- */
-- (void)requestData:(RefreshMode)mode andData:(NSMutableDictionary *)requestDic{
-    
-}
 
 #pragma mark- tableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -314,13 +307,13 @@ typedef enum : NSUInteger {
         _.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         _.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-            //自动下拉
-            [self requestClass:PullToRefresh withContentDictionary:nil];
             
         }];
         
         //第一次自动下拉刷新
         [_.mj_header beginRefreshing];
+        //自动下拉
+        [self requestClass:PullToRefresh withContentDictionary:nil];
         
         _.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
             
@@ -350,17 +343,31 @@ typedef enum : NSUInteger {
         
     });
     
-    
     //多项筛选栏
     _filterView = [[ClassFilterView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_navigationBar.frame), self.view.width_sd, 40)];
     
     [self.view addSubview:_filterView];
+    
+    [_filterView.newestButton setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+    [_filterView.newestArrow setImage:[UIImage imageNamed:@"下箭头"]];
     
     //tag
     [_filterView.tagsButton addTarget:self action:@selector(chooseTags:) forControlEvents:UIControlEventTouchUpInside];
     
     //多项筛选
     [_filterView.filterButton addTarget:self action:@selector(multiFilters) forControlEvents:UIControlEventTouchUpInside];
+    
+    //单项条件筛选
+    
+    //最新
+    [_filterView.newestButton addTarget:self action:@selector(newestFilter:) forControlEvents:UIControlEventTouchUpInside];
+    
+    //价格
+    [_filterView.priceButton addTarget:self action:@selector(priceFilter:) forControlEvents:UIControlEventTouchUpInside];
+    
+    //人气
+    [_filterView.popularityButton addTarget:self action:@selector(countFilter:) forControlEvents:UIControlEventTouchUpInside];
+    
     
 }
 
@@ -392,10 +399,8 @@ typedef enum : NSUInteger {
                 
             }
             
-            
             index ++;
         }
-        
         
     }else{
         
@@ -411,6 +416,201 @@ typedef enum : NSUInteger {
     }];
 }
 
+//单项筛选
+
+/**
+ 筛选最新
+ */
+- (void)newestFilter:(UIButton *)sender{
+    NSDictionary *dic;
+    //重置所有按钮
+    [self filterButtonTurnReset];
+    [sender setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+    //如果已有sort_by字段
+    if (_filterDic[@"sort_by"]) {
+        //如果是价格筛选字段 正序或倒序
+        if ([_filterDic[@"sort_by"] isEqualToString:@"created_at.asc"]||[_filterDic[@"sort_by"] isEqualToString:@"created_at"]) {
+            //正序
+            if ([_filterDic[@"sort_by"] isEqualToString:@"created_at.asc"]) {
+                [_filterDic removeObjectForKey:@"sort_by"];
+                //改成倒序
+                dic = @{@"sort_by":@"created_at"};
+                [_filterView.newestArrow setImage:[UIImage imageNamed:@"上箭头"]];
+                
+            }else if ([_filterDic[@"sort_by"] isEqualToString:@"created_at"]){
+                //如果是倒序
+                [_filterDic removeObjectForKey:@"sort_by"];
+                //改成正序
+                dic = @{@"sort_by":@"created_at.asc"};
+                [_filterView.newestArrow setImage:[UIImage imageNamed:@"下箭头"]];
+                
+            }
+            
+        }else{
+            //如果不是价格筛选字段
+            //重置所有单选button
+            [self filterButtonTurnReset];
+            //按钮和箭头变化
+            [sender setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+            [_filterView.newestArrow setImage:[UIImage imageNamed:@"下箭头"]];
+            
+            [_filterDic removeObjectForKey:@"sort_by"];
+            //去掉后,改为正序
+            dic = @{@"sort_by":@"created_at.asc"};
+            
+        }
+        
+    }else{
+        //如果没有筛选字段
+        dic = @{@"sort_by":@"created_at.asc"};
+         [_filterView.newestArrow setImage:[UIImage imageNamed:@"下箭头"]];
+    }
+    
+    //发起筛选请求
+    [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
+        
+        [self requestClass:PullToRefresh withContentDictionary:dic.mutableCopy];
+    }];
+    
+}
+
+
+
+/**
+ 按价格筛选
+ */
+- (void)priceFilter:(UIButton *)sender{
+    
+    NSDictionary *dic;
+    //重置所有按钮
+    [self filterButtonTurnReset];
+    
+    [sender setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+    //如果已有sort_by字段
+    if (_filterDic[@"sort_by"]) {
+        //如果是价格筛选字段 正序或倒序
+        if ([_filterDic[@"sort_by"] isEqualToString:@"price.asc"]||[_filterDic[@"sort_by"] isEqualToString:@"price"]) {
+            //正序
+            if ([_filterDic[@"sort_by"] isEqualToString:@"price.asc"]) {
+                [_filterDic removeObjectForKey:@"sort_by"];
+                //改成倒序
+                dic = @{@"sort_by":@"price"};
+                [_filterView.priceArrow setImage:[UIImage imageNamed:@"上箭头"]];
+                
+            }else if ([_filterDic[@"sort_by"] isEqualToString:@"price"]){
+                //如果是倒序
+                [_filterDic removeObjectForKey:@"sort_by"];
+                //改成正序
+                dic = @{@"sort_by":@"price.asc"};
+                [_filterView.priceArrow setImage:[UIImage imageNamed:@"下箭头"]];
+                
+            }
+            
+        }else{
+            //如果不是价格筛选字段
+            [_filterDic removeObjectForKey:@"sort_by"];
+            
+            //重置所有单选button
+            [self filterButtonTurnReset];
+            //按钮和箭头变化
+            [sender setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+            [_filterView.priceArrow setImage:[UIImage imageNamed:@"下箭头"]];
+
+            //去掉后,改为正序
+            dic = @{@"sort_by":@"price.asc"};
+            
+        }
+        
+    }else{
+        //如果没有筛选字段
+        dic = @{@"sort_by":@"price.asc"};
+        [_filterView.priceArrow setImage:[UIImage imageNamed:@"下箭头"]];
+        
+    }
+    
+    //发起筛选请求
+    [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
+        
+        [self requestClass:PullToRefresh withContentDictionary:dic.mutableCopy];
+    }];
+    
+    
+}
+
+
+/**
+ 按人气筛选
+ */
+- (void)countFilter:(UIButton *)sender{
+    
+    NSDictionary *dic;
+    
+    [sender setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+    
+    //如果已有sort_by字段
+    if (_filterDic[@"sort_by"]) {
+        //如果是人气筛选字段
+        if ([_filterDic[@"sort_by"] isEqualToString:@"buy_count.asc"]||[_filterDic[@"sort_by"] isEqualToString:@"buy_count"]) {
+            //正序
+            if ([_filterDic[@"sort_by"] isEqualToString:@"buy_count.asc"]) {
+                [_filterDic removeObjectForKey:@"sort_by"];
+                //改成倒序
+                dic = @{@"sort_by":@"buy_count"};
+                [_filterView.popularityArrow setImage:[UIImage imageNamed:@"上箭头"]];
+                
+            }else if ([_filterDic[@"sort_by"] isEqualToString:@"buy_count"]){
+                //如果是倒序
+                [_filterDic removeObjectForKey:@"sort_by"];
+                //改成正序
+                dic = @{@"sort_by":@"buy_count.asc"};
+                [_filterView.popularityArrow setImage:[UIImage imageNamed:@"下箭头"]];
+                
+            }
+            
+        }else{
+            //如果不是人气筛选字段
+            [_filterDic removeObjectForKey:@"sort_by"];
+            //去掉后,改为正序
+            dic = @{@"sort_by":@"buy_count.asc"};
+            
+            //重置所有单选button
+            [self filterButtonTurnReset];
+            //按钮和箭头变化
+            [sender setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+            [_filterView.popularityArrow setImage:[UIImage imageNamed:@"下箭头"]];
+            
+        }
+        
+    }else{
+        //如果没有筛选字段
+        dic = @{@"sort_by":@"buy_count.asc"};
+        [_filterView.popularityArrow setImage:[UIImage imageNamed:@"下箭头"]];
+    }
+    
+    //发起筛选请求
+    [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
+        
+        [self requestClass:PullToRefresh withContentDictionary:dic.mutableCopy];
+    }];
+    
+    
+}
+
+//reset三个单项筛选按钮
+- (void)filterButtonTurnReset{
+    
+    [_filterView.newestButton setTitleColor:SEPERATELINECOLOR forState:UIControlStateNormal];
+    [_filterView.priceButton setTitleColor:SEPERATELINECOLOR forState:UIControlStateNormal];
+    [_filterView.popularityButton setTitleColor:SEPERATELINECOLOR forState:UIControlStateNormal];
+    
+    [_filterView.newestArrow setImage:nil];
+    [_filterView.priceArrow setImage:nil];
+    [_filterView.popularityArrow setImage:nil];
+    
+}
+
+
+
 //多项筛选
 - (void)multiFilters{
     
@@ -420,7 +620,7 @@ typedef enum : NSUInteger {
     
     /**
      多项筛选页面pop后传值回来
-
+     
      @param component 筛选项目字典
      @return void
      */
