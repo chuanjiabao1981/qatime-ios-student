@@ -128,6 +128,7 @@
 		5442009E1E7793E900797E6C /* TodayLive.m in Sources */ = {isa = PBXBuildFile; fileRef = 5442009D1E7793E900797E6C /* TodayLive.m */; };
 		544200A41E77FA7400797E6C /* QualityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544200A31E77FA7400797E6C /* QualityTableViewCell.m */; };
 		544200A71E77FB6300797E6C /* QualityClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 544200A61E77FB6300797E6C /* QualityClass.m */; };
+		54428DCC1E7C03F80004F27B /* UITableView+CYLTableViewPlaceHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 54428DCB1E7C03F80004F27B /* UITableView+CYLTableViewPlaceHolder.m */; };
 		54443E281E0D252F000D8E8B /* LocalChoseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54443E271E0D252F000D8E8B /* LocalChoseView.m */; };
 		54443E2A1E0D284E000D8E8B /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = 54443E291E0D284E000D8E8B /* point.png */; };
 		5444BD2B1E67BFAE00A75AD1 /* TeacherPublicClassCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5444BD2A1E67BFAE00A75AD1 /* TeacherPublicClassCollectionViewCell.swift */; };
@@ -607,6 +608,10 @@
 		544200A31E77FA7400797E6C /* QualityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QualityTableViewCell.m; sourceTree = "<group>"; };
 		544200A51E77FB6300797E6C /* QualityClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QualityClass.h; sourceTree = "<group>"; };
 		544200A61E77FB6300797E6C /* QualityClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QualityClass.m; sourceTree = "<group>"; };
+		54428DC81E7C03F80004F27B /* CYLTableViewPlaceHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYLTableViewPlaceHolder.h; sourceTree = "<group>"; };
+		54428DC91E7C03F80004F27B /* CYLTableViewPlaceHolderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYLTableViewPlaceHolderDelegate.h; sourceTree = "<group>"; };
+		54428DCA1E7C03F80004F27B /* UITableView+CYLTableViewPlaceHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+CYLTableViewPlaceHolder.h"; sourceTree = "<group>"; };
+		54428DCB1E7C03F80004F27B /* UITableView+CYLTableViewPlaceHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+CYLTableViewPlaceHolder.m"; sourceTree = "<group>"; };
 		54443E261E0D252F000D8E8B /* LocalChoseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalChoseView.h; sourceTree = "<group>"; };
 		54443E271E0D252F000D8E8B /* LocalChoseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalChoseView.m; sourceTree = "<group>"; };
 		54443E291E0D284E000D8E8B /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = "<group>"; };
@@ -1847,6 +1852,18 @@
 			name = "自定义Badge";
 			sourceTree = "<group>";
 		};
+		54428DC71E7C03F80004F27B /* CYLTableViewPlaceHolder */ = {
+			isa = PBXGroup;
+			children = (
+				54428DC81E7C03F80004F27B /* CYLTableViewPlaceHolder.h */,
+				54428DC91E7C03F80004F27B /* CYLTableViewPlaceHolderDelegate.h */,
+				54428DCA1E7C03F80004F27B /* UITableView+CYLTableViewPlaceHolder.h */,
+				54428DCB1E7C03F80004F27B /* UITableView+CYLTableViewPlaceHolder.m */,
+			);
+			name = CYLTableViewPlaceHolder;
+			path = HMSegmentedControl/CYLTableViewPlaceHolder;
+			sourceTree = "<group>";
+		};
 		5448AEA51E054C63007B1DF9 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -2567,6 +2584,7 @@
 				54955D601DDBF1180079EB99 /* 网易云信 */,
 				5483288C1DDC6F360053AB29 /* UUChat */,
 				54EA9B361DD9A81A004B8040 /* 网易视频云 */,
+				54428DC71E7C03F80004F27B /* CYLTableViewPlaceHolder */,
 				547E899A1DD1D8AD00749366 /* HMSegmentedControl */,
 				54634D7D1DDEAC1F0070C0FF /* FJFloatingView */,
 				54D661261DD04DBE00C9A0FF /* YZMenuView */,
@@ -4588,6 +4606,7 @@
 				545226081E2482E100F36280 /* EditNameTableViewCell.m in Sources */,
 				542021171E2DF90400517A47 /* RefundTableView.m in Sources */,
 				543BCB001E79156300AD6721 /* ChooseGradeAndSubjectView.m in Sources */,
+				54428DCC1E7C03F80004F27B /* UITableView+CYLTableViewPlaceHolder.m in Sources */,
 				54652E051DEE823100F4607C /* FileService.m in Sources */,
 				54E402291E65831B004935C2 /* QRMaskView.m in Sources */,
 				547FBF351DF6CEC800955A9E /* PersonalDescTableViewCell.m in Sources */,

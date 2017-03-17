@@ -17,7 +17,7 @@
 
  @param component 回调数据
  */
-typedef void(^multiFilters)(NSMutableDictionary *component);
+typedef void(^multiFilters)(NSMutableDictionary *component ,BOOL reset);
 
 
 @interface MultifiltersViewController : UIViewController
@@ -45,7 +45,16 @@ typedef void(^multiFilters)(NSMutableDictionary *component);
  */
 @property (nonatomic, copy) multiFilters componentsBlock ;
 
-- (void)multiFilters:(multiFilters)components;
+
+/**
+ 已筛选的条件
+
+ @param filterdDic 筛选条件字典
+ @return 实例
+ */
+-(instancetype)initWithFilters:( NSDictionary * _Nullable )filterdDic;
+
+- (void)multiFilters:(multiFilters)components ;
 
 
 @end

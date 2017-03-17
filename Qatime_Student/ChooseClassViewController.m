@@ -16,6 +16,7 @@
 #import "TutoriumList.h"
 #import "UIViewController+HUD.h"
 #import "MultifiltersViewController.h"
+#import "CYLTableViewPlaceHolder.h"
 
 //上滑 或 下拉
 typedef enum : NSUInteger {
@@ -24,7 +25,7 @@ typedef enum : NSUInteger {
 } RefreshMode;
 
 
-@interface ChooseClassViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate>{
+@interface ChooseClassViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,CYLTableViewPlaceHolderDelegate>{
     
     NSString *_token;
     NSString *_idNumber;
@@ -79,7 +80,7 @@ typedef enum : NSUInteger {
     
     //初始化数据
     _classesArray = @[].mutableCopy;
-    tags = @[@"不限",@"高考",@"中考",@"会考",@"小升初考试",@"高考志愿",@"英语考级",@"奥数竞赛",@"历年真题",@"期中期末试卷",@"自编试题",@"暑假课",@"寒假课",@"周末课",@"国庆假期课",@"基础课",@"巩固课",@"提高课",@"外教",@"冲刺",@"重点难点"];
+    
     page = 1;   //页数是会变的
     perPage = 10;
     
@@ -96,8 +97,13 @@ typedef enum : NSUInteger {
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
+    
     //加载tableview
     [self setupMainView];
+    
+    //获取所有tag
+    [self getTags];
+    
     
     
 }
@@ -108,8 +114,8 @@ typedef enum : NSUInteger {
 - (void)requestClass:(RefreshMode)mode withContentDictionary:(nullable NSMutableDictionary * )contentDic{
     
     if (mode==PullToRefresh) {
-        
         page = 1;
+        [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
         _classesArray = @[].mutableCopy;
         
         if (_classTableView.mj_footer.state == MJRefreshStateNoMoreData) {
@@ -121,22 +127,28 @@ typedef enum : NSUInteger {
     }else{
         
         page++;
+        [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
     }
     
-    if (contentDic==nil) {
+    if (mode == PullToRefresh) {
         
-        if ([_subject isEqualToString:@"全部"]) {
+        if (contentDic==nil) {
             
-            _filterDic = [NSMutableDictionary dictionaryWithDictionary: @{@"grade":_grade,
-                                                                          @"page":[NSString stringWithFormat:@"%ld",page],
-                                                                          @"per_page":[NSString stringWithFormat:@"%ld",perPage],
-                                                                          @"sort_by":@"created_at"}];
+            if ([_subject isEqualToString:@"全部"]) {
+                
+                _filterDic = [NSMutableDictionary dictionaryWithDictionary: @{@"q[grade_eq]":_grade,
+                                                                              @"page":[NSString stringWithFormat:@"%ld",page],
+                                                                              @"per_page":[NSString stringWithFormat:@"%ld",perPage],
+                                                                              @"sort_by":@"published_at"}];
+            }else{
+                
+                _filterDic = [NSMutableDictionary dictionaryWithDictionary:@{@"q[subject_eq]":_subject,
+                                                                             @"q[grade_eq]":_grade,
+                                                                             @"page":[NSString stringWithFormat:@"%ld",page],
+                                                                             @"per_page":[NSString stringWithFormat:@"%ld",perPage]}];
+            }
         }else{
-            
-            _filterDic = [NSMutableDictionary dictionaryWithDictionary:@{@"subject":_subject,
-                                                                         @"grade":_grade,
-                                                                         @"page":[NSString stringWithFormat:@"%ld",page],
-                                                                         @"per_page":[NSString stringWithFormat:@"%ld",perPage]}];
+            [_filterDic addEntriesFromDictionary:contentDic];
         }
     }else{
         
@@ -144,7 +156,7 @@ typedef enum : NSUInteger {
         
     }
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:_filterDic completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/search",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:_filterDic completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
@@ -164,12 +176,12 @@ typedef enum : NSUInteger {
                     
                     [_classTableView.mj_header endRefreshingWithCompletionBlock:^{
                         //刷新数据
-                        [_classTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                        [_classTableView cyl_reloadData];
                     }];
                 }else{
                     [_classTableView.mj_footer endRefreshingWithCompletionBlock:^{
                         //刷新数据
-                        [_classTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];;
+                        [_classTableView cyl_reloadData];
                     }];
                 }
                 
@@ -177,8 +189,10 @@ typedef enum : NSUInteger {
                 //没有数据的情况
                 if (mode == PullToRefresh) {
                     //下拉刷新的时候
-                    
-                    
+                    [_classTableView.mj_header endRefreshingWithCompletionBlock:^{
+                        //刷新数据
+                        [_classTableView cyl_reloadData];
+                    }];
                     
                 }else{
                     //上滑的时候
@@ -190,8 +204,15 @@ typedef enum : NSUInteger {
         }else{
             //获取数据失败
             [self loadingHUDStopLoadingWithTitle:@"加载失败,请重试"];
-            [_classTableView.mj_header endRefreshing];
-            [_classTableView.mj_footer endRefreshing];
+            if (mode == PullToRefresh) {
+                [_classTableView.mj_header endRefreshing];
+                
+            }else{
+                [_classTableView.mj_footer endRefreshing];
+                page--;
+                [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
+                
+            }
             
             
         }
@@ -201,6 +222,15 @@ typedef enum : NSUInteger {
     
     
 }
+
+//获取本地存储的tag数据
+- (void)getTags{
+    
+    
+}
+
+
+
 
 
 
@@ -349,7 +379,7 @@ typedef enum : NSUInteger {
     [self.view addSubview:_filterView];
     
     [_filterView.newestButton setTitleColor:TITLECOLOR forState:UIControlStateNormal];
-    [_filterView.newestArrow setImage:[UIImage imageNamed:@"下箭头"]];
+    [_filterView.newestArrow setImage:[UIImage imageNamed:@"上箭头"]];
     
     //tag
     [_filterView.tagsButton addTarget:self action:@selector(chooseTags:) forControlEvents:UIControlEventTouchUpInside];
@@ -423,25 +453,27 @@ typedef enum : NSUInteger {
  */
 - (void)newestFilter:(UIButton *)sender{
     NSDictionary *dic;
+    page = 1;
+    [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
     //重置所有按钮
     [self filterButtonTurnReset];
     [sender setTitleColor:TITLECOLOR forState:UIControlStateNormal];
     //如果已有sort_by字段
     if (_filterDic[@"sort_by"]) {
         //如果是价格筛选字段 正序或倒序
-        if ([_filterDic[@"sort_by"] isEqualToString:@"created_at.asc"]||[_filterDic[@"sort_by"] isEqualToString:@"created_at"]) {
+        if ([_filterDic[@"sort_by"] isEqualToString:@"published_at.asc"]||[_filterDic[@"sort_by"] isEqualToString:@"published_at"]) {
             //正序
-            if ([_filterDic[@"sort_by"] isEqualToString:@"created_at.asc"]) {
+            if ([_filterDic[@"sort_by"] isEqualToString:@"published_at.asc"]) {
                 [_filterDic removeObjectForKey:@"sort_by"];
                 //改成倒序
-                dic = @{@"sort_by":@"created_at"};
+                dic = @{@"sort_by":@"published_at"};
                 [_filterView.newestArrow setImage:[UIImage imageNamed:@"上箭头"]];
                 
-            }else if ([_filterDic[@"sort_by"] isEqualToString:@"created_at"]){
+            }else if ([_filterDic[@"sort_by"] isEqualToString:@"published_at"]){
                 //如果是倒序
                 [_filterDic removeObjectForKey:@"sort_by"];
                 //改成正序
-                dic = @{@"sort_by":@"created_at.asc"};
+                dic = @{@"sort_by":@"published_at.asc"};
                 [_filterView.newestArrow setImage:[UIImage imageNamed:@"下箭头"]];
                 
             }
@@ -456,13 +488,13 @@ typedef enum : NSUInteger {
             
             [_filterDic removeObjectForKey:@"sort_by"];
             //去掉后,改为正序
-            dic = @{@"sort_by":@"created_at.asc"};
+            dic = @{@"sort_by":@"published_at.asc"};
             
         }
         
     }else{
         //如果没有筛选字段
-        dic = @{@"sort_by":@"created_at.asc"};
+        dic = @{@"sort_by":@"published_at.asc"};
          [_filterView.newestArrow setImage:[UIImage imageNamed:@"下箭头"]];
     }
     
@@ -482,6 +514,8 @@ typedef enum : NSUInteger {
 - (void)priceFilter:(UIButton *)sender{
     
     NSDictionary *dic;
+    page = 1;
+    [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
     //重置所有按钮
     [self filterButtonTurnReset];
     
@@ -544,25 +578,26 @@ typedef enum : NSUInteger {
 - (void)countFilter:(UIButton *)sender{
     
     NSDictionary *dic;
-    
+    page = 1;
+    [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
     [sender setTitleColor:TITLECOLOR forState:UIControlStateNormal];
     
     //如果已有sort_by字段
     if (_filterDic[@"sort_by"]) {
         //如果是人气筛选字段
-        if ([_filterDic[@"sort_by"] isEqualToString:@"buy_count.asc"]||[_filterDic[@"sort_by"] isEqualToString:@"buy_count"]) {
+        if ([_filterDic[@"sort_by"] isEqualToString:@"buy_tickets_count.asc"]||[_filterDic[@"sort_by"] isEqualToString:@"buy_tickets_count"]) {
             //正序
-            if ([_filterDic[@"sort_by"] isEqualToString:@"buy_count.asc"]) {
+            if ([_filterDic[@"sort_by"] isEqualToString:@"buy_tickets_count.asc"]) {
                 [_filterDic removeObjectForKey:@"sort_by"];
                 //改成倒序
-                dic = @{@"sort_by":@"buy_count"};
+                dic = @{@"sort_by":@"buy_tickets_count"};
                 [_filterView.popularityArrow setImage:[UIImage imageNamed:@"上箭头"]];
                 
-            }else if ([_filterDic[@"sort_by"] isEqualToString:@"buy_count"]){
+            }else if ([_filterDic[@"sort_by"] isEqualToString:@"buy_tickets_count"]){
                 //如果是倒序
                 [_filterDic removeObjectForKey:@"sort_by"];
                 //改成正序
-                dic = @{@"sort_by":@"buy_count.asc"};
+                dic = @{@"sort_by":@"buy_tickets_count.asc"};
                 [_filterView.popularityArrow setImage:[UIImage imageNamed:@"下箭头"]];
                 
             }
@@ -571,7 +606,7 @@ typedef enum : NSUInteger {
             //如果不是人气筛选字段
             [_filterDic removeObjectForKey:@"sort_by"];
             //去掉后,改为正序
-            dic = @{@"sort_by":@"buy_count.asc"};
+            dic = @{@"sort_by":@"buy_tickets_count.asc"};
             
             //重置所有单选button
             [self filterButtonTurnReset];
@@ -583,7 +618,7 @@ typedef enum : NSUInteger {
         
     }else{
         //如果没有筛选字段
-        dic = @{@"sort_by":@"buy_count.asc"};
+        dic = @{@"sort_by":@"buy_tickets_count.asc"};
         [_filterView.popularityArrow setImage:[UIImage imageNamed:@"下箭头"]];
     }
     
@@ -614,7 +649,18 @@ typedef enum : NSUInteger {
 //多项筛选
 - (void)multiFilters{
     
-    MultifiltersViewController *controller = [[MultifiltersViewController alloc]init];
+    NSArray *arr = @[@"range",@"status",@"试听状态"];
+    
+    NSMutableDictionary *filters = _filterDic.mutableCopy;
+    
+    //去掉其他的筛选条件
+    for (NSString *key in _filterDic) {
+        if (![arr containsObject:key]) {
+            [filters removeObjectForKey:key];
+        }
+    }
+    
+    MultifiltersViewController *controller = [[MultifiltersViewController alloc]initWithFilters:filters];
     [self.navigationController pushViewController:controller animated:YES];
     
     
@@ -624,17 +670,59 @@ typedef enum : NSUInteger {
      @param component 筛选项目字典
      @return void
      */
-    [controller multiFilters:^(NSMutableDictionary *component) {
-        //多项筛选方法
-        [self multiFiltersRequest:component];
+    
+    [controller multiFilters:^(NSMutableDictionary *component, BOOL reset) {
         
+        if (reset == YES) {
+            page = 1;
+            [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
+            [self multiFiltersRequest:component resetMulti:YES];
+            
+        }else{
+            page = 1;
+            [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
+            //多项筛选方法 ->未重置/有选择项
+            [self multiFiltersRequest:component resetMulti:NO];
+            
+        }
     }];
+    
     
 }
 
 
 //多项筛选
-- (void)multiFiltersRequest:(NSMutableDictionary *)filterDic{
+- (void)multiFiltersRequest:(NSMutableDictionary *)filterDic resetMulti:(BOOL)reset{
+    
+    
+    if (reset == YES) {
+        //把多项筛的键值选去掉
+        if (_filterDic[@"range"]) {
+            [_filterDic removeObjectForKey:@"range"];
+        }
+        if (_filterDic[@"status"]) {
+            [_filterDic removeObjectForKey:@"status"];
+        }
+        if (_filterDic[@"试听状态"]) {
+            [_filterDic removeObjectForKey:@"试听状态"];
+        }
+        if (_filterDic[@"q[class_date_gteq]"]) {
+            [_filterDic removeObjectForKey:@"q[class_date_gteq]"];
+        }
+        if (_filterDic[@"q[class_date_lt]"]) {
+            [_filterDic removeObjectForKey:@"q[class_date_lt]"];
+        }
+    }else{
+        
+        //把重复的部分去掉
+        NSMutableDictionary *_filterDic_Copy = _filterDic.mutableCopy;
+        for (NSString *key in _filterDic_Copy) {
+            if ([[filterDic allKeys]containsObject:key]) {
+                [_filterDic removeObjectForKey:key];
+            }
+        }
+    }
+    
     
     if (filterDic) {
         [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
@@ -671,6 +759,17 @@ typedef enum : NSUInteger {
     
     return _tagsFilterView;
     
+}
+
+-(UIView *)makePlaceHolderView{
+    
+    UIView *view = [[UIView alloc]init];
+    return view;
+    
+}
+-(BOOL)enableScrollWhenPlaceHolderViewShowing{
+    
+    return YES;
 }
 
 

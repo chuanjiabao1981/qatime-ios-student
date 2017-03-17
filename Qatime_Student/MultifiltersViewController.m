@@ -16,9 +16,16 @@
     
     NSArray *_filters;
     
+    //传出去的筛选条件
     __block NSMutableDictionary *_filtersDic;
     
     HcdDateTimePickerView *_picker;     //日期选择器
+    
+    //是否重置了筛选项
+    BOOL reset;
+    
+    //一个保存已筛选条件的数组
+    NSMutableArray <NSIndexPath *>*_filtedArray;  //只存保存item的indexpath
     
 }
 
@@ -26,21 +33,85 @@
 
 @implementation MultifiltersViewController
 
+
+-(instancetype)initWithFilters:(NSDictionary * _Nullable)filterdDic{
+    
+    self = [super init];
+    if (self) {
+        if (filterdDic == nil) {
+            
+            _filtersDic = @{}.mutableCopy;
+            
+        }else{
+            
+            _filtersDic = filterdDic.mutableCopy;
+            
+            for (NSString *key in filterdDic) {
+                if ([key isEqualToString:@"status"]) {
+                    
+                    if ([_filtersDic[key]isEqualToString:@""]) {
+                        [_filtersDic setValue:@"不限" forKey:@"课程状态"];
+                        
+                    }else if ([_filtersDic[key]isEqualToString:@"published"]){
+                        [_filtersDic setValue:@"招生中" forKey:@"课程状态"];
+                        
+                    }else if ([_filtersDic[key]isEqualToString:@"teaching"]){
+                        
+                        [_filtersDic setValue:@"开课中" forKey:@"课程状态"];
+                    }
+                }
+            }
+        }
+    }
+    return self;
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     //初始化数据
-    _filtersDic = @{}.mutableCopy;
+    
+    _filtedArray = @[].mutableCopy;
+    
     _filters = @[
                  @[@"所有",@"近一个月",@"近两个月",@"近三个月",@"近半年",@"近一年"],
                  @[@"不限",@"招生中",@"开课中"],
                  @[@"不限",@"免费试听",@"无试听"]
                  ];
+    
+    //如果有数据,加载已选数据
+    [self checkFilted];
+    
     //加载导航栏
     [self navigation];
     
     //加载视图
     [self setupViews];
+    
+}
+
+//加载已选数据
+- (void)checkFilted{
+    
+    //如果有数据,加载已选数据
+    if (_filtersDic.allKeys.count != 0) {
+        //做一个已选的副本
+        for (NSString *key in _filtersDic) {
+            NSInteger sec = 0;
+            for (NSArray *arr in _filters) {
+                NSInteger row = 0;
+                for (NSString *value in arr) {
+                    if ([_filtersDic[key]isEqualToString:value]) {
+                        [_filtedArray addObject:[NSIndexPath indexPathForItem:row inSection:sec]];
+                    }
+                    
+                    row++;
+                }
+                sec ++;
+            }
+        }
+    }
     
 }
 
@@ -110,11 +181,27 @@
 ///立即筛选
 - (void)filtered{
     
+    if (_filtersDic) {
+        if (_filtersDic.allValues.count!=0) {
+            
+            if (![_filtersDic.allValues containsObject:@"all"]&&![_filtersDic.allKeys containsObject:@"q[class_date_gteq]"]&&![_filtersDic.allKeys containsObject:@"q[class_date_lt]"]) {
+                reset = YES;
+            }else {
+                reset = NO;
+            }
+        }else{
+            reset = YES;
+            
+        }
+    }
+    
+    
+    
     [self returnLastPage];
     
     if (self.componentsBlock!=nil) {
         
-        self.componentsBlock(_filtersDic);
+        self.componentsBlock(_filtersDic,reset);
     }
     
 }
@@ -156,25 +243,71 @@
     }
     
     //设置默认值
-    if (indexPath.section == 0) {
-        if (indexPath.row ==0) {
-            cell.subject.layer.borderColor = TITLERED.CGColor;
-            cell.subject.textColor = TITLERED;
+    if ([[_filtersDic allKeys]count]==0) {
+        
+        if (indexPath.section == 0) {
+            if (indexPath.row ==0) {
+                cell.subject.layer.borderColor = TITLERED.CGColor;
+                cell.subject.textColor = TITLERED;
+            }
         }
-    }
-    if (indexPath.section == 1) {
-        if (indexPath.row ==0) {
-            cell.subject.layer.borderColor = TITLERED.CGColor;
-            cell.subject.textColor = TITLERED;
+        if (indexPath.section == 1) {
+            if (indexPath.row ==0) {
+                cell.subject.layer.borderColor = TITLERED.CGColor;
+                cell.subject.textColor = TITLERED;
+            }
         }
-    }
-    if (indexPath.section == 2) {
-        if (indexPath.row ==0) {
-            cell.subject.layer.borderColor = TITLERED.CGColor;
-            cell.subject.textColor = TITLERED;
+        if (indexPath.section == 2) {
+            if (indexPath.row ==0) {
+                cell.subject.layer.borderColor = TITLERED.CGColor;
+                cell.subject.textColor = TITLERED;
+            }
         }
+    }else{
+        
+        if (_filtedArray.count!=0) {
+            for (NSIndexPath *indexpath in _filtedArray) {
+                
+                if (indexPath.section ==0) {
+                    
+                    if ([indexPath isEqual:indexpath]) {
+                        cell.subject.layer.borderColor = TITLERED.CGColor;
+                        cell.subject.textColor = TITLERED;
+                    }else{
+                        if (indexPath.row == 0) {
+                            cell.subject.layer.borderColor = TITLERED.CGColor;
+                            cell.subject.textColor = TITLERED;
+                        }
+                    }
+                }else if (indexPath.section == 1){
+                    if ([indexPath isEqual:indexpath]) {
+                        cell.subject.layer.borderColor = TITLERED.CGColor;
+                        cell.subject.textColor = TITLERED;
+                    }else{
+                        if (indexPath.row == 0) {
+                            cell.subject.layer.borderColor = TITLERED.CGColor;
+                            cell.subject.textColor = TITLERED;
+
+                        }
+                    }
+                    
+                }else if (indexPath.section == 2){
+                    if ([indexPath isEqual:indexpath]) {
+                        cell.subject.layer.borderColor = TITLERED.CGColor;
+                        cell.subject.textColor = TITLERED;
+                    }else{
+                        if (indexPath.row == 0) {
+                            cell.subject.layer.borderColor = TITLERED.CGColor;
+                            cell.subject.textColor = TITLERED;
+
+                        }
+                    }
+                    
+                }
+            }
+        }
+        
     }
-    
     
     return cell;
     
@@ -221,13 +354,25 @@
     switch (indexPath.section) {
         case 0:{
             if ([cell.subject.text isEqualToString:@"所有"]) {
-                if (_filtersDic[@"显示范围"]) {
-                    [_filtersDic removeObjectForKey:@"显示范围"];
+                if (_filtersDic[@"range"]) {
+                    [_filtersDic removeObjectForKey:@"range"];
                 }
                 
-            }else{
+            }else if([cell.subject.text isEqualToString:@"近一个月"]){
+                [_filtersDic setValue:@"1_months" forKey:@"range"];
                 
-                [_filtersDic setValue:cell.subject.text forKey:@"显示范围"];
+            }else if([cell.subject.text isEqualToString:@"近两个月"]){
+                [_filtersDic setValue:@"2_months" forKey:@"range"];
+                
+            }else if([cell.subject.text isEqualToString:@"近三个月"]){
+                [_filtersDic setValue:@"3_months" forKey:@"range"];
+                
+            }else if([cell.subject.text isEqualToString:@"近半年"]){
+                [_filtersDic setValue:@"6_months" forKey:@"range"];
+                
+            }else if([cell.subject.text isEqualToString:@"近一年"]){
+                [_filtersDic setValue:@"1_year" forKey:@"range"];
+                
             }
         }
             break;
@@ -484,11 +629,11 @@
         
         if (sender == _startTime) {
             
-            [_filtersDic setValue:datetimeStr forKey:@"class_date_floor"];
+            [_filtersDic setValue:datetimeStr forKey:@"q[class_date_gteq]"];
             
         }else if (sender == _endTime){
             
-            [_filtersDic setValue:datetimeStr forKey:@"class_date_ceil"];
+            [_filtersDic setValue:datetimeStr forKey:@"q[class_date_lt]"];
             
         }
     };
@@ -519,17 +664,10 @@
         row =0;
     }
     
+    [_startTime setTitle:@"选择开始时间" forState:UIControlStateNormal];
+    [_endTime setTitle:@"选择结束时间" forState:UIControlStateNormal];
     
-    if (_filtersDic[@"显示范围"]) {
-        [_filtersDic removeObjectForKey:@"显示范围"];
-    }
-    if (_filtersDic[@"status"]) {
-        [_filtersDic removeObjectForKey:@"status"];
-    }
-    if (_filtersDic[@"试听状态"]) {
-        [_filtersDic removeObjectForKey:@"试听状态"];
-    }
-    
+    _filtersDic = @{}.mutableCopy;
     
 }
 

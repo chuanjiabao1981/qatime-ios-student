@@ -319,6 +319,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[MultifiltersViewController checkFilted]:MultifiltersViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filtedArray">
+            </PersistentString>
+            <PersistentString
+               value = "_filtersDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__34-[MyOrderViewController payOrder:]_block_invoke_2:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -380,6 +391,14 @@
          <PersistentStrings>
             <PersistentString
                value = "launchOptions">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChooseClassViewController multiFilters]:ChooseClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filterDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -717,6 +736,14 @@
          <PersistentStrings>
             <PersistentString
                value = "respdata.code">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChooseClassViewController newestFilter:]:ChooseClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filterDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1291,6 +1318,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_noticeArray">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MultifiltersViewController filtered]:MultifiltersViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filtersDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

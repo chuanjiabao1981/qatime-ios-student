@@ -10,7 +10,7 @@
 #import "NavigationBar.h"
 #import "ClassesListTableViewCell.h"
 #import "YYModel.h"
- 
+
 #import "BuyBar.h"
 
 #import "UIImageView+WebCache.h"
@@ -152,16 +152,13 @@
     _tutoriumInfoView.tagsView.delegate = self;
     
     _config = [[TTGTextTagConfig alloc]init];
-    _config.tagTextColor = BUTTONRED;
-    _config.tagSelectedTextColor = BUTTONRED;
+    _config.tagTextColor = TITLECOLOR;
     _config.tagBackgroundColor = [UIColor whiteColor];
-    _config.tagSelectedBackgroundColor = [UIColor whiteColor];
-    _config.tagBorderColor = BUTTONRED;
-    _config.tagSelectedBorderColor = BUTTONRED;
+    _config.tagBorderColor = [UIColor colorWithRed:0.88 green:0.60 blue:0.60 alpha:1.00];
     _config.tagShadowColor = [UIColor clearColor];
     _config.tagCornerRadius = 0;
-    _config.tagSelectedCornerRadius = 0;
-    _config.tagExtraSpace = CGSizeMake(10, 5);
+    _config.tagExtraSpace = CGSizeMake(15, 5);
+    
     
     //测试数据
     [_tutoriumInfoView.tagsView addTags:@[@"AutoLayout", @"dynamically", @"calculates", @"the", @"size", @"and", @"position",@"of", @"all", @"the", @"views", @"in", @"your", @"view", @"hierarchy", @"based",@"on", @"constraints", @"placed", @"on", @"those", @"views"] withConfig:_config];
@@ -323,7 +320,7 @@
                                     leftDays = @"[即将开课]";
                                     
                                 }
-                                 _tutoriumInfoView.recuitState.text = @"招生中";
+                                _tutoriumInfoView.recuitState.text = @"招生中";
                                 _tutoriumInfoView.deadLine.text = leftDays;
                             }
                         }
@@ -381,12 +378,12 @@
                         [_tutoriumInfoView.teacherNameLabel setText: _teacherModel.teacherName];
                         [_tutoriumInfoView.workPlaceLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.school]];
                         /* 教师简介富文本赋值*/
-//                        [_tutoriumInfoView.teacherInterviewLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.describe]];
+                        //                        [_tutoriumInfoView.teacherInterviewLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.describe]];
                         
                         _tutoriumInfoView.teacherInterviewLabel.attributedText = _teacherModel.attributedDescribe;
-//                        _tutoriumInfoView.teacherInterviewLabel.attributedString = [[NSAttributedString alloc]initWithHTMLData:[_teacherModel.describe dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:nil];
+                        //                        _tutoriumInfoView.teacherInterviewLabel.attributedString = [[NSAttributedString alloc]initWithHTMLData:[_teacherModel.describe dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:nil];
                         
-
+                        
                         
                         [_tutoriumInfoView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacherModel.avatar_url ]];
                         
@@ -401,16 +398,16 @@
                         /* 课程描述的富文本*/
                         _classModel.attributedDescribe = [[NSMutableAttributedString alloc]initWithData:[_dataDic[@"description"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
                         
-//                        [_classModel.attributedDescribe addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:20]} range:NSMakeRange(0, 17)];
+                        //                        [_classModel.attributedDescribe addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:20]} range:NSMakeRange(0, 17)];
                         
                         /* 课程页面的label赋值*/
                         [_tutoriumInfoView.subjectLabel setText:_classModel.subject];
                         [_tutoriumInfoView.gradeLabel setText:_classModel.grade];
                         [_tutoriumInfoView.classCount setText:_classModel.lesson_count];
-//                        [_tutoriumInfoView.classDescriptionLabel setText:_classModel.describe];
-//
+                        //                        [_tutoriumInfoView.classDescriptionLabel setText:_classModel.describe];
+                        //
                         _tutoriumInfoView.classDescriptionLabel.attributedText = _classModel.attributedDescribe;
-//                         _tutoriumInfoView.classDescriptionLabel.attributedString = [[NSAttributedString alloc]initWithHTMLData:[_classModel.describe dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:nil];
+                        //                         _tutoriumInfoView.classDescriptionLabel.attributedString = [[NSAttributedString alloc]initWithHTMLData:[_classModel.describe dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:nil];
                         
                         
                         /* 课程列表的手动解析model*/
@@ -664,7 +661,7 @@
             [alert addAction:sure];
             
             [self presentViewController:alert animated:YES completion:nil];
-        
+            
         }else{
             [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否确定购买该课程?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                 if (buttonIndex!=0) {
@@ -674,7 +671,7 @@
             }];
         }
         
-//        [self loadingHUDStopLoadingWithTitle:@"请前往网页报名"];
+        //        [self loadingHUDStopLoadingWithTitle:@"请前往网页报名"];
         
     }
     
@@ -683,7 +680,7 @@
 
 #pragma mark- 收集订单信息,并传入下一页,开始提交订单
 - (void)requestOrder{
-
+    
     OrderViewController *orderVC;
     
     if (_promotionCode) {
@@ -868,11 +865,9 @@
 #pragma mark- tagview delegate
 
 - (void)textTagCollectionView:(TTGTextTagCollectionView *)textTagCollectionView updateContentSize:(CGSize)contentSize{
-    
     [_tutoriumInfoView.tagsView clearAutoHeigtSettings];
     _tutoriumInfoView.tagsView.sd_layout
     .heightIs(contentSize.height);
-
 }
 
 
@@ -967,7 +962,7 @@
     
     
     /* 教师简介的  高度自适应*/
-     CGSize teacherDesc_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_tutoriumInfoView.teacherInterviewLabel.width_sd, CGFLOAT_MAX) text:_teacherModel.attributedDescribe].textBoundingSize;
+    CGSize teacherDesc_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_tutoriumInfoView.teacherInterviewLabel.width_sd, CGFLOAT_MAX) text:_teacherModel.attributedDescribe].textBoundingSize;
     CGFloat teacherDesc_height =  _tutoriumInfoView.teacherInterviewLabel.frame.origin.y+teacherDesc_size.height;
     
     /* 富文本label适配自动布局高度*/
@@ -978,12 +973,12 @@
     .topSpaceToView(_tutoriumInfoView.descrip,20)
     .heightIs(teacherDesc_size.height+20);
     
-//    _teacherInterviewLabel.sd_layout
-//    .leftSpaceToView(_view2,20)
-//    .rightSpaceToView(_view2,20)
-//    .topSpaceToView(descrip,20)
-//    .autoHeightRatio(0);
-
+    //    _teacherInterviewLabel.sd_layout
+    //    .leftSpaceToView(_view2,20)
+    //    .rightSpaceToView(_view2,20)
+    //    .topSpaceToView(descrip,20)
+    //    .autoHeightRatio(0);
+    
     [_tutoriumInfoView.teacherInterviewLabel updateLayout];
     
     /* 两组视图分别自适应高度*/

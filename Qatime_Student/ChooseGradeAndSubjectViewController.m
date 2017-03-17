@@ -12,6 +12,7 @@
 #import "ChooseClassViewController.h"
 
 #import "ClassSubjectCollectionViewCell.h"
+#import "UIViewController+AFHTTP.h"
 
 @interface ChooseGradeAndSubjectViewController ()<ChooseGradeAndSubjectDelegate,UICollectionViewDataSource,UICollectionViewDelegate>{
     
@@ -42,7 +43,11 @@
     
     
     
-    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        //加载所有的 tag
+        [self getTags];
+    });
     
     
 }
@@ -74,6 +79,25 @@
         _;
     
     });
+    
+}
+
+//获取所有tag
+- (void)getTags{
+    
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/app_constant/tags",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+            
+            
+        }else{
+            
+        }
+        
+        
+    }];
     
 }
 

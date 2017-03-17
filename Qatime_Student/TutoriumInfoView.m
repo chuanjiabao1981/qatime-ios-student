@@ -345,7 +345,8 @@
         
         //标签图
         _tagsView = [[TTGTextTagCollectionView alloc]init];
-        _tagsView.alignment = TTGTagCollectionAlignmentFillByExpandingWidth;
+        _tagsView.alignment = TTGTagCollectionAlignmentLeft;
+        _tagsView.enableTagSelection = NO;
         [_view1 addSubview:_tagsView];
         _tagsView.sd_layout
         .leftSpaceToView(_view1,20)
