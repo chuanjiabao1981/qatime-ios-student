@@ -45,8 +45,15 @@
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
+        
+        //干掉筛选信息
+        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Filter"]) {
+            [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"Filter"];
+        }
+        
         //加载所有的 tag
         [self getTags];
+        
     });
     
     

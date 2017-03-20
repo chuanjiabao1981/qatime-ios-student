@@ -1392,7 +1392,6 @@
 				54FCBAB51DD58B370094BF58 /* Model */,
 				54FCBAB41DD58B350094BF58 /* View */,
 				54FCBAB31DD58B320094BF58 /* Controller */,
-				54FCBAC21DD5909F0094BF58 /* 辅导班详情页 */,
 			);
 			name = "辅导班页面";
 			sourceTree = "<group>";
@@ -1622,6 +1621,7 @@
 				543BCAFD1E79153800AD6721 /* Model */,
 				543BCAFC1E79153600AD6721 /* View */,
 				543BCAFB1E79153400AD6721 /* Controller */,
+				54FCBAC21DD5909F0094BF58 /* 辅导班详情页 */,
 			);
 			name = "选课页面";
 			sourceTree = "<group>";

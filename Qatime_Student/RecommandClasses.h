@@ -49,6 +49,7 @@
 @property(nonatomic,strong) NSString *logo_url ;
 
 @property(nonatomic,strong) NSString *describe ;
+
 /* 课程信息的富文本描述*/
 @property(nonatomic,strong) NSMutableAttributedString *attributedDescribe ;
 
@@ -57,6 +58,11 @@
 /* 观看回放的相关属性*/
 @property(nonatomic,strong) NSString *replayable ;
 @property(nonatomic,assign) NSInteger left_replay_times ;
+
+
+
+//所有的标签
+@property (nonatomic, strong) NSArray *tag_list ;
 
 
 

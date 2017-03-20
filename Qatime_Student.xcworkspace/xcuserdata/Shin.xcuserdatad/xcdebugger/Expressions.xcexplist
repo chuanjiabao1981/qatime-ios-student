@@ -3,10 +3,15 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "-[LivePlayerViewController tableView:cellForRowAtIndexPath:]:LivePlayerViewController.m">
+         contextName = "__64-[ChooseClassViewController requestClass:withContentDictionary:]_block_invoke:ChooseClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filterDic">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[OrderInfoViewController initWithUnpaid:]:OrderInfoViewController.m">
+         contextName = "-[LivePlayerViewController tableView:cellForRowAtIndexPath:]:LivePlayerViewController.m">
       </ContextState>
       <ContextState
          contextName = "__46-[NELivePlayerViewController checkVideoStatus]_block_invoke:NELivePlayerViewController.m">
@@ -17,12 +22,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke:ClassTimeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_unclosedArr">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[OrderInfoViewController initWithUnpaid:]:OrderInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController keyboardWillShow:]:NELivePlayerViewController.m">
@@ -36,12 +36,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__64-[ChooseClassViewController requestClass:withContentDictionary:]_block_invoke:ChooseClassViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_filterDic">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "__33-[LoginViewController userLogin:]_block_invoke:LoginViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController switchStatuseWithDictionary:]:NELivePlayerViewController.m">
@@ -115,6 +110,17 @@
                value = "step">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MultifiltersViewController collectionView:cellForItemAtIndexPath:]:MultifiltersViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filtedArray">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MultifiltersViewController initWithFilters:]:MultifiltersViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[ChatViewController enterLive]:ChatViewController.m">
@@ -225,6 +231,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__69-[ChooseClassViewController collectionView:didSelectItemAtIndexPath:]_block_invoke:ChooseClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filterDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[TutoriumInfoViewController requestOrder]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -294,10 +308,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -451,6 +465,9 @@
       </ContextState>
       <ContextState
          contextName = "__41-[DrawBackViewController requestDrawback]_block_invoke:DrawBackViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[MultifiltersViewController viewDidLoad]:MultifiltersViewController.m">
       </ContextState>
       <ContextState
          contextName = "__39-[BindingMailInfoViewController finish]_block_invoke_2:BindingMailInfoViewController.m">
@@ -693,6 +710,9 @@
             <PersistentString
                value = "_dataDic">
             </PersistentString>
+            <PersistentString
+               value = "_classModel">
+            </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
@@ -792,6 +812,9 @@
                value = "self.navigationController.viewControllers">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__34-[IndexPageViewController getTags]_block_invoke:IndexPageViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[TLCityPickerController didSelctedCity:]:TLCityPickerController.m">
@@ -909,6 +932,14 @@
       </ContextState>
       <ContextState
          contextName = "-[OrderViewController touchesBegan:withEvent:]:OrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[MultifiltersViewController init]:MultifiltersViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filtersDic">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke_2:ClassTimeViewController.m">
@@ -1221,6 +1252,9 @@
          contextName = "__46-[TutoriumInfoViewController switchClassData:]_block_invoke:TutoriumInfoViewController.m">
       </ContextState>
       <ContextState
+         contextName = "__41-[ChooseClassViewController multiFilters]_block_invoke:ChooseClassViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[VideoViewController tableView:cellForRowAtIndexPath:]:VideoViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1383,10 +1417,10 @@
          contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke:LivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1585,7 +1619,20 @@
          contextName = "__43-[NoticeIndexViewController requestNotices]_block_invoke:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__33-[LoginViewController userLogin:]_block_invoke:LoginViewController.m">
+         contextName = "-[ChooseClassViewController multiFiltersRequest:resetMulti:]:ChooseClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filterDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unclosedArr">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
    </ContextStates>
 </VariablesViewState>

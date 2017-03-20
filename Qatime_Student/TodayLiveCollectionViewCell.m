@@ -10,6 +10,16 @@
 
 #import "TodayLiveCollectionViewCell.h"
 
+#import "UIImageView+WebCache.h"
+#import "SDWebImageManager.h"
+
+@interface TodayLiveCollectionViewCell (){
+    
+    SDWebImageManager *manager;
+}
+
+@end
+
 @implementation TodayLiveCollectionViewCell
 
 
@@ -63,17 +73,63 @@
 
 }
 
--(void)setModel:(TodayLive *)model{
+-(void)setModel:(RecommandClasses *)model{
     
     _model = model;
     
-    [_classImageView setImage:[UIImage imageNamed:@"school"]];
-    _classNameLabel.text = @"今日直播课程内容";
     
-    _stateLabel.text = @"12:00-13:00 直播结束";
+    /* 如果本地已经保留了图片缓存*/
+    if ([self diskImageExistsForURL:[NSURL URLWithString:model.publicize]]==YES) {
+        [_classImageView sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
+    }else{
+        /* 如果本地没有缓存,加载网络图片,渐变动画*/
+        [_classImageView sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+            
+        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            
+            _classImageView.alpha = 0.0;
+            [UIView transitionWithView:_classImageView duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                if (image) {
+                    
+                    [_classImageView setImage:image];
+                }else{
+                    [_classImageView setImage:[UIImage imageNamed:@"school"]];
+                }
+                _classImageView.alpha = 1.0;
+            } completion:NULL];
+            
+        }];
+    }
+
+    _classNameLabel.text = model.name;
     
+    _stateLabel.text = [NSString stringWithFormat:@"%@ - %@ %@",[model.live_start_time substringFromIndex:11],[model.live_end_time substringFromIndex:11],[self statusChange:model.status]];
     
     
 }
+
+- (NSString *)statusChange:(NSString *)status{
+    
+    NSString *str  = @"".mutableCopy;
+    
+    if ([status isEqualToString:@"teaching"]) {
+        
+        str = @"正在直播";
+    }else if ([status isEqualToString:@""]){
+        
+        
+    }else if ([status isEqualToString:@""]){
+        
+    }
+    
+    return str;
+}
+
+
+- (BOOL)diskImageExistsForURL:(NSURL *)url {
+    NSString *key = [manager cacheKeyForURL:url];
+    return [manager.imageCache diskImageExistsWithKey:key];
+}
+
 
 @end

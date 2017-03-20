@@ -17,6 +17,8 @@
 #import "UIViewController+HUD.h"
 #import "MultifiltersViewController.h"
 #import "CYLTableViewPlaceHolder.h"
+#import "HaveNoClassView.h"
+#import "TutoriumInfoViewController.h"
 
 //上滑 或 下拉
 typedef enum : NSUInteger {
@@ -44,7 +46,7 @@ typedef enum : NSUInteger {
     SnailQuickMaskPopups *_pops;
     
     //筛选tag的存放数组
-    NSArray *tags ;
+    NSMutableArray *_tags ;
     
     //存课程数据的数组
     NSMutableArray *_classesArray;
@@ -52,6 +54,10 @@ typedef enum : NSUInteger {
     
     //筛选用的字典
     NSMutableDictionary *_filterDic;
+    
+    //保存所有标签
+    
+    
     
 }
 
@@ -111,7 +117,7 @@ typedef enum : NSUInteger {
 
 
 //下拉加载数据
-- (void)requestClass:(RefreshMode)mode withContentDictionary:(nullable NSMutableDictionary * )contentDic{
+- (void)requestClass:(RefreshMode)mode withContentDictionary:( nullable __kindof NSDictionary * )contentDic{
     
     if (mode==PullToRefresh) {
         page = 1;
@@ -226,7 +232,20 @@ typedef enum : NSUInteger {
 //获取本地存储的tag数据
 - (void)getTags{
     
-    
+    NSArray *tag;
+    if (!_tags) {
+        
+        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Tags"]) {
+            _tags = @[].mutableCopy;
+            
+            tag = [[NSUserDefaults standardUserDefaults]valueForKey:@"Tags"];
+            
+            for (NSDictionary *dic in tag) {
+                [_tags addObject:dic[@"name"]];
+            }
+        }
+ 
+    }
 }
 
 
@@ -276,11 +295,22 @@ typedef enum : NSUInteger {
 }
 
 
+//点击 进入辅导班详情
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    ChooseClassTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    TutoriumInfoViewController *controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+    [self.navigationController pushViewController:controller animated:YES];
+    
+}
+
+
 #pragma mark- collectionview datasource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
-    return tags.count;
+    return _tags.count;
     
 }
 
@@ -290,7 +320,7 @@ typedef enum : NSUInteger {
     static NSString * CellIdentifier = @"CollectionCell";
     ClassSubjectCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    cell.subject.text = tags[indexPath.row];
+    cell.subject.text = _tags[indexPath.row];
     cell.subject.font = [UIFont systemFontOfSize:14*ScrenScale];
     return cell;
     
@@ -313,10 +343,20 @@ typedef enum : NSUInteger {
 //点击选择
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    [_filterView.tagsButton setTitle:tags[indexPath.row] forState:UIControlStateNormal];
+    [_filterView.tagsButton setTitle:_tags[indexPath.row] forState:UIControlStateNormal];
     
     //蒙版消失之后 ,执行操作
     [_pops dismissWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
+        
+        if ([[_filterDic allKeys]containsObject:@"tags"]) {
+            [_filterDic removeObjectForKey:@"tags"];
+        }
+        
+        [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
+            
+            [self requestClass:PullToRefresh withContentDictionary:@{@"tags":_tags[indexPath.row]}];
+        }];
+        
         
     }];
     
@@ -410,7 +450,7 @@ typedef enum : NSUInteger {
     if (![sender.titleLabel.text isEqualToString:@"标签"]) {
         //把tag选项表的所有按钮遍历成未选中状态
         NSInteger index = 0;
-        for (NSString *title in tags) {
+        for (NSString *title in _tags) {
             
             if ([sender.titleLabel.text isEqualToString:title]) {
                 
@@ -649,7 +689,7 @@ typedef enum : NSUInteger {
 //多项筛选
 - (void)multiFilters{
     
-    NSArray *arr = @[@"range",@"status",@"试听状态"];
+    NSArray *arr = @[@"range",@"q[status_eq]",@"试听状态"];
     
     NSMutableDictionary *filters = _filterDic.mutableCopy;
     
@@ -660,7 +700,8 @@ typedef enum : NSUInteger {
         }
     }
     
-    MultifiltersViewController *controller = [[MultifiltersViewController alloc]initWithFilters:filters];
+    
+    MultifiltersViewController *controller = [[MultifiltersViewController alloc]init];
     [self.navigationController pushViewController:controller animated:YES];
     
     
@@ -671,63 +712,44 @@ typedef enum : NSUInteger {
      @return void
      */
     
-    [controller multiFilters:^(NSMutableDictionary *component, BOOL reset) {
+    [controller multiFilters:^(BOOL changed) {
         
-        if (reset == YES) {
-            page = 1;
-            [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
-            [self multiFiltersRequest:component resetMulti:YES];
+        if (changed == YES) {
             
-        }else{
-            page = 1;
+            NSMutableDictionary *dics = [[NSUserDefaults standardUserDefaults]valueForKey:@"Filter"];
             [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
-            //多项筛选方法 ->未重置/有选择项
-            [self multiFiltersRequest:component resetMulti:NO];
+            
+            [self multiFiltersRequest:dics];
+        }else{
+            
             
         }
+        
     }];
-    
     
 }
 
 
 //多项筛选
-- (void)multiFiltersRequest:(NSMutableDictionary *)filterDic resetMulti:(BOOL)reset{
+- (void)multiFiltersRequest:(NSMutableDictionary *)filterDic{
     
+    NSMutableDictionary *filter = filterDic.mutableCopy;
     
-    if (reset == YES) {
-        //把多项筛的键值选去掉
-        if (_filterDic[@"range"]) {
-            [_filterDic removeObjectForKey:@"range"];
-        }
-        if (_filterDic[@"status"]) {
-            [_filterDic removeObjectForKey:@"status"];
-        }
-        if (_filterDic[@"试听状态"]) {
-            [_filterDic removeObjectForKey:@"试听状态"];
-        }
-        if (_filterDic[@"q[class_date_gteq]"]) {
-            [_filterDic removeObjectForKey:@"q[class_date_gteq]"];
-        }
-        if (_filterDic[@"q[class_date_lt]"]) {
-            [_filterDic removeObjectForKey:@"q[class_date_lt]"];
-        }
-    }else{
-        
-        //把重复的部分去掉
-        NSMutableDictionary *_filterDic_Copy = _filterDic.mutableCopy;
-        for (NSString *key in _filterDic_Copy) {
-            if ([[filterDic allKeys]containsObject:key]) {
-                [_filterDic removeObjectForKey:key];
-            }
-        }
+    //加工数据
+    if ([filterDic[@"range"]isEqualToString:@"allTime"]) {
+        [filter setValue:@"" forKey:@"range"];
+    }
+    if ([filterDic[@"q[status_eq]"]isEqualToString:@"allStatus"]) {
+        [filter setValue:@"" forKey:@"q[status_eq]"];
+    }
+    if ([filterDic[@"试听状态"]isEqualToString:@"all"]) {
+        [filter setValue:@"" forKey:@"试听状态"];
     }
     
-    
-    if (filterDic) {
+    if (filter) {
         [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
             
-            [self requestClass:PullToRefresh withContentDictionary:filterDic];
+            [self requestClass:PullToRefresh withContentDictionary:filter];
         }];
         
     }else{
@@ -745,6 +767,9 @@ typedef enum : NSUInteger {
 //懒加载标签筛选列表
 -(TagsFilterView *)tagsFilterView{
     
+    //获取所有tags
+    [self getTags];
+    
     if (!_tagsFilterView) {
         
         _tagsFilterView = [[TagsFilterView alloc]initWithFrame:CGRectMake(40, 120, self.view.width_sd-80, (self.view.width_sd-80)*1.6)];
@@ -755,6 +780,8 @@ typedef enum : NSUInteger {
         
         [_tagsFilterView.tagsCollection registerClass:[ClassSubjectCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
         
+        
+        
     }
     
     return _tagsFilterView;
@@ -763,7 +790,9 @@ typedef enum : NSUInteger {
 
 -(UIView *)makePlaceHolderView{
     
-    UIView *view = [[UIView alloc]init];
+    HaveNoClassView *view = [[HaveNoClassView alloc]initWithFrame:_classTableView.frame];
+    
+    view.titleLabel.text = @"没有相关课程";
     return view;
     
 }
@@ -776,6 +805,8 @@ typedef enum : NSUInteger {
 - (void)returnLastPage{
     
     [self.navigationController popViewControllerAnimated:YES];
+    
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"Filter"];
     
 }
 

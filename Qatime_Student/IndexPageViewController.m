@@ -36,6 +36,7 @@
 #import "QualityTableViewCell.h"
 
 #import "LivePlayerViewController.h"
+#import "UIViewController+AFHTTP.h"
 
 
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate,LCTabBarDelegate,UITableViewDelegate,UITableViewDataSource>{
@@ -79,6 +80,11 @@
     /* 今日直播 课程的model数组*/
     NSMutableArray *_todayLives;
     
+    /* 最新发布 课程的model数组*/
+    NSMutableArray *_newestRelease;
+    
+    /* 最近开课 课程的model数组*/
+    NSMutableArray *_newestStart;
     
     
     
@@ -92,11 +98,6 @@
     
     /* 定位城市*/
     NSString *_localCity;
-    
-    
-    
-    
-    
     
     //新首页
     /* 近期开课 更多 按钮*/
@@ -190,20 +191,21 @@
     _classes = @[].mutableCopy;
     
     _todayLives = @[].mutableCopy;
-   
     
+    _newestRelease = @[].mutableCopy;
+    
+    _newestStart = @[].mutableCopy;
     
     
     //加载头视图
     _headerView = [[IndexHeaderPageView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd*3.1/5.0)];
-//    [self.view addSubview:_headerView];
+    //    [self.view addSubview:_headerView];
     _headerView.todayLiveScrollView.delegate = self;
     _headerView.todayLiveScrollView.dataSource = self;
     _headerView.todayLiveScrollView.tag = 1;        //今日直播 tag = 1
     
     /* 头视图的 今日直播 注册cell*/
     [_headerView.todayLiveScrollView registerClass:[TodayLiveCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
-    
     
     /* 主页视图
      三部分的tableview组成
@@ -251,17 +253,92 @@
     /* 请求kee 并存本地*/
     [self requestKee];
     
+    /* 请求今日直播数据*/
+    [self requestTodayLive];
+    
+    /* 请求近期开课和最新发布内容*/
+    [self requestNewest];
+    
     /* 请求基础信息*/
     [self requestBasicInformation];
     
     /* 另一线程在后台请求未读消息和系统消息*/
     [self checkNotice];
     
+    //请求所有tags
+    [self getTags];
+    
     /* 接收地址选择页面传来的地址*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeLoacal:) name:@"UseLocal" object:nil];
     
     
 }
+
+#pragma mark- 请求今日直播数据
+- (void)requestTodayLive{
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/lessons/today",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+            
+            for (NSDictionary *dics in dic[@"data"]) {
+                RecommandClasses *mod = [RecommandClasses yy_modelWithJSON:dics];
+                mod = [RecommandClasses yy_modelWithJSON:dics[@"course"]];
+                mod.classID = dics[@"course"][@"id"];
+                [_todayLives addObject:mod];
+            }
+            
+            [_headerView.todayLiveScrollView reloadData];
+        }
+        
+    }];
+    
+    
+}
+
+#pragma mark- 请求最新发布和最近开课数据
+- (void)requestNewest{
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/rank/published_rank,start_rank?count=2",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            //返回的data字段里是两个数组,key对应的是返回的数组
+            NSArray *published_rank = dic[@"data"][@"published_rank"];  //最新发布
+            NSArray *start_rank = dic[@"data"][@"start_rank"];          //最近开课
+            
+            for (NSDictionary *dics in published_rank) {
+                
+                TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dics];
+                mod.classID = dics[@"id"];
+                [_newestRelease addObject:mod];
+                
+            }
+            [_indexPageView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+            
+            for (NSDictionary *dics in start_rank) {
+                
+                TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dics];
+                mod.classID = dics[@"id"];
+                [_newestStart addObject:mod];
+                
+            }
+            
+            [_indexPageView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationFade];
+            
+        }else{
+            
+            
+        }
+        
+    }];
+    
+}
+
 
 //直接进入直播页
 - (void)showNIMPage:(NSNotification *)notification{
@@ -353,10 +430,8 @@
 /* 请求全部课程*/
 - (void)choseAllTutorium{
     
-    
     /* 发送消息 让第二个页面在初始化后 进行筛选*/
     [[NSNotificationCenter defaultCenter]postNotificationName:@"UserChoseSubject" object:nil];
-    
     
 }
 
@@ -541,7 +616,7 @@
                     
                 }
                 
-                [self reloadData];
+                [_indexPageView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                 
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"SizeChange" object:nil];
             }
@@ -748,7 +823,25 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
-    NSInteger items=10;
+    NSInteger items = 0;
+    
+    if (collectionView.tag == 1) {
+        
+        if (_todayLives.count==0) {
+            items = 10;
+        }else{
+            items = _todayLives.count;
+        }
+    }else if (collectionView.tag == 2){
+        
+        if (_teachers.count == 0) {
+            items = 10;
+        }else{
+            items = _teachers.count;
+        }
+        
+    }
+    
     
     return items;
     
@@ -758,23 +851,27 @@
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     UICollectionViewCell *cell=[[UICollectionViewCell alloc]init];
-
+    
     static NSString * CellIdentifier = @"CollectionCell";
     static NSString * recommandIdentifier = @"RecommandCell";
-
+    
     /* 今日直播的横滑视图*/
     if (collectionView.tag == 1) {
         
         TodayLiveCollectionViewCell * liveCell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        //
+        //            [liveCell.classImageView setImage:[UIImage imageNamed:@"school"]];
+        //            liveCell.classNameLabel.text = @"今日直播课程";
+        //            liveCell.stateLabel.text = @"12:00-13:00 开始";
         
-            [liveCell.classImageView setImage:[UIImage imageNamed:@"school"]];
-            liveCell.classNameLabel.text = @"今日直播课程";
-            liveCell.stateLabel.text = @"12:00-13:00 开始";
+        if (_todayLives.count>indexPath.row) {
+            liveCell.model = _todayLives[indexPath.row];
+        }
         
-         cell = liveCell;
-
+        cell = liveCell;
+        
     }
-
+    
     
     
     /* 教师推荐的横滑视图*/
@@ -893,20 +990,20 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     /* 推荐课程点击事件*/
-//    if (collectionView.tag ==1) {
-//        
-//        if (_classes.count == 0) {
-//            [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"该地区没有推荐课程", nil)];
-//        }else{
-//            
-//            RecommandClassCollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-//            
-//            TutoriumInfoViewController *viewcontroller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
-//            
-//            viewcontroller.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:viewcontroller animated:YES];
-//        }
-//    }
+        if (collectionView.tag ==1) {
+    
+            if (_classes.count == 0) {
+                [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"该地区没有推荐课程", nil)];
+            }else{
+    
+                RecommandClassCollectionViewCell *cell = (RecommandClassCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    
+                TutoriumInfoViewController *viewcontroller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+    
+                viewcontroller.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:viewcontroller animated:YES];
+            }
+        }
     
     if (collectionView.tag ==2) {
         
@@ -963,16 +1060,53 @@
     
     /* cell的重用队列*/
     static NSString *cellIdenfier = @"cell";
-     QualityTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+    QualityTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
     if (cell==nil) {
         cell=[[QualityTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-//        cell.textLabel.text = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
+        //        cell.textLabel.text = [NSString stringaWithFormat:@"%ld",(long)indexPath.row];
+        
     }
     
-    [cell.classImage setImage:[UIImage imageNamed:@"school"]];
-    cell.className.text = @"精选课程推荐";
-    cell.gradeAndSubject.text = @"高一语文";
-    cell.teacherName.text = @"老师姓名";
+    [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+    switch (indexPath.section) {
+        case 0:{
+            
+            if (_classes.count == 0) {
+                
+                
+            }else if (_classes.count>indexPath.row) {
+                cell.recommandModel = _classes[indexPath.row];
+                
+                
+            }
+        }
+            break;
+            
+        case 1:{
+            
+            if (_newestStart.count == 0) {
+                
+            }else if (_newestStart.count>indexPath.row) {
+                cell.classModel = _newestStart[indexPath.row];
+                
+                
+                
+            }
+        }
+            break;
+        case 2:{
+            
+            if (_newestRelease.count == 0) {
+                
+            }else if (_newestRelease.count>indexPath.row) {
+                cell.classModel = _newestRelease[indexPath.row];
+                
+                
+            }
+            
+        }
+            break;
+    }
     
     return  cell;
     
@@ -990,6 +1124,38 @@
     
     return self.view.width_sd/3.5;
 }
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    QualityTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    TutoriumInfoViewController *controller;
+    
+    switch (indexPath.section) {
+        case 0:{
+            controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.recommandModel.classID];
+        }
+            break;
+            
+        case 1:{
+            controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.classModel.classID];
+        }
+
+            break;
+            
+        case 2:{
+            controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.classModel.classID];
+        }
+            
+            break;
+    }
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
+    
+    
+
+}
+
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
@@ -1018,7 +1184,7 @@
     
     if (section == 1) {
         
-        label.text = @"今期开课";
+        label.text = @"近期开课";
         
         _moreCurrentClassButton = [[UIControl alloc]init];
         [view addSubview:_moreCurrentClassButton];
@@ -1193,6 +1359,23 @@
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
+}
+
+
+#pragma mark- 获取系统支持的tags (课程标签)
+- (void)getTags{
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/app_constant/tags",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+            [[NSUserDefaults standardUserDefaults] setValue:dic[@"data"] forKey:@"Tags"];
+            
+        }
         
     }];
     

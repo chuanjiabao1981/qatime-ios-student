@@ -161,11 +161,7 @@
     
     
     //测试数据
-    [_tutoriumInfoView.tagsView addTags:@[@"AutoLayout", @"dynamically", @"calculates", @"the", @"size", @"and", @"position",@"of", @"all", @"the", @"views", @"in", @"your", @"view", @"hierarchy", @"based",@"on", @"constraints", @"placed", @"on", @"those", @"views"] withConfig:_config];
-    
-    //自适应一下尺寸...
-    
-    
+    //    [_tutoriumInfoView.tagsView addTags:@[@"AutoLayout", @"dynamically", @"calculates", @"the", @"size", @"and", @"position",@"of", @"all", @"the", @"views", @"in", @"your", @"view", @"hierarchy", @"based",@"on", @"constraints", @"placed", @"on", @"those", @"views"] withConfig:_config];
     
     
     typeof(self) __weak weakSelf = self;
@@ -408,6 +404,19 @@
                         //
                         _tutoriumInfoView.classDescriptionLabel.attributedText = _classModel.attributedDescribe;
                         //                         _tutoriumInfoView.classDescriptionLabel.attributedString = [[NSAttributedString alloc]initWithHTMLData:[_classModel.describe dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:nil];
+                        
+                        
+                        //给视图赋值tag的内容
+                        
+                        if (_classModel.tag_list.count!=0) {
+                            
+                            [_tutoriumInfoView.tagsView addTags:_classModel.tag_list withConfig:_config];
+                        }else{
+                            
+                            _config.tagBorderColor = [UIColor whiteColor];
+                            _config.tagTextColor = TITLECOLOR;
+                            [_tutoriumInfoView.tagsView addTag:@"无" withConfig:_config];
+                        }
                         
                         
                         /* 课程列表的手动解析model*/

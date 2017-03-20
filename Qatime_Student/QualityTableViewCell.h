@@ -11,6 +11,7 @@
 #import <UIKit/UIKit.h>
 #import "QualityClass.h"
 #import "TutoriumList.h"
+#import "RecommandClasses.h"
 
 
 @interface QualityTableViewCell : UITableViewCell
@@ -52,5 +53,10 @@
  classModel
  */
 @property (nonatomic, strong) TutoriumListInfo *classModel ;
+
+/**
+ 推荐/精选课程的model
+ */
+@property (nonatomic, strong) RecommandClasses *recommandModel ;
 
 @end

@@ -140,14 +140,6 @@
 
 
 
--(void)setModel:(QualityClass *)model{
-    
-    
-    
-    
-}
-
-
 -(void)setClassModel:(TutoriumListInfo *)classModel{
     
     _classModel = classModel;
@@ -178,11 +170,54 @@
     
     //课程名
     _className.text = classModel.name;
-    //
+    
+    //年级和科目
+    _gradeAndSubject.text = [NSString stringWithFormat:@"%@%@",classModel.grade,classModel.subject];
+    //教师名
+    _teacherName.text = classModel.teacher_name;
 
+}
+
+-(void)setRecommandModel:(RecommandClasses *)recommandModel{
+    
+    _recommandModel = recommandModel;
+    
+    /* 如果本地已经保留了图片缓存*/
+    if ([self diskImageExistsForURL:[NSURL URLWithString:recommandModel.publicize]]==YES) {
+        [_classImage sd_setImageWithURL:[NSURL URLWithString:recommandModel.publicize]];
+    }else{
+        
+        [_classImage sd_setImageWithURL:[NSURL URLWithString:recommandModel.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+            
+        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            
+            _classImage.alpha = 0.0;
+            [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                if (image) {
+                    
+                    [_classImage setImage:image];
+                }else{
+                    [_classImage setImage:[UIImage imageNamed:@"school"]];
+                }
+                _classImage.alpha = 1.0;
+            } completion:NULL];
+            
+        }];
+    }
+    
+    
+    //课程名
+    _className.text = recommandModel.name;
+    
+    //年级和科目
+    _gradeAndSubject.text = [NSString stringWithFormat:@"%@%@",recommandModel.grade,recommandModel.subject];
+    //教师名
+    _teacherName.text = recommandModel.teacher_name;
     
     
 }
+
+
 
 - (BOOL)diskImageExistsForURL:(NSURL *)url {
     NSString *key = [manager cacheKeyForURL:url];
