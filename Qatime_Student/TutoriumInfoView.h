@@ -59,15 +59,20 @@
 @property(nonatomic,strong) UILabel *classCount ;
 
 /* 在线直播*/
-@property(nonatomic,strong) UILabel *onlineVideoLabel;
+//@property(nonatomic,strong) UILabel *onlineVideoLabel;
 
 /* 直播时间*/
-@property(nonatomic,strong) UILabel *liveStartTimeLabel ;
-@property(nonatomic,strong) UILabel *liveEndTimeLabel ;
+@property(nonatomic,strong) UILabel *liveTimeLabel ;
 
-/* 标签图*/
-@property (nonatomic, strong) TTGTextTagCollectionView *tagsView ;
 
+/* 课程标签图*/
+@property (nonatomic, strong) TTGTextTagCollectionView *classTagsView ;
+
+/* 课程目标*/
+@property (nonatomic, strong) UILabel *classTarget ;
+
+/* 适合人群*/
+@property (nonatomic, strong) UILabel *suitable ;
 
 
 /* 辅导简介*/
@@ -98,6 +103,11 @@
 
 /* 老师照片*/
 @property(nonatomic,strong) UIImageView *teacherHeadImage ;
+
+
+/* 教师标签*/
+@property (nonatomic, strong) TTGTextTagCollectionView *teacherTagsView ;
+
 
 
 @property(nonatomic,strong) UIView *view3 ;

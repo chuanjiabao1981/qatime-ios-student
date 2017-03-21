@@ -61,6 +61,7 @@
         _left_StateLabel = [[UILabel alloc]init];
         _left_StateLabel.textColor = [UIColor whiteColor];
         _left_StateLabel.backgroundColor = [UIColor colorWithRed:0.4 green:0.8 blue:1.0 alpha:1.0];
+        _left_StateLabel.font = [UIFont systemFontOfSize:12*ScrenScale];
         [_classImage addSubview:_left_StateLabel];
         _left_StateLabel.sd_layout
         .leftSpaceToView(_classImage,0)
@@ -72,12 +73,12 @@
         _right_StateLabel.textColor = [UIColor whiteColor];
         _right_StateLabel.backgroundColor = [UIColor colorWithRed:1.0 green:0.4 blue:0.0 alpha:1.0];
         [_classImage addSubview:_right_StateLabel];
+        _right_StateLabel.font = [UIFont systemFontOfSize:12*ScrenScale];
         _right_StateLabel.sd_layout
         .leftSpaceToView(_left_StateLabel,0)
         .bottomSpaceToView(_classImage,0)
         .autoHeightRatio(0);
         [_right_StateLabel setSingleLineAutoResizeWithMaxWidth:100];
-        
         
         
         //课程名
@@ -215,7 +216,36 @@
     _teacherName.text = recommandModel.teacher_name;
     
     
+    //标签
+    _left_StateLabel.text = [self transStateTag:recommandModel.tag_one];
+    _right_StateLabel.text =[self transStateTag:recommandModel.tag_two];
+    
+    
 }
+
+
+- (NSString *)transStateTag:(NSString *)state{
+    
+    NSString *str = @"".mutableCopy;
+    if ([state isEqual:[NSNull null]]) {
+        
+    }else{
+        
+        if ([state isEqualToString:@"star_teacher"]) {
+            str = @" 名师 ";
+        }else if ([state isEqualToString:@"best_seller"]){
+            str = @" 畅销 ";
+        }else if ([state isEqualToString:@"free_tastes"]){
+            str = @" 试听 ";
+        }else if ([state isEqualToString:@"join_cheap"]){
+            str = @" 优惠 ";
+        }
+    }
+    
+    
+    return str;
+}
+
 
 
 

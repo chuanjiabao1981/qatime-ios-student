@@ -273,7 +273,7 @@
         _viewController = [[LCTabBarController alloc]init];
         _viewController.tabBar.backgroundColor = [UIColor whiteColor];
         _viewController.itemTitleColor = [UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:1.00];
-        _viewController.selectedItemTitleColor = TITLERED;
+        _viewController.selectedItemTitleColor = NAVIGATIONRED;
         _viewController.viewControllers = @[indexPageVC,/*tutoriumVC,*/chooseVC,classTimeVC,noticeVC,personalVC];
     
     }

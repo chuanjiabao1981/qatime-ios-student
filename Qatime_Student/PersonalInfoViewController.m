@@ -74,6 +74,8 @@
     NSString *_userName;
     NSString *_userGrade;
     UIImage *_userImage;
+    NSString *_userProvicne;
+    NSString *_userCity;
     
     /* 是否传值过来的?*/
     BOOL WriteMore;
@@ -92,7 +94,7 @@
 
 @implementation PersonalInfoViewController
 
--(instancetype)initWithName:(NSString *)name andGrade:(NSString *)chosegrade andHeadImage:(UIImage *)headImage withImageChange:(BOOL)imageChange{
+-(instancetype)initWithName:(nullable NSString *)name andGrade:(nullable NSString *)chosegrade andHeadImage:(nullable UIImage *)headImage  withImageChange:(BOOL)imageChange andProvince:(nullable NSString *)province city:(nullable NSString *)city{
     
     self = [super init];
     if (self) {
@@ -120,6 +122,14 @@
                 
             }
         }
+        
+        if (province!=nil) {
+            _userProvicne = [NSString stringWithFormat:@"%@",province];
+        }
+        if (city!=nil) {
+            _userCity = [NSString stringWithFormat:@"%@",city];
+        }
+        
         
         /* 是"完善更多场景"*/
         
@@ -232,82 +242,7 @@
 - (void)changeHeadImage:(UITapGestureRecognizer *)sender{
     
     
-//    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-//    {
-//        NSLog(@"支持相机");
-//    }
-//    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
-//    {
-//        NSLog(@"支持图库");
-//    }
-//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
-//    {
-//        NSLog(@"支持相片库");
-//    }
-//    
-//    UIImagePickerController *picker = [[UIImagePickerController alloc]init];
-//    picker.allowsEditing = YES;
-//    picker.delegate = self;
-//    
-//    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"上传头像" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-//    
-//    UIAlertAction *camera = [UIAlertAction actionWithTitle:@"照相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        
-//        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-//        
-//        [self presentViewController:picker animated:YES completion:nil];
-//    }] ;
-//    UIAlertAction *library = [UIAlertAction actionWithTitle:@"图库" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//        
-//        [self presentViewController:picker animated:YES completion:nil];
-//        
-//    }] ;
-//    UIAlertAction *photos = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-//        
-//        [self presentViewController:picker animated:YES completion:nil];
-//        
-//    }] ;
-//    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//        
-//        
-//    }] ;
-//    
-//    
-//    [alert addAction:camera];
-//    [alert addAction:library];
-//    [alert addAction:photos];
-//    [alert addAction:cancel];
-//    
-//    [self presentViewController:alert animated:YES completion:nil];
-    
-    
 }
-
-#pragma mark- ImagePicker delegate
-//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
-//    
-//    _imageURL = info[@"UIImagePickerControllerReferenceURL"];
-//    
-//    [self dismissViewControllerAnimated:YES completion:^{
-//        
-//        NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0];
-//        
-//        Personal_HeadTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:path]  ;
-//        
-//        [cell.image setImage:info[@"UIImagePickerControllerEditedImage"]];
-//        
-//        _userImage = info[@"UIImagePickerControllerEditedImage"];
-//        
-//        _avatar = UIImageJPEGRepresentation(_userImage,0.8);
-//        
-//        changeImage = YES;
-//    }];
-//    
-//}
-
-
 
 #pragma mark- tableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -480,8 +415,8 @@
             
         }
         if (WriteMore==YES){
-            cell.content.text = @"未设置";
-            cell.subContent.text = @"未设置";
+            cell.content.text = _userProvicne;
+            cell.subContent.text = _userCity;
             
         }else{
             

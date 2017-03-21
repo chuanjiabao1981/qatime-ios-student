@@ -10,6 +10,7 @@
 #import "NavigationBar.h"
 #import "ProinceTableViewCell.h"
 #import "YYModel.h"
+#import "SignUpInfoViewController.h"
 
 #import "PersonalInfoEditViewController.h"
 
@@ -113,6 +114,10 @@
         if ([controller isMemberOfClass:[PersonalInfoEditViewController class]]) {
             
             [self.navigationController popToViewController:controller animated:YES];
+        }else if ([controller isMemberOfClass:[SignUpInfoViewController class]]){
+            
+            [self.navigationController popToViewController:controller animated:YES];
+            
         }
     }
     

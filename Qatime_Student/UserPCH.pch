@@ -56,8 +56,11 @@
 #define SEPERATELINECOLOR [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0]
 
 
-/*字号*/
+/*大标题字号*/
 #define TITLEFONTSIZE [UIFont systemFontOfSize:18*[UIScreen mainScreen].bounds.size.width/414.0]
+
+/* 正文字号*/
+#define TEXT_FONTSIZE [UIFont systemFontOfSize:16*[UIScreen mainScreen].bounds.size.width/414.0]
 
 /* 字体颜色*/
 #define TITLECOLOR [UIColor colorWithRed:0.60 green:0.60 blue:0.60 alpha:1.00]
@@ -68,6 +71,10 @@
 
 /* 标题红色*/
 #define TITLERED [UIColor colorWithRed:0.75 green:0.04 blue:0.04 alpha:1.00]
+
+
+/* 导航栏红*/
+#define NAVIGATIONRED [UIColor colorWithRed:0.99 green:0.35 blue:0.29 alpha:1.00]
 
 /* tabbar高度*/
 

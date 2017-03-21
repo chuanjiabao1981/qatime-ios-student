@@ -64,7 +64,9 @@
 //所有的标签
 @property (nonatomic, strong) NSArray *tag_list ;
 
-
+//两个推荐标签
+@property (nonatomic, strong) NSString *tag_one ;
+@property (nonatomic, strong) NSString *tag_two ;
 
 
 

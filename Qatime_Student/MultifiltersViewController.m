@@ -36,7 +36,6 @@
 @implementation MultifiltersViewController
 
 
-
 - (instancetype)init
 {
     self = [super init];
@@ -72,8 +71,6 @@
                        @[@"all",@"免费试听",@"无试听"]
                        ];
     
-    
-    
     //如果有数据,加载已选数据
     [self checkFilted];
     
@@ -82,7 +79,6 @@
     
     //加载视图
     [self setupViews];
-    
     
 }
 
@@ -705,7 +701,6 @@
     
     self.componentsBlock = changed;
 }
-
 
 
 //返回上一页

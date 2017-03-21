@@ -463,7 +463,7 @@
             if (keeArr) {
                 
                 _kee_teacher =[NSString stringWithFormat:@"%@",[keeArr[0] valueForKey:@"kee"]];
-                _kee_class =[NSString stringWithFormat:@"%@",[keeArr[1] valueForKey:@"kee"]];
+                _kee_class =[NSString stringWithFormat:@"%@",[keeArr[3] valueForKey:@"kee"]];
                 _kee_banner = [ NSString stringWithFormat:@"%@",[keeArr[2] valueForKey:@"kee"]];
             }
             
@@ -483,7 +483,7 @@
             });
             
             
-            /* 另一异步线程请求推荐课程*/
+            /* 另一异步线程请求精品课程*/
             
             dispatch_queue_t classes = dispatch_queue_create("teacher", DISPATCH_QUEUE_SERIAL);
             dispatch_async(classes, ^{
@@ -558,11 +558,12 @@
     
 }
 
-#pragma mark- 请求推荐课程方法
+#pragma mark- 请求精品课程方法
 - (void)requestClasses:(NSString * _Nullable)location{
     
     _classes = @[].mutableCopy;
     
+    //先加载地区信息
     NSString *position = nil;
     if (location == nil) {
         position = @"";
@@ -571,66 +572,45 @@
         position =location;
     }
     
-    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/recommend/positions/%@/items",Request_Header,_kee_class] parameters:@{@"page":[NSString stringWithFormat:@"%ld", page],@"per_page":[NSString stringWithFormat:@"%ld", per_page],@"city_name":position} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    //请求精选课程数据
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/recommend/positions/%@/items",Request_Header,_kee_class] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"page":[NSString stringWithFormat:@"%ld", page],@"per_page":[NSString stringWithFormat:@"%ld", per_page],@"city_name":position}  completeSuccess:^(id  _Nullable responds) {
         
-        NSDictionary *classDic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        //        NSLog( @"%@",classDic);
-        
-        NSString *state =[NSString stringWithFormat:@"%@",classDic[@"status"]];
-        
-        NSArray *classArr=@[].mutableCopy;
-        
-        if ([state isEqualToString:@"0"]) {
-            /* 请求错误，重新发请求*/
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
             
-        }else{
+            NSArray *arr = [NSArray arrayWithArray:dic[@"data"]];
             
-            classArr = [classDic valueForKey:@"data"];
-            
-            if (classArr.count==0) {
-                
+            if (arr.count==0) {
                 /* 没有任何数据的情况,加载空数据*/
-                
                 [self refreshNoClassData];
                 
             }else{
                 
-                for ( int i =0; i<classArr.count; i++) {
+                for (NSDictionary *dics in arr) {
                     
-                    NSDictionary *classinfo =[NSDictionary dictionaryWithDictionary:[classArr[i] valueForKey:@"live_studio_course"]];
-                    RecommandClasses *reclass=[RecommandClasses yy_modelWithDictionary:classinfo];
-                    //                    reclass.title =[classArr[i] valueForKey:@"title"];
-                    //                    reclass.index =[[classArr[i] valueForKey:@"index"] integerValue];
-                    if ([[classArr[i] valueForKey:@"reason"]isEqual:[NSNull null]]) {
-                        reclass.reason = @"";
-                    }else{
-                        reclass.reason =[classArr[i] valueForKey:@"reason"];
-                    }
-                    reclass.logo_url =[classArr[i] valueForKey:@"logo_url"];
-                    reclass.classID =[[classArr[i] valueForKey:@"live_studio_course"]valueForKey:@"id"];
-                    
-                    [_classes addObject:reclass];
+                    RecommandClasses *mod ;
+                    mod = [RecommandClasses yy_modelWithJSON:dics[@"live_studio_course"]];
+                    mod.tag_one = dics[@"tag_one"];
+                    mod.tag_two = dics[@"tag_two"];
+                    mod.classID =dics[@"live_studio_course"][@"id"];
+                    [_classes addObject:mod];
                     
                 }
                 
                 [_indexPageView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                 
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"SizeChange" object:nil];
+                
             }
             
+        }else{
+            //请求错误
             
         }
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
     }];
     
-    
 }
-
 
 
 #pragma mark- 推荐教师请求方法
@@ -866,6 +846,11 @@
         
         if (_todayLives.count>indexPath.row) {
             liveCell.model = _todayLives[indexPath.row];
+        }else{
+            [liveCell.classImageView setImage:[UIImage imageNamed:@"school"]];
+            liveCell.classNameLabel.text = @"今日直播课程";
+            liveCell.stateLabel.text = @"12:00-13:00 开始";
+            
         }
         
         cell = liveCell;
@@ -990,20 +975,20 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     /* 推荐课程点击事件*/
-        if (collectionView.tag ==1) {
-    
-            if (_classes.count == 0) {
-                [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"该地区没有推荐课程", nil)];
-            }else{
-    
-                RecommandClassCollectionViewCell *cell = (RecommandClassCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    
-                TutoriumInfoViewController *viewcontroller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
-    
-                viewcontroller.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:viewcontroller animated:YES];
-            }
+    if (collectionView.tag ==1) {
+        
+        if (_classes.count == 0) {
+            [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"该地区没有推荐课程", nil)];
+        }else{
+            
+            RecommandClassCollectionViewCell *cell = (RecommandClassCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+            
+            TutoriumInfoViewController *viewcontroller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+            
+            viewcontroller.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:viewcontroller animated:YES];
         }
+    }
     
     if (collectionView.tag ==2) {
         
@@ -1063,7 +1048,6 @@
     QualityTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
     if (cell==nil) {
         cell=[[QualityTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-        //        cell.textLabel.text = [NSString stringaWithFormat:@"%ld",(long)indexPath.row];
         
     }
     
@@ -1076,7 +1060,8 @@
                 
             }else if (_classes.count>indexPath.row) {
                 cell.recommandModel = _classes[indexPath.row];
-                
+                cell.left_StateLabel.hidden = NO;
+                cell.right_StateLabel.hidden = NO;
                 
             }
         }
@@ -1088,8 +1073,8 @@
                 
             }else if (_newestStart.count>indexPath.row) {
                 cell.classModel = _newestStart[indexPath.row];
-                
-                
+                cell.left_StateLabel.hidden = YES;
+                cell.right_StateLabel.hidden = YES;
                 
             }
         }
@@ -1100,7 +1085,8 @@
                 
             }else if (_newestRelease.count>indexPath.row) {
                 cell.classModel = _newestRelease[indexPath.row];
-                
+                cell.left_StateLabel.hidden = YES;
+                cell.right_StateLabel.hidden = YES;
                 
             }
             
@@ -1140,7 +1126,7 @@
         case 1:{
             controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.classModel.classID];
         }
-
+            
             break;
             
         case 2:{
@@ -1149,11 +1135,10 @@
             
             break;
     }
+    
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
     
-    
-
 }
 
 
@@ -1237,11 +1222,8 @@
         .bottomEqualToView(arrow);
         [more setSingleLineAutoResizeWithMaxWidth:100];
     }
-    
-    
-    
+
     return view;
-    
     
 }
 
@@ -1269,7 +1251,6 @@
         _recommandTeacherScrollView.backgroundColor = [UIColor whiteColor];
         _recommandTeacherScrollView.frame = CGRectMake(0, CGRectGetMaxY(recTeach.frame)+10, self.view.width_sd,80 ) ;
         view = content;
-        
         
     }
     

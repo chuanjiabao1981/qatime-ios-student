@@ -22,8 +22,10 @@
  @param name 用户姓名
  @param grade 年级
  @param headImage 头像图片
+ @param province 省份
+ @param city 城市
  @return 初始化实例
  */
--(instancetype)initWithName:(nullable NSString *)name andGrade:(nullable NSString *)chosegrade andHeadImage:(nullable UIImage *)headImage  withImageChange:(BOOL)imageChange;
+-(instancetype)initWithName:(nullable NSString *)name andGrade:(nullable NSString *)chosegrade andHeadImage:(nullable UIImage *)headImage  withImageChange:(BOOL)imageChange andProvince:(nullable NSString *)province city:(nullable NSString *)city;
 
 @end

@@ -149,7 +149,8 @@
     _tutoriumInfoView.segmentControl.selectionIndicatorHeight=2;
     _tutoriumInfoView.segmentControl.selectedSegmentIndex=0;
     
-    _tutoriumInfoView.tagsView.delegate = self;
+    _tutoriumInfoView.classTagsView.delegate = self;
+    _tutoriumInfoView.teacherTagsView.delegate = self;
     
     _config = [[TTGTextTagConfig alloc]init];
     _config.tagTextColor = TITLECOLOR;
@@ -323,12 +324,9 @@
                         
                         
                     }
-                    
-                    _tutoriumInfoView.onlineVideoLabel.text =@"在线直播";
-                    
-                    _tutoriumInfoView.liveStartTimeLabel.text = [_dataDic[@"live_start_time"]length]>=10?[_dataDic[@"live_start_time"] substringToIndex:10]:_dataDic[@"live_start_time"];
-                    _tutoriumInfoView.liveEndTimeLabel.text = [_dataDic[@"live_end_time"] length]>=10?[_dataDic[@"live_end_time"] substringToIndex:10]:_dataDic[@"live_end_time"];
-                    
+                    //直播时间赋值
+                    _tutoriumInfoView.liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[_dataDic[@"live_start_time"]length]>=10?[_dataDic[@"live_start_time"] substringToIndex:10]:_dataDic[@"live_start_time"],[_dataDic[@"live_end_time"] length]>=10?[_dataDic[@"live_end_time"] substringToIndex:10]:_dataDic[@"live_end_time"]];
+                   
                     if ([status isEqualToString:@"0"]) {
                         /* 获取token错误  需要重新登录*/
                         
@@ -399,7 +397,7 @@
                         /* 课程页面的label赋值*/
                         [_tutoriumInfoView.subjectLabel setText:_classModel.subject];
                         [_tutoriumInfoView.gradeLabel setText:_classModel.grade];
-                        [_tutoriumInfoView.classCount setText:_classModel.lesson_count];
+                        [_tutoriumInfoView.classCount setText:[NSString stringWithFormat:@"共%@课",  _classModel.lesson_count]];
                         //                        [_tutoriumInfoView.classDescriptionLabel setText:_classModel.describe];
                         //
                         _tutoriumInfoView.classDescriptionLabel.attributedText = _classModel.attributedDescribe;
@@ -410,12 +408,12 @@
                         
                         if (_classModel.tag_list.count!=0) {
                             
-                            [_tutoriumInfoView.tagsView addTags:_classModel.tag_list withConfig:_config];
+                            [_tutoriumInfoView.classTagsView addTags:_classModel.tag_list withConfig:_config];
                         }else{
                             
                             _config.tagBorderColor = [UIColor whiteColor];
                             _config.tagTextColor = TITLECOLOR;
-                            [_tutoriumInfoView.tagsView addTag:@"无" withConfig:_config];
+                            [_tutoriumInfoView.classTagsView addTag:@"无" withConfig:_config];
                         }
                         
                         
@@ -874,9 +872,15 @@
 #pragma mark- tagview delegate
 
 - (void)textTagCollectionView:(TTGTextTagCollectionView *)textTagCollectionView updateContentSize:(CGSize)contentSize{
-    [_tutoriumInfoView.tagsView clearAutoHeigtSettings];
-    _tutoriumInfoView.tagsView.sd_layout
-    .heightIs(contentSize.height);
+    
+    if (textTagCollectionView == _tutoriumInfoView.classTagsView) {
+        [textTagCollectionView clearAutoHeigtSettings];
+       textTagCollectionView.sd_layout
+        .heightIs(contentSize.height);
+    }else if(textTagCollectionView == _tutoriumInfoView.teacherTagsView){
+        
+        
+    }
 }
 
 
@@ -945,21 +949,15 @@
 
 #pragma mark- 根据课程详细内容 ,scrollview 的content 自适应高度
 - (void)autoScrollHeight{
-    
+    //富文本尺寸适配
     [_tutoriumInfoView.classDescriptionLabel updateLayout];
     [_tutoriumInfoView.teacherInterviewLabel updateLayout];
-    
-    NSLog(@"%@",[_tutoriumInfoView.classDescriptionLabel valueForKey:@"frame"]);
-    NSLog(@"%@",[_tutoriumInfoView.teacherInterviewLabel valueForKey:@"frame"]);
     
     /* 使用YYText的YYTextLayout来计算富文本的size*/
     /* 课程信息的 高度自适应*/
     CGSize classDesc_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_tutoriumInfoView.classDescriptionLabel.width_sd, CGFLOAT_MAX) text:_classModel.attributedDescribe].textBoundingSize;
     
-    
-    CGFloat classDesc_height = _tutoriumInfoView.classDescriptionLabel.frame.origin.y+classDesc_size.height;
-    
-    /* 富文本label先适配自动布局高度*/
+    /* 课程简介 富文本label先适配自动布局高度*/
     [_tutoriumInfoView.classDescriptionLabel sd_clearAutoLayoutSettings];
     _tutoriumInfoView.classDescriptionLabel.sd_layout
     .leftEqualToView(_tutoriumInfoView.descriptions)
@@ -972,9 +970,8 @@
     
     /* 教师简介的  高度自适应*/
     CGSize teacherDesc_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_tutoriumInfoView.teacherInterviewLabel.width_sd, CGFLOAT_MAX) text:_teacherModel.attributedDescribe].textBoundingSize;
-    CGFloat teacherDesc_height =  _tutoriumInfoView.teacherInterviewLabel.frame.origin.y+teacherDesc_size.height;
     
-    /* 富文本label适配自动布局高度*/
+    /* 教师简介 富文本label适配自动布局高度*/
     [_tutoriumInfoView.teacherInterviewLabel sd_clearAutoLayoutSettings];
     _tutoriumInfoView.teacherInterviewLabel.sd_layout
     .leftSpaceToView(_tutoriumInfoView.view2,20)
@@ -982,19 +979,7 @@
     .topSpaceToView(_tutoriumInfoView.descrip,20)
     .heightIs(teacherDesc_size.height+20);
     
-    //    _teacherInterviewLabel.sd_layout
-    //    .leftSpaceToView(_view2,20)
-    //    .rightSpaceToView(_view2,20)
-    //    .topSpaceToView(descrip,20)
-    //    .autoHeightRatio(0);
-    
     [_tutoriumInfoView.teacherInterviewLabel updateLayout];
-    
-    /* 两组视图分别自适应高度*/
-    
-    [_tutoriumInfoView.view1 setContentSize:CGSizeMake(self.view.width_sd,classDesc_height+20 )];
-    [_tutoriumInfoView.view2 setContentSize:CGSizeMake(self.view.width_sd, teacherDesc_height+20) ];
-    
     
 }
 

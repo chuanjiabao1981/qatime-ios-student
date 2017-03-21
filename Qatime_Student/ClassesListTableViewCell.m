@@ -45,9 +45,7 @@
     /* 课程名称label 布局*/
     
     _className = [[UILabel alloc]init];
-    _className.font = [UIFont systemFontOfSize:20*ScrenScale];
-//    [self.contentView addSubview:_className];
-//    _className.sd_layout.leftSpaceToView(_circle,10).topSpaceToView(self.contentView,10).hei
+    _className.font = TITLEFONTSIZE;
     
     
     /* 课程时间*/

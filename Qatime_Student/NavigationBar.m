@@ -15,7 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.backgroundColor = TITLERED;
+        self.backgroundColor = NAVIGATIONRED;
         
         UIView *lanView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, 20)];
         lanView.backgroundColor = [UIColor blackColor];
@@ -36,32 +36,44 @@
 
 - (UIButton *)leftButton{
     
-    _leftButton = [[UIButton alloc]initWithFrame:CGRectMake(10*ScrenScale, 30, 30*ScrenScale, 30*ScrenScale)];
-    _leftButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-//    [_leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-    [self addSubview:_leftButton];
-
-    [_leftButton setEnlargeEdge:20];
+    if (!_leftButton) {
+        
+        _leftButton = [[UIButton alloc]initWithFrame:CGRectMake(10*ScrenScale, 30, 30*ScrenScale, 30*ScrenScale)];
+        _leftButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        //    [_leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+        [self addSubview:_leftButton];
+        
+        [_leftButton setEnlargeEdge:20];
+    }
+    
     return _leftButton;
 }
 
 -(UIButton *)rightButton{
     
-    _rightButton = [[UIButton alloc]initWithFrame:CGRectMake(self.width_sd-50*ScrenScale, 30, 30*ScrenScale, 30*ScrenScale)];
-    [self addSubview:_rightButton];
-     [_rightButton setEnlargeEdge:20];
+    if (!_rightButton) {
+        
+        _rightButton = [[UIButton alloc]initWithFrame:CGRectMake(self.width_sd-50*ScrenScale, 30, 30*ScrenScale, 30*ScrenScale)];
+        [self addSubview:_rightButton];
+        [_rightButton setEnlargeEdge:20];
+    }
+    
 
     return _rightButton;
     
 }
 
 -(UILabel *)titleLabel{
-    _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(120, 20, self.width_sd -240, 40)];
-    [self addSubview:_titleLabel];
     
-    [_titleLabel setTextColor:[UIColor whiteColor]];
-    [_titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [_titleLabel setFont:[UIFont systemFontOfSize:20*ScrenScale]];
+    if (!_titleLabel) {
+        _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(120, 20, self.width_sd -240, 40)];
+        [self addSubview:_titleLabel];
+        
+        [_titleLabel setTextColor:[UIColor whiteColor]];
+        [_titleLabel setTextAlignment:NSTextAlignmentCenter];
+        [_titleLabel setFont:[UIFont systemFontOfSize:20*ScrenScale]];
+        
+    }
     
     return  _titleLabel;
     

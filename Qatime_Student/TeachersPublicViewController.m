@@ -17,10 +17,7 @@
 #import "TutoriumInfoViewController.h"
 #import "NSString+ChangeYearsToChinese.h"
 
-@interface TeachersPublicViewController ()
-<UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>
-
-{
+@interface TeachersPublicViewController ()<UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>{
     
     /* 头视图*/
     TeachersPublicHeaderView *_teachersPublicHeaderView ;
@@ -37,9 +34,6 @@
     TeachersPublic_Classes *_teacherPublicClass;
     
     UICollectionViewFlowLayout *_flowLayout;
-    
-    
-    
     
     /* 头视图的尺寸*/
     CGSize headerSize;
@@ -64,29 +58,30 @@
 
 
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-      
+    [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
-    [self.view addSubview:_navigationBar];
     
-    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+    _navigationBar.backgroundColor = BUTTONRED;
+    _navigationBar.alpha = 0;
+    
+    [_navigationBar.leftButton setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.4]];
+    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+    _navigationBar.leftButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
+    [_navigationBar.leftButton updateLayout];
     
     _teachersPublicHeaderView = [[TeachersPublicHeaderView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 400)];
     
-    
     [self.view addSubview:_teachersPublicHeaderView];
     
-    //
-    //    dispatch_queue_t mian1 = dispatch_queue_create("main", DISPATCH_CURRENT_QUEUE_LABEL);
-    //    dispatch_sync(mian1, ^{
+ 
     
     /* 初始化后直接发送教师公开页的请求*/
     [self requestTeachersInfoWithID:_teacherID];
@@ -106,11 +101,8 @@
     
     
     
-    //    dispatch_queue_t mian2 = dispatch_queue_create("main", DISPATCH_CURRENT_QUEUE_LABEL);
-    //    dispatch_sync(mian2, ^{
-    
     /* collection部分*/
-    _teachersPublicCollectionView = [[TeachersPublicCollectionView alloc]initWithFrame:CGRectMake(0,64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64) collectionViewLayout:_flowLayout];
+    _teachersPublicCollectionView = [[TeachersPublicCollectionView alloc]initWithFrame:CGRectMake(0,0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64) collectionViewLayout:_flowLayout];
     [self.view addSubview:_teachersPublicCollectionView];
     _teachersPublicCollectionView.backgroundColor = [UIColor whiteColor];
     _teachersPublicCollectionView.showsVerticalScrollIndicator = NO;
@@ -124,6 +116,8 @@
     
     _publicClasses = @[].mutableCopy;
     
+    
+    [self.view addSubview:_navigationBar];
     
     
 }
@@ -284,7 +278,7 @@
         
         
         _teachersPublicHeaderView.teacherNameLabel.text =teacherInfo.name;
-        _navigationBar.titleLabel.text = teacherInfo.name;
+//        _navigationBar.titleLabel.text = teacherInfo.name;
         
         [_teachersPublicHeaderView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:teacherInfo.avatar_url]];
         _teachersPublicHeaderView.category.text = teacherInfo.category;
@@ -312,8 +306,6 @@
         [[NSNotificationCenter defaultCenter]postNotificationName:@"LabelTextChange" object:nil];
         
         
-        
-        
     }
     
     
@@ -336,7 +328,14 @@
     [_teachersPublicCollectionView setNeedsLayout];
     [_teachersPublicCollectionView setNeedsDisplay];
     
+
+}
+
+-(void)viewDidDisappear:(BOOL)animated{
     
+    [super viewDidDisappear:animated];
+    
+    [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     
 }
 

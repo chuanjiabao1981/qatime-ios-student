@@ -70,6 +70,22 @@
         [gradeText addSubview:_grade];
         [_grade setTitle:@"选择所在年级" forState:UIControlStateNormal];
         [_grade setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+        _grade.titleLabel.font = [UIFont systemFontOfSize:14*ScrenScale];
+        
+        /* 地区选择框*/
+        
+        UIView *locationView = [[UIView alloc]init];
+        [self addSubview:locationView];
+        locationView.layer.borderWidth = 1;
+        locationView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        
+        _chooseLocationButton = [[UIButton alloc]init];
+        [locationView addSubview:_chooseLocationButton];
+        [_chooseLocationButton setTitle:@"选择地区" forState:UIControlStateNormal];
+        [_chooseLocationButton setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+        _chooseLocationButton.titleLabel.font = [UIFont systemFontOfSize:14*ScrenScale];
+        
+        
         
         
         /* 完善更多*/
@@ -89,7 +105,6 @@
         [_enterButton setTitle:@"立即进入" forState:UIControlStateNormal];
         [_enterButton setTitleColor:[UIColor colorWithRed:0.79 green:0 blue:0 alpha:1.0] forState:UIControlStateNormal];
         
-        
         /* 头像*/
        _headImage.sd_layout
         .centerXEqualToView(self)
@@ -103,9 +118,7 @@
         .topSpaceToView(_headImage,10)
         .autoHeightRatio(0);
         [head setSingleLineAutoResizeWithMaxWidth:500];
-        
-        
-        
+    
         /* 姓名框*/
         nameText.sd_layout
         .leftSpaceToView(self,20)
@@ -123,7 +136,7 @@
         .leftEqualToView(nameText)
         .rightEqualToView(nameText)
         .topSpaceToView(nameText,20)
-        .heightRatioToView(nameText,1.0f);
+        .heightRatioToView(nameText,1.0);
         
         _grade.sd_layout
         .leftSpaceToView(gradeText,10)
@@ -131,11 +144,22 @@
         .topSpaceToView(gradeText,10)
         .bottomSpaceToView(gradeText,10);
         
-        
-        _moreButton.sd_layout
+        locationView .sd_layout
         .leftEqualToView(gradeText)
+        .rightEqualToView(gradeText)
         .topSpaceToView(gradeText,20)
-        .heightRatioToView(gradeText,0.8f)
+        .heightRatioToView(gradeText,1.0);
+        
+        _chooseLocationButton.sd_layout
+        .leftSpaceToView(locationView,10)
+        .rightSpaceToView(locationView,10)
+        .topSpaceToView(locationView,10)
+        .bottomSpaceToView(locationView,10);
+
+        _moreButton.sd_layout
+        .leftEqualToView(locationView)
+        .topSpaceToView(locationView,20)
+        .heightRatioToView(locationView,0.8f)
         .widthIs(self.width_sd/2.0f-20-10);
         _moreButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
         

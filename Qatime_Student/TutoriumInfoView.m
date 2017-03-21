@@ -50,7 +50,7 @@
         [_deadLine setSingleLineAutoResizeWithMaxWidth:200];
         [_deadLine setText:@""];
         [_deadLine setTextColor:[UIColor whiteColor]];
-        _deadLine.font = [UIFont systemFontOfSize:20*ScrenScale];
+        _deadLine.font = [UIFont systemFontOfSize:16*ScrenScale];
         [_deadLine setBackgroundColor:USERGREEN];
         
         
@@ -61,7 +61,7 @@
         [_recuitState setSingleLineAutoResizeWithMaxWidth:100];
         [_recuitState setText:@""];
         [_recuitState setTextColor:[UIColor whiteColor]];
-        _recuitState.font = [UIFont systemFontOfSize:20*ScrenScale];
+        _recuitState.font = [UIFont systemFontOfSize:16*ScrenScale];
         [_recuitState setBackgroundColor:USERGREEN];
         
         /* 课程名称*/
@@ -82,37 +82,33 @@
         _priceLabel.textAlignment = NSTextAlignmentLeft;
         [_priceLabel setText:@"¥0.00"];
         [_priceLabel setTextColor:[UIColor redColor]];
-        [_priceLabel setFont:[UIFont systemFontOfSize:18*ScrenScale]];
+        [_priceLabel setFont:[UIFont systemFontOfSize:16*ScrenScale]];
         
-        _priceLabel.hidden = YES;
+//        _priceLabel.hidden = YES;
         
         /* 报名人数*/
         _saleNumber = [[UILabel alloc]init];
+        _saleNumber.font = [UIFont systemFontOfSize:16*ScrenScale];
+        _saleNumber.textColor = TITLECOLOR;
+        _saleNumber.textAlignment = NSTextAlignmentLeft;
         [self addSubview:_saleNumber];
         _saleNumber.sd_layout
         .topSpaceToView(_className,5)
         .rightSpaceToView(self,10)
         .autoHeightRatio(0);
-        
         [_saleNumber setSingleLineAutoResizeWithMaxWidth:100];
-        _saleNumber.textAlignment = NSTextAlignmentLeft;
-        [_saleNumber setText:@"100"];
-        [_saleNumber setTextColor:[UIColor blackColor]];
-        [_saleNumber setFont:[UIFont systemFontOfSize:18*ScrenScale]];
         
         /* 报名人数 label*/
-        
         UILabel *saleNum = [[UILabel alloc]init];
         [self addSubview:saleNum];
         saleNum.sd_layout. topEqualToView(_saleNumber).rightSpaceToView(_saleNumber,10).autoHeightRatio(0);
         [saleNum setSingleLineAutoResizeWithMaxWidth:100];
         saleNum.textAlignment = NSTextAlignmentLeft;
-        [saleNum setTextColor:[UIColor blackColor]];
-        [saleNum setFont:[UIFont systemFontOfSize:18*ScrenScale]];
+        [saleNum setTextColor:TITLECOLOR];
+        [saleNum setFont:[UIFont systemFontOfSize:16*ScrenScale]];
         [saleNum setText:@"报名人数"];
         
         /* 分割线1*/
-        
         
         UIView *line1 = [[UIView alloc]init];
         [self addSubview:line1];
@@ -121,21 +117,21 @@
         [line1 updateLayout];
         
         /* 滑动控制器*/
-        _segmentControl = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"辅导概况",@"教师资料",@"课程安排"]];
+        _segmentControl = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"课程介绍",@"教师资料",@"上课安排"]];
         [self addSubview:_segmentControl];
         _segmentControl.sd_layout
         .leftEqualToView(self)
         .rightEqualToView(self)
         .topSpaceToView(line1,5)
-        .heightRatioToView(self,0.05);
-        
-//        _segmentControl.frame = CGRectMake(0, line1.origin_sd.y+line1.height_sd, self.width_sd, self.height_sd*0.05);
+        .heightRatioToView(self,0.04);
+    
         _segmentControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
         _segmentControl.borderType = HMSegmentedControlTypeText;
         _segmentControl.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
         _segmentControl.borderType = HMSegmentedControlBorderTypeTop | HMSegmentedControlBorderTypeBottom;
         _segmentControl.borderWidth = 0.6;
         _segmentControl.borderColor = SEPERATELINECOLOR;
+        _segmentControl.titleTextAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
         [_segmentControl updateLayout];
         
         /* 大滑动页面*/
@@ -146,7 +142,6 @@
         .rightEqualToView(self)
         .topSpaceToView(_segmentControl,0)
         .bottomEqualToView(self);
-//        _scrollView.frame = CGRectMake(0, _segmentControl.origin_sd.y+_segmentControl.height_sd, self.width_sd, self.height_sd-_segmentControl.origin_sd.y-_segmentControl.height_sd);
         
         [_scrollView updateLayout];
         _scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame)*3,_scrollView.height_sd );
@@ -184,287 +179,421 @@
         _view3.backgroundColor = [UIColor whiteColor];
         
         
-        /* 辅导班概况 的所有label*/
-        
-        
-        /* 科目*/
-       
-        _subjectLabel = [[UILabel alloc]init];
-        _subjectLabel.font = TITLEFONTSIZE;
-        [_view1 addSubview:_subjectLabel];
-        _subjectLabel.sd_layout
-        .topSpaceToView(_view1,20)
+        /* -课程介绍页- */
+        UILabel *desLabel = [[UILabel alloc]init];
+        [_view1 addSubview:desLabel];
+        desLabel.textColor = [UIColor blackColor];
+        desLabel.text = @"-基本属性";
+        desLabel.sd_layout
         .leftSpaceToView(_view1,20)
+        .topSpaceToView(_view1,20)
         .autoHeightRatio(0);
-        [_subjectLabel setSingleLineAutoResizeWithMaxWidth:100.0f];
-
+        [desLabel setSingleLineAutoResizeWithMaxWidth:100];
         
-        UIView *circle1=[[UIView alloc]init];
-        circle1.backgroundColor = TITLERED;
-        [_view1 addSubview:circle1];
-        circle1.sd_layout
-        .rightSpaceToView(_subjectLabel,5)
-        .centerYEqualToView(_subjectLabel)
-        .heightRatioToView(_subjectLabel,0.3)
-        .widthEqualToHeight();
-        circle1.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
-       
+        
         /* 年级*/
+        UIImageView *book1 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"book"]];
+        [_view1 addSubview:book1];
+        
+        book1.sd_layout
+        .leftEqualToView(desLabel);
         
         _gradeLabel =[[UILabel alloc]init];
-        _gradeLabel.font = TITLEFONTSIZE;
+        _gradeLabel.font = TEXT_FONTSIZE;
+        _gradeLabel.textColor = TITLECOLOR;
         [_view1 addSubview:_gradeLabel];
         _gradeLabel.sd_layout
-        .leftSpaceToView(_view1,self.width_sd/2)
-        .topEqualToView(_subjectLabel)
+        .leftSpaceToView(book1,5)
+        .topSpaceToView(desLabel,10)
         .autoHeightRatio(0);
         [_gradeLabel setSingleLineAutoResizeWithMaxWidth:100.0f];
+        [_gradeLabel updateLayout];
         
-        UIView *circle2=[[UIView alloc]init];
-        circle2.backgroundColor = TITLERED;
-        [_view1 addSubview:circle2];
-        circle2.sd_layout
-        .rightSpaceToView(_gradeLabel,5)
+        book1.sd_layout
+        .heightRatioToView(_gradeLabel,0.6)
         .centerYEqualToView(_gradeLabel)
-        .heightRatioToView(_gradeLabel,0.3)
         .widthEqualToHeight();
-        circle2.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
+        [book1 updateLayout];
         
-
+        /* 科目*/
+        
+        UIImageView *book2 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"book"]];
+        [_view1 addSubview:book2];
+        book2.sd_layout
+        .centerXEqualToView(_view1)
+        .topEqualToView(book1)
+        .bottomEqualToView(book1)
+        .widthEqualToHeight();
+        
+        _subjectLabel = [[UILabel alloc]init];
+        _subjectLabel.font = TEXT_FONTSIZE;
+        _subjectLabel.textColor = TITLECOLOR;
+        [_view1 addSubview:_subjectLabel];
+        _subjectLabel.sd_layout
+        .topEqualToView(_gradeLabel)
+        .bottomEqualToView(_gradeLabel)
+        .leftSpaceToView(book2,5);
+        [_subjectLabel setSingleLineAutoResizeWithMaxWidth:100.0f];
+        
         /* 课时*/
-        UILabel *counted =[[UILabel alloc]init];
-        counted.font = TITLEFONTSIZE;
-        [_view1 addSubview:counted];
-        counted.sd_layout.leftEqualToView(_subjectLabel).topSpaceToView(_subjectLabel,20).autoHeightRatio(0);
-        [counted setSingleLineAutoResizeWithMaxWidth:100.0f];
-        [counted setText:@"共"];
-        
-        UIView *circle3=[[UIView alloc]init];
-        circle3.backgroundColor = TITLERED;
-        [_view1 addSubview:circle3];
-        circle3.sd_layout
-        .rightSpaceToView(counted,5)
-        .centerYEqualToView(counted)
-        .heightRatioToView(counted,0.3)
-        .widthEqualToHeight();
-        circle3.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
-
-        
+        UIImageView *book3 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"book"]];
+        [_view1 addSubview:book3];
+        book3.sd_layout
+        .leftEqualToView(book1);
         
         _classCount=[[UILabel alloc]init];
-        _classCount.font = TITLEFONTSIZE;
+        _classCount.font = TEXT_FONTSIZE;
+        _classCount.textColor = TITLECOLOR;
         [_view1 addSubview:_classCount];
-        _classCount.sd_layout.leftSpaceToView(counted,0).topEqualToView(counted).autoHeightRatio(0);
-        [_classCount setSingleLineAutoResizeWithMaxWidth:100.0f];
-        [_classCount setText:@""];
+        _classCount.sd_layout
+        .leftEqualToView(_gradeLabel)
+        .topSpaceToView(_gradeLabel,10)
+        .autoHeightRatio(0);
+        [_classCount setSingleLineAutoResizeWithMaxWidth:150];
         
-        UILabel *classes=[[UILabel alloc]init];
-        classes.font = TITLEFONTSIZE;
-        [_view1 addSubview:classes];
-        classes.sd_layout.leftSpaceToView(_classCount,0).topEqualToView(counted).autoHeightRatio(0);
-        [classes setSingleLineAutoResizeWithMaxWidth:100.0f];
-        [classes setText:@"课时"];
-
-        
-        /* 在线直播*/
-        _onlineVideoLabel =[[UILabel alloc]init];
-        _onlineVideoLabel.font = TITLEFONTSIZE;
-        [_view1 addSubview:_onlineVideoLabel];
-        _onlineVideoLabel.sd_layout.leftEqualToView(_gradeLabel).topEqualToView(counted).autoHeightRatio(0);
-        [_onlineVideoLabel setSingleLineAutoResizeWithMaxWidth:100.0f];
-        [_onlineVideoLabel setText:@"在线直播"];
-        
-        UIView *circle4=[[UIView alloc]init];
-        circle4.backgroundColor = TITLERED;
-        [_view1 addSubview:circle4];
-        circle4.sd_layout
-        .rightSpaceToView(_onlineVideoLabel,5)
-        .centerYEqualToView(_onlineVideoLabel)
-        .heightRatioToView(_onlineVideoLabel,0.3)
+        book3.sd_layout
+        .centerYEqualToView(_classCount)
+        .heightRatioToView(_classCount,0.6)
         .widthEqualToHeight();
-        circle4.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
-
-        
+        [book3 updateLayout];
         
         /* 直播时间*/
+        UIImageView *clock  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"clock"]];
+        [_view1 addSubview:clock];
+        clock.sd_layout
+        .leftEqualToView(book3);
         
-        _liveStartTimeLabel = [[UILabel alloc]init];
-        _liveStartTimeLabel.font = TITLEFONTSIZE;
-        [_view1 addSubview:_liveStartTimeLabel];
-        _liveStartTimeLabel.sd_layout.leftEqualToView(counted).topSpaceToView(counted,20).autoHeightRatio(0);
-        [_liveStartTimeLabel setSingleLineAutoResizeWithMaxWidth:300.0f];
+        _liveTimeLabel = [[UILabel alloc]init];
+        [_view1 addSubview:_liveTimeLabel];
+        _liveTimeLabel.font = TEXT_FONTSIZE;
+        _liveTimeLabel.textColor = TITLECOLOR;
+        _liveTimeLabel.sd_layout
+        .leftEqualToView(_classCount)
+        .topSpaceToView(_classCount,10)
+        .autoHeightRatio(0);
+        [_liveTimeLabel setSingleLineAutoResizeWithMaxWidth:300];
         
-        
-        
-        UIView *circle5=[[UIView alloc]init];
-        circle5.backgroundColor = TITLERED;
-        [_view1 addSubview:circle5];
-        circle5.sd_layout
-        .rightSpaceToView(_liveStartTimeLabel,5)
-        .centerYEqualToView(_liveStartTimeLabel)
-        .heightRatioToView(_liveStartTimeLabel,0.3)
+        clock.sd_layout
+        .centerYEqualToView(_liveTimeLabel)
+        .heightRatioToView(_liveTimeLabel,0.6)
         .widthEqualToHeight();
-        circle5.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
-
-        UILabel *_to =[[UILabel alloc]init];
-        _to.font = TITLEFONTSIZE;
-        [_view1 addSubview:_to];
-        _to.sd_layout.leftSpaceToView(_liveStartTimeLabel,2).topEqualToView(_liveStartTimeLabel).autoHeightRatio(0);
-        [_to setSingleLineAutoResizeWithMaxWidth:100.0f];
-        [_to setText:@"至"];
-        
-        _liveEndTimeLabel = [[UILabel alloc]init];
-        _liveEndTimeLabel.font = TITLEFONTSIZE;
-        [_view1 addSubview:_liveEndTimeLabel];
-        _liveEndTimeLabel.sd_layout.leftSpaceToView(_to,2).topEqualToView(_liveStartTimeLabel).autoHeightRatio(0);
-        [_liveEndTimeLabel setSingleLineAutoResizeWithMaxWidth:300.0f];
-        [_liveEndTimeLabel setText:@""];
+        [clock updateLayout];
         
         
         /* 标签*/
         UILabel *tags = [[UILabel alloc]init];
-        tags.text = @"课程标签";
+        tags.text = @"-课程标签";
+        tags.textColor = [UIColor blackColor];
         tags.font = TITLEFONTSIZE;
         [_view1 addSubview:tags];
         tags.sd_layout
-        .leftEqualToView(_liveStartTimeLabel)
-        .topSpaceToView(_liveStartTimeLabel,20)
+        .leftEqualToView(desLabel)
+        .topSpaceToView(clock,20)
         .autoHeightRatio(0);
         [tags setSingleLineAutoResizeWithMaxWidth:100.0f];
         [tags updateLayout];
         
-        UIView *circleTag=[[UIView alloc]init];
-        circleTag.backgroundColor = TITLERED;
-        [_view1 addSubview:circleTag];
-        circleTag.sd_layout
-        .leftEqualToView(circle5)
-        .rightEqualToView(circle5)
-        .centerYEqualToView(tags)
-        .heightEqualToWidth();
-        circleTag.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
         
-        //标签图
-        _tagsView = [[TTGTextTagCollectionView alloc]init];
-        _tagsView.alignment = TTGTagCollectionAlignmentLeft;
-        _tagsView.enableTagSelection = NO;
-        [_view1 addSubview:_tagsView];
-        _tagsView.sd_layout
+        //课程标签
+        _classTagsView = [[TTGTextTagCollectionView alloc]init];
+        _classTagsView.alignment = TTGTagCollectionAlignmentLeft;
+        _classTagsView.enableTagSelection = NO;
+        [_view1 addSubview:_classTagsView];
+        _classTagsView.sd_layout
         .leftSpaceToView(_view1,20)
         .rightSpaceToView(_view1,20)
         .topSpaceToView(tags,10)
         .heightIs(200);
+        
+        //课程目标
+        UILabel *taget = [[UILabel alloc]init];
+        [_view1 addSubview:taget];
+        taget.textColor = [UIColor blackColor];
+        taget.font = TITLEFONTSIZE;
+        taget.text = @"-课程目标";
+        taget.sd_layout
+        .leftEqualToView(tags)
+        .topSpaceToView(_classTagsView,20)
+        .autoHeightRatio(0);
+        [taget setSingleLineAutoResizeWithMaxWidth:100];
+        
+        _classTarget = [[UILabel alloc]init];
+        [_view1 addSubview:_classTarget];
+        _classTarget.font = TEXT_FONTSIZE;
+        _classTarget.textColor = TITLECOLOR;
+        
+        _classTarget.sd_layout
+        .topSpaceToView(taget,10)
+        .leftEqualToView(taget)
+        .rightSpaceToView(_view1,20)
+        .autoHeightRatio(0);
+        
+        
+        //适合人群
+        UILabel *suit = [[UILabel alloc]init];
+        [_view1 addSubview:suit];
+        suit.font = TITLEFONTSIZE;
+        suit.textColor = [UIColor blackColor];
+        suit.text = @"-适合人群";
+        suit.sd_layout
+        .leftEqualToView(taget)
+        .topSpaceToView(_classTarget,20)
+        .autoHeightRatio(0);
+        [suit setSingleLineAutoResizeWithMaxWidth:100];
+        
+        _suitable = [[UILabel alloc]init];
+        _suitable.font = TEXT_FONTSIZE;
+        _suitable.textColor = TITLECOLOR;
+        _suitable.textAlignment = NSTextAlignmentLeft;
+        [_view1 addSubview:_suitable];
+        _suitable.sd_layout
+        .leftEqualToView(suit)
+        .topSpaceToView(suit,10)
+        .autoHeightRatio(0)
+        .rightSpaceToView(_view1,20);
         
         
         /* 辅导简介*/
         _descriptions=[[UILabel alloc]init];
         _descriptions.font = TITLEFONTSIZE;
         [_view1 addSubview:_descriptions];
-        _descriptions.sd_layout.leftEqualToView(_subjectLabel).topSpaceToView(_tagsView,20).autoHeightRatio(0);
-        [_descriptions setSingleLineAutoResizeWithMaxWidth:100.0f];
-        [_descriptions setText:@"辅导简介"];
+        _descriptions.sd_layout
+        .leftEqualToView(suit)
+        .topSpaceToView(_suitable,20)
+        .autoHeightRatio(0);
+        [_descriptions setSingleLineAutoResizeWithMaxWidth:100];
+        [_descriptions setText:@"-辅导简介"];
         
-        
-        UIView *circle6=[[UIView alloc]init];
-        circle6.backgroundColor = TITLERED;
-        [_view1 addSubview:circle6];
-        circle6.sd_layout
-        .rightSpaceToView(_descriptions,5)
-        .centerYEqualToView(_descriptions)
-        .heightRatioToView(_descriptions,0.3)
-        .widthEqualToHeight();
-        circle6.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
-
         _classDescriptionLabel =[UILabel new];
         _classDescriptionLabel.font = TITLEFONTSIZE;
-//        _classDescriptionLabel.editable = NO;
+
         [_view1 addSubview:_classDescriptionLabel];
-        _classDescriptionLabel.sd_layout.leftEqualToView(_descriptions).topSpaceToView(_descriptions,20).autoHeightRatio(0).rightSpaceToView(_view1,20);
-//        [_classDescriptionLabel setText:@""];
+        _classDescriptionLabel.sd_layout
+        .leftEqualToView(_descriptions)
+        .topSpaceToView(_descriptions,20)
+        .autoHeightRatio(0)
+        .rightSpaceToView(_view1,20);
+        
+        
+        //学习须知
+        UILabel *notice = [[UILabel alloc]init];
+        [_view1 addSubview:notice];
+        notice.text = @"-学习须知";
+        notice.textColor = [UIColor blackColor];
+        notice.font = TITLEFONTSIZE;
+        notice.sd_layout
+        .leftEqualToView(_descriptions)
+        .topSpaceToView(_classDescriptionLabel,20)
+        .autoHeightRatio(0);
+        [notice setSingleLineAutoResizeWithMaxWidth:100];
+        
+        //上课前
+        UILabel *before = [[UILabel alloc]init];
+        before.text = @"上课前";
+        before.font = TITLEFONTSIZE;
+        before.textColor = TITLECOLOR;
+        [_view1 addSubview:before];
+        before.sd_layout
+        .leftSpaceToView(_view1,30)
+        .topSpaceToView(notice,10)
+        .autoHeightRatio(0);
+        [before setSingleLineAutoResizeWithMaxWidth:100];
+        
+        UILabel *beforeLabel = [[UILabel alloc]init];
+        [_view1 addSubview:beforeLabel];
+        beforeLabel.font = TEXT_FONTSIZE;
+        beforeLabel.textColor = TITLECOLOR;
+        beforeLabel.textAlignment = NSTextAlignmentLeft;
+        beforeLabel.text = @"1.做好课程预习，预先了解本课所讲内容，更好的吸收课程精华；\n2.准备好相关的学习工具（如：纸、笔等）并在上课前调试好电脑，使用手机请保持电量充足。\n3.选择安静的学习环境，并将与学习无关的事物置于远处；选择安静的环境避免影响听课。\n4.三年级以下的同学请在家长帮助下学习。\n5.遇到网页不能打开或者不能登陆等情况请及时联系客服。";
+        beforeLabel.sd_layout
+        .topSpaceToView(before,10)
+        .leftEqualToView(before)
+        .rightSpaceToView(_view1,20)
+        .autoHeightRatio(0);
+        
+        
+        //上课中
+        UILabel *during = [[UILabel alloc]init];
+        during.text = @"上课中";
+        during.font = TITLEFONTSIZE;
+        during.textColor = TITLECOLOR;
+        [_view1 addSubview:during];
+        during.sd_layout
+        .leftSpaceToView(_view1,30)
+        .topSpaceToView(beforeLabel,20)
+        .autoHeightRatio(0);
+        [during setSingleLineAutoResizeWithMaxWidth:100];
+        
+        UILabel *duringLabel = [[UILabel alloc]init];
+        [_view1 addSubview:duringLabel];
+        duringLabel.font = TEXT_FONTSIZE;
+        duringLabel.textColor = TITLECOLOR;
+        duringLabel.textAlignment = NSTextAlignmentLeft;
+        duringLabel.text = @"1、时刻保持注意力集中，认真听讲才能更好的提升学习；\n2、课程中遇到听不懂的问题及时通过聊天或互动申请向老师提问，老师收到后会给予解答；\n3、积极响应老师的授课，完成老师布置的课上任务；\n4、禁止在上课中闲聊或发送一切与本课无关的内容，如有发现，一律禁言；\n5、上课途中如突遇屏幕卡顿，直播中断等特殊情况，请刷新后等待直播恢复；超过15分钟未恢复去请致电客服；\n6、请同学们一定要准时学习，本课程正常结束后不补上。";
+        duringLabel.sd_layout
+        .topSpaceToView(during,10)
+        .leftEqualToView(beforeLabel)
+        .rightSpaceToView(_view1,20)
+        .autoHeightRatio(0);
+        
+        //上课后
+        UILabel *after = [[UILabel alloc]init];
+        after.text = @"上课后";
+        after.font = TITLEFONTSIZE;
+        after.textColor = TITLECOLOR;
+        [_view1 addSubview:after];
+        after.sd_layout
+        .leftSpaceToView(_view1,30)
+        .topSpaceToView(duringLabel,20)
+        .autoHeightRatio(0);
+        [after setSingleLineAutoResizeWithMaxWidth:100];
+        
+        UILabel *afterLabel = [[UILabel alloc]init];
+        [_view1 addSubview:afterLabel];
+        afterLabel.font = TEXT_FONTSIZE;
+        afterLabel.textColor = TITLECOLOR;
+        afterLabel.textAlignment = NSTextAlignmentLeft;
+        afterLabel.text = @"1、直播结束后请大家仍可以在直播教室内进行聊天和讨论，老师也会适时解答；\n2、请同学按时完成老师布置的作业任务。";
+        afterLabel.sd_layout
+        .topSpaceToView(after,10)
+        .leftEqualToView(duringLabel)
+        .rightSpaceToView(_view1,20)
+        .autoHeightRatio(0);
+        
+        //sdautolayout 自适应scrollview的contentsize 方法
+        [_view1 setupAutoContentSizeWithBottomView:afterLabel bottomMargin:20];
         
         
         /* 教师简介 。。。view2*/
+        
+        /* 教师头像*/
+        _teacherHeadImage = [[UIImageView alloc]init];
+        [_view2 addSubview:_teacherHeadImage];
+        
+        _teacherHeadImage.sd_layout
+        .leftSpaceToView(_view2,15)
+        .topSpaceToView(_view2,20)
+        .widthIs(self.width_sd/8)
+        .heightEqualToWidth();
+        _teacherHeadImage.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
+        
+        //教师名
         _teacherNameLabel = [[UILabel alloc]init];
         _teacherNameLabel.font = TITLEFONTSIZE;
         [_view2 addSubview:_teacherNameLabel];
-        _teacherNameLabel.sd_layout.leftSpaceToView(_view2,20).topSpaceToView(_view2,20).autoHeightRatio(0);
+        _teacherNameLabel.sd_layout
+        .leftSpaceToView(_teacherHeadImage,10)
+        .centerYEqualToView(_teacherHeadImage)
+        .autoHeightRatio(0);
         [_teacherNameLabel setSingleLineAutoResizeWithMaxWidth:100];
-        
-        [_teacherNameLabel setText:@"教师姓名"];
-        
         
         /* 性别图标*/
         _genderImage  = [[UIImageView alloc]init];
         [_view2 addSubview:_genderImage];
         _genderImage .sd_layout
         .leftSpaceToView(_teacherNameLabel,10)
-        .topEqualToView(_teacherNameLabel)
-        .bottomEqualToView(_teacherNameLabel)
+        .centerYEqualToView(_teacherNameLabel)
+        .heightRatioToView(_teacherNameLabel,0.6)
         .widthEqualToHeight();
-        
-        
-        
-        /* 执教年数*/
-        UILabel *workYears = [[UILabel alloc]init];
-        workYears.font = TITLEFONTSIZE;
-        [_view2 addSubview:workYears];
-        workYears.sd_layout.leftEqualToView(_teacherNameLabel).topSpaceToView(_teacherNameLabel,20).autoHeightRatio(0);
-        [workYears setSingleLineAutoResizeWithMaxWidth:200];
-        [workYears setText:@"执教年数"];
-        
-        _workYearsLabel = [[UILabel alloc]init];
-        _workYearsLabel.font = TITLEFONTSIZE;
-        [_view2 addSubview:_workYearsLabel];
-        _workYearsLabel.sd_layout.leftSpaceToView(workYears,20).topEqualToView(workYears).autoHeightRatio(0);
-        [_workYearsLabel setSingleLineAutoResizeWithMaxWidth:200];
-        _workYearsLabel.text = @"" ;
         
         
         /* 所在学校*/
         UILabel *schools =[[UILabel alloc]init];
         schools.font = TITLEFONTSIZE;
         [_view2 addSubview:schools];
-        schools.sd_layout.leftEqualToView(_teacherNameLabel).topSpaceToView(workYears,20).autoHeightRatio(0);
+        schools.sd_layout
+        .leftEqualToView(_teacherHeadImage)
+        .topSpaceToView(_teacherHeadImage,20)
+        .autoHeightRatio(0);
         [schools setSingleLineAutoResizeWithMaxWidth:200];
-        [schools setText:@"所在学校"];
+        [schools setText:@"-所在学校"];
         
         _workPlaceLabel =[[UILabel alloc]init];
-        _workPlaceLabel.font = TITLEFONTSIZE;
+        _workPlaceLabel.font = TEXT_FONTSIZE;
+        _workPlaceLabel.textColor = TITLECOLOR;
+        
         [_view2 addSubview:_workPlaceLabel];
-        _workPlaceLabel.sd_layout.leftSpaceToView(schools,20).topEqualToView(schools).autoHeightRatio(0);
+        _workPlaceLabel.sd_layout
+        .leftSpaceToView(_view2,20)
+        .topSpaceToView(schools,10)
+        .autoHeightRatio(0);
         [_workPlaceLabel setSingleLineAutoResizeWithMaxWidth:200];
-        _workPlaceLabel.text = @"" ;
+        
+        /* 执教年数*/
+        UILabel *workYears = [[UILabel alloc]init];
+        workYears.font = TITLEFONTSIZE;
+        [_view2 addSubview:workYears];
+        workYears.sd_layout
+        .leftEqualToView(schools)
+        .topSpaceToView(_workPlaceLabel,20)
+        .autoHeightRatio(0);
+        [workYears setSingleLineAutoResizeWithMaxWidth:200];
+        [workYears setText:@"-执教年限"];
+        
+        _workYearsLabel = [[UILabel alloc]init];
+        _workYearsLabel.font = TEXT_FONTSIZE;
+        _workYearsLabel.textColor = TITLECOLOR;
+        [_view2 addSubview:_workYearsLabel];
+        _workYearsLabel.sd_layout
+        .leftEqualToView(_workPlaceLabel)
+        .topSpaceToView(workYears,10)
+        .autoHeightRatio(0);
+        [_workYearsLabel setSingleLineAutoResizeWithMaxWidth:200];
+        _workYearsLabel.text = @"" ;
+        
+        //目前不做的教师标签
+        UILabel *teacherTag = [[UILabel alloc]init];
+        teacherTag.font = TITLEFONTSIZE;
+        teacherTag.text = @"-教师标签";
+        [_view2 addSubview:teacherTag];
+        teacherTag.sd_layout
+        .leftEqualToView(workYears)
+        .topSpaceToView(_workYearsLabel,20)
+        .autoHeightRatio(0);
+        [teacherTag setSingleLineAutoResizeWithMaxWidth:100];
+        teacherTag.hidden = YES;
+        
+        //教师标签
+        _teacherTagsView = [[TTGTextTagCollectionView alloc]init];
+        _teacherTagsView.alignment = TTGTagCollectionAlignmentLeft;
+        _teacherTagsView.enableTagSelection = NO;
+        [_view2 addSubview:_teacherTagsView];
+        _teacherTagsView.sd_layout
+        .leftEqualToView(_workYearsLabel)
+        .rightSpaceToView(_view2,20)
+        .topSpaceToView(teacherTag,10)
+        .heightIs(200);
+        _teacherTagsView.hidden = YES;
 
-
+        
+        
         /* 教师简介*/
         _descrip =[[UILabel alloc]init];
         _descrip.font = TITLEFONTSIZE;
         [_view2 addSubview:_descrip];
-        _descrip.sd_layout.leftEqualToView(_teacherNameLabel).topSpaceToView(_workPlaceLabel,20).autoHeightRatio(0);
+        _descrip.sd_layout
+        .leftEqualToView(workYears)
+        .topSpaceToView(_workYearsLabel,20)
+        .autoHeightRatio(0);
         [_descrip setSingleLineAutoResizeWithMaxWidth:200];
-        _descrip.text = @"教师简介";
+        _descrip.text = @"-自我介绍";
         
         _teacherInterviewLabel =[UILabel new];
-        _teacherInterviewLabel.font = TITLEFONTSIZE;
-//        _teacherInterviewLabel.editable = NO;
+        _teacherInterviewLabel.font = TEXT_FONTSIZE;
+        _teacherInterviewLabel.textColor = TITLECOLOR;
         [_view2 addSubview:_teacherInterviewLabel];
-        _teacherInterviewLabel.sd_layout.leftSpaceToView(_view2,20).rightSpaceToView(_view2,20).topSpaceToView(_descrip,20).autoHeightRatio(0);
-        
-//        _teacherInterviewLabel.text = @"" ;
-        
-        /* 教师头像*/
-        _teacherHeadImage = [[UIImageView alloc]init];
-        [_view2 addSubview:_teacherHeadImage];
-        _teacherHeadImage.sd_layout
-        .topEqualToView(_teacherNameLabel)
-        .rightSpaceToView(_view2,10)
-        .bottomSpaceToView(schools,10)
-        .widthEqualToHeight();
-        
+        _teacherInterviewLabel.sd_layout
+        .leftSpaceToView(_view2,20)
+        .rightSpaceToView(_view2,20)
+        .topSpaceToView(_descrip,20)
+        .autoHeightRatio(0);
+    
+        //view2 滚动内容自适应
+        [_view2 setupAutoContentSizeWithBottomView:_teacherInterviewLabel bottomMargin:20];
         
         /* 辅导课列表*/
         _classesListTableView = [[UITableView alloc]init];
         _classesListTableView.tableFooterView = [[UIView alloc]init];
-        
         
         [_view3 addSubview:_classesListTableView];
         

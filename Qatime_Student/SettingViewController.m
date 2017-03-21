@@ -331,12 +331,10 @@
         [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"remember_token"];
         [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"chat_account"];
         [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"openID"];
-        
+        [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Login"];
         
         /* 云信退出登录*/
         [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error){}];
-        
-        
         
         /* 发消息 给appdelegate*/
         [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];

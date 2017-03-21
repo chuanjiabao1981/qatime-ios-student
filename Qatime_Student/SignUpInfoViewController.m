@@ -15,6 +15,7 @@
 #import "UIAlertController+Blocks.h"
 
 #import "PersonalInfoViewController.h"
+#import "ProvinceChosenViewController.h"
 
 
 @interface SignUpInfoViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
@@ -25,9 +26,13 @@
     NSString *_login_Account;
     NSString *_login_Password;
     
+    
+    /* 地区传值*/
+    NSString *_province;
+    NSString *_city;
+    
+    
     BOOL changeImage;
-    
-    
 }
 
 @end
@@ -77,6 +82,10 @@
     /* 点击选择年级方法*/
     [_signUpInfoView.grade addTarget:self action:@selector(choseGrade:) forControlEvents:UIControlEventTouchUpInside];
     
+    /* 点击选择地区方法*/
+    [_signUpInfoView.chooseLocationButton addTarget:self action:@selector(chooseLocation:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     
     
     /* 立即进入按钮*/
@@ -84,8 +93,11 @@
     
     
     /* 完善资料按钮*/
-    
     [_signUpInfoView.moreButton addTarget:self action:@selector(writeMore) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    /* 监听地址修改完毕*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeLocation:) name:@"ChangeLocation" object:nil];
     
     
     
@@ -105,6 +117,30 @@
     }];
     
 }
+
+#pragma mark- 选择地区
+- (void)chooseLocation:(UIButton *)sender{
+    
+    ProvinceChosenViewController *controller = [[ProvinceChosenViewController alloc]init];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+#pragma mark- 地区变化
+- (void)changeLocation:(NSNotification *)notification{
+    
+    NSDictionary *location = [notification object];
+    
+    [_signUpInfoView.chooseLocationButton setTitle:[NSString stringWithFormat:@"%@  %@",location[@"province"],location[@"city"]] forState:UIControlStateNormal];
+    
+    [_signUpInfoView.chooseLocationButton setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+    
+    /* 初始化地区字段,传入"完善更多"页面*/
+    
+    _province = [NSString stringWithFormat:@"%@",location[@"province"]];
+    _city = [NSString stringWithFormat:@"%@",location[@"city"]];
+    
+}
+
 
 
 #pragma mark- 立即进入主页方法
@@ -161,11 +197,7 @@
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
         }];
-        
-        
     }
-    
-    
 }
 
 
@@ -206,7 +238,6 @@
     /* 取消*/
     UIAlertAction *actionCancel=[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
-        
     }];
     
     [alert addAction:actionCamera];
@@ -233,19 +264,16 @@
         
         changeImage = YES;
 
-    
     });
     
     [picker dismissViewControllerAnimated:YES completion:nil];
-    
-    
     
 }
 
 /* 完善信息页面*/
 - (void)writeMore{
     
-    PersonalInfoViewController *contorller = [[PersonalInfoViewController alloc]initWithName:_signUpInfoView.userName.text==nil?@"未设置":_signUpInfoView.userName.text andGrade:[_signUpInfoView.grade.titleLabel.text isEqualToString:@"选择所在年级"]?@"未设置":_signUpInfoView.grade.titleLabel.text andHeadImage:_signUpInfoView.headImage.image==nil?[UIImage imageNamed:@"人"]:_signUpInfoView.headImage.image  withImageChange:changeImage];
+    PersonalInfoViewController *contorller = [[PersonalInfoViewController alloc]initWithName:_signUpInfoView.userName.text==nil?@"未设置":_signUpInfoView.userName.text andGrade:[_signUpInfoView.grade.titleLabel.text isEqualToString:@"选择所在年级"]?@"未设置":_signUpInfoView.grade.titleLabel.text andHeadImage:_signUpInfoView.headImage.image==nil?[UIImage imageNamed:@"人"]:_signUpInfoView.headImage.image  withImageChange:changeImage andProvince:_province==nil?@"未设置":_province city:_city==nil?@"未设置":_city];
     
     [self.navigationController pushViewController:contorller animated:YES];
     

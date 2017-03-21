@@ -17,28 +17,18 @@
 /* 姓名*/
 @property(nonatomic,strong) UITextField *userName ;
 
-/* 性别按钮  两个*/
-//@property(nonatomic,strong) UIButton *boyButton ;
-//@property(nonatomic,strong) UIButton *girlButton ;
-
-/* 生日*/
-//@property(nonatomic,strong) UIButton *birthday ;
-//@property(nonatomic,strong) NSDate *birthDate  ;
-
-/* 年级*/
-//@property(nonatomic,strong) UIButton *gradeButton ;
+/**
+ 选择年级
+ */
 @property(nonatomic,strong) UIButton *grade ;
 
 /* 完成按钮*/
-
-//@property(nonatomic,strong) UIButton  *finishButton ;
 @property(nonatomic,strong) UIButton *enterButton ;
 @property(nonatomic,strong) UIButton *moreButton ;
 
-
-
-/* 上传图片按钮*/
-//@property(nonatomic,strong) UIButton *uploadPic;
-
+/**
+ 选择地区按钮
+ */
+@property (nonatomic, strong) UIButton *chooseLocationButton ;
 
 @end
