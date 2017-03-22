@@ -52,7 +52,7 @@
         
         //分割线1
         UIView *line1 = [[UIView alloc]init];
-        line1.backgroundColor = SEPERATELINECOLOR;
+        line1.backgroundColor = SEPERATELINECOLOR_2;
         [_infoView addSubview:line1];
         line1.sd_layout
         .leftSpaceToView(_infoView,15)
@@ -218,7 +218,7 @@
         //打横格
         UIView *payline1 = [[UIView alloc]init];
         [payView addSubview:payline1];
-        payline1.backgroundColor = SEPERATELINECOLOR;
+        payline1.backgroundColor = SEPERATELINECOLOR_2;
         payline1.sd_layout
         .leftSpaceToView(payView,15*ScrenScale)
         .rightSpaceToView(payView,15*ScrenScale)
@@ -227,7 +227,7 @@
         
         UIView *payline2 = [[UIView alloc]init];
         [payView addSubview:payline2];
-        payline2.backgroundColor = SEPERATELINECOLOR;
+        payline2.backgroundColor = SEPERATELINECOLOR_2;
         payline2.sd_layout
         .leftSpaceToView(payView,15*ScrenScale)
         .rightSpaceToView(payView,15*ScrenScale)
@@ -236,7 +236,7 @@
         
         UIView *payline3 = [[UIView alloc]init];
         [payView addSubview:payline3];
-        payline3.backgroundColor = SEPERATELINECOLOR;
+        payline3.backgroundColor = SEPERATELINECOLOR_2;
         payline3.sd_layout
         .leftSpaceToView(payView,15*ScrenScale)
         .rightSpaceToView(payView,15*ScrenScale)

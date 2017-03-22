@@ -674,9 +674,9 @@ typedef enum : NSUInteger {
 //reset三个单项筛选按钮
 - (void)filterButtonTurnReset{
     
-    [_filterView.newestButton setTitleColor:SEPERATELINECOLOR forState:UIControlStateNormal];
-    [_filterView.priceButton setTitleColor:SEPERATELINECOLOR forState:UIControlStateNormal];
-    [_filterView.popularityButton setTitleColor:SEPERATELINECOLOR forState:UIControlStateNormal];
+    [_filterView.newestButton setTitleColor:SEPERATELINECOLOR_2 forState:UIControlStateNormal];
+    [_filterView.priceButton setTitleColor:SEPERATELINECOLOR_2 forState:UIControlStateNormal];
+    [_filterView.popularityButton setTitleColor:SEPERATELINECOLOR_2 forState:UIControlStateNormal];
     
     [_filterView.newestArrow setImage:nil];
     [_filterView.priceArrow setImage:nil];

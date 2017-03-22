@@ -22,7 +22,7 @@
         _noticeSwitch = [[UISwitch alloc]init];
         
         UIView *line = [[UIView alloc]init];
-        line.backgroundColor  = SEPERATELINECOLOR;
+        line.backgroundColor  = SEPERATELINECOLOR_2;
         
         
         

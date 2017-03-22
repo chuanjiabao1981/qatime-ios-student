@@ -133,8 +133,7 @@
     
     
     /* 已开课的状态*/
-    
-    
+
     if ([_model.status isEqualToString:@"init"]) {
         _status.text =@"未开始";
         _class_status = [NSString stringWithFormat:@"未开始"];

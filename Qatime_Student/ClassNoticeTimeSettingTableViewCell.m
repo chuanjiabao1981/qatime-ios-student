@@ -59,7 +59,7 @@
 
         _line = ({
             UIView *_ = [[UIView alloc]init];
-            _.backgroundColor = SEPERATELINECOLOR;
+            _.backgroundColor = SEPERATELINECOLOR_2;
             
             _;
         });

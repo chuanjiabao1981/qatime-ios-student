@@ -120,7 +120,6 @@
 		543E23401E2C78D700381F10 /* SetPayPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E233F1E2C78D700381F10 /* SetPayPasswordViewController.m */; };
 		543E23431E2C8D1600381F10 /* AuthenticationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E23421E2C8D1600381F10 /* AuthenticationView.m */; };
 		543E23491E2C8D4000381F10 /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E23481E2C8D4000381F10 /* AuthenticationViewController.m */; };
-		543E234B1E2C9AB200381F10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 543E234A1E2C9AB200381F10 /* Assets.xcassets */; };
 		543E234E1E2CB84B00381F10 /* SetNewPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E234D1E2CB84B00381F10 /* SetNewPasswordViewController.m */; };
 		543E23521E2CE88B00381F10 /* DCPaymentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E23511E2CE88B00381F10 /* DCPaymentView.m */; };
 		543E512C1E5D7B180001551D /* YZBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E512B1E5D7B180001551D /* YZBadge.m */; };
@@ -366,6 +365,7 @@
 		54E8B6A71E601B0300A9703F /* UIViewController+TimeInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E8B6A61E601B0300A9703F /* UIViewController+TimeInterval.m */; };
 		54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC41DFE8D67001A98CE /* OrderView.m */; };
 		54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC71DFE8D75001A98CE /* OrderViewController.m */; };
+		54F292281E8287170076D499 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F292271E8287170076D499 /* Assets.xcassets */; };
 		54F32F721E372E57000F8926 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F32F711E372E57000F8926 /* Reachability.m */; };
 		54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F34D7C1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m */; };
 		54F34D801DE70BA500D6FC85 /* NSString+FindFace.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F34D7E1DE70BA500D6FC85 /* NSString+FindFace.m */; };
@@ -593,7 +593,6 @@
 		543E23421E2C8D1600381F10 /* AuthenticationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationView.m; sourceTree = "<group>"; };
 		543E23471E2C8D4000381F10 /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
 		543E23481E2C8D4000381F10 /* AuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationViewController.m; sourceTree = "<group>"; };
-		543E234A1E2C9AB200381F10 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		543E234C1E2CB84B00381F10 /* SetNewPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetNewPasswordViewController.h; sourceTree = "<group>"; };
 		543E234D1E2CB84B00381F10 /* SetNewPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetNewPasswordViewController.m; sourceTree = "<group>"; };
 		543E23501E2CE88B00381F10 /* DCPaymentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCPaymentView.h; sourceTree = "<group>"; };
@@ -1165,6 +1164,7 @@
 		54ECFEC41DFE8D67001A98CE /* OrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderView.m; sourceTree = "<group>"; };
 		54ECFEC61DFE8D75001A98CE /* OrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
 		54ECFEC71DFE8D75001A98CE /* OrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
+		54F292271E8287170076D499 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		54F32F701E372E57000F8926 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		54F32F711E372E57000F8926 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		54F34D7A1DE70BA500D6FC85 /* Define.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Define.h; sourceTree = "<group>"; };
@@ -2560,8 +2560,8 @@
 				54A153AE1DC6F09D0070B508 /* ViewController.h */,
 				54A153AF1DC6F09D0070B508 /* ViewController.m */,
 				54A153B91DC6F09D0070B508 /* Info.plist */,
+				54F292271E8287170076D499 /* Assets.xcassets */,
 				546978651DC726B3001695F4 /* UserPCH.pch */,
-				543E234A1E2C9AB200381F10 /* Assets.xcassets */,
 				54A153A91DC6F09D0070B508 /* main.m */,
 			);
 			path = Qatime_Student;
@@ -4217,7 +4217,6 @@
 			files = (
 				548328D41DDC6F360053AB29 /* chat_message_back.png in Resources */,
 				54AF51C61DE8226900581C4A /* Emotions.bundle in Resources */,
-				543E234B1E2C9AB200381F10 /* Assets.xcassets in Resources */,
 				544C15121DC73ADA00F59F86 /* selected.png in Resources */,
 				54DBA4B11DE4423300A67A90 /* YZEmotionCell.xib in Resources */,
 				5483E84A1E45730C00C3C1B4 /* InfoPlist.strings in Resources */,
@@ -4238,6 +4237,7 @@
 				5493D48A1E0B7FB60085A39E /* Logo_white.png in Resources */,
 				54BB2D691E55879000446141 /* chat_voice_record.png in Resources */,
 				548328D61DDC6F360053AB29 /* chat_send_message.png in Resources */,
+				54F292281E8287170076D499 /* Assets.xcassets in Resources */,
 				54B4C18C1DF8294B00E31794 /* alipay.png in Resources */,
 				544C15141DC7414000F59F86 /* back.png in Resources */,
 				54E00B171E5AEF020056C74F /* NTESAudio2TextViewController.xib in Resources */,

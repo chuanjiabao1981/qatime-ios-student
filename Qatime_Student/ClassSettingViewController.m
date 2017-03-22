@@ -406,7 +406,7 @@
         ;
         
         UIView *line = [[UIView alloc]init];
-        line.backgroundColor = SEPERATELINECOLOR;
+        line.backgroundColor = SEPERATELINECOLOR_2;
         [view addSubview:line];
         line.sd_layout
         .leftEqualToView(view)

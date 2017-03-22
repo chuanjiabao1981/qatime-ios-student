@@ -35,7 +35,7 @@
         _segmentControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
         _segmentControl.borderType = HMSegmentedControlBorderTypeBottom;
         _segmentControl.borderWidth = 0.6;
-        _segmentControl.borderColor = SEPERATELINECOLOR;
+        _segmentControl.borderColor = SEPERATELINECOLOR_2;
         
         
         #pragma mark- 大滚动视图

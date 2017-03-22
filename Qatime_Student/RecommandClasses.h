@@ -24,6 +24,11 @@
 //"live_end_time": "2016-09-11 11:00",
 //"publicize": "http://qatime-testing.oss-cn-beijing.aliyuncs.com/courses/publicize/list_d67ff91843999033d8ce1d08ca13aa8b.jpg"
 
+//"class_date": "2017-03-22",
+//"live_time": "09:00-10:00",
+//"objective": null,
+//"suit_crowd": null,
+
 @property(nonatomic,strong) NSString *title ;
 @property(nonatomic,assign) NSInteger index ;
 
@@ -68,6 +73,14 @@
 @property (nonatomic, strong) NSString *tag_one ;
 @property (nonatomic, strong) NSString *tag_two ;
 
+//直播时间
+@property (nonatomic, strong) NSString *class_date ;
+@property (nonatomic, strong) NSString *live_time ;
 
+//课程目标
+@property (nonatomic, strong) NSString *objective ;
+
+//适宜人群
+@property (nonatomic, strong) NSString *suit_crowd ;
 
 @end

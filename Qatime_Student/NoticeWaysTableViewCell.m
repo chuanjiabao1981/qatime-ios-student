@@ -30,7 +30,7 @@
         
         UIView *line = [[UIView alloc]init];
         [self.contentView addSubview:line];
-        line.backgroundColor = SEPERATELINECOLOR;
+        line.backgroundColor = SEPERATELINECOLOR_2;
         
         [self.contentView sd_addSubviews:@[_name,_content,line]];
         

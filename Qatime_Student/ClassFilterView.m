@@ -22,7 +22,7 @@
             UIButton *_ = [[UIButton alloc]init];
             [self addSubview:_];
             [_ setTitle:@"最新" forState:UIControlStateNormal];
-            [_ setTitleColor:SEPERATELINECOLOR forState:UIControlStateNormal];
+            [_ setTitleColor:SEPERATELINECOLOR_2 forState:UIControlStateNormal];
             _.titleLabel.textColor = TITLECOLOR;
             _.titleLabel.font = [UIFont systemFontOfSize:15*ScrenScale];
             _.sd_layout
@@ -53,7 +53,7 @@
             UIButton *_ = [[UIButton alloc]init];
             [self addSubview:_];
             [_ setTitle:@"价格" forState:UIControlStateNormal];
-            [_ setTitleColor:SEPERATELINECOLOR forState:UIControlStateNormal];
+            [_ setTitleColor:SEPERATELINECOLOR_2 forState:UIControlStateNormal];
             _.titleLabel.textColor = TITLECOLOR;
             _.titleLabel.font = [UIFont systemFontOfSize:15*ScrenScale];
             _.sd_layout
@@ -83,7 +83,7 @@
             UIButton *_ = [[UIButton alloc]init];
             [self addSubview:_];
             [_ setTitle:@"人气" forState:UIControlStateNormal];
-            [_ setTitleColor:SEPERATELINECOLOR forState:UIControlStateNormal];
+            [_ setTitleColor:SEPERATELINECOLOR_2 forState:UIControlStateNormal];
             _.titleLabel.textColor = TITLECOLOR;
             _.titleLabel.font = [UIFont systemFontOfSize:15*ScrenScale];
             _.sd_layout
@@ -149,7 +149,7 @@
         
         //竖边栏
         UIView *verline = [[UIView alloc]init];
-        verline.backgroundColor = SEPERATELINECOLOR;
+        verline.backgroundColor = SEPERATELINECOLOR_2;
         [self addSubview:verline];
         verline.sd_layout
         .rightSpaceToView(_filterButton,0)
@@ -187,7 +187,7 @@
         
         UIView *line = [[UIView alloc]init];
             [self addSubview:line];
-            line.backgroundColor = SEPERATELINECOLOR;
+            line.backgroundColor = SEPERATELINECOLOR_2;
             line.sd_layout
             .leftEqualToView(self)
             .rightEqualToView(self)

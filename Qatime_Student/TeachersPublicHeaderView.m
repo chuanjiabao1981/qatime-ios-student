@@ -23,167 +23,156 @@
 
 - (void)setupViews{
 
-
     /* 背景图*/
     _bakcgroudImage = [[UIImageView alloc]init];
     [_bakcgroudImage setImage:[UIImage imageNamed:@"back"]];
+    [self addSubview:_bakcgroudImage];
+    _bakcgroudImage.sd_layout
+    .leftEqualToView(self)
+    .topEqualToView(self)
+    .rightEqualToView(self)
+    .autoHeightRatio(0.4);
     
     /* 教师头像*/
     _teacherHeadImage = [[UIImageView alloc]init];
+    [_bakcgroudImage addSubview:_teacherHeadImage];
+    _teacherHeadImage.sd_layout
+    .centerYEqualToView(_bakcgroudImage)
+    .centerXEqualToView(_bakcgroudImage)
+    .widthIs(60)
+    .heightEqualToWidth();
+    _teacherHeadImage.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
     
     /* 教师姓名*/
     _teacherNameLabel =[[UILabel alloc]init];
-    _teacherNameLabel.font = [UIFont systemFontOfSize:22*ScrenScale];
-    /* 性别*/
-    _genderImage  = [[UIImageView alloc]init];
-    
-    /* 学龄阶段*/
-    _category = [[UILabel alloc]init];
-    [_category setTextColor:[UIColor whiteColor]];
-    _category.backgroundColor = [UIColor orangeColor];
-    _category.font = [UIFont systemFontOfSize:16*ScrenScale];
-    
-    
-    /* 科目*/
-    _subject = [[UILabel alloc]init];
-    [_subject setTextColor:[UIColor whiteColor]];
-    _subject.backgroundColor = [UIColor orangeColor];
-    _subject.font = [UIFont systemFontOfSize:16*ScrenScale];
-    
-
-    
-    /* 教龄*/
-    _teaching_year= [[UILabel alloc]init];
-    _teaching_year.font = [UIFont systemFontOfSize:16*ScrenScale];
-     _teaching_year.textColor = [UIColor lightGrayColor];
-    /* 省*/
-    _province= [[UILabel alloc]init];
-    _province.font = [UIFont systemFontOfSize:16*ScrenScale];
-     _province.textColor = [UIColor lightGrayColor];
-    /* 市*/
-    _city= [[UILabel alloc]init];
-    _city.font = [UIFont systemFontOfSize:16*ScrenScale];
-     _city.textColor = [UIColor lightGrayColor];
-    /* 学校*/
-    _workPlace= [[UILabel alloc]init];
-     _workPlace.font = [UIFont systemFontOfSize:16*ScrenScale];
-     _workPlace.textColor = [UIColor lightGrayColor];
-    
-    /* 自我介绍部分*/
-    UIImageView *selfIntro =[[UIImageView alloc]init];
-    [selfIntro setImage:[UIImage imageNamed:@"老师"]];
-    
-    /* 自我介绍标题*/
-    UILabel *selfIntroLabel =[[UILabel alloc]init];
-    selfIntroLabel.text =@"自我介绍";
-    selfIntroLabel.font =[UIFont systemFontOfSize:20*ScrenScale];
-    
-    
-    
-    /* 自我介绍*/
-    _selfInterview= [[UILabel alloc]init];
-    
-        
-    
-    [self sd_addSubviews:@[_bakcgroudImage,selfIntro,selfIntroLabel,_selfInterview]];
-    
-    
-    
-//    _bakcgroudImage.sd_layout
-//    .leftSpaceToView(self,0)
-//    .rightSpaceToView(self,0)
-//    .topSpaceToView(self,0)
-//    .heightIs([UIScreen mainScreen].bounds.size.width/2.0f);
-//    
-    [_bakcgroudImage sd_addSubviews:@[_teacherHeadImage,_teacherNameLabel,_genderImage,_category,_subject,_teaching_year,_province,_city,_workPlace,_selfInterview]];
-    
-    
-    [_bakcgroudImage setFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame),CGRectGetWidth(self.frame)/2.0f)];
-    
-    _teacherHeadImage.sd_layout
-    .leftSpaceToView(_bakcgroudImage,10)
-    .bottomSpaceToView(_bakcgroudImage,10)
-    .heightIs(80)
-    .widthEqualToHeight();
-    
-    
+    _teacherNameLabel.font = TEXT_FONTSIZE;
+    [_bakcgroudImage addSubview:_teacherNameLabel];
     _teacherNameLabel.sd_layout
-    .leftSpaceToView(_teacherHeadImage,10)
-    .topEqualToView(_teacherHeadImage)
+    .centerXEqualToView(_teacherHeadImage)
+    .topSpaceToView(_teacherHeadImage,5)
     .autoHeightRatio(0);
     [_teacherNameLabel setSingleLineAutoResizeWithMaxWidth:100];
     
+    /* 性别*/
+    _genderImage  = [[UIImageView alloc]init];
+    [_bakcgroudImage addSubview:_genderImage];
     _genderImage.sd_layout
     .leftSpaceToView(_teacherNameLabel,5)
-    .topEqualToView(_teacherNameLabel)
-    .heightRatioToView(_teacherNameLabel,1.0f)
+    .centerYEqualToView(_teacherNameLabel)
+    .heightRatioToView(_teacherNameLabel,0.6)
     .widthEqualToHeight();
-
     
-    _category.sd_layout
-    .leftEqualToView(_teacherNameLabel)
-    .bottomEqualToView(_teacherHeadImage)
+    //基本资料
+    UILabel *info = [[UILabel alloc]init];
+    [self addSubview:info];
+    info.text = @"基本资料";
+    info.font = TITLEFONTSIZE;
+    info.sd_layout
+    .topSpaceToView(_bakcgroudImage,20)
+    .leftSpaceToView(self,15)
     .autoHeightRatio(0);
-    [_category setSingleLineAutoResizeWithMaxWidth:100];
+    [info setSingleLineAutoResizeWithMaxWidth:100];
     
-    _subject.sd_layout
-    .leftSpaceToView(_category,0)
-    .topEqualToView(_category)
-    .bottomEqualToView(_category)
-    .autoHeightRatio(0);
-    [_subject setSingleLineAutoResizeWithMaxWidth:100];
-    
-    
-    
+    //教龄
+    _teaching_year= [[UILabel alloc]init];
+    _teaching_year.font = TEXT_FONTSIZE;
+    _teaching_year.textColor = TITLECOLOR;
+    [self addSubview:_teaching_year];
     _teaching_year.sd_layout
-    .rightSpaceToView(_bakcgroudImage,10)
-    .topEqualToView(_teacherHeadImage)
+    .leftEqualToView(info)
+    .topSpaceToView(info,10)
     .autoHeightRatio(0);
-    [_teaching_year setSingleLineAutoResizeWithMaxWidth:300];
+    [_teaching_year setSingleLineAutoResizeWithMaxWidth:200];
     
-    
-    _city.sd_layout
-    .centerYEqualToView(_teacherHeadImage)
-    .rightEqualToView(_teaching_year)
+
+   //学龄阶段和科目
+    _categoryAndSubject = [[UILabel alloc]init];
+    [self addSubview:_categoryAndSubject];
+    _categoryAndSubject.textColor = TITLECOLOR;
+    _categoryAndSubject.font = TEXT_FONTSIZE;
+    _categoryAndSubject.sd_layout
+    .topSpaceToView(_teaching_year,10)
+    .leftEqualToView(_teaching_year)
     .autoHeightRatio(0);
-    [_city setSingleLineAutoResizeWithMaxWidth:100];
+    [_categoryAndSubject setSingleLineAutoResizeWithMaxWidth:200];
     
-    
-    _province.sd_layout
-    .rightSpaceToView(_city,5)
-    .centerYEqualToView(_teacherHeadImage)
+    //地址
+    _location = [[UILabel alloc]init];
+    [self addSubview:_location];
+    _location.textColor = TITLECOLOR;
+    _location.font = TEXT_FONTSIZE;
+    _location.sd_layout
+    .topSpaceToView(_categoryAndSubject,10)
+    .leftEqualToView(_categoryAndSubject)
     .autoHeightRatio(0);
-    [_province setSingleLineAutoResizeWithMaxWidth:100];
+    [_location setSingleLineAutoResizeWithMaxWidth:200];
     
     
-    
+    /* 学校*/
+    _workPlace= [[UILabel alloc]init];
+    _workPlace.textColor = TITLECOLOR;
+    _workPlace.font = TEXT_FONTSIZE;
+    [self addSubview:_workPlace];
     _workPlace.sd_layout
-    .bottomEqualToView(_teacherHeadImage)
-    .rightEqualToView(_city)
+    .leftEqualToView(_location)
+    .topSpaceToView(_location,10)
     .autoHeightRatio(0);
-    [_workPlace setSingleLineAutoResizeWithMaxWidth:300];
+    [_workPlace setSingleLineAutoResizeWithMaxWidth:200];
     
+    //分割线1
+    UIView *line1 = [[UIView alloc]init];
+    line1.backgroundColor = SEPERATELINECOLOR;
+    [self addSubview:line1];
+    line1.sd_layout
+    .leftSpaceToView(self,0)
+    .rightSpaceToView(self,0)
+    .topSpaceToView(_workPlace,20)
+    .heightIs(10);
     
-    /* 自我介绍部分的布局*/
-    
-    [selfIntro setFrame:CGRectMake(10, CGRectGetMaxY(_bakcgroudImage.frame)+10, 20, 20)];
-    
+    /* 自我介绍*/
+    UILabel *selfIntroLabel =[[UILabel alloc]init];
+    selfIntroLabel.text =@"自我介绍";
+    selfIntroLabel.font = TITLEFONTSIZE;
+    [self addSubview:selfIntroLabel];
     selfIntroLabel.sd_layout
-    .leftSpaceToView(selfIntro,3)
-    .centerYEqualToView(selfIntro)
+    .leftEqualToView(info)
+    .topSpaceToView(line1,20)
     .autoHeightRatio(0);
     [selfIntroLabel setSingleLineAutoResizeWithMaxWidth:100];
     
-
+    /* 自我介绍*/
+    _selfInterview= [[UILabel alloc]init];
+    _selfInterview.font = TEXT_FONTSIZE;
+    _selfInterview.textColor = TITLECOLOR;
+    [self addSubview:_selfInterview];
+    _selfInterview.sd_layout
+    .leftEqualToView(selfIntroLabel)
+    .topSpaceToView(selfIntroLabel,10)
+    .rightSpaceToView(self,20)
+    .autoHeightRatio(0);
     
-    [_selfInterview setFrame:CGRectMake(10, CGRectGetMaxY(selfIntro.frame)+10, CGRectGetWidth(self.frame)-20, 60)];
-    _selfInterview .text = @"" ;
-    _selfInterview.numberOfLines =0;
-    [_selfInterview sizeToFit];
+    //分割线2
+    UIView *line2 = [[UIView alloc]init];
+    line2.backgroundColor = SEPERATELINECOLOR;
+    [self addSubview: line2];
+    line2.sd_layout
+    .leftSpaceToView(self,0)
+    .rightSpaceToView(self,0)
+    .topSpaceToView(_selfInterview,20)
+    .heightIs(10);
     
+    //课程
+    _classList = [[UILabel alloc]init];
+    _classList.text = @"TA的课程";
+    _classList.font = TITLEFONTSIZE;
+    [self addSubview:_classList];
+    _classList.sd_layout
+    .leftEqualToView(info)
+    .topSpaceToView(line2,20)
+    .autoHeightRatio(0);
+    [_classList setSingleLineAutoResizeWithMaxWidth:100];
     
-    
-    
+    [self setupAutoHeightWithBottomView:_classList bottomMargin:0];
     
 }
 

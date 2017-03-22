@@ -31,7 +31,7 @@
         _segmentControl = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"公告",@"聊天",@"直播详情",@"成员列表"]];
         _segmentControl.borderType = HMSegmentedControlBorderTypeBottom;
         _segmentControl.borderWidth = 0.6;
-        _segmentControl.borderColor = SEPERATELINECOLOR;
+        _segmentControl.borderColor = SEPERATELINECOLOR_2;
         _segmentControl.titleTextAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
         [self addSubview:_segmentControl];
         

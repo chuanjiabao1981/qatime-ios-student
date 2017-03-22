@@ -216,6 +216,8 @@
      */
     
     _indexPageView  = [[IndexPageView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-49) style:UITableViewStyleGrouped];
+    _indexPageView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     [self.view addSubview:_indexPageView];
     _indexPageView.backgroundColor = [UIColor whiteColor];
     _indexPageView.tableHeaderView = _headerView;
@@ -223,10 +225,15 @@
     
     _indexPageView.dataSource = self;
     _indexPageView.delegate = self;
-    
     headerSize = CGSizeMake(self.view.width_sd, _headerView.fancyView.bottom_sd);
-    
     _indexPageView.tableHeaderView.size = headerSize;
+    _indexPageView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+       
+        [self requestDataWithLocation:_location.titleLabel.text];
+        
+    }];
+    
+    
     
     //推荐教师视图
     
@@ -277,17 +284,18 @@
 #pragma mark- 请求今日直播数据
 - (void)requestTodayLive{
     
+    _todayLives = @[].mutableCopy;
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/lessons/today",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         
         if ([dic[@"status"]isEqualToNumber:@1]) {
             
-            
             for (NSDictionary *dics in dic[@"data"]) {
                 RecommandClasses *mod = [RecommandClasses yy_modelWithJSON:dics];
                 mod = [RecommandClasses yy_modelWithJSON:dics[@"course"]];
                 mod.classID = dics[@"course"][@"id"];
+                mod.live_time = dics[@"live_time"];
                 [_todayLives addObject:mod];
             }
             
@@ -301,6 +309,8 @@
 
 #pragma mark- 请求最新发布和最近开课数据
 - (void)requestNewest{
+    
+    _newestRelease = @[].mutableCopy;
     
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/rank/published_rank,start_rank?count=2",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
         
@@ -423,6 +433,14 @@
     [self requestBanner:location];
     [self requestClasses:location];
     [self requestTeachers:location];
+    [self requestTodayLive];    //今日直播不区分地区
+    [self requestNewest];       //最近课程不区分地区
+    
+    [_indexPageView.mj_header endRefreshingWithCompletionBlock:^{
+       
+        
+        
+    }];
     
     
 }
@@ -597,11 +615,10 @@
                     
                 }
                 
-                [_indexPageView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-                
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"SizeChange" object:nil];
-                
             }
+            [_indexPageView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+            
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"SizeChange" object:nil];
             
         }else{
             //请求错误
@@ -644,7 +661,6 @@
             
         }else{
             
-            
             teacherarr = [teacherDic valueForKey:@"data"];
             
             if (teacherarr.count==0) {
@@ -673,9 +689,8 @@
                     
                 }
                 
-                
-                [self reloadData];
             }
+            [_recommandTeacherScrollView reloadData];
             
         }
         
@@ -815,7 +830,7 @@
     }else if (collectionView.tag == 2){
         
         if (_teachers.count == 0) {
-            items = 10;
+            items = 5;
         }else{
             items = _teachers.count;
         }
@@ -839,10 +854,6 @@
     if (collectionView.tag == 1) {
         
         TodayLiveCollectionViewCell * liveCell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-        //
-        //            [liveCell.classImageView setImage:[UIImage imageNamed:@"school"]];
-        //            liveCell.classNameLabel.text = @"今日直播课程";
-        //            liveCell.stateLabel.text = @"12:00-13:00 开始";
         
         if (_todayLives.count>indexPath.row) {
             liveCell.model = _todayLives[indexPath.row];
@@ -858,7 +869,6 @@
     }
     
     
-    
     /* 教师推荐的横滑视图*/
     if (collectionView .tag==2) {
         
@@ -870,6 +880,7 @@
         squarecell.sd_indexPath = indexPath;
         
         if (_teachers.count ==0) {
+            
             [squarecell.iconTitle setText:NSLocalizedString(@"名师推荐", nil)];
             [squarecell.iconImage setImage: [UIImage imageNamed:@"老师"]];
             
@@ -878,7 +889,6 @@
             RecommandTeacher *tech = _teachers[indexPath.row];
             
             /* 加载获取到的数据*/
-            
             if (tech.avatar_url !=nil) {
                 
                 [squarecell.iconImage sd_setImageWithURL:[NSURL URLWithString:tech.avatar_url ]];
@@ -1029,6 +1039,7 @@
     switch (section) {
         case 0:
             rows = 4;
+            
             break;
             
         case 1:
@@ -1049,6 +1060,7 @@
     if (cell==nil) {
         cell=[[QualityTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
         
+        
     }
     
     [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
@@ -1057,12 +1069,18 @@
             
             if (_classes.count == 0) {
                 
+                [cell.classImage setImage:[UIImage imageNamed:@"school"]];
+                cell.className.text = @"精品课程";
+                cell.teacherName.text = @"老师";
+                cell.gradeAndSubject.text = @"科目";
+                
+                cell.left_StateLabel.hidden = YES;
+                cell.right_StateLabel.hidden = YES;
                 
             }else if (_classes.count>indexPath.row) {
                 cell.recommandModel = _classes[indexPath.row];
                 cell.left_StateLabel.hidden = NO;
                 cell.right_StateLabel.hidden = NO;
-                
             }
         }
             break;
@@ -1119,11 +1137,21 @@
     
     switch (indexPath.section) {
         case 0:{
-            controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.recommandModel.classID];
+            
+            if (_classes.count==0) {
+                
+                [self loadingHUDStopLoadingWithTitle:@"当前地区无精选内容"];
+                
+            }else{
+            
+                controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.recommandModel.classID];
+            }
+            
         }
             break;
             
         case 1:{
+            
             controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.classModel.classID];
         }
             

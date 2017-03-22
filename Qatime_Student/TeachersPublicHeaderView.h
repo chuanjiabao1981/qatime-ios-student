@@ -28,7 +28,6 @@
 @property(nonatomic,strong) UIImageView *bakcgroudImage ;
 
 /* 教师头像*/
-
 @property(nonatomic,strong) UIImageView *teacherHeadImage ;
 
 /* 老师姓名*/
@@ -37,21 +36,14 @@
 /* 性别*/
 @property(nonatomic,strong) UIImageView *genderImage ;
 
-/* 学龄阶段*/
-@property(nonatomic,strong) UILabel *category ;
-
-
-/* 科目*/
-
-@property(nonatomic,strong) UILabel *subject ;
-
 /* 教龄*/
 @property(nonatomic,strong) UILabel *teaching_year ;
 
-/* 地址*/
-@property(nonatomic,strong) UILabel *province ;
+/* 学龄阶段和科目*/
+@property(nonatomic,strong) UILabel *categoryAndSubject ;
 
-@property(nonatomic,strong) UILabel *city ;
+/* 地址*/
+@property(nonatomic,strong) UILabel *location;
 
 /* 学校*/
 @property(nonatomic,strong) UILabel *workPlace ;
@@ -59,6 +51,8 @@
 /* 自我介绍*/
 @property(nonatomic,strong) UILabel *selfInterview ;
 
+/* 课程列表*/
+@property (nonatomic, strong) UILabel *classList ;
 
 
 @end

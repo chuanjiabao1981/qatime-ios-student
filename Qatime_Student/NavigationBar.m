@@ -15,7 +15,9 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.backgroundColor = NAVIGATIONRED;
+        self.backgroundColor = [UIColor clearColor];
+        
+        self.contentView.backgroundColor = NAVIGATIONRED;
         
         UIView *lanView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, 20)];
         lanView.backgroundColor = [UIColor blackColor];
@@ -32,6 +34,18 @@
  */
 
 
+- (UIView *)contentView{
+    
+    if (!_contentView) {
+        _contentView = [[UIView alloc]initWithFrame:self.bounds];
+        [self addSubview:_contentView];
+        
+    }
+    
+    return _contentView;
+}
+
+
 /* 懒加载左右按钮和标题栏*/
 
 - (UIButton *)leftButton{
@@ -41,7 +55,7 @@
         _leftButton = [[UIButton alloc]initWithFrame:CGRectMake(10*ScrenScale, 30, 30*ScrenScale, 30*ScrenScale)];
         _leftButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
         //    [_leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-        [self addSubview:_leftButton];
+        [self.contentView addSubview:_leftButton];
         
         [_leftButton setEnlargeEdge:20];
     }
@@ -54,11 +68,10 @@
     if (!_rightButton) {
         
         _rightButton = [[UIButton alloc]initWithFrame:CGRectMake(self.width_sd-50*ScrenScale, 30, 30*ScrenScale, 30*ScrenScale)];
-        [self addSubview:_rightButton];
+        [self.contentView addSubview:_rightButton];
         [_rightButton setEnlargeEdge:20];
     }
     
-
     return _rightButton;
     
 }
@@ -67,7 +80,7 @@
     
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(120, 20, self.width_sd -240, 40)];
-        [self addSubview:_titleLabel];
+        [self.contentView addSubview:_titleLabel];
         
         [_titleLabel setTextColor:[UIColor whiteColor]];
         [_titleLabel setTextAlignment:NSTextAlignmentCenter];

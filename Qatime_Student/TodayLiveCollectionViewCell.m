@@ -12,6 +12,8 @@
 
 #import "UIImageView+WebCache.h"
 #import "SDWebImageManager.h"
+#import "UIColor+HcdCustom.h"
+
 
 @interface TodayLiveCollectionViewCell (){
     
@@ -54,17 +56,31 @@
         .rightEqualToView(_classImageView)
         .autoHeightRatio(0);
         
+        //直播时间
+        _liveTimeLabel = [[UILabel alloc]init];
+        _liveTimeLabel.font = [UIFont systemFontOfSize:13*ScrenScale];
+        _liveTimeLabel.textColor = TITLECOLOR;
+        [self.contentView addSubview:_liveTimeLabel];
+        _liveTimeLabel.sd_layout
+        .topSpaceToView(_classImageView,2)
+        .leftSpaceToView(self.contentView,0)
+        .autoHeightRatio(0);
+        [_liveTimeLabel setSingleLineAutoResizeWithMaxWidth:200];
+        [_liveTimeLabel updateLayout];
+        
         //状态label
         _stateLabel = [[UILabel alloc]init];
         _stateLabel.font = [UIFont systemFontOfSize:13*ScrenScale];
         _stateLabel.textColor = TITLECOLOR;
         [self.contentView addSubview:_stateLabel];
         _stateLabel.sd_layout
-        .topSpaceToView(_classImageView,2)
-        .centerXEqualToView(_classImageView)
-        .autoHeightRatio(0);
-        [_stateLabel setSingleLineAutoResizeWithMaxWidth:300];
+        .topEqualToView(_liveTimeLabel)
+        .bottomEqualToView(_liveTimeLabel)
+        .leftSpaceToView(_liveTimeLabel,5);
+        [_stateLabel setSingleLineAutoResizeWithMaxWidth:200];
         [_stateLabel updateLayout];
+        
+        
         [self setupAutoHeightWithBottomView:_stateLabel bottomMargin:0];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"TodayHeight" object:self];
         
@@ -76,7 +92,6 @@
 -(void)setModel:(RecommandClasses *)model{
     
     _model = model;
-    
     
     /* 如果本地已经保留了图片缓存*/
     if ([self diskImageExistsForURL:[NSURL URLWithString:model.publicize]]==YES) {
@@ -103,8 +118,12 @@
 
     _classNameLabel.text = model.name;
     
-    _stateLabel.text = [NSString stringWithFormat:@"%@ - %@ %@",[model.live_start_time substringFromIndex:11],[model.live_end_time substringFromIndex:11],[self statusChange:model.status]];
+    _liveTimeLabel .text = model.live_time;
+    _stateLabel.text = [self statusChange:model.status];
     
+    _liveTimeLabel.sd_layout
+    .leftSpaceToView(self.contentView,(self.contentView.width_sd-(_liveTimeLabel.width_sd+_stateLabel.width_sd))/2);
+    [_liveTimeLabel updateLayout];
     
 }
 
@@ -112,16 +131,17 @@
     
     NSString *str  = @"".mutableCopy;
     
-    if ([status isEqualToString:@"teaching"]) {
-        
+    if ([status isEqualToString:@"teaching"]||[status isEqualToString:@"pause"]) {
         str = @"正在直播";
-    }else if ([status isEqualToString:@""]){
-        
-        
-    }else if ([status isEqualToString:@""]){
-        
+        _stateLabel.textColor = [UIColor colorWithHexString:@"#ff5842"];
+    }else if ([status isEqualToString:@"init"]||[status isEqualToString:@"ready"]||[status isEqualToString:@"init"]){
+        str = @"尚未直播";
+        _stateLabel.textColor = [UIColor colorWithHexString:@"#4873ff"];
+    }else if ([status isEqualToString:@"closed"]||[status isEqualToString:@"finished"]||[status isEqualToString:@"missed"]||[status isEqualToString:@"billing"]||[status isEqualToString:@"completed"]){
+        str = @"直播结束";
+        _stateLabel.textColor = [UIColor colorWithHexString:@"#999999"];
     }
-    
+
     return str;
 }
 

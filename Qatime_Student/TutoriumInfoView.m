@@ -130,7 +130,7 @@
         _segmentControl.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
         _segmentControl.borderType = HMSegmentedControlBorderTypeTop | HMSegmentedControlBorderTypeBottom;
         _segmentControl.borderWidth = 0.6;
-        _segmentControl.borderColor = SEPERATELINECOLOR;
+        _segmentControl.borderColor = SEPERATELINECOLOR_2;
         _segmentControl.titleTextAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
         [_segmentControl updateLayout];
         
@@ -468,12 +468,13 @@
         
         /* 教师头像*/
         _teacherHeadImage = [[UIImageView alloc]init];
+        _teacherHeadImage.userInteractionEnabled = YES;
         [_view2 addSubview:_teacherHeadImage];
         
         _teacherHeadImage.sd_layout
-        .leftSpaceToView(_view2,15)
-        .topSpaceToView(_view2,20)
-        .widthIs(self.width_sd/8)
+        .leftSpaceToView(_view2,10)
+        .topSpaceToView(_view2,10)
+        .widthIs(80)
         .heightEqualToWidth();
         _teacherHeadImage.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
         

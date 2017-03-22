@@ -23,7 +23,12 @@
 @property (nonatomic, strong) UILabel *classNameLabel ;
 
 /**
- 直播时间和状态
+ 直播时间
+ */
+@property (nonatomic, strong) UILabel *liveTimeLabel ;
+
+/**
+ 直播状态
  */
 @property (nonatomic, strong) UILabel *stateLabel ;
 

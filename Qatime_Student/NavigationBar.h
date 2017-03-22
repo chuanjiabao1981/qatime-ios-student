@@ -21,6 +21,7 @@ typedef enum : NSUInteger {
 } BackgroundColorType;
 
 @interface NavigationBar : UIView
+@property (nonatomic, strong) UIView *contentView ;
 @property(nonatomic,strong) UIButton *leftButton ;
 @property(nonatomic,strong) UIButton *rightButton ;
 @property(nonatomic,strong) UILabel *titleLabel  ;

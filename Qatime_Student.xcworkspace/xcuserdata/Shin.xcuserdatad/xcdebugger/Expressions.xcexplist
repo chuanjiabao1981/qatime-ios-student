@@ -3,40 +3,96 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "__64-[ChooseClassViewController requestClass:withContentDictionary:]_block_invoke:ChooseClassViewController.m">
+         contextName = "__46-[TutoriumInfoViewController switchClassData:]_block_invoke:TutoriumInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__41-[DrawBackViewController requestDrawback]_block_invoke:DrawBackViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__39-[OrderViewController requestClassInfo]_block_invoke:OrderViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_filterDic">
+               value = "">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[LivePlayerViewController tableView:cellForRowAtIndexPath:]:LivePlayerViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__46-[NELivePlayerViewController checkVideoStatus]_block_invoke:NELivePlayerViewController.m">
+         contextName = "main:main.m">
          <PersistentStrings>
             <PersistentString
-               value = "_statusDic">
+               value = "info">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[OrderInfoViewController initWithUnpaid:]:OrderInfoViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[NELivePlayerViewController keyboardWillShow:]:NELivePlayerViewController.m">
+         contextName = "-[OrderInfoViewController viewDidLoad]:OrderInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "self.view.bounce">
-            </PersistentString>
-            <PersistentString
-               value = "self.view.frame">
+               value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__33-[LoginViewController userLogin:]_block_invoke:LoginViewController.m">
+         contextName = "-[ClassTimeViewController requestClosedClassList]:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_notLoginView">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ClassSettingViewController tableView:cellForRowAtIndexPath:]:ClassSettingViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_settingDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[AllClassViewController loadCurrentDay]:AllClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataArr">
+            </PersistentString>
+            <PersistentString
+               value = "_unclosedArr">
+            </PersistentString>
+            <PersistentString
+               value = "_closedArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate application:didRegisterForRemoteNotificationsWithDeviceToken:]:AppDelegate.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "deviceToken.description">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NoticeIndexViewController tableView:heightForRowAtIndexPath:]:NoticeIndexViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatListArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MessageSettingViewController viewDidLoad]:MessageSettingViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "allowNotification">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__37-[OrderViewController requestBalance]_block_invoke:OrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "price">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController switchStatuseWithDictionary:]:NELivePlayerViewController.m">
@@ -65,818 +121,6 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[LoginViewController sendAuthRequest]:LoginViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "openID">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ConfirmChargeViewController initWithModel:]:ConfirmChargeViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__33-[ChatViewController viewDidLoad]_block_invoke:ChatViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[UUMessageFrame setMessage:]:UUMessageFrame.m">
-      </ContextState>
-      <ContextState
-         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke_3:PersonalInfoViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.448:PersonalInfoViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[NELivePlayerViewController updateMembersList]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "membersName">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ChooseClassViewController requestClass:withContentDictionary:]:ChooseClassViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_filterDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[AppDelegate onLogin:]:AppDelegate.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "step">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[MultifiltersViewController collectionView:cellForItemAtIndexPath:]:MultifiltersViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_filtedArray">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[MultifiltersViewController initWithFilters:]:MultifiltersViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[ChatViewController enterLive]:ChatViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_tutoriumInfo">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ClassTimeViewController requestClosedClassList]:ClassTimeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_notLoginView">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__36-[MyOrderViewController viewDidLoad]_block_invoke.89:MyOrderViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "paidPage">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__35-[ChatViewController makeMessages:]_block_invoke:ChatViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[ConfirmChargeViewController requestChargWithType:andData:]:ConfirmChargeViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[SafeViewController tableView:didSelectRowAtIndexPath:]:SafeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "[[NSUserDefaults standardUserDefaults]valueForKey:@&quot;openID&quot;]">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[QRCodeController captureOutput:didOutputMetadataObjects:fromConnection:]:QRCodeController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "promotionCode">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__37-[SafeViewController requestUserInfo]_block_invoke:SafeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_contentArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__41-[NELivePlayerViewController viewDidLoad]_block_invoke:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "weakSelf.view.frame">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NIMSessionViewController makeUI]:NIMSessionViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.tableView">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[MyOrderViewController payOrder:]:MyOrderViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_unpaidArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.441:PersonalInfoViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[AppDelegate jpushNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
-      </ContextState>
-      <ContextState
-         contextName = "__45-[OrderInfoViewController requestForBuyAgain]_block_invoke_2:OrderInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[PersonalViewController setupPages]:PersonalViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "login">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[UUMessageCell setMessageFrame:]:UUMessageCell.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "subStr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__69-[ChooseClassViewController collectionView:didSelectItemAtIndexPath:]_block_invoke:ChooseClassViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_filterDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[TutoriumInfoViewController requestOrder]:TutoriumInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[TranslateViewController initWithMessage:]:TranslateViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[AppDelegate application:didReceiveRemoteNotification:fetchCompletionHandler:]:AppDelegate.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "userInfo">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[SafeViewController tableView:cellForRowAtIndexPath:]:SafeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "[[NSUserDefaults standardUserDefaults]valueForKey:@&quot;NewPayPasswordTimeStamp&quot;]">
-            </PersistentString>
-            <PersistentString
-               value = "_menuName">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__39-[TutoriumInfoViewController addListen]_block_invoke:TutoriumInfoViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[ChatModel addSpecifiedItem:andIconURL:andName:]:ChatModel.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataSource">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__43-[CashRecordViewController requestWithDraw]_block_invoke:CashRecordViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[BindingViewController nextStep:]:BindingViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_openID">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke.204:NoticeIndexViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_chatListArr">
-            </PersistentString>
-            <PersistentString
-               value = "_myClassArray">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__34-[MyOrderViewController buyAgain:]_block_invoke_3:MyOrderViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
-            </PersistentString>
-            <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[UUInputFunctionView sendMessage:]:UUInputFunctionView.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "resultStr">
-            </PersistentString>
-            <PersistentString
-               value = "self.TextViewInput.text">
-            </PersistentString>
-            <PersistentString
-               value = "self.TextViewInput.typingAttributes">
-            </PersistentString>
-            <PersistentString
-               value = " self.TextViewInput.attributedText">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[MultifiltersViewController checkFilted]:MultifiltersViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_filtedArray">
-            </PersistentString>
-            <PersistentString
-               value = "_filtersDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__34-[MyOrderViewController payOrder:]_block_invoke_2:MyOrderViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_unpaidArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.679:LivePlayerViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.438:PersonalInfoViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[NELivePlayerViewController tableView:cellForRowAtIndexPath:]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_membersArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NELivePlayerViewController mediaControlTurnToFullScreenModeWithMainView:]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "IFView.frame">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NELivePlayerViewController willRotateToInterfaceOrientation:duration:]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_teacherPlayerView.frame">
-            </PersistentString>
-            <PersistentString
-               value = "_boardPlayerView.frame">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "mach_msg_trap:(null)">
-         <PersistentStrings>
-            <PersistentString
-               value = "self">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__36-[MyOrderViewController requestPaid]_block_invoke:MyOrderViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "paidPage">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[AppDelegate application:didFinishLaunchingWithOptions:]:AppDelegate.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "launchOptions">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ChooseClassViewController multiFilters]:ChooseClassViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_filterDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__33-[PersonalViewController getCash]_block_invoke:PersonalViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_balance">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__50-[ChangePhoneViewController requestChangePasswrod]_block_invoke_2:ChangePhoneViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[BarrageWalkTextSprite bindingView]:BarrageWalkTextSprite.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[PersonalViewController changeHead:]:PersonalViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[ChatModel addSpecifiedImageItem:andIconURL:andName:]:ChatModel.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[ClassSettingViewController tableView:cellForRowAtIndexPath:]:ClassSettingViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_settingDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NoticeIndexViewController tableView:editActionsForRowAtIndexPath:]:NoticeIndexViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_chatListArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ChatViewController makeMessages:]:ChatViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__40-[NELivePlayerViewController initNIMSDK]_block_invoke:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_chat_Account">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__41-[DrawBackViewController requestDrawback]_block_invoke:DrawBackViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[MultifiltersViewController viewDidLoad]:MultifiltersViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__39-[BindingMailInfoViewController finish]_block_invoke_2:BindingMailInfoViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[OrderInfoViewController requestForPay]:OrderInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-            <PersistentString
-               value = "balance">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__45-[SafeViewController RequestToBindingWechat:]_block_invoke_2:SafeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "wechatCode">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__43-[IndexPageViewController requestTeachers:]_block_invoke:IndexPageViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__45-[PersonalInfoViewController requestUserInfo]_block_invoke:PersonalInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__53-[TutoriumInfoViewController requestClassesInfoWith:]_block_invoke:TutoriumInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_teacherModel">
-            </PersistentString>
-            <PersistentString
-               value = "_classInfoTimeModel">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NELivePlayerViewController onRecvMessages:]:NELivePlayerViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[ChooseClassViewController chooseTags:]:ChooseClassViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[IndexPageViewController makeCityList:]:IndexPageViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__41-[ChooseClassViewController requestClass]_block_invoke:ChooseClassViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_classesArray">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NELivePlayerViewController makeFloatingPlayer:]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "isFullScreen">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ClassTimeViewController requestUnclosedClassList]:ClassTimeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_unclosedArr">
-            </PersistentString>
-            <PersistentString
-               value = "_token">
-            </PersistentString>
-            <PersistentString
-               value = "_idNumber">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[PersonalInfoViewController updateUserInfo]:PersonalInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "infodic">
-            </PersistentString>
-            <PersistentString
-               value = "_userImage">
-            </PersistentString>
-            <PersistentString
-               value = "_avatar">
-            </PersistentString>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[AppDelegate application:didRegisterForRemoteNotificationsWithDeviceToken:]:AppDelegate.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "deviceToken.description">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ClassSettingViewController saveSettings]:ClassSettingViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__86-[TutoriumViewController requestDataWithGrade:andSubject:andPage:andPerPage:withPull:]_block_invoke:TutoriumViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[MyOrderViewController scrollViewWillBeginDragging:]:MyOrderViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.view.height_sd">
-            </PersistentString>
-            <PersistentString
-               value = "_unpaidView.mj_footer.mj_y">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__34-[MyOrderViewController buyAgain:]_block_invoke_2:MyOrderViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__43-[CashRecordViewController requestRecharge]_block_invoke:CashRecordViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "interval">
-            </PersistentString>
-            <PersistentString
-               value = "_rechargeArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__38-[OrderViewController finishAndCommit]_block_invoke:OrderViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__37-[OrderViewController requestBalance]_block_invoke:OrderViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "price">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[VideoPlayerViewController zf_controlView:resolutionAction:]:VideoPlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "sender.tag">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[MyClassViewController enterListen:]:MyClassViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "sender.tag">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.856:LivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_teacher">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NELivePlayerViewController initNIMSDK]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_chat_Account">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__34-[BindingViewController nextStep:]_block_invoke.217:BindingViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__44-[PersonalInfoEditViewController updateInfo]_block_invoke.345:PersonalInfoEditViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[TutoriumViewController sendFilterStatus:]:TutoriumViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_filterDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ClassTimeViewController requestClassList]:ClassTimeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_token">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__46-[NELivePlayerViewController requestClassInfo]_block_invoke_2:NELivePlayerViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[PayConfirmViewController payWithWechat]:PayConfirmViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[TutoriumViewController selectedTimeFilterWithSort:]:TutoriumViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "sort_By">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[YZEmotionKeyboard didSelectEmotion:]:YZEmotionKeyboard.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "attachment.emotionStr">
-            </PersistentString>
-            <PersistentString
-               value = "_yz_textView.text">
-            </PersistentString>
-            <PersistentString
-               value = "_yz_textView.attributedText">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.735:LivePlayerViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__53-[TutoriumInfoViewController requestClassesInfoWith:]_block_invoke_2:TutoriumInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-            <PersistentString
-               value = "_classModel">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__82-[PersonalInfoViewController imagePickerController:didFinishPickingMediaWithInfo:]_block_invoke:PersonalInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_avatar">
-            </PersistentString>
-            <PersistentString
-               value = "info">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__42-[PayConfirmViewController payWithBalance]_block_invoke_2:PayConfirmViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__44-[NELivePlayerViewController viewDidAppear:]_block_invoke:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_chat_Account">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[MessageSettingViewController tableView:cellForRowAtIndexPath:]:MessageSettingViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "allowVoice">
-            </PersistentString>
-            <PersistentString
-               value = "allowAlert">
-            </PersistentString>
-            <PersistentString
-               value = "allowNotification">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[LoginViewController wechatLoginSucess:]:LoginViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "respdata.code">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ChooseClassViewController newestFilter:]:ChooseClassViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_filterDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ViewController supportedInterfaceOrientations]:ViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "result">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[VideoViewController tableView:numberOfRowsInSection:]:VideoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "tableView.tag">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[AllClassViewController loadCurrentDay]:AllClassViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataArr">
-            </PersistentString>
-            <PersistentString
-               value = "_unclosedArr">
-            </PersistentString>
-            <PersistentString
-               value = "_closedArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[AppDelegate setTabBarController]:AppDelegate.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_viewController">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[CheckChargeViewController returnLastPage]:CheckChargeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.navigationController.viewControllers">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__34-[IndexPageViewController getTags]_block_invoke:IndexPageViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[TLCityPickerController didSelctedCity:]:TLCityPickerController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.commonCitys">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__39-[OrderViewController requestClassInfo]_block_invoke:OrderViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__42-[ChatViewController requestServerHistory]_block_invoke:ChatViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[ChatViewController requestChatHitstory]:ChatViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_session">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__56-[SafeViewController tableView:didSelectRowAtIndexPath:]_block_invoke.279:SafeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "NSUserDefaults standardUserDefaults]boolForKey:@&quot;have_paypassword&quot;]">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ViewController viewDidLoad]:ViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "invocation">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[LivePlayerViewController tableView:didSelectRowAtIndexPath:]:LivePlayerViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[CashRecordViewController tableView:heightForRowAtIndexPath:]:CashRecordViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_withDrawArr">
-            </PersistentString>
-            <PersistentString
-               value = "_rechargeArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[MyOrderViewController repage:]:MyOrderViewController.m">
-      </ContextState>
-      <ContextState
          contextName = "-[IndexPageViewController collectionView:viewForSupplementaryElementOfKind:atIndexPath:]:IndexPageViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -885,56 +129,63 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NoticeIndexViewController tableView:heightForRowAtIndexPath:]:NoticeIndexViewController.m">
+         contextName = "__36-[OrderViewController postOrderInfo]_block_invoke:OrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate onResp:]:AppDelegate.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumInfoViewController addListen]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_chatListArr">
+               value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__62-[LivePlayerViewController tableView:didSelectRowAtIndexPath:]_block_invoke:LivePlayerViewController.m">
+         contextName = "-[OrderInfoViewController confirmRequestOrder]:OrderInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "cell">
+               value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__45-[SafeViewController RequestToBindingWechat:]_block_invoke:SafeViewController.m">
+         contextName = "-[ChatViewController makeMessages:]:ChatViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[TLCityPickerController viewDidLoad]:TLCityPickerController.m">
+         contextName = "-[MyOrderViewController tableView:cellForRowAtIndexPath:]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_titles">
-            </PersistentString>
-            <PersistentString
-               value = "_cities">
+               value = "_paidArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__42-[IndexPageViewController requestClasses:]_block_invoke:IndexPageViewController.m">
+         contextName = "__38-[OrderViewController finishAndCommit]_block_invoke:OrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[PayConfirmViewController payWithWechat]:PayConfirmViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__46-[NELivePlayerViewController requestClassInfo]_block_invoke_2:NELivePlayerViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__37-[NoticeIndexViewController loadView]_block_invoke_2:NoticeIndexViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_classes">
+               value = "_noticeArray">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[UIViewController(HUD) loadingHUDStopLoadingWithTitle:]:UIViewController+HUD.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "currentThread">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "__34-[BindingViewController nextStep:]_block_invoke.217:BindingViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[OrderViewController touchesBegan:withEvent:]:OrderViewController.m">
+         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.679:LivePlayerViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[MultifiltersViewController init]:MultifiltersViewController.m">
+         contextName = "-[MultifiltersViewController collectionView:didSelectItemAtIndexPath:]:MultifiltersViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_filtersDic">
@@ -942,40 +193,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke_2:ClassTimeViewController.m">
+         contextName = "-[NELivePlayerViewController tableView:cellForRowAtIndexPath:]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "sortArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[VideoInfoView initWithFrame:]:VideoInfoView.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_segmentControl.frame">
-            </PersistentString>
-            <PersistentString
-               value = "_scrollView.frame">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__41-[LoginViewController wechatLoginSucess:]_block_invoke:LoginViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__50-[ClassSettingViewController requestNoticeSetting]_block_invoke:ClassSettingViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_settingDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__41-[IndexPageViewController requestBanner:]_block_invoke:IndexPageViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_banners">
+               value = "_membersArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -997,430 +218,21 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[MyOrderViewController cancelRefund:]:MyOrderViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[CashRecordViewController initWithSelectedItem:]:CashRecordViewController.m">
+         contextName = "-[MyOrderViewController scrollViewWillBeginDragging:]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_selectedItem">
+               value = "self.view.height_sd">
+            </PersistentString>
+            <PersistentString
+               value = "_unpaidView.mj_footer.mj_y">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__38-[TranslateViewController viewDidLoad]_block_invoke:TranslateViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_option">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke_2:PersonalInfoViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[MyOrderViewController requestUnpaid]:MyOrderViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "unpaidPage">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NELivePlayerViewController fetchMessageAttachment:didCompleteWithError:]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "imageObject.path">
-            </PersistentString>
-            <PersistentString
-               value = "imageObject.thumbPath">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[AllClassViewController calendar:didSelectDate:]:AllClassViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_allClassArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__38-[IndexPageViewController checkNotice]_block_invoke_2:IndexPageViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[IndexPageViewController checkCityListWithInformationChange:]:IndexPageViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "loaction.subLocality">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NELivePlayerViewController reloadPlayerView]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_teacherPullAddress">
-            </PersistentString>
-            <PersistentString
-               value = "_boardPullAddress">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__58-[TeachersPublicViewController requestTeachersInfoWithID:]_block_invoke:TeachersPublicViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[TutoriumViewController textDidChange:]:TutoriumViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__41-[OrderViewController checkPromotionCode]_block_invoke:OrderViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[AppDelegate onResp:]:AppDelegate.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[OrderInfoViewController confirmRequestOrder]:OrderInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__38-[MyOrderViewController requestUnpaid]_block_invoke:MyOrderViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_unpaidArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[UUMessageCell btnContentClick]:UUMessageCell.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.messageFrame.message">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__36-[OrderViewController postOrderInfo]_block_invoke:OrderViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[CashRecordViewController requestRecharge]:CashRecordViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.token">
-            </PersistentString>
-            <PersistentString
-               value = "self.idNumber">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NELivePlayerViewController changePlayersMode]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_teacherPlayerView.frame">
-            </PersistentString>
-            <PersistentString
-               value = "_liveplayerTeacher.view.frame">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[CityChosenViewController viewDidLoad]:CityChosenViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[PersonalInfoEditViewController tableView:cellForRowAtIndexPath:]:PersonalInfoEditViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_infoDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ClassTimeViewController tableView:didSelectRowAtIndexPath:]:ClassTimeViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_unclosedArr">
-            </PersistentString>
-            <PersistentString
-               value = "_closedArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[PersonalInfoViewController imagePickerController:didFinishPickingMediaWithInfo:]:PersonalInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_imageURL">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[PersonalInfoViewController initWithName:andGrade:andHeadImage:withImageChange:]:PersonalInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_userImage">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke:PersonalInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NELivePlayerViewController setupBoardPlayer]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_boardPullAddress">
-            </PersistentString>
-            <PersistentString
-               value = "_teacherPullAddress">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ChatViewController dealTheFunctionData:]:ChatViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_chatModel">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NoticeIndexViewController tableView:didSelectRowAtIndexPath:]:NoticeIndexViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[MessageSettingViewController turnNoticeStatus:]:MessageSettingViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "sender.selected">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[TeachersPublicViewController refreshTeacherInfoWith:]:TeachersPublicViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "teacherInfo.teaching_years">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ConfirmChargeViewController initWithInfo:]:ConfirmChargeViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_sendContent">
-            </PersistentString>
-            <PersistentString
-               value = "funcView.TextViewInput.attributedText.description">
-            </PersistentString>
-            <PersistentString
-               value = "funcView.TextViewInput.attributedText.string">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[ChatViewController viewDidLoad]:ChatViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_session">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[MessageSettingViewController viewDidLoad]:MessageSettingViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "allowNotification">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__46-[TutoriumInfoViewController switchClassData:]_block_invoke:TutoriumInfoViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__41-[ChooseClassViewController multiFilters]_block_invoke:ChooseClassViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[VideoViewController tableView:cellForRowAtIndexPath:]:VideoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "tableView.tag">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.450:PersonalInfoViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__46-[NELivePlayerViewController setupVideoPlayer]_block_invoke:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_teacherPullAddress">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[OrderInfoViewController setUpViews]:OrderInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[OrderInfoViewController viewDidLoad]:OrderInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NSString(ChangeYearsToChinese) changeEnglishYearsToChinese]:NSString+ChangeYearsToChinese.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "years">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke:NoticeIndexViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_chatListArr">
-            </PersistentString>
-            <PersistentString
-               value = "_myClassArray">
-            </PersistentString>
-            <PersistentString
-               value = "_recentArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ChatModel getDicWithText:andName:andIcon:]:ChatModel.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[TutoriumInfoViewController listen]:TutoriumInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[IndexPageViewController makeCities:]:IndexPageViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "cityOrder">
-            </PersistentString>
-            <PersistentString
-               value = "newCityNames">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__34-[BindingViewController nextStep:]_block_invoke:BindingViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__39-[MyOrderViewController requestCanceld]_block_invoke:MyOrderViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[SetPayPasswordViewController changeLetters:]:SetPayPasswordViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "textfield.text">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__37-[NoticeIndexViewController loadView]_block_invoke_2:NoticeIndexViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_noticeArray">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[MultifiltersViewController filtered]:MultifiltersViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_filtersDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[MyOrderViewController tableView:didSelectRowAtIndexPath:]:MyOrderViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "cell.unpaidModel">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ChooseClassViewController multiFiltersRequest:]:ChooseClassViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[OrderInfoViewController initWithPaid:]:OrderInfoViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[TLCityPickerController data]:TLCityPickerController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_data">
-            </PersistentString>
-            <PersistentString
-               value = "_cityFilePath">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[UUMessage setWithDict:]:UUMessage.m">
       </ContextState>
       <ContextState
          contextName = "-[OrderInfoViewController initWithInfo:]:OrderInfoViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_dataDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__42-[ClassSettingViewController saveSettings]_block_invoke:ClassSettingViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__copy_helper_block_:PersonalInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.435:PersonalInfoViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke:LivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_videoClassInfo">
-            </PersistentString>
-            <PersistentString
-               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1436,95 +248,183 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__45-[OrderInfoViewController requestForBuyAgain]_block_invoke_3:OrderInfoViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__38-[ChangePasswordViewController finish]_block_invoke_4:ChangePasswordViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[TLCityPickerController commonCityData]:TLCityPickerController.m">
+         contextName = "-[OrderInfoViewController requestForPay]:OrderInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "self.commonCitys">
+               value = "_dataDic">
+            </PersistentString>
+            <PersistentString
+               value = "balance">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[ChangePasswordViewController textDidChange:]:ChangePasswordViewController.m">
+         contextName = "__44-[PersonalInfoEditViewController updateInfo]_block_invoke.345:PersonalInfoEditViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__33-[SignUpViewController nextStep:]_block_invoke:SignUpViewController.m">
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke_3:PersonalInfoViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[IndexPageViewController collectionView:didSelectItemAtIndexPath:]:IndexPageViewController.m">
+         contextName = "-[NSString(ChangeYearsToChinese) changeEnglishYearsToChinese]:NSString+ChangeYearsToChinese.m">
          <PersistentStrings>
             <PersistentString
-               value = "_teachers">
+               value = "years">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[PersonalViewController tableView:didSelectRowAtIndexPath:]:PersonalViewController.m">
+         contextName = "-[MultifiltersViewController viewDidLoad]:MultifiltersViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__42-[PayConfirmViewController payWithBalance]_block_invoke:PayConfirmViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "[NSUserDefaults standardUserDefaults]boolForKey:@&quot;Login&quot;]">
+               value = "_dataDic[@&quot;id&quot;]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__42-[PayConfirmViewController payWithBalance]_block_invoke_3:PayConfirmViewController.m">
+         contextName = "__34-[IndexPageViewController getTags]_block_invoke:IndexPageViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[OrderInfoViewController initWithPaid:]:OrderInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ChooseClassViewController multiFilters]:ChooseClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filterDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__36-[MyOrderViewController requestPaid]_block_invoke:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "paidPage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__42-[IndexPageViewController requestClasses:]_block_invoke:IndexPageViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classes">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__37-[SafeViewController requestUserInfo]_block_invoke:SafeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_contentArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.435:PersonalInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "__43-[TutoriumViewController sendFilterStatus:]_block_invoke:TutoriumViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__42-[WithDrawInfoViewController requestApply]_block_invoke_5:WithDrawInfoViewController.m">
+         contextName = "__43-[IndexPageViewController requestTeachers:]_block_invoke:IndexPageViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController initNIMSDK]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "self.navigationController.viewControllers">
+               value = "_chat_Account">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "main:main.m">
+         contextName = "-[LivePlayerViewController tableView:didSelectRowAtIndexPath:]:LivePlayerViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__62-[LivePlayerViewController tableView:didSelectRowAtIndexPath:]_block_invoke:LivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "info">
+               value = "cell">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[LoginViewController saveUserInfo:loginType:]:LoginViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[NoticeIndexViewController requestMyClass]:NoticeIndexViewController.m">
+         contextName = "-[AllClassViewController calendar:didSelectDate:]:AllClassViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_chatListArr">
+               value = "_allClassArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__copy_helper_block_:CashRecordViewController.m">
+         contextName = "-[ChatModel addSpecifiedImageItem:andIconURL:andName:]:ChatModel.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[MyOrderViewController requestUnpaid]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_selectedItem">
+               value = "unpaidPage">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[ConfirmChargeViewController viewDidLoad]:ConfirmChargeViewController.m">
+         contextName = "__64-[ChooseClassViewController requestClass:withContentDictionary:]_block_invoke:ChooseClassViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "dataInfo">
+               value = "_filterDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[MyOrderViewController tableView:cellForRowAtIndexPath:]:MyOrderViewController.m">
+         contextName = "__39-[BindingMailInfoViewController finish]_block_invoke_2:BindingMailInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__41-[OrderViewController checkPromotionCode]_block_invoke:OrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ChooseClassViewController multiFiltersRequest:]:ChooseClassViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[VideoPlayerViewController zf_controlView:resolutionAction:]:VideoPlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_paidArr">
+               value = "sender.tag">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__38-[IndexPageViewController viewDidLoad]_block_invoke:IndexPageViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumViewController sendFilterStatus:]:TutoriumViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filterDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChooseClassViewController newestFilter:]:ChooseClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filterDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke:LivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classesArr">
+            </PersistentString>
+            <PersistentString
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1543,10 +443,24 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[PersonalInfoViewController tableView:cellForRowAtIndexPath:]:PersonalInfoViewController.m">
+         contextName = "__34-[MyOrderViewController buyAgain:]_block_invoke_3:MyOrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ViewController viewDidLoad]:ViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_dataDic">
+               value = "invocation">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController onRecvMessages:]:NELivePlayerViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate onLogin:]:AppDelegate.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "step">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1559,10 +473,275 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[TutoriumInfoViewController addListen]:TutoriumInfoViewController.m">
+         contextName = "-[NIMSessionViewController makeUI]:NIMSessionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.tableView">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NoticeIndexViewController tableView:didSelectRowAtIndexPath:]:NoticeIndexViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[NoticeIndexViewController tableView:editActionsForRowAtIndexPath:]:NoticeIndexViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatListArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController setupBoardPlayer]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_boardPullAddress">
+            </PersistentString>
+            <PersistentString
+               value = "_teacherPullAddress">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MultifiltersViewController initWithFilters:]:MultifiltersViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate setTabBarController]:AppDelegate.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_viewController">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChatViewController requestChatHitstory]:ChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_session">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalInfoEditViewController tableView:cellForRowAtIndexPath:]:PersonalInfoEditViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_infoDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__copy_helper_block_:PersonalInfoViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__42-[ClassSettingViewController saveSettings]_block_invoke:ClassSettingViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[OrderViewController touchesBegan:withEvent:]:OrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_sendContent">
+            </PersistentString>
+            <PersistentString
+               value = "funcView.TextViewInput.attributedText.description">
+            </PersistentString>
+            <PersistentString
+               value = "funcView.TextViewInput.attributedText.string">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__38-[ChangePasswordViewController finish]_block_invoke_4:ChangePasswordViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[VideoInfoView initWithFrame:]:VideoInfoView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_segmentControl.frame">
+            </PersistentString>
+            <PersistentString
+               value = "_scrollView.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MessageSettingViewController turnNoticeStatus:]:MessageSettingViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "sender.selected">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__42-[PayConfirmViewController payWithBalance]_block_invoke_3:PayConfirmViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[QRCodeController captureOutput:didOutputMetadataObjects:fromConnection:]:QRCodeController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "promotionCode">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__36-[MyOrderViewController viewDidLoad]_block_invoke.89:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "paidPage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[BindingViewController nextStep:]:BindingViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_openID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__44-[NELivePlayerViewController viewDidAppear:]_block_invoke:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chat_Account">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__50-[ClassSettingViewController requestNoticeSetting]_block_invoke:ClassSettingViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_settingDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.450:PersonalInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ChatViewController dealTheFunctionData:]:ChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatModel">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[CashRecordViewController initWithSelectedItem:]:CashRecordViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_selectedItem">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController changePlayersMode]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_teacherPlayerView.frame">
+            </PersistentString>
+            <PersistentString
+               value = "_liveplayerTeacher.view.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__53-[TutoriumInfoViewController requestClassesInfoWith:]_block_invoke:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_teacherModel">
+            </PersistentString>
+            <PersistentString
+               value = "_classInfoTimeModel">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MultifiltersViewController checkFilted]:MultifiltersViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filtedArray">
+            </PersistentString>
+            <PersistentString
+               value = "_filtersDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__45-[OrderInfoViewController requestForBuyAgain]_block_invoke_2:OrderInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TeachersPublicViewController refreshTeacherInfoWith:]:TeachersPublicViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "teacherInfo.teaching_years">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[LoginViewController sendAuthRequest]:LoginViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "openID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController fetchMessageAttachment:didCompleteWithError:]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "imageObject.path">
+            </PersistentString>
+            <PersistentString
+               value = "imageObject.thumbPath">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MultifiltersViewController collectionView:cellForItemAtIndexPath:]:MultifiltersViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filtedArray">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.441:PersonalInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[YZEmotionKeyboard didSelectEmotion:]:YZEmotionKeyboard.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "attachment.emotionStr">
+            </PersistentString>
+            <PersistentString
+               value = "_yz_textView.text">
+            </PersistentString>
+            <PersistentString
+               value = "_yz_textView.attributedText">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__41-[ChooseClassViewController requestClass]_block_invoke:ChooseClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classesArray">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1575,7 +754,660 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[TLCityPickerController tableView:didSelectRowAtIndexPath:]:TLCityPickerController.m">
+         contextName = "-[TLCityPickerController commonCityData]:TLCityPickerController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.commonCitys">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalViewController setupPages]:PersonalViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "login">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__45-[OrderInfoViewController requestForBuyAgain]_block_invoke_3:OrderInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ChooseClassViewController requestClass:withContentDictionary:]:ChooseClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filterDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__82-[PersonalInfoViewController imagePickerController:didFinishPickingMediaWithInfo:]_block_invoke:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_avatar">
+            </PersistentString>
+            <PersistentString
+               value = "info">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__58-[TeachersPublicViewController requestTeachersInfoWithID:]_block_invoke:TeachersPublicViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.856:LivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_teacher">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__33-[SignUpViewController nextStep:]_block_invoke:SignUpViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__50-[ChangePhoneViewController requestChangePasswrod]_block_invoke_2:ChangePhoneViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[UUInputFunctionView sendMessage:]:UUInputFunctionView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "resultStr">
+            </PersistentString>
+            <PersistentString
+               value = "self.TextViewInput.text">
+            </PersistentString>
+            <PersistentString
+               value = "self.TextViewInput.typingAttributes">
+            </PersistentString>
+            <PersistentString
+               value = " self.TextViewInput.attributedText">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[IndexPageViewController makeCities:]:IndexPageViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "cityOrder">
+            </PersistentString>
+            <PersistentString
+               value = "newCityNames">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalInfoViewController tableView:cellForRowAtIndexPath:]:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__64-[TutoriumInfoViewController tableView:didSelectRowAtIndexPath:]_block_invoke:TutoriumInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[CityChosenViewController viewDidLoad]:CityChosenViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ClassTimeViewController requestClassList]:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_token">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__42-[ChatViewController requestServerHistory]_block_invoke:ChatViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[LoginViewController wechatLoginSucess:]:LoginViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "respdata.code">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MyOrderViewController payOrder:]:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unpaidArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[CheckChargeViewController returnLastPage]:CheckChargeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.navigationController.viewControllers">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__34-[BindingViewController nextStep:]_block_invoke:BindingViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__45-[SafeViewController RequestToBindingWechat:]_block_invoke:SafeViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[MyClassViewController enterListen:]:MyClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "sender.tag">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[CashRecordViewController tableView:heightForRowAtIndexPath:]:CashRecordViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_withDrawArr">
+            </PersistentString>
+            <PersistentString
+               value = "_rechargeArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__43-[CashRecordViewController requestWithDraw]_block_invoke:CashRecordViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[UUMessageFrame setMessage:]:UUMessageFrame.m">
+      </ContextState>
+      <ContextState
+         contextName = "__53-[TutoriumInfoViewController requestClassesInfoWith:]_block_invoke_2:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+            <PersistentString
+               value = "_classModel">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumInfoViewController listen]:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[OrderInfoViewController initWithUnpaid:]:OrderInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__86-[TutoriumViewController requestDataWithGrade:andSubject:andPage:andPerPage:withPull:]_block_invoke:TutoriumViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ConfirmChargeViewController initWithInfo:]:ConfirmChargeViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[SafeViewController tableView:didSelectRowAtIndexPath:]:SafeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[NSUserDefaults standardUserDefaults]valueForKey:@&quot;openID&quot;]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalInfoViewController imagePickerController:didFinishPickingMediaWithInfo:]:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_imageURL">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__33-[ChatViewController viewDidLoad]_block_invoke:ChatViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__38-[MyOrderViewController requestUnpaid]_block_invoke:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unpaidArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[BarrageWalkTextSprite bindingView]:BarrageWalkTextSprite.m">
+      </ContextState>
+      <ContextState
+         contextName = "__33-[LoginViewController userLogin:]_block_invoke:LoginViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__45-[SafeViewController RequestToBindingWechat:]_block_invoke_2:SafeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "wechatCode">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[UIViewController(HUD) loadingHUDStopLoadingWithTitle:]:UIViewController+HUD.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentThread">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ViewController supportedInterfaceOrientations]:ViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "result">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MessageSettingViewController tableView:cellForRowAtIndexPath:]:MessageSettingViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "allowVoice">
+            </PersistentString>
+            <PersistentString
+               value = "allowAlert">
+            </PersistentString>
+            <PersistentString
+               value = "allowNotification">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__38-[IndexPageViewController checkNotice]_block_invoke_2:IndexPageViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ChooseClassViewController chooseTags:]:ChooseClassViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate application:didFinishLaunchingWithOptions:]:AppDelegate.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "launchOptions">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ClassTimeViewController requestUnclosedClassList]:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unclosedArr">
+            </PersistentString>
+            <PersistentString
+               value = "_token">
+            </PersistentString>
+            <PersistentString
+               value = "_idNumber">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[CashRecordViewController requestRecharge]:CashRecordViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.token">
+            </PersistentString>
+            <PersistentString
+               value = "self.idNumber">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "mach_msg_trap:(null)">
+         <PersistentStrings>
+            <PersistentString
+               value = "self">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__56-[SafeViewController tableView:didSelectRowAtIndexPath:]_block_invoke.279:SafeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "NSUserDefaults standardUserDefaults]boolForKey:@&quot;have_paypassword&quot;]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[SafeViewController tableView:cellForRowAtIndexPath:]:SafeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[NSUserDefaults standardUserDefaults]valueForKey:@&quot;NewPayPasswordTimeStamp&quot;]">
+            </PersistentString>
+            <PersistentString
+               value = "_menuName">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__42-[WithDrawInfoViewController requestApply]_block_invoke_5:WithDrawInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.navigationController.viewControllers">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalViewController tableView:didSelectRowAtIndexPath:]:PersonalViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[NSUserDefaults standardUserDefaults]boolForKey:@&quot;Login&quot;]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MyOrderViewController tableView:didSelectRowAtIndexPath:]:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "cell.unpaidModel">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[VideoViewController tableView:cellForRowAtIndexPath:]:VideoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "tableView.tag">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__39-[MyOrderViewController requestCanceld]_block_invoke:MyOrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ChatModel addSpecifiedItem:andIconURL:andName:]:ChatModel.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataSource">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController keyboardWillShow:]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.view.bounce">
+            </PersistentString>
+            <PersistentString
+               value = "self.view.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController reloadPlayerView]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_teacherPullAddress">
+            </PersistentString>
+            <PersistentString
+               value = "_boardPullAddress">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__34-[MyOrderViewController payOrder:]_block_invoke_2:MyOrderViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unpaidArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__34-[MyOrderViewController buyAgain:]_block_invoke_2:MyOrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[TLCityPickerController data]:TLCityPickerController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_data">
+            </PersistentString>
+            <PersistentString
+               value = "_cityFilePath">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[IndexPageViewController makeCityList:]:IndexPageViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_tutoriumInfoView.view2.contentSize">
+            </PersistentString>
+            <PersistentString
+               value = "_tutoriumInfoView.view1.contentSize">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TeachersPublicViewController collectionView:numberOfItemsInSection:]:TeachersPublicViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_publicClasses">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ClassTimeViewController tableView:didSelectRowAtIndexPath:]:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unclosedArr">
+            </PersistentString>
+            <PersistentString
+               value = "_closedArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[OrderInfoViewController setUpViews]:OrderInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ClassSettingViewController saveSettings]:ClassSettingViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[SetPayPasswordViewController changeLetters:]:SetPayPasswordViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "textfield.text">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ConfirmChargeViewController viewDidLoad]:ConfirmChargeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "dataInfo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TranslateViewController initWithMessage:]:TranslateViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__33-[PersonalViewController getCash]_block_invoke:PersonalViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_balance">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MyOrderViewController repage:]:MyOrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__copy_helper_block_:CashRecordViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_selectedItem">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[UUMessageCell btnContentClick]:UUMessageCell.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.messageFrame.message">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[UUMessage setWithDict:]:UUMessage.m">
+      </ContextState>
+      <ContextState
+         contextName = "__41-[NELivePlayerViewController viewDidLoad]_block_invoke:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "weakSelf.view.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[IndexPageViewController checkCityListWithInformationChange:]:IndexPageViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "loaction.subLocality">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__43-[NoticeIndexViewController requestNotices]_block_invoke:NoticeIndexViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__41-[IndexPageViewController requestBanner:]_block_invoke:IndexPageViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_banners">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController mediaControlTurnToFullScreenModeWithMainView:]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "IFView.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke.204:NoticeIndexViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatListArr">
+            </PersistentString>
+            <PersistentString
+               value = "_myClassArray">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumInfoViewController requestOrder]:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__35-[ChatViewController makeMessages:]_block_invoke:ChatViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke:NoticeIndexViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatListArr">
+            </PersistentString>
+            <PersistentString
+               value = "_myClassArray">
+            </PersistentString>
+            <PersistentString
+               value = "_recentArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__39-[TutoriumInfoViewController addListen]_block_invoke:TutoriumInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__40-[NELivePlayerViewController initNIMSDK]_block_invoke:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chat_Account">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate jpushNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate application:didReceiveRemoteNotification:fetchCompletionHandler:]:AppDelegate.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "userInfo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ConfirmChargeViewController requestChargWithType:andData:]:ConfirmChargeViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[MultifiltersViewController filtered]:MultifiltersViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filtersDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__43-[CashRecordViewController requestRecharge]_block_invoke:CashRecordViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "interval">
+            </PersistentString>
+            <PersistentString
+               value = "_rechargeArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TLCityPickerController viewDidLoad]:TLCityPickerController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_titles">
+            </PersistentString>
+            <PersistentString
+               value = "_cities">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MyOrderViewController cancelRefund:]:MyOrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalInfoViewController initWithName:andGrade:andHeadImage:withImageChange:]:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_userImage">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[CashRecordViewController viewDidLoad]:CashRecordViewController.m">
@@ -1586,10 +1418,178 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__64-[TutoriumInfoViewController tableView:didSelectRowAtIndexPath:]_block_invoke:TutoriumInfoViewController.m">
+         contextName = "-[NELivePlayerViewController willRotateToInterfaceOrientation:duration:]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_teacherPlayerView.frame">
+            </PersistentString>
+            <PersistentString
+               value = "_boardPlayerView.frame">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
+         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.735:LivePlayerViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumViewController textDidChange:]:TutoriumViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ChatViewController viewDidLoad]:ChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_session">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[VideoViewController tableView:numberOfRowsInSection:]:VideoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "tableView.tag">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalInfoViewController updateUserInfo]:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "infodic">
+            </PersistentString>
+            <PersistentString
+               value = "_userImage">
+            </PersistentString>
+            <PersistentString
+               value = "_avatar">
+            </PersistentString>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__41-[LoginViewController wechatLoginSucess:]_block_invoke:LoginViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.438:PersonalInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[PersonalViewController changeHead:]:PersonalViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[NoticeIndexViewController requestMyClass]:NoticeIndexViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatListArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_unclosedArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController updateMembersList]:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "membersName">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__45-[PersonalInfoViewController requestUserInfo]_block_invoke:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChatViewController enterLive]:ChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_tutoriumInfo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__42-[PayConfirmViewController payWithBalance]_block_invoke_2:PayConfirmViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__43-[IndexPageViewController requestTodayLive]_block_invoke:IndexPageViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke_2:ClassTimeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "sortArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChangePasswordViewController textDidChange:]:ChangePasswordViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__46-[NELivePlayerViewController checkVideoStatus]_block_invoke:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_statusDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumViewController selectedTimeFilterWithSort:]:TutoriumViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "sort_By">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ConfirmChargeViewController initWithModel:]:ConfirmChargeViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.448:PersonalInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[TodayLiveCollectionViewCell initWithFrame:]:TodayLiveCollectionViewCell.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_stateLabel.frame.size.width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[LivePlayerViewController tableView:cellForRowAtIndexPath:]:LivePlayerViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__46-[NELivePlayerViewController setupVideoPlayer]_block_invoke:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_teacherPullAddress">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChatModel getDicWithText:andName:andIcon:]:ChatModel.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[IndexPageViewController collectionView:didSelectItemAtIndexPath:]:IndexPageViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_teachers">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[LoginViewController saveUserInfo:loginType:]:LoginViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke_2:PersonalInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "__53-[MyClassViewController requestTutoriumListCompleted]_block_invoke:MyClassViewController.m">
@@ -1600,7 +1600,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[MultifiltersViewController collectionView:didSelectItemAtIndexPath:]:MultifiltersViewController.m">
+         contextName = "-[TLCityPickerController tableView:didSelectRowAtIndexPath:]:TLCityPickerController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[MultifiltersViewController init]:MultifiltersViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_filtersDic">
@@ -1608,18 +1611,26 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__42-[PayConfirmViewController payWithBalance]_block_invoke:PayConfirmViewController.m">
+         contextName = "-[NELivePlayerViewController makeFloatingPlayer:]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_dataDic[@&quot;id&quot;]">
+               value = "isFullScreen">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__43-[NoticeIndexViewController requestNotices]_block_invoke:NoticeIndexViewController.m">
+         contextName = "__38-[TranslateViewController viewDidLoad]_block_invoke:TranslateViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_option">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[ChooseClassViewController multiFiltersRequest:resetMulti:]:ChooseClassViewController.m">
+         contextName = "__41-[ChooseClassViewController multiFilters]_block_invoke:ChooseClassViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__69-[ChooseClassViewController collectionView:didSelectItemAtIndexPath:]_block_invoke:ChooseClassViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_filterDic">
@@ -1627,10 +1638,26 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke:ClassTimeViewController.m">
+         contextName = "-[TLCityPickerController didSelctedCity:]:TLCityPickerController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_unclosedArr">
+               value = "self.commonCitys">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[UUMessageCell setMessageFrame:]:UUMessageCell.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "subStr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChooseClassViewController multiFiltersRequest:resetMulti:]:ChooseClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filterDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

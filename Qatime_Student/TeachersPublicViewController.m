@@ -17,13 +17,15 @@
 #import "TutoriumInfoViewController.h"
 #import "NSString+ChangeYearsToChinese.h"
 
+#import "UIViewController+AFHTTP.h"
+#import "UIViewController+HUD.h"
+
 @interface TeachersPublicViewController ()<UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>{
     
     /* 头视图*/
     TeachersPublicHeaderView *_teachersPublicHeaderView ;
     
     NavigationBar *_navigationBar;
-    
     
     /* 教师公开信息model*/
     TeachersPublicInfo *_teacherPublicInfo;
@@ -56,6 +58,11 @@
     return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+}
 
 
 - (void)viewDidLoad {
@@ -63,66 +70,57 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    //初始化数据
+     _publicClasses = @[].mutableCopy;
     
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
-    
-    
-    [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-    _navigationBar.backgroundColor = BUTTONRED;
-    _navigationBar.alpha = 0;
-    
-    [_navigationBar.leftButton setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.4]];
-    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-    _navigationBar.leftButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
-    [_navigationBar.leftButton updateLayout];
-    
-    _teachersPublicHeaderView = [[TeachersPublicHeaderView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 400)];
-    
-    [self.view addSubview:_teachersPublicHeaderView];
-    
- 
-    
-    /* 初始化后直接发送教师公开页的请求*/
+    /* 请求教师个人详情*/
     [self requestTeachersInfoWithID:_teacherID];
     
-    //    });
     
     
+}
+
+//加载视图
+- (void)setupViews{
     
-    /* 接收label的frame变化的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sizeToFitHeight) name:@"LabelTextChange" object:nil];
+    [self loadingHUDStartLoadingWithTitle:nil];
     
+    //比较特殊的导航栏
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
+    [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+//    _navigationBar.contentView.backgroundColor = [UIColor clearColor];
+//    [_navigationBar.leftButton setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.4]];
+    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+//    _navigationBar.leftButton.layer.masksToBounds = YES;
+//    _navigationBar.leftButton.layer.cornerRadius = _navigationBar.leftButton.height_sd/2;
     
+    [_navigationBar.leftButton updateLayout];
+    
+    //头视图
+    _teachersPublicHeaderView = [[TeachersPublicHeaderView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 400)];
     headerSize = CGSizeMake(CGRectGetWidth(self.view.frame), 600);
     
+    //collection
     _flowLayout = [[UICollectionViewFlowLayout alloc]init];
     _flowLayout.headerReferenceSize = headerSize;
+    _teachersPublicCollectionView = [[TeachersPublicCollectionView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height) collectionViewLayout:_flowLayout];
     
-    
-    
-    /* collection部分*/
-    _teachersPublicCollectionView = [[TeachersPublicCollectionView alloc]initWithFrame:CGRectMake(0,0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64) collectionViewLayout:_flowLayout];
     [self.view addSubview:_teachersPublicCollectionView];
     _teachersPublicCollectionView.backgroundColor = [UIColor whiteColor];
     _teachersPublicCollectionView.showsVerticalScrollIndicator = NO;
-    _teachersPublicCollectionView.bounces = NO;
+    
     /* collectionView 注册cell、headerID、footerId*/
     [_teachersPublicCollectionView registerClass:[TeacherPublicClassCollectionViewCell class] forCellWithReuseIdentifier:@"cellId"];
     [_teachersPublicCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId"];
     
     _teachersPublicCollectionView.delegate = self;
     _teachersPublicCollectionView.dataSource = self;
-    
-    _publicClasses = @[].mutableCopy;
-    
+
+   
     
     [self.view addSubview:_navigationBar];
-    
-    
+
 }
-
-
 
 
 #pragma mark- collectionView datasource
@@ -132,29 +130,15 @@
     
 }
 
-/* 复用池*/
+
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    
     
     static NSString * CellIdentifier = @"cellId";
     TeacherPublicClassCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    
     if (_publicClasses.count >indexPath.row) {
         
-        /* yymodel解析教师公开页的课程model*/
-        
         cell.model = _publicClasses[indexPath.row];
-        
-        //        _teacherPublicClass = [TeachersPublic_Classes yy_modelWithDictionary:_publicClasses[indexPath.row]];
-        //        _teacherPublicClass.classID =[_publicClasses[indexPath.row] valueForKey:@"id"];
-        //
-        //        [cell.classImage sd_setImageWithURL:[NSURL URLWithString:_teacherPublicClass.publicize]];
-        //        cell.className.text = _teacherPublicClass.name;
-        //        cell.grade.text = _teacherPublicClass.grade;
-        //        cell.subjectName.text = _teacherPublicClass.subject;
-        //        cell.priceLabel .text = [NSString stringWithFormat:@"¥%@",_teacherPublicClass.price];
-        
         cell.sd_indexPath = indexPath;
     }
     
@@ -175,47 +159,37 @@
 
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
-    
-    
     return UIEdgeInsetsMake(10, 15, 10, 10);
 }
-
 
 
 
 ////这个方法是返回 Header的大小 size
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
     
-    
     return  headerSize;
 }
 
 // 获取Header的 方法。
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
     
     NSString *CellIdentifier = @"headerId";
     //从缓存中获取 Headercell
-    
     UICollectionReusableView *header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    
     [header addSubview:_teachersPublicHeaderView];
-    
-    
+    _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
     
     return header;
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    TeacherPublicClassCollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    TeacherPublicClassCollectionViewCell *cell = (TeacherPublicClassCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     
     TutoriumInfoViewController *controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
     
     [self.navigationController pushViewController:controller animated:YES];
-    
-    
     
 }
 
@@ -235,22 +209,16 @@
         
         NSString *status = [NSString stringWithFormat:@"%@",dic[@"status"]];
         
-        
         if (![status isEqualToString:@"1"]) {
             /* 登录错误*/
             
-            
         }else{
             
-            /* yymodel解析教师公开信息*/
+            //解析教室公开内容
             _teacherPublicInfo = [TeachersPublicInfo yy_modelWithDictionary:dic[@"data"]];
             
-            
-            //            NSLog(@"%@,%@,%@,%@,%@,%@,%@,%@,%@,%@,%@",_teacherPublicInfo.name,_teacherPublicInfo.desc,_teacherPublicInfo.teaching_years,_teacherPublicInfo.gender,_teacherPublicInfo.grade,_teacherPublicInfo.subject,_teacherPublicInfo.category,_teacherPublicInfo.province,_teacherPublicInfo.city,_teacherPublicInfo.avatar_url,_teacherPublicInfo.courses);
-            
-            //             yymodel解析教师公开课程
+            //yymodel解析教师公开课程
             NSMutableArray *publichArr =[NSMutableArray arrayWithArray: dic[@"data"][@"courses"]];
-            
             
             for (NSDictionary *classDic in publichArr) {
                 TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:classDic];
@@ -260,13 +228,20 @@
                 [_publicClasses addObject:mod];
             }
             
+            //加载视图
+            [self setupViews];
+           
+            [_teachersPublicCollectionView reloadData];
+            
+            //加载头视图数据
             [self refreshTeacherInfoWith:_teacherPublicInfo];
+            
+            [self loadingHUDStopLoadingWithTitle:nil];
             
         }
         
-        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+         [self loadingHUDStopLoadingWithTitle:nil];
     }];
     
 }
@@ -276,17 +251,15 @@
     
     if (teacherInfo) {
         
-        
+        _navigationBar.titleLabel.text =teacherInfo.name;
         _teachersPublicHeaderView.teacherNameLabel.text =teacherInfo.name;
-//        _navigationBar.titleLabel.text = teacherInfo.name;
         
         [_teachersPublicHeaderView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:teacherInfo.avatar_url]];
-        _teachersPublicHeaderView.category.text = teacherInfo.category;
-        _teachersPublicHeaderView.subject.text = teacherInfo.subject;
-   
+        _teachersPublicHeaderView.categoryAndSubject.text = [NSString stringWithFormat:@"%@%@",teacherInfo.category==nil?@"":teacherInfo.category,teacherInfo.subject==nil?@"":teacherInfo.subject];
+        
         _teachersPublicHeaderView.teaching_year.text = [teacherInfo.teaching_years changeEnglishYearsToChinese];
-        _teachersPublicHeaderView.province.text = teacherInfo.province;
-        _teachersPublicHeaderView.city .text = teacherInfo.city;
+        
+        _teachersPublicHeaderView.location.text = [NSString stringWithFormat:@"%@  %@",teacherInfo.province==nil?@"":teacherInfo.province,teacherInfo.city==nil?@"":teacherInfo.city];
         _teachersPublicHeaderView.workPlace .text = teacherInfo.school;
         _teachersPublicHeaderView.selfInterview.text = teacherInfo.desc;
         
@@ -298,16 +271,24 @@
             
         }
         
-        
         [self sizeToFitHeight];
         
         headerSize = CGSizeMake(CGRectGetWidth(_teachersPublicHeaderView.frame), CGRectGetHeight( _teachersPublicHeaderView.frame));
         
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"LabelTextChange" object:nil];
-        
         
     }
     
+}
+
+#pragma mark- 滑动渐变
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+    if (scrollView == _teachersPublicCollectionView) {
+        
+        
+        
+        
+    }
     
 }
 
@@ -317,17 +298,21 @@
     
     CGRect rect = [_teachersPublicHeaderView.selfInterview.text boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 20, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName: _teachersPublicHeaderView.selfInterview.font} context:nil];
     
-    _teachersPublicHeaderView.selfInterview.frame = CGRectMake(_teachersPublicHeaderView.selfInterview.frame.origin.x, _teachersPublicHeaderView.selfInterview.frame.origin.y, CGRectGetWidth(self.view.frame)-20, rect.size.height) ;
+    [_teachersPublicHeaderView.selfInterview clearAutoHeigtSettings];
+    _teachersPublicHeaderView.selfInterview.sd_layout
+    .heightIs(rect.size.height);
+    [_teachersPublicHeaderView.selfInterview updateLayout];
+    
+    [_teachersPublicHeaderView.classList updateLayout];
     
     /* headerview的尺寸也变化*/
-    _teachersPublicHeaderView.frame = CGRectMake(0,0,CGRectGetWidth(self.view.frame) , CGRectGetMaxY(_teachersPublicHeaderView.selfInterview.frame)+10);
+    _teachersPublicHeaderView.frame = CGRectMake(0,0,self.view.width_sd , _teachersPublicHeaderView.classList.bottom_sd-20);
     
-    headerSize =CGSizeMake(_teachersPublicHeaderView.frame.size.width, _teachersPublicHeaderView.frame.size.height);
+    headerSize =CGSizeMake(_teachersPublicHeaderView.width_sd, _teachersPublicHeaderView.height_sd);
     
     [_teachersPublicCollectionView reloadData];
     [_teachersPublicCollectionView setNeedsLayout];
     [_teachersPublicCollectionView setNeedsDisplay];
-    
 
 }
 

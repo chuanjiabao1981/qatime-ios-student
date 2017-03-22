@@ -53,7 +53,7 @@
         
         /* 分割线*/
         _separateLine = [[UIView alloc]init];
-        _separateLine.backgroundColor= SEPERATELINECOLOR;
+        _separateLine.backgroundColor= SEPERATELINECOLOR_2;
         
         [self.contentView sd_addSubviews:@[_logoImage,_settingName,_balance,_separateLine,_arrow]];
         

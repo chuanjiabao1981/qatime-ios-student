@@ -41,7 +41,7 @@
         .topSpaceToView(self.contentView,10)
         .rightSpaceToView(self.contentView,10)
         .bottomSpaceToView(self.contentView,10);
-        _content.layer.borderColor = SEPERATELINECOLOR.CGColor;
+        _content.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
         _content.layer.borderWidth = 0.8;
         [_content updateLayout];
         

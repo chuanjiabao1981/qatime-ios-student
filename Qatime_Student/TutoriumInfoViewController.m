@@ -31,6 +31,7 @@
 #import "Replay.h"
 #import "UIControl+RemoveTarget.h"
 #import "YYTextLayout.h"
+#import "TeachersPublicViewController.h"
 
 
 @interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,TTGTextTagCollectionViewDelegate>{
@@ -152,6 +153,12 @@
     _tutoriumInfoView.classTagsView.delegate = self;
     _tutoriumInfoView.teacherTagsView.delegate = self;
     
+    //教师头像增加点击手势
+    UITapGestureRecognizer *tap_Teacher = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(watchTeachers)];
+    [_tutoriumInfoView.teacherHeadImage addGestureRecognizer:tap_Teacher];
+    
+    
+    //标签设置
     _config = [[TTGTextTagConfig alloc]init];
     _config.tagTextColor = TITLECOLOR;
     _config.tagBackgroundColor = [UIColor whiteColor];
@@ -327,6 +334,13 @@
                     //直播时间赋值
                     _tutoriumInfoView.liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[_dataDic[@"live_start_time"]length]>=10?[_dataDic[@"live_start_time"] substringToIndex:10]:_dataDic[@"live_start_time"],[_dataDic[@"live_end_time"] length]>=10?[_dataDic[@"live_end_time"] substringToIndex:10]:_dataDic[@"live_end_time"]];
                    
+                    //课程目标
+                    _tutoriumInfoView.classTarget.text = _dataDic[@"objective"]==[NSNull null]?@"无":_dataDic[@"object"];
+                    
+                    //适合人群
+                    _tutoriumInfoView.suitable.text = _dataDic[@"suit_crowd"]==[NSNull null]?@"无":_dataDic[@"suit_crowd"];
+                    
+                    
                     if ([status isEqualToString:@"0"]) {
                         /* 获取token错误  需要重新登录*/
                         
@@ -377,14 +391,15 @@
                         _tutoriumInfoView.teacherInterviewLabel.attributedText = _teacherModel.attributedDescribe;
                         //                        _tutoriumInfoView.teacherInterviewLabel.attributedString = [[NSAttributedString alloc]initWithHTMLData:[_teacherModel.describe dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:nil];
                         
-                        
-                        
                         [_tutoriumInfoView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacherModel.avatar_url ]];
+                        
                         
                         /* 判断教学年限*/
                         _tutoriumInfoView.workYearsLabel.text = [_teacherModel.teaching_years changeEnglishYearsToChinese];
                         
-                        /* 手动解析classModel*/
+                        
+                        
+                        /** 手动解析classModel*/
                         _classModel = [RecommandClasses yy_modelWithDictionary:_dataDic];
                         _classModel.classID = _dataDic[@"id"];
                         _classModel.describe = _dataDic[@"description"];
@@ -454,6 +469,14 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
+    
+}
+
+//查看教师详情
+- (void)watchTeachers{
+    
+    TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:_dataDic[@"teacher"][@"id"] ];
+    [self.navigationController pushViewController:controller animated:YES];
     
 }
 

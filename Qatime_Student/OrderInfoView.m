@@ -29,7 +29,7 @@
         
         /* 分割线*/
         UIView *line = [[UIView alloc]init];
-        line.backgroundColor = SEPERATELINECOLOR;
+        line.backgroundColor = SEPERATELINECOLOR_2;
         
         /* 订单号*/
         UILabel *orderNumber = [[UILabel alloc]init];

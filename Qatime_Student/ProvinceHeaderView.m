@@ -71,7 +71,7 @@
         
         UIView *lien2 = [[UIView alloc]init];
         [self addSubview:lien2];
-        lien2.backgroundColor = SEPERATELINECOLOR;
+        lien2.backgroundColor = SEPERATELINECOLOR_2;
         lien2.sd_layout
         .leftEqualToView(self)
         .bottomEqualToView(self)

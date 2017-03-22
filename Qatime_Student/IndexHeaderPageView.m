@@ -48,7 +48,7 @@
         for (NSString *grade in gradeArr) {
             UIButton *btn = [[UIButton alloc]init];
             [btn setTitle:grade forState:UIControlStateNormal];
-            [btn setTitleColor:BUTTONRED forState:UIControlStateNormal];
+            [btn setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
             btn.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
             btn.tag = index;
             [_gradeMenu addSubview:btn];

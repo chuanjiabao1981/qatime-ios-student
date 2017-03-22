@@ -43,7 +43,7 @@
         .topSpaceToView(self.contentView,10)
         .rightSpaceToView(self.contentView,10)
         .bottomSpaceToView(self.contentView,10);
-        _content.layer.borderColor = SEPERATELINECOLOR.CGColor;
+        _content.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
         _content.layer.borderWidth = 0.8;
         [_content updateLayout];
         
@@ -93,14 +93,15 @@
         .autoHeightRatio(0);
         
         //教师图片
-        _teacherImage = [[UIImageView alloc]init];
-        [_teacherImage setImage:[UIImage imageNamed:@"老师"]];
-        [_content addSubview:_teacherImage];
-        _teacherImage.sd_layout
-        .leftEqualToView(_className)
-        .bottomSpaceToView(_content,10)
-        .heightIs(12)
-        .widthEqualToHeight();
+//        _teacherImage = [[UIImageView alloc]init];
+//        [_teacherImage setImage:[UIImage imageNamed:@"老师"]];
+//        [_content addSubview:_teacherImage];
+//        _teacherImage.sd_layout
+//        .leftEqualToView(_className)
+//        .bottomSpaceToView(_content,10)
+//        .heightIs(12)
+//        .widthEqualToHeight();
+        
         
         //教师姓名
         _teacherName = [[UILabel alloc]init];
@@ -108,20 +109,20 @@
         _teacherName.font = [UIFont systemFontOfSize:12*ScrenScale];
         [_content addSubview:_teacherName];
         _teacherName.sd_layout
-        .leftSpaceToView(_teacherImage,5)
-        .topEqualToView(_teacherImage)
-        .bottomEqualToView(_teacherImage);
+        .leftEqualToView(_className)
+        .bottomSpaceToView(_content,10)
+        .autoHeightRatio(0);
         [_teacherName setSingleLineAutoResizeWithMaxWidth:100];
         
-        //年级科目图片
-        _subjectImage = [[UIImageView alloc]init];
-        [_subjectImage setImage:[UIImage imageNamed:@"book"]];
-        [_content addSubview:_subjectImage];
-        _subjectImage.sd_layout
-        .leftEqualToView(_className)
-        .bottomSpaceToView(_teacherImage,10)
-        .heightIs(12)
-        .widthEqualToHeight();
+//        //年级科目图片
+//        _subjectImage = [[UIImageView alloc]init];
+//        [_subjectImage setImage:[UIImage imageNamed:@"book"]];
+//        [_content addSubview:_subjectImage];
+//        _subjectImage.sd_layout
+//        .leftEqualToView(_className)
+//        .bottomSpaceToView(_teacherImage,10)
+//        .heightIs(12)
+//        .widthEqualToHeight();
         
         //年级科目label
         _gradeAndSubject = [[UILabel alloc]init];
@@ -129,9 +130,10 @@
         _gradeAndSubject.textColor = TITLECOLOR;
         [_content addSubview:_gradeAndSubject];
         _gradeAndSubject.sd_layout
-        .leftEqualToView(_teacherName)
-        .topEqualToView(_subjectImage)
-        .bottomEqualToView(_subjectImage);
+        .leftEqualToView(_className)
+        .bottomSpaceToView(_teacherName,10)
+        .autoHeightRatio(0);
+
         [_gradeAndSubject setSingleLineAutoResizeWithMaxWidth:200];
         
     
