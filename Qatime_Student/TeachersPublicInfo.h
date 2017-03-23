@@ -37,6 +37,9 @@
 @property(nonatomic,strong) NSString *school ;
 @property(nonatomic,strong) NSMutableArray *courses;
 
+//正加一个富文本
+@property (nonatomic, strong) NSMutableAttributedString *attributeDescription ;
+
 
 
 

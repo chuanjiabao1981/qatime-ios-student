@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TTGTextTagCollectionView.h"
 
 @interface InfoHeaderView : UIView
 
@@ -20,26 +21,22 @@
 /* 课程数量*/
 @property(nonatomic,strong) UILabel *classCount ;
 
-/* 已完成课程*/
-@property(nonatomic,strong) UILabel *completed_conunt ;
-
-
-
-/* 在线直播*/
-/* */
-@property(nonatomic,strong) UILabel *onlineVideoLabel ;
-
 /* 直播时间*/
+@property(nonatomic,strong) UILabel *liveTimeLabel;
 
-@property(nonatomic,strong) UILabel *liveStartTimeLabel;
-@property(nonatomic,strong) UILabel *liveEndTimeLabel;
+/* 课程标签图*/
+@property (nonatomic, strong) TTGTextTagCollectionView *classTagsView ;
+
+/* 课程目标*/
+@property (nonatomic, strong) UILabel *classTarget ;
+
+/* 适合人群*/
+@property (nonatomic, strong) UILabel *suitable ;
 
 
 /* 课程描述*/
 @property(nonatomic,strong) UILabel *descriptions  ; //"辅导简介"字样,做自动布局
 @property(nonatomic,strong) UILabel *classDescriptionLabel ;
-
-
 
 
 /* 教师详情页的属性*/
@@ -54,36 +51,26 @@
 /* 性别*/
 @property(nonatomic,strong) UIImageView *genderImage ;
 
-/* 学龄阶段*/
-//@property(nonatomic,strong) UILabel *category ;
-
-
-/* 科目*/
-
-//@property(nonatomic,strong) UILabel *subject ;
 
 /* 教龄*/
 @property(nonatomic,strong) UILabel *teaching_year ;
 
-/* 地址*/
-//@property(nonatomic,strong) UILabel *province ;
-//
-//@property(nonatomic,strong) UILabel *city ;
 
 /* 学校*/
 @property(nonatomic,strong) UILabel *workPlace ;
+
+
+/* 教师标签*/
+@property (nonatomic, strong) TTGTextTagCollectionView *teacherTagsView ;
+
 
 /* 自我介绍*/
 
 @property(nonatomic,strong) UILabel *selfIntroLabel;    //"自我介绍"label 自适应高度布局使用
 @property(nonatomic,strong) UILabel *selfInterview ;
 
-
 /* 自动布局参考线*/
 @property(nonatomic,strong) UIView *layoutLine;
-
-
-
 
 
 @end

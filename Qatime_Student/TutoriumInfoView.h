@@ -58,8 +58,6 @@
 /* 课时*/
 @property(nonatomic,strong) UILabel *classCount ;
 
-/* 在线直播*/
-//@property(nonatomic,strong) UILabel *onlineVideoLabel;
 
 /* 直播时间*/
 @property(nonatomic,strong) UILabel *liveTimeLabel ;

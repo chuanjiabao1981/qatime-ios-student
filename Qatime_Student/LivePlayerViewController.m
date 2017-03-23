@@ -12,7 +12,7 @@
 #import "NavigationBar.h"
 
 #import <MediaPlayer/MediaPlayer.h>
- 
+
 #import "VideoClassInfo.h"
 #import "YYModel.h"
 #import "NoticeAndMembers.h"
@@ -35,6 +35,7 @@
 #import "NIMSDK.h"
 #import "FJFloatingView.h"
 #import "BarrageRenderer.h"
+#import "ClassNotice.h"
 
 #import "UIControl+RemoveTarget.h"
 #import "pinyin.h"
@@ -71,6 +72,9 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+#import "CYLTableViewPlaceHolder.h"
+#import "HaveNoClassView.h"
+
 
 #define APP_WIDTH self.view.frame.size.width
 #define APP_HEIGHT self.view.frame.size.height
@@ -85,7 +89,7 @@ typedef enum : NSUInteger {
 
 
 
-@interface LivePlayerViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UUInputFunctionViewDelegate,UUMessageCellDelegate,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate,NIMLoginManagerDelegate>{
+@interface LivePlayerViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UUInputFunctionViewDelegate,UUMessageCellDelegate,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate,NIMLoginManagerDelegate,TTGTextTagCollectionViewDelegate>{
     
     
     /* token/id*/
@@ -117,6 +121,8 @@ typedef enum : NSUInteger {
     /* 存放membersName的数组*/
     NSMutableArray <NSString *>*membersName;
     
+    /* 标签图的config*/
+    TTGTextTagConfig *_config;
     
     /* 课程 model*/
     Classes *_classes;
@@ -135,6 +141,10 @@ typedef enum : NSUInteger {
     CGFloat headerHeight;
     
     ClassList *_classList;
+    
+    
+    /**课程通知图*/
+    ClassNotice *_classNotice;
     
     /* 两个视频播放器的排列方式*/
     
@@ -171,8 +181,6 @@ typedef enum : NSUInteger {
     
     
 #pragma mark- 聊天视图
-    
-    
     
     /* 聊天消息会话*/
     
@@ -556,8 +564,6 @@ bool ismute     = NO;
             }
             
             
-            
-            
         }else{
             
             NSLog(@"白板播放器初始化成功!!!!");
@@ -584,7 +590,6 @@ bool ismute     = NO;
         
         _;
     });
-    
     
 }
 
@@ -1101,17 +1106,11 @@ bool ismute     = NO;
     .topEqualToView(_bottomControlView)
     .widthEqualToHeight();
     
-    
-    
     _barrage.sd_layout
     .topEqualToView(_switchScreen)
     .bottomEqualToView(_switchScreen)
     .rightSpaceToView(_switchScreen,0)
     .widthEqualToHeight();
-    
-    
-    
-    
     
 }
 
@@ -1175,17 +1174,17 @@ bool ismute     = NO;
     
     [self.videoInfoView.scrollView scrollRectToVisible:CGRectMake(self.videoInfoView.segmentControl.selectedSegmentIndex * self.view.width_sd, 0, self.view.width_sd, self.view.height_sd-64-49) animated:NO];
     
-//    if (isFullScreen == NO) {
-//        
-//        typeof(self) __weak weakSelf = self;
-//        [_videoInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-//            NSLog(@"%ld", (long)index);
-//            
-//            [weakSelf.videoInfoView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, weakSelf.view.width_sd, weakSelf.view.height_sd-64-49) animated:YES];
-//        }];
-//    }
+    //    if (isFullScreen == NO) {
+    //
+    //        typeof(self) __weak weakSelf = self;
+    //        [_videoInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
+    //            NSLog(@"%ld", (long)index);
+    //
+    //            [weakSelf.videoInfoView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, weakSelf.view.width_sd, weakSelf.view.height_sd-64-49) animated:YES];
+    //        }];
+    //    }
     
-   
+    
     
     
 }
@@ -1228,7 +1227,6 @@ bool ismute     = NO;
     .rightSpaceToView(_barrage,0);
     
     [IFView updateLayout];
-    
     
     /* 语音输入按钮隐藏*/
     IFView.voiceSwitchTextButton.hidden = YES;
@@ -1307,10 +1305,8 @@ bool ismute     = NO;
     .bottomSpaceToView(_videoInfoView.view2,0)
     .heightIs(46);
     
-    
     /* 语音输入按钮显示*/
     IFView.voiceSwitchTextButton.hidden = NO;
-    
     
 }
 
@@ -1602,8 +1598,6 @@ bool ismute     = NO;
         .topSpaceToView(self.view,ovFrame.origin.y)
         .widthRatioToView(self.view,2/5.0)
         .autoHeightRatio(9/16.0);
-        
-        
         
         //        [self.view bringSubviewToFront:_boardPlayerView];
         
@@ -2076,7 +2070,7 @@ bool ismute     = NO;
     if (isFullScreen == NO) {
         
         [self.navigationController popViewControllerAnimated:YES];
-        //           
+        //
         
         NSLog(@"click back!");
         [self syncUIStatus:YES];
@@ -2342,7 +2336,7 @@ bool ismute     = NO;
         NSLog(@"摄像头播放器资源释放了!!!");
         
     }
-
+    
 }
 
 
@@ -2355,7 +2349,7 @@ bool ismute     = NO;
     // Do any additional setup after loading the view, typically from a nib.
     
     /* TabBar单例隐藏*/
-      
+    
     
     _videoInfoView.segmentControl.selectedSegmentIndex = 1;
     
@@ -2474,10 +2468,18 @@ bool ismute     = NO;
     
     [_videoInfoView.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
     
-    _videoInfoView.noticeTabelView.tag =1;
-    _videoInfoView.noticeTabelView .delegate = self;
-    _videoInfoView.noticeTabelView.dataSource = self;
+    /**课程通知图*/
+    _classNotice = [[ClassNotice alloc]init];
+    [_videoInfoView.view1 addSubview:_classNotice];
     
+    _classNotice.sd_layout
+    .topEqualToView(_videoInfoView.view1)
+    .leftEqualToView(_videoInfoView.view1)
+    .rightEqualToView(_videoInfoView.view1)
+    .bottomEqualToView(_videoInfoView.view1);
+    _classNotice.classNotice.delegate = self;
+    _classNotice.classNotice.dataSource = self;
+    _classNotice.classNotice.tag = 20;
     
     _classList = [[ClassList alloc]init];
     [_videoInfoView.view3 addSubview:_classList];
@@ -2514,6 +2516,17 @@ bool ismute     = NO;
     [_chatTableView addGestureRecognizer:tapSpace];
     
     _infoHeaderView = [[InfoHeaderView alloc]initWithFrame:CGRectMake(0, 0, _videoInfoView.view3.frame.size.width, 800)];
+    _infoHeaderView.classTagsView.delegate = self;
+    
+    //标签设置
+    _config = [[TTGTextTagConfig alloc]init];
+    _config.tagTextColor = TITLECOLOR;
+    _config.tagBackgroundColor = [UIColor whiteColor];
+    _config.tagBorderColor = [UIColor colorWithRed:0.88 green:0.60 blue:0.60 alpha:1.00];
+    _config.tagShadowColor = [UIColor clearColor];
+    _config.tagCornerRadius = 0;
+    _config.tagExtraSpace = CGSizeMake(15, 5);
+    _config.tagTextFont = TEXT_FONTSIZE;
     
     /* 加入高度变化的监听*/
     [self addObserver:self forKeyPath:@"headerHeight" options:NSKeyValueObservingOptionNew context:nil];
@@ -2710,10 +2723,7 @@ bool ismute     = NO;
         
         [self loginStates:dic];
         
-        
         NSDictionary *dataDic=[NSDictionary dictionaryWithDictionary:dic[@"data"]];
-        
-        //        NSLog(@"%@",dic);
         _classInfoDic = dataDic.mutableCopy;
         
         if (![dic[@"status"]isEqualToNumber:@1]) {
@@ -2762,6 +2772,7 @@ bool ismute     = NO;
             teacher.accid = dic[@"data"][@"teacher"][@"chat_account"][@"accid"];
             teacher.icon =dic[@"data"][@"teacher"][@"chat_account"][@"icon"];
             _noticesArr=[_noticeAndMembers valueForKey:@"announcements"];
+            [_classNotice.classNotice cyl_reloadData];
             
             /* 判断通知公告数量,HUD框提示加载信息*/
             if (_noticesArr==nil||_noticesArr.count ==0) {
@@ -2788,7 +2799,6 @@ bool ismute     = NO;
             /* 解析 课程 数据*/
             _videoClassInfo = [VideoClassInfo yy_modelWithDictionary:dataDic];
             
-            
             /* 解析 聊天成员 数据*/
             
             _chatList = dataDic[@"chat_team"][@"accounts"];
@@ -2806,48 +2816,49 @@ bool ismute     = NO;
             /* 课程图的信息赋值*/
             _infoHeaderView.classNameLabel.text = _videoClassInfo.name;
             _infoHeaderView.gradeLabel.text = _videoClassInfo.grade;
-            _infoHeaderView.completed_conunt.text = _videoClassInfo.completed_lesson_count;
-            _infoHeaderView.classCount.text = _videoClassInfo.lesson_count;
             _infoHeaderView.subjectLabel.text = _videoClassInfo.subject;
+            _infoHeaderView.classCount.text =[NSString stringWithFormat:@"共%@课", _videoClassInfo.lesson_count];
+            
+            //课程标签 赋值
+            if (_videoClassInfo.tag_list.count==0) {
+                _config.tagBorderColor = [UIColor clearColor];
+                [_infoHeaderView.classTagsView addTag:@"无" withConfig:_config];
+            }else{
+                
+                [_infoHeaderView.classTagsView addTags:_videoClassInfo.tag_list withConfig:_config];
+            }
+            
+            //课程目标
+            _infoHeaderView.classTarget.text = _videoClassInfo.objective==nil?@"无":_videoClassInfo.objective;
+            
+            //适应人群
+            _infoHeaderView.suitable.text = _videoClassInfo.suit_crowd==nil?@"无":_videoClassInfo.suit_crowd;
+            if (_videoClassInfo.live_start_time.length>10&&_videoClassInfo.live_end_time.length>10) {
+                _infoHeaderView.liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[_videoClassInfo.live_start_time substringToIndex:10],[_videoClassInfo.live_end_time substringToIndex:10]];
+            }else{
+                _infoHeaderView.liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",_videoClassInfo.live_start_time ,_videoClassInfo.live_end_time];
+            }
             
             /* 课程名->播放文件名*/
             _fileName.text = _videoClassInfo.name;
             
+            //            if ([_videoClassInfo.status isEqualToString:@"teaching"]||[_videoClassInfo.status isEqualToString:@"pause"]||[_videoClassInfo.status isEqualToString:@"closed"]) {
+            //                _infoHeaderView.onlineVideoLabel.text = @"在线直播";
+            //            }else if ([_videoClassInfo.status isEqualToString:@"missed"]){
+            //                _infoHeaderView.onlineVideoLabel.text = @"未开课";
+            //            }else if ([_videoClassInfo.status isEqualToString:@"finished"]||[_videoClassInfo.status isEqualToString:@"billing"]||[_videoClassInfo.status isEqualToString:@"completed"]){
+            //                _infoHeaderView.onlineVideoLabel.text = @"已结束";
+            //            }else if ([_videoClassInfo.status isEqualToString:@"public"]){
+            //                _infoHeaderView.onlineVideoLabel.text = @"招生中";
+            //            }
             
-            //            @"teaching" @"pause" @"closed" - >在线直播
-            //            @"missed"-> 未开课
-            //            @"finished" @"billing" @"completed" ->已结束
-            //            @"public"->招生中
+            //            _infoHeaderView.liveTimeLabel.text = _videoClassInfo;
             
-            if ([_videoClassInfo.status isEqualToString:@"teaching"]||[_videoClassInfo.status isEqualToString:@"pause"]||[_videoClassInfo.status isEqualToString:@"closed"]) {
-                _infoHeaderView.onlineVideoLabel.text = @"在线直播";
-            }else if ([_videoClassInfo.status isEqualToString:@"missed"]){
-                _infoHeaderView.onlineVideoLabel.text = @"未开课";
-            }else if ([_videoClassInfo.status isEqualToString:@"finished"]||[_videoClassInfo.status isEqualToString:@"billing"]||[_videoClassInfo.status isEqualToString:@"completed"]){
-                _infoHeaderView.onlineVideoLabel.text = @"已结束";
-            }else if ([_videoClassInfo.status isEqualToString:@"public"]){
-                _infoHeaderView.onlineVideoLabel.text = @"招生中";
-            }
+//            _infoHeaderView.classDescriptionLabel.text = _videoClassInfo.classDescription;
             
-            _infoHeaderView.liveStartTimeLabel.text = [_videoClassInfo.live_start_time substringWithRange:NSMakeRange(0, 10)];
-            _infoHeaderView.liveEndTimeLabel.text = [_videoClassInfo.live_end_time substringWithRange:NSMakeRange(0, 10)];;
-            _infoHeaderView.classDescriptionLabel.text = _videoClassInfo.classDescription;
             /* 课程简介,富文本赋值*/
             _infoHeaderView.classDescriptionLabel.attributedText = _videoClassInfo.attributedDescription;
-            [_infoHeaderView.classDescriptionLabel updateLayout];
-            
-            
-            /* 自适应课程简介的高度*/
-            CGSize class_size =[YYTextLayout layoutWithContainerSize:CGSizeMake(_infoHeaderView.classDescriptionLabel.width_sd, CGFLOAT_MAX) text:_videoClassInfo.attributedDescription].textBoundingSize;
-            
-            [_infoHeaderView.classDescriptionLabel sd_clearAutoLayoutSettings];
-            
-            _infoHeaderView.classDescriptionLabel.sd_layout
-            .leftEqualToView(_infoHeaderView.descriptions)
-            .topSpaceToView(_infoHeaderView.descriptions,20)
-            .widthIs(self.view.width_sd-40)
-            .heightIs(class_size.height+20);
-            
+            _infoHeaderView.classDescriptionLabel.isAttributedContent = YES;
             [_infoHeaderView.classDescriptionLabel updateLayout];
             
             /* 请求教师详细信息*/
@@ -2879,7 +2890,7 @@ bool ismute     = NO;
                     }
                     
                     [_infoHeaderView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacher.avatar_url]];
-                    _infoHeaderView.selfInterview.text = _teacher.desc;
+//                    _infoHeaderView.selfInterview.text = _teacher.desc;
                     
                     /* 教师简介,使用富文本*/
                     _infoHeaderView.selfInterview.attributedText = _teacher.attributedDescription;
@@ -2887,24 +2898,6 @@ bool ismute     = NO;
                     // 测试代码 _infoHeaderView.selfInterview.attributedText = [[NSAttributedString alloc]initWithData:[@"<p>halou&nbsp;halou</p><p>haleou</p><p>halekl</p><p><br /></p><p><strong><span><span><br /></span></span></strong></p><p><strong><span><span></span></span></strong></p>" dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }  documentAttributes:nil error:nil ];
                     
                     [_infoHeaderView.selfInterview updateLayout];
-                    
-                    /* 教师简介的高度自适应*/
-                    CGSize teacher_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_infoHeaderView.selfInterview.width_sd, CGFLOAT_MAX) text:_teacher.attributedDescription].textBoundingSize;
-                    
-                    [_infoHeaderView.selfInterview sd_clearAutoLayoutSettings];
-                    _infoHeaderView.selfInterview.sd_layout
-                    .leftEqualToView(_infoHeaderView.selfIntroLabel)
-                    .topSpaceToView(_infoHeaderView.selfIntroLabel,20)
-                    .widthIs(self.view.width_sd-40)
-                    .heightIs(teacher_size.height+20);
-                    [_infoHeaderView.selfInterview updateLayout];
-                    
-                    //                    _selfInterview.sd_layout
-                    //                    .leftEqualToView(selfIntroLabel)
-                    //                    .topSpaceToView(selfIntroLabel,20)
-                    //                    .rightSpaceToView(self,20)
-                    //                    .autoHeightRatio(0);
-                    
                     
                     /* 自动赋值heagerview的高度*/
                     
@@ -3258,7 +3251,7 @@ bool ismute     = NO;
                         //        [self makeOthersMessageWith:1 andMessage:message];
                         [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                         [self.chatTableView reloadData];
-//                        [self tableViewScrollToBottom];
+                        //                        [self tableViewScrollToBottom];
                         
                     }
                 });
@@ -3332,7 +3325,7 @@ bool ismute     = NO;
                     [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                     
                     [_chatTableView reloadData];
-//                    [self tableViewScrollToBottom];
+                    //                    [self tableViewScrollToBottom];
                     
                 }
                 
@@ -3379,7 +3372,7 @@ bool ismute     = NO;
     [_chatTableView reloadData];
     
     [self tableViewScrollToBottom];
-   
+    
     
 }
 
@@ -3410,7 +3403,7 @@ bool ismute     = NO;
         
         [self.chatTableView reloadData];
         
-//        [self tableViewScrollToBottom];
+        //        [self tableViewScrollToBottom];
         
         [_chatTableView.mj_header endRefreshing];
         
@@ -3418,7 +3411,7 @@ bool ismute     = NO;
     }else{
         
         [self.chatTableView reloadData];
-//        [self tableViewScrollToBottom];
+        //        [self tableViewScrollToBottom];
         [_chatTableView.mj_header endRefreshing];
         
         [self loadingHUDStopLoadingWithTitle:@"加载完成"];
@@ -3543,8 +3536,8 @@ bool ismute     = NO;
     .heightIs(46);
     
     
-//    [self.chatTableView reloadData];
-//    [self tableViewScrollToBottom];
+    //    [self.chatTableView reloadData];
+    //    [self tableViewScrollToBottom];
 }
 
 /* 添加刷新view*/
@@ -3558,12 +3551,11 @@ bool ismute     = NO;
         [weakSelf.chatModel addRandomItemsToDataSource:pageNum];
         
         if (weakSelf.chatModel.dataSource.count > pageNum) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:pageNum inSection:0];
             
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                [weakSelf.chatTableView reloadData];
-//                [weakSelf.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-//            });
+            //            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            //                [weakSelf.chatTableView reloadData];
+            //                [weakSelf.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            //            });
         }
         [weakSelf.head endRefreshing];
     }];
@@ -3916,7 +3908,7 @@ bool ismute     = NO;
     
     
     [self.chatTableView reloadData];
-//    [self tableViewScrollToBottom];
+    //    [self tableViewScrollToBottom];
     
     
     
@@ -4172,7 +4164,7 @@ bool ismute     = NO;
 
 - (void)updateViewsNotice{
     
-    [_videoInfoView.noticeTabelView reloadData];
+    [_classNotice.classNotice reloadData];
     //    [_videoInfoView.noticeTabelView setNeedsDisplay];
     
     
@@ -4180,39 +4172,16 @@ bool ismute     = NO;
 
 - (void)updateViewsInfos{
     
-    
     [_classList.classListTableView reloadData];
-    //    [_classList.classListTableView  setNeedsDisplay];
-    //    [_classList.classListTableView  setNeedsLayout];
+        [_classList.classListTableView  setNeedsDisplay];
+        [_classList.classListTableView  setNeedsLayout];
     
     
 }
 
 
-#pragma mark- tableview的代理方法
+#pragma mark- tableview delegate
 
-//-(NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView{
-//
-//    NSArray *arr = @[].mutableCopy;
-//
-//    if (tableView.tag ==10) {
-//
-//        arr = self.indexArray;
-//
-//    }
-//    return arr;
-//
-//}
-
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-//
-//    NSString *key  = @"".mutableCopy;
-//    if (tableView.tag == 10) {
-//        key =  [self.indexArray objectAtIndex:section];
-//    }
-//
-//    return key;
-//}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
@@ -4376,12 +4345,47 @@ bool ismute     = NO;
     
     
 }
+//列表占位图
+- (UIView *)makePlaceHolderView{
+    
+    HaveNoClassView *view = [[HaveNoClassView alloc]init];
+//    view.titleLabel.text = @"当前无内容";
+    
+    return view;
+}
+
+- (BOOL)enableScrollWhenPlaceHolderViewShowing{
+    
+    return YES;
+}
+
+
+
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
     
     
     [self.view endEditing:YES];
 }
+
+#pragma mark- tagview delegate
+
+- (void)textTagCollectionView:(TTGTextTagCollectionView *)textTagCollectionView updateContentSize:(CGSize)contentSize{
+    
+    if (textTagCollectionView == _infoHeaderView.classTagsView) {
+        [textTagCollectionView clearAutoHeigtSettings];
+        textTagCollectionView.sd_layout
+        .heightIs(contentSize.height);
+    }
+    //    else if(textTagCollectionView == _infoHeaderView.teacherTagsView){
+    //
+    //
+    //    }
+}
+
+
+
+
 
 
 #pragma mark - tableview datasource
@@ -4391,7 +4395,7 @@ bool ismute     = NO;
     UITableViewCell *tableCell = [[UITableViewCell alloc]init];
     
     switch (tableView.tag) {
-        case 1:{
+        case 20:{
             /* cell的重用队列*/
             static NSString *cellIdenfier = @"cell";
             NoticeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
@@ -4400,10 +4404,11 @@ bool ismute     = NO;
                 
                 if (_noticesArr.count==0) {
                     
-                }else{
+                    [_classNotice.classNotice cyl_reloadData];
+                    
+                }else if (_noticesArr.count>indexPath.row){
                     
                     Notice *mod =[Notice yy_modelWithJSON: _noticesArr[indexPath.row]];
-                    //                NSLog(@"%@",_noticesArr[indexPath.row]);
                     
                     cell.model = mod;
                     [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
@@ -4488,7 +4493,12 @@ bool ismute     = NO;
                 cell =[[MemberListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
             }
             
-            if (_membersArr.count>indexPath.row) {
+            if (_membersArr.count==0) {
+                
+                [_memberListView.memberListTableView cyl_reloadData];
+                
+                
+            }else if (_membersArr.count>indexPath.row) {
                 
                 cell.model = [Members yy_modelWithJSON:_membersArr[indexPath.row]];
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
@@ -4501,6 +4511,7 @@ bool ismute     = NO;
                     
                 }
             }
+            
             return cell;
             
         }

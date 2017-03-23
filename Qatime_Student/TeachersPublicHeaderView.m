@@ -144,6 +144,7 @@
     _selfInterview= [[UILabel alloc]init];
     _selfInterview.font = TEXT_FONTSIZE;
     _selfInterview.textColor = TITLECOLOR;
+    _selfInterview.isAttributedContent = YES;
     [self addSubview:_selfInterview];
     _selfInterview.sd_layout
     .leftEqualToView(selfIntroLabel)

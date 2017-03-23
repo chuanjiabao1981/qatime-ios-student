@@ -58,6 +58,14 @@
 
 @property(nonatomic,strong) NSAttributedString *attributedDescription ;
 
+//增加适合人群和课程目标
+@property (nonatomic, strong) NSString *suit_crowd ;
+@property (nonatomic, strong) NSString *objective ;
+
+//增加标签
+@property (nonatomic, strong) NSArray *tag_list ;
+
+
 
 
 @end

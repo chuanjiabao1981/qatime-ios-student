@@ -166,7 +166,7 @@
     _config.tagShadowColor = [UIColor clearColor];
     _config.tagCornerRadius = 0;
     _config.tagExtraSpace = CGSizeMake(15, 5);
-    
+    _config.tagTextFont = TEXT_FONTSIZE;
     
     //测试数据
     //    [_tutoriumInfoView.tagsView addTags:@[@"AutoLayout", @"dynamically", @"calculates", @"the", @"size", @"and", @"position",@"of", @"all", @"the", @"views", @"in", @"your", @"view", @"hierarchy", @"based",@"on", @"constraints", @"placed", @"on", @"those", @"views"] withConfig:_config];
@@ -972,37 +972,37 @@
 
 #pragma mark- 根据课程详细内容 ,scrollview 的content 自适应高度
 - (void)autoScrollHeight{
-    //富文本尺寸适配
+//    //富文本尺寸适配
     [_tutoriumInfoView.classDescriptionLabel updateLayout];
     [_tutoriumInfoView.teacherInterviewLabel updateLayout];
-    
-    /* 使用YYText的YYTextLayout来计算富文本的size*/
-    /* 课程信息的 高度自适应*/
-    CGSize classDesc_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_tutoriumInfoView.classDescriptionLabel.width_sd, CGFLOAT_MAX) text:_classModel.attributedDescribe].textBoundingSize;
-    
-    /* 课程简介 富文本label先适配自动布局高度*/
-    [_tutoriumInfoView.classDescriptionLabel sd_clearAutoLayoutSettings];
-    _tutoriumInfoView.classDescriptionLabel.sd_layout
-    .leftEqualToView(_tutoriumInfoView.descriptions)
-    .topSpaceToView(_tutoriumInfoView.descriptions,20)
-    .rightSpaceToView(_tutoriumInfoView.view1,20)
-    .heightIs(classDesc_size.height+20);
-    
-    [_tutoriumInfoView.classDescriptionLabel updateLayout];
-    
-    
-    /* 教师简介的  高度自适应*/
-    CGSize teacherDesc_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_tutoriumInfoView.teacherInterviewLabel.width_sd, CGFLOAT_MAX) text:_teacherModel.attributedDescribe].textBoundingSize;
-    
-    /* 教师简介 富文本label适配自动布局高度*/
-    [_tutoriumInfoView.teacherInterviewLabel sd_clearAutoLayoutSettings];
-    _tutoriumInfoView.teacherInterviewLabel.sd_layout
-    .leftSpaceToView(_tutoriumInfoView.view2,20)
-    .rightSpaceToView(_tutoriumInfoView.view2,20)
-    .topSpaceToView(_tutoriumInfoView.descrip,20)
-    .heightIs(teacherDesc_size.height+20);
-    
-    [_tutoriumInfoView.teacherInterviewLabel updateLayout];
+//
+//    /* 使用YYText的YYTextLayout来计算富文本的size*/
+//    /* 课程信息的 高度自适应*/
+//    CGSize classDesc_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_tutoriumInfoView.classDescriptionLabel.width_sd, CGFLOAT_MAX) text:_classModel.attributedDescribe].textBoundingSize;
+//    
+//    /* 课程简介 富文本label先适配自动布局高度*/
+//    [_tutoriumInfoView.classDescriptionLabel sd_clearAutoLayoutSettings];
+//    _tutoriumInfoView.classDescriptionLabel.sd_layout
+//    .leftEqualToView(_tutoriumInfoView.descriptions)
+//    .topSpaceToView(_tutoriumInfoView.descriptions,20)
+//    .rightSpaceToView(_tutoriumInfoView.view1,20)
+//    .heightIs(classDesc_size.height+20);
+//    
+//    [_tutoriumInfoView.classDescriptionLabel updateLayout];
+//    
+//    
+//    /* 教师简介的  高度自适应*/
+//    CGSize teacherDesc_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_tutoriumInfoView.teacherInterviewLabel.width_sd, CGFLOAT_MAX) text:_teacherModel.attributedDescribe].textBoundingSize;
+//    
+//    /* 教师简介 富文本label适配自动布局高度*/
+//    [_tutoriumInfoView.teacherInterviewLabel sd_clearAutoLayoutSettings];
+//    _tutoriumInfoView.teacherInterviewLabel.sd_layout
+//    .leftSpaceToView(_tutoriumInfoView.view2,20)
+//    .rightSpaceToView(_tutoriumInfoView.view2,20)
+//    .topSpaceToView(_tutoriumInfoView.descrip,20)
+//    .heightIs(teacherDesc_size.height+20);
+//    
+//    [_tutoriumInfoView.teacherInterviewLabel updateLayout];
     
 }
 

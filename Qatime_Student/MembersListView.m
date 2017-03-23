@@ -16,7 +16,8 @@
     if (self) {
         
         _memberListTableView = [[UITableView alloc]init];
-        _memberListTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _memberListTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        
         [self addSubview: _memberListTableView];
         _memberListTableView.sd_layout
         .leftEqualToView(self)

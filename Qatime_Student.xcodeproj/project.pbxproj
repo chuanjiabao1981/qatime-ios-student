@@ -299,6 +299,7 @@
 		54B4C18C1DF8294B00E31794 /* alipay.png in Resources */ = {isa = PBXBuildFile; fileRef = 54B4C18B1DF8294B00E31794 /* alipay.png */; };
 		54B4C18F1DF8416500E31794 /* ConfirmChargeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B4C18E1DF8416500E31794 /* ConfirmChargeView.m */; };
 		54B4C1921DF8417400E31794 /* ConfirmChargeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B4C1911DF8417400E31794 /* ConfirmChargeViewController.m */; };
+		54B610381E83BA0B00DA8E7A /* ClassNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B610371E83BA0B00DA8E7A /* ClassNotice.m */; };
 		54B73CFB1DE3E40300B7A7EB /* MembersListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73CFA1DE3E40300B7A7EB /* MembersListView.m */; };
 		54B73CFE1DE3E42700B7A7EB /* MemberListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73CFD1DE3E42700B7A7EB /* MemberListTableViewCell.m */; };
 		54B73D041DE3E85A00B7A7EB /* ChineseString.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73D011DE3E85A00B7A7EB /* ChineseString.m */; };
@@ -1016,6 +1017,8 @@
 		54B4C18E1DF8416500E31794 /* ConfirmChargeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmChargeView.m; sourceTree = "<group>"; };
 		54B4C1901DF8417400E31794 /* ConfirmChargeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmChargeViewController.h; sourceTree = "<group>"; };
 		54B4C1911DF8417400E31794 /* ConfirmChargeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ConfirmChargeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		54B610361E83BA0B00DA8E7A /* ClassNotice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassNotice.h; sourceTree = "<group>"; };
+		54B610371E83BA0B00DA8E7A /* ClassNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassNotice.m; sourceTree = "<group>"; };
 		54B73CF91DE3E40300B7A7EB /* MembersListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MembersListView.h; sourceTree = "<group>"; };
 		54B73CFA1DE3E40300B7A7EB /* MembersListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MembersListView.m; sourceTree = "<group>"; };
 		54B73CFC1DE3E42700B7A7EB /* MemberListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberListTableViewCell.h; sourceTree = "<group>"; };
@@ -1468,6 +1471,8 @@
 				54FCBADF1DD5B3050094BF58 /* VideoInfoView.m */,
 				54294C681DDAFCF600677333 /* ClassList.h */,
 				54294C691DDAFCF600677333 /* ClassList.m */,
+				54B610361E83BA0B00DA8E7A /* ClassNotice.h */,
+				54B610371E83BA0B00DA8E7A /* ClassNotice.m */,
 				54294C651DDAD82400677333 /* InfoHeaderView.h */,
 				54294C661DDAD82400677333 /* InfoHeaderView.m */,
 				54B73CF91DE3E40300B7A7EB /* MembersListView.h */,
@@ -3956,9 +3961,9 @@
 		54FCBAC41DD590B90094BF58 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				5473881D1DD9505300A50CCC /* cell */,
 				547E898B1DD1D01B00749366 /* TutoriumInfoView.h */,
 				547E898C1DD1D01B00749366 /* TutoriumInfoView.m */,
+				5473881D1DD9505300A50CCC /* cell */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -4557,6 +4562,7 @@
 				54A153AA1DC6F09D0070B508 /* main.m in Sources */,
 				545731811E022E7700F45C03 /* HaveNoClassView.m in Sources */,
 				547FBF381DF6CFD700955A9E /* MyWalletView.m in Sources */,
+				54B610381E83BA0B00DA8E7A /* ClassNotice.m in Sources */,
 				54634D991DDEAC1F0070C0FF /* FJFloatingView.m in Sources */,
 				5413D2581DF7B5F400A8FDEC /* CashRecordViewController.m in Sources */,
 				5413D2681DF7C75D00A8FDEC /* WithDrawTableViewCell.m in Sources */,

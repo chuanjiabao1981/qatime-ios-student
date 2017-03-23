@@ -58,11 +58,6 @@
     return self;
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    
-    [super viewWillAppear:animated];
-    [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-}
 
 
 - (void)viewDidLoad {
@@ -88,12 +83,7 @@
     //比较特殊的导航栏
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-//    _navigationBar.contentView.backgroundColor = [UIColor clearColor];
-//    [_navigationBar.leftButton setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.4]];
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-//    _navigationBar.leftButton.layer.masksToBounds = YES;
-//    _navigationBar.leftButton.layer.cornerRadius = _navigationBar.leftButton.height_sd/2;
-    
     [_navigationBar.leftButton updateLayout];
     
     //头视图
@@ -214,8 +204,11 @@
             
         }else{
             
-            //解析教室公开内容
+            //解析教师公开内容
             _teacherPublicInfo = [TeachersPublicInfo yy_modelWithDictionary:dic[@"data"]];
+            
+            //教师简介富文本
+            _teacherPublicInfo.attributeDescription = [[NSMutableAttributedString alloc]initWithData:[_teacherPublicInfo.desc dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil  error:nil];
             
             //yymodel解析教师公开课程
             NSMutableArray *publichArr =[NSMutableArray arrayWithArray: dic[@"data"][@"courses"]];
@@ -261,7 +254,8 @@
         
         _teachersPublicHeaderView.location.text = [NSString stringWithFormat:@"%@  %@",teacherInfo.province==nil?@"":teacherInfo.province,teacherInfo.city==nil?@"":teacherInfo.city];
         _teachersPublicHeaderView.workPlace .text = teacherInfo.school;
-        _teachersPublicHeaderView.selfInterview.text = teacherInfo.desc;
+    
+        _teachersPublicHeaderView.selfInterview.attributedText = teacherInfo.attributeDescription;
         
         if ([teacherInfo.gender isEqualToString:@"male"]) {
             [_teachersPublicHeaderView.genderImage setImage:[UIImage imageNamed:@"男"]];
@@ -295,20 +289,9 @@
 
 #pragma mark- label自适应高度方法
 - (void)sizeToFitHeight{
-    
-    CGRect rect = [_teachersPublicHeaderView.selfInterview.text boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 20, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName: _teachersPublicHeaderView.selfInterview.font} context:nil];
-    
-    [_teachersPublicHeaderView.selfInterview clearAutoHeigtSettings];
-    _teachersPublicHeaderView.selfInterview.sd_layout
-    .heightIs(rect.size.height);
+
     [_teachersPublicHeaderView.selfInterview updateLayout];
-    
-    [_teachersPublicHeaderView.classList updateLayout];
-    
-    /* headerview的尺寸也变化*/
-    _teachersPublicHeaderView.frame = CGRectMake(0,0,self.view.width_sd , _teachersPublicHeaderView.classList.bottom_sd-20);
-    
-    headerSize =CGSizeMake(_teachersPublicHeaderView.width_sd, _teachersPublicHeaderView.height_sd);
+    headerSize = CGSizeMake(_teachersPublicHeaderView.width_sd, _teachersPublicHeaderView.selfInterview.bottom_sd);
     
     [_teachersPublicCollectionView reloadData];
     [_teachersPublicCollectionView setNeedsLayout];
@@ -316,13 +299,7 @@
 
 }
 
--(void)viewDidDisappear:(BOOL)animated{
-    
-    [super viewDidDisappear:animated];
-    
-    [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-    
-}
+
 
 
 /* 返回上一页*/
