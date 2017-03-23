@@ -210,14 +210,11 @@ typedef enum : NSUInteger {
     
     
     /* 弹幕*/
-    
     BarrageRenderer *_aBarrage;
     BarrageDescriptor *_descriptor;
     
     BOOL barrageRunning;
-    
-    
-    
+
     /* 覆盖层*/
     UIView *_maskView;
     
@@ -682,7 +679,7 @@ bool ismute     = NO;
     _topControlView = ({
         
         UIView *_= [[UIView alloc] init];
-        _.backgroundColor = [UIColor blackColor];
+        _.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
         _.alpha = 0.8;
         [_controlOverlay addSubview:_];
         _.sd_layout
@@ -698,7 +695,7 @@ bool ismute     = NO;
         
         UIButton *_ =[UIButton buttonWithType:UIButtonTypeCustom];
         [_ setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-        _.backgroundColor = [UIColor blackColor];
+        
         _.alpha = 0.8;
         [_ addTarget:self action:@selector(onClickBack:) forControlEvents:UIControlEventTouchUpInside];
         [_topControlView addSubview:_];
@@ -728,10 +725,36 @@ bool ismute     = NO;
         _;
     });
     
+    //在线人数
+    _onLineNumber = ({
+        UILabel *_ = [[UILabel alloc]init];
+        _.textColor = [UIColor whiteColor];
+        _.font = [UIFont systemFontOfSize:12*ScrenScale];
+        
+        [_topControlView addSubview:_];
+        _.sd_layout
+        .centerYEqualToView(_topControlView)
+        .autoHeightRatio(0)
+        .rightSpaceToView(_topControlView,10);
+        [_ setSingleLineAutoResizeWithMaxWidth:100];
+        
+        UIImageView *image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"whiteman"]];
+        [_topControlView addSubview:image];
+        image.sd_layout
+        .rightSpaceToView(_,5)
+        .topEqualToView(_)
+        .bottomEqualToView(_)
+        .widthEqualToHeight();
+        
+        _;
+    });
+    
+    
+    
     //底部控制栏
     _bottomControlView = ({
         UIView *_ = [[UIView alloc] init];
-        _.backgroundColor = [UIColor blackColor];
+        _.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.8];
         _.alpha = 0.8;
         [_controlOverlay addSubview:_];
         _.sd_layout
@@ -749,7 +772,7 @@ bool ismute     = NO;
         UIButton *_ =[UIButton buttonWithType:UIButtonTypeCustom];
         
         [_ setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
-        _.backgroundColor = [UIColor blackColor];
+        
         _.alpha = 0.8;
         //    [_playBtn addTarget:self action:@selector(onClickPlay:) forControlEvents:UIControlEventTouchUpInside];
         [_bottomControlView addSubview:_];
@@ -768,7 +791,7 @@ bool ismute     = NO;
     _pauseBtn = ({
         UIButton *_= [UIButton buttonWithType:UIButtonTypeCustom];
         [_ setImage:[UIImage imageNamed:@"btn_player_play"] forState:UIControlStateNormal];
-        _.backgroundColor = [UIColor blackColor];
+        
         _.alpha = 0.8;
         //    [_pauseBtn addTarget:self action:@selector(onClickPause:) forControlEvents:UIControlEventTouchUpInside];
         _.hidden = YES;
@@ -807,7 +830,7 @@ bool ismute     = NO;
     _switchScreen = ({
         UIButton *_=[[UIButton alloc]init];
         [_ setImage:[UIImage imageNamed:@"上下转换"] forState:UIControlStateNormal];
-        _.backgroundColor = [UIColor blackColor];
+        
         _.alpha = 0.8;
         [_bottomControlView addSubview:_];
         _.sd_layout
@@ -826,7 +849,7 @@ bool ismute     = NO;
     _tileScreen = ({
         UIButton *_=[[UIButton alloc]init];
         [_ setImage:[UIImage imageNamed:@"tile"] forState:UIControlStateNormal];
-        _.backgroundColor = [UIColor blackColor];
+        
         _.alpha = 0.8;
         [_bottomControlView addSubview:_];
         _.sd_layout
@@ -862,7 +885,7 @@ bool ismute     = NO;
     /* 弹幕开关*/
     _barrage = ({
         UIButton *_=[[UIButton alloc]init];
-        _.backgroundColor = [UIColor clearColor];
+        
         [_bottomControlView addSubview:_];
         [_ setImage:[UIImage imageNamed:@"barrage_on"] forState:UIControlStateNormal];
         //    _barrage.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -2649,6 +2672,11 @@ bool ismute     = NO;
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordEnd) name:@"RecordEnd" object:nil];
     
     
+    //获取在线人数
+    [self checkOnlineNumber];
+    
+    
+    
 }
 
 
@@ -2706,6 +2734,9 @@ bool ismute     = NO;
     
     /* 两个播放器和控制层和覆盖层都加载完成后,每隔30秒请求一次数据*/
     [self checkVideoStatus];
+    
+    /**两个播放器和控制层加载完成后,加载在线人数*/
+//    [self checkOnlineNumber];
     
 }
 
@@ -3602,8 +3633,6 @@ bool ismute     = NO;
         NSMutableAttributedString *text = [NSMutableAttributedString new];
         [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
         
-        
-        
         /* 正则匹配*/
         NSString * pattern = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
         NSError *error = nil;
@@ -4132,16 +4161,7 @@ bool ismute     = NO;
         _classList.classListTableView.tableHeaderView =_infoHeaderView;
         
         _classList.classListTableView.tableHeaderView.height_sd =headerHeight;
-        
-        //        NSLog(@"%@", [_classList.classListTableView.tableHeaderView valueForKey:@"frame"]);
-        //
-        //
-        //        NSLog(@"%f", _infoHeaderView.layoutLine.autoHeight);
-        //
-        //        NSLog(@"%@",[_infoHeaderView.workPlace valueForKey:@"frame"]);
-        //        NSLog(@"%@",[_infoHeaderView.layoutLine valueForKey:@"frame"]);
-        
-        
+      
         
         [self updateViewsInfos];
     }
@@ -4192,9 +4212,6 @@ bool ismute     = NO;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     
-    //    NSLog(@"rows:%lu",(unsigned long)_noticesArr.count);
-    
-    
     NSInteger rows=0;
     
     if (tableView.tag==1) {
@@ -4230,17 +4247,10 @@ bool ismute     = NO;
         }
     }
     
-    
-    
-    //    NSLog(@"%ld",rows);
-    
     return rows;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {
-    
-    //    NSInteger heights = 0;
-    
     
     if (tableView.tag==1) {
         Notice *model =[Notice yy_modelWithJSON:_noticesArr[indexPath.row]];
@@ -4327,9 +4337,7 @@ bool ismute     = NO;
             //            [self loadingHUDStopLoadingWithTitle:@"您尚未购买该课程!"];
         }
         
-        
-        
-        
+  
     }
     
     
@@ -4361,9 +4369,7 @@ bool ismute     = NO;
 
 
 
-
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
-    
     
     [self.view endEditing:YES];
 }
@@ -4629,7 +4635,6 @@ bool ismute     = NO;
 
 #pragma mark- 查询播放状态功能的方法实现 --播放器初始化状态
 - (void)checkVideoStatus{
-    
     /* 向后台发送请求,请求视频直播状态*/
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -4810,6 +4815,29 @@ bool ismute     = NO;
     }
     
 }
+
+//后台轮询查询人数方法
+- (void)checkOnlineNumber{
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/status",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+       
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"] isEqualToNumber:@1]) {
+            
+            //在线人数
+            _onLineNumber.text = [NSString stringWithFormat:@"%ld", [dic[@"data"][@"online_users"] count]];
+            
+        }else{
+            
+            
+            
+            
+        }
+        
+    }];
+}
+
+
 
 
 /* 播放器播放方法*/

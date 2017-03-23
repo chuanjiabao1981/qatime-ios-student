@@ -62,6 +62,9 @@
 /* 弹幕开关*/
 @property(nonatomic,strong) UIButton *barrage ;
 
+/**在线人数*/
+@property (nonatomic, strong) UILabel *onLineNumber ;
+
 /* 副屏幕开关按钮*/
 @property(nonatomic,strong) UIButton *subScreenSwitch ;
 
