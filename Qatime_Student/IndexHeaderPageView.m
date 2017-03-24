@@ -36,12 +36,12 @@
         [self addSubview:_cycleScrollView];
         
         //年级筛选滑动视图
-        _gradeMenu = [[UIScrollView alloc]initWithFrame:CGRectMake(0, _cycleScrollView.bottom_sd, self.width_sd, 40)];
+        _gradeMenu = [[UIScrollView alloc]initWithFrame:CGRectMake(0, _cycleScrollView.bottom_sd, self.width_sd, 60)];
         _gradeMenu.showsHorizontalScrollIndicator = NO;
         
         NSArray *gradeArr= @[@"高三",@"高二",@"高一",@"初三",@"初二",@"初一",@"六年级",@"五年级",@"四年级",@"三年级",@"二年级",@"一年级"];
         
-        NSMutableArray *buttons = @[].mutableCopy;
+        _buttons = @[].mutableCopy;
         
         //遍历按钮.
         NSInteger index =0;
@@ -60,13 +60,12 @@
             .widthIs(self.width_sd/6);
             [btn updateLayout];
             
-            [buttons addObject:btn];
+            [_buttons addObject:btn];
             index++;
         }
         [self addSubview:_gradeMenu];
-        //contentsize 自适应
-        UIButton *lastBtn = [buttons lastObject];
-        _gradeMenu.contentSize = CGSizeMake(lastBtn.origin_sd.x+lastBtn.width_sd, _gradeMenu.height_sd);
+        
+        [_gradeMenu setupAutoContentSizeWithRightView:[_buttons lastObject] rightMargin:5];
         
         /* 分割线1*/
         UIView *line1 =[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_gradeMenu.frame), CGRectGetWidth(self.bounds), 10.0)];

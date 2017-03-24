@@ -18,9 +18,7 @@
     
     NavigationBar *_navigationBar;
     
-    
     NSArray *subjects;
-    
     
     NSString *_selectedGrade;
 }
@@ -41,10 +39,19 @@
     //加载视图
     [self setupViews];
     
-    
+    //是否是前一页传来的年级
+    if (_selectedFilterGrade) {
+        
+        for (UIButton *button in _chooseView.gradeButtons) {
+            if ([_selectedFilterGrade isEqualToString:button.titleLabel.text]) {
+                
+                [_chooseView selected:button];
+            }
+        }
+    }
+
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
         
         //干掉筛选信息
         if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Filter"]) {
@@ -56,11 +63,33 @@
         
     });
     
+    //首页选择年级 的监听
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(chooseFilterGrade:) name:@"ChooseFilterGrade" object:nil];
     
 }
 
-- (void)setupViews{
+//首页选择年级后的监听 ->初始化之后的方法 , 初始化之前在appdelegate里用set方法
+- (void)chooseFilterGrade:(NSNotification *)notification{
     
+    for (UIButton *button in _chooseView.gradeButtons) {
+        if ([[notification object] isEqualToString:button.titleLabel.text]) {
+            
+            [_chooseView selected:button];
+        }
+    }
+}
+
+
+
+- (void)setSelectedFilterGrade:(NSString *)selectedFilterGrade{
+    
+    _selectedFilterGrade = selectedFilterGrade;
+    
+}
+
+
+
+- (void)setupViews{
     
     _navigationBar = ({
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
@@ -155,12 +184,15 @@
 
 
 
-//回调年级信息
+//选择年级信息 -- 回调
 -(void)chooseGrade:(NSString *)grade{
     
     _selectedGrade = grade;
     
 }
+
+//
+
 
 
 

@@ -227,6 +227,23 @@
             /* 获取cash接口的信息成功*/
             _balance = [NSString stringWithFormat:@"%@",dic[@"data"][@"balance"]];
             
+            /**支付密码是否可用*/
+            //获取当前时间戳
+            NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+            NSTimeInterval a=[dat timeIntervalSince1970];
+            NSString *timeString = [NSString stringWithFormat:@"%f", a];//时间戳
+            
+           
+            if ([self compareTwoTime:[dic[@"data"][@"password_set_at"] longLongValue] time2:[timeString longLongValue]]>=24) {
+                
+                [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"PayPasswordUseable"];
+                
+            }else{
+                [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"PayPasswordUseable"];
+
+            }
+            
+            
             NSIndexPath *indexpath = [NSIndexPath indexPathForRow:0 inSection:0];
             SettingTableViewCell *cell = [_personalView.settingTableView cellForRowAtIndexPath:indexpath];
             cell.balance.text = [NSString stringWithFormat:@"￥%@",_balance];
@@ -245,6 +262,34 @@
         
     }];
     
+    
+}
+
+
+/**
+ 比较两个时间戳的差
+
+ @param time1 设置时间戳
+ @param time2 当前时间戳
+ @return 时差
+ */
+- (NSInteger)compareTwoTime:(long long)time1 time2:(long long)time2{
+    
+    NSTimeInterval balance = time2 /1000- time1 /1000;
+    
+    NSString*timeString = [[NSString alloc]init];
+    
+    timeString = [NSString stringWithFormat:@"%f",balance /60];
+    
+    timeString = [timeString substringToIndex:timeString.length-7];
+    
+    NSInteger timeInt = [timeString intValue];
+    
+    NSInteger hour = timeInt /60;
+    
+    
+    
+    return hour;
     
 }
 

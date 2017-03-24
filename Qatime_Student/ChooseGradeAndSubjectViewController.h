@@ -13,4 +13,6 @@
 
 @property (nonatomic, strong) ChooseGradeAndSubjectView *chooseView ;
 
+@property (nonatomic, strong) NSString *selectedFilterGrade;
+
 @end

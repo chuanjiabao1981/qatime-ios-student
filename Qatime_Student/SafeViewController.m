@@ -274,20 +274,18 @@
                             if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
                                 if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==YES) {
                                     
-                                    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"NewPayPasswordTimeStamp"]) {
-                                        
-                                        float timeInterval =[[self dateTimeDifferenceWithStartTime:[[NSUserDefaults standardUserDefaults]valueForKey:@"NewPayPasswordTimeStamp"] endTime:[self getDate]]floatValue];
-                                        if (timeInterval>24) {
-                                            
+                                    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"PayPasswordUseable"]) {
+                                        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"PayPasswordUseable"]==YES) {
                                             cell.balance.hidden = YES;
-                                            
                                         }else{
                                             cell.balance.hidden = NO;
-                                            cell.balance.text = [NSString stringWithFormat:@"新密码%d小时后可用",24-(int)timeInterval];
-                                            cell.balance.textColor = TITLECOLOR;
+                                            cell.balance.textColor = BUTTONRED;
+                                            cell.balance.text = @"支付密码不可用";
                                         }
-                                        
+                                    }else{
+                                        cell.balance.hidden = YES;
                                     }
+                                    
                                     
                                 }else{
                             

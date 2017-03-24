@@ -41,5 +41,9 @@
 @property (nonatomic, strong) UIControl *moreFancyButton ;
 
 
+/**所有年级按钮*/
+
+@property (nonatomic, strong) NSMutableArray  *buttons ;
+
 
 @end

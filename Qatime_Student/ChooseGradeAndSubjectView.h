@@ -21,5 +21,6 @@
 
 @property (nonatomic, strong) NSMutableArray <UIButton *>*gradeButtons ;
 
+- (void)selected:(UIButton *)sender;
 
 @end

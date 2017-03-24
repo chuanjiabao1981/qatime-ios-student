@@ -204,6 +204,17 @@
     _headerView.todayLiveScrollView.dataSource = self;
     _headerView.todayLiveScrollView.tag = 1;        //今日直播 tag = 1
     
+    //选择年级功能
+    NSInteger tags = 100;
+    for (UIButton *button in _headerView.buttons) {
+        
+        button.tag = tags++;
+        [button addTarget:self action:@selector(chooseGrade:) forControlEvents:UIControlEventTouchUpInside];
+        
+    }
+    
+    
+    
     /* 头视图的 今日直播 注册cell*/
     [_headerView.todayLiveScrollView registerClass:[TodayLiveCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
     
@@ -730,91 +741,20 @@
 - (void)reloadData{
     
     /* collectionView重新加载数据*/
-    //    [_headerView.teacherScrollView reloadData];
-    //    [_indexPageView.recommandClassCollectionView reloadData];
-    
     [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"数据加载完成", nil)];
-    
-    
-    //    [_indexPageView.recommandClassCollectionView.mj_header endRefreshing];
-    
 }
 
 
-#pragma mark- 用户选择科目
-- (void)userSelectedSubject:(UITapGestureRecognizer *)sender{
+#pragma mark- 选择年级
+- (void)chooseGrade:(UIButton *)sender{
     
-    __block  NSString *subjectStr = [NSString string];
-    
-    switch (sender.view.tag) {
-        case 10:
-            
-            subjectStr=@"语文";
-            
-            break;
-        case 11:
-            subjectStr=@"数学";
-            
-            break;
-            
-        case 12:
-            subjectStr=@"英语";
-            
-            break;
-            
-        case 13:
-            subjectStr=@"物理";
-            
-            break;
-            
-        case 14:
-            subjectStr=@"化学";
-            
-            break;
-            
-        case 15:
-            
-            subjectStr=@"生物";
-            
-            break;
-            
-        case 16:
-            subjectStr=@"历史";
-            
-            break;
-            
-        case 17:
-            subjectStr=@"地理";
-            
-            break;
-            
-        case 18:
-            subjectStr=@"政治";
-            
-            break;
-            
-        case 19:
-            subjectStr=@"科学";
-            
-            break;
-    }
-    
-    [[NSUserDefaults standardUserDefaults]setObject:subjectStr forKey:@"SubjectChosen"];
-    
-    
-    
-    /* 发送消息 让第二个页面在初始化后 进行筛选*/
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserChoseSubject" object:subjectStr];
-    
-    
-    
-    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"ChooseGrade" object:sender.titleLabel.text];
+
 }
 
 
 
 #pragma mark- collection datasource
-
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
@@ -842,11 +782,9 @@
     
 }
 
-
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     UICollectionViewCell *cell=[[UICollectionViewCell alloc]init];
-    
     static NSString * CellIdentifier = @"CollectionCell";
     static NSString * recommandIdentifier = @"RecommandCell";
     
@@ -984,22 +922,19 @@
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    /* 推荐课程点击事件*/
-    if (collectionView.tag ==1) {
+    if (collectionView.tag==1) {
         
-        if (_classes.count == 0) {
-            [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"该地区没有推荐课程", nil)];
-        }else{
-            
-            RecommandClassCollectionViewCell *cell = (RecommandClassCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-            
-            TutoriumInfoViewController *viewcontroller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
-            
-            viewcontroller.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:viewcontroller animated:YES];
-        }
+        TodayLiveCollectionViewCell *cell = (TodayLiveCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+        
+        TutoriumInfoViewController *controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+        controller.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
+        
+        
     }
     
+    
+    /**推荐教师*/
     if (collectionView.tag ==2) {
         
         if (_teachers.count==0) {

@@ -69,57 +69,18 @@
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
     
-    
     _navigationBar  = ({
         
         NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         [self.view addSubview:_];
-        _.backgroundColor = [UIColor blackColor];
-        _.alpha = 0.6;
+        _.backgroundColor = [UIColor clearColor];
+        _.contentView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.6];
         _.titleLabel.text = @"二维码扫描";
         
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         _;
         
-    });
-    
-    
-    //二维码图
-    _qrcodeImage = ({
-        UIImageView *_ = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"qrcode"]];
-        _.backgroundColor = [UIColor blackColor];
-        _.alpha = 0.6;
-        [self.view addSubview:_];
-        _;
-        
-    });
-    
-    //说明
-    tipsLabel = ({
-        UILabel *_ = [[UILabel alloc]init];
-        _.textColor = [UIColor whiteColor];
-        _.text = NSLocalizedString(@"将二维码置于框内即可扫描", nil);
-        _.backgroundColor = [UIColor blackColor];
-        _.alpha = 0.6;
-        [self.view addSubview:_];
-        _;
-        
-    });
-    
-    
-    torchButton  = ({
-        UIImageView *_ = [[UIImageView alloc]init];
-        _.backgroundColor = [UIColor blackColor];
-        _.alpha = 0.6;
-        [self.view addSubview:_];
-        _.image = [UIImage imageNamed:@"torch"];
-        
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(turnTorch:)];
-        _.userInteractionEnabled = YES;
-        [_ addGestureRecognizer:tap];
-        
-        _;
     });
     
     
@@ -130,8 +91,7 @@
 -(void)configView{
     
     
-     [self setCropRect:kScanRect];
-    
+    [self setCropRect:kScanRect];
     
     UIImageView * imageView = [[UIImageView alloc]initWithFrame:kScanRect];
     imageView.image = [UIImage imageNamed:@"pick_bg"];
@@ -144,6 +104,43 @@
     [self.view addSubview:_line];
     
     timer = [NSTimer scheduledTimerWithTimeInterval:.02 target:self selector:@selector(animation1) userInfo:nil repeats:YES];
+
+    //二维码图
+    _qrcodeImage = ({
+        UIImageView *_ = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"qrcode"]];
+        _.backgroundColor = [UIColor clearColor];
+        
+        [self.view addSubview:_];
+        _;
+        
+    });
+    
+    //说明
+    tipsLabel = ({
+        UILabel *_ = [[UILabel alloc]init];
+        _.textColor = [UIColor whiteColor];
+        _.text = NSLocalizedString(@"将二维码置于框内即可扫描", nil);
+        _.backgroundColor = [UIColor clearColor];
+        
+        [self.view addSubview:_];
+        _;
+        
+    });
+    
+    
+    torchButton  = ({
+        UIImageView *_ = [[UIImageView alloc]init];
+        _.backgroundColor = [UIColor clearColor];
+        
+        [self.view addSubview:_];
+        _.image = [UIImage imageNamed:@"torch"];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(turnTorch:)];
+        _.userInteractionEnabled = YES;
+        [_ addGestureRecognizer:tap];
+        
+        _;
+    });
     
     
     //二维码和提示文字布局
@@ -190,11 +187,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     
-   
-    
     [self performSelector:@selector(setupCamera) withObject:nil afterDelay:0.3];
-    
-    
     
 }
 
@@ -205,19 +198,14 @@
         if (2*num >= (self.view.width_sd*2/3.0f-20)) {
             upOrdown = YES;
         }
-//        if (_line.bottom_sd >= kScanRect.size.height+kScanRect.origin.y) {
-//            upOrdown = YES;
-//        }
-        
+
     }else {
         num --;
         _line.frame = CGRectMake(LEFT, TOP+10+2*num, self.view.width_sd*2/3, 2);
         if (num == 0) {
             upOrdown = NO;
         }
-//        if (_line.top_sd == kScanRect.origin.y) {
-//            upOrdown = NO;
-//        }
+
     }
     
 }
@@ -229,9 +217,9 @@
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathAddRect(path, nil, cropRect);
     CGPathAddRect(path, nil, CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64));
-    CGPathAddRect(path, nil, _qrcodeImage.frame);
-    CGPathAddRect(path, nil, tipsLabel.frame);
-    CGPathAddRect(path, nil, torchButton.frame);
+//    CGPathAddRect(path, nil, _qrcodeImage.frame);
+//    CGPathAddRect(path, nil, tipsLabel.frame);
+//    CGPathAddRect(path, nil, torchButton.frame);
     
     [cropLayer setFillRule:kCAFillRuleEvenOdd];
     [cropLayer setPath:path];

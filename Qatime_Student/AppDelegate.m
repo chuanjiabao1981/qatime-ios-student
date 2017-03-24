@@ -53,7 +53,6 @@
     /* 推送部分*/
     NSDictionary *remoteNotification;
 
-    
 }
 
 
@@ -253,6 +252,8 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabbarHide) name:@"TabbarHide" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabbarShow) name:@"TabbarShow" object:nil];
     
+    /**选择年级的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeItem:) name:@"ChooseGrade" object:nil];
     
     
     /* 获取推送消息内容 10以下系统获取方法*/
@@ -278,9 +279,6 @@
     
     }
     
-    
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeItem) name:@"UserChoseSubject" object:nil];
-    
     /* 新收到消息的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(receiveNewNotice) name:@"ReceiveNewNotice" object:nil];
     
@@ -290,6 +288,8 @@
     
     
 }
+
+
 
 //收到新消息
 - (void)receiveNewNotice{
@@ -306,9 +306,13 @@
 }
 
 //改变选项卡选项
-- (void)changeItem{
+- (void)changeItem:(NSNotification *)notification{
     
     [_viewController setSelectedIndex:1];
+    
+    _chooseClassViewController.selectedFilterGrade = [notification object];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"ChooseFilterGrade" object:[notification object]];
+    
     
 }
 

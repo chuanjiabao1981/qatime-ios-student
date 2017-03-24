@@ -119,7 +119,7 @@
             .rightEqualToView(self)
             .topEqualToView(self)
             .bottomEqualToView(self)
-            .widthIs(self.height_sd*2);
+            .widthIs(self.height_sd*2*ScrenScale);
             
             UILabel *label = [[UILabel alloc]init];
             label.userInteractionEnabled = NO;
@@ -128,7 +128,7 @@
             label.text = @"筛选";
             label.font = [UIFont systemFontOfSize:15*ScrenScale];
             label.sd_layout
-            .rightSpaceToView(_,15)
+            .rightSpaceToView(_,15*ScrenScale)
             .centerYEqualToView(_)
             .autoHeightRatio(0);
             [label setSingleLineAutoResizeWithMaxWidth:100];
@@ -180,10 +180,6 @@
         .centerYEqualToView(_tagsButton)
         .heightRatioToView(_tagsButton,0.5)
         .widthEqualToHeight();
-        
-        
-        
-        
         
         UIView *line = [[UIView alloc]init];
             [self addSubview:line];

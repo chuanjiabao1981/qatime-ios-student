@@ -55,7 +55,9 @@ typedef enum : NSUInteger {
     //筛选用的字典
     NSMutableDictionary *_filterDic;
     
-    //保存所有标签
+    
+    //是否为初始化下拉
+    __block BOOL isInitPull;
     
     
     
@@ -87,6 +89,8 @@ typedef enum : NSUInteger {
     //初始化数据
     _classesArray = @[].mutableCopy;
     
+    isInitPull = YES;
+    
     page = 1;   //页数是会变的
     perPage = 10;
     
@@ -102,7 +106,6 @@ typedef enum : NSUInteger {
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
-    
     
     //加载tableview
     [self setupMainView];
@@ -248,11 +251,6 @@ typedef enum : NSUInteger {
     }
 }
 
-
-
-
-
-
 #pragma mark- tableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
@@ -290,7 +288,7 @@ typedef enum : NSUInteger {
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 120;
+    return 120*ScrenScale;
     
 }
 
@@ -357,12 +355,9 @@ typedef enum : NSUInteger {
             [self requestClass:PullToRefresh withContentDictionary:@{@"tags":_tags[indexPath.row]}];
         }];
         
-        
     }];
     
-    
 }
-
 
 //加载主视图
 - (void)setupMainView{
@@ -377,9 +372,17 @@ typedef enum : NSUInteger {
         _.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         _.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            [_.mj_header endRefreshing];
             
+            if (isInitPull == YES) {
+                
+            }else{
+                
+                isInitPull = NO;
+                [self requestClass:PullToRefresh withContentDictionary:_filterDic];
+            }
         }];
-        
+    
         //第一次自动下拉刷新
         [_.mj_header beginRefreshing];
         //自动下拉
@@ -761,6 +764,7 @@ typedef enum : NSUInteger {
     }
     
 }
+
 
 
 

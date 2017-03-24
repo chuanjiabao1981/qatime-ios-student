@@ -37,17 +37,14 @@
         _content.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _content.layer.borderWidth = 0.8f;
         
-        
-        
       /* 课程图片*/
         _classImage = [[UIImageView alloc]init];
         
         /* 课程名称*/
-        
         _name = [[UILabel alloc]init];
-        _name.font = TITLEFONTSIZE;
+        _name.font = TEXT_FONTSIZE;
         _className = [[UILabel alloc]init];
-        _className.font = TITLEFONTSIZE;
+        _className.font = TEXT_FONTSIZE;
         
         
         /* 年级*/
@@ -78,11 +75,7 @@
         _date = [[UILabel alloc]init];
         _date.textColor = [UIColor grayColor];
         _date.font = [UIFont systemFontOfSize:14*ScrenScale];
-        
-        /* 时间*/
-//        _time = [[UILabel alloc]init];
-//        _time.textColor = [UIColor grayColor];
-//        _time.font = [UIFont systemFontOfSize:14*ScrenScale];
+
         
         /* 状态*/
         _status = [[UILabel alloc]init];
@@ -99,8 +92,6 @@
         [_enterButton.titleLabel setFont:[UIFont systemFontOfSize:14*ScrenScale]];
          [_enterButton setTitle:@"进入" forState:UIControlStateNormal];
         
-        
-        
         /* 所有控件的布局*/
         [_content sd_addSubviews:@[_classImage,_name,_className,_grade,_subject,line,_teacherName,_status,_date,_enterButton]];
         
@@ -109,20 +100,20 @@
         .topSpaceToView(_content,0)
         .bottomSpaceToView(_content,0)
         .leftSpaceToView(_content,0)
-        .widthEqualToHeight();
+        .autoWidthRatio(1.6);
         
         /* 课程名称布局*/
         
         _name.sd_layout
-        .leftSpaceToView(_classImage,10)
-        .topSpaceToView(_content,5);
+        .leftSpaceToView(_classImage,10*ScrenScale)
+        .topSpaceToView(_content,5*ScrenScale);
 //        .autoHeightRatio(0);
         [_name setSingleLineAutoResizeWithMaxWidth:100];
         
         _className.sd_layout
-        .leftSpaceToView(_name,5)
+        .leftSpaceToView(_name,5*ScrenScale)
         .topEqualToView(_name)
-        .rightSpaceToView(_content,10)
+        .rightSpaceToView(_content,10*ScrenScale)
         .bottomEqualToView(_name);
 //        [_className setSingleLineAutoResizeWithMaxWidth:200];
     
@@ -164,7 +155,7 @@
         /* 状态label布局*/
         
         _status.sd_layout
-        .rightSpaceToView(_content,20)
+        .rightSpaceToView(_content,20*ScrenScale)
         .topEqualToView(_teacherName)
         .autoHeightRatio(0);
         
@@ -172,26 +163,20 @@
         
         /* 进入按钮*/
         _enterButton .sd_layout
-        .rightSpaceToView(_content,10)
-        .bottomSpaceToView(_content,5)
+        .rightSpaceToView(_content,10*ScrenScale)
+        .bottomSpaceToView(_content,5*ScrenScale)
         .heightIs(20)
         .widthIs(50);
         
         /* 日期*/
         _date.sd_layout
         .leftEqualToView(_grade)
-        .rightSpaceToView(_enterButton,0)
-        .bottomSpaceToView(_content,5)
+        .rightSpaceToView(_content,10*ScrenScale)
+        .bottomSpaceToView(_content,5*ScrenScale)
         .autoHeightRatio(0);
         
         
-        /* 时间*/
-//        _time .sd_layout
-//        .leftSpaceToView(_date,10)
-//        .topEqualToView(_date)
-//        .autoHeightRatio(0);
-//        [_time setSingleLineAutoResizeWithMaxWidth:200];
-        
+  
         
         
 //        [self setupAutoHeightWithBottomView:_content bottomMargin:5];

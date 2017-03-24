@@ -421,13 +421,13 @@
          contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke:LivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_videoClassInfo">
-            </PersistentString>
-            <PersistentString
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
                value = "_classesArr">
+            </PersistentString>
+            <PersistentString
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -964,6 +964,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[ChooseGradeAndSubjectViewController chooseFilterGrade:]:ChooseGradeAndSubjectViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__33-[ChatViewController viewDidLoad]_block_invoke:ChatViewController.m">
       </ContextState>
       <ContextState
@@ -1026,6 +1029,14 @@
       </ContextState>
       <ContextState
          contextName = "-[ChooseClassViewController chooseTags:]:ChooseClassViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ChooseGradeAndSubjectViewController userSelectedGrade:]:ChooseGradeAndSubjectViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chooseView.gradeButtons">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[AppDelegate application:didFinishLaunchingWithOptions:]:AppDelegate.m">
@@ -1189,10 +1200,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

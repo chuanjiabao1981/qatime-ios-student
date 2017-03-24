@@ -30,13 +30,12 @@
         _segmentControl.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor],NSFontAttributeName:[UIFont systemFontOfSize:16*ScrenScale]};
         _segmentControl.type = HMSegmentedControlTypeText;
         _segmentControl.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
-        _segmentControl.selectionIndicatorColor = [UIColor colorWithRed:181/255.0f green:0 blue:0 alpha:1.0f];
+        _segmentControl.selectionIndicatorColor = NAVIGATIONRED;
         _segmentControl.selectionIndicatorHeight = 2;
         _segmentControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
         _segmentControl.borderType = HMSegmentedControlBorderTypeBottom;
         _segmentControl.borderWidth = 0.6;
         _segmentControl.borderColor = SEPERATELINECOLOR_2;
-        
         
         #pragma mark- 大滚动视图
         _scrollView = [[UIScrollView alloc]init];

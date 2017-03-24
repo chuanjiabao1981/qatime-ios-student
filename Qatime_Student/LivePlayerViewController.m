@@ -214,7 +214,7 @@ typedef enum : NSUInteger {
     BarrageDescriptor *_descriptor;
     
     BOOL barrageRunning;
-
+    
     /* 覆盖层*/
     UIView *_maskView;
     
@@ -925,8 +925,6 @@ bool ismute     = NO;
         
         _;
     });
-    
-    
     
 }
 
@@ -2736,7 +2734,7 @@ bool ismute     = NO;
     [self checkVideoStatus];
     
     /**两个播放器和控制层加载完成后,加载在线人数*/
-//    [self checkOnlineNumber];
+    //    [self checkOnlineNumber];
     
 }
 
@@ -2885,7 +2883,7 @@ bool ismute     = NO;
             
             //            _infoHeaderView.liveTimeLabel.text = _videoClassInfo;
             
-//            _infoHeaderView.classDescriptionLabel.text = _videoClassInfo.classDescription;
+            //            _infoHeaderView.classDescriptionLabel.text = _videoClassInfo.classDescription;
             
             /* 课程简介,富文本赋值*/
             _infoHeaderView.classDescriptionLabel.attributedText = _videoClassInfo.attributedDescription;
@@ -2921,7 +2919,7 @@ bool ismute     = NO;
                     }
                     
                     [_infoHeaderView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacher.avatar_url]];
-//                    _infoHeaderView.selfInterview.text = _teacher.desc;
+                    //                    _infoHeaderView.selfInterview.text = _teacher.desc;
                     
                     /* 教师简介,使用富文本*/
                     _infoHeaderView.selfInterview.attributedText = _teacher.attributedDescription;
@@ -3449,6 +3447,14 @@ bool ismute     = NO;
         
     }
     
+    
+}
+
+//搜索消息方法
+-(void)searchAllMessages:(NIMMessageSearchOption *)option result:(NIMGlobalSearchMessageBlock)result{
+    
+}
+-(void)searchMessages:(NIMSession *)session option:(NIMMessageSearchOption *)option result:(NIMSearchMessageBlock)result{
     
 }
 
@@ -4161,7 +4167,7 @@ bool ismute     = NO;
         _classList.classListTableView.tableHeaderView =_infoHeaderView;
         
         _classList.classListTableView.tableHeaderView.height_sd =headerHeight;
-      
+        
         
         [self updateViewsInfos];
     }
@@ -4193,8 +4199,8 @@ bool ismute     = NO;
 - (void)updateViewsInfos{
     
     [_classList.classListTableView reloadData];
-        [_classList.classListTableView  setNeedsDisplay];
-        [_classList.classListTableView  setNeedsLayout];
+    [_classList.classListTableView  setNeedsDisplay];
+    [_classList.classListTableView  setNeedsLayout];
     
     
 }
@@ -4337,7 +4343,7 @@ bool ismute     = NO;
             //            [self loadingHUDStopLoadingWithTitle:@"您尚未购买该课程!"];
         }
         
-  
+        
     }
     
     
@@ -4357,7 +4363,7 @@ bool ismute     = NO;
 - (UIView *)makePlaceHolderView{
     
     HaveNoClassView *view = [[HaveNoClassView alloc]init];
-//    view.titleLabel.text = @"当前无内容";
+    //    view.titleLabel.text = @"当前无内容";
     
     return view;
 }
@@ -4726,7 +4732,6 @@ bool ismute     = NO;
         NSLog(@"摄像头播放状态:%u",_liveplayerTeacher.playbackState);
         
         
-        
         if (_liveplayerBoard.playbackState != NELPMoviePlaybackStatePlaying) {
             [self playVideo:_liveplayerBoard];
         }
@@ -4816,20 +4821,22 @@ bool ismute     = NO;
     
 }
 
-//后台轮询查询人数方法
+//后台轮询查询人数方法-->每30s 获取一次在线人数
 - (void)checkOnlineNumber{
     
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/status",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-       
+        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"] isEqualToNumber:@1]) {
             
+            NSLog(@"获取在线人数成功,当前在线人数:%ld",[dic[@"data"][@"online_users"] count]);
             //在线人数
             _onLineNumber.text = [NSString stringWithFormat:@"%ld", [dic[@"data"][@"online_users"] count]];
+            [self performSelector:@selector(checkOnlineNumber) withObject:nil afterDelay:30];
             
         }else{
-            
-            
+            NSLog(@"获取在线人数失败");
+            [self performSelector:@selector(checkOnlineNumber) withObject:nil afterDelay:30];
             
             
         }
@@ -4889,9 +4896,6 @@ bool ismute     = NO;
     NSLog(@"干掉弹幕");
     
 }
-
-
-
 
 
 - (void)didReceiveMemoryWarning {
