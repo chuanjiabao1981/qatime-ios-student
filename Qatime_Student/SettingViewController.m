@@ -7,7 +7,7 @@
 //
 
 #import "SettingViewController.h"
-#import "NIMSDK.h"
+#import <NIMSDK/NIMSDK.h>
 #import "SettingTableViewCell.h"
 #import "NavigationBar.h"
 #import "UIViewController_HUD.h"

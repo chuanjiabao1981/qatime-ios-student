@@ -20,7 +20,7 @@
 #import "YYModel.h"
 #import "TeachersPublicViewController.h"
 #import "UIViewController+HUD.h"
-#import "NIMSDK.h"
+#import <NIMSDK/NIMSDK.h>
 #import "YYModel.h"
 #import "TLCityPickerDelegate.h"
 #import "TLCityPickerController.h"
@@ -28,7 +28,7 @@
 #import "ChineseString.h"
 #import "TutoriumList.h"
 #import "TutoriumInfoViewController.h"
-#import "NIMSDK.h"
+#import <NIMSDK/NIMSDK.h>
 #import "MJRefresh.h"
 #import "QRCodeController.h"
 #import "LCTabBar.h"

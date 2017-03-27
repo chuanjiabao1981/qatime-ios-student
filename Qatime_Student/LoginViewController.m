@@ -19,7 +19,7 @@
 #import "UIAlertController+Blocks.h"
 #import "UIViewController+HUD.h"
 
-#import "NIMSDK.h"
+#import <NIMSDK/NIMSDK.h>
 
 
 typedef NS_ENUM(NSUInteger, LoginType) {

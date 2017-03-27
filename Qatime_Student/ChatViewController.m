@@ -17,7 +17,7 @@
 #import "UITextView+YZEmotion.h"
 #import "UITextField+YZEmotion.h"
  
-#import "NIMSDK.h"
+#import <NIMSDK/NIMSDK.h>
 #import "NSAttributedString+YYText.h"
 
 #import "NSBundle+YYAdd.h"
@@ -35,7 +35,7 @@
 #import "UIViewController+AFHTTP.h"
 
 #import "LivePlayerViewController.h"
-#import "NIMSDK.h"
+#import <NIMSDK/NIMSDK.h>
 #import <AVFoundation/AVFoundation.h>
 #import "UIAlertController+Blocks.h"
 //#import <AVFoundation/AVAudioSettings.h>
@@ -71,13 +71,7 @@
     AVAudioRecorder *recorder;
      NSTimer *levelTimer;
     
-    /* 语音翻译专用的message*/
-//    NIMAudioObject *voiceObjevt;
-//    NIMMessage *_voiceMessage;
-    
-    /* 语音转换*/
-//    IFlySpeechRecognizer *_iFlySpeechRecognizer;
-//    NSMutableString *speechResult;
+
     
 }
 
@@ -117,10 +111,7 @@
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         _.titleLabel.text = _tutoriumInfo.name;
         
-        //        UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(120, 20, self.view.width_sd -240, 40)];
-        //        title.text =_tutoriumInfo.name;
-        //        title.textColor = [UIColor whiteColor];
-        //        [_ addSubview:title];
+     
         //
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
@@ -135,13 +126,11 @@
     
     
     _chatTableView = ({
-        UITableView *_=[[UITableView alloc]init];
+        UITableView *_=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-50) style:UITableViewStylePlain];
         _.separatorStyle = UITableViewCellSeparatorStyleNone;
         _.delegate = self;
         _.dataSource = self;
         [self.view addSubview:_];
-        _.frame = CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-50);
-        
         
         _;
     });
@@ -165,11 +154,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
-
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _chatTableView.hidden = YES;
     [self loadingHUDStartLoadingWithTitle:@"正在加载聊天记录"];
     
     /* 初始化*/
@@ -187,13 +173,9 @@
     self.chatModel.isGroupChat = YES;
     [self.chatModel populateRandomDataSource];
     
-    
-    
     if ([[NSUserDefaults standardUserDefaults]boolForKey:@"NIMSDKLogin"]) {
         
         [[NIMSDK sharedSDK].chatManager addDelegate:self];
-        
-        
         
     }else{
         
@@ -571,6 +553,7 @@
     /* 如果本地没有数据,请求服务器数据,并保存到本地*/
     if (messageArr.count<=2) {
         [self requestServerHistory];
+//        _chatTableView.hidden = NO;
     }else{
         
         _chatTableView.hidden = NO;
@@ -935,11 +918,14 @@
             break;
             //消息发送中
         case NIMMessageDeliveryStateDelivering:{
+        
             
         }
             break;
             //消息发送成功
         case NIMMessageDeliveryStateDeliveried:{
+            
+            
             
         }
             break;
@@ -1082,10 +1068,13 @@
 #pragma mark- tableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    NSInteger rows = 1;
+    NSInteger rows = 0;
     if (self.chatModel.dataSource.count!=0) {
         
         rows = self.chatModel.dataSource.count;
+    }else{
+        
+        rows = 0;
     }
     
     return rows;
@@ -1323,14 +1312,13 @@
     
     [funcView changeSendBtnWithPhoto:YES];
     
+   
+    
     
 }
 
 #pragma mark- 发送图片聊天信息的回调
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendPicture:(UIImage *)image{
-    
-    
-    
     //创建一条云信消息
     NIMImageObject * imageObject = [[NIMImageObject alloc] initWithImage:image];
     NIMMessage *message = [[NIMMessage alloc] init];

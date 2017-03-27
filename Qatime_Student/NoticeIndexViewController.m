@@ -12,7 +12,7 @@
 #import "YYModel.h"
 #import "ChatListTableViewCell.h"
 #import "NoticeListTableViewCell.h"
-#import "NIMSDK.h"
+#import <NIMSDK/NIMSDK.h>
 
 #import "ChatViewController.h"
 #import "UIViewController+HUD.h"

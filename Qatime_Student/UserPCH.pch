@@ -28,7 +28,7 @@
 
 /* 测试和生产模式-推送证书名称*/
 
-#define PushCerName @"Push"
+#define PushCerName @"PushDevelopment"
 
 //debug模式推送证书 @"PushDevelopment"
 //reliease模式推送证书 @"Push"
@@ -37,7 +37,7 @@
 //#云信key
 //YunXinDebugAppKey=2a24ca70e580cab2bef58b1e62478f9f
 //YunXinReleaseAppKey=4fe3a3fba0a40a00daf011049a29d995
-#define IM_APPKEY @"4fe3a3fba0a40a00daf011049a29d995"
+#define IM_APPKEY @"2a24ca70e580cab2bef58b1e62478f9f"
 
 
 /* 屏幕适配比例*/

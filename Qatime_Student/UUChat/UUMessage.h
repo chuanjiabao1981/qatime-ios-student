@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "NIMSDK.h"
+#import <NIMSDK/NIMSDK.h>
 
 typedef NS_ENUM(NSInteger, MessageType) {
     UUMessageTypeText     = 0 , // 文字

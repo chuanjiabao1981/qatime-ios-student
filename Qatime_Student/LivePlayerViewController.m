@@ -32,7 +32,7 @@
 #import "ChatModel.h"
 #import "UUMessageFrame.h"
 #import "UUMessage.h"
-#import "NIMSDK.h"
+#import <NIMSDK/NIMSDK.h>
 #import "FJFloatingView.h"
 #import "BarrageRenderer.h"
 #import "ClassNotice.h"
@@ -4210,46 +4210,6 @@ bool ismute     = NO;
     
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    
-    NSInteger rows=0;
-    
-    if (tableView.tag==1) {
-        
-        if (_noticesArr.count==0) {
-            rows = 0;
-        }else{
-            
-            rows=_noticesArr.count;
-        }
-    }
-    
-    if (tableView.tag ==2) {
-        if (_classesArr.count==0) {
-            rows = 0;
-        }else{
-            
-            rows=_classesArr.count;
-        }
-        
-        
-    }
-    
-    if (tableView.tag ==3) {
-        rows = self.chatModel.dataSource.count;
-    }
-    if (tableView.tag ==10) {
-        if (_membersArr.count==0) {
-            
-            rows = 0;
-        }else{
-            rows = _membersArr.count;
-        }
-    }
-    
-    return rows;
-}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {
     
@@ -4384,18 +4344,63 @@ bool ismute     = NO;
         textTagCollectionView.sd_layout
         .heightIs(contentSize.height);
     }
-    //    else if(textTagCollectionView == _infoHeaderView.teacherTagsView){
-    //
-    //
-    //    }
+   
 }
 
 
 
 
 
-
 #pragma mark - tableview datasource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    
+    NSInteger rows=0;
+    
+    if (tableView.tag==1) {
+        
+        if (_noticesArr.count==0) {
+            rows = 0;
+        }else{
+            
+            rows=_noticesArr.count;
+        }
+    }
+    
+    if (tableView.tag ==2) {
+        if (_classesArr.count==0) {
+            rows = 0;
+        }else{
+            
+            rows=_classesArr.count;
+        }
+        
+        
+    }
+    
+    if (tableView.tag ==3) {
+        
+        if (self.chatModel.dataSource.count == 0) {
+            rows = 0;
+        }else{
+            
+            rows = self.chatModel.dataSource.count;
+        }
+        
+    }
+    if (tableView.tag ==10) {
+        if (_membersArr.count==0) {
+            
+            rows = 0;
+        }else{
+            rows = _membersArr.count;
+        }
+    }
+    
+    return rows;
+}
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -4481,10 +4486,14 @@ bool ismute     = NO;
                 cell = [[UUMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
             }
             
-            cell.delegate = self;
-            [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
+            if (self.chatModel.dataSource.count>indexPath.row) {
+                
+                cell.delegate = self;
+                [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
+                
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+            }
             
-            [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             
             return cell;
             

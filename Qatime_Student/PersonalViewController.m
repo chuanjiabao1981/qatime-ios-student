@@ -9,7 +9,7 @@
 #import "PersonalViewController.h"
 #import "NavigationBar.h"
 #import "LivePlayerViewController.h"
-#import "NIMSDK.h"
+#import <NIMSDK/NIMSDK.h>
 #import "UIImageView+WebCache.h"
 #import "SettingTableViewCell.h"
 #import "MyWalletViewController.h"

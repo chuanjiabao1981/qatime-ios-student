@@ -10,7 +10,7 @@
 #import "NoticeSettingTableViewCell.h"
  
 #import "ClassNoticeSettingTableViewCell.h"
-#import "NIMSDK.h"
+#import <NIMSDK/NIMSDK.h>
 
 #import "NoticeSwitchTableViewCell.h"
 #import "NoticeWaysTableViewCell.h"
