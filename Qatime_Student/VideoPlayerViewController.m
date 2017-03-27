@@ -340,7 +340,7 @@ bool videoIsmute     = NO;
 
 - (BOOL)shouldAutorotate
 {
-    return NO;
+    return YES;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
@@ -596,5 +596,14 @@ bool videoIsmute     = NO;
     NSLog(@"resource release success!!!");
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayer];
 }
+
+// 支持哪些转屏方向
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+
+
 
 @end

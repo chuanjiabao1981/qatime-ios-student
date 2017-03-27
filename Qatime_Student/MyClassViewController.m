@@ -878,7 +878,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     
-    return self.view.height_sd*0.15;
+    return self.view.height_sd*0.15*ScrenScale;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -900,14 +900,14 @@
         }
             break;
         case 3:{
-            EndedTableViewCell *cell = [_startedClassView.classTableView cellForRowAtIndexPath:indexPath];
+            EndedTableViewCell *cell = [_endedClassView.classTableView cellForRowAtIndexPath:indexPath];
             TutoriumInfoViewController *info = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
             [self.navigationController pushViewController:info animated:YES];
         }
             
             break;
         case 4:{
-            ListenTableViewCell *cell = [_startedClassView.classTableView cellForRowAtIndexPath:indexPath];
+            ListenTableViewCell *cell = [_listenClassView.classTableView cellForRowAtIndexPath:indexPath];
             TutoriumInfoViewController *info = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
             [self.navigationController pushViewController:info animated:YES];
         }

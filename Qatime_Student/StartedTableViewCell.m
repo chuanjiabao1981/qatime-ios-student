@@ -43,7 +43,7 @@
         
         //        _name = [[UILabel alloc]init];
         _className = [[UILabel alloc]init];
-        _className.font = TITLEFONTSIZE;
+        _className.font = TEXT_FONTSIZE;
         
         /* 年级*/
         _grade = [[UILabel alloc]init];
@@ -78,25 +78,25 @@
         UILabel *progress = [[UILabel alloc]init];
         progress.text = @"进度";
         progress.textColor = [UIColor blackColor];
-        progress.font = TITLEFONTSIZE;
+        progress.font = TEXT_FONTSIZE;
         
         
         /* 已进行课时*/
         _presentCount = [[UILabel alloc]init];
         _presentCount.textColor = [UIColor blackColor];
-        _presentCount.font = TITLEFONTSIZE;
+        _presentCount.font = TEXT_FONTSIZE;
         
         
         /* 斜杠*/
         UILabel *line2 = [[UILabel alloc]init];
         line2.text = @"/";
         line2.textColor = [UIColor blackColor];
-        line2.font = TITLEFONTSIZE;
+        line2.font = TEXT_FONTSIZE;
         
         /* 总课时*/
         _totalCount = [[UILabel alloc]init];
         _totalCount.textColor = [UIColor blackColor];
-        _totalCount.font = TITLEFONTSIZE;
+        _totalCount.font = TEXT_FONTSIZE;
         
         
         /* 进入按钮*/
@@ -117,7 +117,7 @@
         .topEqualToView(_content)
         .bottomEqualToView(_content)
         .leftEqualToView(_content)
-        .widthEqualToHeight();
+        .autoWidthRatio(16/10.0);
         
         /* 状态label布局*/
         
@@ -138,7 +138,7 @@
         .topEqualToView(_status)
         .rightSpaceToView(_content,10)
         .bottomEqualToView(_status);
-        
+        [_className setMaxNumberOfLinesToShow:0];
         
         
         /* 年级布局*/

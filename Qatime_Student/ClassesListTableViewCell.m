@@ -36,16 +36,14 @@
     
     
     /* 原点布局*/
-    _circle = [[UIImageView alloc]init];
-    [_circle setImage:[UIImage imageNamed:@"redDot"]];
+    _tips = [[UIImageView alloc]init];
+    [_tips setImage:[UIImage imageNamed:@"菱形"]];
     
-//    [self.contentView addSubview:_circle];
-//    _circle.sd_layout.centerYEqualToView(self.contentView).leftSpaceToView(self.contentView,10).widthIs(20).heightEqualToWidth();
-    
+
     /* 课程名称label 布局*/
     
     _className = [[UILabel alloc]init];
-    _className.font = TITLEFONTSIZE;
+    _className.font = TEXT_FONTSIZE;
     
     
     /* 课程时间*/
@@ -60,7 +58,7 @@
     /* 课程状态*/
     _status = [[UILabel alloc]init];
     _status.textColor = TITLECOLOR;
-    _status.font = [UIFont systemFontOfSize:16*ScrenScale];
+    _status.font = [UIFont systemFontOfSize:15*ScrenScale];
     
     _class_status = @"".mutableCopy;
     
@@ -72,9 +70,8 @@
     [_replay.titleLabel setFont:[UIFont systemFontOfSize:14*ScrenScale]];
     
     
-    
     /* 全部进行布局*/
-    [self.contentView sd_addSubviews:@[_className,_circle,_classDate,_classTime,_status,_replay]];
+    [self.contentView sd_addSubviews:@[_className,_tips,_classDate,_classTime,_status,_replay]];
     
     _className.sd_layout
     .leftSpaceToView(self.contentView,30)
@@ -83,7 +80,7 @@
     .autoHeightRatio(0);
     _className.numberOfLines = 0;
     
-    _circle.sd_layout
+    _tips.sd_layout
     .widthIs(10)
     .heightIs(10)
     .centerYEqualToView(_className)
@@ -91,7 +88,7 @@
     
     _classDate.sd_layout
     .leftEqualToView(_className)
-    .topSpaceToView(_className,5)
+    .topSpaceToView(_className,10)
     .autoHeightRatio(0);
     [_classDate setSingleLineAutoResizeWithMaxWidth:200];
     
@@ -103,7 +100,7 @@
     
     _status.sd_layout
     .leftEqualToView(_className)
-    .topSpaceToView(_classDate,10)
+    .topSpaceToView(_classDate,5)
     .autoHeightRatio(0);
     [_status setSingleLineAutoResizeWithMaxWidth:100];
     

@@ -15,7 +15,7 @@
 @interface ClassesListTableViewCell : UITableViewCell
 
 /* 状态原点图*/
-@property(nonatomic,strong) UIImageView *circle ;
+@property(nonatomic,strong) UIImageView *tips ;
 
 /* 课程名称*/
 @property(nonatomic,strong) UILabel *className ;

@@ -43,7 +43,7 @@
         
         //        _name = [[UILabel alloc]init];
         _className = [[UILabel alloc]init];
-        _className.font = TITLEFONTSIZE;
+        _className.font = TEXT_FONTSIZE;
         
         /* 年级*/
         _grade = [[UILabel alloc]init];
@@ -72,7 +72,7 @@
         _totalCount = [[UILabel alloc]init];
         _totalCount.textColor = [UIColor blackColor];
         _totalCount .text = @"全部课程已完成";
-        _totalCount.font = TITLEFONTSIZE;
+        _totalCount.font = TEXT_FONTSIZE;
         
     
         
@@ -84,7 +84,7 @@
         .topEqualToView(_content)
         .bottomEqualToView(_content)
         .leftEqualToView(_content)
-        .widthEqualToHeight();
+        .autoWidthRatio(16/10.0);
         
         
         /* 课程名称布局*/
@@ -94,6 +94,7 @@
         .topSpaceToView(_content,5)
         .rightSpaceToView(_content,10)
         .autoHeightRatio(0);
+        [_className setMaxNumberOfLinesToShow:1];
         
         
         /* 年级布局*/
@@ -137,10 +138,6 @@
         .bottomSpaceToView(_content,5)
         .autoHeightRatio(0);
         [_totalCount setSingleLineAutoResizeWithMaxWidth:500];
-        
-
-        
-        
         
         
         

@@ -88,7 +88,7 @@
         [_content addSubview:_dist];
         _dist.textColor = [UIColor blackColor];
         _dist.text = @"距开课";
-        _dist.font = TITLEFONTSIZE;
+        _dist.font = TEXT_FONTSIZE;
         
         _dist.sd_layout
         .leftSpaceToView(_classImage,10)
@@ -112,7 +112,7 @@
         [_content addSubview:_days];
         _days.text = @"天";
         _days.textColor = [UIColor blackColor];
-        _days.font = TITLEFONTSIZE;
+        _days.font = TEXT_FONTSIZE;
         _days.sd_layout
         .leftSpaceToView(_deadLineLabel,0)
         .topEqualToView(_deadLineLabel)
@@ -124,32 +124,32 @@
         _progress = [[UILabel alloc]init];
         _progress.text = @"进度";
         _progress.textColor = [UIColor blackColor];
-        _progress.font = TITLEFONTSIZE;
+        _progress.font = TEXT_FONTSIZE;
         
         
         /* 已进行课时*/
         _presentCount = [[UILabel alloc]init];
         _presentCount.textColor = [UIColor blackColor];
-        _presentCount.font = TITLEFONTSIZE;
+        _presentCount.font = TEXT_FONTSIZE;
         
         
         /* 斜杠*/
         _line2 = [[UILabel alloc]init];
         _line2.text = @"/";
         _line2.textColor = [UIColor blackColor];
-        _line2.font = TITLEFONTSIZE;
+        _line2.font = TEXT_FONTSIZE;
         
         /* 总课时*/
         _totalCount = [[UILabel alloc]init];
         _totalCount.textColor = [UIColor blackColor];
-        _totalCount.font = TITLEFONTSIZE;
+        _totalCount.font = TEXT_FONTSIZE;
         
         
         /* 结课*/
         _finish = [[UILabel alloc]init];
         _finish.textColor = [UIColor blackColor];
         _finish .text = @"全部课程已完成";
-        _finish.font = TITLEFONTSIZE;
+        _finish.font = TEXT_FONTSIZE;
         
         
         
@@ -171,7 +171,7 @@
         .topEqualToView(_content)
         .bottomEqualToView(_content)
         .leftEqualToView(_content)
-        .widthEqualToHeight();
+        .autoWidthRatio(16/10.0);
         
         /* 状态label布局*/
         
@@ -191,6 +191,7 @@
         .topEqualToView(_status)
         .rightSpaceToView(_content,10)
         .bottomEqualToView(_status);
+        [_className setMaxNumberOfLinesToShow:1];
         
         
         

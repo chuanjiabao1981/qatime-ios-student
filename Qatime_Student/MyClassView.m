@@ -23,15 +23,15 @@
         _segmentControl =({
             HMSegmentedControl *_ = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"待开课",@"已开课",@"已结束",@"我的试听"]];
             [self addSubview:_];
-            _.frame = CGRectMake(0, 0, SCREENWIDTH, self.height_sd*0.07) ;
+            _.frame = CGRectMake(0, 0, SCREENWIDTH, self.height_sd*0.07*ScrenScale) ;
             _.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
             _.borderType = HMSegmentedControlBorderTypeBottom;
-            _.borderColor = [UIColor lightGrayColor];
-            _.borderWidth = 0.4;
+            _.borderColor = SEPERATELINECOLOR_2;
+            _.borderWidth = 0.5;
             _.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
-            _.selectionIndicatorColor = [UIColor blackColor];
+            _.selectionIndicatorColor = BUTTONRED;
             _.selectionIndicatorHeight = 2;
-            _.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor lightGrayColor]};
+            _.titleTextAttributes = @{NSForegroundColorAttributeName:TITLECOLOR};
             _.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor]};
             _.selectedSegmentIndex = 0;
             _.verticalDividerEnabled = NO;
@@ -43,7 +43,7 @@
         
         _scrollView = ({
             
-            UIScrollView *_=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 40, SCREENWIDTH, SCREENHEIGHT-40)];
+            UIScrollView *_=[[UIScrollView alloc]initWithFrame:CGRectMake(0,_segmentControl.bottom_sd, SCREENWIDTH, SCREENHEIGHT-40)];
             _.contentSize = CGSizeMake(SCREENWIDTH*4, SCREENHEIGHT-40);
             [self addSubview:_];
             _.pagingEnabled = YES;

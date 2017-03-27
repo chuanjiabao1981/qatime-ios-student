@@ -35,7 +35,7 @@
         .rightSpaceToView(self.contentView,10)
         .topSpaceToView(self.contentView,5)
         .bottomSpaceToView(self.contentView,5);
-        _content.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        _content.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
         _content.layer.borderWidth = 0.8f;
         
         _content.layer.shadowColor =  TITLECOLOR.CGColor;
@@ -44,16 +44,12 @@
         _content.layer.shadowOpacity = 0.3;
         
         
-        
-        
         /* 课程图片*/
         _classImage = [[UIImageView alloc]init];
         
         /* 课程名称*/
-        
-//        _name = [[UILabel alloc]init];
         _className = [[UILabel alloc]init];
-        _className.font = TITLEFONTSIZE;
+        _className.font = TEXT_FONTSIZE;
         
         /* 年级*/
         _grade = [[UILabel alloc]init];
@@ -102,7 +98,7 @@
         .topEqualToView(_content)
         .bottomEqualToView(_content)
         .leftEqualToView(_content)
-        .widthEqualToHeight();
+        .autoWidthRatio(16/10.0);
         
         /* 状态label布局*/
         
@@ -114,8 +110,6 @@
         [_status setSingleLineAutoResizeWithMaxWidth:200];
 
         
-        
-        
         /* 课程名称布局*/
         
         _className.sd_layout
@@ -123,7 +117,7 @@
         .topEqualToView(_status)
         .rightSpaceToView(_content,10)
         .bottomEqualToView(_status);
-        
+         [_className setMaxNumberOfLinesToShow:1];
         
         
         /* 年级布局*/
@@ -163,7 +157,7 @@
         
         /* 距离开课时间*/
         dist = [[UILabel alloc]init];
-        dist.font = TITLEFONTSIZE;
+        dist.font = TEXT_FONTSIZE;
         [_content addSubview:dist];
         dist.textColor = [UIColor blackColor];
 //        dist.text = @"距开课";

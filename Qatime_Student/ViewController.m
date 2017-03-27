@@ -57,6 +57,12 @@
 }
 
 
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+    
+}
+
 
 
 

@@ -2670,11 +2670,6 @@ bool ismute     = NO;
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordEnd) name:@"RecordEnd" object:nil];
     
     
-    //获取在线人数
-    [self checkOnlineNumber];
-    
-    
-    
 }
 
 
@@ -4646,11 +4641,11 @@ bool ismute     = NO;
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/live_status",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/status",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        NSDictionary *dataDic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
-        [self loginStates:dataDic];
+        [self loginStates:dic];
         
         NSLog(@"向服务器请求视频直播状态成功!");
         
@@ -4671,17 +4666,45 @@ bool ismute     = NO;
         //        }
         
         
-        if ([dataDic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
+        //新的状态查询接口返回数据
+//        {
+//            "status": 1,
+//            "data": {
+//                "live_info": {
+//                    "id": "82",
+//                    "name": "第一课",
+//                    "status": "missed",
+//                    "board": "0",
+//                    "camera": "0",
+//                    "t": "1490336337"
+//                },
+//                "online_users": [
+//                                 "2878"
+//                                 ],
+//                "timestamp": 1490595407
+//            }
+//        }
+        
+        
+        
+        if ([dic[@"status"] isEqualToNumber:@1]) {
             
             /* 获取数据成功,执行下一步操作*/
             
-            _statusDic = [NSDictionary dictionaryWithDictionary:dataDic[@"data"]];
+            _statusDic = [NSDictionary dictionaryWithDictionary:dic[@"data"][@"live_info"]];
             
-            [self switchStatuseWithDictionary:dataDic[@"data"]];
+            
+            //检查播放器播放状态
+            [self switchStatuseWithDictionary:_statusDic];
+            
+            //检查在线人数
+            [self switchOnlineNumbersWithArrayrs:dic[@"data"][@"online_users"]];
             
             
         }else{
             /* 获取数据失败*/
+            
+            [self checkVideoStatus];
             
         }
         
@@ -4700,37 +4723,17 @@ bool ismute     = NO;
     /* 状态都是1  都是正在直播中的时候*/
     if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:1]]&&[statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:1]]) {
         
-        if ([_liveplayerBoard isPlaying]) {
-            
-            [_liveplayerBoard play];
-            
-            
-        }else{
-            
-            
-            [_liveplayerBoard play];
-            
-        }
-        
-        if ([_liveplayerTeacher isPlaying]) {
-            
-            [_liveplayerTeacher play];
-            
-            
-        }else{
-            
-            [_liveplayerTeacher play];
-            
-        }
+        //两个播放器继续播放
+        [_liveplayerBoard play];
+      
+        [_liveplayerTeacher play];
         
         /* 不用再向服务器发送查询请求*/
-        
         NSLog(@"白板读取状态:%u",_liveplayerBoard.loadState);
         NSLog(@"白板播放状态:%u",_liveplayerBoard.playbackState);
         
         NSLog(@"摄像头读取状态:%u",_liveplayerTeacher.loadState);
         NSLog(@"摄像头播放状态:%u",_liveplayerTeacher.playbackState);
-        
         
         if (_liveplayerBoard.playbackState != NELPMoviePlaybackStatePlaying) {
             [self playVideo:_liveplayerBoard];
@@ -4741,7 +4744,6 @@ bool ismute     = NO;
         }
         
     }
-    
     
     
     /* 如果有一个播放器是直播状态*/
@@ -4772,11 +4774,7 @@ bool ismute     = NO;
          */
         
         [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
-        
-        
     }
-    
-    
     
     /* 直播结束的状态*/
     
@@ -4785,7 +4783,6 @@ bool ismute     = NO;
         if ([statusDic[@"board"] isEqual:[NSNumber numberWithInteger:2]]) {
             
             [_liveplayerBoard stop];
-            
             
         }
         if ([statusDic[@"camera"]isEqual:[NSNumber numberWithInteger:2]]) {
@@ -4821,35 +4818,28 @@ bool ismute     = NO;
     
 }
 
-//后台轮询查询人数方法-->每30s 获取一次在线人数
-- (void)checkOnlineNumber{
+
+/**
+ 根据轮询数据查询在线观看人数
+
+ @param memberArray 在线成员ID数组
+ */
+- (void)switchOnlineNumbersWithArrayrs:(NSArray *)memberArray{
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/status",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-        
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-        if ([dic[@"status"] isEqualToNumber:@1]) {
-            
-            NSLog(@"获取在线人数成功,当前在线人数:%ld",[dic[@"data"][@"online_users"] count]);
-            //在线人数
-            _onLineNumber.text = [NSString stringWithFormat:@"%ld", [dic[@"data"][@"online_users"] count]];
-            [self performSelector:@selector(checkOnlineNumber) withObject:nil afterDelay:30];
-            
-        }else{
-            NSLog(@"获取在线人数失败");
-            [self performSelector:@selector(checkOnlineNumber) withObject:nil afterDelay:30];
-            
-            
-        }
-        
-    }];
+    
+    NSLog(@"获取在线人数成功,当前在线人数:%ld",[memberArray count]);
+    //在线人数
+    _onLineNumber.text = [NSString stringWithFormat:@"%ld", [memberArray count]];
+    
+    
+    
+    
+    
 }
-
-
 
 
 /* 播放器播放方法*/
 - (void)playVideo:(NELivePlayerController <NELivePlayer> *)liveplayer{
-    
     
     NSLog(@"尝试播放暂停的播放器");
     [liveplayer play];
