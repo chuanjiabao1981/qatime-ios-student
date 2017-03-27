@@ -493,7 +493,7 @@
             if ([_dataDic[@"is_tasting"]boolValue]==YES) {
                 /* 还没有试听*/
                 [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
-                [_buyBar.listenButton setBackgroundColor:BUTTONRED];
+                [_buyBar.listenButton setBackgroundColor:NAVIGATIONRED];
                 [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 
                 if (![data[@"status"] isEqualToString:@"finished"]&&![data[@"status"] isEqualToString:@"competed"]){
@@ -545,7 +545,7 @@
         [_buyBar updateLayout];
         
         [_buyBar.listenButton setTitle:@"开始学习" forState:UIControlStateNormal];
-        _buyBar.listenButton.backgroundColor = BUTTONRED;
+        _buyBar.listenButton.backgroundColor = NAVIGATIONRED;
         [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
         
@@ -595,7 +595,7 @@
     if (_dataDic) {
         if ([_dataDic[@"taste_count"]integerValue]>0) {
             /* 可以试听的情况*/
-            //            [self loadingHUDStartLoadingWithTitle:@"正在加入试听"];
+            
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -611,7 +611,7 @@
                     [_buyBar.listenButton removeTarget:self action:@selector(addListen) forControlEvents:UIControlEventTouchUpInside];
                     
                     [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
-                    [_buyBar.listenButton setBackgroundColor:BUTTONRED];
+                    [_buyBar.listenButton setBackgroundColor:NAVIGATIONRED];
                     [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                     
                     [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];

@@ -70,10 +70,10 @@
 
 
 /*按钮红色*/
-#define BUTTONRED [UIColor colorWithRed:0.79 green:0.00 blue:0.0 alpha:1.00] 
+#define BUTTONRED [UIColor colorWithRed:0.99 green:0.35 blue:0.29 alpha:1.00]
 
 /* 标题红色*/
-#define TITLERED [UIColor colorWithRed:0.75 green:0.04 blue:0.04 alpha:1.00]
+#define TITLERED [UIColor colorWithRed:0.99 green:0.35 blue:0.29 alpha:1.00]
 
 
 /* 导航栏红*/

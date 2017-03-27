@@ -459,9 +459,8 @@ typedef enum : NSUInteger {
                 
                 ClassSubjectCollectionViewCell *cell = (ClassSubjectCollectionViewCell *)[_tagsFilterView.tagsCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
                 
-                cell.subject.textColor = [UIColor whiteColor];
-                cell.subject.backgroundColor = [UIColor orangeColor];
-                cell.subject.layer.borderColor = [UIColor orangeColor].CGColor;
+                cell.subject.textColor = BUTTONRED;
+                cell.subject.layer.borderColor = BUTTONRED.CGColor;
                 
             }else{
                 ClassSubjectCollectionViewCell *cell = (ClassSubjectCollectionViewCell *)[_tagsFilterView.tagsCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
@@ -783,8 +782,6 @@ typedef enum : NSUInteger {
         _tagsFilterView.tagsCollection.dataSource = self;
         
         [_tagsFilterView.tagsCollection registerClass:[ClassSubjectCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
-        
-        
         
     }
     

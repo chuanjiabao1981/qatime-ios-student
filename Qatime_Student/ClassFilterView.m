@@ -26,7 +26,7 @@
             _.titleLabel.textColor = TITLECOLOR;
             _.titleLabel.font = [UIFont systemFontOfSize:15*ScrenScale];
             _.sd_layout
-            .leftSpaceToView(self,20*ScrenScale)
+            .leftSpaceToView(self,15*ScrenScale)
             .topEqualToView(self)
             .bottomEqualToView(self)
             .widthEqualToHeight();

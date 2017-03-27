@@ -25,22 +25,6 @@
     if (self) {
         
         _segmentControl = ({
-//            HMSegmentedControl *_=[[HMSegmentedControl alloc]initWithSectionTitles:@[@"辅导班消息",@"系统消息"]];
-////            _.type = HMSegmentedControlTypeTextImages;
-//            _.frame = CGRectMake(0, 0, self.width_sd, self.height_sd*0.05);
-//            _.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
-//            _.borderType = HMSegmentedControlBorderTypeBottom;
-//            _.borderColor = [UIColor lightGrayColor];
-//            _.borderWidth = 0.4;
-//            _.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
-//            _.selectionIndicatorColor = [UIColor redColor];
-//            _.selectionIndicatorHeight = 2;
-//            _.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor lightGrayColor],
-//                                      NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
-//            _.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-//                                              NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
-//            _.selectedSegmentIndex = 0;
-//            _.verticalDividerEnabled = NO;
             
             JTSegmentControl *_=[[JTSegmentControl alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, self.height_sd*0.065)];
 //            _.delegate = self;
@@ -50,7 +34,7 @@
             _.itemTextColor = [UIColor blackColor];
             _.font = [UIFont systemFontOfSize:15*ScrenScale];
             _.selectedFont = [UIFont systemFontOfSize:15*ScrenScale];
-            _.sliderViewColor = BUTTONRED;
+            _.sliderViewColor = NAVIGATIONRED;
             [_ setSliderViewHeight:0.5];
             [self addSubview:_];
             _;

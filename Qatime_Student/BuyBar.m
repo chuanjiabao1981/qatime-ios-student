@@ -20,10 +20,10 @@
         _listenButton = [[UIButton alloc]init];
         _listenButton.backgroundColor = [UIColor whiteColor];
         [_listenButton setTitle:@"加入试听" forState:UIControlStateNormal];
-        [_listenButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+        [_listenButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
         _listenButton.titleLabel.font = TITLEFONTSIZE;
         
-        _listenButton.layer.borderColor = BUTTONRED.CGColor;
+        _listenButton.layer.borderColor = NAVIGATIONRED.CGColor;
         _listenButton.layer.borderWidth = 1.0;
         
         
@@ -32,9 +32,9 @@
         _applyButton =[[UIButton alloc]init];
         _applyButton.backgroundColor = [UIColor whiteColor];
         [_applyButton setTitle:@"立即报名" forState:UIControlStateNormal];
-        [_applyButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+        [_applyButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
         _applyButton.titleLabel.font = TITLEFONTSIZE;
-        _applyButton.layer.borderColor = BUTTONRED.CGColor;
+        _applyButton.layer.borderColor = NAVIGATIONRED.CGColor;
         _applyButton.layer.borderWidth = 1.0;
         
         
