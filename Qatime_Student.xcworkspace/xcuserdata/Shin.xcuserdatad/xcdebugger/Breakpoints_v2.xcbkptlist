@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMSDK/NIMKit/Classes/Sections/Session/NIMSessionViewController.m"
-            timestampString = "512310943.308013"
+            filePath = "Qatime_Student/ChatViewController.m"
+            timestampString = "512296332.261776"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
-            landmarkName = "-tableView:heightForRowAtIndexPath:"
+            startingLineNumber = "922"
+            endingLineNumber = "922"
+            landmarkName = "-sendMessage:didCompleteWithError:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

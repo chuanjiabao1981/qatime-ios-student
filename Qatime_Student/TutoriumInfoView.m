@@ -119,7 +119,6 @@
         .rightEqualToView(self)
         .topSpaceToView(line1,5)
         .heightIs(30);
-        [_segmentControl updateLayout];
         
         _segmentControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
         _segmentControl.borderType = HMSegmentedControlTypeText;
@@ -138,10 +137,10 @@
         .leftEqualToView(self)
         .rightEqualToView(self)
         .topSpaceToView(_segmentControl,0)
-        .heightIs(self.height_sd-_segmentControl.height_sd);
+        .bottomEqualToView(self);
         
         [_scrollView updateLayout];
-//        _scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame)*3,_scrollView.height_sd );
+        _scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame)*3,_scrollView.height_sd );
         _scrollView.pagingEnabled = YES;
         _scrollView.showsHorizontalScrollIndicator = NO;
         [_scrollView scrollRectToVisible:CGRectMake(CGRectGetWidth(self.frame), 0, CGRectGetWidth(self.frame), 200) animated:NO];
@@ -606,13 +605,6 @@
         [_view3 addSubview:_classesListTableView];
         
         _classesListTableView.sd_layout.leftSpaceToView(_view3,0).rightSpaceToView(_view3,0).topSpaceToView(_view3,0).bottomSpaceToView(_view3,0);
-        
-        
-        //scrollview横向自适应
-        [_scrollView setupAutoContentSizeWithRightView:_view3 rightMargin:0];
-        
-        //视图自适应
-        [self setupAutoContentSizeWithBottomView:_scrollView bottomMargin:10];
         
         
     }

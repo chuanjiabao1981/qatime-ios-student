@@ -145,11 +145,8 @@
     
     
     _tutoriumInfoView.scrollView.delegate = self;
-    _tutoriumInfoView.delegate = self;
-    _tutoriumInfoView.view1.delegate = self;
-    _tutoriumInfoView.view2.delegate = self;
+    //  _tutoriumInfoView.classesListTableView.scrollEnabled =YES;
     
-
     _tutoriumInfoView.segmentControl.selectionIndicatorHeight=2;
     _tutoriumInfoView.segmentControl.selectedSegmentIndex=0;
     
@@ -211,8 +208,6 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(requestAgain) name:@"UserLoginAgain" object:nil];
     
 }
-
-
 
 /* 登录成功后,再次加载数据*/
 - (void)requestAgain{
@@ -340,7 +335,7 @@
                     _tutoriumInfoView.liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[_dataDic[@"live_start_time"]length]>=10?[_dataDic[@"live_start_time"] substringToIndex:10]:_dataDic[@"live_start_time"],[_dataDic[@"live_end_time"] length]>=10?[_dataDic[@"live_end_time"] substringToIndex:10]:_dataDic[@"live_end_time"]];
                    
                     //课程目标
-                    _tutoriumInfoView.classTarget.text = _dataDic[@"objective"]==[NSNull null]?@"无":_dataDic[@"objective"];
+                    _tutoriumInfoView.classTarget.text = _dataDic[@"objective"]==[NSNull null]?@"无":_dataDic[@"object"];
                     
                     //适合人群
                     _tutoriumInfoView.suitable.text = _dataDic[@"suit_crowd"]==[NSNull null]?@"无":_dataDic[@"suit_crowd"];
@@ -750,21 +745,6 @@
         
         [_tutoriumInfoView.segmentControl setSelectedSegmentIndex:page animated:YES];
     }
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
-//    if (scrollView == _tutoriumInfoView.view1) {
-//        
-//        if (_tutoriumInfoView.contentOffset.y >= _tutoriumInfoView.segmentControl.top_sd) {
-//            scrollView.scrollEnabled = YES;
-//            _tutoriumInfoView.scrollEnabled = NO;
-//            
-//        }else{
-//            scrollView.scrollEnabled = NO;
-//            _tutoriumInfoView.scrollEnabled = YES;
-//        }
-//    }
     
     
 }
