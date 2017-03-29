@@ -15,10 +15,6 @@
 #endif /* UserPCH_pch */
 
 
-#import "SDAutoLayout.h"
-#import "AFNetworking.h"
-#import "Masonry.h"
-
 /* 测试和生产环境域名的转换*/
 
 //http://testing.qatime.cn
@@ -93,12 +89,12 @@
 
 /* nslog的封装*/
 #ifdef DEBUG
-#define DLog(fmt, ...) NSLog((@"[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" fmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
+//#define DLog(fmt, ...) NSLog((@"[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" fmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
 #define DeBugLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 #define NSLog(...) NSLog(__VA_ARGS__);
 #define MyNSLog(FORMAT, ...) fprintf(stderr,"[%s]:[line %d行] %s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 #else
-#define DLog(...)
+//#define DLog(...)
 #define DeBugLog(...)
 #define NSLog(...)
 #define MyNSLog(FORMAT, ...) nil
@@ -118,9 +114,15 @@
 
 /* 全局引用文件*/
 
+
+#ifdef __OBJC__
 #import <objc/runtime.h>
 #import <objc/message.h>
+#import "SDAutoLayout.h"
+#import "AFNetworking.h"
+#import "Masonry.h"
 #import "UIButton+EnlargeTouchArea.h"
 #import "UIViewController+Login.h"
+#endif
 
 
