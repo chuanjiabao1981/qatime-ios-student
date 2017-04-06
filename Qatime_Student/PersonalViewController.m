@@ -18,14 +18,13 @@
 #import "SafeViewController.h"
 #import "SettingViewController.h"
 #import "MyOrderViewController.h"
+#import "MyOneOnOneViewController.h"
 
 #import "UIViewController_HUD.h"
 #import "UIViewController+HUD.h"
 #import "PersonalInfoViewController.h"
 #import "UIAlertController+Blocks.h"
 #import "UIImageView+WebCache.h"
-
-
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.width
@@ -74,10 +73,10 @@
 
     
     /* 菜单名*/
-    _settingName = @[/*@"我的钱包",@"我的订单",*/@"我的辅导",@"安全管理",@"系统设置"];
+    _settingName = @[@"我的钱包",@"我的订单",@"我的辅导",@"我的一对一",@"安全管理",@"系统设置"];
     
     /* cell的图片*/
-    _cellImage = @[/*[UIImage imageNamed:@"美元"],[UIImage imageNamed:@"订单"],*/[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"安全"],[UIImage imageNamed:@"设置"]];
+    _cellImage = @[[UIImage imageNamed:@"美元"],[UIImage imageNamed:@"订单"],[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"安全"],[UIImage imageNamed:@"设置"]];
     
     /* 导航栏*/
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
@@ -96,7 +95,7 @@
     _personalView.settingTableView.dataSource = self;
     _personalView.settingTableView.tableHeaderView = _headView;
     _personalView.settingTableView.tableHeaderView.size = CGSizeMake(SCREENWIDTH, SCREENHEIGHT*2/5);
-    _personalView.settingTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     _personalView.settingTableView.bounces = NO;
     _personalView.settingTableView.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
     
@@ -275,17 +274,15 @@
  */
 - (NSInteger)compareTwoTime:(long long)time1 time2:(long long)time2{
     
-    NSTimeInterval balance = time2 /1000- time1 /1000;
+    NSTimeInterval balance = time2 - time1;
     
     NSString*timeString = [[NSString alloc]init];
     
-    timeString = [NSString stringWithFormat:@"%f",balance /60];
+    timeString = [NSString stringWithFormat:@"%f",balance /3600];
     
     timeString = [timeString substringToIndex:timeString.length-7];
     
-    NSInteger timeInt = [timeString intValue];
-    
-    NSInteger hour = timeInt /60;
+    NSInteger hour = [timeString intValue];
     
     
     
@@ -301,14 +298,14 @@
 
 
 
-#pragma mark- tableview datasouce
+#pragma mark- tableview datasource
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
   
     NSInteger rows = 1;
     
     if (section == 0) {
-        rows = 1;
+        rows = 4;
     }else if (section ==1){
         
         rows =2;
@@ -338,8 +335,8 @@
                 break;
             case 1:{
                 
-                [cell.logoImage setImage:_cellImage[indexPath.row+1]];
-                cell.settingName.text = _settingName[indexPath.row+1];
+                [cell.logoImage setImage:_cellImage[indexPath.row+4]];
+                cell.settingName.text = _settingName[indexPath.row+4];
                 cell.arrow.hidden = YES;
             }
                 
@@ -349,25 +346,24 @@
         
         if (indexPath.section ==0) {
             
-//            if (indexPath.row ==0) {
-//                cell.arrow.hidden = YES;
-//                
-//                if (login) {
-//                    
-//                    cell.balance .hidden = NO;
-//                    
-//                }else{
-//                    
-//                }
-//                
-//                if (_balance == nil) {
-//                    
-//                }else{
-//                    
-//                    cell.balance.text = [NSString stringWithFormat:@"￥%@",_balance];
-//                }
-//            }
             if (indexPath.row ==0) {
+                cell.arrow.hidden = YES;
+                
+                if (login) {
+                    
+                    cell.balance .hidden = NO;
+                    
+                }else{
+                    
+                }
+                
+                if (_balance == nil) {
+                    
+                }else{
+                    
+                    cell.balance.text = [NSString stringWithFormat:@"￥%@",_balance];
+                }
+            }else{
                 cell.arrow.hidden = YES;
 //                cell.separateLine.hidden = YES;
             }
@@ -386,20 +382,7 @@
 
 
 
-
 #pragma mark- tableview delegate
-
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    
-    NSInteger height = 0;
-    if (section ==1) {
-        return 10;
-    }
-    
-    return height;
-    
-}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
@@ -431,28 +414,35 @@
             switch (indexPath.section) {
                 case 0:{
                     switch (indexPath.row) {
-//                        case 0:{
-//                            MyWalletViewController *mwVC = [MyWalletViewController new];
-                            
-//                            [self.navigationController pushViewController:mwVC animated:YES];
-
-//                        }
-//                            break;
-//                        case 1:{
-//                            
-//                            MyOrderViewController *moVC = [MyOrderViewController new];
-//                            [self.navigationController pushViewController:moVC animated:YES];
-
-//                        }
-//                            break;
                         case 0:{
+                            MyWalletViewController *mwVC = [MyWalletViewController new];
+                            mwVC.hidesBottomBarWhenPushed = YES;
+                            [self.navigationController pushViewController:mwVC animated:YES];
+
+                        }
+                            break;
+                        case 1:{
+                            
+                            MyOrderViewController *moVC = [MyOrderViewController new];
+                            moVC.hidesBottomBarWhenPushed = YES;
+                            [self.navigationController pushViewController:moVC animated:YES];
+
+                        }
+                            break;
+                        case 2:{
                             MyClassViewController *mcVC = [MyClassViewController new];
                             mcVC.hidesBottomBarWhenPushed = YES;
                             [self.navigationController pushViewController:mcVC animated:YES];
                             
                         }
                             break;
+                        case 3:{
+                            MyOneOnOneViewController *monVC = [MyOneOnOneViewController new];
+                            monVC.hidesBottomBarWhenPushed = YES;
+                            [self.navigationController pushViewController:monVC animated:YES];
                             
+                        }
+                            break;
                             
                     }
                     

@@ -38,6 +38,10 @@
 #import "LivePlayerViewController.h"
 #import "UIViewController+AFHTTP.h"
 
+#import "OneOnOneTutoriumInfoViewController.h"
+#import "UIButton+EnlargeTouchArea.h"
+#import "SafeViewController.h"
+
 
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate,LCTabBarDelegate,UITableViewDelegate,UITableViewDataSource>{
     
@@ -90,6 +94,10 @@
     
     /* 头视图的尺寸*/
     CGSize headerSize;
+    
+    /**未设置支付密码的提示栏*/
+    UIView *_warningView;
+    
     
     UIButton *_location;
     
@@ -160,6 +168,9 @@
     });
     
     [_navigationBar.rightButton addTarget:self action:@selector(enterScanPage) forControlEvents:UIControlEventTouchUpInside];
+    
+    //偷偷的加载未设置支付密码提示栏
+    [self makeWarningView];
     
 }
 
@@ -244,8 +255,6 @@
         
     }];
     
-    
-    
     //推荐教师视图
     
     UICollectionViewFlowLayout *teacherLayout = [[UICollectionViewFlowLayout alloc]init];
@@ -283,12 +292,22 @@
     /* 另一线程在后台请求未读消息和系统消息*/
     [self checkNotice];
     
-    //请求所有tags
-    [self getTags];
-    
     /* 接收地址选择页面传来的地址*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeLoacal:) name:@"UseLocal" object:nil];
     
+    /**接收支付密码设置成功的消息*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(payPasswordSuccess) name:@"SetPayPasswordSuccess" object:nil];
+    
+    /**异步线程请求账户信息,是否设置了支付密码*/
+    if (_token&&_idNumber) {
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            
+            [self getCashInfos];
+            
+        });
+        
+    }
     
 }
 
@@ -357,6 +376,37 @@
         }
         
     }];
+    
+}
+
+/**获取用户的资金概况*/
+- (void)getCashInfos{
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+            if ([dic[@"data"][@"has_password"] boolValue]==NO) {
+                
+                //没设置支付密码
+                _warningView.hidden = NO;
+                [UIView animateWithDuration:0.4 animations:^{
+                    _warningView.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, 40*ScrenScale);
+                    _indexPageView.frame = CGRectMake(0, Navigation_Height+40*ScrenScale,self.view.width_sd, self.view.height_sd-Navigation_Height-40*ScrenScale-TabBar_Height);
+                    
+                }];
+                
+            }else{
+                
+            }
+        }else{
+            [self getCashInfos];
+        }
+        
+        
+    }];
+    
     
 }
 
@@ -926,7 +976,8 @@
         
         TodayLiveCollectionViewCell *cell = (TodayLiveCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
         
-        TutoriumInfoViewController *controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+//        TutoriumInfoViewController *controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+        OneOnOneTutoriumInfoViewController *controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:@"1"];
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
         
@@ -1309,21 +1360,71 @@
 }
 
 
-#pragma mark- 获取系统支持的tags (课程标签)
-- (void)getTags{
+
+/**顶部栏*/
+- (void)makeWarningView{
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/app_constant/tags",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
+    if (!_warningView) {
+        _warningView = [[UIView alloc]init];
+        _warningView.backgroundColor = [UIColor orangeColor];
+        _warningView .userInteractionEnabled = YES;
+        _warningView.hidden = YES;
+        [self.view addSubview:_warningView];
+        _warningView.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, 0);
         
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-        if ([dic[@"status"]isEqualToNumber:@1]) {
-            
-            [[NSUserDefaults standardUserDefaults] setValue:dic[@"data"] forKey:@"Tags"];
-            
-        }
+        UIImageView *war = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"感叹号"]];
+        [_warningView addSubview:war];
+        war.frame = CGRectMake(10*ScrenScale, 10*ScrenScale, 20*ScrenScale, 20*ScrenScale);
         
-    }];
+        UILabel *warning = [[UILabel alloc]init];
+        warning.text = @"尚未设置支付密码,点击设置";
+        warning.font = [UIFont systemFontOfSize:12*ScrenScale];
+        warning.textColor = [UIColor whiteColor];
+        [_warningView addSubview:warning];
+        warning.frame = CGRectMake(war.right_sd+10*ScrenScale, 10*ScrenScale, 200*ScrenScale, war.height_sd);
+    
+        UIButton *closeWarningButton = [[UIButton alloc]init];
+        [closeWarningButton setImage:[UIImage imageNamed:@"叉"] forState:UIControlStateNormal];
+        [_warningView addSubview:closeWarningButton];
+        closeWarningButton.frame = CGRectMake(_warningView.width_sd-30, 10*ScrenScale, 20*ScrenScale, 20*ScrenScale);
+        [closeWarningButton setEnlargeEdge:10];
+        
+        [closeWarningButton addTarget:self action:@selector(closeWarning) forControlEvents:UIControlEventTouchUpInside];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(enterPayPasswordSettingView)];
+        [_warningView addGestureRecognizer:tap];
+        
+    }
     
 }
+
+/**关闭支付密码设置提示栏*/
+- (void)closeWarning{
+    
+   [UIView animateWithDuration:0.5 animations:^{
+      
+       _warningView.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, 0);
+       
+       _indexPageView.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height-TabBar_Height);
+       
+   }];
+    
+}
+
+/**接受支付密码设置成功的消息*/
+- (void)payPasswordSuccess{
+    [self closeWarning];
+}
+
+/**进入支付密码设置页*/
+- (void)enterPayPasswordSettingView{
+    
+    SafeViewController *controller = [[SafeViewController alloc]init];
+    controller .hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
+    
+}
+
+
 
 
 /* 是否可以进入消息中心*/
@@ -1710,6 +1811,7 @@
     
     
 }
+
 
 
 

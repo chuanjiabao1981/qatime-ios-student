@@ -613,10 +613,7 @@
         [_cancelView.tableView.mj_footer endRefreshing];
     }];
     
-    
 }
-
-
 
 
 #pragma mark- tableview datasource
@@ -657,8 +654,6 @@
             
     }
     
-    
-    
     return rows;
 }
 
@@ -675,11 +670,11 @@
             if (cell==nil) {
                 cell=[[MyOrderTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
-                cell.sd_tableView = tableView;
+                
             }
             
             if (_unpaidArr.count>indexPath.row) {
-                
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 cell.unpaidModel = _unpaidArr[indexPath.row];
                 cell.leftButton.tag = 100+indexPath.row;
                 cell.rightButton.tag = 200+indexPath.row;
@@ -687,6 +682,7 @@
                 [cell.rightButton addTarget:self action:@selector(payOrder:) forControlEvents:UIControlEventTouchUpInside];
                 
                 [cell.leftButton setTitle:@"取消订单" forState:UIControlStateNormal];
+             
             }
             
             
@@ -741,30 +737,20 @@
             if (cell==nil) {
                 cell=[[CancelOrderTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
-                cell.leftButton.tag = 500+indexPath.row;
-                cell.rightButton.tag = 600+indexPath.row;
-                
-                [cell.leftButton setTitle:@"删除订单" forState:UIControlStateNormal];
-                cell.leftButton.hidden = YES;
-                [cell.rightButton setTitle:@"重新下单" forState:UIControlStateNormal];
-                
-                
-                [cell.rightButton addTarget:self action:@selector(buyAgain:) forControlEvents:UIControlEventTouchUpInside];
-                
-                
-                cell.sd_tableView = tableView;
-                
             }
             
             if (_caneldArr.count>indexPath.row) {
-                
-                cell.canceldModel = _caneldArr[indexPath.row];
-                cell.leftButton.tag = 500+indexPath.row;
+//                cell.leftButton.tag = 500+indexPath.row;
                 cell.rightButton.tag = 600+indexPath.row;
-                //                [cell.leftButton addTarget:self action:@selector(repage:) forControlEvents:UIControlEventTouchUpInside];
                 
+//                cell.leftButton.hidden = YES;
+//                [cell.rightButton setTitle:@"重新下单" forState:UIControlStateNormal];
                 
-                
+                [cell.rightButton addTarget:self action:@selector(buyAgain:) forControlEvents:UIControlEventTouchUpInside];
+
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+                cell.canceldModel = _caneldArr[indexPath.row];
+               
             }
             
             return  cell;
@@ -786,8 +772,6 @@
 #pragma mark- tableview delegate
 
 
-
-
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
     return 1;
@@ -795,40 +779,36 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSInteger height;
+    NSInteger height = 0;
     
     switch (tableView.tag) {
         case 1:{
             
-            if (_unpaidArr.count>indexPath.row) {
-                
                 Unpaid *model = _unpaidArr[indexPath.row];
                 
-                height= [tableView cellHeightForIndexPath:indexPath model:model keyPath:@"unpaidModel" cellClass:[MyOrderTableViewCell class] contentViewWidth:self.view.width_sd];
-            }
+                height= [tableView cellHeightForIndexPath:indexPath model:model keyPath:@"unpaidModel" cellClass:[MyOrderTableViewCell class]contentViewWidth:self.view.width_sd];
+//            height = 160;
             
         }
             break;
             
         case 2:{
             
-            if (_paidArr.count>indexPath.row) {
-                
+            
                 Paid *model = _paidArr[indexPath.row];
                 
                 height= [tableView cellHeightForIndexPath:indexPath model:model keyPath:@"paidModel" cellClass:[PaidOrderTableViewCell class] contentViewWidth:self.view.width_sd];
-            }
+            
             
         }
             break;
         case 3:{
             
-            if (_caneldArr.count>indexPath.row) {
-                
+            
                 Paid *model = _caneldArr[indexPath.row];
                 
                 height= [tableView cellHeightForIndexPath:indexPath model:model keyPath:@"canceldModel" cellClass:[CancelOrderTableViewCell class] contentViewWidth:self.view.width_sd];
-            }
+            
             
             
         }
@@ -1079,7 +1059,7 @@
                 
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     /* 订单申请成功*/
-                    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:mod.productID];
+                    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:mod.productID andClassType:LiveClassType];
                     [self.navigationController pushViewController:orderVC animated:YES];
                     
                     

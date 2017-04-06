@@ -13,7 +13,7 @@
 #import "NTESDataManager.h"
 #import "NTESMeetingRolesManager.h"
 #import "UIAlertView+NTESBlock.h"
-#import "NTESGlobalMacro.h"
+ 
 
 @interface NTESChatroomMemberCell()
 

@@ -51,11 +51,8 @@
         _balance.hidden = YES;
         _balance.font = [UIFont systemFontOfSize:16*ScrenScale];
         
-        /* 分割线*/
-        _separateLine = [[UIView alloc]init];
-        _separateLine.backgroundColor= SEPERATELINECOLOR_2;
         
-        [self.contentView sd_addSubviews:@[_logoImage,_settingName,_balance,_separateLine,_arrow]];
+        [self.contentView sd_addSubviews:@[_logoImage,_settingName,_balance,_arrow]];
         
         /* 布局*/
         
@@ -82,12 +79,7 @@
         .topSpaceToView(self.contentView,10)
         .bottomSpaceToView(self.contentView,10);
         [_balance setSingleLineAutoResizeWithMaxWidth:200];
-        
-        _separateLine.sd_layout
-        .leftSpaceToView(self.contentView,0)
-        .rightEqualToView(self.contentView)
-        .bottomEqualToView(self.contentView)
-        .heightIs(0.5);
+      
         
         
     }

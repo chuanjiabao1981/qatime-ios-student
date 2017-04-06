@@ -32,6 +32,8 @@
     
     /* 教师课程存放的数组*/
     NSMutableArray *_publicClasses;
+    /**存放一对一课程的数组*/
+    NSMutableArray *_oneOnOneClasses;
     
     TeachersPublic_Classes *_teacherPublicClass;
     
@@ -41,6 +43,10 @@
     CGSize headerSize;
     
 }
+/**section的title*/
+@property (nonatomic, strong) UIView *secTitle ;
+/**section的分割线*/
+@property (nonatomic, strong) UIView *sepLine;
 
 @end
 
@@ -66,11 +72,14 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     //初始化数据
-     _publicClasses = @[].mutableCopy;
+    _publicClasses = @[].mutableCopy;
+    
+    _oneOnOneClasses = @[].mutableCopy;
+    
+    [self loadingHUDStartLoadingWithTitle:@"加载中"];
     
     /* 请求教师个人详情*/
     [self requestTeachersInfoWithID:_teacherID];
-    
     
     
 }
@@ -101,7 +110,14 @@
     
     /* collectionView 注册cell、headerID、footerId*/
     [_teachersPublicCollectionView registerClass:[TeacherPublicClassCollectionViewCell class] forCellWithReuseIdentifier:@"cellId"];
+    
     [_teachersPublicCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId"];
+    
+    [_teachersPublicCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId2"];
+    
+    
+     [_teachersPublicCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId"];
+    
     
     _teachersPublicCollectionView.delegate = self;
     _teachersPublicCollectionView.dataSource = self;
@@ -114,9 +130,23 @@
 
 
 #pragma mark- collectionView datasource
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
-    return _publicClasses.count;
+    NSInteger num = 1;
+    if (_oneOnOneClasses.count!=0) {
+        
+        if (section == 0) {
+            num = _oneOnOneClasses.count;
+        }else if (section == 1){
+            
+            num = _publicClasses.count;
+        }
+    }else{
+        num = _publicClasses.count;
+    }
+    
+    return num;
     
 }
 
@@ -126,11 +156,30 @@
     static NSString * CellIdentifier = @"cellId";
     TeacherPublicClassCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    if (_publicClasses.count >indexPath.row) {
+    if (_oneOnOneClasses.count!=0) {
+        if (indexPath.section == 0) {
+            
+            if (_oneOnOneClasses.count>indexPath.row) {
+                cell.model = _oneOnOneClasses[indexPath.row];
+            }
+            
+        }else if (indexPath.section ==1){
+            if (_publicClasses.count >indexPath.row) {
+                
+                cell.model = _publicClasses[indexPath.row];
+                
+            }
+        }
         
-        cell.model = _publicClasses[indexPath.row];
-        cell.sd_indexPath = indexPath;
+    }else{
+        
+        if (_publicClasses.count >indexPath.row) {
+            
+            cell.model = _publicClasses[indexPath.row];
+            
+        }
     }
+    
     
     return cell;
     
@@ -138,6 +187,17 @@
 
 
 #pragma mark- collectionview delegate
+
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    
+    NSInteger num = 1;
+    if (_oneOnOneClasses.count!=0) {
+        num = 2;
+    }
+    return num;
+}
+
+
 /* item尺寸*/
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -153,22 +213,101 @@
 }
 
 
-
 ////这个方法是返回 Header的大小 size
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
     
-    return  headerSize;
+    CGSize size  = CGSizeZero;
+    //两个section的情况
+    if (_oneOnOneClasses.count!=0) {
+        if (section == 0) {
+            size = headerSize;
+            
+        }else if (section == 1){
+            
+            size = CGSizeMake(self.view.width_sd, 40);
+        }
+        
+        //一个section的情况
+    }else{
+        size = headerSize;
+    }
+    
+    return  size;
 }
 
-// 获取Header的 方法。
+//每个footer的尺寸
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section{
+    
+    CGSize size  = CGSizeZero;
+    
+    //两个section的情况
+    if (_oneOnOneClasses.count!=0) {
+        if (section == 0) {
+            size = CGSizeMake(self.view.width_sd, 50);
+        }else{
+            size = CGSizeZero;
+        }
+        
+        //一个section的情况
+    }else{
+        size = CGSizeZero;
+    }
+    
+    return  size;
+
+}
+
+// 获取Header / Footer 的方法。
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
     
-    NSString *CellIdentifier = @"headerId";
-    //从缓存中获取 Headercell
-    UICollectionReusableView *header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    UICollectionReusableView *header;
     
-    [header addSubview:_teachersPublicHeaderView];
-    _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
+    //两个section的情况
+    if (_oneOnOneClasses.count!=0) {
+        //section 0
+        if (indexPath.section == 0) {
+            //section的header
+            if (kind == UICollectionElementKindSectionHeader) {
+                NSString *CellIdentifier = @"headerId";
+                //从缓存中获取 Headercell
+                header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                
+                [header addSubview:_teachersPublicHeaderView];
+                _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
+
+                //section的footer
+            }else if (kind == UICollectionElementKindSectionFooter){
+                NSString *CellIdentifier = @"footerId";
+                //从缓存中获取 Headercell
+                header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                
+                [header addSubview:self.sepLine];
+//                self.sepLine.frame = CGRectMake(0, 0, header.width_sd, header.height_sd);
+                
+            }
+            //section 1
+        }else if (indexPath.section == 1){
+            NSString *CellIdentifier = @"headerId2";
+            //从缓存中获取 Headercell
+            header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+            [header addSubview:self.secTitle];
+            
+        }
+       //一个section的情况
+    }else{
+        
+        if (indexPath.section == 0) {
+            
+            NSString *CellIdentifier = @"headerId";
+            //从缓存中获取 Headercell
+            header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+            _teachersPublicHeaderView.classList.text = @"直播课";
+            [header addSubview:_teachersPublicHeaderView];
+            _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
+        }
+        
+    }
+    
     
     return header;
 }
@@ -210,15 +349,25 @@
             //教师简介富文本
             _teacherPublicInfo.attributeDescription = [[NSMutableAttributedString alloc]initWithData:[_teacherPublicInfo.desc dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil  error:nil];
             
-            //yymodel解析教师公开课程
+            //yymodel解析教师公开课程数据
             NSMutableArray *publichArr =[NSMutableArray arrayWithArray: dic[@"data"][@"courses"]];
             
             for (NSDictionary *classDic in publichArr) {
+                
                 TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:classDic];
                 
                 mod.classID = classDic[@"id"];
                 
                 [_publicClasses addObject:mod];
+            }
+            
+            //yymodel解析教师一对一课程数据
+            for (NSDictionary *classDic in dic[@"data"][@"courses"]) {
+                TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:classDic];
+                
+                mod.classID = classDic[@"id"];
+                
+//                [_oneOnOneClasses addObject:mod];
             }
             
             //加载视图
@@ -281,7 +430,6 @@
         
         
         
-        
     }
     
 }
@@ -298,7 +446,44 @@
     [_teachersPublicCollectionView setNeedsDisplay];
 
 }
-
+#pragma mark- get method
+-(UIView *)sepLine{
+    if (!_sepLine) {
+        
+        _sepLine = [[UIView alloc]init];
+        _sepLine.frame = CGRectMake(0, 0, self.view.width_sd, 50) ;
+        UIView *line = [[UIView alloc]init];
+        [_sepLine addSubview:line];
+        line.sd_layout
+        .topSpaceToView(_sepLine, 20)
+        .bottomSpaceToView(_sepLine, 20)
+        .leftSpaceToView(_sepLine, 0)
+        .rightSpaceToView(_sepLine, 0);
+        line.backgroundColor = SEPERATELINECOLOR;
+        [line updateLayout];
+    }
+    return _sepLine;
+    
+}
+-(UIView *)secTitle{
+    
+    if (!_secTitle) {
+        _secTitle = [[UIView alloc]init];
+        _secTitle.frame = CGRectMake(0, 0, self.view.width_sd, 40);
+        UILabel *label = [[UILabel alloc]init];
+        label.text = @"直播课";
+        label.font = TITLEFONTSIZE;
+        [_secTitle addSubview:label];
+        label.sd_layout
+        .leftSpaceToView(_secTitle, 12)
+        .centerYEqualToView(_secTitle)
+        .autoHeightRatio(0);
+        [label setSingleLineAutoResizeWithMaxWidth:100];
+        
+        [label updateLayout];
+    }
+    return _secTitle;
+}
 
 
 

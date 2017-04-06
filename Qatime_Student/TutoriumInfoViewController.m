@@ -32,6 +32,8 @@
 #import "UIControl+RemoveTarget.h"
 #import "YYTextLayout.h"
 #import "TeachersPublicViewController.h"
+#import "InteractionViewController.h"
+
 
 
 @interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,TTGTextTagCollectionViewDelegate>{
@@ -147,9 +149,7 @@
     _tutoriumInfoView.scrollView.delegate = self;
     _tutoriumInfoView.delegate = self;
     _tutoriumInfoView.view1.delegate = self;
-    _tutoriumInfoView.view2.delegate = self;
-    
-
+    _tutoriumInfoView.view2.delegate= self;
     _tutoriumInfoView.segmentControl.selectionIndicatorHeight=2;
     _tutoriumInfoView.segmentControl.selectedSegmentIndex=0;
     
@@ -236,7 +236,7 @@
 }
 
 
-/* 根据初始化传值进来的id 进行网络请求*/
+/** 根据初始化传值进来的id 进行网络请求*/
 - (void)requestClassesInfoWith:(NSString *)classid{
     
     [self loadingHUDStartLoadingWithTitle:@"正在加载信息"];
@@ -436,7 +436,6 @@
                             [_tutoriumInfoView.classTagsView addTag:@"无" withConfig:_config];
                         }
                         
-                        
                         /* 课程列表的手动解析model*/
                         NSMutableArray *classList = _dataDic[@"lessons"];
                         
@@ -489,30 +488,24 @@
 #pragma mark- 判断课程状态
 - (void)switchClassData:(NSDictionary *)data{
     /* 先判断is_tasting(正在试听) / is_bought(已购买) / tasted() 的状态*/
-    
     if ([_dataDic[@"is_bought"]boolValue]==NO) {
-        
+
         /* 还没购买的情况下*/
         if ([_dataDic[@"is_tasting"]boolValue]==YES) {
             /* 如果已经加入试听,而且该课程可以试听*/
-            if ([_dataDic[@"is_tasting"]boolValue]==YES) {
-                /* 还没有试听*/
-                [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
-                [_buyBar.listenButton setBackgroundColor:NAVIGATIONRED];
-                [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            
+            /* 还没有试听*/
+            [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
+            [_buyBar.listenButton setBackgroundColor:NAVIGATIONRED];
+            [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            
+            if (![data[@"status"] isEqualToString:@"finished"]&&![data[@"status"] isEqualToString:@"competed"]){
                 
-                if (![data[@"status"] isEqualToString:@"finished"]&&![data[@"status"] isEqualToString:@"competed"]){
-                    
-                    [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
-                    
-                }else{
-                    /* 课程已结束*/
-                    [_buyBar.listenButton addTarget:self action:@selector(addClosedListen) forControlEvents:UIControlEventTouchUpInside];
-                    
-                }
+                [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
                 
             }else{
-                
+                /* 课程已结束*/
+                [_buyBar.listenButton addTarget:self action:@selector(addClosedListen) forControlEvents:UIControlEventTouchUpInside];
                 
             }
             
@@ -651,7 +644,7 @@
     
 }
 
-#pragma mark- 立即试听
+#pragma mark- 立即进入试听
 - (void)listen{
     
     if ([_dataDic[@"is_bought"]boolValue]==YES) {
@@ -671,6 +664,7 @@
             [self loadingHUDStopLoadingWithTitle:@"试听次数用尽"];
         }
     }
+    
     
 }
 
@@ -720,12 +714,11 @@
     
     if (_promotionCode) {
         
-        orderVC = [[OrderViewController alloc]initWithClassID:_classID andPromotionCode:_promotionCode];
+        orderVC = [[OrderViewController alloc]initWithClassID:_classID andPromotionCode:_promotionCode andClassType:LiveClassType];
     }else{
         
-        orderVC= [[OrderViewController alloc]initWithClassID:_classID];
+        orderVC= [[OrderViewController alloc]initWithClassID:_classID andClassType:LiveClassType];
     }
-    
     
     [self.navigationController pushViewController:orderVC animated:YES];
     
@@ -755,17 +748,27 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
 //    if (scrollView == _tutoriumInfoView.view1) {
-//        
-//        if (_tutoriumInfoView.contentOffset.y >= _tutoriumInfoView.segmentControl.top_sd) {
-//            scrollView.scrollEnabled = YES;
+//        if (_tutoriumInfoView.contentOffset.y >= _tutoriumInfoView.segmentControl.origin_sd.y) {
 //            _tutoriumInfoView.scrollEnabled = NO;
-//            
+//            _tutoriumInfoView.view1.scrollEnabled = YES;
 //        }else{
-//            scrollView.scrollEnabled = NO;
 //            _tutoriumInfoView.scrollEnabled = YES;
+//            _tutoriumInfoView.view1.scrollEnabled = NO;
+//            
+//        }
+//
+//    }
+//    if (scrollView == _tutoriumInfoView) {
+//        if (_tutoriumInfoView.contentOffset.y >= _tutoriumInfoView.segmentControl.origin_sd.y) {
+//            _tutoriumInfoView.scrollEnabled = NO;
+//            _tutoriumInfoView.view1.scrollEnabled = YES;
+//        }else{
+//            _tutoriumInfoView.scrollEnabled = YES;
+//            _tutoriumInfoView.view1.scrollEnabled = NO;
+//
+//            
 //        }
 //    }
-    
     
 }
 
@@ -849,8 +852,6 @@
     return heights;
     
 }
-
-
 
 
 

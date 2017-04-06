@@ -13,7 +13,7 @@
 #import "UIImageView+WebCache.h"
 #import "UIAlertView+NTESBlock.h"
 #import "NTESDocDownloadManager.h"
-#import "NTESGlobalMacro.h"
+ 
 
 
 @interface NTESDocumentCell ()

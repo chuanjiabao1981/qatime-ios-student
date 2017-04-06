@@ -12,6 +12,7 @@
 #import "NTESJanKenPonAttachment.h"
 #import "NTESChartletAttachment.h"
 #import "UIImage+NTES.h"
+#import "NIMKit.h"
 
 double OnedayTimeIntervalValue = 24*60*60;  //一天的秒数
 @implementation NTESSessionUtil
@@ -213,7 +214,7 @@ double OnedayTimeIntervalValue = 24*60*60;  //一天的秒数
                                                options:0
                                                  error:&error];
         if (error) {
-            DDLogError(@"dictByJsonData failed %@ error %@",data,error);
+//            DDLogError(@"dictByJsonData failed %@ error %@",data,error);
         }
     }
     return [dict isKindOfClass:[NSDictionary class]] ? dict : nil;

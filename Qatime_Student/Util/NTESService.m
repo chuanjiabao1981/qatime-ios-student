@@ -8,7 +8,7 @@
 
 #import "NTESService.h"
 #import "NTESSessionUtil.h"
-#import "NTESGlobalMacro.h"
+ 
 
 #pragma mark - NIMServiceManagerImpl
 @interface NIMServiceManagerImpl : NSObject

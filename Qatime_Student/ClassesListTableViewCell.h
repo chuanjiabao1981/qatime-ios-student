@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ClassesInfo_Time.h"
 #import "Classes.h"
-
+#import "OneOnOneClass.h"
 
 
 @interface ClassesListTableViewCell : UITableViewCell
@@ -39,6 +39,9 @@
 
 /* 视频直播页的课程model*/
 @property(nonatomic,strong) Classes *classModel ;
+
+/**一对一课程的modle*/
+@property (nonatomic, strong) OneOnOneClass *interactionModel ;
 
 
 

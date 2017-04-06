@@ -20,33 +20,39 @@
         _name =[[UILabel alloc]init];
         _name.textColor = [UIColor blackColor];
         
-        /* 科目*/
-        _subject=[[UILabel alloc]init];
-        _subject.textColor = [UIColor lightGrayColor];
-        
-        /* 年级*/
-        _grade=[[UILabel alloc]init];
-        _grade.textColor = [UIColor lightGrayColor];
-        
-        UILabel *totl = [[UILabel alloc]init];
-        totl.text = @"/共";
-        totl.textColor = [UIColor lightGrayColor];
+        /**订单课程详情*/
+        _orderInfos = [[UILabel alloc]init];
+        _orderInfos.font = TEXT_FONTSIZE;
+        _orderInfos.textColor = TITLECOLOR;
         
         
-        
-        UILabel *tot = [[UILabel alloc]init];
-        tot.text = @"课/";
-        tot.textColor = [UIColor lightGrayColor];
-        //
-        
-        /* 课时*/
-        _classTime=[[UILabel alloc]init];
-        _classTime.textColor = [UIColor lightGrayColor];
-        
-        /* 教师姓名*/
-        _teacherName=[[UILabel alloc]init];
-        _teacherName.textColor = [UIColor lightGrayColor];
-        
+//        /* 科目*/
+//        _subject=[[UILabel alloc]init];
+//        _subject.textColor = [UIColor lightGrayColor];
+//        
+//        /* 年级*/
+//        _grade=[[UILabel alloc]init];
+//        _grade.textColor = [UIColor lightGrayColor];
+//        
+//        UILabel *totl = [[UILabel alloc]init];
+//        totl.text = @"/共";
+//        totl.textColor = [UIColor lightGrayColor];
+//        
+//        
+//        
+//        UILabel *tot = [[UILabel alloc]init];
+//        tot.text = @"课/";
+//        tot.textColor = [UIColor lightGrayColor];
+//        //
+//        
+//        /* 课时*/
+//        _classTime=[[UILabel alloc]init];
+//        _classTime.textColor = [UIColor lightGrayColor];
+//        
+//        /* 教师姓名*/
+//        _teacherName=[[UILabel alloc]init];
+//        _teacherName.textColor = [UIColor lightGrayColor];
+//        
         /* 支付状态*/
         _status=[[UILabel alloc]init];
         _status.textColor = [UIColor blueColor];
@@ -72,7 +78,7 @@
         
         
         /* 布局*/
-        [self.contentView sd_addSubviews:@[_name,_subject,_grade,_classTime,totl,tot,_teacherName,_status,_price,_leftButton,_rightButton]];
+        [self.contentView sd_addSubviews:@[_name,_orderInfos/*_subject,_grade,_classTime,totl,tot,_teacherName*/,_status,_price,_leftButton,_rightButton]];
         
         /* 课程名*/
         
@@ -82,54 +88,62 @@
         .rightSpaceToView(self.contentView,10)
         .autoHeightRatio(0);
         
-        /*科目*/
-        _subject.sd_layout
+        /**订单课程详情*/
+        _orderInfos.sd_layout
         .leftSpaceToView(self.contentView,10)
         .topSpaceToView(_name,10)
         .autoHeightRatio(0);
-        [_subject setSingleLineAutoResizeWithMaxWidth:100];
-        
-        /* 年级*/
-        _grade.sd_layout
-        .leftSpaceToView(_subject,0)
-        .topEqualToView(_subject)
-        .bottomEqualToView(_subject);
-        [_grade setSingleLineAutoResizeWithMaxWidth:100];
+        [_orderInfos setSingleLineAutoResizeWithMaxWidth:1000];
         
         
-        
-        /* 课时*/
-        
-        totl.sd_layout
-        .leftSpaceToView(_grade,0)
-        .topEqualToView(_grade)
-        .bottomEqualToView(_grade);
-        [totl setSingleLineAutoResizeWithMaxWidth:100.0];
-        
-        [_classTime clearAutoHeigtSettings];
-        
-        _classTime.sd_resetLayout
-        .leftSpaceToView(totl,0)
-        .topEqualToView(_grade)
-        .autoHeightRatio(0);
-        [_classTime setSingleLineAutoResizeWithMaxWidth:80.0];
-        _classTime .textAlignment = NSTextAlignmentLeft;
-        
-        
-        tot.sd_layout
-        .leftSpaceToView(_classTime,1)
-        .topEqualToView(_grade)
-        .bottomEqualToView(_grade);
-        [tot setSingleLineAutoResizeWithMaxWidth:100.0];
-        
-        
-        /* 老师姓名*/
-        _teacherName.sd_layout
-        .leftSpaceToView(tot,0)
-        .topEqualToView(_classTime)
-        .bottomEqualToView(_classTime)
-        .widthRatioToView(self.contentView,0.3);
-        _teacherName.textAlignment = NSTextAlignmentLeft;
+//        /*科目*/
+//        _subject.sd_layout
+//        .leftSpaceToView(self.contentView,10)
+//        .topSpaceToView(_name,10)
+//        .autoHeightRatio(0);
+//        [_subject setSingleLineAutoResizeWithMaxWidth:100];
+//        
+//        /* 年级*/
+//        _grade.sd_layout
+//        .leftSpaceToView(_subject,0)
+//        .topEqualToView(_subject)
+//        .bottomEqualToView(_subject);
+//        [_grade setSingleLineAutoResizeWithMaxWidth:100];
+//        
+//        
+//        
+//        /* 课时*/
+//        
+//        totl.sd_layout
+//        .leftSpaceToView(_grade,0)
+//        .topEqualToView(_grade)
+//        .bottomEqualToView(_grade);
+//        [totl setSingleLineAutoResizeWithMaxWidth:100.0];
+//        
+//        [_classTime clearAutoHeigtSettings];
+//        
+//        _classTime.sd_resetLayout
+//        .leftSpaceToView(totl,0)
+//        .topEqualToView(_grade)
+//        .autoHeightRatio(0);
+//        [_classTime setSingleLineAutoResizeWithMaxWidth:80.0];
+//        _classTime .textAlignment = NSTextAlignmentLeft;
+//        
+//        
+//        tot.sd_layout
+//        .leftSpaceToView(_classTime,1)
+//        .topEqualToView(_grade)
+//        .bottomEqualToView(_grade);
+//        [tot setSingleLineAutoResizeWithMaxWidth:100.0];
+//        
+//        
+//        /* 老师姓名*/
+//        _teacherName.sd_layout
+//        .leftSpaceToView(tot,0)
+//        .topEqualToView(_classTime)
+//        .bottomEqualToView(_classTime)
+//        .widthRatioToView(self.contentView,0.3);
+//        _teacherName.textAlignment = NSTextAlignmentLeft;
         
         
         
@@ -138,19 +152,26 @@
         _status.sd_layout
         
         .rightSpaceToView(self.contentView,10)
-        .topEqualToView(_teacherName)
-        .leftSpaceToView(_teacherName,20)
-        .bottomEqualToView(_teacherName);
+        .topEqualToView(_orderInfos)
+        .leftSpaceToView(_orderInfos,20)
+        .bottomEqualToView(_orderInfos);
 //        [_status setSingleLineAutoResizeWithMaxWidth:1000];
         _status.textAlignment = NSTextAlignmentRight;
         
+        UIView *line = [[UIView alloc]init];
+        [self.contentView addSubview:line];
+        line.backgroundColor = SEPERATELINECOLOR_2;
+        line.sd_layout
+        .leftSpaceToView(self.contentView, 10)
+        .rightSpaceToView(self.contentView, 10)
+        .topSpaceToView(_status, 10)
+        .heightIs(1.0);
         
         /* 右按钮*/
         _rightButton.sd_layout
         .rightSpaceToView(self.contentView,10)
-        .topSpaceToView(_status,10)
-        .widthRatioToView(self.contentView,1/5.0)
-        .autoHeightRatio(1/3.0);
+        .topSpaceToView(_status,10);
+        [_rightButton setupAutoSizeWithHorizontalPadding:15 buttonHeight:30];
         _rightButton.sd_cornerRadius = [NSNumber numberWithInteger:1];
         
         
@@ -161,8 +182,8 @@
         .bottomEqualToView(_rightButton)
         .heightRatioToView(_rightButton,1.0)
         .widthRatioToView(_rightButton,1.0);
+        [_leftButton setupAutoSizeWithHorizontalPadding:15 buttonHeight:30];
         _leftButton.sd_cornerRadius = [NSNumber numberWithInteger:1];
-        
         
         /* 金额*/
         _price.sd_layout
@@ -171,7 +192,9 @@
         .centerYEqualToView(_leftButton)
         .autoHeightRatio(0);
         
-        [self setupAutoHeightWithBottomView:_leftButton bottomMargin:10];
+        [_rightButton updateLayout];
+        [self setupAutoHeightWithBottomView:_rightButton bottomMargin:20];
+        
         
         
     }
@@ -183,11 +206,17 @@
 -(void)setPaidModel:(Paid *)paidModel{
     
     _paidModel = paidModel;
-    _classTime .text = paidModel.preset_lesson_count ;
     _name.text = paidModel.name;
-    _subject.text = paidModel.subject;
-    _grade.text = paidModel.grade;
-    _teacherName.text = paidModel.teacher_name;
+    
+    NSString *infos ;
+    
+    if (paidModel.type ==nil) {
+        infos = [NSString stringWithFormat:@"%@%@/共%@课/%@",paidModel.subject,paidModel.grade,paidModel.preset_lesson_count,paidModel.teacher_name];
+    }else{
+        
+        infos =[NSString stringWithFormat:@"%@/%@%@/共%@课/%@",paidModel.type,paidModel.subject,paidModel.grade,paidModel.preset_lesson_count,paidModel.teacher_name];
+    }
+
     
     _price.text = [NSString stringWithFormat:@"¥%@",paidModel.price];
     

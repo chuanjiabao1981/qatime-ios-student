@@ -107,7 +107,7 @@ static NSString *ChatroomListReuseIdentity = @"ChatroomListReuseIdentity";
                                                  {
                                                      NSString *toast = [NSString stringWithFormat:@"进入失败 code:%zd",error.code];
                                                      [wself.view makeToast:toast duration:2.0 position:CSToastPositionCenter];
-                                                     DDLogError(@"enter room %@ failed %@",chatroom.roomId,error);
+//                                                     DDLogError(@"enter room %@ failed %@",chatroom.roomId,error);
                                                  }
 
                                              }];

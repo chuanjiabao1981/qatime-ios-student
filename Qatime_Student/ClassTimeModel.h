@@ -48,6 +48,13 @@
 @property(nonatomic,strong) NSString *teacher_name ;
 @property(nonatomic,strong) NSString *course_id ;
 
+@property (nonatomic, assign) BOOL replayable;
+@property (nonatomic, assign) NSInteger left_replay_times ;
+
+
+
+@property (nonatomic, strong) NSString  *modal_type;
+@property (nonatomic, strong) NSString *lesson_name ;
 
 
 

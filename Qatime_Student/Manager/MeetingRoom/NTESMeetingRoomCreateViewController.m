@@ -17,7 +17,7 @@
 #import "NTESTextSettingCell.h"
 #import "NTESMeetingRolesManager.h"
 #import <NIMAVChat/NIMAVChat.h>
-#import "NTESGlobalMacro.h"
+ 
 
 #define NTESMeetingRoomNameMaxLength  20
 

@@ -166,15 +166,10 @@
             [self loadingHUDStopLoadingWithTitle:@"设置成功!"];
             [self performSelector:@selector(setPaymentSuccess) withObject:nil afterDelay:1];
             
-            /* 设置成后,在本地保存设置成功的时间,由此计算24小时区间,判断师傅密码是否可用*/
-            
-            
-            NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-            formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-            NSString *dateStr = [formatter stringFromDate:[NSDate date]];
-            
-            [[NSUserDefaults standardUserDefaults]setValue:dateStr forKey:@"NewPayPasswordTimeStamp"];
             [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"have_paypassword"];
+            
+            /**设置支付密码成功了*/
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"SetPayPasswordSuccess" object:nil];
             
         }else{
             /* 设置失败,*/

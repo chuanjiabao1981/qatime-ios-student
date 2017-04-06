@@ -94,7 +94,7 @@ NSString * const MMshowsSelectionIndicator = @"showsSelectionIndicator";
   [[self sharedView] setPickerHidden:YES callBack:completion];
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"MMPickerFinished" object:completion];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"TabbarShow" object:nil];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"TabbarShow" object:nil];
     
     
 }

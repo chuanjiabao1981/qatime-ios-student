@@ -78,6 +78,7 @@
 		542C173E1DFA50760088DB3F /* Unpaid.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C173D1DFA50760088DB3F /* Unpaid.m */; };
 		542C17411DFA507E0088DB3F /* Paid.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C17401DFA507E0088DB3F /* Paid.m */; };
 		542C17441DFA508A0088DB3F /* Canceld.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C17431DFA508A0088DB3F /* Canceld.m */; };
+		543278661E8CE50200F7A2D9 /* IJKFloatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543278651E8CE50200F7A2D9 /* IJKFloatingView.m */; };
 		5435D9341DD2B42100DD4FCC /* RecommandClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9331DD2B42100DD4FCC /* RecommandClasses.m */; };
 		5435D9371DD2C12300DD4FCC /* ClassesListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9361DD2C12300DD4FCC /* ClassesListTableViewCell.m */; };
 		5435D93A1DD2C2C100DD4FCC /* ClassesInfo_Time.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9391DD2C2C100DD4FCC /* ClassesInfo_Time.m */; };
@@ -86,6 +87,12 @@
 		5435D9491DD3160600DD4FCC /* TeachersPublicHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9481DD3160600DD4FCC /* TeachersPublicHeaderView.m */; };
 		5435D94F1DD31B4700DD4FCC /* TeachersPublicInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D94E1DD31B4700DD4FCC /* TeachersPublicInfo.m */; };
 		5435D9521DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9511DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m */; };
+		543A4D481E89F775004C5C9E /* NTESEnterRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543A4D401E89F775004C5C9E /* NTESEnterRoomViewController.m */; };
+		543A4D491E89F775004C5C9E /* NTESEnterRoomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 543A4D411E89F775004C5C9E /* NTESEnterRoomViewController.xib */; };
+		543A4D4A1E89F775004C5C9E /* NTESLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543A4D431E89F775004C5C9E /* NTESLoginViewController.m */; };
+		543A4D4B1E89F775004C5C9E /* NTESLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 543A4D441E89F775004C5C9E /* NTESLoginViewController.xib */; };
+		543A4D4C1E89F775004C5C9E /* NTESRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543A4D461E89F775004C5C9E /* NTESRegisterViewController.m */; };
+		543A4D4D1E89F775004C5C9E /* NTESRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 543A4D471E89F775004C5C9E /* NTESRegisterViewController.xib */; };
 		543BCAF81E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCAF51E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.m */; };
 		543BCAF91E78F3F700AD6721 /* UIView+SDAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCAF71E78F3F700AD6721 /* UIView+SDAutoLayout.m */; };
 		543BCB001E79156300AD6721 /* ChooseGradeAndSubjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCAFF1E79156300AD6721 /* ChooseGradeAndSubjectView.m */; };
@@ -125,6 +132,12 @@
 		5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA31E042D45007B1DF9 /* NoticeIndexView.m */; };
 		5448AEA81E054C7A007B1DF9 /* ChatListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA71E054C7A007B1DF9 /* ChatListTableViewCell.m */; };
 		5448AEAB1E054CA4007B1DF9 /* NoticeListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEAA1E054CA4007B1DF9 /* NoticeListTableViewCell.m */; };
+		544B61EB1E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B61EA1E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.m */; };
+		544B61FA1E9647F100D7B160 /* LCActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B61F11E9647F100D7B160 /* LCActionSheet.m */; };
+		544B61FB1E9647F100D7B160 /* LCActionSheetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B61F31E9647F100D7B160 /* LCActionSheetCell.m */; };
+		544B61FC1E9647F100D7B160 /* LCActionSheetConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B61F51E9647F100D7B160 /* LCActionSheetConfig.m */; };
+		544B61FD1E9647F100D7B160 /* NSSet+LCActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B61F71E9647F100D7B160 /* NSSet+LCActionSheet.m */; };
+		544B61FE1E9647F100D7B160 /* UIImage+LCActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B61F91E9647F100D7B160 /* UIImage+LCActionSheet.m */; };
 		544C15121DC73ADA00F59F86 /* selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 544C15111DC73ADA00F59F86 /* selected.png */; };
 		544C15141DC7414000F59F86 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 544C15131DC7414000F59F86 /* back.png */; };
 		544E0CDB1DD0806900884F31 /* YZSquareMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CDA1DD0806900884F31 /* YZSquareMenuCell.m */; };
@@ -176,6 +189,11 @@
 		546F5C531DFD6AFF00528F79 /* card.png in Resources */ = {isa = PBXBuildFile; fileRef = 546F5C521DFD6AFF00528F79 /* card.png */; };
 		546F5C561DFD75F400528F79 /* WithDrawInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 546F5C551DFD75F400528F79 /* WithDrawInfoView.m */; };
 		546F5C591DFD760000528F79 /* WithDrawInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546F5C581DFD760000528F79 /* WithDrawInfoViewController.m */; };
+		5471C7F01E8F43DA0098E509 /* OneOnOneLessonTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5471C7EF1E8F43DA0098E509 /* OneOnOneLessonTableViewCell.m */; };
+		5471C7F61E8F49350098E509 /* InteractionLesson.m in Sources */ = {isa = PBXBuildFile; fileRef = 5471C7F51E8F49350098E509 /* InteractionLesson.m */; };
+		5471C7FC1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5471C7FB1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.m */; };
+		5471C7FF1E8F87ED0098E509 /* TeachersGroupTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5471C7FE1E8F87ED0098E509 /* TeachersGroupTableView.m */; };
+		5471C8021E8F87FD0098E509 /* ClassListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5471C8011E8F87FD0098E509 /* ClassListTableView.m */; };
 		547A7EF71DD411DB00F1282B /* TeachersPublic_Classes.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EF61DD411DB00F1282B /* TeachersPublic_Classes.m */; };
 		547A7EFD1DD416F100F1282B /* ListenAndBuyTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EFC1DD416F100F1282B /* ListenAndBuyTabBar.m */; };
 		547AD51E1E4D6A7000239907 /* UUAVAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 547AD51D1E4D6A7000239907 /* UUAVAudioPlayer.m */; };
@@ -183,6 +201,12 @@
 		547E898D1DD1D01B00749366 /* TutoriumInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E898C1DD1D01B00749366 /* TutoriumInfoView.m */; };
 		547E89901DD1D03100749366 /* TutoriumInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E898F1DD1D03100749366 /* TutoriumInfoViewController.m */; };
 		547E899D1DD1D8AD00749366 /* HMSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E899C1DD1D8AD00749366 /* HMSegmentedControl.m */; };
+		547E92C01E8E312200160C6D /* MyOneOnOneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E92BF1E8E312200160C6D /* MyOneOnOneView.m */; };
+		547E92C31E8E313200160C6D /* MyOneOnOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E92C21E8E313200160C6D /* MyOneOnOneViewController.m */; };
+		547E92CB1E8E51F300160C6D /* OneOnOneTutorimInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E92CA1E8E51F300160C6D /* OneOnOneTutorimInfoView.m */; };
+		547E92CE1E8E520400160C6D /* OneOnOneTutoriumInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E92CD1E8E520400160C6D /* OneOnOneTutoriumInfoViewController.m */; };
+		547E92D11E8E56F100160C6D /* OneOnOneWorkFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E92D01E8E56F100160C6D /* OneOnOneWorkFlowView.m */; };
+		547E92D41E8E813B00160C6D /* OneOnOneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E92D31E8E813B00160C6D /* OneOnOneClass.m */; };
 		547FBF1E1DF658C000955A9E /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547FBF1D1DF658C000955A9E /* UserNotifications.framework */; };
 		547FBF2A1DF681B300955A9E /* libUMessage_Sdk_1.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 547FBF291DF681B300955A9E /* libUMessage_Sdk_1.4.0.a */; };
 		547FBF311DF6B99600955A9E /* PersonalDescViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF301DF6B99600955A9E /* PersonalDescViewController.m */; };
@@ -217,6 +241,12 @@
 		5483E84A1E45730C00C3C1B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5483E84C1E45730C00C3C1B4 /* InfoPlist.strings */; };
 		5483E8511E4576BF00C3C1B4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5483E8531E4576BF00C3C1B4 /* Localizable.strings */; };
 		5484B7421DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 5484B7411DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m */; };
+		548F0E7E1E8A51A400A12C6D /* InteractionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E7D1E8A51A400A12C6D /* InteractionView.m */; };
+		548F0E811E8A51B000A12C6D /* InteractionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E801E8A51B000A12C6D /* InteractionViewController.m */; };
+		548F0E9A1E8A826400A12C6D /* InteractionInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E991E8A826400A12C6D /* InteractionInfoView.m */; };
+		548F70AD1E8B5FE50062C71E /* InteractionControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F70AC1E8B5FE50062C71E /* InteractionControl.m */; };
+		548F70B01E8B63B70062C71E /* InteractionWhiteBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F70AF1E8B63B70062C71E /* InteractionWhiteBoardView.m */; };
+		548F70B31E8BACD30062C71E /* UIView+PlaceholderImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F70B21E8BACD30062C71E /* UIView+PlaceholderImage.m */; };
 		5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */; };
 		549210271DCC6D0E00A65702 /* MultiFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549210261DCC6D0E00A65702 /* MultiFilterView.m */; };
 		5492FC861E7A2E6800F89593 /* TagsFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492FC851E7A2E6800F89593 /* TagsFilterView.m */; };
@@ -745,6 +775,8 @@
 		542C17401DFA507E0088DB3F /* Paid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Paid.m; sourceTree = "<group>"; };
 		542C17421DFA508A0088DB3F /* Canceld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Canceld.h; sourceTree = "<group>"; };
 		542C17431DFA508A0088DB3F /* Canceld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Canceld.m; sourceTree = "<group>"; };
+		543278641E8CE50200F7A2D9 /* IJKFloatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IJKFloatingView.h; path = ../View/IJKFloatingView.h; sourceTree = "<group>"; };
+		543278651E8CE50200F7A2D9 /* IJKFloatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IJKFloatingView.m; path = ../View/IJKFloatingView.m; sourceTree = "<group>"; };
 		5435D9321DD2B42100DD4FCC /* RecommandClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommandClasses.h; sourceTree = "<group>"; };
 		5435D9331DD2B42100DD4FCC /* RecommandClasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommandClasses.m; sourceTree = "<group>"; };
 		5435D9351DD2C12300DD4FCC /* ClassesListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassesListTableViewCell.h; sourceTree = "<group>"; };
@@ -761,6 +793,15 @@
 		5435D94E1DD31B4700DD4FCC /* TeachersPublicInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeachersPublicInfo.m; sourceTree = "<group>"; };
 		5435D9501DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeacherPublicClassCollectionViewCell.h; sourceTree = "<group>"; };
 		5435D9511DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeacherPublicClassCollectionViewCell.m; sourceTree = "<group>"; };
+		543A4D3F1E89F775004C5C9E /* NTESEnterRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESEnterRoomViewController.h; sourceTree = "<group>"; };
+		543A4D401E89F775004C5C9E /* NTESEnterRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESEnterRoomViewController.m; sourceTree = "<group>"; };
+		543A4D411E89F775004C5C9E /* NTESEnterRoomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NTESEnterRoomViewController.xib; sourceTree = "<group>"; };
+		543A4D421E89F775004C5C9E /* NTESLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESLoginViewController.h; sourceTree = "<group>"; };
+		543A4D431E89F775004C5C9E /* NTESLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESLoginViewController.m; sourceTree = "<group>"; };
+		543A4D441E89F775004C5C9E /* NTESLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NTESLoginViewController.xib; sourceTree = "<group>"; };
+		543A4D451E89F775004C5C9E /* NTESRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESRegisterViewController.h; sourceTree = "<group>"; };
+		543A4D461E89F775004C5C9E /* NTESRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESRegisterViewController.m; sourceTree = "<group>"; };
+		543A4D471E89F775004C5C9E /* NTESRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NTESRegisterViewController.xib; sourceTree = "<group>"; };
 		543BCAF31E78F3F700AD6721 /* SDAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDAutoLayout.h; sourceTree = "<group>"; };
 		543BCAF41E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+SDAutoTableViewCellHeight.h"; sourceTree = "<group>"; };
 		543BCAF51E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+SDAutoTableViewCellHeight.m"; sourceTree = "<group>"; };
@@ -841,6 +882,18 @@
 		5448AEA71E054C7A007B1DF9 /* ChatListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatListTableViewCell.m; sourceTree = "<group>"; };
 		5448AEA91E054CA4007B1DF9 /* NoticeListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeListTableViewCell.h; sourceTree = "<group>"; };
 		5448AEAA1E054CA4007B1DF9 /* NoticeListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeListTableViewCell.m; sourceTree = "<group>"; };
+		544B61E91E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionTeacherListTableViewCell.h; sourceTree = "<group>"; };
+		544B61EA1E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionTeacherListTableViewCell.m; sourceTree = "<group>"; };
+		544B61F01E9647F100D7B160 /* LCActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCActionSheet.h; sourceTree = "<group>"; };
+		544B61F11E9647F100D7B160 /* LCActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCActionSheet.m; sourceTree = "<group>"; };
+		544B61F21E9647F100D7B160 /* LCActionSheetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCActionSheetCell.h; sourceTree = "<group>"; };
+		544B61F31E9647F100D7B160 /* LCActionSheetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCActionSheetCell.m; sourceTree = "<group>"; };
+		544B61F41E9647F100D7B160 /* LCActionSheetConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCActionSheetConfig.h; sourceTree = "<group>"; };
+		544B61F51E9647F100D7B160 /* LCActionSheetConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCActionSheetConfig.m; sourceTree = "<group>"; };
+		544B61F61E9647F100D7B160 /* NSSet+LCActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSSet+LCActionSheet.h"; sourceTree = "<group>"; };
+		544B61F71E9647F100D7B160 /* NSSet+LCActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSSet+LCActionSheet.m"; sourceTree = "<group>"; };
+		544B61F81E9647F100D7B160 /* UIImage+LCActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+LCActionSheet.h"; sourceTree = "<group>"; };
+		544B61F91E9647F100D7B160 /* UIImage+LCActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+LCActionSheet.m"; sourceTree = "<group>"; };
 		544C15111DC73ADA00F59F86 /* selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selected.png; sourceTree = "<group>"; };
 		544C15131DC7414000F59F86 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		544E0CD91DD0806900884F31 /* YZSquareMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZSquareMenuCell.h; sourceTree = "<group>"; };
@@ -941,6 +994,16 @@
 		546F5C551DFD75F400528F79 /* WithDrawInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithDrawInfoView.m; sourceTree = "<group>"; };
 		546F5C571DFD760000528F79 /* WithDrawInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithDrawInfoViewController.h; sourceTree = "<group>"; };
 		546F5C581DFD760000528F79 /* WithDrawInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithDrawInfoViewController.m; sourceTree = "<group>"; };
+		5471C7EE1E8F43DA0098E509 /* OneOnOneLessonTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneOnOneLessonTableViewCell.h; sourceTree = "<group>"; };
+		5471C7EF1E8F43DA0098E509 /* OneOnOneLessonTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneOnOneLessonTableViewCell.m; sourceTree = "<group>"; };
+		5471C7F41E8F49350098E509 /* InteractionLesson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionLesson.h; sourceTree = "<group>"; };
+		5471C7F51E8F49350098E509 /* InteractionLesson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionLesson.m; sourceTree = "<group>"; };
+		5471C7FA1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneOnOneTeacherTableViewCell.h; sourceTree = "<group>"; };
+		5471C7FB1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneOnOneTeacherTableViewCell.m; sourceTree = "<group>"; };
+		5471C7FD1E8F87ED0098E509 /* TeachersGroupTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeachersGroupTableView.h; sourceTree = "<group>"; };
+		5471C7FE1E8F87ED0098E509 /* TeachersGroupTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeachersGroupTableView.m; sourceTree = "<group>"; };
+		5471C8001E8F87FD0098E509 /* ClassListTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassListTableView.h; sourceTree = "<group>"; };
+		5471C8011E8F87FD0098E509 /* ClassListTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassListTableView.m; sourceTree = "<group>"; };
 		547388651DD9876E00A50CCC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		547388681DD987AD00A50CCC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		547389FD1DD9A3FA00A50CCC /* libaacplus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libaacplus.a; path = Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/Libs/libaacplus.a; sourceTree = "<group>"; };
@@ -992,6 +1055,18 @@
 		547E898F1DD1D03100749366 /* TutoriumInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutoriumInfoViewController.m; sourceTree = "<group>"; };
 		547E899B1DD1D8AD00749366 /* HMSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMSegmentedControl.h; sourceTree = "<group>"; };
 		547E899C1DD1D8AD00749366 /* HMSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMSegmentedControl.m; sourceTree = "<group>"; };
+		547E92BE1E8E312200160C6D /* MyOneOnOneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOneOnOneView.h; sourceTree = "<group>"; };
+		547E92BF1E8E312200160C6D /* MyOneOnOneView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyOneOnOneView.m; sourceTree = "<group>"; };
+		547E92C11E8E313200160C6D /* MyOneOnOneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOneOnOneViewController.h; sourceTree = "<group>"; };
+		547E92C21E8E313200160C6D /* MyOneOnOneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyOneOnOneViewController.m; sourceTree = "<group>"; };
+		547E92C91E8E51F300160C6D /* OneOnOneTutorimInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneOnOneTutorimInfoView.h; sourceTree = "<group>"; };
+		547E92CA1E8E51F300160C6D /* OneOnOneTutorimInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneOnOneTutorimInfoView.m; sourceTree = "<group>"; };
+		547E92CC1E8E520400160C6D /* OneOnOneTutoriumInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneOnOneTutoriumInfoViewController.h; sourceTree = "<group>"; };
+		547E92CD1E8E520400160C6D /* OneOnOneTutoriumInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneOnOneTutoriumInfoViewController.m; sourceTree = "<group>"; };
+		547E92CF1E8E56F100160C6D /* OneOnOneWorkFlowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneOnOneWorkFlowView.h; sourceTree = "<group>"; };
+		547E92D01E8E56F100160C6D /* OneOnOneWorkFlowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneOnOneWorkFlowView.m; sourceTree = "<group>"; };
+		547E92D21E8E813B00160C6D /* OneOnOneClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneOnOneClass.h; sourceTree = "<group>"; };
+		547E92D31E8E813B00160C6D /* OneOnOneClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneOnOneClass.m; sourceTree = "<group>"; };
 		547FBF191DF657FE00955A9E /* jcore-ios-1.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "jcore-ios-1.0.0.a"; path = "Qatime_Student/JPush-iOS-SDK-3.0.0/Lib/jcore-ios-1.0.0.a"; sourceTree = "<group>"; };
 		547FBF1A1DF657FE00955A9E /* jpush-ios-3.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "jpush-ios-3.0.0.a"; path = "Qatime_Student/JPush-iOS-SDK-3.0.0/Lib/jpush-ios-3.0.0.a"; sourceTree = "<group>"; };
 		547FBF1D1DF658C000955A9E /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -1052,6 +1127,18 @@
 		5483E8551E4576C200C3C1B4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5484B7401DE7DC9600CF9EC0 /* YYTextView+YZEmotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "YYTextView+YZEmotion.h"; sourceTree = "<group>"; };
 		5484B7411DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YYTextView+YZEmotion.m"; sourceTree = "<group>"; };
+		548F0E7C1E8A51A400A12C6D /* InteractionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionView.h; sourceTree = "<group>"; };
+		548F0E7D1E8A51A400A12C6D /* InteractionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionView.m; sourceTree = "<group>"; };
+		548F0E7F1E8A51B000A12C6D /* InteractionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionViewController.h; sourceTree = "<group>"; };
+		548F0E801E8A51B000A12C6D /* InteractionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionViewController.m; sourceTree = "<group>"; };
+		548F0E981E8A826400A12C6D /* InteractionInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionInfoView.h; sourceTree = "<group>"; };
+		548F0E991E8A826400A12C6D /* InteractionInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionInfoView.m; sourceTree = "<group>"; };
+		548F70AB1E8B5FE50062C71E /* InteractionControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionControl.h; sourceTree = "<group>"; };
+		548F70AC1E8B5FE50062C71E /* InteractionControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionControl.m; sourceTree = "<group>"; };
+		548F70AE1E8B63B70062C71E /* InteractionWhiteBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionWhiteBoardView.h; sourceTree = "<group>"; };
+		548F70AF1E8B63B70062C71E /* InteractionWhiteBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionWhiteBoardView.m; sourceTree = "<group>"; };
+		548F70B11E8BACD30062C71E /* UIView+PlaceholderImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+PlaceholderImage.h"; sourceTree = "<group>"; };
+		548F70B21E8BACD30062C71E /* UIView+PlaceholderImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+PlaceholderImage.m"; sourceTree = "<group>"; };
 		5492101A1DCC585E00A65702 /* NSString+UTF8Coding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UTF8Coding.h"; sourceTree = "<group>"; };
 		5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UTF8Coding.m"; sourceTree = "<group>"; };
 		549210251DCC6D0E00A65702 /* MultiFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiFilterView.h; sourceTree = "<group>"; };
@@ -2049,6 +2136,7 @@
 				54AB48B41DED2CF4008E3BC5 /* 我的钱包 */,
 				54AB48B31DED2CF3008E3BC5 /* 我的订单 */,
 				54AB48B21DED2CF2008E3BC5 /* 我的辅导 */,
+				547E92BA1E8E2DA700160C6D /* 我的一对一 */,
 				54AB48B11DED2CF1008E3BC5 /* 安全管理 */,
 				54AB48B01DED2CEF008E3BC5 /* 系统设置 */,
 			);
@@ -2208,6 +2296,23 @@
 			name = View;
 			sourceTree = "<group>";
 		};
+		543A4D3E1E89F775004C5C9E /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				543A4D3F1E89F775004C5C9E /* NTESEnterRoomViewController.h */,
+				543A4D401E89F775004C5C9E /* NTESEnterRoomViewController.m */,
+				543A4D411E89F775004C5C9E /* NTESEnterRoomViewController.xib */,
+				543A4D421E89F775004C5C9E /* NTESLoginViewController.h */,
+				543A4D431E89F775004C5C9E /* NTESLoginViewController.m */,
+				543A4D441E89F775004C5C9E /* NTESLoginViewController.xib */,
+				543A4D451E89F775004C5C9E /* NTESRegisterViewController.h */,
+				543A4D461E89F775004C5C9E /* NTESRegisterViewController.m */,
+				543A4D471E89F775004C5C9E /* NTESRegisterViewController.xib */,
+			);
+			name = Login;
+			path = Util/Login;
+			sourceTree = "<group>";
+		};
 		543BCAF21E78F3F600AD6721 /* SDAutoLayout */ = {
 			isa = PBXGroup;
 			children = (
@@ -2226,7 +2331,8 @@
 				543BCAFD1E79153800AD6721 /* Model */,
 				543BCAFC1E79153600AD6721 /* View */,
 				543BCAFB1E79153400AD6721 /* Controller */,
-				54FCBAC21DD5909F0094BF58 /* 辅导班详情页 */,
+				547E92C41E8E513F00160C6D /* 一对一辅导班详情页 */,
+				54FCBAC21DD5909F0094BF58 /* 直播课辅导班详情页 */,
 			);
 			name = "选课页面";
 			sourceTree = "<group>";
@@ -2266,6 +2372,8 @@
 		543BCAFD1E79153800AD6721 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				541F91EB1DCA09CC00180BE8 /* TutoriumList.h */,
+				541F91EC1DCA09CC00180BE8 /* TutoriumList.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2480,6 +2588,32 @@
 			name = Cell;
 			sourceTree = "<group>";
 		};
+		544B61E81E95DBD200D7B160 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				544B61E91E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.h */,
+				544B61EA1E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.m */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
+		544B61EF1E9647DB00D7B160 /* LCActionSheet */ = {
+			isa = PBXGroup;
+			children = (
+				544B61F01E9647F100D7B160 /* LCActionSheet.h */,
+				544B61F11E9647F100D7B160 /* LCActionSheet.m */,
+				544B61F21E9647F100D7B160 /* LCActionSheetCell.h */,
+				544B61F31E9647F100D7B160 /* LCActionSheetCell.m */,
+				544B61F41E9647F100D7B160 /* LCActionSheetConfig.h */,
+				544B61F51E9647F100D7B160 /* LCActionSheetConfig.m */,
+				544B61F61E9647F100D7B160 /* NSSet+LCActionSheet.h */,
+				544B61F71E9647F100D7B160 /* NSSet+LCActionSheet.m */,
+				544B61F81E9647F100D7B160 /* UIImage+LCActionSheet.h */,
+				544B61F91E9647F100D7B160 /* UIImage+LCActionSheet.m */,
+			);
+			name = LCActionSheet;
+			sourceTree = "<group>";
+		};
 		545162B61DF50D62000BD17A /* 修改密码 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2626,6 +2760,8 @@
 		54634D7D1DDEAC1F0070C0FF /* FJFloatingView */ = {
 			isa = PBXGroup;
 			children = (
+				543278641E8CE50200F7A2D9 /* IJKFloatingView.h */,
+				543278651E8CE50200F7A2D9 /* IJKFloatingView.m */,
 				54634D851DDEAC1F0070C0FF /* Category */,
 				54634D881DDEAC1F0070C0FF /* FJFloatingView */,
 			);
@@ -2767,6 +2903,17 @@
 			name = "注册页面";
 			sourceTree = "<group>";
 		};
+		5471C7ED1E8F43BC0098E509 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				5471C7EE1E8F43DA0098E509 /* OneOnOneLessonTableViewCell.h */,
+				5471C7EF1E8F43DA0098E509 /* OneOnOneLessonTableViewCell.m */,
+				5471C7FA1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.h */,
+				5471C7FB1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.m */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
 		5473881D1DD9505300A50CCC /* cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -2828,6 +2975,95 @@
 				547E899C1DD1D8AD00749366 /* HMSegmentedControl.m */,
 			);
 			path = HMSegmentedControl;
+			sourceTree = "<group>";
+		};
+		547E92BA1E8E2DA700160C6D /* 我的一对一 */ = {
+			isa = PBXGroup;
+			children = (
+				547E92BD1E8E30F600160C6D /* Model */,
+				547E92BC1E8E30F500160C6D /* View */,
+				547E92BB1E8E30F400160C6D /* Controller */,
+			);
+			name = "我的一对一";
+			sourceTree = "<group>";
+		};
+		547E92BB1E8E30F400160C6D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				547E92C11E8E313200160C6D /* MyOneOnOneViewController.h */,
+				547E92C21E8E313200160C6D /* MyOneOnOneViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		547E92BC1E8E30F500160C6D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				547E92BE1E8E312200160C6D /* MyOneOnOneView.h */,
+				547E92BF1E8E312200160C6D /* MyOneOnOneView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		547E92BD1E8E30F600160C6D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		547E92C41E8E513F00160C6D /* 一对一辅导班详情页 */ = {
+			isa = PBXGroup;
+			children = (
+				547E92C81E8E519E00160C6D /* 辅导班详情 */,
+			);
+			name = "一对一辅导班详情页";
+			sourceTree = "<group>";
+		};
+		547E92C51E8E519900160C6D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				547E92D21E8E813B00160C6D /* OneOnOneClass.h */,
+				547E92D31E8E813B00160C6D /* OneOnOneClass.m */,
+				5471C7F41E8F49350098E509 /* InteractionLesson.h */,
+				5471C7F51E8F49350098E509 /* InteractionLesson.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		547E92C61E8E519B00160C6D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5471C7ED1E8F43BC0098E509 /* Cell */,
+				547E92CF1E8E56F100160C6D /* OneOnOneWorkFlowView.h */,
+				547E92D01E8E56F100160C6D /* OneOnOneWorkFlowView.m */,
+				547E92C91E8E51F300160C6D /* OneOnOneTutorimInfoView.h */,
+				547E92CA1E8E51F300160C6D /* OneOnOneTutorimInfoView.m */,
+				5471C7FD1E8F87ED0098E509 /* TeachersGroupTableView.h */,
+				5471C7FE1E8F87ED0098E509 /* TeachersGroupTableView.m */,
+				5471C8001E8F87FD0098E509 /* ClassListTableView.h */,
+				5471C8011E8F87FD0098E509 /* ClassListTableView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		547E92C71E8E519D00160C6D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				547E92CC1E8E520400160C6D /* OneOnOneTutoriumInfoViewController.h */,
+				547E92CD1E8E520400160C6D /* OneOnOneTutoriumInfoViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		547E92C81E8E519E00160C6D /* 辅导班详情 */ = {
+			isa = PBXGroup;
+			children = (
+				547E92C51E8E519900160C6D /* Model */,
+				547E92C61E8E519B00160C6D /* View */,
+				547E92C71E8E519D00160C6D /* Controller */,
+			);
+			name = "辅导班详情";
 			sourceTree = "<group>";
 		};
 		547FBF251DF6817300955A9E /* UMessage_Sdk_1.4.0 */ = {
@@ -3077,6 +3313,7 @@
 			isa = PBXGroup;
 			children = (
 				543BCAF21E78F3F600AD6721 /* SDAutoLayout */,
+				544B61EF1E9647DB00D7B160 /* LCActionSheet */,
 				54B45D171E5C34410027F958 /* Qatime_Student-Bridging-Header.h */,
 				543BCB121E794AE900AD6721 /* SnailQuickMaskPopups */,
 				54B45D081E5C30670027F958 /* JTSegmentControl */,
@@ -3456,12 +3693,13 @@
 			isa = PBXGroup;
 			children = (
 				54AC022F1E892CEE00817767 /* Util */,
+				543A4D3E1E89F775004C5C9E /* Login */,
 				54AC02841E892FD000817767 /* Common */,
-				54AC02281E892C6200817767 /* View */,
 				54AC04E21E893AF300817767 /* Services */,
 				54AC021B1E892C5300817767 /* Model */,
 				54AC042B1E89398E00817767 /* MeetingRoom */,
 				54AC020E1E892C4A00817767 /* Manager */,
+				54AC02281E892C6200817767 /* View */,
 				54AC020D1E892BFA00817767 /* Controller */,
 			);
 			name = "互动页";
@@ -3474,6 +3712,8 @@
 				54AC02081E892BF700817767 /* NTESMeetingWhiteboardViewController.m */,
 				54AC02091E892BF700817767 /* NTESDocumentViewController.h */,
 				54AC020A1E892BF700817767 /* NTESDocumentViewController.m */,
+				548F0E7F1E8A51B000A12C6D /* InteractionViewController.h */,
+				548F0E801E8A51B000A12C6D /* InteractionViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -3511,10 +3751,19 @@
 		54AC02281E892C6200817767 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				544B61E81E95DBD200D7B160 /* Cell */,
 				54AC02291E892C6200817767 /* NTESDocumentCell.h */,
 				54AC022A1E892C6200817767 /* NTESDocumentCell.m */,
 				54AC022B1E892C6200817767 /* NTESWhiteboardDrawView.h */,
 				54AC022C1E892C6200817767 /* NTESWhiteboardDrawView.m */,
+				548F70AE1E8B63B70062C71E /* InteractionWhiteBoardView.h */,
+				548F70AF1E8B63B70062C71E /* InteractionWhiteBoardView.m */,
+				548F0E981E8A826400A12C6D /* InteractionInfoView.h */,
+				548F0E991E8A826400A12C6D /* InteractionInfoView.m */,
+				548F70AB1E8B5FE50062C71E /* InteractionControl.h */,
+				548F70AC1E8B5FE50062C71E /* InteractionControl.m */,
+				548F0E7C1E8A51A400A12C6D /* InteractionView.h */,
+				548F0E7D1E8A51A400A12C6D /* InteractionView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -5320,8 +5569,6 @@
 		54FCBAB51DD58B370094BF58 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				541F91EB1DCA09CC00180BE8 /* TutoriumList.h */,
-				541F91EC1DCA09CC00180BE8 /* TutoriumList.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -5420,17 +5667,19 @@
 				54E8B6A61E601B0300A9703F /* UIViewController+TimeInterval.m */,
 				5444BD2D1E68206D00A75AD1 /* UINavigationController+StatusBar.h */,
 				5444BD2E1E68206D00A75AD1 /* UINavigationController+StatusBar.m */,
+				548F70B11E8BACD30062C71E /* UIView+PlaceholderImage.h */,
+				548F70B21E8BACD30062C71E /* UIView+PlaceholderImage.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
 		};
-		54FCBAC21DD5909F0094BF58 /* 辅导班详情页 */ = {
+		54FCBAC21DD5909F0094BF58 /* 直播课辅导班详情页 */ = {
 			isa = PBXGroup;
 			children = (
 				54ECFEBF1DFE8D3D001A98CE /* 辅导班详情 */,
 				54ECFEBE1DFE8D34001A98CE /* 课程购买页 */,
 			);
-			name = "辅导班详情页";
+			name = "直播课辅导班详情页";
 			sourceTree = "<group>";
 		};
 		54FCBAC31DD590B40094BF58 /* Controller */ = {
@@ -5705,6 +5954,7 @@
 				54AF51C61DE8226900581C4A /* Emotions.bundle in Resources */,
 				544C15121DC73ADA00F59F86 /* selected.png in Resources */,
 				54AC02591E892CEE00817767 /* NTESLogViewController.xib in Resources */,
+				543A4D491E89F775004C5C9E /* NTESEnterRoomViewController.xib in Resources */,
 				54DBA4B11DE4423300A67A90 /* YZEmotionCell.xib in Resources */,
 				5483E84A1E45730C00C3C1B4 /* InfoPlist.strings in Resources */,
 				54443E2A1E0D284E000D8E8B /* point.png in Resources */,
@@ -5722,6 +5972,8 @@
 				54DBA4AB1DE4423300A67A90 /* Emotion.bundle in Resources */,
 				5493D48A1E0B7FB60085A39E /* Logo_white.png in Resources */,
 				54BB2D691E55879000446141 /* chat_voice_record.png in Resources */,
+				543A4D4B1E89F775004C5C9E /* NTESLoginViewController.xib in Resources */,
+				543A4D4D1E89F775004C5C9E /* NTESRegisterViewController.xib in Resources */,
 				548328D61DDC6F360053AB29 /* chat_send_message.png in Resources */,
 				54F292281E8287170076D499 /* Assets.xcassets in Resources */,
 				54B4C18C1DF8294B00E31794 /* alipay.png in Resources */,
@@ -5852,6 +6104,7 @@
 				54AC04B61E89398E00817767 /* NTESChatroomMessageDataProvider.m in Sources */,
 				54AC027C1E892D3C00817767 /* UIAlertView+NTESBlock.m in Sources */,
 				54AC04061E8938E100817767 /* NIMTeamInfoData.m in Sources */,
+				544B61FC1E9647F100D7B160 /* LCActionSheetConfig.m in Sources */,
 				54AC04B81E89398E00817767 /* NTESMeetingRoomCreateViewController.m in Sources */,
 				54AC04291E8938E100817767 /* NIMProgressHUD.m in Sources */,
 				54AC02B51E892FD100817767 /* NTESCommonTableData.m in Sources */,
@@ -5872,6 +6125,7 @@
 				54F47E881E092AF100D896DB /* SystemNotice.m in Sources */,
 				5407C98E1DE7DDED00DB04C8 /* NSString+YYAdd.m in Sources */,
 				54D661251DD048F500C9A0FF /* IndexPageView.m in Sources */,
+				543278661E8CE50200F7A2D9 /* IJKFloatingView.m in Sources */,
 				54AC03D61E8938E100817767 /* NIMInputEmoticonContainerView.m in Sources */,
 				54AC04EF1E893AF300817767 /* NTESDemoCreateMeetingTask.m in Sources */,
 				54AC04BF1E89398E00817767 /* NTESMeetingControlAttachment.m in Sources */,
@@ -5893,8 +6147,10 @@
 				543E23401E2C78D700381F10 /* SetPayPasswordViewController.m in Sources */,
 				54AC040E1E8938E100817767 /* NIMAdvancedTeamMemberCell.m in Sources */,
 				545162D81DF55DD0000BD17A /* PersonalTableViewCell.m in Sources */,
+				548F0E7E1E8A51A400A12C6D /* InteractionView.m in Sources */,
 				54D66F871DEC406B00ED2EBC /* CalendarView.m in Sources */,
 				54DBA4B01DE4423300A67A90 /* YZEmotionCell.m in Sources */,
+				548F70AD1E8B5FE50062C71E /* InteractionControl.m in Sources */,
 				54AC041D1E8938E100817767 /* NIMImageCache.m in Sources */,
 				54FB1DD71DF1AC2C00BA9A3C /* ParentView.m in Sources */,
 				54AC04F01E893AF300817767 /* NTESDemoRegisterTask.m in Sources */,
@@ -5922,6 +6178,7 @@
 				54AC027E1E892D3C00817767 /* UIImage+NTESColor.m in Sources */,
 				5484B7421DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m in Sources */,
 				54AC025A1E892CEE00817767 /* NTESService.m in Sources */,
+				544B61EB1E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.m in Sources */,
 				541F91E41DC9D16700180BE8 /* TutoriumCollectionViewCell.m in Sources */,
 				54652E2B1DEEB98600F4607C /* NoticeSettingViewController.m in Sources */,
 				54AC04151E8938E100817767 /* NIMKitUtil.m in Sources */,
@@ -5962,6 +6219,7 @@
 				54F3BA211DFC4427003998D0 /* LoginAgainView.m in Sources */,
 				547E898A1DD1BC9900749366 /* RecommandTeacher.m in Sources */,
 				54AC02531E892CEE00817767 /* NTESDataManager.m in Sources */,
+				547E92C31E8E313200160C6D /* MyOneOnOneViewController.m in Sources */,
 				549210271DCC6D0E00A65702 /* MultiFilterView.m in Sources */,
 				545162CB1DF5597E000BD17A /* PersonalInfoView.m in Sources */,
 				54DBA4B61DE4423300A67A90 /* YZTextAttachment.m in Sources */,
@@ -5978,7 +6236,9 @@
 				54AC04C91E89398E00817767 /* yuv420sp.fsh.c in Sources */,
 				54AC03E81E8938E100817767 /* NIMNotificationContentConfig.m in Sources */,
 				5493D4A81E0BAAE00085A39E /* City.m in Sources */,
+				5471C7F01E8F43DA0098E509 /* OneOnOneLessonTableViewCell.m in Sources */,
 				54AC04D11E89398E00817767 /* shader.c in Sources */,
+				547E92CE1E8E520400160C6D /* OneOnOneTutoriumInfoViewController.m in Sources */,
 				54AC041C1E8938E100817767 /* NSMutableAttributedString+NIM.m in Sources */,
 				54B4C18A1DF8184500E31794 /* ChargeViewController.m in Sources */,
 				549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */,
@@ -5986,6 +6246,7 @@
 				54C9A8CE1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m in Sources */,
 				54AC04AA1E89398E00817767 /* NTESChatroomCellLayoutConfig.m in Sources */,
 				54F3BA241DFC4435003998D0 /* LoginAgainViewController.m in Sources */,
+				548F0E811E8A51B000A12C6D /* InteractionViewController.m in Sources */,
 				54AC04161E8938E100817767 /* NIMPinyinConverter.m in Sources */,
 				54D75FDD1E2F9F87003744FE /* Replay.m in Sources */,
 				54AC03C71E8938E100817767 /* NIMBadgeView.m in Sources */,
@@ -6001,6 +6262,7 @@
 				54813C4F1E14F30000D6F739 /* NoticeSwitchTableViewCell.m in Sources */,
 				5435D9371DD2C12300DD4FCC /* ClassesListTableViewCell.m in Sources */,
 				54AC04B41E89398E00817767 /* NTESChatroomMaker.m in Sources */,
+				5471C8021E8F87FD0098E509 /* ClassListTableView.m in Sources */,
 				54AC02B91E892FD100817767 /* NTESMarginButton.m in Sources */,
 				54AC04E01E89398E00817767 /* NTESChatroomUnknowContentView.m in Sources */,
 				5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */,
@@ -6010,8 +6272,10 @@
 				5417AC181E715CF70068941D /* CityListTableViewCell.m in Sources */,
 				547E89901DD1D03100749366 /* TutoriumInfoViewController.m in Sources */,
 				54D66F721DEBF5FE00ED2EBC /* AlreadyClassView.m in Sources */,
+				543A4D481E89F775004C5C9E /* NTESEnterRoomViewController.m in Sources */,
 				547E898D1DD1D01B00749366 /* TutoriumInfoView.m in Sources */,
 				54AC04D41E89398E00817767 /* ijksdl_stdinc.c in Sources */,
+				547E92C01E8E312200160C6D /* MyOneOnOneView.m in Sources */,
 				5435D93A1DD2C2C100DD4FCC /* ClassesInfo_Time.m in Sources */,
 				54AC04D01E89398E00817767 /* renderer_yuv444p10le.c in Sources */,
 				54AC02561E892CEE00817767 /* NTESFileLocationHelper.m in Sources */,
@@ -6021,6 +6285,7 @@
 				54AC02821E892D3C00817767 /* UIView+NTES.m in Sources */,
 				54DBA4AE1DE4423300A67A90 /* UITextField+YZEmotion.m in Sources */,
 				54AC04C41E89398E00817767 /* NTESChatroomMemberCell.m in Sources */,
+				547E92CB1E8E51F300160C6D /* OneOnOneTutorimInfoView.m in Sources */,
 				5493D4CA1E0BE1050085A39E /* TLCity.m in Sources */,
 				54AC04281E8938E100817767 /* NIMIndefiniteAnimatedView.m in Sources */,
 				54AC04191E8938E100817767 /* NIMAttributedLabel.m in Sources */,
@@ -6039,6 +6304,7 @@
 				54AC04E11E89398E00817767 /* NTESSessionJankenponContentView.m in Sources */,
 				543E0CCF1E002960004B24FD /* BindingMailView.m in Sources */,
 				543E23431E2C8D1600381F10 /* AuthenticationView.m in Sources */,
+				547E92D11E8E56F100160C6D /* OneOnOneWorkFlowView.m in Sources */,
 				54FCBAFC1DD5DCEE0094BF58 /* Members.m in Sources */,
 				544E0CE11DD090A700884F31 /* RecommandClassCollectionViewCell.m in Sources */,
 				54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */,
@@ -6105,6 +6371,7 @@
 				54AC04271E8938E100817767 /* UIView+NIMWebCacheOperation.m in Sources */,
 				5417C48C1E31B85000DD0795 /* app_pay_params.m in Sources */,
 				54AC04B31E89398E00817767 /* NTESChatroomListViewController.m in Sources */,
+				548F0E9A1E8A826400A12C6D /* InteractionInfoView.m in Sources */,
 				54AC04121E8938E100817767 /* NIMTeamSwitchTableViewCell.m in Sources */,
 				541E20071E13B9AF007CF5D1 /* NSDate+ChangeUTC.m in Sources */,
 				5407C9991DE7DE9200DB04C8 /* UIDevice+YYAdd.m in Sources */,
@@ -6128,6 +6395,7 @@
 				543BCB061E79158400AD6721 /* ChooseClassView.m in Sources */,
 				5448AEAB1E054CA4007B1DF9 /* NoticeListTableViewCell.m in Sources */,
 				54AA309B1DF98D30009E0D04 /* MyOrderTableViewCell.m in Sources */,
+				548F70B01E8B63B70062C71E /* InteractionWhiteBoardView.m in Sources */,
 				5493D4CD1E0BE1050085A39E /* TLCityPickerController.m in Sources */,
 				54AC03D81E8938E100817767 /* NIMInputEmoticonParser.m in Sources */,
 				54AC02801E892D3C00817767 /* UIScrollView+NTESDirection.m in Sources */,
@@ -6171,6 +6439,7 @@
 				5435D9521DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m in Sources */,
 				542021141E2DF7F100517A47 /* Refund.m in Sources */,
 				54AC03CD1E8938E100817767 /* NIMGroupedDataCollection.m in Sources */,
+				544B61FD1E9647F100D7B160 /* NSSet+LCActionSheet.m in Sources */,
 				545B3BAD1E0AA2DD00751D08 /* GradeList.m in Sources */,
 				54AC04251E8938E100817767 /* UIImage+NIMGIF.m in Sources */,
 				5407C98D1DE7DDED00DB04C8 /* NSObject+YYAdd.m in Sources */,
@@ -6194,6 +6463,7 @@
 				54AC02571E892CEE00817767 /* NTESLogManager.m in Sources */,
 				54AC027A1E892D3C00817767 /* NSString+NTES.m in Sources */,
 				54B914A81E6D790500F377ED /* EditLocationTableViewCell.m in Sources */,
+				544B61FB1E9647F100D7B160 /* LCActionSheetCell.m in Sources */,
 				54A991851E34BCB20001D3D9 /* NoticeWaysTableViewCell.m in Sources */,
 				54660F601E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m in Sources */,
 				5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */,
@@ -6213,6 +6483,7 @@
 				546A54741DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m in Sources */,
 				54AC04D51E89398E00817767 /* ijksdl_timer.c in Sources */,
 				54AC04CC1E89398E00817767 /* renderer_rgb.c in Sources */,
+				544B61FA1E9647F100D7B160 /* LCActionSheet.m in Sources */,
 				54D66F691DEBDA5700ED2EBC /* ClassTimeTableViewCell.m in Sources */,
 				54AC03D11E8938E100817767 /* NIMContactSelectConfig.m in Sources */,
 				54C525191E7BAC000005B5A0 /* TTGTagCollectionView.m in Sources */,
@@ -6228,6 +6499,7 @@
 				54AC03EF1E8938E100817767 /* NIMMessageMaker.m in Sources */,
 				54AC03E41E8938E100817767 /* NIMCellLayoutDefaultConfig.m in Sources */,
 				54AC03CA1E8938E100817767 /* NIMMemberGroupView.m in Sources */,
+				547E92D41E8E813B00160C6D /* OneOnOneClass.m in Sources */,
 				54634D991DDEAC1F0070C0FF /* FJFloatingView.m in Sources */,
 				5413D2581DF7B5F400A8FDEC /* CashRecordViewController.m in Sources */,
 				54AC025B1E892CEE00817767 /* NTESSessionUtil.m in Sources */,
@@ -6244,6 +6516,7 @@
 				542C173E1DFA50760088DB3F /* Unpaid.m in Sources */,
 				54AC04B21E89398E00817767 /* NTESMeetingRolesManager.m in Sources */,
 				54AC04DF1E89398E00817767 /* NTESChatroomTextContentView.m in Sources */,
+				544B61FE1E9647F100D7B160 /* UIImage+LCActionSheet.m in Sources */,
 				54AC03EC1E8938E100817767 /* NIMVideoContentConfig.m in Sources */,
 				54AC040D1E8938E100817767 /* NIMTeamMemberListViewController.m in Sources */,
 				54B914921E6D5B7F00F377ED /* CityChosenViewController.m in Sources */,
@@ -6260,8 +6533,10 @@
 				54D661221DD040EF00C9A0FF /* UIViewController+HUD.m in Sources */,
 				545162CE1DF5598E000BD17A /* PersonalInfoViewController.m in Sources */,
 				54AC04B01E89398E00817767 /* NTESMeetingMessageHandler.m in Sources */,
+				5471C7F61E8F49350098E509 /* InteractionLesson.m in Sources */,
 				54AC03CE1E8938E100817767 /* NIMGroupedUsrInfo.m in Sources */,
 				545226151E24CDD300F36280 /* OrderInfoView.m in Sources */,
+				5471C7FF1E8F87ED0098E509 /* TeachersGroupTableView.m in Sources */,
 				5413D25E1DF7BC8A00A8FDEC /* WidthDrawTableView.m in Sources */,
 				54CB26601DEFFBD300AE7414 /* ChangPhoneView.m in Sources */,
 				54AC04C51E89398E00817767 /* color.c in Sources */,
@@ -6286,6 +6561,7 @@
 				54AC025D1E892CEE00817767 /* NTESUserUtil.m in Sources */,
 				54AC04BA1E89398E00817767 /* NTESMeetingViewController.m in Sources */,
 				54FCBAF61DD5D4500094BF58 /* VideoClassInfo.m in Sources */,
+				543A4D4A1E89F775004C5C9E /* NTESLoginViewController.m in Sources */,
 				54AC03CF1E8938E100817767 /* NIMContactDataItem.m in Sources */,
 				54AC041F1E8938E100817767 /* NIMWebImageDecoder.m in Sources */,
 				541E20041E139967007CF5D1 /* UncaughtExceptionHandler.m in Sources */,
@@ -6305,6 +6581,7 @@
 				540A34CB1E481B5F0068E049 /* UIViewController+ZFPlayerRotation.m in Sources */,
 				541A468C1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m in Sources */,
 				545226081E2482E100F36280 /* EditNameTableViewCell.m in Sources */,
+				548F70B31E8BACD30062C71E /* UIView+PlaceholderImage.m in Sources */,
 				54AC03C91E8938E100817767 /* NIMLoadProgressView.m in Sources */,
 				542021171E2DF90400517A47 /* RefundTableView.m in Sources */,
 				54AC03E71E8938E100817767 /* NIMLocationContentConfig.m in Sources */,
@@ -6319,10 +6596,12 @@
 				54AB48E71DED606F008E3BC5 /* UnStartClassView.m in Sources */,
 				54AB48FD1DEDA563008E3BC5 /* StartedTableViewCell.m in Sources */,
 				5493D4CC1E0BE1050085A39E /* TLCityHeaderView.m in Sources */,
+				543A4D4C1E89F775004C5C9E /* NTESRegisterViewController.m in Sources */,
 				54AB48FA1DED7C09008E3BC5 /* MyTutoriumModel.m in Sources */,
 				547A7EFD1DD416F100F1282B /* ListenAndBuyTabBar.m in Sources */,
 				54652E081DEE9D1900F4607C /* AboutUsView.m in Sources */,
 				54AC042A1E8938E100817767 /* UIView+NIMKitToast.m in Sources */,
+				5471C7FC1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.m in Sources */,
 				54AC03C31E8938E100817767 /* UITableView+NIMScrollToBottom.m in Sources */,
 				5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */,
 				543E23521E2CE88B00381F10 /* DCPaymentView.m in Sources */,

@@ -160,7 +160,7 @@
                     }
                 }
                 else {
-                    DDLogError(@"Invalid point cmd: %@", cmdString);
+//                    DDLogError(@"Invalid point cmd: %@", cmdString);
                 }
                 break;
             }
@@ -247,7 +247,7 @@
                     [points addObject:point];
                 }
                 else {
-                    DDLogError(@"Invalid point cmd in sync: %@", cmdString);
+//                    DDLogError(@"Invalid point cmd in sync: %@", cmdString);
                 }
                 break;
             }
@@ -261,7 +261,7 @@
             }
 
             default:
-                DDLogError(@"Invalid cmd in sync: %@", cmdString);
+//                DDLogError(@"Invalid cmd in sync: %@", cmdString);
                 break;
         }
     }

@@ -69,6 +69,7 @@
     [super sendMessage:message];
 }
 
+
 #pragma mark - NIMInputDelegate
 - (void)showInputView
 {

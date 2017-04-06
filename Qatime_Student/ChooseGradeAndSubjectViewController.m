@@ -33,8 +33,9 @@
     
     self.navigationController.navigationBar.hidden = YES;
     
-    //基本信息
-    subjects = @[@"全部",@"语文",@"数学",@"英语",@"历史",@"物理",@"政治",@"地理",@"生物",@"化学"];
+    //基本信息(全部)
+    subjects = @[@"全部直播课",@"全部一对一",@"语文直播课",@"语文一对一",@"数学直播课",@"数学一对一",@"英语直播课",@"英语一对一",@"历史直播课",@"历史一对一",@"物理直播课",@"物理一对一",@"政治直播课",@"政治一对一",@"地理直播课",@"地理一对一",@"生物直播课",@"生物一对一",@"化学直播课",@"化学一对一"];
+    
     
     //加载视图
     [self setupViews];
@@ -50,7 +51,6 @@
         }
     }
 
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         //干掉筛选信息
@@ -77,6 +77,28 @@
             [_chooseView selected:button];
         }
     }
+    //课程表变化
+    if ([[notification object]isEqualToString:@"初三"]) {
+//        语、数、英、物、化、政、历
+        subjects = @[@"全部直播课",@"全部一对一",@"语文直播课",@"语文一对一",@"数学直播课",@"数学一对一",@"英语直播课",@"英语一对一",@"物理直播课",@"物理一对一",@"化学直播课",@"化学一对一",@"政治直播课",@"政治一对一",@"历史直播课",@"历史一对一"];
+    }else if ([[notification object]isEqualToString:@"初二"]){
+//        语、数、英、物、政、历、生、地
+        subjects = @[@"全部直播课",@"全部一对一",@"语文直播课",@"语文一对一",@"数学直播课",@"数学一对一",@"英语直播课",@"英语一对一",@"物理直播课",@"物理一对一",@"政治直播课",@"政治一对一",@"历史直播课",@"历史一对一",@"生物直播课",@"生物一对一",@"地理直播课",@"地理一对一"];
+    }else if ([[notification object]isEqualToString:@"初一"]){
+         subjects = @[@"全部直播课",@"全部一对一",@"语文直播课",@"语文一对一",@"数学直播课",@"数学一对一",@"英语直播课",@"英语一对一",@"政治直播课",@"政治一对一",@"历史直播课",@"历史一对一",@"生物直播课",@"生物一对一",@"地理直播课",@"地理一对一"];
+        
+    }else if ([[notification object]isEqualToString:@"六年级"]||[[notification object]isEqualToString:@"五年级"]||[[notification object]isEqualToString:@"四年级"]||[[notification object]isEqualToString:@"三年级"]){
+//        语、数、英、科学
+         subjects = @[@"全部直播课",@"全部一对一",@"语文直播课",@"语文一对一",@"数学直播课",@"数学一对一",@"英语直播课",@"英语一对一",@"科学直播课",@"科学一对一"];
+    }else if ([[notification object]isEqualToString:@"一年级"]||[[notification object]isEqualToString:@"二年级"]){
+        subjects = @[@"全部直播课",@"全部一对一",@"语文直播课",@"语文一对一",@"数学直播课",@"数学一对一",@"英语直播课",@"英语一对一"];
+    }else {
+        
+        subjects = @[@"全部直播课",@"全部一对一",@"语文直播课",@"语文一对一",@"数学直播课",@"数学一对一",@"英语直播课",@"英语一对一",@"历史直播课",@"历史一对一",@"物理直播课",@"物理一对一",@"政治直播课",@"政治一对一",@"地理直播课",@"地理一对一",@"生物直播课",@"生物一对一",@"化学直播课",@"化学一对一"];
+    }
+    
+    [_chooseView.subjectCollection reloadData];
+    
 }
 
 
@@ -174,8 +196,18 @@
 
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-   
-    ChooseClassViewController *controller = [[ChooseClassViewController alloc]initWithGrade:_selectedGrade andSubject:subjects[indexPath.row]];
+    
+    ChooseClassViewController *controller;
+    
+    if (indexPath.row%2==0) {
+        //普通辅导班类型
+        controller =[[ChooseClassViewController alloc]initWithGrade:_selectedGrade andSubject:[subjects[indexPath.row] substringWithRange:NSMakeRange(0, 2)] andType:TutoriumSearchType];
+        
+    }else{
+        //一对一课程类型
+        controller =[[ChooseClassViewController alloc]initWithGrade:_selectedGrade andSubject:[subjects[indexPath.row] substringWithRange:NSMakeRange(0, 2)] andType:InteractionSearchType];
+        
+    }
     
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
@@ -188,6 +220,28 @@
 -(void)chooseGrade:(NSString *)grade{
     
     _selectedGrade = grade;
+    
+    //课程表变化
+    if ([grade isEqualToString:@"初三"]) {
+        //        语、数、英、物、化、政、历
+        subjects = @[@"全部直播课",@"全部一对一",@"语文直播课",@"语文一对一",@"数学直播课",@"数学一对一",@"英语直播课",@"英语一对一",@"物理直播课",@"物理一对一",@"化学直播课",@"化学一对一",@"政治直播课",@"政治一对一",@"历史直播课",@"历史一对一"];
+    }else if ([grade isEqualToString:@"初二"]){
+        //        语、数、英、物、政、历、生、地
+        subjects = @[@"全部直播课",@"全部一对一",@"语文直播课",@"语文一对一",@"数学直播课",@"数学一对一",@"英语直播课",@"英语一对一",@"物理直播课",@"物理一对一",@"政治直播课",@"政治一对一",@"历史直播课",@"历史一对一",@"生物直播课",@"生物一对一",@"地理直播课",@"地理一对一"];
+    }else if ([grade isEqualToString:@"初一"]){
+        subjects = @[@"全部直播课",@"全部一对一",@"语文直播课",@"语文一对一",@"数学直播课",@"数学一对一",@"英语直播课",@"英语一对一",@"政治直播课",@"政治一对一",@"历史直播课",@"历史一对一",@"生物直播课",@"生物一对一",@"地理直播课",@"地理一对一"];
+        
+    }else if ([grade isEqualToString:@"六年级"]||[grade isEqualToString:@"五年级"]||[grade isEqualToString:@"四年级"]||[grade isEqualToString:@"三年级"]){
+        //        语、数、英、科学
+        subjects = @[@"全部直播课",@"全部一对一",@"语文直播课",@"语文一对一",@"数学直播课",@"数学一对一",@"英语直播课",@"英语一对一",@"科学直播课",@"科学一对一"];
+    }else if ([grade isEqualToString:@"一年级"]||[grade isEqualToString:@"二年级"]){
+        subjects = @[@"全部直播课",@"全部一对一",@"语文直播课",@"语文一对一",@"数学直播课",@"数学一对一",@"英语直播课",@"英语一对一"];
+    }else {
+        
+        subjects = @[@"全部直播课",@"全部一对一",@"语文直播课",@"语文一对一",@"数学直播课",@"数学一对一",@"英语直播课",@"英语一对一",@"历史直播课",@"历史一对一",@"物理直播课",@"物理一对一",@"政治直播课",@"政治一对一",@"地理直播课",@"地理一对一",@"生物直播课",@"生物一对一",@"化学直播课",@"化学一对一"];
+    }
+    
+    [_chooseView.subjectCollection reloadData];
     
 }
 

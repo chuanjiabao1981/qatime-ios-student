@@ -13,20 +13,7 @@
 
 @interface ViewController (){
     
-    /* tabbar的items*/
-    NSMutableArray *items;
-    
-    /* 未选中状态图标*/
-    NSArray *unselectedImage;
-    
-    /* 选中状态的图标*/
-    NSArray *selectedImage;
-    
-    /* 图标的title*/
-    NSArray *titles;
-    
-    /* 代理单例*/
-    AppDelegate *_appDelegate;
+
     
 }
 
@@ -36,9 +23,15 @@
 
 @implementation ViewController
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.tabBar.hidden = NO;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+self.tabBar.hidden = NO;
 
 }
 

@@ -106,7 +106,6 @@
 
 
 
-
 -(void)setModel:(TutoriumListInfo *)model{
     
     _model = model;
@@ -142,8 +141,46 @@
     //老师名字
     _teacherName.text = model.teacher_name;
     
-    
 }
+
+-(void)setInteractionModel:(OneOnOneClass *)interactionModel{
+    
+    _interactionModel = interactionModel;
+    
+    /* 如果本地已经保留了图片缓存*/
+    if ([self diskImageExistsForURL:[NSURL URLWithString:interactionModel.publicize_app_url]]==YES) {
+        [_classImage sd_setImageWithURL:[NSURL URLWithString:interactionModel.publicize_app_url]];
+    }else{
+        
+        [_classImage sd_setImageWithURL:[NSURL URLWithString:interactionModel.publicize_app_url] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            _classImage.alpha = 0.0;
+            [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                if (image) {
+                    
+                    [_classImage setImage:image];
+                }else{
+                    [_classImage setImage:[UIImage imageNamed:@"school"]];
+                }
+                _classImage.alpha = 1.0;
+            } completion:NULL];
+            
+        }];
+    }
+    
+    
+    //课程名
+    _className.text = interactionModel.name;
+    
+    //价格
+    _price.text = [NSString stringWithFormat:@"¥%@",interactionModel.price];
+    
+    //老师名字
+    _teacherName.text = [interactionModel.teacherNameString substringToIndex:interactionModel.teacherNameString.length-1];
+
+}
+
+
 
 - (BOOL)diskImageExistsForURL:(NSURL *)url {
     NSString *key = [manager cacheKeyForURL:url];

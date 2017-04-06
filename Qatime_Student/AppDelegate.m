@@ -53,6 +53,7 @@
     /* 推送部分*/
     NSDictionary *remoteNotification;
 
+
 }
 
 
@@ -80,8 +81,7 @@
 
     /* 默认初始方向屏幕不可旋转*/
     [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"SupportedLandscape"];
-    
-    
+
     _window = [[UIWindow alloc]init];
     [_window makeKeyAndVisible];
     _window.backgroundColor = [UIColor whiteColor];
@@ -266,7 +266,7 @@
 
 
 
-/* 加载核心TabBarController*/
+/* 加载TabBarController*/
 - (void)setTabBarController{
     
     if (!_viewController) {
@@ -279,9 +279,9 @@
     
     }
     
+    
     /* 新收到消息的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(receiveNewNotice) name:@"ReceiveNewNotice" object:nil];
-    
     
     /* 所有消息变为已读*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(allMessageRead) name:@"AllMessageRead" object:nil];
@@ -312,7 +312,6 @@
     
     _chooseClassViewController.selectedFilterGrade = [notification object];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"ChooseFilterGrade" object:[notification object]];
-    
     
 }
 
@@ -359,9 +358,6 @@
     _personalViewController.title = NSLocalizedString(@"个人", comment:"");
     
     
-    
-    
-
     
     
     /* 初始化五个navigationcontroller*/

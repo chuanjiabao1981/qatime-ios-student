@@ -75,6 +75,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
     _navigationBar.backgroundColor= [UIColor whiteColor];
+    _navigationBar.contentView.backgroundColor = [UIColor whiteColor];
     [self .view addSubview:_navigationBar];
     /* logo图片布局*/
     _logoImage = [[UIImageView alloc]init];

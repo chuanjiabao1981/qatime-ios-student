@@ -12,6 +12,7 @@
 #import "UIImageView+WebCache.h"
 #import "UIViewController+HUD.h"
 #import "ProvinceChosenViewController.h"
+#import "LCActionSheet.h"
 
 
 @interface PersonalInfoEditViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate>{
@@ -107,7 +108,6 @@
         _;
     });
     
-    
 }
 
 - (void)viewDidLoad {
@@ -147,56 +147,84 @@
 /* 点击头像的方法*/
 - (void)changeHeadImage:(id)sender{
     
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-    {
-        NSLog(@"支持相机");
-    }
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
-    {
-        NSLog(@"支持图库");
-    }
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
-    {
-        NSLog(@"支持相片库");
-    }
-    
+//    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+//    {
+//        NSLog(@"支持相机");
+//    }
+//    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+//    {
+//        NSLog(@"支持图库");
+//    }
+//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
+//    {
+//        NSLog(@"支持相片库");
+//    }
+//    
     UIImagePickerController *picker = [[UIImagePickerController alloc]init];
     picker.allowsEditing = YES;
     picker.delegate = self;
+//
+//    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"上传头像" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+//    
+//    UIAlertAction *camera = [UIAlertAction actionWithTitle:@"照相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        
+//        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+//        
+//        [self presentViewController:picker animated:YES completion:nil];
+//    }] ;
+//    UIAlertAction *library = [UIAlertAction actionWithTitle:@"图库" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//        
+//        [self presentViewController:picker animated:YES completion:nil];
+//        
+//    }] ;
+//    UIAlertAction *photos = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+//        
+//        [self presentViewController:picker animated:YES completion:nil];
+//        
+//    }] ;
+//    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//        
+//        
+//    }] ;
+//    
+//    
+//    [alert addAction:camera];
+//    [alert addAction:library];
+//    [alert addAction:photos];
+//    [alert addAction:cancel];
+//    
+//    [self presentViewController:alert animated:YES completion:nil];
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"上传头像" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    LCActionSheet *sheet = [[LCActionSheet alloc]initWithTitle:@"选择头像" cancelButtonTitle:@"取消" clicked:^(LCActionSheet *actionSheet, NSInteger buttonIndex) {
     
-    UIAlertAction *camera = [UIAlertAction actionWithTitle:@"照相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        switch (buttonIndex) {
+            case 0:
+                return ;
+                break;
+                
+            case 1:{
+                picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+                
+            }
+                break;
+            case 2:{
+                picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+
+            }
+                break;
+            case 3:{
+                picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+
+            }
+                break;
+        }
+        [self presentViewController:picker animated:YES completion:^{}];
         
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        
-        [self presentViewController:picker animated:YES completion:nil];
-    }] ;
-    UIAlertAction *library = [UIAlertAction actionWithTitle:@"图库" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        
-        [self presentViewController:picker animated:YES completion:nil];
-        
-    }] ;
-    UIAlertAction *photos = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-        
-        [self presentViewController:picker animated:YES completion:nil];
-        
-    }] ;
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-        
-    }] ;
+    } otherButtonTitleArray:@[@"照相机",@"图库",@"相册"]];
     
-    
-    [alert addAction:camera];
-    [alert addAction:library];
-    [alert addAction:photos];
-    [alert addAction:cancel];
-    
-    [self presentViewController:alert animated:YES completion:nil];
-    
+    [sheet show];
     
 }
 
@@ -361,7 +389,7 @@
                 .autoHeightRatio(0);
                 [cell.content setSingleLineAutoResizeWithMaxWidth:200];
                 [cell.content updateLayout];
-
+                
                 
                 if (_infoDic[@"province"]&&_infoDic[@"city"]) {
                     cell.subContent.text =_infoDic[@"province"];
@@ -462,6 +490,7 @@
                 
                 _infoDic[@"grade"] = selectedString;
                 
+                
             }];
             
         }
@@ -474,8 +503,6 @@
             //用block调结果 赋值到head视图上
             
             EditLocationTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            
-           
             
         }
     }
@@ -648,7 +675,7 @@
     }];
     
     [uploadTask resume];
-
+    
 }
 
 //改变地区 接监听
@@ -666,9 +693,16 @@
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
     EditNameTableViewCell *nameCell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-    EditNameTableViewCell *descCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0]];
-    [nameCell.nameText resignFirstResponder];
-    [descCell.nameText resignFirstResponder];
+    EditNameTableViewCell *descCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    
+    if ([nameCell.nameText isFirstResponder]) {
+        
+        [nameCell.nameText resignFirstResponder];
+    }
+    if ([descCell.nameText isFirstResponder]) {
+        
+        [descCell.nameText resignFirstResponder];
+    }
     
 }
 - (void)resign{

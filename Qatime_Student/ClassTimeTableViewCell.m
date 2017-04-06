@@ -34,11 +34,23 @@
         .rightSpaceToView(self.contentView,10)
         .topSpaceToView(self.contentView,5)
         .bottomSpaceToView(self.contentView,5);
-        _content.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        _content.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
         _content.layer.borderWidth = 0.8f;
         
       /* 课程图片*/
         _classImage = [[UIImageView alloc]init];
+        
+        /**课程类型*/
+        _type =[[UILabel alloc]init];
+        _type.font = [UIFont systemFontOfSize:14*ScrenScale];
+        _type.textColor = [UIColor whiteColor];
+        _type.textAlignment = NSTextAlignmentCenter;
+        [_classImage addSubview:_type];
+        _type.sd_layout
+        .leftSpaceToView(_classImage,0)
+        .rightSpaceToView(_classImage, 0)
+        .bottomSpaceToView(_classImage, 0)
+        .autoHeightRatio(0);
         
         /* 课程名称*/
         _name = [[UILabel alloc]init];
@@ -46,12 +58,10 @@
         _className = [[UILabel alloc]init];
         _className.font = TEXT_FONTSIZE;
         
-        
         /* 年级*/
         _grade = [[UILabel alloc]init];
         _grade.textColor = [UIColor grayColor];
         _grade.font = [UIFont systemFontOfSize:14*ScrenScale];
-        
         
         /* 科目*/
         _subject = [[UILabel alloc]init];
@@ -69,22 +79,17 @@
         _teacherName.textColor = [UIColor grayColor];
         _teacherName.font = [UIFont systemFontOfSize:14*ScrenScale];
         
-        
         /* 日期*/
-        
         _date = [[UILabel alloc]init];
         _date.textColor = [UIColor grayColor];
         _date.font = [UIFont systemFontOfSize:14*ScrenScale];
 
-        
         /* 状态*/
         _status = [[UILabel alloc]init];
         _status.textColor = [UIColor lightGrayColor];
         _status.font = [UIFont systemFontOfSize:14*ScrenScale];
 
-        
         /* 进入按钮*/
-        
         _enterButton = [[UIButton alloc]init];
         _enterButton.layer.borderColor = [UIColor orangeColor].CGColor;
         _enterButton.layer.borderWidth = 0.8;
@@ -207,6 +212,16 @@
         _canUse = NO;
     }else{
         _canUse = YES;
+    }
+    
+    //课程类型
+    if ([model.modal_type isEqualToString:@"LiveStudio::Lesson"]) {
+        _type.text = @"直播课";
+        _type.backgroundColor = NAVIGATIONRED;
+    }else if ([model.modal_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
+        
+        _type.text = @"一对一";
+        _type.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:1.0 alpha:1.0];
     }
 
 

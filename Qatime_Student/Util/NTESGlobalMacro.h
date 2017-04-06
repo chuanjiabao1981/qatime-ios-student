@@ -35,6 +35,9 @@ green:((float)((rgbValue & 0x00FF00) >> 8))/255.0 \
 blue:((float)(rgbValue & 0x0000FF))/255.0 \
 alpha:alphaValue]
 
+#define NTES_USE_CLEAR_BAR - (BOOL)useClearBar{return YES;}
+#define NTES_FORBID_INTERACTIVE_POP - (BOOL)forbidInteractivePop{return YES;}
+
 #define UIColorFromRGB(rgbValue) UIColorFromRGBA(rgbValue, 1.0)
 
 #define dispatch_sync_main_safe(block)\

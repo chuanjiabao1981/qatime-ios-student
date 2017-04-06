@@ -19,6 +19,7 @@
 #import "CYLTableViewPlaceHolder.h"
 #import "HaveNoClassView.h"
 #import "TutoriumInfoViewController.h"
+#import "OneOnOneTutoriumInfoViewController.h"
 
 //上滑 或 下拉
 typedef enum : NSUInteger {
@@ -55,11 +56,14 @@ typedef enum : NSUInteger {
     //筛选用的字典
     NSMutableDictionary *_filterDic;
     
-    
     //是否为初始化下拉
     __block BOOL isInitPull;
     
+    //搜索类型
+    SearchType _type;
     
+    //接口信息
+    NSString *_course;
     
 }
 
@@ -67,7 +71,7 @@ typedef enum : NSUInteger {
 
 @implementation ChooseClassViewController
 
--(instancetype)initWithGrade:(NSString *)grade andSubject:(NSString *)subject{
+-(instancetype)initWithGrade:(NSString *)grade andSubject:(NSString *)subject andType:(SearchType)type{
     
     self = [super init];
     
@@ -75,6 +79,14 @@ typedef enum : NSUInteger {
         
         _grade = grade;
         _subject = subject;
+        
+        //判断课程类型
+        _type = type;
+        if (type == TutoriumType) {
+            _course = [NSString stringWithFormat:@"courses"];
+        }else if (type == InteractionType){
+            _course = [NSString stringWithFormat:@"interactive_courses"];
+        }
         
     }
     return self;
@@ -95,6 +107,7 @@ typedef enum : NSUInteger {
     perPage = 10;
     
     _filterDic = @{}.mutableCopy;
+    _tags = @[].mutableCopy;
     
     //导航栏
     [self setupNavigation];
@@ -110,9 +123,13 @@ typedef enum : NSUInteger {
     //加载tableview
     [self setupMainView];
     
-    //获取所有tag
-    [self getTags];
     
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        //根据筛选项,获取响应的tag
+        [self getTags];
+    });
     
     
 }
@@ -165,20 +182,32 @@ typedef enum : NSUInteger {
         
     }
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/search",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:_filterDic completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/%@/search",Request_Header,_course] withHeaderInfo:nil andHeaderfield:nil parameters:_filterDic completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             
             if ([dic[@"data"] count] !=0) {
                 
-                for (NSDictionary *dics in dic[@"data"]) {
+                if (_type == TutoriumSearchType) {
                     
-                    TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dics];
-                    mod.classID = dics[@"id"];
-                    
-                    [_classesArray addObject:mod];
-                    
+                    for (NSDictionary *dics in dic[@"data"]) {
+                        
+                        TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dics];
+                        mod.classID = dics[@"id"];
+                        
+                        [_classesArray addObject:mod];
+                    }
+                }else if (_type == InteractionSearchType){
+                    for (NSDictionary *dics in dic[@"data"]) {
+                        OneOnOneClass *mod = [OneOnOneClass yy_modelWithJSON:dics];
+                        mod.classID = dics[@"id"];
+                        mod.teacherNameString = @"".mutableCopy;
+                        for (NSDictionary *teacher in mod.teachers) {
+                            [mod.teacherNameString appendString:[NSString stringWithFormat:@"%@/",teacher[@"name"]]];
+                        }
+                        [_classesArray addObject:mod];
+                    }
                 }
                 
                 if (mode == PullToRefresh) {
@@ -228,27 +257,42 @@ typedef enum : NSUInteger {
         
     }];
     
-    
-    
 }
 
 //获取本地存储的tag数据
 - (void)getTags{
     
-    NSArray *tag;
-    if (!_tags) {
-        
-        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Tags"]) {
-            _tags = @[].mutableCopy;
+    //    NSArray *tag;
+    //    if (!_tags) {
+    //
+    //        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Tags"]) {
+    //            _tags = @[].mutableCopy;
+    //
+    //            tag = [[NSUserDefaults standardUserDefaults]valueForKey:@"Tags"];
+    //
+    //            for (NSDictionary *dic in tag) {
+    //                [_tags addObject:dic[@"name"]];
+    //            }
+    //        }
+    //
+    //    }
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/app_constant/tags",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"cates":[NSString stringWithFormat:@"%@,%@",_grade,_subject]} completeSuccess:^(id  _Nullable responds) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
             
-            tag = [[NSUserDefaults standardUserDefaults]valueForKey:@"Tags"];
-            
-            for (NSDictionary *dic in tag) {
-                [_tags addObject:dic[@"name"]];
+            for (NSDictionary *tag in dic[@"data"]) {
+                [_tags addObject:tag[@"name"]];
             }
+            
+            [_tagsFilterView.tagsCollection reloadData];
+            
+        }else{
+            
         }
- 
-    }
+        
+    }];
+    
 }
 
 #pragma mark- tableview datasource
@@ -273,7 +317,13 @@ typedef enum : NSUInteger {
     
     if (_classesArray.count>indexPath.row) {
         
-        cell.model = _classesArray[indexPath.row];
+        if (_type == TutoriumSearchType) {
+            
+            cell.model = _classesArray[indexPath.row];
+        }else if (_type == InteractionSearchType){
+            
+            cell.interactionModel = _classesArray[indexPath.row];
+        }
         
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
         
@@ -298,7 +348,17 @@ typedef enum : NSUInteger {
     
     ChooseClassTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    TutoriumInfoViewController *controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+    
+    __kindof UIViewController *controller;
+    
+    if (_type == TutoriumSearchType) {
+        
+        controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+    }else if (_type == InteractionSearchType){
+        
+        controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.interactionModel.classID];
+    }
+    
     [self.navigationController pushViewController:controller animated:YES];
     
 }
@@ -382,7 +442,7 @@ typedef enum : NSUInteger {
                 [self requestClass:PullToRefresh withContentDictionary:_filterDic];
             }
         }];
-    
+        
         //第一次自动下拉刷新
         [_.mj_header beginRefreshing];
         //自动下拉
@@ -407,8 +467,15 @@ typedef enum : NSUInteger {
     _navigationBar = ({
         NavigationBar *_ =[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
         [self.view addSubview:_];
+        NSString *modal;
+        //判断类型
+        if (_type == TutoriumType) {
+            modal = [NSString stringWithFormat:@"直播课"];
+        }else if (_type == InteractionType){
+            modal =[NSString stringWithFormat:@"一对一"];
+        }
         
-        _.titleLabel.text = [NSString stringWithFormat:@"%@%@",_grade,_subject];
+        _.titleLabel.text = [NSString stringWithFormat:@"%@%@%@",_grade,_subject,modal];
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         
@@ -430,6 +497,7 @@ typedef enum : NSUInteger {
     //多项筛选
     [_filterView.filterButton addTarget:self action:@selector(multiFilters) forControlEvents:UIControlEventTouchUpInside];
     
+    
     //单项条件筛选
     
     //最新
@@ -441,6 +509,14 @@ typedef enum : NSUInteger {
     //人气
     [_filterView.popularityButton addTarget:self action:@selector(countFilter:) forControlEvents:UIControlEventTouchUpInside];
     
+    //根据人气,判断有些按钮是否要显示
+    if (_type == TutoriumSearchType) {
+        
+        _filterView.type = TutoriumType;
+    }else if (_type == InteractionSearchType){
+        
+        _filterView.type = InteractionType;
+    }
     
 }
 
@@ -537,7 +613,7 @@ typedef enum : NSUInteger {
     }else{
         //如果没有筛选字段
         dic = @{@"sort_by":@"published_at.asc"};
-         [_filterView.newestArrow setImage:[UIImage imageNamed:@"下箭头"]];
+        [_filterView.newestArrow setImage:[UIImage imageNamed:@"下箭头"]];
     }
     
     //发起筛选请求
@@ -591,7 +667,7 @@ typedef enum : NSUInteger {
             //按钮和箭头变化
             [sender setTitleColor:TITLECOLOR forState:UIControlStateNormal];
             [_filterView.priceArrow setImage:[UIImage imageNamed:@"下箭头"]];
-
+            
             //去掉后,改为正序
             dic = @{@"sort_by":@"price.asc"};
             
@@ -771,7 +847,7 @@ typedef enum : NSUInteger {
 -(TagsFilterView *)tagsFilterView{
     
     //获取所有tags
-    [self getTags];
+    //    [self getTags];
     
     if (!_tagsFilterView) {
         

@@ -57,7 +57,6 @@
 @property(nonatomic,strong) NSString *accid ;
 @property(nonatomic,strong) NSString *icon ;
 
-
 @property(nonatomic,strong) NSAttributedString  *attributedDescription ;
 
 

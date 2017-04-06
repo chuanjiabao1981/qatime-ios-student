@@ -38,7 +38,6 @@
     /* 原点布局*/
     _tips = [[UIImageView alloc]init];
     [_tips setImage:[UIImage imageNamed:@"菱形"]];
-    
 
     /* 课程名称label 布局*/
     
@@ -266,6 +265,47 @@
     
     
     [_replay setTitle:[NSString stringWithFormat:@"还可回放%@次›",classModel.left_replay_times] forState:UIControlStateNormal];
+    
+    
+}
+
+-(void)setInteractionModel:(OneOnOneClass *)interactionModel{
+    
+    _interactionModel = interactionModel;
+    _className.text = _interactionModel.name;
+    _classDate .text = _interactionModel.class_date;
+    _classTime .text = [NSString stringWithFormat:@"%@ - %@",_interactionModel.start_time,_interactionModel.end_time];
+    /* 已开课的状态*/
+    
+    if ([_interactionModel.status isEqualToString:@"init"]) {
+        _status.text =@"未开始";
+        _class_status = [NSString stringWithFormat:@"未开始"];
+    }else if([_interactionModel.status isEqualToString:@"ready"]){
+        _status.text =@"待上课";
+        _class_status = [NSString stringWithFormat:@"待上课"];
+    }else if([_interactionModel.status isEqualToString:@"teaching"]){
+        _status.text =@"直播中";
+        _class_status = [NSString stringWithFormat:@"直播中"];
+    }else if([_interactionModel.status isEqualToString:@"closed"]){
+        _status.text =@"已直播";
+        _class_status = [NSString stringWithFormat:@"已直播"];
+    }else if([_interactionModel.status isEqualToString:@"finished"]){
+        _status.text =@"已结束";
+        _class_status = [NSString stringWithFormat:@"已结束"];
+    }else if([_interactionModel.status isEqualToString:@"pause"]){
+        _status.text =@"暂停中";
+        _class_status = [NSString stringWithFormat:@"暂停中"];
+    }else if([_interactionModel.status isEqualToString:@"missed"]){
+        _status.text =@"待补课";
+        _class_status = [NSString stringWithFormat:@"待补课"];
+    }else if([_interactionModel.status isEqualToString:@"billing"]){
+        _status.text =@"已结束";
+        _class_status = [NSString stringWithFormat:@"已结束"];
+    }else if([_interactionModel.status isEqualToString:@"completed"]){
+        _status.text =@"已结束";
+        _class_status = [NSString stringWithFormat:@"已结束"];
+    }
+
     
     
 }

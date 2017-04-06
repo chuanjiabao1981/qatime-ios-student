@@ -10,16 +10,15 @@
 #import "MyTutoriumModel.h"
 
 @interface EndedTableViewCell : UITableViewCell
+
 /**
  课程图片
  */
 @property(nonatomic,strong) UIImageView *classImage ;
 
-
 /**
  课程名称
  */
-
 @property(nonatomic,strong) UILabel *className ;
 
 /* 年级*/

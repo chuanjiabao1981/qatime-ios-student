@@ -9,6 +9,16 @@
 #import "ClassFilterView.h"
 #import "UIButton+EnlargeTouchArea.h"
 
+@interface ClassFilterView (){
+    /**竖边栏*/
+    UIView *_verline;
+    /**标签图片*/
+    UIImageView *_tagImage;
+    /**分割线*/
+    UIView *_line;
+}
+
+@end
 @implementation ClassFilterView
 
 -(instancetype)initWithFrame:(CGRect)frame{
@@ -148,10 +158,10 @@
         
         
         //竖边栏
-        UIView *verline = [[UIView alloc]init];
-        verline.backgroundColor = SEPERATELINECOLOR_2;
-        [self addSubview:verline];
-        verline.sd_layout
+        _verline = [[UIView alloc]init];
+        _verline.backgroundColor = SEPERATELINECOLOR_2;
+        [self addSubview:_verline];
+        _verline.sd_layout
         .rightSpaceToView(_filterButton,0)
         .topEqualToView(self)
         .bottomEqualToView(self)
@@ -165,7 +175,7 @@
             _.titleLabel.font = [UIFont systemFontOfSize:15*ScrenScale];
             [self addSubview:_];
             _.sd_layout
-            .rightEqualToView(verline)
+            .rightEqualToView(_verline)
             .topEqualToView(self)
             .bottomEqualToView(self);
             [_ setupAutoSizeWithHorizontalPadding:10 buttonHeight:self.height_sd];
@@ -173,18 +183,18 @@
             _;
             
         });
-        UIImageView *tagImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"标签"]];
-        [self addSubview: tagImage];
-        tagImage.sd_layout
+        _tagImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"标签"]];
+        [self addSubview: _tagImage];
+        _tagImage.sd_layout
         .rightSpaceToView(_tagsButton,0)
         .centerYEqualToView(_tagsButton)
         .heightRatioToView(_tagsButton,0.5)
         .widthEqualToHeight();
         
-        UIView *line = [[UIView alloc]init];
-            [self addSubview:line];
-            line.backgroundColor = SEPERATELINECOLOR_2;
-            line.sd_layout
+        _line = [[UIView alloc]init];
+            [self addSubview:_line];
+            _line.backgroundColor = SEPERATELINECOLOR_2;
+            _line.sd_layout
             .leftEqualToView(self)
             .rightEqualToView(self)
             .bottomEqualToView(self)
@@ -193,6 +203,25 @@
     }
     return self;
 
+}
+
+-(void)setType:(ClassType)type{
+    
+    _type = type;
+    if (type == TutoriumType) {
+        _popularityButton.hidden = NO;
+        _tagImage.hidden =  NO;
+        _tagsButton.hidden = NO;
+        _filterButton.hidden = NO;
+        _verline.hidden = NO;
+    }else if(type == InteractionType){
+        _popularityButton.hidden = YES;
+        _tagImage.hidden = YES;
+        _tagsButton.hidden = YES;
+        _filterButton.hidden = YES;
+        _verline.hidden = YES;
+    }
+        
 }
 
 @end

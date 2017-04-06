@@ -7,7 +7,7 @@
 //
 
 #import "UIViewController+NTES.h"
-#import "NTESGlobalMacro.h"
+ 
 
 @implementation UIViewController (NTES)
 

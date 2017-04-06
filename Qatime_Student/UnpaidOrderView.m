@@ -17,8 +17,7 @@
         
         _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, self.height_sd) style:UITableViewStylePlain];
         
-        _tableView.backgroundColor = [UIColor whiteColor];
-        
+        _tableView.backgroundColor = BACKGROUNDGRAY;
         [self addSubview:_tableView];
         
         

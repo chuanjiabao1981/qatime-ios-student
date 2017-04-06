@@ -49,21 +49,21 @@
                 if (size != 1)
                 {
                     assert(0);
-                    DDLogDebug(@"Read HanziNumber Failed,%zu",size);
+//                    DDLogDebug(@"Read HanziNumber Failed,%zu",size);
                     break;
                 }
                 size = fread(&pinyinSize, 4, 1, fp);
                 if (size != 1)
                 {
                     assert(0);
-                    DDLogDebug(@"Read pinyinSize Failed,%zu",size);
+//                    DDLogDebug(@"Read pinyinSize Failed,%zu",size);
                     break;
                 }
                 
                 if (hanZiNumber != kHanziMax - kHanziMin + 1)
                 {
                     assert(0);
-                    DDLogDebug(@"Read pinyinSize Failed,%zu",size);
+//                    DDLogDebug(@"Read pinyinSize Failed,%zu",size);
                 }
                 
                 _codeIndex = (int*)calloc(hanZiNumber, sizeof(int));
@@ -72,13 +72,13 @@
                 size = fread(_codeIndex, 4, hanZiNumber, fp);
                 if (size != hanZiNumber)
                 {
-                    DDLogDebug(@"Read CodeIndex Failed,%zu",size);
+//                    DDLogDebug(@"Read CodeIndex Failed,%zu",size);
                     break;
                 }
                 size = fread(_pinyin, 1, pinyinSize, fp);
                 if (size != pinyinSize)
                 {
-                    DDLogDebug(@"Read Pinyin Failed,%zu",size);
+//                    DDLogDebug(@"Read Pinyin Failed,%zu",size);
                     break;
                 }
                 fclose(fp);
@@ -87,7 +87,7 @@
             else
             {
                 assert(0);
-                DDLogDebug(@"Open Pinyin File Failed %@",filepath);
+//                DDLogDebug(@"Open Pinyin File Failed %@",filepath);
             }
             break;
         }

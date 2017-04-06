@@ -67,7 +67,7 @@
     });
     
     
-    menus = @[@"提醒设置",/*@"检查更新",*/@"清理缓存",@"关于我们",@"学习流程"];
+    menus = @[@"提醒设置",/*@"检查更新",*/@"清理缓存",@"关于我们"/*,@"学习流程"*/];
     
     _settingView = [[SettingView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT)];
     [self.view addSubview:_settingView];
@@ -241,23 +241,15 @@
         
         cell.arrow.hidden = YES;
        
-//        if (indexPath.row ==1) {
-//    
-//            cell.balance.hidden = NO;
-//            cell.balance.text  =  [NSString stringWithFormat:@"V %@",_version];
-//            
-//        }
         if (indexPath.row ==1) {
             cell.balance.hidden = NO;
             cell.balance.text = [NSString stringWithFormat:@"%.2f M",cache];
         }
-        
-        
+    
     }
     
     return  cell;
     
-
 }
 
 

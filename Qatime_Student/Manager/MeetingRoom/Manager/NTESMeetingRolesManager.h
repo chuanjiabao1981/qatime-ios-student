@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "NTESMeetingRole.h"
 #import "NTESService.h"
+#import <NIMSDK/NIMSDK.h>
 
 @protocol NTESMeetingRolesManagerDelegate <NSObject>
 

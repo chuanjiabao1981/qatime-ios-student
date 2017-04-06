@@ -215,8 +215,8 @@ static NSString *previousTime = nil;
         
         NSLog(@"%@",URLString);
         [dictionary setObject:URLString==nil?@"":URLString forKey:@"strIcon"];
-        [dictionary setObject:imagePath forKey:@"imagePath"];
-        [dictionary setObject:thumbImagePath forKey:@"thumbImagePath"];
+        [dictionary setObject:imagePath==nil?@"":imagePath forKey:@"imagePath"];
+        [dictionary setObject:thumbImagePath==nil?@"":thumbImagePath forKey:@"thumbImagePath"];
         [dictionary setObject:message forKey:@"message"];
     }
     

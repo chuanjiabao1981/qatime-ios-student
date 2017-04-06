@@ -71,7 +71,7 @@
         [self onMeetingCommand:attachment from:message.from];
     }
     else {
-        DDLogInfo(@"Receive chatroom command from another meeting %@, drop it.", attachment.roomID);
+//        DDLogInfo(@"Receive chatroom command from another meeting %@, drop it.", attachment.roomID);
     }
 }
 
@@ -122,7 +122,7 @@
                         [self onMeetingCommand:attachment from:notification.sender];
                     }
                     else {
-                        DDLogInfo(@"Receive p2p command from another meeting %@, drop it.", attachment.roomID);
+//                        DDLogInfo(@"Receive p2p command from another meeting %@, drop it.", attachment.roomID);
                     }
                 }
             }
@@ -135,7 +135,7 @@
     if (![attachment.roomID isEqualToString:_chatroom.roomId]) {
         return;
     }
-    DDLogInfo(@"Receive meeting command from %@, attachment [ %@ ]", user, attachment);
+//    DDLogInfo(@"Receive meeting command from %@, attachment [ %@ ]", user, attachment);
     
     [_delegate onReceiveMeetingCommand:attachment from:user];
 }
@@ -145,7 +145,7 @@
 {
     attachment.roomID = _chatroom.roomId;
     
-    DDLogInfo(@"Send meeting p2p command to %@, attachment [ %@ ]", uid, attachment);
+//    DDLogInfo(@"Send meeting p2p command to %@, attachment [ %@ ]", uid, attachment);
     
     NSString *content = [attachment encodeAttachment];
     
@@ -159,7 +159,7 @@
                                                                toSession:[NIMSession session:uid type:NIMSessionTypeP2P]
                                                               completion:^(NSError *error) {
                                                                     if (error) {
-                                                                        DDLogInfo(@"sendMeetingP2PCommand error:%zd",error.code);
+//                                                                        DDLogInfo(@"sendMeetingP2PCommand error:%zd",error.code);
                                                                     }
                                                                 }];
 }
@@ -168,7 +168,7 @@
 {
     attachment.roomID = _chatroom.roomId;
     
-    DDLogInfo(@"Send meeting broadcast command, attachment [ %@ ]", attachment);
+//    DDLogInfo(@"Send meeting broadcast command, attachment [ %@ ]", attachment);
 
     NIMMessage *message = [NTESSessionMsgConverter msgWithMeetingControlAttachment:attachment];
     

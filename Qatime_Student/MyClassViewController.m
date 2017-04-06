@@ -564,11 +564,23 @@
                     .topSpaceToView(cell.content,10)
                     .autoHeightRatio(0)
                     .rightSpaceToView(cell.content,10);
+                    [cell.className setMaxNumberOfLinesToShow:1];
                     [cell.className updateLayout];
-                    //                    [cell.className setSingleLineAutoResizeWithMaxWidth:2000];
+                
                     cell.enterButton.enabled = NO;
                     
                 }else{
+                    cell.status.hidden = NO;
+                    
+                    [cell.className sd_clearAutoLayoutSettings];
+                    cell.className.sd_resetLayout
+                    .leftSpaceToView(cell.status,2)
+                    .topEqualToView(cell.status)
+                    .bottomEqualToView(cell.status)
+                    .rightSpaceToView(cell.content,10);
+                     [cell.className setMaxNumberOfLinesToShow:1];
+                    [cell.className updateLayout];
+                    
                     cell.status.text = @" 试听中 ";
                     cell.enterButton.enabled = NO;
                 }
@@ -603,7 +615,7 @@
                     .topSpaceToView(cell.content,10)
                     .autoHeightRatio(0)
                     .rightSpaceToView(cell.content,10);
-                    
+                     [cell.className setMaxNumberOfLinesToShow:1];
                     [cell.className updateLayout];
                 }else{
                     cell.status.hidden = NO;
@@ -619,7 +631,7 @@
                     .topEqualToView(cell.status)
                     .rightSpaceToView(cell.content,10)
                     .bottomEqualToView(cell.status);
-                    
+                     [cell.className setMaxNumberOfLinesToShow:1];
                     [cell.className updateLayout];
                     
                 }
@@ -646,7 +658,7 @@
             if (_endedArr.count>indexPath.row) {
                 cell.model = _endedArr[indexPath.row];
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-                
+                 [cell.className setMaxNumberOfLinesToShow:1];
             }
             
             return  cell;
@@ -701,7 +713,7 @@
                         .topEqualToView(cell.status)
                         .rightSpaceToView(cell.content,10)
                         .bottomEqualToView(cell.status);
-                        
+                         [cell.className setMaxNumberOfLinesToShow:1];
                         [cell.className updateLayout];
                         
                     }else if ([cell.model.status isEqualToString:@"published"]){
@@ -731,7 +743,7 @@
                         .topSpaceToView(cell.content,5)
                         .rightSpaceToView(cell.content,10)
                         .heightIs(20);
-                        
+                         [cell.className setMaxNumberOfLinesToShow:1];
                         [cell.className updateLayout];
 
                     }else if ([cell.model.status isEqualToString:@"completed"]){
@@ -761,7 +773,7 @@
                         .topEqualToView(cell.status)
                         .rightSpaceToView(cell.content,10)
                         .bottomEqualToView(cell.status);
-                        
+                         [cell.className setMaxNumberOfLinesToShow:1];
                         [cell.className updateLayout];
                         
                     }
@@ -794,7 +806,7 @@
                         .topEqualToView(cell.status)
                         .rightSpaceToView(cell.content,10)
                         .bottomEqualToView(cell.status);
-                        
+                         [cell.className setMaxNumberOfLinesToShow:1];
                         [cell.className updateLayout];
                         
                         
@@ -825,7 +837,7 @@
                         .topEqualToView(cell.status)
                         .rightSpaceToView(cell.content,10)
                         .bottomEqualToView(cell.status);
-                        
+                         [cell.className setMaxNumberOfLinesToShow:1];
                         [cell.className updateLayout];
                         
                         
@@ -856,7 +868,7 @@
                         .topEqualToView(cell.status)
                         .rightSpaceToView(cell.content,10)
                         .bottomEqualToView(cell.status);
-                        
+                         [cell.className setMaxNumberOfLinesToShow:1];
                         [cell.className updateLayout];
                         
                     }

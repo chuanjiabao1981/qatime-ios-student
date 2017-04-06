@@ -9,6 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "OrderView.h"
 
+typedef enum : NSUInteger {
+
+    LiveClassType,
+    InteractionType,
+} ClassOrderType;
+
+
+
 @interface OrderViewController : UIViewController
 
 
@@ -23,7 +31,7 @@
  @param classID 辅导班编号
  @return 实例
  */
--(instancetype)initWithClassID:(NSString *)classID;
+-(instancetype)initWithClassID:(NSString *)classID andClassType:(ClassOrderType)type;
 
 
 /**
@@ -33,6 +41,6 @@
  @param promotionCode 优惠码
  @return 实例
  */
--(instancetype)initWithClassID:(NSString *)classID andPromotionCode:(NSString *)promotionCode;
+-(instancetype)initWithClassID:(NSString *)classID andPromotionCode:(NSString *)promotionCode  andClassType:(ClassOrderType)type;
 
 @end

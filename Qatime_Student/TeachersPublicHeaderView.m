@@ -164,7 +164,7 @@
     
     //课程
     _classList = [[UILabel alloc]init];
-    _classList.text = @"TA的课程";
+    _classList.text = @"一对一";
     _classList.font = TITLEFONTSIZE;
     [self addSubview:_classList];
     _classList.sd_layout

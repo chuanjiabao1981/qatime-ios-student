@@ -22,7 +22,4 @@
 /* logo图*/
 @property(nonatomic,strong) UIImageView *logoImage ;
 
-/* 分割线*/
-@property(nonatomic,strong) UIView *separateLine; 
-
 @end

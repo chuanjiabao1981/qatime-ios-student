@@ -13,6 +13,7 @@
 #import "NTESLoginViewController.h"
 #import "NTESNavigationHandler.h"
 #import "UIAlertView+NTESBlock.h"
+#import <NIMSDK/NIMSDK.h>
 
 @interface NTESPageContext()<NIMLoginManagerDelegate,NIMChatroomManagerDelegate>
 

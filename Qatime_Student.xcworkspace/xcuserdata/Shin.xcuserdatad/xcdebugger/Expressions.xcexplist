@@ -648,6 +648,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[AllClassViewController updateTable]:AllClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[NELivePlayerViewController changePlayersMode]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -741,6 +749,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[OneOnOneTutoriumInfoViewController tableView:didSelectRowAtIndexPath:]:OneOnOneTutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__41-[ChooseClassViewController requestClass]_block_invoke:ChooseClassViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -753,6 +769,14 @@
          <PersistentStrings>
             <PersistentString
                value = "model.status">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NTESMeetingWhiteboardViewController viewDidLoad]:NTESMeetingWhiteboardViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_isManager">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -936,10 +960,21 @@
             <PersistentString
                value = "_dataDic">
             </PersistentString>
+            <PersistentString
+               value = "teacher">
+            </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[OrderInfoViewController initWithUnpaid:]:OrderInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[InteractionViewController checkPermission]:InteractionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[NTESMeetingRolesManager sharedInstance]">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__86-[TutoriumViewController requestDataWithGrade:andSubject:andPage:andPerPage:withPull:]_block_invoke:TutoriumViewController.m">
@@ -1026,9 +1061,6 @@
       </ContextState>
       <ContextState
          contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[ChooseClassViewController chooseTags:]:ChooseClassViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[ChooseGradeAndSubjectViewController userSelectedGrade:]:ChooseGradeAndSubjectViewController.m">
@@ -1129,6 +1161,12 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[NTESMeetingWhiteboardViewController initWithChatroom:]:NTESMeetingWhiteboardViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[InteractionTeacherListTableViewCell setModel:]:InteractionTeacherListTableViewCell.m">
+      </ContextState>
+      <ContextState
          contextName = "-[VideoViewController tableView:cellForRowAtIndexPath:]:VideoViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1193,6 +1231,14 @@
       </ContextState>
       <ContextState
          contextName = "-[IndexPageViewController makeCityList:]:IndexPageViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumInfoViewController textTagCollectionView:updateContentSize:]:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke:PersonalInfoViewController.m">
@@ -1397,6 +1443,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__36-[ChooseClassViewController getTags]_block_invoke:ChooseClassViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__43-[CashRecordViewController requestRecharge]_block_invoke:CashRecordViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1471,6 +1520,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[NTESMeetingWhiteboardViewController checkPermission]:NTESMeetingWhiteboardViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_isJoined">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[PersonalInfoViewController updateUserInfo]:PersonalInfoViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1521,15 +1578,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[ChatViewController sendMessage:didCompleteWithError:]:ChatViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__45-[PersonalInfoViewController requestUserInfo]_block_invoke:PersonalInfoViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ChatViewController sendMessage:didCompleteWithError:]:ChatViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[ChatViewController enterLive]:ChatViewController.m">
@@ -1609,15 +1666,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[LoginViewController saveUserInfo:loginType:]:LoginViewController.m">
-      </ContextState>
-      <ContextState
          contextName = "-[TutoriumInfoViewController observeValueForKeyPath:ofObject:change:context:]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "offset">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[LoginViewController saveUserInfo:loginType:]:LoginViewController.m">
       </ContextState>
       <ContextState
          contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke_2:PersonalInfoViewController.m">

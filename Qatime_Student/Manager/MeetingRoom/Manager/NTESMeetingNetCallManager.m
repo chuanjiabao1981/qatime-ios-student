@@ -45,17 +45,17 @@
     
     [[NIMAVChatSDK sharedSDK].netCallManager joinMeeting:_meeting completion:^(NIMNetCallMeeting *meeting, NSError *error) {
         if (error) {
-            DDLogError(@"Join meeting %@error: %zd.", meeting.name, error.code);
+//            DDLogError(@"Join meeting %@error: %zd.", meeting.name, error.code);
             _meeting = nil;
             if (wself.delegate) {
                 [wself.delegate onJoinMeetingFailed:meeting.name error:error];
             }
         }
         else {
-            DDLogInfo(@"Join meeting %@ success, ext:%@", meeting.name, meeting.ext);
+//            DDLogInfo(@"Join meeting %@ success, ext:%@", meeting.name, meeting.ext);
             _isInMeeting = YES;
             NTESMeetingRole *myRole = [NTESMeetingRolesManager sharedInstance].myRole;
-            DDLogInfo(@"Reset mute:%d, camera disable:%d",!myRole.audioOn,!myRole.videoOn);
+//            DDLogInfo(@"Reset mute:%d, camera disable:%d",!myRole.audioOn,!myRole.videoOn);
             [NTESNetcallManager setMute:!myRole.audioOn];
             [NTESNetcallManager setCameraDisable:!myRole.videoOn];
             
@@ -63,7 +63,7 @@
                 [wself.delegate onMeetingConntectStatus:YES];
             }
             NSString *myUid = [NTESMeetingRolesManager sharedInstance].myRole.uid;
-            DDLogInfo(@"Joined meeting.");
+//            DDLogInfo(@"Joined meeting.");
             [[NTESMeetingRolesManager sharedInstance] updateMeetingUser:myUid
                                                                isJoined:YES];
 
@@ -91,7 +91,7 @@
 - (void)onUserJoined:(NSString *)uid
              meeting:(NIMNetCallMeeting *)meeting
 {
-    DDLogInfo(@"user %@ joined meeting", uid);
+//    DDLogInfo(@"user %@ joined meeting", uid);
     if ([meeting.name isEqualToString:_meeting.name]) {
         [[NTESMeetingRolesManager sharedInstance] updateMeetingUser:uid isJoined:YES];
     }
@@ -100,7 +100,7 @@
 - (void)onUserLeft:(NSString *)uid
            meeting:(NIMNetCallMeeting *)meeting
 {
-    DDLogInfo(@"user %@ left meeting", uid);
+//    DDLogInfo(@"user %@ left meeting", uid);
 
     if ([meeting.name isEqualToString:_meeting.name]) {
         [[NTESMeetingRolesManager sharedInstance] updateMeetingUser:uid isJoined:NO];
@@ -110,7 +110,7 @@
 - (void)onMeetingError:(NSError *)error
                meeting:(NIMNetCallMeeting *)meeting
 {
-    DDLogInfo(@"meeting error %zd", error.code);
+//    DDLogInfo(@"meeting error %zd", error.code);
     _isInMeeting = NO;
     [_delegate onMeetingConntectStatus:NO];
 }
@@ -146,7 +146,7 @@
 
 - (void)onNetStatus:(NIMNetCallNetStatus)status user:(NSString *)user
 {
-    DDLogInfo(@"Net status of %@ is %zd", user, status);
+//    DDLogInfo(@"Net status of %@ is %zd", user, status);
 }
 
 #pragma mark - private

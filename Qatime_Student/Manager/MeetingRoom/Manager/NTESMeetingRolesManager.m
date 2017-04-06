@@ -177,7 +177,7 @@
     //判断互动人数是否达到4人，若达到弹出toast 互动人数已满
     if (!role.isActor && [self exceedMaxActorsNumber]) {
         [self notifyMeetingActorsNumberExceedMax];
-        DDLogError(@"Error setting member %@ to actor: Exceeds max actors number.", user);
+//        DDLogError(@"Error setting member %@ to actor: Exceeds max actors number.", user);
         return;
     }
     
@@ -199,7 +199,7 @@
     
     if (role.isJoined != joined) {
         role.isJoined = joined;
-        DDLogInfo(@"Set user %@ joined:%zd", role.uid, role.isJoined);
+//        DDLogInfo(@"Set user %@ joined:%zd", role.uid, role.isJoined);
         if (!joined) {
             if (![user isEqualToString:_chatroom.creator]) {
                 role.isActor = NO;
@@ -341,7 +341,7 @@
 
 - (NTESMeetingRole *)addNewRole:(NSString *)uid asActor:(BOOL)actor
 {
-    DDLogInfo(@"Add new role : %@, is actor : %@", uid, actor ? @"YES" : @"NO");
+//    DDLogInfo(@"Add new role : %@, is actor : %@", uid, actor ? @"YES" : @"NO");
     NTESMeetingRole *newRole = [[NTESMeetingRole alloc] init];
     
     newRole.uid = uid;
@@ -353,7 +353,7 @@
     
     if ([self.pendingJoinUsers containsObject:uid]) {
         newRole.isJoined = YES;
-        DDLogInfo(@"Set pending user %@ joined.", newRole.uid);
+//        DDLogInfo(@"Set pending user %@ joined.", newRole.uid);
         [self.pendingJoinUsers removeObject:uid];
     }
     
@@ -449,7 +449,7 @@
             [self notifyMeetingRolesUpdate];
         }
         else {
-            DDLogError(@"Error setting member %@ to actor: Exceeds max actors number.", user);
+//            DDLogError(@"Error setting member %@ to actor: Exceeds max actors number.", user);
         }
         return YES;
     }

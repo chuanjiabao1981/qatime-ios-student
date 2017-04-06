@@ -10,7 +10,7 @@
 #import "SDWebImageManager.h"
 #import "UIView+Toast.h"
 #import "NTESDocDownloadManager.h"
-#import "NTESGlobalMacro.h"
+ 
 
 @interface NTESDocumentViewController ()<NTESDocDownloadManagerDelegate>
 

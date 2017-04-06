@@ -12,6 +12,12 @@
 #import "TagsFilterView.h"
 #import "SnailQuickMaskPopups.h"
 
+typedef enum : NSUInteger {
+    TutoriumSearchType,
+    InteractionSearchType,
+    
+} SearchType;
+
 @interface ChooseClassViewController : UIViewController
 
 /**
@@ -43,6 +49,6 @@
  @param subject 科目
  @return 实例
  */
--(instancetype)initWithGrade:(NSString *)grade andSubject:(NSString *)subject;
+-(instancetype)initWithGrade:(NSString *)grade andSubject:(NSString *)subject  andType:(SearchType)type;
 
 @end

@@ -101,23 +101,20 @@
         .autoWidthRatio(16/10.0);
         
         /* 状态label布局*/
-        
         _status.sd_layout
         .leftSpaceToView(_classImage,10)
         .topSpaceToView(_content,5)
         .autoHeightRatio(0);
         
         [_status setSingleLineAutoResizeWithMaxWidth:200];
-
+        _status.hidden = YES;
         
         /* 课程名称布局*/
-        
         _className.sd_layout
-        .leftSpaceToView(_status,2)
-        .topEqualToView(_status)
+        .leftSpaceToView(_classImage,10)
+        .topSpaceToView(_content, 5)
         .rightSpaceToView(_content,10)
-        .bottomEqualToView(_status);
-         [_className setMaxNumberOfLinesToShow:1];
+        .autoHeightRatio(0);
         
         
         /* 年级布局*/

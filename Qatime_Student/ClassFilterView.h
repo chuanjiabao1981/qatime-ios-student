@@ -9,6 +9,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum : NSUInteger {
+    TutoriumType,
+    InteractionType,
+    
+} ClassType;
+
 @interface ClassFilterView : UIView
 
 /**
@@ -38,5 +44,8 @@
  条件筛选按钮
  */
 @property (nonatomic, strong) UIControl *filterButton ;
+
+/**课程类型->决定有些按钮是否显示*/
+@property (nonatomic, assign) ClassType type ;
 
 @end

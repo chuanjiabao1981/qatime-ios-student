@@ -10,6 +10,7 @@
 #import "HMSegmentedControl.h"
 
 #import "TTGTextTagCollectionView.h"
+#import "OneOnOneWorkFlowView.h"
 
 
 @interface TutoriumInfoView : UIScrollView
@@ -40,9 +41,6 @@
 /* 滑动控制器*/
 
 @property(nonatomic,strong) HMSegmentedControl *segmentControl ;
-
-
-
 
 
 /* 要传数据的所有的label 1 */
@@ -76,6 +74,9 @@
 /* 辅导简介*/
 @property(nonatomic,strong) UILabel *descriptions  ;//"辅导简介"字样,自动布局使用
 @property(nonatomic,strong) UILabel *classDescriptionLabel ;
+
+/**学习流程*/
+@property (nonatomic, strong) OneOnOneWorkFlowView *workFlowView ;
 
 
 /* 要传数据的所有的label 2 */

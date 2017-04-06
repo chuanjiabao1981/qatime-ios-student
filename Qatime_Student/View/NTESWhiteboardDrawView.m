@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "NTESCADisplayLinkHolder.h"
 #import "NTESWhiteboardPoint.h"
-#import "NTESGlobalMacro.h"
+ 
 
 @interface NTESWhiteboardDrawView()<NTESCADisplayLinkHolderDelegate>
 

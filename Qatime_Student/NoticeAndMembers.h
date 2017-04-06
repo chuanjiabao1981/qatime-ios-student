@@ -10,7 +10,8 @@
 
 @interface NoticeAndMembers : NSObject
 
-@property(nonatomic,strong) NSMutableArray  *announcements;
+@property (nonatomic, strong) NSMutableArray *team_announcements ;
+@property(nonatomic,strong) NSMutableArray  *announcement;
 
 @property(nonatomic,strong) NSMutableArray  *accounts ;
 

@@ -9,7 +9,7 @@
 #import "NTESMeetingActionView.h"
 #import "UIView+NTES.h"
 #import "UIImage+NTESColor.h"
-#import "NTESGlobalMacro.h"
+ 
 
 
 @interface NTESChatroomSegmentedItem : NSObject
@@ -154,13 +154,16 @@
                              showNameKey : @"白板"
                              },
                          @{
-                             showNameKey : @"讨论"
+                             showNameKey : @"聊天"
+                             },
+                         @{
+                             showNameKey : @"公告"
+                             },
+                         @{
+                             showNameKey : @"详情"
                              },
                          @{
                              showNameKey : @"成员"
-                             },
-                         @{
-                             showNameKey : @"举手"
                              },
 
                          ];

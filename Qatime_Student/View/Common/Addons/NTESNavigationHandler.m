@@ -10,7 +10,7 @@
 #import "UIView+NTES.h"
 #import "UIResponder+NTESFirstResponder.h"
 #import "NTESNavigationAnimator.h"
-#import "NTESGlobalMacro.h"
+ 
 
 @interface NTESNavigationHandler()<UIGestureRecognizerDelegate>
 

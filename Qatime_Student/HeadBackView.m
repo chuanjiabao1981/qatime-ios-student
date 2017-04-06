@@ -38,10 +38,6 @@
         _name.textColor = TITLECOLOR;
         
         
-        UIView *line = [[UIView alloc]init];
-        [_backGroundView addSubview:line];
-        line.backgroundColor = [UIColor lightGrayColor];
-        
         _headImageView.sd_layout
         .centerXEqualToView(_backGroundView)
         .centerYEqualToView(_backGroundView)
@@ -58,13 +54,6 @@
         .widthRatioToView(self,1/3.0f);
         _name.textAlignment = NSTextAlignmentCenter;
         
-        
-        
-        line.sd_layout
-        .leftEqualToView(_backGroundView)
-        .rightEqualToView(_backGroundView)
-        .bottomEqualToView(_backGroundView)
-        .heightIs(0.4);
         
         
     }

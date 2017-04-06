@@ -10,7 +10,7 @@
 #import "NIMAttributedLabel+NIMKit.h"
 #import "NIMMessageModel.h"
 #import "NIMGlobalMacro.h"
-#import "NTESGlobalMacro.h"
+ 
 
 @implementation NTESChatroomUnknowContentView
 

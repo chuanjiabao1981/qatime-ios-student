@@ -34,24 +34,54 @@
 @interface NTESMeetingViewController ()<NTESMeetingActionViewDataSource,NTESMeetingActionViewDelegate,NIMInputDelegate,NIMChatroomManagerDelegate,NTESMeetingNetCallManagerDelegate,NTESActorSelectViewDelegate,NTESMeetingRolesManagerDelegate,NIMLoginManagerDelegate
 >
 
+
+/**
+ 聊天房间
+ */
 @property (nonatomic, copy)   NIMChatroom *chatroom;
 
+/**
+ 聊天视图
+ */
 @property (nonatomic, strong) NTESChatroomViewController *chatroomViewController;
 
+/**
+ 一整个活动页 segment...
+ */
 @property (nonatomic, strong) NTESMeetingActionView *actionView;
 
+/**
+ 视频视图
+ */
 @property (nonatomic, strong) NTESMeetingActorsView *actorsView;
 
 @property (nonatomic, assign) BOOL keyboradIsShown;
 
+/**
+ 切换controller用
+ */
 @property (nonatomic, weak)   UIViewController *currentChildViewController;
 
+
+/**
+ 用户互动权限
+ */
 @property (nonatomic, strong) UIAlertView *actorEnabledAlert;
 
+
+/**
+ 互动栏,摄像头麦克风按钮选择
+ */
 @property (nonatomic, strong) NTESActorSelectView *actorSelectView;
 
+/**
+ 成员列表视图
+ */
 @property (nonatomic, strong) NTESChatroomMemberListViewController *memberListVC;
 
+/**
+ 白板视图
+ */
 @property (nonatomic, strong) NTESMeetingWhiteboardViewController *whiteboardVC;
 
 @property (nonatomic, assign) BOOL isPoped;
@@ -59,7 +89,6 @@
 @property (nonatomic, assign) BOOL isRemainStdNav;
 
 @property (nonatomic, assign) BOOL readyForFullScreen;
-
 
 
 @end
@@ -101,7 +130,6 @@ NTES_FORBID_INTERACTIVE_POP
     [[NTESMeetingRolesManager sharedInstance] setDelegate:self];
     [[NTESMeetingNetCallManager sharedInstance] joinMeeting:_chatroom.roomId delegate:self];
     
-
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -278,8 +306,7 @@ NTES_FORBID_INTERACTIVE_POP
             }
         }
         
-        
-        DDLogInfo(@"chatroom be kicked, roomId:%@  rease:%zd",roomId,reason);
+//        DDLogInfo(@"chatroom be kicked, roomId:%@  rease:%zd",roomId,reason);
         
         //判断 当前页面是document列表的情况
         if ([self.navigationController.visibleViewController isKindOfClass:[NTESDocumentViewController class]]) {
@@ -312,7 +339,7 @@ NTES_FORBID_INTERACTIVE_POP
 
 - (void)chatroom:(NSString *)roomId connectionStateChanged:(NIMChatroomConnectionState)state;
 {
-    DDLogInfo(@"chatroom connectionStateChanged roomId : %@  state:%zd",roomId,state);
+//    DDLogInfo(@"chatroom connectionStateChanged roomId : %@  state:%zd",roomId,state);
     if(state==NIMChatroomConnectionStateEnterOK)
     {
         [self requestChatRoomInfo];
@@ -336,7 +363,7 @@ NTES_FORBID_INTERACTIVE_POP
 
 - (void)onMeetingConntectStatus:(BOOL)connected
 {
-    DDLogInfo(@"Meeting %@ ...", connected ? @"connected" : @"disconnected");
+//    DDLogInfo(@"Meeting %@ ...", connected ? @"connected" : @"disconnected");
     if (connected) {
     }
     else {
@@ -347,7 +374,7 @@ NTES_FORBID_INTERACTIVE_POP
 
 - (void)onSetBypassStreamingEnabled:(BOOL)enabled error:(NSUInteger)code
 {
-    DDLogError(@"Set bypass enabled %d error %zd", enabled, code);
+//    DDLogError(@"Set bypass enabled %d error %zd", enabled, code);
     NSString *toast = [NSString stringWithFormat:@"%@互动直播失败 (%zd)", enabled ? @"开启" : @"关闭", code];
     [self.view.window makeToast:toast duration:3.0 position:CSToastPositionCenter];
 }

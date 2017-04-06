@@ -6,6 +6,7 @@
 //  Copyright © 2015年 Netease. All rights reserved.
 //
 
+#import "NIMSessionConfig.h"
 typedef NS_ENUM(NSInteger, NTESMediaButton)
 {
     NTESMediaButtonJanKenPon,      //石头剪刀布

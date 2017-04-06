@@ -14,6 +14,7 @@
 #import <NIMSDK/NIMCustomObject.h>
 #import "NIMMessageModel.h"
 
+
 @interface NTESSessionJankenponContentView()
 
 @property (nonatomic,strong,readwrite) UIImageView *imageView;

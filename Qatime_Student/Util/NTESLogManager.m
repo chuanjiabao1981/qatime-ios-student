@@ -10,6 +10,11 @@
 #import "NTESLogViewController.h"
 #import <NIMSDK/NIMSDK.h>
 #import "NTESBundleSetting.h"
+#import "DDFileLogger.h"
+#import "DDLog.h"
+#import "DDASLLogger.h"
+#import "DDTTYLogger.h"
+
 
 @interface NTESLogManager () {
     DDFileLogger *_fileLogger;
@@ -46,7 +51,7 @@
 
 - (void)start
 {
-    DDLogInfo(@"App Started SDK Version %@\nBundle Setting: %@",[[NIMSDK sharedSDK] sdkVersion],[NTESBundleSetting sharedConfig]);
+//    DDLogInfo(@"App Started SDK Version %@\nBundle Setting: %@",[[NIMSDK sharedSDK] sdkVersion],[NTESBundleSetting sharedConfig]);
 }
 
 - (UIViewController *)demoLogViewController {

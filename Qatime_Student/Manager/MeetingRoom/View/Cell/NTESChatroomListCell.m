@@ -9,7 +9,7 @@
 #import "NTESChatroomListCell.h"
 #import "UIImageView+WebCache.h"
 #import "UIView+NTES.h"
-#import "NTESGlobalMacro.h"
+ 
 
 @interface NTESChatroomListCellInfoView : UIView
 - (void)refresh:(id)data;

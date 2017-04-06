@@ -11,61 +11,68 @@
 @implementation MyOrderTableViewCell
 
 
-
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
+        self.backgroundColor = BACKGROUNDGRAY;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+        _content = [[UIView alloc]init];
+        [self.contentView addSubview:_content];
+        _content.backgroundColor = BACKGROUNDGRAY;
+        _content.sd_layout
+        .leftSpaceToView(self.contentView,10)
+        .rightSpaceToView(self.contentView,10)
+        .topSpaceToView(self.contentView,10)
+        .heightIs(self.height_sd-20);
         
         /* 课程名*/
         _name =[[UILabel alloc]init];
         _name.textColor = [UIColor blackColor];
         _name.font = TITLEFONTSIZE;
-        
-        /* 科目*/
-        _subject=[[UILabel alloc]init];
-        _subject.textColor = [UIColor lightGrayColor];
-        _subject.font = TITLEFONTSIZE;
-        
-        /* 年级*/
-        _grade=[[UILabel alloc]init];
-        _grade.textColor = [UIColor lightGrayColor];
-        
-        UILabel *totl = [[UILabel alloc]init];
-        totl.text = @"/共";
-        totl.textColor = [UIColor lightGrayColor];
+        [self.contentView addSubview:_name];
+        /* 课程名*/
+        _name.sd_layout
+        .leftSpaceToView(self.contentView,20*ScrenScale)
+        .topSpaceToView(self.contentView,20)
+        .rightSpaceToView(self.contentView,20)
+        .autoHeightRatio(0);
 
+        /**订单课程信息*/
+        _orderInfos = [[UILabel alloc]init];
+        _orderInfos.textColor = TITLECOLOR;
+        _orderInfos.font = TEXT_FONTSIZE;
+        [self.contentView addSubview:_orderInfos];
+        /**订单课程信息*/
+        _orderInfos.sd_layout
+        .leftEqualToView(_name)
+        .topSpaceToView(_name,10)
+        .autoHeightRatio(0);
+        [_orderInfos setSingleLineAutoResizeWithMaxWidth:1000];
         
-        
-        UILabel *tot = [[UILabel alloc]init];
-        tot.text = @"课/";
-        tot.textColor = [UIColor lightGrayColor];
-//
-        
-        /* 课时*/
-        _classTime=[[UILabel alloc]init];
-        _classTime.textColor = [UIColor lightGrayColor];
-        
-        /* 教师姓名*/
-        _teacherName=[[UILabel alloc]init];
-        _teacherName.textColor = [UIColor lightGrayColor];
 
         /* 支付状态*/
         _status=[[UILabel alloc]init];
-        _status.textColor = [UIColor blueColor];
-
-        /* 金额*/
-        _price=[[UILabel alloc]init];
-        _price.textColor = [UIColor redColor];
+        _status.textColor = [UIColor colorWithRed:0.14 green:0.80 blue:0.99 alpha:1.0];
+        [self.contentView addSubview:_status];
+        /* 状态*/
+        _status.sd_layout
+        .rightSpaceToView(self.contentView,20)
+        .topEqualToView(_orderInfos)
+        .bottomEqualToView(_orderInfos);
+        [_status setSingleLineAutoResizeWithMaxWidth:1000];
+        _status.textAlignment = NSTextAlignmentRight;
         
+        UIView *line = [[UIView alloc]init];
+        [self.contentView addSubview:line];
+        line.backgroundColor = SEPERATELINECOLOR_2;
+        line.sd_layout
+        .leftEqualToView(_content)
+        .rightEqualToView(_content)
+        .topSpaceToView(_status, 10)
+        .heightIs(1.0);
         
-        /* 左侧button*/
-        _leftButton = [[UIButton alloc]init];
-        _leftButton.layer.borderColor = [UIColor blackColor].CGColor;
-        _leftButton.layer.borderWidth = 0.8;
-        [_leftButton setTitle:@"删除订单" forState:UIControlStateNormal];
-        [_leftButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         
         /* 右侧button*/
         _rightButton = [[UIButton alloc]init];
@@ -73,113 +80,57 @@
         _rightButton.layer.borderWidth = 0.8;
         [_rightButton setTitle:@"付款" forState:UIControlStateNormal];
         [_rightButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-
+        _rightButton.titleLabel.font = TEXT_FONTSIZE;
         
-        /* 布局*/
-        [self.contentView sd_addSubviews:@[_name,_subject,_grade,_classTime,totl,tot,_teacherName,_status,_price,_leftButton,_rightButton]];
-        
-        /* 课程名*/
-        
-        _name.sd_layout
-        .leftSpaceToView(self.contentView,10)
-        .topSpaceToView(self.contentView,10)
-        .rightSpaceToView(self.contentView,10)
-        .autoHeightRatio(0);
-        
-        /*科目*/
-        _subject.sd_layout
-        .leftSpaceToView(self.contentView,10)
-        .topSpaceToView(_name,10)
-        .autoHeightRatio(0);
-        [_subject setSingleLineAutoResizeWithMaxWidth:100];
-        
-        /* 年级*/
-        _grade.sd_layout
-        .leftSpaceToView(_subject,0)
-        .topEqualToView(_subject)
-        .bottomEqualToView(_subject);
-        [_grade setSingleLineAutoResizeWithMaxWidth:100];
-        
-
-
-        /* 课时*/
-        
-        totl.sd_layout
-        .leftSpaceToView(_grade,0)
-        .topEqualToView(_grade)
-        .bottomEqualToView(_grade);
-        [totl setSingleLineAutoResizeWithMaxWidth:100.0];
-       
-        
-        
-        [_classTime clearAutoHeigtSettings];
-    
-        
-        _classTime.sd_layout
-        .leftSpaceToView(totl,0)
-        .topEqualToView(_grade)
-        .autoHeightRatio(0);
-        [_classTime setSingleLineAutoResizeWithMaxWidth:80.0];
-        _classTime .textAlignment = NSTextAlignmentLeft;
-        
-        
-        tot.sd_layout
-        .leftSpaceToView(_classTime,1)
-        .topEqualToView(_grade)
-        .bottomEqualToView(_grade);
-        [tot setSingleLineAutoResizeWithMaxWidth:100.0];
-        
-        
-        /* 老师姓名*/
-        _teacherName.sd_layout
-        .leftSpaceToView(tot,0)
-        .topEqualToView(_classTime)
-        .bottomEqualToView(_classTime)
-        .widthRatioToView(self.contentView,0.3);
-        _teacherName.textAlignment = NSTextAlignmentLeft;
-        
-        
-        
-        /* 状态*/
-        
-        _status.sd_layout
-        
-        .rightSpaceToView(self.contentView,10)
-        .topEqualToView(_teacherName)
-        .bottomEqualToView(_teacherName);
-        [_status setSingleLineAutoResizeWithMaxWidth:1000];
-        _status.textAlignment = NSTextAlignmentRight;
-        
-        
+        [self.contentView addSubview:_rightButton];
         /* 右按钮*/
         _rightButton.sd_layout
-        .rightSpaceToView(self.contentView,10)
-        .topSpaceToView(_status,10)
-        .widthRatioToView(self.contentView,1/5.0)
-        .autoHeightRatio(1/3.0);
+        .rightSpaceToView(self.contentView,20)
+        .topSpaceToView(line,10);
         _rightButton.sd_cornerRadius = [NSNumber numberWithInteger:1];
+        [_rightButton setupAutoSizeWithHorizontalPadding:15 buttonHeight:30];
         
-        
+        /* 左侧button*/
+        _leftButton = [[UIButton alloc]init];
+        _leftButton.layer.borderColor = [UIColor blackColor].CGColor;
+        _leftButton.layer.borderWidth = 0.8;
+        [_leftButton setTitle:@"删除订单" forState:UIControlStateNormal];
+        [_leftButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        _leftButton.titleLabel.font = TEXT_FONTSIZE;
+        [self.contentView addSubview:_leftButton];
         /* 左按钮*/
         _leftButton.sd_layout
         .rightSpaceToView(_rightButton,10)
         .topEqualToView(_rightButton)
-        .bottomEqualToView(_rightButton)
-        .heightRatioToView(_rightButton,1.0)
-        .widthRatioToView(_rightButton,1.0);
+        .bottomEqualToView(_rightButton);
         _leftButton.sd_cornerRadius = [NSNumber numberWithInteger:1];
-       
+         [_leftButton setupAutoSizeWithHorizontalPadding:15 buttonHeight:30];
         
         /* 金额*/
+        _price=[[UILabel alloc]init];
+        _price.textColor = [UIColor redColor];
+        [self.contentView addSubview:_price];
+        /* 金额*/
         _price.sd_layout
-        .leftSpaceToView(self.contentView,10)
+        .leftEqualToView(_name)
         .rightSpaceToView(_leftButton,10)
         .centerYEqualToView(_leftButton)
         .autoHeightRatio(0);
-       
-        [self setupAutoHeightWithBottomView:_leftButton bottomMargin:10];
         
+        [_rightButton updateLayout];
         
+//        UIView *cont = [[UIView alloc]init];
+//        cont.backgroundColor = [UIColor whiteColor];
+//        [self.contentView addSubview:cont];
+//        cont.sd_resetNewLayout
+//        .leftSpaceToView(self.contentView,10)
+//        .rightSpaceToView(self.contentView, 10)
+//        .topSpaceToView(self.contentView, 10)
+//        .heightIs(_rightButton.bottom_sd+10);
+//        [cont updateLayout];
+//        [self.contentView sendSubviewToBack:cont];
+        
+        [self setupAutoHeightWithBottomView:_rightButton bottomMargin:20];
         
         
     }
@@ -189,12 +140,19 @@
 
 -(void)setUnpaidModel:(Unpaid *)unpaidModel{
     
-    _classTime .text = unpaidModel.preset_lesson_count ;
     _unpaidModel = unpaidModel;
     _name.text = unpaidModel.name;
-    _subject.text = unpaidModel.subject;
-    _grade.text = unpaidModel.grade;
-    _teacherName.text = unpaidModel.teacher_name;
+    
+    NSString *infos ;
+    
+    if (unpaidModel.type ==nil) {
+        infos = [NSString stringWithFormat:@"%@%@/共%@课/%@",unpaidModel.subject,unpaidModel.grade,unpaidModel.preset_lesson_count,unpaidModel.teacher_name];
+    }else{
+        
+        infos =[NSString stringWithFormat:@"%@/%@%@/共%@课/%@",unpaidModel.type,unpaidModel.subject,unpaidModel.grade,unpaidModel.preset_lesson_count,unpaidModel.teacher_name];
+    }
+    
+    _orderInfos.text = infos;
     
     _price.text = [NSString stringWithFormat:@"¥%@",unpaidModel.price];
 
@@ -211,9 +169,6 @@
     }else if ([unpaidModel.status isEqualToString:@"refunded"]){
         self.status.text = @"已退款";
     }
-    
-    
-    
     
 }
 

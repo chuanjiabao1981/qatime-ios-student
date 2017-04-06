@@ -142,7 +142,7 @@
 {
     [self stopLocalPreview];
     
-    DDLogInfo(@"Start local preview");
+//    DDLogInfo(@"Start local preview");
 
     _localVideoLayer = layer;
     
@@ -158,7 +158,7 @@
 
 -(void)stopLocalPreview
 {
-    DDLogInfo(@"Stop local preview");
+//    DDLogInfo(@"Stop local preview");
     if (_localVideoLayer) {
         [_localVideoLayer removeFromSuperlayer];
     }

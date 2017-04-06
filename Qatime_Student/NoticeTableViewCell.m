@@ -81,18 +81,9 @@
         .topSpaceToView(_edit_at,5)
         .rightSpaceToView(self.contentView,30)
         .autoHeightRatio(0);
-        
-        
+        _announcement.numberOfLines = 0;
+
         [self setupAutoHeightWithBottomView:_announcement bottomMargin:10];
-
-        
-        _announcement.sd_resetLayout
-        .leftSpaceToView(_noticeImage,10)
-        .topSpaceToView(_edit_at,5)
-        .rightSpaceToView(self.contentView,30)
-        .autoHeightRatio(0);
-                _announcement.numberOfLines = 0;
-
         
     }
     
@@ -102,7 +93,6 @@
 
 
 - (void)setModel:(Notice *)model{
-    
     
     _model = model;
     

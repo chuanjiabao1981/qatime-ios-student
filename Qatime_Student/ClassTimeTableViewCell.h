@@ -17,6 +17,8 @@
  */
 @property(nonatomic,strong) UIImageView *classImage ;
 
+/**课程类型*/
+@property (nonatomic, strong) UILabel *type ;
 
 /**
  课程名称

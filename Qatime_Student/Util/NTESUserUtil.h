@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <NIMSDK/NIMUser.h>
 
 @interface NTESUserUtil : NSObject
 

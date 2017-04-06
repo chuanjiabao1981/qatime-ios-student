@@ -55,25 +55,29 @@ typedef enum : NSUInteger {
     /* 是否隐藏"使用优惠码"按钮*/
     BOOL hidePromotionCodeButton;
     
+    /**订单类型*/
+    ClassOrderType _orderType;
+    
 }
 
 @end
 
 @implementation OrderViewController
 
--(instancetype)initWithClassID:(NSString *)classID{
+-(instancetype)initWithClassID:(NSString *)classID andClassType:(ClassOrderType)type{
     
     self= [super init];
     if (self) {
         
         _classID = [NSString stringWithFormat:@"%@",classID];
+        _orderType = type;
         
     }
     return self;
     
 }
 
--(instancetype)initWithClassID:(NSString *)classID andPromotionCode:(NSString *)promotionCode{
+-(instancetype)initWithClassID:(NSString *)classID andPromotionCode:(NSString *)promotionCode andClassType:(ClassOrderType)type{
     
     self= [super init];
     if (self) {
@@ -81,15 +85,14 @@ typedef enum : NSUInteger {
         _classID = [NSString stringWithFormat:@"%@",classID];
         
         _promotionCode = [NSString stringWithFormat:@"%@",promotionCode];
+        _orderType = type;
         
         hidePromotionCodeButton = YES;
         
     }
     return self;
     
-    
 }
-
 
 
 - (void)viewDidLoad {
@@ -195,45 +198,51 @@ typedef enum : NSUInteger {
         
         if (_classID!=nil) {
             
+            NSString *course ;
+            if (_orderType == LiveClassType) {
+                course = [NSString stringWithFormat:@"courses"];
+            }else if (_orderType == InteractionType){
+                course = [NSString stringWithFormat:@"interactive_courses"];
+            }
+    
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
             [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-            [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/%@/%@",Request_Header,course,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                 [self loginStates:dic];
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-                    /* 数据请求成功*/
-                    TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dic[@"data"]];
+                   
+                    id mod;
                     
-                    /* 成功后赋值*/
-                    _orderView.className.text = mod.name;
-                    _orderView.subjectLabel.text = mod.subject;
-                    _orderView.gradeLabel.text = mod.grade;
-                    _orderView.teacheNameLabel.text = mod.teacher_name;
-                    _orderView.classTimeLabel.text = [NSString stringWithFormat:@"共%@课",mod.preset_lesson_count];
-                    
-                    if ([mod.current_price containsString:@"."]) {
+                    if (_orderType == LiveClassType) {
                         
-                        _orderView.priceLabel.text = [NSString stringWithFormat:@"¥%@元",mod.current_price];
+                        /* 数据请求成功*/
+                        mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"]];
+                        [(TutoriumListInfo *)mod setClassID:dic[@"data"][@"id"]];
+                        //页面赋值
+                        [_orderView setupLiveClassData:mod];
                         
-                        _orderView.totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",mod.current_price];
+                        //价格
+                        price = [[(TutoriumListInfo *)mod current_price]floatValue];
                         
-                        price = mod.current_price.floatValue;
-                    }else{
-                        _orderView.priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",mod.current_price];
+                    }else if (_orderType == InteractionType){
                         
-                        _orderView.totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",mod.current_price];
+                        mod = (OneOnOneClass *)[OneOnOneClass yy_modelWithJSON:dic[@"data"]];
                         
-                        price = mod.current_price.floatValue;
+                        [(OneOnOneClass *)mod setClassID:dic[@"data"][@"id"]];
+                        //页面赋值
+                        [_orderView setupInteractionData:mod];
                         
+                        //价格
+                        price = [[(OneOnOneClass *)mod price]floatValue];
                     }
                     
-                    
+
                     /* 请求一次余额 ,判断是否可以用余额支付*/
                     [self requestBalance];
-                    
                     
                 }else{
                     /* 拉取订单信息失败*/
@@ -594,12 +603,18 @@ typedef enum : NSUInteger {
         dic = @{@"pay_type":_payType,@"coupon_code":coupon_code};
         
     }
+    NSString *course;
+    if (_orderType == LiveClassType) {
+        course = [NSString stringWithFormat:@"courses"];
+    }else if (_orderType == InteractionType){
+        course = [NSString stringWithFormat:@"interactive_courses"];
+    }
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/orders",Request_Header,_classID] parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/%@/%@/orders",Request_Header,course,_classID] parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         [self loginStates:dic];
@@ -610,17 +625,26 @@ typedef enum : NSUInteger {
             
             [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1.5];
             
-            
             //            [self loadingHUDStopLoadingWithTitle:nil];
             //
             //            dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
-            //            /* 下单成功,发送下单成功通知*/
-            //            [[NSNotificationCenter defaultCenter]postNotificationName:@"OrderSuccess" object:nil ];
-            //            [self performSelector:@selector(turnToPayPage) withObject:nil afterDelay:0];
+            //            /* 下单成功,发送下单成功通il afterDelay:0];
             
         }else{
             
-            [self loadingHUDStopLoadingWithTitle:@"订单申请失败!"];
+            if (_orderType == LiveClassType) {
+                
+                [self loadingHUDStopLoadingWithTitle:@"订单申请失败!"];
+            }else if (_orderType == InteractionType){
+                
+                if (dic[@"error"]) {
+                    if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
+                        
+                        [self loadingHUDStopLoadingWithTitle:@"课程目前不对外招生"];
+                    }
+                }
+            }
+            
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

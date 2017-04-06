@@ -12,14 +12,9 @@
 @interface MyOrderTableViewCell : UITableViewCell
 /* 课程名*/
 @property(nonatomic,strong) UILabel  *name ;
-/* 科目*/
-@property(nonatomic,strong) UILabel *subject ;
-/* 年级*/
-@property(nonatomic,strong) UILabel *grade ;
-/* 课时*/
-@property(nonatomic,strong) UILabel *classTime ;
-/* 教师姓名*/
-@property(nonatomic,strong) UILabel *teacherName ;
+/**订单课程信息*/
+@property (nonatomic, strong) UILabel *orderInfos ;
+
 /* 价格*/
 @property(nonatomic,strong) UILabel *price ;
 /* 交易状态*/
@@ -32,6 +27,8 @@
 
 /* frame model*/
 @property(nonatomic,strong) Unpaid *unpaidModel ;
+
+@property (nonatomic, strong) UIView *content ;
 
 
 @end

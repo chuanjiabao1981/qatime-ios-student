@@ -12,14 +12,14 @@
 
 #import "UUInputFunctionView.h"
 #import "TutoriumList.h"
-
+#import "NavigationBar.h"
 
 
 
 /* 聊天页面*/
 @interface ChatViewController : UIViewController
 
-
+@property (nonatomic, strong) NavigationBar *navigationBar;
 /**
  聊天视图
  */

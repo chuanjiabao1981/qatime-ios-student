@@ -233,7 +233,26 @@
 
     _orderInfoView.orderNumber.text = _dataDic[@"orderNumber"];
     
-    _orderInfoView.subName.text = [NSString stringWithFormat:@"%@%@/共%@课/%@",_dataDic[@"subject"],_dataDic[@"grade"],_dataDic[@"lessonTime"],_dataDic[@"teacherName"]];
+    NSString *infos;
+    NSString *type;
+    //如果有课程类型属性
+    if (_dataDic[@"type"]) {
+        if ([_dataDic[@"type"] isEqualToString:@""]) {
+            type = [NSString stringWithFormat:@"直播课"];
+
+        }else if ([_dataDic[@"type"]isEqualToString:@""]){
+             type = [NSString stringWithFormat:@"一对一"];
+        }
+        
+        infos =[NSString stringWithFormat:@"%@/%@%@/共%@课/%@",type,_dataDic[@"subject"],_dataDic[@"grade"],_dataDic[@"lessonTime"],_dataDic[@"teacherName"]];
+
+    }else{
+        
+        infos =[NSString stringWithFormat:@"%@%@/共%@课/%@",_dataDic[@"subject"],_dataDic[@"grade"],_dataDic[@"lessonTime"],_dataDic[@"teacherName"]]; 
+        
+    }
+    
+    _orderInfoView.subName.text = infos;
     _orderInfoView.name.text = _dataDic[@"name"];
     _orderInfoView.creatTime.text = _dataDic[@"creatTime"];
     _orderInfoView.payTime.text = _dataDic[@"payTime"];
@@ -438,7 +457,7 @@
                 [self loginStates:dic];
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     /* 订单申请成功*/
-                    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:_dataDic[@"productID"]];
+                    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:_dataDic[@"productID"] andClassType:LiveClassType];
                     [self.navigationController pushViewController:orderVC animated:YES];
                     
                 }else{

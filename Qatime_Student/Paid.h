@@ -74,4 +74,7 @@
 
 @property(nonatomic,strong) NSDictionary *app_pay_params ;
 
+//课程类型
+@property (nonatomic, strong) NSString *type ;
+
 @end

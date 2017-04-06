@@ -964,7 +964,6 @@
 #pragma mark- 发送筛选请求
 - (void)sendFilterStatus:(NSDictionary *)filterstatusDic{
     
-    
     [self loadingHUDStartLoadingWithTitle:NSLocalizedString(@"正在加载", nil)];
     
     page = 0;
@@ -1111,8 +1110,6 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-    
-    
     
 }
 

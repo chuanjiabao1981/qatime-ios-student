@@ -138,10 +138,10 @@
         .leftEqualToView(self)
         .rightEqualToView(self)
         .topSpaceToView(_segmentControl,0)
-        .heightIs(self.height_sd-_segmentControl.height_sd);
+        .heightIs(self.height_sd-_segmentControl.bottom_sd);
         
         [_scrollView updateLayout];
-//        _scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame)*3,_scrollView.height_sd );
+        _scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame)*3,_scrollView.height_sd );
         _scrollView.pagingEnabled = YES;
         _scrollView.showsHorizontalScrollIndicator = NO;
         [_scrollView scrollRectToVisible:CGRectMake(CGRectGetWidth(self.frame), 0, CGRectGetWidth(self.frame), 200) animated:NO];
@@ -369,6 +369,33 @@
         .autoHeightRatio(0)
         .rightSpaceToView(_view1,20);
         
+        //学习流程
+        UILabel *workFlow = [[UILabel alloc]init];
+        [_view1 addSubview:workFlow];
+        workFlow.text = @"学习流程";
+        workFlow.textColor = [UIColor blackColor];
+        workFlow.font = TITLEFONTSIZE;
+        workFlow.sd_layout
+        .leftEqualToView(_descriptions)
+        .topSpaceToView(_classDescriptionLabel,20)
+        .autoHeightRatio(0);
+        [workFlow setSingleLineAutoResizeWithMaxWidth:100];
+        
+        _workFlowView = [[OneOnOneWorkFlowView alloc]init];
+        _workFlowView.backgroundColor = [UIColor whiteColor];
+        [_view1 addSubview:_workFlowView];
+        _workFlowView.sd_layout
+        .leftSpaceToView(_view1, 0)
+        .rightSpaceToView(_view1, 0)
+        .topSpaceToView(workFlow, 0)
+        .heightEqualToWidth();
+        
+        [_workFlowView.line updateLayout];
+        [_workFlowView clearAutoHeigtSettings];
+        _workFlowView.sd_layout
+        .heightIs(_workFlowView.line.bottom_sd);
+        [_workFlowView updateLayout];
+        
         
         //学习须知
         UILabel *notice = [[UILabel alloc]init];
@@ -378,7 +405,7 @@
         notice.font = TITLEFONTSIZE;
         notice.sd_layout
         .leftEqualToView(_descriptions)
-        .topSpaceToView(_classDescriptionLabel,20)
+        .topSpaceToView(_workFlowView,20)
         .autoHeightRatio(0);
         [notice setSingleLineAutoResizeWithMaxWidth:100];
         
@@ -433,7 +460,7 @@
         duringLabel.textColor = TITLECOLOR;
         duringLabel.textAlignment = NSTextAlignmentLeft;
         duringLabel.isAttributedContent = YES;
-        duringLabel.attributedText = [[NSMutableAttributedString alloc]initWithString:@"1、时刻保持注意力集中，认真听讲才能更好的提升学习；\n2、课程中遇到听不懂的问题及时通过聊天或互动申请向老师提问，老师收到后会给予解答；\n3、积极响应老师的授课，完成老师布置的课上任务；\n4、禁止在上课中闲聊或发送一切与本课无关的内容，如有发现，一律禁言；\n5、上课途中如突遇屏幕卡顿，直播中断等特殊情况，请刷新后等待直播恢复；超过15分钟未恢复去请致电客服；\n6、请同学们一定要准时学习，本课程正常结束后不补上。" attributes:attribute];
+        duringLabel.attributedText = [[NSMutableAttributedString alloc]initWithString:@"1、时刻保持注意力集中，认真听讲才能更好的提升学习；\n2、课程中遇到听不懂的问题及时通过聊天或互动申请向老师提问，老师收到后会给予解答；\n3、积极响应老师的授课，完成老师布置的课上任务；\n4、禁止在上课中闲聊或发送一切与本课无关的内容，如有发现，一律禁言；\n5、上课途中如突遇屏幕卡顿，直播中断等特殊情况，请刷新后等待直播恢复；超过15分钟未恢复去请致电客服。" attributes:attribute];
         
         duringLabel.sd_layout
         .topSpaceToView(during,10)
@@ -465,6 +492,7 @@
         .leftEqualToView(duringLabel)
         .rightSpaceToView(_view1,20)
         .autoHeightRatio(0);
+        
         
         //sdautolayout 自适应scrollview的contentsize 方法
         [_view1 setupAutoContentSizeWithBottomView:afterLabel bottomMargin:20];
@@ -609,10 +637,11 @@
         
         
         //scrollview横向自适应
-        [_scrollView setupAutoContentSizeWithRightView:_view3 rightMargin:0];
+//        [_scrollView setupAutoContentSizeWithRightView:_view3 rightMargin:0];
+//        [_scrollView setupAutoContentSizeWithBottomView:_view3 bottomMargin:10];
         
         //视图自适应
-        [self setupAutoContentSizeWithBottomView:_scrollView bottomMargin:10];
+//        [self setupAutoContentSizeWithBottomView:_scrollView bottomMargin:10];
         
         
     }

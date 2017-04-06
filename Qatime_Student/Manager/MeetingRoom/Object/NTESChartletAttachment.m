@@ -9,6 +9,7 @@
 #import "NTESChartletAttachment.h"
 #import "UIImage+NTES.h"
 #import "NTESSessionUtil.h"
+#import "NIMMessageModel.h"
 
 @implementation NTESChartletAttachment
 

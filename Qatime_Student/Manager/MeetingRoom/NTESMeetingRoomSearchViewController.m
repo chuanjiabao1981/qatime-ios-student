@@ -14,7 +14,7 @@
 #import "NTESMeetingViewController.h"
 #import "NTESMeetingManager.h"
 #import "NTESMeetingRolesManager.h"
-#import "NTESGlobalMacro.h"
+ 
 
 @interface NTESMeetingRoomSearchViewController ()
 

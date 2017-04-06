@@ -8,6 +8,7 @@
 
 
 #import "OrderView.h"
+#import "UIImageView+WebCache.h"
 
 #define LINESPACE self.height_sd/80.0*ScrenScale
 
@@ -592,5 +593,52 @@
     }
     return self;
 }
+
+- (void)setupLiveClassData:(TutoriumListInfo *)tutorium{
+    
+    _subjectLabel.text = tutorium.subject;
+    _className.text = tutorium.name;
+    _gradeLabel.text = tutorium.grade;
+    _teacheNameLabel.text = tutorium.teacher_name;
+    _classTimeLabel.text = [NSString stringWithFormat:@"共%@课",tutorium.preset_lesson_count];
+    if ([tutorium.current_price containsString:@"."]) {
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.current_price];
+        _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.current_price];
+        
+    }else{
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.current_price];
+        _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.current_price];
+        
+    }
+
+}
+
+- (void)setupInteractionData:(OneOnOneClass *)interaction{
+    
+    _subjectLabel.text = interaction.subject;
+    _className.text = interaction.current_lesson_name;
+    _gradeLabel.text = interaction.grade;
+    
+    interaction.teacherNameString = @"".mutableCopy;
+    for (NSDictionary *teacher in interaction.teachers) {
+        
+        [interaction.teacherNameString appendString:[NSString stringWithFormat:@"%@/",teacher[@"name"]]];
+    }
+   
+    _teacheNameLabel.text =  [interaction.teacherNameString substringWithRange:NSMakeRange(0, interaction.teacherNameString.length-1)];
+    _classTimeLabel.text = interaction.lessons_count;
+    
+    if ([interaction.price containsString:@"."]) {
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@元",interaction.price];
+        _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",interaction.price];
+        
+    }else{
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",interaction.price];
+        _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",interaction.price];
+        
+    }
+    
+}
+
 
 @end

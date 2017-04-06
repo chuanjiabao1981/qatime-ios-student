@@ -7,6 +7,7 @@
 //
 
 #import "NTESLocationPoint.h"
+#import "NIMLocationContentConfig.h"
 
 @implementation NTESLocationPoint
 

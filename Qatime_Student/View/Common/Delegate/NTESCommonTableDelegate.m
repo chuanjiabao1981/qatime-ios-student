@@ -11,7 +11,7 @@
 #import "NTESCommonTableViewCell.h"
 #import "UIView+NTES.h"
 #import "NSString+NTES.h"
-#import "NTESGlobalMacro.h"
+ 
 
 #define SepViewTag 10001
 

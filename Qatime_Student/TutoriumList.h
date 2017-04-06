@@ -34,8 +34,16 @@
 @property(nonatomic,assign) BOOL is_tasting ;
 @property(nonatomic,assign) BOOL is_bought ;
 @property(nonatomic,strong) NSString *status;
+@property (nonatomic, strong) NSString *describe ;
+
+@property (nonatomic, strong) NSString *board_pull_stream ;
+@property (nonatomic, strong) NSString *chat_team_owner ;
+@property (nonatomic, strong) NSString *camera_pull_stream ;
 
 @property (nonatomic, strong) NSArray *tag_list ;
+@property (nonatomic, strong) NSString *objective ; //目标
+@property (nonatomic, strong) NSString *suit_crowd ;
+
 
 /* 在加载消息列表页时该属性才有用,其他接口用不到*/
 @property(nonatomic,assign) BOOL notify ;

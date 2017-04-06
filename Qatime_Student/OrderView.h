@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TutoriumList.h"
+#import "OneOnOneClass.h"
 
 @interface OrderView : UIScrollView
 
@@ -63,10 +65,19 @@
 /* 几块底视图*/
 @property(nonatomic,strong) UIView *infoView;
 
+/**
+ 直播课页面赋值方法
+
+ @param tutorium id
+ */
+- (void)setupLiveClassData:(TutoriumListInfo *)tutorium;
 
 
+/**
+ 互动课程页面赋值方法
 
-
-
+ @param interaction id
+ */
+- (void)setupInteractionData:(OneOnOneClass *)interaction;
 
 @end

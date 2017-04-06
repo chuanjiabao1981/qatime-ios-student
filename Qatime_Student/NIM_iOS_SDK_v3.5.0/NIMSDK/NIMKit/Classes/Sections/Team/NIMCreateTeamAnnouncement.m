@@ -75,10 +75,10 @@
     CGRect keyboardFrame;
     [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];
     CGFloat keyBordOriginY = keyboardFrame.origin.y;
-    BOOL iOS7 = ([[[UIDevice currentDevice] systemVersion] doubleValue] < 8.0);
+    BOOL isiOS7 = ([[[UIDevice currentDevice] systemVersion] doubleValue] < 8.0);
     UIInterfaceOrientation orientation =
     [[UIApplication sharedApplication] statusBarOrientation];
-    if (iOS7 && (orientation == UIDeviceOrientationLandscapeLeft
+    if (isiOS7 && (orientation == UIDeviceOrientationLandscapeLeft
                  || orientation == UIDeviceOrientationLandscapeRight)) {
         keyBordOriginY = keyboardFrame.origin.x + keyboardFrame.size.width;
     }

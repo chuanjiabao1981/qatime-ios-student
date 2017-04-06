@@ -9,7 +9,7 @@
 #import "UINavigationBar+Swizzling.h"
 #import "UIView+NTES.h"
 #import "SwizzlingDefine.h"
-#import "NTESGlobalMacro.h"
+ 
 @implementation UINavigationBar (Swizzling)
 
 + (void)load{

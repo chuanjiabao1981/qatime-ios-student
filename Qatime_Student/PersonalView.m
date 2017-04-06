@@ -15,8 +15,6 @@
 @interface PersonalView (){
     
     
-    
-    
 }
 
 @end
@@ -30,7 +28,7 @@
         
         self.backgroundColor = [UIColor clearColor];
                 
-        _settingTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT)];
+        _settingTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT) style:UITableViewStyleGrouped];
         
         _settingTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         [self addSubview:_settingTableView];
