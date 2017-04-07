@@ -12,25 +12,25 @@
 typedef NS_ENUM(NSInteger, MessageType) {
     UUMessageTypeText     = 0 , // 文字
     UUMessageTypePicture  = 1 , // 图片
-    UUMessageTypeVoice    = 2   // 语音
+    UUMessageTypeVoice    = 2 , // 语音
+    UUMessagetypeNotice   = 3   // 系统消息
 };
 
 
 typedef NS_ENUM(NSInteger, MessageFrom) {
     UUMessageFromMe    = 0,   // 自己发的
-    UUMessageFromOther = 1    // 别人发得
+    UUMessageFromOther = 1,   // 别人发得
+    UUMessageFromeSystem = 2  //系统发的
 };
 
 
 @interface UUMessage : NSObject
 
 
-
 /**
  消息ID,消息的唯一标识 ->重要
  */
 @property(nonatomic,strong) NSString *messageID ;
-
 
 
 /**

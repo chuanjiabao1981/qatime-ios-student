@@ -60,7 +60,7 @@
         self.labelTime.textAlignment = NSTextAlignmentCenter;
         self.labelTime.textColor = [UIColor grayColor];
         self.labelTime.font = ChatTimeFont;
-//        [self.contentView addSubview:self.labelTime];
+        [self.contentView addSubview:self.labelTime];
         
         // 2、创建头像
         headImageBackView = [[UIView alloc]init];
@@ -136,7 +136,6 @@
         self.title.textVerticalAlignment = YYTextVerticalAlignmentCenter;
         self.title.editable = NO;
         self.title.scrollEnabled = NO;
-        
         
         
         [self.contentView addSubview:self.title];
@@ -326,8 +325,8 @@
     //    UUMessage *message = messageFrame.message;
     
     // 1、设置时间
-//    self.labelTime.text = messageFrame.message.strTime;
-//    self.labelTime.frame = messageFrame.timeF;
+    self.labelTime.text = messageFrame.message.strTime;
+    self.labelTime.frame = messageFrame.timeF;
     
     // 2、设置头像
     

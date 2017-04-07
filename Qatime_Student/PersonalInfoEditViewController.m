@@ -52,7 +52,6 @@
     /* 提交数据用的字典*/
     NSMutableDictionary *_dataDic;
     
-    
 }
 
 @end
@@ -70,7 +69,6 @@
     return self;
     
 }
-
 
 
 - (void)loadView{
@@ -398,9 +396,7 @@
                 }
             }
             
-            
             return  cell;
-            
             
         }
             break;
@@ -456,13 +452,10 @@
             
             [self changeHeadImage:[tableView cellForRowAtIndexPath:indexPath]];
             
-            
         }
             break;
             
         case 2:{
-            
-            
             
         }
             break;
@@ -490,7 +483,6 @@
                 
                 _infoDic[@"grade"] = selectedString;
                 
-                
             }];
             
         }
@@ -501,7 +493,6 @@
             [self.navigationController pushViewController:controller animated:YES];
             
             //用block调结果 赋值到head视图上
-            
             EditLocationTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             
         }
@@ -552,7 +543,6 @@
     [UIView animateWithDuration:animationDuration animations:^{
         
         [ self.view setFrame:CGRectMake(0, -keyboardRect.size.height/2, self.view.width_sd, self.view.height_sd)];
-        
     }];
     
 }

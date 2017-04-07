@@ -7,6 +7,7 @@
 //
 
 #import "ChatListTableViewCell.h"
+#import "UIImageView+WebCache.h"
 
 @implementation ChatListTableViewCell
 
@@ -16,46 +17,47 @@
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        _badge = ({
-//            M13BadgeView *_=[[M13BadgeView alloc]init];
-//            _.hidden = YES;
-//            _.hidesWhenZero = YES;
-//            
-//            _.frame = CGRectMake(self.contentView.width_sd-30, 10, self.contentView.height_sd-20, self.contentView.height_sd-20);
-//            [self.contentView addSubview:_];
-//            
-//            _.verticalAlignment = M13BadgeViewVerticalAlignmentMiddle;
-//            _.horizontalAlignment = M13BadgeViewHorizontalAlignmentRight;
-//            _.pixelPerfectText = YES;
-//            _.alignmentShift = CGSizeMake(60, 0);
-//            _.maximumWidth = 40;
-//            _;
-            
-            
-            
-            UILabel *_ = [[UILabel alloc]init];
+        _image = ({
+        
+            UIImageView *_ = [[UIImageView alloc]init];
             [self.contentView addSubview:_];
-            _.backgroundColor = [UIColor redColor];
-            _.textColor = [UIColor whiteColor];
-            _.textAlignment = NSTextAlignmentCenter;
-          
+            _.sd_layout
+            .leftSpaceToView(self.contentView, 15)
+            .topSpaceToView(self.contentView, 10)
+            .bottomSpaceToView(self.contentView, 10)
+            .widthEqualToHeight();
+            _.sd_cornerRadius = @2;
             _;
-            
         });
+        
         
         _className = ({
             
             UILabel *_= [[UILabel alloc]init];
-            _.textColor = TITLECOLOR;
+            _.textColor = [UIColor blackColor];
             _.font = [UIFont systemFontOfSize:15*ScrenScale];
-            
+            _.textAlignment = NSTextAlignmentLeft;
             [self.contentView addSubview:_];
             
             _.sd_layout
-            .leftSpaceToView(self.contentView,20)
-            .topSpaceToView(self.contentView,10)
-            .bottomSpaceToView(self.contentView,10);
-            [_ setSingleLineAutoResizeWithMaxWidth:300];
+            .leftSpaceToView(_image,10)
+            .topEqualToView(_image)
+            .autoHeightRatio(0)
+            .rightSpaceToView(self.contentView, 40);
+            
+            _;
+        });
+        
+        _lastTime = ({
+            UILabel *_ = [[UILabel alloc]init];
+            [self.contentView addSubview:_];
+            _.textColor = TITLECOLOR;
+            _.font = TEXT_FONTSIZE;
+            _.sd_layout
+            .leftEqualToView(_className)
+            .bottomEqualToView(_image)
+            .autoHeightRatio(0);
+            [_ setSingleLineAutoResizeWithMaxWidth:200];
             _;
         });
         
@@ -64,17 +66,25 @@
         [self.contentView addSubview:_closeNotice];
         _closeNotice.hidden = NO;
         _closeNotice.sd_layout
-        .leftSpaceToView(_className,20)
-        .centerYEqualToView(_className)
-        .heightRatioToView(_className,0.5)
+        .topEqualToView(_image)
+        .rightSpaceToView(self.contentView, 15)
+        .heightRatioToView(_className, 1.0)
         .widthEqualToHeight();
+        
+        _badge = ({
+            UILabel *_ = [[UILabel alloc]init];
+            [self.contentView addSubview:_];
+            _.backgroundColor = [UIColor redColor];
+            _.textColor = [UIColor whiteColor];
+            _.textAlignment = NSTextAlignmentCenter;
+            
+            _;
+            
+        });
         
         
         /* 默认接受推送*/
         _noticeOn = YES;
-        
-//        self.contentView.badge.badgeMaximumBadgeNumber = 999;
-//        self.contentView.badge.badgeCenterOffset = CGPointMake(self.contentView.width_sd-20, self.contentView.centerY_sd);
         
         [self setupAutoHeightWithBottomView:_className bottomMargin:10];
         
@@ -87,11 +97,10 @@
 -(void)setModel:(ChatList *)model{
     
     _model = model;
+    [_image sd_setImageWithURL:[NSURL URLWithString:model.tutorium.publicize]];
     _className.text = model.name;
-    
+    _lastTime.text = [self timeStampSwitcher:model.lastTime];
     self.badgeNumber = model.badge;
-    
-    
     if (self.model.badge>999) {
         self.badge.text = @"999+";
     }else{
@@ -104,10 +113,11 @@
         [_badge sd_clearAutoLayoutSettings];
         
         _badge.sd_layout
-        .rightSpaceToView(self.contentView,20)
-        .topSpaceToView(self.contentView,10)
-        .bottomSpaceToView(self.contentView,10)
+        .rightEqualToView(_closeNotice)
+        .bottomEqualToView(_image)
+        .autoHeightRatio(0)
         .widthEqualToHeight();
+        
         _badge.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
         [_badge updateLayout];
         
@@ -116,10 +126,11 @@
         [_badge sd_clearAutoLayoutSettings];
         
         _badge.sd_layout
-        .rightSpaceToView(self.contentView,20)
-        .topSpaceToView(self.contentView,10)
-        .bottomSpaceToView(self.contentView,10)
-        .widthIs((self.contentView.height_sd-20)*1.2);
+        .rightEqualToView(_closeNotice)
+        .bottomEqualToView(_image)
+        .autoHeightRatio(0)
+        .autoWidthRatio(1.2);
+        
         _badge.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
         [_badge updateLayout];
     }else if(self.model.badge>=100&&self.model.badge<1000){
@@ -127,10 +138,10 @@
         [_badge sd_clearAutoLayoutSettings];
         
         _badge.sd_layout
-        .rightSpaceToView(self.contentView,20)
-        .topSpaceToView(self.contentView,10)
-        .bottomSpaceToView(self.contentView,10)
-        .widthIs((self.contentView.height_sd-20)*1.5);
+        .rightEqualToView(_closeNotice)
+        .bottomEqualToView(_image)
+        .autoHeightRatio(0)
+        .autoWidthRatio(1.5);
         _badge.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
         [_badge updateLayout];
         
@@ -139,10 +150,10 @@
         [_badge sd_clearAutoLayoutSettings];
         
         _badge.sd_layout
-        .rightSpaceToView(self.contentView,20)
-        .topSpaceToView(self.contentView,10)
-        .bottomSpaceToView(self.contentView,10)
-        .heightIs((self.contentView.height_sd-20)*1.5);
+        .rightEqualToView(_closeNotice)
+        .bottomEqualToView(_image)
+        .autoHeightRatio(0)
+        .autoWidthRatio(1.7);
         _badge.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
         [_badge updateLayout];
         
@@ -156,6 +167,25 @@
     
     
 }
+
+- (NSString *)timeStampSwitcher:(NSTimeInterval)timeStamps{
+    
+    NSString *switchString;
+    
+    if (timeStamps !=0) {
+        
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeStamps];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        [formatter setDateFormat:@"MM-dd HH:mm:ss"];
+        switchString = [formatter stringFromDate:date];
+    }else{
+        switchString = @"";
+    }
+
+    return switchString;
+}
+
+
 
 
 - (void)awakeFromNib {

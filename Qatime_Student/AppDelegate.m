@@ -279,7 +279,6 @@
     
     }
     
-    
     /* 新收到消息的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(receiveNewNotice) name:@"ReceiveNewNotice" object:nil];
     

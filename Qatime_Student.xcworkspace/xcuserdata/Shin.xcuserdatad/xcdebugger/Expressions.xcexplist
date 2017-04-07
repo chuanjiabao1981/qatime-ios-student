@@ -424,10 +424,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1153,6 +1153,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[InteractionTeacherListTableViewCell setModel:]:InteractionTeacherListTableViewCell.m">
+      </ContextState>
+      <ContextState
          contextName = "-[MyOrderViewController tableView:didSelectRowAtIndexPath:]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1162,9 +1165,6 @@
       </ContextState>
       <ContextState
          contextName = "-[NTESMeetingWhiteboardViewController initWithChatroom:]:NTESMeetingWhiteboardViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[InteractionTeacherListTableViewCell setModel:]:InteractionTeacherListTableViewCell.m">
       </ContextState>
       <ContextState
          contextName = "-[VideoViewController tableView:cellForRowAtIndexPath:]:VideoViewController.m">
@@ -1252,10 +1252,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1716,6 +1716,14 @@
       </ContextState>
       <ContextState
          contextName = "__41-[ChooseClassViewController multiFilters]_block_invoke:ChooseClassViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__44-[NoticeIndexViewController requestMyClass:]_block_invoke:NoticeIndexViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_recentArr">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__69-[ChooseClassViewController collectionView:didSelectItemAtIndexPath:]_block_invoke:ChooseClassViewController.m">

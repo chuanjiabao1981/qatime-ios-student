@@ -244,7 +244,7 @@ typedef enum : NSUInteger {
     /* 获取我的辅导班列表*/
     [self requestMyClass:RefreshStateNone];
     
-    /* 请求通知消息,收到的消息存到本地数据库,文件名:notice.db*/
+    /* 请求通知消息*/
     [self requestNotices:RefreshStateNone];
     
     [[[NIMSDK sharedSDK]loginManager]addDelegate:self];
@@ -255,7 +255,7 @@ typedef enum : NSUInteger {
     
     [[[NIMSDK sharedSDK]conversationManager]addDelegate:self];
     [[[NIMSDK sharedSDK]chatManager]addDelegate:self];
-
+    
 }
 
 
@@ -282,7 +282,6 @@ typedef enum : NSUInteger {
         }
             break;
     }
-    
     
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -320,14 +319,10 @@ typedef enum : NSUInteger {
                         TutoriumListInfo *info = [TutoriumListInfo yy_modelWithJSON:tutorium];
                         info.classID = tutorium[@"id"];
                         
-                        info.notify = [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.classID];
-                        
+                        info.notify =  [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.chat_team_id];
                         NSLog(@"%d",info.notify);
                         
-                        info.notify =  [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.chat_team_id];
-                        
-                        /* 试听已经结束的*/
-                        
+                        /* 已购买的或者试听尚未结束的 ,加入聊天列表*/
                         if ([info.taste_count integerValue]<[info.preset_lesson_count integerValue]||info.is_bought == YES) {
                             
                             [_myClassArray addObject:info];
@@ -353,17 +348,44 @@ typedef enum : NSUInteger {
                                     
                                     unreadCont +=session.unreadCount;
                                     
+                                    mod.lastTime = session.lastMessage.timestamp;
+                                    
                                 }
-                                
                                 
                             }
                             [_chatListArr addObject:mod];
                             
                         }
                     }
+                    
+                    /**
+                     在这儿进行一次_chatListArr的排序
+                     根据数组里的每一个元素(ChatList类型)的lastTime属性进行比较
+                     */
+                    NSArray *tempArr = _chatListArr.mutableCopy;
+                    _chatListArr = (NSMutableArray *)[tempArr sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                        
+                        ChatList *mod1 = (ChatList *)obj1;
+                        ChatList *mod2 = (ChatList *)obj2;
+                        
+                        
+                        if (mod1.lastTime<mod2.lastTime) {
+                            
+                            // 按时间戳降序排列
+                            return NSOrderedDescending;
+                        }else{
+                            
+                            // 相同不变
+                            return NSOrderedSame;
+                        }
+                    }];
+                    
+                    for (ChatList *mod in _chatListArr) {
+                        NSLog(@"%f",mod.lastTime);
+                    }
+                    
                 }
             }
-            
             
             if (state == RefreshStatePushLoadMore) {
                 
@@ -568,28 +590,23 @@ typedef enum : NSUInteger {
             if (cell==nil) {
                 cell=[[ChatListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
-                //                cell.badge.hidden = YES;
             }
             
             if (_chatListArr.count>indexPath.row) {
                 cell.model = _chatListArr[indexPath.row];
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+                
                 if (cell.noticeOn==YES) {
                     cell.closeNotice.hidden = YES;
+                    if (cell.model.badge>0) {
+                        cell.badge.hidden = NO;
+                    }else if(cell.model.badge==0){
+                        cell.badge.hidden = YES;
+                    }
                 }else if(cell.noticeOn==NO){
                     cell.closeNotice.hidden = NO;
-                }
-                
-                //                UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(resignNotice:)];
-                //
-                //                [cell addGestureRecognizer:press];
-                
-                if (cell.model.badge>0) {
-                    cell.badge.hidden = NO;
-                }else if(cell.model.badge==0){
                     cell.badge.hidden = YES;
                 }
-                
             }
             
             return  cell;
@@ -641,8 +658,7 @@ typedef enum : NSUInteger {
         case 2:{
             if (_chatListArr.count>indexPath.row) {
                 
-                ChatList *mod = _chatListArr[indexPath.row];
-                height = [tableView cellHeightForIndexPath:indexPath model:mod keyPath:@"model" cellClass:[ChatListTableViewCell class] contentViewWidth:self.view.width_sd];
+                height = 70*ScrenScale;
             }
         }
             break;
@@ -752,9 +768,13 @@ typedef enum : NSUInteger {
                         cell.closeNotice.hidden = NO;
                         cell.noticeOn = NO;
                         cell.model.tutorium.notify = NO;
-                        
                         _chatListArr[indexPath.row].tutorium.notify = NO;
                         [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                    }else{
+                        
+                        NSLog(@"%@", error);
+                        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                        [self loadingHUDStopLoadingWithTitle:@"修改失败"];
                     }
                     
                 }];
@@ -769,14 +789,17 @@ typedef enum : NSUInteger {
                         cell.model.tutorium.notify = YES;
                         _chatListArr[indexPath.row].tutorium.notify = YES;
                         [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                    }else{
+                        
+                        NSLog(@"%@", error);
+                        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                        [self loadingHUDStopLoadingWithTitle:@"修改失败"];
+                        
                     }
                     
                 }];
                 
-                
             }
-            
-            
             
         }];
         return @[action];
@@ -790,21 +813,40 @@ typedef enum : NSUInteger {
 -(void)onRecvMessages:(NSArray<NIMMessage *> *)messages{
     
     for (NIMMessage *message in messages) {
-        
         NSInteger index = 0;
         for (ChatList *chat in _chatListArr) {
             index++;
             if ([message.session.sessionId isEqualToString:chat.tutorium.chat_team_id]){
                 chat.badge+=1;
-                
                 unreadCont +=1;
+                chat.lastTime = message.timestamp;
                 
                 [_noticeIndexView.chatListTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index-1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-                
             }
         }
         
     }
+    
+    //进行一次排序
+    NSArray *tempArr = _chatListArr.mutableCopy;
+    _chatListArr = (NSMutableArray *)[tempArr sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        
+        ChatList *mod1 = (ChatList *)obj1;
+        ChatList *mod2 = (ChatList *)obj2;
+        
+        if (mod1.lastTime<mod2.lastTime) {
+            
+            // 按时间戳降序排列
+            return NSOrderedDescending;
+        }else{
+            
+            // 相同不变
+            return NSOrderedSame;
+        }
+    }];
+    
+    [_noticeIndexView.chatListTableView reloadData];
+    [_noticeIndexView.chatListTableView setNeedsDisplay];
     
     /* badge的判断和增加*/
     
@@ -895,7 +937,7 @@ typedef enum : NSUInteger {
                             
                             
                         }];
-                    
+                        
                         
                     });
                     

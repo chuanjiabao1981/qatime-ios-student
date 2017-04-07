@@ -278,6 +278,7 @@
 		54A153B01DC6F09D0070B508 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153AF1DC6F09D0070B508 /* ViewController.m */; };
 		54A153C31DC6F09E0070B508 /* Qatime_StudentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153C21DC6F09E0070B508 /* Qatime_StudentTests.m */; };
 		54A153CE1DC6F09E0070B508 /* Qatime_StudentUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153CD1DC6F09E0070B508 /* Qatime_StudentUITests.m */; };
+		54A6C4A11E97393700B56135 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54A6C4A01E97393700B56135 /* StoreKit.framework */; };
 		54A991851E34BCB20001D3D9 /* NoticeWaysTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A991841E34BCB20001D3D9 /* NoticeWaysTableViewCell.m */; };
 		54AA307C1DF9427D009E0D04 /* NSString+TimeStamp.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA307B1DF9427D009E0D04 /* NSString+TimeStamp.m */; };
 		54AA30821DF950CA009E0D04 /* CheckChargeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30811DF950CA009E0D04 /* CheckChargeView.m */; };
@@ -1199,6 +1200,7 @@
 		54A153C91DC6F09E0070B508 /* Qatime_StudentUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Qatime_StudentUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		54A153CD1DC6F09E0070B508 /* Qatime_StudentUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Qatime_StudentUITests.m; sourceTree = "<group>"; };
 		54A153CF1DC6F09E0070B508 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		54A6C4A01E97393700B56135 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		54A991831E34BCB20001D3D9 /* NoticeWaysTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeWaysTableViewCell.h; sourceTree = "<group>"; };
 		54A991841E34BCB20001D3D9 /* NoticeWaysTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeWaysTableViewCell.m; sourceTree = "<group>"; };
 		54AA307A1DF9427D009E0D04 /* NSString+TimeStamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TimeStamp.h"; sourceTree = "<group>"; };
@@ -1954,6 +1956,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54A6C4A11E97393700B56135 /* StoreKit.framework in Frameworks */,
 				54AC02051E88FF0200817767 /* NIMAVChat.framework in Frameworks */,
 				54AC02041E88FEDA00817767 /* NIMSDK.framework in Frameworks */,
 				54AC01FF1E88FE5C00817767 /* libaacplus.a in Frameworks */,
@@ -5746,6 +5749,7 @@
 		B493EB6DEDE6DB14F293C15A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				54A6C4A01E97393700B56135 /* StoreKit.framework */,
 				54E8B6A21E5EF1B600A9703F /* AddressBook.framework */,
 				54E8B6A01E5EF1AF00A9703F /* Contacts.framework */,
 				5493450D1E4B058B005849B2 /* JavaScriptCore.framework */,

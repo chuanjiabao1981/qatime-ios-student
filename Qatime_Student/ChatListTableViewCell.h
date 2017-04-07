@@ -14,28 +14,27 @@
 
 @interface ChatListTableViewCell : UITableViewCell
 
+/**辅导班图*/
+@property (nonatomic, strong) UIImageView *image ;
 
-
-/* 辅导班名字*/
+/** 辅导班名字*/
 @property(nonatomic,strong) UILabel *className ;
 
-/* 新消息数量*/
-//@property(nonatomic,strong) M13BadgeView *badge ;
+/**最后一条消息收到的时间*/
+@property (nonatomic, strong) UILabel *lastTime;
 
-/* 不接受推送的图标*/
+/** 不接受推送的图标*/
 @property(nonatomic,strong) UIImageView *closeNotice ;
 
 @property(nonatomic,assign) BOOL noticeOn ;
 
-/* 辅导班model*/
-@property(nonatomic,strong) ChatList *model ;
-
-
-/* 作为badge*/
+/** 作为badge*/
 @property(nonatomic,strong) UILabel *badge ;
 
 @property(nonatomic,assign) NSInteger badgeNumber ;
 
+/** 辅导班model*/
+@property(nonatomic,strong) ChatList *model ;
 
 
 @end
