@@ -299,104 +299,118 @@ typedef enum : NSUInteger {
             /* 请求近期聊天会话*/
             _recentArr =  [NSMutableArray arrayWithArray:[[[NIMSDK sharedSDK]conversationManager]allRecentSessions]];
             
-            if ([dic[@"data"] count ] ==0) {
-                /* 没有加入聊天的情况*/
-                HaveNoClassView *noChat = [[HaveNoClassView  alloc]init];
-                noChat.titleLabel.text = @"当前无课程";
+            /**在请求一次一对一聊天数据*/
+            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/interactive_courses",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
                 
-                noChat.frame = CGRectMake(0, 0, self.view.width_sd,_noticeIndexView.scrollView.height_sd);
-                [_noticeIndexView.chatListTableView addSubview:noChat];
-                
-            }else{
-                
-                if (_myClassArray) {
+                NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                if ([dataDic[@"status"]isEqualToNumber:@1]) {
                     
-                    /* 获取近期会话的未读消息等数据*/
-                    NSMutableArray *dicArr =[NSMutableArray arrayWithArray: dic[@"data"]];
-                    
-                    for (NSDictionary *tutorium in dicArr) {
+                    if ([dic[@"data"] count ] ==0 && [dataDic[@"data"]count]==0) {
+                        /* 没有加入聊天的情况*/
+                        HaveNoClassView *noChat = [[HaveNoClassView  alloc]init];
+                        noChat.titleLabel.text = @"当前无课程";
                         
-                        TutoriumListInfo *info = [TutoriumListInfo yy_modelWithJSON:tutorium];
-                        info.classID = tutorium[@"id"];
+                        noChat.frame = CGRectMake(0, 0, self.view.width_sd,_noticeIndexView.scrollView.height_sd);
+                        [_noticeIndexView.chatListTableView addSubview:noChat];
                         
-                        info.notify =  [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.chat_team_id];
-                        NSLog(@"%d",info.notify);
+                    }else{
                         
-                        /* 已购买的或者试听尚未结束的 ,加入聊天列表*/
-                        if ([info.taste_count integerValue]<[info.preset_lesson_count integerValue]||info.is_bought == YES) {
+                        if (_myClassArray) {
                             
-                            [_myClassArray addObject:info];
-                        }
-                        
-                    }
-                    
-                    if (_myClassArray&&_recentArr) {
-                        
-                        /* 把badge结果遍历给chatlist的cell*/
-                        for (TutoriumListInfo *info in _myClassArray) {
+                            /* 获取近期会话的未读消息等数据*/
+                            NSMutableArray *dicArr =[NSMutableArray arrayWithArray: dic[@"data"]];
                             
-                            ChatList *mod = [[ChatList alloc]init];
-                            mod.tutorium = info;
-                            mod.name = info.name;
-                            for (NIMRecentSession *session in _recentArr) {
+                            [dicArr addObjectsFromArray:[NSMutableArray arrayWithArray:dataDic[@"data"]]];
+                            
+                            for (NSDictionary *tutorium in dicArr) {
                                 
-                                NSLog(@"%@........%@",session.session.sessionId,info.chat_team_id);
+                                TutoriumListInfo *info = [TutoriumListInfo yy_modelWithJSON:tutorium];
+                                info.classID = tutorium[@"id"];
                                 
-                                if ([session.session.sessionId isEqualToString:info.chat_team_id]) {
+                                info.notify =  [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.chat_team_id];
+                                NSLog(@"%d",info.notify);
+                                
+                                /* 已购买的或者试听尚未结束的 ,加入聊天列表*/
+                                if ([info.taste_count integerValue]<[info.preset_lesson_count integerValue]||info.is_bought == YES) {
                                     
-                                    mod.badge = session.unreadCount;
+                                    [_myClassArray addObject:info];
+                                }
+                            }
+                            
+                            
+                            if (_myClassArray&&_recentArr) {
+                                
+                                /* 把badge结果遍历给chatlist的cell*/
+                                for (TutoriumListInfo *info in _myClassArray) {
                                     
-                                    unreadCont +=session.unreadCount;
-                                    
-                                    mod.lastTime = session.lastMessage.timestamp;
+                                    ChatList *mod = [[ChatList alloc]init];
+                                    mod.tutorium = info;
+                                    mod.name = info.name;
+                                    for (NIMRecentSession *session in _recentArr) {
+                                        
+                                        NSLog(@"%@........%@",session.session.sessionId,info.chat_team_id);
+                                        
+                                        if ([session.session.sessionId isEqualToString:info.chat_team_id]) {
+                                            
+                                            mod.badge = session.unreadCount;
+                                            
+                                            unreadCont +=session.unreadCount;
+                                            
+                                            mod.lastTime = session.lastMessage.timestamp;
+                                            
+                                        }
+                                        
+                                    }
+                                    [_chatListArr addObject:mod];
                                     
                                 }
-                                
                             }
-                            [_chatListArr addObject:mod];
+                            
+                            /**
+                             在这儿进行一次_chatListArr的排序
+                             根据数组里的每一个元素(ChatList类型)的lastTime属性进行比较
+                             */
+                            NSArray *tempArr = _chatListArr.mutableCopy;
+                            _chatListArr = (NSMutableArray *)[tempArr sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                                
+                                ChatList *mod1 = (ChatList *)obj1;
+                                ChatList *mod2 = (ChatList *)obj2;
+                                
+                                
+                                if (mod1.lastTime<mod2.lastTime) {
+                                    
+                                    // 按时间戳降序排列
+                                    return NSOrderedDescending;
+                                }else{
+                                    
+                                    // 相同不变
+                                    return NSOrderedSame;
+                                }
+                            }];
+                            
+                            for (ChatList *mod in _chatListArr) {
+                                NSLog(@"%f",mod.lastTime);
+                            }
                             
                         }
                     }
-                    
-                    /**
-                     在这儿进行一次_chatListArr的排序
-                     根据数组里的每一个元素(ChatList类型)的lastTime属性进行比较
-                     */
-                    NSArray *tempArr = _chatListArr.mutableCopy;
-                    _chatListArr = (NSMutableArray *)[tempArr sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                        
-                        ChatList *mod1 = (ChatList *)obj1;
-                        ChatList *mod2 = (ChatList *)obj2;
-                        
-                        
-                        if (mod1.lastTime<mod2.lastTime) {
-                            
-                            // 按时间戳降序排列
-                            return NSOrderedDescending;
-                        }else{
-                            
-                            // 相同不变
-                            return NSOrderedSame;
-                        }
-                    }];
-                    
-                    for (ChatList *mod in _chatListArr) {
-                        NSLog(@"%f",mod.lastTime);
-                    }
-                    
                 }
-            }
-            
-            if (state == RefreshStatePushLoadMore) {
                 
-                [_noticeIndexView.chatListTableView.mj_header endRefreshing];
-                [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                 
-            }else{
-                [self loadingHUDStopLoadingWithTitle:@"加载完成"];
-                [_noticeIndexView.chatListTableView.mj_header endRefreshing];
-                [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-            }
+                
+               
+                
+                if (state == RefreshStatePushLoadMore) {
+                    
+                    [_noticeIndexView.chatListTableView.mj_header endRefreshing];
+                    [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                }else{
+                    [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                    [_noticeIndexView.chatListTableView.mj_header endRefreshing];
+                    [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                }
+            }];
             
         }else{
             /* 数据错误*/
