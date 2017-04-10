@@ -15,6 +15,14 @@ typedef enum : NSUInteger {
     
 } ClassType;
 
+//筛选栏显示模式
+typedef enum : NSUInteger {
+    LiveClassMode,
+    InteractionMode,
+    VideoMode,
+} FilterViewShowsMode;
+
+
 @interface ClassFilterView : UIView
 
 /**

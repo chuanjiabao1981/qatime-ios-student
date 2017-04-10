@@ -606,6 +606,9 @@
 		54DBA4B51DE4423300A67A90 /* YZEmotionPageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBA4A81DE4423300A67A90 /* YZEmotionPageCell.m */; };
 		54DBA4B61DE4423300A67A90 /* YZTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBA4AA1DE4423300A67A90 /* YZTextAttachment.m */; };
 		54DBA4BA1DE442D900A67A90 /* YZInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBA4B91DE442D900A67A90 /* YZInputView.m */; };
+		54DBEB101E9B55DB000EEB00 /* InteractionClassFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBEB041E9B55DB000EEB00 /* InteractionClassFilterViewController.m */; };
+		54DBEB111E9B55DB000EEB00 /* VideoClassFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBEB051E9B55DB000EEB00 /* VideoClassFilterViewController.m */; };
+		54DBEB121E9B55DB000EEB00 /* LiveClassFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBEB061E9B55DB000EEB00 /* LiveClassFilterViewController.m */; };
 		54E00B151E5AEAD60056C74F /* TranslateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E00B141E5AEAD60056C74F /* TranslateViewController.m */; };
 		54E00B171E5AEF020056C74F /* NTESAudio2TextViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54E00B161E5AEF020056C74F /* NTESAudio2TextViewController.xib */; };
 		54E120CE1DDC2CA5004F8012 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E120CD1DDC2CA5004F8012 /* CoreText.framework */; };
@@ -1855,6 +1858,12 @@
 		54DBA4AA1DE4423300A67A90 /* YZTextAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZTextAttachment.m; sourceTree = "<group>"; };
 		54DBA4B81DE442D900A67A90 /* YZInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZInputView.h; sourceTree = "<group>"; };
 		54DBA4B91DE442D900A67A90 /* YZInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZInputView.m; sourceTree = "<group>"; };
+		54DBEB041E9B55DB000EEB00 /* InteractionClassFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionClassFilterViewController.m; sourceTree = "<group>"; };
+		54DBEB051E9B55DB000EEB00 /* VideoClassFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassFilterViewController.m; sourceTree = "<group>"; };
+		54DBEB061E9B55DB000EEB00 /* LiveClassFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveClassFilterViewController.m; sourceTree = "<group>"; };
+		54DBEB071E9B55DB000EEB00 /* InteractionClassFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionClassFilterViewController.h; sourceTree = "<group>"; };
+		54DBEB081E9B55DB000EEB00 /* VideoClassFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassFilterViewController.h; sourceTree = "<group>"; };
+		54DBEB0B1E9B55DB000EEB00 /* LiveClassFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveClassFilterViewController.h; sourceTree = "<group>"; };
 		54E00B131E5AEAD60056C74F /* TranslateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TranslateViewController.h; sourceTree = "<group>"; };
 		54E00B141E5AEAD60056C74F /* TranslateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TranslateViewController.m; sourceTree = "<group>"; };
 		54E00B161E5AEF020056C74F /* NTESAudio2TextViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NTESAudio2TextViewController.xib; sourceTree = "<group>"; };
@@ -2347,6 +2356,7 @@
 				543BCB021E79157400AD6721 /* ChooseGradeAndSubjectViewController.m */,
 				543BCB071E79159200AD6721 /* ChooseClassViewController.h */,
 				543BCB081E79159200AD6721 /* ChooseClassViewController.m */,
+				54DBEB181E9B55E2000EEB00 /* 筛选页 子控制器类页面 */,
 				5492FC8D1E7A7BB800F89593 /* MultifiltersViewController.h */,
 				5492FC8E1E7A7BB800F89593 /* MultifiltersViewController.m */,
 			);
@@ -5072,6 +5082,19 @@
 			path = Resource/InputView;
 			sourceTree = "<group>";
 		};
+		54DBEB181E9B55E2000EEB00 /* 筛选页 子控制器类页面 */ = {
+			isa = PBXGroup;
+			children = (
+				54DBEB0B1E9B55DB000EEB00 /* LiveClassFilterViewController.h */,
+				54DBEB061E9B55DB000EEB00 /* LiveClassFilterViewController.m */,
+				54DBEB071E9B55DB000EEB00 /* InteractionClassFilterViewController.h */,
+				54DBEB041E9B55DB000EEB00 /* InteractionClassFilterViewController.m */,
+				54DBEB081E9B55DB000EEB00 /* VideoClassFilterViewController.h */,
+				54DBEB051E9B55DB000EEB00 /* VideoClassFilterViewController.m */,
+			);
+			name = "筛选页 子控制器类页面";
+			sourceTree = "<group>";
+		};
 		54E00B0D1E5A90100056C74F /* 个人信息修改页面 */ = {
 			isa = PBXGroup;
 			children = (
@@ -6104,6 +6127,7 @@
 				5407C98C1DE7DDED00DB04C8 /* NSBundle+YYAdd.m in Sources */,
 				545162D51DF55DC7000BD17A /* Personal_HeadTableViewCell.m in Sources */,
 				543BCB091E79159200AD6721 /* ChooseClassViewController.m in Sources */,
+				54DBEB111E9B55DB000EEB00 /* VideoClassFilterViewController.m in Sources */,
 				548328CC1DDC6F360053AB29 /* NSDate+Utils.m in Sources */,
 				54AC04B61E89398E00817767 /* NTESChatroomMessageDataProvider.m in Sources */,
 				54AC027C1E892D3C00817767 /* UIAlertView+NTESBlock.m in Sources */,
@@ -6297,6 +6321,7 @@
 				545162B11DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m in Sources */,
 				54AC02811E892D3C00817767 /* UIScrollView+NTESPullToRefresh.m in Sources */,
 				544200A71E77FB6300797E6C /* QualityClass.m in Sources */,
+				54DBEB101E9B55DB000EEB00 /* InteractionClassFilterViewController.m in Sources */,
 				54B73D041DE3E85A00B7A7EB /* ChineseString.m in Sources */,
 				549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */,
 				5492FC861E7A2E6800F89593 /* TagsFilterView.m in Sources */,
@@ -6580,6 +6605,7 @@
 				545226051E2482C800F36280 /* EditHeadTableViewCell.m in Sources */,
 				5407C9931DE7DE7500DB04C8 /* NSData+YYAdd.m in Sources */,
 				54AC03EB1E8938E100817767 /* NIMUnsupportContentConfig.m in Sources */,
+				54DBEB121E9B55DB000EEB00 /* LiveClassFilterViewController.m in Sources */,
 				54AC03FA1E8938E100817767 /* NIMSessionMessageContentView.m in Sources */,
 				54AC040B1E8938E100817767 /* NIMTeamAnnouncementListViewController.m in Sources */,
 				540A34CB1E481B5F0068E049 /* UIViewController+ZFPlayerRotation.m in Sources */,

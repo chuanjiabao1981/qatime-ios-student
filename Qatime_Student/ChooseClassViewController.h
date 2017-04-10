@@ -12,11 +12,16 @@
 #import "TagsFilterView.h"
 #import "SnailQuickMaskPopups.h"
 
+#import "LiveClassFilterViewController.h"
+#import "InteractionClassFilterViewController.h"
+#import "VideoClassFilterViewController.h"
+
 typedef enum : NSUInteger {
     TutoriumSearchType,
     InteractionSearchType,
     
 } SearchType;
+
 
 @interface ChooseClassViewController : UIViewController
 
@@ -33,13 +38,22 @@ typedef enum : NSUInteger {
 /**
  课程列表
  */
-@property (nonatomic, strong) UITableView *classTableView ;
+//@property (nonatomic, strong) UITableView *classTableView ;
 
 
 /**
  标签筛选列表
  */
 @property (nonatomic, strong) TagsFilterView *tagsFilterView ;
+
+/**三个子controller*/
+
+/**直播课筛选controller*/
+@property (nonatomic, strong) LiveClassFilterViewController *liveClassFilterController ;
+/**一对一课筛选controller*/
+@property (nonatomic, strong) InteractionClassFilterViewController  *interactionClassFilterController;
+/**视频课筛选controller*/
+@property (nonatomic, strong) VideoClassFilterViewController *videoClassFilterController ;
 
 
 /**
@@ -49,6 +63,10 @@ typedef enum : NSUInteger {
  @param subject 科目
  @return 实例
  */
--(instancetype)initWithGrade:(NSString *)grade andSubject:(NSString *)subject  andType:(SearchType)type;
+-(instancetype)initWithGrade:(NSString *)grade andSubject:(NSString *)subject;
+
+
+/**获取所有标签*/
+- (void)getTags;
 
 @end

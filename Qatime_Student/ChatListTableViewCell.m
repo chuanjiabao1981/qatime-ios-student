@@ -26,7 +26,7 @@
             .topSpaceToView(self.contentView, 10)
             .bottomSpaceToView(self.contentView, 10)
             .widthEqualToHeight();
-            _.sd_cornerRadius = @2;
+            _.sd_cornerRadius = @(M_PI);
             _;
         });
         

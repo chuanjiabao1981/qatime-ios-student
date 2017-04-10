@@ -16,62 +16,70 @@
 #import "TutoriumList.h"
 #import "UIViewController+HUD.h"
 #import "MultifiltersViewController.h"
-#import "CYLTableViewPlaceHolder.h"
 #import "HaveNoClassView.h"
 #import "TutoriumInfoViewController.h"
 #import "OneOnOneTutoriumInfoViewController.h"
 
-//上滑 或 下拉
-typedef enum : NSUInteger {
-    PullToRefresh,      //下拉刷新
-    PushToReadMore      //上滑加载更多
-} RefreshMode;
+#define Filter_Height 40
 
 
-@interface ChooseClassViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,CYLTableViewPlaceHolderDelegate>{
+@interface ChooseClassViewController ()<UICollectionViewDataSource,UICollectionViewDelegate>{
     
-    NSString *_token;
-    NSString *_idNumber;
-    
-    
+//    
     NSString *_grade;
     NSString *_subject;
     NavigationBar *_navigationBar;
-    
+//
     //加载课程页数
     NSInteger page;
     //每页条数
     NSInteger perPage;
-    
+//
     //弹窗蒙版
     SnailQuickMaskPopups *_pops;
-    
+//
     //筛选tag的存放数组
     NSMutableArray *_tags ;
-    
+//
     //存课程数据的数组
     NSMutableArray *_classesArray;
-    
-    
-    //筛选用的字典
+//
+//    /**
+//     三个不同的源,
+//     根据课程类型的不同变化三个源
+//     */
+//    /**直播课的dataArray*/
+//    NSMutableArray *_liveClassArray;
+//    
+//    /**一对一课的dataArray*/
+//    NSMutableArray *_interactionClassArray;
+//    
+//    /**视频课的dataArray*/
+//    NSMutableArray *_videoClassArray;
+//    
+    //筛选用的字典->传入每个childController用
     NSMutableDictionary *_filterDic;
-    
-    //是否为初始化下拉
-    __block BOOL isInitPull;
-    
-    //搜索类型
-    SearchType _type;
-    
-    //接口信息
-    NSString *_course;
+//
+//    //是否为初始化下拉
+//    __block BOOL isInitPull;
+//    
+//    //搜索类型
+//    SearchType _type;
+//    
+//    //接口信息
+//    NSString *_course;
     
 }
+
+/**分段控制器*/
+@property (nonatomic, strong) UISegmentedControl *segmentControl ;
+
 
 @end
 
 @implementation ChooseClassViewController
 
--(instancetype)initWithGrade:(NSString *)grade andSubject:(NSString *)subject andType:(SearchType)type{
+-(instancetype)initWithGrade:(NSString *)grade andSubject:(NSString *)subject{
     
     self = [super init];
     
@@ -79,14 +87,6 @@ typedef enum : NSUInteger {
         
         _grade = grade;
         _subject = subject;
-        
-        //判断课程类型
-        _type = type;
-        if (type == TutoriumType) {
-            _course = [NSString stringWithFormat:@"courses"];
-        }else if (type == InteractionType){
-            _course = [NSString stringWithFormat:@"interactive_courses"];
-        }
         
     }
     return self;
@@ -98,30 +98,19 @@ typedef enum : NSUInteger {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    
+    
     //初始化数据
-    _classesArray = @[].mutableCopy;
-    
-    isInitPull = YES;
-    
-    page = 1;   //页数是会变的
-    perPage = 10;
-    
-    _filterDic = @{}.mutableCopy;
+
     _tags = @[].mutableCopy;
+    _filterDic = @{}.mutableCopy;
     
-    //导航栏
+    
+    //导航栏和主视图参考图
     [self setupNavigation];
-    
-    //token
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-    
-    //加载tableview
-    [self setupMainView];
+    //第一视图
+    [self addChildViewController:self.liveClassFilterController];
+    [self.liveClassFilterController didMoveToParentViewController:self];
     
     
     
@@ -134,148 +123,46 @@ typedef enum : NSUInteger {
     
 }
 
-
-
-//下拉加载数据
-- (void)requestClass:(RefreshMode)mode withContentDictionary:( nullable __kindof NSDictionary * )contentDic{
+/**切换segment*/
+- (void)didSelectedOnSegment:(UISegmentedControl *)segment{
     
-    if (mode==PullToRefresh) {
-        page = 1;
-        [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
-        _classesArray = @[].mutableCopy;
-        
-        if (_classTableView.mj_footer.state == MJRefreshStateNoMoreData) {
-            _classTableView.mj_footer.state = MJRefreshStateIdle;
+    switch (segment.selectedSegmentIndex) {
+        case 0:{
             
-        }else{
+            [self.view addSubview:self.liveClassFilterController.view];
+            [self.liveClassFilterController didMoveToParentViewController:self];
+            _filterView.popularityButton.hidden = NO;
+            _filterView.popularityArrow.hidden = NO;
+            _filterView.tagsButton.hidden = YES;
             
         }
-    }else{
-        
-        page++;
-        [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
+            break;
+            
+        case 1:{
+            [self.view addSubview:self.interactionClassFilterController.view];
+            [self.interactionClassFilterController didMoveToParentViewController:self];
+            
+            _filterView.popularityButton.hidden = YES;
+            _filterView.popularityArrow.hidden = YES;
+            _filterView.tagsButton.hidden = YES;
+            
+            
+        }
+            break;
+        case 2:{
+            
+            [self.view addSubview:self.videoClassFilterController.view];
+            [self.videoClassFilterController didMoveToParentViewController:self];
+            
+        }
+            break;
     }
     
-    if (mode == PullToRefresh) {
-        
-        if (contentDic==nil) {
-            
-            if ([_subject isEqualToString:@"全部"]) {
-                
-                _filterDic = [NSMutableDictionary dictionaryWithDictionary: @{@"q[grade_eq]":_grade,
-                                                                              @"page":[NSString stringWithFormat:@"%ld",page],
-                                                                              @"per_page":[NSString stringWithFormat:@"%ld",perPage],
-                                                                              @"sort_by":@"published_at"}];
-            }else{
-                
-                _filterDic = [NSMutableDictionary dictionaryWithDictionary:@{@"q[subject_eq]":_subject,
-                                                                             @"q[grade_eq]":_grade,
-                                                                             @"page":[NSString stringWithFormat:@"%ld",page],
-                                                                             @"per_page":[NSString stringWithFormat:@"%ld",perPage]}];
-            }
-        }else{
-            [_filterDic addEntriesFromDictionary:contentDic];
-        }
-    }else{
-        
-        [_filterDic addEntriesFromDictionary:contentDic];
-        
-    }
-    
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/%@/search",Request_Header,_course] withHeaderInfo:nil andHeaderfield:nil parameters:_filterDic completeSuccess:^(id  _Nullable responds) {
-        
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-        if ([dic[@"status"]isEqualToNumber:@1]) {
-            
-            if ([dic[@"data"] count] !=0) {
-                
-                if (_type == TutoriumSearchType) {
-                    
-                    for (NSDictionary *dics in dic[@"data"]) {
-                        
-                        TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dics];
-                        mod.classID = dics[@"id"];
-                        
-                        [_classesArray addObject:mod];
-                    }
-                }else if (_type == InteractionSearchType){
-                    for (NSDictionary *dics in dic[@"data"]) {
-                        OneOnOneClass *mod = [OneOnOneClass yy_modelWithJSON:dics];
-                        mod.classID = dics[@"id"];
-                        mod.teacherNameString = @"".mutableCopy;
-                        for (NSDictionary *teacher in mod.teachers) {
-                            [mod.teacherNameString appendString:[NSString stringWithFormat:@"%@/",teacher[@"name"]]];
-                        }
-                        [_classesArray addObject:mod];
-                    }
-                }
-                
-                if (mode == PullToRefresh) {
-                    
-                    [_classTableView.mj_header endRefreshingWithCompletionBlock:^{
-                        //刷新数据
-                        [_classTableView cyl_reloadData];
-                    }];
-                }else{
-                    [_classTableView.mj_footer endRefreshingWithCompletionBlock:^{
-                        //刷新数据
-                        [_classTableView cyl_reloadData];
-                    }];
-                }
-                
-            }else{
-                //没有数据的情况
-                if (mode == PullToRefresh) {
-                    //下拉刷新的时候
-                    [_classTableView.mj_header endRefreshingWithCompletionBlock:^{
-                        //刷新数据
-                        [_classTableView cyl_reloadData];
-                    }];
-                    
-                }else{
-                    //上滑的时候
-                    
-                    [_classTableView.mj_footer endRefreshingWithNoMoreData];
-                }
-                
-            }
-        }else{
-            //获取数据失败
-            [self loadingHUDStopLoadingWithTitle:@"加载失败,请重试"];
-            if (mode == PullToRefresh) {
-                [_classTableView.mj_header endRefreshing];
-                
-            }else{
-                [_classTableView.mj_footer endRefreshing];
-                page--;
-                [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
-                
-            }
-            
-            
-        }
-        
-    }];
     
 }
 
 //获取本地存储的tag数据
 - (void)getTags{
-    
-    //    NSArray *tag;
-    //    if (!_tags) {
-    //
-    //        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Tags"]) {
-    //            _tags = @[].mutableCopy;
-    //
-    //            tag = [[NSUserDefaults standardUserDefaults]valueForKey:@"Tags"];
-    //
-    //            for (NSDictionary *dic in tag) {
-    //                [_tags addObject:dic[@"name"]];
-    //            }
-    //        }
-    //
-    //    }
     
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/app_constant/tags",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"cates":[NSString stringWithFormat:@"%@,%@",_grade,_subject]} completeSuccess:^(id  _Nullable responds) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
@@ -292,74 +179,6 @@ typedef enum : NSUInteger {
         }
         
     }];
-    
-}
-
-#pragma mark- tableview datasource
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    if (_classesArray.count>0) {
-        return _classesArray.count;
-    }
-    
-    return 0;
-    
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    /* cell的重用队列*/
-    static NSString *cellIdenfier = @"cell";
-    ChooseClassTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-    if (cell==nil) {
-        cell=[[ChooseClassTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-    }
-    
-    if (_classesArray.count>indexPath.row) {
-        
-        if (_type == TutoriumSearchType) {
-            
-            cell.model = _classesArray[indexPath.row];
-        }else if (_type == InteractionSearchType){
-            
-            cell.interactionModel = _classesArray[indexPath.row];
-        }
-        
-        [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-        
-    }
-    
-    return  cell;
-    
-}
-
-
-#pragma mark- tableview delegate
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    return 120*ScrenScale;
-    
-}
-
-
-//点击 进入辅导班详情
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    ChooseClassTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    
-    __kindof UIViewController *controller;
-    
-    if (_type == TutoriumSearchType) {
-        
-        controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
-    }else if (_type == InteractionSearchType){
-        
-        controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.interactionModel.classID];
-    }
-    
-    [self.navigationController pushViewController:controller animated:YES];
     
 }
 
@@ -406,57 +225,27 @@ typedef enum : NSUInteger {
     //蒙版消失之后 ,执行操作
     [_pops dismissWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
         
-        if ([[_filterDic allKeys]containsObject:@"tags"]) {
-            [_filterDic removeObjectForKey:@"tags"];
-        }
         
-        [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
-            
-            [self requestClass:PullToRefresh withContentDictionary:@{@"tags":_tags[indexPath.row]}];
-        }];
+        //发起筛选请求
+        switch (_segmentControl.selectedSegmentIndex) {
+            case 0:{
+                
+                [_liveClassFilterController filteredByTages:_tags[indexPath.row]];
+            }
+                break;
+                
+            case 1:{
+                [_interactionClassFilterController filteredByTages:_tags[indexPath.row]];
+            }
+                break;
+            case 2:{
+                [_videoClassFilterController filteredByTages:_tags[indexPath.row]];
+            }
+                break;
+        }
+
         
     }];
-    
-}
-
-//加载主视图
-- (void)setupMainView{
-    
-    _classTableView = ({
-        
-        UITableView *_ =[[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_filterView.frame), self.view.width_sd, self.view.height_sd-CGRectGetMaxY(_filterView.frame)) style:UITableViewStylePlain];
-        [self.view addSubview:_];
-        _.backgroundColor = [UIColor whiteColor];
-        _.delegate = self;
-        _.dataSource = self;
-        _.separatorStyle = UITableViewCellSeparatorStyleNone;
-        
-        _.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-            [_.mj_header endRefreshing];
-            
-            if (isInitPull == YES) {
-                
-            }else{
-                
-                isInitPull = NO;
-                [self requestClass:PullToRefresh withContentDictionary:_filterDic];
-            }
-        }];
-        
-        //第一次自动下拉刷新
-        [_.mj_header beginRefreshing];
-        //自动下拉
-        [self requestClass:PullToRefresh withContentDictionary:nil];
-        
-        _.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-            
-            //上滑加载更多
-            [self requestClass:PushToReadMore withContentDictionary:nil];
-            
-        }];
-        
-        _;
-    });
     
 }
 
@@ -467,15 +256,16 @@ typedef enum : NSUInteger {
     _navigationBar = ({
         NavigationBar *_ =[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
         [self.view addSubview:_];
-        NSString *modal;
+//        NSString *modal;
         //判断类型
-        if (_type == TutoriumType) {
-            modal = [NSString stringWithFormat:@"直播课"];
-        }else if (_type == InteractionType){
-            modal =[NSString stringWithFormat:@"一对一"];
-        }
+//        if (_type == TutoriumType) {
+//            modal = [NSString stringWithFormat:@"直播课"];
+//        }else if (_type == InteractionType){
+//            modal =[NSString stringWithFormat:@"一对一"];
+//        }
         
-        _.titleLabel.text = [NSString stringWithFormat:@"%@%@%@",_grade,_subject,modal];
+//        _.titleLabel.text = [NSString stringWithFormat:@"%@%@%@",_grade,_subject,modal]
+        
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         
@@ -483,13 +273,32 @@ typedef enum : NSUInteger {
         
     });
     
+    //分段控制器
+    _segmentControl = [[UISegmentedControl alloc]initWithItems:@[@"直播课",@"一对一",@"视频课"]];
+    [_navigationBar addSubview:_segmentControl];
+    _segmentControl.apportionsSegmentWidthsByContent = YES;
+    _segmentControl.selectedSegmentIndex = 0;
+    _segmentControl.sd_layout
+    .leftSpaceToView(_navigationBar.leftButton, 25*ScrenScale)
+    .rightSpaceToView(_navigationBar.rightButton, 25*ScrenScale)
+    .topEqualToView(_navigationBar.leftButton)
+    .bottomEqualToView(_navigationBar.leftButton);
+    _segmentControl.tintColor = [UIColor whiteColor];
+    [_segmentControl addTarget:self action:@selector(didSelectedOnSegment:) forControlEvents:UIControlEventValueChanged];
+
+    
     //多项筛选栏
-    _filterView = [[ClassFilterView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_navigationBar.frame), self.view.width_sd, 40)];
+    _filterView = [[ClassFilterView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_navigationBar.frame), self.view.width_sd, Filter_Height)];
     
     [self.view addSubview:_filterView];
     
     [_filterView.newestButton setTitleColor:TITLECOLOR forState:UIControlStateNormal];
     [_filterView.newestArrow setImage:[UIImage imageNamed:@"上箭头"]];
+    
+    
+    //主视图参考图
+    _chooseView = [[ChooseClassView alloc]init];
+    _chooseView.frame = CGRectMake(0, _navigationBar.height_sd+_filterView.height_sd, self.view.width_sd, self.view.height_sd-_navigationBar.height_sd-_filterView.height_sd);
     
     //tag
     [_filterView.tagsButton addTarget:self action:@selector(chooseTags:) forControlEvents:UIControlEventTouchUpInside];
@@ -510,13 +319,13 @@ typedef enum : NSUInteger {
     [_filterView.popularityButton addTarget:self action:@selector(countFilter:) forControlEvents:UIControlEventTouchUpInside];
     
     //根据人气,判断有些按钮是否要显示
-    if (_type == TutoriumSearchType) {
-        
-        _filterView.type = TutoriumType;
-    }else if (_type == InteractionSearchType){
-        
-        _filterView.type = InteractionType;
-    }
+//    if (_type == TutoriumSearchType) {
+//        
+//        _filterView.type = TutoriumType;
+//    }else if (_type == InteractionSearchType){
+//        
+//        _filterView.type = InteractionType;
+//    }
     
 }
 
@@ -564,13 +373,10 @@ typedef enum : NSUInteger {
     }];
 }
 
-//单项筛选
-
 /**
  筛选最新
  */
 - (void)newestFilter:(UIButton *)sender{
-    NSDictionary *dic;
     page = 1;
     [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
     //重置所有按钮
@@ -584,14 +390,14 @@ typedef enum : NSUInteger {
             if ([_filterDic[@"sort_by"] isEqualToString:@"published_at.asc"]) {
                 [_filterDic removeObjectForKey:@"sort_by"];
                 //改成倒序
-                dic = @{@"sort_by":@"published_at"};
+                _filterDic = @{@"sort_by":@"published_at"}.mutableCopy;
                 [_filterView.newestArrow setImage:[UIImage imageNamed:@"上箭头"]];
                 
             }else if ([_filterDic[@"sort_by"] isEqualToString:@"published_at"]){
                 //如果是倒序
                 [_filterDic removeObjectForKey:@"sort_by"];
                 //改成正序
-                dic = @{@"sort_by":@"published_at.asc"};
+                _filterDic = @{@"sort_by":@"published_at.asc"}.mutableCopy;
                 [_filterView.newestArrow setImage:[UIImage imageNamed:@"下箭头"]];
                 
             }
@@ -606,21 +412,35 @@ typedef enum : NSUInteger {
             
             [_filterDic removeObjectForKey:@"sort_by"];
             //去掉后,改为正序
-            dic = @{@"sort_by":@"published_at.asc"};
+            _filterDic = @{@"sort_by":@"published_at.asc"}.mutableCopy;
             
         }
         
     }else{
         //如果没有筛选字段
-        dic = @{@"sort_by":@"published_at.asc"};
+        _filterDic =@{@"sort_by":@"published_at.asc"}.mutableCopy;
         [_filterView.newestArrow setImage:[UIImage imageNamed:@"下箭头"]];
     }
     
     //发起筛选请求
-    [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
-        
-        [self requestClass:PullToRefresh withContentDictionary:dic.mutableCopy];
-    }];
+
+    switch (_segmentControl.selectedSegmentIndex) {
+        case 0:{
+            
+            [_liveClassFilterController filterdByFilterDic:_filterDic];
+        }
+            break;
+            
+        case 1:{
+            [_interactionClassFilterController filterdByFilterDic:_filterDic];
+        }
+            break;
+        case 2:{
+            [_videoClassFilterController filterdByFilterDic:_filterDic];
+        }
+            break;
+    }
+    
     
 }
 
@@ -631,7 +451,6 @@ typedef enum : NSUInteger {
  */
 - (void)priceFilter:(UIButton *)sender{
     
-    NSDictionary *dic;
     page = 1;
     [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
     //重置所有按钮
@@ -641,19 +460,19 @@ typedef enum : NSUInteger {
     //如果已有sort_by字段
     if (_filterDic[@"sort_by"]) {
         //如果是价格筛选字段 正序或倒序
-        if ([_filterDic[@"sort_by"] isEqualToString:@"price.asc"]||[_filterDic[@"sort_by"] isEqualToString:@"price"]) {
+        if ([_filterDic[@"sort_by"] isEqualToString:@"left_price.asc"]||[_filterDic[@"sort_by"] isEqualToString:@"left_price"]) {
             //正序
-            if ([_filterDic[@"sort_by"] isEqualToString:@"price.asc"]) {
+            if ([_filterDic[@"sort_by"] isEqualToString:@"left_price.asc"]) {
                 [_filterDic removeObjectForKey:@"sort_by"];
                 //改成倒序
-                dic = @{@"sort_by":@"price"};
+                _filterDic = @{@"sort_by":@"left_price"}.mutableCopy;
                 [_filterView.priceArrow setImage:[UIImage imageNamed:@"上箭头"]];
                 
-            }else if ([_filterDic[@"sort_by"] isEqualToString:@"price"]){
+            }else if ([_filterDic[@"sort_by"] isEqualToString:@"left_price"]){
                 //如果是倒序
                 [_filterDic removeObjectForKey:@"sort_by"];
                 //改成正序
-                dic = @{@"sort_by":@"price.asc"};
+                _filterDic = @{@"sort_by":@"left_price.asc"}.mutableCopy;
                 [_filterView.priceArrow setImage:[UIImage imageNamed:@"下箭头"]];
                 
             }
@@ -669,22 +488,36 @@ typedef enum : NSUInteger {
             [_filterView.priceArrow setImage:[UIImage imageNamed:@"下箭头"]];
             
             //去掉后,改为正序
-            dic = @{@"sort_by":@"price.asc"};
+            _filterDic = @{@"sort_by":@"left_price.asc"}.mutableCopy;
             
         }
         
     }else{
         //如果没有筛选字段
-        dic = @{@"sort_by":@"price.asc"};
+        _filterDic = @{@"sort_by":@"left_price.asc"}.mutableCopy;
+        
         [_filterView.priceArrow setImage:[UIImage imageNamed:@"下箭头"]];
         
     }
     
     //发起筛选请求
-    [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
-        
-        [self requestClass:PullToRefresh withContentDictionary:dic.mutableCopy];
-    }];
+    switch (_segmentControl.selectedSegmentIndex) {
+        case 0:{
+            
+            [_liveClassFilterController filterdByFilterDic:_filterDic];
+        }
+            break;
+            
+        case 1:{
+            [_interactionClassFilterController filterdByFilterDic:_filterDic];
+        }
+            break;
+        case 2:{
+            [_videoClassFilterController filterdByFilterDic:_filterDic];
+        }
+            break;
+    }
+
     
     
 }
@@ -695,11 +528,11 @@ typedef enum : NSUInteger {
  */
 - (void)countFilter:(UIButton *)sender{
     
-    NSDictionary *dic;
     page = 1;
     [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
     [sender setTitleColor:TITLECOLOR forState:UIControlStateNormal];
-    
+    //重置所有按钮
+    [self filterButtonTurnReset];
     //如果已有sort_by字段
     if (_filterDic[@"sort_by"]) {
         //如果是人气筛选字段
@@ -708,14 +541,14 @@ typedef enum : NSUInteger {
             if ([_filterDic[@"sort_by"] isEqualToString:@"buy_tickets_count.asc"]) {
                 [_filterDic removeObjectForKey:@"sort_by"];
                 //改成倒序
-                dic = @{@"sort_by":@"buy_tickets_count"};
+                _filterDic = @{@"sort_by":@"buy_tickets_count"}.mutableCopy;
                 [_filterView.popularityArrow setImage:[UIImage imageNamed:@"上箭头"]];
                 
             }else if ([_filterDic[@"sort_by"] isEqualToString:@"buy_tickets_count"]){
                 //如果是倒序
                 [_filterDic removeObjectForKey:@"sort_by"];
                 //改成正序
-                dic = @{@"sort_by":@"buy_tickets_count.asc"};
+                _filterDic = @{@"sort_by":@"buy_tickets_count.asc"}.mutableCopy;
                 [_filterView.popularityArrow setImage:[UIImage imageNamed:@"下箭头"]];
                 
             }
@@ -724,7 +557,7 @@ typedef enum : NSUInteger {
             //如果不是人气筛选字段
             [_filterDic removeObjectForKey:@"sort_by"];
             //去掉后,改为正序
-            dic = @{@"sort_by":@"buy_tickets_count.asc"};
+            _filterDic = @{@"sort_by":@"buy_tickets_count.asc"}.mutableCopy;
             
             //重置所有单选button
             [self filterButtonTurnReset];
@@ -736,16 +569,28 @@ typedef enum : NSUInteger {
         
     }else{
         //如果没有筛选字段
-        dic = @{@"sort_by":@"buy_tickets_count.asc"};
+        _filterDic = @{@"sort_by":@"buy_tickets_count.asc"}.mutableCopy;
+        _filterDic =@{@"sort_by":@"buy_tickets_count.asc"}.mutableCopy;
         [_filterView.popularityArrow setImage:[UIImage imageNamed:@"下箭头"]];
     }
     
     //发起筛选请求
-    [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
-        
-        [self requestClass:PullToRefresh withContentDictionary:dic.mutableCopy];
-    }];
-    
+    switch (_segmentControl.selectedSegmentIndex) {
+        case 0:{
+            
+            [_liveClassFilterController filterdByFilterDic:_filterDic];
+        }
+            break;
+            
+        case 1:{
+            [_interactionClassFilterController filterdByFilterDic:_filterDic];
+        }
+            break;
+        case 2:{
+            [_videoClassFilterController filterdByFilterDic:_filterDic];
+        }
+            break;
+    }
     
 }
 
@@ -825,19 +670,71 @@ typedef enum : NSUInteger {
     }
     
     if (filter) {
-        [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
-            
-            [self requestClass:PullToRefresh withContentDictionary:filter];
-        }];
+//        [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
+        
+//            [self requestClass:PullToRefresh withContentDictionary:filter];
+//        }];
         
     }else{
         
-        [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
-            [self requestClass:PushToReadMore withContentDictionary:nil];
+//        [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
+//            [self requestClass:PushToReadMore withContentDictionary:nil];
             
-        }];
+//        }];
     }
     
+}
+
+#pragma mark- GET Method 
+//三个子controller
+-(LiveClassFilterViewController *)liveClassFilterController{
+    
+    if (!_liveClassFilterController) {
+        _liveClassFilterController = [[LiveClassFilterViewController alloc]initWithGrade:_grade andSubject:_subject andCourse:@"courses"];
+        [self addChildViewController:_liveClassFilterController];
+        [self.view addSubview:_liveClassFilterController.view];
+        _liveClassFilterController.view.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .topSpaceToView(_filterView, 0)
+        .bottomSpaceToView(self.view, 0);
+        
+    }
+    
+    return _liveClassFilterController;
+}
+
+-(InteractionClassFilterViewController *)interactionClassFilterController{
+    
+    if (!_interactionClassFilterController) {
+        _interactionClassFilterController  = [[InteractionClassFilterViewController alloc]initWithGrade:_grade andSubject:_subject andCourse:@"interactive_courses"];
+        [self addChildViewController:_interactionClassFilterController];
+        [self.view addSubview:_interactionClassFilterController.view];
+        _interactionClassFilterController.view.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .topSpaceToView(_filterView, 0)
+        .bottomSpaceToView(self.view, 0);
+        
+    }
+    return _interactionClassFilterController;
+}
+
+-(VideoClassFilterViewController *)videoClassFilterController{
+    
+    if (!_videoClassFilterController) {
+        
+        _videoClassFilterController = [[VideoClassFilterViewController alloc]initWithGrade:_grade andSubject:_subject andCourse:@"course"];
+        [self addChildViewController:_videoClassFilterController];
+        [self.view addSubview:_videoClassFilterController.view];
+        _videoClassFilterController.view.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .topSpaceToView(_filterView, 0)
+        .bottomSpaceToView(self.view, 0);
+    }
+    
+    return _videoClassFilterController;
 }
 
 
@@ -865,18 +762,7 @@ typedef enum : NSUInteger {
     
 }
 
--(UIView *)makePlaceHolderView{
-    
-    HaveNoClassView *view = [[HaveNoClassView alloc]initWithFrame:_classTableView.frame];
-    
-    view.titleLabel.text = @"没有相关课程";
-    return view;
-    
-}
--(BOOL)enableScrollWhenPlaceHolderViewShowing{
-    
-    return YES;
-}
+
 
 
 - (void)returnLastPage{
