@@ -44,6 +44,7 @@
         _orderInfos.textColor = TITLECOLOR;
         _orderInfos.font = TEXT_FONTSIZE;
         [self.contentView addSubview:_orderInfos];
+        
         /**订单课程信息*/
         _orderInfos.sd_layout
         .leftEqualToView(_name)

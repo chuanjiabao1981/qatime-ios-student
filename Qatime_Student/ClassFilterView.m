@@ -12,6 +12,12 @@
 @interface ClassFilterView (){
     /**竖边栏*/
     UIView *_verline;
+    /**竖边栏2*/
+    UIView *_varLine;
+    
+    /**免费课筛选label*/
+    UILabel *_freeLabel;
+    
     /**标签图片*/
     UIImageView *_tagImage;
     /**分割线*/
@@ -152,6 +158,17 @@
             .bottomEqualToView(label)
             .widthEqualToHeight();
             
+            
+            //竖边栏
+            _verline = [[UIView alloc]init];
+            _verline.backgroundColor = SEPERATELINECOLOR_2;
+            [self addSubview:_verline];
+            _verline.sd_layout
+            .rightSpaceToView(_filterButton,0)
+            .topEqualToView(self)
+            .bottomEqualToView(self)
+            .widthIs(0.5);
+            
             _;
         
         });
@@ -167,6 +184,98 @@
         .bottomEqualToView(self)
         .widthIs(0.5);
         
+        
+        //免费课程筛选按钮
+//        _freeClassButton = ({
+        
+//            UIControl *_ = [[UIControl alloc]init];
+//            [self addSubview:_];
+//            _.sd_layout
+//            .rightEqualToView(self)
+//            .topEqualToView(self)
+//            .bottomEqualToView(self)
+//            .widthIs(self.width_sd*3*ScrenScale);
+//            
+//            UILabel *label = [[UILabel alloc]init];
+//            label.userInteractionEnabled = NO;
+//            [_ addSubview:label];
+//            label.textColor = TITLECOLOR;
+//            label.text = @"免费课程";
+//            label.font = [UIFont systemFontOfSize:15*ScrenScale];
+//            label.sd_layout
+//            .rightSpaceToView(_,15*ScrenScale)
+//            .centerYEqualToView(_)
+//            .autoHeightRatio(0);
+//            [label setSingleLineAutoResizeWithMaxWidth:100];
+//            
+//            BEMCheckBox *box = [[BEMCheckBox alloc]init];
+//            [_ addSubview:box];
+//            box.sd_layout
+//            .rightSpaceToView(label,0)
+//            .topEqualToView(label)
+//            .bottomEqualToView(label)
+//            .widthEqualToHeight();
+//            box.boxType =BEMBoxTypeSquare;
+//            box.onAnimationType = BEMAnimationTypeFill;
+//            box.offAnimationType = BEMAnimationTypeFill;
+//            
+//            UIView *varLine = [[UIView alloc]init];
+//            varLine.backgroundColor = SEPERATELINECOLOR_2;
+//            [_ addSubview:varLine];
+//            varLine.sd_layout
+//            .leftSpaceToView(_, 0)
+//            .topEqualToView(self)
+//            .bottomEqualToView(self)
+//            .widthIs(0.5);
+//            
+//            _;
+//
+//        
+//        });
+        
+        
+        //免费提示label
+        _freeLabel = [[UILabel alloc]init];
+        _freeLabel.userInteractionEnabled = NO;
+        [self addSubview:_freeLabel];
+        _freeLabel.textColor = TITLECOLOR;
+        _freeLabel.text = @"免费课程";
+        _freeLabel.font = [UIFont systemFontOfSize:15*ScrenScale];
+        _freeLabel.sd_layout
+        .rightSpaceToView(self,15*ScrenScale)
+        .centerYEqualToView(self)
+        .autoHeightRatio(0);
+        [_freeLabel setSingleLineAutoResizeWithMaxWidth:100];
+        
+        //box按钮
+        _freeButton = [[BEMCheckBox alloc]init];
+        [self addSubview:_freeButton];
+        _freeButton.sd_layout
+        .rightSpaceToView(_freeLabel,10)
+        .topEqualToView(_freeLabel)
+        .bottomEqualToView(_freeLabel)
+        .widthEqualToHeight();
+        
+        _freeButton.boxType =BEMBoxTypeSquare;
+        _freeButton.onAnimationType = BEMAnimationTypeFill;
+        _freeButton.offAnimationType = BEMAnimationTypeFill;
+        _freeButton.onTintColor = NAVIGATIONRED;
+        _freeButton.lineWidth = 1;
+        _freeButton.onFillColor = NAVIGATIONRED;
+        _freeButton.offFillColor = [UIColor clearColor];
+        _freeButton.onCheckColor = [UIColor whiteColor];
+
+        
+        _varLine = [[UIView alloc]init];
+        _varLine.backgroundColor = SEPERATELINECOLOR_2;
+        [self addSubview:_varLine];
+        _varLine.sd_layout
+        .rightSpaceToView(_freeButton, 0)
+        .topEqualToView(self)
+        .bottomEqualToView(self)
+        .widthIs(0.5);
+
+
         //标签按钮
         _tagsButton = ({
             UIButton *_ = [[UIButton alloc]init];
@@ -205,23 +314,61 @@
 
 }
 
--(void)setType:(ClassType)type{
+- (void)setMode:(FilterViewShowsMode)mode{
     
-    _type = type;
-    if (type == TutoriumType) {
-        _popularityButton.hidden = NO;
-        _tagImage.hidden =  NO;
-        _tagsButton.hidden = NO;
-        _filterButton.hidden = NO;
-        _verline.hidden = NO;
-    }else if(type == InteractionType){
-        _popularityButton.hidden = YES;
-        _tagImage.hidden = YES;
-        _tagsButton.hidden = YES;
-        _filterButton.hidden = YES;
-        _verline.hidden = YES;
-    }
+    _mode = mode;
+    
+    switch (mode) {
+        case LiveClassMode:{
+            _popularityArrow.hidden = NO;
+            _popularityButton.hidden = NO;
+            _tagImage.hidden = NO;
+            _tagsButton.hidden = NO;
+            _filterButton.hidden =NO;
+            _verline.hidden = NO;
+            
+            _freeLabel.hidden = YES;
+            _freeButton.hidden = YES;
+            _varLine.hidden = YES;
+            
+            
+        }
+            break;
+            
+        case InteractionMode:{
+            
+            _popularityArrow.hidden = YES;
+            _popularityButton.hidden = YES;
+            _tagImage.hidden = YES;
+            _tagsButton.hidden = YES;
+            _filterButton.hidden =YES;
+            _verline.hidden = YES;
         
+            _freeLabel.hidden = YES;
+            _freeButton.hidden = YES;
+            _varLine.hidden = YES;
+            
+        }
+            break;
+        case VideoMode:{
+            _popularityArrow.hidden = YES;
+            _popularityButton.hidden = YES;
+            _tagImage.hidden = YES;
+            _tagsButton.hidden = YES;
+            _filterButton.hidden =YES;
+            _verline.hidden = YES;
+            
+            _freeLabel.hidden = NO;
+            _freeButton.hidden = NO;
+            _varLine.hidden = NO;
+            
+            
+        }
+            break;
+    }
+    
+    
+    
 }
 
 @end

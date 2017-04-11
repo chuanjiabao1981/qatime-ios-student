@@ -25,6 +25,7 @@
 #import "PersonalInfoViewController.h"
 #import "UIAlertController+Blocks.h"
 #import "UIImageView+WebCache.h"
+#import "MyVideoClassViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.width
@@ -73,10 +74,10 @@
 
     
     /* 菜单名*/
-    _settingName = @[@"我的钱包",@"我的订单",@"我的辅导",@"我的一对一",@"安全管理",@"系统设置"];
+    _settingName = @[@"我的钱包",@"我的订单",@"我的辅导",@"我的一对一",@"我的视频课",@"安全管理",@"系统设置"];
     
     /* cell的图片*/
-    _cellImage = @[[UIImage imageNamed:@"美元"],[UIImage imageNamed:@"订单"],[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"安全"],[UIImage imageNamed:@"设置"]];
+    _cellImage = @[[UIImage imageNamed:@"美元"],[UIImage imageNamed:@"订单"],[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"安全"],[UIImage imageNamed:@"设置"]];
     
     /* 导航栏*/
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
@@ -96,7 +97,6 @@
     _personalView.settingTableView.tableHeaderView = _headView;
     _personalView.settingTableView.tableHeaderView.size = CGSizeMake(SCREENWIDTH, SCREENHEIGHT*2/5);
     
-    _personalView.settingTableView.bounces = NO;
     _personalView.settingTableView.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
     
     /* 加载页面方法*/
@@ -305,7 +305,7 @@
     NSInteger rows = 1;
     
     if (section == 0) {
-        rows = 4;
+        rows = 5;
     }else if (section ==1){
         
         rows =2;
@@ -335,8 +335,8 @@
                 break;
             case 1:{
                 
-                [cell.logoImage setImage:_cellImage[indexPath.row+4]];
-                cell.settingName.text = _settingName[indexPath.row+4];
+                [cell.logoImage setImage:_cellImage[indexPath.row+5]];
+                cell.settingName.text = _settingName[indexPath.row+5];
                 cell.arrow.hidden = YES;
             }
                 
@@ -440,6 +440,14 @@
                             MyOneOnOneViewController *monVC = [MyOneOnOneViewController new];
                             monVC.hidesBottomBarWhenPushed = YES;
                             [self.navigationController pushViewController:monVC animated:YES];
+                            
+                        }
+                            break;
+                        case 4:{
+                            
+                            MyVideoClassViewController *myVideo = [[MyVideoClassViewController alloc]init];
+                            myVideo.hidesBottomBarWhenPushed = YES;
+                            [self.navigationController pushViewController:myVideo animated:YES];
                             
                         }
                             break;

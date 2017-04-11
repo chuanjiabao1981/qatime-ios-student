@@ -19,11 +19,12 @@
 #import "HaveNoClassView.h"
 #import "TutoriumInfoViewController.h"
 #import "OneOnOneTutoriumInfoViewController.h"
+#import "BEMCheckBox.h"
 
 #define Filter_Height 40
 
 
-@interface ChooseClassViewController ()<UICollectionViewDataSource,UICollectionViewDelegate>{
+@interface ChooseClassViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,BEMCheckBoxDelegate>{
     
 //    
     NSString *_grade;
@@ -98,8 +99,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    
-    
     //初始化数据
 
     _tags = @[].mutableCopy;
@@ -131,9 +130,8 @@
             
             [self.view addSubview:self.liveClassFilterController.view];
             [self.liveClassFilterController didMoveToParentViewController:self];
-            _filterView.popularityButton.hidden = NO;
-            _filterView.popularityArrow.hidden = NO;
-            _filterView.tagsButton.hidden = YES;
+           
+            _filterView.mode = LiveClassMode;
             
         }
             break;
@@ -141,11 +139,8 @@
         case 1:{
             [self.view addSubview:self.interactionClassFilterController.view];
             [self.interactionClassFilterController didMoveToParentViewController:self];
-            
-            _filterView.popularityButton.hidden = YES;
-            _filterView.popularityArrow.hidden = YES;
-            _filterView.tagsButton.hidden = YES;
-            
+         
+            _filterView.mode = InteractionMode;
             
         }
             break;
@@ -154,6 +149,7 @@
             [self.view addSubview:self.videoClassFilterController.view];
             [self.videoClassFilterController didMoveToParentViewController:self];
             
+            _filterView.mode = VideoMode;
         }
             break;
     }
@@ -181,6 +177,25 @@
     }];
     
 }
+
+#pragma mark- CheckBox delegate
+
+-(void)didTapCheckBox:(BEMCheckBox *)checkBox{
+    
+//    if (checkBox.on == YES) {
+//        [checkBox setOn:NO animated:YES];
+//    }else{
+//        
+//        [checkBox setOn:YES animated:YES];
+//    }
+    
+}
+- (void)animationDidStopForCheckBox:(BEMCheckBox *)checkBox{
+    
+    
+    
+}
+
 
 
 #pragma mark- collectionview datasource
@@ -294,7 +309,9 @@
     
     [_filterView.newestButton setTitleColor:TITLECOLOR forState:UIControlStateNormal];
     [_filterView.newestArrow setImage:[UIImage imageNamed:@"上箭头"]];
+    _filterView.mode = LiveClassMode;
     
+    _filterView.freeButton.delegate = self;
     
     //主视图参考图
     _chooseView = [[ChooseClassView alloc]init];
@@ -606,6 +623,9 @@
     [_filterView.popularityArrow setImage:nil];
     
 }
+
+
+
 
 
 

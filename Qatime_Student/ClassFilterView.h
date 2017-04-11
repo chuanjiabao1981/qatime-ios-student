@@ -8,6 +8,7 @@
 //  条件筛选框
 
 #import <UIKit/UIKit.h>
+#import "BEMCheckBox.h"
 
 typedef enum : NSUInteger {
     TutoriumType,
@@ -53,7 +54,11 @@ typedef enum : NSUInteger {
  */
 @property (nonatomic, strong) UIControl *filterButton ;
 
+/**免费课程选择按钮*/
+@property (nonatomic, strong) BEMCheckBox *freeButton ;
+
+
 /**课程类型->决定有些按钮是否显示*/
-@property (nonatomic, assign) ClassType type ;
+@property (nonatomic, assign) FilterViewShowsMode mode ;
 
 @end

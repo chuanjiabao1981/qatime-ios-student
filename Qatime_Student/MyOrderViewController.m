@@ -704,9 +704,6 @@
             if (_paidArr.count>indexPath.row) {
                 
                 cell.paidModel = _paidArr[indexPath.row];
-                cell.leftButton.hidden= YES;
-                
-                
                 cell.rightButton.tag = 400+indexPath.row;
                 
                 /* 进入退款申请页面*/

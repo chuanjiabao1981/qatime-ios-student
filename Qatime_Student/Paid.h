@@ -33,6 +33,7 @@
 //        "sign": "F4BD14923A892C9492EECBC76BCE5EAD"
 //    },
 //    "app_pay_str": null,
+//    "product_type":LiveStudio::Course
 //    "product": {
 //        "id": 27,
 //        "name": "钢琴辅导班",
@@ -76,5 +77,8 @@
 
 //课程类型
 @property (nonatomic, strong) NSString *type ;
+
+//产品类型
+@property (nonatomic, strong) NSString *product_type;
 
 @end

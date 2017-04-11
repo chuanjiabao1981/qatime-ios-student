@@ -9,17 +9,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>BEMCheckBox.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>BarrageRenderer.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>CocoaLumberjack.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>FMDB.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -122,12 +122,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>12E61FDCA6D7CE1C63DD87C0348A736F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>157391F9AA1132BC03AEBC48EC636E46</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>1A9298B32F31A61F3742650B19EE27BD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>21DD6A4A3B5D644209FFECDB1C6F80A9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>23C46D12E093E8E822378781F8728EEC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -142,17 +157,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2EE112356609CD4D41698D130B861862</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>45B1C8D83D90154FE95F78F2B5291964</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>4865690F79439ACC0499CBFCFDDAE5A8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -162,37 +167,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6D0ABBBEB5256B9CA802836A5D0AB09F</key>
+		<key>601E94725B328B5EE37AC67B12618897</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7F218CA19461C4B8B14A93586D8D08E3</key>
+		<key>611433937C3C227915B66131EF45308B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7F2CFC5334EEB0B62D804A70088580A5</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>8642CC820CE8C5B88C113D7F47AF4BC3</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>8A107C5675E1E721E4F894C802A637E6</key>
+		<key>69AFC47EB19EFCFF704F8063E8869DDC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>917A154E9869E50A6FB9BF4C6102EA24</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>922AF1F91E34E81CBCD552F8B7F02C78</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -207,22 +197,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B3787BF5BADAB64E36560545120D1DC3</key>
+		<key>A3475EEA2F9002DB4E82DFC037F6A4C4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E7CC383135D5FD32095176740DCC8497</key>
+		<key>A4D47AC6F728A7CEE5EC1DB2FA2387C1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EFBB8DA770DDC201E9BF8061351EA8D3</key>
+		<key>AA9B687449D120079F62F7874D6BC4F2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FCDE450C70894B795D69FBC5EE5251A6</key>
+		<key>CF16464A1BDABB55D7A30C1BCBD9CD0F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E4C66D7A344B308567B682F90A1EAC40</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FC580D845FA08C57DF580059CF4700C0</key>
 		<dict>
 			<key>primary</key>
 			<true/>

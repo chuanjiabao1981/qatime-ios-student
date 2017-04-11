@@ -27,9 +27,10 @@
         _titleLabel.sd_layout
         .centerYEqualToView(self)
         .centerXEqualToView(self)
-        .leftEqualToView(self)
-        .rightEqualToView(self)
-        .heightRatioToView(self,0.05);
+        .autoHeightRatio(0)
+        .leftSpaceToView(self, 0)
+        .rightSpaceToView(self, 0);
+        
         
     }
     return self;
