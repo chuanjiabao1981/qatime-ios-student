@@ -270,7 +270,7 @@
         _varLine.backgroundColor = SEPERATELINECOLOR_2;
         [self addSubview:_varLine];
         _varLine.sd_layout
-        .rightSpaceToView(_freeButton, 0)
+        .rightSpaceToView(_freeButton, 15)
         .topEqualToView(self)
         .bottomEqualToView(self)
         .widthIs(0.5);

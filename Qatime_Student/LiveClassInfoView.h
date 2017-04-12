@@ -1,5 +1,5 @@
 //
-//  VideoInfoView.h
+//  LiveClassInfoView.h
 //  Qatime_Student
 //
 //  Created by Shin on 2016/11/11.
@@ -10,8 +10,7 @@
 #import "HMSegmentedControl.h"
 #import "InfoHeaderView.h"
 
-
-@interface VideoInfoView : UIView
+@interface LiveClassInfoView : UIView
 
 /* 滑动选择器*/
 @property(nonatomic,strong) HMSegmentedControl *segmentControl;

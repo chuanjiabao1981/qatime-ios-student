@@ -13,7 +13,7 @@
 
 #import <MediaPlayer/MediaPlayer.h>
 
-#import "VideoClassInfo.h"
+#import "LiveClassInfo.h"
 #import "YYModel.h"
 #import "NoticeAndMembers.h"
 #import "Notice.h"
@@ -96,7 +96,7 @@ typedef enum : NSUInteger {
     NSString *_idNumber;
     
     /* 课程model*/
-    VideoClassInfo *_videoClassInfo;
+    LiveClassInfo *_videoClassInfo;
     
     /* 通知消息model*/
     NoticeAndMembers *_noticeAndMembers;
@@ -1183,20 +1183,20 @@ bool ismute     = NO;
     
     [self.view updateLayout];
     [self.view layoutIfNeeded];
-    [_videoInfoView updateLayout];
-    [_videoInfoView.scrollView updateLayout];
+    [_liveClassInfoView updateLayout];
+    [_liveClassInfoView.scrollView updateLayout];
     
     
     
-    [self.videoInfoView.scrollView scrollRectToVisible:CGRectMake(self.videoInfoView.segmentControl.selectedSegmentIndex * self.view.width_sd, 0, self.view.width_sd, self.view.height_sd-64-49) animated:NO];
+    [self.liveClassInfoView.scrollView scrollRectToVisible:CGRectMake(self.liveClassInfoView.segmentControl.selectedSegmentIndex * self.view.width_sd, 0, self.view.width_sd, self.view.height_sd-64-49) animated:NO];
     
     //    if (isFullScreen == NO) {
     //
     //        typeof(self) __weak weakSelf = self;
-    //        [_videoInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
+    //        [_liveClassInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
     //            NSLog(@"%ld", (long)index);
     //
-    //            [weakSelf.videoInfoView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, weakSelf.view.width_sd, weakSelf.view.height_sd-64-49) animated:YES];
+    //            [weakSelf.LiveClassInfoView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, weakSelf.view.width_sd, weakSelf.view.height_sd-64-49) animated:YES];
     //        }];
     //    }
     
@@ -1308,7 +1308,7 @@ bool ismute     = NO;
     
     /* 聊天输入框变化*/
     [IFView removeFromSuperview];
-    [_videoInfoView.view2 addSubview:IFView];
+    [_liveClassInfoView.view2 addSubview:IFView];
     
     IFView.backgroundColor = [UIColor whiteColor];
     [IFView changeSendBtnWithPhoto:YES];
@@ -1316,9 +1316,9 @@ bool ismute     = NO;
     
     [IFView sd_clearAutoLayoutSettings];
     IFView.sd_layout
-    .leftEqualToView(_videoInfoView.view2)
-    .rightEqualToView(_videoInfoView.view2)
-    .bottomSpaceToView(_videoInfoView.view2,0)
+    .leftEqualToView(_liveClassInfoView.view2)
+    .rightEqualToView(_liveClassInfoView.view2)
+    .bottomSpaceToView(_liveClassInfoView.view2,0)
     .heightIs(46);
     
     /* 语音输入按钮显示*/
@@ -1441,7 +1441,7 @@ bool ismute     = NO;
 /* infoview的contentsize变大*/
 - (void)changInfoViewContentSizeToBig{
     
-    _videoInfoView.scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width*4, [UIScreen mainScreen].bounds.size.height -  [UIScreen mainScreen].bounds.size.width*9/16.0f-30-4-40);
+    _liveClassInfoView.scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width*4, [UIScreen mainScreen].bounds.size.height -  [UIScreen mainScreen].bounds.size.width*9/16.0f-30-4-40);
     
     
     
@@ -1450,7 +1450,7 @@ bool ismute     = NO;
 /* infoview的contentsize变小*/
 - (void)changInfoViewContentSizeToSmall{
     
-    _videoInfoView.scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width*4, [UIScreen mainScreen].bounds.size.height -  [UIScreen mainScreen].bounds.size.width*9/16.0f*2-30-4-40);
+    _liveClassInfoView.scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width*4, [UIScreen mainScreen].bounds.size.height -  [UIScreen mainScreen].bounds.size.width*9/16.0f*2-30-4-40);
     
     
 }
@@ -1764,7 +1764,7 @@ bool ismute     = NO;
     
     
     _chatTableView.sd_layout
-    .bottomSpaceToView(_videoInfoView.view2,46);
+    .bottomSpaceToView(_liveClassInfoView.view2,46);
     [_chatTableView updateLayout];
     
     /* 把可移动的这个视图放到self.view的最上层*/
@@ -1775,17 +1775,17 @@ bool ismute     = NO;
 /* 改变infoview的top和位置*/
 - (void)changInfoViewsWithTopView:(FJFloatingView *)playerView{
     
-    [_videoInfoView sd_clearAutoLayoutSettings];
+    [_liveClassInfoView sd_clearAutoLayoutSettings];
     dispatch_queue_t floatview = dispatch_queue_create("floatview", DISPATCH_QUEUE_SERIAL);
     dispatch_sync(floatview, ^{
         
-        _videoInfoView.sd_layout
+        _liveClassInfoView.sd_layout
         .topSpaceToView(playerView,0)
         .leftEqualToView(self.view)
         .rightEqualToView(self.view)
         .bottomEqualToView(self.view);
         
-        [_videoInfoView updateLayout];
+        [_liveClassInfoView updateLayout];
         
     });
     
@@ -1795,20 +1795,20 @@ bool ismute     = NO;
 #pragma mark- 隐藏segment和滑动视图
 - (void)hideSegementAndScrollViews{
     
-    _videoInfoView.segmentControl.hidden = YES;
-    _videoInfoView.scrollView.hidden = YES;
+    _liveClassInfoView.segmentControl.hidden = YES;
+    _liveClassInfoView.scrollView.hidden = YES;
     
 }
 
 #pragma mark- 显示segment和滑动视图
 - (void)showSegmentAndScrollViews{
     
-    _videoInfoView.segmentControl.hidden = NO;
-    _videoInfoView.scrollView.hidden = NO;
+    _liveClassInfoView.segmentControl.hidden = NO;
+    _liveClassInfoView.scrollView.hidden = NO;
     
-    [_videoInfoView.segmentControl updateLayout];
-    [_videoInfoView.scrollView updateLayout];
-    _videoInfoView.scrollView.contentSize = CGSizeMake(self.view.width_sd*4, _videoInfoView.scrollView.height_sd);
+    [_liveClassInfoView.segmentControl updateLayout];
+    [_liveClassInfoView.scrollView updateLayout];
+    _liveClassInfoView.scrollView.contentSize = CGSizeMake(self.view.width_sd*4, _liveClassInfoView.scrollView.height_sd);
     
     
 }
@@ -2052,7 +2052,7 @@ bool ismute     = NO;
         //谁是主视图，谁就全屏
         if (_boardPlayerView.becomeMainPlayer == YES) {
             
-            [self.view sendSubviewToBack:_videoInfoView];
+            [self.view sendSubviewToBack:_liveClassInfoView];
             [self turnToFullScreenMode:_boardPlayerView];
             [_teacherPlayerView addGestureRecognizer:_doubelTap];
             
@@ -2060,7 +2060,7 @@ bool ismute     = NO;
             [_teacherPlayerView updateLayout];
             
         }else if(_teacherPlayerView.becomeMainPlayer == YES){
-            [self.view sendSubviewToBack:_videoInfoView];
+            [self.view sendSubviewToBack:_liveClassInfoView];
             [self turnToFullScreenMode:_teacherPlayerView];
             [_boardPlayerView addGestureRecognizer:_doubelTap];
             //            [_boardPlayerView removeFromSuperview];
@@ -2366,7 +2366,7 @@ bool ismute     = NO;
     /* TabBar单例隐藏*/
     
     
-    _videoInfoView.segmentControl.selectedSegmentIndex = 1;
+    _liveClassInfoView.segmentControl.selectedSegmentIndex = 1;
     
     /* 白板播放端的通知*/
     
@@ -2458,51 +2458,51 @@ bool ismute     = NO;
     
 #pragma mark- 课程信息视图
     
-    _videoInfoView = [[VideoInfoView alloc]init];
-    [self.view addSubview:_videoInfoView];
+    _liveClassInfoView = [[LiveClassInfoView alloc]init];
+    [self.view addSubview:_liveClassInfoView];
     
-    _videoInfoView.frame = CGRectMake(0,self.view.width_sd*9/16*2, self.view.width_sd, self.view.height_sd-_teacherPlayerView.height_sd-_boardPlayerView.height_sd);
+    _liveClassInfoView.frame = CGRectMake(0,self.view.width_sd*9/16*2, self.view.width_sd, self.view.height_sd-_teacherPlayerView.height_sd-_boardPlayerView.height_sd);
     
-    _videoInfoView.scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width*4, [UIScreen mainScreen].bounds.size.height -  [UIScreen mainScreen].bounds.size.width*9/16.0f*2-30-4-20);
+    _liveClassInfoView.scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width*4, [UIScreen mainScreen].bounds.size.height -  [UIScreen mainScreen].bounds.size.width*9/16.0f*2-30-4-20);
     
     if (isFullScreen == NO) {
         
         typeof(self) __weak weakSelf = self;
-        [ _videoInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
+        [ _liveClassInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
             NSLog(@"%ld", (long)index);
-            [weakSelf.videoInfoView.scrollView scrollRectToVisible:CGRectMake(weakSelf.view.width_sd * index, 0, weakSelf.view.width_sd, weakSelf.view.height_sd-64-49) animated:YES];
+            [weakSelf.liveClassInfoView.scrollView scrollRectToVisible:CGRectMake(weakSelf.view.width_sd * index, 0, weakSelf.view.width_sd, weakSelf.view.height_sd-64-49) animated:YES];
         }];
     }
     
-    _videoInfoView.scrollView.delegate = self;
-    _videoInfoView.segmentControl.selectedSegmentIndex =0;
-    _videoInfoView.segmentControl.selectionIndicatorHeight =2.0f;
-    _videoInfoView.scrollView.bounces=NO;
-    _videoInfoView.scrollView.alwaysBounceVertical=NO;
-    _videoInfoView.scrollView.alwaysBounceHorizontal=NO;
+    _liveClassInfoView.scrollView.delegate = self;
+    _liveClassInfoView.segmentControl.selectedSegmentIndex =0;
+    _liveClassInfoView.segmentControl.selectionIndicatorHeight =2.0f;
+    _liveClassInfoView.scrollView.bounces=NO;
+    _liveClassInfoView.scrollView.alwaysBounceVertical=NO;
+    _liveClassInfoView.scrollView.alwaysBounceHorizontal=NO;
     
-    [_videoInfoView.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
+    [_liveClassInfoView.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
     
     /**课程通知图*/
     _classNotice = [[ClassNotice alloc]init];
-    [_videoInfoView.view1 addSubview:_classNotice];
+    [_liveClassInfoView.view1 addSubview:_classNotice];
     
     _classNotice.sd_layout
-    .topEqualToView(_videoInfoView.view1)
-    .leftEqualToView(_videoInfoView.view1)
-    .rightEqualToView(_videoInfoView.view1)
-    .bottomEqualToView(_videoInfoView.view1);
+    .topEqualToView(_liveClassInfoView.view1)
+    .leftEqualToView(_liveClassInfoView.view1)
+    .rightEqualToView(_liveClassInfoView.view1)
+    .bottomEqualToView(_liveClassInfoView.view1);
     _classNotice.classNotice.delegate = self;
     _classNotice.classNotice.dataSource = self;
     _classNotice.classNotice.tag = 20;
     
     _classList = [[ClassList alloc]init];
-    [_videoInfoView.view3 addSubview:_classList];
+    [_liveClassInfoView.view3 addSubview:_classList];
     _classList.sd_layout
-    .leftEqualToView(_videoInfoView.view3)
-    .rightEqualToView(_videoInfoView.view3)
-    .topEqualToView(_videoInfoView.view3)
-    .bottomEqualToView(_videoInfoView.view3);
+    .leftEqualToView(_liveClassInfoView.view3)
+    .rightEqualToView(_liveClassInfoView.view3)
+    .topEqualToView(_liveClassInfoView.view3)
+    .bottomEqualToView(_liveClassInfoView.view3);
     
     _classList.classListTableView.delegate =self;
     _classList.classListTableView.dataSource =self;
@@ -2514,15 +2514,15 @@ bool ismute     = NO;
     _chatTableView = [[UITableView alloc]init];
     _chatTableView.backgroundColor = [UIColor whiteColor];
     
-    [_videoInfoView.view2 addSubview:_chatTableView];
+    [_liveClassInfoView.view2 addSubview:_chatTableView];
     _chatTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     
     _chatTableView.sd_layout
-    .leftEqualToView(_videoInfoView.view2)
-    .topEqualToView(_videoInfoView.view2)
-    .rightEqualToView(_videoInfoView.view2)
-    .bottomSpaceToView(_videoInfoView.view2,64);
+    .leftEqualToView(_liveClassInfoView.view2)
+    .topEqualToView(_liveClassInfoView.view2)
+    .rightEqualToView(_liveClassInfoView.view2)
+    .bottomSpaceToView(_liveClassInfoView.view2,64);
     
     _chatTableView.delegate = self;
     _chatTableView.dataSource = self;
@@ -2530,7 +2530,7 @@ bool ismute     = NO;
     UITapGestureRecognizer *tapSpace = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapSpace)];
     [_chatTableView addGestureRecognizer:tapSpace];
     
-    _infoHeaderView = [[InfoHeaderView alloc]initWithFrame:CGRectMake(0, 0, _videoInfoView.view3.frame.size.width, 800)];
+    _infoHeaderView = [[InfoHeaderView alloc]initWithFrame:CGRectMake(0, 0, _liveClassInfoView.view3.frame.size.width, 800)];
     _infoHeaderView.classTagsView.delegate = self;
     
     //标签设置
@@ -2563,12 +2563,12 @@ bool ismute     = NO;
 #pragma mark- 在线成员列表页
     
     _memberListView = [[MembersListView alloc]init];
-    [_videoInfoView.view4 addSubview:_memberListView];
+    [_liveClassInfoView.view4 addSubview:_memberListView];
     _memberListView.sd_layout
-    .topEqualToView(_videoInfoView.view4)
-    .bottomEqualToView(_videoInfoView.view4)
-    .leftEqualToView(_videoInfoView.view4)
-    .rightEqualToView(_videoInfoView.view4);
+    .topEqualToView(_liveClassInfoView.view4)
+    .bottomEqualToView(_liveClassInfoView.view4)
+    .leftEqualToView(_liveClassInfoView.view4)
+    .rightEqualToView(_liveClassInfoView.view4);
     
     _memberListView.memberListTableView.delegate = self;
     _memberListView.memberListTableView.dataSource = self;
@@ -2607,13 +2607,13 @@ bool ismute     = NO;
         
         
         UIView *_= [[UIView alloc]init];
-        [_videoInfoView addSubview:_];
-        if (_videoInfoView&&_viewsArrangementMode==SameLevel) {
+        [_liveClassInfoView addSubview:_];
+        if (_liveClassInfoView&&_viewsArrangementMode==SameLevel) {
             _.sd_layout
-            .leftEqualToView(_videoInfoView)
-            .rightEqualToView(_videoInfoView)
-            .topEqualToView(_videoInfoView)
-            .bottomEqualToView(_videoInfoView);
+            .leftEqualToView(_liveClassInfoView)
+            .rightEqualToView(_liveClassInfoView)
+            .topEqualToView(_liveClassInfoView)
+            .bottomEqualToView(_liveClassInfoView);
             
         }
         
@@ -2815,7 +2815,7 @@ bool ismute     = NO;
             [self updateMembersList];
             
             /* 解析 课程 数据*/
-            _videoClassInfo = [VideoClassInfo yy_modelWithDictionary:dataDic];
+            _videoClassInfo = [LiveClassInfo yy_modelWithDictionary:dataDic];
             
             /* 解析 聊天成员 数据*/
             
@@ -3464,7 +3464,7 @@ bool ismute     = NO;
         [UIView animateWithDuration:animationDuration animations:^{
             
             IFView.sd_layout
-            .bottomSpaceToView(_videoInfoView.view2,keyboardRect.size.height);
+            .bottomSpaceToView(_liveClassInfoView.view2,keyboardRect.size.height);
             
             [IFView updateLayout];
             [_chatTableView clearAutoHeigtSettings];
@@ -3504,7 +3504,7 @@ bool ismute     = NO;
         [UIView animateWithDuration:animationDuration animations:^{
             
             IFView.sd_layout
-            .bottomSpaceToView(_videoInfoView.view2,0);
+            .bottomSpaceToView(_liveClassInfoView.view2,0);
             [IFView updateLayout];
             
             [_chatTableView clearAutoHeigtSettings];
@@ -3538,13 +3538,13 @@ bool ismute     = NO;
     
     IFView = [[UUInputFunctionView alloc]initWithSuperVC:self];
     IFView.delegate = self;
-    [_videoInfoView.view2 addSubview:IFView];
+    [_liveClassInfoView.view2 addSubview:IFView];
     [IFView.btnChangeVoiceState addTarget:self action:@selector(emojiKeyboardShow:) forControlEvents:UIControlEventTouchUpInside];
     
     IFView.sd_layout
-    .leftEqualToView(_videoInfoView.view2)
-    .rightEqualToView(_videoInfoView.view2)
-    .bottomSpaceToView(_videoInfoView.view2,0)
+    .leftEqualToView(_liveClassInfoView.view2)
+    .rightEqualToView(_liveClassInfoView.view2)
+    .bottomSpaceToView(_liveClassInfoView.view2,0)
     .heightIs(46);
     
     
@@ -4166,7 +4166,7 @@ bool ismute     = NO;
 - (void)updateViewsNotice{
     
     [_classNotice.classNotice reloadData];
-    //    [_videoInfoView.noticeTabelView setNeedsDisplay];
+    //    [_liveClassInfoView.noticeTabelView setNeedsDisplay];
     
     
 }
@@ -4526,14 +4526,14 @@ bool ismute     = NO;
     
     if (isFullScreen == NO) {
         
-        if (scrollView == _videoInfoView.scrollView) {
+        if (scrollView == _liveClassInfoView.scrollView) {
             
             CGFloat pageWidth = scrollView.frame.size.width;
             NSInteger page = scrollView.contentOffset.x / pageWidth;
             
-            [_videoInfoView.segmentControl setSelectedSegmentIndex:page animated:YES];
+            [_liveClassInfoView.segmentControl setSelectedSegmentIndex:page animated:YES];
             
-            if (_videoInfoView.segmentControl.selectedSegmentIndex ==1) {
+            if (_liveClassInfoView.segmentControl.selectedSegmentIndex ==1) {
                 if (chatTime ==0) {
                     
                     [_chatTableView.mj_header beginRefreshing];

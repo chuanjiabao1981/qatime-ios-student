@@ -8,6 +8,7 @@
 
 #import "VideoClassInfoView.h"
 #import "UIColor+HcdCustom.h"
+#import "NSString+ChangeYearsToChinese.h"
 
 #define SCREENWIDTH CGRectGetWidth([UIScreen mainScreen].bounds)
 #define SCREENHEIGHT CGRectGetHeight(self.frame)
@@ -491,14 +492,39 @@
 /**页面赋值*/
 -(void)setModel:(VideoClassInfo *)model{
     
+    _model = model;
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
+    _className.text = model.current_lesson_name;
     
+    if (model.price.floatValue!=0) {
+        
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];
+    }else{
+        _priceLabel.text = @"免费";
+    }
+    _saleNumber.text = [NSString stringWithFormat:@"学习人数 %@",model.buy_tickets_count];
     
+    _gradeLabel.text = model.grade;
+    _subjectLabel.text = model.subject;
+    _classCount.text = [NSString stringWithFormat:@"共%@课",model.lessons_count];
+//    _liveTimeLabel.text = [NSString stringWithFormat:@"视频总长%@",model.视频长度];
+    _classTarget.text = model.objective;
+    _suitable.text = model.suit_crowd;
+    //简介富文本
+    _classDescriptionLabel.attributedText = [[NSMutableAttributedString alloc]initWithData:[model.description dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+    
+    [_teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:model.teacher[@"avatar_url"]]];
+    _teacherNameLabel.text = model.teacher[@"name"];
+    if ([model.teacher[@"gender"]isEqualToString:@"male"]) {
+        [_genderImage setImage:[UIImage imageNamed:@"男"]];
+    }else if([model.teacher[@"gender"]isEqualToString:@"female"]) {
+        [_genderImage setImage:[UIImage imageNamed:@"女"]];
+    }
+    _workPlaceLabel.text = model.teacher[@"school"];
+    _workYearsLabel.text = model.teacher[@"teaching_years"];
+    _teacherInterviewLabel.attributedText = [[NSMutableAttributedString alloc]initWithData:[model.teacher[@"desc"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
     
 }
-
-
-
-
 
 
 @end

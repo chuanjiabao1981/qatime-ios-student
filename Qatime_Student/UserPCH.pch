@@ -64,7 +64,6 @@
 #define TITLECOLOR [UIColor colorWithRed:0.60 green:0.60 blue:0.60 alpha:1.00]
 
 
-
 /*按钮红色*/
 #define BUTTONRED [UIColor colorWithRed:0.99 green:0.35 blue:0.29 alpha:1.00]
 
@@ -121,6 +120,7 @@
 #import "SDAutoLayout.h"
 #import "AFNetworking.h"
 #import "Masonry.h"
+#import "UIImageView+WebCache.h"
 #import "UIButton+EnlargeTouchArea.h"
 #import "UIViewController+Login.h"
 #import "NTESGlobalMacro.h"

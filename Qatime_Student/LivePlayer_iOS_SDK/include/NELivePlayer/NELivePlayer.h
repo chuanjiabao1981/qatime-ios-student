@@ -18,6 +18,7 @@
  * @brief 视频流类型
  */
 typedef enum NELPBufferStrategy{
+    NELPTopSpeed,    //!< 极速模式
     NELPLowDelay,    //!< 网络直播低延时，适用于视频直播，延时低，网络抖动时偶尔有卡顿
     NELPFluent,      //!< 网络直播流畅，适用于视频直播，流畅性好，延时比低延时模式稍大
     NELPAntiJitter,  //!< 网络点播抗抖动，适用于视频点播和本地视频，抗抖动性强
@@ -81,6 +82,19 @@ typedef struct NELPAudioInfo {
     NSInteger bitrate;       //!< 码率 (单位: kb/s)
     NSInteger numOfChannels; //!< 音频的通道数
 }NELPAudioInfo;
+
+/**
+ * @brief 密钥校验结果
+ */
+typedef enum NELPKeyCheckResult {
+    NELP_NO_ENCRYPTION                  = 0, //!< 没有加密
+    NELP_ENCRYPTION_CHECK_OK            = 1, //!< 密钥正确
+    NELP_ENCRYPTION_UNSUPPORT_PROTOCAL  = 2, //!< 协议不支持
+    NELP_ENCRYPTION_KEY_CHECK_ERROR     = 3, //!< 密钥错误
+    NELP_ENCRYPTION_INPUT_INVALIED      = 4, //!< 输入错误
+    NELP_ENCRYPTION_GET_KEY_TIMEOUT     = 5, //!< 获取密钥超时
+    NELP_ENCRYPTION_UNKNOWN_ERROR       = 6, //!< 未知错误
+} NELPKeyCheckResult;
 
 //typedef struct NELPAudioQueue {
 //    float first_pts;
@@ -283,6 +297,18 @@ typedef struct NELPAudioInfo {
  * @return 无
  */
 - (void)setPlaybackTimeout:(long)timeout;
+
+/**
+ * @brief 解密模块初始化，并校验密钥是否正确
+ *
+ * @param transferToken 获取密钥的令牌
+ * @param accid 视频云用户创建的其子用户id
+ * @param appKey 开发者平台分配的AppKey
+ * @param token 视频云用户子用户的token
+ *
+ * @return ret 返回密钥检测的状态
+ */
+- (void)initDecryption:(NSString *)transferToken :(NSString *)accid :(NSString *)appKey :(NSString *)token :(void(^)(NELPKeyCheckResult ret))completionBlock;
 
 //- (void)getAudioQueue:(NELPAudioQueue *)audioQueue;
 

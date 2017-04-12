@@ -68,7 +68,6 @@
 		54294CD51DDB3CCA00677333 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FC41DD4713100F1282B /* OpenGLES.framework */; };
 		54294CD61DDB3CD500677333 /* libz.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 54EA9B841DD9A9D5004B8040 /* libz.1.tbd */; };
 		54294CD71DDB3CF000677333 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FC01DD4711300F1282B /* CFNetwork.framework */; };
-		54294CD81DDB3D3600677333 /* libNELivePlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54EA9B201DD9A7DF004B8040 /* libNELivePlayer.a */; };
 		54294F621DDB44A500677333 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FC21DD4712900F1282B /* Foundation.framework */; };
 		54294F631DDB44C200677333 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FC81DD4714100F1282B /* CoreAudio.framework */; };
 		54294F641DDB44DC00677333 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FCA1DD4714700F1282B /* CoreGraphics.framework */; };
@@ -143,6 +142,10 @@
 		544E0CDB1DD0806900884F31 /* YZSquareMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CDA1DD0806900884F31 /* YZSquareMenuCell.m */; };
 		544E0CE11DD090A700884F31 /* RecommandClassCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CE01DD090A700884F31 /* RecommandClassCollectionViewCell.m */; };
 		544E0CE41DD09FAE00884F31 /* IndexHeaderPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CE31DD09FAE00884F31 /* IndexHeaderPageView.m */; };
+		54504AC91E9E0E5F00EFCF8E /* VideoClassPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54504AC81E9E0E5F00EFCF8E /* VideoClassPlayerViewController.m */; };
+		54504ACC1E9E0E7F00EFCF8E /* VideoClassPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54504ACB1E9E0E7F00EFCF8E /* VideoClassPlayerView.m */; };
+		54504AD01E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54504ACF1E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.m */; };
+		54504AD21E9E220500EFCF8E /* libNELivePlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54504AD11E9E220500EFCF8E /* libNELivePlayer.a */; };
 		545162B11DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162B01DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m */; };
 		545162BB1DF50D85000BD17A /* ChangePasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162BA1DF50D85000BD17A /* ChangePasswordView.m */; };
 		545162BE1DF50D99000BD17A /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162BD1DF50D99000BD17A /* ChangePasswordViewController.m */; };
@@ -556,6 +559,10 @@
 		54B73D051DE3E85A00B7A7EB /* pinyin.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73D031DE3E85A00B7A7EB /* pinyin.m */; };
 		54B73D081DE40B1800B7A7EB /* NSString+Emojize.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73D071DE40B1800B7A7EB /* NSString+Emojize.m */; };
 		54B73D0F1DE40E1800B7A7EB /* NSString+ContainEmoji.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B73D0E1DE40E1800B7A7EB /* NSString+ContainEmoji.m */; };
+		54B9075C1E9CCE9600034FDC /* VideoClassInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9075B1E9CCE9600034FDC /* VideoClassInfoView.m */; };
+		54B9075F1E9CCEA400034FDC /* VideoClassInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9075E1E9CCEA400034FDC /* VideoClassInfoViewController.m */; };
+		54B907661E9CCFF600034FDC /* VideoClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B907651E9CCFF600034FDC /* VideoClassInfo.m */; };
+		54B9076C1E9CF37400034FDC /* VideoClassListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9076B1E9CF37400034FDC /* VideoClassListTableViewCell.m */; };
 		54B9148F1E6D5B7500F377ED /* ProvinceChosenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9148E1E6D5B7500F377ED /* ProvinceChosenViewController.m */; };
 		54B914921E6D5B7F00F377ED /* CityChosenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B914911E6D5B7F00F377ED /* CityChosenViewController.m */; };
 		54B9149D1E6D676D00F377ED /* ProvinceHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9149C1E6D676D00F377ED /* ProvinceHeaderView.m */; };
@@ -656,10 +663,10 @@
 		54FB1DCD1DF172F300BA9A3C /* BindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB1DCC1DF172F300BA9A3C /* BindingViewController.m */; };
 		54FB1DD71DF1AC2C00BA9A3C /* ParentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB1DD61DF1AC2C00BA9A3C /* ParentView.m */; };
 		54FB1DDA1DF1AC3D00BA9A3C /* ParentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB1DD91DF1AC3D00BA9A3C /* ParentViewController.m */; };
-		54FCBAE01DD5B3050094BF58 /* VideoInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBADF1DD5B3050094BF58 /* VideoInfoView.m */; };
+		54FCBAE01DD5B3050094BF58 /* LiveClassInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBADF1DD5B3050094BF58 /* LiveClassInfoView.m */; };
 		54FCBAEC1DD5CA9F0094BF58 /* NoticeAndMembers.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAEB1DD5CA9F0094BF58 /* NoticeAndMembers.m */; };
 		54FCBAF31DD5CB6B0094BF58 /* NoticeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAF21DD5CB6B0094BF58 /* NoticeTableViewCell.m */; };
-		54FCBAF61DD5D4500094BF58 /* VideoClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAF51DD5D4500094BF58 /* VideoClassInfo.m */; };
+		54FCBAF61DD5D4500094BF58 /* LiveClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAF51DD5D4500094BF58 /* LiveClassInfo.m */; };
 		54FCBAF91DD5DCE50094BF58 /* Notice.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAF81DD5DCE50094BF58 /* Notice.m */; };
 		54FCBAFC1DD5DCEE0094BF58 /* Members.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAFB1DD5DCEE0094BF58 /* Members.m */; };
 		F249EFD4707A4E4121B5BF4D /* libPods-Qatime_Student.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0908EB8F55388D2CA5802D18 /* libPods-Qatime_Student.a */; };
@@ -923,6 +930,13 @@
 		544E0CE01DD090A700884F31 /* RecommandClassCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommandClassCollectionViewCell.m; sourceTree = "<group>"; };
 		544E0CE21DD09FAE00884F31 /* IndexHeaderPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexHeaderPageView.h; sourceTree = "<group>"; };
 		544E0CE31DD09FAE00884F31 /* IndexHeaderPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexHeaderPageView.m; sourceTree = "<group>"; };
+		54504AC71E9E0E5F00EFCF8E /* VideoClassPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassPlayerViewController.h; sourceTree = "<group>"; };
+		54504AC81E9E0E5F00EFCF8E /* VideoClassPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassPlayerViewController.m; sourceTree = "<group>"; };
+		54504ACA1E9E0E7F00EFCF8E /* VideoClassPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassPlayerView.h; sourceTree = "<group>"; };
+		54504ACB1E9E0E7F00EFCF8E /* VideoClassPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassPlayerView.m; sourceTree = "<group>"; };
+		54504ACE1E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassProgressTableViewCell.h; sourceTree = "<group>"; };
+		54504ACF1E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassProgressTableViewCell.m; sourceTree = "<group>"; };
+		54504AD11E9E220500EFCF8E /* libNELivePlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNELivePlayer.a; path = Qatime_Student/LivePlayer_iOS_SDK/libs/libNELivePlayer.a; sourceTree = "<group>"; };
 		545162AF1DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+EnlargeTouchArea.h"; sourceTree = "<group>"; };
 		545162B01DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+EnlargeTouchArea.m"; sourceTree = "<group>"; };
 		545162B91DF50D85000BD17A /* ChangePasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordView.h; sourceTree = "<group>"; };
@@ -1780,6 +1794,14 @@
 		54B73D091DE40B5900B7A7EB /* emojis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = emojis.h; sourceTree = "<group>"; };
 		54B73D0D1DE40E1800B7A7EB /* NSString+ContainEmoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ContainEmoji.h"; sourceTree = "<group>"; };
 		54B73D0E1DE40E1800B7A7EB /* NSString+ContainEmoji.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ContainEmoji.m"; sourceTree = "<group>"; };
+		54B9075A1E9CCE9600034FDC /* VideoClassInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassInfoView.h; sourceTree = "<group>"; };
+		54B9075B1E9CCE9600034FDC /* VideoClassInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassInfoView.m; sourceTree = "<group>"; };
+		54B9075D1E9CCEA400034FDC /* VideoClassInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassInfoViewController.h; sourceTree = "<group>"; };
+		54B9075E1E9CCEA400034FDC /* VideoClassInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassInfoViewController.m; sourceTree = "<group>"; };
+		54B907641E9CCFF600034FDC /* VideoClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassInfo.h; sourceTree = "<group>"; };
+		54B907651E9CCFF600034FDC /* VideoClassInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassInfo.m; sourceTree = "<group>"; };
+		54B9076A1E9CF37400034FDC /* VideoClassListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassListTableViewCell.h; sourceTree = "<group>"; };
+		54B9076B1E9CF37400034FDC /* VideoClassListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassListTableViewCell.m; sourceTree = "<group>"; };
 		54B9148D1E6D5B7500F377ED /* ProvinceChosenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProvinceChosenViewController.h; sourceTree = "<group>"; };
 		54B9148E1E6D5B7500F377ED /* ProvinceChosenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProvinceChosenViewController.m; sourceTree = "<group>"; };
 		54B914901E6D5B7F00F377ED /* CityChosenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityChosenViewController.h; sourceTree = "<group>"; };
@@ -1996,14 +2018,14 @@
 		54FB1DD61DF1AC2C00BA9A3C /* ParentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentView.m; sourceTree = "<group>"; };
 		54FB1DD81DF1AC3D00BA9A3C /* ParentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentViewController.h; sourceTree = "<group>"; };
 		54FB1DD91DF1AC3D00BA9A3C /* ParentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ParentViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		54FCBADE1DD5B3050094BF58 /* VideoInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoInfoView.h; sourceTree = "<group>"; };
-		54FCBADF1DD5B3050094BF58 /* VideoInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoInfoView.m; sourceTree = "<group>"; };
+		54FCBADE1DD5B3050094BF58 /* LiveClassInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveClassInfoView.h; sourceTree = "<group>"; };
+		54FCBADF1DD5B3050094BF58 /* LiveClassInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveClassInfoView.m; sourceTree = "<group>"; };
 		54FCBAEA1DD5CA9F0094BF58 /* NoticeAndMembers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeAndMembers.h; sourceTree = "<group>"; };
 		54FCBAEB1DD5CA9F0094BF58 /* NoticeAndMembers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeAndMembers.m; sourceTree = "<group>"; };
 		54FCBAF11DD5CB6B0094BF58 /* NoticeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeTableViewCell.h; sourceTree = "<group>"; };
 		54FCBAF21DD5CB6B0094BF58 /* NoticeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeTableViewCell.m; sourceTree = "<group>"; };
-		54FCBAF41DD5D4500094BF58 /* VideoClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassInfo.h; sourceTree = "<group>"; };
-		54FCBAF51DD5D4500094BF58 /* VideoClassInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassInfo.m; sourceTree = "<group>"; };
+		54FCBAF41DD5D4500094BF58 /* LiveClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveClassInfo.h; sourceTree = "<group>"; };
+		54FCBAF51DD5D4500094BF58 /* LiveClassInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveClassInfo.m; sourceTree = "<group>"; };
 		54FCBAF71DD5DCE50094BF58 /* Notice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notice.h; sourceTree = "<group>"; };
 		54FCBAF81DD5DCE50094BF58 /* Notice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notice.m; sourceTree = "<group>"; };
 		54FCBAFA1DD5DCEE0094BF58 /* Members.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Members.h; sourceTree = "<group>"; };
@@ -2017,6 +2039,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54504AD21E9E220500EFCF8E /* libNELivePlayer.a in Frameworks */,
 				54A6C4A11E97393700B56135 /* StoreKit.framework in Frameworks */,
 				54AC02051E88FF0200817767 /* NIMAVChat.framework in Frameworks */,
 				54AC02041E88FEDA00817767 /* NIMSDK.framework in Frameworks */,
@@ -2037,7 +2060,6 @@
 				547FBF2A1DF681B300955A9E /* libUMessage_Sdk_1.4.0.a in Frameworks */,
 				547FBF1E1DF658C000955A9E /* UserNotifications.framework in Frameworks */,
 				54CB26731DF0302900AE7414 /* Security.framework in Frameworks */,
-				54294CD81DDB3D3600677333 /* libNELivePlayer.a in Frameworks */,
 				54294CD61DDB3CD500677333 /* libz.1.tbd in Frameworks */,
 				5493450C1E4B0571005849B2 /* JSPatchPlatform.framework in Frameworks */,
 				54294CC31DDB3AC400677333 /* libstdc++.tbd in Frameworks */,
@@ -2254,8 +2276,8 @@
 				54C9A8CF1E12159700B81EBF /* PlayerView.h */,
 				54C9A8D01E12159700B81EBF /* PlayerView.m */,
 				54FCBAF01DD5CB520094BF58 /* Cell */,
-				54FCBADE1DD5B3050094BF58 /* VideoInfoView.h */,
-				54FCBADF1DD5B3050094BF58 /* VideoInfoView.m */,
+				54FCBADE1DD5B3050094BF58 /* LiveClassInfoView.h */,
+				54FCBADF1DD5B3050094BF58 /* LiveClassInfoView.m */,
 				54294C681DDAFCF600677333 /* ClassList.h */,
 				54294C691DDAFCF600677333 /* ClassList.m */,
 				54B610361E83BA0B00DA8E7A /* ClassNotice.h */,
@@ -2277,8 +2299,8 @@
 				54FCBAFB1DD5DCEE0094BF58 /* Members.m */,
 				54FCBAF71DD5DCE50094BF58 /* Notice.h */,
 				54FCBAF81DD5DCE50094BF58 /* Notice.m */,
-				54FCBAF41DD5D4500094BF58 /* VideoClassInfo.h */,
-				54FCBAF51DD5D4500094BF58 /* VideoClassInfo.m */,
+				54FCBAF41DD5D4500094BF58 /* LiveClassInfo.h */,
+				54FCBAF51DD5D4500094BF58 /* LiveClassInfo.m */,
 				54294C6B1DDB051E00677333 /* Classes.h */,
 				54294C6C1DDB051E00677333 /* Classes.m */,
 				54294C6E1DDB062000677333 /* Teacher.h */,
@@ -2681,6 +2703,15 @@
 			name = LCActionSheet;
 			sourceTree = "<group>";
 		};
+		54504ACD1E9E0EA500EFCF8E /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				54504ACE1E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.h */,
+				54504ACF1E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.m */,
+			);
+			name = cell;
+			sourceTree = "<group>";
+		};
 		545162B61DF50D62000BD17A /* 修改密码 */ = {
 			isa = PBXGroup;
 			children = (
@@ -3000,14 +3031,14 @@
 			name = "教师公开页";
 			sourceTree = "<group>";
 		};
-		547B6C3C1E2E14ED00C52F1B /* VideoPlayer */ = {
+		547B6C3C1E2E14ED00C52F1B /* ReplayVideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
 				547B6C3F1E2E150100C52F1B /* Model */,
 				547B6C3E1E2E150000C52F1B /* View */,
 				547B6C3D1E2E14FE00C52F1B /* Controller */,
 			);
-			name = VideoPlayer;
+			name = ReplayVideoPlayer;
 			sourceTree = "<group>";
 		};
 		547B6C3D1E2E14FE00C52F1B /* Controller */ = {
@@ -4793,6 +4824,51 @@
 			path = ChineseSorting;
 			sourceTree = "<group>";
 		};
+		54B907601E9CCFBE00034FDC /* VideoPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				54B907631E9CCFD100034FDC /* Model */,
+				54B907621E9CCFD000034FDC /* View */,
+				54B907611E9CCFCF00034FDC /* Controller */,
+			);
+			name = VideoPlayer;
+			sourceTree = "<group>";
+		};
+		54B907611E9CCFCF00034FDC /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54504AC71E9E0E5F00EFCF8E /* VideoClassPlayerViewController.h */,
+				54504AC81E9E0E5F00EFCF8E /* VideoClassPlayerViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54B907621E9CCFD000034FDC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54504ACD1E9E0EA500EFCF8E /* cell */,
+				54504ACA1E9E0E7F00EFCF8E /* VideoClassPlayerView.h */,
+				54504ACB1E9E0E7F00EFCF8E /* VideoClassPlayerView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54B907631E9CCFD100034FDC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		54B907671E9CE99800034FDC /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				54B9076A1E9CF37400034FDC /* VideoClassListTableViewCell.h */,
+				54B9076B1E9CF37400034FDC /* VideoClassListTableViewCell.m */,
+			);
+			name = cell;
+			sourceTree = "<group>";
+		};
 		54B914931E6D61FE00F377ED /* 地区选择页面 */ = {
 			isa = PBXGroup;
 			children = (
@@ -4907,6 +4983,8 @@
 		54C4520D1E9CB739002108F4 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				54B9075D1E9CCEA400034FDC /* VideoClassInfoViewController.h */,
+				54B9075E1E9CCEA400034FDC /* VideoClassInfoViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -4914,6 +4992,9 @@
 		54C4520E1E9CB73A002108F4 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				54B907671E9CE99800034FDC /* cell */,
+				54B9075A1E9CCE9600034FDC /* VideoClassInfoView.h */,
+				54B9075B1E9CCE9600034FDC /* VideoClassInfoView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -4921,6 +5002,8 @@
 		54C4520F1E9CB73B002108F4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				54B907641E9CCFF600034FDC /* VideoClassInfo.h */,
+				54B907651E9CCFF600034FDC /* VideoClassInfo.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -5919,7 +6002,8 @@
 			isa = PBXGroup;
 			children = (
 				54294C741DDB354400677333 /* LivePlayer */,
-				547B6C3C1E2E14ED00C52F1B /* VideoPlayer */,
+				547B6C3C1E2E14ED00C52F1B /* ReplayVideoPlayer */,
+				54B907601E9CCFBE00034FDC /* VideoPlayer */,
 			);
 			name = "视频播放页";
 			sourceTree = "<group>";
@@ -5947,6 +6031,7 @@
 		B493EB6DEDE6DB14F293C15A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				54504AD11E9E220500EFCF8E /* libNELivePlayer.a */,
 				54A6C4A01E97393700B56135 /* StoreKit.framework */,
 				54E8B6A21E5EF1B600A9703F /* AddressBook.framework */,
 				54E8B6A01E5EF1AF00A9703F /* Contacts.framework */,
@@ -6350,6 +6435,7 @@
 				548328EE1DDC6F360053AB29 /* UUMessageContentButton.m in Sources */,
 				54AC04D31E89398E00817767 /* ijksdl_mutex.c in Sources */,
 				548328EB1DDC6F360053AB29 /* UUInputFunctionView.m in Sources */,
+				54B9075C1E9CCE9600034FDC /* VideoClassInfoView.m in Sources */,
 				543E23401E2C78D700381F10 /* SetPayPasswordViewController.m in Sources */,
 				54AC040E1E8938E100817767 /* NIMAdvancedTeamMemberCell.m in Sources */,
 				545162D81DF55DD0000BD17A /* PersonalTableViewCell.m in Sources */,
@@ -6383,6 +6469,7 @@
 				54AA30941DF98CC7009E0D04 /* PaidOrderView.m in Sources */,
 				54AC03DC1E8938E100817767 /* NIMInputToolBar.m in Sources */,
 				54AC027E1E892D3C00817767 /* UIImage+NTESColor.m in Sources */,
+				54B9076C1E9CF37400034FDC /* VideoClassListTableViewCell.m in Sources */,
 				5484B7421DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m in Sources */,
 				54AC025A1E892CEE00817767 /* NTESService.m in Sources */,
 				544B61EB1E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.m in Sources */,
@@ -6598,6 +6685,7 @@
 				54AC03C51E8938E100817767 /* NIMKit.m in Sources */,
 				54FCBAF91DD5DCE50094BF58 /* Notice.m in Sources */,
 				54AA30881DF98C40009E0D04 /* MyOrderView.m in Sources */,
+				54B9075F1E9CCEA400034FDC /* VideoClassInfoViewController.m in Sources */,
 				54AC04171E8938E100817767 /* NIMSpellingCenter.m in Sources */,
 				54D66F791DEC087D00ED2EBC /* NSString+StatusSwitch.m in Sources */,
 				54AC04261E8938E100817767 /* UIImage+NIMMultiFormat.m in Sources */,
@@ -6663,6 +6751,7 @@
 				5442009E1E7793E900797E6C /* TodayLive.m in Sources */,
 				54F47E851E08F77600D896DB /* UIButton+Touch.m in Sources */,
 				54AC027F1E892D3C00817767 /* UIResponder+NTESFirstResponder.m in Sources */,
+				54504AD01E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.m in Sources */,
 				5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */,
 				54AC04AD1E89398E00817767 /* NTESChatroomUnknowMessageConfig.m in Sources */,
 				54AC03DE1E8938E100817767 /* NIMKitEvent.m in Sources */,
@@ -6680,6 +6769,7 @@
 				54AC02571E892CEE00817767 /* NTESLogManager.m in Sources */,
 				54AC027A1E892D3C00817767 /* NSString+NTES.m in Sources */,
 				54B914A81E6D790500F377ED /* EditLocationTableViewCell.m in Sources */,
+				54504AC91E9E0E5F00EFCF8E /* VideoClassPlayerViewController.m in Sources */,
 				544B61FB1E9647F100D7B160 /* LCActionSheetCell.m in Sources */,
 				54A991851E34BCB20001D3D9 /* NoticeWaysTableViewCell.m in Sources */,
 				54660F601E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m in Sources */,
@@ -6692,7 +6782,7 @@
 				543BCB151E794AE900AD6721 /* SnailQuickMaskPopups.m in Sources */,
 				54AC04AC1E89398E00817767 /* NTESChatroomTextContentConfig.m in Sources */,
 				54AC03CC1E8938E100817767 /* NIMContactDataCell.m in Sources */,
-				54FCBAE01DD5B3050094BF58 /* VideoInfoView.m in Sources */,
+				54FCBAE01DD5B3050094BF58 /* LiveClassInfoView.m in Sources */,
 				54AC04011E8938E100817767 /* NIMSessionListViewController.m in Sources */,
 				54FA71561E07B107009D81FE /* ChatView.m in Sources */,
 				540A34CA1E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m in Sources */,
@@ -6779,9 +6869,10 @@
 				54FA71591E07B111009D81FE /* ChatViewController.m in Sources */,
 				546F5C591DFD760000528F79 /* WithDrawInfoViewController.m in Sources */,
 				54D661291DD04DC900C9A0FF /* YZSquareMenu.m in Sources */,
+				54B907661E9CCFF600034FDC /* VideoClassInfo.m in Sources */,
 				54AC025D1E892CEE00817767 /* NTESUserUtil.m in Sources */,
 				54AC04BA1E89398E00817767 /* NTESMeetingViewController.m in Sources */,
-				54FCBAF61DD5D4500094BF58 /* VideoClassInfo.m in Sources */,
+				54FCBAF61DD5D4500094BF58 /* LiveClassInfo.m in Sources */,
 				543A4D4A1E89F775004C5C9E /* NTESLoginViewController.m in Sources */,
 				54AC03CF1E8938E100817767 /* NIMContactDataItem.m in Sources */,
 				54AC041F1E8938E100817767 /* NIMWebImageDecoder.m in Sources */,
@@ -6822,6 +6913,7 @@
 				54AB48FA1DED7C09008E3BC5 /* MyTutoriumModel.m in Sources */,
 				547A7EFD1DD416F100F1282B /* ListenAndBuyTabBar.m in Sources */,
 				54652E081DEE9D1900F4607C /* AboutUsView.m in Sources */,
+				54504ACC1E9E0E7F00EFCF8E /* VideoClassPlayerView.m in Sources */,
 				54AC042A1E8938E100817767 /* UIView+NIMKitToast.m in Sources */,
 				5471C7FC1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.m in Sources */,
 				54AC03C31E8938E100817767 /* UITableView+NIMScrollToBottom.m in Sources */,
@@ -7005,7 +7097,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/include/NELivePlayer",
+					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/include/NELivePlayer",
 					"$(inherited)",
 					"$(PROJECT_DIR)/Qatime_Student",
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",
@@ -7017,12 +7109,13 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/libs",
+					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/libs",
 					"$(PROJECT_DIR)/Qatime_Student/UUChat/OtherResources/VoiceLib",
 					"$(PROJECT_DIR)/Qatime_Student",
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMAVChat/Libs",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMSDK/Libs",
+					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/libs",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -7083,7 +7176,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/include/NELivePlayer",
+					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/include/NELivePlayer",
 					"$(inherited)",
 					"$(PROJECT_DIR)/Qatime_Student",
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",
@@ -7095,12 +7188,13 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/libs",
+					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/libs",
 					"$(PROJECT_DIR)/Qatime_Student/UUChat/OtherResources/VoiceLib",
 					"$(PROJECT_DIR)/Qatime_Student",
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMAVChat/Libs",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMSDK/Libs",
+					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/libs",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (

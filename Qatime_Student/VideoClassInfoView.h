@@ -10,6 +10,7 @@
 #import "HMSegmentedControl.h"
 #import "VideoClassInfo.h"
 
+
 @interface VideoClassInfoView : UIScrollView
 /* 课程名*/
 @property(nonatomic,strong) UILabel  *className ;

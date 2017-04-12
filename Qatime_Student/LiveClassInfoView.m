@@ -1,5 +1,5 @@
 //
-//  VideoInfoView.m
+//  LiveClassInfoView.m
 //  Qatime_Student
 //
 //  Created by Shin on 2016/11/11.
@@ -7,20 +7,19 @@
 //
 
 
-#import "VideoInfoView.h"
+#import "LiveClassInfoView.h"
 
 #define SCREENWIDTH self.frame.size.width
 #define VIEWHEIGHT  self.frame.size.height
 
-@interface VideoInfoView (){
-    
+@interface LiveClassInfoView (){
     
 }
 
 @end
 
 
-@implementation VideoInfoView
+@implementation LiveClassInfoView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {

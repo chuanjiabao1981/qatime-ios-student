@@ -15,7 +15,7 @@
  
 
 
-#import "VideoInfoView.h"
+#import "LiveClassInfoView.h"
 #import "InfoHeaderView.h"
 #import "MembersListView.h"
 
@@ -46,7 +46,7 @@
 @property(nonatomic,strong) NSURL *teacherPullAddress ;
 
 /* 视频信息页面*/
-@property(nonatomic,strong) VideoInfoView *videoInfoView ;
+@property(nonatomic,strong) LiveClassInfoView *liveClassInfoView ;
 
 @property(nonatomic,strong) InfoHeaderView *infoHeaderView ;
 /* 在线成员列表页*/

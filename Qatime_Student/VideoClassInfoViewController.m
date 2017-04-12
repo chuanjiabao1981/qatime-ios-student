@@ -8,10 +8,18 @@
 
 #import "VideoClassInfoViewController.h"
 #import "NavigationBar.h"
+#import "VideoClassListTableViewCell.h"
+#import "VideoClassInfo.h"
+#import "CYLTableViewPlaceHolder.h"
+#import "HaveNoClassView.h"
 
-@interface VideoClassInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
+@interface VideoClassInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CYLTableViewPlaceHolderDelegate>{
     
     NavigationBar *_navigationBar;
+    
+    /**数据源*/
+    NSMutableArray <VideoClassInfo *>*_classArray;
+    
 }
 /**主视图*/
 @property (nonatomic, strong) VideoClassInfoView *videoClassInfoView ;
@@ -50,9 +58,11 @@
 }
 
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //初始化
+    _classArray = @[].mutableCopy;
     
     //加载导航栏
     [self setupNavigation];
@@ -65,24 +75,34 @@
 #pragma mark- UITableView datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 10;
+    return _classArray.count;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     /* cell的重用队列*/
     static NSString *cellIdenfier = @"cell";
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+     VideoClassListTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
     if (cell==nil) {
-        cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+        cell=[[VideoClassListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+    }
+    
+    if (_classArray.count>indexPath.row) {
+        
+        cell.model = _classArray[indexPath.row];
     }
     
     return  cell;
 
-    
 }
 
 
 #pragma mark- UITableView delegate
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return [tableView cellHeightForIndexPath:indexPath model:_classArray[indexPath.row] keyPath:@"model" cellClass:[VideoClassListTableViewCell class] contentViewWidth:self.view.width_sd];
+}
+
 
 #pragma mark- UIScrollView delegate
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -93,12 +113,17 @@
         NSInteger pages = scrollView.contentOffset.x / pageWidth;
         
         [_videoClassInfoView.segmentControl setSelectedSegmentIndex:pages animated:YES];
-        
-      
     }
-
-    
 }
+
+/**无课程占位图*/
+- (UIView *)makePlaceHolderView{
+    HaveNoClassView *view = [[HaveNoClassView alloc]init];
+    view.titleLabel.text = @"当前无课程";
+    return view;
+}
+
+
 
 - (void)returnLastPage{
     
