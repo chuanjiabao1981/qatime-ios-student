@@ -23,7 +23,7 @@
 @property (nonatomic, strong) NSString *chat_team_owner ;
 @property (nonatomic, strong) NSString *buy_tickets_count ;
 @property (nonatomic, strong) NSString *status ;
-@property (nonatomic, strong) NSString *description ;
+@property (nonatomic, strong) NSString *descriptions ;
 @property (nonatomic, strong) NSString *tag_list ;
 @property (nonatomic, strong) NSString *lesson_count ;
 @property (nonatomic, strong) NSString *lessons_count ;

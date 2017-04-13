@@ -33,15 +33,6 @@
 @property (nonatomic, strong) UILabel *suitable ;
 
 
-/** 辅导简介*/
-@property(nonatomic,strong) UILabel *descriptions  ;//"辅导简介"字样,自动布局使用
-@property(nonatomic,strong) UILabel *classDescriptionLabel ;
-
-
-/** 要传数据的所有的label 2 */
-
-@property(nonatomic,strong) UIScrollView *view2 ;
-
 /** 教师姓名*/
 @property(nonatomic,strong) UILabel *teacherNameLabel ;
 
@@ -52,8 +43,6 @@
 @property(nonatomic,strong) UILabel *workPlaceLabel ;
 
 /** 教师简介*/
-
-@property(nonatomic,strong) UILabel *descrip  ;//"教师简介"的label 布局用
 @property(nonatomic,strong) UILabel *teacherInterviewLabel ;
 
 /** 性别*/
@@ -61,15 +50,6 @@
 
 /** 老师照片*/
 @property(nonatomic,strong) UIImageView *teacherHeadImage ;
-
-
-
-@property(nonatomic,strong) UIView *view3 ;
-
-/* 课程列表*/
-@property(nonatomic,strong) UITableView *classesListTableView ;
-
-
 
 
 @end
