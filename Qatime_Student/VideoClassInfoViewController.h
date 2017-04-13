@@ -12,4 +12,6 @@
 
 @interface VideoClassInfoViewController : UIViewController
 
+- (instancetype)initWithClassID:(NSString *)classID ;
+
 @end

@@ -10,6 +10,7 @@
 #import "VideoClassPlayerView.h"
 #import "VideoClassProgressTableViewCell.h"
 
+
 @interface VideoClassPlayerViewController ()<ZFPlayerDelegate,UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
     //播放器模型
@@ -21,6 +22,8 @@
 }
 /**主视图*/
 @property (nonatomic, strong) VideoClassPlayerView *mainView ;
+
+
 
 @end
 
@@ -46,6 +49,8 @@
     
     //加载主视图
     [self setupMainView];
+    
+    //
     
 }
 
@@ -117,7 +122,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 10;
+    return _classListArray.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -128,6 +133,11 @@
     if (cell==nil) {
         cell=[[VideoClassProgressTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
     }
+    
+    if (_classListArray.count>indexPath.row) {
+        cell.model = _classListArray[indexPath.row];
+    }
+    
     
     return  cell;
 }

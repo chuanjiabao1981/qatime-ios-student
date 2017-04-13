@@ -42,6 +42,8 @@
 #import "UIButton+EnlargeTouchArea.h"
 #import "SafeViewController.h"
 
+#import "VideoClassInfoViewController.h"
+
 
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate,LCTabBarDelegate,UITableViewDelegate,UITableViewDataSource>{
     

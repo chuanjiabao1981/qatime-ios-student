@@ -12,21 +12,57 @@
 #import "VideoClassInfo.h"
 #import "CYLTableViewPlaceHolder.h"
 #import "HaveNoClassView.h"
+#import "VideoClassBuyBar.h"
+#import "UIViewController+AFHTTP.h"
+#import "YYModel.h"
 
-@interface VideoClassInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CYLTableViewPlaceHolderDelegate>{
+
+
+@interface VideoClassInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CYLTableViewPlaceHolderDelegate,VideoClassBuyBarDelegate>{
     
     NavigationBar *_navigationBar;
     
+    NSString *_token;
+    NSString *_idNumber;
+    
+    
     /**数据源*/
     NSMutableArray <VideoClassInfo *>*_classArray;
+    
+    /**课程ID*/
+    NSString *_classID;
+    
+    /**model*/
+    VideoClassInfo *_classInfo;
+    
+    
+    
     
 }
 /**主视图*/
 @property (nonatomic, strong) VideoClassInfoView *videoClassInfoView ;
 
+/**购买栏*/
+@property (nonatomic, strong) VideoClassBuyBar *buyBar ;
+
 @end
 
 @implementation VideoClassInfoViewController
+
+
+- (instancetype)initWithClassID:(NSString *)classID{
+    
+    self = [super init];
+    if (self) {
+        
+        _classID = classID.mutableCopy;
+        
+    }
+    return self;
+    
+}
+
+
 
 /**导航栏*/
 - (void)setupNavigation{
@@ -36,11 +72,22 @@
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
 }
+/**token方法*/
+- (void)getToken{
+    /* 提出token和学生id*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
+        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
+    }
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
+        
+        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
+    }
+}
 
 /**加载主视图*/
 - (void)setupMainView{
     
-    _videoClassInfoView = [[VideoClassInfoView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd - Navigation_Height)];
+    _videoClassInfoView = [[VideoClassInfoView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd - Navigation_Height - TabBar_Height)];
     [self.view addSubview:_videoClassInfoView];
     
     _videoClassInfoView.classesListTableView.delegate = self;
@@ -57,20 +104,89 @@
     
 }
 
+/**加载购买栏*/
+- (void)setupBuyBar{
+    _buyBar = [[VideoClassBuyBar alloc]init];
+    [self.view addSubview:_buyBar];
+    _buyBar.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .bottomSpaceToView(self.view, 0)
+    .heightIs(TabBar_Height);
+    
+    _buyBar.delegate = self;
+    
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.view.backgroundColor = [UIColor whiteColor];
     //初始化
     _classArray = @[].mutableCopy;
+    
+    //加载token
+    [self getToken];
     
     //加载导航栏
     [self setupNavigation];
     
+    //加载主视图
+    [self setupMainView];
+    
+    //加载购买栏
+    [self setupBuyBar];
+    
+}
+
+/**请求数据*/
+- (void)requestData{
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            _classInfo = [VideoClassInfo yy_modelWithJSON:dic[@"data"]];
+            _classInfo.classID = dic[@"data"][@"id"];
+            
+            
+            
+            
+        }else{
+            
+        }
+        
+    }];
+    
+}
+
+
+
+
+
+
+
+/**
+ 回调方法 试听
+
+ @param sender 购买栏左侧按钮
+ */
+- (void)enterTaste:(UIButton *)sender{
     
     
     
 }
+
+/**
+ 回调方法  进入学习
+
+ @param sender 购买栏右侧方法
+ */
+- (void)enterStudy:(UIButton *)sender{
+    
+    
+}
+
+
 
 #pragma mark- UITableView datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

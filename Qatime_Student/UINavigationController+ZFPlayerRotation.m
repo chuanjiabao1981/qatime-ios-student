@@ -33,9 +33,7 @@
 
 // 是否支持自动转屏
 - (BOOL)shouldAutorotate{
-    
 
-    
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"SupportedLandscape"]) {
         if ([[NSUserDefaults standardUserDefaults]boolForKey:@"SupportedLandscape"]==YES) {
             return YES;
@@ -54,9 +52,6 @@
 
 // 支持哪些屏幕方向
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-    
-
-    
     
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"SupportedLandscape"]) {
         if ([[NSUserDefaults standardUserDefaults]boolForKey:@"SupportedLandscape"]==YES) {

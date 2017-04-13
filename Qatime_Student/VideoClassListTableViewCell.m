@@ -17,6 +17,9 @@
 /**视频时长*/
 @property (nonatomic, strong) UILabel *duringTime ;
 
+/**状态*/
+@property (nonatomic, strong) UILabel *status ;
+
 @end
 
 
@@ -61,7 +64,17 @@
         .autoHeightRatio(0);
         
         [_duringTime setSingleLineAutoResizeWithMaxWidth:400];
-    
+        
+        //课程状态
+        _status = [[UILabel alloc]init];
+        [self.contentView addSubview:_status];
+        _status.font = TEXT_FONTSIZE;
+        _status.sd_layout
+        .rightSpaceToView(self.contentView, 10)
+        .topEqualToView(_duringTime)
+        .bottomEqualToView(_duringTime);
+        [_status setSingleLineAutoResizeWithMaxWidth:200];
+        
         [self setupAutoHeightWithBottomView:_duringTime bottomMargin:10];
         
     }
@@ -70,6 +83,10 @@
 
 - (void)setModel:(VideoClassInfo *)model{
     
+    _model = model;
+    _className.text = model.current_lesson_name;
+//    _duringTime.text = model.时长;
+    //判断课程状态
     
     
 }
