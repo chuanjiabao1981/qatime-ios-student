@@ -36,6 +36,9 @@
     //加载播放器
     [self setupVideoPlayer];
     
+    //加载主视图
+    [self setupMainView];
+    
 }
 
 /**播放器设置*/
@@ -73,6 +76,17 @@
     self.videoPlayer.hasPreviewView = YES;
     
 }
+
+
+/**加载主视图*/
+- (void)setupMainView{
+    
+    
+    
+    
+}
+
+
 
 
 - (void)didReceiveMemoryWarning {

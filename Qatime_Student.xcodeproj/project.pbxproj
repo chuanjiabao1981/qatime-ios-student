@@ -27,6 +27,7 @@
 		5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2701DF7CF2900A8FDEC /* WithDraw.m */; };
 		5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2731DF7CF3000A8FDEC /* Payment.m */; };
 		5413D2781DF7D0DF00A8FDEC /* UIViewController+Token.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */; };
+		5414AD671E9F1BE0002818FB /* VideoClass_Player_InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5414AD661E9F1BE0002818FB /* VideoClass_Player_InfoView.m */; };
 		5417AC181E715CF70068941D /* CityListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5417AC171E715CF70068941D /* CityListTableViewCell.m */; };
 		5417C48C1E31B85000DD0795 /* app_pay_params.m in Sources */ = {isa = PBXBuildFile; fileRef = 5417C48B1E31B85000DD0795 /* app_pay_params.m */; };
 		541A468C1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m in Sources */ = {isa = PBXBuildFile; fileRef = 541A468B1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m */; };
@@ -746,6 +747,8 @@
 		5413D2751DF7D0AE00A8FDEC /* UIViewController_Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_Token.h; sourceTree = "<group>"; };
 		5413D2761DF7D0DF00A8FDEC /* UIViewController+Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Token.h"; sourceTree = "<group>"; };
 		5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Token.m"; sourceTree = "<group>"; };
+		5414AD651E9F1BDF002818FB /* VideoClass_Player_InfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClass_Player_InfoView.h; sourceTree = "<group>"; };
+		5414AD661E9F1BE0002818FB /* VideoClass_Player_InfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClass_Player_InfoView.m; sourceTree = "<group>"; };
 		5417AC161E715CF70068941D /* CityListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityListTableViewCell.h; sourceTree = "<group>"; };
 		5417AC171E715CF70068941D /* CityListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityListTableViewCell.m; sourceTree = "<group>"; };
 		5417C48A1E31B85000DD0795 /* app_pay_params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_pay_params.h; sourceTree = "<group>"; };
@@ -4847,6 +4850,8 @@
 			isa = PBXGroup;
 			children = (
 				54504ACD1E9E0EA500EFCF8E /* cell */,
+				5414AD651E9F1BDF002818FB /* VideoClass_Player_InfoView.h */,
+				5414AD661E9F1BE0002818FB /* VideoClass_Player_InfoView.m */,
 				54504ACA1E9E0E7F00EFCF8E /* VideoClassPlayerView.h */,
 				54504ACB1E9E0E7F00EFCF8E /* VideoClassPlayerView.m */,
 			);
@@ -6883,6 +6888,7 @@
 				54AC02241E892C5300817767 /* NTESDocumentShareInfo.m in Sources */,
 				54B9148F1E6D5B7500F377ED /* ProvinceChosenViewController.m in Sources */,
 				541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */,
+				5414AD671E9F1BE0002818FB /* VideoClass_Player_InfoView.m in Sources */,
 				54634D981DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m in Sources */,
 				5493D4CB1E0BE1050085A39E /* TLCityGroupCell.m in Sources */,
 				545226051E2482C800F36280 /* EditHeadTableViewCell.m in Sources */,
