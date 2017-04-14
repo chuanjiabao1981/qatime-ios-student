@@ -15,8 +15,15 @@
 #import "VideoClassBuyBar.h"
 #import "UIViewController+AFHTTP.h"
 #import "YYModel.h"
+#import "UIControl+RemoveTarget.h"
+#import "VideoClass.h"
+#import "YYModel.h"
 
-
+typedef enum : NSUInteger {
+    PullToRefresh,
+    PushToLoadMore,
+    
+} RefreshType;
 
 @interface VideoClassInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CYLTableViewPlaceHolderDelegate,VideoClassBuyBarDelegate>{
     
@@ -27,7 +34,7 @@
     
     
     /**数据源*/
-    NSMutableArray <VideoClassInfo *>*_classArray;
+    NSMutableArray <VideoClass *>*_classArray;
     
     /**课程ID*/
     NSString *_classID;
@@ -55,7 +62,7 @@
     self = [super init];
     if (self) {
         
-        _classID = classID.mutableCopy;
+        _classID = [NSString stringWithFormat:@"%@",classID];
         
     }
     return self;
@@ -96,6 +103,8 @@
     
     _videoClassInfoView.scrollView.delegate = self;
     _videoClassInfoView.scrollView.tag = 2;
+    _videoClassInfoView.classesListTableView.estimatedRowHeight = 100;
+    _videoClassInfoView.classesListTableView.rowHeight = UITableViewAutomaticDimension;
     
     typeof(self) __weak weakSelf = self;
     [_videoClassInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
@@ -106,13 +115,8 @@
 
 /**加载购买栏*/
 - (void)setupBuyBar{
-    _buyBar = [[VideoClassBuyBar alloc]init];
+    _buyBar = [[VideoClassBuyBar alloc]initWithFrame: CGRectMake(0, self.view.height_sd-TabBar_Height, self.view.width_sd, TabBar_Height)];
     [self.view addSubview:_buyBar];
-    _buyBar.sd_layout
-    .leftSpaceToView(self.view, 0)
-    .rightSpaceToView(self.view, 0)
-    .bottomSpaceToView(self.view, 0)
-    .heightIs(TabBar_Height);
     
     _buyBar.delegate = self;
     
@@ -131,24 +135,67 @@
     //加载导航栏
     [self setupNavigation];
     
-    //加载主视图
-    [self setupMainView];
-    
-    //加载购买栏
-    [self setupBuyBar];
+    //请求数据
+    [self requestData];
     
 }
 
 /**请求数据*/
 - (void)requestData{
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             _classInfo = [VideoClassInfo yy_modelWithJSON:dic[@"data"]];
             _classInfo.classID = dic[@"data"][@"id"];
+            //加载主页
+            [self setupMainView];
+            _videoClassInfoView.model = _classInfo;
             
+            //课程列表
+            for (NSDictionary *dics in _classInfo.video_lessons) {
+                VideoClass *mod = [VideoClass yy_modelWithJSON:dics];
+                mod.video = [Video yy_modelWithJSON:dics[@"video"]];
+               
+                [_classArray addObject:mod];
+            }
+            [_videoClassInfoView.classesListTableView reloadData];
             
+            //加载购买栏
+            [self setupBuyBar];
+            
+            //按钮显示部分
+            if (_classInfo.is_bought == YES) {
+                _buyBar.leftButton.hidden = YES;
+                _buyBar.rightButton.layer.borderColor = [UIColor greenColor].CGColor;
+                _buyBar.rightButton.backgroundColor = [UIColor greenColor];
+                [_buyBar.rightButton setTitle:@"观看" forState:UIControlStateNormal];
+                [_buyBar.rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                
+                _buyBar.rightButton.sd_resetLayout
+                .leftSpaceToView(_buyBar, 10)
+                .rightSpaceToView(_buyBar, 10)
+                .topSpaceToView(_buyBar, 10)
+                .bottomSpaceToView(_buyBar, 10);
+                [_buyBar.rightButton updateLayout];
+            }else{
+                if (/**能试听*/_classInfo.taste_count.integerValue!=0) {
+                    
+                    _buyBar.leftButton.layer.borderColor = [UIColor greenColor].CGColor;
+                    _buyBar.leftButton.backgroundColor = [UIColor greenColor];
+                    [_buyBar.leftButton setTitle:@"进入试听" forState:UIControlStateNormal];
+                    [_buyBar.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                }else{
+                    _buyBar.leftButton.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+                    _buyBar.leftButton.backgroundColor = SEPERATELINECOLOR_2;
+                    [_buyBar.leftButton setTitle:@"试听结束" forState:UIControlStateNormal];
+                    [_buyBar.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+                    
+                }
+                
+                
+            }
             
             
         }else{
@@ -160,19 +207,22 @@
 }
 
 
-
-
-
-
-
 /**
  回调方法 试听
 
  @param sender 购买栏左侧按钮
  */
 - (void)enterTaste:(UIButton *)sender{
-    
-    
+   
+    //如果可以试听就试听,不能试听没反应
+    if (_classInfo.taste_count!=0) {
+        
+        //进入试听
+        
+    }else{
+       //按钮不能用
+        
+    }
     
 }
 
@@ -183,7 +233,14 @@
  */
 - (void)enterStudy:(UIButton *)sender{
     
-    
+    if (_classInfo.is_bought == YES) {
+        //进入学习
+        
+        
+    }else{
+     //购买下单
+        
+    }
 }
 
 
@@ -216,7 +273,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return [tableView cellHeightForIndexPath:indexPath model:_classArray[indexPath.row] keyPath:@"model" cellClass:[VideoClassListTableViewCell class] contentViewWidth:self.view.width_sd];
+    return [tableView cellHeightForIndexPath:indexPath cellContentViewWidth:self.view.width_sd tableView:tableView];
 }
 
 

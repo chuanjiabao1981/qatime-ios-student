@@ -54,7 +54,7 @@
         
         //时长
         _duringTime = [[UILabel alloc]init];
-        [self.contentView decreaseSize:_duringTime];
+        [self.contentView addSubview:_duringTime];
         _duringTime.font = TEXT_FONTSIZE;
         _duringTime.textColor = TITLECOLOR;
         
@@ -81,13 +81,12 @@
     return self;
 }
 
-- (void)setModel:(VideoClassInfo *)model{
+- (void)setModel:(VideoClass *)model{
     
     _model = model;
-    _className.text = model.current_lesson_name;
-//    _duringTime.text = model.时长;
+    _className.text = model.name;
+    _duringTime.text = [NSString stringWithFormat:@"时长:%@",model.video.format_tmp_duration];
     //判断课程状态
-    
     
 }
 

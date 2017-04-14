@@ -15,7 +15,7 @@
 
 @interface IndexHeaderPageView : UIView
 
-/**
+/**z
  轮播图
  */
 @property(nonatomic,strong) SDCycleScrollView *cycleScrollView ;

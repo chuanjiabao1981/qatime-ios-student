@@ -31,6 +31,8 @@
 		5414AD6A1E9F719B002818FB /* VideoClassBuyBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5414AD691E9F719B002818FB /* VideoClassBuyBar.m */; };
 		5417AC181E715CF70068941D /* CityListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5417AC171E715CF70068941D /* CityListTableViewCell.m */; };
 		5417C48C1E31B85000DD0795 /* app_pay_params.m in Sources */ = {isa = PBXBuildFile; fileRef = 5417C48B1E31B85000DD0795 /* app_pay_params.m */; };
+		54197A901EA0CAB500770B7C /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = 54197A8F1EA0CAB500770B7C /* Video.m */; };
+		54197A931EA0D9C300770B7C /* VideoClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 54197A921EA0D9C300770B7C /* VideoClass.m */; };
 		541A468C1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m in Sources */ = {isa = PBXBuildFile; fileRef = 541A468B1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m */; };
 		541E20041E139967007CF5D1 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */; };
 		541E20071E13B9AF007CF5D1 /* NSDate+ChangeUTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20061E13B9AF007CF5D1 /* NSDate+ChangeUTC.m */; };
@@ -756,6 +758,10 @@
 		5417AC171E715CF70068941D /* CityListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityListTableViewCell.m; sourceTree = "<group>"; };
 		5417C48A1E31B85000DD0795 /* app_pay_params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_pay_params.h; sourceTree = "<group>"; };
 		5417C48B1E31B85000DD0795 /* app_pay_params.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = app_pay_params.m; sourceTree = "<group>"; };
+		54197A8E1EA0CAB500770B7C /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Video.h; sourceTree = "<group>"; };
+		54197A8F1EA0CAB500770B7C /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Video.m; sourceTree = "<group>"; };
+		54197A911EA0D9C300770B7C /* VideoClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClass.h; sourceTree = "<group>"; };
+		54197A921EA0D9C300770B7C /* VideoClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClass.m; sourceTree = "<group>"; };
 		541A468A1E52E7C100F0B36D /* UIViewController+CheckMicVolum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+CheckMicVolum.h"; sourceTree = "<group>"; };
 		541A468B1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+CheckMicVolum.m"; sourceTree = "<group>"; };
 		541E20021E139967007CF5D1 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -2424,8 +2430,8 @@
 				543BCAFD1E79153800AD6721 /* Model */,
 				543BCAFC1E79153600AD6721 /* View */,
 				543BCAFB1E79153400AD6721 /* Controller */,
-				547E92C41E8E513F00160C6D /* 一对一辅导班详情页 */,
 				54FCBAC21DD5909F0094BF58 /* 直播课辅导班详情页 */,
+				547E92C41E8E513F00160C6D /* 一对一辅导班详情页 */,
 				54C4520C1E9CB6DF002108F4 /* 视频课辅导班详情 */,
 			);
 			name = "选课页面";
@@ -5014,6 +5020,10 @@
 			children = (
 				54B907641E9CCFF600034FDC /* VideoClassInfo.h */,
 				54B907651E9CCFF600034FDC /* VideoClassInfo.m */,
+				54197A8E1EA0CAB500770B7C /* Video.h */,
+				54197A8F1EA0CAB500770B7C /* Video.m */,
+				54197A911EA0D9C300770B7C /* VideoClass.h */,
+				54197A921EA0D9C300770B7C /* VideoClass.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -6424,6 +6434,7 @@
 				54AA30851DF950DB009E0D04 /* CheckChargeViewController.m in Sources */,
 				54F47E881E092AF100D896DB /* SystemNotice.m in Sources */,
 				5407C98E1DE7DDED00DB04C8 /* NSString+YYAdd.m in Sources */,
+				54197A931EA0D9C300770B7C /* VideoClass.m in Sources */,
 				54D661251DD048F500C9A0FF /* IndexPageView.m in Sources */,
 				543278661E8CE50200F7A2D9 /* IJKFloatingView.m in Sources */,
 				54AC03D61E8938E100817767 /* NIMInputEmoticonContainerView.m in Sources */,
@@ -6914,6 +6925,7 @@
 				54AC02541E892CEE00817767 /* NTESDemoConfig.m in Sources */,
 				54AC02B41E892FD100817767 /* NTESPageContext.m in Sources */,
 				543BCB001E79156300AD6721 /* ChooseGradeAndSubjectView.m in Sources */,
+				54197A901EA0CAB500770B7C /* Video.m in Sources */,
 				54428DCC1E7C03F80004F27B /* UITableView+CYLTableViewPlaceHolder.m in Sources */,
 				54652E051DEE823100F4607C /* FileService.m in Sources */,
 				54E402291E65831B004935C2 /* QRMaskView.m in Sources */,

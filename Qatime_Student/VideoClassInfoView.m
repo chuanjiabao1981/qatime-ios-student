@@ -84,6 +84,7 @@
         _segmentControl.selectionIndicatorColor = NAVIGATIONRED ;
         _segmentControl.borderType = HMSegmentedControlBorderTypeTop | HMSegmentedControlBorderTypeBottom;
         _segmentControl.borderWidth = 0.6;
+        _segmentControl.selectionIndicatorHeight = 2;
         _segmentControl.borderColor = SEPERATELINECOLOR_2;
         _segmentControl.titleTextAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
         [_segmentControl updateLayout];
@@ -95,14 +96,15 @@
         .leftEqualToView(self)
         .rightEqualToView(self)
         .topSpaceToView(_segmentControl,0)
-        .heightIs(self.height_sd-_segmentControl.bottom_sd);
+        .bottomSpaceToView(self, 0);
         
         [_scrollView updateLayout];
-        _scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame)*3,_scrollView.height_sd );
+        
+        _scrollView.contentSize = CGSizeMake(self.width_sd*3,_scrollView.height_sd);
         _scrollView.pagingEnabled = YES;
         _scrollView.showsHorizontalScrollIndicator = NO;
-        [_scrollView scrollRectToVisible:CGRectMake(CGRectGetWidth(self.frame), 0, CGRectGetWidth(self.frame), 200) animated:NO];
         _scrollView.backgroundColor = [UIColor whiteColor];
+        _scrollView.bounces = NO;
         
         /* 分割线2*/
         UIView *line2 =[[UIView alloc]init];
@@ -115,22 +117,33 @@
         
         [_scrollView addSubview:_view1];
         
-        _view1.sd_layout.leftSpaceToView(_scrollView,0).rightSpaceToView(_scrollView,0).topEqualToView(_scrollView).bottomEqualToView(_scrollView);
+        _view1.sd_layout
+        .leftSpaceToView(_scrollView,0)
+        .widthIs(self.width_sd)
+        .topSpaceToView(_scrollView, 0)
+        .bottomSpaceToView(_scrollView, 0);
         _view1.backgroundColor = [UIColor whiteColor];
         _view1.contentSize = CGSizeMake(self.width_sd, 500);
         
         _view2 =[[UIScrollView alloc]init];
         [_scrollView addSubview:_view2];
-        _view2.sd_layout.leftSpaceToView(_view1,0).widthIs(SCREENWIDTH).topEqualToView(_scrollView).bottomEqualToView(_scrollView);
+        _view2.sd_layout
+        .leftSpaceToView(_view1,0)
+        .widthIs(SCREENWIDTH)
+        .topSpaceToView(_scrollView, 0)
+        .bottomSpaceToView(_scrollView, 0);
         _view2.backgroundColor = [UIColor whiteColor];
         
         _view2.contentSize = CGSizeMake(self.width_sd,500);
         
         _view3 =[[UIView alloc]init];
         [_scrollView addSubview:_view3];
-        _view3.sd_layout.leftSpaceToView(_view2,0).widthIs(SCREENWIDTH).topEqualToView(_scrollView).bottomEqualToView(_scrollView);
+        _view3.sd_layout
+        .leftSpaceToView(_view2,0)
+        .widthIs(SCREENWIDTH)
+        .topSpaceToView(_scrollView, 0)
+        .bottomSpaceToView(_scrollView, 0);
         _view3.backgroundColor = [UIColor whiteColor];
-        
         
         /* -课程介绍页- */
         UILabel *desLabel = [[UILabel alloc]init];
@@ -482,7 +495,15 @@
         _classesListTableView.tableFooterView = [[UIView alloc]init];
         
         [_view3 addSubview:_classesListTableView];
-        _classesListTableView.sd_layout.leftSpaceToView(_view3,0).rightSpaceToView(_view3,0).topSpaceToView(_view3,0).bottomSpaceToView(_view3,0);
+        _classesListTableView.sd_layout
+        .leftSpaceToView(_view3,0)
+        .rightSpaceToView(_view3,0)
+        .topSpaceToView(_view3,0)
+        .bottomSpaceToView(_view3,0);
+        
+        [_scrollView setupAutoContentSizeWithRightView:_view3 rightMargin:0];
+        [_scrollView setupAutoContentSizeWithBottomView:_view1 bottomMargin:0];
+        
         
     }
     return self;
@@ -494,7 +515,7 @@
     
     _model = model;
     [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
-    _className.text = model.current_lesson_name;
+    _className.text = model.name;
     
     if (model.price.floatValue!=0) {
         
@@ -506,7 +527,7 @@
     
     _gradeLabel.text = model.grade;
     _subjectLabel.text = model.subject;
-    _classCount.text = [NSString stringWithFormat:@"共%@课",model.lessons_count];
+    _classCount.text = [NSString stringWithFormat:@"共%@课",model.video_lessons_count];
 //    _liveTimeLabel.text = [NSString stringWithFormat:@"视频总长%@",model.视频长度];
     _classTarget.text = model.objective;
     _suitable.text = model.suit_crowd;
@@ -520,8 +541,8 @@
     }else if([model.teacher[@"gender"]isEqualToString:@"female"]) {
         [_genderImage setImage:[UIImage imageNamed:@"女"]];
     }
-    _workPlaceLabel.text = model.teacher[@"school"];
-    _workYearsLabel.text = model.teacher[@"teaching_years"];
+    _workPlaceLabel.text = [NSString stringWithFormat:@"%@",model.teacher[@"school"]];
+    _workYearsLabel.text = [NSString stringWithFormat:@"%@",[model.teacher[@"teaching_years"] changeEnglishYearsToChinese]];
     _teacherInterviewLabel.attributedText = [[NSMutableAttributedString alloc]initWithData:[model.teacher[@"desc"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
     
 }

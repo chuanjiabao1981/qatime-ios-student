@@ -744,7 +744,7 @@
     
     if (!_videoClassFilterController) {
         
-        _videoClassFilterController = [[VideoClassFilterViewController alloc]initWithGrade:_grade andSubject:_subject andCourse:@"course"];
+        _videoClassFilterController = [[VideoClassFilterViewController alloc]initWithGrade:_grade andSubject:_subject andCourse:@"video_courses"];
         [self addChildViewController:_videoClassFilterController];
         [self.view addSubview:_videoClassFilterController.view];
         _videoClassFilterController.view.sd_layout
