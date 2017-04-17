@@ -13,6 +13,7 @@ typedef enum : NSUInteger {
 
     LiveClassType,
     InteractionType,
+    VideoClassType
 } ClassOrderType;
 
 

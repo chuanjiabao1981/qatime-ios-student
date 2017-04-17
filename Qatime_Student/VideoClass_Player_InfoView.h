@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VideoClassInfo.h"
 
 @interface VideoClass_Player_InfoView : UIScrollView
 
@@ -51,5 +52,8 @@
 /** 老师照片*/
 @property(nonatomic,strong) UIImageView *teacherHeadImage ;
 
+
+/**model*/
+@property (nonatomic, strong) VideoClassInfo  *model ;
 
 @end

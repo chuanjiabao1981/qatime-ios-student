@@ -18,6 +18,11 @@
 #import "UIControl+RemoveTarget.h"
 #import "VideoClass.h"
 #import "YYModel.h"
+<<<<<<< HEAD
+=======
+#import "VideoClassPlayerViewController.h"
+#import "OrderViewController.h"
+>>>>>>> 视频课功能
 
 typedef enum : NSUInteger {
     PullToRefresh,
@@ -42,8 +47,8 @@ typedef enum : NSUInteger {
     /**model*/
     VideoClassInfo *_classInfo;
     
-    
-    
+    /**教师详情*/
+    Teacher *_teacher;
     
 }
 /**主视图*/
@@ -152,6 +157,7 @@ typedef enum : NSUInteger {
             [self setupMainView];
             _videoClassInfoView.model = _classInfo;
             
+<<<<<<< HEAD
             //课程列表
             for (NSDictionary *dics in _classInfo.video_lessons) {
                 VideoClass *mod = [VideoClass yy_modelWithJSON:dics];
@@ -196,8 +202,61 @@ typedef enum : NSUInteger {
                 
                 
             }
+=======
             
+            _teacher = [Teacher yy_modelWithJSON:_classInfo.teacher];
+            _teacher.teacherID = _classInfo.teacher[@"id"];
             
+            //课程列表
+            for (NSDictionary *dics in _classInfo.video_lessons) {
+                VideoClass *mod = [VideoClass yy_modelWithJSON:dics];
+                mod.video = [Video yy_modelWithJSON:dics[@"video"]];
+               
+                [_classArray addObject:mod];
+            }
+            [_videoClassInfoView.classesListTableView reloadData];
+>>>>>>> 视频课功能
+            
+            //加载购买栏
+            [self setupBuyBar];
+            
+            //按钮显示部分
+            
+            //已购买
+            if (_classInfo.is_bought == YES) {
+                _buyBar.leftButton.hidden = YES;
+                _buyBar.rightButton.layer.borderColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0].CGColor;
+                _buyBar.rightButton.backgroundColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0];
+                [_buyBar.rightButton setTitle:@"观看" forState:UIControlStateNormal];
+                [_buyBar.rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                
+                _buyBar.rightButton.sd_resetLayout
+                .leftSpaceToView(_buyBar, 10)
+                .rightSpaceToView(_buyBar, 10)
+                .topSpaceToView(_buyBar, 10)
+                .bottomSpaceToView(_buyBar, 10);
+                [_buyBar.rightButton updateLayout];
+                
+                [_buyBar.rightButton removeAllTargets];
+                [_buyBar.rightButton addTarget:self action:@selector(enterStudy:) forControlEvents:UIControlEventTouchUpInside];
+                
+                //未购买
+            }else{
+                //能试听
+                if (_classInfo.is_tasting == YES) {
+                    _buyBar.leftButton.layer.borderColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0].CGColor;
+                    _buyBar.leftButton.backgroundColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0];
+                    [_buyBar.leftButton setTitle:@"进入试听" forState:UIControlStateNormal];
+                    [_buyBar.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                }else{
+                    //不能试听
+                    _buyBar.leftButton.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+                    _buyBar.leftButton.backgroundColor = SEPERATELINECOLOR_2;
+                    [_buyBar.leftButton setTitle:@"试听结束" forState:UIControlStateNormal];
+                    [_buyBar.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+                }
+            }
         }else{
             
         }
@@ -215,10 +274,21 @@ typedef enum : NSUInteger {
 - (void)enterTaste:(UIButton *)sender{
    
     //如果可以试听就试听,不能试听没反应
+<<<<<<< HEAD
     if (_classInfo.taste_count!=0) {
         
         //进入试听
         
+=======
+    if (_classInfo.is_tasting==YES) {
+        //进入试听
+        
+        //测试代码  ->暂时缺少试听接口
+        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo];
+        [self.navigationController pushViewController:controller animated:YES];
+
+        
+>>>>>>> 视频课功能
     }else{
        //按钮不能用
         
@@ -236,11 +306,27 @@ typedef enum : NSUInteger {
     if (_classInfo.is_bought == YES) {
         //进入学习
         
+<<<<<<< HEAD
+=======
+        //测试代码
+            VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo];
+            [self.navigationController pushViewController:controller animated:YES];
+>>>>>>> 视频课功能
         
     }else{
      //购买下单
         
+<<<<<<< HEAD
     }
+=======
+        OrderViewController *controller = [[OrderViewController alloc]initWithClassID:_classID andClassType:VideoClassType];
+        [self.navigationController pushViewController:controller animated:YES];
+        
+    }
+
+    
+    
+>>>>>>> 视频课功能
 }
 
 

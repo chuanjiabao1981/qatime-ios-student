@@ -10,8 +10,17 @@
 #import "VideoClassPlayerView.h"
 #import "VideoClassProgressTableViewCell.h"
 
+//屏幕模式
+typedef enum : NSUInteger {
+    PortraitMode,
+    FullScreenMode,
+} ScreenMode;
 
 @interface VideoClassPlayerViewController ()<ZFPlayerDelegate,UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
+    
+    /**播放器的底视图*/
+    UIView *_playerView;
+    
     
     //播放器模型
     ZFPlayerModel *_playerModel;
@@ -19,15 +28,44 @@
     /**课程数据*/
     NSMutableArray *_classListArray;
     
+    /**教师详情数据*/
+    Teacher *_teacher;
+    
+    /**课程详情信息*/
+    VideoClassInfo *_classInfo;
+    
+    /**屏幕模式*/
+    ScreenMode _screenMode;
+    
+    /**播放源数组*/
+    NSArray *datas;
+    
 }
 /**主视图*/
 @property (nonatomic, strong) VideoClassPlayerView *mainView ;
 
-
-
 @end
 
 @implementation VideoClassPlayerViewController
+
+//初始化方法
+-(instancetype)initWithClasses:(__kindof NSArray *)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo{
+    
+    self = [super init];
+    if (self) {
+        
+        _classListArray = [NSMutableArray arrayWithArray:classes];
+        _teacher = teacher;
+        _classInfo = classInfo;
+        
+        
+    }
+    return self;
+    
+}
+
+
+
 
 - (void)viewDidAppear:(BOOL)animated{
     
@@ -44,38 +82,75 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    _screenMode = PortraitMode;
+    
+    datas = @[@"http://7xqhmn.media1.z0.glb.clouddn.com/femorning-20161106.mp4",
+                @"http://wvideo.spriteapp.cn/video/2016/0328/56f8ec01d9bfe_wpd.mp4",
+                @"http://baobab.wdjcdn.com/1456117847747a_x264.mp4",
+                @"http://baobab.wdjcdn.com/14525705791193.mp4",
+                ];
+
+    
     //加载播放器
     [self setupVideoPlayer];
     
     //加载主视图
     [self setupMainView];
     
-    //
+    //旋转监听
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+    
+    [self.videoPlayer addObserver:self forKeyPath:@"isFullScreen" options:NSKeyValueObservingOptionNew context:nil];
     
 }
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    
+    
+    if ([change[@"new"] integerValue]==0) {
+        
+        NSLog(@"切回竖屏模式");
+    }else{
+        NSLog(@"切换至全屏模式");
+    }
+    
+    
+    
+}
+
 
 /**播放器设置*/
 - (void)setupVideoPlayer{
     
+    _playerView = [[UIView alloc]init];
+    [self.view addSubview:_playerView];
+    [_playerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo(_playerView.mas_width).multipliedBy(9.0f/16.0f);
+        
+    }];
+    
     self.videoPlayer = [[ZFPlayerView alloc] init];
-    [self.view addSubview:self.videoPlayer];
+    [_playerView addSubview:self.videoPlayer];
     [self.videoPlayer mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view);
-        make.left.right.equalTo(self.view);
-        make.height.equalTo(self.videoPlayer.mas_width).multipliedBy(9.0f/16.0f);
+        make.top.left.right.bottom.equalTo(_playerView);
     }];
     // 初始化控制层view
     // 考虑自定义
     ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
     [self.videoPlayer addSubview:controlView];
     [controlView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.left.right.equalTo(self.videoPlayer);
+        make.left.top.right.bottom.equalTo(self.videoPlayer);
     }];
+    
     
     // 初始化播放模型
     _playerModel = [[ZFPlayerModel alloc]init];
-    _playerModel.videoURL = [NSURL URLWithString:@""];
-    _playerModel.title = @"";
+    _playerModel.fatherView = _playerView;
+    _playerModel.videoURL = [NSURL URLWithString:@"http://baobab.wdjcdn.com/1456316686552The.mp4"];
+    _playerModel.title = @"视频课程啊";
     [self.videoPlayer playerControlView:controlView playerModel:_playerModel];
     
     // 设置代理
@@ -99,7 +174,7 @@
     _mainView.sd_layout
     .leftSpaceToView(self.view, 0)
     .rightSpaceToView(self.view, 0)
-    .topSpaceToView(_videoPlayer, 0)
+    .topSpaceToView(_playerView, 0)
     .bottomSpaceToView(self.view, 0);
     
     _mainView.classVideoListTableView.delegate = self;
@@ -109,14 +184,16 @@
     _mainView.scrollView.delegate = self;
     _mainView.scrollView.tag = 2;
     
+    _mainView.model = _classInfo;
+    
     typeof(self) __weak weakSelf = self;
     _mainView.segmentControl.indexChangeBlock = ^(NSInteger index) {
         [weakSelf.mainView.scrollView scrollRectToVisible:CGRectMake(weakSelf.view.width_sd*index, 0, weakSelf.view.width_sd, weakSelf.mainView.scrollView.height_sd) animated:YES];
     };
     
-    
-    
 }
+
+
 
 #pragma mark- UITableView datasource
 
@@ -135,6 +212,7 @@
     }
     
     if (_classListArray.count>indexPath.row) {
+        cell.numbers.text = [NSString stringWithFormat:@"%ld",indexPath.row];
         cell.model = _classListArray[indexPath.row];
     }
     
@@ -144,13 +222,15 @@
 
 
 #pragma mark- UITableView delegate
-
--(CGFloat)cellHeightForIndexPath:(NSIndexPath *)indexPath cellContentViewWidth:(CGFloat)width tableView:(UITableView *)tableView{
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return [tableView cellHeightForIndexPath:indexPath cellContentViewWidth:self.view.width_sd tableView:tableView];
-    
 }
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    _playerModel.videoURL = [NSURL URLWithString:datas[indexPath.row]];
+    [self.videoPlayer resetToPlayNewVideo:_playerModel];
     
 }
 
@@ -162,6 +242,26 @@
         [_mainView.segmentControl setSelectedSegmentIndex:page animated:YES];
     }
 }
+
+#pragma mark- Device Oriation
+- (void)deviceOrientationDidChange:(NSObject*)sender{
+    
+    UIDevice* device = [sender valueForKey:@"object"];
+    NSLog(@"%ld",(long)device.orientation);
+}
+
+//返回按钮的回调
+- (void)zf_playerBackAction{
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
+
+-(void)dealloc{
+    
+    [self.videoPlayer removeObserver:self forKeyPath:@"isFullScreen"];
+}
+
 
 
 - (void)didReceiveMemoryWarning {
