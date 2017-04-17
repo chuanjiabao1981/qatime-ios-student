@@ -376,6 +376,10 @@ typedef enum : NSUInteger {
                                 ChatList *mod1 = (ChatList *)obj1;
                                 ChatList *mod2 = (ChatList *)obj2;
                                 
+<<<<<<< HEAD
+=======
+                                
+>>>>>>> master
                                 if (mod1.lastTime<mod2.lastTime) {
                                     
                                     // 按时间戳降序排列
@@ -394,7 +398,15 @@ typedef enum : NSUInteger {
                         }
                     }
                 }
+<<<<<<< HEAD
                 
+=======
+                
+                
+                
+               
+                
+>>>>>>> master
                 if (state == RefreshStatePushLoadMore) {
                     
                     [_noticeIndexView.chatListTableView.mj_header endRefreshing];
