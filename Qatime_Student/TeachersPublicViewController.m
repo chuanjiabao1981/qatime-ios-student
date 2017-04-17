@@ -34,6 +34,8 @@
     NSMutableArray *_publicClasses;
     /**存放一对一课程的数组*/
     NSMutableArray *_oneOnOneClasses;
+    /**视频课程的数组*/
+    NSMutableArray *_videoClasses;
     
     TeachersPublic_Classes *_teacherPublicClass;
     
@@ -42,11 +44,19 @@
     /* 头视图的尺寸*/
     CGSize headerSize;
     
+    /**section的数量~~*/
+    NSInteger _publicCount;
+    NSInteger _oneOnOneCount;
+    NSInteger _videoCount;
+    
 }
-/**section的title*/
+/**section2的title*/
 @property (nonatomic, strong) UIView *secTitle ;
+/**section3的title*/
+@property (nonatomic, strong) UIView *thirdTitle ;
 /**section的分割线*/
 @property (nonatomic, strong) UIView *sepLine;
+
 
 @end
 
@@ -56,10 +66,7 @@
 {
     self = [super init];
     if (self) {
-        
-        _teacherID = @"".mutableCopy;
-        _teacherID  = teacherID;
-        
+        _teacherID  = teacherID.mutableCopy;
     }
     return self;
 }
@@ -73,8 +80,11 @@
     
     //初始化数据
     _publicClasses = @[].mutableCopy;
-    
+    _publicCount = 0;
     _oneOnOneClasses = @[].mutableCopy;
+    _oneOnOneCount = 0;
+    _videoClasses = @[].mutableCopy;
+    _videoCount = 0;
     
     [self loadingHUDStartLoadingWithTitle:@"加载中"];
     
@@ -115,15 +125,17 @@
     
     [_teachersPublicCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId2"];
     
+    [_teachersPublicCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId3"];
     
      [_teachersPublicCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId"];
     
+    [_teachersPublicCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId2"];
+    
+    [_teachersPublicCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId3"];
     
     _teachersPublicCollectionView.delegate = self;
     _teachersPublicCollectionView.dataSource = self;
 
-   
-    
     [self.view addSubview:_navigationBar];
 
 }
@@ -133,21 +145,52 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
-    NSInteger num = 1;
-    if (_oneOnOneClasses.count!=0) {
-        
-        if (section == 0) {
-            num = _oneOnOneClasses.count;
-        }else if (section == 1){
-            
-            num = _publicClasses.count;
+    NSInteger num = 0;
+    if (_publicCount!=0) {
+        if (_oneOnOneCount==0&&_videoCount==0) {
+            num = _publicCount;
+        }else if (_oneOnOneCount !=0 &&_videoCount==0){
+            if (section == 0) {
+                num = _publicCount;
+            }else if (section == 1){
+                num = _oneOnOneCount;
+            }
+        }else if (_oneOnOneCount == 0 && _videoCount != 0){
+            if (section == 0) {
+                num = _publicCount;
+            }else if (section == 1){
+                num = _videoCount;
+            }
+        }else if (_oneOnOneCount != 0 && _videoCount != 0){
+            if (section == 0) {
+                num = _publicCount;
+            }else if (section == 1){
+                num = _oneOnOneCount;
+            }else if (section == 2){
+                num = _videoCount;
+            }
         }
     }else{
-        num = _publicClasses.count;
+        if (_oneOnOneCount==0&&_videoCount==0) {
+            num = 0;
+        }else if (_oneOnOneCount !=0 &&_videoCount==0){
+            if (section == 0) {
+                num = _oneOnOneCount;
+            }
+        }else if (_oneOnOneCount == 0 && _videoCount != 0){
+            if (section == 0) {
+                num = _videoCount;
+            }
+        }else if (_oneOnOneCount != 0 && _videoCount != 0){
+            if (section == 0) {
+                num = _oneOnOneCount;
+            }else if (section == 1){
+                num = _videoCount;
+            }
+        }
     }
     
     return num;
-    
 }
 
 
@@ -180,7 +223,6 @@
         }
     }
     
-    
     return cell;
     
 }
@@ -190,10 +232,17 @@
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     
-    NSInteger num = 1;
-    if (_oneOnOneClasses.count!=0) {
-        num = 2;
+    NSInteger num = 0;
+    if (_publicCount!=0) {
+        num++;
     }
+    if (_oneOnOneCount!=0) {
+        num++;
+    }
+    if (_videoCount!=0) {
+        num++;
+    }
+    
     return num;
 }
 
@@ -261,58 +310,193 @@
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
     
     UICollectionReusableView *header;
-    
-    //两个section的情况
-    if (_oneOnOneClasses.count!=0) {
-        //section 0
-        if (indexPath.section == 0) {
-            //section的header
-            if (kind == UICollectionElementKindSectionHeader) {
-                NSString *CellIdentifier = @"headerId";
-                //从缓存中获取 Headercell
-                header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-                
-                [header addSubview:_teachersPublicHeaderView];
-                _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
-
+    //有没有直播课
+    if (_publicCount!=0) {
+        if (_oneOnOneCount!=0&&_videoCount!=0) {
+            //三个section的情况
+            if (indexPath.section == 0) {
+                //section的header
+                if (kind == UICollectionElementKindSectionHeader){
+                    NSString *CellIdentifier = @"headerId";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:_teachersPublicHeaderView];
+                    _teachersPublicHeaderView.classList.text = @"直播课";
+                    _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
+                }
                 //section的footer
-            }else if (kind == UICollectionElementKindSectionFooter){
-                NSString *CellIdentifier = @"footerId";
-                //从缓存中获取 Headercell
-                header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-                
-                [header addSubview:self.sepLine];
-//                self.sepLine.frame = CGRectMake(0, 0, header.width_sd, header.height_sd);
-                
+                else if (kind == UICollectionElementKindSectionFooter){
+                    NSString *CellIdentifier = @"footerId";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:self.sepLine];
+                }
+                //section 1
+            }else if (indexPath.section == 1){
+                if (kind == UICollectionElementKindSectionHeader){
+                    NSString *CellIdentifier = @"headerId2";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:self.secTitle];
+                }else if (kind == UICollectionElementKindSectionFooter){
+                    NSString *CellIdentifier = @"footerId2";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:self.sepLine];
+                }
+            }else if (indexPath.section==2){
+                if (kind == UICollectionElementKindSectionHeader){
+                    NSString *CellIdentifier = @"headerId3";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:self.thirdTitle];
+                }
             }
-            //section 1
-        }else if (indexPath.section == 1){
-            NSString *CellIdentifier = @"headerId2";
-            //从缓存中获取 Headercell
-            header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-            [header addSubview:self.secTitle];
-            
+        }else if (_oneOnOneCount==0 &&_videoCount!=0){
+            //两个section的情况
+            if (indexPath.section == 0) {
+                //section的header
+                if (kind == UICollectionElementKindSectionHeader){
+                    NSString *CellIdentifier = @"headerId";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:_teachersPublicHeaderView];
+                    _teachersPublicHeaderView.classList.text = @"直播课";
+                    _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
+                }
+                //section的footer
+                else if (kind == UICollectionElementKindSectionFooter){
+                    NSString *CellIdentifier = @"footerId";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:self.sepLine];
+                }
+                //section 1
+            }else if (indexPath.section == 1){
+                if (kind == UICollectionElementKindSectionHeader){
+                    NSString *CellIdentifier = @"headerId2";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:self.secTitle];
+                }
+            }
+        }else if (_oneOnOneCount!=0 &&_videoCount==0){
+            //两个section的情况
+            if (indexPath.section == 0) {
+                //section的header
+                if (kind == UICollectionElementKindSectionHeader){
+                    NSString *CellIdentifier = @"headerId";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:_teachersPublicHeaderView];
+                    _teachersPublicHeaderView.classList.text = @"直播课";
+                    _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
+                }
+                //section的footer
+                else if (kind == UICollectionElementKindSectionFooter){
+                    NSString *CellIdentifier = @"footerId";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:self.sepLine];
+                }
+                //section 1
+            }else if (indexPath.section == 1){
+                if (kind == UICollectionElementKindSectionHeader){
+                    NSString *CellIdentifier = @"headerId2";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:self.thirdTitle];
+                }
+            }
+        }else if (_oneOnOneCount==0 &&_videoCount==0){
+            //一个section的情况
+            if (indexPath.section == 0) {
+                //section的header
+                if (kind == UICollectionElementKindSectionHeader){
+                    NSString *CellIdentifier = @"headerId";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:_teachersPublicHeaderView];
+                    _teachersPublicHeaderView.classList.text = @"直播课";
+                    _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
+                }
+                //section的footer
+                else if (kind == UICollectionElementKindSectionFooter){
+                    NSString *CellIdentifier = @"footerId";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:self.sepLine];
+                }
+            }
         }
-       //一个section的情况
     }else{
-        
-        if (indexPath.section == 0) {
-            
-            NSString *CellIdentifier = @"headerId";
-            //从缓存中获取 Headercell
-            header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-            _teachersPublicHeaderView.classList.text = @"直播课";
-            [header addSubview:_teachersPublicHeaderView];
-            _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
+        if (_oneOnOneCount!=0&&_videoCount!=0) {
+            //两个section的情况
+            if (indexPath.section == 0) {
+                //section的header
+                if (kind == UICollectionElementKindSectionHeader){
+                    NSString *CellIdentifier = @"headerId";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:_teachersPublicHeaderView];
+                    _teachersPublicHeaderView.classList.text = @"一对一";
+                    _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
+                }
+                //section的footer
+                else if (kind == UICollectionElementKindSectionFooter){
+                    NSString *CellIdentifier = @"footerId";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:self.sepLine];
+                }
+                //section 1
+            }else if (indexPath.section == 1){
+                if (kind == UICollectionElementKindSectionHeader){
+                    NSString *CellIdentifier = @"headerId2";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:self.thirdTitle];
+                }else if (kind == UICollectionElementKindSectionFooter){
+                    NSString *CellIdentifier = @"footerId2";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:self.sepLine];
+                }
+            }
+        }else if (_oneOnOneCount==0 &&_videoCount!=0){
+            //一个section的情况
+            if (indexPath.section == 0) {
+                //section的header
+                if (kind == UICollectionElementKindSectionHeader){
+                    NSString *CellIdentifier = @"headerId";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:_teachersPublicHeaderView];
+                    _teachersPublicHeaderView.classList.text = @"视频课";
+                    _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
+                }
+            }
+        }else if (_oneOnOneCount==0 &&_videoCount==0){
+            //啥数据都没有的情况
+            if (indexPath.section == 0) {
+                //section的header
+                if (kind == UICollectionElementKindSectionHeader){
+                    NSString *CellIdentifier = @"headerId";
+                    //从缓存中获取 Headercell
+                    header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                    [header addSubview:_teachersPublicHeaderView];
+                    _teachersPublicHeaderView.classList.text = @"";
+                    _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
+                }
+            }
         }
-        
     }
-    
-    
-    return header;
+        
+        return header;
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
     
     TeacherPublicClassCollectionViewCell *cell = (TeacherPublicClassCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     
@@ -360,15 +544,23 @@
                 
                 [_publicClasses addObject:mod];
             }
+            _publicCount = _publicClasses.count;
             
             //yymodel解析教师一对一课程数据
             for (NSDictionary *classDic in dic[@"data"][@"courses"]) {
                 TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:classDic];
-                
                 mod.classID = classDic[@"id"];
-                
-//                [_oneOnOneClasses addObject:mod];
+                [_oneOnOneClasses addObject:mod];
             }
+            _oneOnOneCount = _oneOnOneClasses.count;
+            
+            //yymodel解析教师视频课数据
+            for (NSDictionary *classDic in dic[@"data"][@"courses"]) {
+                TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:classDic];
+                mod.classID = classDic[@"id"];
+                [_videoClasses addObject:mod];
+            }
+            _videoCount = _videoClasses.count;
             
             //加载视图
             [self setupViews];
@@ -471,7 +663,7 @@
         _secTitle = [[UIView alloc]init];
         _secTitle.frame = CGRectMake(0, 0, self.view.width_sd, 40);
         UILabel *label = [[UILabel alloc]init];
-        label.text = @"直播课";
+        label.text = @"一对一";
         label.font = TITLEFONTSIZE;
         [_secTitle addSubview:label];
         label.sd_layout
@@ -483,6 +675,26 @@
         [label updateLayout];
     }
     return _secTitle;
+}
+
+-(UIView *)thirdTitle{
+    
+    if (!_thirdTitle) {
+        _thirdTitle = [[UIView alloc]init];
+        _thirdTitle.frame = CGRectMake(0, 0, self.view.width_sd, 40);
+        UILabel *label = [[UILabel alloc]init];
+        label.text = @"视频课";
+        label.font = TITLEFONTSIZE;
+        [_thirdTitle addSubview:label];
+        label.sd_layout
+        .leftSpaceToView(_thirdTitle, 12)
+        .centerYEqualToView(_thirdTitle)
+        .autoHeightRatio(0);
+        [label setSingleLineAutoResizeWithMaxWidth:100];
+        
+        [label updateLayout];
+    }
+    return _thirdTitle;
 }
 
 

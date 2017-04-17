@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VideoClassInfo.h"
+
+#import "VideoClass.h"
 
 @interface VideoClassProgressTableViewCell : UITableViewCell
 /**序号*/
@@ -23,6 +24,6 @@
 @property (nonatomic, strong) UILabel *status ;
 
 /**model*/
-@property (nonatomic, strong) VideoClassInfo *model ;
+@property (nonatomic, strong) VideoClass *model ;
 
 @end

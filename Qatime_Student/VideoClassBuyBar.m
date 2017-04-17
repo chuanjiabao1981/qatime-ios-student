@@ -32,7 +32,8 @@
         .leftSpaceToView(self, 10)
         .topSpaceToView(self, 10)
         .bottomSpaceToView(self, 10)
-        .widthIs(self.width_sd-30);
+        .widthIs(self.width_sd/2-15);
+        [_leftButton updateLayout];
         
         [_leftButton addTarget:self action:@selector(leftButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -47,6 +48,7 @@
         .bottomSpaceToView(self, 10)
         .rightSpaceToView(self, 10)
         .widthRatioToView(_leftButton, 1.0);
+        [_rightButton updateLayout];
         
         [_rightButton addTarget:self action:@selector(rightButtonAction:) forControlEvents:UIControlEventTouchUpInside];
        

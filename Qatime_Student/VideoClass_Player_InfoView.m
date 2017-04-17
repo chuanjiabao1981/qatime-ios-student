@@ -7,6 +7,8 @@
 //
 
 #import "VideoClass_Player_InfoView.h"
+#import "NSString+ChangeYearsToChinese.h"
+
 
 @implementation VideoClass_Player_InfoView
 
@@ -16,7 +18,7 @@
     if (self) {
         
         self.contentSize = CGSizeMake(self.width_sd, self.height_sd);
-        
+        self.showsHorizontalScrollIndicator = NO;
         //课程名
         _className = [[UILabel alloc]init];
         _className.textColor = [UIColor blackColor];
@@ -282,8 +284,39 @@
         .topSpaceToView(descrip,20)
         .autoHeightRatio(0);
         
+        [self setupAutoHeightWithBottomView:_teacherInterviewLabel bottomMargin:20];
+        
     }
     return self;
 }
+
+-(void)setModel:(VideoClassInfo *)model{
+    
+    _model = model;
+    
+    _className.text = model.name;
+    _gradeLabel.text = model.grade;
+    _subjectLabel.text = model.subject;
+    _classCount.text = model.video_lessons_count;
+    _liveTimeLabel.text = [NSString stringWithFormat:@"视频总长:%@",model.total_duration];
+    _classTarget.text = model.objective;
+    _suitable.text = model.suit_crowd;
+    
+    [_teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:model.teacher[@"avatar_url"]]];
+    _teacherNameLabel.text = model.teacher[@"name"];
+    
+    if ([model.teacher[@"gender"]isEqualToString:@"male"]) {
+        [_genderImage setImage:[UIImage imageNamed:@"男"]];
+        
+    }else if ([model.teacher[@"gender"]isEqualToString:@"female"]){
+        
+        [_genderImage setImage:[UIImage imageNamed:@"女"]];
+    }
+    _workPlaceLabel.text = model.teacher[@"school"];
+    _workYearsLabel.text = [model.teacher[@"teaching_years"] changeEnglishYearsToChinese];
+    _teacherInterviewLabel.attributedText = [[NSMutableAttributedString alloc]initWithData:[model.teacher[@"desc"] dataUsingEncoding:NSUnicodeStringEncoding ] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+    
+}
+
 
 @end

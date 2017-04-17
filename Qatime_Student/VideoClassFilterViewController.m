@@ -11,6 +11,7 @@
 #import "TutoriumInfoViewController.h"
 #import "MJRefresh.h"
 #import "CYLTableViewPlaceHolder.h"
+#import "VideoClassInfoViewController.h"
 
 //上滑 或 下拉
 typedef enum : NSUInteger {
@@ -287,7 +288,7 @@ typedef enum : NSUInteger {
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     ChooseClassTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    UIViewController *controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+    UIViewController *controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
     [self.navigationController pushViewController:controller animated:YES];
     
 }

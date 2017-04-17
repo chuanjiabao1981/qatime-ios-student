@@ -15,6 +15,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         //序号
         _numbers = [[UILabel alloc]init];
         [self.contentView addSubview:_numbers];
@@ -65,14 +67,11 @@
     return self;
 }
 
--(void)setModel:(VideoClassInfo *)model{
+-(void)setModel:(VideoClass *)model{
     
     _model = model;
-    
     _className.text = model.name;
-//    _duringTime.text = [NSString stringWithFormat:@"时长:%@",model.时长];
-    
-    
+    _duringTime.text = [NSString stringWithFormat:@"时长:%@",model.video.format_tmp_duration];
     
 }
 

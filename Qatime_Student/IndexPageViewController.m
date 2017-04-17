@@ -616,9 +616,10 @@
             
             NSDictionary *dataDic = dic[@"data"];
             
-            for (NSDictionary *dic in dataDic) {
+            for (NSDictionary *dics in dataDic) {
                 
-                [_banners addObject:dic[@"logo_url"]];
+                [_banners addObject:dics[@"logo_url"]];
+                
             }
             if (_banners.count>0) {
                 
@@ -674,7 +675,13 @@
                     mod.tag_one = dics[@"tag_one"];
                     mod.tag_two = dics[@"tag_two"];
                     mod.classID =dics[@"live_studio_course"][@"id"];
-                    [_classes addObject:mod];
+                    
+                    if (mod == nil) {
+                        
+                    }else{
+                        
+                        [_classes addObject:mod];
+                    }
                     
                 }
                 
@@ -979,7 +986,9 @@
         TodayLiveCollectionViewCell *cell = (TodayLiveCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
         
 //        TutoriumInfoViewController *controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
-        OneOnOneTutoriumInfoViewController *controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:@"1"];
+//        OneOnOneTutoriumInfoViewController *controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:@"1"];
+        
+        VideoClassInfoViewController *controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
         
@@ -999,11 +1008,9 @@
             
         }else{
             
-            NSString *teacherId=[NSString string];
-            
             RecommandTeacher *teach =_teachers[indexPath.row];
             
-            teacherId = teach.teacherID;
+             NSString *teacherId=  [NSString stringWithFormat:@"%@",teach.teacherID];
             
             TeachersPublicViewController *public =[[TeachersPublicViewController alloc]initWithTeacherID:teacherId];
             

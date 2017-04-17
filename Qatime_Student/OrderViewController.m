@@ -18,7 +18,7 @@
 #import "PayConfirmViewController.h"
 #import "UIAlertController+Blocks.h"
 #import "WXApi.h"
-
+#import "VideoClassInfo.h"
 #import "UIViewController+AFHTTP.h"
 
 
@@ -57,6 +57,9 @@ typedef enum : NSUInteger {
     
     /**订单类型*/
     ClassOrderType _orderType;
+    
+    /**不可退款提示*/
+    UIView *_warning;
     
 }
 
@@ -154,7 +157,6 @@ typedef enum : NSUInteger {
     });
     
     
-    
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
         _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
@@ -187,9 +189,65 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     
+    //判断是否需要有不可退款提示
+    [self checkRefundWarning];
+    
 }
 
-
+/**是否有不可退款提示*/
+- (void)checkRefundWarning{
+    
+    if (_orderType == VideoClassType) {
+        
+        _warning = [[UIView alloc]init];
+        [self.view addSubview:_warning];
+        _warning.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, 0);
+        UIImageView *warningImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"发送失败"]];
+        [_warning addSubview: warningImage];
+        UILabel *warningLabel = [[UILabel alloc]init];
+        [_warning addSubview:warningLabel];
+        warningLabel.text = @"购买提醒:此订单类型暂不支持退款!";
+        warningLabel.font = TEXT_FONTSIZE;
+        warningLabel.textColor = TITLERED;
+        
+        warningImage.sd_layout
+        .leftSpaceToView(_warning, 10)
+        .centerYEqualToView(_warning)
+        .heightIs(20)
+        .widthEqualToHeight();
+        [warningImage updateLayout];
+        
+        warningLabel.sd_layout
+        .leftSpaceToView(warningImage, 0)
+        .centerYEqualToView(warningImage)
+        .autoHeightRatio(0);
+        [warningLabel setSingleLineAutoResizeWithMaxWidth:400];
+        [warningLabel updateLayout];
+        
+        warningImage.sd_resetLayout
+        .leftSpaceToView(_warning, (_warning.width_sd-warningImage.width_sd-warningLabel.width_sd)*0.5)
+        .centerYEqualToView(_warning)
+        .heightIs(20)
+        .widthEqualToHeight();
+        [warningImage updateLayout];
+        
+        UIView *line = [[UIView alloc]init];
+        [_warning addSubview:line];
+        line.backgroundColor = SEPERATELINECOLOR;
+        line.sd_layout
+        .leftSpaceToView(_warning, 0)
+        .rightSpaceToView(_warning, 0)
+        .bottomSpaceToView(_warning, 0)
+        .heightIs(0.5);
+        
+        _warning.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, 40);
+        _orderView.frame = CGRectMake(0, Navigation_Height+40, self.view.width_sd, self.view.height_sd-Navigation_Height - 40);
+        
+    }else{
+        
+    }
+    
+}
 
 /* 请求课程详细信息*/
 - (void)requestClassInfo{
@@ -203,8 +261,10 @@ typedef enum : NSUInteger {
                 course = [NSString stringWithFormat:@"courses"];
             }else if (_orderType == InteractionType){
                 course = [NSString stringWithFormat:@"interactive_courses"];
+            }else if (_orderType == VideoClassType){
+                course = [NSString stringWithFormat:@"video_courses"];
             }
-    
+            
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -214,7 +274,7 @@ typedef enum : NSUInteger {
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                 [self loginStates:dic];
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-                   
+                    
                     id mod;
                     
                     if (_orderType == LiveClassType) {
@@ -238,9 +298,20 @@ typedef enum : NSUInteger {
                         
                         //价格
                         price = [[(OneOnOneClass *)mod price]floatValue];
+                    }else if (_orderType == VideoClassType){
+                        
+                        /* 数据请求成功*/
+                        mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"]];
+                        [(VideoClassInfo *)mod setClassID:dic[@"data"][@"id"]];
+                        //页面赋值
+                        [_orderView setupLiveClassData:mod];
+                        
+                        //价格
+                        price = [[(TutoriumListInfo *)mod current_price]floatValue];
+                        
                     }
                     
-
+                    
                     /* 请求一次余额 ,判断是否可以用余额支付*/
                     [self requestBalance];
                     
@@ -353,13 +424,13 @@ typedef enum : NSUInteger {
     
     if (![_orderView.promotionText.text isEqualToString:@""]) {
         //验证优惠码
-     
+        
         _promotionCode =_orderView.promotionText.text;
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         [manager POST:[NSString stringWithFormat:@"%@/api/v1/payment/coupons/%@/verify",Request_Header,_promotionCode] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-           
+            
             NSError *error = [NSError new];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:&error];
             if ([dic[@"status"] isEqualToNumber:@1]) {
@@ -373,7 +444,7 @@ typedef enum : NSUInteger {
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
         }];
-
+        
     }else{
         
         [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入优惠码" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
@@ -414,7 +485,7 @@ typedef enum : NSUInteger {
             
         }];
     }
-
+    
 }
 
 
@@ -608,7 +679,10 @@ typedef enum : NSUInteger {
         course = [NSString stringWithFormat:@"courses"];
     }else if (_orderType == InteractionType){
         course = [NSString stringWithFormat:@"interactive_courses"];
+    }else if (_orderType == VideoClassType){
+        course = [NSString stringWithFormat:@"video_courses"];
     }
+    
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -643,7 +717,16 @@ typedef enum : NSUInteger {
                         [self loadingHUDStopLoadingWithTitle:@"课程目前不对外招生"];
                     }
                 }
+            }else if (_orderType == VideoClassType){
+                
+                if (dic[@"error"]) {
+                    if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
+                        
+                        [self loadingHUDStopLoadingWithTitle:@"课程目前不对外招生"];
+                    }
+                }
             }
+            
             
         }
         
@@ -710,8 +793,8 @@ typedef enum : NSUInteger {
     
     [UIView animateWithDuration:animationDuration animations:^{
         
-         self.view.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd);
-     
+        self.view.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd);
+        
         
     }];
     
@@ -730,14 +813,12 @@ typedef enum : NSUInteger {
     
     if (_promotionCode) {
         
-//        [self.navigationController popToRootViewControllerAnimated:YES];
+        //        [self.navigationController popToRootViewControllerAnimated:YES];
         
     }else{
         
         [self.navigationController popViewControllerAnimated:YES];
     }
-    
-    
     
     
 }

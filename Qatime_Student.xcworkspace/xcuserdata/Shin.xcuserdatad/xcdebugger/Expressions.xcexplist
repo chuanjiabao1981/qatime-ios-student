@@ -366,6 +366,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__43-[VideoClassInfoViewController requestData]_block_invoke:VideoClassInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classInfo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[ChatModel addSpecifiedImageItem:andIconURL:andName:]:ChatModel.m">
       </ContextState>
       <ContextState
@@ -432,10 +440,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -637,6 +645,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[VideoClassInfoView setModel:]:VideoClassInfoView.m">
+      </ContextState>
+      <ContextState
          contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.450:PersonalInfoViewController.m">
       </ContextState>
       <ContextState
@@ -662,6 +673,9 @@
                value = "_dataArr">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[VideoClassFilterViewController tableView:didSelectRowAtIndexPath:]:VideoClassFilterViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController changePlayersMode]:NELivePlayerViewController.m">
@@ -1260,10 +1274,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

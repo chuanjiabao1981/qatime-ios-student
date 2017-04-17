@@ -8,10 +8,23 @@
 
 #import <UIKit/UIKit.h>
 #import "ZFPlayer.h"
+#import "Teacher.h"
+#import "VideoClassInfo.h"
 
 @interface VideoClassPlayerViewController : UIViewController
 
 /**视频播放器*/
 @property (nonatomic, strong) ZFPlayerView *videoPlayer ;
+
+
+/**
+ 初始化方法
+
+ @param classes 课程列表信息
+ @param teacher 教师信息
+ @param classInfo 课程详情
+ @return 实例
+ */
+-(instancetype)initWithClasses:(__kindof NSArray *)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo;
 
 @end
