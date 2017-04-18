@@ -9,6 +9,7 @@
 #import "VideoClassPlayerViewController.h"
 #import "VideoClassPlayerView.h"
 #import "VideoClassProgressTableViewCell.h"
+#import "VideoClassFullScreenListTableViewCell.h"
 
 //屏幕模式
 typedef enum : NSUInteger {
@@ -21,6 +22,8 @@ typedef enum : NSUInteger {
     /**播放器的底视图*/
     UIView *_playerView;
     
+    /**播放器控制层*/
+    ZFPlayerControlView *_controlView;
     
     //播放器模型
     ZFPlayerModel *_playerModel;
@@ -43,6 +46,7 @@ typedef enum : NSUInteger {
 }
 /**主视图*/
 @property (nonatomic, strong) VideoClassPlayerView *mainView ;
+
 
 @end
 
@@ -139,11 +143,16 @@ typedef enum : NSUInteger {
     }];
     // 初始化控制层view
     // 考虑自定义
-    ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
-    [self.videoPlayer addSubview:controlView];
-    [controlView mas_makeConstraints:^(MASConstraintMaker *make) {
+    _controlView = [[ZFPlayerControlView alloc] init];
+    [self.videoPlayer addSubview:_controlView];
+    [_controlView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.right.bottom.equalTo(self.videoPlayer);
     }];
+    
+//    _controlView.classList.delegate = self;
+//    _controlView.classList.dataSource = self;
+//    _controlView.classList.tag = 3;
+    
     
     
     // 初始化播放模型
@@ -151,7 +160,7 @@ typedef enum : NSUInteger {
     _playerModel.fatherView = _playerView;
     _playerModel.videoURL = [NSURL URLWithString:@"http://baobab.wdjcdn.com/1456316686552The.mp4"];
     _playerModel.title = @"视频课程啊";
-    [self.videoPlayer playerControlView:controlView playerModel:_playerModel];
+    [self.videoPlayer playerControlView:_controlView playerModel:_playerModel];
     
     // 设置代理
     self.videoPlayer.delegate = self;
@@ -204,20 +213,42 @@ typedef enum : NSUInteger {
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    /* cell的重用队列*/
-    static NSString *cellIdenfier = @"cell";
-    VideoClassProgressTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-    if (cell==nil) {
-        cell=[[VideoClassProgressTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+    UITableViewCell *tableCell;
+    
+    if (tableView.tag == 1) {
+        
+        /* cell的重用队列*/
+        static NSString *cellIdenfier = @"cell";
+        VideoClassProgressTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+        if (cell==nil) {
+            cell=[[VideoClassProgressTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+        }
+        
+        if (_classListArray.count>indexPath.row) {
+            cell.numbers.text = [NSString stringWithFormat:@"%ld",indexPath.row];
+            cell.model = _classListArray[indexPath.row];
+        }
+        tableCell = cell;
     }
     
-    if (_classListArray.count>indexPath.row) {
-        cell.numbers.text = [NSString stringWithFormat:@"%ld",indexPath.row];
-        cell.model = _classListArray[indexPath.row];
+    if (tableView.tag == 3) {
+        /* cell的重用队列*/
+        static NSString *cellIdenfier = @"tableCell";
+        VideoClassFullScreenListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+        if (cell==nil) {
+            cell=[[VideoClassFullScreenListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"tableCell"];
+        }
+        
+        if (_classListArray.count>indexPath.row) {
+            cell.numbers.text = [NSString stringWithFormat:@"%ld",indexPath.row];
+            cell.model = _classListArray[indexPath.row];
+        }
+        tableCell = cell;
+
     }
     
     
-    return  cell;
+    return  tableCell;
 }
 
 
@@ -243,12 +274,6 @@ typedef enum : NSUInteger {
     }
 }
 
-#pragma mark- Device Oriation
-- (void)deviceOrientationDidChange:(NSObject*)sender{
-    
-    UIDevice* device = [sender valueForKey:@"object"];
-    NSLog(@"%ld",(long)device.orientation);
-}
 
 //返回按钮的回调
 - (void)zf_playerBackAction{
@@ -256,6 +281,22 @@ typedef enum : NSUInteger {
     [self.navigationController popViewControllerAnimated:YES];
     
 }
+
+//切换清晰度的回调
+- (void)zf_playerChooseSharpness:(UIButton *)sender{
+    
+    if ([sender.titleLabel.text isEqualToString:@"标清"]) {
+        //切换至标清播放源
+    }else if ([sender.titleLabel.text isEqualToString:@"高清"]){
+        //切换至高清播放源
+        
+    }
+}
+
+
+
+
+
 
 -(void)dealloc{
     

@@ -37,17 +37,12 @@
 @property (nonatomic, strong) NSArray *video_lessons ;
 @property (nonatomic, strong) NSDictionary *chat_team ;
 @property (nonatomic, strong) NSDictionary *teacher ;
-<<<<<<< HEAD
-@property (nonatomic, assign) BOOL is_bought ;
-@property (nonatomic, strong) NSString *sell_type ;
-=======
 
 @property (nonatomic, strong) NSString *sell_type ;
 @property (nonatomic, strong) NSString *total_duration ;
 @property (nonatomic, assign) BOOL is_tasting ;
 @property (nonatomic, assign) BOOL is_bought ;
 @property (nonatomic, assign) BOOL tastes ;
->>>>>>> 视频课功能
 
 
 @end

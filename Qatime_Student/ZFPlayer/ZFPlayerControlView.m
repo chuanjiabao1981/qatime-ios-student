@@ -25,7 +25,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "UIView+CustomControlView.h"
-#import "MMMaterialDesignSpinner.h"
+
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored"-Wdeprecated-declarations"
@@ -35,73 +35,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 @interface ZFPlayerControlView () <UIGestureRecognizerDelegate>
 
-/** 标题 */
-@property (nonatomic, strong) UILabel                 *titleLabel;
-/** 开始播放按钮 */
-@property (nonatomic, strong) UIButton                *startBtn;
-/** 当前播放时长label */
-@property (nonatomic, strong) UILabel                 *currentTimeLabel;
-/** 视频总时长label */
-@property (nonatomic, strong) UILabel                 *totalTimeLabel;
-/** 缓冲进度条 */
-@property (nonatomic, strong) UIProgressView          *progressView;
-/** 滑杆 */
-@property (nonatomic, strong) ASValueTrackingSlider   *videoSlider;
-/** 全屏按钮 */
-@property (nonatomic, strong) UIButton                *fullScreenBtn;
-/** 锁定屏幕方向按钮 */
-@property (nonatomic, strong) UIButton                *lockBtn;
-/** 系统菊花 */
-@property (nonatomic, strong) MMMaterialDesignSpinner *activity;
-/** 返回按钮*/
-@property (nonatomic, strong) UIButton                *backBtn;
-/** 关闭按钮*/
-@property (nonatomic, strong) UIButton                *closeBtn;
-/** 重播按钮 */
-@property (nonatomic, strong) UIButton                *repeatBtn;
-/** bottomView*/
-@property (nonatomic, strong) UIImageView             *bottomImageView;
-/** topView */
-@property (nonatomic, strong) UIImageView             *topImageView;
-/** 缓存按钮 */
-@property (nonatomic, strong) UIButton                *downLoadBtn;
-/** 切换分辨率按钮 */
-@property (nonatomic, strong) UIButton                *resolutionBtn;
-/** 分辨率的View */
-@property (nonatomic, strong) UIView                  *resolutionView;
-/** 播放按钮 */
-@property (nonatomic, strong) UIButton                *playeBtn;
-/** 加载失败按钮 */
-@property (nonatomic, strong) UIButton                *failBtn;
-/** 快进快退View*/
-@property (nonatomic, strong) UIView                  *fastView;
-/** 快进快退进度progress*/
-@property (nonatomic, strong) UIProgressView          *fastProgressView;
-/** 快进快退时间*/
-@property (nonatomic, strong) UILabel                 *fastTimeLabel;
-/** 快进快退ImageView*/
-@property (nonatomic, strong) UIImageView             *fastImageView;
-/** 当前选中的分辨率btn按钮 */
-@property (nonatomic, weak  ) UIButton                *resoultionCurrentBtn;
-/** 占位图 */
-@property (nonatomic, strong) UIImageView             *placeholderImageView;
-/** 控制层消失时候在底部显示的播放进度progress */
-@property (nonatomic, strong) UIProgressView          *bottomProgressView;
-/** 分辨率的名称 */
-@property (nonatomic, strong) NSArray                 *resolutionArray;
-
-/** 显示控制层 */
-@property (nonatomic, assign, getter=isShowing) BOOL  showing;
-/** 小屏播放 */
-@property (nonatomic, assign, getter=isShrink ) BOOL  shrink;
-/** 在cell上播放 */
-@property (nonatomic, assign, getter=isCellVideo)BOOL cellVideo;
-/** 是否拖拽slider控制播放进度 */
-@property (nonatomic, assign, getter=isDragged) BOOL  dragged;
-/** 是否播放结束 */
-@property (nonatomic, assign, getter=isPlayEnd) BOOL  playeEnd;
-/** 是否全屏播放 */
-@property (nonatomic, assign,getter=isFullScreen)BOOL fullScreen;
 
 @end
 
@@ -121,6 +54,9 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         [self.bottomImageView addSubview:self.fullScreenBtn];
         [self.bottomImageView addSubview:self.totalTimeLabel];
         
+        //个人增加的清晰度切换按钮
+//        [self.bottomImageView addSubview:self.sharpnessBtn];
+        
         [self.topImageView addSubview:self.downLoadBtn];
         [self addSubview:self.lockBtn];
         [self.topImageView addSubview:self.backBtn];
@@ -139,11 +75,17 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         [self addSubview:self.closeBtn];
         [self addSubview:self.bottomProgressView];
         
+        //加个课程表
+//        [self addSubview:self.classView];
+//        [self.classView addSubview:self.classList];
+        
         // 添加子控件的约束
+        // 这大概是,竖屏情况下的约束..
         [self makeSubViewsConstraints];
         
         self.downLoadBtn.hidden     = YES;
         self.resolutionBtn.hidden   = YES;
+//        self.sharpnessBtn.hidden    = YES;
         // 初始化时重置controlView
         [self zf_playerResetControlView];
         // app退到后台
@@ -226,6 +168,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         make.trailing.equalTo(self.bottomImageView.mas_trailing).offset(-5);
         make.centerY.equalTo(self.startBtn.mas_centerY);
     }];
+
     
     [self.totalTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.trailing.equalTo(self.fullScreenBtn.mas_leading).offset(3);
@@ -300,6 +243,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         make.leading.trailing.mas_offset(0);
         make.bottom.mas_offset(0);
     }];
+    
+    [self layoutIfNeeded];
 }
 
 - (void)layoutSubviews {
@@ -411,9 +356,41 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 }
 
 - (void)downloadBtnClick:(UIButton *)sender {
-    if ([self.delegate respondsToSelector:@selector(zf_controlView:downloadVideoAction:)]) {
-        [self.delegate zf_controlView:self downloadVideoAction:sender];
-    }
+//    
+//    [self autoFadeOutControlView];
+//    
+//    self.classView.hidden = !self.classView.hidden;
+//    if ([self.delegate respondsToSelector:@selector(zf_controlView:downloadVideoAction:)]) {
+//        [self.delegate zf_controlView:self downloadVideoAction:sender];
+//        
+//    }
+//    
+//    if (self.classView.hidden == YES) {
+//        
+//        [UIView animateWithDuration:0.3 animations:^{
+//            
+//            [self.classView mas_makeConstraints:^(MASConstraintMaker *make) {
+//                
+//                make.left.mas_equalTo(self.mas_right);
+//            }];
+//            [self layoutIfNeeded];
+//        }];
+//
+//        
+//    }else{
+//        
+//        [UIView animateWithDuration:0.3 animations:^{
+//            
+//            [self.classView mas_makeConstraints:^(MASConstraintMaker *make) {
+//                
+//                make.left.mas_equalTo(self.mas_right).offset(-self.classView.width_sd);
+//            }];
+//            [self bringSubviewToFront:self.classView];
+//            [self layoutIfNeeded];
+//        }];
+//    }
+    
+    
 }
 
 - (void)resolutionBtnClick:(UIButton *)sender {
@@ -455,6 +432,132 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         [self.delegate zf_controlView:self progressSliderTouchEnded:sender];
     }
 }
+
+/**选择清晰度*/
+- (void)sharpnessChosen:(UIButton *)sender {
+    //取消延时隐藏
+    [self autoFadeOutControlView];
+    [self showSharpnessView:sender];
+    
+}
+
+-(UIView *)sharpMenu{
+    
+    if (!_sharpMenu) {
+        _sharpMenu = [[UIView alloc]init];
+        [self addSubview:_sharpMenu];
+        
+        _standardDefinition = [[UIButton alloc]init];
+        _standardDefinition.layer.borderColor = [UIColor whiteColor].CGColor;
+        _standardDefinition.layer.borderWidth = 0.5;
+        [_standardDefinition setTitle:@"标清" forState:UIControlStateNormal];
+        [_standardDefinition setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _standardDefinition.titleLabel.font = [UIFont systemFontOfSize:12];
+        [_sharpMenu addSubview:_standardDefinition];
+        [_standardDefinition addTarget:self action:@selector(chooseStandardDefinition:) forControlEvents:UIControlEventTouchUpInside];
+        
+        _highDefinition = [[UIButton alloc]init];
+        _highDefinition.layer.borderColor = [UIColor whiteColor].CGColor;
+        _highDefinition.layer.borderWidth = 0.5;
+        [_highDefinition setTitle:@"高清" forState:UIControlStateNormal];
+        [_highDefinition setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _highDefinition.titleLabel.font = [UIFont systemFontOfSize:12];
+        [_sharpMenu addSubview:_highDefinition];
+        [_highDefinition addTarget:self action:@selector(chooseHighDefinition:) forControlEvents:UIControlEventTouchUpInside];
+        
+//        _sharpMenu.sd_layout
+//        .leftSpaceToView(self.sharpnessBtn, 0)
+//        .rightSpaceToView(self.sharpnessBtn, 0)
+//        .bottomSpaceToView(self.sharpnessBtn, 0)
+//        .heightIs(self.sharpnessBtn.height_sd*3);
+        
+        [_sharpMenu mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.mas_equalTo(self.sharpnessBtn);
+            make.bottom.equalTo(self.sharpnessBtn.mas_top);
+            make.height.mas_equalTo(self.sharpnessBtn).multipliedBy(3.0);
+        }];
+        
+        [_standardDefinition mas_makeConstraints:^(MASConstraintMaker *make) {
+           
+            make.left.bottom.right.mas_equalTo(_sharpMenu);
+            make.height.mas_equalTo(_sharpMenu).multipliedBy(0.5);
+            
+            
+        }];
+        [_highDefinition mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.top.right.mas_equalTo(_sharpMenu);
+            make.height.mas_equalTo(_standardDefinition);
+            
+        }];
+
+        
+        _sharpMenu.hidden =YES;
+    }
+    
+    return _sharpMenu;
+}
+
+/**显示选择清晰度菜单*/
+- (void)showSharpnessView:(UIButton *)sender{
+    
+    [_standardDefinition setBackgroundColor:[UIColor clearColor]];
+    [_highDefinition setBackgroundColor:[UIColor clearColor]];
+    
+    //显示或隐藏清晰度切换菜单
+    self.sharpMenu.hidden = !self.sharpMenu.hidden;
+    self.sharpMenu.alpha = 1;
+    if (self.sharpMenu.hidden == NO) {
+        
+        if ([sender.titleLabel.text isEqualToString:@"高清"]) {
+            [_highDefinition setBackgroundColor:NAVIGATIONRED];
+        }else if([sender.titleLabel.text isEqualToString:@"标清"]){
+            [_standardDefinition setBackgroundColor:NAVIGATIONRED];
+        }
+    }
+    
+}
+
+/**选择标清*/
+- (void)chooseStandardDefinition:(UIButton *)sender{
+    [_standardDefinition setBackgroundColor:[UIColor clearColor]];
+    [_highDefinition setBackgroundColor:[UIColor clearColor]];
+    [sender setBackgroundColor:NAVIGATIONRED];
+    [self.sharpnessBtn setTitle:sender.titleLabel.text forState:UIControlStateNormal];
+    [self performSelector:@selector(sharpMenuHide) withObject:nil afterDelay:0.3];
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:sharpness:)]) {
+        [self.delegate zf_controlView:self sharpness:sender];
+    }
+    
+}
+
+/**选择高清*/
+- (void)chooseHighDefinition:(UIButton *)sender{
+    [_standardDefinition setBackgroundColor:[UIColor clearColor]];
+    [_highDefinition setBackgroundColor:[UIColor clearColor]];
+    [sender setBackgroundColor:NAVIGATIONRED];
+    [self.sharpnessBtn setTitle:sender.titleLabel.text forState:UIControlStateNormal];
+    [self performSelector:@selector(sharpMenuHide) withObject:nil afterDelay:0.3];
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:sharpness:)]) {
+        [self.delegate zf_controlView:self sharpness:sender];
+    }
+
+}
+
+- (void)sharpMenuHide{
+    
+    [UIView animateWithDuration:0.3 animations:^{
+     
+        self.sharpMenu.alpha = 0;
+        
+    }];
+    [self performSelector:@selector(hideSharpMenu) withObject:nil afterDelay:0.5];
+    
+}
+- (void)hideSharpMenu{
+    
+    self.sharpMenu.hidden = YES;
+}
+
 
 /**
  *  应用退到后台
@@ -501,12 +604,73 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.fullScreen             = YES;
     self.lockBtn.hidden         = !self.isFullScreen;
     self.fullScreenBtn.selected = self.isFullScreen;
+    self.downLoadBtn.hidden = NO;
     [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
     [self.backBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topImageView.mas_top).offset(23);
         make.leading.equalTo(self.topImageView.mas_leading).offset(10);
         make.width.height.mas_equalTo(40);
     }];
+    
+    
+    //设置现在已经变成横屏了的约束
+    [self.fullScreenBtn removeFromSuperview];
+    [self.bottomImageView addSubview:self.sharpnessBtn];
+    
+    //清晰度切换按钮
+    [self.sharpnessBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+       
+        make.height.mas_equalTo(20);
+        make.width.mas_equalTo(50);
+        make.trailing.equalTo(self.bottomImageView.mas_trailing).offset(-10);
+        make.centerY.equalTo(self.startBtn.mas_centerY);
+        
+    }];
+    
+    [self.currentTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.startBtn.mas_trailing).offset(-3);
+        make.centerY.equalTo(self.startBtn.mas_centerY);
+        make.width.mas_equalTo(43);
+    }];
+   
+    
+    [self.totalTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.trailing.equalTo(self.sharpnessBtn.mas_leading).offset(-5);
+        make.centerY.equalTo(self.startBtn.mas_centerY);
+        make.width.mas_equalTo(43);
+    }];
+    
+    [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.currentTimeLabel.mas_trailing).offset(4);
+        make.trailing.equalTo(self.totalTimeLabel.mas_leading).offset(-4);
+        make.centerY.equalTo(self.startBtn.mas_centerY);
+    }];
+    
+    [self.videoSlider mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.currentTimeLabel.mas_trailing).offset(4);
+        make.trailing.equalTo(self.totalTimeLabel.mas_leading).offset(-4);
+        make.centerY.equalTo(self.currentTimeLabel.mas_centerY).offset(-1);
+        make.height.mas_equalTo(30);
+    }];
+    
+    //自行增加的课程列表
+//    [self.classView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_equalTo(self.topImageView).offset(self.topImageView.height_sd);
+//        make.bottom.mas_equalTo(self.bottomImageView).offset(-self.bottomImageView.height_sd);
+//        make.width.mas_equalTo(self.mas_width).multipliedBy(0.3);
+//        make.left.mas_equalTo(self.mas_right);
+//    }];
+//    
+//    [self.classList mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_equalTo(self.classView).offset(1);
+//        make.left.mas_equalTo(self.classView).offset(1);
+//        make.right.mas_equalTo(self.classView).offset(-1);
+//        make.bottom.mas_equalTo(self.classView).offset(-1);
+//    }];
+    
+//    [self layoutIfNeeded];
+    
+    
 }
 /**
  *  设置竖屏的约束
@@ -515,12 +679,53 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.fullScreen             = NO;
     self.lockBtn.hidden         = !self.isFullScreen;
     self.fullScreenBtn.selected = self.isFullScreen;
+    self.downLoadBtn.hidden = YES;
     [self.backBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topImageView.mas_top).offset(3);
         make.leading.equalTo(self.topImageView.mas_leading).offset(10);
         make.width.height.mas_equalTo(40);
     }];
-
+    
+    
+    //设置现在已经变成竖屏了的约束
+    if ([self.bottomImageView.subviews containsObject:self.sharpnessBtn]) {
+        
+        [self.sharpnessBtn removeFromSuperview];
+    }
+    [self.bottomImageView addSubview:self.fullScreenBtn];
+    
+    [self.fullScreenBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.mas_equalTo(30);
+        make.trailing.equalTo(self.bottomImageView.mas_trailing).offset(-5);
+        make.centerY.equalTo(self.startBtn.mas_centerY);
+    }];
+    
+    [self.currentTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.startBtn.mas_trailing).offset(-3);
+        make.centerY.equalTo(self.startBtn.mas_centerY);
+        make.width.mas_equalTo(43);
+    }];
+    
+    
+    [self.totalTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.trailing.equalTo(self.fullScreenBtn.mas_leading).offset(-5);
+        make.centerY.equalTo(self.startBtn.mas_centerY);
+        make.width.mas_equalTo(43);
+    }];
+    
+    [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.currentTimeLabel.mas_trailing).offset(4);
+        make.trailing.equalTo(self.totalTimeLabel.mas_leading).offset(-4);
+        make.centerY.equalTo(self.startBtn.mas_centerY);
+    }];
+    
+    [self.videoSlider mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.currentTimeLabel.mas_trailing).offset(4);
+        make.trailing.equalTo(self.totalTimeLabel.mas_leading).offset(-4);
+        make.centerY.equalTo(self.currentTimeLabel.mas_centerY).offset(-1);
+        make.height.mas_equalTo(30);
+    }];
+    
     if (self.isCellVideo) {
         [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_close") forState:UIControlStateNormal];
     }
@@ -553,12 +758,21 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.bottomImageView.alpha    = 0;
     self.lockBtn.alpha            = 0;
     self.bottomProgressView.alpha = 1;
+//    self.classView.hidden = YES;
     // 隐藏resolutionView
     self.resolutionBtn.selected = YES;
+//    self.sharpMenu.hidden = YES;
     [self resolutionBtnClick:self.resolutionBtn];
     if (self.isFullScreen && !self.playeEnd && !self.isShrink) {
         ZFPlayerShared.isStatusBarHidden = YES;
     }
+    
+    if (_sharpMenu) {
+        if ([self.subviews containsObject:self.sharpMenu]) {
+            self.sharpMenu.hidden = YES;
+        }
+    }
+
 }
 
 /**
@@ -856,6 +1070,50 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _bottomProgressView;
 }
 
+///个人增加的高清按钮
+-(UIButton *)sharpnessBtn{
+    if (!_sharpnessBtn) {
+        _sharpnessBtn = [[UIButton alloc]init];
+        _sharpnessBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+        _sharpnessBtn.layer.borderWidth = 0.6;
+        [_sharpnessBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_sharpnessBtn setTitle:@"标清" forState:UIControlStateNormal];
+        _sharpnessBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+        [_sharpnessBtn setEnlargeEdge:20];
+        [_sharpnessBtn addTarget:self action:@selector(sharpnessChosen:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _sharpnessBtn;
+}
+
+
+
+/**个人增加的课程列表*/
+//
+//-(UIView *)classView{
+//    
+//    if (!_classView) {
+//        
+//        _classView = [[UIView alloc]init];
+//        _classView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.4];
+//        
+//        
+//    }
+//    return _classView;
+//}
+//
+//
+//-(UITableView *)classList{
+//    
+//    if (!_classList) {
+//        _classList = [[UITableView alloc]init];
+//        _classList.separatorStyle = UITableViewCellSeparatorStyleNone ;
+//        _classList.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.4];
+//    }
+//    return _classList;
+//}
+
+
+
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -890,6 +1148,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.lockBtn.hidden              = !self.isFullScreen;
     self.failBtn.hidden              = YES;
     self.placeholderImageView.alpha  = 1;
+    
     [self hideControlView];
 }
 
@@ -904,6 +1163,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.shrink                 = NO;
     self.showing                = NO;
     self.playeEnd               = NO;
+    
 }
 
 /**
@@ -962,6 +1222,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
  *  隐藏控制层
  */
 - (void)zf_playerHideControlView {
+    
     if ([self.delegate respondsToSelector:@selector(zf_controlViewWillHidden:isFullscreen:)]) {
         [self.delegate zf_controlViewWillHidden:self isFullscreen:self.isFullScreen];
     }
@@ -971,6 +1232,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     } completion:^(BOOL finished) {
         self.showing = NO;
     }];
+    
 }
 
 /** 小屏播放 */

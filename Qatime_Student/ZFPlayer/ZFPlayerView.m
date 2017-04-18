@@ -144,6 +144,9 @@ typedef NS_ENUM(NSInteger, PanDirection){
  */
 - (void)initializeThePlayer {
     self.cellPlayerOnCenter = YES;
+    
+    
+    
 }
 
 - (void)dealloc {
@@ -703,6 +706,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
                 make.height.equalTo(@(ScreenWidth));
                 make.center.equalTo([UIApplication sharedApplication].keyWindow);
             }];
+            
         }
     }
     // iOS6.0之后,设置状态条的方法能使用的前提是shouldAutorotate为NO,也就是说这个视图控制器内,旋转要关掉;
@@ -929,6 +933,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
         else {
             if (self.playDidEnd) { return; }
             else {
+                
                 [self.controlView zf_playerShowOrHideControlView];
             }
         }
@@ -1621,6 +1626,15 @@ typedef NS_ENUM(NSInteger, PanDirection){
         [self.delegate zf_playerControlViewWillHidden:controlView isFullscreen:fullscreen];
     }
 }
+
+//切换清晰度
+- (void)zf_controlView:(UIView *)controlView sharpness:(UIButton *)sender{
+    
+    [_delegate zf_playerChooseSharpness:sender];
+    
+}
+
+
 
 #pragma clang diagnostic pop
 

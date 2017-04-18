@@ -39,14 +39,19 @@
  */
 - (void)zf_playerModel:(ZFPlayerModel *)playerModel {}
 
-- (void)zf_playerShowOrHideControlView {}
+- (void)zf_playerShowOrHideControlView {
+
+}
 /**
  * 显示top、bottom、lockBtn
  */
 - (void)zf_playerShowControlView {}
 /**
  * 隐藏top、bottom、lockBtn*/
-- (void)zf_playerHideControlView {}
+- (void)zf_playerHideControlView {
+
+
+}
 
 /**
  * 重置ControlView

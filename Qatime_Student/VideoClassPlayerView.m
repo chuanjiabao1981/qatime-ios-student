@@ -86,11 +86,7 @@
     _infoView.gradeLabel.text = model.grade;
     _infoView.subjectLabel.text = model.subject;
     _infoView.classCount.text = [NSString stringWithFormat:@"共%@课",model.video_lessons_count];
-<<<<<<< HEAD
-//    _infoView.liveTimeLabel.text = [NSString stringWithFormat:@"视频总长:%@",model.视频时长];
-=======
     _infoView.liveTimeLabel.text = [NSString stringWithFormat:@"视频总长:%@",model.total_duration];
->>>>>>> 视频课功能
     _infoView.classTarget.text = model.objective;
     _infoView.suitable.text = model.suit_crowd;
     

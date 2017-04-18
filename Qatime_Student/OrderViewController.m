@@ -218,7 +218,7 @@ typedef enum : NSUInteger {
         [warningImage updateLayout];
         
         warningLabel.sd_layout
-        .leftSpaceToView(warningImage, 0)
+        .leftSpaceToView(warningImage, 5)
         .centerYEqualToView(warningImage)
         .autoHeightRatio(0);
         [warningLabel setSingleLineAutoResizeWithMaxWidth:400];

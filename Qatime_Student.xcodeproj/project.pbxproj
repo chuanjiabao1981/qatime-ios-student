@@ -278,6 +278,8 @@
 		549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05141DC86EBB00B3564D /* HcdDateTimePickerView.m */; };
 		549A051A1DC86EBB00B3564D /* MXSCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05161DC86EBB00B3564D /* MXSCycleScrollView.m */; };
 		549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05181DC86EBB00B3564D /* UIColor+HcdCustom.m */; };
+		549A979E1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A979D1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m */; };
+		549A97A11EA61D1E008FF9F4 /* VideoClassFullListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A97A01EA61D1E008FF9F4 /* VideoClassFullListViewController.m */; };
 		549AE7621E013DAC001DD2ED /* BindingMailInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */; };
 		549AE7651E013DBD001DD2ED /* BindingMailInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AE7641E013DBD001DD2ED /* BindingMailInfoViewController.m */; };
 		54A153AA1DC6F09D0070B508 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153A91DC6F09D0070B508 /* main.m */; };
@@ -1229,6 +1231,10 @@
 		549A05161DC86EBB00B3564D /* MXSCycleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXSCycleScrollView.m; sourceTree = "<group>"; };
 		549A05171DC86EBB00B3564D /* UIColor+HcdCustom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HcdCustom.h"; sourceTree = "<group>"; };
 		549A05181DC86EBB00B3564D /* UIColor+HcdCustom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HcdCustom.m"; sourceTree = "<group>"; };
+		549A979C1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassFullScreenListTableViewCell.h; sourceTree = "<group>"; };
+		549A979D1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassFullScreenListTableViewCell.m; sourceTree = "<group>"; };
+		549A979F1EA61D1E008FF9F4 /* VideoClassFullListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassFullListViewController.h; sourceTree = "<group>"; };
+		549A97A01EA61D1E008FF9F4 /* VideoClassFullListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassFullListViewController.m; sourceTree = "<group>"; };
 		549AE7601E013DAC001DD2ED /* BindingMailInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailInfoView.h; sourceTree = "<group>"; };
 		549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindingMailInfoView.m; sourceTree = "<group>"; };
 		549AE7631E013DBD001DD2ED /* BindingMailInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailInfoViewController.h; sourceTree = "<group>"; };
@@ -2720,6 +2726,8 @@
 			children = (
 				54504ACE1E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.h */,
 				54504ACF1E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.m */,
+				549A979C1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.h */,
+				549A979D1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m */,
 			);
 			name = cell;
 			sourceTree = "<group>";
@@ -4851,6 +4859,8 @@
 			children = (
 				54504AC71E9E0E5F00EFCF8E /* VideoClassPlayerViewController.h */,
 				54504AC81E9E0E5F00EFCF8E /* VideoClassPlayerViewController.m */,
+				549A979F1EA61D1E008FF9F4 /* VideoClassFullListViewController.h */,
+				549A97A01EA61D1E008FF9F4 /* VideoClassFullListViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -6492,6 +6502,7 @@
 				54AC027E1E892D3C00817767 /* UIImage+NTESColor.m in Sources */,
 				54B9076C1E9CF37400034FDC /* VideoClassListTableViewCell.m in Sources */,
 				5484B7421DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m in Sources */,
+				549A979E1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m in Sources */,
 				54AC025A1E892CEE00817767 /* NTESService.m in Sources */,
 				544B61EB1E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.m in Sources */,
 				541F91E41DC9D16700180BE8 /* TutoriumCollectionViewCell.m in Sources */,
@@ -6939,6 +6950,7 @@
 				54652E081DEE9D1900F4607C /* AboutUsView.m in Sources */,
 				54504ACC1E9E0E7F00EFCF8E /* VideoClassPlayerView.m in Sources */,
 				54AC042A1E8938E100817767 /* UIView+NIMKitToast.m in Sources */,
+				549A97A11EA61D1E008FF9F4 /* VideoClassFullListViewController.m in Sources */,
 				5471C7FC1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.m in Sources */,
 				54AC03C31E8938E100817767 /* UITableView+NIMScrollToBottom.m in Sources */,
 				5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */,

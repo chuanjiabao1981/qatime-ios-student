@@ -63,4 +63,8 @@
 /** 控制层即将隐藏 */
 - (void)zf_controlViewWillHidden:(UIView *)controlView isFullscreen:(BOOL)fullscreen;
 
+/** 切换清晰度方法 */
+- (void)zf_controlView:(UIView *)controlView sharpness:(UIButton *)sender;
+
+
 @end
