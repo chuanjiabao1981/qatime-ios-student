@@ -983,12 +983,13 @@
     
     if (collectionView.tag==1) {
         
-        TodayLiveCollectionViewCell *cell = (TodayLiveCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+//        TodayLiveCollectionViewCell *cell = (TodayLiveCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
         
 //        TutoriumInfoViewController *controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
-//        OneOnOneTutoriumInfoViewController *controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:@"1"];
         
-        VideoClassInfoViewController *controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
+        OneOnOneTutoriumInfoViewController *controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:@"1"];
+        
+//        VideoClassInfoViewController *controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
         

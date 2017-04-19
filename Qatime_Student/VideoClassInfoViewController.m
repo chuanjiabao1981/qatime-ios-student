@@ -20,6 +20,8 @@
 #import "YYModel.h"
 #import "VideoClassPlayerViewController.h"
 #import "OrderViewController.h"
+#import "Features.h"
+#import "TeacherFeatureTagCollectionViewCell.h"
 
 typedef enum : NSUInteger {
     PullToRefresh,
@@ -27,7 +29,7 @@ typedef enum : NSUInteger {
     
 } RefreshType;
 
-@interface VideoClassInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CYLTableViewPlaceHolderDelegate,VideoClassBuyBarDelegate>{
+@interface VideoClassInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CYLTableViewPlaceHolderDelegate,VideoClassBuyBarDelegate,UICollectionViewDataSource,UICollectionViewDelegate>{
     
     NavigationBar *_navigationBar;
     
@@ -46,6 +48,9 @@ typedef enum : NSUInteger {
     
     /**教师详情*/
     Teacher *_teacher;
+    
+    /**课程特色 数组*/
+    NSMutableArray *_classFeaturesArray;
     
 }
 /**主视图*/
@@ -107,6 +112,10 @@ typedef enum : NSUInteger {
     _videoClassInfoView.classesListTableView.estimatedRowHeight = 100;
     _videoClassInfoView.classesListTableView.rowHeight = UITableViewAutomaticDimension;
     
+    _videoClassInfoView.classFeature.dataSource = self;
+    _videoClassInfoView.classFeature.delegate = self;
+    [_videoClassInfoView.classFeature registerClass:[TeacherFeatureTagCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
+    
     typeof(self) __weak weakSelf = self;
     [_videoClassInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
         [weakSelf.videoClassInfoView.scrollView scrollRectToVisible:CGRectMake(weakSelf.view.width_sd*index, 0, weakSelf.view.width_sd, weakSelf.videoClassInfoView.scrollView.height_sd) animated:YES];
@@ -129,7 +138,7 @@ typedef enum : NSUInteger {
     self.view.backgroundColor = [UIColor whiteColor];
     //初始化
     _classArray = @[].mutableCopy;
-    
+    _classFeaturesArray = @[].mutableCopy;
     //加载token
     [self getToken];
     
@@ -149,6 +158,19 @@ typedef enum : NSUInteger {
         if ([dic[@"status"]isEqualToNumber:@1]) {
             _classInfo = [VideoClassInfo yy_modelWithJSON:dic[@"data"]];
             _classInfo.classID = dic[@"data"][@"id"];
+           
+            //特色
+            for (NSString *key in dic[@"data"][@"icons"]) {
+                if (![key isEqualToString:@"cheap_moment"]) {
+                    if ([dic[@"data"][@"icons"][key]boolValue]==YES) {
+                        Features *mod = [[Features alloc]init];
+                        mod.include = [dic[@"data"][@"icons"][key] boolValue];
+                        mod.content = key;
+                        [_classFeaturesArray addObject:mod];
+                    }
+                }
+            }
+
             //加载主页
             [self setupMainView];
             _videoClassInfoView.model = _classInfo;
@@ -310,6 +332,49 @@ typedef enum : NSUInteger {
         [_videoClassInfoView.segmentControl setSelectedSegmentIndex:pages animated:YES];
     }
 }
+
+
+#pragma mark- UICollectionView datasource
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    
+    NSInteger num;
+    
+    if (_classFeaturesArray.count==0) {
+        num = 3;
+    }else{
+        num = _classFeaturesArray.count;
+    }
+    
+    return num;
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    static NSString * CellIdentifier = @"CollectionCell";
+    TeacherFeatureTagCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    if (_classFeaturesArray.count>indexPath.row) {
+        
+        cell.model = _classFeaturesArray[indexPath.row];
+        [cell updateLayoutSubviews];
+    }
+    
+    return cell;
+    
+}
+
+#pragma mark- UICollectionView delegate
+
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    return 1;
+}
+
+/* item尺寸*/
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return  CGSizeMake(self.view.width_sd/3.0,20);
+}
+
 
 
 /**无课程占位图*/

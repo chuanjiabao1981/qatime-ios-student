@@ -9,20 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "HMSegmentedControl.h"
 #import "VideoClassInfo.h"
+#import "UICollectionViewLeftAlignedLayout.h"
 
 
 @interface VideoClassInfoView : UIScrollView
 /* 课程名*/
 @property(nonatomic,strong) UILabel  *className ;
 
-/* 课程图*/
-@property(nonatomic,strong) UIImageView * classImage ;
-
-/* 招生状态*/
-//@property(nonatomic,strong) UILabel *recuitState ;
-
-/* 开课时间*/
-//@property(nonatomic,strong) UILabel  *deadLine ;
+/**课程特色*/
+@property (nonatomic, strong) UICollectionView *classFeature ;
 
 
 /* 价格*/

@@ -19,8 +19,10 @@
 #import "OrderViewController.h"
 #import "TeachersPublicViewController.h"
 #import "InteractionViewController.h"
+#import "Features.h"
+#import "TeacherFeatureTagCollectionViewCell.h"
 
-@interface OneOnOneTutoriumInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,OneOnOneTeacherTableViewCellDelegate>{
+@interface OneOnOneTutoriumInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,OneOnOneTeacherTableViewCellDelegate,UICollectionViewDelegate,UICollectionViewDataSource>{
     
     NavigationBar *_navigationBar;
     NSString  *_token;
@@ -43,6 +45,9 @@
     
     /**课程model*/
 //    OneOnOneClass *_classMod;
+    
+    /**课程特色数组*/
+    NSMutableArray *_classFeaturesArray;
     
 
 }
@@ -84,6 +89,8 @@
     _teachersArray = @[].mutableCopy;
     _classArray = @[].mutableCopy;
     
+    _classFeaturesArray = @[].mutableCopy;
+    
     //加载导航栏
     [self setupNavigation];
     
@@ -112,12 +119,27 @@
             classMod.classID = dic[@"data"][@"id"];
             classMod.descriptions = dic[@"data"][@"description"];
             classMod.attributeDescriptions = [[NSMutableAttributedString alloc]initWithData:[dic[@"data"][@"description"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-            [self.view addSubview:self.myView];
             //标题
             _navigationBar.titleLabel.text = classMod.current_lesson_name;
             
+            //特色
+            for (NSString *key in _dataDic[@"icons"]) {
+                
+                if (![key isEqualToString:@"cheap_moment"]) {
+                    if ([_dataDic[@"icons"][key]boolValue]==YES) {
+                        Features *mod = [[Features alloc]init];
+                        mod.include = [_dataDic[@"icons"][key] boolValue];
+                        mod.content = key;
+                        [_classFeaturesArray addObject:mod];
+                    }
+                }
+                
+            }
+            [self.view addSubview:self.myView];
+            
             //赋值
             self.myView.model = classMod;
+            
             //教师
             if (classMod.teachers.count!=0) {
                 
@@ -233,6 +255,11 @@
         _myView.classListTableView.dataSource = self;
         _myView.classListTableView.tag = 2;
         _myView.scrollView.delegate = self;
+        
+        _myView.classFeature.dataSource = self;
+        _myView.classFeature.delegate = self;
+        
+        [_myView.classFeature registerClass:[TeacherFeatureTagCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
         
         [self setupBuyBar];
     }
@@ -450,6 +477,48 @@
     }
     
 }
+
+#pragma mark- UICollectionView datasource
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    
+    NSInteger num;
+    
+    if (_classFeaturesArray.count==0) {
+        num = 3;
+    }else{
+        num = _classFeaturesArray.count;
+    }
+    
+    return num;
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    static NSString * CellIdentifier = @"CollectionCell";
+    TeacherFeatureTagCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    if (_classFeaturesArray.count>indexPath.row) {
+        
+        cell.model = _classFeaturesArray[indexPath.row];
+        [cell updateLayoutSubviews];
+    }
+    
+    return cell;
+    
+}
+
+#pragma mark- UICollectionView delegate
+
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    return 1;
+}
+
+/* item尺寸*/
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return  CGSizeMake(self.view.width_sd/3.0,20);
+}
+
 
 
 

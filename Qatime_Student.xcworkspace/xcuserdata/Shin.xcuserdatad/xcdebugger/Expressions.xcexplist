@@ -339,6 +339,14 @@
          contextName = "__43-[IndexPageViewController requestTeachers:]_block_invoke:IndexPageViewController.m">
       </ContextState>
       <ContextState
+         contextName = "__43-[VideoClassInfoViewController requestData]_block_invoke:VideoClassInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classInfo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[NELivePlayerViewController initNIMSDK]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -362,14 +370,6 @@
          <PersistentStrings>
             <PersistentString
                value = "_allClassArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__43-[VideoClassInfoViewController requestData]_block_invoke:VideoClassInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_classInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -440,10 +440,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -637,15 +637,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[VideoClassInfoView setModel:]:VideoClassInfoView.m">
+      </ContextState>
+      <ContextState
          contextName = "__50-[ClassSettingViewController requestNoticeSetting]_block_invoke:ClassSettingViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_settingDic">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[VideoClassInfoView setModel:]:VideoClassInfoView.m">
       </ContextState>
       <ContextState
          contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.450:PersonalInfoViewController.m">
@@ -1274,10 +1274,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1455,6 +1455,14 @@
       </ContextState>
       <ContextState
          contextName = "-[ConfirmChargeViewController requestChargWithType:andData:]:ConfirmChargeViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumInfoViewController collectionView:numberOfItemsInSection:]:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classFeaturesArray">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[MultifiltersViewController filtered]:MultifiltersViewController.m">

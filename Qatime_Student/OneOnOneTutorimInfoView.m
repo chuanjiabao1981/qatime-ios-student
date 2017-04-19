@@ -25,36 +25,50 @@
         self.showsVerticalScrollIndicator = NO;
         self.backgroundColor = [UIColor whiteColor];
         
-        /* 课程图*/
-        _classImage = [[UIImageView alloc]init];
-        [self addSubview:_classImage];
-        _classImage.frame = CGRectMake(0, 0, self.width_sd, self.width_sd/16*9);
-        
         /* 课程名称*/
         _className = [[UILabel alloc]init];
         [self addSubview:_className];
-        _className.sd_layout.rightSpaceToView(self,10).leftSpaceToView(self,10).topSpaceToView(_classImage,5).autoHeightRatio(0);
-        _className.textAlignment = NSTextAlignmentLeft;
-        [_className setText:@"课程名称"];
+        _className.sd_layout
+        .leftSpaceToView(self,10)
+        .rightSpaceToView(self, 10)
+        .topSpaceToView(self,20)
+        .autoHeightRatio(0);
         [_className setTextColor:[UIColor blackColor]];
         [_className setFont:TITLEFONTSIZE];
+        
+        //课程特色
+        UICollectionViewLeftAlignedLayout *layout = [[UICollectionViewLeftAlignedLayout alloc]init];
+        layout.minimumLineSpacing = 5;
+        layout.minimumInteritemSpacing = 0;
+        _classFeature = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+        _classFeature.backgroundColor = [UIColor whiteColor];
+        [self addSubview:_classFeature];
+        _classFeature.sd_layout
+        .leftSpaceToView(self, 0)
+        .rightSpaceToView(self, 0)
+        .topSpaceToView(_className, 10)
+        .heightIs(20);
+
         
         /* 价格*/
         _priceLabel=[[UILabel alloc]init];
         [self addSubview:_priceLabel];
-        _priceLabel.sd_layout. topSpaceToView(_className,5).leftEqualToView(_className).autoHeightRatio(0);
+        _priceLabel.sd_layout
+        .topSpaceToView(_classFeature,10)
+        .leftEqualToView(_className)
+        .autoHeightRatio(0);
         [_priceLabel setSingleLineAutoResizeWithMaxWidth:500];
         _priceLabel.textAlignment = NSTextAlignmentLeft;
         [_priceLabel setTextColor:NAVIGATIONRED];
         [_priceLabel setFont:[UIFont systemFontOfSize:16*ScrenScale]];
-        
+
         /* 分割线1*/
         UIView *line1 = [[UIView alloc]init];
         [self addSubview:line1];
         line1.sd_layout
         .leftSpaceToView(self,0)
         .rightSpaceToView(self,0)
-        .topSpaceToView(_priceLabel,5)
+        .topSpaceToView(_priceLabel,10)
         .heightIs(1.0f);
         [line1 updateLayout];
         /* 滑动控制器*/
@@ -444,8 +458,7 @@
     
     _model = model;
     
-    [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize_app_url] placeholderImage:[UIImage imageNamed:@"school"]];
-    _className.text = model.current_lesson_name;
+    _className.text = model.name;
     _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];
     
     _gradeLabel.text = model.grade;

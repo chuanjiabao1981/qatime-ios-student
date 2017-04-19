@@ -14,15 +14,14 @@
 #import "OneOnOneClass.h"
 #import "TeachersGroupTableView.h"
 #import "ClassListTableView.h"
-
+#import "UICollectionViewLeftAlignedLayout.h"
 @interface OneOnOneTutorimInfoView : UIScrollView
 
 /** 课程名*/
 @property(nonatomic,strong) UILabel  *className ;
 
-/** 课程图*/
-@property(nonatomic,strong) UIImageView * classImage ;
-
+/**课程特色*/
+@property (nonatomic, strong) UICollectionView *classFeature ;
 /** 价格*/
 @property(nonatomic,strong) UILabel *priceLabel ;
 

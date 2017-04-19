@@ -8,6 +8,7 @@
 
 #import "TutoriumInfoView.h"
 #import "UIColor+HcdCustom.h"
+#import "UICollectionViewLeftAlignedLayout.h"
 
 #define SCREENWIDTH CGRectGetWidth([UIScreen mainScreen].bounds)
 #define SCREENHEIGHT CGRectGetHeight(self.frame)
@@ -36,46 +37,51 @@
         self.bounces = NO;
         self.showsVerticalScrollIndicator = NO;
         
-        /* 课程图*/
-        _classImage = [[UIImageView alloc]init];
-        [self addSubview:_classImage];
-        _classImage.frame = CGRectMake(0, 0, self.width_sd, self.width_sd/16*9);
-        
-        /* 距开课时间*/
-        _deadLine = [[UILabel alloc]init];
-        [self addSubview:_deadLine];
-        _deadLine.sd_layout.rightEqualToView(_classImage).bottomEqualToView(_classImage).autoHeightRatio(0);
-        [_deadLine setSingleLineAutoResizeWithMaxWidth:200];
-        [_deadLine setText:@""];
-        [_deadLine setTextColor:[UIColor whiteColor]];
-        _deadLine.font = [UIFont systemFontOfSize:16*ScrenScale];
-        [_deadLine setBackgroundColor:USERGREEN];
-        
-        
-        /* 招生状态*/
-        _recuitState = [[UILabel alloc]init];
-        [self addSubview:_recuitState];
-        _recuitState.sd_layout.rightSpaceToView(_deadLine,0).bottomEqualToView(_deadLine).heightRatioToView(_deadLine,1.0f);
-        [_recuitState setSingleLineAutoResizeWithMaxWidth:100];
-        [_recuitState setText:@""];
-        [_recuitState setTextColor:[UIColor whiteColor]];
-        _recuitState.font = [UIFont systemFontOfSize:16*ScrenScale];
-        [_recuitState setBackgroundColor:USERGREEN];
-        
         /* 课程名称*/
-        
         _className = [[UILabel alloc]init];
         [self addSubview:_className];
-        _className.sd_layout.rightSpaceToView(self,10).leftSpaceToView(self,10).topSpaceToView(_classImage,5).autoHeightRatio(0);
-        _className.textAlignment = NSTextAlignmentLeft;
-        [_className setText:@"课程名称"];
+        _className.sd_layout
+        .leftSpaceToView(self,10)
+        .rightSpaceToView(self, 10)
+        .topSpaceToView(self,20)
+        .autoHeightRatio(0);
+        
         [_className setTextColor:[UIColor blackColor]];
         [_className setFont:TITLEFONTSIZE];
+        
+        
+       //课程状态
+        _status = [[UILabel alloc]init];
+        [self addSubview:_status];
+        _status.font = TEXT_FONTSIZE;
+        _status.textColor = [UIColor whiteColor];
+        _status.sd_layout
+        .leftEqualToView(_className)
+        .topSpaceToView(_className, 10)
+        .autoHeightRatio(0);
+        [_status setSingleLineAutoResizeWithMaxWidth:200];
+    
+        
+        //课程特色
+        UICollectionViewLeftAlignedLayout *layout = [[UICollectionViewLeftAlignedLayout alloc]init];
+        layout.minimumLineSpacing = 5;
+        layout.minimumInteritemSpacing = 0;
+        _classFeature = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+        _classFeature.backgroundColor = [UIColor whiteColor];
+        [self addSubview:_classFeature];
+        _classFeature.sd_layout
+        .leftSpaceToView(self, 0)
+        .rightSpaceToView(self, 0)
+        .topSpaceToView(_status, 10)
+        .heightIs(20);
         
         /* 价格*/
         _priceLabel=[[UILabel alloc]init];
         [self addSubview:_priceLabel];
-        _priceLabel.sd_layout. topSpaceToView(_className,5).leftEqualToView(_className).autoHeightRatio(0);
+        _priceLabel.sd_layout
+        .topSpaceToView(_classFeature,10)
+        .leftEqualToView(_className)
+        .autoHeightRatio(0);
         [_priceLabel setSingleLineAutoResizeWithMaxWidth:500];
         _priceLabel.textAlignment = NSTextAlignmentLeft;
         [_priceLabel setTextColor:NAVIGATIONRED];
@@ -88,27 +94,21 @@
         _saleNumber.textAlignment = NSTextAlignmentLeft;
         [self addSubview:_saleNumber];
         _saleNumber.sd_layout
-        .topSpaceToView(_className,5)
+        .bottomEqualToView(_priceLabel)
         .rightSpaceToView(self,10)
         .autoHeightRatio(0);
-        [_saleNumber setSingleLineAutoResizeWithMaxWidth:100];
-        
-        /* 报名人数 label*/
-        UILabel *saleNum = [[UILabel alloc]init];
-        [self addSubview:saleNum];
-        saleNum.sd_layout. topEqualToView(_saleNumber).rightSpaceToView(_saleNumber,10).autoHeightRatio(0);
-        [saleNum setSingleLineAutoResizeWithMaxWidth:100];
-        saleNum.textAlignment = NSTextAlignmentLeft;
-        [saleNum setTextColor:TITLECOLOR];
-        [saleNum setFont:[UIFont systemFontOfSize:16*ScrenScale]];
-        [saleNum setText:@"报名人数"];
+        [_saleNumber setSingleLineAutoResizeWithMaxWidth:200];
         
         /* 分割线1*/
         
         UIView *line1 = [[UIView alloc]init];
         [self addSubview:line1];
         
-        line1.sd_layout.leftSpaceToView(self,0).rightSpaceToView(self,0).topSpaceToView(saleNum,5).heightIs(1.0f);
+        line1.sd_layout
+        .leftSpaceToView(self,0)
+        .rightSpaceToView(self,0)
+        .topSpaceToView(_saleNumber,10)
+        .heightIs(1.0f);
         [line1 updateLayout];
         
         /* 滑动控制器*/
@@ -138,10 +138,11 @@
         .leftEqualToView(self)
         .rightEqualToView(self)
         .topSpaceToView(_segmentControl,0)
-        .heightIs(self.height_sd-_segmentControl.bottom_sd);
+        .bottomSpaceToView(self, 0);
         
         [_scrollView updateLayout];
         _scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame)*3,_scrollView.height_sd );
+        
         _scrollView.pagingEnabled = YES;
         _scrollView.showsHorizontalScrollIndicator = NO;
         [_scrollView scrollRectToVisible:CGRectMake(CGRectGetWidth(self.frame), 0, CGRectGetWidth(self.frame), 200) animated:NO];
@@ -158,22 +159,36 @@
         
         [_scrollView addSubview:_view1];
         
-        _view1.sd_layout.leftSpaceToView(_scrollView,0).rightSpaceToView(_scrollView,0).topEqualToView(_scrollView).bottomEqualToView(_scrollView);
+        _view1.sd_layout
+        .leftSpaceToView(_scrollView,0)
+        .rightSpaceToView(_scrollView,0)
+        .topEqualToView(_scrollView)
+        .bottomSpaceToView(_scrollView, 0);
         _view1.backgroundColor = [UIColor whiteColor];
         _view1.contentSize = CGSizeMake(self.width_sd, 500);
         
         _view2 =[[UIScrollView alloc]init];
         [_scrollView addSubview:_view2];
-        _view2.sd_layout.leftSpaceToView(_view1,0).widthIs(SCREENWIDTH).topEqualToView(_scrollView).bottomEqualToView(_scrollView);
+        _view2.sd_layout
+        .leftSpaceToView(_view1,0)
+        .widthIs(SCREENWIDTH)
+        .topEqualToView(_scrollView)
+        .bottomSpaceToView(_scrollView, 0);
         _view2.backgroundColor = [UIColor whiteColor];
         
         _view2.contentSize = CGSizeMake(self.width_sd,500);
         
         _view3 =[[UIView alloc]init];
         [_scrollView addSubview:_view3];
-        _view3.sd_layout.leftSpaceToView(_view2,0).widthIs(SCREENWIDTH).topEqualToView(_scrollView).bottomEqualToView(_scrollView);
+        _view3.sd_layout
+        .leftSpaceToView(_view2,0)
+        .widthIs(SCREENWIDTH)
+        .topEqualToView(_scrollView)
+        .bottomSpaceToView(_scrollView, 0);
         _view3.backgroundColor = [UIColor whiteColor];
         
+        [_scrollView setupAutoContentSizeWithRightView:_view3 rightMargin:0];
+        [_scrollView setupAutoContentSizeWithBottomView:_view3 bottomMargin:0];
         
         /* -课程介绍页- */
         UILabel *desLabel = [[UILabel alloc]init];

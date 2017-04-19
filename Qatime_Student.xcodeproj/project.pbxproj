@@ -254,6 +254,8 @@
 		548D1D7B1EA7420B00B120C8 /* AllClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D781EA7420B00B120C8 /* AllClassView.m */; };
 		548D1D7C1EA7420B00B120C8 /* CalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D7A1EA7420B00B120C8 /* CalendarView.m */; };
 		548D1D7F1EA7421400B120C8 /* AllClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D7E1EA7421400B120C8 /* AllClassViewController.m */; };
+		548D1D8E1EA7551F00B120C8 /* Features.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D8D1EA7551F00B120C8 /* Features.m */; };
+		548D1D911EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D901EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.m */; };
 		548F0E7E1E8A51A400A12C6D /* InteractionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E7D1E8A51A400A12C6D /* InteractionView.m */; };
 		548F0E811E8A51B000A12C6D /* InteractionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E801E8A51B000A12C6D /* InteractionViewController.m */; };
 		548F0E9A1E8A826400A12C6D /* InteractionInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E991E8A826400A12C6D /* InteractionInfoView.m */; };
@@ -1184,6 +1186,10 @@
 		548D1D7A1EA7420B00B120C8 /* CalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarView.m; sourceTree = "<group>"; };
 		548D1D7D1EA7421400B120C8 /* AllClassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllClassViewController.h; sourceTree = "<group>"; };
 		548D1D7E1EA7421400B120C8 /* AllClassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllClassViewController.m; sourceTree = "<group>"; };
+		548D1D8C1EA7551F00B120C8 /* Features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Features.h; sourceTree = "<group>"; };
+		548D1D8D1EA7551F00B120C8 /* Features.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Features.m; sourceTree = "<group>"; };
+		548D1D8F1EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICollectionViewLeftAlignedLayout.h; sourceTree = "<group>"; };
+		548D1D901EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICollectionViewLeftAlignedLayout.m; sourceTree = "<group>"; };
 		548F0E7C1E8A51A400A12C6D /* InteractionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionView.h; sourceTree = "<group>"; };
 		548F0E7D1E8A51A400A12C6D /* InteractionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionView.m; sourceTree = "<group>"; };
 		548F0E7F1E8A51B000A12C6D /* InteractionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionViewController.h; sourceTree = "<group>"; };
@@ -5805,6 +5811,8 @@
 				5435D94E1DD31B4700DD4FCC /* TeachersPublicInfo.m */,
 				547A7EF51DD411DB00F1282B /* TeachersPublic_Classes.h */,
 				547A7EF61DD411DB00F1282B /* TeachersPublic_Classes.m */,
+				548D1D8C1EA7551F00B120C8 /* Features.h */,
+				548D1D8D1EA7551F00B120C8 /* Features.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -5867,6 +5875,8 @@
 		54FCBABE1DD58E790094BF58 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				548D1D8F1EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.h */,
+				548D1D901EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.m */,
 				540A34C61E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.h */,
 				540A34C71E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m */,
 				540A34C81E481B5F0068E049 /* UIViewController+ZFPlayerRotation.h */,
@@ -6470,6 +6480,7 @@
 				54FCBAEC1DD5CA9F0094BF58 /* NoticeAndMembers.m in Sources */,
 				54FB1DCA1DF172E600BA9A3C /* BindingView.m in Sources */,
 				54AC03CB1E8938E100817767 /* NIMPageView.m in Sources */,
+				548D1D911EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.m in Sources */,
 				54AC03FD1E8938E100817767 /* NIMSessionTextContentView.m in Sources */,
 				54AC04071E8938E100817767 /* NIMUsrInfoData.m in Sources */,
 				54AC04CD1E89398E00817767 /* renderer_yuv420p.c in Sources */,
@@ -6700,6 +6711,7 @@
 				5413D26E1DF7CF1C00A8FDEC /* Recharge.m in Sources */,
 				54AC03E01E8938E100817767 /* NIMMessageModel.m in Sources */,
 				54AC03E11E8938E100817767 /* NIMUIConfig.m in Sources */,
+				548D1D8E1EA7551F00B120C8 /* Features.m in Sources */,
 				54AC02181E892C4A00817767 /* NTESDocumentHandler.m in Sources */,
 				54AC03EA1E8938E100817767 /* NIMTipContentConfig.m in Sources */,
 				548D1D701EA7417800B120C8 /* NotClassView.m in Sources */,

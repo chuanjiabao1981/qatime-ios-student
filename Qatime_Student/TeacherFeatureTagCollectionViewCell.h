@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Features.h"
 
 @interface TeacherFeatureTagCollectionViewCell : UICollectionViewCell
 
@@ -14,6 +15,9 @@
 @property (nonatomic, strong) UIImageView *featureImage ;
 /**特色内容*/
 @property (nonatomic, strong) UILabel *features ;
+
+@property (nonatomic, strong) Features *model ;
+
 /**更新某些视图的布局*/
 - (void)updateLayoutSubviews;
 

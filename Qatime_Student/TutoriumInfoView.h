@@ -13,19 +13,20 @@
 #import "OneOnOneWorkFlowView.h"
 
 
+
 @interface TutoriumInfoView : UIScrollView
 
 /* 课程名*/
 @property(nonatomic,strong) UILabel  *className ;
 
 /* 课程图*/
-@property(nonatomic,strong) UIImageView * classImage ;
+//@property(nonatomic,strong) UIImageView * classImage ;
 
-/* 招生状态*/
-@property(nonatomic,strong) UILabel *recuitState ;
+/**课程状态*/
+@property(nonatomic,strong) UILabel *status ;
 
-/* 开课时间*/
-@property(nonatomic,strong) UILabel  *deadLine ;
+/** 课程特色*/
+@property (nonatomic, strong) UICollectionView *classFeature ;
 
 
 /* 价格*/

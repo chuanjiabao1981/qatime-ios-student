@@ -23,23 +23,35 @@
         self.bounces = NO;
         self.showsVerticalScrollIndicator = NO;
         
-        /* 课程图*/
-        _classImage = [[UIImageView alloc]init];
-        [self addSubview:_classImage];
-        _classImage.frame = CGRectMake(0, 0, self.width_sd, self.width_sd/16*9);
-        
         /* 课程名称*/
         _className = [[UILabel alloc]init];
         [self addSubview:_className];
-        _className.sd_layout.rightSpaceToView(self,10).leftSpaceToView(self,10).topSpaceToView(_classImage,5).autoHeightRatio(0);
-        _className.textAlignment = NSTextAlignmentLeft;
+        _className.sd_layout
+        .leftSpaceToView(self,10)
+        .rightSpaceToView(self, 10)
+        .topSpaceToView(self,20)
+        .autoHeightRatio(0);
         [_className setTextColor:[UIColor blackColor]];
         [_className setFont:TITLEFONTSIZE];
+        
+        //课程特色
+        UICollectionViewLeftAlignedLayout *layout = [[UICollectionViewLeftAlignedLayout alloc]init];
+        _classFeature = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+        _classFeature.backgroundColor = [UIColor whiteColor];
+        [self addSubview:_classFeature];
+        _classFeature.sd_layout
+        .leftSpaceToView(self, 0)
+        .rightSpaceToView(self, 0)
+        .topSpaceToView(_className, 10)
+        .heightIs(20);
         
         /* 价格*/
         _priceLabel=[[UILabel alloc]init];
         [self addSubview:_priceLabel];
-        _priceLabel.sd_layout. topSpaceToView(_className,5).leftEqualToView(_className).autoHeightRatio(0);
+        _priceLabel.sd_layout
+        .topSpaceToView(_classFeature,10)
+        .leftEqualToView(_className)
+        .autoHeightRatio(0);
         [_priceLabel setSingleLineAutoResizeWithMaxWidth:500];
         _priceLabel.textAlignment = NSTextAlignmentLeft;
         [_priceLabel setTextColor:NAVIGATIONRED];
@@ -52,10 +64,10 @@
         _saleNumber.textAlignment = NSTextAlignmentLeft;
         [self addSubview:_saleNumber];
         _saleNumber.sd_layout
-        .topEqualToView(_priceLabel)
         .bottomEqualToView(_priceLabel)
-        .rightSpaceToView(self,10);
-        [_saleNumber setSingleLineAutoResizeWithMaxWidth:100];
+        .rightSpaceToView(self,10)
+        .autoHeightRatio(0);
+        [_saleNumber setSingleLineAutoResizeWithMaxWidth:200];
         
         /* 分割线1*/
         UIView *line1 = [[UIView alloc]init];
@@ -514,7 +526,6 @@
 -(void)setModel:(VideoClassInfo *)model{
     
     _model = model;
-    [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
     _className.text = model.name;
     
     if (model.price.floatValue!=0) {
