@@ -7,6 +7,25 @@
 //
 
 #import "TeachersPublicHeaderView.h"
+#import "UIColor+HcdCustom.h"
+
+@interface TeachersPublicHeaderView (){
+//    //特色标签的图片
+//    UIImageView *_featuerImage1;
+//    UIImageView *_featuerImage2;
+//    UIImageView *_featuerImage3;
+//    UIImageView *_featureImage4;
+//    
+//    //特色标签内容
+//    UILabel *_featureLabel1;
+//    UILabel *_featureLabel2;
+//    UILabel *_featureLabel3;
+//    UILabel *_featureLabel4;
+    
+    
+}
+
+@end
 
 @implementation TeachersPublicHeaderView
 
@@ -62,13 +81,28 @@
     .heightRatioToView(_teacherNameLabel,0.6)
     .widthEqualToHeight();
     
+    //教师特色
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
+    layout.minimumLineSpacing = 5;
+    layout.minimumInteritemSpacing = 0;
+    
+    _featuresView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, _bakcgroudImage.height_sd, self.width_sd, 20) collectionViewLayout:layout];
+    _featuresView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:_featuresView];
+    
+    _featuresView.sd_layout
+    .topSpaceToView(_bakcgroudImage, 10)
+    .leftSpaceToView(self, 0)
+    .rightSpaceToView(self, 0)
+    .heightIs(20);
+    
     //基本资料
     UILabel *info = [[UILabel alloc]init];
     [self addSubview:info];
     info.text = @"基本资料";
     info.font = TITLEFONTSIZE;
     info.sd_layout
-    .topSpaceToView(_bakcgroudImage,20)
+    .topSpaceToView(_featuresView,20)
     .leftSpaceToView(self,15)
     .autoHeightRatio(0);
     [info setSingleLineAutoResizeWithMaxWidth:100];

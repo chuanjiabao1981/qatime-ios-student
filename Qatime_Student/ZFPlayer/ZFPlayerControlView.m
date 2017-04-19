@@ -76,8 +76,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         [self addSubview:self.bottomProgressView];
         
         //加个课程表
-//        [self addSubview:self.classView];
-//        [self.classView addSubview:self.classList];
+        [self addSubview:self.classView];
+        [self.classView addSubview:self.classList];
         
         // 添加子控件的约束
         // 这大概是,竖屏情况下的约束..
@@ -357,38 +357,38 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 - (void)downloadBtnClick:(UIButton *)sender {
 //    
-//    [self autoFadeOutControlView];
-//    
-//    self.classView.hidden = !self.classView.hidden;
-//    if ([self.delegate respondsToSelector:@selector(zf_controlView:downloadVideoAction:)]) {
-//        [self.delegate zf_controlView:self downloadVideoAction:sender];
-//        
-//    }
-//    
-//    if (self.classView.hidden == YES) {
-//        
-//        [UIView animateWithDuration:0.3 animations:^{
-//            
-//            [self.classView mas_makeConstraints:^(MASConstraintMaker *make) {
-//                
-//                make.left.mas_equalTo(self.mas_right);
-//            }];
-//            [self layoutIfNeeded];
-//        }];
+    [self autoFadeOutControlView];
 //
-//        
-//    }else{
-//        
-//        [UIView animateWithDuration:0.3 animations:^{
-//            
-//            [self.classView mas_makeConstraints:^(MASConstraintMaker *make) {
-//                
-//                make.left.mas_equalTo(self.mas_right).offset(-self.classView.width_sd);
-//            }];
-//            [self bringSubviewToFront:self.classView];
-//            [self layoutIfNeeded];
-//        }];
-//    }
+    self.classView.hidden = !self.classView.hidden;
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:downloadVideoAction:)]) {
+        [self.delegate zf_controlView:self downloadVideoAction:sender];
+        
+    }
+
+    if (self.classView.hidden == YES) {
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            [self.classView mas_makeConstraints:^(MASConstraintMaker *make) {
+                
+                make.left.mas_equalTo(self.mas_right);
+            }];
+            [self layoutIfNeeded];
+        }];
+
+        
+    }else{
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            [self.classView mas_makeConstraints:^(MASConstraintMaker *make) {
+                
+                make.left.mas_equalTo(self.mas_right).offset(-self.classView.width_sd);
+            }];
+            [self bringSubviewToFront:self.classView];
+            [self layoutIfNeeded];
+        }];
+    }
     
     
 }
@@ -464,12 +464,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         _highDefinition.titleLabel.font = [UIFont systemFontOfSize:12];
         [_sharpMenu addSubview:_highDefinition];
         [_highDefinition addTarget:self action:@selector(chooseHighDefinition:) forControlEvents:UIControlEventTouchUpInside];
-        
-//        _sharpMenu.sd_layout
-//        .leftSpaceToView(self.sharpnessBtn, 0)
-//        .rightSpaceToView(self.sharpnessBtn, 0)
-//        .bottomSpaceToView(self.sharpnessBtn, 0)
-//        .heightIs(self.sharpnessBtn.height_sd*3);
         
         [_sharpMenu mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.right.mas_equalTo(self.sharpnessBtn);
@@ -654,21 +648,21 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }];
     
     //自行增加的课程列表
-//    [self.classView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.mas_equalTo(self.topImageView).offset(self.topImageView.height_sd);
-//        make.bottom.mas_equalTo(self.bottomImageView).offset(-self.bottomImageView.height_sd);
-//        make.width.mas_equalTo(self.mas_width).multipliedBy(0.3);
-//        make.left.mas_equalTo(self.mas_right);
-//    }];
-//    
-//    [self.classList mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.mas_equalTo(self.classView).offset(1);
-//        make.left.mas_equalTo(self.classView).offset(1);
-//        make.right.mas_equalTo(self.classView).offset(-1);
-//        make.bottom.mas_equalTo(self.classView).offset(-1);
-//    }];
+    [self.classView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.topImageView).offset(self.topImageView.height_sd);
+        make.bottom.mas_equalTo(self.bottomImageView).offset(-self.bottomImageView.height_sd);
+        make.width.mas_equalTo(self.mas_width).multipliedBy(0.3);
+        make.left.mas_equalTo(self.mas_right);
+    }];
     
-//    [self layoutIfNeeded];
+    [self.classList mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.classView).offset(1);
+        make.left.mas_equalTo(self.classView).offset(1);
+        make.right.mas_equalTo(self.classView).offset(-1);
+        make.bottom.mas_equalTo(self.classView).offset(-1);
+    }];
+    
+    [self layoutIfNeeded];
     
     
 }
@@ -758,7 +752,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.bottomImageView.alpha    = 0;
     self.lockBtn.alpha            = 0;
     self.bottomProgressView.alpha = 1;
-//    self.classView.hidden = YES;
+    self.classView.hidden = YES;
     // 隐藏resolutionView
     self.resolutionBtn.selected = YES;
 //    self.sharpMenu.hidden = YES;
@@ -1088,29 +1082,29 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 
 /**个人增加的课程列表*/
-//
-//-(UIView *)classView{
-//    
-//    if (!_classView) {
-//        
-//        _classView = [[UIView alloc]init];
-//        _classView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.4];
-//        
-//        
-//    }
-//    return _classView;
-//}
-//
-//
-//-(UITableView *)classList{
-//    
-//    if (!_classList) {
-//        _classList = [[UITableView alloc]init];
-//        _classList.separatorStyle = UITableViewCellSeparatorStyleNone ;
-//        _classList.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.4];
-//    }
-//    return _classList;
-//}
+
+-(UIView *)classView{
+    
+    if (!_classView) {
+        
+        _classView = [[UIView alloc]init];
+        _classView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.4];
+        
+        
+    }
+    return _classView;
+}
+
+
+-(UITableView *)classList{
+    
+    if (!_classList) {
+        _classList = [[UITableView alloc]init];
+        _classList.separatorStyle = UITableViewCellSeparatorStyleNone ;
+        _classList.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.4];
+    }
+    return _classList;
+}
 
 
 

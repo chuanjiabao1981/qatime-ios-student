@@ -109,8 +109,8 @@
 /**高清*/
 @property (nonatomic, strong) UIButton *highDefinition ;
 
-//@property (nonatomic, strong) UIView *classView ;
+@property (nonatomic, strong) UIView *classView ;
 /**课程列表*/
-//@property (nonatomic, strong) UITableView *classList ;
+@property (nonatomic, strong) UITableView *classList ;
 
 @end

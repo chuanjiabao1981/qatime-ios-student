@@ -11,7 +11,7 @@
 #import "IndexHeaderPageView.h"
 #import "YZSquareMenu.h"
 
-#import "TutoriumViewController.h"
+//#import "TutoriumViewController.h"
 #import "NoticeIndexViewController.h"
 #import "YZSquareMenuCell.h"
 #import "RecommandTeacher.h"

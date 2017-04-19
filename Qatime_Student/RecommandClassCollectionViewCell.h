@@ -6,7 +6,7 @@
 //  Copyright © 2016年 WWTD. All rights reserved.
 //
 
-#import "TutoriumCollectionViewCell.h"
+//#import "TutoriumCollectionViewCell.h"
 #import "RecommandClasses.h"
 
 @interface RecommandClassCollectionViewCell : UICollectionViewCell

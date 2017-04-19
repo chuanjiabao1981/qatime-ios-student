@@ -12,7 +12,7 @@
 #import "WXApi.h"
 
 #import "IndexPageViewController.h"
-#import "TutoriumViewController.h"
+//#import "TutoriumViewController.h"
 #import "ClassTimeViewController.h"
 #import "PersonalViewController.h"
 #import "NoticeIndexViewController.h"

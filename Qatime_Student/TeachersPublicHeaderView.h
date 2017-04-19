@@ -54,6 +54,9 @@
 /* 课程列表*/
 @property (nonatomic, strong) UILabel *classList ;
 
+/**教师特色图*/
+@property (nonatomic, strong) UICollectionView *featuresView ;
+
 
 
 

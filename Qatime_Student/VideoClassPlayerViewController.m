@@ -11,6 +11,7 @@
 #import "VideoClassProgressTableViewCell.h"
 #import "VideoClassFullScreenListTableViewCell.h"
 
+
 //屏幕模式
 typedef enum : NSUInteger {
     PortraitMode,
@@ -149,9 +150,9 @@ typedef enum : NSUInteger {
         make.left.top.right.bottom.equalTo(self.videoPlayer);
     }];
     
-//    _controlView.classList.delegate = self;
-//    _controlView.classList.dataSource = self;
-//    _controlView.classList.tag = 3;
+    _controlView.classList.delegate = self;
+    _controlView.classList.dataSource = self;
+    _controlView.classList.tag = 3;
     
     
     
@@ -291,6 +292,12 @@ typedef enum : NSUInteger {
         //切换至高清播放源
         
     }
+}
+
+//点击课程列表
+- (void)zf_playerDownload:(NSString *)url{
+    
+    
 }
 
 

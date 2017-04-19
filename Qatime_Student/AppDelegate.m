@@ -64,7 +64,7 @@
 
 /* 五个选项卡的ViewController*/
 @property(nonatomic,strong) IndexPageViewController *indexPageViewController ;
-@property(nonatomic,strong) TutoriumViewController *tutoriumViewController ;
+//@property(nonatomic,strong) TutoriumViewController *tutoriumViewController ;
 @property(nonatomic,strong) ClassTimeViewController *classTimeViewController ;
 @property(nonatomic,strong) PersonalViewController *personalViewController ;
 @property(nonatomic,strong) NoticeIndexViewController *noticeIndexViewController ;
@@ -327,10 +327,10 @@
     _indexPageViewController.title = NSLocalizedString(@"首页", comment:"");
     
     
-    _tutoriumViewController = [[TutoriumViewController alloc]init];
-    _tutoriumViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_tutorium_h"];
-    _tutoriumViewController.tabBarItem.image = [UIImage imageNamed:@"tab_tutorium_n"];
-    _tutoriumViewController.title = NSLocalizedString(@"辅导班", comment:"");
+//    _tutoriumViewController = [[TutoriumViewController alloc]init];
+//    _tutoriumViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_tutorium_h"];
+//    _tutoriumViewController.tabBarItem.image = [UIImage imageNamed:@"tab_tutorium_n"];
+//    _tutoriumViewController.title = NSLocalizedString(@"辅导班", comment:"");
     
     
     _chooseClassViewController = [[ChooseGradeAndSubjectViewController alloc]init];
@@ -361,7 +361,7 @@
     
     /* 初始化五个navigationcontroller*/
     indexPageVC = [[UINavigationController alloc]initWithRootViewController:_indexPageViewController];
-    tutoriumVC = [[UINavigationController alloc]initWithRootViewController:_tutoriumViewController];
+//    tutoriumVC = [[UINavigationController alloc]initWithRootViewController:_tutoriumViewController];
     classTimeVC = [[UINavigationController alloc]initWithRootViewController:_classTimeViewController];
     noticeVC = [[UINavigationController alloc]initWithRootViewController:_noticeIndexViewController];
     personalVC = [[UINavigationController alloc]initWithRootViewController:_personalViewController];

@@ -72,13 +72,11 @@ typedef enum : NSUInteger {
     
 }
 
-
-
 /**导航栏*/
 - (void)setupNavigation{
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
     [self.view addSubview: _navigationBar];
-    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arow"] forState:UIControlStateNormal];
+    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
 }
@@ -163,7 +161,7 @@ typedef enum : NSUInteger {
             for (NSDictionary *dics in _classInfo.video_lessons) {
                 VideoClass *mod = [VideoClass yy_modelWithJSON:dics];
                 mod.video = [Video yy_modelWithJSON:dics[@"video"]];
-               
+                
                 [_classArray addObject:mod];
             }
             [_videoClassInfoView.classesListTableView reloadData];
@@ -171,7 +169,8 @@ typedef enum : NSUInteger {
             //加载购买栏
             [self setupBuyBar];
             
-            //按钮显示部分
+            //标题
+            _navigationBar.titleLabel.text = _classInfo.name;
             
             //已购买
             if (_classInfo.is_bought == NO) {
@@ -205,7 +204,7 @@ typedef enum : NSUInteger {
                     _buyBar.leftButton.backgroundColor = SEPERATELINECOLOR_2;
                     [_buyBar.leftButton setTitle:@"试听结束" forState:UIControlStateNormal];
                     [_buyBar.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        
+                    
                 }
             }
         }else{
@@ -219,11 +218,11 @@ typedef enum : NSUInteger {
 
 /**
  回调方法 试听
-
+ 
  @param sender 购买栏左侧按钮
  */
 - (void)enterTaste:(UIButton *)sender{
-   
+    
     //如果可以试听就试听,不能试听没反应
     if (_classInfo.is_tasting==YES) {
         //进入试听
@@ -231,10 +230,10 @@ typedef enum : NSUInteger {
         //测试代码  ->暂时缺少试听接口
         VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo];
         [self.navigationController pushViewController:controller animated:YES];
-
+        
         
     }else{
-       //按钮不能用
+        //按钮不能用
         
     }
     
@@ -242,7 +241,7 @@ typedef enum : NSUInteger {
 
 /**
  回调方法  进入学习
-
+ 
  @param sender 购买栏右侧方法
  */
 - (void)enterStudy:(UIButton *)sender{
@@ -251,17 +250,17 @@ typedef enum : NSUInteger {
         //进入学习
         
         //测试代码
-            VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo];
-            [self.navigationController pushViewController:controller animated:YES];
+        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo];
+        [self.navigationController pushViewController:controller animated:YES];
         
     }else{
-     //购买下单
+        //购买下单
         
         OrderViewController *controller = [[OrderViewController alloc]initWithClassID:_classID andClassType:VideoClassType];
         [self.navigationController pushViewController:controller animated:YES];
         
     }
-
+    
     
     
 }
@@ -277,7 +276,7 @@ typedef enum : NSUInteger {
     
     /* cell的重用队列*/
     static NSString *cellIdenfier = @"cell";
-     VideoClassListTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+    VideoClassListTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
     if (cell==nil) {
         cell=[[VideoClassListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
     }
@@ -288,7 +287,7 @@ typedef enum : NSUInteger {
     }
     
     return  cell;
-
+    
 }
 
 
@@ -333,13 +332,13 @@ typedef enum : NSUInteger {
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

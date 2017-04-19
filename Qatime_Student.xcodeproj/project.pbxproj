@@ -38,8 +38,6 @@
 		541E20071E13B9AF007CF5D1 /* NSDate+ChangeUTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20061E13B9AF007CF5D1 /* NSDate+ChangeUTC.m */; };
 		541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */; };
 		541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91D21DC97FFB00180BE8 /* FindPasswordView.m */; };
-		541F91D61DC9BB5200180BE8 /* TutoriumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91D51DC9BB5100180BE8 /* TutoriumView.m */; };
-		541F91E41DC9D16700180BE8 /* TutoriumCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91E31DC9D16700180BE8 /* TutoriumCollectionViewCell.m */; };
 		541F91EA1DC9F1CC00180BE8 /* school.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F91E91DC9F1CC00180BE8 /* school.png */; };
 		541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91EC1DCA09CC00180BE8 /* TutoriumList.m */; };
 		542020FF1E2DBE5100517A47 /* UIViewController+AFHTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 542020FE1E2DBE5100517A47 /* UIViewController+AFHTTP.m */; };
@@ -106,8 +104,6 @@
 		543BCB111E7932AF00AD6721 /* ClassFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB101E7932AF00AD6721 /* ClassFilterView.m */; };
 		543BCB151E794AE900AD6721 /* SnailQuickMaskPopups.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB141E794AE900AD6721 /* SnailQuickMaskPopups.m */; };
 		543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C207D1DC6F66B0086B04B /* IndexPageViewController.m */; };
-		543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20801DC6F6B00086B04B /* TutoriumViewController.m */; };
-		543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20831DC6F6BE0086B04B /* ClassTimeViewController.m */; };
 		543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20861DC703CA0086B04B /* PersonalViewController.m */; };
 		543E0CBE1DFFDA77004B24FD /* PayConfirmView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CBD1DFFDA77004B24FD /* PayConfirmView.m */; };
 		543E0CC11DFFDA82004B24FD /* PayConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CC01DFFDA82004B24FD /* PayConfirmViewController.m */; };
@@ -248,6 +244,16 @@
 		5483E84A1E45730C00C3C1B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5483E84C1E45730C00C3C1B4 /* InfoPlist.strings */; };
 		5483E8511E4576BF00C3C1B4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5483E8531E4576BF00C3C1B4 /* Localizable.strings */; };
 		5484B7421DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 5484B7411DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m */; };
+		548D144F1EA7101A00B120C8 /* TeacherFeatureTagCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D144E1EA7101A00B120C8 /* TeacherFeatureTagCollectionViewCell.m */; };
+		548D1D661EA740CA00B120C8 /* ClassTimeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D651EA740CA00B120C8 /* ClassTimeModel.m */; };
+		548D1D6A1EA740E300B120C8 /* ClassTimeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D691EA740E300B120C8 /* ClassTimeTableViewCell.m */; };
+		548D1D6D1EA7415400B120C8 /* ClassTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D6B1EA7415400B120C8 /* ClassTimeView.m */; };
+		548D1D701EA7417800B120C8 /* NotClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D6F1EA7417800B120C8 /* NotClassView.m */; };
+		548D1D731EA7418C00B120C8 /* AlreadyClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D721EA7418C00B120C8 /* AlreadyClassView.m */; };
+		548D1D761EA741FE00B120C8 /* ClassTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D751EA741FE00B120C8 /* ClassTimeViewController.m */; };
+		548D1D7B1EA7420B00B120C8 /* AllClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D781EA7420B00B120C8 /* AllClassView.m */; };
+		548D1D7C1EA7420B00B120C8 /* CalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D7A1EA7420B00B120C8 /* CalendarView.m */; };
+		548D1D7F1EA7421400B120C8 /* AllClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D7E1EA7421400B120C8 /* AllClassViewController.m */; };
 		548F0E7E1E8A51A400A12C6D /* InteractionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E7D1E8A51A400A12C6D /* InteractionView.m */; };
 		548F0E811E8A51B000A12C6D /* InteractionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E801E8A51B000A12C6D /* InteractionViewController.m */; };
 		548F0E9A1E8A826400A12C6D /* InteractionInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E991E8A826400A12C6D /* InteractionInfoView.m */; };
@@ -255,7 +261,6 @@
 		548F70B01E8B63B70062C71E /* InteractionWhiteBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F70AF1E8B63B70062C71E /* InteractionWhiteBoardView.m */; };
 		548F70B31E8BACD30062C71E /* UIView+PlaceholderImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F70B21E8BACD30062C71E /* UIView+PlaceholderImage.m */; };
 		5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */; };
-		549210271DCC6D0E00A65702 /* MultiFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549210261DCC6D0E00A65702 /* MultiFilterView.m */; };
 		5492FC861E7A2E6800F89593 /* TagsFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492FC851E7A2E6800F89593 /* TagsFilterView.m */; };
 		5492FC891E7A6DC600F89593 /* ChooseClassTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492FC881E7A6DC600F89593 /* ChooseClassTableViewCell.m */; };
 		5492FC8C1E7A7BA800F89593 /* MultiFiltersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492FC8B1E7A7BA800F89593 /* MultiFiltersView.m */; };
@@ -279,7 +284,6 @@
 		549A051A1DC86EBB00B3564D /* MXSCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05161DC86EBB00B3564D /* MXSCycleScrollView.m */; };
 		549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05181DC86EBB00B3564D /* UIColor+HcdCustom.m */; };
 		549A979E1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A979D1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m */; };
-		549A97A11EA61D1E008FF9F4 /* VideoClassFullListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A97A01EA61D1E008FF9F4 /* VideoClassFullListViewController.m */; };
 		549AE7621E013DAC001DD2ED /* BindingMailInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */; };
 		549AE7651E013DBD001DD2ED /* BindingMailInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AE7641E013DBD001DD2ED /* BindingMailInfoViewController.m */; };
 		54A153AA1DC6F09D0070B508 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153A91DC6F09D0070B508 /* main.m */; };
@@ -611,15 +615,7 @@
 		54D661221DD040EF00C9A0FF /* UIViewController+HUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D661211DD040EF00C9A0FF /* UIViewController+HUD.m */; };
 		54D661251DD048F500C9A0FF /* IndexPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D661241DD048F500C9A0FF /* IndexPageView.m */; };
 		54D661291DD04DC900C9A0FF /* YZSquareMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D661281DD04DC900C9A0FF /* YZSquareMenu.m */; };
-		54D66F651DEBD5C600ED2EBC /* ClassTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D66F641DEBD5C600ED2EBC /* ClassTimeView.m */; };
-		54D66F691DEBDA5700ED2EBC /* ClassTimeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D66F681DEBDA5700ED2EBC /* ClassTimeTableViewCell.m */; };
-		54D66F6C1DEBDAA100ED2EBC /* ClassTimeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D66F6B1DEBDAA100ED2EBC /* ClassTimeModel.m */; };
-		54D66F6F1DEBF5ED00ED2EBC /* NotClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D66F6E1DEBF5ED00ED2EBC /* NotClassView.m */; };
-		54D66F721DEBF5FE00ED2EBC /* AlreadyClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D66F711DEBF5FE00ED2EBC /* AlreadyClassView.m */; };
 		54D66F791DEC087D00ED2EBC /* NSString+StatusSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D66F781DEC087D00ED2EBC /* NSString+StatusSwitch.m */; };
-		54D66F7C1DEC33B100ED2EBC /* AllClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D66F7B1DEC33B100ED2EBC /* AllClassView.m */; };
-		54D66F7F1DEC33C300ED2EBC /* AllClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D66F7E1DEC33C300ED2EBC /* AllClassViewController.m */; };
-		54D66F871DEC406B00ED2EBC /* CalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D66F861DEC406B00ED2EBC /* CalendarView.m */; };
 		54D75FDA1E2F9074003744FE /* VideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D75FD91E2F9074003744FE /* VideoPlayerViewController.m */; };
 		54D75FDD1E2F9F87003744FE /* Replay.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D75FDC1E2F9F87003744FE /* Replay.m */; };
 		54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D8DDBA1DCB634100F0B408 /* PersonalView.m */; };
@@ -774,10 +770,6 @@
 		541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindPasswordViewController.m; sourceTree = "<group>"; };
 		541F91D11DC97FFB00180BE8 /* FindPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindPasswordView.h; sourceTree = "<group>"; };
 		541F91D21DC97FFB00180BE8 /* FindPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindPasswordView.m; sourceTree = "<group>"; };
-		541F91D41DC9BB5100180BE8 /* TutoriumView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumView.h; sourceTree = "<group>"; };
-		541F91D51DC9BB5100180BE8 /* TutoriumView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutoriumView.m; sourceTree = "<group>"; };
-		541F91E21DC9D16700180BE8 /* TutoriumCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumCollectionViewCell.h; sourceTree = "<group>"; };
-		541F91E31DC9D16700180BE8 /* TutoriumCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutoriumCollectionViewCell.m; sourceTree = "<group>"; };
 		541F91E91DC9F1CC00180BE8 /* school.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = school.png; sourceTree = "<group>"; };
 		541F91EB1DCA09CC00180BE8 /* TutoriumList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumList.h; sourceTree = "<group>"; };
 		541F91EC1DCA09CC00180BE8 /* TutoriumList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutoriumList.m; sourceTree = "<group>"; };
@@ -866,10 +858,6 @@
 		543BCB141E794AE900AD6721 /* SnailQuickMaskPopups.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnailQuickMaskPopups.m; sourceTree = "<group>"; };
 		543C207C1DC6F66B0086B04B /* IndexPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexPageViewController.h; sourceTree = "<group>"; };
 		543C207D1DC6F66B0086B04B /* IndexPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexPageViewController.m; sourceTree = "<group>"; };
-		543C207F1DC6F6B00086B04B /* TutoriumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutoriumViewController.h; sourceTree = "<group>"; };
-		543C20801DC6F6B00086B04B /* TutoriumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutoriumViewController.m; sourceTree = "<group>"; };
-		543C20821DC6F6BE0086B04B /* ClassTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassTimeViewController.h; sourceTree = "<group>"; };
-		543C20831DC6F6BE0086B04B /* ClassTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassTimeViewController.m; sourceTree = "<group>"; };
 		543C20851DC703CA0086B04B /* PersonalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalViewController.h; sourceTree = "<group>"; };
 		543C20861DC703CA0086B04B /* PersonalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalViewController.m; sourceTree = "<group>"; };
 		543E0CBC1DFFDA77004B24FD /* PayConfirmView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayConfirmView.h; sourceTree = "<group>"; };
@@ -1176,6 +1164,26 @@
 		5483E8551E4576C200C3C1B4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5484B7401DE7DC9600CF9EC0 /* YYTextView+YZEmotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "YYTextView+YZEmotion.h"; sourceTree = "<group>"; };
 		5484B7411DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YYTextView+YZEmotion.m"; sourceTree = "<group>"; };
+		548D144D1EA7101A00B120C8 /* TeacherFeatureTagCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeacherFeatureTagCollectionViewCell.h; sourceTree = "<group>"; };
+		548D144E1EA7101A00B120C8 /* TeacherFeatureTagCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeacherFeatureTagCollectionViewCell.m; sourceTree = "<group>"; };
+		548D1D641EA740CA00B120C8 /* ClassTimeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassTimeModel.h; sourceTree = "<group>"; };
+		548D1D651EA740CA00B120C8 /* ClassTimeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassTimeModel.m; sourceTree = "<group>"; };
+		548D1D681EA740E300B120C8 /* ClassTimeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassTimeTableViewCell.h; sourceTree = "<group>"; };
+		548D1D691EA740E300B120C8 /* ClassTimeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassTimeTableViewCell.m; sourceTree = "<group>"; };
+		548D1D6B1EA7415400B120C8 /* ClassTimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassTimeView.m; sourceTree = "<group>"; };
+		548D1D6C1EA7415400B120C8 /* ClassTimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassTimeView.h; sourceTree = "<group>"; };
+		548D1D6E1EA7417800B120C8 /* NotClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotClassView.h; sourceTree = "<group>"; };
+		548D1D6F1EA7417800B120C8 /* NotClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotClassView.m; sourceTree = "<group>"; };
+		548D1D711EA7418C00B120C8 /* AlreadyClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlreadyClassView.h; sourceTree = "<group>"; };
+		548D1D721EA7418C00B120C8 /* AlreadyClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlreadyClassView.m; sourceTree = "<group>"; };
+		548D1D741EA741FE00B120C8 /* ClassTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassTimeViewController.h; sourceTree = "<group>"; };
+		548D1D751EA741FE00B120C8 /* ClassTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassTimeViewController.m; sourceTree = "<group>"; };
+		548D1D771EA7420B00B120C8 /* AllClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllClassView.h; sourceTree = "<group>"; };
+		548D1D781EA7420B00B120C8 /* AllClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllClassView.m; sourceTree = "<group>"; };
+		548D1D791EA7420B00B120C8 /* CalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarView.h; sourceTree = "<group>"; };
+		548D1D7A1EA7420B00B120C8 /* CalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarView.m; sourceTree = "<group>"; };
+		548D1D7D1EA7421400B120C8 /* AllClassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllClassViewController.h; sourceTree = "<group>"; };
+		548D1D7E1EA7421400B120C8 /* AllClassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllClassViewController.m; sourceTree = "<group>"; };
 		548F0E7C1E8A51A400A12C6D /* InteractionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionView.h; sourceTree = "<group>"; };
 		548F0E7D1E8A51A400A12C6D /* InteractionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionView.m; sourceTree = "<group>"; };
 		548F0E7F1E8A51B000A12C6D /* InteractionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionViewController.h; sourceTree = "<group>"; };
@@ -1190,8 +1198,6 @@
 		548F70B21E8BACD30062C71E /* UIView+PlaceholderImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+PlaceholderImage.m"; sourceTree = "<group>"; };
 		5492101A1DCC585E00A65702 /* NSString+UTF8Coding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UTF8Coding.h"; sourceTree = "<group>"; };
 		5492101B1DCC585E00A65702 /* NSString+UTF8Coding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UTF8Coding.m"; sourceTree = "<group>"; };
-		549210251DCC6D0E00A65702 /* MultiFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiFilterView.h; sourceTree = "<group>"; };
-		549210261DCC6D0E00A65702 /* MultiFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiFilterView.m; sourceTree = "<group>"; };
 		5492FC841E7A2E6800F89593 /* TagsFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagsFilterView.h; sourceTree = "<group>"; };
 		5492FC851E7A2E6800F89593 /* TagsFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagsFilterView.m; sourceTree = "<group>"; };
 		5492FC871E7A6DC600F89593 /* ChooseClassTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseClassTableViewCell.h; sourceTree = "<group>"; };
@@ -1233,8 +1239,6 @@
 		549A05181DC86EBB00B3564D /* UIColor+HcdCustom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HcdCustom.m"; sourceTree = "<group>"; };
 		549A979C1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassFullScreenListTableViewCell.h; sourceTree = "<group>"; };
 		549A979D1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassFullScreenListTableViewCell.m; sourceTree = "<group>"; };
-		549A979F1EA61D1E008FF9F4 /* VideoClassFullListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassFullListViewController.h; sourceTree = "<group>"; };
-		549A97A01EA61D1E008FF9F4 /* VideoClassFullListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassFullListViewController.m; sourceTree = "<group>"; };
 		549AE7601E013DAC001DD2ED /* BindingMailInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailInfoView.h; sourceTree = "<group>"; };
 		549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindingMailInfoView.m; sourceTree = "<group>"; };
 		549AE7631E013DBD001DD2ED /* BindingMailInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailInfoViewController.h; sourceTree = "<group>"; };
@@ -1905,24 +1909,8 @@
 		54D661241DD048F500C9A0FF /* IndexPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexPageView.m; sourceTree = "<group>"; };
 		54D661271DD04DC900C9A0FF /* YZSquareMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZSquareMenu.h; sourceTree = "<group>"; };
 		54D661281DD04DC900C9A0FF /* YZSquareMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZSquareMenu.m; sourceTree = "<group>"; };
-		54D66F631DEBD5C600ED2EBC /* ClassTimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassTimeView.h; sourceTree = "<group>"; };
-		54D66F641DEBD5C600ED2EBC /* ClassTimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassTimeView.m; sourceTree = "<group>"; };
-		54D66F671DEBDA5700ED2EBC /* ClassTimeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassTimeTableViewCell.h; sourceTree = "<group>"; };
-		54D66F681DEBDA5700ED2EBC /* ClassTimeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassTimeTableViewCell.m; sourceTree = "<group>"; };
-		54D66F6A1DEBDAA100ED2EBC /* ClassTimeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassTimeModel.h; sourceTree = "<group>"; };
-		54D66F6B1DEBDAA100ED2EBC /* ClassTimeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassTimeModel.m; sourceTree = "<group>"; };
-		54D66F6D1DEBF5ED00ED2EBC /* NotClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotClassView.h; sourceTree = "<group>"; };
-		54D66F6E1DEBF5ED00ED2EBC /* NotClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotClassView.m; sourceTree = "<group>"; };
-		54D66F701DEBF5FE00ED2EBC /* AlreadyClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlreadyClassView.h; sourceTree = "<group>"; };
-		54D66F711DEBF5FE00ED2EBC /* AlreadyClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlreadyClassView.m; sourceTree = "<group>"; };
 		54D66F771DEC087D00ED2EBC /* NSString+StatusSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+StatusSwitch.h"; sourceTree = "<group>"; };
 		54D66F781DEC087D00ED2EBC /* NSString+StatusSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+StatusSwitch.m"; sourceTree = "<group>"; };
-		54D66F7A1DEC33B100ED2EBC /* AllClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllClassView.h; sourceTree = "<group>"; };
-		54D66F7B1DEC33B100ED2EBC /* AllClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllClassView.m; sourceTree = "<group>"; };
-		54D66F7D1DEC33C300ED2EBC /* AllClassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllClassViewController.h; sourceTree = "<group>"; };
-		54D66F7E1DEC33C300ED2EBC /* AllClassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AllClassViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		54D66F851DEC406B00ED2EBC /* CalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarView.h; sourceTree = "<group>"; };
-		54D66F861DEC406B00ED2EBC /* CalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarView.m; sourceTree = "<group>"; };
 		54D75FD81E2F9074003744FE /* VideoPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayerViewController.h; sourceTree = "<group>"; };
 		54D75FD91E2F9074003744FE /* VideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewController.m; sourceTree = "<group>"; };
 		54D75FDB1E2F9F87003744FE /* Replay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Replay.h; sourceTree = "<group>"; };
@@ -2214,16 +2202,6 @@
 			name = "异常捕获";
 			sourceTree = "<group>";
 		};
-		541F91D71DC9BB5C00180BE8 /* 辅导班页面 */ = {
-			isa = PBXGroup;
-			children = (
-				54FCBAB51DD58B370094BF58 /* Model */,
-				54FCBAB41DD58B350094BF58 /* View */,
-				54FCBAB31DD58B320094BF58 /* Controller */,
-			);
-			name = "辅导班页面";
-			sourceTree = "<group>";
-		};
 		541F91D91DC9BB8D00180BE8 /* 导航栏 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2246,15 +2224,6 @@
 				54AB48B01DED2CEF008E3BC5 /* 系统设置 */,
 			);
 			name = "个人页面";
-			sourceTree = "<group>";
-		};
-		541F91DD1DC9BBA800180BE8 /* 课程表页面 */ = {
-			isa = PBXGroup;
-			children = (
-				54D66F801DEC33DC00ED2EBC /* 课程表主页 */,
-				54D66F811DEC33FA00ED2EBC /* 日历页面 */,
-			);
-			name = "课程表页面";
 			sourceTree = "<group>";
 		};
 		541F91DE1DC9BBAA00180BE8 /* 主页页面 */ = {
@@ -3282,6 +3251,103 @@
 			name = Localizable;
 			sourceTree = "<group>";
 		};
+		548D1D5B1EA7407600B120C8 /* 课程表页面 */ = {
+			isa = PBXGroup;
+			children = (
+				548D1D5D1EA7409B00B120C8 /* 课程表主页 */,
+				548D1D5C1EA7409900B120C8 /* 日历页面 */,
+			);
+			name = "课程表页面";
+			sourceTree = "<group>";
+		};
+		548D1D5C1EA7409900B120C8 /* 日历页面 */ = {
+			isa = PBXGroup;
+			children = (
+				548D1D631EA740A500B120C8 /* Model */,
+				548D1D621EA740A300B120C8 /* View */,
+				548D1D611EA740A300B120C8 /* Controller */,
+			);
+			name = "日历页面";
+			sourceTree = "<group>";
+		};
+		548D1D5D1EA7409B00B120C8 /* 课程表主页 */ = {
+			isa = PBXGroup;
+			children = (
+				548D1D601EA740A100B120C8 /* Model */,
+				548D1D5F1EA7409F00B120C8 /* View */,
+				548D1D5E1EA7409F00B120C8 /* Controller */,
+			);
+			name = "课程表主页";
+			sourceTree = "<group>";
+		};
+		548D1D5E1EA7409F00B120C8 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				548D1D741EA741FE00B120C8 /* ClassTimeViewController.h */,
+				548D1D751EA741FE00B120C8 /* ClassTimeViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		548D1D5F1EA7409F00B120C8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				548D1D6C1EA7415400B120C8 /* ClassTimeView.h */,
+				548D1D6B1EA7415400B120C8 /* ClassTimeView.m */,
+				548D1D6E1EA7417800B120C8 /* NotClassView.h */,
+				548D1D6F1EA7417800B120C8 /* NotClassView.m */,
+				548D1D711EA7418C00B120C8 /* AlreadyClassView.h */,
+				548D1D721EA7418C00B120C8 /* AlreadyClassView.m */,
+				548D1D671EA740D700B120C8 /* cell */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		548D1D601EA740A100B120C8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				548D1D641EA740CA00B120C8 /* ClassTimeModel.h */,
+				548D1D651EA740CA00B120C8 /* ClassTimeModel.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		548D1D611EA740A300B120C8 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				548D1D7D1EA7421400B120C8 /* AllClassViewController.h */,
+				548D1D7E1EA7421400B120C8 /* AllClassViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		548D1D621EA740A300B120C8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				548D1D771EA7420B00B120C8 /* AllClassView.h */,
+				548D1D781EA7420B00B120C8 /* AllClassView.m */,
+				548D1D791EA7420B00B120C8 /* CalendarView.h */,
+				548D1D7A1EA7420B00B120C8 /* CalendarView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		548D1D631EA740A500B120C8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		548D1D671EA740D700B120C8 /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				548D1D681EA740E300B120C8 /* ClassTimeTableViewCell.h */,
+				548D1D691EA740E300B120C8 /* ClassTimeTableViewCell.m */,
+			);
+			name = cell;
+			sourceTree = "<group>";
+		};
 		5493D4A21E0B85DA0085A39E /* YYKit+Add */ = {
 			isa = PBXGroup;
 			children = (
@@ -3405,8 +3471,7 @@
 				546978531DC723A2001695F4 /* 登录页面 */,
 				541F91DE1DC9BBAA00180BE8 /* 主页页面 */,
 				543BCAFA1E79152900AD6721 /* 选课页面 */,
-				541F91D71DC9BB5C00180BE8 /* 辅导班页面 */,
-				541F91DD1DC9BBA800180BE8 /* 课程表页面 */,
+				548D1D5B1EA7407600B120C8 /* 课程表页面 */,
 				5430DBF11E03F4420097E7B4 /* 消息页面 */,
 				541F91DA1DC9BBA000180BE8 /* 个人页面 */,
 				54AC02061E892BC700817767 /* 互动页 */,
@@ -4824,15 +4889,6 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
-		54B73CF81DE3DA1700B7A7EB /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				543C20821DC6F6BE0086B04B /* ClassTimeViewController.h */,
-				543C20831DC6F6BE0086B04B /* ClassTimeViewController.m */,
-			);
-			name = Controller;
-			sourceTree = "<group>";
-		};
 		54B73CFF1DE3E85A00B7A7EB /* ChineseSorting */ = {
 			isa = PBXGroup;
 			children = (
@@ -4859,8 +4915,6 @@
 			children = (
 				54504AC71E9E0E5F00EFCF8E /* VideoClassPlayerViewController.h */,
 				54504AC81E9E0E5F00EFCF8E /* VideoClassPlayerViewController.m */,
-				549A979F1EA61D1E008FF9F4 /* VideoClassFullListViewController.h */,
-				549A97A01EA61D1E008FF9F4 /* VideoClassFullListViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -5242,85 +5296,6 @@
 				54D661281DD04DC900C9A0FF /* YZSquareMenu.m */,
 			);
 			name = YZMenuView;
-			sourceTree = "<group>";
-		};
-		54D66F611DEBD5AD00ED2EBC /* View */ = {
-			isa = PBXGroup;
-			children = (
-				54D66F661DEBDA3900ED2EBC /* Cell */,
-				54D66F631DEBD5C600ED2EBC /* ClassTimeView.h */,
-				54D66F641DEBD5C600ED2EBC /* ClassTimeView.m */,
-				54D66F6D1DEBF5ED00ED2EBC /* NotClassView.h */,
-				54D66F6E1DEBF5ED00ED2EBC /* NotClassView.m */,
-				54D66F701DEBF5FE00ED2EBC /* AlreadyClassView.h */,
-				54D66F711DEBF5FE00ED2EBC /* AlreadyClassView.m */,
-			);
-			name = View;
-			sourceTree = "<group>";
-		};
-		54D66F621DEBD5B400ED2EBC /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				54D66F6A1DEBDAA100ED2EBC /* ClassTimeModel.h */,
-				54D66F6B1DEBDAA100ED2EBC /* ClassTimeModel.m */,
-			);
-			name = Model;
-			sourceTree = "<group>";
-		};
-		54D66F661DEBDA3900ED2EBC /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				54D66F671DEBDA5700ED2EBC /* ClassTimeTableViewCell.h */,
-				54D66F681DEBDA5700ED2EBC /* ClassTimeTableViewCell.m */,
-			);
-			name = Cell;
-			sourceTree = "<group>";
-		};
-		54D66F801DEC33DC00ED2EBC /* 课程表主页 */ = {
-			isa = PBXGroup;
-			children = (
-				54D66F621DEBD5B400ED2EBC /* Model */,
-				54D66F611DEBD5AD00ED2EBC /* View */,
-				54B73CF81DE3DA1700B7A7EB /* Controller */,
-			);
-			name = "课程表主页";
-			sourceTree = "<group>";
-		};
-		54D66F811DEC33FA00ED2EBC /* 日历页面 */ = {
-			isa = PBXGroup;
-			children = (
-				54D66F841DEC341100ED2EBC /* Model */,
-				54D66F831DEC341000ED2EBC /* View */,
-				54D66F821DEC340D00ED2EBC /* Controller */,
-			);
-			name = "日历页面";
-			sourceTree = "<group>";
-		};
-		54D66F821DEC340D00ED2EBC /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				54D66F7D1DEC33C300ED2EBC /* AllClassViewController.h */,
-				54D66F7E1DEC33C300ED2EBC /* AllClassViewController.m */,
-			);
-			name = Controller;
-			sourceTree = "<group>";
-		};
-		54D66F831DEC341000ED2EBC /* View */ = {
-			isa = PBXGroup;
-			children = (
-				54D66F7A1DEC33B100ED2EBC /* AllClassView.h */,
-				54D66F7B1DEC33B100ED2EBC /* AllClassView.m */,
-				54D66F851DEC406B00ED2EBC /* CalendarView.h */,
-				54D66F861DEC406B00ED2EBC /* CalendarView.m */,
-			);
-			name = View;
-			sourceTree = "<group>";
-		};
-		54D66F841DEC341100ED2EBC /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Model;
 			sourceTree = "<group>";
 		};
 		54DBA4961DE4423300A67A90 /* YZEmotionKeyboard */ = {
@@ -5855,43 +5830,8 @@
 				5435D9501DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.h */,
 				5435D9511DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m */,
 				5444BD2A1E67BFAE00A75AD1 /* TeacherPublicClassCollectionViewCell.swift */,
-			);
-			name = Cell;
-			sourceTree = "<group>";
-		};
-		54FCBAB31DD58B320094BF58 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				543C207F1DC6F6B00086B04B /* TutoriumViewController.h */,
-				543C20801DC6F6B00086B04B /* TutoriumViewController.m */,
-			);
-			name = Controller;
-			sourceTree = "<group>";
-		};
-		54FCBAB41DD58B350094BF58 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				541F91D41DC9BB5100180BE8 /* TutoriumView.h */,
-				541F91D51DC9BB5100180BE8 /* TutoriumView.m */,
-				549210251DCC6D0E00A65702 /* MultiFilterView.h */,
-				549210261DCC6D0E00A65702 /* MultiFilterView.m */,
-				54FCBAB61DD58B630094BF58 /* Cell */,
-			);
-			name = View;
-			sourceTree = "<group>";
-		};
-		54FCBAB51DD58B370094BF58 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Model;
-			sourceTree = "<group>";
-		};
-		54FCBAB61DD58B630094BF58 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				541F91E21DC9D16700180BE8 /* TutoriumCollectionViewCell.h */,
-				541F91E31DC9D16700180BE8 /* TutoriumCollectionViewCell.m */,
+				548D144D1EA7101A00B120C8 /* TeacherFeatureTagCollectionViewCell.h */,
+				548D144E1EA7101A00B120C8 /* TeacherFeatureTagCollectionViewCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -6392,10 +6332,10 @@
 				54AA30971DF98CD5009E0D04 /* CanceldOrderView.m in Sources */,
 				543E0CCB1DFFEDC8004B24FD /* CheckOrderViewController.m in Sources */,
 				5413D2521DF7B5CD00A8FDEC /* CashRecordView.m in Sources */,
+				548D1D6D1EA7415400B120C8 /* ClassTimeView.m in Sources */,
 				545226021E24821400F36280 /* PersonalInfoEditViewController.m in Sources */,
 				54AC04AE1E89398E00817767 /* NTESSessionCustomContentConfig.m in Sources */,
 				54AC04DC1E89398E00817767 /* NTESMeetingActionView.m in Sources */,
-				54D66F6F1DEBF5ED00ED2EBC /* NotClassView.m in Sources */,
 				54AC03DB1E8938E100817767 /* NIMInputTextView.m in Sources */,
 				546978561DC723B5001695F4 /* LoginViewController.m in Sources */,
 				548328ED1DDC6F360053AB29 /* UUMessageCell.m in Sources */,
@@ -6414,8 +6354,11 @@
 				54AC04231E8938E100817767 /* NIMWebImagePrefetcher.m in Sources */,
 				546F5C561DFD75F400528F79 /* WithDrawInfoView.m in Sources */,
 				54AC03DA1E8938E100817767 /* NIMInputMoreContainerView.m in Sources */,
+				548D1D7C1EA7420B00B120C8 /* CalendarView.m in Sources */,
+				548D1D731EA7418C00B120C8 /* AlreadyClassView.m in Sources */,
 				54F34D801DE70BA500D6FC85 /* NSString+FindFace.m in Sources */,
 				5407C98C1DE7DDED00DB04C8 /* NSBundle+YYAdd.m in Sources */,
+				548D1D661EA740CA00B120C8 /* ClassTimeModel.m in Sources */,
 				545162D51DF55DC7000BD17A /* Personal_HeadTableViewCell.m in Sources */,
 				543BCB091E79159200AD6721 /* ChooseClassViewController.m in Sources */,
 				54DBEB111E9B55DB000EEB00 /* VideoClassFilterViewController.m in Sources */,
@@ -6431,6 +6374,7 @@
 				543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */,
 				54AC02B11E892FD100817767 /* UIView+Swizzling.m in Sources */,
 				54AA30911DF98CBC009E0D04 /* UnpaidOrderView.m in Sources */,
+				548D1D761EA741FE00B120C8 /* ClassTimeViewController.m in Sources */,
 				545162BB1DF50D85000BD17A /* ChangePasswordView.m in Sources */,
 				54AC02AE1E892FD100817767 /* UINavigationBar+Swizzling.m in Sources */,
 				54AC03E61E8938E100817767 /* NIMImageContentConfig.m in Sources */,
@@ -6471,7 +6415,7 @@
 				54AC040E1E8938E100817767 /* NIMAdvancedTeamMemberCell.m in Sources */,
 				545162D81DF55DD0000BD17A /* PersonalTableViewCell.m in Sources */,
 				548F0E7E1E8A51A400A12C6D /* InteractionView.m in Sources */,
-				54D66F871DEC406B00ED2EBC /* CalendarView.m in Sources */,
+				548D1D7F1EA7421400B120C8 /* AllClassViewController.m in Sources */,
 				54DBA4B01DE4423300A67A90 /* YZEmotionCell.m in Sources */,
 				548F70AD1E8B5FE50062C71E /* InteractionControl.m in Sources */,
 				54AC041D1E8938E100817767 /* NIMImageCache.m in Sources */,
@@ -6505,7 +6449,6 @@
 				549A979E1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m in Sources */,
 				54AC025A1E892CEE00817767 /* NTESService.m in Sources */,
 				544B61EB1E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.m in Sources */,
-				541F91E41DC9D16700180BE8 /* TutoriumCollectionViewCell.m in Sources */,
 				54652E2B1DEEB98600F4607C /* NoticeSettingViewController.m in Sources */,
 				54AC04151E8938E100817767 /* NIMKitUtil.m in Sources */,
 				54AC041A1E8938E100817767 /* NIMAttributedLabelAttachment.m in Sources */,
@@ -6516,9 +6459,7 @@
 				5442009B1E77914200797E6C /* TodayLiveCollectionViewCell.m in Sources */,
 				54AC040C1E8938E100817767 /* NIMTeamMemberCardViewController.m in Sources */,
 				54AC040F1E8938E100817767 /* NIMKitColorButtonCell.m in Sources */,
-				54D66F7F1DEC33C300ED2EBC /* AllClassViewController.m in Sources */,
 				548328F01DDC6F370053AB29 /* UUProgressHUD.m in Sources */,
-				54D66F6C1DEBDAA100ED2EBC /* ClassTimeModel.m in Sources */,
 				54AC02B71E892FD100817767 /* NTESBadgeView.m in Sources */,
 				54AC020B1E892BF700817767 /* NTESMeetingWhiteboardViewController.m in Sources */,
 				54DBA4B51DE4423300A67A90 /* YZEmotionPageCell.m in Sources */,
@@ -6547,7 +6488,6 @@
 				547E898A1DD1BC9900749366 /* RecommandTeacher.m in Sources */,
 				54AC02531E892CEE00817767 /* NTESDataManager.m in Sources */,
 				547E92C31E8E313200160C6D /* MyOneOnOneViewController.m in Sources */,
-				549210271DCC6D0E00A65702 /* MultiFilterView.m in Sources */,
 				545162CB1DF5597E000BD17A /* PersonalInfoView.m in Sources */,
 				54DBA4B61DE4423300A67A90 /* YZTextAttachment.m in Sources */,
 				54AC03D21E8938E100817767 /* NIMContactSelectTabView.m in Sources */,
@@ -6556,7 +6496,6 @@
 				54AC04C11E89398E00817767 /* NTESSessionMsgConverter.m in Sources */,
 				54AC04081E8938E100817767 /* NIMAdvancedTeamCardViewController.m in Sources */,
 				54294C6D1DDB051E00677333 /* Classes.m in Sources */,
-				543C20811DC6F6B00086B04B /* TutoriumViewController.m in Sources */,
 				54D75FDA1E2F9074003744FE /* VideoPlayerViewController.m in Sources */,
 				54C452331E9CBD77002108F4 /* UIAlertController+ZFPlayerRotation.m in Sources */,
 				54AC02271E892C5300817767 /* NTESWhiteboardPoint.m in Sources */,
@@ -6587,10 +6526,10 @@
 				54AC04EE1E893AF300817767 /* NTESDemoCloseMeetingTask.m in Sources */,
 				54B9149D1E6D676D00F377ED /* ProvinceHeaderView.m in Sources */,
 				549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */,
-				54D66F7C1DEC33B100ED2EBC /* AllClassView.m in Sources */,
 				54AC03F51E8938E100817767 /* NIMSessionTimestampCell.m in Sources */,
 				54AC03FB1E8938E100817767 /* NIMSessionNetChatNotifyContentView.m in Sources */,
 				54813C4F1E14F30000D6F739 /* NoticeSwitchTableViewCell.m in Sources */,
+				548D1D7B1EA7420B00B120C8 /* AllClassView.m in Sources */,
 				5435D9371DD2C12300DD4FCC /* ClassesListTableViewCell.m in Sources */,
 				54AC04B41E89398E00817767 /* NTESChatroomMaker.m in Sources */,
 				5471C8021E8F87FD0098E509 /* ClassListTableView.m in Sources */,
@@ -6603,7 +6542,6 @@
 				54AC03C81E8938E100817767 /* NIMCustomLeftBarView.m in Sources */,
 				5417AC181E715CF70068941D /* CityListTableViewCell.m in Sources */,
 				547E89901DD1D03100749366 /* TutoriumInfoViewController.m in Sources */,
-				54D66F721DEBF5FE00ED2EBC /* AlreadyClassView.m in Sources */,
 				543A4D481E89F775004C5C9E /* NTESEnterRoomViewController.m in Sources */,
 				547E898D1DD1D01B00749366 /* TutoriumInfoView.m in Sources */,
 				54AC04D41E89398E00817767 /* ijksdl_stdinc.c in Sources */,
@@ -6621,7 +6559,6 @@
 				5493D4CA1E0BE1050085A39E /* TLCity.m in Sources */,
 				54AC04281E8938E100817767 /* NIMIndefiniteAnimatedView.m in Sources */,
 				54AC04191E8938E100817767 /* NIMAttributedLabel.m in Sources */,
-				54D66F651DEBD5C600ED2EBC /* ClassTimeView.m in Sources */,
 				545162B11DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m in Sources */,
 				54AC02811E892D3C00817767 /* UIScrollView+NTESPullToRefresh.m in Sources */,
 				544200A71E77FB6300797E6C /* QualityClass.m in Sources */,
@@ -6649,7 +6586,6 @@
 				54C452041E9CA5D1002108F4 /* MyVideoClassView.m in Sources */,
 				54A153B01DC6F09D0070B508 /* ViewController.m in Sources */,
 				54B9CAFC1DFE4AAC003961FF /* WithdrawConfirmViewController.m in Sources */,
-				541F91D61DC9BB5200180BE8 /* TutoriumView.m in Sources */,
 				54AC04091E8938E100817767 /* NIMCreateTeamAnnouncement.m in Sources */,
 				54D59A7A1E23417B006066EC /* DrawBackViewController.m in Sources */,
 				54DBA4B21DE4423300A67A90 /* YZEmotionKeyboard.m in Sources */,
@@ -6766,6 +6702,7 @@
 				54AC03E11E8938E100817767 /* NIMUIConfig.m in Sources */,
 				54AC02181E892C4A00817767 /* NTESDocumentHandler.m in Sources */,
 				54AC03EA1E8938E100817767 /* NIMTipContentConfig.m in Sources */,
+				548D1D701EA7417800B120C8 /* NotClassView.m in Sources */,
 				54AC04031E8938E100817767 /* NIMCardMemberItem.m in Sources */,
 				548328EF1DDC6F360053AB29 /* UUMessageFrame.m in Sources */,
 				54AC03D41E8938E100817767 /* NIMInputAudioRecordIndicatorView.m in Sources */,
@@ -6793,7 +6730,6 @@
 				54AB48DE1DED51A0008E3BC5 /* MyClassViewController.m in Sources */,
 				54B914A41E6D772900F377ED /* ProinceTableViewCell.m in Sources */,
 				543E233D1E2C78C800381F10 /* SetPayPasswordView.m in Sources */,
-				543C20841DC6F6BE0086B04B /* ClassTimeViewController.m in Sources */,
 				54294C7D1DDB373400677333 /* LivePlayerViewController.m in Sources */,
 				54AB48D21DED3389008E3BC5 /* SettingTableViewCell.m in Sources */,
 				54652E311DEEBDC300F4607C /* ClassNoticeSettingView.m in Sources */,
@@ -6823,7 +6759,6 @@
 				54AC04D51E89398E00817767 /* ijksdl_timer.c in Sources */,
 				54AC04CC1E89398E00817767 /* renderer_rgb.c in Sources */,
 				544B61FA1E9647F100D7B160 /* LCActionSheet.m in Sources */,
-				54D66F691DEBDA5700ED2EBC /* ClassTimeTableViewCell.m in Sources */,
 				54AC03D11E8938E100817767 /* NIMContactSelectConfig.m in Sources */,
 				54C525191E7BAC000005B5A0 /* TTGTagCollectionView.m in Sources */,
 				545B86FB1E650F2000A157F0 /* QRCodeController.m in Sources */,
@@ -6873,6 +6808,7 @@
 				54D661221DD040EF00C9A0FF /* UIViewController+HUD.m in Sources */,
 				545162CE1DF5598E000BD17A /* PersonalInfoViewController.m in Sources */,
 				54AC04B01E89398E00817767 /* NTESMeetingMessageHandler.m in Sources */,
+				548D144F1EA7101A00B120C8 /* TeacherFeatureTagCollectionViewCell.m in Sources */,
 				54C452321E9CBD77002108F4 /* ASValueTrackingSlider.m in Sources */,
 				54C452381E9CBD77002108F4 /* UIViewController+ZFPlayerRotation.m in Sources */,
 				5471C7F61E8F49350098E509 /* InteractionLesson.m in Sources */,
@@ -6891,6 +6827,7 @@
 				54CB26631DEFFBDF00AE7414 /* ChangePhoneViewController.m in Sources */,
 				54B4C18F1DF8416500E31794 /* ConfirmChargeView.m in Sources */,
 				54AC04DE1E89398E00817767 /* NTESVideoFSViewController.m in Sources */,
+				548D1D6A1EA740E300B120C8 /* ClassTimeTableViewCell.m in Sources */,
 				54AC03C21E8938E100817767 /* UIImage+NIM.m in Sources */,
 				54AC03D01E8938E100817767 /* NIMContactPickedView.m in Sources */,
 				5452260E1E24830200F36280 /* EditBirthdayTableViewCell.m in Sources */,
@@ -6950,7 +6887,6 @@
 				54652E081DEE9D1900F4607C /* AboutUsView.m in Sources */,
 				54504ACC1E9E0E7F00EFCF8E /* VideoClassPlayerView.m in Sources */,
 				54AC042A1E8938E100817767 /* UIView+NIMKitToast.m in Sources */,
-				549A97A11EA61D1E008FF9F4 /* VideoClassFullListViewController.m in Sources */,
 				5471C7FC1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.m in Sources */,
 				54AC03C31E8938E100817767 /* UITableView+NIMScrollToBottom.m in Sources */,
 				5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */,
@@ -7129,6 +7065,9 @@
 					"$(PROJECT_DIR)/Qatime_Student",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMAVChat",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMSDK",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMAVChat",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMSDK",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
@@ -7152,6 +7091,12 @@
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMAVChat/Libs",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMSDK/Libs",
 					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/libs",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/LivePlayer_iOS_SDK/libs",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMAVChat/Libs",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMSDK/Libs",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/UMessage_Sdk_1.4.0",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/UUChat/OtherResources/VoiceLib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -7208,6 +7153,9 @@
 					"$(PROJECT_DIR)/Qatime_Student",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMAVChat",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMSDK",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMAVChat",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMSDK",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
@@ -7231,6 +7179,12 @@
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMAVChat/Libs",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMSDK/Libs",
 					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/libs",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/LivePlayer_iOS_SDK/libs",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMAVChat/Libs",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/NIM_iOS_SDK_v3.5.0/NIMSDK/Libs",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/UMessage_Sdk_1.4.0",
+					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/UUChat/OtherResources/VoiceLib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
