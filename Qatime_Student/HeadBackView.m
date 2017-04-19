@@ -24,7 +24,7 @@
         /* 头像的背景*/
         _backGroundView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT)];
         [self addSubview:_backGroundView];
-        _backGroundView.backgroundColor = [UIColor whiteColor];
+        _backGroundView.backgroundColor = NAVIGATIONRED;
 
         /* 头像*/
         
@@ -35,7 +35,7 @@
         _name = [[UILabel alloc]init];
         _name.font = TITLEFONTSIZE;
         [_backGroundView addSubview:_name];
-        _name.textColor = TITLECOLOR;
+        _name.textColor = [UIColor whiteColor];
         
         
         _headImageView.sd_layout

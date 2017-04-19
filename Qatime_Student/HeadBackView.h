@@ -16,8 +16,6 @@
  */
 @property(nonatomic,strong) UIView *backGroundView ;
 
-
-
 /**
  用户头像
  */

@@ -66,8 +66,7 @@
     
     });
     
-    
-    menus = @[@"提醒设置",/*@"检查更新",*/@"清理缓存",@"关于我们"/*,@"学习流程"*/];
+    menus = @[@"提醒设置",/*@"检查更新",*/@"清理缓存"/*,@"关于我们",@"学习流程"*/];
     
     _settingView = [[SettingView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT)];
     [self.view addSubview:_settingView];
@@ -75,16 +74,13 @@
     
     _settingView.menuTableView.delegate = self;
     _settingView.menuTableView.dataSource = self;
-    _settingView.menuTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _settingView.menuTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     
     _settingView.menuTableView.tableFooterView = [[UIView alloc]init];
     
     /* 获取当前软件版本*/
     
     _version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-
-    
-//     NSString *FilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"<#File Path#>"];
     
     /* 获取缓存数据*/
     
@@ -288,26 +284,8 @@
             }];
         }
             break;
-        case 2:{
-            
-            AboutUsViewController *abVC = [AboutUsViewController new];
-            [self.navigationController pushViewController:abVC animated:YES];
-            
-        }
-            break;
-            
-        case 3:{
-            
-            
-        }
-            break;
     }
-    
-    
-    
 }
-
-
 
 #pragma mark- 用户退出登录
 - (void)userLogOut{

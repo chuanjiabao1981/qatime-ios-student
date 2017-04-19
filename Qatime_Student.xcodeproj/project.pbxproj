@@ -2223,7 +2223,7 @@
 				54AB48AF1DED2CDB008E3BC5 /* 个人页面 */,
 				54AB48B41DED2CF4008E3BC5 /* 我的钱包 */,
 				54AB48B31DED2CF3008E3BC5 /* 我的订单 */,
-				54AB48B21DED2CF2008E3BC5 /* 我的辅导 */,
+				54AB48B21DED2CF2008E3BC5 /* 我的直播课 */,
 				547E92BA1E8E2DA700160C6D /* 我的一对一 */,
 				54C451FE1E9C94B8002108F4 /* 我的视频课 */,
 				54AB48B11DED2CF1008E3BC5 /* 安全管理 */,
@@ -3632,14 +3632,14 @@
 			name = "安全管理";
 			sourceTree = "<group>";
 		};
-		54AB48B21DED2CF2008E3BC5 /* 我的辅导 */ = {
+		54AB48B21DED2CF2008E3BC5 /* 我的直播课 */ = {
 			isa = PBXGroup;
 			children = (
 				54AB48BE1DED2D5A008E3BC5 /* Model */,
 				54AB48BC1DED2D55008E3BC5 /* View */,
 				54AB48BB1DED2D53008E3BC5 /* Controller */,
 			);
-			name = "我的辅导";
+			name = "我的直播课";
 			sourceTree = "<group>";
 		};
 		54AB48B31DED2CF3008E3BC5 /* 我的订单 */ = {
