@@ -6,6 +6,14 @@
          contextName = "__46-[TutoriumInfoViewController switchClassData:]_block_invoke:TutoriumInfoViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[VideoClassFilterViewController filterdByFilterDic:]:VideoClassFilterViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filterDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__41-[DrawBackViewController requestDrawback]_block_invoke:DrawBackViewController.m">
       </ContextState>
       <ContextState
@@ -440,10 +448,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -561,6 +569,9 @@
       </ContextState>
       <ContextState
          contextName = "__42-[ClassSettingViewController saveSettings]_block_invoke:ClassSettingViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[VideoClassFilterViewController requestClass:withContentDictionary:]:VideoClassFilterViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[OrderViewController touchesBegan:withEvent:]:OrderViewController.m">
@@ -1274,10 +1285,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1524,6 +1535,14 @@
             </PersistentString>
             <PersistentString
                value = "_boardPlayerView.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__69-[VideoClassFilterViewController requestClass:withContentDictionary:]_block_invoke:VideoClassFilterViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classesArray">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

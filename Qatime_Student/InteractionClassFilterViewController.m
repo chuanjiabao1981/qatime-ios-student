@@ -303,13 +303,22 @@ typedef enum : NSUInteger {
 //单项筛选
 - (void)filterdByFilterDic:( __kindof NSMutableDictionary *)filterdDic{
     
-    _filterDic = filterdDic;
+    //_filterDic = filterdDic;
     
-    [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
-        
-        [self requestClass:PullToRefresh withContentDictionary:_filterDic];
-        
-    }];
+    NSDictionary *dic = _filterDic.mutableCopy;
+    
+    for (NSString *key in dic) {
+        for (NSString *keys in filterdDic) {
+            if ([key isEqualToString:keys]) {
+                [_filterDic removeObjectForKey:key];
+            }
+        }
+    }
+    [_filterDic addEntriesFromDictionary:filterdDic];
+    
+    [_classTableView.mj_header beginRefreshing];
+    
+    [self requestClass:PullToRefresh withContentDictionary:_filterDic];
     
 }
 

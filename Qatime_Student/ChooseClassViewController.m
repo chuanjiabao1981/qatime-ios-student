@@ -182,19 +182,17 @@
 
 -(void)didTapCheckBox:(BEMCheckBox *)checkBox{
     
-//    if (checkBox.on == YES) {
-//        [checkBox setOn:NO animated:YES];
-//    }else{
-//        
-//        [checkBox setOn:YES animated:YES];
-//    }
+    if (checkBox.on == YES) {
+        //筛选免费视频课
+        [_videoClassFilterController filteredForFree:YES];
+        
+    }else{
+        //筛选收费视频课
+        [_videoClassFilterController filteredForFree:NO];
+    }
     
 }
-- (void)animationDidStopForCheckBox:(BEMCheckBox *)checkBox{
-    
-    
-    
-}
+
 
 
 
@@ -474,22 +472,40 @@
     [self filterButtonTurnReset];
     
     [sender setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+    
+    NSString *sort_by = @"".mutableCopy;
+    NSString *sort_by_asc = @"".mutableCopy;
+    switch (_segmentControl.selectedSegmentIndex) {
+        case 0:
+            sort_by = @"left_price";
+            sort_by_asc = @"left_price.asc";
+            break;
+        case 1:
+            sort_by = @"price";
+            sort_by_asc = @"price.asc";
+            break;
+        case 2:
+            sort_by = @"price";
+            sort_by_asc = @"price.asc";
+            break;
+    }
+    
     //如果已有sort_by字段
     if (_filterDic[@"sort_by"]) {
         //如果是价格筛选字段 正序或倒序
-        if ([_filterDic[@"sort_by"] isEqualToString:@"left_price.asc"]||[_filterDic[@"sort_by"] isEqualToString:@"left_price"]) {
+        if ([_filterDic[@"sort_by"] isEqualToString:sort_by_asc]||[_filterDic[@"sort_by"] isEqualToString:sort_by]) {
             //正序
-            if ([_filterDic[@"sort_by"] isEqualToString:@"left_price.asc"]) {
+            if ([_filterDic[@"sort_by"] isEqualToString:sort_by_asc]) {
                 [_filterDic removeObjectForKey:@"sort_by"];
                 //改成倒序
-                _filterDic = @{@"sort_by":@"left_price"}.mutableCopy;
+                _filterDic = @{@"sort_by":sort_by}.mutableCopy;
                 [_filterView.priceArrow setImage:[UIImage imageNamed:@"上箭头"]];
                 
-            }else if ([_filterDic[@"sort_by"] isEqualToString:@"left_price"]){
+            }else if ([_filterDic[@"sort_by"] isEqualToString:sort_by]){
                 //如果是倒序
                 [_filterDic removeObjectForKey:@"sort_by"];
                 //改成正序
-                _filterDic = @{@"sort_by":@"left_price.asc"}.mutableCopy;
+                _filterDic = @{@"sort_by":sort_by_asc}.mutableCopy;
                 [_filterView.priceArrow setImage:[UIImage imageNamed:@"下箭头"]];
                 
             }
@@ -505,13 +521,13 @@
             [_filterView.priceArrow setImage:[UIImage imageNamed:@"下箭头"]];
             
             //去掉后,改为正序
-            _filterDic = @{@"sort_by":@"left_price.asc"}.mutableCopy;
+            _filterDic = @{@"sort_by":sort_by_asc}.mutableCopy;
             
         }
         
     }else{
         //如果没有筛选字段
-        _filterDic = @{@"sort_by":@"left_price.asc"}.mutableCopy;
+        _filterDic = @{@"sort_by":sort_by_asc}.mutableCopy;
         
         [_filterView.priceArrow setImage:[UIImage imageNamed:@"下箭头"]];
         
@@ -534,9 +550,6 @@
         }
             break;
     }
-
-    
-    
 }
 
 

@@ -44,4 +44,12 @@
  */
 - (void)filteredByTages:(NSString *)tag;
 
+
+/**
+ 免费课程筛选方法
+
+ @param free 是否免费
+ */
+- (void)filteredForFree:(BOOL)free;
+
 @end

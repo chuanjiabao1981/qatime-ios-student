@@ -12,6 +12,7 @@
 #import "MJRefresh.h"
 #import "CYLTableViewPlaceHolder.h"
 #import "VideoClassInfoViewController.h"
+#import "BEMCheckBox.h"
 
 //上滑 或 下拉
 typedef enum : NSUInteger {
@@ -19,7 +20,11 @@ typedef enum : NSUInteger {
     PushToReadMore      //上滑加载更多
 } RefreshMode;
 
-@interface VideoClassFilterViewController ()<UITableViewDataSource,UITableViewDelegate,CYLTableViewPlaceHolderDelegate>
+@interface VideoClassFilterViewController ()<UITableViewDataSource,UITableViewDelegate,CYLTableViewPlaceHolderDelegate,BEMCheckBoxDelegate>{
+    
+    BOOL _filterForFree;
+    
+}
 /**年级*/
 @property (nonatomic, strong) NSString *grade ;
 /**科目*/
@@ -93,6 +98,7 @@ typedef enum : NSUInteger {
     [self setupViews];
     
     _isInitPull = NO;
+    _filterForFree = NO;
     
 }
 
@@ -124,8 +130,10 @@ typedef enum : NSUInteger {
         
         //第一次自动下拉刷新
         [_.mj_header beginRefreshing];
+        
         //自动下拉
         [self requestClass:PullToRefresh withContentDictionary:nil];
+        
         
         _.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
             
@@ -138,6 +146,27 @@ typedef enum : NSUInteger {
     });
     
 }
+
+//免费课程加载方法
+- (void)filteredForFree:(BOOL)free{
+    
+    _filterForFree = free;
+    if (free == YES) {
+        
+        [_filterDic setObject:@"free" forKey:@"q[sell_type_eq]"];
+        [_classTableView.mj_header beginRefreshing];
+        
+    }else{
+        if (_filterDic[@"q[sell_type_eq]"]) {
+            [_filterDic removeObjectForKey:@"q[sell_type_eq]"];
+            [_classTableView.mj_header beginRefreshing];
+            
+        }
+    }
+}
+
+
+
 //下拉加载数据
 - (void)requestClass:(RefreshMode)mode withContentDictionary:( nullable __kindof NSDictionary * )contentDic{
     //    self.isInitPull = NO;
@@ -253,9 +282,6 @@ typedef enum : NSUInteger {
     
     return _classesArray.count;
     
-    
-    return 0;
-    
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -296,13 +322,24 @@ typedef enum : NSUInteger {
 #pragma mark- 筛选方法
 - (void)filterdByFilterDic:( __kindof NSMutableDictionary *)filterdDic{
     
-    _filterDic = filterdDic;
+    //_filterDic = filterdDic;
     
-    [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
+    NSDictionary *dic = _filterDic.mutableCopy;
+    
+    for (NSString *key in dic) {
+        for (NSString *keys in filterdDic) {
+            if ([key isEqualToString:keys]) {
+                [_filterDic removeObjectForKey:key];
+            }
+        }
+    }
+    [_filterDic addEntriesFromDictionary:filterdDic];
+    
+    [_classTableView.mj_header beginRefreshing];
         
-        [self requestClass:PullToRefresh withContentDictionary:_filterDic];
+    [self requestClass:PullToRefresh withContentDictionary:_filterDic];
         
-    }];
+    
     
 }
 
@@ -341,13 +378,13 @@ typedef enum : NSUInteger {
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
