@@ -18,6 +18,6 @@
 
 
 
-- (instancetype)initWithPhone:(NSString *)phone;
+- (instancetype)initWithPhone:(NSString *)phone andTicketToken:(NSString *)ticketToken;
 
 @end

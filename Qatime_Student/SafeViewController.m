@@ -24,6 +24,7 @@
 #import "AuthenticationViewController.h"
 #import "SetPayPasswordViewController.h"
 #import "UIViewController+AFHTTP.h"
+#import "VerifyPasswordViewController.h"
 
 @interface SafeViewController ()<WXApiDelegate>{
     
@@ -375,11 +376,11 @@
                 case 3:{
                     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]) {
                         
-                        ParentViewController *pareVC = [[ParentViewController alloc]initWithPhone:[[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]];
+                        VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]init];
                         [self.navigationController pushViewController:pareVC animated:YES];
                     }
                     else if (![[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]||[[[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]isEqualToString:@""]||[[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]==nil){
-                        ParentViewController *pareVC = [[ParentViewController alloc]initWithPhone:@"未绑定家长手机"];
+                        VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]init];
                         [self.navigationController pushViewController:pareVC animated:YES];
                         
                     }

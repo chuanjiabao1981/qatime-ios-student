@@ -57,7 +57,7 @@
         /* 布局*/
         
         _logoImage.sd_layout
-        .leftSpaceToView(self.contentView,10)
+        .leftSpaceToView(self.contentView,20)
         .centerYEqualToView(self.contentView)
         .heightRatioToView(self.contentView,0.5)
         .widthEqualToHeight();

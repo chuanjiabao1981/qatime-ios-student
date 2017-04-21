@@ -15,4 +15,12 @@
 
 @property (nonatomic, strong) NSString *selectedFilterGrade;
 
+
+/**
+ 首页年级筛选方法
+
+ @param notification 通知内容
+ */
+- (void)chooseFilterGrade:(NSNotification *)notification;
+
 @end

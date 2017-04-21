@@ -35,10 +35,10 @@
 //        _parentPhoneLabel.layer.borderWidth =1;
 //        _parentPhoneLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
         /* 登录密码*/
-        _password = [[UITextField alloc]init];
-        _password.placeholder = @" 输入登录密码";
-        _password.layer.borderWidth =1;
-        _password.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//        _password = [[UITextField alloc]init];
+//        _password.placeholder = @" 输入登录密码";
+//        _password.layer.borderWidth =1;
+//        _password.layer.borderColor = [UIColor lightGrayColor].CGColor;
         
         
         /* 新的家长手机号*/
@@ -46,10 +46,6 @@
         _parentPhoneText.placeholder = @" 输入新家长手机";
         _parentPhoneText.layer.borderWidth =1;
         _parentPhoneText.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        
-
-        
-
         
         
         /* 校验码*/
@@ -80,7 +76,7 @@
         _finishButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _finishButton.layer.borderWidth = 1;
                 
-        [self sd_addSubviews:@[para,_parentPhoneLabel,_password,_parentPhoneText,_keyCodeText,_getCodeButton,_finishButton]];
+        [self sd_addSubviews:@[para,_parentPhoneLabel,_parentPhoneText,_keyCodeText,_getCodeButton,_finishButton]];
         
         /* 布局*/
         para.sd_layout
@@ -95,23 +91,23 @@
         .bottomEqualToView(para);
         [_parentPhoneLabel setSingleLineAutoResizeWithMaxWidth:1000];
         
-        _password .sd_layout
+//        _password .sd_layout
+//        .topSpaceToView(para,30)
+//        .leftSpaceToView(self,20)
+//        .rightSpaceToView(self,20)
+//        .heightRatioToView(self,0.065f);
+        
+        _parentPhoneText.sd_layout
         .topSpaceToView(para,30)
         .leftSpaceToView(self,20)
         .rightSpaceToView(self,20)
         .heightRatioToView(self,0.065f);
-        
-        _parentPhoneText.sd_layout
-        .leftEqualToView(_password)
-        .rightEqualToView(_password)
-        .topSpaceToView(_password,20)
-        .heightRatioToView(_password,1);
        
         _keyCodeText.sd_layout
-        .leftEqualToView(_password)
+        .leftEqualToView(_parentPhoneText)
         .widthIs(self.width_sd/2+20)
         .topSpaceToView(_parentPhoneText,20)
-        .heightRatioToView(_password,1);
+        .heightRatioToView(_parentPhoneText,1);
         
         _getCodeButton.sd_layout
         .leftSpaceToView(_keyCodeText,0)

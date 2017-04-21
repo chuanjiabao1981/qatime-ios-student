@@ -18,7 +18,7 @@
     
     NavigationBar *_navigationBar;
     
-    NSArray *subjects;
+    NSMutableArray *subjects;
     
     NSString *_selectedGrade;
 }
@@ -34,7 +34,7 @@
     self.navigationController.navigationBar.hidden = YES;
     
     //基本信息(全部)
-    subjects = @[@"全部",@"语文",@"数学",@"英语",@"历史",@"物理",@"政治",@"地理",@"生物",@"化学"];
+    subjects = @[@"全部",@"语文",@"数学",@"英语",@"历史",@"物理",@"政治",@"地理",@"生物",@"化学"].mutableCopy;
     
     
     //加载视图
@@ -50,7 +50,7 @@
             }
         }
     }
-
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         //干掉筛选信息
@@ -63,8 +63,6 @@
         
     });
     
-    //首页选择年级 的监听
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(chooseFilterGrade:) name:@"ChooseFilterGrade" object:nil];
     
 }
 
@@ -72,43 +70,48 @@
 - (void)chooseFilterGrade:(NSNotification *)notification{
     
     for (UIButton *button in _chooseView.gradeButtons) {
+        
+        button.selected = NO;
+        [button setTitleColor:[UIColor colorWithRed:0.61 green:0.61 blue:0.61 alpha:1.00] forState:UIControlStateNormal];
+        [button setBackgroundColor:[UIColor clearColor]];
+        
         if ([[notification object] isEqualToString:button.titleLabel.text]) {
             
-            [_chooseView selected:button];
+            button.selected = YES;
+            [button setTitleColor:BUTTONRED forState:UIControlStateNormal];
+            [button setBackgroundColor:[UIColor whiteColor]];
         }
     }
+    
+    subjects = nil;
+    
     //课程表变化
-    if ([[notification object]isEqualToString:@"初三"]) {
-//        语、数、英、物、化、政、历
-        subjects = @[@"全部",@"全部",@"语文",@"语文",@"数学",@"数学",@"英语",@"英语",@"物理",@"物理",@"化学",@"化学",@"政治",@"政治",@"历史",@"历史"];
-    }else if ([[notification object]isEqualToString:@"初二"]){
-//        语、数、英、物、政、历、生、地
-        subjects = @[@"全部",@"全部",@"语文",@"语文",@"数学",@"数学",@"英语",@"英语",@"物理",@"物理",@"政治",@"政治",@"历史",@"历史",@"生物",@"生物",@"地理",@"地理"];
-    }else if ([[notification object]isEqualToString:@"初一"]){
-         subjects = @[@"全部",@"全部",@"语文",@"语文",@"数学",@"数学",@"英语",@"英语",@"政治",@"政治",@"历史",@"历史",@"生物",@"生物",@"地理",@"地理"];
-        
-    }else if ([[notification object]isEqualToString:@"六年级"]||[[notification object]isEqualToString:@"五年级"]||[[notification object]isEqualToString:@"四年级"]||[[notification object]isEqualToString:@"三年级"]){
-//        语、数、英、科学
-         subjects = @[@"全部",@"全部",@"语文",@"语文",@"数学",@"数学",@"英语",@"英语",@"科学",@"科学"];
-    }else if ([[notification object]isEqualToString:@"一年级"]||[[notification object]isEqualToString:@"二年级"]){
-        subjects = @[@"全部",@"全部",@"语文",@"语文",@"数学",@"数学",@"英语",@"英语"];
+    if ([[notification object] isEqualToString:@"初三"]) {
+        //        语、数、英、物、化、政、历
+        subjects = @[@"全部",@"语文",@"数学",@"英语",@"物理",@"化学",@"政治",@"历史"].mutableCopy;
+    }else if ([[notification object] isEqualToString:@"初二"]){
+        //        语、数、英、物、政、历、生、地
+        subjects = @[@"全部",@"语文",@"数学",@"英语",@"物理",@"政治",@"历史",@"生物",@"地理"].mutableCopy;
+    }else if ([[notification object] isEqualToString:@"初一"]){
+        subjects = @[@"全部",@"语文",@"数学",@"英语",@"政治",@"历史",@"地理"].mutableCopy;
+    }else if ([[notification object] isEqualToString:@"六年级"]||[[notification object] isEqualToString:@"五年级"]||[[notification object] isEqualToString:@"四年级"]||[[notification object] isEqualToString:@"三年级"]){
+        //        语、数、英、科学
+        subjects = @[@"全部",@"语文",@"数学",@"英语",@"科学"].mutableCopy;
+    }else if ([[notification object] isEqualToString:@"一年级"]||[[notification object] isEqualToString:@"二年级"]){
+        subjects = @[@"全部",@"语文",@"数学",@"英语"].mutableCopy;
     }else {
-        
-        subjects = @[@"全部",@"全部",@"语文",@"语文",@"数学",@"数学",@"英语",@"英语",@"历史",@"历史",@"物理",@"物理",@"政治",@"政治",@"地理",@"地理",@"生物",@"生物",@"化学",@"化学"];
+        subjects = @[@"全部",@"语文",@"数学",@"英语",@"历史",@"物理",@"政治",@"地理",@"生物",@"化学"].mutableCopy;
     }
     
-    [_chooseView.subjectCollection reloadData];
-    
-}
+    [_chooseView.subjectCollection reloadSections:[NSIndexSet indexSetWithIndex:0]];
 
+}
 
 
 - (void)setSelectedFilterGrade:(NSString *)selectedFilterGrade{
     
     _selectedFilterGrade = selectedFilterGrade;
-    
 }
-
 
 
 - (void)setupViews{
@@ -119,7 +122,7 @@
         
         [self.view addSubview:_];
         _;
-    
+        
     });
     
     _chooseView = ({
@@ -129,14 +132,14 @@
         _.subjectCollection.dataSource = self;
         _.subjectCollection.delegate = self;
         
-        //注册类
-        [_.subjectCollection registerClass:[ClassSubjectCollectionViewCell class] forCellWithReuseIdentifier:@"cellID"];
-        
         [self.view addSubview:_];
         
         _;
-    
+        
     });
+    
+    //注册类
+    [_chooseView.subjectCollection registerClass:[ClassSubjectCollectionViewCell class] forCellWithReuseIdentifier:@"cellID"];
     
 }
 
@@ -163,6 +166,8 @@
 #pragma mark- collection datasource
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
+    
+    
     return subjects.count ;
     
 }
@@ -172,11 +177,12 @@
     static NSString * CellIdentifier = @"cellID";
     ClassSubjectCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    cell.subject.text = subjects[indexPath.row];
-    
+    if (subjects.count>indexPath.row) {
+        
+        cell.subject.text = subjects[indexPath.row];
+    }
     
     return cell;
-    
 }
 
 
@@ -184,13 +190,13 @@
 
 //item间距
 - (UIEdgeInsets) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-   
+    
     return UIEdgeInsetsMake(20, 20, 20, 20);
 }
 
 //行距
 - (CGFloat) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
-   
+    
     return 20;
 }
 
@@ -205,41 +211,34 @@
 }
 
 
-
 //选择年级信息 -- 回调
 -(void)chooseGrade:(NSString *)grade{
     
-    _selectedGrade = grade;
+    _selectedGrade = [NSString stringWithFormat:@"%@",grade];
     
+    subjects = @[].mutableCopy;
     //课程表变化
     if ([grade isEqualToString:@"初三"]) {
         //        语、数、英、物、化、政、历
-        subjects = @[@"全部",@"语文",@"数学",@"英语",@"物理",@"化学",@"政治",@"历史"];
+        subjects = @[@"全部",@"语文",@"数学",@"英语",@"物理",@"化学",@"政治",@"历史"].mutableCopy;
     }else if ([grade isEqualToString:@"初二"]){
         //        语、数、英、物、政、历、生、地
-        subjects = @[@"全部",@"语文",@"数学",@"英语",@"物理",@"政治",@"历史",@"生物",@"地理"];
+        subjects = @[@"全部",@"语文",@"数学",@"英语",@"物理",@"政治",@"历史",@"生物",@"地理"].mutableCopy;
     }else if ([grade isEqualToString:@"初一"]){
-        subjects = @[@"全部",@"语文",@"数学",@"英语",@"政治",@"历史",@"地理"];
-        
+        subjects = @[@"全部",@"语文",@"数学",@"英语",@"政治",@"历史",@"地理"].mutableCopy;
     }else if ([grade isEqualToString:@"六年级"]||[grade isEqualToString:@"五年级"]||[grade isEqualToString:@"四年级"]||[grade isEqualToString:@"三年级"]){
         //        语、数、英、科学
-        subjects = @[@"全部",@"语文",@"数学",@"英语",@"科学"];
+        subjects = @[@"全部",@"语文",@"数学",@"英语",@"科学"].mutableCopy;
     }else if ([grade isEqualToString:@"一年级"]||[grade isEqualToString:@"二年级"]){
-        subjects = @[@"全部",@"语文",@"数学",@"英语"];
+        subjects = @[@"全部",@"语文",@"数学",@"英语"].mutableCopy;
     }else {
-        
-        subjects = @[@"全部",@"语文",@"数学",@"英语",@"历史",@"物理",@"政治",@"地理",@"生物",@"化学"];
+        subjects = @[@"全部",@"语文",@"数学",@"英语",@"历史",@"物理",@"政治",@"地理",@"生物",@"化学"].mutableCopy;
     }
     
-    [_chooseView.subjectCollection reloadData];
+    [_chooseView.subjectCollection reloadSections:[NSIndexSet indexSetWithIndex:0]];
+    
     
 }
-
-//
-
-
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -247,13 +246,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

@@ -310,7 +310,9 @@
     [_viewController setSelectedIndex:1];
     
     _chooseClassViewController.selectedFilterGrade = [notification object];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"ChooseFilterGrade" object:[notification object]];
+    
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"ChooseFilterGrade" object:[notification object]];
+    [_chooseClassViewController chooseFilterGrade:notification];
     
 }
 

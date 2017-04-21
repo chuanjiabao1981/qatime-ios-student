@@ -54,7 +54,7 @@ typedef enum : NSUInteger {
 @implementation VideoClassPlayerViewController
 
 //初始化方法
--(instancetype)initWithClasses:(__kindof NSArray *)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo{
+-(instancetype)initWithClasses:(__kindof NSArray<VideoClass *> *)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo{
     
     self = [super init];
     if (self) {

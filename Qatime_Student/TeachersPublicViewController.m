@@ -62,6 +62,8 @@
 /**section的分割线*/
 @property (nonatomic, strong) UIView *sepLine;
 
+/**section2的分割线*/
+@property (nonatomic, strong) UIView *sepLine2;
 
 @end
 
@@ -332,25 +334,76 @@
     
     if (collectionView.tag == 1) {
         
-        //两个section的情况
-        if (_oneOnOneClasses.count!=0) {
-            if (section == 0) {
+        if (_videoCount!=0) {
+            //三个section的情况
+            if (_oneOnOneCount!=0&&_videoCount!=0) {
+                if (section == 0) {
+                    size = headerSize;
+                    
+                }else if (section == 1){
+                    
+                    size = CGSizeMake(self.view.width_sd, 40);
+                }else if (section == 2){
+                    size = CGSizeMake(self.view.width_sd, 40);
+                }
+                
+            }else if (_oneOnOneCount!=0&&_videoCount ==0){
+                if (section == 0) {
+                    size = headerSize;
+                    
+                }else if (section == 1){
+                    
+                    size = CGSizeMake(self.view.width_sd, 40);
+                }
+                
+            }else if (_oneOnOneCount==0&&_videoCount !=0){
+                if (section == 0) {
+                    size = headerSize;
+                    
+                }else if (section == 1){
+                    
+                    size = CGSizeMake(self.view.width_sd, 40);
+                }
+            }else if(_oneOnOneCount == 0 && _videoCount == 0){
                 size = headerSize;
                 
-            }else if (section == 1){
-                
-                size = CGSizeMake(self.view.width_sd, 40);
             }
             
-            //一个section的情况
         }else{
-            size = headerSize;
+            if (_oneOnOneCount!=0&&_videoCount!=0) {
+                if (section == 0) {
+                    size = headerSize;
+                    
+                }else if (section == 1){
+                    
+                    size = CGSizeMake(self.view.width_sd, 40);
+                }
+                
+            }else if (_oneOnOneCount!=0&&_videoCount ==0){
+                if (section == 0) {
+                    size = headerSize;
+                    
+                }else if (section == 1){
+                    
+                    size = CGSizeMake(self.view.width_sd, 40);
+                }
+
+            }else if (_oneOnOneCount==0&&_videoCount !=0){
+                if (section == 0) {
+                    size = CGSizeMake(self.view.width_sd, 50);
+                    
+                }else if (section == 1){
+                    
+                    size = CGSizeZero;
+                }
+            }else if(_oneOnOneCount == 0 && _videoCount == 0){
+                    size = headerSize;
+            }
         }
+       
     }else{
         
     }
-    
-    
     
     return  size;
 }
@@ -362,22 +415,77 @@
     
     if (collectionView.tag == 1) {
         
-        //两个section的情况
-        if (_oneOnOneClasses.count!=0) {
-            if (section == 0) {
-                size = CGSizeMake(self.view.width_sd, 50);
-            }else{
+        if (_videoCount!=0) {
+            //三个section的情况
+            if (_oneOnOneCount!=0&&_videoCount!=0) {
+                if (section == 0) {
+                    size =  CGSizeMake(self.view.width_sd, 50);;
+                    
+                }else if (section == 1){
+                    
+                    size = CGSizeMake(self.view.width_sd, 50);
+                }else if (section == 2){
+                    size = CGSizeZero;
+                }
+                
+            }else if (_oneOnOneCount!=0&&_videoCount ==0){
+                if (section == 0) {
+                    size = CGSizeMake(self.view.width_sd, 50);
+                    
+                }else if (section == 1){
+                    
+                    size = CGSizeZero;
+                }
+                
+            }else if (_oneOnOneCount==0&&_videoCount !=0){
+                if (section == 0) {
+                    size = CGSizeMake(self.view.width_sd, 50);
+                    
+                }else if (section == 1){
+                    
+                    size = CGSizeZero;
+                }
+            }else if(_oneOnOneCount == 0 && _videoCount == 0){
                 size = CGSizeZero;
+                
             }
             
-            //一个section的情况
         }else{
-            size = CGSizeZero;
+            if (_oneOnOneCount!=0&&_videoCount!=0) {
+                if (section == 0) {
+                    size = CGSizeMake(self.view.width_sd, 50);
+                    
+                }else if (section == 1){
+                    
+                    size = CGSizeZero;
+                }
+                
+            }else if (_oneOnOneCount!=0&&_videoCount ==0){
+                if (section == 0) {
+                    size = CGSizeMake(self.view.width_sd, 50);
+                    
+                }else if (section == 1){
+                    
+                    size = CGSizeZero;
+                }
+                
+            }else if (_oneOnOneCount==0&&_videoCount !=0){
+                if (section == 0) {
+                    size = CGSizeMake(self.view.width_sd, 50);
+                    
+                }else if (section == 1){
+                    
+                    size = CGSizeZero;
+                }
+            }else if(_oneOnOneCount == 0 && _videoCount == 0){
+                size = CGSizeZero;
+            }
         }
+        
     }else{
         
     }
-    
+        
     
     return  size;
 
@@ -421,7 +529,7 @@
                         NSString *CellIdentifier = @"footerId2";
                         //从缓存中获取 Headercell
                         header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-                        [header addSubview:self.sepLine];
+                        [header addSubview:self.sepLine2];
                     }
                 }else if (indexPath.section==2){
                     if (kind == UICollectionElementKindSectionHeader){
@@ -745,6 +853,24 @@
         [line updateLayout];
     }
     return _sepLine;
+    
+}
+-(UIView *)sepLine2{
+    if (!_sepLine2) {
+        
+        _sepLine2 = [[UIView alloc]init];
+        _sepLine2.frame = CGRectMake(0, 0, self.view.width_sd, 50) ;
+        UIView *line = [[UIView alloc]init];
+        [_sepLine2 addSubview:line];
+        line.sd_layout
+        .topSpaceToView(_sepLine2, 20)
+        .bottomSpaceToView(_sepLine2, 20)
+        .leftSpaceToView(_sepLine2, 0)
+        .rightSpaceToView(_sepLine2, 0);
+        line.backgroundColor = SEPERATELINECOLOR;
+        [line updateLayout];
+    }
+    return _sepLine2;
     
 }
 -(UIView *)secTitle{

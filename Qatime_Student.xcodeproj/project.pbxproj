@@ -33,6 +33,7 @@
 		5417C48C1E31B85000DD0795 /* app_pay_params.m in Sources */ = {isa = PBXBuildFile; fileRef = 5417C48B1E31B85000DD0795 /* app_pay_params.m */; };
 		54197A901EA0CAB500770B7C /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = 54197A8F1EA0CAB500770B7C /* Video.m */; };
 		54197A931EA0D9C300770B7C /* VideoClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 54197A921EA0D9C300770B7C /* VideoClass.m */; };
+		5419C2A01EA9E4A000AF5763 /* MyVideoClassTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C29F1EA9E4A000AF5763 /* MyVideoClassTableViewCell.m */; };
 		541A468C1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m in Sources */ = {isa = PBXBuildFile; fileRef = 541A468B1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m */; };
 		541E20041E139967007CF5D1 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */; };
 		541E20071E13B9AF007CF5D1 /* NSDate+ChangeUTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20061E13B9AF007CF5D1 /* NSDate+ChangeUTC.m */; };
@@ -79,6 +80,8 @@
 		542C173E1DFA50760088DB3F /* Unpaid.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C173D1DFA50760088DB3F /* Unpaid.m */; };
 		542C17411DFA507E0088DB3F /* Paid.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C17401DFA507E0088DB3F /* Paid.m */; };
 		542C17441DFA508A0088DB3F /* Canceld.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C17431DFA508A0088DB3F /* Canceld.m */; };
+		542F09221EA8A6170062090D /* VerifyPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F09211EA8A6170062090D /* VerifyPasswordViewController.m */; };
+		542F09281EA8A63B0062090D /* VerifyPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F09271EA8A63B0062090D /* VerifyPasswordView.m */; };
 		543278661E8CE50200F7A2D9 /* IJKFloatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543278651E8CE50200F7A2D9 /* IJKFloatingView.m */; };
 		5435D9341DD2B42100DD4FCC /* RecommandClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9331DD2B42100DD4FCC /* RecommandClasses.m */; };
 		5435D9371DD2C12300DD4FCC /* ClassesListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9361DD2C12300DD4FCC /* ClassesListTableViewCell.m */; };
@@ -762,6 +765,8 @@
 		54197A8F1EA0CAB500770B7C /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Video.m; sourceTree = "<group>"; };
 		54197A911EA0D9C300770B7C /* VideoClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClass.h; sourceTree = "<group>"; };
 		54197A921EA0D9C300770B7C /* VideoClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClass.m; sourceTree = "<group>"; };
+		5419C29E1EA9E4A000AF5763 /* MyVideoClassTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyVideoClassTableViewCell.h; sourceTree = "<group>"; };
+		5419C29F1EA9E4A000AF5763 /* MyVideoClassTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyVideoClassTableViewCell.m; sourceTree = "<group>"; };
 		541A468A1E52E7C100F0B36D /* UIViewController+CheckMicVolum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+CheckMicVolum.h"; sourceTree = "<group>"; };
 		541A468B1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+CheckMicVolum.m"; sourceTree = "<group>"; };
 		541E20021E139967007CF5D1 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -811,6 +816,10 @@
 		542C17401DFA507E0088DB3F /* Paid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Paid.m; sourceTree = "<group>"; };
 		542C17421DFA508A0088DB3F /* Canceld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Canceld.h; sourceTree = "<group>"; };
 		542C17431DFA508A0088DB3F /* Canceld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Canceld.m; sourceTree = "<group>"; };
+		542F09201EA8A6170062090D /* VerifyPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyPasswordViewController.h; sourceTree = "<group>"; };
+		542F09211EA8A6170062090D /* VerifyPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyPasswordViewController.m; sourceTree = "<group>"; };
+		542F09261EA8A63B0062090D /* VerifyPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyPasswordView.h; sourceTree = "<group>"; };
+		542F09271EA8A63B0062090D /* VerifyPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyPasswordView.m; sourceTree = "<group>"; };
 		543278641E8CE50200F7A2D9 /* IJKFloatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IJKFloatingView.h; path = ../View/IJKFloatingView.h; sourceTree = "<group>"; };
 		543278651E8CE50200F7A2D9 /* IJKFloatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IJKFloatingView.m; path = ../View/IJKFloatingView.m; sourceTree = "<group>"; };
 		5435D9321DD2B42100DD4FCC /* RecommandClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommandClasses.h; sourceTree = "<group>"; };
@@ -5050,6 +5059,8 @@
 		54C452081E9CABC7002108F4 /* cell */ = {
 			isa = PBXGroup;
 			children = (
+				5419C29E1EA9E4A000AF5763 /* MyVideoClassTableViewCell.h */,
+				5419C29F1EA9E4A000AF5763 /* MyVideoClassTableViewCell.m */,
 			);
 			name = cell;
 			sourceTree = "<group>";
@@ -5715,6 +5726,8 @@
 			children = (
 				54FB1DD81DF1AC3D00BA9A3C /* ParentViewController.h */,
 				54FB1DD91DF1AC3D00BA9A3C /* ParentViewController.m */,
+				542F09201EA8A6170062090D /* VerifyPasswordViewController.h */,
+				542F09211EA8A6170062090D /* VerifyPasswordViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -5724,6 +5737,8 @@
 			children = (
 				54FB1DD51DF1AC2C00BA9A3C /* ParentView.h */,
 				54FB1DD61DF1AC2C00BA9A3C /* ParentView.m */,
+				542F09261EA8A63B0062090D /* VerifyPasswordView.h */,
+				542F09271EA8A63B0062090D /* VerifyPasswordView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -6505,6 +6520,7 @@
 				54AB48EA1DED607B008E3BC5 /* StartedClassView.m in Sources */,
 				54AC022E1E892C6200817767 /* NTESWhiteboardDrawView.m in Sources */,
 				54AC04C11E89398E00817767 /* NTESSessionMsgConverter.m in Sources */,
+				542F09221EA8A6170062090D /* VerifyPasswordViewController.m in Sources */,
 				54AC04081E8938E100817767 /* NIMAdvancedTeamCardViewController.m in Sources */,
 				54294C6D1DDB051E00677333 /* Classes.m in Sources */,
 				54D75FDA1E2F9074003744FE /* VideoPlayerViewController.m in Sources */,
@@ -6666,6 +6682,7 @@
 				54AA30881DF98C40009E0D04 /* MyOrderView.m in Sources */,
 				54B9075F1E9CCEA400034FDC /* VideoClassInfoViewController.m in Sources */,
 				54AC04171E8938E100817767 /* NIMSpellingCenter.m in Sources */,
+				5419C2A01EA9E4A000AF5763 /* MyVideoClassTableViewCell.m in Sources */,
 				54D66F791DEC087D00ED2EBC /* NSString+StatusSwitch.m in Sources */,
 				54AC04261E8938E100817767 /* UIImage+NIMMultiFormat.m in Sources */,
 				54AC040A1E8938E100817767 /* NIMNormalTeamCardViewController.m in Sources */,
@@ -6861,6 +6878,7 @@
 				54AC02501E892CEE00817767 /* NTESBundleSetting.m in Sources */,
 				54AC03E31E8938E100817767 /* NIMBaseSessionContentConfig.m in Sources */,
 				5435D9461DD315CD00DD4FCC /* TeachersPublicCollectionView.m in Sources */,
+				542F09281EA8A63B0062090D /* VerifyPasswordView.m in Sources */,
 				54AC02241E892C5300817767 /* NTESDocumentShareInfo.m in Sources */,
 				54B9148F1E6D5B7500F377ED /* ProvinceChosenViewController.m in Sources */,
 				541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */,

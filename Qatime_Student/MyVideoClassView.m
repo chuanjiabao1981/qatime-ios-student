@@ -55,6 +55,7 @@
         //两个tableview
         _boughtClassTableView = ({
             UITableView *_ = [[UITableView alloc]init];
+            _.separatorStyle = UITableViewCellSeparatorStyleNone;
             [_scrollView addSubview:_];
             _.sd_layout
             .leftSpaceToView(_scrollView, 0)
@@ -66,9 +67,9 @@
             
         });
         
-
         _freeClasstableView= ({
             UITableView *_ = [[UITableView alloc]init];
+            _.separatorStyle = UITableViewCellSeparatorStyleNone;
             [_scrollView addSubview:_];
             _.sd_layout
             .leftSpaceToView(_boughtClassTableView, 0)
@@ -79,12 +80,6 @@
             
         });
 
-
-        
-        
-        
-        
-        
     }
     return self;
 }

@@ -10,7 +10,7 @@
 #import "ZFPlayer.h"
 #import "Teacher.h"
 #import "VideoClassInfo.h"
-
+#import "VideoClass.h"
 @interface VideoClassPlayerViewController : UIViewController
 
 /**视频播放器*/
@@ -25,6 +25,6 @@
  @param classInfo 课程详情
  @return 实例
  */
--(instancetype)initWithClasses:(__kindof NSArray *)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo;
+-(instancetype)initWithClasses:(__kindof NSArray <VideoClass *>*)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo;
 
 @end

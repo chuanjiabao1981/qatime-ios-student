@@ -448,10 +448,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -549,6 +549,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[VideoClassFilterViewController requestClass:withContentDictionary:]:VideoClassFilterViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[PersonalInfoEditViewController tableView:cellForRowAtIndexPath:]:PersonalInfoEditViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -565,13 +568,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
-      </ContextState>
-      <ContextState
          contextName = "__42-[ClassSettingViewController saveSettings]_block_invoke:ClassSettingViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[VideoClassFilterViewController requestClass:withContentDictionary:]:VideoClassFilterViewController.m">
+         contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[OrderViewController touchesBegan:withEvent:]:OrderViewController.m">
@@ -666,6 +666,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_chatModel">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChooseGradeAndSubjectViewController chooseGrade:]:ChooseGradeAndSubjectViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "subjects">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -947,6 +955,14 @@
       </ContextState>
       <ContextState
          contextName = "__34-[BindingViewController nextStep:]_block_invoke:BindingViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__82-[MyVideoClassViewController requestMyVideoClassDataWithClassType:andRefreshType:]_block_invoke:MyVideoClassViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "sellType">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__45-[SafeViewController RequestToBindingWechat:]_block_invoke:SafeViewController.m">
@@ -1285,10 +1301,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

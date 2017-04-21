@@ -10,6 +10,7 @@
 #import "UIViewController+HUD.h"
 
 #import "UIAlertController+Blocks.h"
+#import "SafeViewController.h"
 
 @interface ParentViewController (){
     
@@ -18,19 +19,24 @@
     NSString *_token;
     NSString *_idNumber;
     
+    NSString *_ticket_token;
+    
 }
 
 @end
 
 @implementation ParentViewController
 
-- (instancetype)initWithPhone:(NSString *)phone
+- (instancetype)initWithPhone:(NSString *)phone andTicketToken:(NSString *)ticketToken
 {
     self = [super init];
     if (self) {
         
         
         _parentPhone = [NSString stringWithFormat:@"%@",phone];
+        
+        _ticket_token = [NSString stringWithFormat:@"%@",ticketToken];
+        
     }
     return self;
 }
@@ -58,23 +64,23 @@
         
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
-
+    
     
     _parentView = [[ParentView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
     [self.view addSubview:_parentView];
     
     _parentView.parentPhoneLabel.text = _parentPhone;
-//    _parentView.getCodeButton.enabled = YES;
+    //    _parentView.getCodeButton.enabled = YES;
     _parentView.finishButton.enabled = NO;
-    _parentView.password.secureTextEntry = YES;
+    //    _parentView.password.secureTextEntry = YES;
     
     
     [_parentView.parentPhoneText addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
-     [_parentView.password addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
-     [_parentView.keyCodeText addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
+    //     [_parentView.password addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [_parentView.keyCodeText addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
     
     
-//    [_parentView.getCodeButton addTarget:self action:@selector(requestKeyCode:) forControlEvents:UIControlEventTouchUpInside];
+    //    [_parentView.getCodeButton addTarget:self action:@selector(requestKeyCode:) forControlEvents:UIControlEventTouchUpInside];
     
     [_parentView.finishButton addTarget:self action:@selector(requestChangeParentPhone) forControlEvents:UIControlEventTouchUpInside];
     
@@ -89,7 +95,7 @@
         _parentView.getCodeButton.layer.borderColor = BUTTONRED.CGColor;
         
     }else{
-         _parentView.getCodeButton.enabled = NO;
+        _parentView.getCodeButton.enabled = NO;
         [ _parentView.getCodeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [ _parentView.getCodeButton removeTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
         _parentView.getCodeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
@@ -100,7 +106,7 @@
         [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入11位手机号" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
     }
     
-    if (_parentView.parentPhoneText.text.length>0&&_parentView.keyCodeText.text.length>0&&_parentView.password.text.length>0) {
+    if (_parentView.parentPhoneText.text.length>0&&_parentView.keyCodeText.text.length>0) {
         _parentView.finishButton.enabled = YES;
         [_parentView.finishButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
         _parentView.finishButton.layer.borderColor = BUTTONRED.CGColor;
@@ -128,10 +134,7 @@
         UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self dismissViewControllerAnimated:YES completion:nil];
             
-            
-            
         }] ;
-        
         
         [alert addAction:sure];
         
@@ -141,16 +144,16 @@
     }else{
         
         [self loadingHUDStartLoadingWithTitle:@"正在加载"];
-        [manager PUT:[NSString stringWithFormat:@"%@/api/v1/students/%@/parent_phone",Request_Header, _idNumber] parameters:@{@"current_password":_parentView.password.text,@"parent_phone":_parentView.parentPhoneText.text,@"captcha_confirmation":_parentView.keyCodeText.text} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager PUT:[NSString stringWithFormat:@"%@/api/v1/students/%@/parent_phone_ticket_token",Request_Header, _idNumber] parameters:@{@"ticket_token":_ticket_token,@"parent_phone":_parentView.parentPhoneText.text,@"captcha_confirmation":_parentView.keyCodeText.text} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary  *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             [self loginStates:dic];
             NSLog(@"%@",dic);
             
             if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
-                
                 [self loadingHUDStopLoadingWithTitle:@"修改成功!"];
-                [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
+                [self performSelector:@selector(returnFrontPage) withObject:nil afterDelay:1];
+                [[NSUserDefaults standardUserDefaults]setValue:dic[@"data"][@"parent_phone"] forKey:@"parent_phone"];
                 
                 /* 修改前一页的手机号码*/
                 [self performSelector:@selector(changePaerentNumber) withObject:nil afterDelay:0];
@@ -160,7 +163,7 @@
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
         }];
-     
+        
     }
     
 }
@@ -170,7 +173,7 @@
     [[NSUserDefaults standardUserDefaults]setValue:_parentView.parentPhoneText.text forKey:@"parent_phone"];
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangeParentPhoneSuccess" object:nil];
-
+    
 }
 
 #pragma mark- 请求验证码
@@ -194,18 +197,6 @@
             
             [self presentViewController:alert animated:YES completion:nil];
             
-        }
-        if (_parentView.password.text ==nil||[_parentView.password.text isEqualToString:@""]) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入登录密码!" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [self dismissViewControllerAnimated:YES completion:nil];
-                
-            }] ;
-            
-            [alert addAction:sure];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-
         }else{
             
             [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header] parameters:@{@"send_to":_parentView.parentPhoneText.text,@"key":@"send_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -218,8 +209,9 @@
                 [self loadingHUDStopLoadingWithTitle:@"发送失败"];
                 
             }];
-            
         }
+        
+        
     }
     
 }
@@ -272,7 +264,19 @@
     
 }
 
-
+- (void)returnFrontPage{
+    
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isKindOfClass:[SafeViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+            
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"PopToRoot" object:nil];
+            
+        }
+    }
+    
+    
+}
 
 
 - (void)returnLastPage{
@@ -286,13 +290,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

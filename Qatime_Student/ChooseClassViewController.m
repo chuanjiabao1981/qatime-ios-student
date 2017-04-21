@@ -522,15 +522,12 @@
             
             //去掉后,改为正序
             _filterDic = @{@"sort_by":sort_by_asc}.mutableCopy;
-            
         }
         
     }else{
         //如果没有筛选字段
         _filterDic = @{@"sort_by":sort_by_asc}.mutableCopy;
-        
         [_filterView.priceArrow setImage:[UIImage imageNamed:@"下箭头"]];
-        
     }
     
     //发起筛选请求

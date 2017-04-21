@@ -16,6 +16,7 @@
 
 #import "PersonalInfoViewController.h"
 #import "ProvinceChosenViewController.h"
+#import "LCActionSheet.h"
 
 
 @interface SignUpInfoViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
@@ -204,48 +205,82 @@
 /* 上传头像按钮点击方法*/
 - (void)upLoadHeadImage {
     
-    /* 弹出提示框，选择照片选取方式*/
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"请选择照片选取方式" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+//    /* 弹出提示框，选择照片选取方式*/
+//    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"请选择照片选取方式" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+//    
+//    /* 相机选取*/
+//    UIAlertAction *actionCamera=[UIAlertAction actionWithTitle:@"相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        
+//        UIImagePickerController *imagePicker = [[UIImagePickerController alloc]init];
+//        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+//        imagePicker.allowsEditing = YES;
+//        imagePicker.delegate = self;
+//        
+//        [self presentViewController:imagePicker animated:YES completion:^{
+//            
+//        }];
+//        
+//    }];
+//    
+//    /* 从照片中选取*/
+//    UIAlertAction *actionLibrary=[UIAlertAction actionWithTitle:@"照片库" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        
+//        UIImagePickerController *imagePicker = [[UIImagePickerController alloc]init];
+//        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//        imagePicker.allowsEditing = YES;
+//        imagePicker.delegate = self;
+//        
+//        [self presentViewController:imagePicker animated:YES completion:^{
+//            
+//        }];
+//        
+//    }];
+//    
+//    /* 取消*/
+//    UIAlertAction *actionCancel=[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//        
+//    }];
+//    
+//    [alert addAction:actionCamera];
+//    [alert addAction:actionLibrary];
+//    [alert addAction:actionCancel];
+//    [self presentViewController:alert animated:YES completion:^{
+//        
+//    }];
+    UIImagePickerController *picker = [[UIImagePickerController alloc]init];
+    picker.allowsEditing = YES;
+    picker.delegate = self;
     
-    /* 相机选取*/
-    UIAlertAction *actionCamera=[UIAlertAction actionWithTitle:@"相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    LCActionSheet *sheet = [[LCActionSheet alloc]initWithTitle:@"选择头像" cancelButtonTitle:@"取消" clicked:^(LCActionSheet *actionSheet, NSInteger buttonIndex) {
         
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc]init];
-        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        imagePicker.allowsEditing = YES;
-        imagePicker.delegate = self;
+        switch (buttonIndex) {
+            case 0:
+                return ;
+                break;
+                
+            case 1:{
+                picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+                
+            }
+                break;
+            case 2:{
+                picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                
+            }
+                break;
+            case 3:{
+                picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+                
+            }
+                break;
+        }
+        [self presentViewController:picker animated:YES completion:^{}];
         
-        [self presentViewController:imagePicker animated:YES completion:^{
-            
-        }];
-        
-    }];
+    } otherButtonTitleArray:@[@"照相机",@"图库",@"相册"]];
     
-    /* 从照片中选取*/
-    UIAlertAction *actionLibrary=[UIAlertAction actionWithTitle:@"照片库" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc]init];
-        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        imagePicker.allowsEditing = YES;
-        imagePicker.delegate = self;
-        
-        [self presentViewController:imagePicker animated:YES completion:^{
-            
-        }];
-        
-    }];
+    [sheet show];
+
     
-    /* 取消*/
-    UIAlertAction *actionCancel=[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-    }];
-    
-    [alert addAction:actionCamera];
-    [alert addAction:actionLibrary];
-    [alert addAction:actionCancel];
-    [self presentViewController:alert animated:YES completion:^{
-        
-    }];
     
 }
 

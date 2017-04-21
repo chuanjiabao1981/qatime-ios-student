@@ -15,8 +15,7 @@
 @property(nonatomic,strong) UILabel *parentPhoneLabel ;
 
 /* 登录密码框*/
-
-@property(nonatomic,strong) UITextField *password ;
+//@property(nonatomic,strong) UITextField *password ;
 
 /* 家长手机号*/
 @property(nonatomic,strong) UITextField *parentPhoneText ;

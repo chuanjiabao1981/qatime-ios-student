@@ -16,6 +16,6 @@
 
  @param grade 年级字段
  */
-- (void)chooseGrade:(NSString *)grade;
+- (void)chooseGrade:(NSString *)grade ;
 
 @end

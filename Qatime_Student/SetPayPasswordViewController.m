@@ -150,7 +150,6 @@
     
     [_passwordText becomeFirstResponder];
     
-    
 }
 
 /* 用户输入或改变输入字符的方法*/
@@ -245,10 +244,6 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-    
-    
-    
-    
 }
 
 /* 修改密码*/

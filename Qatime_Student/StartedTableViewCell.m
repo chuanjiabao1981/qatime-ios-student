@@ -236,10 +236,9 @@
     
     _presentCount.text = model.completed_lesson_count;
     _totalCount.text = model.preset_lesson_count;
-    
-    
-    
+
 }
+
 
 
 - (void)awakeFromNib {

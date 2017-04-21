@@ -194,7 +194,7 @@ typedef enum : NSUInteger {
             _navigationBar.titleLabel.text = _classInfo.name;
             
             //已购买
-            if (_classInfo.is_bought == NO) {
+            if (_classInfo.is_bought == YES) {
                 _buyBar.leftButton.hidden = YES;
                 _buyBar.rightButton.layer.borderColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0].CGColor;
                 _buyBar.rightButton.backgroundColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0];
@@ -267,7 +267,7 @@ typedef enum : NSUInteger {
  */
 - (void)enterStudy:(UIButton *)sender{
     
-    if (_classInfo.is_bought == NO) {
+    if (_classInfo.is_bought == YES) {
         //进入学习
         
         //测试代码

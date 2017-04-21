@@ -14,6 +14,16 @@
 #import "UIViewController+AFHTTP.h"
 #import "StartedTableViewCell.h"
 #import "MJRefresh.h"
+#import "UIViewController+AFHTTP.h"
+#import "UITableView+CYLTableViewPlaceHolder.h"
+#import "VideoClassInfo.h"
+#import "YYModel.h"
+#import "HaveNoClassView.h"
+#import "MyVideoClassTableViewCell.h"
+#import "VideoClassInfoViewController.h"
+#import "UIControl+RemoveTarget.h"
+#import "VideoClassPlayerViewController.h"
+#import "VideoClass.h"
 
 typedef enum : NSUInteger {
     PullToRefresh,  //下拉刷新
@@ -31,6 +41,9 @@ typedef enum : NSUInteger {
     
     NavigationBar *_navigationBar;
     
+    NSString *_token;
+    NSString *_idNumber;
+    
     /**已购课程的数据*/
     NSMutableArray *_boughtClassArray;
     /**免费课程的数据*/
@@ -43,6 +56,16 @@ typedef enum : NSUInteger {
     
     /**segment item2的刷新次数*/
    __block NSInteger refreshNum;
+    
+    
+    //传值用的数组
+    NSMutableArray *_boughtVideoArray;
+    NSMutableArray *_freeVideoArray;
+    
+    //教师
+    Teacher *_teacher;
+    
+    /**课程详情*/
     
     
 }
@@ -105,7 +128,7 @@ typedef enum : NSUInteger {
         
     }];
     
-    _myVideoClassView.boughtClassTableView.mj_footer = [MJRefreshAutoFooter footerWithRefreshingBlock:^{
+    _myVideoClassView.boughtClassTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
         [self requestMyVideoClassDataWithClassType:MyVideoClassRequestTypeBought andRefreshType:PushToLoadMore];
     }];
     
@@ -113,7 +136,7 @@ typedef enum : NSUInteger {
         [self requestMyVideoClassDataWithClassType:MyVideoClassRequestTypeFree andRefreshType:PullToRefresh];
     }];
     
-    _myVideoClassView.freeClasstableView.mj_footer = [MJRefreshAutoFooter footerWithRefreshingBlock:^{
+    _myVideoClassView.freeClasstableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
         [self requestMyVideoClassDataWithClassType:MyVideoClassRequestTypeFree andRefreshType:PushToLoadMore];
     }];
     
@@ -134,6 +157,10 @@ typedef enum : NSUInteger {
     _boughtClassArray = @[].mutableCopy;
     _freeClassArray = @[].mutableCopy;
     
+    _boughtVideoArray = @[].mutableCopy;
+    _freeVideoArray = @[].mutableCopy;
+    
+    [self getToken];
     
     //加载导航栏
     [self setupNavigation];
@@ -141,9 +168,17 @@ typedef enum : NSUInteger {
     //主视图
     [self setupMainView];
     
+}
+
+- (void)getToken{
     
-    
-    
+    /* 提出token和学生id*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
+        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
+    }
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
+        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
+    }
 }
 
 
@@ -159,10 +194,143 @@ typedef enum : NSUInteger {
     
     if (refreshType == PullToRefresh) {
         page = 1;
+        
+        if (classType == MyVideoClassRequestTypeBought) {
+            
+            _boughtClassArray = @[].mutableCopy;
+            
+        }else if (classType == MyVideoClassRequestTypeFree){
+            
+            _freeClassArray = @[].mutableCopy;
+        }
+        
+        
     }else{
         page ++;
     }
     
+    NSString *sellType = nil;
+    
+    if (classType == MyVideoClassRequestTypeBought) {
+        sellType = @"charge";
+    }else if (classType == MyVideoClassRequestTypeFree){
+        sellType = @"free";
+    }
+    
+    dics = @{@"sell_type":sellType,
+             @"page":[NSString stringWithFormat:@"%ld",page],
+             @"per_page":[NSString stringWithFormat:@"%ld",per_page]}.mutableCopy;
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/video_courses",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:dics completeSuccess:^(id  _Nullable responds) {
+       
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+            if ([dic[@"data"]count]!=0) {
+                
+                if (classType == MyVideoClassRequestTypeBought) {
+                    //已购课程下拉刷新
+                    for (NSDictionary *dicsdata in dic[@"data"]) {
+                        VideoClassInfo *mod = [VideoClassInfo yy_modelWithJSON:dicsdata];
+                        mod.classID = dicsdata[@"id"];
+                        [_boughtClassArray addObject:mod];
+                        
+                    }
+                    
+                    
+                    
+                    [_myVideoClassView.boughtClassTableView cyl_reloadData];
+                    
+                    [_myVideoClassView.boughtClassTableView.mj_header endRefreshing];
+                     [_myVideoClassView.boughtClassTableView.mj_footer resetNoMoreData];
+                }else if (classType == MyVideoClassRequestTypeFree){
+                    
+                    for (NSDictionary *dicsdata in dic[@"data"]) {
+                        VideoClassInfo *mod = [VideoClassInfo yy_modelWithJSON:dicsdata];
+                        mod.classID = dicsdata[@"id"];
+                        [_freeClassArray addObject:mod];
+                        
+                    }
+                    
+                    [_myVideoClassView.freeClasstableView cyl_reloadData];
+                    [_myVideoClassView.freeClasstableView.mj_header endRefreshing];
+                    [_myVideoClassView.freeClasstableView.mj_footer resetNoMoreData];
+                }
+            }else{
+                if (classType == MyVideoClassRequestTypeBought) {
+                    if (refreshType == PullToRefresh) {
+                        [_myVideoClassView.boughtClassTableView.mj_header endRefreshingWithCompletionBlock:^{
+                            [_myVideoClassView.boughtClassTableView cyl_reloadData];
+                        }];
+                    }else{
+                        [_myVideoClassView.boughtClassTableView.mj_footer endRefreshingWithNoMoreData];
+                        
+                    }
+                    
+                }else if (classType == MyVideoClassRequestTypeFree){
+                    
+                    if (refreshType == PullToRefresh) {
+                        
+                        [_myVideoClassView.freeClasstableView.mj_header endRefreshingWithCompletionBlock:^{
+                            [_myVideoClassView.freeClasstableView cyl_reloadData];
+                        }];
+                    }else{
+                        [_myVideoClassView.freeClasstableView.mj_footer endRefreshingWithNoMoreData];
+                    }
+                   
+                }
+            }
+            
+        }else{
+            
+            
+        }
+        
+    }];
+    
+}
+/**进入视频课程播放*/
+- (void)enterClass:(UIButton *)sender{
+    
+    VideoClassPlayerViewController *controller;
+    MyVideoClassTableViewCell *cell;
+    
+    if (sender.tag>=100&&sender.tag<200) {
+        //购买的课程
+        
+        cell = (MyVideoClassTableViewCell *)[_myVideoClassView.boughtClassTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag-100 inSection:0]];
+        //课程数组
+        for (NSDictionary *dics  in cell.model.video_lessons) {
+            VideoClass *mod = [VideoClass yy_modelWithJSON:dics];
+            mod.classID = dics[@"id"];
+            [_boughtVideoArray addObject:mod];
+        }
+        
+        //教师
+        _teacher = [Teacher yy_modelWithJSON:cell.model.teacher];
+        _teacher.teacherID = cell.model.teacher[@"id"];
+        
+        controller = [[VideoClassPlayerViewController alloc]initWithClasses:_boughtVideoArray andTeacher:_teacher andVideoClassInfos:cell.model];
+    }else if (sender.tag>=200){
+        
+        cell = (MyVideoClassTableViewCell *)[_myVideoClassView.freeClasstableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag-200 inSection:0]];
+        //课程数组
+        for (NSDictionary *dics  in cell.model.video_lessons) {
+            VideoClass *mod = [VideoClass yy_modelWithJSON:dics];
+            mod.classID = dics[@"id"];
+            [_freeVideoArray addObject:mod];
+        }
+        
+        //教师
+        _teacher = [Teacher yy_modelWithJSON:cell.model.teacher];
+        _teacher.teacherID = cell.model.teacher[@"id"];
+        
+        controller = [[VideoClassPlayerViewController alloc]initWithClasses:_freeVideoArray andTeacher:_teacher andVideoClassInfos:cell.model];
+
+    }
+    
+    [self.navigationController pushViewController:controller animated:YES];
+
 }
 
 
@@ -170,18 +338,57 @@ typedef enum : NSUInteger {
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 10;
+    NSInteger num ;
+    if (tableView.tag == 1) {
+        num = _boughtClassArray.count;
+    }else {
+        num = _freeClassArray.count;
+    }
+    
+    return num;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    /* cell的重用队列*/
-    static NSString *cellIdenfier = @"cell";
-    StartedTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-    if (cell==nil) {
-        cell=[[StartedTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+    UITableViewCell *tableCell;
+    if (tableView.tag == 1) {
+        
+        /* cell的重用队列*/
+        static NSString *cellIdenfier = @"cell";
+        MyVideoClassTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+        if (cell==nil) {
+            cell=[[MyVideoClassTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+        }
+        [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+        
+        if (_boughtClassArray.count >indexPath.row) {
+            cell.model = _boughtClassArray[indexPath.row];
+            cell.enterButton.tag = indexPath.row+100;
+            [cell.enterButton removeAllTargets];
+            [cell.enterButton addTarget:self action:@selector(enterClass:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+        
+        tableCell = cell;
+    }else{
+        /* cell的重用队列*/
+        static NSString *cellIdenfier = @"tablecell";
+        MyVideoClassTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+        if (cell==nil) {
+            cell=[[MyVideoClassTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"tablecell"];
+        }
+        [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+        if (_freeClassArray.count>indexPath.row) {
+            cell.model = _freeClassArray[indexPath.row];
+            cell.enterButton.tag = indexPath.row+200;
+            [cell.enterButton removeAllTargets];
+            [cell.enterButton addTarget:self action:@selector(enterClass:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+        
+        tableCell = cell;
     }
-    return  cell;
+    
+    return  tableCell;
 }
 
 
@@ -189,8 +396,15 @@ typedef enum : NSUInteger {
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    return 100 *ScrenScale;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 100;
+    MyVideoClassTableViewCell *cell = (MyVideoClassTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    VideoClassInfoViewController *controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
+    [self.navigationController pushViewController:controller animated:YES];
+    
 }
 
 
@@ -213,13 +427,24 @@ typedef enum : NSUInteger {
     }
 
 }
+- (UIView *)makePlaceHolderView{
+    
+    HaveNoClassView *view = [[HaveNoClassView alloc]init];
+    view.titleLabel.text = @"当前无相关课程";
+    return view;
+}
 
+- (BOOL)enableScrollWhenPlaceHolderViewShowing{
+    
+    return YES;
+}
 
 
 - (void)returnLastPage{
     
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 
 
 - (void)didReceiveMemoryWarning {

@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "MyTutoriumModel.h"
 
-@interface StartedTableViewCell : UITableViewCell
 
+@interface StartedTableViewCell : UITableViewCell
 
 /**
  课程图片
@@ -63,4 +63,8 @@
 /* 数据model*/
 
 @property(nonatomic,strong) MyTutoriumModel *model ;
+
+ ;
+
+
 @end

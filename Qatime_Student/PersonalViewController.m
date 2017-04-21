@@ -78,7 +78,7 @@
     _settingName = @[@"我的钱包",@"我的订单",@"我的直播课",@"我的一对一",@"我的视频课",@"安全管理",@"系统设置",@"关于我们"];
     
     /* cell的图片*/
-    _cellImage = @[[UIImage imageNamed:@"美元"],[UIImage imageNamed:@"订单"],[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"辅导"],[UIImage imageNamed:@"安全"],[UIImage imageNamed:@"设置"],[UIImage imageNamed:@"发送失败"]];
+    _cellImage = @[[UIImage imageNamed:@"我的钱包"],[UIImage imageNamed:@"我的订单"],[UIImage imageNamed:@"我的直播课"],[UIImage imageNamed:@"我的一对一"],[UIImage imageNamed:@"我的视频课"],[UIImage imageNamed:@"安全管理"],[UIImage imageNamed:@"系统设置"],[UIImage imageNamed:@"关于我们"]];
     
     /* 导航栏*/
     //    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
@@ -110,6 +110,9 @@
     
     /* 修改个人信息成功后的回调*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeHead:) name:@"ChangeInfoSuccess" object:nil];
+    
+    /**重新登录后的个人信息改动监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogin:) name:@"UserLogin" object:nil];
     
     
 }
@@ -178,7 +181,6 @@
     
     /* 重新加载页面和数据*/
     [self setupPages];
-    
     
 }
 
