@@ -21,7 +21,6 @@
     UIImageView *_logoImage;
     
 
-    
 }
 
 @end
@@ -34,45 +33,48 @@
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
 
-        
-       
-        
-                
-        
-        
         /* 输入账号密码*/
         /* 框1 输入用户账号*/
         
         UIView *text1=[[UIView alloc]init];
-//        text1.layer.masksToBounds=YES;
-//        text1.layer.cornerRadius = M_PI;
         text1.layer.borderWidth = 1;
         text1.layer.borderColor = [UIColor lightGrayColor].CGColor;
         [self addSubview:text1];
-     
-
+        
+        text1.sd_layout
+        .leftSpaceToView(self,20)
+        .topSpaceToView(self,40)
+        .rightSpaceToView(self,20)
+        .heightIs(50*ScrenScale);
+        
         /* 用户名输入框*/
         _userName = [[UITextField alloc]init];
         [text1 addSubview:_userName];
         _userName.placeholder = NSLocalizedString(@"请输入手机号码或邮箱",comment: "");
         
+        _userName.sd_layout
+        .leftSpaceToView(text1,10)
+        .topSpaceToView(text1,10)
+        .bottomSpaceToView(text1,10)
+        .rightSpaceToView(text1,10);
+
         
         /* 框2 输入密码*/
         _text2=[[UIView alloc]init];
-//        _text2.layer.masksToBounds=YES;
-//        _text2.layer.cornerRadius = M_PI;
         _text2.layer.borderWidth = 1;
         _text2.layer.borderColor = [UIColor lightGrayColor].CGColor;
         [self addSubview:_text2];
-        
-        
-        
+        _text2.sd_layout
+        .topSpaceToView(text1,-1)
+        .leftEqualToView(text1)
+        .rightEqualToView(text1)
+        .heightRatioToView(text1,1.0f);
+
         /* 密码输入框*/
         /* 用户名输入框*/
         _passWord = [[UITextField alloc]init];
         [_text2 addSubview:_passWord];
         _passWord.placeholder = NSLocalizedString(@"请输入密码", comment:"");
-        
         
         
         /* 注册按钮*/
@@ -161,30 +163,6 @@
         [_text3 addSubview:_keyCodeText];
         _keyCodeText.hidden = YES;
         
-       
-        
-        
-        
-        /* 布局*/
-        text1.sd_layout
-        .leftSpaceToView(self,20)
-        .topSpaceToView(self,40)
-        .rightSpaceToView(self,20)
-        .heightRatioToView(self,0.07f);
-//        text1.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
-        
-        _userName.sd_layout
-        .leftSpaceToView(text1,10)
-        .topSpaceToView(text1,10)
-        .bottomSpaceToView(text1,10)
-        .rightSpaceToView(text1,10);
-        
-        _text2.sd_layout
-        .topSpaceToView(text1,-1)
-        .leftEqualToView(text1)
-        .rightEqualToView(text1)
-        .heightRatioToView(text1,1.0f);
-//        _text2.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         
         _passWord.sd_layout
         .leftSpaceToView(_text2,10)

@@ -75,15 +75,10 @@
     
     
     /* 菜单名*/
-    _settingName = @[@"我的钱包",@"我的订单",@"我的直播课",@"我的一对一",@"我的视频课",@"安全管理",@"系统设置",@"关于我们"];
+    _settingName = @[@"我的钱包",@"我的订单",@"我的直播课",@"我的一对一",@"我的视频课",@"我的试听课",@"安全管理",@"系统设置",@"关于我们"];
     
     /* cell的图片*/
-    _cellImage = @[[UIImage imageNamed:@"我的钱包"],[UIImage imageNamed:@"我的订单"],[UIImage imageNamed:@"我的直播课"],[UIImage imageNamed:@"我的一对一"],[UIImage imageNamed:@"我的视频课"],[UIImage imageNamed:@"安全管理"],[UIImage imageNamed:@"系统设置"],[UIImage imageNamed:@"关于我们"]];
-    
-    /* 导航栏*/
-    //    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
-    //    [self.view addSubview:_navigationBar];
-    //    _navigationBar.titleLabel.text = @"个人中心";
+    _cellImage = @[[UIImage imageNamed:@"我的钱包"],[UIImage imageNamed:@"我的订单"],[UIImage imageNamed:@"我的直播课"],[UIImage imageNamed:@"我的一对一"],[UIImage imageNamed:@"我的视频课"],[UIImage imageNamed:@"我的视频课"],[UIImage imageNamed:@"安全管理"],[UIImage imageNamed:@"系统设置"],[UIImage imageNamed:@"关于我们"]];
     
     _headView = [[HeadBackView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT*2/5)];
     [self.view addSubview:_headView];
@@ -374,7 +369,7 @@
     
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
         if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
-           
+            
             UIViewController *controller;
             switch (indexPath.row) {
                 case 0:{
@@ -415,19 +410,25 @@
                 }
                     break;
                 case 5:{
+                    
+                    
+                    
+                }
+                    break;
+                case 6:{
                     controller = [SafeViewController new];
                     controller.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:controller animated:YES];
                 }
                     break;
-                case 6:{
+                case 7:{
                     controller = [SettingViewController new];
                     controller.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:controller animated:YES];
                     
                 }
                     break;
-                case 7:{
+                case 8:{
                     controller = [AboutUsViewController new];
                     controller.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:controller animated:YES];
@@ -447,16 +448,16 @@
 #pragma mark- UIScrollView delegate
 //头部放大效果
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    //获取偏移量
-//    CGPoint offset = scrollView.contentOffset;
-//    //判断是否改变
-//    if (offset.y < 0) {
-//        CGRect rect = _personalView.settingTableView.tableHeaderView.frame;
-//        //我们只需要改变图片的y值和高度即可
-//        rect.origin.y = offset.y;
-//        rect.size.height = 200 - offset.y;
-//        _headView.backGroundView.frame = rect;
-//    }
+    //    //获取偏移量
+    //    CGPoint offset = scrollView.contentOffset;
+    //    //判断是否改变
+    //    if (offset.y < 0) {
+    //        CGRect rect = _personalView.settingTableView.tableHeaderView.frame;
+    //        //我们只需要改变图片的y值和高度即可
+    //        rect.origin.y = offset.y;
+    //        rect.size.height = 200 - offset.y;
+    //        _headView.backGroundView.frame = rect;
+    //    }
 }
 
 /* 修改个人信息成功后的回调*/

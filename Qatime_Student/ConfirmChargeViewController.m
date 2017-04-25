@@ -31,6 +31,13 @@
     
     NSString *_pay_type;
     
+    
+    /**充值金额*/
+    NSInteger rechargePrice;
+    
+    
+    
+    
 }
 
 @end
@@ -95,6 +102,19 @@
                                                                    @"app_pay_params":model.app_pay_params==nil?@"":model.app_pay_params
                                                                    }];
     }
+    return self;
+}
+
+
+-(instancetype)initWithPrice:(NSString *)price{
+    self = [super init];
+    if (self) {
+        
+        
+        rechargePrice = price.integerValue;
+        
+    }
+    
     return self;
 }
 

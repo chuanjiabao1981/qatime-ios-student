@@ -82,11 +82,11 @@
         /* 进入按钮*/
         
         _enterButton  = [[UIButton alloc]init];
-        [_enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        _enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        [_enterButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+        _enterButton.layer.borderColor = NAVIGATIONRED.CGColor;
         _enterButton.layer.borderWidth = 0.8f;
         _enterButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
-        [_enterButton setTitle:@"进入" forState:UIControlStateNormal];
+        [_enterButton setTitle:@"进入聊天" forState:UIControlStateNormal];
         _enterButton.sd_cornerRadius = [NSNumber numberWithInteger:1];
        
         
@@ -190,10 +190,8 @@
         /* 进入按钮*/
         _enterButton.sd_layout
         .rightSpaceToView(_content,10)
-        .bottomSpaceToView(_content,10)
-        .heightIs(20)
-        .widthIs(60);
-        
+        .bottomSpaceToView(_content,10);
+        [_enterButton setupAutoSizeWithHorizontalPadding:10 buttonHeight:30];
         
     }
     

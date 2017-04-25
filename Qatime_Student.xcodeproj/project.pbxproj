@@ -318,7 +318,6 @@
 		54AB48E71DED606F008E3BC5 /* UnStartClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48E61DED606F008E3BC5 /* UnStartClassView.m */; };
 		54AB48EA1DED607B008E3BC5 /* StartedClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48E91DED607B008E3BC5 /* StartedClassView.m */; };
 		54AB48ED1DED608A008E3BC5 /* EndedClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48EC1DED608A008E3BC5 /* EndedClassView.m */; };
-		54AB48F01DED60D9008E3BC5 /* ListenClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48EF1DED60D9008E3BC5 /* ListenClassView.m */; };
 		54AB48F71DED6257008E3BC5 /* UnstartClassTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48F61DED6257008E3BC5 /* UnstartClassTableViewCell.m */; };
 		54AB48FA1DED7C09008E3BC5 /* MyTutoriumModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48F91DED7C09008E3BC5 /* MyTutoriumModel.m */; };
 		54AB48FD1DEDA563008E3BC5 /* StartedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48FC1DEDA563008E3BC5 /* StartedTableViewCell.m */; };
@@ -623,6 +622,11 @@
 		54D66F791DEC087D00ED2EBC /* NSString+StatusSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D66F781DEC087D00ED2EBC /* NSString+StatusSwitch.m */; };
 		54D75FDA1E2F9074003744FE /* VideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D75FD91E2F9074003744FE /* VideoPlayerViewController.m */; };
 		54D75FDD1E2F9F87003744FE /* Replay.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D75FDC1E2F9F87003744FE /* Replay.m */; };
+		54D82AF21EAEFB140034015F /* MyAuditionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D82AF11EAEFB140034015F /* MyAuditionView.m */; };
+		54D82AF51EAEFB280034015F /* MyAuditionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D82AF41EAEFB280034015F /* MyAuditionViewController.m */; };
+		54D82AF91EAF17730034015F /* MyAudioClassTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D82AF81EAF17730034015F /* MyAudioClassTableViewCell.m */; };
+		54D82AFC1EAF1C140034015F /* MyAudioClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D82AFB1EAF1C140034015F /* MyAudioClass.m */; };
+		54D82B001EAF350A0034015F /* ChargeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D82AFF1EAF350A0034015F /* ChargeCollectionViewCell.m */; };
 		54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D8DDBA1DCB634100F0B408 /* PersonalView.m */; };
 		54DBA4AB1DE4423300A67A90 /* Emotion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 54DBA4981DE4423300A67A90 /* Emotion.bundle */; };
 		54DBA4AC1DE4423300A67A90 /* emotion.plist in Resources */ = {isa = PBXBuildFile; fileRef = 54DBA4991DE4423300A67A90 /* emotion.plist */; };
@@ -1314,8 +1318,6 @@
 		54AB48E91DED607B008E3BC5 /* StartedClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartedClassView.m; sourceTree = "<group>"; };
 		54AB48EB1DED608A008E3BC5 /* EndedClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EndedClassView.h; sourceTree = "<group>"; };
 		54AB48EC1DED608A008E3BC5 /* EndedClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EndedClassView.m; sourceTree = "<group>"; };
-		54AB48EE1DED60D9008E3BC5 /* ListenClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListenClassView.h; sourceTree = "<group>"; };
-		54AB48EF1DED60D9008E3BC5 /* ListenClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListenClassView.m; sourceTree = "<group>"; };
 		54AB48F51DED6256008E3BC5 /* UnStartClassTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnStartClassTableViewCell.h; sourceTree = "<group>"; };
 		54AB48F61DED6257008E3BC5 /* UnstartClassTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnstartClassTableViewCell.m; sourceTree = "<group>"; };
 		54AB48F81DED7C09008E3BC5 /* MyTutoriumModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyTutoriumModel.h; sourceTree = "<group>"; };
@@ -1930,6 +1932,16 @@
 		54D75FD91E2F9074003744FE /* VideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewController.m; sourceTree = "<group>"; };
 		54D75FDB1E2F9F87003744FE /* Replay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Replay.h; sourceTree = "<group>"; };
 		54D75FDC1E2F9F87003744FE /* Replay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Replay.m; sourceTree = "<group>"; };
+		54D82AF01EAEFB140034015F /* MyAuditionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAuditionView.h; sourceTree = "<group>"; };
+		54D82AF11EAEFB140034015F /* MyAuditionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAuditionView.m; sourceTree = "<group>"; };
+		54D82AF31EAEFB280034015F /* MyAuditionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAuditionViewController.h; sourceTree = "<group>"; };
+		54D82AF41EAEFB280034015F /* MyAuditionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAuditionViewController.m; sourceTree = "<group>"; };
+		54D82AF71EAF17730034015F /* MyAudioClassTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAudioClassTableViewCell.h; sourceTree = "<group>"; };
+		54D82AF81EAF17730034015F /* MyAudioClassTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAudioClassTableViewCell.m; sourceTree = "<group>"; };
+		54D82AFA1EAF1C140034015F /* MyAudioClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAudioClass.h; sourceTree = "<group>"; };
+		54D82AFB1EAF1C140034015F /* MyAudioClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAudioClass.m; sourceTree = "<group>"; };
+		54D82AFE1EAF350A0034015F /* ChargeCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChargeCollectionViewCell.h; sourceTree = "<group>"; };
+		54D82AFF1EAF350A0034015F /* ChargeCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChargeCollectionViewCell.m; sourceTree = "<group>"; };
 		54D8DDB91DCB634100F0B408 /* PersonalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalView.h; sourceTree = "<group>"; };
 		54D8DDBA1DCB634100F0B408 /* PersonalView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalView.m; sourceTree = "<group>"; };
 		54DBA4981DE4423300A67A90 /* Emotion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Emotion.bundle; sourceTree = "<group>"; };
@@ -2235,6 +2247,7 @@
 				54AB48B21DED2CF2008E3BC5 /* 我的直播课 */,
 				547E92BA1E8E2DA700160C6D /* 我的一对一 */,
 				54C451FE1E9C94B8002108F4 /* 我的视频课 */,
+				54D82AEC1EAEFA240034015F /* 我的试听课 */,
 				54AB48B11DED2CF1008E3BC5 /* 安全管理 */,
 				54AB48B01DED2CEF008E3BC5 /* 系统设置 */,
 			);
@@ -3741,8 +3754,6 @@
 				54AB48E91DED607B008E3BC5 /* StartedClassView.m */,
 				54AB48EB1DED608A008E3BC5 /* EndedClassView.h */,
 				54AB48EC1DED608A008E3BC5 /* EndedClassView.m */,
-				54AB48EE1DED60D9008E3BC5 /* ListenClassView.h */,
-				54AB48EF1DED60D9008E3BC5 /* ListenClassView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -4871,6 +4882,7 @@
 		54B4C1841DF8181700E31794 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				54D82AFD1EAF34F60034015F /* cell */,
 				54B4C1851DF8183800E31794 /* ChargeView.h */,
 				54B4C1861DF8183800E31794 /* ChargeView.m */,
 			);
@@ -5313,6 +5325,62 @@
 				54D661281DD04DC900C9A0FF /* YZSquareMenu.m */,
 			);
 			name = YZMenuView;
+			sourceTree = "<group>";
+		};
+		54D82AEC1EAEFA240034015F /* 我的试听课 */ = {
+			isa = PBXGroup;
+			children = (
+				54D82AEF1EAEFAF70034015F /* Model */,
+				54D82AEE1EAEFAF60034015F /* View */,
+				54D82AED1EAEFAF50034015F /* Controller */,
+			);
+			name = "我的试听课";
+			sourceTree = "<group>";
+		};
+		54D82AED1EAEFAF50034015F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54D82AF31EAEFB280034015F /* MyAuditionViewController.h */,
+				54D82AF41EAEFB280034015F /* MyAuditionViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54D82AEE1EAEFAF60034015F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54D82AF61EAF175F0034015F /* cell */,
+				54D82AF01EAEFB140034015F /* MyAuditionView.h */,
+				54D82AF11EAEFB140034015F /* MyAuditionView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54D82AEF1EAEFAF70034015F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54D82AFA1EAF1C140034015F /* MyAudioClass.h */,
+				54D82AFB1EAF1C140034015F /* MyAudioClass.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		54D82AF61EAF175F0034015F /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				54D82AF71EAF17730034015F /* MyAudioClassTableViewCell.h */,
+				54D82AF81EAF17730034015F /* MyAudioClassTableViewCell.m */,
+			);
+			name = cell;
+			sourceTree = "<group>";
+		};
+		54D82AFD1EAF34F60034015F /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				54D82AFE1EAF350A0034015F /* ChargeCollectionViewCell.h */,
+				54D82AFF1EAF350A0034015F /* ChargeCollectionViewCell.m */,
+			);
+			name = cell;
 			sourceTree = "<group>";
 		};
 		54DBA4961DE4423300A67A90 /* YZEmotionKeyboard */ = {
@@ -6420,6 +6488,7 @@
 				54AC04EF1E893AF300817767 /* NTESDemoCreateMeetingTask.m in Sources */,
 				54AC04BF1E89398E00817767 /* NTESMeetingControlAttachment.m in Sources */,
 				545162C11DF53DE6000BD17A /* ChangePhoneGetCodeView.m in Sources */,
+				54D82AFC1EAF1C140034015F /* MyAudioClass.m in Sources */,
 				54AC04AF1E89398E00817767 /* NTESMeetingManager.m in Sources */,
 				54AB48F71DED6257008E3BC5 /* UnstartClassTableViewCell.m in Sources */,
 				54AC02AC1E892FD000817767 /* NTESNavigationAnimator.m in Sources */,
@@ -6525,6 +6594,7 @@
 				54294C6D1DDB051E00677333 /* Classes.m in Sources */,
 				54D75FDA1E2F9074003744FE /* VideoPlayerViewController.m in Sources */,
 				54C452331E9CBD77002108F4 /* UIAlertController+ZFPlayerRotation.m in Sources */,
+				54D82B001EAF350A0034015F /* ChargeCollectionViewCell.m in Sources */,
 				54AC02271E892C5300817767 /* NTESWhiteboardPoint.m in Sources */,
 				54F3BA301DFC7140003998D0 /* WithDrawViewController.m in Sources */,
 				54AC04C91E89398E00817767 /* yuv420sp.fsh.c in Sources */,
@@ -6542,6 +6612,7 @@
 				54AC04AA1E89398E00817767 /* NTESChatroomCellLayoutConfig.m in Sources */,
 				54F3BA241DFC4435003998D0 /* LoginAgainViewController.m in Sources */,
 				548F0E811E8A51B000A12C6D /* InteractionViewController.m in Sources */,
+				54D82AF51EAEFB280034015F /* MyAuditionViewController.m in Sources */,
 				54C4523F1E9CBD77002108F4 /* ZFPlayerView.m in Sources */,
 				54AC04161E8938E100817767 /* NIMPinyinConverter.m in Sources */,
 				54D75FDD1E2F9F87003744FE /* Replay.m in Sources */,
@@ -6613,6 +6684,7 @@
 				54C452041E9CA5D1002108F4 /* MyVideoClassView.m in Sources */,
 				54A153B01DC6F09D0070B508 /* ViewController.m in Sources */,
 				54B9CAFC1DFE4AAC003961FF /* WithdrawConfirmViewController.m in Sources */,
+				54D82AF91EAF17730034015F /* MyAudioClassTableViewCell.m in Sources */,
 				54AC04091E8938E100817767 /* NIMCreateTeamAnnouncement.m in Sources */,
 				54D59A7A1E23417B006066EC /* DrawBackViewController.m in Sources */,
 				54DBA4B21DE4423300A67A90 /* YZEmotionKeyboard.m in Sources */,
@@ -6703,7 +6775,6 @@
 				54AB48ED1DED608A008E3BC5 /* EndedClassView.m in Sources */,
 				546978641DC725A5001695F4 /* NavigationBar.m in Sources */,
 				54294C731DDB071700677333 /* Chat_Account.m in Sources */,
-				54AB48F01DED60D9008E3BC5 /* ListenClassView.m in Sources */,
 				54AB48E11DED51B8008E3BC5 /* SafeViewController.m in Sources */,
 				54FB1DB51DF10B9B00BA9A3C /* UIViewController+VideoStatus.m in Sources */,
 				5413D2611DF7BC9400A8FDEC /* PaymentTableView.m in Sources */,
@@ -6726,6 +6797,7 @@
 				54AC03DD1E8938E100817767 /* NIMInputView.m in Sources */,
 				54AC04141E8938E100817767 /* NIMKitTimerHolder.m in Sources */,
 				5413D26E1DF7CF1C00A8FDEC /* Recharge.m in Sources */,
+				54D82AF21EAEFB140034015F /* MyAuditionView.m in Sources */,
 				54AC03E01E8938E100817767 /* NIMMessageModel.m in Sources */,
 				54AC03E11E8938E100817767 /* NIMUIConfig.m in Sources */,
 				548D1D8E1EA7551F00B120C8 /* Features.m in Sources */,

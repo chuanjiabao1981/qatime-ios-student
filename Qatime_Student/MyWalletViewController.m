@@ -44,8 +44,6 @@
     
     [super viewWillAppear:animated];
     
-    
-    
 }
 
 - (void)viewDidLoad {
@@ -54,17 +52,12 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
-    
-    
-    
-    
+
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];
     _navigationBar.titleLabel.text = @"我的钱包";
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-    
-    
     
     _myWalletView = [[MyWalletView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
     [self.view addSubview:_myWalletView];
@@ -82,11 +75,10 @@
     
     [self loadingHUDStartLoadingWithTitle:@"正在获取数据"];
     
-    _menuName = @[@"充值记录",@"提现记录",@"消费记录",@"退款记录"];
+    _menuName = @[@"充值记录",@"提现记录",@"消费记录"];
     
     /* 请求钱包数据*/
     [self requestWallet];
-    
     
     
     /* 指定代理*/
@@ -95,10 +87,6 @@
     
     /* 我的订单  充值记录点击时间*/
     [_myWalletView.rechargeButton addTarget:self action:@selector(recharge) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    /* 我的订单 提现功能*/
-    [_myWalletView.widthDrawButon addTarget:self action:@selector(widthDraw) forControlEvents:UIControlEventTouchUpInside];
     
     /* 拨打帮助电话*/
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(callForHelp)];
@@ -110,22 +98,11 @@
 
 /* 拨打帮助电话*/
 - (void)callForHelp{
-    
-    
-     
-            
-            NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",@"0532-34003426"];
-            UIWebView *callWebview = [[UIWebView alloc] init];
-            [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
-            [self.view addSubview:callWebview];
-            
-//            
-//            NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",@"0532-34003426"];
-//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel://0532-34003426"]];
-     
 
-    
-    
+    NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",@"0532-34003426"];
+    UIWebView *callWebview = [[UIWebView alloc] init];
+    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+    [self.view addSubview:callWebview];
     
 }
 
@@ -144,8 +121,8 @@
         [self loginStates:dic];
         if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
             /* 数据加载成功*/
-            _myWalletView.balance.text = [NSString stringWithFormat:@"¥%@",dic[@"data"][@"balance"]];
-            _myWalletView.total.text =[NSString stringWithFormat:@"¥%@",dic[@"data"][@"total_expenditure"]];
+            _myWalletView.balance.text = [NSString stringWithFormat:@"¥ %@",dic[@"data"][@"balance"]];
+            _myWalletView.total.text =[NSString stringWithFormat:@"累计消费：¥ %@",dic[@"data"][@"total_expenditure"]];
             
             /* 余额数据存本地*/
             [[NSUserDefaults standardUserDefaults]setObject:dic[@"data"][@"balance"] forKey:@"balance"];
@@ -173,16 +150,12 @@
         [self loadingHUDStopLoadingWithTitle:@"数据获取失败!请重试"];
     }];
     
-    
-    
-    
-    
 }
 
 #pragma mark- tableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 4;
+    return _menuName.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -194,13 +167,8 @@
         cell=[[PersonalTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
         
         cell.name.text = _menuName[indexPath.row];
-        
-        
     }
-    
     return  cell;
-    
-    
 }
 
 
@@ -210,34 +178,35 @@
     
     CashRecordViewController *cashVC = [[CashRecordViewController alloc]initWithSelectedItem:indexPath.row];
     
-    
     [self.navigationController pushViewController:cashVC animated:YES];
-    
     
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return 50*ScrenScale;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 10;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 10;
+}
 
 
 #pragma mark- 进入充值页面
 - (void)recharge{
-    
-    
-    [self loadingHUDStopLoadingWithTitle:@"请使用网页端进行充值"];
-//    ChargeViewController *cVC = [ChargeViewController new];
-//    
-//    [self.navigationController pushViewController:cVC animated:YES];
-    
+//    [self loadingHUDStopLoadingWithTitle:@"请使用网页端进行充值"];
+    ChargeViewController *cVC = [ChargeViewController new];
+    [self.navigationController pushViewController:cVC animated:YES];
 }
 
 #pragma mark- 进入提现页面
-- (void)widthDraw{
-        
-    WithDrawViewController *withVC = [WithDrawViewController new];
-    
-    [self.navigationController pushViewController:withVC animated:YES];
-    
-}
-
+//- (void)widthDraw{
+//    WithDrawViewController *withVC = [WithDrawViewController new];
+//    [self.navigationController pushViewController:withVC animated:YES];
+//}
 
 - (void) returnLastPage{
     

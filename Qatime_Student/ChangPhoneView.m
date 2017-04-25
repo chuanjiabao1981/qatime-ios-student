@@ -27,6 +27,7 @@
     _phoneNumber.placeholder = @"输入新手机号(仅支持大陆地区11位)";
     _phoneNumber.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _phoneNumber.layer.borderWidth = 1;
+    _phoneNumber.keyboardType = UIKeyboardTypeNumberPad;
     
     _keyCode = [[UITextField alloc]init];
     _keyCode.layer.borderColor = [UIColor lightGrayColor].CGColor;

@@ -46,6 +46,7 @@
         _parentPhoneText.placeholder = @" 输入新家长手机";
         _parentPhoneText.layer.borderWidth =1;
         _parentPhoneText.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        _parentPhoneText.keyboardType = UIKeyboardTypeNumberPad;
         
         
         /* 校验码*/
@@ -54,6 +55,7 @@
         _keyCodeText.placeholder = @" 输入校验码";
         _keyCodeText.layer.borderWidth =1;
         _keyCodeText.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        _keyCodeText.keyboardType = UIKeyboardTypeNumberPad;
         
 
         

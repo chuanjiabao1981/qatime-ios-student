@@ -10,7 +10,6 @@
 
 @interface ChargeView (){
     
-    UIView *text;
     
 }
 
@@ -23,145 +22,59 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        /* 外框*/
-        text = [[UIView alloc]init];
-        text.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        text.layer.borderWidth = 0.6f;
+        //充值选项
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
+        layout.minimumLineSpacing = 10;
+        layout.minimumInteritemSpacing = 5;
+        layout.itemSize = CGSizeMake((self.width_sd-40)/3, 40);
         
-        /* 输入框*/
-        _moneyText = [[UITextField alloc]init];
-        _moneyText.placeholder = @"请输入充值金额";
+        _chargeMenu = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, 200) collectionViewLayout:layout];
+        _chargeMenu.backgroundColor = [UIColor whiteColor];
         
-        /* 元*/
-        UILabel *yuan = [[UILabel alloc]init];
-        yuan .text = @"元";
-        yuan.textColor = [UIColor blackColor];
+        [self addSubview:_chargeMenu];
+        _chargeMenu.sd_layout
+        .leftSpaceToView(self, 0)
+        .topSpaceToView(self, 0)
+        .rightSpaceToView(self, 0)
+        .heightIs(150*ScrenScale);
         
-        /* 微信支付按钮*/
+        //充值提示
+        _tips = [[UILabel alloc]init];
+        [self addSubview:_tips];
         
-        _wechatButton = [[UIButton alloc]init];
-        _wechatButton.selected = NO;
-        _wechatButton.layer.borderWidth = 0.6;
-        _wechatButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        NSString *string =@"充值须知：\n1、由于苹果公司内购条款限制（收取30%作为内购费用),使用IOS客户端充值后账户实充金额与所选充值金额不一致。\n2、举例：选择充值100元并成功充值后账户实际收入70元。\n3、非IOS客户端不受内购条款限制。\n4、点击立即充值则表示用户认可以上内容。";
         
-        UIImageView *wechaImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"wechat"]];
+        NSMutableParagraphStyle*style = [[NSMutableParagraphStyle alloc]init];
+        style.lineSpacing = 5;
+        style.paragraphSpacing = 5;
         
-        UILabel *wechatPay = [[UILabel alloc]init];
-        wechatPay.text = @"微信支付";
-        wechatPay.textColor = [UIColor lightGrayColor];
-        
-        
-        
-        /* 支付宝支付按钮*/
-        
-//        _alipayButton = [[UIButton alloc]init];
-//        _alipayButton.selected = NO;
-//        _alipayButton.layer.borderWidth = 0.6;
-//        _alipayButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-//        
-//        UIImageView *alipayImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"alipay"]];
-//        
-//        UILabel *aliPay = [[UILabel alloc]init];
-//        aliPay.text = @"支付宝支付";
-//        aliPay.textColor = [UIColor lightGrayColor];
-//        
-        UILabel *tip = [[UILabel alloc]init];
-        tip.text = @"选择支付方式:";
-        tip.textColor = [UIColor lightGrayColor];
-        
-        
-        
-        _finishButton = [[UIButton alloc]init];
-        _finishButton .layer.borderColor = BUTTONRED.CGColor;
-        _finishButton.layer.borderWidth =1;
-        
-        [_finishButton setTitle:@"立即充值" forState:UIControlStateNormal];
-        [_finishButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
-
-        
-        
-        /* 布局*/
-        [self sd_addSubviews:@[text,_wechatButton,wechaImage,wechatPay,/*_alipayButton,alipayImage,aliPay,*/tip,_finishButton]];
-        
-        [text sd_addSubviews:@[yuan,_moneyText]];
-        
-        /* 框*/
-        text.sd_layout
-        .leftSpaceToView(self,20)
-        .rightSpaceToView(self,20)
-        .topSpaceToView(self,20)
-        .heightRatioToView(self,0.065);
-        
-        yuan.sd_layout
-        .topSpaceToView(text,10)
-        .bottomSpaceToView(text,10)
-        .rightSpaceToView(text,10);
-        [yuan setSingleLineAutoResizeWithMaxWidth:100];
-        
-        _moneyText.sd_layout
-        .topSpaceToView(text,10)
-        .bottomSpaceToView(text,10)
-        .rightSpaceToView(yuan,0)
-        .leftSpaceToView(text,10);
-        
-        wechatPay.sd_layout
-        .leftSpaceToView(self,self.width_sd/2)
-        .topSpaceToView(text,30)
+        NSMutableAttributedString *mustring = [[NSMutableAttributedString alloc]initWithString:string];
+        [mustring addAttributes:@{NSForegroundColorAttributeName:[UIColor redColor]} range:NSMakeRange(0, 5)];
+        [mustring addAttributes:@{NSForegroundColorAttributeName:TITLECOLOR} range:NSMakeRange(5, string.length-5)];
+        [mustring addAttributes:@{NSParagraphStyleAttributeName:style} range:NSMakeRange(0, string.length-1)];
+        [mustring addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14*ScrenScale]} range:NSMakeRange(0, string.length-1)];
+        _tips.attributedText = mustring;
+        _tips.isAttributedContent = YES;
+        _tips.sd_layout
+        .leftSpaceToView(self, 10)
+        .rightSpaceToView(self, 10)
+        .topSpaceToView(_chargeMenu, 10)
         .autoHeightRatio(0);
-        [wechatPay setSingleLineAutoResizeWithMaxWidth:1000];
         
-        wechaImage.sd_layout
-        .rightSpaceToView(wechatPay,0)
-        .centerYEqualToView(wechatPay)
-        .heightRatioToView(wechatPay,1.2)
-        .widthEqualToHeight();
+        //立即充值
+        _chargeButton = [[UIButton alloc]init];
+        _chargeButton.layer.borderColor = NAVIGATIONRED.CGColor;
+        _chargeButton.layer.borderWidth = 1;
+        [_chargeButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+        [_chargeButton setTitle:@"立即充值" forState:UIControlStateNormal];
+        _chargeButton.sd_cornerRadius = @2;
         
-        _wechatButton.sd_layout
-        .centerYEqualToView(wechaImage)
-        .rightSpaceToView(wechaImage,5)
-        .heightRatioToView(wechatPay,1)
-        .widthEqualToHeight();
-        
-        _wechatButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
-        
-        
-        tip.sd_layout
-        .leftSpaceToView(self,20)
-        .topSpaceToView(text,30)
-        .autoHeightRatio(0)
-        .rightSpaceToView(_wechatButton,10);
-        tip.textAlignment = NSTextAlignmentLeft;
-        
-        
-//        alipayImage.sd_layout
-//        .topSpaceToView(wechaImage,20)
-//        .leftEqualToView(wechaImage)
-//        .rightEqualToView(wechaImage)
-//        .heightRatioToView(wechaImage,1.0f);
-//        
-//        aliPay.sd_layout
-//        .leftEqualToView(wechatPay)
-//        .centerYEqualToView(alipayImage)
-//        .autoHeightRatio(0);
-//        [aliPay setSingleLineAutoResizeWithMaxWidth:500];
-//        
-//        _alipayButton.sd_layout
-//        .leftEqualToView(_wechatButton)
-//        .rightEqualToView(_wechatButton)
-//        .centerYEqualToView(alipayImage)
-//        .heightRatioToView(_wechatButton,1.0f);
-//        
-//        _alipayButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
-        
-        
-        
-        _finishButton.sd_layout
-        .leftSpaceToView(self,20)
-        .rightSpaceToView(self,20)
-        .topSpaceToView(wechaImage,30)
-        .heightRatioToView(text,1.0);
-        _finishButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
-        
+        [self addSubview:_chargeButton];
+        _chargeButton.sd_layout
+        .topSpaceToView(_tips, 40)
+        .leftSpaceToView(self, 10)
+        .rightSpaceToView(self, 10)
+        .heightIs(40);
         
         
         

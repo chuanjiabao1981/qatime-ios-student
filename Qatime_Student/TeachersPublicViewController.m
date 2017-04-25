@@ -21,6 +21,9 @@
 #import "UIViewController+HUD.h"
 #import "TeacherFeatureTagCollectionViewCell.h"
 
+#import "OneOnOneClass.h"
+#import "VideoClassInfo.h"
+
 @interface TeachersPublicViewController ()<UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>{
     
     /* 头视图*/
@@ -745,16 +748,16 @@
             _publicCount = _publicClasses.count;
             
             //yymodel解析教师一对一课程数据
-            for (NSDictionary *classDic in dic[@"data"][@"courses"]) {
-                TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:classDic];
+            for (NSDictionary *classDic in dic[@"data"][@"interactive_courses"]) {
+                OneOnOneClass *mod = [OneOnOneClass yy_modelWithJSON:classDic];
                 mod.classID = classDic[@"id"];
                 [_oneOnOneClasses addObject:mod];
             }
             _oneOnOneCount = _oneOnOneClasses.count;
             
             //yymodel解析教师视频课数据
-            for (NSDictionary *classDic in dic[@"data"][@"courses"]) {
-                TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:classDic];
+            for (NSDictionary *classDic in dic[@"data"][@"video_courses"]) {
+                VideoClassInfo *mod = [VideoClassInfo yy_modelWithJSON:classDic];
                 mod.classID = classDic[@"id"];
                 [_videoClasses addObject:mod];
             }

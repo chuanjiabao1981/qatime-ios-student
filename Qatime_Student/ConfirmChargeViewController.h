@@ -18,10 +18,13 @@
 
 /* 传字典初始化方法*/
 - (instancetype)initWithInfo:(__kindof NSDictionary *)info;
+
 /* 传model初始化方法*/
 -(instancetype)initWithModel:(Recharge *)model;
 
 -(instancetype)initWithPayModel:(Unpaid *)model;
+
+-(instancetype)initWithPrice:(NSString *)price;
 
 
 @end

@@ -9,9 +9,7 @@
 #import "MyWalletView.h"
 
 @interface MyWalletView (){
-   
-    UILabel *balan;
-    UILabel *tot;
+
     UIView *line;
 }
 
@@ -26,51 +24,64 @@
         
         /* 余额*/
         _balance = [[UILabel alloc]init];
-        _balance.textColor = [UIColor blackColor];
+        _balance.textColor = NAVIGATIONRED;
         [_balance setFont:[UIFont systemFontOfSize:40*ScrenScale]];
+        [self addSubview:_balance];
         
-        balan  = [[UILabel alloc]init];
-        balan.textColor = TITLECOLOR;
-        balan.font=[UIFont systemFontOfSize:16*ScrenScale];
-        balan .text = @"余额";
+        _balance.sd_layout
+        .topSpaceToView(self, 20)
+        .leftSpaceToView(self, 20)
+        .autoHeightRatio(0);
+        [_balance setSingleLineAutoResizeWithMaxWidth:300];
         
         /* 累计消费*/
         _total = [[UILabel alloc]init];
         _total.textColor = TITLECOLOR;
         _total.font=[UIFont systemFontOfSize:16*ScrenScale];
+        [self addSubview:_total];
         
-        tot = [[UILabel alloc]init];
-        tot.text = @"累计消费:";
-        tot.textColor = TITLECOLOR;
-        
-        /* 分割线*/
-        line = [[UIView alloc]init];
-        line.backgroundColor = [UIColor lightGrayColor];
-        
+        _total.sd_layout
+        .leftEqualToView(_balance)
+        .topSpaceToView(_balance,20)
+        .autoHeightRatio(0);
+        [_total setSingleLineAutoResizeWithMaxWidth:1000];
         
         /* 充值按钮*/
         _rechargeButton = [[UIButton alloc]init];
         [_rechargeButton setTitle:@"充值" forState:UIControlStateNormal];
-        [_rechargeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_rechargeButton setBackgroundColor:[UIColor orangeColor]];
+        [_rechargeButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+        [_rechargeButton setBackgroundColor:[UIColor whiteColor]];
+        _rechargeButton.layer.borderColor = NAVIGATIONRED.CGColor;
+        _rechargeButton.layer.borderWidth = 1;
+        [self addSubview:_rechargeButton];
         
+        _rechargeButton.sd_layout
+        .topSpaceToView(_total,20)
+        .rightSpaceToView(self, 10);
+        [_rechargeButton setupAutoSizeWithHorizontalPadding:30*ScrenScale buttonHeight:40];
+        _rechargeButton.sd_cornerRadius = @1;
+
+        /* 分割线*/
+        line = [[UIView alloc]init];
+        line.backgroundColor = [UIColor whiteColor];
+        [self addSubview:line];
         
-        /* 提现按钮*/
-        
-        _widthDrawButon = [[UIButton alloc]init];
-        [_widthDrawButon setTitle:@"提现" forState:UIControlStateNormal];
-        [_widthDrawButon setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_widthDrawButon setBackgroundColor:[UIColor orangeColor]];
-        
+        line.sd_layout
+        .leftEqualToView(self)
+        .rightEqualToView(self)
+        .topSpaceToView(_rechargeButton,10)
+        .heightIs(0.5);
         
         /* 菜单*/
-        
-        _menuTableView = [[UITableView alloc]init];
+        _menuTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, line.bottom_sd, self.width_sd, 200) style:UITableViewStyleGrouped];
         _menuTableView.bounces = NO;
-        _menuTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, 0.4)];
-        _menuTableView.tableFooterView.backgroundColor = [UIColor lightGrayColor];
-        
-        
+        [self addSubview:_menuTableView];
+        _menuTableView.sd_layout
+        .leftSpaceToView(self, 0)
+        .rightSpaceToView(self, 0)
+        .topSpaceToView(line, 0)
+        .heightIs(170);
+
         /* 电话提示*/
         _tips = [[UILabel alloc]init];
         _tips.textColor = TITLECOLOR;
@@ -79,68 +90,12 @@
         NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc]initWithString:_tips.text];
         [attStr addAttributes:@{NSForegroundColorAttributeName:[UIColor blueColor]} range:NSMakeRange(11, 13)];
         _tips.attributedText = attStr;
-        
-        [self sd_addSubviews:@[_balance,balan,line,_total,tot,_rechargeButton,_widthDrawButon,_menuTableView,_tips]];
-        
-        _balance.sd_layout
-        .topSpaceToView(self,self.height_sd/6.5)
-        .centerXEqualToView(self)
-        .autoHeightRatio(0);
-        
-        [_balance setSingleLineAutoResizeWithMaxWidth:500];
-        
-        balan.sd_layout
-        .rightSpaceToView(_balance,0)
-        .centerYEqualToView(_balance)
-        .autoHeightRatio(0);
-        [balan setSingleLineAutoResizeWithMaxWidth:200];
-        
-        
-        _total.sd_layout
-        .rightSpaceToView(self,5)
-        .topSpaceToView(_balance,CGRectGetHeight(self.frame)/6.5)
-        .autoHeightRatio(0);
-        [_total setSingleLineAutoResizeWithMaxWidth:1000];
-        
-        tot.sd_layout
-        .topEqualToView(_total)
-        .bottomEqualToView(_total)
-        .rightSpaceToView(_total,0);
-        [tot setSingleLineAutoResizeWithMaxWidth:1000];
-        
-        line.sd_layout
-        .leftEqualToView(self)
-        .rightEqualToView(self)
-        .topSpaceToView(tot,5)
-        .heightIs(0.6);
-        
-        
-        _rechargeButton.sd_layout
-        .topSpaceToView(line,5)
-        .leftSpaceToView(self,5)
-        .heightIs(CGRectGetHeight(self.frame)/6.5/2)
-        .widthIs(CGRectGetWidth(self.frame)/2-10);
-        
-        
-        _widthDrawButon.sd_layout
-        .topSpaceToView(line,5)
-        .rightSpaceToView(self,5)
-        .heightIs(CGRectGetHeight(self.frame)/6.5/2)
-        .widthIs(CGRectGetWidth(self.frame)/2-10);
-        
-        _menuTableView.sd_layout
-        .leftEqualToView(self)
-        .rightEqualToView(self)
-        .topSpaceToView(_widthDrawButon,10)
-        .bottomEqualToView(self);
-
-        
+        [self addSubview:_tips];
         _tips.sd_layout
         .bottomSpaceToView(self,20)
         .centerXEqualToView(self)
         .autoHeightRatio(0);
         [_tips setSingleLineAutoResizeWithMaxWidth:1000];
-         
         
     }
     return self;

@@ -51,13 +51,11 @@
         _balance.hidden = YES;
         _balance.font = [UIFont systemFontOfSize:16*ScrenScale];
         
-        
         [self.contentView sd_addSubviews:@[_logoImage,_settingName,_balance,_arrow]];
         
         /* 布局*/
-        
         _logoImage.sd_layout
-        .leftSpaceToView(self.contentView,20)
+        .leftSpaceToView(self.contentView,20*ScrenScale)
         .centerYEqualToView(self.contentView)
         .heightRatioToView(self.contentView,0.5)
         .widthEqualToHeight();

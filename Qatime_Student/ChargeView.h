@@ -10,16 +10,11 @@
 
 @interface ChargeView : UIView
 
-@property(nonatomic,strong) UITextField *moneyText ;
+@property (nonatomic, strong) UICollectionView *chargeMenu ;
 
-@property(nonatomic,strong) UIButton *wechatButton ;
+@property (nonatomic, strong) UILabel *tips ;
 
-@property(nonatomic,strong) UIButton *alipayButton ;
+@property (nonatomic, strong) UIButton *chargeButton ;
 
-//@property(nonatomic,strong) UIButton *balanceButton ;
-
-
-/* */
-@property(nonatomic,strong) UIButton *finishButton ;
 
 @end

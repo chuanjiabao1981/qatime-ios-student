@@ -21,7 +21,7 @@
         
         /* 滑动segemnt*/
         _segmentControl =({
-            HMSegmentedControl *_ = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"待开课",@"已开课",@"已结束",@"我的试听"]];
+            HMSegmentedControl *_ = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"待开课",@"已开课",@"已结束"]];
             [self addSubview:_];
             _.frame = CGRectMake(0, 0, SCREENWIDTH, self.height_sd*0.07*ScrenScale) ;
             _.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
@@ -44,7 +44,7 @@
         _scrollView = ({
             
             UIScrollView *_=[[UIScrollView alloc]initWithFrame:CGRectMake(0,_segmentControl.bottom_sd, SCREENWIDTH, SCREENHEIGHT-40)];
-            _.contentSize = CGSizeMake(SCREENWIDTH*4, SCREENHEIGHT-40);
+            _.contentSize = CGSizeMake(SCREENWIDTH*3, SCREENHEIGHT-40);
             [self addSubview:_];
             _.pagingEnabled = YES;
             _.bounces = NO;
@@ -55,9 +55,6 @@
 //            _.backgroundColor = [UIColor redColor];
             _;
         });
-        
-        
-                
         
     }
     return self;

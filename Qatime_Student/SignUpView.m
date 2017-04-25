@@ -10,6 +10,7 @@
 
 @interface SignUpView()<UITextFieldDelegate>{
     
+    /**选择协议*/
     BOOL selectedPolicy;
     
 }
@@ -33,7 +34,7 @@
         _phoneNumber.layer.borderWidth=0.6;
         _phoneNumber.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         _phoneNumber.sd_layout.topSpaceToView(self,15).leftSpaceToView(self,20).rightSpaceToView(self,20).heightIs(40);
-        _phoneNumber.keyboardType = UIKeyboardTypePhonePad;
+        _phoneNumber.keyboardType = UIKeyboardTypeNumberPad;
         
         
         /* 手机校验码输入框*/
@@ -44,7 +45,7 @@
         _checkCode.layer.borderWidth=0.6;
         _checkCode.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         _checkCode.sd_layout.topSpaceToView(_phoneNumber,15).leftSpaceToView(self,20).widthIs((CGRectGetWidth(self.frame)-40)/2).heightIs(40);
-        _checkCode.keyboardType = UIKeyboardTypePhonePad;
+        _checkCode.keyboardType = UIKeyboardTypeNumberPad;
         
         
         /* 获取校验码按钮*/

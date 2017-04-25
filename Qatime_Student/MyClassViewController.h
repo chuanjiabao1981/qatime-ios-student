@@ -12,7 +12,7 @@
 #import "UnStartClassView.h"
 #import "StartedClassView.h"
 #import "EndedClassView.h"
-#import "ListenClassView.h"
+//#import "ListenClassView.h"
 
 @interface MyClassViewController : UIViewController
 
@@ -29,7 +29,7 @@
 @property(nonatomic,strong) EndedClassView *endedClassView ;
 
 /* 试听课程*/
-@property(nonatomic,strong) ListenClassView *listenClassView ;
+//@property(nonatomic,strong) ListenClassView *listenClassView ;
 
 
 @end

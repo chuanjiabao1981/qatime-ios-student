@@ -45,6 +45,7 @@
     _codeText.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _codeText.layer.borderWidth = 1;
     _codeText.placeholder = @"输入收到的验证码";
+    _codeText.keyboardType = UIKeyboardTypeNumberPad;
     
     _getCodeButton = [[UIButton alloc]init];
     [_getCodeButton setTitleColor: [UIColor whiteColor] forState:UIControlStateNormal];
@@ -62,18 +63,12 @@
     
     [self layoutViews];
     
-    
-    
-    
-    
 }
 
 
 - (void)layoutViews{
     
     [self sd_addSubviews:@[_label,_phoneLabel,_codeText,_getCodeButton,_nextButton]];
-    
-    
     
     _label.sd_layout
     .leftSpaceToView(self,20)
@@ -108,12 +103,6 @@
     .topSpaceToView(_getCodeButton,20)
     .heightRatioToView(_getCodeButton,1.0f);
     _nextButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
-    
-    
-    
-    
-    
-    
     
 }
 

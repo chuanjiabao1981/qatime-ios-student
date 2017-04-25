@@ -7,7 +7,7 @@
 //
 
 #import "MyClassViewController.h"
- 
+
 #import "NavigationBar.h"
 #import "TutoriumList.h"
 #import "UnStartClassTableViewCell.h"
@@ -19,7 +19,8 @@
 #import "UIViewController+HUD.h"
 #import "TutoriumInfoViewController.h"
 #import "LivePlayerViewController.h"
-
+#import "ChatViewController.h"
+#import "UIControl+RemoveTarget.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -31,7 +32,6 @@
     
     NSString *_token;
     NSString *_idNumber;
-    
     
     /* 保存课程数据的数组们*/
     
@@ -53,10 +53,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-      
+    
     _navigationBar  = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
     [self.view addSubview:_navigationBar];
-    _navigationBar.titleLabel.text = @"我的辅导";
+    _navigationBar.titleLabel.text = @"我的直播课";
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
@@ -74,8 +74,6 @@
     }];
     [_myClassView.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
     
-    
-    
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
         _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
@@ -87,14 +85,11 @@
     
     
     /* 所有数据初始化*/
-    
     _allClassArr = @[].mutableCopy;
     _unStartArr = @[].mutableCopy;
     _startedArr = @[].mutableCopy;
     _endedArr = @[].mutableCopy;
     _listenArr = @[].mutableCopy;
-    
-    
     
     
     /* 请求课程数据*/
@@ -167,16 +162,16 @@
 /* 加载试听视图*/
 - (void)setupListenView{
     
-    _listenClassView = ({
-        ListenClassView *_ = [[ListenClassView alloc]initWithFrame:CGRectMake(SCREENWIDTH*3, 0, SCREENWIDTH, SCREENHEIGHT-64-40)];
-        [_myClassView.scrollView addSubview:_];
-        _.classTableView.tag =4;
-        _.classTableView.delegate = self;
-        _.classTableView.dataSource =self;
-        
-        _;
-        
-    });
+    //    _listenClassView = ({
+    //        ListenClassView *_ = [[ListenClassView alloc]initWithFrame:CGRectMake(SCREENWIDTH*3, 0, SCREENWIDTH, SCREENHEIGHT-64-40)];
+    //        [_myClassView.scrollView addSubview:_];
+    //        _.classTableView.tag =4;
+    //        _.classTableView.delegate = self;
+    //        _.classTableView.dataSource =self;
+    //
+    //        _;
+    //
+    //    });
 }
 
 
@@ -193,7 +188,6 @@
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
         [manager GET:requestURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             [self loginStates:dic];
@@ -220,15 +214,15 @@
                     /* 加载数据*/
                     
                     [self setupUnstartView];
-                                        /* 如果有空数据,那么该项所在页面添加占位图*/
+                    /* 如果有空数据,那么该项所在页面添加占位图*/
                     if (_unStartArr.count == 0) {
                         
                         HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _unStartClassView.height_sd)];
                         noview.titleLabel.text  = @"没有课程";
                         [_unStartClassView addSubview:noview];
-
+                        
                     }
-
+                    
                     [self loadingHUDStopLoadingWithTitle:@"加载完成"];
                     
                 }else{
@@ -294,14 +288,14 @@
                         }
                     }
                     
-                     [self setupStartedView];
+                    [self setupStartedView];
                     
                     /* 如果有空数据,那么该项所在页面添加占位图*/
                     if (_startedArr.count ==0) {
                         HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _startedClassView.height_sd)];
                         noview.titleLabel.text  = @"没有课程";
                         [_startedClassView addSubview:noview];
-
+                        
                     }
                     [self loadingHUDStopLoadingWithTitle:@"加载完成"];
                     
@@ -311,7 +305,7 @@
                 }
                 
                 
-               
+                
                 //                [_startedClassView.classTableView reloadData];
                 
             }else{
@@ -366,7 +360,7 @@
                             
                             if (mod.is_bought == YES) {
                                 
-                                    [_endedArr addObject:mod];
+                                [_endedArr addObject:mod];
                                 
                                 
                             }
@@ -467,7 +461,7 @@
                         
                         HaveNoClassView *noview = [[HaveNoClassView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, _unStartClassView.height_sd)];
                         noview.titleLabel.text  = @"没有课程";
-                        [_listenClassView addSubview:noview];
+                        //                        [_listenClassView addSubview:noview];
                         
                     }
                     
@@ -566,8 +560,6 @@
                     .rightSpaceToView(cell.content,10);
                     [cell.className setMaxNumberOfLinesToShow:1];
                     [cell.className updateLayout];
-                
-                    cell.enterButton.enabled = NO;
                     
                 }else{
                     cell.status.hidden = NO;
@@ -578,12 +570,15 @@
                     .topEqualToView(cell.status)
                     .bottomEqualToView(cell.status)
                     .rightSpaceToView(cell.content,10);
-                     [cell.className setMaxNumberOfLinesToShow:1];
+                    [cell.className setMaxNumberOfLinesToShow:1];
                     [cell.className updateLayout];
                     
                     cell.status.text = @" 试听中 ";
-                    cell.enterButton.enabled = NO;
                 }
+                [cell.enterButton removeAllTargets];
+                cell.enterButton.enabled = YES;
+                [cell.enterButton addTarget:self action:@selector(enterChat:) forControlEvents:UIControlEventTouchUpInside];
+                cell.enterButton.tag = indexPath.row;
             }
             
             return  cell;
@@ -615,7 +610,7 @@
                     .topSpaceToView(cell.content,10)
                     .autoHeightRatio(0)
                     .rightSpaceToView(cell.content,10);
-                     [cell.className setMaxNumberOfLinesToShow:1];
+                    [cell.className setMaxNumberOfLinesToShow:1];
                     [cell.className updateLayout];
                 }else{
                     cell.status.hidden = NO;
@@ -631,11 +626,11 @@
                     .topEqualToView(cell.status)
                     .rightSpaceToView(cell.content,10)
                     .bottomEqualToView(cell.status);
-                     [cell.className setMaxNumberOfLinesToShow:1];
+                    [cell.className setMaxNumberOfLinesToShow:1];
                     [cell.className updateLayout];
                     
                 }
-                
+                [cell.enterButton removeAllTargets];
                 [cell.enterButton addTarget:self action:@selector(enterListen:) forControlEvents:UIControlEventTouchUpInside];
                 
                 cell.enterButton.tag = indexPath.row+100;
@@ -658,7 +653,7 @@
             if (_endedArr.count>indexPath.row) {
                 cell.model = _endedArr[indexPath.row];
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-                 [cell.className setMaxNumberOfLinesToShow:1];
+                [cell.className setMaxNumberOfLinesToShow:1];
             }
             
             return  cell;
@@ -666,219 +661,219 @@
         }
             break;
             
-        case 4:{
+            //        case 4:{
+            //
+            //            /* cell的重用队列*/
+            //            static NSString *cellIdenfier = @"cell";
+            //            ListenTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+            //            if (cell==nil) {
+            //                cell=[[ListenTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+            //
+            //
+            //            }
+            //            if (_listenArr.count>indexPath.row) {
+            //                cell.model = _listenArr[indexPath.row];
+            //                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+            //                [cell.enterButton addTarget:self action:@selector(enterListen:) forControlEvents:UIControlEventTouchUpInside];
+            //                cell.enterButton.tag = indexPath.row+1000;
+            //
+            //                /* 已试听的*/
+            //                if (cell.model.tasted == YES) {
+            //                    /* 已开课的*/
+            //                    if ([cell.model.status isEqualToString:@"teaching"]) {
+            //
+            //                        cell.dist.hidden = YES;
+            //                        cell.deadLineLabel.hidden =YES;
+            //                        cell.days.hidden =YES;
+            //
+            //                        cell.progress.hidden =NO;
+            //                        cell.line2.hidden = NO;
+            //                        cell.presentCount.hidden =NO;
+            //                        cell.totalCount.hidden =NO;
+            //
+            //                        cell.finish.hidden =YES;
+            //
+            //                        cell.status.text = @" 已试听 ";
+            //                        cell.status.backgroundColor = [UIColor lightGrayColor];
+            //                        cell.status.hidden = NO;
+            //                        cell.enterButton.hidden = NO;
+            //                        cell.enterButton.enabled= NO;
+            //
+            //                        cell.enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            //                        [cell.enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            //
+            //                        [cell.className sd_clearAutoLayoutSettings];
+            //                        cell.className.sd_layout
+            //                        .leftSpaceToView(cell.status,2)
+            //                        .topEqualToView(cell.status)
+            //                        .rightSpaceToView(cell.content,10)
+            //                        .bottomEqualToView(cell.status);
+            //                         [cell.className setMaxNumberOfLinesToShow:1];
+            //                        [cell.className updateLayout];
+            //
+            //                    }else if ([cell.model.status isEqualToString:@"published"]){
+            ////                        /* 未开课的*/
+            //                        cell.dist.hidden = NO;
+            //                        cell.deadLineLabel.hidden =NO;
+            //                        cell.days.hidden =NO;
+            //
+            //                        cell.progress.hidden =YES;
+            //                        cell.line2.hidden = YES;
+            //                        cell.presentCount.hidden =YES;
+            //                        cell.totalCount.hidden =YES;
+            //
+            //                        cell.finish.hidden =YES;
+            //
+            //                        cell.status.text = @" 已试听 ";
+            //                         cell.status.backgroundColor = [UIColor lightGrayColor];
+            //                        cell.status.hidden = YES;
+            //                        cell.enterButton.hidden = NO;
+            //                        cell.enterButton.enabled= NO;
+            //                        cell.enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            //                        [cell.enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            //
+            //                        [cell.className sd_clearAutoLayoutSettings];
+            //                        cell.className.sd_layout
+            //                        .leftSpaceToView(cell.classImage,10)
+            //                        .topSpaceToView(cell.content,5)
+            //                        .rightSpaceToView(cell.content,10)
+            //                        .heightIs(20);
+            //                         [cell.className setMaxNumberOfLinesToShow:1];
+            //                        [cell.className updateLayout];
+            //
+            //                    }else if ([cell.model.status isEqualToString:@"completed"]){
+            //                        /* 已结束的*/
+            //                        cell.dist.hidden = YES;
+            //                        cell.deadLineLabel.hidden =YES;
+            //                        cell.days.hidden =YES;
+            //
+            //                        cell.progress.hidden =YES;
+            //                        cell.line2.hidden = YES;
+            //                        cell.presentCount.hidden =YES;
+            //                        cell.totalCount.hidden =YES;
+            //
+            //                        cell.finish.hidden = NO;
+            //
+            //                        cell.status.text = @" 已试听 ";
+            //                         cell.status.backgroundColor = [UIColor lightGrayColor];
+            //                        cell.status.hidden = NO;
+            //                        cell.enterButton.hidden = YES;
+            //                        cell.enterButton.enabled= NO;
+            //                        cell.enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            //                        [cell.enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            //
+            //                        [cell.className sd_clearAutoLayoutSettings];
+            //                        cell.className.sd_layout
+            //                        .leftSpaceToView(cell.status,2)
+            //                        .topEqualToView(cell.status)
+            //                        .rightSpaceToView(cell.content,10)
+            //                        .bottomEqualToView(cell.status);
+            //                         [cell.className setMaxNumberOfLinesToShow:1];
+            //                        [cell.className updateLayout];
+            //
+            //                    }
+            //                }else{
+            //                    /* 试听中的*/
+            //
+            //                    /* 待开课*/
+            //                    if ([cell.model.status isEqualToString:@"published"]) {
+            //                        cell.dist.hidden = NO;
+            //                        cell.deadLineLabel.hidden =NO;
+            //                        cell.days.hidden =NO;
+            //
+            //                        cell.progress.hidden =YES;
+            //                        cell.line2.hidden = YES;
+            //                        cell.presentCount.hidden =YES;
+            //                        cell.totalCount.hidden =YES;
+            //                        cell.finish.hidden =YES;
+            //
+            //                        cell.enterButton.hidden =NO;
+            //                        cell.enterButton.enabled = NO;
+            //                        cell.enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            //                        [cell.enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            //                        cell.status.text = @" 试听中 ";
+            //                         cell.status.backgroundColor = [UIColor orangeColor];
+            //                        cell.status.hidden = NO;
+            //
+            //                        [cell.className sd_clearAutoLayoutSettings];
+            //                        cell.className.sd_layout
+            //                        .leftSpaceToView(cell.status,2)
+            //                        .topEqualToView(cell.status)
+            //                        .rightSpaceToView(cell.content,10)
+            //                        .bottomEqualToView(cell.status);
+            //                         [cell.className setMaxNumberOfLinesToShow:1];
+            //                        [cell.className updateLayout];
+            //
+            //
+            //                    }
+            //                    else if ([cell.model.status isEqualToString:@"teaching"]) {
+            //
+            //                        cell.dist.hidden = YES;
+            //                        cell.deadLineLabel.hidden =YES;
+            //                        cell.days.hidden = YES;
+            //
+            //                        cell.progress.hidden =NO;
+            //                        cell.line2.hidden = NO;
+            //                        cell.presentCount.hidden = NO;
+            //                        cell.totalCount.hidden = NO;
+            //                        cell.finish.hidden =YES;
+            //
+            //                        cell.enterButton.hidden=NO;
+            //                        cell.enterButton.enabled = YES;
+            //                        cell.enterButton.layer.borderColor = BUTTONRED.CGColor;
+            //                        [cell.enterButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+            //                        cell.status.text = @" 试听中 ";
+            //                         cell.status.backgroundColor = [UIColor orangeColor];
+            //                        cell.status.hidden = NO;
+            //
+            //                        [cell.className sd_clearAutoLayoutSettings];
+            //                        cell.className.sd_layout
+            //                        .leftSpaceToView(cell.status,2)
+            //                        .topEqualToView(cell.status)
+            //                        .rightSpaceToView(cell.content,10)
+            //                        .bottomEqualToView(cell.status);
+            //                         [cell.className setMaxNumberOfLinesToShow:1];
+            //                        [cell.className updateLayout];
+            //
+            //
+            //                    }else if ([cell.model.status isEqualToString:@"completed"]) {
+            //
+            //                        cell.dist.hidden = YES;
+            //                        cell.deadLineLabel.hidden =YES;
+            //                        cell.days.hidden = YES;
+            //
+            //                        cell.progress.hidden =YES;
+            //                        cell.line2.hidden = YES;
+            //                        cell.presentCount.hidden = YES;
+            //                        cell.totalCount.hidden = YES;
+            //
+            //                        cell.finish.hidden =NO;
+            //
+            //                        cell.enterButton.hidden=YES;
+            //                        cell.enterButton.enabled = NO;
+            //                        cell.enterButton.layer.borderColor = BUTTONRED.CGColor;
+            //                        [cell.enterButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+            //                        cell.status.text = @" 试听中 ";
+            //                         cell.status.backgroundColor = [UIColor orangeColor];
+            //                        cell.status.hidden = NO;
+            //
+            //                        [cell.className sd_clearAutoLayoutSettings];
+            //                        cell.className.sd_layout
+            //                        .leftSpaceToView(cell.status,2)
+            //                        .topEqualToView(cell.status)
+            //                        .rightSpaceToView(cell.content,10)
+            //                        .bottomEqualToView(cell.status);
+            //                         [cell.className setMaxNumberOfLinesToShow:1];
+            //                        [cell.className updateLayout];
+            //
+            //                    }
+            //
+            //                }
+            //            }
             
-            /* cell的重用队列*/
-            static NSString *cellIdenfier = @"cell";
-            ListenTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-            if (cell==nil) {
-                cell=[[ListenTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-                
-                
-            }
-            if (_listenArr.count>indexPath.row) {
-                cell.model = _listenArr[indexPath.row];
-                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-                [cell.enterButton addTarget:self action:@selector(enterListen:) forControlEvents:UIControlEventTouchUpInside];
-                cell.enterButton.tag = indexPath.row+1000;
-                
-                /* 已试听的*/
-                if (cell.model.tasted == YES) {
-                    /* 已开课的*/
-                    if ([cell.model.status isEqualToString:@"teaching"]) {
-                        
-                        cell.dist.hidden = YES;
-                        cell.deadLineLabel.hidden =YES;
-                        cell.days.hidden =YES;
-                        
-                        cell.progress.hidden =NO;
-                        cell.line2.hidden = NO;
-                        cell.presentCount.hidden =NO;
-                        cell.totalCount.hidden =NO;
-                        
-                        cell.finish.hidden =YES;
-                        
-                        cell.status.text = @" 已试听 ";
-                        cell.status.backgroundColor = [UIColor lightGrayColor];
-                        cell.status.hidden = NO;
-                        cell.enterButton.hidden = NO;
-                        cell.enterButton.enabled= NO;
-                        
-                        cell.enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-                        [cell.enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-                        
-                        [cell.className sd_clearAutoLayoutSettings];
-                        cell.className.sd_layout
-                        .leftSpaceToView(cell.status,2)
-                        .topEqualToView(cell.status)
-                        .rightSpaceToView(cell.content,10)
-                        .bottomEqualToView(cell.status);
-                         [cell.className setMaxNumberOfLinesToShow:1];
-                        [cell.className updateLayout];
-                        
-                    }else if ([cell.model.status isEqualToString:@"published"]){
-//                        /* 未开课的*/
-                        cell.dist.hidden = NO;
-                        cell.deadLineLabel.hidden =NO;
-                        cell.days.hidden =NO;
-                        
-                        cell.progress.hidden =YES;
-                        cell.line2.hidden = YES;
-                        cell.presentCount.hidden =YES;
-                        cell.totalCount.hidden =YES;
-                        
-                        cell.finish.hidden =YES;
-                        
-                        cell.status.text = @" 已试听 ";
-                         cell.status.backgroundColor = [UIColor lightGrayColor];
-                        cell.status.hidden = YES;
-                        cell.enterButton.hidden = NO;
-                        cell.enterButton.enabled= NO;
-                        cell.enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-                        [cell.enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-                        
-                        [cell.className sd_clearAutoLayoutSettings];
-                        cell.className.sd_layout
-                        .leftSpaceToView(cell.classImage,10)
-                        .topSpaceToView(cell.content,5)
-                        .rightSpaceToView(cell.content,10)
-                        .heightIs(20);
-                         [cell.className setMaxNumberOfLinesToShow:1];
-                        [cell.className updateLayout];
-
-                    }else if ([cell.model.status isEqualToString:@"completed"]){
-                        /* 已结束的*/
-                        cell.dist.hidden = YES;
-                        cell.deadLineLabel.hidden =YES;
-                        cell.days.hidden =YES;
-                        
-                        cell.progress.hidden =YES;
-                        cell.line2.hidden = YES;
-                        cell.presentCount.hidden =YES;
-                        cell.totalCount.hidden =YES;
-                        
-                        cell.finish.hidden = NO;
-                        
-                        cell.status.text = @" 已试听 ";
-                         cell.status.backgroundColor = [UIColor lightGrayColor];
-                        cell.status.hidden = NO;
-                        cell.enterButton.hidden = YES;
-                        cell.enterButton.enabled= NO;
-                        cell.enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-                        [cell.enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-                        
-                        [cell.className sd_clearAutoLayoutSettings];
-                        cell.className.sd_layout
-                        .leftSpaceToView(cell.status,2)
-                        .topEqualToView(cell.status)
-                        .rightSpaceToView(cell.content,10)
-                        .bottomEqualToView(cell.status);
-                         [cell.className setMaxNumberOfLinesToShow:1];
-                        [cell.className updateLayout];
-                        
-                    }
-                }else{
-                    /* 试听中的*/
-                    
-                    /* 待开课*/
-                    if ([cell.model.status isEqualToString:@"published"]) {
-                        cell.dist.hidden = NO;
-                        cell.deadLineLabel.hidden =NO;
-                        cell.days.hidden =NO;
-                        
-                        cell.progress.hidden =YES;
-                        cell.line2.hidden = YES;
-                        cell.presentCount.hidden =YES;
-                        cell.totalCount.hidden =YES;
-                        cell.finish.hidden =YES;
-                        
-                        cell.enterButton.hidden =NO;
-                        cell.enterButton.enabled = NO;
-                        cell.enterButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-                        [cell.enterButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-                        cell.status.text = @" 试听中 ";
-                         cell.status.backgroundColor = [UIColor orangeColor];
-                        cell.status.hidden = NO;
-                        
-                        [cell.className sd_clearAutoLayoutSettings];
-                        cell.className.sd_layout
-                        .leftSpaceToView(cell.status,2)
-                        .topEqualToView(cell.status)
-                        .rightSpaceToView(cell.content,10)
-                        .bottomEqualToView(cell.status);
-                         [cell.className setMaxNumberOfLinesToShow:1];
-                        [cell.className updateLayout];
-                        
-                        
-                    }
-                    else if ([cell.model.status isEqualToString:@"teaching"]) {
-                        
-                        cell.dist.hidden = YES;
-                        cell.deadLineLabel.hidden =YES;
-                        cell.days.hidden = YES;
-                        
-                        cell.progress.hidden =NO;
-                        cell.line2.hidden = NO;
-                        cell.presentCount.hidden = NO;
-                        cell.totalCount.hidden = NO;
-                        cell.finish.hidden =YES;
-                        
-                        cell.enterButton.hidden=NO;
-                        cell.enterButton.enabled = YES;
-                        cell.enterButton.layer.borderColor = BUTTONRED.CGColor;
-                        [cell.enterButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
-                        cell.status.text = @" 试听中 ";
-                         cell.status.backgroundColor = [UIColor orangeColor];
-                        cell.status.hidden = NO;
-                        
-                        [cell.className sd_clearAutoLayoutSettings];
-                        cell.className.sd_layout
-                        .leftSpaceToView(cell.status,2)
-                        .topEqualToView(cell.status)
-                        .rightSpaceToView(cell.content,10)
-                        .bottomEqualToView(cell.status);
-                         [cell.className setMaxNumberOfLinesToShow:1];
-                        [cell.className updateLayout];
-                        
-                        
-                    }else if ([cell.model.status isEqualToString:@"completed"]) {
-                        
-                        cell.dist.hidden = YES;
-                        cell.deadLineLabel.hidden =YES;
-                        cell.days.hidden = YES;
-                        
-                        cell.progress.hidden =YES;
-                        cell.line2.hidden = YES;
-                        cell.presentCount.hidden = YES;
-                        cell.totalCount.hidden = YES;
-                        
-                        cell.finish.hidden =NO;
-                        
-                        cell.enterButton.hidden=YES;
-                        cell.enterButton.enabled = NO;
-                        cell.enterButton.layer.borderColor = BUTTONRED.CGColor;
-                        [cell.enterButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
-                        cell.status.text = @" 试听中 ";
-                         cell.status.backgroundColor = [UIColor orangeColor];
-                        cell.status.hidden = NO;
-                        
-                        [cell.className sd_clearAutoLayoutSettings];
-                        cell.className.sd_layout
-                        .leftSpaceToView(cell.status,2)
-                        .topEqualToView(cell.status)
-                        .rightSpaceToView(cell.content,10)
-                        .bottomEqualToView(cell.status);
-                         [cell.className setMaxNumberOfLinesToShow:1];
-                        [cell.className updateLayout];
-                        
-                    }
-                    
-                }
-            }
-            
-            return  cell;
-        }
-            break;
+            //            return  cell;
+            //        }
+            //            break;
             
     }
     
@@ -918,47 +913,65 @@
         }
             
             break;
-        case 4:{
-            ListenTableViewCell *cell = [_listenClassView.classTableView cellForRowAtIndexPath:indexPath];
-            TutoriumInfoViewController *info = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
-            [self.navigationController pushViewController:info animated:YES];
-        }
-            
-            break;
-            
+            //        case 4:{
+            //            ListenTableViewCell *cell = [_listenClassView.classTableView cellForRowAtIndexPath:indexPath];
+            //            TutoriumInfoViewController *info = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+            //            [self.navigationController pushViewController:info animated:YES];
+            //        }
+            //            break;
     }
+}
+
+/**进入聊天*/
+- (void)enterChat:(UIButton *)sender{
     
+    MyTutoriumModel *mod = _unStartArr[sender.tag];
+    TutoriumListInfo *info = [TutoriumListInfo yy_modelWithJSON:[self returnToDictionaryWithModel:mod]];
+    
+    ChatViewController *controller = [[ChatViewController alloc]initWithClass:info];
+    [self.navigationController pushViewController:controller animated:YES];
     
 }
 
-/* 进入试听*/
+/**进入试听*/
 - (void)enterListen:(UIButton *)sender{
     
     NSString *classID = nil;
-    
     /* 如果是在已开课列表*/
     if (sender.tag>=100&&sender.tag<1000) {
-        
         MyTutoriumModel *mod =_startedArr[sender.tag-100];
-        
         classID = [NSString stringWithFormat:@"%@",mod.classID];
-        
     }else if (sender.tag>=1000){
-        
         MyTutoriumModel *mod = _listenArr[sender.tag - 1000];
-        
         classID = [NSString stringWithFormat:@"%@",mod.classID];
     }
-    
-    
-    
-    
     LivePlayerViewController *listen = [[LivePlayerViewController alloc]initWithClassID:classID];
     [self.navigationController pushViewController:listen animated:YES];
-    
-    
-    
-    
+}
+
+
+
+/**
+ 反解析model
+
+ @param model 我的直播课类型的model
+ @return 解析字典
+ */
+-(NSMutableDictionary *)returnToDictionaryWithModel:(MyTutoriumModel *)model
+{
+    NSMutableDictionary *userDic = [NSMutableDictionary dictionary];
+    unsigned int count = 0;
+    objc_property_t *properties = class_copyPropertyList([MyTutoriumModel class], &count);
+    for (int i = 0; i < count; i++) {
+        const char *name = property_getName(properties[i]);
+        NSString *propertyName = [NSString stringWithUTF8String:name];
+        id propertyValue = [model valueForKey:propertyName];
+        if (propertyValue) {
+            [userDic setObject:propertyValue forKey:propertyName];
+        }
+    }
+    free(properties);
+    return userDic;
 }
 
 
@@ -966,29 +979,19 @@
     
     [self.navigationController popViewControllerAnimated:YES];
     
-    
 }
-
-
-
-
 
 
 // segment的滑动代理
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     
-    
     if (scrollView == _myClassView.scrollView) {
-        
-        
         CGFloat pageWidth = scrollView.frame.size.width;
         NSInteger page = scrollView.contentOffset.x / pageWidth;
         
         [_myClassView.segmentControl setSelectedSegmentIndex:page animated:YES];
         
     }
-    
-    
 }
 
 
