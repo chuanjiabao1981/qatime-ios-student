@@ -36,8 +36,6 @@
     NSInteger rechargePrice;
     
     
-    
-    
 }
 
 @end
@@ -109,7 +107,6 @@
 -(instancetype)initWithPrice:(NSString *)price{
     self = [super init];
     if (self) {
-        
         
         rechargePrice = price.integerValue;
         

@@ -26,7 +26,7 @@
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
         layout.minimumLineSpacing = 10;
         layout.minimumInteritemSpacing = 5;
-        layout.itemSize = CGSizeMake((self.width_sd-40)/3, 40);
+        layout.itemSize = CGSizeMake((self.width_sd-40)/3, (self.width_sd-40)/3*3/5);
         
         _chargeMenu = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, 200) collectionViewLayout:layout];
         _chargeMenu.backgroundColor = [UIColor whiteColor];
@@ -36,13 +36,13 @@
         .leftSpaceToView(self, 0)
         .topSpaceToView(self, 0)
         .rightSpaceToView(self, 0)
-        .heightIs(150*ScrenScale);
+        .heightIs((self.width_sd-40)/3+(self.width_sd-40)/3*3/5+20);
         
         //充值提示
         _tips = [[UILabel alloc]init];
         [self addSubview:_tips];
         
-        NSString *string =@"充值须知：\n1、由于苹果公司内购条款限制（收取30%作为内购费用),使用IOS客户端充值后账户实充金额与所选充值金额不一致。\n2、举例：选择充值100元并成功充值后账户实际收入70元。\n3、非IOS客户端不受内购条款限制。\n4、点击立即充值则表示用户认可以上内容。";
+        NSString *string =@"充值须知：\n1、由于Apple政策原因（Apple内购扣费），充值金额不等于实到账金额；\n2、仅限Apple制定价格进行充值；\n3、充值的金额可在答疑时间平台任意客户端使用；\n4、点击立即充值则表示同意以上说明。";
         
         NSMutableParagraphStyle*style = [[NSMutableParagraphStyle alloc]init];
         style.lineSpacing = 5;

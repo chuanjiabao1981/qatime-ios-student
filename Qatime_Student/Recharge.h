@@ -24,7 +24,7 @@
 @property(nonatomic,strong) NSString *nonce_str ;
 
 @property(nonatomic,strong) NSString *timeStamp ;
-
+@property (nonatomic, strong) NSDictionary *app_pay_params ;
 
 
 @end

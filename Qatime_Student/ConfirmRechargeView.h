@@ -1,14 +1,15 @@
 //
-//  ConfirmChargeView.h
+//  ConfirmRechargeView.h
 //  Qatime_Student
 //
-//  Created by Shin on 2016/12/7.
-//  Copyright © 2016年 WWTD. All rights reserved.
+//  Created by Shin on 2017/4/26.
+//  Copyright © 2017年 WWTD. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import "Recharge.h"
 
-@interface ConfirmChargeView : UIView
+@interface ConfirmRechargeView : UIView
 
 /* 交易编号*/
 @property(nonatomic,strong) UILabel *number ;
@@ -19,14 +20,12 @@
 /* 交易类型*/
 @property(nonatomic,strong) UILabel *charge_type ;
 
-/* 交易方式*/
-@property(nonatomic,strong) UILabel *pay_type ;
-
 /* 交易金额*/
 @property(nonatomic,strong) UILabel *money ;
 
 /* 支付按钮*/
 @property(nonatomic,strong) UIButton *payButton ;
-
+/**model*/
+@property (nonatomic, strong) Recharge *model;
 
 @end

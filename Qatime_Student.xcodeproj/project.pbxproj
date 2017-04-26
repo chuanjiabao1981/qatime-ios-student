@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5407B0781EB032EA005CD82B /* ConfirmRechargeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407B0771EB032EA005CD82B /* ConfirmRechargeViewController.m */; };
 		5407C98C1DE7DDED00DB04C8 /* NSBundle+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C9881DE7DDED00DB04C8 /* NSBundle+YYAdd.m */; };
 		5407C98D1DE7DDED00DB04C8 /* NSObject+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C98A1DE7DDED00DB04C8 /* NSObject+YYAdd.m */; };
 		5407C98E1DE7DDED00DB04C8 /* NSString+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C98B1DE7DDED00DB04C8 /* NSString+YYAdd.m */; };
@@ -15,6 +16,7 @@
 		5407C9991DE7DE9200DB04C8 /* UIDevice+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C9981DE7DE9200DB04C8 /* UIDevice+YYAdd.m */; };
 		540A34CA1E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 540A34C71E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m */; };
 		540A34CB1E481B5F0068E049 /* UIViewController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 540A34C91E481B5F0068E049 /* UIViewController+ZFPlayerRotation.m */; };
+		540F85BC1EB03789007AE08A /* ConfirmRechargeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 540F85BB1EB03789007AE08A /* ConfirmRechargeView.m */; };
 		5413D2521DF7B5CD00A8FDEC /* CashRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2511DF7B5CD00A8FDEC /* CashRecordView.m */; };
 		5413D2581DF7B5F400A8FDEC /* CashRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2571DF7B5F400A8FDEC /* CashRecordViewController.m */; };
 		5413D25B1DF7BC7900A8FDEC /* RechargeTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D25A1DF7BC7900A8FDEC /* RechargeTableView.m */; };
@@ -715,6 +717,8 @@
 
 /* Begin PBXFileReference section */
 		0908EB8F55388D2CA5802D18 /* libPods-Qatime_Student.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Qatime_Student.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5407B0761EB032EA005CD82B /* ConfirmRechargeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmRechargeViewController.h; sourceTree = "<group>"; };
+		5407B0771EB032EA005CD82B /* ConfirmRechargeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmRechargeViewController.m; sourceTree = "<group>"; };
 		5407C9871DE7DDED00DB04C8 /* NSBundle+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+YYAdd.h"; sourceTree = "<group>"; };
 		5407C9881DE7DDED00DB04C8 /* NSBundle+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+YYAdd.m"; sourceTree = "<group>"; };
 		5407C9891DE7DDED00DB04C8 /* NSObject+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+YYAdd.h"; sourceTree = "<group>"; };
@@ -732,6 +736,8 @@
 		540A34C71E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+ZFPlayerRotation.m"; sourceTree = "<group>"; };
 		540A34C81E481B5F0068E049 /* UIViewController+ZFPlayerRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ZFPlayerRotation.h"; sourceTree = "<group>"; };
 		540A34C91E481B5F0068E049 /* UIViewController+ZFPlayerRotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ZFPlayerRotation.m"; sourceTree = "<group>"; };
+		540F85BA1EB03789007AE08A /* ConfirmRechargeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmRechargeView.h; sourceTree = "<group>"; };
+		540F85BB1EB03789007AE08A /* ConfirmRechargeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmRechargeView.m; sourceTree = "<group>"; };
 		5413D2501DF7B5CD00A8FDEC /* CashRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CashRecordView.h; sourceTree = "<group>"; };
 		5413D2511DF7B5CD00A8FDEC /* CashRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CashRecordView.m; sourceTree = "<group>"; };
 		5413D2561DF7B5F400A8FDEC /* CashRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CashRecordViewController.h; sourceTree = "<group>"; };
@@ -4903,6 +4909,8 @@
 			children = (
 				54B4C18D1DF8416500E31794 /* ConfirmChargeView.h */,
 				54B4C18E1DF8416500E31794 /* ConfirmChargeView.m */,
+				540F85BA1EB03789007AE08A /* ConfirmRechargeView.h */,
+				540F85BB1EB03789007AE08A /* ConfirmRechargeView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -4912,6 +4920,8 @@
 			children = (
 				54B4C1901DF8417400E31794 /* ConfirmChargeViewController.h */,
 				54B4C1911DF8417400E31794 /* ConfirmChargeViewController.m */,
+				5407B0761EB032EA005CD82B /* ConfirmRechargeViewController.h */,
+				5407B0771EB032EA005CD82B /* ConfirmRechargeViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -6252,6 +6262,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
 							com.apple.Keychain = {
 								enabled = 1;
 							};
@@ -6578,6 +6591,7 @@
 				54AC03F11E8938E100817767 /* NIMSessionViewController.m in Sources */,
 				54B73D051DE3E85A00B7A7EB /* pinyin.m in Sources */,
 				54AC04F21E893AF300817767 /* NTESLoginManager.m in Sources */,
+				540F85BC1EB03789007AE08A /* ConfirmRechargeView.m in Sources */,
 				54AC04211E8938E100817767 /* NIMWebImageDownloaderOperation.m in Sources */,
 				54F3BA211DFC4427003998D0 /* LoginAgainView.m in Sources */,
 				547E898A1DD1BC9900749366 /* RecommandTeacher.m in Sources */,
@@ -6989,6 +7003,7 @@
 				54652E081DEE9D1900F4607C /* AboutUsView.m in Sources */,
 				54504ACC1E9E0E7F00EFCF8E /* VideoClassPlayerView.m in Sources */,
 				54AC042A1E8938E100817767 /* UIView+NIMKitToast.m in Sources */,
+				5407B0781EB032EA005CD82B /* ConfirmRechargeViewController.m in Sources */,
 				5471C7FC1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.m in Sources */,
 				54AC03C31E8938E100817767 /* UITableView+NIMScrollToBottom.m in Sources */,
 				5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */,

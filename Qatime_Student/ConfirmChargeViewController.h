@@ -10,6 +10,7 @@
 #import "ConfirmChargeView.h"
 #import "Recharge.h"
 #import "Unpaid.h"
+
 @interface ConfirmChargeViewController : UIViewController
 
 @property(nonatomic,strong) ConfirmChargeView *confirmView ;
@@ -23,6 +24,7 @@
 -(instancetype)initWithModel:(Recharge *)model;
 
 -(instancetype)initWithPayModel:(Unpaid *)model;
+
 
 -(instancetype)initWithPrice:(NSString *)price;
 

@@ -8,19 +8,19 @@
 
 #import "ChargeViewController.h"
 #import "NavigationBar.h"
-#import "WXApi.h"
- 
+//#import "WXApi.h"
+
 #import "UIViewController+HUD.h"
 #import "NSString+TimeStamp.h"
-#import "ConfirmChargeViewController.h"
 #import "UIAlertController+Blocks.h"
 
 #import "ChargeCollectionViewCell.h"
-#import "ConfirmChargeViewController.h"
+//#import "ConfirmChargeViewController.h"
 #import "UIViewController+AFHTTP.h"
+#import "YYModel.h"
+#import "ConfirmRechargeViewController.h"
 
 @interface ChargeViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>{
-    
     
     NavigationBar *_navigationBar;
     
@@ -35,9 +35,9 @@
     
     /**价格表*/
     NSArray *_priceArray;
+    NSArray *_actuallyPriceArray;
     
     NSString *_chargePrice;
-    
     
 }
 
@@ -63,6 +63,7 @@
     _dataDic = @{}.mutableCopy;
     
     _priceArray = @[@"50",@"108",@"158",@"208",@"258",@"308"];
+    _actuallyPriceArray = @[@"34.30",@"74.10",@"108.40",@"142.70",@"177.01",@"211.31"];
     
 }
 
@@ -116,6 +117,7 @@
     
     if (_priceArray.count>indexPath.row) {
         cell.title.text = [NSString stringWithFormat:@"%@元",_priceArray[indexPath.row]];
+        cell.subTitle.text = [NSString stringWithFormat:@"实到账%@元",_actuallyPriceArray[indexPath.row]];
     }
     
     return cell;
@@ -123,24 +125,6 @@
 
 
 #pragma mark- UICollectionView delegate
-
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
-    for (ChargeCollectionViewCell *cell in _chargeView.chargeMenu.visibleCells) {
-        cell.title.layer.borderColor = TITLECOLOR.CGColor;
-        cell.title.textColor = TITLECOLOR;
-        cell.title.backgroundColor = [UIColor whiteColor];
-    }
-    
-    ChargeCollectionViewCell *cell = (ChargeCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    cell.title.layer.borderColor = NAVIGATIONRED.CGColor;
-    cell.title.textColor = [UIColor whiteColor];
-    cell.title.backgroundColor = NAVIGATIONRED;
-    
-    _chargePrice = [NSString stringWithFormat:@"%@",_priceArray[indexPath.row]];
-
-}
-
 //item间距
 - (UIEdgeInsets) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
@@ -153,14 +137,53 @@
     return 20;
 }
 
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    for (ChargeCollectionViewCell *cell in _chargeView.chargeMenu.visibleCells) {
+        
+        cell.contentView.layer.borderColor = TITLECOLOR.CGColor;
+        cell.chosenImage.hidden = YES;
+    }
+    
+    ChargeCollectionViewCell *cell = (ChargeCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    
+    cell.contentView.layer.borderColor = NAVIGATIONRED.CGColor;
+    cell.chosenImage.hidden = NO;
+    
+    _chargePrice = [NSString stringWithFormat:@"%@",_priceArray[indexPath.row]];
+
+}
+
+
 
 /**下单充值*/
 - (void)charge{
     
-    [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/recharges",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"amount":_chargePrice} completeSuccess:^(id  _Nullable responds) {
+    if (_chargePrice) {
         
-    }];
-    
+        [self loadingHUDStartLoadingWithTitle:nil];
+        [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/recharges",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"amount":_chargePrice,@"pay_type":@"offline"} completeSuccess:^(id  _Nullable responds) {
+            
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                
+                [self loadingHUDStopLoadingWithTitle:nil];
+                Recharge *mod = [Recharge yy_modelWithJSON:dic[@"data"]];
+                mod.idNumber = dic[@"data"][@"id"];
+                
+                ConfirmRechargeViewController *controller = [[ConfirmRechargeViewController alloc]initWithRechage:mod];
+                [self.navigationController pushViewController:controller animated:YES];
+                
+            }else{
+                
+                [self loadingHUDStopLoadingWithTitle:@"充值失败!"];
+                
+            }
+        }];
+        
+    }else{
+        [self loadingHUDStopLoadingWithTitle:@"请选择充值金额"];
+    }
     
 }
 
@@ -168,8 +191,8 @@
 /* 检查支付结果*/
 - (void)CheckPayStatus{
     
-    ConfirmChargeViewController *conVC = [ConfirmChargeViewController new];
-    [self.navigationController pushViewController:conVC animated:YES];
+//    ConfirmChargeViewController *conVC = [ConfirmChargeViewController new];
+//    [self.navigationController pushViewController:conVC animated:YES];
     
 }
 

@@ -1,14 +1,15 @@
 //
-//  ConfirmChargeView.m
+//  ConfirmRechargeView.m
 //  Qatime_Student
 //
-//  Created by Shin on 2016/12/7.
-//  Copyright © 2016年 WWTD. All rights reserved.
+//  Created by Shin on 2017/4/26.
+//  Copyright © 2017年 WWTD. All rights reserved.
 //
 
-#import "ConfirmChargeView.h"
+#import "ConfirmRechargeView.h"
+#import "NSString+TimeStamp.h"
 
-@implementation ConfirmChargeView
+@implementation ConfirmRechargeView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -21,7 +22,7 @@
         
         UILabel *num = [UILabel new];
         num.textColor = TITLECOLOR;
-        num.text = @"编    号";
+        num.text = @"编        号";
         
         /* 时间*/
         
@@ -30,28 +31,16 @@
         
         UILabel  *time = [[UILabel alloc]init];
         time.textColor = TITLECOLOR;
-        time.text = @"时    间";
+        time.text = @"时        间";
         
         
         /* 交易类型*/
-        
         _charge_type = [UILabel new];
         _charge_type .textColor = [UIColor blackColor];
         
         UILabel  *charge = [UILabel new];
         charge.textColor = TITLECOLOR;
         charge.text = @"交易类型";
-
-        
-        /* 交易方式 */
-        
-        _pay_type = [UILabel new];
-        _pay_type .textColor = [UIColor blackColor];
-        
-        UILabel  *paytype = [UILabel new];
-        paytype.textColor = TITLECOLOR;
-        paytype.text = @"交易方式";
-
         
         
         /* 交易金额*/
@@ -64,14 +53,14 @@
         mon.text = @"交易金额";
         
         /* 支付按钮*/
-
+        
         _payButton = [[UIButton alloc]init];
         _payButton.layer.borderColor = BUTTONRED.CGColor;
         _payButton.layer.borderWidth = 1;
         [_payButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
         [_payButton setTitle:@"支付" forState:UIControlStateNormal];
         
-        [self sd_addSubviews:@[num,_number,time,_time,charge,_charge_type,paytype,_pay_type,mon,_money,_payButton]];
+        [self sd_addSubviews:@[num,_number,time,_time,charge,_charge_type,mon,_money,_payButton]];
         
         
         /* 布局*/
@@ -101,7 +90,7 @@
         .rightSpaceToView(self,20)
         .bottomEqualToView(time);
         _time.textAlignment = NSTextAlignmentLeft;
-
+        
         
         charge .sd_layout
         .leftEqualToView(time)
@@ -115,27 +104,10 @@
         .rightSpaceToView(self,20)
         .bottomEqualToView(charge);
         _charge_type.textAlignment = NSTextAlignmentLeft;
-
-        
-        
-        paytype.sd_layout
-        .leftEqualToView(charge)
-        .topSpaceToView(charge,15)
-        .autoHeightRatio(0);
-        [paytype setSingleLineAutoResizeWithMaxWidth:400];
-        
-        _pay_type.sd_layout
-        .leftSpaceToView(paytype,10)
-        .topEqualToView(paytype)
-        .rightSpaceToView(self,20)
-        .bottomEqualToView(paytype);
-        _pay_type.textAlignment = NSTextAlignmentLeft;
-        
-        
         
         mon.sd_layout
-        .leftEqualToView(paytype)
-        .topSpaceToView(paytype,15)
+        .leftEqualToView(charge)
+        .topSpaceToView(charge,15)
         .autoHeightRatio(0);
         [mon setSingleLineAutoResizeWithMaxWidth:400];
         
@@ -145,9 +117,6 @@
         .rightSpaceToView(self,20)
         .bottomEqualToView(mon);
         _money.textAlignment = NSTextAlignmentLeft;
-
-
-        
         
         _payButton.sd_layout
         .leftSpaceToView(self,20)
@@ -156,11 +125,27 @@
         .heightRatioToView(self,0.065);
         _payButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         
-        
-        
+
     }
     return self;
 }
+
+
+-(void)setModel:(Recharge *)model{
+    
+    _model = model;
+    _number.text = model.idNumber;
+    _time.text = [model.created_at timeStampToDate];
+    
+    _charge_type.text = @"账户储值";
+    _money.text = model.amount;
+    
+    
+    
+}
+
+
+
 
 
 

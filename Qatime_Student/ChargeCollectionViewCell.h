@@ -12,4 +12,8 @@
 
 @property (nonatomic, strong) UILabel *title ;
 
+@property (nonatomic, strong) UILabel *subTitle ;
+
+@property (nonatomic, strong) UIImageView *chosenImage ;
+
 @end
