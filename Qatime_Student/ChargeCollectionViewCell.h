@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ItunesProduct.h"
 
 @interface ChargeCollectionViewCell : UICollectionViewCell
 
@@ -15,5 +16,7 @@
 @property (nonatomic, strong) UILabel *subTitle ;
 
 @property (nonatomic, strong) UIImageView *chosenImage ;
+
+@property (nonatomic, strong) ItunesProduct *model ;
 
 @end

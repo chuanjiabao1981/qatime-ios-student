@@ -31,7 +31,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 
 @interface LoginViewController ()<UITextFieldDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate,UITextInputDelegate,WXApiDelegate>{
     
-    NavigationBar *_navigationBar;
+//    NavigationBar *_navigationBar;
     
     UIImageView *_logoImage;
     
@@ -72,28 +72,13 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     self.navigationController.navigationBar.hidden = YES;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
-    
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
-    _navigationBar.backgroundColor= [UIColor whiteColor];
-    _navigationBar.contentView.backgroundColor = [UIColor whiteColor];
-    [self .view addSubview:_navigationBar];
-    /* logo图片布局*/
-    _logoImage = [[UIImageView alloc]init];
-    [_navigationBar addSubview:_logoImage];
-    [_logoImage setImage:[UIImage imageNamed:@"Logo"]];
-    
-    _logoImage.sd_layout
-    .topSpaceToView(_navigationBar,30)
-    .bottomSpaceToView(_navigationBar,10)
-    .centerXEqualToView(_navigationBar)
-    .widthIs(24*1080/208.0f);
-    
-    
+
+    [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleDefault];
     needCheckCaptcha = NO;
     _wrongTimes = 0;
     _captcha =[NSMutableString string ];
     
-    _loginView = [[LoginView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
+    _loginView = [[LoginView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd)];
     [self.view addSubview:_loginView];
     
     

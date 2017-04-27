@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Recharge.h"
 #import <StoreKit/StoreKit.h>
+#import "ItunesProduct.h"
 
 //enum{
 //    Charge_50 = 50,
@@ -67,6 +68,6 @@ typedef enum : NSUInteger {
  @param recharge 从服务器拿到的服务端订单信息
  @return 实例
  */
--(instancetype)initWithRechage:(Recharge *)recharge;
+-(instancetype)initWithRechage:(Recharge *)recharge andProduct:(ItunesProduct *)product;
 
 @end

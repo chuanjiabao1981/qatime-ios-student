@@ -93,6 +93,14 @@
     _myWalletView.tips.userInteractionEnabled = YES;
     [_myWalletView.tips addGestureRecognizer:tap];
     
+    
+    /**监听充值是否成功,是否需要修改余额*/
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"ChargeSuccess" object:nil queue:[NSOperationQueue new] usingBlock:^(NSNotification * _Nonnull note) {
+        
+        [self requestWallet];
+        
+    }];
+    
 
 }
 

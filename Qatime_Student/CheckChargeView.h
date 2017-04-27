@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+//#import "JBWatchActivityIndicator.h"
 
 @interface CheckChargeView : UIView
 
@@ -19,19 +20,21 @@
 /* 当前余额*/
 @property(nonatomic,strong) UILabel *balance ;
 
-
 /* 编号*/
 @property(nonatomic,strong) UILabel *number;
+
 /* 充值金额*/
 @property(nonatomic,strong) UILabel *chargeMoney ;
 
 /* 完成按钮*/
-
 @property(nonatomic,strong) UIButton *finishButton ;
 
 /* 未找到充值结果的覆盖view*/
-
 @property(nonatomic,strong) UILabel *explain ;
 
+
+
+/**进度..*/
+//@property (nonatomic, strong) JBWatchActivityIndicator *indicator ;
 
 @end

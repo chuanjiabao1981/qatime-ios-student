@@ -20,6 +20,7 @@
 #import "WXApi.h"
 #import "VideoClassInfo.h"
 #import "UIViewController+AFHTTP.h"
+#import "DCPaymentView.h"
 
 
 typedef enum : NSUInteger {
@@ -42,9 +43,6 @@ typedef enum : NSUInteger {
     
     /* 是否可以使用余额*/
     BOOL balanceEnable;
-    
-    /* 支付方式*/
-    NSString *_payType;
     
     /* 订单成功后,收到的数据,传入下一页*/
     NSDictionary *dataDic;
@@ -118,8 +116,6 @@ typedef enum : NSUInteger {
         
         OrderView *_=[[OrderView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
         
-        [_.wechatButton addTarget:self action:@selector(chooseWechat:) forControlEvents:UIControlEventTouchUpInside];
-        [_.alipayButton addTarget:self action:@selector(chooseAlipay:) forControlEvents:UIControlEventTouchUpInside];
         [_.balanceButton addTarget:self action:@selector(chooseBalance:) forControlEvents:UIControlEventTouchUpInside];
         [_.applyButton addTarget:self action:@selector(applyOrder) forControlEvents:UIControlEventTouchUpInside];
         
@@ -168,19 +164,10 @@ typedef enum : NSUInteger {
     
     
     /* 初始化*/
-    _payType = @"".mutableCopy;
     dataDic = @{}.mutableCopy;
-    
-    /* 默认选择微信支付*/
-    _orderView.wechatButton.selected = YES;
-    
-    _payType = @"weixin";
-    [_orderView.wechatButton setImage:[UIImage imageNamed:@"selectedCircle"] forState:UIControlStateNormal];
-    
     
     /* 请求课程详细信息数据*/
     [self requestClassInfo];
-    
     
     //使用NSNotificationCenter 鍵盤出現時
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -369,8 +356,6 @@ typedef enum : NSUInteger {
                     
                     balanceEnable = NO;
                     
-                    //                    _orderView.balanceButton.enabled = NO;
-                    
                     [_orderView.balanceButton addTarget:self action:@selector(chooseBalance:) forControlEvents:UIControlEventTouchUpInside];
                     
                     ///////////////////////////////////////////////////////
@@ -488,176 +473,45 @@ typedef enum : NSUInteger {
     
 }
 
-
-
-/* 使用微信支付*/
-- (void)chooseWechat:(UIButton *)sender{
-    
-    if (sender.selected ==NO) {
-        sender.selected =YES;
-        _payType = @"weixin";
-        [sender setImage:[UIImage imageNamed:@"selectedCircle"] forState:UIControlStateNormal];
-        
-        
-        _orderView.alipayButton.selected = NO;
-        [_orderView.alipayButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
-        if (_orderView.balanceButton.enabled ==YES) {
-            _orderView.balanceButton.selected = NO;
-            [_orderView.balanceButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
-            
-        }else{
-            
-        }
-        
-    }else{
-        sender.selected = NO;
-        [sender setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
-        
-    }
-    
-}
-
-/* 使用支付宝支付*/
-- (void)chooseAlipay:(UIButton *)sender{
-    
-    if (sender.selected ==NO) {
-        sender.selected =YES;
-        _payType = @"alipay";
-        [sender setImage:[UIImage imageNamed:@"selectedCircle"] forState:UIControlStateNormal];
-        
-        _orderView.wechatButton.selected = NO;
-        [_orderView.wechatButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
-        if (_orderView.balanceButton.enabled ==YES) {
-            _orderView.balanceButton.selected = NO;
-            [_orderView.balanceButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
-            
-        }else{
-            
-        }
-        
-    }else{
-        sender.selected = NO;
-        [sender setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
-        
-    }
-    
-    
-}
-
-
 /* 在可以使用余额的情况下 使用余额支付*/
 - (void)chooseBalance:(UIButton *)sender{
     
     if (sender.selected ==NO) {
         sender.selected =YES;
-        _payType = @"account";
+
         [sender setImage:[UIImage imageNamed:@"selectedCircle"] forState:UIControlStateNormal];
-        _orderView.wechatButton.selected = NO;
-        [_orderView.wechatButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
-        _orderView.alipayButton.selected = NO;
-        [_orderView.alipayButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
-        
         
     }else{
         sender.selected = NO;
-        //        _payType = @"";
+        
         [sender setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
         
     }
     
-    
 }
+
 #pragma mark- 准备提交订单
 - (void)applyOrder{
     
-    /* 在没有选择任何支付方式的情况下*/
-    if (_orderView.wechatButton.selected==NO&&_orderView.balanceButton.selected==NO&&_orderView.alipayButton.selected == NO) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择支付方式!" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-        }] ;
-        [alert addAction:sure];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-        
-    }else{
-        
-        /* 选择了支付方式,就直接提交订单*/
-        [self finishAndCommit];
-        
-    }
-    
-    
-    
-    //    if (balanceEnable==NO) {
-    //
-    //            }else{
-    //        if (_orderView.wechatButton.selected==NO&&_orderView.alipayButton.selected==NO&&_orderView.balanceButton.selected==NO) {
-    //            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择支付方式!" preferredStyle:UIAlertControllerStyleAlert];
-    //            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-    //
-    //            }] ;
-    //            [alert addAction:sure];
-    //
-    //            [self presentViewController:alert animated:YES completion:nil];
-    //
-    //        }else{
-    //
-    //            /* 就直接提交订单*/
-    //            [self finishAndCommit];
-    //
-    //        }
-    //
-    //    }
+    [self finishAndCommit];
     
 }
 
 #pragma mark- 提交课程订单
 - (void)finishAndCommit{
     
-    if (_classID&&_token) {
-        if ([_payType isEqualToString:@"weixin"]) {
+    if (balanceEnable == YES) {
+        
+        [self postOrderInfo];
+        
+    }else{
+        
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"余额不足,不可使用余额支付." cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
             
-            //            if ([WXApi isWXAppInstalled]==YES) {
-            //                [self loadingHUDStartLoadingWithTitle:@"提交订单"];
-            
-            [self postOrderInfo];
-            
-            //            }else{
-            ////                [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
-            //                [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
-            //
-            //            }
-            
-            
-        }else if ([_payType isEqualToString:@"account"]){
-            
-            if (balanceEnable == YES) {
-                
-                [self postOrderInfo];
-                
-                
-            }else{
-                
-                [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"余额不足,不可使用余额支付." cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                    
-                }];
-                
-            }
-            
-        }else if ([_payType isEqualToString:@"alipay"]){
-            
-            [self loadingHUDStopLoadingWithTitle:@"暂不支持"];
-            
-        }
-    }
-    
-    if (![_payType isEqualToString:@""]) {
-        if (_classID&&_token) {
-            
-        }
+        }];
         
     }
+    
 }
 
 #pragma mark- 发送请求->用户提交订单
@@ -668,12 +522,12 @@ typedef enum : NSUInteger {
     NSString *coupon_code;
     if ([_orderView.promotionText.text isEqualToString:@""]) {
         
-        dic = @{@"pay_type":_payType};
+        dic = @{@"pay_type":@"account"};
     }else{
         coupon_code = _orderView.promotionText.text;
-        dic = @{@"pay_type":_payType,@"coupon_code":coupon_code};
-        
+        dic = @{@"pay_type":@"account",@"coupon_code":coupon_code};
     }
+    
     NSString *course;
     if (_orderType == LiveClassType) {
         course = [NSString stringWithFormat:@"courses"];
@@ -694,40 +548,112 @@ typedef enum : NSUInteger {
         [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 下单成功*/
+            [self loadingHUDStopLoadingWithTitle:nil];
+            dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
             
-            [self loadingHUDStopLoadingWithTitle:@"下单成功，请使用网页端支付"];
+            PayConfirmViewController *controller = [[PayConfirmViewController alloc]initWithData:dataDic];
+            [self.navigationController pushViewController:controller animated:YES];
             
-            [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1.5];
-            
-            //            [self loadingHUDStopLoadingWithTitle:nil];
+//            //有支付密码
+//            if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
+//                if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==YES) {
+//                    
+//                    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"PayPasswordUseable"]) {
+//                        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"PayPasswordUseable"]) {
+//                            
+//                            [DCPaymentView showPayAlertWithTitle:@"订单支付" andDetail:@"订单支付" andAmount:[dataDic[@"amount"]floatValue] completeHandle:^(NSString *inputPwd) {
+//                                
+//                                /* 请求ticket token*/
+//                                [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/pay/ticket_token",Request_Header,dataDic[@"id"]] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"password":inputPwd} completeSuccess:^(id  _Nullable responds) {
+//                                    
+//                                    NSDictionary *dics = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+//                                    if ([dics[@"status"]isEqualToNumber:@1]) {
+//                                        
+//                                        [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/pay",Request_Header,dataDic[@"id"] ] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"ticket_token":dics[@"data"]} completeSuccess:^(id  _Nullable responds) {
+//                                            
+//                                            NSDictionary *paymentDic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+//                                            if ([paymentDic[@"status"]isEqualToNumber:@1]) {
+//                                                //支付成功了
+//                                                
+//                                                
+//                                                
+//                                            }else{
+//                                                
+//                                                //支付失败
+//                                            }
+//                                            
+//                                        }];
+//                                    }else{
+//                                        
+//                                        
+//                                    }
+//                                    
+//                                }];
+//                            }];
+//                            
+//                        }else{
+//                            
+//                            [self loadingHUDStopLoadingWithTitle:@"支付密码暂不可用"];
+//                        }
+//                    }
+//                    
+//                }else{
+//                    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"尚未设置支付密码!\n是否前往设置?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"前往设置"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+//                       
+//                        if (buttonIndex == 0) {
+//                            
+//                        }else{
+//                            
+//                            //设置支付密码去
+//                        }
+//                        
+//                    }];
+//                }
+//            }else{
+//                
+//                [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"尚未设置支付密码!\n是否前往设置?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"前往设置"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+//                    
+//                    if (buttonIndex == 0) {
+//                        
+//                    }else{
+//                        
+//                        //设置支付密码去
+//                    }
+//
+//                    
+//                    
+//                }];
+//            }
+//            
+//            
+//            
+//            
+//            
+//            
+//        }else{
+//            
+//            if (_orderType == LiveClassType) {
+//                
+//                [self loadingHUDStopLoadingWithTitle:@"订单申请失败!"];
+//            }else if (_orderType == InteractionType){
+//                
+//                if (dic[@"error"]) {
+//                    if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
+//                        
+//                        [self loadingHUDStopLoadingWithTitle:@"课程目前不对外招生"];
+//                    }
+//                }
+//            }else if (_orderType == VideoClassType){
+//                
+//                if (dic[@"error"]) {
+//                    if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
+//                        
+//                        [self loadingHUDStopLoadingWithTitle:@"课程目前不对外招生"];
+//                    }
+//                }
+//            }
+//            
             //
-            //            dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
-            //            /* 下单成功,发送下单成功通il afterDelay:0];
-            
-        }else{
-            
-            if (_orderType == LiveClassType) {
-                
-                [self loadingHUDStopLoadingWithTitle:@"订单申请失败!"];
-            }else if (_orderType == InteractionType){
-                
-                if (dic[@"error"]) {
-                    if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
-                        
-                        [self loadingHUDStopLoadingWithTitle:@"课程目前不对外招生"];
-                    }
-                }
-            }else if (_orderType == VideoClassType){
-                
-                if (dic[@"error"]) {
-                    if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
-                        
-                        [self loadingHUDStopLoadingWithTitle:@"课程目前不对外招生"];
-                    }
-                }
-            }
-            
-            
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -740,15 +666,7 @@ typedef enum : NSUInteger {
 
 #pragma mark- 跳转到支付确认页面
 - (void)turnToPayPage{
-    
-    //    if (dataDic) {
-    //
-    //        PayConfirmViewController *confirm = [[PayConfirmViewController alloc]initWithData:dataDic];
-    //
-    //        [self.navigationController pushViewController:confirm animated:YES];
-    //
-    //
-    //    }
+  
     
 }
 

@@ -32,8 +32,10 @@
     
     
     /* 支付状态*/
-    
     PayStatus _paystatus;
+    
+    /**查询次数*/
+    NSInteger checkTime;
 
 }
 
@@ -49,6 +51,7 @@
         
         _numbers = [NSString stringWithFormat:@"%@",number];
         _amount = [NSString  stringWithFormat:@"%@",amount];
+        
         
         /* 提出token和学生id*/
         if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
@@ -71,16 +74,21 @@
     _navigationBar = ({
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         
-        _.titleLabel.text = @"充值结果";
-        //        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-        //        [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-        
+        _.titleLabel.text = @"支付结果";
         [self.view addSubview:_];
         _;
     });
     
+    checkTime = 0;
+    
+    /* 请求支付状态*/
+    [self requestPayStatus];
+    
+}
+
+- (void)setupMainView{
+   
     _checkOrderView =({
-        
         CheckOrderView *_=[[CheckOrderView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
         [_.finishButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         
@@ -88,51 +96,62 @@
         _;
     });
     
-    /* 请求支付状态*/
-    [self requestPayStatus];
-    
-    
-    
 }
 - (void)requestPayStatus{
     
     if (_numbers) {
         
+        checkTime++;
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remeber-Token"];
+        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
         [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/result",Request_Header,_numbers] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 /* 获取状态数据成功*/
-                if ([dic[@"data"] isEqualToString:@"unpaid"]) {
+                
+                if (![dic[@"data"] isEqualToString:@"shipped"]) {
+                    
+                    if (checkTime>6) {
+                        
+                        [self requestPayStatus];
+                        
+                    }else{
+                        
+                        _paystatus = unpaid;
+                        
+                        [self setupMainView];
+                        [_checkOrderView.statusImage setImage:[UIImage imageNamed:@"selectedCircle"]];
+                        _checkOrderView.status.text = @"未查到购买结果";
+                        _checkOrderView.number.text = _numbers;
+                        _checkOrderView.chargeMoney.text = _amount;
+                        _checkOrderView.explain.hidden = NO;
+
+                    }
+                    
                     /* 未支付状态*/
-                    _paystatus = unpaid;
+        
                     
-                    
-                    
-                }else if ([dic[@"data"] isEqualToString:@"received"]){
+                }else{
                     
                     _paystatus = recieved;
+                    [self setupMainView];
                     
-                    
-                }else if(![dic[@"data"] isEqualToString:@"received"]&&![dic[@"data"] isEqualToString:@"unpaid"]){
-                    
-                    
-                    _paystatus = other;
-                    
+                    [_checkOrderView.statusImage setImage:[UIImage imageNamed:@"selectedCircle"]];
+                    _checkOrderView.status.text = @"课程购买成功";
+                    _checkOrderView.number.text = _numbers;
+                    _checkOrderView.chargeMoney.text = _amount;
+                    _checkOrderView.explain.hidden = YES;
                     
                     
                 }
+            
             }else if([dic[@"status"]isEqual:[NSNumber numberWithInteger:0]]){
                 
-                
                 _paystatus = other;
-                
-                
                 
             }else{
                 /* 获取数据错误,需重新登录*/
@@ -151,7 +170,7 @@
                 
             }
             
-            [self loadViewWithStatus:_paystatus];
+//            [self loadViewWithStatus:_paystatus];
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
@@ -172,7 +191,6 @@
     __block NSString *number = @"".mutableCopy;
     __block NSString *chargeMoney = @"".mutableCopy;
     __block UIColor *color = [UIColor whiteColor];
-    
     
     
     switch (paystatus) {

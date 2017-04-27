@@ -22,7 +22,6 @@
 /* 忘记密码*/
 @property(nonatomic,strong) UIButton *forgottenPassorwdButton;
 
-
 /* 微信登录按钮*/
 @property(nonatomic,strong) UIButton *wechatButton ;
 

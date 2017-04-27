@@ -19,6 +19,7 @@
 #import "UIViewController+AFHTTP.h"
 #import "YYModel.h"
 #import "ConfirmRechargeViewController.h"
+#import "ItunesProduct.h"
 
 @interface ChargeViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>{
     
@@ -33,11 +34,17 @@
     /* 申请后获取到的数据*/
     NSMutableDictionary *_dataDic;
     
+    
+    /**可充值产品*/
+    NSMutableArray <ItunesProduct *>*_productArray;
+    
     /**价格表*/
-    NSArray *_priceArray;
-    NSArray *_actuallyPriceArray;
+//    NSArray *_priceArray;
+//    NSArray *_actuallyPriceArray;
     
     NSString *_chargePrice;
+    
+    ItunesProduct *_product;
     
 }
 
@@ -55,15 +62,19 @@
     /**加载导航栏*/
     [self setupNavigation];
     
+    /**获取充值信息*/
+    [self getRecharge];
+    
     /**加载主视图*/
     [self setupMainView];
     
     /* 初始化*/
     _payType = @"".mutableCopy;
     _dataDic = @{}.mutableCopy;
+    _productArray = @[].mutableCopy;
     
-    _priceArray = @[@"50",@"108",@"158",@"208",@"258",@"308"];
-    _actuallyPriceArray = @[@"34.30",@"74.10",@"108.40",@"142.70",@"177.01",@"211.31"];
+//    _priceArray = @[@"50",@"108",@"158",@"208",@"258",@"308"];
+//    _actuallyPriceArray = @[@"34.30",@"74.10",@"108.40",@"142.70",@"177.01",@"211.31"];
     
 }
 
@@ -90,16 +101,38 @@
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
 }
 
+- (void)getRecharge{
+    
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/itunes_products",Request_Header] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+            for (NSDictionary *dics in dic[@"data"]) {
+                
+                ItunesProduct *mod = [ItunesProduct yy_modelWithJSON:dics];
+                [_productArray addObject:mod];
+            }
+            
+            [_chargeView.chargeMenu reloadSections:[NSIndexSet indexSetWithIndex:0]];
+        }
+        
+        
+    }];
+    
+}
+
+
 /**加载主视图*/
 - (void)setupMainView{
     
     _chargeView = [[ChargeView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
     [self.view addSubview:_chargeView];
+    [_chargeView.chargeMenu registerClass:[ChargeCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
     _chargeView.chargeMenu.delegate = self;
     _chargeView.chargeMenu.dataSource = self;
     
-    [_chargeView.chargeMenu registerClass:[ChargeCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
-
     [_chargeView.chargeButton addTarget:self action:@selector(charge) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -107,7 +140,7 @@
 #pragma mark- UICollectionView datasource
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
-    return _priceArray.count;
+    return _productArray.count;
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -115,9 +148,8 @@
     static NSString * CellIdentifier = @"CollectionCell";
     ChargeCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    if (_priceArray.count>indexPath.row) {
-        cell.title.text = [NSString stringWithFormat:@"%@元",_priceArray[indexPath.row]];
-        cell.subTitle.text = [NSString stringWithFormat:@"实到账%@元",_actuallyPriceArray[indexPath.row]];
+    if (_productArray.count>indexPath.row) {
+        cell.model = _productArray[indexPath.row];
     }
     
     return cell;
@@ -150,7 +182,8 @@
     cell.contentView.layer.borderColor = NAVIGATIONRED.CGColor;
     cell.chosenImage.hidden = NO;
     
-    _chargePrice = [NSString stringWithFormat:@"%@",_priceArray[indexPath.row]];
+    _product = _productArray[indexPath.row];
+    _chargePrice = [NSString stringWithFormat:@"%@",_product.price];
 
 }
 
@@ -162,7 +195,7 @@
     if (_chargePrice) {
         
         [self loadingHUDStartLoadingWithTitle:nil];
-        [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/recharges",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"amount":_chargePrice,@"pay_type":@"offline"} completeSuccess:^(id  _Nullable responds) {
+        [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/recharges",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"amount":_chargePrice,@"pay_type":@"itunes"} completeSuccess:^(id  _Nullable responds) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqualToNumber:@1]) {
@@ -171,7 +204,7 @@
                 Recharge *mod = [Recharge yy_modelWithJSON:dic[@"data"]];
                 mod.idNumber = dic[@"data"][@"id"];
                 
-                ConfirmRechargeViewController *controller = [[ConfirmRechargeViewController alloc]initWithRechage:mod];
+                ConfirmRechargeViewController *controller = [[ConfirmRechargeViewController alloc]initWithRechage:mod andProduct:_product];
                 [self.navigationController pushViewController:controller animated:YES];
                 
             }else{

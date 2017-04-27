@@ -12,9 +12,6 @@
 
 #import "LoginView.h"
 
-
-
-
 @interface LoginView (){
     
     /* logo图片*/
@@ -33,17 +30,86 @@
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
 
+       
+        /* 跳过登录*/
+        _acrossLogin = [[UIButton alloc]init];
+        [self addSubview:_acrossLogin];
+        [_acrossLogin setTitle:NSLocalizedString(@"跳过登录", comment:"") forState:UIControlStateNormal];
+        [_acrossLogin setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        _acrossLogin.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
+        
+        _acrossLogin.sd_layout
+        .rightSpaceToView(self, 15*ScrenScale)
+        .topSpaceToView(self, 35*ScrenScale)
+        .autoHeightRatio(0);
+        [_acrossLogin setupAutoSizeWithHorizontalPadding:10 buttonHeight:30];
+        
+        /**logo*/
+        _logoImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"logo_big"]];
+        [self addSubview:_logoImage];
+        
+        _logoImage.sd_layout
+        .centerXEqualToView(self)
+        .topSpaceToView(_acrossLogin, Navigation_Height*2)
+        .widthRatioToView(self, 2/3.0)
+        .autoHeightRatio(112/479.0);
+        [_logoImage updateLayout];
+        
+        
+        /* 微信登录按钮*/
+        _wechatButton = [[UIButton alloc]init];
+        [_wechatButton setImage:[UIImage imageNamed:@"wechat"] forState:UIControlStateNormal];
+        [self addSubview:_wechatButton];
+        
+        _wechatButton.sd_layout
+        .centerXEqualToView(self)
+        .bottomSpaceToView(self,10*ScrenScale320)
+        .widthIs(25)
+        .heightEqualToWidth();
+        
+        /* 其他方式登录label和view*/
+        UILabel *wechatLogin = [[UILabel alloc]init];
+        wechatLogin.text = NSLocalizedString(@"其他方式登录", comment:"");
+        wechatLogin.textColor = [UIColor lightGrayColor];
+        wechatLogin.font = [UIFont systemFontOfSize:16*ScrenScale];
+        [self addSubview:wechatLogin];
+        
+        wechatLogin.sd_layout
+        .centerXEqualToView(self)
+        .bottomSpaceToView(_wechatButton,10*ScrenScale320)
+        .autoHeightRatio(0);
+        [wechatLogin setSingleLineAutoResizeWithMaxWidth:500];
+        
+        UIView *line1 = [[UIView alloc]init];
+        line1.backgroundColor = SEPERATELINECOLOR_2;
+        [self addSubview:line1];
+        
+        UIView *line2 = [[UIView alloc]init];
+        line2.backgroundColor = SEPERATELINECOLOR_2;
+        [self addSubview:line2];
+
+        line1.sd_layout
+        .centerYEqualToView(wechatLogin)
+        .leftEqualToView(self)
+        .rightSpaceToView(wechatLogin,15)
+        .heightIs(0.5);
+        
+        line2.sd_layout
+        .centerYEqualToView(wechatLogin)
+        .rightEqualToView(self)
+        .leftSpaceToView(wechatLogin,15)
+        .heightIs(0.5);
+        
         /* 输入账号密码*/
         /* 框1 输入用户账号*/
-        
         UIView *text1=[[UIView alloc]init];
-        text1.layer.borderWidth = 1;
-        text1.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        text1.layer.borderWidth = 0.6;
+        text1.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
         [self addSubview:text1];
         
         text1.sd_layout
-        .leftSpaceToView(self,20)
-        .topSpaceToView(self,40)
+        .leftSpaceToView(self,30*ScrenScale)
+        .topSpaceToView(_logoImage,Navigation_Height*2)
         .rightSpaceToView(self,20)
         .heightIs(50*ScrenScale);
         
@@ -61,8 +127,8 @@
         
         /* 框2 输入密码*/
         _text2=[[UIView alloc]init];
-        _text2.layer.borderWidth = 1;
-        _text2.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        _text2.layer.borderWidth = 0.6;
+        _text2.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
         [self addSubview:_text2];
         _text2.sd_layout
         .topSpaceToView(text1,-1)
@@ -76,26 +142,11 @@
         [_text2 addSubview:_passWord];
         _passWord.placeholder = NSLocalizedString(@"请输入密码", comment:"");
         
-        
-        /* 注册按钮*/
-        
-        _signUpButton = [[UIButton alloc]init];
-        [_signUpButton setTitle:NSLocalizedString(@"注册账号", comment:"") forState:UIControlStateNormal];
-        [_signUpButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        [self addSubview:_signUpButton];
-        _signUpButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
-        _signUpButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-        [_signUpButton setEnlargeEdge:20];
-        
-        /* 忘记密码*/
-        
-        _forgottenPassorwdButton = [[UIButton alloc]init];
-        [self addSubview:_forgottenPassorwdButton];
-        _forgottenPassorwdButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
-        [_forgottenPassorwdButton setTitle:NSLocalizedString(@"找回密码", comment:"") forState:UIControlStateNormal];
-        [_forgottenPassorwdButton setTitleColor:[UIColor grayColor]  forState:UIControlStateNormal];
-        [_forgottenPassorwdButton setEnlargeEdge:20];
-        
+        _passWord.sd_layout
+        .leftSpaceToView(_text2,10)
+        .topSpaceToView(_text2,10)
+        .bottomSpaceToView(_text2,10)
+        .rightSpaceToView(_text2,10);
         
         
         /* 登录按钮*/
@@ -107,40 +158,44 @@
         [_loginButton setTitleColor:[UIColor colorWithRed:0.79 green:0.0 blue:0.0 alpha:1.00] forState:UIControlStateNormal];
         [self addSubview:_loginButton];
         
+        _loginButton.sd_layout
+        .topSpaceToView(_text2,10*ScrenScale320)
+        .leftEqualToView(_text2)
+        .rightEqualToView(_text2)
+        .heightRatioToView(_text2,0.9f);
+        _loginButton.sd_cornerRadius = [NSNumber numberWithFloat:2];
         
-        /* 微信登录按钮*/
+        /* 注册按钮*/
+        _signUpButton = [[UIButton alloc]init];
+        [_signUpButton setTitle:NSLocalizedString(@"注册账号", comment:"") forState:UIControlStateNormal];
+        [_signUpButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [self addSubview:_signUpButton];
+        _signUpButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
+        [_signUpButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+        [_signUpButton setEnlargeEdge:20];
         
-        _wechatButton = [[UIButton alloc]init];
-        [_wechatButton setImage:[UIImage imageNamed:@"wechat"] forState:UIControlStateNormal];
-        [self addSubview:_wechatButton];
+        _signUpButton.sd_layout
+        .leftEqualToView(_loginButton)
+        .topSpaceToView(_loginButton,10*ScrenScale)
+        .heightIs(20)
+        .widthIs(80);
         
-        /* 其他方式登录label和view*/
-        UILabel *wechatLogin = [[UILabel alloc]init];
-        wechatLogin.text = NSLocalizedString(@"其他方式登录", comment:"");
-        wechatLogin.textColor = [UIColor lightGrayColor];
-        wechatLogin.font = [UIFont systemFontOfSize:16*ScrenScale];
-        [self addSubview:wechatLogin];
+        /* 忘记密码*/
+        _forgottenPassorwdButton = [[UIButton alloc]init];
+        [self addSubview:_forgottenPassorwdButton];
+        _forgottenPassorwdButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
+        [_forgottenPassorwdButton setTitle:NSLocalizedString(@"忘记密码?", comment:"") forState:UIControlStateNormal];
+        [_forgottenPassorwdButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [_forgottenPassorwdButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+        [_forgottenPassorwdButton setEnlargeEdge:20];
         
-        UIView *line1 = [[UIView alloc]init];
-        line1.backgroundColor = [UIColor lightGrayColor];
-        [self addSubview:line1];
-        
-        UIView *line2 = [[UIView alloc]init];
-        line2.backgroundColor = [UIColor lightGrayColor];
-        [self addSubview:line2];
-        
-        
-        /* 跳过登录*/
-        _acrossLogin = [[UIButton alloc]init];
-        [self addSubview:_acrossLogin];
-        [_acrossLogin setTitle:NSLocalizedString(@"跳过登录", comment:"") forState:UIControlStateNormal];
-        _acrossLogin.layer.masksToBounds = YES;
-        _acrossLogin.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        _acrossLogin.layer.borderWidth = 1.0f;
-        [_acrossLogin setTitleColor:[UIColor colorWithRed:0.79 green:0.00 blue:0.00 alpha:1.00] forState:UIControlStateNormal];
-        _acrossLogin.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
-        
-        
+        _forgottenPassorwdButton.sd_layout
+        .rightEqualToView(_loginButton)
+        .topSpaceToView(_loginButton,10*ScrenScale)
+        .heightIs(20)
+        .widthIs(80);
+
+       
         /* 验证码按钮*/
         _keyCodeButton = [[UIButton alloc]init];
         _keyCodeButton.backgroundColor = [UIColor lightGrayColor];
@@ -162,75 +217,6 @@
         _keyCodeText =[[UITextField alloc]init];
         [_text3 addSubview:_keyCodeText];
         _keyCodeText.hidden = YES;
-        
-        
-        _passWord.sd_layout
-        .leftSpaceToView(_text2,10)
-        .topSpaceToView(_text2,10)
-        .bottomSpaceToView(_text2,10)
-        .rightSpaceToView(_text2,10);
-        
-        
-        _loginButton.sd_layout
-        .topSpaceToView(_text2,20)
-        .leftEqualToView(_text2)
-        .rightEqualToView(_text2)
-        .heightRatioToView(_text2,0.8f);
-        _loginButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
-        
-        
-        _signUpButton.sd_layout
-        .leftEqualToView(_loginButton)
-        .topSpaceToView(_loginButton,30)
-        .heightIs(20)
-        .widthIs(80);
-        
-        _forgottenPassorwdButton.sd_layout
-        .rightEqualToView(_loginButton)
-        .topSpaceToView(_loginButton,30)
-        .heightIs(20)
-        .widthIs(80);
-        
-        
-        /* 微信按钮布局*/
-        
-        _wechatButton.sd_layout
-        .centerXEqualToView(self)
-        .bottomSpaceToView(self,25)
-        .widthIs(30)
-        .heightIs(30);
-        
-        
-        wechatLogin.sd_layout
-        .centerXEqualToView(self)
-        .bottomSpaceToView(_wechatButton,20)
-        .heightIs(20);
-        [wechatLogin setSingleLineAutoResizeWithMaxWidth:500];
-        
-        
-        line1.sd_layout
-        .centerYEqualToView(wechatLogin)
-        .leftEqualToView(self)
-        .rightSpaceToView(wechatLogin,25)
-        .heightIs(0.6);
-        
-        line2.sd_layout
-        .centerYEqualToView(wechatLogin)
-        .rightEqualToView(self)
-        .leftSpaceToView(wechatLogin,25)
-        .heightIs(0.6);
-        
-        
-        
-        /* 跳过登录*/
-        
-        _acrossLogin.sd_layout
-        .centerXEqualToView(self)
-        .heightIs(30)
-        .widthIs(100)
-        .bottomSpaceToView(wechatLogin,25) ;
-        _acrossLogin.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
-        
         
         
         /* 验证码生成*/
