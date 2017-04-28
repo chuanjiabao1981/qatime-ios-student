@@ -43,6 +43,7 @@
 #import "SafeViewController.h"
 
 #import "VideoClassInfoViewController.h"
+#import "UIViewController+Login.h"
 
 
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate,LCTabBarDelegate,UITableViewDelegate,UITableViewDataSource>{
@@ -389,6 +390,7 @@
         
         if ([dic[@"status"]isEqualToNumber:@1]) {
             
+            [self loginStates:dic];
             if ([dic[@"data"][@"has_password"] boolValue]==NO) {
                 
                 //没设置支付密码
@@ -401,9 +403,12 @@
                 
             }else{
                 
+                
             }
         }else{
-            [self getCashInfos];
+            
+            
+//            [self getCashInfos];
         }
         
         

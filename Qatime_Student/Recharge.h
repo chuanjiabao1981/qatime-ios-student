@@ -10,8 +10,6 @@
 
 @interface Recharge : NSObject
 
-
-
 @property(nonatomic,strong) NSString *idNumber ;
 @property(nonatomic,strong) NSString *amount ;
 @property(nonatomic,strong) NSString *pay_type ;

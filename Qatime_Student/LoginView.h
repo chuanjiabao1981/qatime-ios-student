@@ -7,8 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AuthenCode.h"
 
 @interface LoginView : UIView
+
+@property (nonatomic, strong) UIImageView *logoImage ;
+
 
 /* 注册按钮*/
 @property(nonatomic,strong) UIButton *signUpButton ;
@@ -22,7 +26,6 @@
 /* 忘记密码*/
 @property(nonatomic,strong) UIButton *forgottenPassorwdButton;
 
-
 /* 微信登录按钮*/
 @property(nonatomic,strong) UIButton *wechatButton ;
 
@@ -31,8 +34,10 @@
 
 /* 验证码按钮*/
 @property(nonatomic,strong) UIButton *keyCodeButton ;
+@property (nonatomic, strong) AuthenCode *authenCode ;
 
 /* 外边框*/
+@property(nonatomic,strong) UIView *text1 ;
 @property(nonatomic,strong) UIView *text2 ;
 @property(nonatomic,strong) UIView *text3 ;
 

@@ -39,6 +39,8 @@
 /* 屏幕适配比例*/
 #define ScrenScale [UIScreen mainScreen].bounds.size.width/414.0
 
+#define ScrenScale320 [UIScreen mainScreen].bounds.size.width/320.0
+
 /* 全局绿色*/
 #define USERGREEN  [UIColor colorWithRed:26/255.0 green:183/255.0 blue:159/255.0 alpha:1.0]
 
@@ -46,7 +48,7 @@
 //#define SCREENWIDTH [UIScreen mainScreen].bounce.size.width
 
 /* 背景灰色*/
-#define BACKGROUNDGRAY [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0]
+#define BACKGROUNDGRAY [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0]
 
 /* 分割线灰色*/
 #define SEPERATELINECOLOR [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0]
@@ -59,6 +61,8 @@
 
 /* 正文字号*/
 #define TEXT_FONTSIZE [UIFont systemFontOfSize:16*[UIScreen mainScreen].bounds.size.width/414.0]
+/* 正文字号2*/
+#define TEXT_FONTSIZE_MIN [UIFont systemFontOfSize:14*[UIScreen mainScreen].bounds.size.width/414.0]
 
 /* 字体颜色*/
 #define TITLECOLOR [UIColor colorWithRed:0.60 green:0.60 blue:0.60 alpha:1.00]
@@ -72,7 +76,7 @@
 
 
 /* 导航栏红*/
-#define NAVIGATIONRED [UIColor colorWithRed:0.99 green:0.35 blue:0.29 alpha:1.00]
+#define NAVIGATIONRED [UIColor colorWithRed:1.00 green:0.35 blue:0.26 alpha:1.00]
 
 /* tabbar高度*/
 

@@ -18,7 +18,6 @@
 /* 当前余额*/
 @property(nonatomic,strong) UILabel *balance ;
 
-
 /* 编号*/
 @property(nonatomic,strong) UILabel *number;
 /* 充值金额*/

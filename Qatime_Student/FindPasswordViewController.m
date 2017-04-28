@@ -311,6 +311,11 @@
             [button setTitle:strTime forState:UIControlStateNormal];
             [button setEnabled:NO];
             
+            [button setBackgroundColor:[UIColor lightGrayColor]];
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            button.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            
+            
             
             
         });
@@ -326,6 +331,9 @@
                 [button setTitle:@"获取校验码" forState:UIControlStateNormal];
                 [button setEnabled:YES];
                 
+                [button setBackgroundColor:[UIColor whiteColor]];
+                [button setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+                button.layer.borderColor = NAVIGATIONRED.CGColor;
                 
             });
         }

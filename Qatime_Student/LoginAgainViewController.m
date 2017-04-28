@@ -242,7 +242,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Login"];
     
-    
     [[NSNotificationCenter defaultCenter]postNotificationName:@"EnterWithoutLogin" object:nil];
     
 }

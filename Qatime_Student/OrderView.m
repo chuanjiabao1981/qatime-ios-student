@@ -213,183 +213,26 @@
         .leftEqualToView(self)
         .rightEqualToView(self)
         .topSpaceToView(line2,0)
-        .heightIs(self.height_sd*0.08*3+1.5);
-        
-        
-        //打横格
-        UIView *payline1 = [[UIView alloc]init];
-        [payView addSubview:payline1];
-        payline1.backgroundColor = SEPERATELINECOLOR_2;
-        payline1.sd_layout
-        .leftSpaceToView(payView,15*ScrenScale)
-        .rightSpaceToView(payView,15*ScrenScale)
-        .topSpaceToView(payView,self.height_sd*0.08)
-        .heightIs(0.5);
-        
-        UIView *payline2 = [[UIView alloc]init];
-        [payView addSubview:payline2];
-        payline2.backgroundColor = SEPERATELINECOLOR_2;
-        payline2.sd_layout
-        .leftSpaceToView(payView,15*ScrenScale)
-        .rightSpaceToView(payView,15*ScrenScale)
-        .topSpaceToView(payline1,self.height_sd*0.08)
-        .heightIs(0.5);
-        
-        UIView *payline3 = [[UIView alloc]init];
-        [payView addSubview:payline3];
-        payline3.backgroundColor = SEPERATELINECOLOR_2;
-        payline3.sd_layout
-        .leftSpaceToView(payView,15*ScrenScale)
-        .rightSpaceToView(payView,15*ScrenScale)
-        .topSpaceToView(payline2,self.height_sd*0.08)
-        .heightIs(0.5);
-        
-        //微信支付
-        UIImageView *wechatImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"wechatPay"]];
-        [payView addSubview:wechatImage];
-        wechatImage.sd_layout
-        .leftSpaceToView(payView,20*ScrenScale)
-        .topSpaceToView(payView,10*ScrenScale)
-        .bottomSpaceToView(payline1,10*ScrenScale)
-        .widthEqualToHeight();
-        
-        UILabel *wechat = [[UILabel alloc]init];
-        wechat.textColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0];
-        wechat.text = @"微信支付";
-        wechat.font = [UIFont systemFontOfSize:14*ScrenScale];
-        [payView addSubview:wechat];
-        wechat.sd_layout
-        .leftSpaceToView(wechatImage,20*ScrenScale)
-        .topSpaceToView(payView,10*ScrenScale)
-        .autoHeightRatio(0);
-        [wechat setSingleLineAutoResizeWithMaxWidth:100];
-        
-        UILabel *wechatTip = [[UILabel alloc]init];
-        wechatTip.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
-        wechatTip.font = [UIFont systemFontOfSize:13*ScrenScale];
-        wechatTip.text = @"推荐安装微信5.0及以上版本";
-        [payView addSubview:wechatTip];
-        
-        wechatTip.sd_layout
-        .leftEqualToView(wechat)
-        .topSpaceToView(wechat,10*ScrenScale)
-        .autoHeightRatio(0);
-        [wechatTip setSingleLineAutoResizeWithMaxWidth:300];
-        
-        [wechatTip updateLayout];
-        
-        //分割线布局变化
-        payline1.sd_resetLayout
-        .leftSpaceToView(payView,15*ScrenScale)
-        .rightSpaceToView(payView,15*ScrenScale)
-        .topSpaceToView(wechatTip,10*ScrenScale)
-        .heightIs(0.5);
-        [payline1 updateLayout];
-        
-        payline2.sd_resetLayout
-        .leftSpaceToView(payView,15*ScrenScale)
-        .rightSpaceToView(payView,15*ScrenScale)
-        .topSpaceToView(payline1,payline1.origin_sd.y+0.5)
-        .heightIs(0.5);
-        [payline2 updateLayout];
-       
-        payline3.sd_resetLayout
-        .leftSpaceToView(payView,15*ScrenScale)
-        .rightSpaceToView(payView,15*ScrenScale)
-        .topSpaceToView(payline2,payline1.origin_sd.y+0.5)
-        .heightIs(0.5);
-        [payline3 updateLayout];
-        
-        payView.sd_resetLayout
-        .leftEqualToView(self)
-        .rightEqualToView(self)
-        .topSpaceToView(line2,0)
-        .heightIs(payline3.origin_sd.y+payline3.height_sd);
-        [payView updateLayout];
-        
-        payline3.hidden = YES;
-        
-
-        _wechatButton =[UIButton new];
-        
-        [_wechatButton setImage:[UIImage imageNamed:@"selectedCircle"] forState:UIControlStateNormal];
-        [payView addSubview:_wechatButton];
-        _wechatButton.sd_layout
-        .centerYEqualToView(wechatImage)
-        .topSpaceToView(payView,20*ScrenScale)
-        .bottomSpaceToView(payline1,20*ScrenScale)
-        .rightSpaceToView(payView,15*ScrenScale)
-        .widthEqualToHeight();
-        _wechatButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
-        [_wechatButton setEnlargeEdge:10];
-        
-        //支付宝
-        UIImageView *alipayImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"aliPay"]];
-        [payView addSubview:alipayImage];
-        
-        alipayImage.sd_layout
-        .leftEqualToView(wechatImage)
-        .topSpaceToView(payline1,10*ScrenScale)
-        .bottomSpaceToView(payline2,10*ScrenScale)
-        .widthEqualToHeight();
-        
-        UILabel *alipay = [[UILabel alloc]init];
-        [payView addSubview:alipay];
-        alipay.textColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0];
-        alipay.text = @"支付宝支付";
-        alipay.font = [UIFont systemFontOfSize:14*ScrenScale];
-        alipay.sd_layout
-        .leftSpaceToView(alipayImage,20*ScrenScale)
-        .topSpaceToView(payline1,10*ScrenScale)
-        .autoHeightRatio(0);
-        [alipay setSingleLineAutoResizeWithMaxWidth:100];
-        
-        
-        UILabel *alipayTip = [[UILabel alloc]init];
-        alipayTip.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
-        alipayTip.font = [UIFont systemFontOfSize:13*ScrenScale];
-        alipayTip.text = @"推荐有支付宝账户的用户使用";
-        [payView addSubview:alipayTip];
-        
-        alipayTip.sd_layout
-        .leftEqualToView(alipay)
-        .topSpaceToView(alipay,10*ScrenScale)
-        .bottomSpaceToView(payline2,10*ScrenScale);
-        [alipayTip setSingleLineAutoResizeWithMaxWidth:300];
-        
-        
-        _alipayButton =[UIButton new];
-        [_alipayButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
-        [payView addSubview:_alipayButton];
-        _alipayButton.sd_layout
-        .centerYEqualToView(alipayImage)
-        .topSpaceToView(payline1,20*ScrenScale)
-        .bottomSpaceToView(payline2,20*ScrenScale)
-        .rightSpaceToView(payView,15*ScrenScale)
-        .widthEqualToHeight();
-        _alipayButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
-        [_alipayButton setEnlargeEdge:10];
-        
-        
+        .heightIs(self.height_sd*0.08+0.5);
         
         //余额支付
         _balanceImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"amountPay"]];
         [payView addSubview:_balanceImage];
         
         _balanceImage.sd_layout
-        .leftEqualToView(alipayImage)
-        .topSpaceToView(payline2,10*ScrenScale)
-        .bottomSpaceToView(payline3,10*ScrenScale)
+        .leftSpaceToView(payView, 15*ScrenScale)
+        .topSpaceToView(payView,10*ScrenScale)
+        .bottomSpaceToView(payView,10*ScrenScale)
         .widthEqualToHeight();
         
         UILabel *balances = [[UILabel alloc]init];
         [payView addSubview:balances];
         balances.textColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0];
-        balances.text = @"支付宝支付";
+        balances.text = @"账户余额";
         balances.font = [UIFont systemFontOfSize:14*ScrenScale];
         balances.sd_layout
         .leftSpaceToView(_balanceImage,20*ScrenScale)
-        .topSpaceToView(payline2,10*ScrenScale)
+        .topSpaceToView(payView,10*ScrenScale)
         .autoHeightRatio(0);
         [balances setSingleLineAutoResizeWithMaxWidth:100];
 
@@ -401,35 +244,24 @@
         _balance.sd_layout
         .leftEqualToView(balances)
         .topSpaceToView(balances,10*ScrenScale)
-        .bottomSpaceToView(payline3,10*ScrenScale);
+        .bottomSpaceToView(payView,10*ScrenScale);
         [_balance setSingleLineAutoResizeWithMaxWidth:300];
         
         _balanceButton =[UIButton new];
-        [_balanceButton setImage:[UIImage imageNamed:@"unselectedCircle"] forState:UIControlStateNormal];
+        [_balanceButton setImage:[UIImage imageNamed:@"selectedCircle"] forState:UIControlStateNormal];
         [payView addSubview:_balanceButton];
+        _balanceButton.enabled = NO;
         
         _balanceButton.sd_layout
         .centerYEqualToView(_balanceImage)
-        .topSpaceToView(payline2,20*ScrenScale)
-        .bottomSpaceToView(payline3,20*ScrenScale)
+        .topSpaceToView(payView,18*ScrenScale)
+        .bottomSpaceToView(payView,18*ScrenScale)
         .rightSpaceToView(payView,15*ScrenScale)
         .widthEqualToHeight();
         _balanceButton.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
         [_balanceButton setEnlargeEdge:10];
         
-        
-//        _balanceLabel = [UILabel new];
-//        _balanceLabel.textColor = TITLECOLOR;
-//        _balanceLabel.text = @"应付金额";
-        
-//        [payView addSubview:_balanceLabel];
-//        _balanceLabel.sd_layout
-//        .topEqualToView(_balance)
-//        .bottomEqualToView(_balance)
-//        .leftSpaceToView(_balance,2);
-//        [_balanceLabel setSingleLineAutoResizeWithMaxWidth:100];
-        
-        
+     
         
         //分割线3
         UIView *line3 = [[UIView alloc]init];

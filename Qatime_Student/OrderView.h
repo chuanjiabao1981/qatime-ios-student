@@ -28,9 +28,9 @@
 @property(nonatomic,strong) UILabel *priceLabel ;
 
 /* 微信支付按钮*/
-@property(nonatomic,strong) UIButton *wechatButton ;
+//@property(nonatomic,strong) UIButton *wechatButton ;
 /* 支付宝支付按钮*/
-@property(nonatomic,strong) UIButton *alipayButton ;
+//@property(nonatomic,strong) UIButton *alipayButton ;
 /* 余额支付按钮*/
 @property(nonatomic,strong) UIButton *balanceButton ;
 @property(nonatomic,strong) UILabel *balance ;

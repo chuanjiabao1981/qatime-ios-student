@@ -99,12 +99,12 @@
         .bottomEqualToView(self.chosenButton);
         [self.accessLabel setSingleLineAutoResizeWithMaxWidth:200];
         
-         [self.userPolicy sd_clearAutoLayoutSettings];
-        self.userPolicy.sd_resetLayout
-        .leftSpaceToView(self.accessLabel,0)
-        .topEqualToView(self.accessLabel)
-        .bottomEqualToView(self.accessLabel)
-        .widthIs(220);
+//         [self.userPolicy sd_clearAutoLayoutSettings];
+//        self.userPolicy.sd_resetLayout
+//        .leftSpaceToView(self.accessLabel,0)
+//        .topEqualToView(self.accessLabel)
+//        .bottomEqualToView(self.accessLabel)
+//        .widthIs(220);
         
         [self.nextStepButton sd_clearAutoLayoutSettings];
         self.nextStepButton.sd_layout

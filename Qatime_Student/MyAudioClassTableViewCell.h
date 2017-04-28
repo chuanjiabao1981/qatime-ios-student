@@ -12,5 +12,8 @@
 @interface MyAudioClassTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) MyAudioClass *model ;
+/**课程状态*/
+@property (nonatomic, strong) UILabel *status ;
+
 
 @end

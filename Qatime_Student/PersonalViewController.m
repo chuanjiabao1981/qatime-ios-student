@@ -27,6 +27,7 @@
 #import "UIImageView+WebCache.h"
 #import "MyVideoClassViewController.h"
 #import "AboutUsViewController.h"
+#import "MyAuditionViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.width
@@ -374,68 +375,50 @@
             switch (indexPath.row) {
                 case 0:{
                     controller = [MyWalletViewController new];
-                    controller.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:controller animated:YES];
-                    
                 }
                     break;
                 case 1:{
                     
                     controller = [MyOrderViewController new];
-                    controller.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:controller animated:YES];
-                    
                 }
                     break;
                 case 2:{
                     controller = [MyClassViewController new];
-                    controller.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:controller animated:YES];
-                    
                 }
                     break;
                 case 3:{
                     controller = [MyOneOnOneViewController new];
-                    controller.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:controller animated:YES];
-                    
                 }
                     break;
                 case 4:{
                     
                     controller = [[MyVideoClassViewController alloc]init];
-                    controller.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:controller animated:YES];
-                    
+            
                 }
                     break;
                 case 5:{
                     
-                    
+                    controller = [[MyAuditionViewController alloc]init];
                     
                 }
                     break;
                 case 6:{
                     controller = [SafeViewController new];
-                    controller.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:controller animated:YES];
+                    
                 }
                     break;
                 case 7:{
                     controller = [SettingViewController new];
-                    controller.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:controller animated:YES];
-                    
                 }
                     break;
                 case 8:{
-                    controller = [AboutUsViewController new];
-                    controller.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:controller animated:YES];
-                    
+                    controller = [AboutUsViewController new];  
                 }
                     break;
             }
+            
+            controller.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:controller animated:YES];
             
         }else{
             

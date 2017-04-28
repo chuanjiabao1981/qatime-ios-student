@@ -11,13 +11,14 @@
 #import "NSString+TimeStamp.h"
 #import "UIViewController+HUD.h"
 #import "WXApi.h"
-#import "CheckChargeViewController.h"
+//#import "CheckChargeViewController.h"
 #import "DCPaymentView.h"
 #import "UIAlertController+Blocks.h"
 #import "AuthenticationViewController.h"
 #import "UIViewController+AFHTTP.h"
 #import "TutoriumInfoViewController.h"
 #import "MyOrderViewController.h"
+#import "CheckOrderViewController.h"
 
 @interface PayConfirmViewController (){
     
@@ -97,8 +98,6 @@
             [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
         }
         
-        
-        
         [self.view addSubview:_];
         _;
     
@@ -116,10 +115,8 @@
     /* 注册微信支付成功或失败的通知*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(CheckPayStatus) name:@"ChargeSucess" object:nil];
     
-   
-
-    
 }
+
 #pragma mark- 支付订单
 - (void)payForOrder{
     
@@ -189,8 +186,11 @@
     
     [DCPaymentView showPayAlertWithTitle:@"支付订单" andDetail:@"请输入支付密码" andAmount:[_dataDic[@"amount"]  floatValue] completeHandle:^(NSString *inputPwd) {
         
+        [self loadingHUD];
+        
         /* 输入完成后,先访问服务器,获取tickettoken,然后在用tickettoken去请求支付*/
         NSLog(@"%@",inputPwd);
+        
         [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/pay/ticket_token",Request_Header,_dataDic[@"id"]] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"password":inputPwd} completeSuccess:^(id  _Nullable responds) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
@@ -210,14 +210,18 @@
                         /* 付款成功*/
                         NSLog(@"%@",dic[@"data"]);
                         
-                        [self loadingHUDStopLoadingWithTitle:@"购买成功!"];
+//                        [self loadingHUDStopLoadingWithTitle:@"购买成功!"];
                         
-                        [self performSelector:@selector(returnInfoPage) withObject:nil afterDelay:1];
+//                        [self performSelector:@selector(returnInfoPage) withObject:nil afterDelay:1];
+                        [self stopHUD];
+                        CheckOrderViewController *controller = [[CheckOrderViewController alloc]initWithIDNumber:dic[@"data"][@"id"] andAmount:dic[@"data"][@"amount"]];
+                        [self.navigationController pushViewController:controller animated:YES];
                         
                         [[NSNotificationCenter defaultCenter ]postNotificationName:@"RefreshTutoriumInfo" object:nil];
                         
                     }else{
                         /* 付款失败*/
+                        [self stopHUD];
                          NSLog(@"%@",dic[@"data"]);
                          [self loadingHUDStopLoadingWithTitle:@"购买失败!"];
                         [self performSelector:@selector(returnInfoPage) withObject:nil afterDelay:1];
@@ -275,11 +279,11 @@
 #pragma mark- 访问服务器,查询支付是否成功
 - (void)CheckPayStatus{
     
-    if (_dataDic) {
-        CheckChargeViewController *checkVC = [[CheckChargeViewController alloc]initWithIDNumber:_dataDic[@"id"] andAmount:_dataDic[@"amount"]];
-        [self.navigationController pushViewController:checkVC animated:YES];
-        
-    }
+//    if (_dataDic) {
+//        CheckChargeViewController *checkVC = [[CheckChargeViewController alloc]initWithIDNumber:_dataDic[@"id"] andAmount:_dataDic[@"amount"]];
+//        [self.navigationController pushViewController:checkVC animated:YES];
+//        
+//    }
     
 }
 

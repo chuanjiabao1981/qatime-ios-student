@@ -292,6 +292,8 @@
                         
                     }
                     
+                    
+                    
                     /* 已经开课->插班价*/
                     if ([_dataDic[@"status"]isEqualToString:@"teaching"]||[_dataDic[@"status"]isEqualToString:@"pause"]||[_dataDic[@"status"]isEqualToString:@"closed"]) {
                         
@@ -460,6 +462,16 @@
                     /* 赋值完毕,开始进行自适应高度*/
                     [self autoScrollHeight];
                     [_tutoriumInfoView.classFeature reloadData];
+                    
+                    if (_classFeaturesArray.count>3) {
+                        _tutoriumInfoView.classFeature.sd_resetLayout
+                        .leftSpaceToView(_tutoriumInfoView, 0)
+                        .rightSpaceToView(_tutoriumInfoView, 0)
+                        .topSpaceToView(_tutoriumInfoView.status, 10)
+                        .heightIs(40);
+                        [_tutoriumInfoView.classFeature updateLayout];
+                        [_tutoriumInfoView.classFeature layoutIfNeeded];
+                    }
                     
                     _tutoriumInfoView.classFeature.sd_layout
                     .heightIs(_tutoriumInfoView.classFeature.contentSize.height);

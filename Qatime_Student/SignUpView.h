@@ -26,21 +26,22 @@
 @property(nonatomic,strong) UITextField *userPasswordCompare ;
 
 /* 注册码*/
-@property(nonatomic,strong) UITextField *unlockKey ;
+//@property(nonatomic,strong) UITextField *unlockKey ;
 
 /* 下一步按钮*/
-
 @property(nonatomic,strong)  UIButton *nextStepButton;
+
+/**选择年级*/
+@property (nonatomic, strong) UITextField *chooseGrade ;
 
 /* 协议选择框*/
 @property(nonatomic,strong) UIButton *chosenButton; 
-
 
 /* 同意label*/
 @property(nonatomic,strong) UILabel *accessLabel ;
 
 /* 用户协议*/
-@property(nonatomic,strong)  UIButton *userPolicy; 
+//@property(nonatomic,strong)  UIButton *userPolicy; 
 
 
 @end

@@ -12,6 +12,7 @@
 #import "UIViewController+HUD.h"
 
 #import "UIViewController+AFHTTP.h"
+#import "CheckChargeViewController.h"
 
 //在内购项目中创的商品单号
 #define Product_50 @"Charge_50"//50
@@ -24,7 +25,7 @@
 
 #define AppStoreInfoLocalFilePath [NSString stringWithFormat:@"%@/%@/", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject],@"EACEF35FE363A75A"]
 
-@interface ConfirmRechargeViewController ()<NSURLSessionDelegate>{
+@interface ConfirmRechargeViewController (){
     
     NavigationBar *_navigationBar;
     
@@ -35,7 +36,10 @@
     /**充值信息*/
     Recharge *_recharge;
     
- 
+    /**充值产品信息*/
+    ItunesProduct *_product;
+    
+    
 }
 
 @property (nonatomic, strong) ConfirmRechargeView *mainView ;
@@ -44,12 +48,14 @@
 
 @implementation ConfirmRechargeViewController
 
--(instancetype)initWithRechage:(Recharge *)recharge{
+-(instancetype)initWithRechage:(Recharge *)recharge andProduct:(ItunesProduct *)product{
     
     self = [super init];
     if (self) {
         
         _recharge = recharge;
+        
+        _product = product;
     }
     return self;
 }
@@ -112,31 +118,8 @@
     [self loadingHUDStartLoadingWithTitle:nil];
     [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     
-    switch (_recharge.amount.integerValue) {
-        case 50:
-            buyType = Charge_50;
-            break;
-        case 108:
-            buyType = Charge_108;
-            break;
-        case 158:
-            buyType = Charge_158;
-            break;
-        case 208:
-            buyType = Charge_208;
-            break;
-        case 258:
-            buyType = Charge_258;
-            break;
-        case 308:
-            buyType = Charge_308;
-            break;
-    }
-    
-    
     [self buy:buyType];
-    
- 
+
 }
 
 -(void)buy:(int)type{
@@ -160,29 +143,29 @@
 {
     NSLog(@"---------请求对应的产品信息------------");
     NSArray *product = nil;
-    switch (buyType) {
-        case Charge_50:
-            product=[[NSArray alloc] initWithObjects:Product_50,nil];
-            break;
-        case Charge_108:
-            product=[[NSArray alloc] initWithObjects:Product_108,nil];
-            break;
-        case Charge_158:
-            product=[[NSArray alloc] initWithObjects:Product_158,nil];
-            break;
-        case Charge_208:
-            product=[[NSArray alloc] initWithObjects:Product_208,nil];
-            break;
-        case Charge_258:
-            product=[[NSArray alloc] initWithObjects:Product_258,nil];
-            break;
-        case Charge_308:
-            product=[[NSArray alloc] initWithObjects:Product_308,nil];
-            break;
-            
-        default:
-            break;
-    }
+//    switch (buyType) {
+//        case Charge_50:
+//            product=[[NSArray alloc] initWithObjects:Product_50,nil];
+//            break;
+//        case Charge_108:
+//            product=[[NSArray alloc] initWithObjects:Product_108,nil];
+//            break;
+//        case Charge_158:
+//            product=[[NSArray alloc] initWithObjects:Product_158,nil];
+//            break;
+//        case Charge_208:
+//            product=[[NSArray alloc] initWithObjects:Product_208,nil];
+//            break;
+//        case Charge_258:
+//            product=[[NSArray alloc] initWithObjects:Product_258,nil];
+//            break;
+//        case Charge_308:
+//            product=[[NSArray alloc] initWithObjects:Product_308,nil];
+//            break;
+//            
+//        default:
+//            break;
+//    }
     NSSet *nsset = [NSSet setWithArray:product];
     SKProductsRequest *request=[[SKProductsRequest alloc] initWithProductIdentifiers: nsset];
     request.delegate=self;
@@ -208,28 +191,28 @@
         NSLog(@"Product id: %@" , product.productIdentifier);
     }
     SKPayment *payment = nil;
-    switch (buyType) {
-        case Charge_50:
-            payment  = [SKPayment paymentWithProductIdentifier:Product_50];    //支付50
-            break;
-        case Charge_108:
-            payment  = [SKPayment paymentWithProductIdentifier:Product_108];    //支付108
-            break;
-        case Charge_158:
-            payment  = [SKPayment paymentWithProductIdentifier:Product_158];    //支付158
-            break;
-        case Charge_208:
-            payment  = [SKPayment paymentWithProductIdentifier:Product_208];    //支付208
-            break;
-        case Charge_258:
-            payment  = [SKPayment paymentWithProductIdentifier:Product_258];    //支付258
-            break;
-        case Charge_308:
-            payment  = [SKPayment paymentWithProductIdentifier:Product_308];    //支付308
-            break;
-        default:
-            break;
-    }
+//    switch (buyType) {
+//        case Charge_50:
+//            payment  = [SKPayment paymentWithProductIdentifier:Product_50];    //支付50
+//            break;
+//        case Charge_108:
+//            payment  = [SKPayment paymentWithProductIdentifier:Product_108];    //支付108
+//            break;
+//        case Charge_158:
+//            payment  = [SKPayment paymentWithProductIdentifier:Product_158];    //支付158
+//            break;
+//        case Charge_208:
+//            payment  = [SKPayment paymentWithProductIdentifier:Product_208];    //支付208
+//            break;
+//        case Charge_258:
+//            payment  = [SKPayment paymentWithProductIdentifier:Product_258];    //支付258
+//            break;
+//        case Charge_308:
+//            payment  = [SKPayment paymentWithProductIdentifier:Product_308];    //支付308
+//            break;
+//        default:
+//            break;
+//    }
     NSLog(@"---------发送购买请求------------");
     [[SKPaymentQueue defaultQueue] addPayment:payment];
     
@@ -280,15 +263,9 @@
                 [self completeTransaction:transaction];
                 NSLog(@"-----交易完成 --------");
                 
-                //向服务器验证支付
-                [self verifyPayment:transaction];
-//                NSLog(@"%@", [transaction.transactionReceipt base64EncodedStringWithOptions:0]);
-                
-                UIAlertView *alerView =  [[UIAlertView alloc] initWithTitle:@""
-                                                                    message:@"购买成功"
-                                                                   delegate:nil cancelButtonTitle:NSLocalizedString(@"关闭",nil) otherButtonTitles:nil];
-                
-                [alerView show];
+                //跳转到下一页去向服务器进行验证
+                CheckChargeViewController *controller = [[CheckChargeViewController alloc]initWithTransaction:transaction andProduct:_product];
+                [self.navigationController pushViewController:controller animated:YES];
                 
             } break;
             case SKPaymentTransactionStateFailed://交易失败
@@ -318,6 +295,7 @@
 - (void) completeTransaction: (SKPaymentTransaction *)transaction
 {
     NSLog(@"-----completeTransaction--------");
+    
     // Your application should implement these two methods.
     NSString *product = transaction.payment.productIdentifier;
     if ([product length] > 0) {
@@ -383,9 +361,8 @@
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
+    
     switch([(NSHTTPURLResponse *)response statusCode]) {
-       
-        
         case 200:
         case 206:
             break;
@@ -415,38 +392,8 @@
 /**服务器验证支付情况*/
 - (void)verifyPayment:(SKPaymentTransaction *)transaction{
     
-    NSData *receiptData;
-    NSString *receiptString;
-    
-    if ([[[UIDevice currentDevice]systemVersion]floatValue]>6.9f) {
-        
-        receiptData = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] appStoreReceiptURL]];
-        receiptString = [receiptData base64EncodedStringWithOptions:0];
-    }else{
-        receiptString = [NSString stringWithFormat:@"%@",[transaction.transactionReceipt base64EncodedStringWithOptions:0]];
-    }
-
     
     
-    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager POST:[NSString stringWithFormat:@"%@/api/v1/payment/recharges/%@/verify_receipt",Request_Header,transaction.transactionIdentifier] parameters:@{@"product_id":@"Charge_50",@"receipt_data":receiptString} progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
-        if ([dic[@"status"]isEqualToNumber:@1]) {
-            
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"购买失败，请重试"delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"重试", nil];
-                [alertView show];
-    }];
-    
-
 }
 
 
@@ -465,13 +412,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

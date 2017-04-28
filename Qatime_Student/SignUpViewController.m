@@ -61,18 +61,25 @@
             _signUpView.nextStepButton.enabled = YES;
             [_signUpView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             
-            sender.layer.borderWidth = 0;
+            
             sender.backgroundColor = [UIColor colorWithRed:0.84 green:0.33 blue:0.6 alpha:1.00];
             [sender setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];
             
             sender.selected = YES;
             
+            [_signUpView.nextStepButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+            [_signUpView.nextStepButton setBackgroundColor: [UIColor whiteColor]];
+            _signUpView.nextStepButton.layer.borderColor = NAVIGATIONRED.CGColor;
+            
             
         }else{
             
-            sender.layer.borderWidth = 0;
             sender.backgroundColor = [UIColor colorWithRed:0.84 green:0.33 blue:0.6 alpha:1.00];
             [sender setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];
+            
+            [_signUpView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [_signUpView.nextStepButton setBackgroundColor: [UIColor lightGrayColor]];
+            _signUpView.nextStepButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
             
             sender.selected = YES;
             
@@ -223,7 +230,7 @@
                                                     _signUpView.checkCode.text = @"";
                                                     _signUpView.userPassword.text = @"";
                                                     _signUpView.userPasswordCompare.text = @"";
-                                                    _signUpView.unlockKey.text = @"";
+                                                    //                                                    _signUpView.unlockKey.text = @"";
                                                     
                                                     [_signUpView.phoneNumber becomeFirstResponder];
                                                     
@@ -274,16 +281,30 @@
 -(void)textDidChange:(id<UITextInput>)textInput{
     
     /* 手机号框*/
+    
     if ([self isMobileNumber:_signUpView.phoneNumber.text]) {
         
-        _signUpView.getCheckCodeButton.enabled = YES;
-        [_signUpView.getCheckCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_signUpView.getCheckCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+        if ([_signUpView.getCheckCodeButton.titleLabel.text isEqualToString:@"获取校验码"]) {
+            _signUpView.getCheckCodeButton.enabled = YES;
+            [_signUpView.getCheckCodeButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+            [_signUpView.getCheckCodeButton setBackgroundColor:[UIColor whiteColor]];
+            _signUpView.getCheckCodeButton.layer.borderColor = NAVIGATIONRED.CGColor;
+            
+            [_signUpView.getCheckCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+            
+        }else{
+            
+        }
+        
     }else{
+        
         _signUpView.getCheckCodeButton.enabled = NO;
         [_signUpView.getCheckCodeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [_signUpView.getCheckCodeButton removeTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
         
+        [_signUpView.getCheckCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_signUpView.getCheckCodeButton setBackgroundColor:[UIColor lightGrayColor]];
+        _signUpView.getCheckCodeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     }
     
     if (_signUpView.phoneNumber.text.length > 11) {
@@ -291,20 +312,24 @@
         [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请输入11位手机号", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
     }
     
+    
     if (_signUpView.phoneNumber.text.length>0&&_signUpView.checkCode.text.length>0&&_signUpView.userPassword.text.length>0&&_signUpView.userPasswordCompare.text.length>0&&_signUpView.chosenButton.selected==YES) {
+        
         _signUpView.nextStepButton.enabled = YES;
-        [_signUpView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_signUpView.nextStepButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+        [_signUpView.nextStepButton setBackgroundColor: [UIColor whiteColor]];
+        _signUpView.nextStepButton.layer.borderColor = NAVIGATIONRED.CGColor;
         
     }else{
         _signUpView.nextStepButton.enabled = NO;
-        [_signUpView.nextStepButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        
+        [_signUpView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_signUpView.nextStepButton setBackgroundColor: [UIColor lightGrayColor]];
+        _signUpView.nextStepButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
         
     }
     
 }
-
-
-
 
 
 /*点击按钮  获取验证码*/
@@ -366,7 +391,6 @@
 }
 
 
-
 #pragma 正则匹配用户密码 6 - 16 位数字和字母组合
 -(BOOL)checkPassWord:(NSString *)password{
     
@@ -379,10 +403,6 @@
     }else
         return NO;
 }
-
-
-
-
 
 /* 弹出alter封装*/
 - (void)showAlertWith:(NSString *)message{
@@ -397,7 +417,6 @@
 #pragma mark- 倒计时方法封装
 /* 倒计时方法封装*/
 - (void)deadLineTimer:(UIButton *)button{
-    
     
     /* 按钮倒计时*/
     __block int deadline=CheckCodeTime;
@@ -415,8 +434,11 @@
             NSString *strTime = [NSString stringWithFormat:@"%@(%d)",NSLocalizedString(@"重发验证码", nil),deadline];
             
             [button setTitle:strTime forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-            [button setEnabled:NO];
+            
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setBackgroundColor:[UIColor lightGrayColor]];
+            button.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            [button setEnabled:YES];
             
         });
         deadline--;
@@ -427,7 +449,10 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 [button setTitle:NSLocalizedString(@"获取校验码", nil) forState:UIControlStateNormal];
-                [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [button setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+                [button setBackgroundColor:[UIColor whiteColor]];
+                button.layer.borderColor = NAVIGATIONRED.CGColor;
+                
                 [button setEnabled:YES];
                 
             });
@@ -443,8 +468,8 @@
     [_signUpView.checkCode resignFirstResponder];
     [_signUpView.userPassword resignFirstResponder];
     [_signUpView.userPasswordCompare resignFirstResponder];
-    [_signUpView.unlockKey resignFirstResponder];
-
+    //    [_signUpView.unlockKey resignFirstResponder];
+    
 }
 
 

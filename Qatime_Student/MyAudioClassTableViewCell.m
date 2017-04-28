@@ -13,8 +13,6 @@
 @property (nonatomic, strong) UILabel *name ;
 /**课程信息*/
 @property (nonatomic, strong) UILabel *infos ;
-/**课程状态*/
-@property (nonatomic, strong) UILabel *status ;
 
 @end
 
@@ -25,9 +23,13 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
+        self.contentView.backgroundColor = BACKGROUNDGRAY;
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         //框
         UIView *_content  = [[UIView alloc]init];
-        _content.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+        _content.backgroundColor = [UIColor whiteColor];
+        _content.layer.borderColor = [UIColor whiteColor].CGColor;
         _content.layer.borderWidth = 1;
         [self.contentView addSubview:_content];
         _content.sd_layout
@@ -40,7 +42,7 @@
         _name = [[UILabel alloc]init];
         [_content addSubview:_name];
         _name.textColor = [UIColor blackColor];
-        _name.font = TITLEFONTSIZE;
+        _name.font = TEXT_FONTSIZE;
         [_content addSubview:_name];
         _name.sd_layout
         .leftSpaceToView(_content, 10)
@@ -52,10 +54,10 @@
         _infos = [[UILabel alloc]init];
         [_content addSubview:_infos];
         _infos.textColor = TITLECOLOR;
-        _infos.font = TEXT_FONTSIZE;
+        _infos.font = TEXT_FONTSIZE_MIN;
         [_content addSubview:_infos];
         _infos.sd_layout
-        .topSpaceToView(_name, 10)
+        .bottomSpaceToView(_content, 10)
         .leftEqualToView(_name)
         .autoHeightRatio(0);
         [_infos setSingleLineAutoResizeWithMaxWidth:200];
@@ -63,9 +65,9 @@
         _status = [[UILabel alloc]init];
         [_content addSubview:_status];
         _status.textColor = TITLECOLOR;
-        _status.font = TEXT_FONTSIZE;
+        _status.font = TEXT_FONTSIZE_MIN;
         _status.sd_layout
-        .topSpaceToView(_name, 10)
+        .centerYEqualToView(_infos)
         .autoHeightRatio(0)
         .rightSpaceToView(_content, 10);
         [_status setSingleLineAutoResizeWithMaxWidth:200];
@@ -78,7 +80,17 @@
 
 -(void)setModel:(MyAudioClass *)model{
     
+    _model = model;
+    _name.text = model.name;
+    _infos.text = [NSString stringWithFormat:@"%@%@/%@",model.grade,model.subject,model.teacher_name];
     
+    
+    if (model.closed_lessons_count.integerValue>model.taste_count.integerValue) {
+        
+        _status.text = [NSString stringWithFormat:@"已试听%@/%@",model.taste_count,model.taste_count];
+    }else{
+        _status.text = [NSString stringWithFormat:@"已试听%@/%@",model.closed_lessons_count,model.taste_count];
+    }
     
 }
 

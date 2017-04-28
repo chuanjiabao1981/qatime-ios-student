@@ -547,11 +547,18 @@
     
     [_teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:model.teacher[@"avatar_url"]]];
     _teacherNameLabel.text = model.teacher[@"name"];
-    if ([model.teacher[@"gender"]isEqualToString:@"male"]) {
-        [_genderImage setImage:[UIImage imageNamed:@"男"]];
-    }else if([model.teacher[@"gender"]isEqualToString:@"female"]) {
-        [_genderImage setImage:[UIImage imageNamed:@"女"]];
+   
+    if ([model.teacher[@"gender"] isEqual:[NSNull null]]) {
+        
+    }else{
+        
+        if ([model.teacher[@"gender"]isEqualToString:@"male"]) {
+            [_genderImage setImage:[UIImage imageNamed:@"男"]];
+        }else if([model.teacher[@"gender"]isEqualToString:@"female"]) {
+            [_genderImage setImage:[UIImage imageNamed:@"女"]];
+        }
     }
+    
     _workPlaceLabel.text = [NSString stringWithFormat:@"%@",model.teacher[@"school"]];
     _workYearsLabel.text = [NSString stringWithFormat:@"%@",[model.teacher[@"teaching_years"] changeEnglishYearsToChinese]];
     _teacherInterviewLabel.attributedText = [[NSMutableAttributedString alloc]initWithData:[model.teacher[@"desc"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];

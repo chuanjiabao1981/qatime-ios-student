@@ -9,10 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "LoginAgainViewController.h"
 
+typedef void(^ReturnState)();
+
+
 @interface UIViewController (Login)
 
 @property (nonatomic, assign) BOOL loginAlertShow ;
 
+@property (nonatomic, copy) ReturnState returnBlock ;
 
 /**
  再次登录
@@ -23,7 +27,9 @@
 /**
  根据数据内容判断登录状态
  */
-- (void)loginStates:(NSDictionary *)dataDic;
+- (void)loginStates:(NSDictionary *)dataDic ;
+
+- (void)loginStates:(NSDictionary *)dataDic  state:(ReturnState)block;
 
 
 /**

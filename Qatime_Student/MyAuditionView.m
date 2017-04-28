@@ -62,6 +62,7 @@
         //两个tableview
         _liveClassList = ({
             UITableView *_ = [[UITableView alloc]init];
+            _.backgroundColor = BACKGROUNDGRAY;
             _.separatorStyle = UITableViewCellSeparatorStyleNone;
             [_scrollView addSubview:_];
             _.sd_layout
@@ -76,6 +77,7 @@
         
         _videoClassList= ({
             UITableView *_ = [[UITableView alloc]init];
+            _.backgroundColor = BACKGROUNDGRAY;
             _.separatorStyle = UITableViewCellSeparatorStyleNone;
             [_scrollView addSubview:_];
             _.sd_layout

@@ -70,7 +70,7 @@
         [gradeText addSubview:_grade];
         [_grade setTitle:@"选择所在年级" forState:UIControlStateNormal];
         [_grade setTitleColor:TITLECOLOR forState:UIControlStateNormal];
-        _grade.titleLabel.font = [UIFont systemFontOfSize:14*ScrenScale];
+        _grade.titleLabel.font = TEXT_FONTSIZE;
         
         /* 地区选择框*/
         
@@ -83,27 +83,27 @@
         [locationView addSubview:_chooseLocationButton];
         [_chooseLocationButton setTitle:@"选择地区" forState:UIControlStateNormal];
         [_chooseLocationButton setTitleColor:TITLECOLOR forState:UIControlStateNormal];
-        _chooseLocationButton.titleLabel.font = [UIFont systemFontOfSize:14*ScrenScale];
-        
-        
+        _chooseLocationButton.titleLabel.font = TEXT_FONTSIZE;
         
         
         /* 完善更多*/
         _moreButton = [[UIButton alloc]init];
+        _moreButton.titleLabel.font = TEXT_FONTSIZE;
         [self addSubview:_moreButton];
-        _moreButton.layer.borderColor = [UIColor colorWithRed:0.79 green:0 blue:0 alpha:1.0].CGColor;
-        _moreButton.layer.borderWidth = 2;
+        _moreButton.layer.borderColor = NAVIGATIONRED.CGColor;
+        _moreButton.layer.borderWidth = 1;
         [_moreButton setTitle:@"完善更多" forState:UIControlStateNormal];
-        [_moreButton setTitleColor:[UIColor colorWithRed:0.79 green:0 blue:0 alpha:1.0] forState:UIControlStateNormal];
+        [_moreButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
         
         
         /* 立即进入*/
         _enterButton = [[UIButton alloc]init];
+        _enterButton.titleLabel.font = TEXT_FONTSIZE;
         [self addSubview:_enterButton];
-        _enterButton.layer.borderColor = [UIColor colorWithRed:0.79 green:0 blue:0 alpha:1.0].CGColor;
-        _enterButton.layer.borderWidth = 2;
+        _enterButton.layer.borderColor = NAVIGATIONRED.CGColor;
+        _enterButton.layer.borderWidth = 1;
         [_enterButton setTitle:@"立即进入" forState:UIControlStateNormal];
-        [_enterButton setTitleColor:[UIColor colorWithRed:0.79 green:0 blue:0 alpha:1.0] forState:UIControlStateNormal];
+        [_enterButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
         
         /* 头像*/
        _headImage.sd_layout
@@ -161,14 +161,14 @@
         .topSpaceToView(locationView,20)
         .heightRatioToView(locationView,0.8f)
         .widthIs(self.width_sd/2.0f-20-10);
-        _moreButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
+        _moreButton.sd_cornerRadius = [NSNumber numberWithFloat:1];
         
         _enterButton.sd_layout
         .rightEqualToView(gradeText)
         .topEqualToView(_moreButton)
         .bottomEqualToView(_moreButton)
         .widthRatioToView(_moreButton,1.0f);
-        _enterButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
+        _enterButton.sd_cornerRadius = [NSNumber numberWithFloat:1];
 
                 
     }

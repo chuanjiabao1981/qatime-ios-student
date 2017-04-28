@@ -314,6 +314,10 @@
     
 }
 
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
+    [_signUpInfoView.userName resignFirstResponder];
+}
 
 
 /* 返回上一页*/

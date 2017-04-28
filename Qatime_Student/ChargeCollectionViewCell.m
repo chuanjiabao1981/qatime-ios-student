@@ -55,4 +55,12 @@
     return self;
 }
 
+-(void)setModel:(ItunesProduct *)model{
+
+    _model = model;
+    _title.text = [NSString stringWithFormat:@"%ld元",model.price.integerValue];
+    _subTitle.text = [NSString stringWithFormat:@"实到账%.2f元",model.amount.floatValue];
+    
+}
+
 @end

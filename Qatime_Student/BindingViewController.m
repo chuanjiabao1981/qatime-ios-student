@@ -306,7 +306,7 @@
                                     _bindingView.checkCode.text = @"";
                                     _bindingView.userPassword.text = @"";
                                     _bindingView.userPasswordCompare.text = @"";
-                                    _bindingView.unlockKey.text = @"";
+//                                    _bindingView.unlockKey.text = @"";
                                     
                                     [_bindingView.phoneNumber becomeFirstResponder];
                                     

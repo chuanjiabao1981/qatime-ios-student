@@ -50,6 +50,42 @@ static const void *loginAlertShowKey = &loginAlertShowKey;
             }
         }
     }
+}
+
+
+
+- (void)loginStates:(NSDictionary *)dataDic state:(ReturnState)block{
+    
+    
+    self.returnBlock = block;
+    if ([dataDic[@"status"]isEqualToNumber:@0]) {
+        if (dataDic[@"error"]) {
+            if ([dataDic[@"error"][@"code"]isEqualToNumber:@1002]) {
+                
+                if (self.loginAlertShow == YES) {
+                    
+                }else{
+                    
+                    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录超时!\n是否重新登录?" cancelButtonTitle:@"取消" destructiveButtonTitle:@"重新登录" otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                        if (buttonIndex!=0) {
+                            
+                            [self loginAgain];
+                            
+                            self.loginAlertShow = NO;
+                            
+                        }else{
+                            
+                            //                            block();
+                        }
+                        
+                    }];
+                    self.loginAlertShow = YES;
+                    
+                }
+                
+            }
+        }
+    }
     
     
     

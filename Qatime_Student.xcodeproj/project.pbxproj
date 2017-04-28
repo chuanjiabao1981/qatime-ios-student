@@ -293,6 +293,8 @@
 		549A979E1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A979D1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m */; };
 		549AE7621E013DAC001DD2ED /* BindingMailInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */; };
 		549AE7651E013DBD001DD2ED /* BindingMailInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AE7641E013DBD001DD2ED /* BindingMailInfoViewController.m */; };
+		549C8D4E1EB1992C00CCD2FB /* ItunesProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 549C8D4D1EB1992C00CCD2FB /* ItunesProduct.m */; };
+		549C8D521EB1C65600CCD2FB /* JBWatchActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 549C8D511EB1C65600CCD2FB /* JBWatchActivityIndicator.m */; };
 		54A153AA1DC6F09D0070B508 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153A91DC6F09D0070B508 /* main.m */; };
 		54A153AD1DC6F09D0070B508 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153AC1DC6F09D0070B508 /* AppDelegate.m */; };
 		54A153B01DC6F09D0070B508 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153AF1DC6F09D0070B508 /* ViewController.m */; };
@@ -654,6 +656,7 @@
 		54E8B6A11E5EF1AF00A9703F /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E8B6A01E5EF1AF00A9703F /* Contacts.framework */; };
 		54E8B6A31E5EF1B600A9703F /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E8B6A21E5EF1B600A9703F /* AddressBook.framework */; };
 		54E8B6A71E601B0300A9703F /* UIViewController+TimeInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E8B6A61E601B0300A9703F /* UIViewController+TimeInterval.m */; };
+		54EBCFF41EB2E6190011344D /* AuthenCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EBCFF31EB2E6190011344D /* AuthenCode.m */; };
 		54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC41DFE8D67001A98CE /* OrderView.m */; };
 		54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC71DFE8D75001A98CE /* OrderViewController.m */; };
 		54F292281E8287170076D499 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F292271E8287170076D499 /* Assets.xcassets */; };
@@ -1268,6 +1271,10 @@
 		549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindingMailInfoView.m; sourceTree = "<group>"; };
 		549AE7631E013DBD001DD2ED /* BindingMailInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailInfoViewController.h; sourceTree = "<group>"; };
 		549AE7641E013DBD001DD2ED /* BindingMailInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindingMailInfoViewController.m; sourceTree = "<group>"; };
+		549C8D4C1EB1992C00CCD2FB /* ItunesProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItunesProduct.h; sourceTree = "<group>"; };
+		549C8D4D1EB1992C00CCD2FB /* ItunesProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItunesProduct.m; sourceTree = "<group>"; };
+		549C8D501EB1C65600CCD2FB /* JBWatchActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBWatchActivityIndicator.h; sourceTree = "<group>"; };
+		549C8D511EB1C65600CCD2FB /* JBWatchActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBWatchActivityIndicator.m; sourceTree = "<group>"; };
 		54A153A51DC6F09D0070B508 /* Qatime_Student.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Qatime_Student.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54A153A91DC6F09D0070B508 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		54A153AB1DC6F09D0070B508 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -2011,6 +2018,8 @@
 		54EA9B281DD9A7F1004B8040 /* librtmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = librtmp.a; path = "Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs/librtmp.a"; sourceTree = "<group>"; };
 		54EA9B291DD9A7F1004B8040 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs/libssl.a"; sourceTree = "<group>"; };
 		54EA9B841DD9A9D5004B8040 /* libz.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.tbd; path = usr/lib/libz.1.tbd; sourceTree = SDKROOT; };
+		54EBCFF21EB2E6190011344D /* AuthenCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenCode.h; sourceTree = "<group>"; };
+		54EBCFF31EB2E6190011344D /* AuthenCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenCode.m; sourceTree = "<group>"; };
 		54ECFEC31DFE8D67001A98CE /* OrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderView.h; sourceTree = "<group>"; };
 		54ECFEC41DFE8D67001A98CE /* OrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderView.m; sourceTree = "<group>"; };
 		54ECFEC61DFE8D75001A98CE /* OrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
@@ -2442,6 +2451,7 @@
 				54FCBAC21DD5909F0094BF58 /* 直播课辅导班详情页 */,
 				547E92C41E8E513F00160C6D /* 一对一辅导班详情页 */,
 				54C4520C1E9CB6DF002108F4 /* 视频课辅导班详情 */,
+				54ECFEBE1DFE8D34001A98CE /* 课程购买页 */,
 			);
 			name = "选课页面";
 			sourceTree = "<group>";
@@ -3136,7 +3146,9 @@
 		547E92C41E8E513F00160C6D /* 一对一辅导班详情页 */ = {
 			isa = PBXGroup;
 			children = (
-				547E92C81E8E519E00160C6D /* 辅导班详情 */,
+				547E92C51E8E519900160C6D /* Model */,
+				547E92C61E8E519B00160C6D /* View */,
+				547E92C71E8E519D00160C6D /* Controller */,
 			);
 			name = "一对一辅导班详情页";
 			sourceTree = "<group>";
@@ -3175,16 +3187,6 @@
 				547E92CD1E8E520400160C6D /* OneOnOneTutoriumInfoViewController.m */,
 			);
 			name = Controller;
-			sourceTree = "<group>";
-		};
-		547E92C81E8E519E00160C6D /* 辅导班详情 */ = {
-			isa = PBXGroup;
-			children = (
-				547E92C51E8E519900160C6D /* Model */,
-				547E92C61E8E519B00160C6D /* View */,
-				547E92C71E8E519D00160C6D /* Controller */,
-			);
-			name = "辅导班详情";
 			sourceTree = "<group>";
 		};
 		547FBF251DF6817300955A9E /* UMessage_Sdk_1.4.0 */ = {
@@ -3474,6 +3476,25 @@
 			path = MMPickerView;
 			sourceTree = "<group>";
 		};
+		549C8D4B1EB1991B00CCD2FB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				549C8D4C1EB1992C00CCD2FB /* ItunesProduct.h */,
+				549C8D4D1EB1992C00CCD2FB /* ItunesProduct.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		549C8D4F1EB1C64500CCD2FB /* JBWatchActivityIndicator */ = {
+			isa = PBXGroup;
+			children = (
+				549C8D501EB1C65600CCD2FB /* JBWatchActivityIndicator.h */,
+				549C8D511EB1C65600CCD2FB /* JBWatchActivityIndicator.m */,
+			);
+			name = JBWatchActivityIndicator;
+			path = TLCityPicker;
+			sourceTree = "<group>";
+		};
 		54A1539C1DC6F09D0070B508 = {
 			isa = PBXGroup;
 			children = (
@@ -3529,6 +3550,7 @@
 		54A153A81DC6F09D0070B508 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				54EBCFF11EB2E5930011344D /* AuthenCode */,
 				543BCAF21E78F3F600AD6721 /* SDAutoLayout */,
 				544B61EF1E9647DB00D7B160 /* LCActionSheet */,
 				54B45D171E5C34410027F958 /* Qatime_Student-Bridging-Header.h */,
@@ -3538,6 +3560,7 @@
 				5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */,
 				54F32F741E373142000F8926 /* Reachability */,
 				54B73CFF1DE3E85A00B7A7EB /* ChineseSorting */,
+				549C8D4F1EB1C64500CCD2FB /* JBWatchActivityIndicator */,
 				5493D4BC1E0BE1050085A39E /* TLCityPicker */,
 				547FBF251DF6817300955A9E /* UMessage_Sdk_1.4.0 */,
 				54C525081E7BAC000005B5A0 /* TTGTagCollectionView */,
@@ -4869,6 +4892,7 @@
 		54B4C1821DF8180A00E31794 /* 充值页面 */ = {
 			isa = PBXGroup;
 			children = (
+				549C8D4B1EB1991B00CCD2FB /* Model */,
 				54B4C1841DF8181700E31794 /* View */,
 				54B4C1831DF8181600E31794 /* Controller */,
 				54B4C1931DF8417C00E31794 /* 确认充值页面 */,
@@ -5533,6 +5557,15 @@
 			name = "网易视频云";
 			sourceTree = "<group>";
 		};
+		54EBCFF11EB2E5930011344D /* AuthenCode */ = {
+			isa = PBXGroup;
+			children = (
+				54EBCFF21EB2E6190011344D /* AuthenCode.h */,
+				54EBCFF31EB2E6190011344D /* AuthenCode.m */,
+			);
+			name = AuthenCode;
+			sourceTree = "<group>";
+		};
 		54ECFEBE1DFE8D34001A98CE /* 课程购买页 */ = {
 			isa = PBXGroup;
 			children = (
@@ -5542,16 +5575,6 @@
 				54ECFEC01DFE8D4A001A98CE /* Controller */,
 			);
 			name = "课程购买页";
-			sourceTree = "<group>";
-		};
-		54ECFEBF1DFE8D3D001A98CE /* 辅导班详情 */ = {
-			isa = PBXGroup;
-			children = (
-				54FCBAC51DD590BB0094BF58 /* Model */,
-				54FCBAC41DD590B90094BF58 /* View */,
-				54FCBAC31DD590B40094BF58 /* Controller */,
-			);
-			name = "辅导班详情";
 			sourceTree = "<group>";
 		};
 		54ECFEC01DFE8D4A001A98CE /* Controller */ = {
@@ -6033,8 +6056,9 @@
 		54FCBAC21DD5909F0094BF58 /* 直播课辅导班详情页 */ = {
 			isa = PBXGroup;
 			children = (
-				54ECFEBF1DFE8D3D001A98CE /* 辅导班详情 */,
-				54ECFEBE1DFE8D34001A98CE /* 课程购买页 */,
+				54FCBAC51DD590BB0094BF58 /* Model */,
+				54FCBAC41DD590B90094BF58 /* View */,
+				54FCBAC31DD590B40094BF58 /* Controller */,
 			);
 			name = "直播课辅导班详情页";
 			sourceTree = "<group>";
@@ -6714,6 +6738,7 @@
 				54AC03FE1E8938E100817767 /* NIMSessionUnknowContentView.m in Sources */,
 				547A7EF71DD411DB00F1282B /* TeachersPublic_Classes.m in Sources */,
 				54AC04111E8938E100817767 /* NIMTeamCardHeaderCell.m in Sources */,
+				549C8D521EB1C65600CCD2FB /* JBWatchActivityIndicator.m in Sources */,
 				54AB48CE1DED31D3008E3BC5 /* HeadBackView.m in Sources */,
 				54AC03E51E8938E100817767 /* NIMFileContentConfig.m in Sources */,
 				54FB1DCD1DF172F300BA9A3C /* BindingViewController.m in Sources */,
@@ -6839,6 +6864,7 @@
 				5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */,
 				54AC04AD1E89398E00817767 /* NTESChatroomUnknowMessageConfig.m in Sources */,
 				54AC03DE1E8938E100817767 /* NIMKitEvent.m in Sources */,
+				549C8D4E1EB1992C00CCD2FB /* ItunesProduct.m in Sources */,
 				54443E281E0D252F000D8E8B /* LocalChoseView.m in Sources */,
 				54AC04201E8938E100817767 /* NIMWebImageDownloader.m in Sources */,
 				54C452071E9CA5DF002108F4 /* MyVideoClassViewController.m in Sources */,
@@ -7005,6 +7031,7 @@
 				54AC042A1E8938E100817767 /* UIView+NIMKitToast.m in Sources */,
 				5407B0781EB032EA005CD82B /* ConfirmRechargeViewController.m in Sources */,
 				5471C7FC1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.m in Sources */,
+				54EBCFF41EB2E6190011344D /* AuthenCode.m in Sources */,
 				54AC03C31E8938E100817767 /* UITableView+NIMScrollToBottom.m in Sources */,
 				5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */,
 				543E23521E2CE88B00381F10 /* DCPaymentView.m in Sources */,

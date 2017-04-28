@@ -9,24 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "Recharge.h"
 #import <StoreKit/StoreKit.h>
+#import "ItunesProduct.h"
 
-//enum{
-//    Charge_50 = 50,
-//    Charge_108,
-//    Charge_158,
-//    Charge_208,
-//    Charge_258,
-//    Charge_308
-//}ChargeTag;
-
-typedef enum : NSUInteger {
-    Charge_50 = 50,
-    Charge_108,
-    Charge_158,
-    Charge_208,
-    Charge_258,
-    Charge_308
-} ChargeTag;
 
 @interface ConfirmRechargeViewController : UIViewController <SKPaymentTransactionObserver,SKProductsRequestDelegate>{
     
@@ -67,6 +51,6 @@ typedef enum : NSUInteger {
  @param recharge 从服务器拿到的服务端订单信息
  @return 实例
  */
--(instancetype)initWithRechage:(Recharge *)recharge;
+-(instancetype)initWithRechage:(Recharge *)recharge andProduct:(ItunesProduct *)product;
 
 @end

@@ -17,6 +17,12 @@
 #import "Teacher.h"
 #import "YYModel.h"
 #import "HaveNoClassView.h"
+#import "UIViewController+AFHTTP.h"
+#import "UIViewController+HUD.h"
+
+#import "TutoriumInfoViewController.h"
+#import "VideoClassInfoViewController.h"
+
 
 typedef enum : NSUInteger {
     PullToRefresh,  //下拉刷新
@@ -36,10 +42,12 @@ typedef enum : NSUInteger {
     NSString *_token;
     NSString *_idNumber;
     
-    /**已购课程的数据*/
-    NSMutableArray *_boughtClassArray;
-    /**免费课程的数据*/
-    NSMutableArray *_freeClassArray;
+    /**直播课程的数据*/
+    NSMutableArray *_liveClassArray;
+    
+    /**视频课程的数据*/
+    NSMutableArray *_videoClassArray;
+    
     
     /**页码*/
     NSInteger page;
@@ -49,16 +57,13 @@ typedef enum : NSUInteger {
     /**segment item2的刷新次数*/
     __block NSInteger refreshNum;
     
-    
-    //传值用的数组
-    NSMutableArray *_boughtVideoArray;
-    NSMutableArray *_freeVideoArray;
+
     
     //教师
     Teacher *_teacher;
     
     /**课程详情*/
-
+    
 }
 
 @property (nonatomic, strong) MyAuditionView *myAudioView ;
@@ -75,7 +80,7 @@ typedef enum : NSUInteger {
         
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-        _.titleLabel.text = @"我的视频课";
+        _.titleLabel.text = @"我的试听课";
         _;
     });
     
@@ -99,17 +104,7 @@ typedef enum : NSUInteger {
     _myAudioView.scrollView.delegate = self;
     _myAudioView.scrollView.tag = 3;
     
-    //滑动
-    typeof(self) __weak weakSelf = self;
-    _myAudioView.segmentControl.indexChangeBlock = ^(NSInteger index) {
-        [weakSelf.myAudioView.scrollView scrollRectToVisible:CGRectMake(weakSelf.view.width_sd*index, 0, weakSelf.view.width_sd, weakSelf.myAudioView.scrollView.height_sd) animated:YES];
-        
-        if (refreshNum == 0) {
-            [weakSelf.myAudioView.liveClassList.mj_header beginRefreshing];
-            refreshNum++;
-        }
-        
-    };
+    
     
     //header和footer
     _myAudioView.liveClassList.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
@@ -130,11 +125,20 @@ typedef enum : NSUInteger {
         [self requestMyVideoClassDataWithClassType:VideoClassType andRefreshType:PushToLoadMore];
     }];
     
-    
     //先下拉刷新一次
     [_myAudioView.liveClassList.mj_header beginRefreshing];
     
-    
+    //滑动
+    typeof(self) __weak weakSelf = self;
+    _myAudioView.segmentControl.indexChangeBlock = ^(NSInteger index) {
+        [weakSelf.myAudioView.scrollView scrollRectToVisible:CGRectMake(weakSelf.view.width_sd*index, 0, weakSelf.view.width_sd, weakSelf.myAudioView.scrollView.height_sd) animated:YES];
+        
+        if (refreshNum == 0) {
+            [weakSelf.myAudioView.videoClassList.mj_header beginRefreshing];
+            refreshNum++;
+        }
+        
+    };
     
 }
 
@@ -145,11 +149,9 @@ typedef enum : NSUInteger {
     page = 1;
     per_page = 10;
     refreshNum = 0;
-    _boughtClassArray = @[].mutableCopy;
-    _freeClassArray = @[].mutableCopy;
     
-    _boughtVideoArray = @[].mutableCopy;
-    _freeVideoArray = @[].mutableCopy;
+    _liveClassArray = @[].mutableCopy;
+    _videoClassArray = @[].mutableCopy;
     
     [self getToken];
     
@@ -158,7 +160,7 @@ typedef enum : NSUInteger {
     
     //主视图
     [self setupMainView];
-
+    
 }
 
 - (void)getToken{
@@ -171,7 +173,6 @@ typedef enum : NSUInteger {
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
 }
-
 
 /**
  加载我的视频课数据
@@ -188,13 +189,12 @@ typedef enum : NSUInteger {
         
         if (classType == LiveClassType) {
             
-            _boughtClassArray = @[].mutableCopy;
+            _liveClassArray = @[].mutableCopy;
             
         }else if (classType == VideoClassType){
             
-            _freeClassArray = @[].mutableCopy;
+            _videoClassArray = @[].mutableCopy;
         }
-        
         
     }else{
         page ++;
@@ -208,122 +208,80 @@ typedef enum : NSUInteger {
         sellType = @"free";
     }
     
-    dics = @{@"sell_type":sellType,
-             @"page":[NSString stringWithFormat:@"%ld",page],
-             @"per_page":[NSString stringWithFormat:@"%ld",per_page]}.mutableCopy;
-    
-//    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/video_courses",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:dics completeSuccess:^(id  _Nullable responds) {
-//        
-//        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-//        if ([dic[@"status"]isEqualToNumber:@1]) {
-//            
-//            if ([dic[@"data"]count]!=0) {
-//                
-//                if (classType == LiveClassType) {
-//                    //已购课程下拉刷新
-//                    for (NSDictionary *dicsdata in dic[@"data"]) {
-//                        MyAudioClass *mod = [MyAudioClass yy_modelWithJSON:dicsdata];
-////                        mod.classID = dicsdata[@"id"];
-//                        [_boughtClassArray addObject:mod];
-//                        
-//                    }
-//                    
-//                    
-//                    
-//                    [_myAudioView.liveClassList cyl_reloadData];
-//                    
-//                    [_myAudioView.liveClassList.mj_header endRefreshing];
-//                    [_myAudioView.liveClassList.mj_footer resetNoMoreData];
-//                }else if (classType == VideoClassType){
-//                    
-//                    for (NSDictionary *dicsdata in dic[@"data"]) {
-//                        MyAudioClass *mod = [MyAudioClass yy_modelWithJSON:dicsdata];
-////                        mod.classID = dicsdata[@"id"];
-//                        [_freeClassArray addObject:mod];
-//                        
-//                    }
-//                    
-//                    [_myAudioView.videoClassList cyl_reloadData];
-//                    [_myAudioView.videoClassList.mj_header endRefreshing];
-//                    [_myAudioView.videoClassList.mj_footer resetNoMoreData];
-//                }
-//            }else{
-//                if (classType == LiveClassType) {
-//                    if (refreshType == PullToRefresh) {
-//                        [_myAudioView.liveClassList.mj_header endRefreshingWithCompletionBlock:^{
-//                            [_myAudioView.liveClassList cyl_reloadData];
-//                        }];
-//                    }else{
-//                        [_myAudioView.liveClassList.mj_footer endRefreshingWithNoMoreData];
-//                        
-//                    }
-//                    
-//                }else if (classType == VideoClassType){
-//                    
-//                    if (refreshType == PullToRefresh) {
-//                        
-//                        [_myAudioView.videoClassList.mj_header endRefreshingWithCompletionBlock:^{
-//                            [_myAudioView.videoClassList cyl_reloadData];
-//                        }];
-//                    }else{
-//                        [_myAudioView.videoClassList.mj_footer endRefreshingWithNoMoreData];
-//                    }
-//                    
-//                }
-//            }
-//            
-//        }else{
-//            
-//            
-//        }
-//        
-//    }];
+    if (classType == LiveClassType) {
+        dics = @{@"cate":@"taste",
+                 @"page":[NSString stringWithFormat:@"%ld",page],
+                 @"per_page":[NSString stringWithFormat:@"%ld",per_page]}.mutableCopy;
+        
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:dics completeSuccess:^(id  _Nullable responds) {
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                
+                if ([dic[@"data"]count]!=0) {
+                    
+                    for (NSDictionary *classes in dic[@"data"]) {
+                        MyAudioClass *mod = [MyAudioClass yy_modelWithJSON:classes];
+                        mod.classID = classes[@"id"];
+                        [_liveClassArray addObject:mod];
+                    }
+                    [_myAudioView.liveClassList cyl_reloadData];
+                    [_myAudioView.liveClassList.mj_header endRefreshing];
+                    [_myAudioView.liveClassList.mj_footer resetNoMoreData];
+                }else{
+                    if (refreshType == PullToRefresh) {
+                        [_myAudioView.liveClassList.mj_header endRefreshingWithCompletionBlock:^{
+                            [_myAudioView.liveClassList cyl_reloadData];
+                        }];
+                    }else{
+                        [_myAudioView.liveClassList.mj_footer endRefreshingWithNoMoreData];
+                    }
+                }
+            }else{
+                [self loadingHUDStopLoadingWithTitle:@"请稍后重试"];
+                [_myAudioView.liveClassList.mj_header endRefreshing];
+                [_myAudioView.liveClassList.mj_footer endRefreshing];
+                
+            }
+            
+        }];
+        
+    }else if (classType == VideoClassType){
+        
+        dics = @{@"page":[NSString stringWithFormat:@"%ld",page],
+                 @"per_page":[NSString stringWithFormat:@"%ld",per_page]}.mutableCopy;
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/video_courses/tasting",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:dics completeSuccess:^(id  _Nullable responds) {
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                
+                if ([dic[@"data"]count]!=0) {
+                    
+                    for (NSDictionary *classes in dic[@"data"]) {
+                        MyAudioClass *mod = [MyAudioClass yy_modelWithJSON:classes];
+                        mod.classID = classes[@"id"];
+                        [_videoClassArray addObject:mod];
+                    }
+                    [_myAudioView.videoClassList cyl_reloadData];
+                    [_myAudioView.videoClassList.mj_header endRefreshing];
+                    [_myAudioView.videoClassList.mj_footer resetNoMoreData];
+                }else{
+                    if (refreshType == PullToRefresh) {
+                        [_myAudioView.videoClassList.mj_header endRefreshingWithCompletionBlock:^{
+                            [_myAudioView.videoClassList cyl_reloadData];
+                        }];
+                    }else{
+                        [_myAudioView.videoClassList.mj_footer endRefreshingWithNoMoreData];
+                    }
+                }
+            }else{
+                [self loadingHUDStopLoadingWithTitle:@"请稍后重试"];
+                [_myAudioView.videoClassList.mj_header endRefreshing];
+                [_myAudioView.videoClassList.mj_footer endRefreshing];
+            }
+            
+        }];
+    }
     
 }
-///**进入视频课程播放*/
-//- (void)enterClass:(UIButton *)sender{
-//    
-////    VideoClassPlayerViewController *controller;
-//    MyAudioClassTableViewCell *cell;
-//    
-//    if (sender.tag>=100&&sender.tag<200) {
-//        //购买的课程
-//        
-//        cell = (MyAudioClassTableViewCell *)[_myVideoClassView.boughtClassTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag-100 inSection:0]];
-//        //课程数组
-//        for (NSDictionary *dics  in cell.model.video_lessons) {
-//            VideoClass *mod = [VideoClass yy_modelWithJSON:dics];
-//            mod.classID = dics[@"id"];
-//            [_boughtVideoArray addObject:mod];
-//        }
-//        
-//        //教师
-//        _teacher = [Teacher yy_modelWithJSON:cell.model.teacher];
-//        _teacher.teacherID = cell.model.teacher[@"id"];
-//        
-//        controller = [[VideoClassPlayerViewController alloc]initWithClasses:_boughtVideoArray andTeacher:_teacher andVideoClassInfos:cell.model];
-//    }else if (sender.tag>=200){
-//        
-//        cell = (MyVideoClassTableViewCell *)[_myVideoClassView.freeClasstableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag-200 inSection:0]];
-//        //课程数组
-//        for (NSDictionary *dics  in cell.model.video_lessons) {
-//            VideoClass *mod = [VideoClass yy_modelWithJSON:dics];
-//            mod.classID = dics[@"id"];
-//            [_freeVideoArray addObject:mod];
-//        }
-//        
-//        //教师
-//        _teacher = [Teacher yy_modelWithJSON:cell.model.teacher];
-//        _teacher.teacherID = cell.model.teacher[@"id"];
-//        
-//        controller = [[VideoClassPlayerViewController alloc]initWithClasses:_freeVideoArray andTeacher:_teacher andVideoClassInfos:cell.model];
-//        
-//    }
-//    
-//    [self.navigationController pushViewController:controller animated:YES];
-//    
-//}
-
 
 #pragma mark- UITableView datasource
 
@@ -331,9 +289,9 @@ typedef enum : NSUInteger {
     
     NSInteger num ;
     if (tableView.tag == 1) {
-        num = _boughtClassArray.count;
+        num = _liveClassArray.count;
     }else {
-        num = _freeClassArray.count;
+        num = _videoClassArray.count;
     }
     
     return num;
@@ -351,8 +309,9 @@ typedef enum : NSUInteger {
         }
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
         
-        if (_boughtClassArray.count >indexPath.row) {
-            cell.model = _boughtClassArray[indexPath.row];
+        if (_liveClassArray.count >indexPath.row) {
+            cell.model = _liveClassArray[indexPath.row];
+            cell.status.hidden = NO;
         }
         
         
@@ -365,8 +324,9 @@ typedef enum : NSUInteger {
             cell=[[MyAudioClassTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"tablecell"];
         }
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-        if (_freeClassArray.count>indexPath.row) {
-            cell.model = _freeClassArray[indexPath.row];
+        if (_videoClassArray.count>indexPath.row) {
+            cell.model = _videoClassArray[indexPath.row];
+            cell.status.hidden = YES;
         }
         
         tableCell = cell;
@@ -386,11 +346,15 @@ typedef enum : NSUInteger {
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     MyAudioClassTableViewCell *cell = (MyAudioClassTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-//    VideoClassInfoViewController *controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
-//    [self.navigationController pushViewController:controller animated:YES];
+    UIViewController *controller ;
+    if (tableView.tag == 1) {
+        controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+    }else if (tableView.tag == 2){
+        controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
+    }
+    [self.navigationController pushViewController:controller animated:YES];
     
 }
-
 
 
 #pragma mark- UIScrollView delegate
@@ -402,7 +366,6 @@ typedef enum : NSUInteger {
         NSInteger pages = scrollView.contentOffset.x / pageWidth;
         
         [_myAudioView.segmentControl setSelectedSegmentIndex:pages animated:YES];
-        
         if (refreshNum == 0) {
             [_myAudioView.videoClassList.mj_header beginRefreshing];
         }
@@ -437,13 +400,13 @@ typedef enum : NSUInteger {
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
