@@ -67,8 +67,8 @@
         [_settingName setSingleLineAutoResizeWithMaxWidth:200];
         
         _arrow.sd_layout
-        .topSpaceToView(self.contentView,15)
-        .bottomSpaceToView(self.contentView,15)
+        .topSpaceToView(self.contentView,20)
+        .bottomSpaceToView(self.contentView,20)
         .rightSpaceToView(self.contentView,20)
         .widthEqualToHeight();
         
@@ -78,7 +78,6 @@
         .bottomSpaceToView(self.contentView,10);
         [_balance setSingleLineAutoResizeWithMaxWidth:200];
       
-        
         
     }
 

@@ -67,10 +67,9 @@
     return self;
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.view.backgroundColor = BACKGROUNDGRAY;
     _navigationBar = ({
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         

@@ -20,7 +20,7 @@
         
         _content = [[UIView alloc]init];
         [self.contentView addSubview:_content];
-        _content.backgroundColor = BACKGROUNDGRAY;
+        _content.backgroundColor = [UIColor whiteColor];
         _content.sd_layout
         .leftSpaceToView(self.contentView,10)
         .rightSpaceToView(self.contentView,10)
@@ -116,18 +116,18 @@
 -(void)setCanceldModel:(Canceld *)canceldModel{
     
     _canceldModel = canceldModel;
-    self.name.text = canceldModel.name;
-    
-    NSString *infos;
-    if (canceldModel.type ==nil) {
-        infos = [NSString stringWithFormat:@"%@%@/共%@课/%@",canceldModel.subject,canceldModel.grade,canceldModel.preset_lesson_count,canceldModel.teacher_name];
-    }else{
+    if ([canceldModel.product_type isEqualToString:@"LiveStudio::Course"]) {
         
-        infos =[NSString stringWithFormat:@"%@/%@%@/共%@课/%@",canceldModel.type,canceldModel.subject,canceldModel.grade,canceldModel.preset_lesson_count,canceldModel.teacher_name];
+        _name.text = canceldModel.product[@"name"];
+        
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:canceldModel.product_type],canceldModel.product[@"subject"],canceldModel.product[@"grade"],canceldModel.product[@"preset_lesson_count"],canceldModel.product[@"teacher_name"]];
+        
+    }else if ([canceldModel.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
+        _name.text = canceldModel.product_video_course[@"name"];
+        
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:canceldModel.product_type],canceldModel.product_video_course[@"subject"],canceldModel.product_video_course[@"grade"],canceldModel.product_video_course[@"preset_lesson_count"],canceldModel.product_video_course[@"teacher_name"]];
     }
-
-    self.orderInfos.text = infos;
-    
+    _price.text = [NSString stringWithFormat:@"¥%@",canceldModel.amount];
     if ([canceldModel.status isEqualToString:@"unpaid"]) {
         self.status.text = @"待付款";
     }else if ([canceldModel.status isEqualToString:@"shipped"]){
@@ -141,8 +141,20 @@
     }else if ([canceldModel.status isEqualToString:@"refunded"]){
         self.status.text = @"已退款";
     }
-
-    
 }
+
+- (NSString *)switchClassType:(NSString *)type {
+    NSString *result;
+    
+    if ([type isEqualToString:@"LiveStudio::Course"]) {
+        result = @"直播课";
+    }else if ([type isEqualToString:@"LiveStudio::VideoCourse"]){
+        result = @"视频课";
+    }else if ([type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+        result = @"一对一";
+    }
+    return result;
+}
+
 
 @end

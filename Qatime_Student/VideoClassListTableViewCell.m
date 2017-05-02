@@ -17,8 +17,8 @@
 /**视频时长*/
 @property (nonatomic, strong) UILabel *duringTime ;
 
-/**状态*/
-@property (nonatomic, strong) UILabel *status ;
+
+
 
 @end
 
@@ -30,7 +30,10 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         //课程名
+        
         _className = [[UILabel alloc]init];
         [self.contentView addSubview:_className];
         _className.font = TITLEFONTSIZE;
@@ -67,6 +70,8 @@
         
         //课程状态
         _status = [[UILabel alloc]init];
+        _status.textColor = [UIColor colorWithRed:0.08 green:0.59 blue:0.09 alpha:1.00];
+        _status.text = @"试听";
         [self.contentView addSubview:_status];
         _status.font = TEXT_FONTSIZE;
         _status.sd_layout
@@ -86,7 +91,8 @@
     _model = model;
     _className.text = model.name;
     _duringTime.text = [NSString stringWithFormat:@"时长:%@",model.video.format_tmp_duration];
-    //判断课程状态
+    
+    
     
 }
 

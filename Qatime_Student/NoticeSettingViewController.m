@@ -46,12 +46,11 @@
         UITableView * _ = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
         _.tableFooterView = [[UIView alloc]init];
         [self.view addSubview:_];
-        _.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _.bounces = NO;
         _.delegate = self;
         _.dataSource = self;
         _;
-        
         
     });
     

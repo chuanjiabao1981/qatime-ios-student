@@ -10,7 +10,6 @@
 
 #import "HMSegmentedControl.h"
 
-
 @interface MyOrderView : UIView
 
 
@@ -19,6 +18,14 @@
 
 /* 大滑动视图*/
 @property(nonatomic,strong) UIScrollView *scrollView ;
+
+@property (nonatomic, strong) UITableView *unpaidView ;
+
+@property (nonatomic, strong) UITableView *paidView ;
+
+@property (nonatomic, strong) UITableView *cancelView ;
+
+
 
 
 @end

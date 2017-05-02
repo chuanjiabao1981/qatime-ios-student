@@ -11,11 +11,13 @@
 
 @interface VideoClass : NSObject
 //{
-//    "id": 4,
-//    "name": "第一学时",
-//    "status": "init",
-//    "video_course_id": 3,
-//    "pos": 1,
+//"id": 2,
+//"name": "超人1号课程",
+//"status": "init",
+//"video_course_id": 2,
+//"real_time": 0,
+//"pos": 1,
+//"tastable": null,
 //    "video": {
 //        "id": 7767,
 //        "token": "1492157139451",
@@ -31,6 +33,8 @@
 @property (nonatomic, strong) NSString *name ;
 @property (nonatomic, strong) NSString *status ;
 @property (nonatomic, strong) NSString *video_course_id ;
+@property (nonatomic, strong) NSString *real_time;
 @property (nonatomic, strong) NSString *pos ;
+@property (nonatomic, assign) BOOL tastable ;
 @property (nonatomic, strong) Video *video ;
 @end

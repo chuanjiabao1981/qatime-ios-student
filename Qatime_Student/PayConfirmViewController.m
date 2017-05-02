@@ -61,7 +61,6 @@
     
     _navigationBar = ({
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
-        
         _.titleLabel.text = @"支付确认";
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
@@ -119,67 +118,12 @@
 
 #pragma mark- 支付订单
 - (void)payForOrder{
-    
-    if ([_dataDic[@"pay_type"]isEqualToString:@"weixin"]) {
-        /* 微信支付*/
-        
-        [self payWithWechat];
-        
-    }else if ([_dataDic[@"pay_type"]isEqualToString:@"alipay"]){
-        /* 支付宝支付*/
-        /* 预留接口*/
-        
-        [self payWithAlipay];
-        
-    }else if ([_dataDic[@"pay_type"]isEqualToString:@"account"]){
-        /* 余额支付*/
-        [self payWithBalance];
-    }
-    
+
+    /* 余额支付*/
+    [self payWithBalance];
     
 }
 
-#pragma mark- 使用微信支付
-- (void)payWithWechat{
-    
-    if ([WXApi isWXAppInstalled]==YES) {
-        
-        if (_dataDic) {
-            
-//            NSDictionary *payDic =[NSDictionary dictionaryWithDictionary: _dataDic[@"app_pay_params"]];
-//            PayReq *request = [[PayReq alloc] init] ;
-//            
-//            request.partnerId = payDic[@"partnerid"];
-//            
-//            request.prepayId= payDic[@"prepayid"];
-//            
-//            request.package = payDic[@"package"];
-//            
-//            request.nonceStr= payDic[@"noncestr"];
-//            
-//            request.timeStamp= [payDic[@"timestamp"] intValue];
-//            
-//            request.sign= payDic[@"sign"];
-//            
-//            [WXApi sendReq:request];
-            
-        }else{
-            
-            [self loadingHUDStopLoadingWithTitle:@"数据错误"];
-        }
-    }else{
-        [self loadingHUDStopLoadingWithTitle:@"尚未安装微信"];
-        
-    }
-    
-
-}
-
-#pragma mark- 使用支付宝支付
-- (void)payWithAlipay{
-    
-    
-}
 
 #pragma mark- 余额支付
 - (void)payWithBalance{
@@ -210,9 +154,6 @@
                         /* 付款成功*/
                         NSLog(@"%@",dic[@"data"]);
                         
-//                        [self loadingHUDStopLoadingWithTitle:@"购买成功!"];
-                        
-//                        [self performSelector:@selector(returnInfoPage) withObject:nil afterDelay:1];
                         [self stopHUD];
                         CheckOrderViewController *controller = [[CheckOrderViewController alloc]initWithIDNumber:dic[@"data"][@"id"] andAmount:dic[@"data"][@"amount"]];
                         [self.navigationController pushViewController:controller animated:YES];

@@ -22,6 +22,12 @@
 #import "YYModel.h"
 #import "PayConfirmViewController.h"
 
+#import "Paid.h"
+#import "Unpaid.h"
+#import "Canceld.h"
+
+
+
 @interface OrderInfoViewController (){
     
     NavigationBar *_navigationBar;
@@ -37,10 +43,11 @@
     /* 保存数据的dic*/
     NSMutableDictionary *_dataDic;
     
+    /**保存订单产品内容的字典*/
+    NSMutableDictionary *_product;
     
     NSString *_token;
     NSString *_idNumber;
-    
     
     /* 余额*/
     CGFloat balance;
@@ -53,87 +60,27 @@
 @implementation OrderInfoViewController
 
 
-/* 传值初始化方法*/
--(instancetype)initWithInfo:(NSDictionary *)info{
+/**传实例初始化方法*/
+-(instancetype)initWithOrderInfos:(id)orderInfo{
     
     self = [super init];
     if (self) {
+      
+        _dataDic = [self entityToDictionary:orderInfo].mutableCopy;
         
-        _dataDic = [NSMutableDictionary dictionaryWithDictionary:info];
-    }
-    return self;
-    
-}
-
-/* 未付款订单详情页初始化*/
--(instancetype)initWithUnpaid:(Unpaid *)unpaid{
-    
-    self = [super init];
-    if (self) {
-        
-        _unPaid = unpaid;
-        _dataDic = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                   @"amount":unpaid.price,
-                                                                   @"app_pay_params":unpaid.app_pay_params==nil?@"":unpaid.appid,                                                                   @"creatTime":unpaid.created_at==nil?@"":[unpaid.created_at timeStampToDate],
-                                                                   @"grade":unpaid.grade,
-                                                                   @"lessonTime":unpaid.preset_lesson_count,
-                                                                   @"name":unpaid.name,
-                                                                   @"orderNumber":unpaid.orderID,
-                                                                   @"payTime":unpaid.pay_at==nil?@"":unpaid.pay_at,
-                                                                   @"payType":unpaid.pay_type,
-                                                                   @"status":unpaid.status,
-                                                                   @"subject":unpaid.subject,
-                                                                   @"teacherName":unpaid.teacher_name,
-                                                                   
-                                                                   }];
+        if ([_dataDic[@"product_type"]isEqualToString:@"LiveStudio::Course"]) {
+            
+            _product = [_dataDic[@"product"] mutableCopy];
+        }else if ([_dataDic[@"product_type"]isEqualToString:@"LiveStudio::VideoCourse"]){
+            _product = [_dataDic[@"product_video_course"] mutableCopy];
+        }else if ([_dataDic[@"product_type"]isEqualToString:@"LiveStudio::InteractiveCourse"]){
+            _product = [_dataDic[@"product_interactive_course"] mutableCopy];
+        }
         
     }
+    
     return self;
-
-    
 }
-
-/* 已付款订单详情页初始化*/
--(instancetype)initWithPaid:(Paid *)paid{
-    
-    self = [super init];
-    if (self) {
-        
-        _paid = paid;
-        _dataDic = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                   @"amount":paid.price,
-                                                                   @"app_pay_params":paid.app_pay_params==nil?@"":paid.app_pay_params,                                                                   @"creatTime":paid.created_at==nil?@"":[paid.created_at timeStampToDate],
-                                                                   @"grade":paid.grade,
-                                                                   @"lessonTime":paid.preset_lesson_count,
-                                                                   @"name":paid.name,
-                                                                   @"orderNumber":paid.orderID,
-                                                               @"payTime":paid.pay_at==nil?@"":[paid.pay_at timeStampToDate],
-                                                                   @"payType":paid.pay_type,
-                                                                   @"status":paid.status,
-                                                                   @"subject":paid.subject,
-                                                                   @"teacherName":paid.teacher_name,
-                                                                   
-                                                                   }];
-
-    }
-    return self;
-
-    
-}
-
-/* 已取消订单详情页初始化*/
--(instancetype)initWithCaid:(Canceld *)canceld{
-    
-    self = [super init];
-    if (self) {
-        
-//        _dataDic = [NSMutableDictionary dictionaryWithDictionary:info];
-    }
-    return self;
-
-    
-}
-
 
 - (void)loadView{
     [super loadView];
@@ -149,7 +96,6 @@
     [self.view addSubview:_orderInfoView];
     
 
-    
     /* 判断订单状态...信息赋值*/
     if ([_dataDic[@"status"]isEqualToString:@"shipped"]) {
         /* 交易完成的*/
@@ -164,8 +110,6 @@
         [_orderInfoView.payButton setTitle:@"申请退款" forState:UIControlStateNormal];
         
         [_orderInfoView.payButton addTarget:self action:@selector(requestForRefund) forControlEvents:UIControlEventTouchUpInside];
-        
-        
         
     }else if ([_dataDic[@"status"]isEqualToString:@"unpaid"]){
         /* 未付款的*/
@@ -231,40 +175,35 @@
         
     }
 
-    _orderInfoView.orderNumber.text = _dataDic[@"orderNumber"];
+    _orderInfoView.orderNumber.text = _dataDic[@"orderID"];
     
     NSString *infos;
     NSString *type;
     //如果有课程类型属性
-    if (_dataDic[@"type"]) {
-        if ([_dataDic[@"type"] isEqualToString:@""]) {
+    if (_dataDic[@"product_type"]) {
+        if ([_dataDic[@"product_type"] isEqualToString:@"LiveStudio::Course"]) {
             type = [NSString stringWithFormat:@"直播课"];
 
-        }else if ([_dataDic[@"type"]isEqualToString:@""]){
-             type = [NSString stringWithFormat:@"一对一"];
+        }else if ([_dataDic[@"product_type"]isEqualToString:@"LiveStudio::InteractiveCourse"]){
+            type = [NSString stringWithFormat:@"一对一"];
+        }else if ([_dataDic[@"product_type"]isEqualToString:@"LiveStudio::VideoCourse"]){
+            type = [NSString stringWithFormat:@"视频课"];
         }
         
-        infos =[NSString stringWithFormat:@"%@/%@%@/共%@课/%@",type,_dataDic[@"subject"],_dataDic[@"grade"],_dataDic[@"lessonTime"],_dataDic[@"teacherName"]];
+        
+        infos =[NSString stringWithFormat:@"%@/%@%@/共%@课/%@",type,_product[@"subject"],_product[@"grade"],_product[@"preset_lesson_count"],_product[@"teacherName"]];
 
     }else{
         
-        infos =[NSString stringWithFormat:@"%@%@/共%@课/%@",_dataDic[@"subject"],_dataDic[@"grade"],_dataDic[@"lessonTime"],_dataDic[@"teacherName"]]; 
-        
+        infos =[NSString stringWithFormat:@"%@%@/共%@课/%@",_product[@"subject"],_product[@"grade"],_product[@"preset_lesson_count"],_product[@"teacherName"]];
     }
     
     _orderInfoView.subName.text = infos;
-    _orderInfoView.name.text = _dataDic[@"name"];
-    _orderInfoView.creatTime.text = _dataDic[@"creatTime"];
-    _orderInfoView.payTime.text = _dataDic[@"payTime"];
-    if ([_dataDic[@"payType"]isEqualToString:@"weixin"]) {
-        _orderInfoView.payType.text = @"微信支付";
-    }else if ([_dataDic[@"payType"]isEqualToString:@"alipay"]){
-        _orderInfoView.payType.text = @"支付宝";
-    }else if([_dataDic[@"payType"]isEqualToString:@"account"]){
-        _orderInfoView.payType.text = @"余额支付";
-    }
+    _orderInfoView.name.text = _product[@"name"];
+    _orderInfoView.creatTime.text = _dataDic[@"created_at"];
+    _orderInfoView.payTime.text = _dataDic[@"pay_at"]==nil?@"":_dataDic[@"pay_at"];
+    _orderInfoView.payType.text = @"余额支付";
     _orderInfoView.amount.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"amount"]];
-    
     
     [_orderInfoView.cancelButton addTarget:self action:@selector(cancelOrder) forControlEvents:UIControlEventTouchUpInside];
 //    [_orderInfoView.payButton addTarget:self action:@selector(payOrder) forControlEvents:UIControlEventTouchUpInside];
@@ -518,7 +457,44 @@
     
     
 }
-
+//反解model->字典
+- (NSDictionary *) entityToDictionary:(id)entity
+{
+    
+    Class clazz = [entity class];
+    u_int count;
+    
+    objc_property_t* properties = class_copyPropertyList(clazz, &count);
+    NSMutableArray* propertyArray = [NSMutableArray arrayWithCapacity:count];
+    NSMutableArray* valueArray = [NSMutableArray arrayWithCapacity:count];
+    
+    for (int i = 0; i < count ; i++)
+    {
+        objc_property_t prop=properties[i];
+        const char* propertyName = property_getName(prop);
+        
+        [propertyArray addObject:[NSString stringWithCString:propertyName encoding:NSUTF8StringEncoding]];
+        
+        //        const char* attributeName = property_getAttributes(prop);
+        //        NSLog(@"%@",[NSString stringWithUTF8String:propertyName]);
+        //        NSLog(@"%@",[NSString stringWithUTF8String:attributeName]);
+        
+        id value =  [entity performSelector:NSSelectorFromString([NSString stringWithUTF8String:propertyName])];
+        if(value ==nil)
+            [valueArray addObject:[NSNull null]];
+        else {
+            [valueArray addObject:value];
+        }
+        //        NSLog(@"%@",value);
+    }
+    
+    free(properties);
+    
+    NSDictionary* returnDic = [NSDictionary dictionaryWithObjects:valueArray forKeys:propertyArray];
+    NSLog(@"%@", returnDic);
+    
+    return returnDic;
+}
 
 
 

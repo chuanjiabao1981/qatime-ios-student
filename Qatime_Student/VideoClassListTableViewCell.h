@@ -12,4 +12,8 @@
 
 @property (nonatomic, strong) VideoClass *model ;
 
+/**状态*/
+@property (nonatomic, strong) UILabel *status ;
+
+
 @end

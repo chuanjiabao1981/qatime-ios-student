@@ -30,7 +30,7 @@ typedef enum : NSUInteger {
     ZFPlayerModel *_playerModel;
     
     /**课程数据*/
-    NSMutableArray *_classListArray;
+    NSMutableArray <VideoClass *>*_classListArray;
     
     /**教师详情数据*/
     Teacher *_teacher;
@@ -42,7 +42,10 @@ typedef enum : NSUInteger {
     ScreenMode _screenMode;
     
     /**播放源数组*/
-    NSArray *datas;
+//    NSMutableArray *datas;
+    
+    /**初始化的播放源*/
+    NSString *_urlString;
     
 }
 /**主视图*/
@@ -54,7 +57,7 @@ typedef enum : NSUInteger {
 @implementation VideoClassPlayerViewController
 
 //初始化方法
--(instancetype)initWithClasses:(__kindof NSArray<VideoClass *> *)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo{
+-(instancetype)initWithClasses:(__kindof NSArray<VideoClass *> *)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo andURLString:(NSString * _Nullable)URLString{
     
     self = [super init];
     if (self) {
@@ -63,13 +66,18 @@ typedef enum : NSUInteger {
         _teacher = teacher;
         _classInfo = classInfo;
         
+        if (URLString ==nil) {
+            
+            _urlString = [NSString stringWithFormat:@"%@",_classListArray[0].video.name_url];
+            
+        }else{
+            _urlString = [NSString stringWithFormat:@"%@",URLString];
+        }
         
     }
     return self;
     
 }
-
-
 
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -89,12 +97,12 @@ typedef enum : NSUInteger {
     
     _screenMode = PortraitMode;
     
-    datas = @[@"http://7xqhmn.media1.z0.glb.clouddn.com/femorning-20161106.mp4",
-                @"http://wvideo.spriteapp.cn/video/2016/0328/56f8ec01d9bfe_wpd.mp4",
-                @"http://baobab.wdjcdn.com/1456117847747a_x264.mp4",
-                @"http://baobab.wdjcdn.com/14525705791193.mp4",
-                ];
-
+//    datas = @[].mutableCopy;
+//    
+//    for (VideoClass *videos in _classListArray) {
+//        
+//        [datas addObject:videos.video.name_url];
+//    }
     
     //加载播放器
     [self setupVideoPlayer];
@@ -159,7 +167,7 @@ typedef enum : NSUInteger {
     // 初始化播放模型
     _playerModel = [[ZFPlayerModel alloc]init];
     _playerModel.fatherView = _playerView;
-    _playerModel.videoURL = [NSURL URLWithString:@"http://baobab.wdjcdn.com/1456316686552The.mp4"];
+    _playerModel.videoURL = [NSURL URLWithString:_urlString];
     _playerModel.title = @"视频课程啊";
     [self.videoPlayer playerControlView:_controlView playerModel:_playerModel];
     
@@ -261,7 +269,11 @@ typedef enum : NSUInteger {
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    _playerModel.videoURL = [NSURL URLWithString:datas[indexPath.row]];
+    
+    VideoClassProgressTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    _playerModel.videoURL = [NSURL URLWithString:cell.model.video.name_url];
+    
     [self.videoPlayer resetToPlayNewVideo:_playerModel];
     
 }

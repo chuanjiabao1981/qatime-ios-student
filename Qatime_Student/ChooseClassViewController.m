@@ -112,7 +112,6 @@
     [self.liveClassFilterController didMoveToParentViewController:self];
     
     
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         //根据筛选项,获取响应的tag

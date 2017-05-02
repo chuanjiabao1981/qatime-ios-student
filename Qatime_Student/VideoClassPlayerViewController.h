@@ -14,7 +14,7 @@
 @interface VideoClassPlayerViewController : UIViewController
 
 /**视频播放器*/
-@property (nonatomic, strong) ZFPlayerView *videoPlayer ;
+@property (nonatomic, strong) ZFPlayerView * _Nullable videoPlayer ;
 
 
 /**
@@ -25,6 +25,6 @@
  @param classInfo 课程详情
  @return 实例
  */
--(instancetype)initWithClasses:(__kindof NSArray <VideoClass *>*)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo;
+-(instancetype)initWithClasses:(__kindof NSArray <VideoClass *>*)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo andURLString:(NSString * _Nullable)URLString;
 
 @end

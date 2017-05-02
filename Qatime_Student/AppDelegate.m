@@ -359,8 +359,6 @@
     _personalViewController.title = NSLocalizedString(@"个人", comment:"");
     
     
-    
-    
     /* 初始化五个navigationcontroller*/
     indexPageVC = [[UINavigationController alloc]initWithRootViewController:_indexPageViewController];
 //    tutoriumVC = [[UINavigationController alloc]initWithRootViewController:_tutoriumViewController];

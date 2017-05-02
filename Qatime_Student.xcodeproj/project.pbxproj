@@ -306,9 +306,6 @@
 		54AA30821DF950CA009E0D04 /* CheckChargeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30811DF950CA009E0D04 /* CheckChargeView.m */; };
 		54AA30851DF950DB009E0D04 /* CheckChargeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30841DF950DB009E0D04 /* CheckChargeViewController.m */; };
 		54AA30881DF98C40009E0D04 /* MyOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30871DF98C40009E0D04 /* MyOrderView.m */; };
-		54AA30911DF98CBC009E0D04 /* UnpaidOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30901DF98CBC009E0D04 /* UnpaidOrderView.m */; };
-		54AA30941DF98CC7009E0D04 /* PaidOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30931DF98CC7009E0D04 /* PaidOrderView.m */; };
-		54AA30971DF98CD5009E0D04 /* CanceldOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30961DF98CD5009E0D04 /* CanceldOrderView.m */; };
 		54AA309B1DF98D30009E0D04 /* MyOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA309A1DF98D30009E0D04 /* MyOrderTableViewCell.m */; };
 		54AB48C81DED2D9B008E3BC5 /* SettingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48C71DED2D9B008E3BC5 /* SettingView.m */; };
 		54AB48CB1DED2DC7008E3BC5 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48CA1DED2DC7008E3BC5 /* SettingViewController.m */; };
@@ -1299,12 +1296,6 @@
 		54AA30841DF950DB009E0D04 /* CheckChargeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CheckChargeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		54AA30861DF98C40009E0D04 /* MyOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOrderView.h; sourceTree = "<group>"; };
 		54AA30871DF98C40009E0D04 /* MyOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyOrderView.m; sourceTree = "<group>"; };
-		54AA308F1DF98CBC009E0D04 /* UnpaidOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnpaidOrderView.h; sourceTree = "<group>"; };
-		54AA30901DF98CBC009E0D04 /* UnpaidOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnpaidOrderView.m; sourceTree = "<group>"; };
-		54AA30921DF98CC7009E0D04 /* PaidOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaidOrderView.h; sourceTree = "<group>"; };
-		54AA30931DF98CC7009E0D04 /* PaidOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaidOrderView.m; sourceTree = "<group>"; };
-		54AA30951DF98CD5009E0D04 /* CanceldOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanceldOrderView.h; sourceTree = "<group>"; };
-		54AA30961DF98CD5009E0D04 /* CanceldOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanceldOrderView.m; sourceTree = "<group>"; };
 		54AA30991DF98D30009E0D04 /* MyOrderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOrderTableViewCell.h; sourceTree = "<group>"; };
 		54AA309A1DF98D30009E0D04 /* MyOrderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyOrderTableViewCell.m; sourceTree = "<group>"; };
 		54AB48C61DED2D9B008E3BC5 /* SettingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingView.h; sourceTree = "<group>"; };
@@ -3811,12 +3802,6 @@
 				54AA30981DF98D1E009E0D04 /* Cell */,
 				54AA30861DF98C40009E0D04 /* MyOrderView.h */,
 				54AA30871DF98C40009E0D04 /* MyOrderView.m */,
-				54AA308F1DF98CBC009E0D04 /* UnpaidOrderView.h */,
-				54AA30901DF98CBC009E0D04 /* UnpaidOrderView.m */,
-				54AA30921DF98CC7009E0D04 /* PaidOrderView.h */,
-				54AA30931DF98CC7009E0D04 /* PaidOrderView.m */,
-				54AA30951DF98CD5009E0D04 /* CanceldOrderView.h */,
-				54AA30961DF98CD5009E0D04 /* CanceldOrderView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -6459,7 +6444,6 @@
 				54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */,
 				548328E81DDC6F360053AB29 /* Mp3Recorder.m in Sources */,
 				54AB48E41DED5415008E3BC5 /* MyClassView.m in Sources */,
-				54AA30971DF98CD5009E0D04 /* CanceldOrderView.m in Sources */,
 				543E0CCB1DFFEDC8004B24FD /* CheckOrderViewController.m in Sources */,
 				5413D2521DF7B5CD00A8FDEC /* CashRecordView.m in Sources */,
 				548D1D6D1EA7415400B120C8 /* ClassTimeView.m in Sources */,
@@ -6503,7 +6487,6 @@
 				543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */,
 				543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */,
 				54AC02B11E892FD100817767 /* UIView+Swizzling.m in Sources */,
-				54AA30911DF98CBC009E0D04 /* UnpaidOrderView.m in Sources */,
 				548D1D761EA741FE00B120C8 /* ClassTimeViewController.m in Sources */,
 				545162BB1DF50D85000BD17A /* ChangePasswordView.m in Sources */,
 				54AC02AE1E892FD100817767 /* UINavigationBar+Swizzling.m in Sources */,
@@ -6572,7 +6555,6 @@
 				54AC02191E892C4A00817767 /* NTESMeetingRTSManager.m in Sources */,
 				54AC04041E8938E100817767 /* NIMTeamCardOperationItem.m in Sources */,
 				541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */,
-				54AA30941DF98CC7009E0D04 /* PaidOrderView.m in Sources */,
 				54AC03DC1E8938E100817767 /* NIMInputToolBar.m in Sources */,
 				54AC027E1E892D3C00817767 /* UIImage+NTESColor.m in Sources */,
 				54B9076C1E9CF37400034FDC /* VideoClassListTableViewCell.m in Sources */,

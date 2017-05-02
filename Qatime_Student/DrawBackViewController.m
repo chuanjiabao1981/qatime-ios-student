@@ -129,7 +129,6 @@
         [self loadingHUDStopLoadingWithTitle:@"最多输入20个字"];
     }
     
-    
 }
 
 
@@ -153,7 +152,7 @@
             
             [self setupView];
             
-            [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+            [self endHUD];
             
         }else{
            /* 请求数据失败*/
@@ -177,21 +176,28 @@
     
     if (_dataDic) {
         _drawBackView.number.text = _paidOrder.orderID;
-        _drawBackView.className.text = _paidOrder.name;
-        _drawBackView.progress.text =  [NSString stringWithFormat:@"%@/%@",_paidOrder.completed_lessons_count,_paidOrder.preset_lesson_count];
+        
+        
+        NSDictionary *product;
+        //直播课
+        if ([_paidOrder.product_type isEqualToString:@"LiveStudio::Course"]) {
+            
+            product = [NSDictionary dictionaryWithDictionary:_paidOrder.product];
+            
+        }else if ([_paidOrder.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
+            product = [NSDictionary dictionaryWithDictionary:_paidOrder.product_video_course];
+        }else if ([_paidOrder.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+            
+            product = [NSDictionary dictionaryWithDictionary:_paidOrder.product_interactive_course];
+            
+        }
+        _drawBackView.className.text = product[@"name"];
+        _drawBackView.progress.text =  [NSString stringWithFormat:@"%ld/%@",[product[@"preset_lesson_count"]integerValue] -[product[@"completed_lesson_count"]integerValue] ,product[@"preset_lesson_count"]];
         _drawBackView.price.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"amount"]];
         _drawBackView.enableDrawbackPrice.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"refund_amount"]];
         _drawBackView.paidPrice.text = [NSString stringWithFormat:@"%ld",[_dataDic[@"amount"] integerValue]-[_dataDic[@"refund_amount"] integerValue]];
         
-        if ([_dataDic[@"pay_type"]isEqualToString:@"weixin"]) {
-            _drawBackView.drawBackWay.text = @"微信钱包";
-            
-        }else if ([_dataDic[@"pay_type"]isEqualToString:@"alipay"]){
-            _drawBackView.drawBackWay.text = @"支付宝";
-        }else if ([_dataDic[@"pay_type"]isEqualToString:@"account"]){
-            _drawBackView.drawBackWay.text = @"退至余额";
-            
-        }
+        _drawBackView.drawBackWay.text = @"退至余额";
         
     }
     
@@ -219,6 +225,7 @@
             
             if ([dic[@"status"]isEqualToNumber:@1]) {
                 [self loadingHUDStopLoadingWithTitle:@"申请成功!"];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"RefundSuccess" object:nil];
                 
                 [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                 

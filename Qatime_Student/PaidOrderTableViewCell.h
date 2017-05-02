@@ -28,8 +28,8 @@
 @property (nonatomic, strong) UILabel *unTips ;
 @property (nonatomic, strong) UIImageView *unTipsImage ;
 
-
-
 @property(nonatomic,strong) Paid *paidModel;
+
+@property (nonatomic, strong) UIView *content ;
 
 @end

@@ -22,6 +22,7 @@
 #import "OrderViewController.h"
 #import "Features.h"
 #import "TeacherFeatureTagCollectionViewCell.h"
+#import "UIViewController+HUD.h"
 
 typedef enum : NSUInteger {
     PullToRefresh,
@@ -249,7 +250,7 @@ typedef enum : NSUInteger {
         //进入试听
         
         //测试代码  ->暂时缺少试听接口
-        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo];
+        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:_classArray[0].video.name_url];
         [self.navigationController pushViewController:controller animated:YES];
         
         
@@ -271,19 +272,15 @@ typedef enum : NSUInteger {
         //进入学习
         
         //测试代码
-        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo];
+        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:nil];
         [self.navigationController pushViewController:controller animated:YES];
         
     }else{
         //购买下单
-        
         OrderViewController *controller = [[OrderViewController alloc]initWithClassID:_classID andClassType:VideoClassType];
         [self.navigationController pushViewController:controller animated:YES];
         
     }
-    
-    
-    
 }
 
 
@@ -305,6 +302,18 @@ typedef enum : NSUInteger {
     if (_classArray.count>indexPath.row) {
         
         cell.model = _classArray[indexPath.row];
+        if (_classInfo.is_bought == YES) {
+            
+            cell.status.hidden = NO;
+        }else{
+            
+            if (cell.model.tastable == YES) {
+                cell.status.hidden= NO;
+            }else{
+                cell.status .hidden = YES;
+            }
+            
+        }
     }
     
     return  cell;
@@ -317,6 +326,29 @@ typedef enum : NSUInteger {
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return [tableView cellHeightForIndexPath:indexPath cellContentViewWidth:self.view.width_sd tableView:tableView];
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (_classInfo.is_bought == YES) {
+        
+        VideoClassListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        //进入观看
+        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url];
+        [self.navigationController pushViewController:controller animated:YES];
+        
+        
+    }else{
+        
+        [self loadingHUDStopLoadingWithTitle:@"尚未购买不能观看"];
+    }
+    
+    
+}
+
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
 }
 
 

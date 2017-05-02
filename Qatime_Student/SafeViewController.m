@@ -117,9 +117,6 @@
     SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
     cell.balance.text = [[NSUserDefaults standardUserDefaults]valueForKey:@"parent_phone"];
     
-    
-    
-    
 }
 
 #pragma mark- 请求数据
@@ -170,7 +167,7 @@
             _menuTableView.delegate = self;
             _menuTableView.dataSource = self;
             _menuTableView.bounces = NO;
-            _menuTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+            _menuTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             [self.view addSubview:_menuTableView];
             _menuTableView.backgroundColor = [UIColor clearColor];
             _menuTableView.tableFooterView = [[UIView alloc]init];

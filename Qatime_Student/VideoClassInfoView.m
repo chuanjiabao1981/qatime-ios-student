@@ -504,6 +504,7 @@
         
         /* 辅导课列表*/
         _classesListTableView = [[UITableView alloc]init];
+        
         _classesListTableView.tableFooterView = [[UIView alloc]init];
         
         [_view3 addSubview:_classesListTableView];

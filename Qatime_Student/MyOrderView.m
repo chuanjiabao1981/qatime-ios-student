@@ -55,6 +55,46 @@
         });
         
         
+        /**未支付页面*/
+        _unpaidView = ({
+            UITableView *_ =[[UITableView alloc]init];
+            [_scrollView addSubview:_];
+            _.separatorStyle = UITableViewCellSeparatorStyleNone;
+            _.sd_layout
+            .topSpaceToView(_scrollView, 0)
+            .bottomSpaceToView(_scrollView, 0)
+            .leftSpaceToView(_scrollView, 0)
+            .widthIs(self.width_sd);
+            _;
+        });
+        
+        /**已支付页面*/
+        _paidView = ({
+            UITableView *_ =[[UITableView alloc]init];
+            [_scrollView addSubview:_];
+            _.separatorStyle = UITableViewCellSeparatorStyleNone;
+            _.sd_layout
+            .topSpaceToView(_scrollView, 0)
+            .bottomSpaceToView(_scrollView, 0)
+            .leftSpaceToView(_unpaidView, 0)
+            .widthIs(self.width_sd);
+            _;
+        });
+        
+        /**未支付页面*/
+        _cancelView = ({
+            UITableView *_ =[[UITableView alloc]init];
+            [_scrollView addSubview:_];
+            _.separatorStyle = UITableViewCellSeparatorStyleNone;
+            _.sd_layout
+            .topSpaceToView(_scrollView, 0)
+            .bottomSpaceToView(_scrollView, 0)
+            .leftSpaceToView(_paidView, 0)
+            .widthIs(self.width_sd);
+            _;
+        });
+        
+        [_scrollView setupAutoContentSizeWithRightView:_cancelView rightMargin:0];
         
     }
     return self;

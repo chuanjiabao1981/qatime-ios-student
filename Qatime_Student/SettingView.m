@@ -39,14 +39,15 @@
             _.titleLabel.font = TITLEFONTSIZE;
             [self addSubview:_];
             _ .sd_layout
-            .leftSpaceToView(self ,10)
-            .rightSpaceToView(self,10)
+            .leftSpaceToView(self ,20)
+            .rightSpaceToView(self,20)
             .topSpaceToView(_menuTableView,60)
             .heightRatioToView(self,0.06f);
             [_ setTitle:@"切换账号" forState:UIControlStateNormal];
             _.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
-            [_ setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [_ setBackgroundColor:[UIColor orangeColor]];
+            [_ setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+            _.layer.borderColor = NAVIGATIONRED.CGColor;
+            _.layer.borderWidth = 1;
             _;
         });
     }

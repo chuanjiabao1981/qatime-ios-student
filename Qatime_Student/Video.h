@@ -24,5 +24,6 @@
 @property (nonatomic, strong) NSString *tmp_duration ;
 @property (nonatomic, strong) NSString *format_tmp_duration ;
 @property (nonatomic, strong) NSString *capture ;
+@property (nonatomic, strong) NSString *name_url ;
 
 @end

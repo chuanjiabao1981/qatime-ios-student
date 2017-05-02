@@ -448,10 +448,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1004,6 +1004,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[DrawBackViewController setupView]:DrawBackViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_paidOrder">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[TutoriumInfoViewController listen]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1016,6 +1024,11 @@
       </ContextState>
       <ContextState
          contextName = "-[OrderInfoViewController initWithUnpaid:]:OrderInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[InteractionViewController checkPermission]:InteractionViewController.m">
@@ -1110,6 +1123,14 @@
       </ContextState>
       <ContextState
          contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[OrderInfoViewController initWithOrderInfos:]:OrderInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[ChooseGradeAndSubjectViewController userSelectedGrade:]:ChooseGradeAndSubjectViewController.m">
@@ -1301,10 +1322,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1332,6 +1353,9 @@
          <PersistentStrings>
             <PersistentString
                value = "_dataDic">
+            </PersistentString>
+            <PersistentString
+               value = "_product">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1501,6 +1525,9 @@
       </ContextState>
       <ContextState
          contextName = "__36-[ChooseClassViewController getTags]_block_invoke:ChooseClassViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__44-[CheckOrderViewController requestPayStatus]_block_invoke:CheckOrderViewController.m">
       </ContextState>
       <ContextState
          contextName = "__43-[CashRecordViewController requestRecharge]_block_invoke:CashRecordViewController.m">

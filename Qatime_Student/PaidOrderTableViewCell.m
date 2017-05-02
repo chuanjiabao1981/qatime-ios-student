@@ -14,7 +14,18 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
+         self.backgroundColor = BACKGROUNDGRAY;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        _content = [[UIView alloc]init];
+        [self.contentView addSubview:_content];
+        _content.backgroundColor = [UIColor whiteColor];
+        _content.sd_layout
+        .leftSpaceToView(self.contentView,10)
+        .rightSpaceToView(self.contentView,10)
+        .topSpaceToView(self.contentView,10)
+        .bottomSpaceToView(self.contentView,10);
+        
         
         /* 课程名*/
         _name =[[UILabel alloc]init];
@@ -22,9 +33,9 @@
         [self.contentView addSubview:_name];
         /* 课程名*/
         _name.sd_layout
-        .leftSpaceToView(self.contentView,10)
-        .topSpaceToView(self.contentView,10)
-        .rightSpaceToView(self.contentView,10)
+        .leftSpaceToView(self.contentView,20*ScrenScale)
+        .topSpaceToView(self.contentView,20)
+        .rightSpaceToView(self.contentView,20)
         .autoHeightRatio(0);
         
         /**订单课程详情*/
@@ -38,8 +49,8 @@
         .topSpaceToView(_name,10)
         .autoHeightRatio(0);
         [_orderInfos setSingleLineAutoResizeWithMaxWidth:1000];
-
         
+    
         /* 支付状态*/
         _status=[[UILabel alloc]init];
         _status.textColor = [UIColor colorWithRed:0.14 green:0.80 blue:0.99 alpha:1.0];
@@ -56,8 +67,8 @@
         [self.contentView addSubview:line];
         line.backgroundColor = SEPERATELINECOLOR_2;
         line.sd_layout
-        .leftEqualToView(self.contentView)
-        .rightEqualToView(self.contentView)
+        .leftEqualToView(_content)
+        .rightEqualToView(_content)
         .topSpaceToView(_status, 10)
         .heightIs(1.0);
 
@@ -124,20 +135,19 @@
 -(void)setPaidModel:(Paid *)paidModel{
     
     _paidModel = paidModel;
-    _name.text = paidModel.name;
-    
-    NSString *infos ;
-    
-    if (paidModel.type ==nil) {
-        infos = [NSString stringWithFormat:@"%@%@/共%@课/%@",paidModel.subject,paidModel.grade,paidModel.preset_lesson_count,paidModel.teacher_name];
-    }else{
+    if ([paidModel.product_type isEqualToString:@"LiveStudio::Course"]) {
         
-        infos =[NSString stringWithFormat:@"%@/%@%@/共%@课/%@",paidModel.type,paidModel.subject,paidModel.grade,paidModel.preset_lesson_count,paidModel.teacher_name];
+        _name.text = paidModel.product[@"name"];
+        
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:paidModel.product_type],paidModel.product[@"subject"],paidModel.product[@"grade"],paidModel.product[@"preset_lesson_count"],paidModel.product[@"teacher_name"]];
+        
+    }else if ([paidModel.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
+        _name.text = paidModel.product_video_course[@"name"];
+        
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:paidModel.product_type],paidModel.product_video_course[@"subject"],paidModel.product_video_course[@"grade"],paidModel.product_video_course[@"preset_lesson_count"],paidModel.product_video_course[@"teacher_name"]];
     }
     
-    _orderInfos.text = infos;
-    
-    _price.text = [NSString stringWithFormat:@"¥%@",paidModel.price];
+    _price.text = [NSString stringWithFormat:@"¥%@",paidModel.amount];
     
     if ([paidModel.status isEqualToString:@"unpaid"]) {
         _status.text = @"待付款";
@@ -175,6 +185,19 @@
     }
     
     
+}
+
+- (NSString *)switchClassType:(NSString *)type {
+    NSString *result;
+    
+    if ([type isEqualToString:@"LiveStudio::Course"]) {
+        result = @"直播课";
+    }else if ([type isEqualToString:@"LiveStudio::VideoCourse"]){
+        result = @"视频课";
+    }else if ([type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+        result = @"一对一";
+    }
+    return result;
 }
 
 @end

@@ -20,12 +20,12 @@
     
         _content = [[UIView alloc]init];
         [self.contentView addSubview:_content];
-        _content.backgroundColor = BACKGROUNDGRAY;
+        _content.backgroundColor = [UIColor whiteColor];
         _content.sd_layout
         .leftSpaceToView(self.contentView,10)
         .rightSpaceToView(self.contentView,10)
         .topSpaceToView(self.contentView,10)
-        .heightIs(self.height_sd-20);
+        .bottomSpaceToView(self.contentView, 10);
         
         /* 课程名*/
         _name =[[UILabel alloc]init];
@@ -52,7 +52,6 @@
         .autoHeightRatio(0);
         [_orderInfos setSingleLineAutoResizeWithMaxWidth:1000];
         
-
         /* 支付状态*/
         _status=[[UILabel alloc]init];
         _status.textColor = [UIColor colorWithRed:0.14 green:0.80 blue:0.99 alpha:1.0];
@@ -73,7 +72,6 @@
         .rightEqualToView(_content)
         .topSpaceToView(_status, 10)
         .heightIs(1.0);
-        
         
         /* 右侧button*/
         _rightButton = [[UIButton alloc]init];
@@ -142,20 +140,20 @@
 -(void)setUnpaidModel:(Unpaid *)unpaidModel{
     
     _unpaidModel = unpaidModel;
-    _name.text = unpaidModel.name;
     
-    NSString *infos ;
-    
-    if (unpaidModel.type ==nil) {
-        infos = [NSString stringWithFormat:@"%@%@/共%@课/%@",unpaidModel.subject,unpaidModel.grade,unpaidModel.preset_lesson_count,unpaidModel.teacher_name];
-    }else{
+    if ([unpaidModel.product_type isEqualToString:@"LiveStudio::Course"]) {
         
-        infos =[NSString stringWithFormat:@"%@/%@%@/共%@课/%@",unpaidModel.type,unpaidModel.subject,unpaidModel.grade,unpaidModel.preset_lesson_count,unpaidModel.teacher_name];
+        _name.text = unpaidModel.product[@"name"];
+        
+        _orderInfos.text = [NSString stringWithFormat:@"%@%@/共%@课/%@",unpaidModel.product[@"subject"],unpaidModel.product[@"grade"],unpaidModel.product[@"preset_lesson_count"],unpaidModel.product[@"teacher_name"]];
+        
+    }else if ([unpaidModel.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
+        _name.text = unpaidModel.product_video_course[@"name"];
+        
+        _orderInfos.text = [NSString stringWithFormat:@"%@%@/共%@课/%@",unpaidModel.product_video_course[@"subject"],unpaidModel.product_video_course[@"grade"],unpaidModel.product_video_course[@"preset_lesson_count"],unpaidModel.product_video_course[@"teacher_name"]];
     }
-    
-    _orderInfos.text = infos;
-    
-    _price.text = [NSString stringWithFormat:@"¥%@",unpaidModel.price];
+
+    _price.text = [NSString stringWithFormat:@"¥%@",unpaidModel.amount];
 
     if ([unpaidModel.status isEqualToString:@"unpaid"]) {
         _status.text = @"待付款";
@@ -171,6 +169,19 @@
         self.status.text = @"已退款";
     }
     
+}
+
+- (NSString *)switchClassType:(NSString *)type {
+    NSString *result;
+    
+    if ([type isEqualToString:@"LiveStudio::Course"]) {
+        result = @"直播课";
+    }else if ([type isEqualToString:@"LiveStudio::VideoCourse"]){
+        result = @"视频课";
+    }else if ([type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+        result = @"一对一";
+    }
+    return result;
 }
 
 

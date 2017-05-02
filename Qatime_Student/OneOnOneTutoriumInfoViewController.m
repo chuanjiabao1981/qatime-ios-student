@@ -195,7 +195,6 @@
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
     
-    
 }
 
 /**进入互动课程*/
@@ -204,12 +203,10 @@
     OneOnOneTutoriumInfoViewController *controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:_classID];
     [self.navigationController pushViewController:controller animated:YES];
     
-    
 }
 
 /**购买课程*/
 - (void)buyClass:(UIButton *)sender{
-    
     
     OrderViewController *orderVC;
     
@@ -405,59 +402,58 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    NIMChatroom *chatroom = [[NIMChatroom alloc]init];
-    chatroom.roomId = @"8130727";
-    chatroom.name = @"哈喽";
-    
-    //创建数据
-    NSMutableArray *noticeArr = @[].mutableCopy;
-    TutoriumListInfo *tutoium;
-    NSMutableArray <Teacher *> *teachers = @[].mutableCopy;
-    NSMutableArray *classArr = @[].mutableCopy;
-    NSMutableArray *membersArr = @[].mutableCopy;
-    
-    if (![_dataDic[@"chat_team"] isEqual:[NSNull null]]) {
-        
-        if (![_dataDic[@"chat_team"][@"announcement"] isEqual:[NSNull null]]) {
-            
-            for (NSDictionary *dic in _dataDic[@"chat_team"][@"announcement"]) {
-                
-                Notice *mod  = [Notice yy_modelWithJSON:dic];
-                [noticeArr addObject:mod];
-            }
-        }
-        
-        if (![_dataDic[@"chat_team"][@"accounts"] isEqual:[NSNull null]]) {
-            for (NSMutableDictionary *dic in _dataDic[@"chat_team"][@"accounts"]) {
-                Members *mod = [Members yy_modelWithJSON:dic];
-                [membersArr addObject:mod];
-            }
-        }
-    }
-    
-    tutoium = [TutoriumListInfo yy_modelWithJSON:_dataDic];
-    tutoium.describe = _dataDic[@"description"];
-    
-    if (![_dataDic[@"teachers"]isEqual:[NSNull null]]) {
-        for (NSDictionary *dic in _dataDic[@"teachers"]) {
-            Teacher *mod = [Teacher yy_modelWithJSON:dic];
-            mod.teacherID = dic[@"id"];
-            [teachers addObject:mod];
-        }
-    }
-    
-    if (![_dataDic[@"interactive_lessons"]isEqual:[NSNull null]]) {
-        
-        for (NSDictionary *dic in _dataDic[@"interactive_lessons"]) {
-            Classes *mod = [Classes yy_modelWithJSON:dic];
-            mod.classID = dic[@"id"];
-            [classArr addObject:mod];
-        }
-    }
-    
-    InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatroom andNotice:noticeArr andTutorium:tutoium andTeacher:_teachersArray andClasses:classArr andOnlineMembers:membersArr];
-    [self.navigationController pushViewController:controller animated:YES];
+//    NIMChatroom *chatroom = [[NIMChatroom alloc]init];
+//    chatroom.roomId = @"8130727";
+//    chatroom.name = @"哈喽";
+//    
+//    //创建数据
+//    NSMutableArray *noticeArr = @[].mutableCopy;
+//    TutoriumListInfo *tutoium;
+//    NSMutableArray <Teacher *> *teachers = @[].mutableCopy;
+//    NSMutableArray *classArr = @[].mutableCopy;
+//    NSMutableArray *membersArr = @[].mutableCopy;
+//    
+//    if (![_dataDic[@"chat_team"] isEqual:[NSNull null]]) {
+//        
+//        if (![_dataDic[@"chat_team"][@"announcement"] isEqual:[NSNull null]]) {
+//            
+//            for (NSDictionary *dic in _dataDic[@"chat_team"][@"announcement"]) {
+//                
+//                Notice *mod  = [Notice yy_modelWithJSON:dic];
+//                [noticeArr addObject:mod];
+//            }
+//        }
+//        
+//        if (![_dataDic[@"chat_team"][@"accounts"] isEqual:[NSNull null]]) {
+//            for (NSMutableDictionary *dic in _dataDic[@"chat_team"][@"accounts"]) {
+//                Members *mod = [Members yy_modelWithJSON:dic];
+//                [membersArr addObject:mod];
+//            }
+//        }
+//    }
+//    
+//    tutoium = [TutoriumListInfo yy_modelWithJSON:_dataDic];
+//    tutoium.describe = _dataDic[@"description"];
+//    
+//    if (![_dataDic[@"teachers"]isEqual:[NSNull null]]) {
+//        for (NSDictionary *dic in _dataDic[@"teachers"]) {
+//            Teacher *mod = [Teacher yy_modelWithJSON:dic];
+//            mod.teacherID = dic[@"id"];
+//            [teachers addObject:mod];
+//        }
+//    }
+//    
+//    if (![_dataDic[@"interactive_lessons"]isEqual:[NSNull null]]) {
+//        
+//        for (NSDictionary *dic in _dataDic[@"interactive_lessons"]) {
+//            Classes *mod = [Classes yy_modelWithJSON:dic];
+//            mod.classID = dic[@"id"];
+//            [classArr addObject:mod];
+//        }
+//    }
+//    
+//    InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatroom andNotice:noticeArr andTutorium:tutoium andTeacher:_teachersArray andClasses:classArr andOnlineMembers:membersArr];
+//    [self.navigationController pushViewController:controller animated:YES];
 
     
 }

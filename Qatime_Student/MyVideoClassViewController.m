@@ -310,7 +310,7 @@ typedef enum : NSUInteger {
         _teacher = [Teacher yy_modelWithJSON:cell.model.teacher];
         _teacher.teacherID = cell.model.teacher[@"id"];
         
-        controller = [[VideoClassPlayerViewController alloc]initWithClasses:_boughtVideoArray andTeacher:_teacher andVideoClassInfos:cell.model];
+        controller = [[VideoClassPlayerViewController alloc]initWithClasses:_boughtVideoArray andTeacher:_teacher andVideoClassInfos:cell.model andURLString:nil];
     }else if (sender.tag>=200){
         
         cell = (MyVideoClassTableViewCell *)[_myVideoClassView.freeClasstableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag-200 inSection:0]];
@@ -325,7 +325,7 @@ typedef enum : NSUInteger {
         _teacher = [Teacher yy_modelWithJSON:cell.model.teacher];
         _teacher.teacherID = cell.model.teacher[@"id"];
         
-        controller = [[VideoClassPlayerViewController alloc]initWithClasses:_freeVideoArray andTeacher:_teacher andVideoClassInfos:cell.model];
+        controller = [[VideoClassPlayerViewController alloc]initWithClasses:_freeVideoArray andTeacher:_teacher andVideoClassInfos:cell.model andURLString:nil];
 
     }
     
