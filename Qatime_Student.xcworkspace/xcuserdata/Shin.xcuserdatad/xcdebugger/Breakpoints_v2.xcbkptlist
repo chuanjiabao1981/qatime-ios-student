@@ -25,6 +25,7 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+<<<<<<< HEAD
             filePath = "Qatime_Student/MyVideoClassViewController.m"
             timestampString = "515392634.602384"
             startingColumnNumber = "9223372036854775807"
@@ -32,6 +33,15 @@
             startingLineNumber = "294"
             endingLineNumber = "294"
             landmarkName = "-enterClass:"
+=======
+            filePath = "Qatime_Student/CheckChargeViewController.m"
+            timestampString = "514972343.013517"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
+            landmarkName = "-requestPayStatus"
+>>>>>>> 内购充值
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,11 +52,19 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/CheckChargeViewController.m"
+<<<<<<< HEAD
             timestampString = "515416871.031587"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "126"
             endingLineNumber = "126"
+=======
+            timestampString = "514972571.696235"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
+>>>>>>> 内购充值
             landmarkName = "-requestPayStatus"
             landmarkType = "7">
          </BreakpointContent>
@@ -57,6 +75,7 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+<<<<<<< HEAD
             filePath = "Qatime_Student/OrderInfoViewController.m"
             timestampString = "515421909.136436"
             startingColumnNumber = "9223372036854775807"
@@ -64,6 +83,15 @@
             startingLineNumber = "238"
             endingLineNumber = "238"
             landmarkName = "-viewDidLoad"
+=======
+            filePath = "Qatime_Student/CheckChargeViewController.m"
+            timestampString = "514972571.696235"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "181"
+            endingLineNumber = "181"
+            landmarkName = "-requestPayStatus"
+>>>>>>> 内购充值
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -73,6 +101,7 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+<<<<<<< HEAD
             filePath = "Qatime_Student/OrderInfoViewController.m"
             timestampString = "515421922.118741"
             startingColumnNumber = "9223372036854775807"
@@ -80,6 +109,14 @@
             startingLineNumber = "209"
             endingLineNumber = "209"
             landmarkName = "-setUpViews"
+=======
+            filePath = "Qatime_Student/CheckOrderViewController.m"
+            timestampString = "514985264.206654"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
+            landmarkName = "-requestPayStatus"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -89,6 +126,24 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+            filePath = "Qatime_Student/CheckOrderViewController.m"
+            timestampString = "514979765.137448"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
+            landmarkName = "-requestPayStatus"
+>>>>>>> 内购充值
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+<<<<<<< HEAD
             filePath = "Qatime_Student/OrderInfoViewController.m"
             timestampString = "515421955.027463"
             startingColumnNumber = "9223372036854775807"
@@ -97,6 +152,63 @@
             endingLineNumber = "247"
             landmarkName = "-requestBalance"
             landmarkType = "7">
+=======
+            filePath = "Qatime_Student/CheckOrderViewController.m"
+            timestampString = "514985385.542164"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "187"
+            endingLineNumber = "187"
+            landmarkName = "-loadViewWithStatus:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[CheckOrderViewController loadViewWithStatus:]"
+                  moduleName = "Qatime_Student"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Qatime_Student/CheckOrderViewController.m"
+                  timestampString = "514989294.989835"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "188"
+                  endingLineNumber = "188"
+                  offsetFromSymbolStart = "24">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__Block_byref_object_copy_"
+                  moduleName = "Qatime_Student"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Qatime_Student/CheckOrderViewController.m"
+                  timestampString = "514989294.992962"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "188"
+                  endingLineNumber = "188"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__Block_byref_object_dispose_"
+                  moduleName = "Qatime_Student"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Shin/Documents/%E5%B8%B7%E5%B9%84%E9%80%9A%E8%BE%BE/qatime-ios-student%20-%20debug/Qatime_Student/CheckOrderViewController.m"
+                  timestampString = "514989294.996654"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "188"
+                  endingLineNumber = "188"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
+>>>>>>> 内购充值
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

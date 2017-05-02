@@ -154,6 +154,12 @@
                         /* 付款成功*/
                         NSLog(@"%@",dic[@"data"]);
                         
+<<<<<<< HEAD
+=======
+//                        [self loadingHUDStopLoadingWithTitle:@"购买成功!"];
+                        
+//                        [self performSelector:@selector(returnInfoPage) withObject:nil afterDelay:1];
+>>>>>>> 内购充值
                         [self stopHUD];
                         CheckOrderViewController *controller = [[CheckOrderViewController alloc]initWithIDNumber:dic[@"data"][@"id"] andAmount:dic[@"data"][@"amount"]];
                         [self.navigationController pushViewController:controller animated:YES];
