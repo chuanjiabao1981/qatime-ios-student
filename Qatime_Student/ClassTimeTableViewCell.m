@@ -222,6 +222,8 @@
         
         _type.text = @"一对一";
         _type.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:1.0 alpha:1.0];
+    }else{
+        _type.text = @"视频课";
     }
 
 

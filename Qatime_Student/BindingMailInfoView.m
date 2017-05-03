@@ -37,9 +37,9 @@
         [_getKeyCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
         _nextStepButton = [UIButton new];
-        _nextStepButton.backgroundColor = BUTTONRED;
+        _nextStepButton.backgroundColor = [UIColor whiteColor];
         _nextStepButton.layer.borderWidth = 1;
-        _nextStepButton.layer.borderColor = BUTTONRED.CGColor;
+        _nextStepButton.layer.borderColor = NAVIGATIONRED.CGColor;
         
         [_nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_nextStepButton setTitle:@"下一步" forState:UIControlStateNormal];

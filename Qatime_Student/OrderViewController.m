@@ -21,6 +21,7 @@
 #import "VideoClassInfo.h"
 #import "UIViewController+AFHTTP.h"
 #import "DCPaymentView.h"
+#import "ChargeViewController.h"
 
 
 typedef enum : NSUInteger {
@@ -239,6 +240,7 @@ typedef enum : NSUInteger {
 /* 请求课程详细信息*/
 - (void)requestClassInfo{
     
+    [self loadingHUDStopLoadingWithTitle:nil];
     if (_token&&_idNumber) {
         
         if (_classID!=nil) {
@@ -265,7 +267,6 @@ typedef enum : NSUInteger {
                     id mod;
                     
                     if (_orderType == LiveClassType) {
-                        
                         /* 数据请求成功*/
                         mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"]];
                         [(TutoriumListInfo *)mod setClassID:dic[@"data"][@"id"]];
@@ -278,7 +279,6 @@ typedef enum : NSUInteger {
                     }else if (_orderType == InteractionType){
                         
                         mod = (OneOnOneClass *)[OneOnOneClass yy_modelWithJSON:dic[@"data"]];
-                        
                         [(OneOnOneClass *)mod setClassID:dic[@"data"][@"id"]];
                         //页面赋值
                         [_orderView setupInteractionData:mod];
@@ -298,9 +298,10 @@ typedef enum : NSUInteger {
                         
                     }
                     
-                    
                     /* 请求一次余额 ,判断是否可以用余额支付*/
                     [self requestBalance];
+                    
+                    
                     
                 }else{
                     /* 拉取订单信息失败*/
@@ -315,6 +316,8 @@ typedef enum : NSUInteger {
                     
                     
                 }
+                
+                [self stopHUD];
                 
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -348,7 +351,6 @@ typedef enum : NSUInteger {
                     
                     balanceEnable = YES;
                     [_orderView.balanceButton addTarget:self action:@selector(chooseBalance:) forControlEvents:UIControlEventTouchUpInside];
-                    
                     
                 }else{
                     
@@ -506,7 +508,13 @@ typedef enum : NSUInteger {
         
     }else{
         
-        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"余额不足,不可使用余额支付." cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"余额不足,是否前往充值?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"前往充值"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+            
+            if (buttonIndex!=0) {
+                ChargeViewController *controller = [[ChargeViewController alloc]init];
+                [self.navigationController pushViewController:controller animated:YES];
+                
+            }
             
         }];
         

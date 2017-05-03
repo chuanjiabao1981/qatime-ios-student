@@ -21,7 +21,6 @@
 
 -(instancetype)initWithPaidOrder:(Paid *)paidOrder;
 
-
 -(instancetype)initWithRefundOrder:(Refund *)refundOrder;
 
 

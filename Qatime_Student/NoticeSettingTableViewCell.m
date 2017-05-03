@@ -8,12 +8,9 @@
 
 #import "NoticeSettingTableViewCell.h"
 
-@interface NoticeSettingTableViewCell ()
-
-{
+@interface NoticeSettingTableViewCell (){
     
     UIView *_line;
-    
 }
 
 @end

@@ -15,6 +15,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         _name = [[UILabel alloc]init];
 //        _name.text =  @"辅导班消息通知";
         _name.textColor = [UIColor blackColor];
@@ -23,10 +24,6 @@
         
         UIView *line = [[UIView alloc]init];
         line.backgroundColor  = SEPERATELINECOLOR_2;
-        
-        
-        
-        
         [self.contentView sd_addSubviews:@[_name,_noticeSwitch,line]];
         
         _name.sd_layout
@@ -37,10 +34,9 @@
         
         _noticeSwitch.sd_layout
         .rightSpaceToView(self.contentView,20)
-        .topSpaceToView(self.contentView,10)
-        .bottomSpaceToView(self.contentView,10)
         .centerYEqualToView(_name)
-        .autoHeightRatio(0.5);
+        .heightRatioToView(self, 0.3)
+        .autoWidthRatio(0.5);
         
         line.sd_layout
         .leftEqualToView(self.contentView)

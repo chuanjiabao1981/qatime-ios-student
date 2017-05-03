@@ -32,10 +32,12 @@
         
         /* 选项名*/
         _name = [[UILabel alloc]init];
+        _name.font = [UIFont systemFontOfSize:17*ScrenScale];
         _name.textColor = [UIColor blackColor];
         
         _before = ({
             UILabel *_ = [[UILabel alloc]init];
+            _.font = [UIFont systemFontOfSize:17*ScrenScale];
             _.textColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0];
             _.text = @"提前";
             _;
@@ -43,7 +45,7 @@
         
         _timeButton = ({
             UILabel *_ = [[UILabel alloc]init];
-            [_ setFont:[UIFont systemFontOfSize:15*ScrenScale]];
+            [_ setFont:[UIFont systemFontOfSize:16*ScrenScale]];
             _.textColor = BUTTONRED;
             _.text =@"00小时00分钟" ;
             _.userInteractionEnabled = YES;

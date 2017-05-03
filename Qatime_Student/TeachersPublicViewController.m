@@ -76,7 +76,7 @@
 {
     self = [super init];
     if (self) {
-        _teacherID  = teacherID.mutableCopy;
+        _teacherID  = [NSString stringWithFormat:@"%@",teacherID];
     }
     return self;
 }
@@ -707,8 +707,6 @@
     
 }
 
-
-
 #pragma mark- 教师详细信息请求
 - (void)requestTeachersInfoWithID:(NSString *)teacherID{
     
@@ -811,7 +809,6 @@
         
         headerSize = CGSizeMake(CGRectGetWidth(_teachersPublicHeaderView.frame), CGRectGetHeight( _teachersPublicHeaderView.frame));
         
-        
     }
     
 }
@@ -820,7 +817,6 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
     if (scrollView == _teachersPublicCollectionView) {
-        
         
         
     }

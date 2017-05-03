@@ -23,6 +23,7 @@
 #import "Features.h"
 #import "TeacherFeatureTagCollectionViewCell.h"
 #import "UIViewController+HUD.h"
+#import "TeachersPublicViewController.h"
 
 typedef enum : NSUInteger {
     PullToRefresh,
@@ -36,7 +37,6 @@ typedef enum : NSUInteger {
     
     NSString *_token;
     NSString *_idNumber;
-    
     
     /**数据源*/
     NSMutableArray <VideoClass *>*_classArray;
@@ -122,7 +122,14 @@ typedef enum : NSUInteger {
         [weakSelf.videoClassInfoView.scrollView scrollRectToVisible:CGRectMake(weakSelf.view.width_sd*index, 0, weakSelf.view.width_sd, weakSelf.videoClassInfoView.scrollView.height_sd) animated:YES];
     }];
     
+    //教师头像点击
+    _videoClassInfoView.teacherHeadImage.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(watchTeachers)];
+    [_videoClassInfoView.teacherHeadImage addGestureRecognizer:tap];
+    
 }
+
+
 
 /**加载购买栏*/
 - (void)setupBuyBar{
@@ -149,6 +156,15 @@ typedef enum : NSUInteger {
     [self requestData];
     
 }
+
+//查看教师详情
+- (void)watchTeachers{
+    
+    TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:_teacher.teacherID];
+    [self.navigationController pushViewController:controller animated:YES];
+    
+}
+
 
 /**请求数据*/
 - (void)requestData{

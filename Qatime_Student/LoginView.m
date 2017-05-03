@@ -11,10 +11,7 @@
 
 
 #import "LoginView.h"
-<<<<<<< HEAD
 #import "AuthenCode.h"
-=======
->>>>>>> 内购充值
 
 @interface LoginView (){
 
@@ -35,28 +32,18 @@
         /* 跳过登录*/
         _acrossLogin = [[UIButton alloc]init];
         [self addSubview:_acrossLogin];
-<<<<<<< HEAD
         [_acrossLogin setTitle:NSLocalizedString(@"直接进入", comment:"") forState:UIControlStateNormal];
         [_acrossLogin setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _acrossLogin.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         [_acrossLogin setBackgroundColor:[UIColor whiteColor]];
-=======
-        [_acrossLogin setTitle:NSLocalizedString(@"跳过登录", comment:"") forState:UIControlStateNormal];
-        [_acrossLogin setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        _acrossLogin.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
->>>>>>> 内购充值
         
         _acrossLogin.sd_layout
         .rightSpaceToView(self, 15*ScrenScale)
         .topSpaceToView(self, 35*ScrenScale)
         .autoHeightRatio(0);
-<<<<<<< HEAD
         [_acrossLogin setupAutoSizeWithHorizontalPadding:15 buttonHeight:30];
         [_acrossLogin updateLayout];
         [_acrossLogin setEnlargeEdge:20];
-=======
-        [_acrossLogin setupAutoSizeWithHorizontalPadding:10 buttonHeight:30];
->>>>>>> 内购充值
         
         /**logo*/
         _logoImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"logo_big"]];
@@ -113,7 +100,6 @@
         .rightEqualToView(self)
         .leftSpaceToView(wechatLogin,15)
         .heightIs(0.5);
-<<<<<<< HEAD
         
         /* 输入账号密码*/
         /* 框1 输入用户账号*/
@@ -126,20 +112,6 @@
         .leftSpaceToView(self,30*ScrenScale)
         .topSpaceToView(_logoImage,Navigation_Height*2)
         .rightSpaceToView(self,30*ScrenScale)
-=======
-        
-        /* 输入账号密码*/
-        /* 框1 输入用户账号*/
-        UIView *text1=[[UIView alloc]init];
-        text1.layer.borderWidth = 0.6;
-        text1.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
-        [self addSubview:text1];
-        
-        text1.sd_layout
-        .leftSpaceToView(self,30*ScrenScale)
-        .topSpaceToView(_logoImage,Navigation_Height*2)
-        .rightSpaceToView(self,20)
->>>>>>> 内购充值
         .heightIs(50*ScrenScale);
         
         /* 用户名输入框*/
@@ -182,19 +154,11 @@
         
         /* 登录按钮*/
         _loginButton =[[UIButton alloc]init];
-<<<<<<< HEAD
         _loginButton.layer.borderColor =NAVIGATIONRED.CGColor;
         _loginButton.layer.borderWidth = 1.0f;
         
         [_loginButton setTitle:NSLocalizedString(@"登录", comment:"") forState:UIControlStateNormal];
         [_loginButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
-=======
-        _loginButton.layer.borderColor =[UIColor colorWithRed:0.79 green:0.0 blue:0.0 alpha:1.00].CGColor;
-        _loginButton.layer.borderWidth = 1.0f;
-        
-        [_loginButton setTitle:NSLocalizedString(@"登录", comment:"") forState:UIControlStateNormal];
-        [_loginButton setTitleColor:[UIColor colorWithRed:0.79 green:0.0 blue:0.0 alpha:1.00] forState:UIControlStateNormal];
->>>>>>> 内购充值
         [self addSubview:_loginButton];
         
         _loginButton.sd_layout
@@ -271,17 +235,6 @@
         [_text3 addSubview:_keyCodeText];
         _keyCodeText.hidden = YES;
         
-<<<<<<< HEAD
-=======
-        
-        /* 验证码生成*/
-        _keyCodeButton.sd_layout
-        .rightEqualToView(_text2)
-        .heightRatioToView(_text2,0.9)
-        .topSpaceToView(_text2,20)
-        .widthRatioToView(_text2,2/5.0f);
-        
->>>>>>> 内购充值
         _text3.sd_layout
         .leftEqualToView(_text2)
         .rightSpaceToView(_keyCodeButton,0)

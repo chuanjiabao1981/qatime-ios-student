@@ -66,7 +66,7 @@
         
         /* 解释*/
         _explain = [[UILabel alloc]init];
-        _explain.backgroundColor = [UIColor whiteColor];
+        _explain.backgroundColor = BACKGROUNDGRAY;
         _explain.textColor = TITLECOLOR;
         _explain.text = @"由于当前购买人数较多，需要等待一会儿才能获取充值结果，请稍后进行查询。";
         _explain.numberOfLines = 0;
@@ -146,9 +146,7 @@
         .rightSpaceToView(self,20)
         .topEqualToView(number)
         .bottomSpaceToView(_finishButton,0);
-        
-        
-        
+    
         
     }
     return self;

@@ -36,7 +36,7 @@
         [self addSubview:_cycleScrollView];
         
         //年级筛选滑动视图
-        _gradeMenu = [[UIScrollView alloc]initWithFrame:CGRectMake(0, _cycleScrollView.bottom_sd, self.width_sd, 60)];
+        _gradeMenu = [[UIScrollView alloc]initWithFrame:CGRectMake(0, _cycleScrollView.bottom_sd, self.width_sd, 60*ScrenScale)];
         _gradeMenu.showsHorizontalScrollIndicator = NO;
         
         NSArray *gradeArr= @[@"高三",@"高二",@"高一",@"初三",@"初二",@"初一",@"六年级",@"五年级",@"四年级",@"三年级",@"二年级",@"一年级"];

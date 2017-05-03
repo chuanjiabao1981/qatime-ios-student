@@ -13,6 +13,7 @@
 #import "SignUpInfoViewController.h"
 
 #import "PersonalInfoEditViewController.h"
+#import "BindingViewController.h"
 
 @interface CityChosenViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
@@ -67,8 +68,6 @@
         _;
     });
 
-    
-    
 }
 
 
@@ -118,9 +117,10 @@
             
             [self.navigationController popToViewController:controller animated:YES];
             
+        }else if ([controller isMemberOfClass:[BindingViewController class]]){
+            [self.navigationController popToViewController:controller animated:YES];
         }
     }
-    
     
 }
 

@@ -76,16 +76,7 @@
             
             _.number.text = _dataDic[@"id"];
             _.time.text = [_dataDic[@"created_at"] timeStampToDate];
-            
-            if ([_dataDic[@"pay_type"]isEqualToString:@"weixin"]) {
-                _.type.text = @"微信支付";
-                
-            }else if ([_dataDic[@"pay_type"]isEqualToString:@"alipay"]){
-                _.type.text = @"支付宝支付";
-            }else if ([_dataDic[@"pay_type"]isEqualToString:@"account"]){
-                _.type.text = @"余额支付";
-            }
-            
+            _.type.text = @"余额支付";
             _.money.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"amount"]];
             
             [_.finishButton addTarget:self action:@selector(payForOrder) forControlEvents:UIControlEventTouchUpInside];
@@ -112,7 +103,7 @@
     }
     
     /* 注册微信支付成功或失败的通知*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(CheckPayStatus) name:@"ChargeSucess" object:nil];
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(CheckPayStatus) name:@"ChargeSucess" object:nil];
     
 }
 
@@ -154,17 +145,13 @@
                         /* 付款成功*/
                         NSLog(@"%@",dic[@"data"]);
                         
-<<<<<<< HEAD
-=======
-//                        [self loadingHUDStopLoadingWithTitle:@"购买成功!"];
-                        
-//                        [self performSelector:@selector(returnInfoPage) withObject:nil afterDelay:1];
->>>>>>> 内购充值
                         [self stopHUD];
-                        CheckOrderViewController *controller = [[CheckOrderViewController alloc]initWithIDNumber:dic[@"data"][@"id"] andAmount:dic[@"data"][@"amount"]];
-                        [self.navigationController pushViewController:controller animated:YES];
+                        [self loadingHUDStopLoadingWithTitle:@"支付成功"];
                         
                         [[NSNotificationCenter defaultCenter ]postNotificationName:@"RefreshTutoriumInfo" object:nil];
+                        
+                        [self CheckPayStatus:dic[@"data"][@"id"] andAmount:dic[@"data"][@"amount"]];
+                        
                         
                     }else{
                         /* 付款失败*/
@@ -223,14 +210,14 @@
     
 }
 
+
 #pragma mark- 访问服务器,查询支付是否成功
-- (void)CheckPayStatus{
+- (void)CheckPayStatus:(NSString *)inNumber andAmount:(NSString *)amount{
     
-//    if (_dataDic) {
-//        CheckChargeViewController *checkVC = [[CheckChargeViewController alloc]initWithIDNumber:_dataDic[@"id"] andAmount:_dataDic[@"amount"]];
-//        [self.navigationController pushViewController:checkVC animated:YES];
-//        
-//    }
+    [NSThread sleepForTimeInterval:2];
+    
+    CheckOrderViewController *controller = [[CheckOrderViewController alloc]initWithIDNumber:inNumber andAmount:amount];
+    [self.navigationController pushViewController:controller animated:YES];
     
 }
 

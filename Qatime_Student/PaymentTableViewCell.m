@@ -126,23 +126,13 @@
     
     _number.text = model.target_type;
     
+    _mode.text = @"余额支付";
     
-    if ([model.change_type isEqualToString:@"weixin"]) {
-    
-        _mode.text = @"微信支付";
-    
-    
-    }
-    
-    
-        /* 时间戳*/
+    /* 时间戳*/
     _time.text = model.created_at;
     
     /* 金额*/
     _money.text = [NSString stringWithFormat:@"%@",model.amount];
-    
-    
-    
     
 }
 

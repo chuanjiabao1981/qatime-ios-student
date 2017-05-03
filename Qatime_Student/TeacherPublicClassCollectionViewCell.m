@@ -25,13 +25,12 @@
         [self.contentView addSubview:_classImage];
         _classImage.sd_layout.topSpaceToView(self.contentView,0).leftSpaceToView(self.contentView,0).rightSpaceToView(self.contentView,0).heightRatioToView(self.contentView,0.7);
         
-        
-        
         /* 教师姓名label*/
         
         /**** 预留label的宽度和教师姓名model源 ***/
         
         _className = [[UILabel alloc]init];
+        _className.font = TITLEFONTSIZE;
         [self.contentView addSubview:_className];
         _className.textColor = [UIColor blackColor];
         _className.sd_layout

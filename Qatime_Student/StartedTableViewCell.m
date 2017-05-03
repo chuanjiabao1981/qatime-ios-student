@@ -117,13 +117,13 @@
         .topEqualToView(_content)
         .bottomEqualToView(_content)
         .leftEqualToView(_content)
-        .autoWidthRatio(16/10.0);
+        .autoWidthRatio(1.0);
         
         /* 状态label布局*/
         
         _status.sd_layout
-        .leftSpaceToView(_classImage,10)
-        .topSpaceToView(_content,5)
+        .leftSpaceToView(_classImage,10*ScrenScale)
+        .topSpaceToView(_content,5*ScrenScale)
         .autoHeightRatio(0);
         
         [_status setSingleLineAutoResizeWithMaxWidth:200];
@@ -134,16 +134,16 @@
         /* 课程名称布局*/
         
         _className.sd_layout
-        .leftSpaceToView(_status,2)
+        .leftSpaceToView(_status,2*ScrenScale)
         .topEqualToView(_status)
-        .rightSpaceToView(_content,10)
+        .rightSpaceToView(_content,10*ScrenScale)
         .bottomEqualToView(_status);
         [_className setMaxNumberOfLinesToShow:0];
         
         
         /* 年级布局*/
         _grade .sd_layout
-        .leftSpaceToView(_classImage,10)
+        .leftSpaceToView(_classImage,10*ScrenScale)
         .centerYEqualToView(_content)
         .autoHeightRatio(0);
         [_grade setSingleLineAutoResizeWithMaxWidth:100];
@@ -178,8 +178,8 @@
         
         /* 课程进度布局*/
         progress.sd_layout
-        .leftSpaceToView(_classImage,10)
-        .bottomSpaceToView(_content,5)
+        .leftSpaceToView(_classImage,10*ScrenScale)
+        .bottomSpaceToView(_content,5*ScrenScale)
         .autoHeightRatio(0);
         [progress setSingleLineAutoResizeWithMaxWidth:100];
         
@@ -204,14 +204,11 @@
         
         /* 进入按钮*/
         _enterButton.sd_layout
-        .rightSpaceToView(_content,10)
-        .bottomSpaceToView(_content,10)
+        .rightSpaceToView(_content,10*ScrenScale)
+        .bottomSpaceToView(_content,10*ScrenScale)
         .heightIs(20)
-        .widthIs(60);
-        
-        
-        
-        
+        .widthIs(60*ScrenScale);
+    
         
     }
     

@@ -77,7 +77,6 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
 
     /* 默认初始方向屏幕不可旋转*/
     [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"SupportedLandscape"];
@@ -85,7 +84,6 @@
     _window = [[UIWindow alloc]init];
     [_window makeKeyAndVisible];
     _window.backgroundColor = [UIColor whiteColor];
-    
     
     /* 选项卡视图初始化*/
     [self updateTabBarViews];
@@ -237,7 +235,7 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ChangeLoginRoot:) name:@"Login_Type" object:nil];
     
     /*监听 是否微信绑定状态*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(bindingWechat) name:@"BindingWechat" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(bindingWechat:) name:@"BindingWechat" object:nil];
     
     /* 监听用户是否关闭推送声音和震动*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnPushSound:) name:@"NotificationSound" object:nil];
@@ -453,9 +451,9 @@
 }
 
 /* 处在绑定微信状态下*/
-- (void)bindingWechat{
-    
-    bindingWechat  = YES;
+- (void)bindingWechat:(NSNotification *)note{
+
+    bindingWechat  = [[note object]boolValue];
 
 }
 
@@ -820,7 +818,6 @@
             if (bindingWechat == YES) {
                 
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"RequestToBindingWechat" object:respdata.code];
-                
                 
             }else{
                 /* 如果只是登录*/

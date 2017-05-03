@@ -119,12 +119,7 @@
     [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     
     [self buy:buyType];
-<<<<<<< HEAD
 
-=======
-    
-    
->>>>>>> 内购充值
 }
 
 -(void)buy:(int)type{
@@ -397,13 +392,8 @@
 /**服务器验证支付情况*/
 - (void)verifyPayment:(SKPaymentTransaction *)transaction{
     
-<<<<<<< HEAD
     
     
-=======
-    
-    
->>>>>>> 内购充值
 }
 
 

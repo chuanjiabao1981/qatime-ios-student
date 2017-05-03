@@ -75,7 +75,7 @@
     
     [self loadingHUDStartLoadingWithTitle:@"正在获取数据"];
     
-    _menuName = @[@"充值记录",@"提现记录",@"消费记录"];
+    _menuName = @[@"充值记录",@"消费记录",@"退款记录"];
     
     /* 请求钱包数据*/
     [self requestWallet];
@@ -196,10 +196,10 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 10;
+    return 10*ScrenScale;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 10;
+    return 10*ScrenScale;
 }
 
 

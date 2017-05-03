@@ -25,95 +25,229 @@
     self = [super initWithFrame:frame];
     if (self) {
         
+        self.backgroundColor = BACKGROUNDGRAY;
         
-        /* 年级选择器*/
-        _grade = [[UIButton alloc]init];
-        [self addSubview:_grade];
-        //        _grade.textColor = [UIColor colorWithRed:0.78 green:0.78 blue:0.8 alpha:1.0];
-        [_grade setTitle:@"选择所在年级" forState:UIControlStateNormal];
-        _grade.titleLabel.textAlignment = NSTextAlignmentLeft;
-        _grade.titleLabel.font = [UIFont systemFontOfSize:18*ScrenScale];
-        [_grade setTitleColor:TITLECOLOR forState:UIControlStateNormal];
+        /* 手机号输入框的创建和布局*/
+        UIView *text1 = [[UIView alloc]init];
+        text1.backgroundColor = [UIColor whiteColor];
+        [self addSubview:text1];
+        text1.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+        text1.layer.borderWidth = 0.5;
+        text1.sd_layout
+        .topSpaceToView(self,10*ScrenScale320)
+        .leftSpaceToView(self,30)
+        .rightSpaceToView(self,30)
+        .heightIs(40);
         
-        _grade.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        _grade.layer.borderWidth = 0.6;
+        _phoneNumber = [[UITextField alloc]init];
+        _phoneNumber.font = TEXT_FONTSIZE;
+        [text1 addSubview:_phoneNumber];
+        _phoneNumber.placeholder =NSLocalizedString(@"请输入大陆地区11位手机号", nil);
+        _phoneNumber.keyboardType = UIKeyboardTypeNumberPad;
+        _phoneNumber.sd_layout
+        .leftSpaceToView(text1, 10)
+        .rightSpaceToView(text1, 10)
+        .topSpaceToView(text1, 10)
+        .bottomSpaceToView(text1, 10);
         
-        [self.nextStepButton setTitle:@"绑定" forState:UIControlStateNormal];
-        [self.nextStepButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        self.nextStepButton.backgroundColor = [UIColor whiteColor];
-        self.nextStepButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        self.nextStepButton.layer.borderWidth = 1;
+        /* 手机校验码输入框*/
+        UIView *text2 = [[UIView alloc]init];
+        text2.backgroundColor = [UIColor whiteColor];
+        [self addSubview:text2];
+        text2.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+        text2.layer.borderWidth = 0.5;
+        text2.sd_layout
+        .topSpaceToView(text1,10*ScrenScale320)
+        .leftEqualToView(text1)
+        .widthRatioToView(text1, 0.6)
+        .heightRatioToView(text1, 1.0);
         
-        /* 布局和布局修改*/
+        _checkCode = [[UITextField alloc]init];
+        _checkCode.font = TEXT_FONTSIZE;
+        _checkCode.keyboardType = UIKeyboardTypeNumberPad;
+        [text2 addSubview:_checkCode];
+        _checkCode.placeholder = NSLocalizedString(@"输入校验码", nil) ;
+        _checkCode.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
+        _checkCode.sd_layout
+        .leftSpaceToView(text2, 10)
+        .rightSpaceToView(text2, 10)
+        .topSpaceToView(text2, 10)
+        .bottomSpaceToView(text2, 10);
         
-        self.phoneNumber.sd_layout
-        .leftSpaceToView(self,20)
-        .rightSpaceToView(self,20)
-        .topSpaceToView(self,20)
-        .heightRatioToView(self,0.1);
+        /* 获取校验码按钮*/
+        _getCheckCodeButton = [[UIButton alloc]init];
+        [self addSubview:_getCheckCodeButton];
+        _getCheckCodeButton.backgroundColor = TITLECOLOR;
+        _getCheckCodeButton.layer.borderWidth = 1;
+        _getCheckCodeButton.layer.borderColor = TITLECOLOR.CGColor;
+        _getCheckCodeButton.titleLabel.font = TEXT_FONTSIZE;
+        _getCheckCodeButton.sd_layout
+        .topEqualToView(text2)
+        .bottomEqualToView(text2)
+        .leftSpaceToView(text2, 0)
+        .rightEqualToView(text1);
+        [_getCheckCodeButton setTitle:NSLocalizedString(@"获取校验码", nil) forState:UIControlStateNormal];
+        [_getCheckCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _getCheckCodeButton.enabled = NO;
+        [_getCheckCodeButton setEnlargeEdge:10];
         
-        self.checkCode.sd_layout
-        .topSpaceToView(self.phoneNumber,15)
-        .leftSpaceToView(self,20)
-        .widthIs(self.width_sd/2-40)
-        .heightRatioToView(self.phoneNumber,1.0f);
+        /* 用户密码输入框*/
+        UIView *text3 = [[UIView alloc]init];
+        text3.backgroundColor = [UIColor whiteColor];
+        [self addSubview:text3];
+        text3.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+        text3.layer.borderWidth = 0.5;
+        text3.sd_layout
+        .topSpaceToView(text2,10*ScrenScale320)
+        .leftEqualToView(text1)
+        .rightEqualToView(text1)
+        .heightRatioToView(text1, 1.0);
         
-        self.getCheckCodeButton.sd_layout
-        .topEqualToView(self.checkCode)
-        .leftSpaceToView(self.checkCode,0)
-        .rightEqualToView(self.phoneNumber)
-        .heightRatioToView(self.checkCode,1.0);
+        _userPassword = [[UITextField alloc]init];
+        _userPassword.font = TEXT_FONTSIZE;
+        [text3 addSubview:_userPassword];
+        _userPassword.placeholder = NSLocalizedString(@"输入登录密码", nil);
+        _userPassword.sd_layout
+        .topSpaceToView(text3, 10)
+        .bottomSpaceToView(text3, 10)
+        .leftSpaceToView(text3, 10)
+        .rightSpaceToView(text3, 10);
+        _userPassword.secureTextEntry = YES;
+        
+        /* 确认登录密码框*/
+        UIView *text4  = [[UIView alloc]init];
+        text4.backgroundColor = [UIColor whiteColor];
+        [self addSubview:text4];
+        text4.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+        text4.layer.borderWidth = 0.5;
+        
+        text4.sd_layout
+        .topSpaceToView(text3,10*ScrenScale320)
+        .leftEqualToView(text1)
+        .rightEqualToView(text1)
+        .heightRatioToView(text1, 1.0);
+        
+        _userPasswordCompare =[[UITextField alloc]init];
+        _userPasswordCompare.font = TEXT_FONTSIZE;
+        [text4 addSubview:_userPasswordCompare];
+        _userPasswordCompare.placeholder =NSLocalizedString(@"确认登录密码", nil);
+        _userPasswordCompare.sd_layout
+        .leftSpaceToView(text4, 10)
+        .rightSpaceToView(text4, 10)
+        .topSpaceToView(text4, 10)
+        .bottomSpaceToView(text4, 10);
+        _userPasswordCompare.secureTextEntry = YES;
+        
+        //选择年级
+        UIView *text5  = [[UIView alloc]init];
+        text5.backgroundColor = [UIColor whiteColor];
+        [self addSubview:text5];
+        text5.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+        text5.layer.borderWidth = 0.5;
+        
+        text5.sd_layout
+        .topSpaceToView(text4,10*ScrenScale320)
+        .leftEqualToView(text1)
+        .rightEqualToView(text1)
+        .heightRatioToView(text1, 1.0);
+        
+        _chooseGrade = [[UIButton alloc]init];
+        _chooseGrade.titleLabel.font = TEXT_FONTSIZE;
+        [_chooseGrade setTitleColor:PLACEHOLDERGRAY forState:UIControlStateNormal];
+        [_chooseGrade setTitle:@"请选择年级" forState:UIControlStateNormal];
+        [text5 addSubview:_chooseGrade];
+        
+        _chooseGrade.sd_layout
+        .topSpaceToView(text5, 0)
+        .bottomSpaceToView(text5, 0)
+        .leftSpaceToView(text5, 0)
+        .rightSpaceToView(text5, 0);
+        
+        /**选择地区*/
+        UIView *text6  = [[UIView alloc]init];
+        text6.backgroundColor = [UIColor whiteColor];
+        [self addSubview:text6];
+        text6.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+        text6.layer.borderWidth = 0.5;
+        
+        text6.sd_layout
+        .topSpaceToView(text5,10*ScrenScale320)
+        .leftEqualToView(text1)
+        .rightEqualToView(text1)
+        .heightRatioToView(text1, 1.0);
+        
+        _chooseCitys = [[UIButton alloc]init];
+        _chooseCitys.titleLabel.font = TEXT_FONTSIZE;
+        [_chooseCitys setTitleColor:PLACEHOLDERGRAY forState:UIControlStateNormal];
+        [_chooseCitys setTitle:@"请选择地区" forState:UIControlStateNormal];
+        
+        [text6 addSubview:_chooseCitys];
+        _chooseCitys.sd_layout
+        .leftSpaceToView(text6, 10)
+        .rightSpaceToView(text6, 10)
+        .bottomSpaceToView(text6, 10)
+        .topSpaceToView(text6, 10);
 
-        self.userPassword.sd_layout
-        .topSpaceToView(self.checkCode,20)
-        .leftEqualToView(self.checkCode)
-        .rightEqualToView( self.getCheckCodeButton)
-        .heightRatioToView(self.checkCode,1.0f);
+        /* 同意用户协议的选择框*/
+        _chosenButton = [[UIButton alloc]init];
         
-        self.userPasswordCompare.sd_layout
-        .topSpaceToView(self.userPassword,20)
-        .leftEqualToView(self.userPassword)
-        .rightEqualToView( self.userPassword)
-        .heightRatioToView(self.userPassword,10.f);
+        [self addSubview:_chosenButton];
+        _chosenButton .layer.borderColor =TITLECOLOR.CGColor;
+        _chosenButton.layer.borderWidth=1.0f;
+        _chosenButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
+        _chosenButton.selected = NO;
+        [_chosenButton setEnlargeEdge:20];
         
+        /* 同意label*/
+        _accessLabel= [[UILabel alloc]init];
+        [self addSubview:_accessLabel];
+        [_accessLabel setText:NSLocalizedString(@"同意", nil)];
+        _accessLabel.textColor = TITLECOLOR;
+        _accessLabel.sd_layout
+        .leftSpaceToView(_chosenButton,10*ScrenScale320)
+        .topEqualToView(_chosenButton)
+        .bottomEqualToView(_chosenButton);
+        [_accessLabel setSingleLineAutoResizeWithMaxWidth:200];
         
-        _grade.sd_layout
-        .leftEqualToView(self.userPasswordCompare)
-        .rightEqualToView(self.userPasswordCompare)
-        .topSpaceToView(self.userPasswordCompare,20)
-        .heightRatioToView(self.userPasswordCompare,1.0f);
-        _grade.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
+        NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:@"同意《答疑时间用户协议》"];
+        [string addAttributes:@{NSFontAttributeName:TEXT_FONTSIZE,NSForegroundColorAttributeName:TITLECOLOR} range:NSMakeRange(0, 2)];
+        [string addAttributes:@{NSFontAttributeName:TEXT_FONTSIZE,NSForegroundColorAttributeName:[UIColor colorWithRed:0.11 green:0.64 blue:0.92 alpha:1.00]} range:NSMakeRange(2, string.length-2)];
         
-        [self.chosenButton sd_clearAutoLayoutSettings];
+        _accessLabel.attributedText = string;
+        _accessLabel.isAttributedContent = YES;
+        _accessLabel.sd_layout
+        .leftEqualToView(text1)
+        .topSpaceToView(text6, 10*ScrenScale320)
+        .autoHeightRatio(0);
+        [_accessLabel setSingleLineAutoResizeWithMaxWidth:200];
         
-        self.chosenButton.sd_layout
-        .topSpaceToView(self.grade,20)
-        .leftEqualToView(self.grade)
-        .widthIs(20)
-        .heightIs(20);
+        [_accessLabel updateLayout];
         
-         [self.accessLabel sd_clearAutoLayoutSettings];
-        self.accessLabel.sd_layout
-        .leftSpaceToView(self.chosenButton,10)
-        .topEqualToView(self.chosenButton)
-        .bottomEqualToView(self.chosenButton);
-        [self.accessLabel setSingleLineAutoResizeWithMaxWidth:200];
+        _chosenButton.sd_layout
+        .leftEqualToView(text1)
+        .topSpaceToView(text6, 10*ScrenScale320)
+        .heightRatioToView(_accessLabel, 1.0)
+        .widthEqualToHeight();
         
-//         [self.userPolicy sd_clearAutoLayoutSettings];
-//        self.userPolicy.sd_resetLayout
-//        .leftSpaceToView(self.accessLabel,0)
-//        .topEqualToView(self.accessLabel)
-//        .bottomEqualToView(self.accessLabel)
-//        .widthIs(220);
+        _accessLabel.sd_layout
+        .leftSpaceToView(_chosenButton, 10);
+        [_accessLabel updateLayout];
         
-        [self.nextStepButton sd_clearAutoLayoutSettings];
-        self.nextStepButton.sd_layout
-        .leftEqualToView(self.grade)
-        .rightEqualToView(self.grade)
-        .topSpaceToView(self.chosenButton,20)
-        .heightRatioToView(self.grade,1.0f);
-        
-
+        /* 下一步按钮*/
+        _nextStepButton = [[UIButton alloc]init];
+        _nextStepButton.titleLabel.font = TEXT_FONTSIZE;
+        _nextStepButton.layer.borderWidth = 1;
+        _nextStepButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        _nextStepButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI] ;
+        [self addSubview:_nextStepButton];
+        [_nextStepButton setTitle:NSLocalizedString(@"下一步",nil) forState:UIControlStateNormal];
+        [_nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _nextStepButton.backgroundColor = [UIColor lightGrayColor];
+        _nextStepButton.sd_layout
+        .leftEqualToView(text1)
+        .rightEqualToView(text1)
+        .topSpaceToView(_accessLabel, 10*ScrenScale320)
+        .heightRatioToView(text1, 1.0);
     }
     return self;
 }

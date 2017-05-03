@@ -48,12 +48,10 @@
     
         BindingMailView *_=[[BindingMailView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
         
-        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]) {
+        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"email"]) {
         
+            _phoneNumber = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults]valueForKey:@"email"]];
             
-            _phoneNumber = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]];
-            
-           
             _.phoneLabel.text =_phoneNumber;
             
             [_.getKeyCodeButton addTarget:self action:@selector(getCode:) forControlEvents:UIControlEventTouchUpInside];
@@ -65,9 +63,6 @@
             [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
             
         }
-        
-        
-        
         [self.view addSubview:_];
         _;
     });
@@ -82,9 +77,6 @@
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
 
-    
-    
-    
 }
 
 #pragma mark- 下一步

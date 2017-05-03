@@ -94,7 +94,6 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeParentPhone) name:@"ChangeParentPhoneSuccess" object:nil];
     
     /* 添加手动绑定微信的监听*/
-    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(RequestToBindingWechat:) name:@"RequestToBindingWechat" object:nil];
     
     /* 添加解绑微信的监听*/
@@ -351,7 +350,7 @@
                     /* 去绑定微信*/
                     if (wechatIsBinding == NO) {
                         
-                        [[NSNotificationCenter defaultCenter]postNotificationName:@"BindingWechat" object:nil];
+                        [[NSNotificationCenter defaultCenter]postNotificationName:@"BindingWechat" object:@YES];
                         
                         /* 拉起微信绑定*/
                         [self sendAuthRequest];
@@ -477,8 +476,6 @@
     
     [WXApi sendAuthReq:req viewController:self delegate:self];
     
-    
-    
 }
 
 /* 绑定微信*/
@@ -500,6 +497,8 @@
             /* 绑定成功*/
             
             [self loadingHUDStopLoadingWithTitle:@"绑定成功!"];
+            
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"BindingWechat" object:@NO];
             
             /* 绑定成功*/
             [self bindingSuccess:wechatCode];

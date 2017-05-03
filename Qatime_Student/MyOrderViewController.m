@@ -27,6 +27,7 @@
 #import "DrawBackViewController.h"
 #import "HaveNoClassView.h"
 #import "NSString+TimeStamp.h"
+#import "UIControl+RemoveTarget.h"
 
 #import "OrderInfoViewController.h"
 #import "ConfirmChargeViewController.h"
@@ -124,7 +125,7 @@ typedef enum : NSUInteger {
     _myOrderView.unpaidView.tag = 1;
     
     _myOrderView.unpaidView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-       
+        
         [self requestDataWithRefreshType:PullToRefresh andOrderType:UnpaidType];
         
     }];
@@ -147,7 +148,7 @@ typedef enum : NSUInteger {
     _myOrderView.paidView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
         [self requestDataWithRefreshType:PushToLoadMore andOrderType:PaidType];
     }];
-
+    
     
     _myOrderView.cancelView.delegate = self;
     _myOrderView.cancelView.dataSource = self;
@@ -194,18 +195,7 @@ typedef enum : NSUInteger {
 }
 
 
-/**申请退款*/
-- (void)repage:(UIButton *)sender{
 
-    NSIndexPath *index = [NSIndexPath indexPathForRow:sender.tag - 400 inSection:0];
-
-    PaidOrderTableViewCell *cell = [_myOrderView.paidView cellForRowAtIndexPath:index];
-
-    DrawBackViewController *new = [[DrawBackViewController alloc]initWithPaidOrder:cell.paidModel];
-
-    [self.navigationController pushViewController:new animated:YES];
-
-}
 
 
 - (void)viewDidLoad {
@@ -234,9 +224,9 @@ typedef enum : NSUInteger {
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
-        [_myOrderView.unpaidView.mj_header beginRefreshingWithCompletionBlock:^{
-            
-        }];
+    [_myOrderView.unpaidView.mj_header beginRefreshingWithCompletionBlock:^{
+        
+    }];
     
     /* 微信支付成功的监听回调*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(paySucess) name:@"ChargeSucess" object:nil];
@@ -249,8 +239,14 @@ typedef enum : NSUInteger {
     
     /**退款成功的回调*/
     [[NSNotificationCenter defaultCenter]addObserverForName:@"RefundSuccess" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-       
+        
         [_myOrderView.paidView.mj_header beginRefreshing];
+    }];
+    
+    /**付款成功后的回调*/
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"PaySuccess" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        
+        [_myOrderView.unpaidView.mj_header beginRefreshing];
     }];
     
 }
@@ -403,7 +399,7 @@ typedef enum : NSUInteger {
                         [_myOrderView.cancelView.mj_footer endRefreshingWithNoMoreData];
                         [_myOrderView.cancelView cyl_reloadData];
                     }
-
+                    
                 }else{
                     if (orderType == UnpaidType) {
                         [_myOrderView.unpaidView.mj_header endRefreshing];
@@ -417,7 +413,7 @@ typedef enum : NSUInteger {
                         [_myOrderView.cancelView.mj_header endRefreshing];
                         [_myOrderView.cancelView cyl_reloadData];
                     }
-
+                    
                 }
                 
             }
@@ -438,7 +434,7 @@ typedef enum : NSUInteger {
     NSInteger rows = 0;
     
     switch (tableView.tag) {
-       
+            
         case 1:{
             rows =_unpaidArr.count;
         }
@@ -482,7 +478,9 @@ typedef enum : NSUInteger {
                 cell.unpaidModel = _unpaidArr[indexPath.row];
                 cell.leftButton.tag = 100+indexPath.row;
                 cell.rightButton.tag = 200+indexPath.row;
+                [cell.leftButton removeAllTargets];
                 [cell.leftButton addTarget:self action:@selector(cancelOrder:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.rightButton removeAllTargets];
                 [cell.rightButton addTarget:self action:@selector(payOrder:) forControlEvents:UIControlEventTouchUpInside];
                 
                 [cell.leftButton setTitle:@"取消订单" forState:UIControlStateNormal];
@@ -512,13 +510,14 @@ typedef enum : NSUInteger {
                 
                 /* 进入退款申请页面*/
                 [cell.rightButton setTitle:@"申请退款" forState:UIControlStateNormal];
+                
+                [cell.rightButton removeAllTargets];
                 [cell.rightButton addTarget:self action:@selector(repage:) forControlEvents:UIControlEventTouchUpInside];
                 
                 if ([cell.paidModel.status isEqualToString:@"refunding"]){
                     /* 取消退款申请*/
                     [cell.rightButton setTitle:@"取消退款" forState:UIControlStateNormal];
-                    
-                    [cell.rightButton removeTarget:self action:@selector(repage:) forControlEvents:UIControlEventTouchUpInside];
+                    [cell.rightButton removeAllTargets];
                     [cell.rightButton addTarget:self action:@selector(cancelRefund:) forControlEvents:UIControlEventTouchUpInside];
                 }else if ([cell.paidModel.status isEqualToString:@"completed"]){
                     
@@ -547,6 +546,7 @@ typedef enum : NSUInteger {
                 //                cell.leftButton.hidden = YES;
                 //                [cell.rightButton setTitle:@"重新下单" forState:UIControlStateNormal];
                 
+                [cell.rightButton removeAllTargets];
                 [cell.rightButton addTarget:self action:@selector(buyAgain:) forControlEvents:UIControlEventTouchUpInside];
                 
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
@@ -567,7 +567,6 @@ typedef enum : NSUInteger {
 
 #pragma mark- tableview delegate
 
-
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
     return 1;
@@ -575,42 +574,42 @@ typedef enum : NSUInteger {
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSInteger height = 140;
+    NSInteger height = 140*ScrenScale;
     
-//    switch (tableView.tag) {
-//        case 1:{
-//            
-//            Unpaid *model = _unpaidArr[indexPath.row];
-//            
-//            height= [tableView cellHeightForIndexPath:indexPath model:model keyPath:@"unpaidModel" cellClass:[MyOrderTableViewCell class]contentViewWidth:self.view.width_sd];
-//            //            height = 160;
-//            
-//        }
-//            break;
-//            
-//        case 2:{
-//            
-//            
-//            Paid *model = _paidArr[indexPath.row];
-//            
-//            height= [tableView cellHeightForIndexPath:indexPath model:model keyPath:@"paidModel" cellClass:[PaidOrderTableViewCell class] contentViewWidth:self.view.width_sd];
-//            
-//            
-//        }
-//            break;
-//        case 3:{
-//            
-//            
-//            Paid *model = _caneldArr[indexPath.row];
-//            
-//            height= [tableView cellHeightForIndexPath:indexPath model:model keyPath:@"canceldModel" cellClass:[CancelOrderTableViewCell class] contentViewWidth:self.view.width_sd];
-//            
-//            
-//            
-//        }
-//            break;
-//            
-//    }
+    //    switch (tableView.tag) {
+    //        case 1:{
+    //
+    //            Unpaid *model = _unpaidArr[indexPath.row];
+    //
+    //            height= [tableView cellHeightForIndexPath:indexPath model:model keyPath:@"unpaidModel" cellClass:[MyOrderTableViewCell class]contentViewWidth:self.view.width_sd];
+    //            //            height = 160;
+    //
+    //        }
+    //            break;
+    //
+    //        case 2:{
+    //
+    //
+    //            Paid *model = _paidArr[indexPath.row];
+    //
+    //            height= [tableView cellHeightForIndexPath:indexPath model:model keyPath:@"paidModel" cellClass:[PaidOrderTableViewCell class] contentViewWidth:self.view.width_sd];
+    //
+    //
+    //        }
+    //            break;
+    //        case 3:{
+    //
+    //
+    //            Paid *model = _caneldArr[indexPath.row];
+    //
+    //            height= [tableView cellHeightForIndexPath:indexPath model:model keyPath:@"canceldModel" cellClass:[CancelOrderTableViewCell class] contentViewWidth:self.view.width_sd];
+    //
+    //
+    //
+    //        }
+    //            break;
+    //
+    //    }
     
     
     return height;
@@ -644,33 +643,33 @@ typedef enum : NSUInteger {
         case 3: {
             
             CancelOrderTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            
-            NSDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                                @"name":cell.canceldModel.name,
-                                                                                @"subject":cell.canceldModel.subject,
-                                                                                @"grade":cell.canceldModel.grade,
-                                                                                @"lessonTime":cell.canceldModel.preset_lesson_count,
-                                                                                @"teacherName":cell.canceldModel.teacher_name,
-                                                                                @"creatTime":cell.canceldModel.created_at==nil?@"无":[cell.canceldModel.created_at timeStampToDate],
-                                                                                @"payTime":cell.canceldModel.pay_at==nil?@"无":[cell.canceldModel.pay_at timeStampToDate],
-                                                                                @"payType":cell.canceldModel.pay_type,
-                                                                                @"amount":cell.canceldModel.price,
-                                                                                @"status":cell.canceldModel.status,
-                                                                                @"orderNumber":cell.canceldModel.orderID,
-                                                                                @"app_pay_params":               cell.canceldModel.app_pay_params==nil?@"":cell.canceldModel.app_pay_params,
-                                                                                @"productID":cell.canceldModel.orderID==nil?@"":cell.canceldModel.orderID}];
-            
-            
             OrderInfoViewController *order = [[OrderInfoViewController alloc]initWithOrderInfos:cell.canceldModel];
             [self.navigationController pushViewController:order animated:YES];
             
         }
             
             break;
-            
     }
     
+}
+
+/**申请退款*/
+- (void)repage:(UIButton *)sender{
     
+    NSIndexPath *index = [NSIndexPath indexPathForRow:sender.tag - 400 inSection:0];
+    
+    PaidOrderTableViewCell *cell = [_myOrderView.paidView cellForRowAtIndexPath:index];
+    
+    if ([cell.paidModel.product_type isEqualToString:@"LiveStudio::VideoCourse"]) {
+        
+        [self loadingHUDStopLoadingWithTitle:@"视频课不可退款"];
+        
+    }else{
+        
+        DrawBackViewController *new = [[DrawBackViewController alloc]initWithPaidOrder:cell.paidModel];
+        
+        [self.navigationController pushViewController:new animated:YES];
+    }
 }
 
 
@@ -763,11 +762,14 @@ typedef enum : NSUInteger {
             productNumber = mod.orderID;
             payType = @"account";
             
+            NSString *classID ;
+            
             //判断课程类型
             if ([mod.product_type isEqualToString:@"LiveStudio::Course"]) {
                 //直播课
                 course = @"courses";
                 courseNumber = [NSString stringWithFormat:@"%@",mod.product[@"id"]];
+                
                 
             }else if ([mod.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
                 //视频课
@@ -792,13 +794,20 @@ typedef enum : NSUInteger {
                 
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     /* 订单申请成功*/
-                    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:mod.orderID andClassType:LiveClassType];
+                    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:courseNumber andClassType:LiveClassType];
                     [self.navigationController pushViewController:orderVC animated:YES];
                     
-                    
                 }else{
+                    
                     if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
-                        [self loadingHUDStopLoadingWithTitle:@"您已经购买过该课程"];
+                        
+                        if ([dic[@"error"][@"msg"] containsObject:@"已经"]) {
+                            
+                            [self loadingHUDStopLoadingWithTitle:@"您已经购买过该课程"];
+                        }else if ([dic[@"error"][@"msg"] containsObject:@"目前"]){
+                            [self loadingHUDStopLoadingWithTitle:@"课程目前不对外招生"];
+                        }
+                        
                     }else{
                         
                         [self loadingHUDStopLoadingWithTitle:@"订单创建失败,请重试!"];
@@ -844,8 +853,6 @@ typedef enum : NSUInteger {
     }
     
 }
-
-
 
 
 /* 取消订单*/
@@ -934,14 +941,14 @@ typedef enum : NSUInteger {
                 //                unpaidPageTime = 1;
                 //                unpaidPage = 1;
                 if (_unpaidArr.count==0) {
-//                    [self requestUnpaid];
+                    //                    [self requestUnpaid];
                     
                 }else{
                     
                     [_unpaidArr removeObjectAtIndex:tags-100];
                     [_myOrderView.unpaidView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                     if (_unpaidArr.count == 0) {
-//                        [self requestUnpaid];
+                        //                        [self requestUnpaid];
                     }
                 }
                 
@@ -1015,7 +1022,7 @@ typedef enum : NSUInteger {
                 break;
             case 1:{
                 if (paidPageTime == 0) {
-        
+                    
                     [_myOrderView.paidView.mj_header beginRefreshing];
                     
                 }else{

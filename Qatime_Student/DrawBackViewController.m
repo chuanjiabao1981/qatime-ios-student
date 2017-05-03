@@ -61,12 +61,10 @@
     
 }
 
-
 -(instancetype)initWithOrderNumber:(NSString *)orderNumber{
     self = [super init];
     if (self) {
        
-        
         _orderNumber = [NSString stringWithFormat:@"%@",orderNumber];
         
     }
@@ -130,9 +128,6 @@
     }
     
 }
-
-
-
 
 /* 请求退款信息数据*/
 - (void)requestDrawback{

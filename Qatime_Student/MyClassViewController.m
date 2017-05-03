@@ -884,8 +884,7 @@
 #pragma mark- tableview delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    return self.view.height_sd*0.15*ScrenScale;
+    return 120*ScrenScale;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

@@ -21,8 +21,6 @@
         _name.font = [UIFont systemFontOfSize:17*ScrenScale];
         _name.textColor = [UIColor blackColor];
         
-        
-        
         _content = [[UILabel alloc]init];
         [self.contentView addSubview:_content];
         _content.font = [UIFont systemFontOfSize:15*ScrenScale];

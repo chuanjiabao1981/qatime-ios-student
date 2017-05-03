@@ -20,7 +20,6 @@
 #import "YYModel.h"
 #import "ConfirmRechargeViewController.h"
 #import "ItunesProduct.h"
-<<<<<<< HEAD
 #import "CheckChargeViewController.h"
 
 //在内购项目中创的商品单号
@@ -30,8 +29,6 @@
 //#define Product_208 @"Charge_208" //208
 //#define Product_258 @"Charge_258" //258
 //#define Product_308 @"Charge_308" //308
-=======
->>>>>>> 内购充值
 
 @interface ChargeViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>{
     
@@ -58,11 +55,8 @@
     
     ItunesProduct *_product;
     
-<<<<<<< HEAD
     int buyType;
     
-=======
->>>>>>> 内购充值
 }
 
 @end
@@ -90,12 +84,7 @@
     _dataDic = @{}.mutableCopy;
     _productArray = @[].mutableCopy;
     
-<<<<<<< HEAD
 
-=======
-//    _priceArray = @[@"50",@"108",@"158",@"208",@"258",@"308"];
-//    _actuallyPriceArray = @[@"34.30",@"74.10",@"108.40",@"142.70",@"177.01",@"211.31"];
->>>>>>> 内购充值
     
 }
 
@@ -205,10 +194,7 @@
     
     _product = _productArray[indexPath.row];
     _chargePrice = [NSString stringWithFormat:@"%@",_product.price];
-<<<<<<< HEAD
     
-=======
->>>>>>> 内购充值
 
 }
 
@@ -219,7 +205,6 @@
     
     if (_chargePrice) {
         
-<<<<<<< HEAD
         [self payForRecharge];
         
     }else{
@@ -362,19 +347,6 @@
                 
                 //跳转到下一页去向服务器进行验证
                 CheckChargeViewController *controller = [[CheckChargeViewController alloc]initWithTransaction:transaction andProduct:_product];
-=======
-        [self loadingHUDStartLoadingWithTitle:nil];
-        [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/recharges",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"amount":_chargePrice,@"pay_type":@"itunes"} completeSuccess:^(id  _Nullable responds) {
-            
-            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-            if ([dic[@"status"]isEqualToNumber:@1]) {
-                
-                [self loadingHUDStopLoadingWithTitle:nil];
-                Recharge *mod = [Recharge yy_modelWithJSON:dic[@"data"]];
-                mod.idNumber = dic[@"data"][@"id"];
-                
-                ConfirmRechargeViewController *controller = [[ConfirmRechargeViewController alloc]initWithRechage:mod andProduct:_product];
->>>>>>> 内购充值
                 [self.navigationController pushViewController:controller animated:YES];
                 
             } break;

@@ -16,6 +16,7 @@
 		5407C9991DE7DE9200DB04C8 /* UIDevice+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C9981DE7DE9200DB04C8 /* UIDevice+YYAdd.m */; };
 		540A34CA1E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 540A34C71E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m */; };
 		540A34CB1E481B5F0068E049 /* UIViewController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 540A34C91E481B5F0068E049 /* UIViewController+ZFPlayerRotation.m */; };
+		540CC97F1EB96FA700387E8F /* NSNull+Json.m in Sources */ = {isa = PBXBuildFile; fileRef = 540CC97E1EB96FA700387E8F /* NSNull+Json.m */; };
 		540F85BC1EB03789007AE08A /* ConfirmRechargeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 540F85BB1EB03789007AE08A /* ConfirmRechargeView.m */; };
 		5413D2521DF7B5CD00A8FDEC /* CashRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2511DF7B5CD00A8FDEC /* CashRecordView.m */; };
 		5413D2581DF7B5F400A8FDEC /* CashRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2571DF7B5F400A8FDEC /* CashRecordViewController.m */; };
@@ -736,6 +737,8 @@
 		540A34C71E481B5F0068E049 /* UINavigationController+ZFPlayerRotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+ZFPlayerRotation.m"; sourceTree = "<group>"; };
 		540A34C81E481B5F0068E049 /* UIViewController+ZFPlayerRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ZFPlayerRotation.h"; sourceTree = "<group>"; };
 		540A34C91E481B5F0068E049 /* UIViewController+ZFPlayerRotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ZFPlayerRotation.m"; sourceTree = "<group>"; };
+		540CC97D1EB96FA700387E8F /* NSNull+Json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNull+Json.h"; sourceTree = "<group>"; };
+		540CC97E1EB96FA700387E8F /* NSNull+Json.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNull+Json.m"; sourceTree = "<group>"; };
 		540F85BA1EB03789007AE08A /* ConfirmRechargeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmRechargeView.h; sourceTree = "<group>"; };
 		540F85BB1EB03789007AE08A /* ConfirmRechargeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmRechargeView.m; sourceTree = "<group>"; };
 		5413D2501DF7B5CD00A8FDEC /* CashRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CashRecordView.h; sourceTree = "<group>"; };
@@ -6034,6 +6037,8 @@
 				5444BD2E1E68206D00A75AD1 /* UINavigationController+StatusBar.m */,
 				548F70B11E8BACD30062C71E /* UIView+PlaceholderImage.h */,
 				548F70B21E8BACD30062C71E /* UIView+PlaceholderImage.m */,
+				540CC97D1EB96FA700387E8F /* NSNull+Json.h */,
+				540CC97E1EB96FA700387E8F /* NSNull+Json.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -6790,6 +6795,7 @@
 				54AA309B1DF98D30009E0D04 /* MyOrderTableViewCell.m in Sources */,
 				548F70B01E8B63B70062C71E /* InteractionWhiteBoardView.m in Sources */,
 				5493D4CD1E0BE1050085A39E /* TLCityPickerController.m in Sources */,
+				540CC97F1EB96FA700387E8F /* NSNull+Json.m in Sources */,
 				54AC03D81E8938E100817767 /* NIMInputEmoticonParser.m in Sources */,
 				54AC02801E892D3C00817767 /* UIScrollView+NTESDirection.m in Sources */,
 				54F47E8B1E09367900D896DB /* ChatList.m in Sources */,

@@ -159,6 +159,7 @@
         
         /* -课程介绍页- */
         UILabel *desLabel = [[UILabel alloc]init];
+        desLabel.font = TITLEFONTSIZE;
         [_view1 addSubview:desLabel];
         desLabel.textColor = [UIColor blackColor];
         desLabel.text = @"基本属性";

@@ -8,6 +8,7 @@
 
 #import "CheckOrderViewController.h"
 #import "NavigationBar.h"
+#import "MyOrderViewController.h"
 
 #import "TutoriumInfoViewController.h"
 
@@ -114,7 +115,7 @@
                 
                 if (![dic[@"data"] isEqualToString:@"shipped"]) {
                     
-                    if (checkTime>6) {
+                    if (checkTime<6) {
                         
                         [self requestPayStatus];
                         
@@ -180,94 +181,94 @@
     
 }
 
-#pragma mark- 三种不同数据状态的加载方法
-- (void)loadViewWithStatus:(PayStatus)paystatus{
-    
-    /* 存储所有需要展示的字段*/
-    __block NSString *status=@"".mutableCopy;
-    __block UIImage *image = nil;
-    __block NSString *balance = @"".mutableCopy;
-    __block NSString *number = @"".mutableCopy;
-    __block NSString *chargeMoney = @"".mutableCopy;
-    __block UIColor *color = [UIColor whiteColor];
-    
-    
-    switch (paystatus) {
-            
-        case recieved:{
-            /* 查询成功,请求余额数据等信息*/
-            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-            [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-            [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-                    balance = [NSString stringWithFormat:@"最新余额 %@",dic[@"data"][@"balance"]];
-                    status = @"支付成功";
-                    color = GREEN;
-                    image = [UIImage imageNamed:@"yes_green"];
-                    if (_amount) {
-                        
-                        chargeMoney = _amount;
-                    }
-                }
-                
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                
-            }];
-            
-            _checkOrderView.explain.hidden =YES;
-            
-            
-        }
-            break;
-        case unpaid:{
-            
-            
-            status = @"充值结果未找到";
-            color = RED;
-            image = [UIImage imageNamed:@"wrong_green"];
-            if (_amount) {
-                
-                chargeMoney = _amount;
-            }
-            
-            _checkOrderView.explain.hidden =NO;
-            
-        }
-            break;
-            
-        case other:{
-            
-            
-            status = @"充值结果未找到";
-            color = RED;
-            image = [UIImage imageNamed:@"wrong_red"];
-            if (_amount) {
-                
-                chargeMoney = _amount;
-            }
-            
-            _checkOrderView.explain.hidden =NO;
-            
-            
-        }
-            break;
-            
-    }
-    
-    _checkOrderView.status.textColor = color;
-    _checkOrderView.status.text = status;
-    [_checkOrderView.statusImage setImage:image];
-    _checkOrderView.balance.text = balance;
-    _checkOrderView.number.text = _numbers;
-    _checkOrderView.chargeMoney.text = chargeMoney;
-    
-    
-    
-}
-
+//#pragma mark- 三种不同数据状态的加载方法
+//- (void)loadViewWithStatus:(PayStatus)paystatus{
+//    
+//    /* 存储所有需要展示的字段*/
+//    __block NSString *status=@"".mutableCopy;
+//    __block UIImage *image = nil;
+//    __block NSString *balance = @"".mutableCopy;
+//    __block NSString *number = @"".mutableCopy;
+//    __block NSString *chargeMoney = @"".mutableCopy;
+//    __block UIColor *color = [UIColor whiteColor];
+//    
+//    
+//    switch (paystatus) {
+//            
+//        case recieved:{
+//            /* 查询成功,请求余额数据等信息*/
+//            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+//            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+//            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+//            [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+//            [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+//                if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+//                    balance = [NSString stringWithFormat:@"最新余额 %@",dic[@"data"][@"balance"]];
+//                    status = @"支付成功";
+//                    color = GREEN;
+//                    image = [UIImage imageNamed:@"yes_green"];
+//                    if (_amount) {
+//                        
+//                        chargeMoney = _amount;
+//                    }
+//                }
+//                
+//            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//                
+//            }];
+//            
+//            _checkOrderView.explain.hidden =YES;
+//            
+//            
+//        }
+//            break;
+//        case unpaid:{
+//            
+//            
+//            status = @"充值结果未找到";
+//            color = RED;
+//            image = [UIImage imageNamed:@"wrong_green"];
+//            if (_amount) {
+//                
+//                chargeMoney = _amount;
+//            }
+//            
+//            _checkOrderView.explain.hidden =NO;
+//            
+//        }
+//            break;
+//            
+//        case other:{
+//            
+//            
+//            status = @"充值结果未找到";
+//            color = RED;
+//            image = [UIImage imageNamed:@"wrong_red"];
+//            if (_amount) {
+//                
+//                chargeMoney = _amount;
+//            }
+//            
+//            _checkOrderView.explain.hidden =NO;
+//            
+//            
+//        }
+//            break;
+//            
+//    }
+//    
+//    _checkOrderView.status.textColor = color;
+//    _checkOrderView.status.text = status;
+//    [_checkOrderView.statusImage setImage:image];
+//    _checkOrderView.balance.text = balance;
+//    _checkOrderView.number.text = _numbers;
+//    _checkOrderView.chargeMoney.text = chargeMoney;
+//    
+//    
+//    
+//}
+//
 
 
 
@@ -284,6 +285,9 @@
             controller = VC;
             [self.navigationController popToViewController:controller animated:YES];
             [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshTutoriumInfo" object:nil];
+        }else if ([VC isMemberOfClass:[MyOrderViewController class]]){
+            [self.navigationController popToViewController:VC animated:YES];
+            
         }
     }
     

@@ -66,6 +66,8 @@
         .rightSpaceToView(_content,10)
         .autoHeightRatio(0);
         
+        [_className setMaxNumberOfLinesToShow:1];
+        
         //教师图片
         _teacherImage = [[UIImageView alloc]init];
         [_teacherImage setImage:[UIImage imageNamed:@"老师"]];

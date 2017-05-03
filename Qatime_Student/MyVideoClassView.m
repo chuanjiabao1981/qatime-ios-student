@@ -20,7 +20,7 @@
             HMSegmentedControl *_ = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"已购",@"免费"]];
             [self addSubview:_];
             _.frame = CGRectMake(0, 0, self.width_sd, 40*ScrenScale) ;
-            _.selectionStyle = HMSegmentedControlSelectionStyleTextWidthStripe;
+            _.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
             _.borderType = HMSegmentedControlBorderTypeBottom;
             _.borderColor = SEPERATELINECOLOR_2;
             _.borderWidth = 0.5;
@@ -28,9 +28,9 @@
             _.selectionIndicatorColor = BUTTONRED;
             _.selectionIndicatorHeight = 2;
             _.titleTextAttributes = @{NSForegroundColorAttributeName:TITLECOLOR,
-                                      NSFontAttributeName:[UIFont systemFontOfSize:14*ScrenScale]};
+                                      NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
             _.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-                                              NSFontAttributeName:[UIFont systemFontOfSize:14*ScrenScale]};
+                                              NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
             _.selectedSegmentIndex = 0;
             _.verticalDividerEnabled = NO;
             _;

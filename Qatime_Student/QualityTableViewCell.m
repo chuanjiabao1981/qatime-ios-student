@@ -39,10 +39,10 @@
         _content = [[UIView alloc]init];
         [self.contentView addSubview:_content];
         _content.sd_layout
-        .leftSpaceToView(self.contentView,10)
-        .topSpaceToView(self.contentView,10)
-        .rightSpaceToView(self.contentView,10)
-        .bottomSpaceToView(self.contentView,10);
+        .leftSpaceToView(self.contentView,10*ScrenScale)
+        .topSpaceToView(self.contentView,10*ScrenScale)
+        .rightSpaceToView(self.contentView,10*ScrenScale)
+        .bottomSpaceToView(self.contentView,10*ScrenScale);
         _content.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
         _content.layer.borderWidth = 0.8;
         [_content updateLayout];
@@ -87,10 +87,11 @@
         _className.textColor = [UIColor blackColor];
         [_content addSubview:_className];
         _className.sd_layout
-        .topSpaceToView(_content,10)
-        .leftSpaceToView(_classImage,10)
-        .rightSpaceToView(_content,10)
+        .topSpaceToView(_content,10*ScrenScale)
+        .leftSpaceToView(_classImage,10*ScrenScale)
+        .rightSpaceToView(_content, 10*ScrenScale)
         .autoHeightRatio(0);
+        [_className setMaxNumberOfLinesToShow:1];
         
         //教师图片
 //        _teacherImage = [[UIImageView alloc]init];
@@ -110,7 +111,7 @@
         [_content addSubview:_teacherName];
         _teacherName.sd_layout
         .leftEqualToView(_className)
-        .bottomSpaceToView(_content,10)
+        .bottomSpaceToView(_content,10*ScrenScale)
         .autoHeightRatio(0);
         [_teacherName setSingleLineAutoResizeWithMaxWidth:100];
         
@@ -131,7 +132,7 @@
         [_content addSubview:_gradeAndSubject];
         _gradeAndSubject.sd_layout
         .leftEqualToView(_className)
-        .bottomSpaceToView(_teacherName,10)
+        .bottomSpaceToView(_teacherName,10*ScrenScale)
         .autoHeightRatio(0);
 
         [_gradeAndSubject setSingleLineAutoResizeWithMaxWidth:200];

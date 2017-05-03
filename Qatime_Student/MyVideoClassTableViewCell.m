@@ -22,7 +22,6 @@
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        
         /* contentview的裁边*/
         _content = [[UIView alloc]init];
         _content.backgroundColor = [UIColor whiteColor];
@@ -36,9 +35,9 @@
         _content.layer.borderWidth = 0.8f;
         
         _content.layer.shadowColor =  TITLECOLOR.CGColor;
-        _content.layer.shadowOffset = CGSizeMake(3, 2);
-        _content.layer.shadowRadius = 3;
-        _content.layer.shadowOpacity = 0.3;
+        _content.layer.shadowOffset = CGSizeMake(1, 1);
+        _content.layer.shadowRadius = 1;
+        _content.layer.shadowOpacity = 0.1;
         
         
         /* 课程图片*/
@@ -48,7 +47,7 @@
         .leftSpaceToView(_content, 0)
         .topSpaceToView(_content, 0)
         .bottomSpaceToView(_content, 0)
-        .autoWidthRatio(16/10.0);
+        .autoWidthRatio(1.0);
         
         /* 课程名称*/
         _className = [[UILabel alloc]init];
@@ -56,10 +55,10 @@
         _className.textColor = [UIColor blackColor];
         [_content addSubview:_className];
         _className.sd_layout
-        .leftSpaceToView(_classImage, 5)
-        .topSpaceToView(_content, 5)
+        .leftSpaceToView(_classImage, 5*ScrenScale)
+        .topSpaceToView(_content, 5*ScrenScale)
         .autoHeightRatio(0)
-        .rightSpaceToView(_content, 5);
+        .rightSpaceToView(_content, 5*ScrenScale);
         
         /* 基本信息*/
         _infos = [[UILabel alloc]init];
@@ -80,7 +79,7 @@
         [_content addSubview:_status];
         _status.sd_layout
         .leftEqualToView(_className)
-        .bottomSpaceToView(_content, 5)
+        .bottomSpaceToView(_content, 5*ScrenScale)
         .autoHeightRatio(0);
         [_status setSingleLineAutoResizeWithMaxWidth:200];
         
@@ -93,10 +92,10 @@
         [_enterButton setTitle:@"观看" forState:UIControlStateNormal];
         [_content addSubview:_enterButton];
         _enterButton.sd_layout
-        .bottomSpaceToView(_content, 15)
-        .rightSpaceToView(_content, 15)
+        .bottomSpaceToView(_content, 15*ScrenScale)
+        .rightSpaceToView(_content, 15*ScrenScale)
         .heightRatioToView(_className, 1.2)
-        .widthIs(60);
+        .widthIs(60*ScrenScale);
 //        [_enterButton setupAutoSizeWithHorizontalPadding:15 buttonHeight:_className.height_sd];
         [_enterButton updateLayout];
         

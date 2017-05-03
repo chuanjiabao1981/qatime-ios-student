@@ -48,12 +48,7 @@
     NSMutableArray *_withDrawArr;
     NSMutableArray *_paymentArr;
     NSMutableArray *_refundArr;
-    
-    
-   
-    
-    
-    
+
 }
 
 @property(nonatomic,strong) NSString *selectedItem ;
@@ -118,9 +113,9 @@
     _cashRecordView.rechargeView.dataSource = self;
     _cashRecordView.rechargeView.tag = 1;
     
-    _cashRecordView.withDrawView.delegate = self;
-    _cashRecordView.withDrawView.dataSource = self;
-    _cashRecordView.withDrawView.tag = 2;
+//    _cashRecordView.withDrawView.delegate = self;
+//    _cashRecordView.withDrawView.dataSource = self;
+//    _cashRecordView.withDrawView.tag = 2;
     
     _cashRecordView.paymentView.delegate = self;
     _cashRecordView.paymentView.dataSource = self;
@@ -303,7 +298,7 @@
         HaveNoClassView *_noDataView = [[HaveNoClassView alloc]init];
         _noDataView.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd-64-_cashRecordView.segmentControl.height_sd);
         _noDataView.titleLabel.text = @"暂时没有数据";
-        [_cashRecordView.withDrawView addSubview:_noDataView];
+//        [_cashRecordView.withDrawView addSubview:_noDataView];
         _noDataView.hidden = NO;
 
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] ;
@@ -335,7 +330,7 @@
                 }
                 
                 
-                [_cashRecordView.withDrawView reloadData];
+//                [_cashRecordView.withDrawView reloadData];
                 //                [_cashRecordView.withDrawView setNeedsDisplay];
                 [self loadingHUDStopLoadingWithTitle:@"加载成功!"];
                 
@@ -383,7 +378,6 @@
         [_cashRecordView.paymentView addSubview:_noDataView];
         _noDataView.hidden = NO;
 
-        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] ;
         
         [self loginStates:dic];
@@ -408,10 +402,7 @@
                     }
                     
                     Payment *payMod = [Payment yy_modelWithJSON:dic];
-                    
                     payMod.idNumber = payment[i][@"id"];
-                    
-                    
                     [_paymentArr addObject:payMod];
                     
                 }
@@ -712,9 +703,6 @@
         }
             
             break;
-
-            
-            
     }
     
     return  height;
@@ -742,8 +730,6 @@
 //            
 //        }
     }
-    
-    
     
     /* 提现页面*/
     if (tableView.tag ==2) {
@@ -816,7 +802,6 @@
     
     if (_idNumber&&orderNumber) {
         
-        
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -827,24 +812,19 @@
             
             [self loginStates:dic];
             
-            
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 /* 删除成功*/
                 [self loadingHUDStopLoadingWithTitle:@"取消成功!"];
                 
-                WithDrawTableViewCell *cell = [_cashRecordView.withDrawView cellForRowAtIndexPath:indexPath];
-                cell.status.text = @"已取消";
-                
+//                WithDrawTableViewCell *cell = [_cashRecordView.withDrawView cellForRowAtIndexPath:indexPath];
+//                cell.status.text = @"已取消";
                 
 //                [self requestWithDraw];
-                
                 
             }else{
                 
                 [self loadingHUDStopLoadingWithTitle:@"取消失败!"];
             }
-            
-            
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             

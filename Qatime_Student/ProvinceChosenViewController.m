@@ -33,9 +33,6 @@
     //市model数组
     NSMutableArray *_cityModelArr;
     
-    
-    
-    
 }
 
 @end

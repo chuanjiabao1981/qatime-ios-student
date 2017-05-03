@@ -59,8 +59,6 @@
         if (_signUpView.phoneNumber.text.length>0&&_signUpView.checkCode.text.length>0&&_signUpView.userPassword.text.length>0&&_signUpView.userPasswordCompare.text.length>0) {
             
             _signUpView.nextStepButton.enabled = YES;
-            [_signUpView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            
             
             sender.backgroundColor = [UIColor colorWithRed:0.84 green:0.33 blue:0.6 alpha:1.00];
             [sender setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];
@@ -376,7 +374,6 @@
 }
 
 
-
 // 正则判断手机号码地址格式
 - (BOOL)isMobileNumber:(NSString *)mobileNum {
     
@@ -438,7 +435,7 @@
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [button setBackgroundColor:[UIColor lightGrayColor]];
             button.layer.borderColor = [UIColor lightGrayColor].CGColor;
-            [button setEnabled:YES];
+            [button setEnabled:NO];
             
         });
         deadline--;

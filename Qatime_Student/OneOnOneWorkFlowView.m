@@ -24,8 +24,8 @@
     UIColor* color7 = [UIColor colorWithRed: 0.953 green: 0.953 blue: 0.953 alpha: 1];
     
     //// Rectangle Drawing
-    CGRect rectangleRect = CGRectMake(20, 20, 374, 30);
-    UIBezierPath* rectanglePath = [UIBezierPath bezierPathWithRoundedRect: rectangleRect byRoundingCorners: UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii: CGSizeMake(10, 10)];
+    CGRect rectangleRect = CGRectMake(20*ScrenScale, 20*ScrenScale, 374*ScrenScale, 30*ScrenScale);
+    UIBezierPath* rectanglePath = [UIBezierPath bezierPathWithRoundedRect: rectangleRect byRoundingCorners: UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii: CGSizeMake(10*ScrenScale, 10*ScrenScale)];
     [rectanglePath closePath];
     [color setFill];
     [rectanglePath fill];
@@ -34,7 +34,7 @@
         NSMutableParagraphStyle* rectangleStyle = [NSMutableParagraphStyle new];
         rectangleStyle.alignment = NSTextAlignmentCenter;
         
-        NSDictionary* rectangleFontAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize: 15], NSForegroundColorAttributeName: UIColor.grayColor, NSParagraphStyleAttributeName: rectangleStyle};
+        NSDictionary* rectangleFontAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize: 15*ScrenScale], NSForegroundColorAttributeName: UIColor.grayColor, NSParagraphStyleAttributeName: rectangleStyle};
         
         CGFloat rectangleTextHeight = [textContent boundingRectWithSize: CGSizeMake(rectangleRect.size.width, INFINITY)  options: NSStringDrawingUsesLineFragmentOrigin attributes: rectangleFontAttributes context: nil].size.height;
         CGContextSaveGState(context);
@@ -45,8 +45,8 @@
     
     
     //// Rectangle 2 Drawing
-    CGRect rectangle2Rect = CGRectMake(20, 50, 374, 20);
-    UIBezierPath* rectangle2Path = [UIBezierPath bezierPathWithRoundedRect: rectangle2Rect byRoundingCorners: UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii: CGSizeMake(10, 10)];
+    CGRect rectangle2Rect = CGRectMake(20*ScrenScale, 50*ScrenScale, 374*ScrenScale, 20*ScrenScale);
+    UIBezierPath* rectangle2Path = [UIBezierPath bezierPathWithRoundedRect: rectangle2Rect byRoundingCorners: UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii: CGSizeMake(10*ScrenScale, 10*ScrenScale)];
     [rectangle2Path closePath];
     [color3 setStroke];
     rectangle2Path.lineWidth = 0.5;
@@ -56,7 +56,7 @@
         NSMutableParagraphStyle* rectangle2Style = [NSMutableParagraphStyle new];
         rectangle2Style.alignment = NSTextAlignmentCenter;
         
-        NSDictionary* rectangle2FontAttributes = @{NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue" size: 12], NSForegroundColorAttributeName: UIColor.lightGrayColor, NSParagraphStyleAttributeName: rectangle2Style};
+        NSDictionary* rectangle2FontAttributes = @{NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue" size: 12*ScrenScale], NSForegroundColorAttributeName: UIColor.lightGrayColor, NSParagraphStyleAttributeName: rectangle2Style};
         
         CGFloat rectangle2TextHeight = [textContent boundingRectWithSize: CGSizeMake(rectangle2Rect.size.width, INFINITY)  options: NSStringDrawingUsesLineFragmentOrigin attributes: rectangle2FontAttributes context: nil].size.height;
         CGContextSaveGState(context);
@@ -67,8 +67,8 @@
     
     
     //// Rectangle 3 Drawing
-    CGRect rectangle3Rect = CGRectMake(20, 100, 374, 30);
-    UIBezierPath* rectangle3Path = [UIBezierPath bezierPathWithRoundedRect: rectangle3Rect byRoundingCorners: UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii: CGSizeMake(10, 10)];
+    CGRect rectangle3Rect = CGRectMake(20*ScrenScale, 100*ScrenScale, 374*ScrenScale, 30*ScrenScale);
+    UIBezierPath* rectangle3Path = [UIBezierPath bezierPathWithRoundedRect: rectangle3Rect byRoundingCorners: UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii: CGSizeMake(10*ScrenScale, 10*ScrenScale)];
     [rectangle3Path closePath];
     [color setFill];
     [rectangle3Path fill];
@@ -77,7 +77,7 @@
         NSMutableParagraphStyle* rectangle3Style = [NSMutableParagraphStyle new];
         rectangle3Style.alignment = NSTextAlignmentCenter;
         
-        NSDictionary* rectangle3FontAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize: 15], NSForegroundColorAttributeName: UIColor.grayColor, NSParagraphStyleAttributeName: rectangle3Style};
+        NSDictionary* rectangle3FontAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize: 15*ScrenScale], NSForegroundColorAttributeName: UIColor.grayColor, NSParagraphStyleAttributeName: rectangle3Style};
         
         CGFloat rectangle3TextHeight = [textContent boundingRectWithSize: CGSizeMake(rectangle3Rect.size.width, INFINITY)  options: NSStringDrawingUsesLineFragmentOrigin attributes: rectangle3FontAttributes context: nil].size.height;
         CGContextSaveGState(context);
@@ -88,18 +88,18 @@
     
     
     //// Rectangle 4 Drawing
-    CGRect rectangle4Rect = CGRectMake(20, 130, 374, 20);
-    UIBezierPath* rectangle4Path = [UIBezierPath bezierPathWithRoundedRect: rectangle4Rect byRoundingCorners: UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii: CGSizeMake(10, 10)];
+    CGRect rectangle4Rect = CGRectMake(20*ScrenScale, 130*ScrenScale, 374*ScrenScale, 20*ScrenScale);
+    UIBezierPath* rectangle4Path = [UIBezierPath bezierPathWithRoundedRect: rectangle4Rect byRoundingCorners: UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii: CGSizeMake(10*ScrenScale, 10*ScrenScale)];
     [rectangle4Path closePath];
     [color3 setStroke];
-    rectangle4Path.lineWidth = 0.5;
+    rectangle4Path.lineWidth = 0.5*ScrenScale;
     [rectangle4Path stroke];
     {
         NSString* textContent = @"无需预约，按时上课";
         NSMutableParagraphStyle* rectangle4Style = [NSMutableParagraphStyle new];
         rectangle4Style.alignment = NSTextAlignmentCenter;
         
-        NSDictionary* rectangle4FontAttributes = @{NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue" size: 12], NSForegroundColorAttributeName: UIColor.lightGrayColor, NSParagraphStyleAttributeName: rectangle4Style};
+        NSDictionary* rectangle4FontAttributes = @{NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue" size: 12*ScrenScale], NSForegroundColorAttributeName: UIColor.lightGrayColor, NSParagraphStyleAttributeName: rectangle4Style};
         
         CGFloat rectangle4TextHeight = [textContent boundingRectWithSize: CGSizeMake(rectangle4Rect.size.width, INFINITY)  options: NSStringDrawingUsesLineFragmentOrigin attributes: rectangle4FontAttributes context: nil].size.height;
         CGContextSaveGState(context);
@@ -110,8 +110,8 @@
     
     
     //// Rectangle 5 Drawing
-    CGRect rectangle5Rect = CGRectMake(20, 180, 374, 30);
-    UIBezierPath* rectangle5Path = [UIBezierPath bezierPathWithRoundedRect: rectangle5Rect byRoundingCorners: UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii: CGSizeMake(10, 10)];
+    CGRect rectangle5Rect = CGRectMake(20*ScrenScale, 180*ScrenScale, 374*ScrenScale, 30*ScrenScale);
+    UIBezierPath* rectangle5Path = [UIBezierPath bezierPathWithRoundedRect: rectangle5Rect byRoundingCorners: UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii: CGSizeMake(10*ScrenScale, 10*ScrenScale)];
     [rectangle5Path closePath];
     [color setFill];
     [rectangle5Path fill];
@@ -120,7 +120,7 @@
         NSMutableParagraphStyle* rectangle5Style = [NSMutableParagraphStyle new];
         rectangle5Style.alignment = NSTextAlignmentCenter;
         
-        NSDictionary* rectangle5FontAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize: 15], NSForegroundColorAttributeName: UIColor.grayColor, NSParagraphStyleAttributeName: rectangle5Style};
+        NSDictionary* rectangle5FontAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize: 15*ScrenScale], NSForegroundColorAttributeName: UIColor.grayColor, NSParagraphStyleAttributeName: rectangle5Style};
         
         CGFloat rectangle5TextHeight = [textContent boundingRectWithSize: CGSizeMake(rectangle5Rect.size.width, INFINITY)  options: NSStringDrawingUsesLineFragmentOrigin attributes: rectangle5FontAttributes context: nil].size.height;
         CGContextSaveGState(context);
@@ -131,18 +131,18 @@
     
     
     //// Rectangle 6 Drawing
-    CGRect rectangle6Rect = CGRectMake(20, 210, 374, 20);
-    UIBezierPath* rectangle6Path = [UIBezierPath bezierPathWithRoundedRect: rectangle6Rect byRoundingCorners: UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii: CGSizeMake(10, 10)];
+    CGRect rectangle6Rect = CGRectMake(20*ScrenScale, 210*ScrenScale, 374*ScrenScale, 20*ScrenScale);
+    UIBezierPath* rectangle6Path = [UIBezierPath bezierPathWithRoundedRect: rectangle6Rect byRoundingCorners: UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii: CGSizeMake(10*ScrenScale, 10*ScrenScale)];
     [rectangle6Path closePath];
     [color3 setStroke];
-    rectangle6Path.lineWidth = 0.5;
+    rectangle6Path.lineWidth = 0.5*ScrenScale;
     [rectangle6Path stroke];
     {
         NSString* textContent = @"视频直播，白板互动";
         NSMutableParagraphStyle* rectangle6Style = [NSMutableParagraphStyle new];
         rectangle6Style.alignment = NSTextAlignmentCenter;
         
-        NSDictionary* rectangle6FontAttributes = @{NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue" size: 12], NSForegroundColorAttributeName: UIColor.lightGrayColor, NSParagraphStyleAttributeName: rectangle6Style};
+        NSDictionary* rectangle6FontAttributes = @{NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue" size: 12*ScrenScale], NSForegroundColorAttributeName: UIColor.lightGrayColor, NSParagraphStyleAttributeName: rectangle6Style};
         
         CGFloat rectangle6TextHeight = [textContent boundingRectWithSize: CGSizeMake(rectangle6Rect.size.width, INFINITY)  options: NSStringDrawingUsesLineFragmentOrigin attributes: rectangle6FontAttributes context: nil].size.height;
         CGContextSaveGState(context);
@@ -154,13 +154,13 @@
     
     //// Polygon Drawing
     CGContextSaveGState(context);
-    CGContextTranslateCTM(context, 232.5, 90);
+    CGContextTranslateCTM(context, 232.5*ScrenScale, 90*ScrenScale);
     CGContextRotateCTM(context, -180 * M_PI / 180);
     
     UIBezierPath* polygonPath = [UIBezierPath bezierPath];
-    [polygonPath moveToPoint: CGPointMake(25, 0)];
-    [polygonPath addLineToPoint: CGPointMake(46.65, 11.25)];
-    [polygonPath addLineToPoint: CGPointMake(3.35, 11.25)];
+    [polygonPath moveToPoint: CGPointMake(25*ScrenScale, 0*ScrenScale)];
+    [polygonPath addLineToPoint: CGPointMake(46.65*ScrenScale, 11.25*ScrenScale)];
+    [polygonPath addLineToPoint: CGPointMake(3.35*ScrenScale, 11.25*ScrenScale)];
     [polygonPath closePath];
     [color5 setStroke];
     polygonPath.lineWidth = 1;
@@ -171,13 +171,13 @@
     
     //// Polygon 2 Drawing
     CGContextSaveGState(context);
-    CGContextTranslateCTM(context, 232.5, 169);
+    CGContextTranslateCTM(context, 232.5*ScrenScale, 169*ScrenScale);
     CGContextRotateCTM(context, -180 * M_PI / 180);
     
     UIBezierPath* polygon2Path = [UIBezierPath bezierPath];
-    [polygon2Path moveToPoint: CGPointMake(25, 0)];
-    [polygon2Path addLineToPoint: CGPointMake(46.65, 11.25)];
-    [polygon2Path addLineToPoint: CGPointMake(3.35, 11.25)];
+    [polygon2Path moveToPoint: CGPointMake(25*ScrenScale, 0*ScrenScale)];
+    [polygon2Path addLineToPoint: CGPointMake(46.65*ScrenScale, 11.25*ScrenScale)];
+    [polygon2Path addLineToPoint: CGPointMake(3.35*ScrenScale, 11.25*ScrenScale)];
     [polygon2Path closePath];
     [color6 setStroke];
     polygon2Path.lineWidth = 1;
@@ -187,8 +187,8 @@
     
     
     //// Rectangle 7 Drawing
-    CGRect rectangle7Rect = CGRectMake(20, 260, 374, 30);
-    UIBezierPath* rectangle7Path = [UIBezierPath bezierPathWithRoundedRect: rectangle7Rect byRoundingCorners: UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii: CGSizeMake(10, 10)];
+    CGRect rectangle7Rect = CGRectMake(20*ScrenScale, 260*ScrenScale, 374*ScrenScale, 30*ScrenScale);
+    UIBezierPath* rectangle7Path = [UIBezierPath bezierPathWithRoundedRect: rectangle7Rect byRoundingCorners: UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii: CGSizeMake(10*ScrenScale, 10*ScrenScale)];
     [rectangle7Path closePath];
     [color setFill];
     [rectangle7Path fill];
@@ -197,7 +197,7 @@
         NSMutableParagraphStyle* rectangle7Style = [NSMutableParagraphStyle new];
         rectangle7Style.alignment = NSTextAlignmentCenter;
         
-        NSDictionary* rectangle7FontAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize: 15], NSForegroundColorAttributeName: UIColor.grayColor, NSParagraphStyleAttributeName: rectangle7Style};
+        NSDictionary* rectangle7FontAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize: 15*ScrenScale], NSForegroundColorAttributeName: UIColor.grayColor, NSParagraphStyleAttributeName: rectangle7Style};
         
         CGFloat rectangle7TextHeight = [textContent boundingRectWithSize: CGSizeMake(rectangle7Rect.size.width, INFINITY)  options: NSStringDrawingUsesLineFragmentOrigin attributes: rectangle7FontAttributes context: nil].size.height;
         CGContextSaveGState(context);
@@ -209,13 +209,13 @@
     
     //// Polygon 3 Drawing
     CGContextSaveGState(context);
-    CGContextTranslateCTM(context, 232.5, 250);
+    CGContextTranslateCTM(context, 232.5*ScrenScale, 250*ScrenScale);
     CGContextRotateCTM(context, -180 * M_PI / 180);
     
     UIBezierPath* polygon3Path = [UIBezierPath bezierPath];
-    [polygon3Path moveToPoint: CGPointMake(25, 0)];
-    [polygon3Path addLineToPoint: CGPointMake(46.65, 11.25)];
-    [polygon3Path addLineToPoint: CGPointMake(3.35, 11.25)];
+    [polygon3Path moveToPoint: CGPointMake(25*ScrenScale, 0*ScrenScale)];
+    [polygon3Path addLineToPoint: CGPointMake(46.65*ScrenScale, 11.25*ScrenScale)];
+    [polygon3Path addLineToPoint: CGPointMake(3.35*ScrenScale, 11.25*ScrenScale)];
     [polygon3Path closePath];
     [color7 setStroke];
     polygon3Path.lineWidth = 1;
@@ -225,18 +225,18 @@
     
     
     //// Rectangle 8 Drawing
-    CGRect rectangle8Rect = CGRectMake(20, 290, 374, 20);
-    UIBezierPath* rectangle8Path = [UIBezierPath bezierPathWithRoundedRect: rectangle8Rect byRoundingCorners: UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii: CGSizeMake(10, 10)];
+    CGRect rectangle8Rect = CGRectMake(20*ScrenScale, 290*ScrenScale, 374*ScrenScale, 20*ScrenScale);
+    UIBezierPath* rectangle8Path = [UIBezierPath bezierPathWithRoundedRect: rectangle8Rect byRoundingCorners: UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii: CGSizeMake(10*ScrenScale, 10*ScrenScale)];
     [rectangle8Path closePath];
     [color3 setStroke];
-    rectangle8Path.lineWidth = 0.5;
+    rectangle8Path.lineWidth = 0.5*ScrenScale;
     [rectangle8Path stroke];
     {
         NSString* textContent = @"音图并茂，随时解答";
         NSMutableParagraphStyle* rectangle8Style = [NSMutableParagraphStyle new];
         rectangle8Style.alignment = NSTextAlignmentCenter;
         
-        NSDictionary* rectangle8FontAttributes = @{NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue" size: 12], NSForegroundColorAttributeName: UIColor.lightGrayColor, NSParagraphStyleAttributeName: rectangle8Style};
+        NSDictionary* rectangle8FontAttributes = @{NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue" size: 12*ScrenScale], NSForegroundColorAttributeName: UIColor.lightGrayColor, NSParagraphStyleAttributeName: rectangle8Style};
         
         CGFloat rectangle8TextHeight = [textContent boundingRectWithSize: CGSizeMake(rectangle8Rect.size.width, INFINITY)  options: NSStringDrawingUsesLineFragmentOrigin attributes: rectangle8FontAttributes context: nil].size.height;
         CGContextSaveGState(context);
@@ -245,10 +245,9 @@
         CGContextRestoreGState(context);
     }
 
-    
     _line = [[UIView alloc]init];
     [self addSubview:_line];
-    _line.frame = CGRectMake(0, 320, self.width_sd, 0);
+    _line.frame = CGRectMake(0*ScrenScale, 320*ScrenScale, self.width_sd*ScrenScale, 0*ScrenScale);
     
     
 }

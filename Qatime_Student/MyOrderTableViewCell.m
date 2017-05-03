@@ -22,10 +22,10 @@
         [self.contentView addSubview:_content];
         _content.backgroundColor = [UIColor whiteColor];
         _content.sd_layout
-        .leftSpaceToView(self.contentView,10)
-        .rightSpaceToView(self.contentView,10)
-        .topSpaceToView(self.contentView,10)
-        .bottomSpaceToView(self.contentView, 10);
+        .leftSpaceToView(self.contentView,10*ScrenScale)
+        .rightSpaceToView(self.contentView,10*ScrenScale)
+        .topSpaceToView(self.contentView,10*ScrenScale)
+        .bottomSpaceToView(self.contentView, 10*ScrenScale);
         
         /* 课程名*/
         _name =[[UILabel alloc]init];
@@ -35,8 +35,8 @@
         /* 课程名*/
         _name.sd_layout
         .leftSpaceToView(self.contentView,20*ScrenScale)
-        .topSpaceToView(self.contentView,20)
-        .rightSpaceToView(self.contentView,20)
+        .topSpaceToView(self.contentView,20*ScrenScale)
+        .rightSpaceToView(self.contentView,20*ScrenScale)
         .autoHeightRatio(0);
 
         /**订单课程信息*/
@@ -48,17 +48,18 @@
         /**订单课程信息*/
         _orderInfos.sd_layout
         .leftEqualToView(_name)
-        .topSpaceToView(_name,10)
+        .topSpaceToView(_name,10*ScrenScale)
         .autoHeightRatio(0);
         [_orderInfos setSingleLineAutoResizeWithMaxWidth:1000];
         
         /* 支付状态*/
         _status=[[UILabel alloc]init];
+        _status.font = TEXT_FONTSIZE_MIN;
         _status.textColor = [UIColor colorWithRed:0.14 green:0.80 blue:0.99 alpha:1.0];
         [self.contentView addSubview:_status];
         /* 状态*/
         _status.sd_layout
-        .rightSpaceToView(self.contentView,20)
+        .rightSpaceToView(self.contentView,20*ScrenScale)
         .topEqualToView(_orderInfos)
         .bottomEqualToView(_orderInfos);
         [_status setSingleLineAutoResizeWithMaxWidth:1000];
@@ -70,7 +71,7 @@
         line.sd_layout
         .leftEqualToView(_content)
         .rightEqualToView(_content)
-        .topSpaceToView(_status, 10)
+        .topSpaceToView(_status, 10*ScrenScale)
         .heightIs(1.0);
         
         /* 右侧button*/
@@ -84,10 +85,10 @@
         [self.contentView addSubview:_rightButton];
         /* 右按钮*/
         _rightButton.sd_layout
-        .rightSpaceToView(self.contentView,20)
-        .topSpaceToView(line,10);
+        .rightSpaceToView(self.contentView,20*ScrenScale)
+        .topSpaceToView(line,10*ScrenScale);
         _rightButton.sd_cornerRadius = [NSNumber numberWithInteger:1];
-        [_rightButton setupAutoSizeWithHorizontalPadding:15 buttonHeight:30];
+        [_rightButton setupAutoSizeWithHorizontalPadding:15 buttonHeight:30*ScrenScale];
         
         /* 左侧button*/
         _leftButton = [[UIButton alloc]init];
@@ -99,14 +100,15 @@
         [self.contentView addSubview:_leftButton];
         /* 左按钮*/
         _leftButton.sd_layout
-        .rightSpaceToView(_rightButton,10)
+        .rightSpaceToView(_rightButton,10*ScrenScale)
         .topEqualToView(_rightButton)
         .bottomEqualToView(_rightButton);
         _leftButton.sd_cornerRadius = [NSNumber numberWithInteger:1];
-         [_leftButton setupAutoSizeWithHorizontalPadding:15 buttonHeight:30];
+         [_leftButton setupAutoSizeWithHorizontalPadding:15 buttonHeight:30*ScrenScale];
         
         /* 金额*/
         _price=[[UILabel alloc]init];
+        _price.font = TEXT_FONTSIZE;
         _price.textColor = [UIColor redColor];
         [self.contentView addSubview:_price];
         /* 金额*/
@@ -117,17 +119,6 @@
         .autoHeightRatio(0);
         
         [_rightButton updateLayout];
-        
-//        UIView *cont = [[UIView alloc]init];
-//        cont.backgroundColor = [UIColor whiteColor];
-//        [self.contentView addSubview:cont];
-//        cont.sd_resetNewLayout
-//        .leftSpaceToView(self.contentView,10)
-//        .rightSpaceToView(self.contentView, 10)
-//        .topSpaceToView(self.contentView, 10)
-//        .heightIs(_rightButton.bottom_sd+10);
-//        [cont updateLayout];
-//        [self.contentView sendSubviewToBack:cont];
         
         [self setupAutoHeightWithBottomView:_rightButton bottomMargin:20];
         

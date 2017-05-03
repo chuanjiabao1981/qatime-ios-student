@@ -202,9 +202,10 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 }
 
 
-#pragma mark- 微信请求code数据
+#pragma mark- 微信请求code数据后,向后台申请openID
 - (void)wechatLoginSucess:(NSNotification *)notification{
     
+//    [self loadingHUDStartLoadingWithTitle:nil];
     NSString *code = [notification object];
     
     __block NSString *openID  = @"".mutableCopy;
@@ -217,27 +218,20 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
-            for (NSString *key in dic[@"data"]) {
+            if (dic[@"data"][@"remember_token"]) {
+                /* 在后台查到该用户的信息*/
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+                [self stopHUD];
+                /* 保存用户信息*/
+                [self saveUserInfo:dic[@"data"] loginType:Wechat];
+                [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录成功", nil)];
                 
-                if ([key isEqualToString:@"remember_token"]) {
-                    /* 在后台查到该用户的信息*/
-                    
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
-                    /* 保存用户信息*/
-                    [self saveUserInfo:dic[@"data"] loginType:Wechat];
-                    
-                    [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录成功", nil)];
-                    
-                }else{
-                    
-                    /* 登录信息拉取信息成功*/
-                    openID = dic[@"data"][@"openid"];
-                    
-                    BindingViewController *bVC = [[BindingViewController alloc]initWithOpenID:openID];
-                    [self.navigationController pushViewController:bVC animated:YES];
-                }
+            }else{
+                /* 登录信息拉取信息成功*/
+                openID = dic[@"data"][@"openid"];
+                BindingViewController *bVC = [[BindingViewController alloc]initWithOpenID:openID];
+                [self.navigationController pushViewController:bVC animated:YES];
             }
-            
             
         }else{
             /* 登录信息拉取失败*/
@@ -300,10 +294,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     .rightEqualToView(_loginView.keyCodeButton)
     .heightRatioToView(_loginView.text2,0.8);
     
-    
-    
-    
-
 }
 
 

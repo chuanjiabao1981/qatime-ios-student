@@ -58,7 +58,7 @@
         _rechargeButton.sd_layout
         .topSpaceToView(_total,20)
         .rightSpaceToView(self, 10);
-        [_rechargeButton setupAutoSizeWithHorizontalPadding:30*ScrenScale buttonHeight:40];
+        [_rechargeButton setupAutoSizeWithHorizontalPadding:30*ScrenScale buttonHeight:40*ScrenScale];
         _rechargeButton.sd_cornerRadius = @1;
 
         /* 分割线*/
@@ -80,7 +80,7 @@
         .leftSpaceToView(self, 0)
         .rightSpaceToView(self, 0)
         .topSpaceToView(line, 0)
-        .heightIs(170);
+        .heightIs(170*ScrenScale);
 
         /* 电话提示*/
         _tips = [[UILabel alloc]init];

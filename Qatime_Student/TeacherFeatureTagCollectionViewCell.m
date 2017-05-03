@@ -23,6 +23,7 @@
         [self.contentView addSubview:_featureImage];
        
         _features = [[UILabel alloc]init];
+        _features.font = TEXT_FONTSIZE;
         [self.contentView addSubview:_features];
         _features.textColor = [UIColor colorWithHexString:@"1fac64"];
 

@@ -98,12 +98,12 @@
         .topEqualToView(_content)
         .bottomEqualToView(_content)
         .leftEqualToView(_content)
-        .autoWidthRatio(16/10.0);
+        .autoWidthRatio(1.0);
         
         /* 状态label布局*/
         _status.sd_layout
-        .leftSpaceToView(_classImage,10)
-        .topSpaceToView(_content,5)
+        .leftSpaceToView(_classImage,10*ScrenScale)
+        .topSpaceToView(_content,5*ScrenScale)
         .autoHeightRatio(0);
         
         [_status setSingleLineAutoResizeWithMaxWidth:200];
@@ -111,15 +111,15 @@
         
         /* 课程名称布局*/
         _className.sd_layout
-        .leftSpaceToView(_classImage,10)
-        .topSpaceToView(_content, 5)
-        .rightSpaceToView(_content,10)
+        .leftSpaceToView(_classImage,10*ScrenScale)
+        .topSpaceToView(_content, 5*ScrenScale)
+        .rightSpaceToView(_content,10*ScrenScale)
         .autoHeightRatio(0);
         
         
         /* 年级布局*/
         _grade .sd_layout
-        .leftSpaceToView(_classImage,10)
+        .leftSpaceToView(_classImage,10*ScrenScale)
         .centerYEqualToView(_content)
         .autoHeightRatio(0);
         [_grade setSingleLineAutoResizeWithMaxWidth:100];
@@ -160,38 +160,38 @@
 //        dist.text = @"距开课";
         
         dist.sd_layout
-        .leftSpaceToView(_classImage,10)
-        .bottomSpaceToView(_content,5)
+        .leftSpaceToView(_classImage,10*ScrenScale)
+        .bottomSpaceToView(_content,5*ScrenScale)
         .autoHeightRatio(0);
         [dist setSingleLineAutoResizeWithMaxWidth:200];
         
         
-        _deadLineLabel = [[UILabel alloc]init];
-        _deadLineLabel.textColor = [UIColor grayColor];
-        _deadLineLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
-        [_content addSubview: _deadLineLabel];
-        _deadLineLabel.sd_layout
-        .leftSpaceToView(dist,0)
-        .topEqualToView(dist)
-        .bottomEqualToView(dist);
-        [_deadLineLabel setSingleLineAutoResizeWithMaxWidth:200];
-        
-        /* 天label*/
-        day = [[UILabel alloc]init];
-        [_content addSubview:day];
-        day.text = @"天";
-        day.textColor = [UIColor blackColor];
-        day.sd_layout
-        .leftSpaceToView(_deadLineLabel,0)
-        .topEqualToView(_deadLineLabel)
-        .bottomEqualToView(_deadLineLabel);
-        [day setSingleLineAutoResizeWithMaxWidth:200];
+//        _deadLineLabel = [[UILabel alloc]init];
+//        _deadLineLabel.textColor = [UIColor grayColor];
+//        _deadLineLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
+//        [_content addSubview: _deadLineLabel];
+//        _deadLineLabel.sd_layout
+//        .leftSpaceToView(dist,0)
+//        .topEqualToView(dist)
+//        .bottomEqualToView(dist);
+//        [_deadLineLabel setSingleLineAutoResizeWithMaxWidth:200];
+//        
+//        /* 天label*/
+//        day = [[UILabel alloc]init];
+//        [_content addSubview:day];
+//        day.text = @"天";
+//        day.textColor = [UIColor blackColor];
+//        day.sd_layout
+//        .leftSpaceToView(_deadLineLabel,0)
+//        .topEqualToView(_deadLineLabel)
+//        .bottomEqualToView(_deadLineLabel);
+//        [day setSingleLineAutoResizeWithMaxWidth:200];
         
         /* 进入按钮*/
         _enterButton.sd_layout
-        .rightSpaceToView(_content,10)
-        .bottomSpaceToView(_content,10);
-        [_enterButton setupAutoSizeWithHorizontalPadding:10 buttonHeight:30];
+        .rightSpaceToView(_content,10*ScrenScale)
+        .bottomSpaceToView(_content,10*ScrenScale);
+        [_enterButton setupAutoSizeWithHorizontalPadding:10*ScrenScale buttonHeight:30*ScrenScale];
         
     }
     
@@ -233,19 +233,11 @@
    
     if (days>=1) {
         
-        dist.text = @"距开课";
-        NSString *dateContent=[[NSString alloc] initWithFormat:@"%d",days];
-        _deadLineLabel.text = dateContent;
-        day.hidden = NO;
-        //    int hours=((int)time)%(3600*24)/3600;
-        
-        
+        dist.text = [NSString stringWithFormat:@"距开课%d天",days];
+       
     }else if (days>/* DISABLES CODE */ (0)&&days<1){
         
-        _deadLineLabel.text = @"";
-        day.hidden = YES;
         dist.text = @"即将开课";
-        
         
     }
     

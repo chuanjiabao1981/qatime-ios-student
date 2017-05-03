@@ -7,6 +7,7 @@
 //
 
 #import "RechargeTableViewCell.h"
+#import "NSString+TimeStamp.h"
 
 @interface RechargeTableViewCell (){
     
@@ -160,9 +161,8 @@
 //
 //    }
     
-    
         /* 时间戳*/
-    _time.text = model.timeStamp;
+    _time.text = [model.created_at timeStampToDate];
     
     /* 金额*/
     _money.text = [NSString stringWithFormat:@"+ ¥%@",model.amount];

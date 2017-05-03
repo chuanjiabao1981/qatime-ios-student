@@ -15,6 +15,9 @@
 #import "MMPickerView.h"
 #import "UIAlertController+Blocks.h"
 #import "UIViewController+HUD.h"
+#import "LCActionSheet.h"
+#import "SignUpInfoViewController.h"
+#import "ProvinceChosenViewController.h"
 
 
 @interface BindingViewController ()<UIPickerViewDelegate,UIPickerViewDataSource,UITextInputDelegate>{
@@ -28,6 +31,8 @@
     /* 保存年级信息*/
     GradeList *gradeList;
     
+    NSString *_provinceID;
+    NSString *_cityID;
     
 }
 
@@ -35,14 +40,11 @@
 
 @implementation BindingViewController
 
-
-- (instancetype)initWithOpenID:(NSString *)openID
-{
+- (instancetype)initWithOpenID:(NSString *)openID{
     self = [super init];
     if (self) {
         
         _openID = [NSString stringWithFormat:@"%@",openID];
-        
         
     }
     return self;
@@ -62,25 +64,47 @@
     
     [self.view addSubview:_bindingView];
     
-    
     [_bindingView.getCheckCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
     
     [_bindingView.nextStepButton addTarget:self action:@selector(nextStep:) forControlEvents:UIControlEventTouchUpInside];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(readGradeOver) name:@"LoadGradeOver" object:nil];
     
+    //修改地址
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"ChangeLocation" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+       
+        NSDictionary *dic = [note object];
+        
+        NSArray *province = [[NSUserDefaults standardUserDefaults]valueForKey:@"province"];
+        
+        for (NSDictionary *pro in province) {
+            if ([dic[@"province"] isEqualToString:pro[@"name"]]) {
+                _provinceID = [NSString stringWithFormat:@"%@",pro[@"id"]];
+            }
+        }
+        NSArray *city = [[NSUserDefaults standardUserDefaults]valueForKey:@"city"];
+        for (NSDictionary *citydic in city) {
+            if ([dic[@"city"]isEqualToString:citydic[@"name"]]) {
+                _cityID = [NSString stringWithFormat:@"%@",citydic[@"id"]];
+            }
+        }
+        [_bindingView.chooseCitys setTitle:[NSString stringWithFormat:@"%@  %@",dic[@"province"],dic[@"city"]] forState:UIControlStateNormal];
+        [_bindingView.chooseCitys setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        
+    }];
+    
     
     /* 加载年级信息*/
     gradeList = [[GradeList alloc]init];
     
-    //    选项
+    
+    // 选项
     
     [_bindingView.chosenButton addTarget:self action:@selector(chosenProtocol:) forControlEvents:UIControlEventTouchUpInside];
     
+    [_bindingView.chooseGrade addTarget:self action:@selector(chooseGrade:) forControlEvents:UIControlEventTouchUpInside];
     
-    
-    [_bindingView.grade addTarget:self action:@selector(chooseGrade:) forControlEvents:UIControlEventTouchUpInside];
-    
+    [_bindingView.chooseCitys addTarget:self action:@selector(chooseCitys:) forControlEvents:UIControlEventTouchUpInside];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
     
@@ -91,7 +115,7 @@
 
 - (void)readGradeOver{
     
-    [self loadingHUDStopLoadingWithTitle:@"年级信息加载完毕!"];
+    [self loadingHUDStopLoadingWithTitle:nil];
     
 }
 
@@ -99,15 +123,28 @@
 
 -(void)textDidChange:(id<UITextInput>)textInput{
     
-    if (![_bindingView.phoneNumber.text isEqualToString:@""]) {
-        _bindingView.getCheckCodeButton.enabled = YES;
-        [_bindingView.getCheckCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_bindingView.getCheckCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+    if ([self isMobileNumber:_bindingView.phoneNumber.text]) {
+        if ([_bindingView.getCheckCodeButton.titleLabel.text isEqualToString:@"获取校验码"]) {
+            _bindingView.getCheckCodeButton.enabled = YES;
+            [_bindingView.getCheckCodeButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+            [_bindingView.getCheckCodeButton setBackgroundColor:[UIColor whiteColor]];
+            _bindingView.getCheckCodeButton.layer.borderColor = NAVIGATIONRED.CGColor;
+            
+            [_bindingView.getCheckCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+            
+        }else{
+            
+        }
+        
     }else{
+        
         _bindingView.getCheckCodeButton.enabled = NO;
         [_bindingView.getCheckCodeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [_bindingView.getCheckCodeButton removeTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
         
+        [_bindingView.getCheckCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_bindingView.getCheckCodeButton setBackgroundColor:[UIColor lightGrayColor]];
+        _bindingView.getCheckCodeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     }
     
     if (_bindingView.phoneNumber.text.length > 11) {
@@ -115,6 +152,22 @@
         [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入11位手机号" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
     }
     
+    if (_bindingView.phoneNumber.text.length>0&&_bindingView.checkCode.text.length>0&&_bindingView.userPassword.text.length>0&&_bindingView.userPasswordCompare.text.length>0&&_bindingView.chosenButton.selected==YES) {
+        
+        _bindingView.nextStepButton.enabled = YES;
+        [_bindingView.nextStepButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+        [_bindingView.nextStepButton setBackgroundColor: [UIColor whiteColor]];
+        _bindingView.nextStepButton.layer.borderColor = NAVIGATIONRED.CGColor;
+        
+    }else{
+        _bindingView.nextStepButton.enabled = NO;
+        
+        [_bindingView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_bindingView.nextStepButton setBackgroundColor: [UIColor lightGrayColor]];
+        _bindingView.nextStepButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        
+    }
+
 }
 
 
@@ -122,48 +175,57 @@
 - (void)chosenProtocol:(UIButton *)sender{
     
     if (sender.selected ==NO) {
-        sender.layer.borderWidth = 0;
-        sender.backgroundColor = [UIColor colorWithRed:0.84 green:0.33 blue:0.6 alpha:1.00];
-        [sender setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];
-        sender.selected = YES;
-        if (_bindingView.phoneNumber.text.length>0&&_bindingView.checkCode.text.length>0&&_bindingView.userPassword.text.length>0&&_bindingView.userPasswordCompare.text.length>0&&![_bindingView.grade.titleLabel.text isEqualToString:@"选择所在年级"]) {
-            _bindingView.nextStepButton.enabled = YES;
-            [_bindingView.nextStepButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
-            _bindingView.nextStepButton.layer.borderColor = BUTTONRED.CGColor;
-        }else{
-            _bindingView.nextStepButton.enabled = NO;
-            [_bindingView.nextStepButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-            _bindingView.nextStepButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-            
-        }
-
-    }else if (sender.selected == YES){
-        sender.layer.borderColor =[UIColor blackColor].CGColor;
-        sender.layer.borderWidth=1.0f;
-        [sender setImage:nil forState:UIControlStateNormal];
-        sender.backgroundColor = [UIColor clearColor];
-        sender.selected= NO;
+        
         if (_bindingView.phoneNumber.text.length>0&&_bindingView.checkCode.text.length>0&&_bindingView.userPassword.text.length>0&&_bindingView.userPasswordCompare.text.length>0) {
-            _bindingView.nextStepButton.enabled = NO;
-            [_bindingView.nextStepButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-            _bindingView.nextStepButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        }else{
             _bindingView.nextStepButton.enabled = YES;
-            [_bindingView.nextStepButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
-            _bindingView.nextStepButton.layer.borderColor = BUTTONRED.CGColor;
+            sender.backgroundColor = [UIColor colorWithRed:0.84 green:0.33 blue:0.6 alpha:1.00];
+            [sender setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];
+            
+            sender.selected = YES;
+            
+            [_bindingView.nextStepButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+            [_bindingView.nextStepButton setBackgroundColor: [UIColor whiteColor]];
+            _bindingView.nextStepButton.layer.borderColor = NAVIGATIONRED.CGColor;
+            
+            
+        }else{
+            
+            sender.backgroundColor = [UIColor colorWithRed:0.84 green:0.33 blue:0.6 alpha:1.00];
+            [sender setImage:[UIImage imageNamed:@"right_button"] forState:UIControlStateNormal];
+            
+            [_bindingView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [_bindingView.nextStepButton setBackgroundColor: [UIColor lightGrayColor]];
+            _bindingView.nextStepButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            
+            sender.selected = YES;
             
         }
-
+        
+        
+    }else{
+        
+        if (_bindingView.phoneNumber.text.length>0&&_bindingView.checkCode.text.length>0&&_bindingView.userPassword.text.length>0&&_bindingView.userPasswordCompare.text.length>0) {
+            
+            _bindingView.nextStepButton.enabled = NO;
+            [_bindingView.nextStepButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            sender.layer.borderColor =[UIColor blackColor].CGColor;
+            sender.layer.borderWidth=1.0f;
+            [sender setImage:nil forState:UIControlStateNormal];
+            sender.backgroundColor = [UIColor clearColor];
+            
+            sender.selected= NO;
+        }else{
+            
+            sender.layer.borderColor =[UIColor blackColor].CGColor;
+            sender.layer.borderWidth=1.0f;
+            [sender setImage:nil forState:UIControlStateNormal];
+            sender.backgroundColor = [UIColor clearColor];
+            
+            sender.selected= NO;
+            
+        }
     }
-    
-    
-    
-    
-    
-    
-    
 }
-
 
 
 /* 点击下一步按钮*/
@@ -172,9 +234,9 @@
     /* 测试口  直接跳转*/
     
     //    /* 进入下一页*/
-    //    _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
-    //
-    //    [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
+//      SignUpInfoViewController * _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
+//    
+//        [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
     //
     ////////////////////////////////////////////
     
@@ -199,6 +261,10 @@
         [self showAlertWith:@"前后密码不一致"];
         
     }
+    if ([_bindingView.chooseGrade.titleLabel.text isEqualToString:@"请选择年级"]) {
+        
+        [self showAlertWith:@"请选择年级"];
+    }
     
     /* 所有信息都填写正确的情况*/
     if (!([_bindingView.phoneNumber.text isEqualToString:@""]&&[_bindingView.userPassword.text isEqualToString:@""]&&[_bindingView.userPasswordCompare.text isEqualToString:@""]&&[_bindingView.checkCode.text isEqualToString:@""]/*&&[_signUpView.unlockKey.text isEqualToString:@""] 注册码功能暂时去掉*/)&&[_bindingView.userPasswordCompare.text isEqualToString:_bindingView.userPassword.text]) {
@@ -220,8 +286,10 @@
                                         @"register_code_value":@"code",
                                         @"type":@"Student",
                                         @"client_type":@"app",
-                                        @"grade":_bindingView.grade.titleLabel.text,
-                                        @"openid":_openID
+                                        @"grade":_bindingView.chooseGrade.titleLabel.text,
+                                        @"openid":_openID,
+                                        @"province_id":_provinceID,
+                                        @"city_id":_cityID
                                         };
             
             [self loadingHUDStartLoadingWithTitle:@"绑定中"];
@@ -253,7 +321,6 @@
                         [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
                         
                         NSLog(@"保存的数据\n%@",dataDic);
-                        
                         
                         /* 归档*/
                         [NSKeyedArchiver archiveRootObject:dataDic toFile:tokenFilePath];
@@ -359,7 +426,6 @@
             hud.yOffset= 150.f;
             hud.removeFromSuperViewOnHide = YES;
             
-            
             /* 重新发送验证码*/
             [self deadLineTimer:_bindingView.getCheckCodeButton];
             
@@ -407,10 +473,6 @@
         return NO;
 }
 
-
-
-
-
 /* 弹出alter封装*/
 - (void)showAlertWith:(NSString *)message{
     UIAlertController *alert=[UIAlertController alertControllerWithTitle:@"提示" message:message preferredStyle:UIAlertControllerStyleAlert];
@@ -442,8 +504,10 @@
             NSString *strTime = [NSString stringWithFormat:@"重发验证码(%d)",deadline];
             
             [button setTitle:strTime forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
             
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setBackgroundColor:[UIColor lightGrayColor]];
+            button.layer.borderColor = [UIColor lightGrayColor].CGColor;
             [button setEnabled:NO];
             
         });
@@ -455,12 +519,12 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                
-                [button setTitle:@"获取校验码" forState:UIControlStateNormal];
-                [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [button setTitle:NSLocalizedString(@"获取校验码", nil) forState:UIControlStateNormal];
+                [button setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+                [button setBackgroundColor:[UIColor whiteColor]];
+                button.layer.borderColor = NAVIGATIONRED.CGColor;
                 
                 [button setEnabled:YES];
-                
                 
             });
         }
@@ -481,8 +545,16 @@
     
     [MMPickerView showPickerViewInView:self.view withStrings:gradeList.grade withOptions:@{NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]} completion:^(NSString *selectedString) {
         
-        [_bindingView.grade setTitle:selectedString forState:UIControlStateNormal];
+        [sender setTitle:selectedString forState:UIControlStateNormal];
+        [sender setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     } ];
+}
+
+#pragma mark- 选择地区
+- (void)chooseCitys:(UIButton *)sender{
+    
+    ProvinceChosenViewController *controller = [[ProvinceChosenViewController alloc]init];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 

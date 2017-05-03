@@ -478,7 +478,7 @@
                     [_tutoriumInfoView.classFeature updateLayout];
                     
                     
-                    [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
+                    [self loadingHUDStopLoadingWithTitle:nil];
                     
                 }else{
                     /* 返回的教师数据是错误的*/
@@ -501,7 +501,7 @@
 //查看教师详情
 - (void)watchTeachers{
     
-    TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:_dataDic[@"teacher"][@"id"] ];
+    TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:(NSString *)_dataDic[@"teacher"][@"id"] ];
     [self.navigationController pushViewController:controller animated:YES];
     
 }

@@ -28,7 +28,7 @@
 @property(nonatomic,strong) RechargeView *rechargeView ;
 
 /* 提现记录*/
-@property(nonatomic,strong) WidthDrawView *withDrawView ;
+//@property(nonatomic,strong) WidthDrawView *withDrawView ;
 
 /* 消费记录*/
 @property(nonatomic,strong) PaymentView *paymentView ;

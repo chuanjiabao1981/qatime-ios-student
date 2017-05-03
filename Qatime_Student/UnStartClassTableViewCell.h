@@ -47,7 +47,7 @@
 
 /* 距离开课时间*/
 
-@property(nonatomic,strong) UILabel *deadLineLabel ;
+//@property(nonatomic,strong) UILabel *deadLineLabel ;
 
 
 /* 数据model*/

@@ -84,22 +84,22 @@
         .topEqualToView(_content)
         .bottomEqualToView(_content)
         .leftEqualToView(_content)
-        .autoWidthRatio(16/10.0);
+        .autoWidthRatio(1.0);
         
         
         /* 课程名称布局*/
         
         _className.sd_layout
-        .leftSpaceToView(_classImage,10)
-        .topSpaceToView(_content,5)
-        .rightSpaceToView(_content,10)
+        .leftSpaceToView(_classImage,10*ScrenScale)
+        .topSpaceToView(_content,5*ScrenScale)
+        .rightSpaceToView(_content,10*ScrenScale)
         .autoHeightRatio(0);
         [_className setMaxNumberOfLinesToShow:1];
         
         
         /* 年级布局*/
         _grade .sd_layout
-        .leftSpaceToView(_classImage,10)
+        .leftSpaceToView(_classImage,10*ScrenScale)
         .centerYEqualToView(_content)
         .autoHeightRatio(0);
         [_grade setSingleLineAutoResizeWithMaxWidth:100];
@@ -131,15 +131,11 @@
         
         [_teacherName setSingleLineAutoResizeWithMaxWidth:100];
         
-        
-        
         _totalCount.sd_layout
-        .leftSpaceToView(_classImage,10)
-        .bottomSpaceToView(_content,5)
+        .leftSpaceToView(_classImage,10*ScrenScale)
+        .bottomSpaceToView(_content,5*ScrenScale)
         .autoHeightRatio(0);
         [_totalCount setSingleLineAutoResizeWithMaxWidth:500];
-        
-        
         
     }
     
