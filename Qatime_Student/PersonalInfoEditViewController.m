@@ -52,6 +52,9 @@
     /* 提交数据用的字典*/
     NSMutableDictionary *_dataDic;
     
+    NSString *_provinceID;
+    NSString *_cityID;
+    
 }
 
 @end
@@ -115,15 +118,10 @@
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     _navigationBar.titleLabel.text = @"修改个人信息";
     
-    
     /* 指定列表代理*/
     _editTableView.delegate = self;
     _editTableView.dataSource = self;
     _editTableView.bounces = NO;
-    
-    //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(resign)];
-    //    [_editTableView addGestureRecognizer:tap];
-    
     
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
@@ -140,60 +138,13 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeLocation:) name:@"ChangeLocation" object:nil];
     
-    
 }
 /* 点击头像的方法*/
 - (void)changeHeadImage:(id)sender{
-    
-//    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-//    {
-//        NSLog(@"支持相机");
-//    }
-//    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
-//    {
-//        NSLog(@"支持图库");
-//    }
-//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
-//    {
-//        NSLog(@"支持相片库");
-//    }
-//    
+ 
     UIImagePickerController *picker = [[UIImagePickerController alloc]init];
     picker.allowsEditing = YES;
     picker.delegate = self;
-//
-//    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"上传头像" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-//    
-//    UIAlertAction *camera = [UIAlertAction actionWithTitle:@"照相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        
-//        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-//        
-//        [self presentViewController:picker animated:YES completion:nil];
-//    }] ;
-//    UIAlertAction *library = [UIAlertAction actionWithTitle:@"图库" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//        
-//        [self presentViewController:picker animated:YES completion:nil];
-//        
-//    }] ;
-//    UIAlertAction *photos = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-//        
-//        [self presentViewController:picker animated:YES completion:nil];
-//        
-//    }] ;
-//    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//        
-//        
-//    }] ;
-//    
-//    
-//    [alert addAction:camera];
-//    [alert addAction:library];
-//    [alert addAction:photos];
-//    [alert addAction:cancel];
-//    
-//    [self presentViewController:alert animated:YES completion:nil];
     
     LCActionSheet *sheet = [[LCActionSheet alloc]initWithTitle:@"选择头像" cancelButtonTitle:@"取消" clicked:^(LCActionSheet *actionSheet, NSInteger buttonIndex) {
     
@@ -578,14 +529,19 @@
     /* 组成个人信息的字典*/
     _dataDic =[NSMutableDictionary dictionaryWithDictionary: @{@"name":_infoDic[@"name"]?_infoDic[@"name"]:@"",@"gender":_infoDic[@"gender"]?_infoDic[@"gender"]:@"",@"desc":_infoDic[@"desc"]?_infoDic[@"desc"]:@"",}];
     
+    if (_provinceID&&_cityID) {
+        [_dataDic setValue:_provinceID forKey:@"province_id"];
+        [_dataDic setValue:_cityID forKey:@"city_id"];
+    }
+    
+    
     /* 取出头像*/
     EditHeadTableViewCell *cell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0 ]];
     
     _avatar = UIImageJPEGRepresentation(cell.headImage.image, 0.9);
     
-    if (changeBirthday ==YES) {
-        [_dataDic setValue:_infoDic[@"birthday"] forKey:@"birthday"];
-    }
+    [_dataDic setValue:_infoDic[@"birthday"] forKey:@"birthday"];
+    
     if (_dataDic[@"gender"] !=nil) {
         
         EditGenderTableViewCell *cell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
@@ -596,6 +552,7 @@
         }
         
     }
+    
     if (grade == YES||![_infoDic[@"grade"] isEqualToString:@"未设置"]) {
         [_dataDic setObject:_infoDic[@"grade"]?_infoDic[@"grade"]:@"" forKey:@"grade"];
     }
@@ -613,29 +570,19 @@
     //    [request setHTTPMethod:@"PUT"];
     [request setCachePolicy:NSURLRequestReloadIgnoringCacheData];
     [request setTimeoutInterval:15];
-    
     //    [self loadingHUDStartLoadingWithTitle:@"正在提交"];
-    
     __block MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelFont = [UIFont systemFontOfSize:14*ScrenScale];
-    
     
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSURLSessionUploadTask *uploadTask;
     uploadTask = [manager uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull uploadProgress) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            //
-            //            [hud show:YES];
+            
             [hud setLabelText:[NSString stringWithFormat:@"正在提交 %ld%@",(NSInteger)uploadProgress.fractionCompleted*100,@"%"]];
-            
-            //            if ((NSInteger)uploadProgress.fractionCompleted*100==100) {
-            //                [hud hide:YES];
-            //            }
-            
         });
-        
         
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         if (error) {
@@ -676,6 +623,21 @@
     
     cell.content.text = dic[@"province"];
     cell.subContent.text = dic[@"city"];
+    
+    NSArray *provinceArr = [[NSUserDefaults standardUserDefaults]valueForKey:@"province"];
+    NSArray *cityArr = [[NSUserDefaults standardUserDefaults]valueForKey:@"city"];
+    
+    for (NSDictionary *province in provinceArr) {
+        if ([dic[@"province"]isEqualToString:province[@"name"]]) {
+            _provinceID = [NSString stringWithFormat:@"%@",province[@"id"]];
+        }
+    }
+    
+    for (NSDictionary *city in cityArr) {
+        if ([dic[@"city"]isEqualToString:city[@"name"]]) {
+            _cityID = [NSString stringWithFormat:@"%@",city[@"id"]];
+        }
+    }
     
 }
 

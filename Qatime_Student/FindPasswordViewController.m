@@ -164,42 +164,55 @@
         }
     }
     
-    
-    
 }
 
 /* 输入框字符发生改变*/
 
 -(void)textDidChange:(id<UITextInput>)textInput{
     
-    if (![_findPasswordView.phoneNumber.text isEqualToString:@""]) {
-        _findPasswordView.getCheckCodeButton.enabled = YES;
-        [_findPasswordView.getCheckCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_findPasswordView.getCheckCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+    /* 手机号框*/
+    if ([self isMobileNumber:_findPasswordView.phoneNumber.text]) {
+        
+        if ([_findPasswordView.getCheckCodeButton.titleLabel.text isEqualToString:@"获取校验码"]) {
+            _findPasswordView.getCheckCodeButton.enabled = YES;
+            [_findPasswordView.getCheckCodeButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+            [_findPasswordView.getCheckCodeButton setBackgroundColor:[UIColor whiteColor]];
+            _findPasswordView.getCheckCodeButton.layer.borderColor = NAVIGATIONRED.CGColor;
+            [_findPasswordView.getCheckCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+        }else{
+            
+        }
+        
     }else{
+        
         _findPasswordView.getCheckCodeButton.enabled = NO;
         [_findPasswordView.getCheckCodeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [_findPasswordView.getCheckCodeButton removeTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
         
+        [_findPasswordView.getCheckCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_findPasswordView.getCheckCodeButton setBackgroundColor:[UIColor lightGrayColor]];
+        _findPasswordView.getCheckCodeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     }
     
     if (_findPasswordView.phoneNumber.text.length > 11) {
         _findPasswordView.phoneNumber.text = [_findPasswordView.phoneNumber.text substringToIndex:11];
-        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入11位手机号" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+        [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请输入11位手机号", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
     }
     
-    if (_findPasswordView.phoneNumber.text.length>0&&_findPasswordView.checkCode.text.length>0&&_findPasswordView.userPassword.text.length>0&&_findPasswordView.userPasswordCompare.text.length>0){
+    if (_findPasswordView.phoneNumber.text.length>0&&_findPasswordView.checkCode.text.length>0&&_findPasswordView.userPassword.text.length>0&&_findPasswordView.userPasswordCompare.text.length>0) {
+        
         _findPasswordView.nextStepButton.enabled = YES;
-        [_findPasswordView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_findPasswordView.nextStepButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+        [_findPasswordView.nextStepButton setBackgroundColor: [UIColor whiteColor]];
+        _findPasswordView.nextStepButton.layer.borderColor = NAVIGATIONRED.CGColor;
         
     }else{
         _findPasswordView.nextStepButton.enabled = NO;
-        [_findPasswordView.nextStepButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [_findPasswordView.nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_findPasswordView.nextStepButton setBackgroundColor: [UIColor lightGrayColor]];
+        _findPasswordView.nextStepButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
         
     }
-    
-    
-    
 }
 
 
@@ -292,7 +305,6 @@
 /* 倒计时方法封装*/
 - (void)deadLineTimer:(UIButton *)button{
     
-    
     /* 按钮倒计时*/
     __block int deadline=CheckCodeTime;
     
@@ -309,14 +321,11 @@
             NSString *strTime = [NSString stringWithFormat:@"重发验证码(%d)",deadline];
             
             [button setTitle:strTime forState:UIControlStateNormal];
-            [button setEnabled:NO];
             
-            [button setBackgroundColor:[UIColor lightGrayColor]];
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setBackgroundColor:[UIColor lightGrayColor]];
             button.layer.borderColor = [UIColor lightGrayColor].CGColor;
-            
-            
-            
+            [button setEnabled:NO];
             
         });
         deadline--;
@@ -327,20 +336,17 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                
-                [button setTitle:@"获取校验码" forState:UIControlStateNormal];
-                [button setEnabled:YES];
-                
-                [button setBackgroundColor:[UIColor whiteColor]];
+                [button setTitle:NSLocalizedString(@"获取校验码", nil) forState:UIControlStateNormal];
                 [button setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+                [button setBackgroundColor:[UIColor whiteColor]];
                 button.layer.borderColor = NAVIGATIONRED.CGColor;
+                
+                [button setEnabled:YES];
                 
             });
         }
     });
     dispatch_resume(_timer);
-    
-    
     
 }
 

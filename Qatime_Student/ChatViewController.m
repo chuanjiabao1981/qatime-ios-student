@@ -806,7 +806,6 @@
                     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message]];
                     
                     [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
-                    
                 }
                 
             }
@@ -815,13 +814,12 @@
         
     }
     
-    [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
+    [self loadingHUDStopLoadingWithTitle:nil];
     [self performSelector:@selector(sendNoticeIn) withObject:nil afterDelay:1];
     
     [_chatTableView reloadData];
     [self tableViewScrollToBottom];
 }
-
 
 
 /* 发送您已加入聊天室的通知消息*/
@@ -855,7 +853,6 @@
     
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
-    
     
 }
 
@@ -894,9 +891,7 @@
                     
                 }
                 
-                
             }
-            
             
         }
             break;

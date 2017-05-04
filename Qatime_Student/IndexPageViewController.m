@@ -93,8 +93,6 @@
     /* 最近开课 课程的model数组*/
     NSMutableArray *_newestStart;
     
-    
-    
     /* 头视图的尺寸*/
     CGSize headerSize;
     
@@ -182,7 +180,7 @@
     [super viewDidLoad];
     
     self.navigationController.navigationBarHidden = YES;
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = BACKGROUNDGRAY ;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     

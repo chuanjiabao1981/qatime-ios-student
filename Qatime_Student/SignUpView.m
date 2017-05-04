@@ -36,7 +36,7 @@
         .topSpaceToView(self,10*ScrenScale320)
         .leftSpaceToView(self,30)
         .rightSpaceToView(self,30)
-        .heightIs(40);
+        .heightIs(40*ScrenScale320);
         
         _phoneNumber = [[UITextField alloc]init];
         _phoneNumber.font = TEXT_FONTSIZE;
@@ -48,7 +48,6 @@
         .rightSpaceToView(text1, 10)
         .topSpaceToView(text1, 10)
         .bottomSpaceToView(text1, 10);
-        
         
         /* 手机校验码输入框*/
         UIView *text2 = [[UIView alloc]init];
@@ -138,7 +137,6 @@
         .bottomSpaceToView(text4, 10);
         _userPasswordCompare.secureTextEntry = YES;
         
-        
         /* 同意用户协议的选择框*/
         _chosenButton = [[UIButton alloc]init];
         
@@ -148,7 +146,6 @@
         _chosenButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
         _chosenButton.selected = NO;
         [_chosenButton setEnlargeEdge:20];
-        
         
         /* 同意label*/
         _accessLabel= [[UILabel alloc]init];
@@ -185,7 +182,6 @@
         .leftSpaceToView(_chosenButton, 10);
         [_accessLabel updateLayout];
         
-        
         /* 下一步按钮*/
         _nextStepButton = [[UIButton alloc]init];
         _nextStepButton.titleLabel.font = TEXT_FONTSIZE;
@@ -201,6 +197,7 @@
         .rightEqualToView(text1)
         .topSpaceToView(_accessLabel, 10*ScrenScale320)
         .heightRatioToView(text1, 1.0);
+        
         
     }
     return self;

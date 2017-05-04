@@ -16,7 +16,6 @@
 /**视频播放器*/
 @property (nonatomic, strong) ZFPlayerView * _Nullable videoPlayer ;
 
-
 /**
  初始化方法
 

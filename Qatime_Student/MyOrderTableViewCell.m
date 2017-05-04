@@ -136,12 +136,17 @@
         
         _name.text = unpaidModel.product[@"name"];
         
-        _orderInfos.text = [NSString stringWithFormat:@"%@%@/共%@课/%@",unpaidModel.product[@"subject"],unpaidModel.product[@"grade"],unpaidModel.product[@"preset_lesson_count"],unpaidModel.product[@"teacher_name"]];
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:unpaidModel.product_type],unpaidModel.product[@"grade"],unpaidModel.product[@"subject"],unpaidModel.product[@"preset_lesson_count"],unpaidModel.product[@"teacher_name"]];
         
     }else if ([unpaidModel.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
         _name.text = unpaidModel.product_video_course[@"name"];
         
-        _orderInfos.text = [NSString stringWithFormat:@"%@%@/共%@课/%@",unpaidModel.product_video_course[@"subject"],unpaidModel.product_video_course[@"grade"],unpaidModel.product_video_course[@"preset_lesson_count"],unpaidModel.product_video_course[@"teacher_name"]];
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:unpaidModel.product_type],unpaidModel.product_video_course[@"grade"],unpaidModel.product_video_course[@"subject"],unpaidModel.product_video_course[@"preset_lesson_count"],unpaidModel.product_video_course[@"teacher_name"]];
+        
+    }else if ([unpaidModel.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+        _name.text = unpaidModel.product_interactive_course[@"name"];
+        
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:unpaidModel.product_type],unpaidModel.product_interactive_course[@"grade"],unpaidModel.product_interactive_course[@"subject"],unpaidModel.product_interactive_course[@"preset_lesson_count"],unpaidModel.product_interactive_course[@"teacher_name"]];
     }
 
     _price.text = [NSString stringWithFormat:@"¥%@",unpaidModel.amount];

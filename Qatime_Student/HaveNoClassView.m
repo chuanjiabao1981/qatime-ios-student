@@ -10,18 +10,29 @@
 
 @implementation HaveNoClassView
 
+-(instancetype)initWithTitle:(NSString *)title{
+    
+    self = [super init];
+    if (self) {
+        
+        _titleLabel.text = title;
+        
+    }
+    return self;
+}
+
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = BACKGROUNDGRAY;
         
         _titleLabel = [UILabel new];
         _titleLabel.text = @"";
         [self addSubview:_titleLabel];
-        _titleLabel.textColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.00];
+        _titleLabel.textColor = [UIColor lightGrayColor];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         
         _titleLabel.sd_layout
@@ -30,7 +41,6 @@
         .autoHeightRatio(0)
         .leftSpaceToView(self, 0)
         .rightSpaceToView(self, 0);
-        
         
     }
     return self;

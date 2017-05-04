@@ -8,6 +8,8 @@
 
 #import "PaidOrderTableViewCell.h"
 
+
+
 @implementation PaidOrderTableViewCell
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
@@ -100,12 +102,12 @@
         .bottomEqualToView(_price);
         _rightButton.sd_cornerRadius = [NSNumber numberWithInteger:1];
         [_rightButton setupAutoSizeWithHorizontalPadding:15 buttonHeight:30*ScrenScale];
-        [_rightButton updateLayout];
+//        [_rightButton updateLayout];
         
         //视频课类型订单,不支持退款的提示字样 -->根据类型判断是否显示
         _unTips = [[UILabel alloc]init];
         [self.contentView addSubview:_unTips];
-        _unTips.font = TEXT_FONTSIZE;
+        _unTips.font = TEXT_FONTSIZE_MIN;
         _unTips.textColor = TITLECOLOR;
         _unTips.text = @"此类型订单不支持退款";
         _unTipsImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"感叹号gray"]];
@@ -137,12 +139,16 @@
         
         _name.text = paidModel.product[@"name"];
         
-        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:paidModel.product_type],paidModel.product[@"subject"],paidModel.product[@"grade"],paidModel.product[@"preset_lesson_count"],paidModel.product[@"teacher_name"]];
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:paidModel.product_type],paidModel.product[@"grade"],paidModel.product[@"subject"],paidModel.product[@"preset_lesson_count"],paidModel.product[@"teacher_name"]];
         
     }else if ([paidModel.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
         _name.text = paidModel.product_video_course[@"name"];
         
-        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:paidModel.product_type],paidModel.product_video_course[@"subject"],paidModel.product_video_course[@"grade"],paidModel.product_video_course[@"preset_lesson_count"],paidModel.product_video_course[@"teacher_name"]];
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:paidModel.product_type],paidModel.product_video_course[@"grade"],paidModel.product_video_course[@"subject"],paidModel.product_video_course[@"preset_lesson_count"],paidModel.product_video_course[@"teacher_name"]];
+        
+    }else if ([paidModel.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+        _name.text = paidModel.product_interactive_course[@"name"];
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:paidModel.product_type],paidModel.product_interactive_course[@"grade"],paidModel.product_interactive_course[@"subject"],paidModel.product_interactive_course[@"preset_lesson_count"],paidModel.product_interactive_course[@"teacher_name"]];
     }
     
     _price.text = [NSString stringWithFormat:@"¥%@",paidModel.amount];
@@ -161,13 +167,13 @@
         self.status.text = @"已退款";
     }
     
-    if ([paidModel.pay_type isEqualToString:@"LiveStudio::Course"]) {
+    if ([paidModel.product_type isEqualToString:@"LiveStudio::Course"]) {
         //直播课类型
         _unTips.hidden = YES;
         _unTipsImage.hidden = YES;
         _rightButton.hidden = NO;
         
-    }else if ([paidModel.pay_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
+    }else if ([paidModel.product_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
         //一对一课类型
         
         _unTips.hidden = NO;
@@ -175,13 +181,13 @@
         _rightButton.hidden = YES;
         
     }else{
-        //暂定 视频课类型
-        _unTips.hidden = YES;
-        _unTipsImage.hidden = YES;
-        _rightButton.hidden = NO;
+        //暂定 视频课类型 不能退款的
+        
+        _unTips.hidden = NO;
+        _unTipsImage.hidden = NO;
+        _rightButton.hidden = YES;
  
     }
-    
     
 }
 

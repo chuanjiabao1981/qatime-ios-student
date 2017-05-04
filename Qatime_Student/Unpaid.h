@@ -25,7 +25,7 @@
 @property (nonatomic, strong) NSString *app_pay_str ;
 @property (nonatomic, strong) NSString *product_type ;
 @property (nonatomic, strong) NSDictionary *product ;
-@property (nonatomic, strong) NSString *product_interactive_course ;
+@property (nonatomic, strong) NSDictionary *product_interactive_course ;
 @property (nonatomic, strong) NSDictionary *product_video_course;
 @property (nonatomic, strong) NSString *coupon_code ;
 

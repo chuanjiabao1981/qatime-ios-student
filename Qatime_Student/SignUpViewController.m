@@ -47,7 +47,6 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
     
-    
 }
 
 
@@ -121,9 +120,9 @@
     /* 测试口  直接跳转*/
     
     /* 进入下一页*/
-    //        _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
-    //
-    //        [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
+    _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
+    
+    [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
     
     ////////////////////////////////////////////
     

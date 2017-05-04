@@ -12,8 +12,6 @@
 
 @property(nonatomic,strong) UILabel *titleLabel ;
 
-
-
-
+-(instancetype)initWithTitle:(NSString *)title;
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "ClassTimeViewController.h"
- 
+
 #import "NavigationBar.h"
 #import "HMSegmentedControl.h"
 #import "ClassTimeTableViewCell.h"
@@ -19,14 +19,29 @@
 
 #import "AllClassViewController.h"
 #import "NotClassView.h"
+#import "CYLTableViewPlaceHolder.h"
 
 /* 点击事件 -> 辅导班详情页*/
 #import "TutoriumInfoViewController.h"
 #import "LivePlayerViewController.h"
 #import "UIAlertController+Blocks.h"
+#import "HaveNoClassView.h"
+#import "UIViewController+AFHTTP.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
+
+//刷新方式
+typedef enum : NSUInteger {
+    PullToRefresh,
+    PushToLoadMore,
+} RefreshType;
+
+//课程类型
+typedef enum : NSUInteger {
+    UnstartClass,
+    StartedClass,
+} ClassType;
 
 @interface ClassTimeViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIGestureRecognizerDelegate>{
     
@@ -36,18 +51,18 @@
     /* 保存未上课数据的数组*/
     __block  NSMutableArray *_unclosedArr;
     
-    
     /* 保存已上课数据的数组*/
     __block  NSMutableArray *_closedArr;
     
     /* 该月份是否有课*/
-    
     BOOL haveClass;
     
     /* 是否登录*/
     BOOL isLogin;
     
     HaveNoClassView *_notLoginView;
+    
+    NSInteger checkTime;
     
 }
 
@@ -60,18 +75,22 @@
 - (void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
-
+    
 }
 
 - (void)loadView{
     [super loadView];
     
     [self loadClassView];
+    [self makeViews];
     
-    /* 课程表的视图*/
+}
+
+/**课程表未登录的视图*/
+- (void)makeViews{
     
+    /* 课程表未登录的视图*/
     _notLoginView = ({
-        
         HaveNoClassView *_=[[HaveNoClassView alloc]init];
         _.titleLabel.text = @"登录才能查看!";
         [self.view addSubview:_];
@@ -99,87 +118,54 @@
         _;
         
     });
-    
-    
 }
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES];
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
-//    self.tabBarController.tabBar.hidden = YES;
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = BACKGROUNDGRAY;
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
     [self.view addSubview:_navigationBar];
     [_navigationBar.titleLabel setText:@"课程表"];
-    
     [_navigationBar.rightButton setImage:[UIImage imageNamed:@"日历"] forState:UIControlStateNormal];
     [_navigationBar.rightButton addTarget:self action:@selector(calenderViews) forControlEvents:UIControlEventTouchUpInside];
-    
-#pragma mark- HUD加载数据
-    //
     
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
         _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
     }
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
     /* 判断是否登录*/
-    
     isLogin = [[NSUserDefaults standardUserDefaults]boolForKey:@"Login"];
     if (isLogin==YES&&_token&&_idNumber) {
         _notLoginView.hidden = YES;
-        [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
-        
-        
+//        [self loadingHUDStartLoadingWithTitle:nil];
     }else{
         _notLoginView.hidden = NO;
-        
-//        _navigationBar.rightButton.hidden = YES;
-        
     }
     
-
-#pragma mark- 初始化数据
+    //初始化数据
     _unclosedArr = @[].mutableCopy;
     _closedArr = @[].mutableCopy;
+    checkTime = 0;
     
-#pragma mark- 请求未上课课程表数据
-    [self requestUnclosedClassList];
-    
-#pragma mark- 请求已上课课程表数据
-    [self requestClosedClassList];
-    
-    
-    
-#pragma mark- 下拉刷新方法
     _classTimeView.notClassView.notClassTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        
-        
-        [self loadingHUDStartLoadingWithTitle:@"正在刷新"];
-        
-        [self requestUnclosedClassList];
-        
-        
+        [self requestClassListWithRefreshType:PullToRefresh andClassType:UnstartClass];
     }];
     
     _classTimeView.alreadyClassView.alreadyClassTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        
-        [self loadingHUDStartLoadingWithTitle:@"正在刷新"];
-        [self requestClosedClassList];
-        
+        [self requestClassListWithRefreshType:PullToRefresh andClassType:StartedClass];
     }];
     
+    [_classTimeView.notClassView.notClassTableView.mj_header beginRefreshing];
     
     /* 添加登录成功后的 监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"UserLoginAgain" object:nil];
-    
     
 }
 
@@ -198,227 +184,101 @@
     _unclosedArr = @[].mutableCopy;
     _closedArr = @[].mutableCopy;
     
-#pragma mark- 请求未上课课程表数据
-    [self requestUnclosedClassList];
-    
-#pragma mark- 请求已上课课程表数据
-    [self requestClosedClassList];
-
-    
 }
 
-- (void)endRefresh{
+#pragma mark- 请求数据方法
+
+/**
+ 请求数据
+
+ @param refreshType 刷新方式
+ @param classtype 课程类型
+ */
+- (void)requestClassListWithRefreshType:(RefreshType)refreshType andClassType:(ClassType)classtype{
     
-    [_classTimeView.notClassView.notClassTableView.mj_header endRefreshing];
-    [_classTimeView.alreadyClassView.alreadyClassTableView.mj_header endRefreshing];
+    NSString *classTypes;
     
-    if (haveClass ==NO) {
+    //暂时预留上滑操作 只做下拉刷新
+    if (refreshType == PullToRefresh) {
         
-        [self loadingHUDStopLoadingWithTitle:@"本月暂时没有课程!"];
+        if (classtype == UnstartClass) {
+            _unclosedArr = @[].mutableCopy;
+            classTypes = @"unclosed";
+        }else if (classtype == StartedClass){
+            _closedArr = @[].mutableCopy;
+            classTypes = @"closed";
+        }
+    }else if (refreshType == PushToLoadMore){
         
-    }else{
-        [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
     }
-}
-
-
-
-#pragma mark- 请求未上课课程表数据
-- (void)requestUnclosedClassList{
     
-    if (_token&&_idNumber) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"state":classTypes} completeSuccess:^(id  _Nullable responds) {
         
-        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule?state=unclosed&month=2016-10-01",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        
+        if ([dic[@"status"]isEqualToNumber:@1]) {
             
-            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-            [self loginStates:dic];
-            
-            /* 回复数据正确的情况下*/
-            if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
-                NSLog(@"%@",dic[@"data"]);
-                if ([dic[@"data"] count] ==0) {
-                    
-                    haveClass = NO;
-                    /* 弹窗警告*/
-                    [self noClassThisMonth];
-                    _classTimeView.notClassView.haveNoClassView .hidden= NO;
-                    
-                }else{
-                    haveClass = YES;
-                     _unclosedArr = @[].mutableCopy;
-                    NSArray *sortArr = [dic[@"data"] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                        NSDictionary *dic1 = obj1;
-                        NSDictionary *dic2 = obj2;
-                        
-                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                        
-                        [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm"];
-                        
-                        NSDate *date1= [dateFormatter dateFromString:dic1[@"date"]];
-                        NSDate *date2= [dateFormatter dateFromString:dic2[@"date"]];
-                        if (date1 == [date1 earlierDate: date2]) { //不使用intValue比较无效
-                            
-                            return NSOrderedDescending;//降序
-                            
-                        }else if (date1 == [date1 laterDate: date2]) {
-                            return NSOrderedAscending;//升序
-                            
-                        }else{  
-                            return NSOrderedSame;//相等  
-                        }
-                        
-                        
-                    }];
-                    
-                    NSLog(@"%@", sortArr);
+            if ([dic[@"data"]count]!=0) {
+               
+                NSArray *sortArr = [dic[@"data"] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                    NSDictionary *dic1 = obj1;
+                    NSDictionary *dic2 = obj2;
+                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                    [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm"];
+                    NSDate *date1= [dateFormatter dateFromString:dic1[@"date"]];
+                    NSDate *date2= [dateFormatter dateFromString:dic2[@"date"]];
+                    if (date1 == [date1 earlierDate: date2]) { //不使用intValue比较无效
+                        return NSOrderedDescending;//降序
+                    }else if (date1 == [date1 laterDate: date2]) {
+                        return NSOrderedAscending;//升序
+                    }else{
+                        return NSOrderedSame;//相等
+                    }
+                }];
+                
+                
+                if (classtype == UnstartClass) {
                     
                     for (NSDictionary *classDic in sortArr) {
                         for (NSDictionary *lessons in classDic[@"lessons"]) {
                             ClassTimeModel *mod = [ClassTimeModel yy_modelWithJSON:lessons];
                             mod.classID = lessons[@"id"];
-                            
                             [_unclosedArr addObject:mod];
                         }
-                        
                     }
-                    
-                }
-                
-               
-#pragma mark- 请求已上课课程表数据
-                
-                [_classTimeView.notClassView.notClassTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-            }else{
-                
-                /* 数据错误*/
-                
-            }
-            
-            
-            [self endRefresh];
-
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            
-        }];
-        
-    }else{
-        
-        /* 登录错误*/
-        
-        _notLoginView.hidden = NO;
-        
-    }
-    
-}
-
-- (void)requestClosedClassList{
-    
-   
-    if (_token&&_idNumber) {
-        
-        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule?state=closed",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            
-            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-            
-            [self loginStates:dic];
-            /* 回复数据正确的情况下*/
-            if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
-                
-                NSLog(@"%@",dic[@"data"]);
-                
-                if ([dic[@"data"] count] == 0) {
-                    
-                    haveClass = NO;
-                    [self noClassThisMonth];
-                    
-                    _classTimeView.alreadyClassView.haveNoClassView.hidden = NO;
-                    
-                }else{
-                    
-                    haveClass = YES;
-                     _closedArr = @[].mutableCopy;
-                    
-                    NSArray *sortArr = [dic[@"data"] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                        NSDictionary *dic1 = obj1;
-                        NSDictionary *dic2 = obj2;
-                        
-                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                        
-                        [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm"];
-                        
-                        NSDate *date1= [dateFormatter dateFromString:dic1[@"date"]];
-                        NSDate *date2= [dateFormatter dateFromString:dic2[@"date"]];
-                        if (date1 == [date1 earlierDate: date2]) { //不使用intValue比较无效
-                            
-                            return NSOrderedAscending;//升序
-                            
-                        }else if (date1 == [date1 laterDate: date2]) {
-                            return NSOrderedDescending;//降序
-                            
-                        }else{
-                            return NSOrderedSame;//相等
-                        }
-                        
-                        
-                    }];
-                    
-                    NSLog(@"%@", sortArr);
-
+                    [_classTimeView.notClassView.notClassTableView cyl_reloadData];
+                    [_classTimeView.notClassView.notClassTableView.mj_header endRefreshing];
+                }else if (classtype == StartedClass){
                     
                     for (NSDictionary *classDic in sortArr) {
-                        
                         for (NSDictionary *lessons in classDic[@"lessons"]) {
-                            
-                            
                             ClassTimeModel *mod = [ClassTimeModel yy_modelWithJSON:lessons];
                             mod.classID = lessons[@"id"];
-                            
-                            
                             [_closedArr addObject:mod];
                         }
-                        
                     }
-                    
+                    [_classTimeView.alreadyClassView.alreadyClassTableView cyl_reloadData];
+                    [_classTimeView.alreadyClassView.alreadyClassTableView.mj_header endRefreshing];
                 }
                 
-                
-//                [self loadClassView];
-                
-                [_classTimeView.alreadyClassView.alreadyClassTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             }else{
                 
-                /* 回复数据不正确*/
-                
+                if (classtype == UnstartClass) {
+                    [_classTimeView.notClassView.notClassTableView cyl_reloadData];
+                    [_classTimeView.notClassView.notClassTableView.mj_header endRefreshing];
+                }else if (classtype == StartedClass){
+                    [_classTimeView.alreadyClassView.alreadyClassTableView cyl_reloadData];
+                    [_classTimeView.alreadyClassView.alreadyClassTableView.mj_header endRefreshing];
+                }
                 
             }
-                        
             
-            [self endRefresh];
-            
-        }failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            
-        }];
-        
-    }else{
-        
-        /* 登录报错*/
-        
-        [self.view addSubview:_notLoginView];
-        _notLoginView.frame = _classTimeView.frame;
-        _notLoginView.hidden = NO;
-        
-    }
+        }
     
+    }];
     
 }
+
 
 /* 加载视图*/
 - (void)loadClassView{
@@ -438,6 +298,12 @@
         typeof(self) __weak weakSelf = self;
         [_.segmentControl setIndexChangeBlock:^(NSInteger index) {
             [weakSelf.classTimeView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
+            if (index ==1) {
+                if (checkTime == 0) {
+                    [_classTimeView.alreadyClassView.alreadyClassTableView.mj_header beginRefreshing];
+                    checkTime ++;
+                }
+            }
         }];
         _.notClassView.notClassTableView.delegate = self;
         _.notClassView.notClassTableView.dataSource = self;
@@ -451,7 +317,6 @@
         
         _;
     });
-
     
 }
 
@@ -479,98 +344,70 @@
     
     NSInteger rows=0;
     
-    if (haveClass==NO) {
+    if (tableView.tag ==1) {
         
-        rows = 1;
-    }else{
-        
-        if (tableView.tag ==1) {
-            
-            if (_unclosedArr.count !=0) {
-                
-                rows = _unclosedArr.count;
-            }
-        }
-        
-        if (tableView.tag == 2) {
-            if (_closedArr.count !=0) {
-                
-                rows = _closedArr.count;
-            }
-        }
+        rows = _unclosedArr.count;
     }
     
-    
+    if (tableView.tag == 2) {
+        rows = _closedArr.count;
+    }
     
     return rows ;
-    
-    
 }
 
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (haveClass==NO) {
+    UITableViewCell *tableCell;
+    
+    /* 未上课列表*/
+    if (tableView.tag ==1) {
         
-    }else{
-        
-        /* 未上课列表*/
-        if (tableView.tag ==1) {
+        static NSString *cellIdenfier = @"cell";
+        ClassTimeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+        if (!cell) {
             
-            static NSString *cellIdenfier = @"cell";
-            ClassTimeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-            if (!cell) {
-                
-                cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-            }
-            if (_unclosedArr.count>indexPath.row) {
-                
-                cell.model =_unclosedArr[indexPath.row];
-                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-                /* 不能进入观看*/
-                
-//                if (cell.model.status isEqualToString:@"") {
-//                    
-//                }
-                
-                if (cell.canUse == NO){
-                    cell.enterButton.hidden = YES;
-                }else{
-                    cell.enterButton.hidden = NO;
-                }
-
-                cell.enterButton.tag = indexPath.row+10;
-                [cell.enterButton addTarget:self action:@selector(enterLive:) forControlEvents:UIControlEventTouchUpInside];
-            }
-            
-            return  cell;
+            cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
         }
-        
-        if (tableView.tag ==2) {
+        if (_unclosedArr.count>indexPath.row) {
             
-            static NSString *cellID = @"CellID";
-            ClassTimeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-            if (!cell) {
-                cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellID"];
-            }
-            if (_closedArr.count>indexPath.row) {
-                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-                cell.model =_closedArr[indexPath.row];
+            cell.model =_unclosedArr[indexPath.row];
+            [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+            /* 不能进入观看*/
+           
+            if (cell.canUse == NO){
                 cell.enterButton.hidden = YES;
-                
+            }else{
+                cell.enterButton.hidden = NO;
             }
             
-            return cell;
+            cell.enterButton.tag = indexPath.row+10;
+            [cell.enterButton addTarget:self action:@selector(enterLive:) forControlEvents:UIControlEventTouchUpInside];
         }
+        
+        tableCell = cell;
     }
     
+    if (tableView.tag ==2) {
+        
+        static NSString *cellID = @"CellID";
+        ClassTimeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+        if (!cell) {
+            cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellID"];
+        }
+        if (_closedArr.count>indexPath.row) {
+            [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+            cell.model =_closedArr[indexPath.row];
+            cell.enterButton.hidden = YES;
+            
+        }
+        
+        tableCell = cell;
+    }
     
-    
-    
-    return [[UITableViewCell alloc]init];
-    
-    
+    return tableCell;
     
 }
 
@@ -598,7 +435,7 @@
             
         }
     }
-
+    
     
     return height;
 }
@@ -616,13 +453,10 @@
             
             if (_unclosedArr.count!=0) {
                 
-            ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
                 classID = cell.model.course_id;
-
                 
             }
-            
-            
         }
         if (tableView.tag ==2) {
             
@@ -630,10 +464,8 @@
                 
                 ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
                 classID = cell.model.course_id;
-
                 
             }
-            
         }
         
         NSLog(@"%@",classID);
@@ -663,9 +495,6 @@
 }
 
 
-
-
-
 // segment的滑动代理
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     
@@ -675,11 +504,16 @@
         NSInteger page = scrollView.contentOffset.x / pageWidth;
         
         [_classTimeView.segmentControl setSelectedSegmentIndex:page animated:YES];
+        
+        if (_classTimeView.segmentControl.selectedSegmentIndex == 1) {
+            
+            if (checkTime == 0) {
+                [_classTimeView.alreadyClassView.alreadyClassTableView.mj_header beginRefreshing];
+            }
+        }
+        
     }
-    
 }
-
-
 
 
 - (void)calenderViews{
@@ -692,27 +526,28 @@
             
             [self.navigationController pushViewController:allClassVC animated:YES];
         }else{
-//            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录后才能查看!" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-//               
-//                if (buttonIndex!=0) {
-                    [self loginAgain];
-//                }
-//            }];
+            
+            [self loginAgain];
             
         }
     }else{
-//        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录后才能查看!" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-//            
-//            if (buttonIndex!=0) {
-                [self loginAgain];
-//            }
-//        }];
-
+        
+        [self loginAgain];
+        
     }
     
 }
 
 
+- (UIView *)makePlaceHolderView{
+    
+    HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"本月暂时没有课程"];
+    return view;
+}
+
+- (BOOL)enableScrollWhenPlaceHolderViewShowing{
+    return YES;
+}
 
 
 - (void)didReceiveMemoryWarning {

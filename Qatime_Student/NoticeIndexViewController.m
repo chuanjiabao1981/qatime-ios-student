@@ -67,7 +67,6 @@ typedef enum : NSUInteger {
     /* 未读消息数组*/
     NSMutableArray *unreadArr;
     
-    
 }
 
 @end
@@ -126,7 +125,7 @@ typedef enum : NSUInteger {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.view.backgroundColor = BACKGROUNDGRAY;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     [self.navigationController setNavigationBarHidden:YES];
@@ -401,7 +400,7 @@ typedef enum : NSUInteger {
                     [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                     
                 }else{
-                    [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                    [self loadingHUDStopLoadingWithTitle:nil];
                     [_noticeIndexView.chatListTableView.mj_header endRefreshing];
                     [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                 }
@@ -528,7 +527,7 @@ typedef enum : NSUInteger {
                     [_noticeIndexView.noticeTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                     
                 }else{
-                    [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                    [self loadingHUDStopLoadingWithTitle:nil];
                     [_noticeIndexView.noticeTableView.mj_header endRefreshing];
                     [_noticeIndexView.noticeTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                 }

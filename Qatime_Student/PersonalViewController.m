@@ -108,8 +108,12 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeHead:) name:@"ChangeInfoSuccess" object:nil];
     
     /**重新登录后的个人信息改动监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogin:) name:@"UserLogin" object:nil];
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogin:) name:@"UserLogin" object:nil];
     
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"UserLogin" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        
+        [self userLogin:note];
+    }];
     
 }
 
@@ -185,15 +189,11 @@
     
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
         if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]== NO) {
-            
             [self loginAgain];
-            
         }else{
-            
-            PersonalInfoViewController *personVC = [PersonalInfoViewController new];
+            PersonalInfoViewController *personVC = [[PersonalInfoViewController alloc]init];
             personVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:personVC animated:YES];
-            
         }
     }else{
         

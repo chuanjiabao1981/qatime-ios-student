@@ -18,13 +18,13 @@
         self.backgroundColor = [UIColor whiteColor];
         
         _alreadyClassTableView = [[UITableView alloc]init];
+        _alreadyClassTableView.backgroundColor = BACKGROUNDGRAY;
         [self addSubview: _alreadyClassTableView];
         _alreadyClassTableView.sd_layout
         .topEqualToView(self)
         .bottomEqualToView(self)
         .leftEqualToView(self)
         .rightEqualToView(self);
-        
         
         _haveNoClassView = [[HaveNoClassView alloc]init];
         _haveNoClassView.titleLabel.text = @"本月暂时没有课程";

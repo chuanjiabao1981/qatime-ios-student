@@ -260,6 +260,11 @@ typedef enum : NSUInteger {
     return  tableCell;
 }
 
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+    
+}
+
 
 #pragma mark- UITableView delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -273,10 +278,20 @@ typedef enum : NSUInteger {
     VideoClassProgressTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     _playerModel.videoURL = [NSURL URLWithString:cell.model.video.name_url];
+    _playerModel.title = cell.model.name;
     
     [self.videoPlayer resetToPlayNewVideo:_playerModel];
     
+    if (tableView.tag == 1) {
+        
+    }else{
+        
+        [self.videoPlayer interfaceOrientation:UIInterfaceOrientationPortrait];
+        [self.videoPlayer interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+    }
+
 }
+
 
 #pragma mark- UIScrollView delegate
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -302,26 +317,18 @@ typedef enum : NSUInteger {
         //切换至标清播放源
     }else if ([sender.titleLabel.text isEqualToString:@"高清"]){
         //切换至高清播放源
-        
     }
 }
 
 //点击课程列表
 - (void)zf_playerDownload:(NSString *)url{
     
-    
 }
-
-
-
-
-
 
 -(void)dealloc{
     
     [self.videoPlayer removeObserver:self forKeyPath:@"isFullScreen"];
 }
-
 
 
 - (void)didReceiveMemoryWarning {

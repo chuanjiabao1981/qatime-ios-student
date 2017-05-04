@@ -50,33 +50,26 @@
         _scrollView.pagingEnabled = YES;
         _scrollView.showsHorizontalScrollIndicator = NO;
         
-        
         /* 未上课页面*/
         _notClassView = [[NotClassView alloc]init];
         [_scrollView addSubview:_notClassView];
-        _notClassView.backgroundColor = [UIColor whiteColor];
+        
         _notClassView.sd_layout
         .topEqualToView(_scrollView)
         .leftEqualToView(_scrollView)
         .bottomEqualToView(_scrollView)
         .widthIs(SCREENWIDTH);
         
-        
         /* 已上课页面*/
         _alreadyClassView = [[AlreadyClassView alloc]init];
         [_scrollView addSubview:_alreadyClassView];
-        _alreadyClassView.backgroundColor = [UIColor whiteColor];
+        
         _alreadyClassView.sd_layout
         .topEqualToView(_notClassView)
         .bottomEqualToView(_notClassView)
         .leftSpaceToView(_notClassView,0)
         .widthIs(SCREENWIDTH);
-        
                 
-        
-        
-        
-        
     }
     return self;
 }

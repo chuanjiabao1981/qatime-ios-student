@@ -140,7 +140,6 @@
 }
 
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -221,9 +220,7 @@
                 
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
                 
-                
             }];
-            
             
         }
         
@@ -383,8 +380,6 @@
                     break;
                 case 6:{
                     
-                    
-                    
                     if ([[_dataDic valueForKey:@"desc"]isEqualToString:@""]) {
                         
                         cell.content.text = @"未设置";
@@ -420,18 +415,18 @@
             
         }else{
             
-            if ([[_dataDic allKeys]count]!=0){
-                
-                cell.content.textColor = [UIColor lightGrayColor];
-                cell.subContent.textColor = [UIColor lightGrayColor];
-                cell.content.text = [_dataDic valueForKey:@"province"]==nil?@"未设置":[_dataDic valueForKey:@"province"];
-                cell.subContent.text = [_dataDic valueForKey:@"city"]==nil?@"未设置":[_dataDic valueForKey:@"city"];
+            if (_dataDic) {
+                if ([[_dataDic allKeys]count]!=0){
+                    
+                    cell.content.textColor = [UIColor lightGrayColor];
+                    cell.subContent.textColor = [UIColor lightGrayColor];
+                    cell.content.text = _dataDic[@"province"]==nil?@"未设置":[self getProvince:[NSString stringWithFormat:@"%@", _dataDic[@"province"]]];
+                    cell.subContent.text = _dataDic[@"city"]==nil?@"未设置":[self getCity:[NSString stringWithFormat:@"%@",_dataDic[@"city"]]];
+                }
             }
         }
         
         return  cell;
-        
-
         
     }
     
@@ -439,7 +434,31 @@
     
 }
 
+- (NSString *)getProvince:(NSString *)provinceID{
+    
+    NSString *provinceStr;
+    NSArray *provinceArr = [[NSUserDefaults standardUserDefaults]valueForKey:@"province"];
+    for (NSDictionary *province in provinceArr) {
+        if ([provinceID isEqualToString:[NSString stringWithFormat:@"%@",province[@"id"]]]) {
+            provinceStr = [NSString stringWithFormat:@"%@",province[@"name"]];
+        }
+    }
+    
+    return provinceStr;
+}
 
+- (NSString *)getCity:(NSString *)cityID{
+    
+    NSString *cityStr;
+    NSArray *cityArr = [[NSUserDefaults standardUserDefaults]valueForKey:@"city"];
+    for (NSDictionary *city in cityArr) {
+        if ([cityID isEqualToString:[NSString stringWithFormat:@"%@",city[@"id"]]]) {
+            cityStr = [NSString stringWithFormat:@"%@",city[@"name"]];
+        }
+    }
+    return cityStr;
+    
+}
 
 
 #pragma mark- tableview delegate

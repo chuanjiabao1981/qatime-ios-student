@@ -119,12 +119,17 @@
         
         _name.text = canceldModel.product[@"name"];
         
-        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:canceldModel.product_type],canceldModel.product[@"subject"],canceldModel.product[@"grade"],canceldModel.product[@"preset_lesson_count"],canceldModel.product[@"teacher_name"]];
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:canceldModel.product_type],canceldModel.product[@"grade"],canceldModel.product[@"subject"],canceldModel.product[@"preset_lesson_count"],canceldModel.product[@"teacher_name"]];
         
     }else if ([canceldModel.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
         _name.text = canceldModel.product_video_course[@"name"];
         
-        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:canceldModel.product_type],canceldModel.product_video_course[@"subject"],canceldModel.product_video_course[@"grade"],canceldModel.product_video_course[@"preset_lesson_count"],canceldModel.product_video_course[@"teacher_name"]];
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:canceldModel.product_type],canceldModel.product_video_course[@"grade"],canceldModel.product_video_course[@"subject"],canceldModel.product_video_course[@"preset_lesson_count"],canceldModel.product_video_course[@"teacher_name"]];
+        
+    }else if ([canceldModel.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+        _name.text = canceldModel.product_interactive_course[@"name"];
+        
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:canceldModel.product_type],canceldModel.product_interactive_course[@"grade"],canceldModel.product_interactive_course[@"subject"],canceldModel.product_interactive_course[@"preset_lesson_count"],canceldModel.product_interactive_course[@"teacher_name"]];
     }
     _price.text = [NSString stringWithFormat:@"¥%@",canceldModel.amount];
     if ([canceldModel.status isEqualToString:@"unpaid"]) {

@@ -115,17 +115,12 @@
 
 - (void)addNotification {
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(updateLayer:)
-												 name:UIDeviceOrientationDidChangeNotification
-											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLayer:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 - (void)addObserver {
 	
-	[[UIScreen mainScreen] addObserver:self
-							forKeyPath:@"brightness"
-							   options:NSKeyValueObservingOptionNew context:NULL];
+	[[UIScreen mainScreen] addObserver:self	forKeyPath:@"brightness" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath

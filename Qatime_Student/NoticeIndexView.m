@@ -43,7 +43,7 @@
         /* 大滚动视图*/
         _scrollView = ({
             UIScrollView *_=[[UIScrollView alloc]initWithFrame:CGRectMake(0, _segmentControl.height_sd, self.width_sd, self.height_sd-_segmentControl.height_sd)];
-            _.backgroundColor = [UIColor whiteColor];
+            _.backgroundColor = BACKGROUNDGRAY;
             _.contentSize = CGSizeMake(self.width_sd*2,self.height_sd-_segmentControl.height_sd);
             _.pagingEnabled = YES;
             _.bounces = NO;
@@ -59,6 +59,7 @@
         _chatListTableView = ({
         
             UITableView *_=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, _scrollView.height_sd) style:UITableViewStylePlain];
+            _.backgroundColor = BACKGROUNDGRAY;
             _.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             _.tableFooterView = [[UIView alloc]init];
             [_scrollView addSubview:_];
@@ -69,6 +70,7 @@
         _noticeTableView= ({
             
             UITableView *_=[[UITableView alloc]initWithFrame:CGRectMake(self.width_sd, 0, self.width_sd, _scrollView.height_sd) style:UITableViewStylePlain];
+            _.backgroundColor = BACKGROUNDGRAY;
             _.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             _.tableFooterView = [[UIView alloc]init];
             
@@ -76,11 +78,6 @@
             _;
             
         });
-
-
-        
-        
-        
         
     }
     return self;

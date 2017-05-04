@@ -120,6 +120,8 @@
         }else if ([controller isMemberOfClass:[BindingViewController class]]){
             [self.navigationController popToViewController:controller animated:YES];
         }
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"PopToRoot" object:nil];
     }
     
 }

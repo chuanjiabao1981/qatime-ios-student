@@ -85,6 +85,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 /** player在栈上，即此时push或者模态了新控制器 */
 @property (nonatomic, assign) BOOL                    playerPushedOrPresented;
 
+/**控制层*/
+@property (nonatomic, strong) UIView                 *controlView;
+
+/** 播放model */
+@property (nonatomic, strong) ZFPlayerModel          *playerModel;
+
 /**
  *  单例，用于列表cell上多个视频
  *
@@ -127,5 +133,16 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
   * 暂停
  */
 - (void)pause;
+
+/** 是否为全屏 */
+@property (nonatomic, assign) BOOL  isFullScreen;
+
+
+@property (nonatomic, strong) NSURL *videoURL;
+
+
+- (void)toOrientation:(UIInterfaceOrientation)orientation;
+
+- (void)interfaceOrientation:(UIInterfaceOrientation)orientation ;
 
 @end

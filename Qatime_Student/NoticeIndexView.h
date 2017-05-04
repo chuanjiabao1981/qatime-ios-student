@@ -10,7 +10,6 @@
 #import "HMSegmentedControl.h"
 #import "Qatime_Student-Swift.h"
 
-
 @interface NoticeIndexView : UIView
 
 /* 另一个滑动控制器....*/

@@ -57,8 +57,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property (nonatomic, assign) PanDirection           panDirection;
 /** 播发器的几种状态 */
 @property (nonatomic, assign) ZFPlayerState          state;
-/** 是否为全屏 */
-@property (nonatomic, assign) BOOL                   isFullScreen;
+
 /** 是否锁定屏幕方向 */
 @property (nonatomic, assign) BOOL                   isLocked;
 /** 是否在调节音量*/
@@ -111,11 +110,16 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 @property (nonatomic, strong) UIPanGestureRecognizer *shrinkPanGesture;
 
-@property (nonatomic, strong) UIView                 *controlView;
-@property (nonatomic, strong) ZFPlayerModel          *playerModel;
+
 @property (nonatomic, assign) NSInteger              seekTime;
-@property (nonatomic, strong) NSURL                  *videoURL;
+
 @property (nonatomic, strong) NSDictionary           *resolutionDic;
+
+
+/**增加classview显示的bool属性*/
+@property (nonatomic, assign) BOOL classViewShow ;
+
+
 @end
 
 @implementation ZFPlayerView
@@ -197,6 +201,16 @@ typedef NS_ENUM(NSInteger, PanDirection){
                                              selector:@selector(onStatusBarOrientationChange)
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
+    //添加两个监听 ->>监听选课菜单的show和hide
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"ClassListShow" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        
+        _classViewShow = YES;
+    }];
+    
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"ClassListHide" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        _classViewShow = NO;
+    }];
+    
 }
 
 #pragma mark - layoutSubviews
@@ -432,6 +446,10 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 双击失败响应单击事件
     [self.singleTap requireGestureRecognizerToFail:self.doubleTap];
 }
+
+
+
+
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     if (self.isAutoPlay) {
@@ -924,17 +942,27 @@ typedef NS_ENUM(NSInteger, PanDirection){
  *  @param gesture UITapGestureRecognizer
  */
 - (void)singleTapAction:(UIGestureRecognizer *)gesture {
+    
     if ([gesture isKindOfClass:[NSNumber class]] && ![(id)gesture boolValue]) {
          [self _fullScreenAction];
          return;
     }
-    if (gesture.state == UIGestureRecognizerStateRecognized) {
-        if (self.isBottomVideo && !self.isFullScreen) { [self _fullScreenAction]; }
-        else {
-            if (self.playDidEnd) { return; }
+    
+    if (_classViewShow == YES) {
+        
+        //这儿空着,为了实现课程切换点击.
+        
+        
+    }else{
+        
+        if (gesture.state == UIGestureRecognizerStateRecognized) {
+            if (self.isBottomVideo && !self.isFullScreen) { [self _fullScreenAction]; }
             else {
-                
-                [self.controlView zf_playerShowOrHideControlView];
+                if (self.playDidEnd) { return; }
+                else {
+                    
+                    [self.controlView zf_playerShowOrHideControlView];
+                }
             }
         }
     }
@@ -1217,6 +1245,10 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     
+    
+    if ([NSStringFromClass(touch.view.class)isEqualToString:@"UITableViewCellContentView"]){
+        return NO;
+    }
     if (gestureRecognizer == self.shrinkPanGesture && self.isCellVideo) {
         if (!self.isBottomVideo || self.isFullScreen) {
             return NO;

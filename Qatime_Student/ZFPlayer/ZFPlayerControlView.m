@@ -375,6 +375,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
             }];
             [self layoutIfNeeded];
         }];
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"ClassListHide" object:nil];
 
         
     }else{
@@ -388,6 +390,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
             [self bringSubviewToFront:self.classView];
             [self layoutIfNeeded];
         }];
+        
+         [[NSNotificationCenter defaultCenter]postNotificationName:@"ClassListShow" object:nil];
     }
     
     
@@ -736,7 +740,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         self.topImageView.alpha    = 1;
         self.bottomImageView.alpha = 1;
     }
-    self.backgroundColor           = RGBA(0, 0, 0, 0.3);
+    self.backgroundColor           = RGBA(0, 0, 0, 0);
     self.lockBtn.alpha             = 1;
     if (self.isCellVideo) {
         self.shrink                = NO;
@@ -753,6 +757,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.lockBtn.alpha            = 0;
     self.bottomProgressView.alpha = 1;
     self.classView.hidden = YES;
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"ClassListHide" object:nil];
     // 隐藏resolutionView
     self.resolutionBtn.selected = YES;
 //    self.sharpMenu.hidden = YES;
@@ -782,6 +787,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 
 - (void)autoFadeOutControlView {
+    
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(zf_playerHideControlView) object:nil];
     [self performSelector:@selector(zf_playerHideControlView) withObject:nil afterDelay:ZFPlayerAnimationTimeInterval];
 }
@@ -930,6 +936,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }
     return _videoSlider;
 }
+
 
 - (UILabel *)totalTimeLabel {
     if (!_totalTimeLabel) {
@@ -1088,8 +1095,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     if (!_classView) {
         
         _classView = [[UIView alloc]init];
-        _classView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.4];
-        
+        _classView.backgroundColor = RGBA(0, 0, 0, .1);
         
     }
     return _classView;
@@ -1101,7 +1107,10 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     if (!_classList) {
         _classList = [[UITableView alloc]init];
         _classList.separatorStyle = UITableViewCellSeparatorStyleNone ;
-        _classList.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.4];
+        _classList.backgroundColor = [UIColor clearColor];
+//        UIImageView *image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"gradient"]];
+//        image.frame = self.bounds;
+//        _classList.backgroundView = image;
     }
     return _classList;
 }
@@ -1346,7 +1355,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.showing          = NO;
     // 隐藏controlView
     [self hideControlView];
-    self.backgroundColor  = RGBA(0, 0, 0, .3);
+    self.backgroundColor  = [UIColor clearColor];
     ZFPlayerShared.isStatusBarHidden = NO;
     self.bottomProgressView.alpha = 0;
 }
