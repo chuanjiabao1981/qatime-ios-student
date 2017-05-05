@@ -448,10 +448,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -575,6 +575,9 @@
       </ContextState>
       <ContextState
          contextName = "-[OrderViewController touchesBegan:withEvent:]:OrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumInfoViewController switchClassData:]:TutoriumInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
@@ -818,6 +821,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_isManager">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[VideoClassInfoViewController enterTaste:]:VideoClassInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classArray">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1122,15 +1133,15 @@
          contextName = "__38-[IndexPageViewController checkNotice]_block_invoke_2:IndexPageViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
-      </ContextState>
-      <ContextState
          contextName = "-[OrderInfoViewController initWithOrderInfos:]:OrderInfoViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
       </ContextState>
       <ContextState
          contextName = "-[ChooseGradeAndSubjectViewController userSelectedGrade:]:ChooseGradeAndSubjectViewController.m">
@@ -1322,10 +1333,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

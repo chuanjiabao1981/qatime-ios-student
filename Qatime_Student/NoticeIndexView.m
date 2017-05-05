@@ -28,7 +28,7 @@
             
             JTSegmentControl *_=[[JTSegmentControl alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, self.height_sd*0.065)];
 //            _.delegate = self;
-            _.items = @[@"辅导班消息",@"系统消息"];
+            _.items = @[@"聊天消息",@"系统消息"];
             _.autoScrollWhenIndexChange = NO;
             _.itemSelectedTextColor = [UIColor blackColor];
             _.itemTextColor = [UIColor blackColor];

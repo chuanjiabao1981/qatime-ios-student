@@ -497,7 +497,6 @@
                 
             }
             
-            
             [self requestChatHitstory];
             
         }else{
@@ -505,7 +504,6 @@
             
             [self loadingHUDStopLoadingWithTitle:@"获取聊天成员信息失败!"];
         }
-        
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -547,7 +545,7 @@
     }else{
         
         _chatTableView.hidden = NO;
-        [self loadingHUDStopLoadingWithTitle:@""];
+        [self loadingHUDStopLoadingWithTitle:nil];
         [self makeMessages:messageArr];
     }
     
@@ -1535,7 +1533,7 @@
 }
 
 
-#pragma mark- 语音转换
+#pragma mark- 语音转换/切换扬声器和听筒
 -(void)cellContentLongPress:(UUMessageCell *)cell voice:(NSData *)voice{
     
     //    [cell becomeFirstResponder];
@@ -1559,24 +1557,11 @@
     
     
     
-    [UIAlertController showActionSheetInViewController:self withTitle:nil message:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"文字转换",voiceSwitch] popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
+    [UIAlertController showActionSheetInViewController:self withTitle:nil message:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[voiceSwitch] popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
         
     } tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
         
-        if (buttonIndex==2) {
-            
-            //构造消息
-            //            NIMAudioObject *audioObject = [[NIMAudioObject alloc] initWithData:voice extension:@".aac"];
-            
-            NIMMessage *message        = cell.messageFrame.message.message;
-            
-            TranslateViewController *translate = [[TranslateViewController alloc]initWithMessage:message];
-            [self presentViewController:translate animated:YES completion:^{
-                
-            }];
-            
-            
-        }else if (buttonIndex == 3){
+        if (buttonIndex == 2){
             
             if ([[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]) {
                 
@@ -1594,11 +1579,9 @@
                 [[NSUserDefaults standardUserDefaults]setValue:@"earphone" forKey:@"AVAudioSession"];
             }
             
-            
         }
         
     }];
-    
     
 }
 

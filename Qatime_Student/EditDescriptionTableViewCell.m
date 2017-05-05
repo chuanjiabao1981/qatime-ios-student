@@ -1,20 +1,22 @@
 //
-//  EditNameTableViewCell.m
+//  EditDescriptionTableViewCell.m
 //  Qatime_Student
 //
-//  Created by Shin on 2017/1/10.
+//  Created by Shin on 2017/5/5.
 //  Copyright © 2017年 WWTD. All rights reserved.
 //
 
-#import "EditNameTableViewCell.h"
+#import "EditDescriptionTableViewCell.h"
+#import "UITextView+Placeholder.h"
 
-@interface EditNameTableViewCell (){
-
+@interface EditDescriptionTableViewCell (){
+    
+    UIImageView *_arrow;
 }
 
 @end
 
-@implementation EditNameTableViewCell
+@implementation EditDescriptionTableViewCell
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     
@@ -22,6 +24,7 @@
     if (self) {
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         /* 设置项*/
         _name = [[UILabel alloc]init];
         _name.font = TITLEFONTSIZE;
@@ -29,14 +32,16 @@
         _name.text = @"姓名";
         
         /* 姓名输入框*/
-        _nameText = [[UITextField alloc]init];
+        _nameText = [[UITextView alloc]init];
         _nameText.font = TITLEFONTSIZE;
         _nameText.textColor = TITLECOLOR;
+        _nameText.editable = YES;
+        _nameText.placeholder = @"一句话介绍自己";
         
         /* 箭头*/
-//        _arrow = [[UIImageView alloc]init];
-//        [_arrow setImage:[UIImage imageNamed:@"rightArrow"]];
-//
+        //        _arrow = [[UIImageView alloc]init];
+        //        [_arrow setImage:[UIImage imageNamed:@"rightArrow"]];
+        //
         [self.contentView sd_addSubviews:@[_name,_nameText]];
         
         /* 布局*/
@@ -53,18 +58,10 @@
         .rightSpaceToView(self.contentView,20);
         
         
-//        _arrow.sd_layout
-//        .rightSpaceToView(self.contentView,20)
-//        .centerYEqualToView(_name)
-//        .heightRatioToView(_name,0.5)
-//        .widthEqualToHeight();
-        
-        
     }
     return self;
     
 }
-
 
 - (void)awakeFromNib {
     [super awakeFromNib];

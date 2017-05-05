@@ -1060,7 +1060,7 @@ bool ismute     = NO;
     [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:5];
     
     isFullScreen = YES;
-    [_aBarrage start];
+    [_aBarrage stop];
     
     /* 在全屏播放状态下*/
     /* 1、先添加弹幕*/
@@ -1071,13 +1071,13 @@ bool ismute     = NO;
     if (_boardPlayerView.becomeMainPlayer == YES) {
         
         [_boardPlayerView addSubview:_aBarrage.view];
-        _aBarrage.view.sd_layout
+        _aBarrage.view.sd_resetLayout
         .leftEqualToView(_boardPlayerView)
         .rightEqualToView(_boardPlayerView)
         .topEqualToView(_boardPlayerView)
         .bottomEqualToView(_boardPlayerView);
-        
-        [_boardPlayerView bringSubviewToFront:_aBarrage.view];
+//        [_boardPlayerView bringSubviewToFront:_aBarrage.view];
+        [_aBarrage.view updateLayout];
         
         _aBarrage.view.hidden = NO;
         [_aBarrage start];
@@ -1090,13 +1090,14 @@ bool ismute     = NO;
         
         [_teacherPlayerView addSubview:_aBarrage.view];
         
-        _aBarrage.view.sd_layout
+        _aBarrage.view.sd_resetLayout
         .leftEqualToView(_teacherPlayerView)
         .rightEqualToView(_teacherPlayerView)
         .topEqualToView(_teacherPlayerView)
         .bottomEqualToView(_teacherPlayerView);
         [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
-        //        [_aBarrage start];
+        [_aBarrage.view updateLayout];
+        [_aBarrage start];
         _aBarrage.view.hidden = NO;
         
         [self mediaControlTurnToFullScreenModeWithMainView:_teacherPlayerView];
@@ -1128,6 +1129,18 @@ bool ismute     = NO;
     .rightSpaceToView(_switchScreen,0)
     .widthEqualToHeight();
     
+    [self sendBarrage:@"hallo" withAttibute:[[NSMutableAttributedString alloc] initWithString:@"hello"]];
+    [self sendBarrage:@"hallo" withAttibute:[[NSMutableAttributedString alloc] initWithString:@"hello"]];
+    [self sendBarrage:@"hallo" withAttibute:[[NSMutableAttributedString alloc] initWithString:@"hello"]];
+    [self sendBarrage:@"hallo" withAttibute:[[NSMutableAttributedString alloc] initWithString:@"hello"]];
+    [self sendBarrage:@"hallo" withAttibute:[[NSMutableAttributedString alloc] initWithString:@"hello"]];
+    [self sendBarrage:@"hallo" withAttibute:[[NSMutableAttributedString alloc] initWithString:@"hello"]];
+    [self sendBarrage:@"hallo" withAttibute:[[NSMutableAttributedString alloc] initWithString:@"hello"]];
+    [self sendBarrage:@"hallo" withAttibute:[[NSMutableAttributedString alloc] initWithString:@"hello"]];
+    [self sendBarrage:@"hallo" withAttibute:[[NSMutableAttributedString alloc] initWithString:@"hello"]];
+    [self sendBarrage:@"hallo" withAttibute:[[NSMutableAttributedString alloc] initWithString:@"hello"]];
+    [self sendBarrage:@"hallo" withAttibute:[[NSMutableAttributedString alloc] initWithString:@"hello"]];
+    
 }
 
 #pragma mark- 切回竖屏后的监听
@@ -1135,7 +1148,7 @@ bool ismute     = NO;
     
     isFullScreen = NO;
     _viewsArrangementMode = DifferentLevel;
-    [_aBarrage start];
+    
     
     /* 如果是在平级视图*/
     if (_viewsArrangementMode == SameLevel) {
@@ -1201,12 +1214,14 @@ bool ismute     = NO;
     //    }
     
     
-    
+    [_aBarrage start];
     
 }
 
 /* 控制层变成全屏模式的方法*/
 - (void)mediaControlTurnToFullScreenModeWithMainView:(FJFloatingView *)playerView{
+    
+    [_aBarrage stop];
     
     [self.view bringSubviewToFront:_mediaControl];
     
@@ -1247,12 +1262,14 @@ bool ismute     = NO;
     /* 语音输入按钮隐藏*/
     IFView.voiceSwitchTextButton.hidden = YES;
     
+    [_aBarrage start];
     
 }
 
 /* 控制层切回竖屏模式的方法*/
 - (void)mediaControlTurnDownFullScreenModeWithMainView:(FJFloatingView *)playerView{
     
+    [_aBarrage stop];
     _mediaControl.sd_resetLayout
     .topSpaceToView(self.view,0)
     .leftEqualToView(self.view)
@@ -1323,6 +1340,9 @@ bool ismute     = NO;
     
     /* 语音输入按钮显示*/
     IFView.voiceSwitchTextButton.hidden = NO;
+    
+    [_aBarrage start];
+    
     
 }
 
@@ -1967,6 +1987,7 @@ bool ismute     = NO;
         // 从2开始是因为0 1 两个参数已经被selector和target占用
         [invocation setArgument:&val atIndex:2];
         [invocation invoke];
+        
     }
     
 }
@@ -2048,7 +2069,6 @@ bool ismute     = NO;
         [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
         self.scaleModeBtn.titleLabel.tag = 1;
         
-        
         //谁是主视图，谁就全屏
         if (_boardPlayerView.becomeMainPlayer == YES) {
             
@@ -2082,6 +2102,8 @@ bool ismute     = NO;
 
 //退出播放
 - (void)onClickBack:(id)sender{
+    [_aBarrage stop];
+//    [_aBarrage.view removeFromSuperview];
     /* 非屏状态下的点击事件*/
     if (isFullScreen == NO) {
         
@@ -2097,7 +2119,6 @@ bool ismute     = NO;
     }else if (isFullScreen == YES){
         
         [self onClickScaleMode:self];
-        
         
     }
     
@@ -2794,13 +2815,13 @@ bool ismute     = NO;
             
             /* 判断通知公告数量,HUD框提示加载信息*/
             if (_noticesArr==nil||_noticesArr.count ==0) {
-                [self loadingHUDStopLoadingWithTitle:@"暂时没有公告!"];
+//                [self loadingHUDStopLoadingWithTitle:@"暂时没有公告!"];
             }
             
             _membersArr = [_noticeAndMembers valueForKey:@"accounts"];
             
             if (_membersArr==nil||_membersArr.count==0) {
-                [self loadingHUDStopLoadingWithTitle:@"暂时没有成员加入!"];
+//                [self loadingHUDStopLoadingWithTitle:@"暂时没有成员加入!"];
             }
             
             
@@ -3837,7 +3858,6 @@ bool ismute     = NO;
     }else{
         
         
-        
         if (_boardPlayerView .becomeMainPlayer == YES) {
             [_aBarrage.view removeFromSuperview];
             
@@ -3891,8 +3911,6 @@ bool ismute     = NO;
     //    [_aBarrage start];
     
     [_aBarrage receive:_descriptor];
-    
-    
     
     
 }
@@ -4819,9 +4837,6 @@ bool ismute     = NO;
     NSLog(@"获取在线人数成功,当前在线人数:%ld",[memberArray count]);
     //在线人数
     _onLineNumber.text = [NSString stringWithFormat:@"%ld", [memberArray count]];
-    
-    
-    
     
     
 }

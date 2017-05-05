@@ -10,7 +10,7 @@
 #import <NIMSDK/NIMSDK.h>
 #import "SettingTableViewCell.h"
 #import "NavigationBar.h"
-#import "UIViewController_HUD.h"
+#import "UIViewController+HUD.h"
 #import "UIViewController+HUD.h"
 
 #import "FileService.h"

@@ -8,7 +8,7 @@
 
 #import "DrawBackViewController.h"
 #import "NavigationBar.h"
-#import "UIViewController_HUD.h"
+#import "UIViewController+HUD.h"
 #import "UIViewController+AFHTTP.h"
 #import "UIAlertController+Blocks.h"
 #import "YYModel.h"
@@ -126,7 +126,6 @@
         [textView.text substringToIndex:20];
         [self loadingHUDStopLoadingWithTitle:@"最多输入20个字"];
     }
-    
 }
 
 /* 请求退款信息数据*/

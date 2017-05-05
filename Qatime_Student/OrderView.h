@@ -12,6 +12,9 @@
 
 @interface OrderView : UIScrollView
 
+/**课程类型*/
+@property (nonatomic, strong) UILabel *classType; ;
+
 /* 课程名称*/
 @property(nonatomic,strong) UILabel *className ;
 

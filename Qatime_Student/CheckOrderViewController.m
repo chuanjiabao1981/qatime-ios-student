@@ -11,6 +11,7 @@
 #import "MyOrderViewController.h"
 
 #import "TutoriumInfoViewController.h"
+#import "VideoClassInfoViewController.h"
 
 
 #define RED [UIColor colorWithRed:0.84 green:0.13 blue:0.10 alpha:1.00]
@@ -145,7 +146,6 @@
                     _checkOrderView.number.text = _numbers;
                     _checkOrderView.chargeMoney.text = _amount;
                     _checkOrderView.explain.hidden = YES;
-                    
                     
                 }
             
@@ -284,16 +284,16 @@
             
             controller = VC;
             [self.navigationController popToViewController:controller animated:YES];
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshTutoriumInfo" object:nil];
+//            [[NSNotificationCenter defaultCenter]postNotificationName:@"RefreshTutoriumInfo" object:nil];
         }else if ([VC isMemberOfClass:[MyOrderViewController class]]){
             [self.navigationController popToViewController:VC animated:YES];
             
+        }else if ([VC isMemberOfClass:[VideoClassInfoViewController class]]){
+             [self.navigationController popToViewController:VC animated:YES];
         }
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"PopToRoot" object:nil];
     }
-    
-    
-    
-    
     
 }
 

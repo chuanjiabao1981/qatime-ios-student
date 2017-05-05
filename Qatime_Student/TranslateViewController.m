@@ -109,8 +109,9 @@
 - (void)show:(NSError *)error  text:(NSString *)text
 {
     if (error) {
-        [self.loadingHUD hide:YES];
         
+//        [self.loadingHUD hide:YES];
+        [self stopHUD];
         
     }
     else

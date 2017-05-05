@@ -235,6 +235,8 @@
                             if (buttonIndex!=0) {
                                 AuthenticationViewController *controller = [[AuthenticationViewController alloc]init];
                                 [self.navigationController pushViewController:controller animated:YES];
+                            }else{
+                                
                             }
                         }];
                     }

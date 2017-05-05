@@ -11,7 +11,7 @@
  
 
 #import "UIViewController+HUD.h"
-#import "UIViewController_HUD.h"
+#import "UIViewController+HUD.h"
 
 #import "ChangePhoneViewController.h"
 

@@ -10,7 +10,7 @@
 #import "NavigationBar.h"
 #import "FindPasswordViewController.h"
 #import "UIViewController+HUD.h"
-#import "UIViewController_HUD.h"
+#import "UIViewController+HUD.h"
 #import "UIAlertController+Blocks.h"
 
 @interface ChangePasswordViewController ()<UITextFieldDelegate>

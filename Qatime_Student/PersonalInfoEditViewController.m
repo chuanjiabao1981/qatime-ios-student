@@ -13,6 +13,8 @@
 #import "UIViewController+HUD.h"
 #import "ProvinceChosenViewController.h"
 #import "LCActionSheet.h"
+#import "EditDescriptionTableViewCell.h"
+#import "UITextView+Placeholder.h"
 
 
 @interface PersonalInfoEditViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate>{
@@ -355,12 +357,13 @@
         case 6:{
             /* cell的重用队列*/
             static NSString *cellIdenfier = @"cell";
-            EditNameTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+            EditDescriptionTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
             if (cell==nil) {
-                cell=[[EditNameTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+                cell=[[EditDescriptionTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
                 cell.name.text = @"简介";
-                [cell.nameText addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+//                cell.nameText.hidden = YES;
+//                [cell.nameText addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
                 if (_infoDic) {
                     if (_infoDic[@"desc"]) {
                         
@@ -534,6 +537,9 @@
         [_dataDic setValue:_cityID forKey:@"city_id"];
     }
     
+    /**取出简介*/
+    EditDescriptionTableViewCell *descell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    [_dataDic setValue:descell.nameText.text forKey:@"desc"];
     
     /* 取出头像*/
     EditHeadTableViewCell *cell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0 ]];

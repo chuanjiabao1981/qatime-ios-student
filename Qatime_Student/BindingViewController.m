@@ -10,7 +10,7 @@
 #import "NavigationBar.h"
 
 #import "UIViewController+HUD.h"
-#import "UIViewController_HUD.h"
+#import "UIViewController+HUD.h"
 #import "GradeList.h"
 #import "MMPickerView.h"
 #import "UIAlertController+Blocks.h"

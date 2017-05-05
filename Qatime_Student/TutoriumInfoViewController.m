@@ -14,7 +14,7 @@
 #import "BuyBar.h"
 
 #import "UIImageView+WebCache.h"
-#import "UIViewController_HUD.h"
+#import "UIViewController+HUD.h"
 #import "UIViewController+HUD.h"
 
 #import "OrderViewController.h"
@@ -231,7 +231,7 @@
     
     
     /* 请求数据*/
-    [self requestClassesInfoWith:_classID];
+    [self refreshPage];
     
 }
 
@@ -277,7 +277,6 @@
                     _tutoriumInfoView.className.text = _dataDic[@"name"];
                     _tutoriumInfoView.saleNumber.text = [NSString stringWithFormat:@"报名人数 %@", _dataDic[@"buy_tickets_count"]];
                     
-                    
                     //课程特色
                     for (NSString *key in _dataDic[@"icons"]) {
                         
@@ -315,7 +314,9 @@
                         
                     }else if ([_dataDic[@"status"]isEqualToString:@"finished"]||[_dataDic[@"status"]isEqualToString:@"billing"]||[_dataDic[@"status"]isEqualToString:@"completed"]){
                         
-                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ %@/%@",@"已结束",_dataDic[@"completed_lesson_count"],_dataDic[@"lesson_count"]];
+                        _tutoriumInfoView.status.text = @" 已结束 ";
+//                        [NSString stringWithFormat:@" %@ %@/%@",@"已结束",_dataDic[@"completed_lesson_count"],_dataDic[@"lesson_count"]];
+                        _tutoriumInfoView.status.backgroundColor = [UIColor colorWithRed:0.08 green:0.59 blue:0.09 alpha:1.00];
                         
                     }else if ([_dataDic[@"status"]isEqualToString:@"published"]){
                         
@@ -407,7 +408,6 @@
                         
                         /* 判断教学年限*/
                         _tutoriumInfoView.workYearsLabel.text = [_teacherModel.teaching_years changeEnglishYearsToChinese];
-                        
                         
                         
                         /** 手动解析classModel*/
@@ -506,12 +506,8 @@
     
 }
 
-
 #pragma mark- 判断课程状态
 - (void)switchClassData:(NSDictionary *)data{
-    
-    
-    
     
     /* 先判断is_tasting(正在试听) / is_bought(已购买) / tasted() 的状态*/
     if ([_dataDic[@"is_bought"]boolValue]==NO) {
@@ -575,7 +571,7 @@
     }else{
         /* 已经购买的情况下*/
         _buyBar.applyButton.hidden = YES;
-        
+        _buyBar.listenButton.hidden = NO;
         [_buyBar.listenButton sd_clearAutoLayoutSettings];
         _buyBar.listenButton.sd_resetLayout
         .leftSpaceToView(_buyBar,10)
@@ -717,36 +713,40 @@
     
     if (_dataDic) {
         
-        //砍掉
-        if ([_dataDic[@"status"] isEqualToString:@"teaching"]) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"该辅导已开课,是否继续购买?" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                
-            }] ;
-            UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
-                [self requestOrder];
-                
-            }] ;
+        if (![_dataDic[@"status"] isEqualToString:@"completed"]&&![_dataDic[@"status"] isEqualToString:@"finished"]&&![_dataDic[@"status"] isEqualToString:@"billing"]) {
             
-            [alert addAction:cancel];
-            [alert addAction:sure];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-            
-        }else{
-            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否确定购买该课程?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                if (buttonIndex!=0) {
+            //砍掉
+            if ([_dataDic[@"status"] isEqualToString:@"teaching"]) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"该辅导已开课,是否继续购买?" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                    
+                }] ;
+                UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    
                     [self requestOrder];
-                }
+                    
+                }] ;
                 
-            }];
+                [alert addAction:cancel];
+                [alert addAction:sure];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+                
+            }else{
+                [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否确定购买该课程?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                    if (buttonIndex!=0) {
+                        [self requestOrder];
+                    }
+                    
+                }];
+            }
+        }else{
+            
+            [self loadingHUDStopLoadingWithTitle:@"当前课程不支持购买"];
+            
         }
         
-        //        [self loadingHUDStopLoadingWithTitle:@"请前往网页报名"];
-        
     }
-    
     
 }
 
@@ -998,6 +998,9 @@
     
     [_buyBar.listenButton removeAllTargets];
     [_buyBar.applyButton removeAllTargets];
+    
+    _classListArray = @[].mutableCopy;
+    _classFeaturesArray = @[].mutableCopy;
     
     [self requestClassesInfoWith:_classID];
     

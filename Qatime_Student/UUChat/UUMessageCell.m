@@ -264,7 +264,7 @@
 }
 
 -(BOOL)canBecomeFirstResponder{
-    return YES;
+    return NO;
 }
 
 
@@ -274,12 +274,12 @@
  */
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-    NSLog(@"%@", NSStringFromSelector(action));
-    if (action == @selector(cut:)
-        || action == @selector(copy:)
-        || action == @selector(paste:)) {
-        return YES; // YES ->  代表我们只监听 cut: / copy: / paste:方法
-    }
+//    NSLog(@"%@", NSStringFromSelector(action));
+//    if (action == @selector(cut:)
+//        || action == @selector(copy:)
+//        || action == @selector(paste:)) {
+//        return YES; // YES ->  代表我们只监听 cut: / copy: / paste:方法
+//    }
     return NO; // 除了上面的操作，都不支持
     //    return YES;
 }

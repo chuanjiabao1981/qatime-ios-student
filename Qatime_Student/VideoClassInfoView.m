@@ -541,7 +541,7 @@
     _gradeLabel.text = model.grade;
     _subjectLabel.text = model.subject;
     _classCount.text = [NSString stringWithFormat:@"共%@课",model.video_lessons_count];
-//    _liveTimeLabel.text = [NSString stringWithFormat:@"视频总长%@",model.视频长度];
+    _liveTimeLabel.text = [self getMMSSFromSS:[NSString stringWithFormat:@"视频总长%@",model.total_duration]];
     _classTarget.text = model.objective;
     _suitable.text = model.suit_crowd;
     //简介富文本
@@ -564,6 +564,30 @@
     _workPlaceLabel.text = [NSString stringWithFormat:@"%@",model.teacher[@"school"]];
     _workYearsLabel.text = [NSString stringWithFormat:@"%@",[model.teacher[@"teaching_years"] changeEnglishYearsToChinese]];
     _teacherInterviewLabel.attributedText = [[NSMutableAttributedString alloc]initWithData:[model.teacher[@"desc"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+    
+}
+
+//传入 秒  得到 xx:xx:xx
+-(NSString *)getMMSSFromSS:(NSString *)totalTime{
+    
+    NSInteger seconds = [totalTime integerValue];
+    NSString *format_time;
+    if (seconds>60) {
+        
+        //format of hour
+        NSString *str_hour = [NSString stringWithFormat:@"%02ld",seconds/3600];
+        //format of minute
+        NSString *str_minute = [NSString stringWithFormat:@"%02ld",(seconds%3600)/60];
+        //format of second
+        NSString *str_second = [NSString stringWithFormat:@"%02ld",seconds%60];
+        //format of time
+        format_time = [NSString stringWithFormat:@"%@:%@:%@",str_hour,str_minute,str_second];
+    }else{
+        format_time = [NSString stringWithFormat:@"00:00:%02ld",seconds];
+    }
+    
+    
+    return format_time;
     
 }
 

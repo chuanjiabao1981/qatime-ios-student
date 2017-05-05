@@ -318,7 +318,16 @@
           _cityFilePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"City.plist"];
         }
         
-        NSArray *array = [NSArray arrayWithContentsOfFile:_cityFilePath]   ;
+//        NSArray *array = [NSArray arrayWithContentsOfFile:_cityFilePath];
+        
+        NSMutableArray *array = @[].mutableCopy;
+        NSArray *cityarr =[NSArray arrayWithContentsOfFile:_cityFilePath];
+        for (NSDictionary *cityss in cityarr) {
+            if ([cityss[@"workstations_count"]integerValue]!=0) {
+                [array addObject:cityss];
+            }
+        }
+        
         _data = [[NSMutableArray alloc] init];
         for (NSDictionary *groupDic in array) {
             TLCityGroup *group = [[TLCityGroup alloc] init];

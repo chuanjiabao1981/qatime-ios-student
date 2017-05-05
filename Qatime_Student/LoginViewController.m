@@ -13,7 +13,7 @@
 #import "WXApi.h"
 #import "WXApiObject.h"
 #import "UIViewController+HUD.h"
-#import "UIViewController_HUD.h"
+#import "UIViewController+HUD.h"
 
 #import "BindingViewController.h"
 #import "UIAlertController+Blocks.h"

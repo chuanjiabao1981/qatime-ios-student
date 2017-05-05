@@ -12,7 +12,7 @@
 #import "ClassTimeModel.h"
 #import "ClassTimeTableViewCell.h"
 #import "YYModel.h"
-#import "UIViewController_HUD.h"
+#import "UIViewController+HUD.h"
 #import "UIViewController+HUD.h"
 
 #import "HaveNoClassView.h"
@@ -141,6 +141,7 @@
 
     _calendar.delegate = self;
     _calendar.dataSource = self;
+    [_calendar setSelectedDate:[NSDate date]];
     
     _classTableView.delegate = self;
     _classTableView.dataSource = self;
@@ -515,7 +516,7 @@
 #pragma mark- tableview delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return self.view.height_sd*0.15*ScrenScale;;
+    return 120*ScrenScale;;
     
 }
 

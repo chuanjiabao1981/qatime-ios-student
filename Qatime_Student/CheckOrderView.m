@@ -32,6 +32,7 @@
         /* 最新余额*/
         _balance = [[UILabel alloc]init];
         _balance.textColor = TITLECOLOR;
+        _balance.font = TEXT_FONTSIZE;
         
         /* 分割线*/
         line = [[UIView alloc]init];
@@ -39,28 +40,32 @@
         
         /* 编号*/
         UILabel *number = [[UILabel alloc]init];
-        number.text = @"编    号";
+        number.font = TEXT_FONTSIZE;
+        number.text = @"编        号";
         number.textColor = TITLECOLOR;
         
         _number= [[UILabel alloc]init];
+        _number.font = TEXT_FONTSIZE;
         _number.textColor = TITLECOLOR;
         
         /* 充值金额*/
         UILabel *money = [[UILabel alloc]init];
-        money.text = @"充值金额";
+        money.text = @"支付金额";
         money.textColor = TITLECOLOR;
+        money.font = TEXT_FONTSIZE;
         
         _chargeMoney= [[UILabel alloc]init];
         _chargeMoney.textColor = TITLECOLOR;
+        _chargeMoney.font = TEXT_FONTSIZE;
         
         
         /* 完成按钮*/
-        
         _finishButton = [[UIButton alloc]init];
         _finishButton.layer.borderColor = BUTTONRED.CGColor;
         _finishButton.layer.borderWidth =1;
         [_finishButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
         [_finishButton setTitle:@"完成" forState:UIControlStateNormal];
+        _finishButton.titleLabel.font = TEXT_FONTSIZE;
         
         
         
@@ -70,7 +75,7 @@
         _explain.textColor = TITLECOLOR;
         _explain.text = @"由于当前购买人数较多，需要等待一会儿才能获取充值结果，请稍后进行查询。";
         _explain.numberOfLines = 0;
-        
+        _explain.font = TEXT_FONTSIZE;
         
         /* 布局*/
         [self sd_addSubviews:@[_status,_statusImage,_balance,line,number,_number,money,_chargeMoney,_finishButton,_explain]];

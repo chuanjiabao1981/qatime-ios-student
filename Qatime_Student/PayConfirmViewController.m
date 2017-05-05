@@ -53,7 +53,6 @@
 }
 
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -186,8 +185,9 @@
                                     }
                                     
                                 }];
+                            }else if(buttonIndex == 0){
                                 
-                                
+                                [self payWithBalance];
                             }
                             
                         }];
@@ -195,9 +195,7 @@
                         //新设置密码,未过24小时
                         [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置的支付密码未满24小时，为保证账户安全暂不可用。 " cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                            
-                           
                         }];
-                        
                         
                     }
                 }
@@ -206,8 +204,6 @@
         }];
         
     }];
-    
-    
 }
 
 

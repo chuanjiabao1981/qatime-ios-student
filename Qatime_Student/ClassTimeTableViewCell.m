@@ -105,7 +105,7 @@
         .topSpaceToView(_content,0)
         .bottomSpaceToView(_content,0)
         .leftSpaceToView(_content,0)
-        .autoWidthRatio(1.6);
+        .autoWidthRatio(1.0);
         
         /* 课程名称布局*/
         

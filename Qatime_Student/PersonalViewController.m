@@ -20,7 +20,7 @@
 #import "MyOrderViewController.h"
 #import "MyOneOnOneViewController.h"
 
-#import "UIViewController_HUD.h"
+#import "UIViewController+HUD.h"
 #import "UIViewController+HUD.h"
 #import "PersonalInfoViewController.h"
 #import "UIAlertController+Blocks.h"

@@ -187,6 +187,7 @@
 		54652E3F1DEEBF0D00F4607C /* NoticeSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54652E3E1DEEBF0D00F4607C /* NoticeSettingTableViewCell.m */; };
 		54652E421DEEC25200F4607C /* MessageSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54652E411DEEC25200F4607C /* MessageSettingViewController.m */; };
 		54660F601E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m in Sources */ = {isa = PBXBuildFile; fileRef = 54660F5F1E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m */; };
+		546630C81EBC9D9B0010704E /* EditDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 546630C71EBC9D9B0010704E /* EditDescriptionTableViewCell.m */; };
 		546978561DC723B5001695F4 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546978551DC723B5001695F4 /* LoginViewController.m */; };
 		546978591DC723BD001695F4 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 546978581DC723BD001695F4 /* LoginView.m */; };
 		5469785F1DC72534001695F4 /* account.png in Resources */ = {isa = PBXBuildFile; fileRef = 5469785D1DC72534001695F4 /* account.png */; };
@@ -1034,6 +1035,8 @@
 		54652E411DEEC25200F4607C /* MessageSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageSettingViewController.m; sourceTree = "<group>"; };
 		54660F5E1E2642E6009DFB7C /* NSString+ChangeYearsToChinese.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ChangeYearsToChinese.h"; sourceTree = "<group>"; };
 		54660F5F1E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ChangeYearsToChinese.m"; sourceTree = "<group>"; };
+		546630C61EBC9D9B0010704E /* EditDescriptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditDescriptionTableViewCell.h; sourceTree = "<group>"; };
+		546630C71EBC9D9B0010704E /* EditDescriptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditDescriptionTableViewCell.m; sourceTree = "<group>"; };
 		546978541DC723B5001695F4 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		546978551DC723B5001695F4 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		546978571DC723BD001695F4 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
@@ -1926,7 +1929,6 @@
 		54D59A731E234140006066EC /* DrawBackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawBackView.m; sourceTree = "<group>"; };
 		54D59A781E23417B006066EC /* DrawBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawBackViewController.h; sourceTree = "<group>"; };
 		54D59A791E23417B006066EC /* DrawBackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawBackViewController.m; sourceTree = "<group>"; };
-		54D6611A1DD0373100C9A0FF /* UIViewController_HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_HUD.h; sourceTree = "<group>"; };
 		54D661201DD040EF00C9A0FF /* UIViewController+HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+HUD.h"; sourceTree = "<group>"; };
 		54D661211DD040EF00C9A0FF /* UIViewController+HUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+HUD.m"; sourceTree = "<group>"; };
 		54D661231DD048F500C9A0FF /* IndexPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexPageView.h; sourceTree = "<group>"; };
@@ -3011,8 +3013,8 @@
 			isa = PBXGroup;
 			children = (
 				546978611DC7258B001695F4 /* 注册页面 */,
-				54F3BA1C1DFC43FC003998D0 /* 重新登录页面 */,
 				54CB26651DEFFE4400AE7414 /* 登录界面 */,
+				54F3BA1C1DFC43FC003998D0 /* 重新登录页面 */,
 				54CB26641DEFFE4100AE7414 /* 找回密码 */,
 			);
 			name = "登录页面";
@@ -5513,6 +5515,8 @@
 				5452260D1E24830100F36280 /* EditBirthdayTableViewCell.m */,
 				54B914A61E6D790500F377ED /* EditLocationTableViewCell.h */,
 				54B914A71E6D790500F377ED /* EditLocationTableViewCell.m */,
+				546630C61EBC9D9B0010704E /* EditDescriptionTableViewCell.h */,
+				546630C71EBC9D9B0010704E /* EditDescriptionTableViewCell.m */,
 			);
 			name = cell;
 			sourceTree = "<group>";
@@ -5993,7 +5997,6 @@
 				54B73D091DE40B5900B7A7EB /* emojis.h */,
 				54B73D061DE40B1800B7A7EB /* NSString+Emojize.h */,
 				54B73D071DE40B1800B7A7EB /* NSString+Emojize.m */,
-				54D6611A1DD0373100C9A0FF /* UIViewController_HUD.h */,
 				54D661201DD040EF00C9A0FF /* UIViewController+HUD.h */,
 				54D661211DD040EF00C9A0FF /* UIViewController+HUD.m */,
 				54E428B21DE2DC6100AF5980 /* UIControl+RemoveTarget.h */,
@@ -6493,6 +6496,7 @@
 				543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */,
 				54AC02B11E892FD100817767 /* UIView+Swizzling.m in Sources */,
 				548D1D761EA741FE00B120C8 /* ClassTimeViewController.m in Sources */,
+				546630C81EBC9D9B0010704E /* EditDescriptionTableViewCell.m in Sources */,
 				545162BB1DF50D85000BD17A /* ChangePasswordView.m in Sources */,
 				54AC02AE1E892FD100817767 /* UINavigationBar+Swizzling.m in Sources */,
 				54AC03E61E8938E100817767 /* NIMImageContentConfig.m in Sources */,

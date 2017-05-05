@@ -30,17 +30,16 @@
         /**** 预留label的宽度和教师姓名model源 ***/
         
         _className = [[UILabel alloc]init];
-        _className.font = TITLEFONTSIZE;
+        _className.font = TEXT_FONTSIZE;
         [self.contentView addSubview:_className];
         _className.textColor = [UIColor blackColor];
         _className.sd_layout
         .leftSpaceToView(self.contentView,0)
         .rightSpaceToView(self.contentView,0)
         .topSpaceToView(_classImage,5)
-        .heightIs(30);
-//        [_className setSingleLineAutoResizeWithMaxWidth:300];
+        .autoHeightRatio(0);
+        [_className setMaxNumberOfLinesToShow:1];
         
-        [_className setText:@"课程名称"];
         _className.textAlignment = NSTextAlignmentLeft;
         
         /* 年级 label*/
@@ -64,8 +63,6 @@
         _subjectName.textAlignment = NSTextAlignmentRight;
         [_subjectName setFont:[UIFont systemFontOfSize:12*ScrenScale]];
         
-       
-        
         /* 价格label*/
         _priceLabel = [[UILabel alloc]init];
         [self.contentView addSubview:_priceLabel];
@@ -75,10 +72,8 @@
         [_priceLabel setSingleLineAutoResizeWithMaxWidth:80];
         _priceLabel.textAlignment = NSTextAlignmentRight;
         [_priceLabel setFont:[UIFont systemFontOfSize:12*ScrenScale]];
-        _priceLabel.hidden = YES;
+//        _priceLabel.hidden = YES;
 
-        
-        
     }
     return self;
 }

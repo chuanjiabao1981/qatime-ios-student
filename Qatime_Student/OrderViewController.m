@@ -176,7 +176,6 @@ typedef enum : NSUInteger {
     //使用NSNotificationCenter 鍵盤隐藏時
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
-    
     //判断是否需要有不可退款提示
     [self checkRefundWarning];
     
@@ -270,6 +269,7 @@ typedef enum : NSUInteger {
                         /* 数据请求成功*/
                         mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"]];
                         [(TutoriumListInfo *)mod setClassID:dic[@"data"][@"id"]];
+                        _orderView.classType.text = @"直播课";
                         //页面赋值
                         [_orderView setupLiveClassData:mod];
                         
@@ -280,6 +280,8 @@ typedef enum : NSUInteger {
                         
                         mod = (OneOnOneClass *)[OneOnOneClass yy_modelWithJSON:dic[@"data"]];
                         [(OneOnOneClass *)mod setClassID:dic[@"data"][@"id"]];
+                        
+                        _orderView.classType.text = @"一对一课";
                         //页面赋值
                         [_orderView setupInteractionData:mod];
                         
@@ -290,6 +292,7 @@ typedef enum : NSUInteger {
                         /* 数据请求成功*/
                         mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"]];
                         [(VideoClassInfo *)mod setClassID:dic[@"data"][@"id"]];
+                        _orderView.classType.text = @"视频课";
                         //页面赋值
                         [_orderView setupLiveClassData:mod];
                         
@@ -323,7 +326,6 @@ typedef enum : NSUInteger {
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
             }];
-            
             
         }
     }
@@ -697,7 +699,7 @@ typedef enum : NSUInteger {
     
     [UIView animateWithDuration:animationDuration animations:^{
         
-        self.view.frame = CGRectMake(0, -keyboardRect.size.height, self.view.width_sd, self.view.height_sd);
+        self.view.frame = CGRectMake(0, -keyboardRect.size.height/2, self.view.width_sd, self.view.height_sd);
         
         
     }];

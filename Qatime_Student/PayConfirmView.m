@@ -19,40 +19,48 @@
         UILabel *number = [UILabel new];
         number.text = @"订单编号";
         number.textColor = TITLECOLOR;
+        number.font = TEXT_FONTSIZE;
         
         _number = [UILabel new];
         _number.textColor = TITLECOLOR;
+        _number.font = TEXT_FONTSIZE;
         
         
         /*创建时间*/
         UILabel *ordertime = [UILabel new];
         ordertime.text = @"创建时间";
         ordertime.textColor = TITLECOLOR;
+        ordertime.font = TEXT_FONTSIZE;
         
         _time = [UILabel new];
         _time.textColor = TITLECOLOR;
+        _time.font = TEXT_FONTSIZE;
         
         /*支付方式*/
         UILabel *type = [UILabel new];
         type.text = @"支付方式";
         type.textColor = TITLECOLOR;
+        type.font = TEXT_FONTSIZE;
         
         _type = [UILabel new];
         _type.textColor = TITLECOLOR;
+        _type.font = TEXT_FONTSIZE;
         
         /*支付金额*/
         UILabel *money = [UILabel new];
         money.text = @"支付金额";
         money.textColor = TITLECOLOR;
+        money.font = TEXT_FONTSIZE;
         
         _money = [UILabel new];
         _money.textColor = TITLECOLOR;
-        
+        _money.font = TEXT_FONTSIZE;
         
         /* 提示*/
         UILabel *tips = [[UILabel alloc]init];
         tips.text = @"请您在24小时内完成支付确认，否则订单将会自动取消。";
         tips.textColor = TITLECOLOR;
+        tips.font = TEXT_FONTSIZE;
         
         /* 确认按钮*/
         _finishButton = [UIButton new];
@@ -60,6 +68,7 @@
         _finishButton.layer.borderWidth = 1.0;
         [_finishButton setTitle:@"确认支付" forState:UIControlStateNormal];
         [_finishButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+        _finishButton.titleLabel.font = TEXT_FONTSIZE;
         
         /* 布局*/
         [self sd_addSubviews:@[number,_number,ordertime,_time,type,_type,money,_money,tips,_finishButton]];

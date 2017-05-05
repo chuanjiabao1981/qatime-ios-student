@@ -8,28 +8,33 @@
 
 #import "UIViewController+HUD.h"
 
+static const void *loadingHUDKey = &loadingHUDKey;
+
+static const void *endHUDKey = &endHUDKey;
+
 @implementation UIViewController (HUD)
 
-- (MBProgressHUD *)loadingHUD{
-    MBProgressHUD *hud=[MBProgressHUD HUDForView:self.view];
-    return hud;
+
+-(void)setLoadingHUD:(MBProgressHUD *)loadingHUD{
+    
+    objc_setAssociatedObject(self, loadingHUDKey, loadingHUD, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(MBProgressHUD *)loadingHUD{
+    
+    return objc_getAssociatedObject(self, loadingHUDKey);
+}
+
+-(void)setEndHUD:(MBProgressHUD *)endHUD{
+    
+    objc_setAssociatedObject(self,endHUDKey , endHUD, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 -(MBProgressHUD *)endHUD{
-    MBProgressHUD *hud=[MBProgressHUD HUDForView:self.view];
-    return hud;
+    
+    return objc_getAssociatedObject(self, endHUDKey);
 }
 
-
-- (void)setLoadingHUD:(MBProgressHUD *)loadingHUD{
-    
-    
-}
-
-- (void)setEndHUD:(MBProgressHUD *)endHUD{
-    
-    
-}
 
 
 - (void)loadingHUDStartLoadingWithTitle:(NSString * _Nullable)hudTitle{
@@ -41,7 +46,6 @@
         [self.loadingHUD setLabelText:hudTitle];
         self.loadingHUD.mode = MBProgressHUDModeIndeterminate;
         self.loadingHUD.labelFont = [UIFont systemFontOfSize:14*ScrenScale];
-    
     
 }
 

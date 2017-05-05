@@ -257,7 +257,6 @@
     /* 获取推送消息内容 10以下系统获取方法*/
    remoteNotification =  [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     
-    
     return YES;
 }
 
@@ -292,7 +291,6 @@
 - (void)receiveNewNotice{
     
     _noticeIndexViewController.tabBarItem.badgeValue=@"";
-    
     
 }
 

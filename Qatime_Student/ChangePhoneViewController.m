@@ -9,7 +9,7 @@
 #import "ChangePhoneViewController.h"
  
 #import "UIViewController+HUD.h"
-#import "UIViewController_HUD.h"
+#import "UIViewController+HUD.h"
  
 #import "UIAlertController+Blocks.h"
 

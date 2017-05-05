@@ -29,8 +29,6 @@
 @property (nonatomic, retain) UIActivityIndicatorView *indicator;
 
 
-
-
 @property (nonatomic, assign) BOOL isMyMessage;
 
 

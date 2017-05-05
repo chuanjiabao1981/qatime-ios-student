@@ -29,6 +29,10 @@
     //一个保存已筛选条件的数组
     NSMutableArray <NSIndexPath *>*_filtedArray;  //只存保存item的indexpath
     
+    UILabel *sectionLabel1;
+    UILabel *sectionLabel2;
+    UILabel *sectionLabel3;
+    
 }
 
 @end
@@ -197,6 +201,7 @@
         [_ setTitle:@"立即筛选" forState:UIControlStateNormal];
         [_ setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_ setBackgroundColor:BUTTONRED];
+        _.titleLabel.font = TEXT_FONTSIZE;
         _.sd_layout
         .bottomSpaceToView(self.view,20)
         .centerXEqualToView(self.view)
@@ -438,15 +443,16 @@
         if (kind == UICollectionElementKindSectionHeader){
             UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId" forIndexPath:indexPath];
             
-            UILabel *label = [[UILabel alloc]init];
-            label.text = @"显示范围";
-            label.textColor = TITLECOLOR;
-            [header addSubview:label];
-            label.sd_layout
-            .leftSpaceToView(header,20)
+            sectionLabel1 = [[UILabel alloc]init];
+            sectionLabel1.text = @"显示范围";
+            sectionLabel1.textColor = TITLECOLOR;
+            sectionLabel1.font = TEXT_FONTSIZE;
+            [header addSubview:sectionLabel1];
+            sectionLabel1.sd_layout
+            .leftSpaceToView(header,20*ScrenScale)
             .bottomSpaceToView(header,0)
             .autoHeightRatio(0);
-            [label setSingleLineAutoResizeWithMaxWidth:100];
+            [sectionLabel1 setSingleLineAutoResizeWithMaxWidth:100];
             
             view = header;
         }
@@ -465,15 +471,16 @@
         if (kind == UICollectionElementKindSectionHeader){
             UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId" forIndexPath:indexPath];
             
-            UILabel *label = [[UILabel alloc]init];
-            label.text = @"课程状态";
-            label.textColor = TITLECOLOR;
-            [header addSubview:label];
-            label.sd_layout
-            .leftSpaceToView(header,20)
+            sectionLabel2 = [[UILabel alloc]init];
+            sectionLabel2.text = @"课程状态";
+            sectionLabel2.font = TEXT_FONTSIZE;
+            sectionLabel2.textColor = TITLECOLOR;
+            [header addSubview:sectionLabel2];
+            sectionLabel2.sd_layout
+            .leftSpaceToView(header,20*ScrenScale)
             .bottomSpaceToView(header,0)
             .autoHeightRatio(0);
-            [label setSingleLineAutoResizeWithMaxWidth:100];
+            [sectionLabel2 setSingleLineAutoResizeWithMaxWidth:100];
             
             view = header;
         }
@@ -494,11 +501,12 @@
         if (kind == UICollectionElementKindSectionHeader){
             UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId" forIndexPath:indexPath];
             UILabel *label = [[UILabel alloc]init];
+            label.font = TEXT_FONTSIZE;
             label.text = @"试听状态";
             label.textColor = TITLECOLOR;
             [header addSubview:label];
             label.sd_layout
-            .leftSpaceToView(header,20)
+            .leftSpaceToView(header,20*ScrenScale)
             .bottomSpaceToView(header,0)
             .autoHeightRatio(0);
             [label setSingleLineAutoResizeWithMaxWidth:100];
@@ -511,15 +519,16 @@
             UICollectionReusableView *footer = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId" forIndexPath:indexPath];
             footer.backgroundColor = [UIColor whiteColor];
             
-            UILabel *label = [[UILabel alloc]init];
-            label.text = @"开课时间";
-            label.textColor = TITLECOLOR;
-            [footer addSubview:label];
-            label.sd_layout
-            .leftSpaceToView(footer,20)
-            .topSpaceToView(footer,40)
+            sectionLabel3 = [[UILabel alloc]init];
+            sectionLabel3.font = TEXT_FONTSIZE;
+            sectionLabel3.text = @"开课时间";
+            sectionLabel3.textColor = TITLECOLOR;
+            [footer addSubview:sectionLabel3];
+            sectionLabel3.sd_layout
+            .leftSpaceToView(footer,20*ScrenScale)
+            .topSpaceToView(footer,40*ScrenScale)
             .autoHeightRatio(0);
-            [label setSingleLineAutoResizeWithMaxWidth:100];
+            [sectionLabel3 setSingleLineAutoResizeWithMaxWidth:100];
             
             //开始时间
             UIView *start = [[UIView alloc]init];
@@ -528,17 +537,17 @@
             start.layer.borderWidth = 1;
             
             start.sd_layout
-            .topSpaceToView(label,30)
-            .leftSpaceToView(footer,20)
-            .heightIs(30)
-            .widthIs(self.view.width_sd/2-40);
+            .topSpaceToView(sectionLabel3,30*ScrenScale)
+            .leftSpaceToView(footer,20*ScrenScale)
+            .heightIs(30*ScrenScale)
+            .widthIs(self.view.width_sd/2-40*ScrenScale);
             
-            UIImageView *image1 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"礼物"]];
+            UIImageView *image1 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"日历灰"]];
             [start addSubview:image1];
             image1.sd_layout
-            .rightSpaceToView(start,10)
-            .topSpaceToView(start,5)
-            .bottomSpaceToView(start,5)
+            .rightSpaceToView(start,10*ScrenScale)
+            .topSpaceToView(start,5*ScrenScale)
+            .bottomSpaceToView(start,5*ScrenScale)
             .widthEqualToHeight();
             
             _startTime = [[UIButton alloc]init];
@@ -550,10 +559,10 @@
             [_startTime addTarget:self action:@selector(selectTime:) forControlEvents:UIControlEventTouchUpInside];
             [start addSubview:_startTime];
             _startTime.sd_layout
-            .leftSpaceToView(start,10)
-            .topSpaceToView(start,5)
-            .bottomSpaceToView(start,5)
-            .rightSpaceToView(image1,10);
+            .leftSpaceToView(start,10*ScrenScale)
+            .topSpaceToView(start,5*ScrenScale)
+            .bottomSpaceToView(start,5*ScrenScale)
+            .rightSpaceToView(image1,10*ScrenScale);
             
             //结束时间
             UIView *end = [[UIView alloc]init];
@@ -564,15 +573,15 @@
             end.sd_layout
             .topEqualToView(start)
             .bottomEqualToView(start)
-            .rightSpaceToView(footer,20)
+            .rightSpaceToView(footer,20*ScrenScale)
             .widthRatioToView(start,1.0);
             
-            UIImageView *image2 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"礼物"]];
+            UIImageView *image2 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"日历灰"]];
             [end addSubview:image2];
             image2.sd_layout
-            .rightSpaceToView(end,10)
-            .topSpaceToView(end,5)
-            .bottomSpaceToView(end,5)
+            .rightSpaceToView(end,10*ScrenScale)
+            .topSpaceToView(end,5*ScrenScale)
+            .bottomSpaceToView(end,5*ScrenScale)
             .widthEqualToHeight();
             
             _endTime = [[UIButton alloc]init];
@@ -583,10 +592,10 @@
             [_endTime addTarget:self action:@selector(selectTime:) forControlEvents:UIControlEventTouchUpInside];
             [end addSubview:_endTime];
             _endTime.sd_layout
-            .leftSpaceToView(end,10)
-            .topSpaceToView(end,5)
-            .bottomSpaceToView(end,5)
-            .rightSpaceToView(image2,10);
+            .leftSpaceToView(end,10*ScrenScale)
+            .topSpaceToView(end,5*ScrenScale)
+            .bottomSpaceToView(end,5*ScrenScale)
+            .rightSpaceToView(image2,10*ScrenScale);
             
             //杠
             UILabel *dots = [[UILabel alloc]init];
@@ -612,7 +621,7 @@
 //header高度
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     
-    return CGSizeMake(self.view.width_sd, 40);
+    return CGSizeMake(self.view.width_sd, 40*ScrenScale);
     
 }
 //footer高度
@@ -621,12 +630,11 @@
     CGSize size = CGSizeZero;
     
     if (section == 2) {
-        size = CGSizeMake(self.view.width_sd, 200);
+        size = CGSizeMake(self.view.width_sd, 200*ScrenScale);
     }else{
         
-        size = CGSizeMake(self.view.height_sd, 20);
+        size = CGSizeMake(self.view.height_sd, 20*ScrenScale);
     }
-    
     
     return size;
     

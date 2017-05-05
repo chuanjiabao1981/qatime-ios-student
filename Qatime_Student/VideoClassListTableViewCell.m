@@ -47,7 +47,7 @@
         .autoHeightRatio(0);
         
         //菱形
-        _tips = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"菱形"]];
+        _tips = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"播放"]];
         [self.contentView addSubview:_tips];
         _tips.sd_layout
         .leftSpaceToView(self.contentView, 10)

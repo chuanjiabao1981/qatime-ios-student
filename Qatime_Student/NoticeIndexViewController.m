@@ -204,9 +204,9 @@ typedef enum : NSUInteger {
     
 }
 
+
 /* 读取消息后,该页面接受通知消息,tablecell的badge数量变化*/
 - (void)markRead:(NSNotification *)notification{
-    
     
     
     
@@ -493,10 +493,10 @@ typedef enum : NSUInteger {
                         //其他类型的信息进行加载处理
                         if ([notice.notificationable_type isEqualToString:@"action_record"]) {
                             
-                            [notice.notice_content insertString:@"                " atIndex:0];
+//                            [notice.notice_content insertString:@"                " atIndex:0];
                         }else{
                             
-                            [notice.notice_content insertString:@"          " atIndex:0];
+//                            [notice.notice_content insertString:@"          " atIndex:0];
                         }
                         
                         notice.noticeID = dics[@"id"];
@@ -511,7 +511,7 @@ typedef enum : NSUInteger {
                         if (notice.read==NO) {
                             
                             [_noticeIndexView.segmentControl showBridgeWithShow:YES index:1];
-                            
+                            unreadCont++;
                             /* 未读消息添加到这个数组*/
                             [unreadArr addObject:notice.noticeID];
                             
@@ -706,6 +706,9 @@ typedef enum : NSUInteger {
         cell.badge.hidden = YES;
         
         unreadCont -= cell.badgeNumber;
+        if (unreadCont == 0) {
+            [self badgeHide];
+        }
         
         [_chatListArr[indexPath.row] setValue:@0 forKey:@"badge"];
         
@@ -719,7 +722,6 @@ typedef enum : NSUInteger {
             //教师公告
             
             controller = [[TutoriumInfoViewController alloc]initWithClassID:[cell.model.link substringFromIndex:19]];
-            
             
         }else if ([cell.model.notificationable_type isEqualToString:@"live_studio/lesson"]){
             //辅导班开课通知
@@ -932,6 +934,11 @@ typedef enum : NSUInteger {
                             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:&error];
                             if ([dic[@"status"]isEqualToNumber:@1]) {
                                 
+                                unreadCont -=unreadArr.count;
+                                if(unreadCont == 0) {
+                                    [self badgeHide];
+                                }
+                                unreadArr = @[].mutableCopy;
                                 [_noticeIndexView.segmentControl showBridgeWithShow:NO index:1];
                                 
                             }else{
@@ -956,7 +963,6 @@ typedef enum : NSUInteger {
                 
             }
             
-            
         }else{
             [_noticeIndexView.segmentControl showBridgeWithShow:NO index:0];
             
@@ -965,6 +971,13 @@ typedef enum : NSUInteger {
         }
         
     }
+    
+}
+
+/**消息选项卡的badge隐藏*/
+- (void)badgeHide{
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"AllMessageRead" object:nil];
     
 }
 

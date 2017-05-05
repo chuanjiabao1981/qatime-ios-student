@@ -216,6 +216,8 @@
     _headerView.todayLiveScrollView.dataSource = self;
     _headerView.todayLiveScrollView.tag = 1;        //今日直播 tag = 1
     
+    [_headerView.moreFancyButton addTarget:self action:@selector(chooseGrade) forControlEvents:UIControlEventTouchUpInside];
+    
     //选择年级功能
     NSInteger tags = 100;
     for (UIButton *button in _headerView.buttons) {
@@ -813,6 +815,10 @@
     [[NSNotificationCenter defaultCenter]postNotificationName:@"ChooseGrade" object:sender.titleLabel.text];
 
 }
+- (void)chooseGrade{
+    
+     [[NSNotificationCenter defaultCenter]postNotificationName:@"ChooseGrade" object:nil];
+}
 
 
 
@@ -1190,8 +1196,14 @@
     more.font = [UIFont systemFontOfSize:12*ScrenScale];
     more.text = @"更多";
     
+    UITapGestureRecognizer *moreTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(chooseGrade)];
+    
+    [more addGestureRecognizer:moreTap];
+    
+    
     UIImageView *arrow = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"rightArrow"]];
     arrow.userInteractionEnabled = YES;
+    [arrow addGestureRecognizer:moreTap];
     
     
     if (section == 1) {
@@ -1205,7 +1217,6 @@
         .topEqualToView(label)
         .bottomEqualToView(label)
         .widthRatioToView(label,1.0);
-        
         
         [_moreCurrentClassButton addSubview:more];
         [_moreCurrentClassButton addSubview:arrow];
@@ -1778,7 +1789,7 @@
         }
     }
     
-    locationController.hotCitys = @[@"1",@"266"];
+//    locationController.hotCitys = @[@"1",@"266"];
     
     locationController.hidesBottomBarWhenPushed = YES;
     [self .navigationController pushViewController:locationController animated:YES];
@@ -1804,13 +1815,11 @@
 }
 
 
-
 /* 接到上一页传来的地址信息,修改该页面的地址信息*/
 - (void)changeLoacal:(NSNotification *)notification{
     
     NSString *local = notification.object;
     [_location setTitle:local forState:UIControlStateNormal];
-    
     
 }
 

@@ -61,6 +61,32 @@
         .topSpaceToView(_className,10)
         .heightIs(0.5);
         
+        //课程类型
+        UILabel *type = [[UILabel alloc]init];
+        type.text = @"课程类型";
+        type.textColor = MineShaft;
+        type.font = NormalFont;
+        [_infoView addSubview:type];
+        
+        type.sd_layout
+        .topSpaceToView(line1,InterVal)
+        .leftSpaceToView(_infoView,20)
+        .autoHeightRatio(0);
+        [type setSingleLineAutoResizeWithMaxWidth:200];
+        
+        _classType =[UILabel new];
+        _classType.textColor = Steel;
+        _classType.font = NormalFont;
+        [_infoView addSubview:_classType];
+        
+        _classType.sd_layout
+        .topEqualToView(type)
+        .bottomEqualToView(type)
+        .leftSpaceToView(type,20);
+        [_classType setSingleLineAutoResizeWithMaxWidth:200];
+        
+        
+
         
         /* 科目*/
         UILabel *subject = [UILabel new];
@@ -70,8 +96,8 @@
         [_infoView addSubview:subject];
         
         subject.sd_layout
-        .topSpaceToView(line1,InterVal)
-        .leftSpaceToView(_infoView,20)
+        .leftEqualToView(type)
+        .topSpaceToView(type,InterVal)
         .autoHeightRatio(0);
         [subject setSingleLineAutoResizeWithMaxWidth:200];
         
@@ -85,7 +111,6 @@
         .bottomEqualToView(subject)
         .leftSpaceToView(subject,20);
         [_subjectLabel setSingleLineAutoResizeWithMaxWidth:200];
-        
         
         /* 年级*/
         UILabel *grade = [UILabel new];
@@ -294,6 +319,7 @@
         
         /* 优惠码确定按钮*/
         _sureButton = [[UIButton alloc]init];
+        _sureButton.titleLabel.font = TEXT_FONTSIZE;
         _sureButton .layer.borderColor = TITLECOLOR.CGColor;
         _sureButton.layer.borderWidth = 0.6;
         [_sureButton setTitle:@"确认" forState:UIControlStateNormal];
@@ -327,12 +353,12 @@
         .topSpaceToView(promotionText,5*ScrenScale)
         .bottomSpaceToView(promotionText,5*ScrenScale);
         
-        
+
         /* 优惠码*/
         UILabel *promotion = [[UILabel alloc]init];
         promotion.text = @"输入优惠码";
         promotion.textColor = TITLECOLOR;
-        promotion.font = NormalFont;
+        promotion.font = TEXT_FONTSIZE;
         [promotionView addSubview:promotion];
         promotion.sd_layout
         .leftSpaceToView(promotionView,20*ScrenScale)
@@ -343,6 +369,8 @@
         
         /* 优惠码按钮*/
         _promotionButton = [[UIButton alloc]init];
+        _promotionButton.titleLabel.font = TEXT_FONTSIZE;
+    
         [_promotionButton setTitle:@"使用优惠码" forState:UIControlStateNormal];
         [_promotionButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
         [_promotionButton setBackgroundColor:[UIColor whiteColor]];
@@ -369,6 +397,7 @@
         
         /* 支付按钮*/
         _applyButton = [[UIButton alloc]init];
+        _applyButton.titleLabel.font = TITLEFONTSIZE;
         [_applyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_applyButton setTitle:@"立即报名" forState:UIControlStateNormal];
         _applyButton.backgroundColor = BUTTONRED;
@@ -382,6 +411,7 @@
         
         /* 元*/
         UILabel *yuan = [[UILabel alloc]init];
+        yuan.font = TITLEFONTSIZE;
         yuan.text = @"元";
         yuan.textColor = TITLECOLOR;
         [applyView addSubview:yuan];
@@ -393,6 +423,7 @@
         
         /* 总价*/
         _totalMoneyLabel = [UILabel new];
+        
         _totalMoneyLabel.textColor = BUTTONRED;
         _totalMoneyLabel.font = [UIFont systemFontOfSize:27*ScrenScale];
         [applyView addSubview:_totalMoneyLabel];
@@ -404,6 +435,7 @@
         
         /* 应付金额*/
         UILabel *payment = [[UILabel alloc]init];
+        payment.font = TITLEFONTSIZE;
         payment.text = @"应付金额";
         [applyView addSubview:payment];
         payment.sd_layout

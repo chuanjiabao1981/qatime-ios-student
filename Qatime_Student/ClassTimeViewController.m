@@ -14,7 +14,7 @@
 #import "ClassTimeModel.h"
 #import "YYModel.h"
 #import "MJRefresh.h"
-#import "UIViewController_HUD.h"
+#import "UIViewController+HUD.h"
 #import "UIViewController+HUD.h"
 
 #import "AllClassViewController.h"
@@ -423,7 +423,7 @@ typedef enum : NSUInteger {
         
         if (_unclosedArr.count !=0) {
             
-            height = self.view.height_sd*0.15*ScrenScale;
+            height = 120*ScrenScale;
             
         }
     }
@@ -431,7 +431,7 @@ typedef enum : NSUInteger {
         
         if (_closedArr.count !=0) {
             
-            height = self.view.height_sd*0.15*ScrenScale;
+            height = 120*ScrenScale;
             
         }
     }

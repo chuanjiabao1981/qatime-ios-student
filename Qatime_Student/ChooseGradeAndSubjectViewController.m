@@ -69,42 +69,47 @@
 //首页选择年级后的监听 ->初始化之后的方法 , 初始化之前在appdelegate里用set方法
 - (void)chooseFilterGrade:(NSNotification *)notification{
     
-    for (UIButton *button in _chooseView.gradeButtons) {
+    if ([notification object]!=nil) {
         
-        button.selected = NO;
-        [button setTitleColor:[UIColor colorWithRed:0.61 green:0.61 blue:0.61 alpha:1.00] forState:UIControlStateNormal];
-        [button setBackgroundColor:[UIColor clearColor]];
-        
-        if ([[notification object] isEqualToString:button.titleLabel.text]) {
+        for (UIButton *button in _chooseView.gradeButtons) {
             
-            button.selected = YES;
-            [button setTitleColor:BUTTONRED forState:UIControlStateNormal];
-            [button setBackgroundColor:[UIColor whiteColor]];
+            button.selected = NO;
+            [button setTitleColor:[UIColor colorWithRed:0.61 green:0.61 blue:0.61 alpha:1.00] forState:UIControlStateNormal];
+            [button setBackgroundColor:[UIColor clearColor]];
+            
+            if ([[notification object] isEqualToString:button.titleLabel.text]) {
+                
+                button.selected = YES;
+                [button setTitleColor:BUTTONRED forState:UIControlStateNormal];
+                [button setBackgroundColor:[UIColor whiteColor]];
+            }
         }
+        
+        subjects = nil;
+        
+        //课程表变化
+        
+        
+        if ([[notification object] isEqualToString:@"初三"]) {
+            //        语、数、英、物、化、政、历
+            subjects = @[@"全部",@"语文",@"数学",@"英语",@"物理",@"化学",@"政治",@"历史"].mutableCopy;
+        }else if ([[notification object] isEqualToString:@"初二"]){
+            //        语、数、英、物、政、历、生、地
+            subjects = @[@"全部",@"语文",@"数学",@"英语",@"物理",@"政治",@"历史",@"生物",@"地理"].mutableCopy;
+        }else if ([[notification object] isEqualToString:@"初一"]){
+            subjects = @[@"全部",@"语文",@"数学",@"英语",@"政治",@"历史",@"地理"].mutableCopy;
+        }else if ([[notification object] isEqualToString:@"六年级"]||[[notification object] isEqualToString:@"五年级"]||[[notification object] isEqualToString:@"四年级"]||[[notification object] isEqualToString:@"三年级"]){
+            //        语、数、英、科学
+            subjects = @[@"全部",@"语文",@"数学",@"英语",@"科学"].mutableCopy;
+        }else if ([[notification object] isEqualToString:@"一年级"]||[[notification object] isEqualToString:@"二年级"]){
+            subjects = @[@"全部",@"语文",@"数学",@"英语"].mutableCopy;
+        }else {
+            subjects = @[@"全部",@"语文",@"数学",@"英语",@"历史",@"物理",@"政治",@"地理",@"生物",@"化学"].mutableCopy;
+        }
+        
+        [_chooseView.subjectCollection reloadSections:[NSIndexSet indexSetWithIndex:0]];
     }
     
-    subjects = nil;
-    
-    //课程表变化
-    if ([[notification object] isEqualToString:@"初三"]) {
-        //        语、数、英、物、化、政、历
-        subjects = @[@"全部",@"语文",@"数学",@"英语",@"物理",@"化学",@"政治",@"历史"].mutableCopy;
-    }else if ([[notification object] isEqualToString:@"初二"]){
-        //        语、数、英、物、政、历、生、地
-        subjects = @[@"全部",@"语文",@"数学",@"英语",@"物理",@"政治",@"历史",@"生物",@"地理"].mutableCopy;
-    }else if ([[notification object] isEqualToString:@"初一"]){
-        subjects = @[@"全部",@"语文",@"数学",@"英语",@"政治",@"历史",@"地理"].mutableCopy;
-    }else if ([[notification object] isEqualToString:@"六年级"]||[[notification object] isEqualToString:@"五年级"]||[[notification object] isEqualToString:@"四年级"]||[[notification object] isEqualToString:@"三年级"]){
-        //        语、数、英、科学
-        subjects = @[@"全部",@"语文",@"数学",@"英语",@"科学"].mutableCopy;
-    }else if ([[notification object] isEqualToString:@"一年级"]||[[notification object] isEqualToString:@"二年级"]){
-        subjects = @[@"全部",@"语文",@"数学",@"英语"].mutableCopy;
-    }else {
-        subjects = @[@"全部",@"语文",@"数学",@"英语",@"历史",@"物理",@"政治",@"地理",@"生物",@"化学"].mutableCopy;
-    }
-    
-    [_chooseView.subjectCollection reloadSections:[NSIndexSet indexSetWithIndex:0]];
-
 }
 
 

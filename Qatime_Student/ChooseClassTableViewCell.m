@@ -15,7 +15,7 @@
     
     UIView *_content;  //背景框
     
-    UIImageView *_teacherImage;
+//    UIImageView *_teacherImage;
     
     //图片缓存管理器
     SDWebImageManager *manager;
@@ -68,15 +68,15 @@
         
         [_className setMaxNumberOfLinesToShow:1];
         
-        //教师图片
-        _teacherImage = [[UIImageView alloc]init];
-        [_teacherImage setImage:[UIImage imageNamed:@"老师"]];
-        [_content addSubview:_teacherImage];
-        _teacherImage.sd_layout
-        .leftEqualToView(_className)
-        .bottomSpaceToView(_content,10)
-        .heightIs(12)
-        .widthEqualToHeight();
+//        //教师图片
+//        _teacherImage = [[UIImageView alloc]init];
+//        [_teacherImage setImage:[UIImage imageNamed:@"老师"]];
+//        [_content addSubview:_teacherImage];
+//        _teacherImage.sd_layout
+//        .leftEqualToView(_className)
+//        .bottomSpaceToView(_content,10)
+//        .heightIs(12)
+//        .widthEqualToHeight();
         
         //教师姓名
         _teacherName = [[UILabel alloc]init];
@@ -84,10 +84,10 @@
         _teacherName.font = [UIFont systemFontOfSize:12*ScrenScale];
         [_content addSubview:_teacherName];
         _teacherName.sd_layout
-        .leftSpaceToView(_teacherImage,5)
-        .topEqualToView(_teacherImage)
-        .bottomEqualToView(_teacherImage);
-        [_teacherName setSingleLineAutoResizeWithMaxWidth:100];
+        .leftEqualToView(_className)
+        .bottomSpaceToView(_content, 10)
+        .autoHeightRatio(0);
+        [_teacherName setSingleLineAutoResizeWithMaxWidth:150];
        
         
         //年级科目label
@@ -96,7 +96,7 @@
         _price.textColor = BUTTONRED;
         [_content addSubview:_price];
         _price.sd_layout
-        .leftEqualToView(_teacherImage)
+        .leftEqualToView(_teacherName)
         .bottomSpaceToView(_teacherName,10)
         .autoHeightRatio(0);
         [_price setSingleLineAutoResizeWithMaxWidth:200];

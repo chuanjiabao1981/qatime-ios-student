@@ -8,6 +8,7 @@
 
 #import "VideoClassPlayerView.h"
 #import "NSString+ChangeYearsToChinese.h"
+#import "NSNull+Json.h"
 
 @interface VideoClassPlayerView ()
 
@@ -93,16 +94,19 @@
     //教师信息
     [_infoView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
     _infoView.teacherNameLabel.text = model.teacher[@"name"];
-    if ([model.teacher[@"gender"]isEqualToString:@"male"]) {
-        [_infoView.genderImage setImage:[UIImage imageNamed:@"男"]];
-    }else if ([model.teacher[@"gender"]isEqualToString:@"female"]){
-        [_infoView.genderImage setImage:[UIImage imageNamed:@"女"]];
+    
+    if (![[model.teacher[@"gender"] description]isEqualToString:@"0(NSNull)"]) {
+        
+        if ([model.teacher[@"gender"]isEqualToString:@"male"]) {
+            [_infoView.genderImage setImage:[UIImage imageNamed:@"男"]];
+        }else if ([model.teacher[@"gender"]isEqualToString:@"female"]){
+            [_infoView.genderImage setImage:[UIImage imageNamed:@"女"]];
+        }
     }
+    
     _infoView.workPlaceLabel.text = [NSString stringWithFormat:@"%@",model.teacher[@"school"]];
     _infoView.workYearsLabel.text = [model.teacher[@"work_years"] changeEnglishYearsToChinese];
     _infoView.teacherInterviewLabel.attributedText = [[NSMutableAttributedString alloc]initWithData:[model.teacher[@"desc"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }  documentAttributes:nil error:nil];
-
 }
-
 
 @end

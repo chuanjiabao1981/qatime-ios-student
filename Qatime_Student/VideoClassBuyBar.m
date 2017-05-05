@@ -27,6 +27,7 @@
         .heightIs(0.5);
         
         _leftButton = [[UIButton alloc]init];
+        _leftButton.titleLabel.font = TEXT_FONTSIZE;
         [self addSubview:_leftButton];
         _leftButton.sd_layout
         .leftSpaceToView(self, 10)
@@ -38,6 +39,7 @@
         [_leftButton addTarget:self action:@selector(leftButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         
         _rightButton = [[UIButton alloc]init];
+        _rightButton.titleLabel.font = TEXT_FONTSIZE;
         _rightButton.layer.borderColor = NAVIGATIONRED.CGColor;
         _rightButton.layer.borderWidth = 1;
         [_rightButton setTitle:@"立即学习" forState:UIControlStateNormal];

@@ -129,8 +129,6 @@ typedef enum : NSUInteger {
         NSLog(@"切换至全屏模式");
     }
     
-    
-    
 }
 
 
@@ -161,7 +159,6 @@ typedef enum : NSUInteger {
     _controlView.classList.delegate = self;
     _controlView.classList.dataSource = self;
     _controlView.classList.tag = 3;
-    
     
     
     // 初始化播放模型

@@ -157,9 +157,11 @@
     if (isbeginVoiceRecord) {
         [self.voiceSwitchTextButton setImage:[UIImage imageNamed:@"chat_ipunt_message"] forState:UIControlStateNormal];
         [self.TextViewInput resignFirstResponder];
+        [self changeSendBtnWithPhoto:YES];
     }else{
         [self.voiceSwitchTextButton setImage:[UIImage imageNamed:@"chat_voice_record"] forState:UIControlStateNormal];
         [self.TextViewInput becomeFirstResponder];
+        [self changeSendBtnWithPhoto:NO];
     }
     
     
