@@ -154,6 +154,12 @@
     
     _tutoriumInfoView.classFeature.delegate = self;
     _tutoriumInfoView.classFeature.dataSource = self;
+    
+    
+    _tutoriumInfoView.workFlowView.delegate = self;
+    
+    
+    
     //注册cell
     [_tutoriumInfoView.classFeature registerClass:[TeacherFeatureTagCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
     
@@ -315,8 +321,15 @@
                     }else if ([_dataDic[@"status"]isEqualToString:@"finished"]||[_dataDic[@"status"]isEqualToString:@"billing"]||[_dataDic[@"status"]isEqualToString:@"completed"]){
                         
                         _tutoriumInfoView.status.text = @" 已结束 ";
-//                        [NSString stringWithFormat:@" %@ %@/%@",@"已结束",_dataDic[@"completed_lesson_count"],_dataDic[@"lesson_count"]];
-                        _tutoriumInfoView.status.backgroundColor = [UIColor colorWithRed:0.08 green:0.59 blue:0.09 alpha:1.00];
+                        _tutoriumInfoView.status.backgroundColor = SEPERATELINECOLOR_2;
+                        
+                        //如果课程已结束,buybar不显示.什么都不显示了
+                        if (_buyBar) {
+                            _buyBar.hidden = YES;
+                            _tutoriumInfoView.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height);
+                            
+                        }
+                        
                         
                     }else if ([_dataDic[@"status"]isEqualToString:@"published"]){
                         
@@ -879,61 +892,61 @@
 /* 点击课程表,进入回放的点击事件*/
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-//    ClassesListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-//    
-//    if ([_dataDic[@"is_bought"]boolValue]==YES) {
-//        
-//        if (cell.model.replayable == YES) {
-//            
-//            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-//                
-//                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-//                
-//                if ([dic[@"status"]isEqualToNumber:@1]) {
-//                    
-//                    if ([dic[@"data"][@"replayable"]boolValue]== YES) {
-//                        
-//                        if ([dic[@"data"][@"left_replay_times"]integerValue]>0) {
-//                            
-//                            if (dic[@"data"][@"replay"]==nil) {
-//                                
-//                            }else{
-//                                NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
-//                                [decodeParm addObject:@"hardware"];
-//                                [decodeParm addObject:@"videoOnDemand"];
-//                                
-//                                VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
-//                                [self presentViewController:video animated:YES completion:^{
-//                                    
-//                                }];
-//                            }
-//                            
-//                        }else{
-//                            
-//                            [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
-//                            
-//                        }
-//                        
-//                    }else{
-//                        [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
-//                    }
-//                }else{
-//                    [self loadingHUDStopLoadingWithTitle:@"服务器繁忙,请稍后重试"];
-//                }
-//                
-//            }];
-//        }else{
-//            
-//            [self loadingHUDStopLoadingWithTitle:@"不能看回放"];
-//        }
-//        
-//        
-//    }else{
-//        
-//                [self loadingHUDStopLoadingWithTitle:@"您尚未购买该课程!"];
-//        /* 未购买,不提示*/
-//        
-//    }
+    ClassesListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if ([_dataDic[@"is_bought"]boolValue]==YES) {
+        
+        if (cell.model.replayable == YES) {
+            
+            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+                
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                
+                if ([dic[@"status"]isEqualToNumber:@1]) {
+                    
+                    if ([dic[@"data"][@"replayable"]boolValue]== YES) {
+                        
+                        if ([dic[@"data"][@"left_replay_times"]integerValue]>0) {
+                            
+                            if (dic[@"data"][@"replay"]==nil) {
+                                
+                            }else{
+                                NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+                                [decodeParm addObject:@"software"];
+                                [decodeParm addObject:@"videoOnDemand"];
+                                
+                                VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+                                [self presentViewController:video animated:YES completion:^{
+                                    
+                                }];
+                            }
+                            
+                        }else{
+                            
+                            [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
+                            
+                        }
+                        
+                    }else{
+                        [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
+                    }
+                }else{
+                    [self loadingHUDStopLoadingWithTitle:@"服务器繁忙,请稍后重试"];
+                }
+                
+            }];
+        }else{
+            
+            [self loadingHUDStopLoadingWithTitle:@"不能看回放"];
+        }
+        
+        
+    }else{
+        
+                [self loadingHUDStopLoadingWithTitle:@"您尚未购买该课程!"];
+        /* 未购买,不提示*/
+        
+    }
 }
 
 

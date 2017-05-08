@@ -25,6 +25,7 @@
 #import "UIViewController+HUD.h"
 #import "TeachersPublicViewController.h"
 
+#import "VideoPlayerViewController.h"
 typedef enum : NSUInteger {
     PullToRefresh,
     PushToLoadMore,
@@ -303,6 +304,15 @@ typedef enum : NSUInteger {
         //测试代码
         VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:nil];
         [self.navigationController pushViewController:controller animated:YES];
+        
+//        NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+//        [decodeParm addObject:@"hardware"];
+//        [decodeParm addObject:@"videoOnDemand"];
+//        VideoPlayerViewController *controller = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:@"http://baobab.wdjcdn.com/1456117847747a_x264.mp4"] andDecodeParm:decodeParm andTitle:@""];
+//        
+//        [self presentViewController:controller animated:YES completion:^{
+//            
+//        }];
         
     }else{
         //购买下单

@@ -154,7 +154,7 @@
     _price.text = [NSString stringWithFormat:@"¥%@",paidModel.amount];
     
     if ([paidModel.status isEqualToString:@"unpaid"]) {
-        _status.text = @"待付款";
+        _status.text = @"等待付款";
     }else if ([paidModel.status isEqualToString:@"shipped"]){
        _status.text = @"交易完成";
     }else if ([paidModel.status isEqualToString:@"canceled"]){
@@ -162,7 +162,7 @@
     }else if ([paidModel.status isEqualToString:@"refunding"]){
         _status.text = @"退款中";
     }else if ([paidModel.status isEqualToString:@"completed"]){
-        _status.text = @"交易完成";
+        _status.text = @"交易关闭";
     }else if ([paidModel.status isEqualToString:@"refunded"]){
         self.status.text = @"已退款";
     }

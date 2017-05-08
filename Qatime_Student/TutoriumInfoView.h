@@ -11,6 +11,7 @@
 
 #import "TTGTextTagCollectionView.h"
 #import "OneOnOneWorkFlowView.h"
+#import "WorkFlowView.h"
 
 
 
@@ -77,7 +78,7 @@
 @property(nonatomic,strong) UILabel *classDescriptionLabel ;
 
 /**学习流程*/
-@property (nonatomic, strong) OneOnOneWorkFlowView *workFlowView ;
+@property (nonatomic, strong) WorkFlowView *workFlowView ;
 
 
 /* 要传数据的所有的label 2 */

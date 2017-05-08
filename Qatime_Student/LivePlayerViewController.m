@@ -536,7 +536,6 @@ bool ismute     = NO;
     
     /* 白板的 播放器*/
     _liveplayerBoard = ({
-        
         NELivePlayerController *_= [[NELivePlayerController alloc] initWithContentURL:_boardPullAddress];
         
         _.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -554,7 +553,6 @@ bool ismute     = NO;
                 
                 [self setupBoardPlayer];
             }
-            
             
         }else{
             
@@ -576,7 +574,7 @@ bool ismute     = NO;
         [_ setBufferStrategy:NELPLowDelay]; //直播低延时模式
         [_ setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
         [_ setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
-        [_ setHardwareDecoder:isHardware]; //设置解码模式，是否开启硬件解码
+        [_ setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
         [_ setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
         [_ prepareToPlay]; //初始化视频文件
         
@@ -605,7 +603,6 @@ bool ismute     = NO;
                 
             }else{
                 [self setupTeacherPlayer];
-                
             }
         }else{
             
@@ -626,7 +623,7 @@ bool ismute     = NO;
         [_ setBufferStrategy:NELPLowDelay]; //直播低延时模式
         [_ setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
         [_ setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
-        [_ setHardwareDecoder:isHardware]; //设置解码模式，是否开启硬件解码
+        [_ setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
         [_ setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
         [_ prepareToPlay]; //初始化视频文件
         
@@ -1031,10 +1028,8 @@ bool ismute     = NO;
     [self setupBoardPlayer];
     
     /*延迟0.3s 加载摄像头播放器*/
-    [self performSelector:@selector(setupTeacherPlayer) withObject:nil afterDelay:0.3];
+    [self performSelector:@selector(setupTeacherPlayer) withObject:nil afterDelay:0.5];
     //    [self setupTeacherPlayer];
-    
-    
     
     
 }
@@ -1071,6 +1066,7 @@ bool ismute     = NO;
     if (_boardPlayerView.becomeMainPlayer == YES) {
         
         [_boardPlayerView addSubview:_aBarrage.view];
+        [_aBarrage.view sd_clearAutoLayoutSettings];
         _aBarrage.view.sd_resetLayout
         .leftEqualToView(_boardPlayerView)
         .rightEqualToView(_boardPlayerView)
@@ -1089,7 +1085,7 @@ bool ismute     = NO;
     }else if (_teacherPlayerView.becomeMainPlayer == YES){
         
         [_teacherPlayerView addSubview:_aBarrage.view];
-        
+        [_aBarrage.view sd_clearAutoLayoutSettings];
         _aBarrage.view.sd_resetLayout
         .leftEqualToView(_teacherPlayerView)
         .rightEqualToView(_teacherPlayerView)
@@ -1343,7 +1339,6 @@ bool ismute     = NO;
     
     [_aBarrage start];
     
-    
 }
 
 #pragma mark- 切换分屏(平铺)点击事件
@@ -1462,8 +1457,6 @@ bool ismute     = NO;
 - (void)changInfoViewContentSizeToBig{
     
     _liveClassInfoView.scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width*4, [UIScreen mainScreen].bounds.size.height -  [UIScreen mainScreen].bounds.size.width*9/16.0f-30-4-40);
-    
-    
     
 }
 
@@ -1978,16 +1971,26 @@ bool ismute     = NO;
 //在点击全屏按钮的情况下，强制改变屏幕方向
 - (void)interfaceOrientation:(UIInterfaceOrientation)orientation{
     
+//    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+//        SEL selector = NSSelectorFromString(@"setOrientation:");
+//        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+//        [invocation setSelector:selector];
+//        [invocation setTarget:[UIDevice currentDevice]];
+//        int val                  = orientation;
+//        // 从2开始是因为0 1 两个参数已经被selector和target占用
+//        [invocation setArgument:&val atIndex:2];
+//        [invocation invoke];
+//        
+//    }
+    
     if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
         SEL selector = NSSelectorFromString(@"setOrientation:");
         NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
         [invocation setSelector:selector];
         [invocation setTarget:[UIDevice currentDevice]];
-        int val                  = orientation;
-        // 从2开始是因为0 1 两个参数已经被selector和target占用
+        int val = orientation;
         [invocation setArgument:&val atIndex:2];
         [invocation invoke];
-        
     }
     
 }
@@ -2110,11 +2113,11 @@ bool ismute     = NO;
         [self.navigationController popViewControllerAnimated:YES];
         //
         
-        NSLog(@"click back!");
-        [self syncUIStatus:YES];
-        if (self.presentingViewController) {
-            [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-        }
+//        NSLog(@"click back!");
+//        [self syncUIStatus:YES];
+//        if (self.presentingViewController) {
+//            [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+//        }
         /* 全屏状态下的点击事件*/
     }else if (isFullScreen == YES){
         
@@ -2275,7 +2278,6 @@ bool ismute     = NO;
             }
             
             [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:30];
-            
             
         }
             
@@ -2796,7 +2798,9 @@ bool ismute     = NO;
             /* 建立会话消息*/
             _session = [NIMSession session:dic[@"data"][@"chat_team_id"] type:NIMSessionTypeTeam];
             
+            //加载云信
             if (_session) {
+                
                 [self initNIMSDK];
                 
                 [self requestHistoryChatList];
@@ -2832,7 +2836,6 @@ bool ismute     = NO;
             [self updateViewsNotice];
             
             /* 刷新在线用户列表*/
-            
             [self updateMembersList];
             
             /* 解析 课程 数据*/
@@ -2974,10 +2977,11 @@ bool ismute     = NO;
                     
                     _boardPullAddress = [NSURL URLWithString:dataDic[@"board_pull_stream"]];
                     
-                    /* 重新加载播放器*/
-                    [self reloadPlayerView];
                     
                 }else{
+                    //如果要是已经购买了的话
+                    /* 重新加载播放器*/
+                    [self reloadPlayerView];
                     
                 }
                 
@@ -4268,7 +4272,7 @@ bool ismute     = NO;
                             }else{
                                 
                                 NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
-                                [decodeParm addObject:@"hardware"];
+                                [decodeParm addObject:@"software"];
                                 [decodeParm addObject:@"videoOnDemand"];
                                 
                                 VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];

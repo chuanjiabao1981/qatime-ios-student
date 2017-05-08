@@ -147,6 +147,8 @@
         [_orderInfoView.payButton setTitle:@"重新下单" forState:UIControlStateNormal];
         [_orderInfoView.payButton removeAllTargets];
         [_orderInfoView.payButton addTarget:self action:@selector(requestForBuyAgain) forControlEvents:UIControlEventTouchUpInside];
+        
+        _orderInfoView.payTime.text = @"未支付";
     }else if ([_dataDic[@"status"]isEqualToString:@"completed"]){
         /* 完成交易的*/
         [_orderInfoView.statusImage setImage:[UIImage imageNamed:@"交易完成"]];
@@ -160,6 +162,13 @@
         [_orderInfoView.payButton setTitle:@"申请退款" forState:UIControlStateNormal];
         [_orderInfoView.payButton removeAllTargets];
         [_orderInfoView.payButton addTarget:self action:@selector(requestForRefund) forControlEvents:UIControlEventTouchUpInside];
+        
+        if ([_dataDic[@"product_type"]isEqualToString:@"LiveStudio::VideoCourse"]){
+            _orderInfoView.tips.hidden = NO;
+            _orderInfoView.payButton.hidden = YES;
+            _orderInfoView.cancelButton .hidden = YES;
+        }
+
         
     }else if ([_dataDic[@"status"]isEqualToString:@"refunding"]){
         /* 正在退款的*/
@@ -187,7 +196,7 @@
         .heightRatioToView(_orderInfoView,0.065);
         [_orderInfoView.payButton updateLayout];
 
-        [_orderInfoView.payButton setTitle:@"重新下单" forState:UIControlStateNormal];
+        [_orderInfoView.payButton setTitle:@"重新购买" forState:UIControlStateNormal];
         [_orderInfoView.payButton removeAllTargets];
         [_orderInfoView.payButton addTarget:self action:@selector(requestForBuyAgain) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -203,8 +212,10 @@
 
         }else if ([_dataDic[@"product_type"]isEqualToString:@"LiveStudio::InteractiveCourse"]){
             type = [NSString stringWithFormat:@"一对一"];
+            
         }else if ([_dataDic[@"product_type"]isEqualToString:@"LiveStudio::VideoCourse"]){
             type = [NSString stringWithFormat:@"视频课"];
+         
         }
         
         
@@ -376,7 +387,19 @@
                     
                 }else{
                     
-                    [self loadingHUDStopLoadingWithTitle:@"订单创建失败,请重试!"];
+                    if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
+                        
+                        if ([dic[@"error"][@"msg"] rangeOfString:@"已经"].location!= NSNotFound) {
+                            
+                            [self loadingHUDStopLoadingWithTitle:@"您已经购买过该课程"];
+                        }else if ([dic[@"error"][@"msg"] rangeOfString:@"目前"].location!= NSNotFound){
+                            [self loadingHUDStopLoadingWithTitle:@"课程目前不对外招生"];
+                        }
+                        
+                    }else{
+                        
+                        [self loadingHUDStopLoadingWithTitle:@"该课程已过期"];
+                    }
                     
                     [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                 }

@@ -97,8 +97,22 @@
         _payButton.layer.borderWidth = 1;
         
         
+        /**不支持退款的提示*/
+        _tips = [[UIView alloc]init];
+        UIImageView *image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"发送失败"]];
+        UILabel *label = [[UILabel alloc]init];
+        label.font = TEXT_FONTSIZE_MIN;
+        label.text = @"该类型课程不支持退款";
+        label.textColor = NAVIGATIONRED;
+        [_tips addSubview:image];
+        [_tips addSubview: label];
+        
+        //一般不显示,只有已经付款的视频课显示
+        _tips.hidden = YES;
+
+        
         /* 布局*/
-        [self sd_addSubviews:@[_statusImage,_name,_subName,line,orderNumber,_orderNumber,creatTime,_creatTime,payTime,_payTime,payType,_payType,amount,_amount,_cancelButton,_payButton]];
+        [self sd_addSubviews:@[_statusImage,_name,_subName,line,orderNumber,_orderNumber,creatTime,_creatTime,payTime,_payTime,payType,_payType,amount,_amount,_cancelButton,_payButton,_tips]];
         
         /* 状态图*/
         _statusImage.sd_layout
@@ -215,6 +229,38 @@
         .bottomEqualToView(_cancelButton)
         .widthRatioToView(_cancelButton,1.0);
         _payButton.sd_cornerRadius = [NSNumber numberWithInteger:2];
+        
+        
+        /*不能退款课程的提示*/
+        _tips.sd_layout
+        .leftSpaceToView(self, 20)
+        .topSpaceToView(amount, 20)
+        .rightSpaceToView(self, 20)
+        .heightRatioToView(self, 0.065);
+        
+        label.sd_layout
+        .centerXEqualToView(_tips)
+        .centerYEqualToView(_tips)
+        .autoHeightRatio(0);
+        [label setSingleLineAutoResizeWithMaxWidth:200];
+        
+        image.sd_layout
+        .rightSpaceToView(label, 10)
+        .topEqualToView(label)
+        .bottomEqualToView(label)
+        .widthEqualToHeight();
+        [label updateLayout];
+        [image updateLayout];
+        [_tips updateLayout];
+
+        image.sd_layout
+        .leftSpaceToView(_tips, (_tips.width_sd-(image.width_sd+label.width_sd+10))/2);
+        
+        [image updateLayout];
+        label.sd_layout
+        .leftSpaceToView(image, 10);
+        [label updateLayout];
+        
         
     }
     return self;

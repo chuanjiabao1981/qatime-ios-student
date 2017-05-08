@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/UUChat/UUMessageCell.m"
-            timestampString = "515661924.83028"
+            filePath = "Qatime_Student/LivePlayerViewController.m"
+            timestampString = "515927639.47018"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "262"
-            endingLineNumber = "262"
-            landmarkName = "-changeVoiceToText"
+            startingLineNumber = "1064"
+            endingLineNumber = "1064"
+            landmarkName = "-turnFullScreen:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/UUChat/UUMessageCell.m"
-            timestampString = "515662058.199136"
+            filePath = "Qatime_Student/LivePlayerViewController.m"
+            timestampString = "515928101.767563"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "267"
-            endingLineNumber = "267"
-            landmarkName = "-canBecomeFirstResponder"
+            startingLineNumber = "1094"
+            endingLineNumber = "1094"
+            landmarkName = "-turnFullScreen:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,29 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/VideoClassPlayerViewController.m"
-            timestampString = "515669394.338318"
+            filePath = "Qatime_Student/LivePlayerViewController.m"
+            timestampString = "515928106.231486"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "275"
-            endingLineNumber = "275"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/PersonalInfoEditViewController.m"
-            timestampString = "515679669.919331"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "542"
-            endingLineNumber = "542"
-            landmarkName = "-updateInfo"
+            startingLineNumber = "1076"
+            endingLineNumber = "1076"
+            landmarkName = "-turnFullScreen:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

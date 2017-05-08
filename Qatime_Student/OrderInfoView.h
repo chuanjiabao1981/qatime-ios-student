@@ -40,4 +40,7 @@
 /* 付款按钮*/
 @property(nonatomic,strong) UIButton *payButton;
 
+@property (nonatomic, strong) UIView *tips ;
+
+
 @end

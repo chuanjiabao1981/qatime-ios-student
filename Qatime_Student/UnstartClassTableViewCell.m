@@ -239,6 +239,8 @@
         
         dist.text = @"即将开课";
         
+    }else if (days<0){
+        dist.text = @"已经开课";
     }
     
 }

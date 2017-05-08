@@ -78,7 +78,7 @@
         _rightButton = [[UIButton alloc]init];
         _rightButton.layer.borderColor = [UIColor redColor].CGColor;
         _rightButton.layer.borderWidth = 0.8;
-        [_rightButton setTitle:@"重新下单" forState:UIControlStateNormal];
+        [_rightButton setTitle:@"重新购买" forState:UIControlStateNormal];
         [_rightButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         _rightButton.titleLabel.font = TEXT_FONTSIZE;
         
@@ -133,7 +133,7 @@
     }
     _price.text = [NSString stringWithFormat:@"¥%@",canceldModel.amount];
     if ([canceldModel.status isEqualToString:@"unpaid"]) {
-        self.status.text = @"待付款";
+        self.status.text = @"等待付款";
     }else if ([canceldModel.status isEqualToString:@"shipped"]){
         self.status.text = @"交易完成";
     }else if ([canceldModel.status isEqualToString:@"canceled"]){
@@ -141,7 +141,7 @@
     }else if ([canceldModel.status isEqualToString:@"refunding"]){
         self.status.text = @"退款中";
     }else if ([canceldModel.status isEqualToString:@"completed"]){
-        self.status.text = @"交易完成";
+        self.status.text = @"交易关闭";
     }else if ([canceldModel.status isEqualToString:@"refunded"]){
         self.status.text = @"已退款";
     }

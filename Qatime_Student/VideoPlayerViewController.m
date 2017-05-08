@@ -232,7 +232,6 @@ bool videoIsmute     = NO;
     
     [NELivePlayerController setLogLevel:NELP_LOG_DEBUG];
 
-    
     self.liveplayer = [[NELivePlayerController alloc] initWithContentURL:self.url];
     if (self.liveplayer == nil) { // 返回空则表示初始化失败
         NSLog(@"player initilize failed, please tay again!");
@@ -511,8 +510,6 @@ bool videoIsmute     = NO;
    
     
 }
-
-
 
 
 - (void)NELivePlayerDidPreparedToPlay:(NSNotification*)notification

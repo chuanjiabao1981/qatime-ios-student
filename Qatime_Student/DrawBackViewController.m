@@ -186,7 +186,7 @@
             
         }
         _drawBackView.className.text = product[@"name"];
-        _drawBackView.progress.text =  [NSString stringWithFormat:@"%ld/%@",[product[@"preset_lesson_count"]integerValue] -[product[@"completed_lesson_count"]integerValue] ,product[@"preset_lesson_count"]];
+        _drawBackView.progress.text =  [NSString stringWithFormat:@"%ld",[product[@"preset_lesson_count"]integerValue] -[product[@"completed_lesson_count"]integerValue]];
         _drawBackView.price.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"amount"]];
         _drawBackView.enableDrawbackPrice.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"refund_amount"]];
         _drawBackView.paidPrice.text = [NSString stringWithFormat:@"%ld",[_dataDic[@"amount"] integerValue]-[_dataDic[@"refund_amount"] integerValue]];
@@ -293,7 +293,11 @@
     for (UIViewController *controller in self.navigationController.viewControllers) {
         if ([controller isMemberOfClass:[MyOrderViewController class]]) {
             [self.navigationController popToViewController:controller animated:YES];
+        }else if ([controller isMemberOfClass:[MyOrderViewController class]]){
+            [self.navigationController popToViewController:controller animated:YES];
         }
+        
+        
     }
 
 //    [self.navigationController popViewControllerAnimated:YES];

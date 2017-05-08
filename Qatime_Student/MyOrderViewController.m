@@ -801,16 +801,16 @@ typedef enum : NSUInteger {
                     
                     if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
                         
-                        if ([dic[@"error"][@"msg"] containsObject:@"已经"]) {
+                        if ([dic[@"error"][@"msg"] rangeOfString:@"已经"].location!= NSNotFound) {
                             
                             [self loadingHUDStopLoadingWithTitle:@"您已经购买过该课程"];
-                        }else if ([dic[@"error"][@"msg"] containsObject:@"目前"]){
+                        }else if ([dic[@"error"][@"msg"] rangeOfString:@"目前"].location!= NSNotFound){
                             [self loadingHUDStopLoadingWithTitle:@"课程目前不对外招生"];
                         }
                         
                     }else{
                         
-                        [self loadingHUDStopLoadingWithTitle:@"订单创建失败,请重试!"];
+                        [self loadingHUDStopLoadingWithTitle:@"该课程已过期"];
                     }
                     
                 }

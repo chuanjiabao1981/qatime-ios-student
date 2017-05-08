@@ -32,7 +32,6 @@ static const void *placeholderImagekey = &placeholderImagekey;
 }
 
 
-
 -(void)setPlaceholderImage:(UIImageView *)placeholderImage{
     
       objc_setAssociatedObject(self, placeholderImagekey, placeholderImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);

@@ -7,14 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ZFPlayer.h"
+//#import "ZFPlayer.h"
 #import "Teacher.h"
 #import "VideoClassInfo.h"
 #import "VideoClass.h"
+#import "NELivePlayerControl.h"
+#import "NELivePlayer.h"
+#import "NELivePlayerController.h"
 @interface VideoClassPlayerViewController : UIViewController
 
 /**视频播放器*/
-@property (nonatomic, strong) ZFPlayerView * _Nullable videoPlayer ;
+@property (nonatomic, strong) NELivePlayerController <NELivePlayer>* _Nullable videoPlayer ;
+
+/**控制层*/
+@property (nonatomic, strong) NELivePlayerControl * _Nullable controlView ;
+
 
 /**
  初始化方法

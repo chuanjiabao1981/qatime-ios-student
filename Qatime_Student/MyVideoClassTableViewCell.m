@@ -114,7 +114,7 @@
     
     if (model.video_lessons_count.integerValue != model.completed_lessons_count.integerValue) {
         
-        _status.text = [NSString stringWithFormat:@"进度%@/%@",model.video_lessons_count,model.completed_lessons_count];
+        _status.text = [NSString stringWithFormat:@"进度%@/%@",model.completed_lessons_count,model.video_lessons_count];
     }else{
         _status.text = @"全部课程已观看";
         

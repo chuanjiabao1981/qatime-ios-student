@@ -26,6 +26,7 @@
 //        "tmp_duration": 2,
 //        "format_tmp_duration": "00:00:02",
 //        "capture": "http://qatime-testing.oss-cn-beijing.aliyuncs.com/videos/capture/96fcf0349390a9ddccd8871c868d070a.jpg"
+//"name_url": "http://qatime-testing.oss-cn-beijing.aliyuncs.com/videos/24e4490546fc753cd51eb9da30d2bb92.mp4"
 //    }
 //},
 

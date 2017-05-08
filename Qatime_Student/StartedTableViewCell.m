@@ -73,6 +73,7 @@
         _status.textColor = [UIColor whiteColor];
         _status.font = [UIFont systemFontOfSize:14*ScrenScale];
         _status.backgroundColor = [UIColor orangeColor];
+        _status.hidden = YES;
         
         /* 进度label*/
         UILabel *progress = [[UILabel alloc]init];
@@ -128,16 +129,12 @@
         
         [_status setSingleLineAutoResizeWithMaxWidth:200];
         
-        
-        
-        
         /* 课程名称布局*/
-        
         _className.sd_layout
-        .leftSpaceToView(_status,2*ScrenScale)
-        .topEqualToView(_status)
+        .leftSpaceToView(_classImage,2*ScrenScale)
+        .topSpaceToView(_content,5*ScrenScale)
         .rightSpaceToView(_content,10*ScrenScale)
-        .bottomEqualToView(_status);
+        .autoHeightRatio(0);
         [_className setMaxNumberOfLinesToShow:0];
         
         
