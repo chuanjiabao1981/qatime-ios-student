@@ -63,6 +63,8 @@
         
     });
     
+    //默认选择高三
+    [self setSelectedFilterGrade:@"高三"];
     
 }
 

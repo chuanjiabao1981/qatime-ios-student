@@ -764,6 +764,8 @@ typedef enum : NSUInteger {
             
             NSString *classID ;
             
+            
+            UIViewController *controller;
             //判断课程类型
             if ([mod.product_type isEqualToString:@"LiveStudio::Course"]) {
                 //直播课
@@ -782,43 +784,10 @@ typedef enum : NSUInteger {
                 courseNumber = [NSString stringWithFormat:@"%@",mod.product_interactive_course[@"id"]];
             }
             
-            /* 发送再次购买请求*/
-            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-            [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-            [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/%@/%@/orders",Request_Header,course,courseNumber] parameters:@{@"pay_type":mod.pay_type} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                
-                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                [self loginStates:dic];
-                
-                if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-                    /* 订单申请成功*/
-                    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:courseNumber andClassType:LiveClassType];
-                    [self.navigationController pushViewController:orderVC animated:YES];
-                    
-                }else{
-                    
-                    if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
-                        
-                        if ([dic[@"error"][@"msg"] rangeOfString:@"已经"].location!= NSNotFound) {
-                            
-                            [self loadingHUDStopLoadingWithTitle:@"您已经购买过该课程"];
-                        }else if ([dic[@"error"][@"msg"] rangeOfString:@"目前"].location!= NSNotFound){
-                            [self loadingHUDStopLoadingWithTitle:@"课程目前不对外招生"];
-                        }
-                        
-                    }else{
-                        
-                        [self loadingHUDStopLoadingWithTitle:@"该课程已过期"];
-                    }
-                    
-                }
-                
-                
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                
-            }];
+            
+//            加载不同类型的辅导班详情
+            
+            
             
         }
     }] ;

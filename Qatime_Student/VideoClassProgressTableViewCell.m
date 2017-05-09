@@ -73,6 +73,7 @@
     _className.text = model.name;
     _duringTime.text = [NSString stringWithFormat:@"时长:%@",model.video.format_tmp_duration];
     
+    
 }
 
 

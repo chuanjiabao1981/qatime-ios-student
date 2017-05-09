@@ -80,7 +80,7 @@ typedef enum : NSUInteger {
         
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-        _.titleLabel.text = @"我的试听课";
+        _.titleLabel.text = @"我的试听";
         _;
     });
     

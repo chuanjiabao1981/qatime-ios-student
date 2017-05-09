@@ -12,6 +12,6 @@
 
 @property(nonatomic,strong) UIButton *city ;
 
-@property(nonatomic,strong) UIButton *getLocal ;
+//@property(nonatomic,strong) UIButton *getLocal ;
 
 @end

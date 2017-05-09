@@ -80,8 +80,8 @@
     _className.numberOfLines = 0;
     
     _tips.sd_layout
-    .widthIs(10)
-    .heightIs(10)
+    .widthIs(15)
+    .heightIs(15)
     .centerYEqualToView(_className)
     .leftSpaceToView(self.contentView,10);
     

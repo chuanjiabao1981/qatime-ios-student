@@ -175,6 +175,7 @@
 		5452260E1E24830200F36280 /* EditBirthdayTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5452260D1E24830100F36280 /* EditBirthdayTableViewCell.m */; };
 		545226151E24CDD300F36280 /* OrderInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545226141E24CDD300F36280 /* OrderInfoView.m */; };
 		545226181E24CDE100F36280 /* OrderInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545226171E24CDE100F36280 /* OrderInfoViewController.m */; };
+		5454D2B11EC1824F0045F4C9 /* UITabBarController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5454D2B01EC1824F0045F4C9 /* UITabBarController+Rotation.m */; };
 		545731811E022E7700F45C03 /* HaveNoClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545731801E022E7700F45C03 /* HaveNoClassView.m */; };
 		545B3BA71E0A216700751D08 /* GuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B3BA61E0A216700751D08 /* GuideViewController.m */; };
 		545B3BAA1E0A5F4900751D08 /* MMPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B3BA91E0A5F4900751D08 /* MMPickerView.m */; };
@@ -997,6 +998,8 @@
 		545226141E24CDD300F36280 /* OrderInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderInfoView.m; sourceTree = "<group>"; };
 		545226161E24CDE100F36280 /* OrderInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderInfoViewController.h; sourceTree = "<group>"; };
 		545226171E24CDE100F36280 /* OrderInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderInfoViewController.m; sourceTree = "<group>"; };
+		5454D2AF1EC1824F0045F4C9 /* UITabBarController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+Rotation.h"; sourceTree = "<group>"; };
+		5454D2B01EC1824F0045F4C9 /* UITabBarController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+Rotation.m"; sourceTree = "<group>"; };
 		5457317F1E022E7700F45C03 /* HaveNoClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HaveNoClassView.h; sourceTree = "<group>"; };
 		545731801E022E7700F45C03 /* HaveNoClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HaveNoClassView.m; sourceTree = "<group>"; };
 		5458AB321E0D411D00D6409F /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/libs/libcrypto.a; sourceTree = "<group>"; };
@@ -5923,8 +5926,10 @@
 			children = (
 				544AD3BD1EC02C7B002F567D /* UIViewController+ZFPlayerRotation.h */,
 				544AD3BE1EC02C7B002F567D /* UIViewController+ZFPlayerRotation.m */,
-				544AD3BF1EC02C7B002F567D /* UINavigationController+ZFPlayerRotation.m */,
 				544AD3C01EC02C7B002F567D /* UINavigationController+ZFPlayerRotation.h */,
+				544AD3BF1EC02C7B002F567D /* UINavigationController+ZFPlayerRotation.m */,
+				5454D2AF1EC1824F0045F4C9 /* UITabBarController+Rotation.h */,
+				5454D2B01EC1824F0045F4C9 /* UITabBarController+Rotation.m */,
 				548D1D8F1EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.h */,
 				548D1D901EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.m */,
 				5422337C1E15F6100092AB66 /* UIAlertController+Blocks.h */,
@@ -6617,6 +6622,7 @@
 				54DBA4AE1DE4423300A67A90 /* UITextField+YZEmotion.m in Sources */,
 				54AC04C41E89398E00817767 /* NTESChatroomMemberCell.m in Sources */,
 				547E92CB1E8E51F300160C6D /* OneOnOneTutorimInfoView.m in Sources */,
+				5454D2B11EC1824F0045F4C9 /* UITabBarController+Rotation.m in Sources */,
 				5493D4CA1E0BE1050085A39E /* TLCity.m in Sources */,
 				54AC04281E8938E100817767 /* NIMIndefiniteAnimatedView.m in Sources */,
 				54AC04191E8938E100817767 /* NIMAttributedLabel.m in Sources */,

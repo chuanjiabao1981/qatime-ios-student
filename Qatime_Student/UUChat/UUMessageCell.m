@@ -23,15 +23,15 @@
 #import "NSBundle+YYAdd.h"
 #import "NSAttributedString+YYtext.h"
 #import "UIImageView+WebCache.h"
-#import "XHImageViewer.h"
-#import "UIImageView+XHURLDownload.h"
+//#import "XHImageViewer.h"
+//#import "UIImageView+XHURLDownload.h"
 #import "UUAVAudioPlayer.h"
 
 
 
 //#import "YYPhotoBrowseView.h"
 
-@interface UUMessageCell ()<XHImageViewerDelegate,UUAVAudioPlayerDelegate>
+@interface UUMessageCell ()<UUAVAudioPlayerDelegate>
 {
     
     AVAudioPlayer *player;
@@ -183,38 +183,73 @@
     }
     /* 显示图片*/
     else if (self.messageFrame.message.type == UUMessageTypePicture){
-        XHImageViewer *viewer = [[XHImageViewer alloc]init];
-        viewer.delegate = self;
+
+        /**重要的代码 不能动 其他部分随便动*/
         
-        /* 展示用的图片*/
+//        XHImageViewer *viewer = [[XHImageViewer alloc]init];
+//        viewer.delegate = self;
+//        /* 展示用的图片*/
+//        UIImage *image;
+//        /* 图片查看器的背景view*/
+//        UIImageView *btnImageView;
+//        if (self.messageFrame.message.from == UUMessageFromMe) {
+//            /* 自己发送的消息*/
+//            if (self.messageFrame.message.thumbPath) {
+//                
+//                image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]];
+//                btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
+//                [btnImageView loadWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_messageFrame.message.imagePath]] placeholer:image showActivityIndicatorView:YES];
+//            }else{
+//                
+//                image = self.btnContent.backImageView.image;
+//                btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
+//                btnImageView.image = image;
+//                [btnImageView load];
+//            }
+//            [viewer showWithImageViews:@[btnImageView] selectedView:btnImageView];
+//            
+//            
+//        }else{
+//           /* 对方发送的消息*/
+//            
+//            image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]];
+//            btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
+//            [btnImageView loadWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_messageFrame.message.imagePath]] placeholer:image showActivityIndicatorView:YES];
+//            [viewer showWithImageViews:@[btnImageView] selectedView:btnImageView];
+//        }
+        
+        
+        
+        
+        /**测试代码*/
         UIImage *image;
-        /* 图片查看器的背景view*/
-        UIImageView *btnImageView;
+        UIImageView * btnImageView;
         if (self.messageFrame.message.from == UUMessageFromMe) {
             /* 自己发送的消息*/
             if (self.messageFrame.message.thumbPath) {
                 
                 image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]];
                 btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
-                [btnImageView loadWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_messageFrame.message.imagePath]] placeholer:image showActivityIndicatorView:YES];
+//                [btnImageView loadWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_messageFrame.message.imagePath]] placeholer:image showActivityIndicatorView:YES];
             }else{
                 
                 image = self.btnContent.backImageView.image;
                 btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
                 btnImageView.image = image;
-                [btnImageView load];
+//                [btnImageView load];
             }
-            [viewer showWithImageViews:@[btnImageView] selectedView:btnImageView];
             
+            [_photoDelegate showImage:btnImageView andImage:image];
             
         }else{
-           /* 对方发送的消息*/
+            /* 对方发送的消息*/
             
             image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]];
             btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
-            [btnImageView loadWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_messageFrame.message.imagePath]] placeholer:image showActivityIndicatorView:YES];
-            [viewer showWithImageViews:@[btnImageView] selectedView:btnImageView];
+//            [btnImageView loadWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_messageFrame.message.imagePath]] placeholer:image showActivityIndicatorView:YES];
+            [_photoDelegate showImage:btnImageView andImage:image];
         }
+
         
     }else if (self.messageFrame.message.type == UUMessageTypeVoice){
         if(!contentVoiceIsPlaying){
@@ -308,13 +343,13 @@
 }
 
 
-- (void)imageViewer:(XHImageViewer *)imageViewer  willDismissWithSelectedView:(UIImageView*)selectedView{
-    
-    [imageViewer removeFromSuperview];
-    selectedView.hidden = YES;
-    
-    
-}
+//- (void)imageViewer:(XHImageViewer *)imageViewer  willDismissWithSelectedView:(UIImageView*)selectedView{
+//    
+//    [imageViewer removeFromSuperview];
+//    selectedView.hidden = YES;
+//    
+//    
+//}
 
 
 //内容及Frame设置

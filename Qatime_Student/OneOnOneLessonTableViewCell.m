@@ -57,11 +57,11 @@
         .autoHeightRatio(0);
         
         //菱形图
-        _image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"菱形"]];
+        _image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"播放"]];
         [self.contentView addSubview:_image];
         _image.sd_layout
-        .widthIs(10)
-        .heightIs(10)
+        .widthIs(15)
+        .heightIs(15)
         .centerYEqualToView(self.lessonName)
         .leftSpaceToView(self.contentView,10);
         

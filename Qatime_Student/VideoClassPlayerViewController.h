@@ -31,6 +31,6 @@
  @param classInfo 课程详情
  @return 实例
  */
--(instancetype)initWithClasses:(__kindof NSArray <VideoClass *>*)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo andURLString:(NSString * _Nullable)URLString;
+-(instancetype)initWithClasses:(__kindof NSArray <VideoClass *>*)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo andURLString:(NSString * _Nullable)URLString andIndexPath:(NSIndexPath * _Nullable)indexPath;
 
 @end

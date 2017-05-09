@@ -52,8 +52,8 @@
         _tips.sd_layout
         .leftSpaceToView(self.contentView, 10)
         .centerYEqualToView(_className)
-        .widthIs(10)
-        .heightIs(10);
+        .widthIs(15)
+        .heightIs(15);
         
         //时长
         _duringTime = [[UILabel alloc]init];

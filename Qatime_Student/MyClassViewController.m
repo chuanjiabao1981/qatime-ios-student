@@ -598,7 +598,7 @@
                 
                 if (cell.model.is_bought == YES) {
                     
-                    cell.status.hidden = YES;
+//                    cell.status.hidden = YES;
                     
                     cell.enterButton.hidden = NO;
                     cell.enterButton.layer.borderColor = BUTTONRED.CGColor;
@@ -613,8 +613,6 @@
                     [cell.className setMaxNumberOfLinesToShow:1];
                     [cell.className updateLayout];
                 }else{
-                    cell.status.hidden = NO;
-                    cell.status.text = @" 试听中 ";
                     
                     cell.enterButton.hidden = NO;
                     cell.enterButton.layer.borderColor = BUTTONRED.CGColor;
@@ -622,10 +620,10 @@
                     
                     [cell.className sd_clearAutoLayoutSettings];
                     cell.className.sd_layout
-                    .leftSpaceToView(cell.status,2)
-                    .topEqualToView(cell.status)
+                    .leftSpaceToView(cell.classImage,10)
+                    .topSpaceToView(cell.content, 10)
                     .rightSpaceToView(cell.content,10)
-                    .bottomEqualToView(cell.status);
+                    .autoHeightRatio(0);
                     [cell.className setMaxNumberOfLinesToShow:1];
                     [cell.className updateLayout];
                     

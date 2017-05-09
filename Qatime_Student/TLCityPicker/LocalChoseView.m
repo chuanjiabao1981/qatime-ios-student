@@ -51,18 +51,18 @@
             _;
         });
         
-        _getLocal= ({
-            UIButton *_=[[UIButton alloc]init];
-            [_ setImage:[UIImage imageNamed:@"point"] forState:UIControlStateNormal];
-            _.imageView.contentMode = UIViewContentModeScaleAspectFit;
-            [self addSubview:_];
-            _.sd_layout
-            .rightSpaceToView(self,20)
-            .topEqualToView(self)
-            .bottomEqualToView(self)
-            .widthEqualToHeight();
-            _;
-        });
+//        _getLocal= ({
+//            UIButton *_=[[UIButton alloc]init];
+//            [_ setImage:[UIImage imageNamed:@"point"] forState:UIControlStateNormal];
+//            _.imageView.contentMode = UIViewContentModeScaleAspectFit;
+//            [self addSubview:_];
+//            _.sd_layout
+//            .rightSpaceToView(self,20)
+//            .topEqualToView(self)
+//            .bottomEqualToView(self)
+//            .widthEqualToHeight();
+//            _;
+//        });
 
         
     }

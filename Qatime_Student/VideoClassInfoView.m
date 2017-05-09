@@ -10,6 +10,7 @@
 #import "UIColor+HcdCustom.h"
 #import "NSString+ChangeYearsToChinese.h"
 
+
 #define SCREENWIDTH CGRectGetWidth([UIScreen mainScreen].bounds)
 #define SCREENHEIGHT CGRectGetHeight(self.frame)
 @implementation VideoClassInfoView

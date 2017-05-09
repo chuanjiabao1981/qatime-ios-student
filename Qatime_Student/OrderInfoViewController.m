@@ -229,7 +229,17 @@
     _orderInfoView.subName.text = infos;
     _orderInfoView.name.text = _product[@"name"];
     _orderInfoView.creatTime.text = [_dataDic[@"created_at"] timeStampToDate];
-    _orderInfoView.payTime.text = _dataDic[@"pay_at"]==nil?@"未支付":[_dataDic[@"pay_at"] timeStampToDate];
+    
+    if (_dataDic[@"pay_at"]!=nil) {
+        if ([_dataDic[@"paay_at"]isEqualToString:@""]) {
+            
+            _orderInfoView.payTime.text =@"未支付";
+            
+        }else{
+            _orderInfoView.payTime.text =[_dataDic[@"pay_at"] timeStampToDate];
+        }
+    }
+    
     _orderInfoView.payType.text = @"余额支付";
     _orderInfoView.amount.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"amount"]];
     

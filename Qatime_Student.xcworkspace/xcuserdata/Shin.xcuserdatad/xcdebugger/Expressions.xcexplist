@@ -347,14 +347,6 @@
          contextName = "__43-[IndexPageViewController requestTeachers:]_block_invoke:IndexPageViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__43-[VideoClassInfoViewController requestData]_block_invoke:VideoClassInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_classInfo">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "-[NELivePlayerViewController initNIMSDK]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -378,6 +370,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_allClassArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__43-[VideoClassInfoViewController requestData]_block_invoke:VideoClassInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -448,10 +448,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -496,6 +496,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_cityArray">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TLCityPickerController tableView:numberOfRowsInSection:]:TLCityPickerController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.data">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -574,10 +582,10 @@
          contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[OrderViewController touchesBegan:withEvent:]:OrderViewController.m">
+         contextName = "-[TutoriumInfoViewController switchClassData:]:TutoriumInfoViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[TutoriumInfoViewController switchClassData:]:TutoriumInfoViewController.m">
+         contextName = "-[OrderViewController touchesBegan:withEvent:]:OrderViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
@@ -1333,10 +1341,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

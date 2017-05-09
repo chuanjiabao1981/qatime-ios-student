@@ -295,8 +295,10 @@
             [self.navigationController popToViewController:controller animated:YES];
         }else if ([controller isMemberOfClass:[MyOrderViewController class]]){
             [self.navigationController popToViewController:controller animated:YES];
+        }else{
+            
+            [self.navigationController popViewControllerAnimated:YES];
         }
-        
         
     }
 

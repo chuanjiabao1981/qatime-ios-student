@@ -321,15 +321,16 @@
         .autoHeightRatio(0);
         [workFlow setSingleLineAutoResizeWithMaxWidth:100];
         
-        _workFlowView = [[OneOnOneWorkFlowView alloc]init];
+        _workFlowView = [[WorkFlowView alloc]init];
+        _workFlowView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _workFlowView.backgroundColor = [UIColor whiteColor];
         [_view1 addSubview:_workFlowView];
         _workFlowView.sd_layout
-        .leftSpaceToView(_view1, 0)
-        .rightSpaceToView(_view1, 0)
-        .topSpaceToView(workFlow, 0)
-        .autoHeightRatio(0.8);
-        [_workFlowView updateLayout];
+        .leftSpaceToView(_view1, 50*ScrenScale)
+        .rightSpaceToView(_view1, 50*ScrenScale)
+        .topSpaceToView(workFlow, 20*ScrenScale)
+        .heightIs((self.view1.width_sd - 100*ScrenScale)*4);
+        
         
         //学习须知
         UILabel *notice = [[UILabel alloc]init];

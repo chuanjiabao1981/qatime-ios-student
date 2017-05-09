@@ -45,8 +45,9 @@
 //#import <iflyMSC/iflyMSC.h>
 #import "NSString+YYAdd.h"
 #import "UIViewController+TimeInterval.h"
+#import "KSPhotoBrowser.h"
 
-@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelgate/*,IFlySpeechRecognizerDelegate*/>{
+@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelgate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate>{
     
     NSString *_token;
     NSString *_idNumber;
@@ -1035,6 +1036,8 @@
 }
 
 
+
+
 /* 接收到消息后 ，在本地创建消息*/
 - (void)makeOthersMessageWith:(NSInteger)msgNum andMessage:(UUMessage *)message{
     
@@ -1071,6 +1074,7 @@
     if (self.chatModel.dataSource.count>indexPath.row) {
         
         cell.delegate = self;
+        cell.photoDelegate = self;
         [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
         
         /* 消息发送状态*/
@@ -1585,7 +1589,16 @@
     
 }
 
-
+/**浏览大图*/
+-(void)showImage:(UIImageView *)imageView andImage:(UIImage *)image{
+    
+    NSMutableArray *items = @[].mutableCopy;
+    KSPhotoItem *item = [KSPhotoItem itemWithSourceView:imageView image:image];
+    [items addObject:item];
+    KSPhotoBrowser *browser = [KSPhotoBrowser browserWithPhotoItems:items selectedIndex:0];
+    [browser showFromViewController:self];
+    
+}
 
 
 - (void)didReceiveMemoryWarning {

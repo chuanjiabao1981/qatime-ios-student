@@ -76,7 +76,7 @@
     
     
     /* 菜单名*/
-    _settingName = @[@"我的钱包",@"我的订单",@"我的直播课",@"我的一对一",@"我的视频课",@"我的试听课",@"安全管理",@"系统设置",@"关于我们"];
+    _settingName = @[@"我的钱包",@"我的订单",@"我的直播课",@"我的一对一",@"我的视频课",@"我的试听",@"安全管理",@"系统设置",@"关于我们"];
     
     /* cell的图片*/
     _cellImage = @[[UIImage imageNamed:@"我的钱包"],[UIImage imageNamed:@"我的订单"],[UIImage imageNamed:@"我的直播课"],[UIImage imageNamed:@"我的一对一"],[UIImage imageNamed:@"我的视频课"],[UIImage imageNamed:@"我的试听课"],[UIImage imageNamed:@"安全管理"],[UIImage imageNamed:@"系统设置"],[UIImage imageNamed:@"关于我们"]];

@@ -10,7 +10,7 @@
 #import "NavigationBar.h"
 #import "ClassNoticeSettingTableViewCell.h"
 #import "ClassNoticeTimeSettingTableViewCell.h"
- 
+
 #import "UIViewController+HUD.h"
 #import "HcdDateTimePickerView.h"
 #import "UIAlertController+Blocks.h"
@@ -20,7 +20,7 @@
 
 @interface ClassSettingViewController ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>{
     
-     NavigationBar *_navigtionBar;
+    NavigationBar *_navigtionBar;
     
     NSString *_token;
     NSString *_idNumber;
@@ -42,7 +42,7 @@
     
     /* 灰色背景*/
     UIVisualEffectView *_effect ;
-
+    
 }
 @end
 
@@ -51,7 +51,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-
+    
     _navigtionBar = ({
         NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
         _.titleLabel.text = @"课程提醒";
@@ -61,7 +61,7 @@
         _;
     });
     
-   
+    
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
         _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
@@ -178,8 +178,16 @@
             break;
             
         case 1:
-            rows = 1;
+            rows = 2;
             break;
+            
+        case 2:
+            rows = 2;
+            break;
+        case 3:
+            rows= 1;
+            break;
+       
     }
     
     return rows;
@@ -193,6 +201,118 @@
     switch (indexPath.section) {
             
         case 0:{
+            
+            /**提醒范围*/
+            static NSString *cellIdenfier = @"startcell";
+            NoticeSwitchTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+            if (cell==nil) {
+                cell=[[NoticeSwitchTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"startcell"];
+                
+                switch (indexPath.row) {
+                    case 0:{
+                        
+                        cell.name.text = @"上课提醒";
+                        cell.noticeSwitch.onTintColor = BUTTONRED;
+                        if (_settingDic) {
+                            
+                            //当前设置状态
+                            //                            if ([_settingDic[@"message"]boolValue]==YES) {
+                            //                                cell.noticeSwitch.selected = YES;
+                            //                                cell.noticeSwitch.on = YES;
+                            //                            }else{
+                            //                                cell.noticeSwitch.selected = NO;
+                            //                                cell.noticeSwitch.on = NO;
+                            //                            }
+                            
+                        }
+                        cell.noticeSwitch.tag = 1;
+                    }
+                        
+                        break;
+                        
+                    case 1:{
+                        cell.name.text = @"开课提醒";
+                        cell.noticeSwitch.onTintColor = BUTTONRED;
+                        if (_settingDic) {
+                            //                            if ([_settingDic[@"notice"]boolValue]==YES) {
+                            //                                cell.noticeSwitch.selected = YES;
+                            //                                cell.noticeSwitch.on = YES;
+                            //
+                            //                            }else{
+                            //                                cell.noticeSwitch.selected = NO;
+                            //                                cell.noticeSwitch.on = NO;
+                            //                            }
+                            
+                        }
+                        cell.noticeSwitch.tag = 2;
+                    }
+                        break;
+                }
+                
+                [cell.noticeSwitch addTarget:self action:@selector(turnNoticeStatus:) forControlEvents:UIControlEventTouchUpInside];
+                
+            }
+            return cell;
+            
+        }
+            break;
+        case 1:{
+            /**提醒课程*/
+            static NSString *cellIdenfier = @"classcell";
+            NoticeSwitchTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+            if (cell==nil) {
+                cell=[[NoticeSwitchTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"classcell"];
+                
+                switch (indexPath.row) {
+                    case 0:{
+                        
+                        cell.name.text = @"直播课";
+                        cell.noticeSwitch.onTintColor = BUTTONRED;
+                        if (_settingDic) {
+                            
+                            //当前设置状态
+                            //                            if ([_settingDic[@"message"]boolValue]==YES) {
+                            //                                cell.noticeSwitch.selected = YES;
+                            //                                cell.noticeSwitch.on = YES;
+                            //                            }else{
+                            //                                cell.noticeSwitch.selected = NO;
+                            //                                cell.noticeSwitch.on = NO;
+                            //                            }
+                            
+                        }
+                        cell.noticeSwitch.tag = 3;
+                    }
+                        
+                        break;
+                        
+                    case 1:{
+                        cell.name.text = @"一对一";
+                        cell.noticeSwitch.onTintColor = BUTTONRED;
+                        if (_settingDic) {
+                            //                            if ([_settingDic[@"notice"]boolValue]==YES) {
+                            //                                cell.noticeSwitch.selected = YES;
+                            //                                cell.noticeSwitch.on = YES;
+                            //
+                            //                            }else{
+                            //                                cell.noticeSwitch.selected = NO;
+                            //                                cell.noticeSwitch.on = NO;
+                            //                            }
+                            
+                        }
+                        cell.noticeSwitch.tag = 4;
+                    }
+                        break;
+                }
+                
+                [cell.noticeSwitch addTarget:self action:@selector(turnNoticeStatus:) forControlEvents:UIControlEventTouchUpInside];
+                
+            }
+            return cell;
+            
+        }
+            break;
+            
+        case 2:{
             /* cell的重用队列*/
             static NSString *cellIdenfier = @"cell";
             NoticeSwitchTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
@@ -214,7 +334,7 @@
                             }
                             
                         }
-                        cell.noticeSwitch.tag = 1;
+                        cell.noticeSwitch.tag = 5;
                     }
                         
                         break;
@@ -233,19 +353,19 @@
                             }
                             
                         }
-                        cell.noticeSwitch.tag = 2;
+                        cell.noticeSwitch.tag = 6;
                     }
                         break;
                 }
                 
                 [cell.noticeSwitch addTarget:self action:@selector(turnNoticeStatus:) forControlEvents:UIControlEventTouchUpInside];
-               
+                
             }
             return cell;
             
         }
             break;
-        case 1:{
+        case 3:{
             /* cell的重用队列*/
             static NSString *cellID = @"cellID";
             ClassNoticeTimeSettingTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellID];
@@ -276,7 +396,7 @@
             }
             
             return  cell;
-
+            
             
         }
             break;
@@ -290,9 +410,73 @@
 #pragma mark- tableview delegate
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
-    return 2;
+    return 4;
 }
 
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    
+    UIView *view;
+    
+    if (section!=3) {
+        
+        
+        
+    }
+    
+    return view;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    
+    CGFloat height =0;
+    if (section!=3) {
+        height = 57*ScrenScale;
+    }
+    
+    return height;
+}
+
+
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    
+    UIView * view ;
+    
+    if (section == 2) {
+        view = [[UIView alloc]init];
+        view.backgroundColor = BACKGROUNDGRAY;
+        UIView *line = [[UIView alloc]init];
+        line.backgroundColor = SEPERATELINECOLOR_2;
+        [view addSubview:line];
+        line.sd_layout
+        .leftEqualToView(view)
+        .rightEqualToView(view)
+        .bottomEqualToView(view)
+        .heightIs(0.5);
+        
+        UILabel *label = [[UILabel alloc]init];
+        [view addSubview:label];
+        label.sd_layout
+        .topSpaceToView(view,6)
+        .leftSpaceToView(view,12)
+        .rightSpaceToView(view,12)
+        .autoHeightRatio(0);
+        label.text = @"为了您能正常使用此功能，请在“系统设置”>“答疑时间”>“通知”中允许接收通知";
+        label.textColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0];
+        label.font = [UIFont systemFontOfSize:12*ScrenScale];
+        return view;
+    }
+    
+    return view;
+    
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    
+    if (section == 2) {
+        
+        return 47*ScrenScale;
+    }
+    return 0;
+}
 
 
 
@@ -303,8 +487,8 @@
     _effect.backgroundColor = [UIColor blackColor];
     _effect.alpha = 0;
     
-//    UIBlurEffect *effec=[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-//    _effect.effect = effec;
+    //    UIBlurEffect *effec=[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    //    _effect.effect = effec;
     UITapGestureRecognizer *effectTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(resign)];
     [_effect addGestureRecognizer:effectTap];
     
@@ -317,17 +501,17 @@
     _pickerBackGround.frame = CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd/5*2);
     _pickerBackGround.backgroundColor = BUTTONRED;
     [self.view addSubview:_pickerBackGround];
-   
+    
     _timePicker = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 40, _pickerBackGround.width_sd, _pickerBackGround.height_sd-40)];
-   
+    
     [_pickerBackGround addSubview:_timePicker];
     _timePicker.backgroundColor= [UIColor whiteColor];
     _timePicker.delegate = self;
     _timePicker.dataSource = self;
     
-//    UIView *func = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 40)];
-//    func.backgroundColor = [UIColor blueColor];
-//    [_timePicker addSubview:func];
+    //    UIView *func = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 40)];
+    //    func.backgroundColor = [UIColor blueColor];
+    //    [_timePicker addSubview:func];
     
     UIButton *sure = [[UIButton alloc]init];
     sure.userInteractionEnabled = YES;
@@ -350,12 +534,12 @@
         _effect.alpha = 0.3;
         _pickerBackGround.frame =CGRectMake(0, self.view.height_sd/5*3, self.view.width_sd, self.view.height_sd/5*2);
         //        func.frame =CGRectMake(0, self.view.height_sd/5*3-30, self.view.width_sd, 40);
-    
+        
         
     }];
     
     [sure addTarget:self action:@selector(choseTime) forControlEvents:UIControlEventTouchUpInside];
-
+    
     
 }
 
@@ -363,7 +547,7 @@
 - (void)choseTime{
     
     [UIView animateWithDuration:0.3 animations:^{
-       _effect.alpha = 0;
+        _effect.alpha = 0;
         _pickerBackGround.frame = CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd/5*2);
         
         
@@ -395,53 +579,6 @@
     return rows;
 }
 
--(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    
-    
-    UIView * view = [[UIView alloc]init];
-    
-    
-    if (section == 0) {
-        view.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.00]
-        ;
-        
-        UIView *line = [[UIView alloc]init];
-        line.backgroundColor = SEPERATELINECOLOR_2;
-        [view addSubview:line];
-        line.sd_layout
-        .leftEqualToView(view)
-        .rightEqualToView(view)
-        .bottomEqualToView(view)
-        .heightIs(0.5);
-        
-        
-        UILabel *label = [[UILabel alloc]init];
-        [view addSubview:label];
-        label.sd_layout
-        .topSpaceToView(view,6)
-        .leftSpaceToView(view,12)
-        .rightSpaceToView(view,12)
-        .autoHeightRatio(0);
-        label.text = @"为了您能正常使用此功能，请在“系统设置”>“答疑时间”>“通知”中允许接收通知";
-        label.textColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0];
-        label.font = [UIFont systemFontOfSize:12*ScrenScale];
-        return view;
-    }
-    
-    return view;
-    
-    
-    
-}
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    
-    if (section == 0) {
-        
-        return 47;
-    }
-    return 0;
-}
-
 #pragma mark- pickerview delegate
 - (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
     
@@ -454,7 +591,7 @@
     if (component == 1){
         title = [NSString stringWithFormat:@"%@",_minutes[row]];
     }
-   
+    
     return title;
     
     
@@ -484,56 +621,48 @@
         [_settingDic setValue:[_minutes[row] substringWithRange:NSMakeRange(0, 2)] forKey:@"before_minutes"];
     }
     
-    
-    
 }
 
 /* 设置消息提醒*/
 - (void)turnNoticeStatus:(UISwitch *)sender{
     
-    switch (sender.tag) {
-        case 1:{
-            /* 开关短信通知*/
-            [self switchSender:sender];
-            
-        }
-            break;
-        case 2:{
-            /* 开关系统通知*/
-            [self switchSender:sender];
- 
-        }
-            break;
-            
-    }
-    
-}
-
-#pragma mark- 声音和震动的开关方法
-- (void)switchSender:(UISwitch *)sender{
-    
+    //有接口了之后再添加方法
     if (sender.selected ==YES) {
         sender.selected = NO;
         changeSettings =YES;
+        
         if (sender.tag == 1) {
+            
+        }else if (sender.tag == 2){
+            
+        }else if (sender.tag == 3){
+            
+        }else if (sender.tag == 4){
+            
+        }else if (sender.tag == 5) {
             [_settingDic setValue:@"0" forKey:@"message"];
         }else if (sender.tag ==2){
             [_settingDic setValue:@"0" forKey:@"notice"];
         }
         
-        
-        
     }else if (sender.selected ==NO){
         sender.selected = YES;
         changeSettings =YES;
+        
         if (sender.tag == 1) {
+            
+        }else if (sender.tag == 2){
+            
+        }else if (sender.tag == 3){
+            
+        }else if (sender.tag == 4){
+            
+        }else if (sender.tag == 6) {
             [_settingDic setValue:@"1" forKey:@"message"];
         }else if (sender.tag ==2){
             [_settingDic setValue:@"1" forKey:@"notice"];
         }
     }
-    
-    
     
 }
 
@@ -556,8 +685,8 @@
 
 - (void)exit{
     [self.navigationController popViewControllerAnimated: YES];
-      
-
+    
+    
 }
 
 - (void)resign{
@@ -566,7 +695,7 @@
         _effect.alpha = 0;
         _pickerBackGround.frame = CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd/5*2);
     }];
-
+    
     
 }
 
@@ -575,7 +704,7 @@
     
     
     [UIView animateWithDuration:0.3 animations:^{
-       
+        
         _effect.alpha = 0;
         _pickerBackGround.frame = CGRectMake(0, self.view.height_sd, self.view.width_sd, self.view.height_sd/5*2);
     }];
@@ -588,13 +717,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

@@ -16,15 +16,18 @@
     
     if (self) {
         
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         _image = [[UIImageView alloc]init];
         [self.contentView addSubview:_image];
         _image.sd_layout
-        .leftSpaceToView(self.contentView, 0)
-        .rightSpaceToView(self.contentView, 0)
-        .topSpaceToView(self.contentView, 0)
-        .bottomSpaceToView(self.contentView, 0);
+        .leftSpaceToView(self.contentView, 5)
+        .rightSpaceToView(self.contentView, 5)
+        .topSpaceToView(self.contentView, 5)
+        .bottomSpaceToView(self.contentView, 5);
         
         _title = [[UILabel alloc]init];
+        _title.font = TEXT_FONTSIZE;
+        _title.textColor = [UIColor whiteColor];
         [self.contentView addSubview:_title];
         _title.sd_layout
         .centerXEqualToView(self.contentView)
@@ -34,6 +37,8 @@
         [_title updateLayout];
         
         _subTitle = [[UILabel alloc]init];
+        _subTitle.font = TEXT_FONTSIZE_MIN;
+        _subTitle.textColor = [UIColor whiteColor];
         [self.contentView addSubview:_subTitle];
         _subTitle.sd_layout
         .centerXEqualToView(self.contentView)
@@ -43,10 +48,13 @@
         
         [_subTitle updateLayout];
         
-        _title.sd_layout
-        .topSpaceToView(self.contentView, self.height_sd - (_title.height_sd+_subTitle.height_sd+10*ScrenScale)) ;
+        _title.sd_resetLayout
+        .centerXEqualToView(self.contentView)
+        .autoHeightRatio(0)
+        .topSpaceToView(self.contentView, (self.height_sd - (_title.height_sd+_subTitle.height_sd+8*ScrenScale))/2.0) ;
         
         [_title updateLayout];
+        [_subTitle updateLayout];
         
         
     }

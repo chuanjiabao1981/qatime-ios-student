@@ -69,11 +69,11 @@
         
         
         /* 状态*/
-        _status = [[UILabel alloc]init];
-        _status.textColor = [UIColor whiteColor];
-        _status.font = [UIFont systemFontOfSize:14*ScrenScale];
-        _status.backgroundColor = [UIColor orangeColor];
-        _status.hidden = YES;
+//        _status = [[UILabel alloc]init];
+//        _status.textColor = [UIColor whiteColor];
+//        _status.font = [UIFont systemFontOfSize:14*ScrenScale];
+//        _status.backgroundColor = [UIColor orangeColor];
+//        _status.hidden = YES;
         
         /* 进度label*/
         UILabel *progress = [[UILabel alloc]init];
@@ -111,7 +111,7 @@
         
         
         /* 所有控件的布局*/
-        [_content sd_addSubviews:@[_classImage,_status,_className,_grade,_subject,line,_teacherName,progress,_presentCount,line2,_totalCount,_enterButton]];
+        [_content sd_addSubviews:@[_classImage,/*_status,*/_className,_grade,_subject,line,_teacherName,progress,_presentCount,line2,_totalCount,_enterButton]];
         
         /* 课程图片布局*/
         _classImage.sd_layout
@@ -122,12 +122,12 @@
         
         /* 状态label布局*/
         
-        _status.sd_layout
-        .leftSpaceToView(_classImage,10*ScrenScale)
-        .topSpaceToView(_content,5*ScrenScale)
-        .autoHeightRatio(0);
+//        _status.sd_layout
+//        .leftSpaceToView(_classImage,10*ScrenScale)
+//        .topSpaceToView(_content,5*ScrenScale)
+//        .autoHeightRatio(0);
         
-        [_status setSingleLineAutoResizeWithMaxWidth:200];
+//        [_status setSingleLineAutoResizeWithMaxWidth:200];
         
         /* 课程名称布局*/
         _className.sd_layout

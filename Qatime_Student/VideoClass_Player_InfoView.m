@@ -8,6 +8,7 @@
 
 #import "VideoClass_Player_InfoView.h"
 #import "NSString+ChangeYearsToChinese.h"
+#import "UIImageView+WebCache.h"
 
 
 @implementation VideoClass_Player_InfoView
@@ -315,6 +316,8 @@
     _workPlaceLabel.text = model.teacher[@"school"];
     _workYearsLabel.text = [model.teacher[@"teaching_years"] changeEnglishYearsToChinese];
     _teacherInterviewLabel.attributedText = [[NSMutableAttributedString alloc]initWithData:[model.teacher[@"desc"] dataUsingEncoding:NSUnicodeStringEncoding ] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+    
+    [_teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:model.teacher[@""]]];
     
 }
 

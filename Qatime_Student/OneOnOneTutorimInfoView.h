@@ -15,6 +15,7 @@
 #import "TeachersGroupTableView.h"
 #import "ClassListTableView.h"
 #import "UICollectionViewLeftAlignedLayout.h"
+#import "WorkFlowView.h"
 @interface OneOnOneTutorimInfoView : UIScrollView
 
 /** 课程名*/
@@ -63,7 +64,7 @@
 @property(nonatomic,strong) UILabel *classDescriptionLabel ;
 
 /**上课流程*/
-@property (nonatomic, strong) OneOnOneWorkFlowView *workFlowView ;
+@property (nonatomic, strong) WorkFlowView *workFlowView ;
 
 /**学习须知*/
 

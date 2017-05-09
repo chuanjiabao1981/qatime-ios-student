@@ -23,6 +23,12 @@
 
 @end
 
+@protocol PhotoBrowserDelegate <NSObject>
+
+- (void)showImage:(UIImageView*)imageView andImage:(UIImage *)image;
+
+@end
+
 
 @interface UUMessageCell : UITableViewCell
 
@@ -38,6 +44,8 @@
 @property (nonatomic, retain)UUMessageFrame *messageFrame;
 
 @property (nonatomic, assign)id<UUMessageCellDelegate>delegate;
+
+@property (nonatomic, strong) id<PhotoBrowserDelegate> photoDelegate ;
 
 @property(nonatomic,strong) YYTextView *title ;
 

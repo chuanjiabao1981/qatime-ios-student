@@ -1,3 +1,4 @@
+
 //
 //  VideoClassPlayerViewController.m
 //  Qatime_Student
@@ -11,7 +12,8 @@
 #import "VideoClassProgressTableViewCell.h"
 #import "VideoClassFullScreenListTableViewCell.h"
 #import "UIView+PlaceholderImage.h"
-
+#import "UIViewController+HUD.h"
+#import "TeachersPublicViewController.h"
 
 //屏幕模式
 typedef enum : NSUInteger {
@@ -33,6 +35,9 @@ typedef enum : NSUInteger {
     /**课程详情信息*/
     VideoClassInfo *_classInfo;
     
+    /**选中的条目->正在播放的条目*/
+    NSIndexPath *_indexPath;
+    
     /**屏幕模式*/
     ScreenMode _screenMode;
     
@@ -47,9 +52,15 @@ typedef enum : NSUInteger {
     
     NSTimeInterval mDuration;
     NSTimeInterval mCurrPos;
+    
+    /**播放器加载次数*/
+    NSInteger faildTime;
 }
 /**主视图*/
 @property (nonatomic, strong) VideoClassPlayerView *mainView ;
+
+/**全屏模式下的选课列表*/
+@property (nonatomic, strong) UITableView *classList ;
 
 
 /**播放器相关的属性*/
@@ -80,7 +91,6 @@ typedef enum : NSUInteger {
 /**全屏状态下的课程列表按钮*/
 @property (nonatomic, strong) UIButton *classListBtn ;
 
-
 /**控制层*/
 @property(nonatomic, strong)  NELivePlayerControl *mediaControl;
 
@@ -89,7 +99,7 @@ typedef enum : NSUInteger {
 @implementation VideoClassPlayerViewController
 
 //初始化方法
--(instancetype)initWithClasses:(__kindof NSArray<VideoClass *> *)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo andURLString:(NSString * _Nullable)URLString{
+-(instancetype)initWithClasses:(__kindof NSArray<VideoClass *> *)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo andURLString:(NSString * _Nullable)URLString andIndexPath:(NSIndexPath * _Nullable)indexPath{
     
     self = [super init];
     if (self) {
@@ -106,17 +116,30 @@ typedef enum : NSUInteger {
             _urlString = [NSString stringWithFormat:@"%@",URLString];
         }
         
+        
+        if (indexPath == nil) {
+            _indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        }else{
+            
+            _indexPath = indexPath;
+        }
+        
     }
     return self;
     
 }
 
 
+
+
 - (void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
     [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    
 }
+
+
 
 - (void)viewDidDisappear:(BOOL)animated{
     
@@ -146,6 +169,8 @@ typedef enum : NSUInteger {
     self.view.backgroundColor = [UIColor whiteColor];
     
     _screenMode = PortraitMode;
+    
+     faildTime = 0;
     
     //加载播放器
     [self setupVideoPlayerWithURL:_urlString];
@@ -192,7 +217,10 @@ typedef enum : NSUInteger {
         [_videoPlayer setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
         [_videoPlayer prepareToPlay]; //初始化视频文件
         
-        [self setupVideoPlayerView];
+        if (!_playerView) {
+            
+            [self setupVideoPlayerView];
+        }
     }
     
 }
@@ -412,6 +440,37 @@ typedef enum : NSUInteger {
     [self.bottomControlView addSubview:self.resolutionBtn];
     [self.resolutionBtn addTarget:self action:@selector(chooseResolution:) forControlEvents:UIControlEventTouchUpInside];
     
+    
+    //课程列表
+    _classList = [[UITableView alloc]init];
+    [_controlOverlay addSubview:_classList];
+    _classList.delegate = self;
+    _classList.dataSource =self;
+    _classList.tag = 3;
+    _classList.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+    _classList.alpha = 0.8f;
+    _classList.sd_layout
+    .rightSpaceToView(_controlOverlay, 0)
+    .topSpaceToView(_topControlView, 0)
+    .bottomSpaceToView(_bottomControlView, 0)
+    .widthRatioToView(_controlOverlay, 1/3.0);
+    _classList.hidden  = YES;
+    _classList.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    
+    //弹出课程列表的按钮
+    _classListBtn = [[UIButton alloc]init];
+    [_topControlView addSubview:_classListBtn];
+    [_classListBtn setImage:[UIImage imageNamed:@"class"] forState:UIControlStateNormal];
+    [_classListBtn addTarget:self action:@selector(onClickClassList:) forControlEvents:UIControlEventTouchUpInside];
+    _classListBtn .sd_layout
+    .rightSpaceToView(_topControlView, 30*ScrenScale)
+    .topSpaceToView(_topControlView, 10)
+    .bottomSpaceToView(_topControlView, 10)
+    .widthEqualToHeight();
+    [_classListBtn setEnlargeEdge:20];
+    _classListBtn.hidden = YES;
+    
 }
 
 
@@ -554,11 +613,29 @@ typedef enum : NSUInteger {
     [self syncUIStatus:NO];
 }
 
+/**显示课程列表*/
+- (void)onClickClassList:(id)sender{
+    
+    if (isFullScreen == YES) {
+    
+        if (_classList.hidden == YES) {
+            _classList.hidden = NO;
+        }else{
+            
+            _classList.hidden = YES;
+        }
+        
+    }
+}
+
+
+
+
 /**加载播放器底层视图*/
 - (void)setupVideoPlayerView{
     
     _playerView = [[UIView alloc]init];
-    [_playerView makePlaceHolderImage:[UIImage imageNamed:@"PlayerHolder"]];
+//    [_playerView makePlaceHolderImage:[UIImage imageNamed:@"PlayerHolder"]];
     [self.view addSubview:_playerView];
     
     _playerView.sd_layout
@@ -567,14 +644,35 @@ typedef enum : NSUInteger {
     .topSpaceToView(self.view, 0)
     .heightIs(self.view.width_sd/16.0*9.0);
     
+    UIImageView *place = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"PlayerHolder"]];
+    [_playerView addSubview:place];
+    place.sd_layout
+    .leftEqualToView(_playerView)
+    .rightEqualToView(_playerView)
+    .topEqualToView(_playerView)
+    .bottomEqualToView(_playerView);
+    
+    [self setupControl];
+    
+    [self setupMainView];
+    
     /**播放器初始化*/
-    NSInteger faildTime = 0;
+    
     if (_videoPlayer==nil) {
         // 返回空则表示初始化失败
         faildTime ++;
         NSLog(@"播放器初始化失败!!!!");
-        //再次加载
-        [self setupVideoPlayerWithURL:_urlString];
+        
+        if (faildTime>10) {
+            
+            [self loadingHUDStopLoadingWithTitle:@"播放器加载失败"];
+            
+        }else{
+            //再次加载
+            [self setupVideoPlayerWithURL:_urlString];
+            
+        }
+        
     }else{
         NSLog(@"播放器初始化成功!!!!");
         [_playerView addSubview:self.videoPlayer.view];
@@ -584,9 +682,7 @@ typedef enum : NSUInteger {
         .topSpaceToView(_playerView, 0)
         .bottomSpaceToView(_playerView, 0);
         
-        [self setupControl];
-        
-        [self setupMainView];
+      
     }
     
 }
@@ -623,6 +719,19 @@ typedef enum : NSUInteger {
         [weakSelf.mainView.scrollView scrollRectToVisible:CGRectMake(weakSelf.view.width_sd*index, 0, weakSelf.view.width_sd, weakSelf.mainView.scrollView.height_sd) animated:YES];
     };
     
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(teacherInfo)];
+    _mainView.infoView.teacherHeadImage.userInteractionEnabled = YES;
+    [_mainView.infoView.teacherHeadImage addGestureRecognizer:tap];
+    
+}
+
+/**加载教师详情页*/
+- (void)teacherInfo{
+    
+    TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:_teacher.teacherID];
+    [self.navigationController pushViewController:controller animated:YES];
+    
 }
 
 /* 控制层点击事件*/
@@ -630,7 +739,7 @@ typedef enum : NSUInteger {
     NSLog(@"click mediacontrol");
     [self controlOverlayShow];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlOverlayHide) object:nil];
-    [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:5];
+    [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:7];
     self.controlOverlay.alpha = 1.0;
     
 }
@@ -670,6 +779,8 @@ typedef enum : NSUInteger {
 /* 控制层隐藏 不带动画*/
 - (void)hideControlOverlay{
     self.controlOverlay.hidden = YES;
+    
+    _classList.hidden = YES;
 }
 
 
@@ -874,6 +985,8 @@ typedef enum : NSUInteger {
     
     [self mediaControlTurnDownFullScreenModeWithMainView:_playerView];
     
+    [_mainView.classVideoListTableView reloadData];
+    
 }
 
 /**播放器变为全屏布局*/
@@ -905,10 +1018,11 @@ typedef enum : NSUInteger {
 /* 控制层变成全屏模式的方法*/
 - (void)mediaControlTurnToFullScreenModeWithMainView:(__kindof UIView *)playerView{
     
-    [self.view bringSubviewToFront:_mediaControl];
-    
     _mediaControl.hidden  = NO;
     _fileName.hidden = NO;
+    _classListBtn.hidden = NO;
+    [self.view bringSubviewToFront:_mediaControl];
+    
     
     _topControlView.backgroundColor = [UIColor blackColor];
     _topControlView.alpha = 0.8;
@@ -926,13 +1040,15 @@ typedef enum : NSUInteger {
     [_mediaControl updateLayout];
     
     _resolutionBtn.hidden = NO;
-   
     
+   
 }
 
 /* 控制层切回竖屏模式的方法*/
 - (void)mediaControlTurnDownFullScreenModeWithMainView:(__kindof UIView *)playerView{
 
+    _resolutionBtn.hidden  = YES;
+    _classListBtn.hidden = YES;
     _mediaControl.sd_resetLayout
     .topSpaceToView(self.view,0)
     .leftEqualToView(self.view)
@@ -954,8 +1070,6 @@ typedef enum : NSUInteger {
     .topSpaceToView(self.bottomControlView,0)
     .bottomSpaceToView(self.bottomControlView,0)
     .widthEqualToHeight();
-    
-    _resolutionBtn.hidden  = YES;
     
 }
 
@@ -985,6 +1099,10 @@ typedef enum : NSUInteger {
             cell.numbers.text = [NSString stringWithFormat:@"%ld",indexPath.row];
             cell.model = _classListArray[indexPath.row];
         }
+        
+        if (indexPath == _indexPath) {
+            cell.className.textColor = NAVIGATIONRED;
+        }
         tableCell = cell;
     }
     
@@ -997,18 +1115,17 @@ typedef enum : NSUInteger {
         }
         
         if (_classListArray.count>indexPath.row) {
-            cell.numbers.text = [NSString stringWithFormat:@"%ld",indexPath.row];
+            cell.numbers.text = [NSString stringWithFormat:@"%ld",indexPath.row+1];
             cell.model = _classListArray[indexPath.row];
         }
-        tableCell = cell;
         
+        
+        tableCell = cell;
     }
     
     
     return  tableCell;
 }
-
-
 
 
 #pragma mark- UITableView delegate
@@ -1019,9 +1136,22 @@ typedef enum : NSUInteger {
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    VideoClassProgressTableViewCell *cell;
     
-    VideoClassProgressTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-  
+    if (tableView.tag ==1) {
+        VideoClassProgressTableViewCell *classcell = [tableView cellForRowAtIndexPath:indexPath];
+        for (VideoClassProgressTableViewCell *cells in _mainView.classVideoListTableView.visibleCells) {
+            cells.className.textColor = [UIColor blackColor];
+        }
+        classcell.className.textColor = NAVIGATIONRED;
+        
+    }else if (tableView.tag == 3){
+        VideoClassProgressTableViewCell *classcell = [tableView cellForRowAtIndexPath:indexPath];
+        for (VideoClassProgressTableViewCell *cells in _classList.visibleCells) {
+            cells.className.textColor = [UIColor whiteColor];
+        }
+        classcell.className.textColor = NAVIGATIONRED;
+    }
     [_videoPlayer shutdown];
     [_videoPlayer.view removeFromSuperview];
     _videoPlayer = nil;
@@ -1041,6 +1171,7 @@ typedef enum : NSUInteger {
     [_videoPlayer prepareToPlay]; //初始化视频文件
     
     [_playerView addSubview:_videoPlayer.view];
+    
     _videoPlayer.view.sd_layout
     .leftSpaceToView(_playerView, 0)
     .topSpaceToView(_playerView, 0)
@@ -1048,6 +1179,7 @@ typedef enum : NSUInteger {
     .rightSpaceToView(_playerView, 0);
     [_videoPlayer.view updateLayout];
     
+    _fileName.text = cell.model.name;
     
 }
 

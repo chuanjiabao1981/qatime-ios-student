@@ -402,10 +402,10 @@
         _workFlowView.backgroundColor = [UIColor whiteColor];
         [_view1 addSubview:_workFlowView];
         _workFlowView.sd_layout
-        .leftSpaceToView(_view1, 60*ScrenScale)
-        .rightSpaceToView(_view1, 60*ScrenScale)
+        .leftSpaceToView(_view1, 50*ScrenScale)
+        .rightSpaceToView(_view1, 50*ScrenScale)
         .topSpaceToView(workFlow, 20*ScrenScale)
-        .heightIs((self.view1.width_sd - 60*ScrenScale*2)*4);
+        .heightIs((self.view1.width_sd - 100*ScrenScale)*4);
         
         //学习须知
         UILabel *notice = [[UILabel alloc]init];
@@ -415,7 +415,7 @@
         notice.font = TITLEFONTSIZE;
         notice.sd_layout
         .leftEqualToView(_descriptions)
-        .topSpaceToView(_workFlowView,20)
+        .topSpaceToView(_workFlowView,20*ScrenScale)
         .autoHeightRatio(0);
         [notice setSingleLineAutoResizeWithMaxWidth:100];
         

@@ -10,6 +10,7 @@
 #import "HMSegmentedControl.h"
 #import "VideoClassInfo.h"
 #import "UICollectionViewLeftAlignedLayout.h"
+#import "WorkFlowView.h"
 
 
 @interface VideoClassInfoView : UIScrollView

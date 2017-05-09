@@ -21,6 +21,7 @@
 #import "InteractionViewController.h"
 #import "Features.h"
 #import "TeacherFeatureTagCollectionViewCell.h"
+#import "WorkFlowTableViewCell.h"
 
 @interface OneOnOneTutoriumInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,OneOnOneTeacherTableViewCellDelegate,UICollectionViewDelegate,UICollectionViewDataSource>{
     
@@ -49,6 +50,8 @@
     /**课程特色数组*/
     NSMutableArray *_classFeaturesArray;
     
+    /**学习流程所需的数据*/
+    NSArray *_workFlowArr;
 
 }
 
@@ -91,6 +94,10 @@
     
     _classFeaturesArray = @[].mutableCopy;
     
+    _workFlowArr = @[@{@"image":@"work1",@"title":@"1.购买课程",@"subTitle":@"支持退款,放心购买"},
+                     @{@"image":@"work2",@"title":@"2.准时上课",@"subTitle":@"提前预习,按时上课"},
+                     @{@"image":@"work3",@"title":@"3.在线授课",@"subTitle":@"多人交流,生动直播"},
+                     @{@"image":@"work4",@"title":@"4.上课结束",@"subTitle":@"视频回放,想看就看"}];
     //加载导航栏
     [self setupNavigation];
     
@@ -253,6 +260,11 @@
         _myView.classListTableView.tag = 2;
         _myView.scrollView.delegate = self;
         
+        _myView.workFlowView.delegate = self;
+        _myView.workFlowView.dataSource = self;
+        _myView.workFlowView.tag = 3;
+        
+        
         _myView.classFeature.dataSource = self;
         _myView.classFeature.delegate = self;
         
@@ -333,6 +345,9 @@
             rows = _classArray.count;
         }
             break;
+        case 3:{
+            rows = _workFlowArr.count;
+        }
     }
     return rows;
 }
@@ -375,6 +390,25 @@
             tableCell = cell;
         }
             break;
+            
+        case 3:{
+            /* cell的重用队列*/
+            static NSString *cellIdenfier = @"tablecell";
+            WorkFlowTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+            if (cell==nil) {
+                cell=[[WorkFlowTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"tablecell"];
+            }
+            if (_workFlowArr.count>indexPath.row) {
+                
+                [cell.image setImage:[UIImage imageNamed:_workFlowArr[indexPath.row][@"image"]]];
+                cell.title.text = _workFlowArr[indexPath.row][@"title"];
+                cell.subTitle.text = _workFlowArr[indexPath.row][@"subTitle"];
+            }
+
+            
+            return  cell;
+        
+        }
     }
     
     return tableCell;
@@ -394,6 +428,10 @@
             height= [tableView cellHeightForIndexPath:indexPath model:_classArray[indexPath.row] keyPath:@"model" cellClass:[OneOnOneLessonTableViewCell class] contentViewWidth:self.view.width_sd];
         }
             break;
+        case 3:{
+            
+            height = (self.view.width_sd-100*ScrenScale)/4.0;
+        }
     }
     
     

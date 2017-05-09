@@ -72,8 +72,6 @@
         [_scrollView setupAutoContentSizeWithRightView:_infoView rightMargin:0];
         [_scrollView setupAutoContentSizeWithBottomView:_classVideoListTableView bottomMargin:0];
         
-        
-        
     }
     return self;
 }
@@ -92,7 +90,7 @@
     _infoView.suitable.text = model.suit_crowd;
     
     //教师信息
-    [_infoView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
+    [_infoView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:model.teacher[@"avatar_url"]]];
     _infoView.teacherNameLabel.text = model.teacher[@"name"];
     
     if (![[model.teacher[@"gender"] description]isEqualToString:@"0(NSNull)"]) {
@@ -107,6 +105,7 @@
     _infoView.workPlaceLabel.text = [NSString stringWithFormat:@"%@",model.teacher[@"school"]];
     _infoView.workYearsLabel.text = [model.teacher[@"work_years"] changeEnglishYearsToChinese];
     _infoView.teacherInterviewLabel.attributedText = [[NSMutableAttributedString alloc]initWithData:[model.teacher[@"desc"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }  documentAttributes:nil error:nil];
+    
 }
 
 @end

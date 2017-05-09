@@ -144,7 +144,7 @@ typedef enum : NSUInteger {
     isLogin = [[NSUserDefaults standardUserDefaults]boolForKey:@"Login"];
     if (isLogin==YES&&_token&&_idNumber) {
         _notLoginView.hidden = YES;
-//        [self loadingHUDStartLoadingWithTitle:nil];
+        //        [self loadingHUDStartLoadingWithTitle:nil];
     }else{
         _notLoginView.hidden = NO;
     }
@@ -190,7 +190,7 @@ typedef enum : NSUInteger {
 
 /**
  请求数据
-
+ 
  @param refreshType 刷新方式
  @param classtype 课程类型
  */
@@ -219,7 +219,7 @@ typedef enum : NSUInteger {
         if ([dic[@"status"]isEqualToNumber:@1]) {
             
             if ([dic[@"data"]count]!=0) {
-               
+                
                 NSArray *sortArr = [dic[@"data"] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
                     NSDictionary *dic1 = obj1;
                     NSDictionary *dic2 = obj2;
@@ -274,7 +274,7 @@ typedef enum : NSUInteger {
             }
             
         }
-    
+        
     }];
     
 }
@@ -376,7 +376,7 @@ typedef enum : NSUInteger {
             cell.model =_unclosedArr[indexPath.row];
             [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             /* 不能进入观看*/
-           
+            
             if (cell.canUse == NO){
                 cell.enterButton.hidden = YES;
             }else{
@@ -445,37 +445,33 @@ typedef enum : NSUInteger {
     
     NSString *classID;
     
-    if (haveClass == NO) {
+    if (tableView.tag ==1) {
         
-    }else{
-        
-        if (tableView.tag ==1) {
+        if (_unclosedArr.count!=0) {
             
-            if (_unclosedArr.count!=0) {
-                
-                ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                classID = cell.model.course_id;
-                
-            }
-        }
-        if (tableView.tag ==2) {
+            ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            classID = cell.model.course_id;
             
-            if (_closedArr.count!=0) {
-                
-                ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                classID = cell.model.course_id;
-                
-            }
         }
-        
-        NSLog(@"%@",classID);
-        
-        TutoriumInfoViewController *infoVC= [[TutoriumInfoViewController alloc]initWithClassID:classID];
-        infoVC.hidesBottomBarWhenPushed = YES;
-        
-        [self.navigationController pushViewController:infoVC animated:YES];
-        
     }
+    if (tableView.tag ==2) {
+        
+        if (_closedArr.count!=0) {
+            
+            ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            classID = cell.model.course_id;
+            
+        }
+    }
+    
+    NSLog(@"%@",classID);
+    
+    TutoriumInfoViewController *infoVC= [[TutoriumInfoViewController alloc]initWithClassID:classID];
+    infoVC.hidesBottomBarWhenPushed = YES;
+    
+    [self.navigationController pushViewController:infoVC animated:YES];
+    
+    
     
 }
 

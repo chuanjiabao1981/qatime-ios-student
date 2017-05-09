@@ -149,7 +149,12 @@
         [_.leftButton setImage:[UIImage imageNamed:@"location"] forState:UIControlStateNormal];
         
         _location = [UIButton new];
-        [_location setTitle:@"全国" forState:UIControlStateNormal];
+        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Location"]) {
+            
+            [_location setTitle:[[NSUserDefaults standardUserDefaults]valueForKey:@"Location"] forState:UIControlStateNormal];
+        }else{
+            [_location setTitle:@"全国" forState:UIControlStateNormal];
+        }
         [_location setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
         [_location.titleLabel setFont:[UIFont systemFontOfSize:15*ScrenScale]];
@@ -1357,6 +1362,9 @@
                 
             });
             
+            //加工城市信息 ->去掉当地没有工作站的数据
+            
+            
             
 #pragma mark- 写完城市信息plist之后,开始定位
             
@@ -1381,8 +1389,8 @@
         
     }];
     
+    
 }
-
 
 
 /**顶部栏*/
@@ -1566,7 +1574,13 @@
              /*
               定位完成后,跟本地信息进行比较,如果有工作站,就提示用户切换到当前城市,没有就不提示*/
              
-             [self checkCityListWithInformationChange:placemark];
+             
+             if ([_localCity isEqualToString:[[NSUserDefaults standardUserDefaults]valueForKey:@"Location"]]) {
+                 
+             }else{
+                 
+                 [self checkCityListWithInformationChange:placemark];
+             }
              
              
              if (!_localCity) {
@@ -1610,7 +1624,7 @@
                 if ([loaction.subLocality isEqualToString:cityDic[@"name"]]) {
                     if ([cityDic[@"workstations_count"] integerValue] !=0) {
                         
-                        /* 在定位城市地址当地有工作产的情况下*/
+                        /* 在定位城市地址当地有工作站的情况下*/
                         
                         UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"提示", nil) message:[NSString stringWithFormat:@"%@%@,%@",NSLocalizedString(@"当前定位地点在", nil), loaction.subLocality,NSLocalizedString(@"是否切换至该地区?", nil)] preferredStyle:UIAlertControllerStyleAlert];
                         UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"取消", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -1761,7 +1775,6 @@
     [cityData insertObject:contr atIndex:0];
     
     /* 大的城市数据表已经组合完成,现在存入本地*/
-    
     
     NSString *cityFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"City.plist"];
     

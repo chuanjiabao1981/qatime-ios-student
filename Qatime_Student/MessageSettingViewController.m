@@ -96,7 +96,7 @@
                 cell=[[NoticeSwitchTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cellID"];
                 cell.noticeSwitch.onTintColor = BUTTONRED;
                 [cell.noticeSwitch addTarget:self action:@selector(switchNotice:) forControlEvents:UIControlEventTouchUpInside];
-                cell.name.text = @"接收辅导班消息通知";
+                cell.name.text = @"接收聊天消息通知";
                [cell.noticeSwitch setOn:allowNotification==YES?YES:NO];
                 
             }

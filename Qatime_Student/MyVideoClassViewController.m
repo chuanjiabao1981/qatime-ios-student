@@ -297,20 +297,21 @@ typedef enum : NSUInteger {
     
     if (sender.tag>=100&&sender.tag<200) {
         //购买的课程
-        
         cell = (MyVideoClassTableViewCell *)[_myVideoClassView.boughtClassTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag-100 inSection:0]];
         //课程数组
         for (NSDictionary *dics  in cell.model.video_lessons) {
             VideoClass *mod = [VideoClass yy_modelWithJSON:dics];
             mod.classID = dics[@"id"];
+            
             [_boughtVideoArray addObject:mod];
+            
         }
         
         //教师
         _teacher = [Teacher yy_modelWithJSON:cell.model.teacher];
         _teacher.teacherID = cell.model.teacher[@"id"];
         
-        controller = [[VideoClassPlayerViewController alloc]initWithClasses:_boughtVideoArray andTeacher:_teacher andVideoClassInfos:cell.model andURLString:nil];
+        controller = [[VideoClassPlayerViewController alloc]initWithClasses:_boughtVideoArray andTeacher:_teacher andVideoClassInfos:cell.model andURLString:nil andIndexPath:nil];
     }else if (sender.tag>=200){
         
         cell = (MyVideoClassTableViewCell *)[_myVideoClassView.freeClasstableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag-200 inSection:0]];
@@ -318,15 +319,17 @@ typedef enum : NSUInteger {
         for (NSDictionary *dics  in cell.model.video_lessons) {
             VideoClass *mod = [VideoClass yy_modelWithJSON:dics];
             mod.classID = dics[@"id"];
+            
             [_freeVideoArray addObject:mod];
+            
         }
         
         //教师
         _teacher = [Teacher yy_modelWithJSON:cell.model.teacher];
         _teacher.teacherID = cell.model.teacher[@"id"];
         
-        controller = [[VideoClassPlayerViewController alloc]initWithClasses:_freeVideoArray andTeacher:_teacher andVideoClassInfos:cell.model andURLString:nil];
-
+        controller = [[VideoClassPlayerViewController alloc]initWithClasses:_freeVideoArray andTeacher:_teacher andVideoClassInfos:cell.model andURLString:nil andIndexPath:nil];
+        
     }
     
     [self.navigationController pushViewController:controller animated:YES];

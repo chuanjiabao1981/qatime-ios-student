@@ -18,6 +18,7 @@ pod 'YYText'
 pod 'YYImage'
 pod 'SDCycleScrollView'
 pod 'BarrageRenderer'
+pod 'KSPhotoBrowser'
 
 pod 'CocoaLumberjack'
 pod 'Toast'
@@ -26,7 +27,7 @@ pod 'MLLabel'
 
 pod 'FSCalendar'
 
-pod 'XHImageViewer'
+#pod 'XHImageViewer'
 pod 'M13BadgeView'
 pod 'WZLBadge'
 pod 'SVProgressHUD'

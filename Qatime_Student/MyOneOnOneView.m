@@ -57,6 +57,7 @@
         _onStudyTableView = ({
         
             UITableView *_ = [[UITableView alloc]init];
+            _.separatorStyle = UITableViewCellSeparatorStyleNone;
             [_scrollView addSubview:_];
             _.sd_layout
             .leftSpaceToView(_scrollView, 0)
@@ -71,6 +72,7 @@
         //学习结束的tabelview
         _finishStudyTableView = ({
             UITableView *_ = [[UITableView alloc]init];
+            _.separatorStyle = UITableViewCellSeparatorStyleNone;
             [_scrollView addSubview:_];
             _.sd_layout
             .leftSpaceToView(_onStudyTableView, 0)

@@ -35,7 +35,7 @@
 
 
 /* 状态*/
-@property(nonatomic,strong) UILabel *status ;
+//@property(nonatomic,strong) UILabel *status ;
 
 /* 状态属性*/
 @property(nonatomic,strong) NSString  *state ;

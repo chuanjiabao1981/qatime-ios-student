@@ -82,15 +82,19 @@
     });
     
     _localChoseView = ({
-        LocalChoseView *_=[[LocalChoseView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, 44)];
+        LocalChoseView *_=[[LocalChoseView alloc]init];
         [self.view addSubview:_];
+        _.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .topSpaceToView(_navigationBar, 0)
+        .heightIs(44);
         _;
     
     });
     
-    
     self.tableView = ({
-        UITableView *_ = [[UITableView alloc]initWithFrame:CGRectMake(0, 108, self.view.width_sd, self.view.height_sd-64) style:UITableViewStylePlain];
+        UITableView *_ = [[UITableView alloc]init];
         [_ setSectionIndexBackgroundColor:[UIColor clearColor]];
         [_ setSectionIndexColor:[UIColor blackColor]];
         [_ registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
@@ -98,7 +102,13 @@
         [_ registerClass:[TLCityHeaderView class] forHeaderFooterViewReuseIdentifier:@"TLCityHeaderView"];
         _.delegate= self;
         _.dataSource = self;
+        _.tableFooterView = [[UIView alloc]init];
         [self.view addSubview:_];
+        _.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .topSpaceToView(_localChoseView, 0)
+        .bottomSpaceToView(self.view, 0);
         
         _;
     });
@@ -115,7 +125,7 @@
     /* 次级导航栏的*/
     [_localChoseView.city setTitle:_chosenCity forState:UIControlStateNormal];
     
-    [_localChoseView.getLocal addTarget:self action:@selector(getLocation) forControlEvents:UIControlEventTouchUpInside];
+//    [_localChoseView.getLocal addTarget:self action:@selector(getLocation) forControlEvents:UIControlEventTouchUpInside];
     
 }
 
@@ -132,6 +142,7 @@
     }else if (section == 1) {
         return 1;
     }
+    
     TLCityGroup *group = [self.data objectAtIndex:section - 3];
     return group.arrayCitys.count;
 }
@@ -321,10 +332,28 @@
 //        NSArray *array = [NSArray arrayWithContentsOfFile:_cityFilePath];
         
         NSMutableArray *array = @[].mutableCopy;
-        NSArray *cityarr =[NSArray arrayWithContentsOfFile:_cityFilePath];
+        NSMutableArray *cityarr =[NSMutableArray arrayWithContentsOfFile:_cityFilePath];
+        for (NSDictionary *citys in cityarr) {
+            NSMutableArray *citysArr =[citys[@"citys"]mutableCopy];
+            for (NSDictionary *cityInfo in citys[@"citys"]) {
+                if (cityInfo[@"workstations_count"]) {
+                    if ([cityInfo[@"workstations_count"]integerValue]==0) {
+                        
+                        [citysArr removeObject:cityInfo];
+                    }else{
+                        
+                    }
+                }
+            }
+            [citys setValue:citysArr forKey:@"citys"];
+        }
+        
         for (NSDictionary *cityss in cityarr) {
-            if ([cityss[@"workstations_count"]integerValue]!=0) {
-                [array addObject:cityss];
+            if (cityss) {
+                if ([cityss[@"citys"]count]!=0) {
+                    
+                    [array addObject:cityss];
+                }
             }
         }
         
@@ -441,115 +470,115 @@
     return _commonCitys;
 }
 
-#pragma mark- 发起定位
-- (void)getLocation{
-    
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    
-    /** 由于IOS8中定位的授权机制改变 需要进行手动授权
-     * 获取授权认证，两个方法：
-     * [self.locationManager requestWhenInUseAuthorization];
-     * [self.locationManager requestAlwaysAuthorization];
-     */
-    if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
-        NSLog(@"requestAlwaysAuthorization");
-        [self.locationManager requestAlwaysAuthorization];
-    }
-    
-    //开始定位，不断调用其代理方法
-    [self.locationManager startUpdatingLocation];
-    self.locationManager.delegate = self;
-    
-    NSLog(@"start gps");
-    [self loadingHUDStartLoadingWithTitle:@"正在获取定位信息"];
-    
-}
-
-- (void)locationManager:(CLLocationManager *)manager
-       didFailWithError:(NSError *)error
-{
-    if (error.code == kCLErrorDenied) {
-        // 提示用户出错原因，可按住Option键点击 KCLErrorDenied的查看更多出错信息，可打印error.code值查找原因所在
-    }
-}
-
-#pragma mark Location and Delegate
-
-
-- (void)locationManager:(CLLocationManager *)manager
-     didUpdateLocations:(NSArray *)locations
-{
-    // 1.获取用户位置的对象
-    CLLocation *location = [locations lastObject];
-    CLLocationCoordinate2D coordinate = location.coordinate;
-    NSLog(@"纬度:%f 经度:%f", coordinate.latitude, coordinate.longitude);
-    
-    // 获取当前所在的城市名
-    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-    //根据经纬度反向地理编译出地址信息
-    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *array, NSError *error)
-     {
-         if (array.count > 0)
-         {
-             CLPlacemark *placemark = [array objectAtIndex:0];
-             //获取城市
-             
-             _loaclCity = [NSString stringWithFormat:@"%@", placemark.subLocality];
-             
-             /* 定位信息存本地*/
-             [[NSUserDefaults standardUserDefaults]setValue:_loaclCity forKey:@"Location"];
-             
-
-             
-             if (!_loaclCity) {
-                 //四大直辖市的城市信息无法通过locality获得，只能通过获取省份的方法来获得（如果city为空，则可知为直辖市）
-                 _loaclCity = placemark.administrativeArea;
-                 
-             }
-             
-         }
-         else if (error == nil && [array count] == 0)
-         {
-             NSLog(@"No results were returned.");
-         }
-         else if (error != nil)
-         {
-             NSLog(@"An error occurred = %@", error);
-         }
-         
-         [self loadingHUDStopLoadingWithTitle:@"定位成功"];
-         
-         
-         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"当前定位城市是%@,是否切换到该城市?",_loaclCity] preferredStyle:UIAlertControllerStyleAlert];
-         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-             
-         }] ;
-         UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-             
-             [[NSNotificationCenter defaultCenter]postNotificationName:@"UseLocal" object:_loaclCity];
-             
-             [self.navigationController popViewControllerAnimated:YES];
-             
-         }] ;
-         
-         [alert addAction:cancel];
-         [alert addAction:sure];
-         
-         [self presentViewController:alert animated:YES completion:nil];
-         
-     }];
-    
-    // 2.停止定位
-    
-    if (_loaclCity) {
-        
-        [manager stopUpdatingLocation];
-    }
-    
-    
-}
+//#pragma mark- 发起定位
+//- (void)getLocation{
+//    
+//    self.locationManager = [[CLLocationManager alloc] init];
+//    self.locationManager.delegate = self;
+//    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+//    
+//    /** 由于IOS8中定位的授权机制改变 需要进行手动授权
+//     * 获取授权认证，两个方法：
+//     * [self.locationManager requestWhenInUseAuthorization];
+//     * [self.locationManager requestAlwaysAuthorization];
+//     */
+//    if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+//        NSLog(@"requestAlwaysAuthorization");
+//        [self.locationManager requestAlwaysAuthorization];
+//    }
+//    
+//    //开始定位，不断调用其代理方法
+//    [self.locationManager startUpdatingLocation];
+//    self.locationManager.delegate = self;
+//    
+//    NSLog(@"start gps");
+//    [self loadingHUDStartLoadingWithTitle:@"正在获取定位信息"];
+//    
+//}
+//
+//- (void)locationManager:(CLLocationManager *)manager
+//       didFailWithError:(NSError *)error
+//{
+//    if (error.code == kCLErrorDenied) {
+//        // 提示用户出错原因，可按住Option键点击 KCLErrorDenied的查看更多出错信息，可打印error.code值查找原因所在
+//    }
+//}
+//
+//#pragma mark Location and Delegate
+//
+//
+//- (void)locationManager:(CLLocationManager *)manager
+//     didUpdateLocations:(NSArray *)locations
+//{
+//    // 1.获取用户位置的对象
+//    CLLocation *location = [locations lastObject];
+//    CLLocationCoordinate2D coordinate = location.coordinate;
+//    NSLog(@"纬度:%f 经度:%f", coordinate.latitude, coordinate.longitude);
+//    
+//    // 获取当前所在的城市名
+//    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+//    //根据经纬度反向地理编译出地址信息
+//    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *array, NSError *error)
+//     {
+//         if (array.count > 0)
+//         {
+//             CLPlacemark *placemark = [array objectAtIndex:0];
+//             //获取城市
+//             
+//             _loaclCity = [NSString stringWithFormat:@"%@", placemark.subLocality];
+//             
+//             /* 定位信息存本地*/
+//             [[NSUserDefaults standardUserDefaults]setValue:_loaclCity forKey:@"Location"];
+//             
+//
+//             
+//             if (!_loaclCity) {
+//                 //四大直辖市的城市信息无法通过locality获得，只能通过获取省份的方法来获得（如果city为空，则可知为直辖市）
+//                 _loaclCity = placemark.administrativeArea;
+//                 
+//             }
+//             
+//         }
+//         else if (error == nil && [array count] == 0)
+//         {
+//             NSLog(@"No results were returned.");
+//         }
+//         else if (error != nil)
+//         {
+//             NSLog(@"An error occurred = %@", error);
+//         }
+//         
+//         [self loadingHUDStopLoadingWithTitle:@"定位成功"];
+//         
+//         
+//         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"当前定位城市是%@,是否切换到该城市?",_loaclCity] preferredStyle:UIAlertControllerStyleAlert];
+//         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//             
+//         }] ;
+//         UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//             
+//             [[NSNotificationCenter defaultCenter]postNotificationName:@"UseLocal" object:_loaclCity];
+//             
+//             [self.navigationController popViewControllerAnimated:YES];
+//             
+//         }] ;
+//         
+//         [alert addAction:cancel];
+//         [alert addAction:sure];
+//         
+//         [self presentViewController:alert animated:YES completion:nil];
+//         
+//     }];
+//    
+//    // 2.停止定位
+//    
+//    if (_loaclCity) {
+//        
+//        [manager stopUpdatingLocation];
+//    }
+//    
+//    
+//}
 
 
 

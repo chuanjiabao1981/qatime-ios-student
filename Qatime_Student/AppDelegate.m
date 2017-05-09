@@ -26,8 +26,6 @@
 #import <JSPatchPlatform/JSPatch.h>
 
 
-
-
 //#import <iflyMSC/iflyMSC.h>
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate,NIMSystemNotificationManager,NIMLoginManagerDelegate>{
@@ -336,24 +334,20 @@
     _chooseClassViewController.tabBarItem.image = [UIImage imageNamed:@"tab_tutorium_n"];
     _chooseClassViewController.title = NSLocalizedString(@"选课", comment:"");
     
-    
     _classTimeViewController = [[ClassTimeViewController alloc]init];
     _classTimeViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_class_h"];
     _classTimeViewController.tabBarItem.image = [UIImage imageNamed:@"tab_class_n"];
     _classTimeViewController.title = NSLocalizedString(@"课程表", comment:"");
-    
     
     _noticeIndexViewController = [[NoticeIndexViewController alloc]init];
     _noticeIndexViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_message_h"];
     _noticeIndexViewController.tabBarItem.image = [UIImage imageNamed:@"tab_message_n"];
     _noticeIndexViewController.title = NSLocalizedString(@"消息", comment:"");
     
-    
     _personalViewController = [[PersonalViewController alloc]init];
     _personalViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_me_h"];
     _personalViewController.tabBarItem.image = [UIImage imageNamed:@"tab_me_n"];
     _personalViewController.title = NSLocalizedString(@"个人", comment:"");
-    
     
     /* 初始化五个navigationcontroller*/
     indexPageVC = [[UINavigationController alloc]initWithRootViewController:_indexPageViewController];

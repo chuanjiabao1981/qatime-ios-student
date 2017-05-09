@@ -158,6 +158,12 @@ typedef enum : NSUInteger {
     //请求数据
     [self requestData];
     
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"UserLoginAgain" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        
+        [self getToken];
+        [self requestData];
+    }];
+    
 }
 
 //查看教师详情
@@ -212,13 +218,67 @@ typedef enum : NSUInteger {
             //标题
             _navigationBar.titleLabel.text = _classInfo.name;
             
-            //已购买
-            if (_classInfo.is_bought == YES) {
+            //如果是需要购买的课程
+            if ([_classInfo.sell_type isEqualToString:@"charge"]) {
+                
+                //如果已经购买,直接进入学习
+                if (_classInfo.is_bought == YES) {
+                    _buyBar.leftButton.hidden = YES;
+                    _buyBar.rightButton.layer.borderColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0].CGColor;
+                    _buyBar.rightButton.backgroundColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0];
+                    [_buyBar.rightButton setTitle:@"观看" forState:UIControlStateNormal];
+                    [_buyBar.rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                    
+                    _buyBar.rightButton.sd_resetLayout
+                    .leftSpaceToView(_buyBar, 10)
+                    .rightSpaceToView(_buyBar, 10)
+                    .topSpaceToView(_buyBar, 10)
+                    .bottomSpaceToView(_buyBar, 10);
+                    [_buyBar.rightButton updateLayout];
+                    
+                    [_buyBar.rightButton removeAllTargets];
+                    [_buyBar.rightButton addTarget:self action:@selector(enterStudy:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    //如果未购买
+                }else{
+                    //如果是可以试听的
+                    if (_classInfo.taste_count.integerValue>0) {
+                        _buyBar.leftButton.layer.borderColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0].CGColor;
+                        _buyBar.leftButton.backgroundColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0];
+                        [_buyBar.leftButton setTitle:@"进入试听" forState:UIControlStateNormal];
+                        [_buyBar.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                        [_buyBar.leftButton removeAllTargets];
+                        [_buyBar.leftButton addTarget:self action:@selector(enterTaste:) forControlEvents:UIControlEventTouchUpInside];
+                        [_buyBar.rightButton removeAllTargets];
+                        [_buyBar.rightButton addTarget:self action:@selector(enterStudy:) forControlEvents:UIControlEventTouchUpInside];
+                    }else{
+                        //不能试听
+//                        _buyBar.leftButton.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+//                        _buyBar.leftButton.backgroundColor = SEPERATELINECOLOR_2;
+//                        [_buyBar.leftButton setTitle:@"试听结束" forState:UIControlStateNormal];
+//                        [_buyBar.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                        _buyBar.leftButton.hidden = YES;
+                        _buyBar.rightButton.sd_resetLayout
+                        .leftSpaceToView(_buyBar, 10)
+                        .rightSpaceToView(_buyBar, 10)
+                        .topSpaceToView(_buyBar, 10)
+                        .bottomSpaceToView(_buyBar, 10);
+                        [_buyBar updateLayout];
+                        
+                        [_buyBar.rightButton removeAllTargets];
+                        [_buyBar.rightButton addTarget:self action:@selector(enterStudy:) forControlEvents:UIControlEventTouchUpInside];
+                        
+                    }
+                }
+                
+            }else if ([_classInfo.sell_type isEqualToString:@"free"]){
+                
+                //如果是免费课
                 _buyBar.leftButton.hidden = YES;
-                _buyBar.rightButton.layer.borderColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0].CGColor;
-                _buyBar.rightButton.backgroundColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0];
-                [_buyBar.rightButton setTitle:@"观看" forState:UIControlStateNormal];
-                [_buyBar.rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                _buyBar.rightButton.layer.borderColor = NAVIGATIONRED.CGColor;
+                _buyBar.rightButton.backgroundColor = [UIColor whiteColor];
+                [_buyBar.rightButton setTitle:@"立即学习" forState:UIControlStateNormal];
+                [_buyBar.rightButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
                 
                 _buyBar.rightButton.sd_resetLayout
                 .leftSpaceToView(_buyBar, 10)
@@ -230,37 +290,8 @@ typedef enum : NSUInteger {
                 [_buyBar.rightButton removeAllTargets];
                 [_buyBar.rightButton addTarget:self action:@selector(enterStudy:) forControlEvents:UIControlEventTouchUpInside];
                 
-                //未购买
-            }else{
-                //能试听
-                if (_classInfo.is_tasting == YES) {
-                    _buyBar.leftButton.layer.borderColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0].CGColor;
-                    _buyBar.leftButton.backgroundColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0];
-                    [_buyBar.leftButton setTitle:@"进入试听" forState:UIControlStateNormal];
-                    [_buyBar.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                    [_buyBar.leftButton removeAllTargets];
-                    [_buyBar.leftButton addTarget:self action:@selector(enterTaste:) forControlEvents:UIControlEventTouchUpInside];
-                    [_buyBar.rightButton removeAllTargets];
-                    [_buyBar.rightButton addTarget:self action:@selector(enterStudy:) forControlEvents:UIControlEventTouchUpInside];
-                }else{
-                    //不能试听
-                    _buyBar.leftButton.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
-                    _buyBar.leftButton.backgroundColor = SEPERATELINECOLOR_2;
-                    [_buyBar.leftButton setTitle:@"试听结束" forState:UIControlStateNormal];
-                    [_buyBar.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                    _buyBar.leftButton.hidden = YES;
-                    _buyBar.rightButton.sd_resetLayout
-                    .leftSpaceToView(_buyBar, 10)
-                    .rightSpaceToView(_buyBar, 10)
-                    .topSpaceToView(_buyBar, 10)
-                    .bottomSpaceToView(_buyBar, 10);
-                    [_buyBar updateLayout];
-                    
-                    [_buyBar.rightButton removeAllTargets];
-                    [_buyBar.rightButton addTarget:self action:@selector(enterStudy:) forControlEvents:UIControlEventTouchUpInside];
-                    
-                }
             }
+            
         }else{
             
         }
@@ -277,18 +308,33 @@ typedef enum : NSUInteger {
  */
 - (void)enterTaste:(UIButton *)sender{
     
-    //如果可以试听就试听,不能试听没反应
-    if (_classInfo.is_tasting==YES) {
+    if ([_classInfo.sell_type isEqualToString:@"charge"]) {
+        
+        if (_classInfo.taste_count>0) {
+            //去掉不支持试听的课程
+            NSMutableArray <VideoClass *>*classesArray = @[].mutableCopy;
+            for (VideoClass *mod in _classArray) {
+                if (mod.tastable == YES) {
+                    [classesArray addObject:mod];
+                }
+            }
+            
+            //进入试听
+            VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:classesArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:classesArray[0].video.name_url andIndexPath:nil];
+            [self.navigationController pushViewController:controller animated:YES];
+        }else{
+            //没反应
+            [self loadingHUDStopLoadingWithTitle:@"暂时不能试听"];
+        }
+        
+    }else if ([_classInfo.sell_type isEqualToString:@"free"]){
+        
         //进入试听
-        
-        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:_classArray[0].video.name_url];
+        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:_classArray[0].video.name_url andIndexPath:nil];
         [self.navigationController pushViewController:controller animated:YES];
-        
-        
-    }else{
-        //按钮不能用
-        
+
     }
+    
 }
 
 /**
@@ -298,28 +344,45 @@ typedef enum : NSUInteger {
  */
 - (void)enterStudy:(UIButton *)sender{
     
-    if (_classInfo.is_bought == YES) {
-        //进入学习
+    if ([_classInfo.sell_type isEqualToString:@"charge"]) {
         
-        //测试代码
-        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:nil];
-        [self.navigationController pushViewController:controller animated:YES];
+        if (_classInfo.is_bought == YES) {
+            //进入学习
+            
+            VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:nil andIndexPath:nil];
+            [self.navigationController pushViewController:controller animated:YES];
+            
+        }else{
+            //购买下单
+            OrderViewController *controller = [[OrderViewController alloc]initWithClassID:_classID andClassType:VideoClassType];
+            [self.navigationController pushViewController:controller animated:YES];
+            
+        }
+    }else if ([_classInfo.sell_type isEqualToString:@"free"]){
         
-//        NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
-//        [decodeParm addObject:@"hardware"];
-//        [decodeParm addObject:@"videoOnDemand"];
-//        VideoPlayerViewController *controller = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:@"http://baobab.wdjcdn.com/1456117847747a_x264.mp4"] andDecodeParm:decodeParm andTitle:@""];
-//        
-//        [self presentViewController:controller animated:YES completion:^{
-//            
-//        }];
-        
-    }else{
-        //购买下单
-        OrderViewController *controller = [[OrderViewController alloc]initWithClassID:_classID andClassType:VideoClassType];
-        [self.navigationController pushViewController:controller animated:YES];
+        [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@/deliver_free",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+           
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                
+                [self loadingHUDStopLoadingWithTitle:@"该课程已添加至“我的视频课”"];
+                [self performSelector:@selector(enterStudy) withObject:nil afterDelay:2];
+               
+            }else{
+                
+                [self performSelector:@selector(enterStudy) withObject:nil afterDelay:2];
+            }
+            
+        }];
         
     }
+    
+}
+
+- (void)enterStudy{
+    VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:nil andIndexPath:nil];
+    [self.navigationController pushViewController:controller animated:YES];
+    
 }
 
 
@@ -369,20 +432,38 @@ typedef enum : NSUInteger {
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (_classInfo.is_bought == YES) {
+    VideoClassListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell.model.tastable == YES) {
         
-        VideoClassListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        
-        //进入观看
-        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url];
-        [self.navigationController pushViewController:controller animated:YES];
-        
+        if (_classInfo.is_bought == YES) {
+            //进入观看
+            VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
+            [self.navigationController pushViewController:controller animated:YES];
+        }else{
+            if ([_classInfo.sell_type isEqualToString:@"free"]) {
+                
+                //进入观看
+                VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
+                [self.navigationController pushViewController:controller animated:YES];
+                
+            }else{
+                
+                NSMutableArray <VideoClass *>*arrs =@[].mutableCopy;
+                for (VideoClass *clas in _classArray) {
+                    if (clas.tastable == YES) {
+                        [arrs addObject:clas];
+                    }
+                }
+                
+                VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:arrs andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
+                [self.navigationController pushViewController:controller animated:YES];
+            }
+            
+        }
         
     }else{
-        
-        [self loadingHUDStopLoadingWithTitle:@"尚未购买不能观看"];
+        [self loadingHUDStopLoadingWithTitle:@"该课不支持试听"];
     }
-    
     
 }
 
