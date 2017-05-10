@@ -76,6 +76,7 @@
 #import "HaveNoClassView.h"
 #import "KSPhotoBrowser.h"
 
+
 #define APP_WIDTH self.view.frame.size.width
 #define APP_HEIGHT self.view.frame.size.height
 
@@ -89,7 +90,7 @@ typedef enum : NSUInteger {
     
 } ViewsArrangementMode;
 
-@interface LivePlayerViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UUInputFunctionViewDelegate,UUMessageCellDelegate,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate,NIMLoginManagerDelegate,TTGTextTagCollectionViewDelegate,PhotoBrowserDelegate>{
+@interface LivePlayerViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UUInputFunctionViewDelegate,UUMessageCellDelegate,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate,NIMLoginManagerDelegate,TTGTextTagCollectionViewDelegate,PhotoBrowserDelegate,UIGestureRecognizerDelegate>{
     
     /* token/id*/
     
@@ -767,7 +768,7 @@ bool ismute     = NO;
         [_ setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
         
         _.alpha = 0.8;
-        //    [_playBtn addTarget:self action:@selector(onClickPlay:) forControlEvents:UIControlEventTouchUpInside];
+        [_ addTarget:self action:@selector(onClickPlay:) forControlEvents:UIControlEventTouchUpInside];
         [_bottomControlView addSubview:_];
         _.sd_layout
         .leftSpaceToView(_bottomControlView,0)
@@ -776,7 +777,7 @@ bool ismute     = NO;
         .bottomSpaceToView(_bottomControlView,0)
         .widthEqualToHeight();
         _.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
-        [_ setEnlargeEdge:10];
+        [_ setEnlargeEdge:20];
         _;
     });
     
@@ -786,7 +787,7 @@ bool ismute     = NO;
         [_ setImage:[UIImage imageNamed:@"btn_player_play"] forState:UIControlStateNormal];
         
         _.alpha = 0.8;
-        //    [_pauseBtn addTarget:self action:@selector(onClickPause:) forControlEvents:UIControlEventTouchUpInside];
+        [_ addTarget:self action:@selector(onClickPause:) forControlEvents:UIControlEventTouchUpInside];
         _.hidden = YES;
         [_bottomControlView addSubview:_];
         _.sd_layout
@@ -1056,7 +1057,6 @@ bool ismute     = NO;
     [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:5];
     
     isFullScreen = YES;
-    [_aBarrage stop];
     
     /* 在全屏播放状态下*/
     /* 1、先添加弹幕*/
@@ -1067,26 +1067,23 @@ bool ismute     = NO;
     if (_boardPlayerView.becomeMainPlayer == YES) {
         
         [_boardPlayerView addSubview:_aBarrage.view];
-        [_aBarrage.view sd_clearAutoLayoutSettings];
+        
         _aBarrage.view.sd_layout
         .leftEqualToView(_boardPlayerView)
         .rightEqualToView(_boardPlayerView)
         .topEqualToView(_boardPlayerView)
         .bottomEqualToView(_boardPlayerView);
-//        [_boardPlayerView bringSubviewToFront:_aBarrage.view];
         [_aBarrage.view updateLayout];
-        
-        _aBarrage.view.hidden = NO;
-        [_aBarrage start];
         
         [self mediaControlTurnToFullScreenModeWithMainView:_boardPlayerView];
         
         [self makeFloatingPlayer:_teacherPlayerView];
+        [_aBarrage start];
         
     }else if (_teacherPlayerView.becomeMainPlayer == YES){
         
         [_teacherPlayerView addSubview:_aBarrage.view];
-        [_aBarrage.view sd_clearAutoLayoutSettings];
+        
         _aBarrage.view.sd_layout
         .leftEqualToView(_teacherPlayerView)
         .rightEqualToView(_teacherPlayerView)
@@ -1100,6 +1097,8 @@ bool ismute     = NO;
         [self mediaControlTurnToFullScreenModeWithMainView:_teacherPlayerView];
         
         [self makeFloatingPlayer:_boardPlayerView];
+        
+        [_aBarrage start];
     }
     
     
@@ -1134,20 +1133,18 @@ bool ismute     = NO;
     
     isFullScreen = NO;
     _viewsArrangementMode = DifferentLevel;
-    
-    
+    [_aBarrage.view removeFromSuperview];
     /* 如果是在平级视图*/
     if (_viewsArrangementMode == SameLevel) {
-        
+
         [_teacherPlayerView addSubview:_aBarrage.view];
         _aBarrage.view.sd_layout
         .leftEqualToView(_teacherPlayerView)
         .rightEqualToView(_teacherPlayerView)
         .topEqualToView(_teacherPlayerView)
         .bottomEqualToView(_teacherPlayerView);
-        
+        [_aBarrage.view updateLayout];
         //        [_teacherPlayerView bringSubviewToFront:_liveplayerTeacher.view];
-        
         
         /* 判断主视图 */
         if (_boardPlayerView.becomeMainPlayer == YES) {
@@ -1185,8 +1182,6 @@ bool ismute     = NO;
     [_liveClassInfoView updateLayout];
     [_liveClassInfoView.scrollView updateLayout];
     
-    
-    
     [self.liveClassInfoView.scrollView scrollRectToVisible:CGRectMake(self.liveClassInfoView.segmentControl.selectedSegmentIndex * self.view.width_sd, 0, self.view.width_sd, self.view.height_sd-64-49) animated:NO];
     
     //    if (isFullScreen == NO) {
@@ -1199,7 +1194,6 @@ bool ismute     = NO;
     //        }];
     //    }
     
-    
     [_aBarrage start];
     
 }
@@ -1207,7 +1201,7 @@ bool ismute     = NO;
 /* 控制层变成全屏模式的方法*/
 - (void)mediaControlTurnToFullScreenModeWithMainView:(FJFloatingView *)playerView{
     
-    [_aBarrage stop];
+//    [_aBarrage stop];
     
     [self.view bringSubviewToFront:_mediaControl];
     
@@ -1246,14 +1240,14 @@ bool ismute     = NO;
     /* 语音输入按钮隐藏*/
     IFView.voiceSwitchTextButton.hidden = YES;
     
-    [_aBarrage start];
+//    [_aBarrage start];
     
 }
 
 /* 控制层切回竖屏模式的方法*/
 - (void)mediaControlTurnDownFullScreenModeWithMainView:(FJFloatingView *)playerView{
     
-    [_aBarrage stop];
+//    [_aBarrage stop];
     _mediaControl.sd_resetLayout
     .topSpaceToView(self.view,0)
     .leftEqualToView(self.view)
@@ -1325,7 +1319,7 @@ bool ismute     = NO;
     /* 语音输入按钮显示*/
     IFView.voiceSwitchTextButton.hidden = NO;
     
-    [_aBarrage start];
+//    [_aBarrage start];
     
 }
 
@@ -1458,6 +1452,7 @@ bool ismute     = NO;
 #pragma mark- 切换屏顺序点击事件
 - (void)switchBothScreen:(id)sender{
     
+     [_aBarrage stop];
     /* 条件:在非全屏状态下*/
     if (isFullScreen == NO) {
         /* 条件1：如果现在是平级视图,白板和老师进行切换*/
@@ -1473,22 +1468,22 @@ bool ismute     = NO;
         
         /* 条件:在全屏状态下*/
     }else{
-        
         /* 条件1:白板是主屏*/
         if (_boardPlayerView.becomeMainPlayer == YES) {
             
             [self turnToFullScreenMode:_teacherPlayerView];
             [_teacherPlayerView removeGestureRecognizer:_doubelTap];
             [_boardPlayerView addGestureRecognizer:_doubelTap];
-            [_aBarrage.view removeFromSuperview];
-            [_teacherPlayerView addSubview:_aBarrage.view];
             
-            _aBarrage.view.sd_layout
-            .leftEqualToView(_teacherPlayerView)
-            .rightEqualToView(_teacherPlayerView)
-            .topEqualToView(_teacherPlayerView)
-            .bottomEqualToView(_teacherPlayerView);
-            [_aBarrage.view updateLayout];
+//            [_aBarrage.view removeFromSuperview];
+//            [_teacherPlayerView addSubview:_aBarrage.view];
+//            
+//            _aBarrage.view.sd_layout
+//            .leftEqualToView(_teacherPlayerView)
+//            .rightEqualToView(_teacherPlayerView)
+//            .topEqualToView(_teacherPlayerView)
+//            .bottomEqualToView(_teacherPlayerView);
+//            [_aBarrage.view updateLayout];
             [self mediaControlTurnToFullScreenModeWithMainView:_teacherPlayerView];
             [self makeFloatingPlayer:_boardPlayerView];
             
@@ -1498,23 +1493,24 @@ bool ismute     = NO;
             [_boardPlayerView removeGestureRecognizer:_doubelTap];
             [_teacherPlayerView addGestureRecognizer:_doubelTap];
             
-            [_aBarrage.view removeFromSuperview];
-            [_boardPlayerView addSubview:_aBarrage.view];
-            
-            _aBarrage.view.sd_layout
-            .leftEqualToView(_boardPlayerView)
-            .rightEqualToView(_boardPlayerView)
-            .topEqualToView(_boardPlayerView)
-            .bottomEqualToView(_boardPlayerView);
-            [_aBarrage.view updateLayout];
+//            [_aBarrage.view removeFromSuperview];
+//            [_boardPlayerView addSubview:_aBarrage.view];
+//            
+//            _aBarrage.view.sd_layout
+//            .leftEqualToView(_boardPlayerView)
+//            .rightEqualToView(_boardPlayerView)
+//            .topEqualToView(_boardPlayerView)
+//            .bottomEqualToView(_boardPlayerView);
+//            [_aBarrage.view updateLayout];
             [self mediaControlTurnToFullScreenModeWithMainView:_boardPlayerView];
             [self makeFloatingPlayer:_teacherPlayerView];
-            
             
         }
         
         
     }
+    
+     [_aBarrage start];
     
 }
 
@@ -1816,15 +1812,15 @@ bool ismute     = NO;
         [playerView removeGestureRecognizer:_doubelTap];
     }
     
-    [_aBarrage.view removeFromSuperview];
-    [playerView addSubview:_aBarrage.view];
-    _aBarrage.view.sd_layout
-    .leftSpaceToView(playerView, 0)
-    .rightSpaceToView(playerView, 0)
-    .topSpaceToView(playerView, 0)
-    .bottomSpaceToView(playerView, 0);
-    [_aBarrage.view updateLayout];
-    
+//    [_aBarrage.view removeFromSuperview];
+//    [playerView addSubview:_aBarrage.view];
+//    _aBarrage.view.sd_layout
+//    .leftSpaceToView(playerView, 0)
+//    .rightSpaceToView(playerView, 0)
+//    .topSpaceToView(playerView, 0)
+//    .bottomSpaceToView(playerView, 0);
+//    [_aBarrage.view updateLayout];
+//    
     
 }
 
@@ -1846,6 +1842,8 @@ bool ismute     = NO;
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear");
+    
+    [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     
     [self.liveplayerBoard shutdown]; //退出播放并释放相关资源
     [self.liveplayerBoard.view removeFromSuperview];
@@ -1981,9 +1979,11 @@ bool ismute     = NO;
 //全屏播放视频后，播放器的适配和全屏旋转
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     
+    [_aBarrage stop];
+    
     /* 切换到竖屏*/
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
-        [_aBarrage stop];
+//        [_aBarrage stop];
 //        self.view.backgroundColor = [UIColor blackColor];
         [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
         self.scaleModeBtn.titleLabel.tag = 0;
@@ -2035,7 +2035,7 @@ bool ismute     = NO;
     /* 切换到全屏*/
     else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
         
-        [_aBarrage stop];
+//        [_aBarrage stop];
         self.view.backgroundColor = [UIColor blackColor];
         [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
         self.scaleModeBtn.titleLabel.tag = 1;
@@ -2054,8 +2054,6 @@ bool ismute     = NO;
             [self makeFloatingPlayer:_teacherPlayerView];
             
             [_teacherPlayerView addGestureRecognizer:_doubelTap];
-            
-            
             [_boardPlayerView updateLayout];
             [_teacherPlayerView updateLayout];
             
@@ -2354,18 +2352,18 @@ bool ismute     = NO;
     
 }
 
-
 #pragma mark- 以上是播放器的初始化和配置方法、接口等
 
 #pragma mark- 下为页面数据及逻辑等
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    //不允许侧滑返回
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    
     
     /* TabBar单例隐藏*/
-    
-    
     _liveClassInfoView.segmentControl.selectedSegmentIndex = 1;
     
     /* 白板播放端的通知*/
@@ -2656,14 +2654,12 @@ bool ismute     = NO;
     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"SupportedLandscape"];
     
     
-    
     /* 添加录音是否开始的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordStart) name:@"RecordStart" object:nil];
     
     /* 添加录音是否结束的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordEnd) name:@"RecordEnd" object:nil];
     
-
     
 }
 
@@ -3524,6 +3520,7 @@ bool ismute     = NO;
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     
+    
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
@@ -3695,8 +3692,6 @@ bool ismute     = NO;
                     @"isRichText":@NO,
                     @"richNum":@"0"};
             
-            
-            
         }
         
         
@@ -3820,7 +3815,7 @@ bool ismute     = NO;
             [_aBarrage.view removeFromSuperview];
             
             [_teacherPlayerView addSubview:_aBarrage.view];
-            [_aBarrage.view sd_clearAutoLayoutSettings];
+            
             _aBarrage.view.sd_layout
             .leftEqualToView(_teacherPlayerView)
             .rightEqualToView(_teacherPlayerView)
@@ -3832,55 +3827,75 @@ bool ismute     = NO;
             
         }else{
             
-            _aBarrage.view.hidden = YES;
+//            if (_aBarrage.view.hidden == NO) {
+//                
+//                _aBarrage.view.hidden = YES;
+//            }
             
         }
-        
         
         /* 在全屏的条件下*/
     }else{
         
-        
         if (_boardPlayerView .becomeMainPlayer == YES) {
-            [_aBarrage.view removeFromSuperview];
-            
-            [_boardPlayerView addSubview:_aBarrage.view];
-            _aBarrage.view.hidden = YES;
-            [_boardPlayerView bringSubviewToFront:_aBarrage.view];
+            if ([_boardPlayerView.subviews containsObject:_aBarrage.view]) {
+                
+            }else{
+                
+                [_boardPlayerView addSubview:_aBarrage.view];
+                _aBarrage.view.sd_layout
+                .leftEqualToView(_boardPlayerView)
+                .rightEqualToView(_boardPlayerView)
+                .topEqualToView(_boardPlayerView)
+                .bottomEqualToView(_boardPlayerView);
+                [_aBarrage.view updateLayout];
+            }
+//            if (_aBarrage.view.hidden == YES) {
+//                
+//                _aBarrage.view.hidden = NO;
+//            }
+//            [_boardPlayerView bringSubviewToFront:_aBarrage.view];
             
         }else if (_teacherPlayerView.becomeMainPlayer == YES){
             
-            [_teacherPlayerView addSubview:_aBarrage.view];
-            [_aBarrage.view clearAutoHeigtSettings];
-            _aBarrage.view.sd_layout
-            .leftEqualToView(_teacherPlayerView)
-            .rightEqualToView(_teacherPlayerView)
-            .topEqualToView(_teacherPlayerView)
-            .bottomEqualToView(_teacherPlayerView);
-            [_aBarrage.view updateLayout];
-            _aBarrage.view.hidden = NO;
-            [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
+            if ([_teacherPlayerView .subviews containsObject:_aBarrage.view]) {
+                
+            }else{
+                
+                if (_aBarrage.view.superview!=nil) {
+                    [_aBarrage.view removeFromSuperview];
+                }
+                
+                [_teacherPlayerView addSubview:_aBarrage.view];
+                _aBarrage.view.sd_layout
+                .leftEqualToView(_teacherPlayerView)
+                .rightEqualToView(_teacherPlayerView)
+                .topEqualToView(_teacherPlayerView)
+                .bottomEqualToView(_teacherPlayerView);
+                [_aBarrage.view updateLayout];
+                
+            }
+            
+//            if (_aBarrage.view.hidden == YES) {
+//                
+//                _aBarrage.view.hidden = NO;
+//            }
+            
         }
         
     }
-    
     
     _descriptor.spriteName = NSStringFromClass(BarrageWalkTextSprite.self);
     _descriptor.params[@"text"] =message;
     _descriptor.params[@"textColor"] = [UIColor whiteColor];  //弹幕颜色
     _descriptor.params[@"side"] = BarrageWalkSideDefault;
     _descriptor.params[@"speed"] = @60;
-    //    _descriptor.params[@"attributedText"] = attribute;
     
     if (isFullScreen) {
         _descriptor.params[@"fontSize"]= @22;
     }else{
         _descriptor.params[@"fontSize"]= @16;
     }
-    
-    
-    
-    //    _descriptor.params[@"direction"] = @(BarrageWalkDirectionR2L);
     
     if (isFullScreen) {
         
@@ -3890,9 +3905,7 @@ bool ismute     = NO;
         _aBarrage.canvasMargin = UIEdgeInsetsMake(30, 0, (CGRectGetWidth(self.view.frame)/16*9.0f)/3.0f, 0);
     }
     
-    
-    //    [_aBarrage start];
-    
+    [_aBarrage start];
     [_aBarrage receive:_descriptor];
     
     
@@ -4299,8 +4312,8 @@ bool ismute     = NO;
 - (UIView *)makePlaceHolderView{
     
     HaveNoClassView *view = [[HaveNoClassView alloc]init];
-    //    view.titleLabel.text = @"当前无内容";
-    
+    view.titleLabel.text = @"暂时没有公告";
+    [view updateLayout];
     return view;
 }
 
@@ -4308,7 +4321,6 @@ bool ismute     = NO;
     
     return YES;
 }
-
 
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{

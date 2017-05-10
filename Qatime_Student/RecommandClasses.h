@@ -64,8 +64,6 @@
 @property(nonatomic,strong) NSString *replayable ;
 @property(nonatomic,assign) NSInteger left_replay_times ;
 
-
-
 //所有的标签
 @property (nonatomic, strong) NSArray *tag_list ;
 
@@ -82,5 +80,14 @@
 
 //适宜人群
 @property (nonatomic, strong) NSString *suit_crowd ;
+
+
+/**
+ 首页精品课程属性
+ */
+@property (nonatomic, strong) NSString *target_type ;
+
+
+
 
 @end

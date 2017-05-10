@@ -23,9 +23,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
-        
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        
+//        self.contentView.backgroundColor = BACKGROUNDGRAY;
         /* contentview的裁边*/
         _content = [[UIView alloc]init];
         [self.contentView addSubview:_content];

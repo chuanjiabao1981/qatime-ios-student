@@ -272,13 +272,27 @@ typedef enum : NSUInteger {
                 }
                 
             }else if ([_classInfo.sell_type isEqualToString:@"free"]){
-                
                 //如果是免费课
                 _buyBar.leftButton.hidden = YES;
-                _buyBar.rightButton.layer.borderColor = NAVIGATIONRED.CGColor;
-                _buyBar.rightButton.backgroundColor = [UIColor whiteColor];
-                [_buyBar.rightButton setTitle:@"立即学习" forState:UIControlStateNormal];
-                [_buyBar.rightButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+                
+                if (_classInfo.is_bought == YES) {
+                    
+                    _buyBar.rightButton.layer.borderColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0].CGColor;
+                    _buyBar.rightButton.backgroundColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0];
+                    [_buyBar.rightButton setTitle:@"观看" forState:UIControlStateNormal];
+                    [_buyBar.rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                }else{
+                    
+                    _buyBar.rightButton.layer.borderColor = NAVIGATIONRED.CGColor;
+                    _buyBar.rightButton.backgroundColor = [UIColor whiteColor];
+                    [_buyBar.rightButton setTitle:@"立即学习" forState:UIControlStateNormal];
+                    [_buyBar.rightButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+                    
+                }
+                
+                [_buyBar.rightButton removeAllTargets];
+                [_buyBar.rightButton addTarget:self action:@selector(enterStudy:) forControlEvents:UIControlEventTouchUpInside];
+                
                 
                 _buyBar.rightButton.sd_resetLayout
                 .leftSpaceToView(_buyBar, 10)
@@ -287,8 +301,6 @@ typedef enum : NSUInteger {
                 .bottomSpaceToView(_buyBar, 10);
                 [_buyBar.rightButton updateLayout];
                 
-                [_buyBar.rightButton removeAllTargets];
-                [_buyBar.rightButton addTarget:self action:@selector(enterStudy:) forControlEvents:UIControlEventTouchUpInside];
                 
             }
             
@@ -360,20 +372,30 @@ typedef enum : NSUInteger {
         }
     }else if ([_classInfo.sell_type isEqualToString:@"free"]){
         
-        [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@/deliver_free",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-           
-            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-            if ([dic[@"status"]isEqualToNumber:@1]) {
-                
-                [self loadingHUDStopLoadingWithTitle:@"该课程已添加至“我的视频课”"];
-                [self performSelector:@selector(enterStudy) withObject:nil afterDelay:2];
-               
-            }else{
-                
-                [self performSelector:@selector(enterStudy) withObject:nil afterDelay:2];
-            }
+        if (_classInfo.is_bought == YES) {
             
-        }];
+            //进入学习
+            VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:nil andIndexPath:nil];
+            [self.navigationController pushViewController:controller animated:YES];
+            
+        }else{
+            
+            [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@/deliver_free",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+                
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                if ([dic[@"status"]isEqualToNumber:@1]) {
+                    
+                    [self loadingHUDStopLoadingWithTitle:@"该课程已添加至“我的视频课”"];
+                    [self performSelector:@selector(enterStudy) withObject:nil afterDelay:2];
+                    
+                }else{
+                    
+                    [self performSelector:@selector(enterStudy) withObject:nil afterDelay:2];
+                }
+                
+            }];
+        }
+        
         
     }
     
@@ -406,7 +428,7 @@ typedef enum : NSUInteger {
         cell.model = _classArray[indexPath.row];
         if (_classInfo.is_bought == YES) {
             
-            cell.status.hidden = NO;
+            cell.status.hidden = YES;
         }else{
             
             if (cell.model.tastable == YES) {

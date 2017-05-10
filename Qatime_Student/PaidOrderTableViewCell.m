@@ -87,7 +87,6 @@
         .autoHeightRatio(0);
         [_price setSingleLineAutoResizeWithMaxWidth:200];
         
-
         /* 右侧button*/
         _rightButton = [[UIButton alloc]init];
         _rightButton.layer.borderColor = [UIColor redColor].CGColor;
@@ -98,8 +97,7 @@
         /* 右按钮*/
         _rightButton.sd_layout
         .rightSpaceToView(self.contentView,20*ScrenScale)
-        .topSpaceToView(line, 10*ScrenScale)
-        .bottomEqualToView(_price);
+        .topSpaceToView(line, 10*ScrenScale);
         _rightButton.sd_cornerRadius = [NSNumber numberWithInteger:1];
         [_rightButton setupAutoSizeWithHorizontalPadding:15 buttonHeight:30*ScrenScale];
 //        [_rightButton updateLayout];

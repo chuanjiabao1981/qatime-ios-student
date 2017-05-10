@@ -102,15 +102,14 @@
         UIImageView *image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"发送失败"]];
         UILabel *label = [[UILabel alloc]init];
         label.font = TEXT_FONTSIZE_MIN;
-        label.text = @"该类型课程不支持退款";
+        label.text = @"该类型订单不支持退款";
         label.textColor = NAVIGATIONRED;
         [_tips addSubview:image];
-        [_tips addSubview: label];
+        [_tips addSubview:label];
         
         //一般不显示,只有已经付款的视频课显示
         _tips.hidden = YES;
 
-        
         /* 布局*/
         [self sd_addSubviews:@[_statusImage,_name,_subName,line,orderNumber,_orderNumber,creatTime,_creatTime,payTime,_payTime,payType,_payType,amount,_amount,_cancelButton,_payButton,_tips]];
         

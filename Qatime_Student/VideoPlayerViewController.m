@@ -379,7 +379,7 @@ bool videoIsmute     = NO;
 //开始播放
 - (void)onClickPlay:(id)sender
 {
-    NSLog(@"click pause");
+    NSLog(@"click play");
     [self.liveplayer play];
     [self syncUIStatus:NO];
 }
@@ -489,6 +489,8 @@ bool videoIsmute     = NO;
     } else {
         [self.videoProgress setValue:0.0f];
     }
+    
+    
     
     if ([self.liveplayer playbackState] == NELPMoviePlaybackStatePlaying) {
         self.playBtn.hidden = YES;

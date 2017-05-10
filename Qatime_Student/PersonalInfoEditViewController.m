@@ -97,6 +97,7 @@
         
         [_ setTitle:@"完成" forState:UIControlStateNormal];
         [_ setTitleColor:BUTTONRED forState:UIControlStateNormal];
+        [_ setBackgroundColor:[UIColor whiteColor]];
         _.layer.borderWidth = 1;
         _.layer.borderColor = BUTTONRED.CGColor;
         [_ addTarget:self action:@selector(updateInfo) forControlEvents:UIControlEventTouchUpInside];

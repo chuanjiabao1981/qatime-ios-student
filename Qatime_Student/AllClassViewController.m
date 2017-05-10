@@ -141,7 +141,7 @@
 
     _calendar.delegate = self;
     _calendar.dataSource = self;
-    [_calendar setSelectedDate:[NSDate date]];
+    [_calendar selectDate:[NSDate date]];
     
     _classTableView.delegate = self;
     _classTableView.dataSource = self;

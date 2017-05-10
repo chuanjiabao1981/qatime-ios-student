@@ -18,7 +18,7 @@
         self.backgroundColor = [UIColor whiteColor];
         
         _notClassTableView = [[UITableView alloc]init];
-        _notClassTableView.backgroundColor = BACKGROUNDGRAY;
+        _notClassTableView.backgroundColor = [UIColor whiteColor];
         [self addSubview: _notClassTableView];
         
         _notClassTableView.sd_layout
@@ -39,9 +39,6 @@
         
         _haveNoClassView.hidden = YES;
         
-        
-        
-    
         
     }
     return self;

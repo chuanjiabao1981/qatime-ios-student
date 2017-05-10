@@ -258,7 +258,7 @@
 /** 根据初始化传值进来的id 进行网络请求*/
 - (void)requestClassesInfoWith:(NSString *)classid{
     
-    [self loadingHUDStartLoadingWithTitle:@"正在加载信息"];
+    [self loadingHUDStartLoadingWithTitle:nil];
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -272,7 +272,7 @@
         
         [self loginStates:dic];
         
-        NSLog(@"%@",dic);
+//        NSLog(@"%@",dic);
         
         NSString *teacherID = [NSString stringWithFormat:@"%@",dic[@"data"][@"teacher"][@"id"]];
         
@@ -332,8 +332,7 @@
                         _tutoriumInfoView.status.backgroundColor = [UIColor colorWithRed:0.08 green:0.59 blue:0.09 alpha:1.00];
                         
                     }else if ([_dataDic[@"status"]isEqualToString:@"finished"]||[_dataDic[@"status"]isEqualToString:@"billing"]||[_dataDic[@"status"]isEqualToString:@"completed"]){
-                        
-                        _tutoriumInfoView.status.text = @" 已结束 ";
+                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ ,%@/%@",@"已结束",_dataDic[@"lesson_count"],_dataDic[@"lesson_count"]];
                         _tutoriumInfoView.status.backgroundColor = SEPERATELINECOLOR_2;
                         
                         //如果课程已结束,buybar不显示.什么都不显示了

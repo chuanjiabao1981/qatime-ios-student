@@ -148,30 +148,30 @@
     
     _classModel = classModel;
     
-    /* 如果本地已经保留了图片缓存*/
-    if ([self diskImageExistsForURL:[NSURL URLWithString:classModel.publicize]]==YES) {
-        [_classImage sd_setImageWithURL:[NSURL URLWithString:classModel.publicize]];
-    }else{
+    /**加载缓存图片*/
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:classModel.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         
-        [_classImage sd_setImageWithURL:[NSURL URLWithString:classModel.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-            
-        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            
-            _classImage.alpha = 0.0;
-            [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-                if (image) {
-                    
-                    [_classImage setImage:image];
-                }else{
-                    [_classImage setImage:[UIImage imageNamed:@"school"]];
-                }
-                _classImage.alpha = 1.0;
-            } completion:NULL];
+        [manager diskImageExistsForURL:[NSURL URLWithString:classModel.publicize] completion:^(BOOL isInCache) {
+            if (isInCache == YES) {
+                
+            }else{
+                _classImage.alpha = 0.0;
+                [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                    if (image) {
+                        
+                        [_classImage setImage:image];
+                    }else{
+                        [_classImage setImage:[UIImage imageNamed:@"school"]];
+                    }
+                    _classImage.alpha = 1.0;
+                } completion:NULL];
+                
+            }
             
         }];
-    }
-    
-    
+        
+    }];
+
     //课程名
     _className.text = classModel.name;
     
@@ -186,28 +186,29 @@
     
     _recommandModel = recommandModel;
     
-    /* 如果本地已经保留了图片缓存*/
-    if ([self diskImageExistsForURL:[NSURL URLWithString:recommandModel.publicize]]==YES) {
-        [_classImage sd_setImageWithURL:[NSURL URLWithString:recommandModel.publicize]];
-    }else{
+    /**加载缓存图片*/
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:recommandModel.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         
-        [_classImage sd_setImageWithURL:[NSURL URLWithString:recommandModel.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-            
-        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            
-            _classImage.alpha = 0.0;
-            [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-                if (image) {
-                    
-                    [_classImage setImage:image];
-                }else{
-                    [_classImage setImage:[UIImage imageNamed:@"school"]];
-                }
-                _classImage.alpha = 1.0;
-            } completion:NULL];
+        [manager diskImageExistsForURL:[NSURL URLWithString:recommandModel.publicize] completion:^(BOOL isInCache) {
+            if (isInCache == YES) {
+                
+            }else{
+                _classImage.alpha = 0.0;
+                [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                    if (image) {
+                        
+                        [_classImage setImage:image];
+                    }else{
+                        [_classImage setImage:[UIImage imageNamed:@"school"]];
+                    }
+                    _classImage.alpha = 1.0;
+                } completion:NULL];
+                
+            }
             
         }];
-    }
+        
+    }];
     
     
     //课程名
@@ -248,15 +249,6 @@
     
     return str;
 }
-
-
-
-
-- (BOOL)diskImageExistsForURL:(NSURL *)url {
-    NSString *key = [manager cacheKeyForURL:url];
-    return [manager.imageCache diskImageExistsWithKey:key];
-}
-
 
 
 - (void)awakeFromNib {

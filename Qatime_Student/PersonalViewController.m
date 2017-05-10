@@ -85,13 +85,13 @@
     [self.view addSubview:_headView];
     
     /* 个人页面菜单*/
-    _personalView = [[PersonalView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd-TabBar_Height)];
+    _personalView = [[PersonalView alloc]initWithFrame:CGRectMake(0, _headView.height_sd, self.view.width_sd, self.view.height_sd-_headView.height_sd-TabBar_Height)];
     [self.view addSubview:_personalView];
     
     _personalView.settingTableView.delegate = self;
     _personalView.settingTableView.dataSource = self;
-    _personalView.settingTableView.tableHeaderView = _headView;
-    _personalView.settingTableView.tableHeaderView.size = CGSizeMake(SCREENWIDTH, SCREENHEIGHT*2/5);
+//    _personalView.settingTableView.tableHeaderView = _headView;
+//    _personalView.settingTableView.tableHeaderView.size = CGSizeMake(SCREENWIDTH, SCREENHEIGHT*2/5);
     
     _personalView.settingTableView.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
     

@@ -79,7 +79,7 @@ SOFTWARE.
 
 Software License Agreement (BSD License)
 
-Copyright (c) 2010-2015, Deusty, LLC
+Copyright (c) 2010-2016, Deusty, LLC
 All rights reserved.
 
 Redistribution and use of this software in source and binary forms,
@@ -350,7 +350,7 @@ THE SOFTWARE.
 
 ## SVProgressHUD
 
-Copyright (c) 2011-2014 Sam Vermette
+Copyright (c) 2011-2016 Sam Vermette, Tobias Tiemerding and contributors.
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -377,9 +377,10 @@ A different license may apply to other resources included in this package,
 including Freepik Icons. Please consult their 
 respective headers for the terms of their individual licenses.
 
+
 ## Toast
 
-Copyright (c) 2014 Charles Scalesse.
+Copyright (c) 2011-2015 Charles Scalesse.
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the

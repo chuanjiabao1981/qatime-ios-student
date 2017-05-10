@@ -94,27 +94,28 @@
     _model = model;
     
     /* 如果本地已经保留了图片缓存*/
-    if ([self diskImageExistsForURL:[NSURL URLWithString:model.publicize]]==YES) {
-        [_classImageView sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
-    }else{
-        /* 如果本地没有缓存,加载网络图片,渐变动画*/
-        [_classImageView sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-            
-        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            
-            _classImageView.alpha = 0.0;
-            [UIView transitionWithView:_classImageView duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-                if (image) {
-                    
-                    [_classImageView setImage:image];
-                }else{
-                    [_classImageView setImage:[UIImage imageNamed:@"school"]];
-                }
-                _classImageView.alpha = 1.0;
-            } completion:NULL];
+    [_classImageView sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        
+        [manager diskImageExistsForURL:[NSURL URLWithString:model.publicize] completion:^(BOOL isInCache) {
+            if (isInCache == YES) {
+                
+            }else{
+                _classImageView.alpha = 0.0;
+                [UIView transitionWithView:_classImageView duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                    if (image) {
+                        
+                        [_classImageView setImage:image];
+                    }else{
+                        [_classImageView setImage:[UIImage imageNamed:@"school"]];
+                    }
+                    _classImageView.alpha = 1.0;
+                } completion:NULL];
+                
+            }
             
         }];
-    }
+        
+    }];
 
     _classNameLabel.text = model.name;
     
@@ -145,11 +146,6 @@
     return str;
 }
 
-
-- (BOOL)diskImageExistsForURL:(NSURL *)url {
-    NSString *key = [manager cacheKeyForURL:url];
-    return [manager.imageCache diskImageExistsWithKey:key];
-}
 
 
 @end

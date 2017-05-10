@@ -37,7 +37,7 @@
         .leftSpaceToView(_memberIcon,10)
         .topEqualToView(_memberIcon)
         .bottomEqualToView(_memberIcon);
-        [_name setSingleLineAutoResizeWithMaxWidth:300];
+        [_name setSingleLineAutoResizeWithMaxWidth:160];
         
         _character = [[UILabel alloc]init];
         _character.font = [UIFont systemFontOfSize:15*ScrenScale];
@@ -48,9 +48,6 @@
         .bottomEqualToView(_name)
         .rightSpaceToView(self.contentView,10);
         [_character setSingleLineAutoResizeWithMaxWidth:300];
-        
-        
-        
         
         
     }

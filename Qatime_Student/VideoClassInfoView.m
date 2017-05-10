@@ -531,12 +531,13 @@
     _model = model;
     _className.text = model.name;
     
-    if (model.price.floatValue!=0) {
-        
+    if ([model.sell_type isEqualToString:@"charge"]) {
         _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];
-    }else{
+    }else if ([model.sell_type isEqualToString:@"free"]){
+        
         _priceLabel.text = @"免费";
     }
+    
     _saleNumber.text = [NSString stringWithFormat:@"学习人数 %@",model.buy_tickets_count];
     
     _gradeLabel.text = model.grade;

@@ -53,7 +53,8 @@
             [fileManager removeItemAtPath:absolutePath error:nil];
         }
     }
-    [[SDImageCache sharedImageCache] cleanDisk];
+    [[SDImageCache sharedImageCache] clearMemory];
+    
 }
 
 

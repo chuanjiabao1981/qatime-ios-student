@@ -18,7 +18,7 @@
         self.backgroundColor = [UIColor whiteColor];
         
         _alreadyClassTableView = [[UITableView alloc]init];
-        _alreadyClassTableView.backgroundColor = BACKGROUNDGRAY;
+        _alreadyClassTableView.backgroundColor = [UIColor whiteColor];
         [self addSubview: _alreadyClassTableView];
         _alreadyClassTableView.sd_layout
         .topEqualToView(self)

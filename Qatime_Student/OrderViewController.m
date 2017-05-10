@@ -13,7 +13,6 @@
 #import "YYModel.h"
 #import "UIImageView+WebCache.h"
 
-
 #import "UIViewController+HUD.h"
 #import "PayConfirmViewController.h"
 #import "UIAlertController+Blocks.h"
@@ -23,13 +22,10 @@
 #import "DCPaymentView.h"
 #import "ChargeViewController.h"
 
-
 typedef enum : NSUInteger {
     AutoWrite,  //扫码自动填写的优惠码
     ManullyWrite,   //手动填写的优惠码
 } PromotionCodeWriteType;
-
-
 
 @interface OrderViewController (){
     
@@ -662,8 +658,15 @@ typedef enum : NSUInteger {
 //                    }
 //                }
 //            }
-//            
-            //
+//
+        }else{
+            
+            if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
+                if ([dic[@"error"][@"msg"] rangeOfString:@"目前不对外招生"].location != NSNotFound ) {
+                 
+                    [self loadingHUDStopLoadingWithTitle:@"该课程目前不对外招生"];
+                }
+            }
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -701,13 +704,9 @@ typedef enum : NSUInteger {
         
         self.view.frame = CGRectMake(0, -keyboardRect.size.height/2, self.view.width_sd, self.view.height_sd);
         
-        
     }];
     
-    
-    
 }
-
 
 - (void)keyboardWillHide:(NSNotification *)notification {
     
@@ -723,9 +722,7 @@ typedef enum : NSUInteger {
         
         self.view.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd);
         
-        
     }];
-    
     
 }
 

@@ -88,7 +88,7 @@
     
     /* 初始化容器*/
     
-    _menuName = @[@"绑定手机",@"绑定邮箱",@"微信绑定",@"家长手机",@"修改支付密码",@"修改登录密码"];
+    _menuName = @[@"绑定手机",@"微信绑定",@"绑定邮箱",@"家长手机",@"重置支付密码",@"修改登录密码"];
     
     /* 添加一个家长手机修改成功的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeParentPhone) name:@"ChangeParentPhoneSuccess" object:nil];
@@ -150,7 +150,7 @@
             }
             
             /* 拉取个人信息成功*/
-            _contentArr = [NSMutableArray arrayWithArray:@[chDic[@"login_mobile"],chDic[@"email"],@"马上绑定",chDic[@"parent_phone"],@"",@""]];
+            _contentArr = [NSMutableArray arrayWithArray:@[chDic[@"login_mobile"],@"马上绑定",chDic[@"email"],chDic[@"parent_phone"],@"",@""]];
             
             NSLog(@"%@",chDic);
             
@@ -238,7 +238,7 @@
                     cell.settingName.text = _menuName[indexPath.row];
                     cell.balance.text = _contentArr[indexPath.row];
                     
-                    if (indexPath.row==2) {
+                    if (indexPath.row==1) {
                         
                         if (wechatIsBinding == YES) {
                             cell.balance.text =@" 取消绑定 ";
@@ -339,13 +339,6 @@
                 }
                     break;
                 case 1:{
-                    BindingMailViewController *binVC = [[BindingMailViewController alloc]init];
-                    [self.navigationController pushViewController:binVC animated:YES];
-                    
-                    
-                }
-                    break;
-                case 2:{
                     
                     /* 去绑定微信*/
                     if (wechatIsBinding == NO) {
@@ -364,11 +357,18 @@
                             }
                         }];
                         
-                        
                     }
                     
                 }
                     break;
+                    
+                case 2:{
+                    BindingMailViewController *binVC = [[BindingMailViewController alloc]init];
+                    [self.navigationController pushViewController:binVC animated:YES];
+                    
+                }
+                    break;
+
                 case 3:{
                     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]) {
                         

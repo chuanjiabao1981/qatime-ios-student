@@ -44,7 +44,6 @@
 @property (nonatomic, strong) NSString *objective ; //目标
 @property (nonatomic, strong) NSString *suit_crowd ;
 
-
 /* 在加载消息列表页时该属性才有用,其他接口用不到*/
 @property(nonatomic,assign) BOOL notify ;
 

@@ -166,7 +166,7 @@
             for (NSDictionary *tag in dic[@"data"]) {
                 [_tags addObject:tag[@"name"]];
             }
-            
+            [_tags insertObject:@"不限" atIndex:0];
             [_tagsFilterView.tagsCollection reloadData];
             
         }else{
@@ -234,6 +234,16 @@
     
     [_filterView.tagsButton setTitle:_tags[indexPath.row] forState:UIControlStateNormal];
     
+    NSString *tag;
+    if ([_tags[indexPath.row]isEqualToString:@"不限"]) {
+        
+        tag = @"";
+    }else{
+        tag = _tags[indexPath.row];
+        
+    }
+    
+    
     //蒙版消失之后 ,执行操作
     [_pops dismissWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
         
@@ -242,16 +252,16 @@
         switch (_segmentControl.selectedSegmentIndex) {
             case 0:{
                 
-                [_liveClassFilterController filteredByTages:_tags[indexPath.row]];
+                [_liveClassFilterController filteredByTages:tag];
             }
                 break;
                 
             case 1:{
-                [_interactionClassFilterController filteredByTages:_tags[indexPath.row]];
+                [_interactionClassFilterController filteredByTages:tag];
             }
                 break;
             case 2:{
-                [_videoClassFilterController filteredByTages:_tags[indexPath.row]];
+                [_videoClassFilterController filteredByTages:tag];
             }
                 break;
         }
@@ -316,6 +326,7 @@
     
     //tag
     [_filterView.tagsButton addTarget:self action:@selector(chooseTags:) forControlEvents:UIControlEventTouchUpInside];
+    [_filterView.tagsButton setTitle:@"不限" forState:UIControlStateNormal];
     
     //多项筛选
     [_filterView.filterButton addTarget:self action:@selector(multiFilters) forControlEvents:UIControlEventTouchUpInside];

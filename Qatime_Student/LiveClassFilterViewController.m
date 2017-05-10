@@ -138,6 +138,7 @@ typedef enum : NSUInteger {
     });
     
 }
+
 //下拉加载数据
 - (void)requestClass:(RefreshMode)mode withContentDictionary:( nullable __kindof NSDictionary * )contentDic{
 //    self.isInitPull = NO;

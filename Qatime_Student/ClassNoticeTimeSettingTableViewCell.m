@@ -14,9 +14,7 @@
     UILabel *_before;
     UIImageView *_arrow;
     
-    UIView *_line;
-    
-    
+//    UIView *_line;
 }
 
 @end
@@ -59,17 +57,17 @@
             _;
         });
 
-        _line = ({
-            UIView *_ = [[UIView alloc]init];
-            _.backgroundColor = SEPERATELINECOLOR_2;
-            
-            _;
-        });
+//        _line = ({
+//            UIView *_ = [[UIView alloc]init];
+//            _.backgroundColor = SEPERATELINECOLOR_2;
+//            
+//            _;
+//        });
         
         
         /* 布局*/
         
-        [self.contentView sd_addSubviews:@[_name,_before,_timeButton,_arrow,_line]];
+        [self.contentView sd_addSubviews:@[_name,_before,_timeButton,_arrow/*,_line*/]];
         
         _name.sd_layout
         .topSpaceToView(self.contentView,15)
@@ -97,11 +95,11 @@
         _before.textAlignment = NSTextAlignmentRight;
         
         
-        _line.sd_layout
-        .leftEqualToView(self.contentView)
-        .rightEqualToView(self.contentView)
-        .bottomEqualToView(self.contentView)
-        .heightIs(0.5);
+//        _line.sd_layout
+//        .leftEqualToView(self.contentView)
+//        .rightEqualToView(self.contentView)
+//        .bottomEqualToView(self.contentView)
+//        .heightIs(0.5);
         
         
         

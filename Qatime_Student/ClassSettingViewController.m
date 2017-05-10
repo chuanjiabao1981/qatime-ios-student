@@ -15,6 +15,7 @@
 #import "HcdDateTimePickerView.h"
 #import "UIAlertController+Blocks.h"
 #import "NoticeSwitchTableViewCell.h"
+#import "UIColor+HcdCustom.h"
 
 
 
@@ -121,14 +122,13 @@
 - (void)loadSettingView{
     /* 设置列表*/
     _menuTableView = ({
-        UITableView *_=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
+        UITableView *_=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64) style:UITableViewStyleGrouped];
+        _.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         [self.view addSubview:_];
         _.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
         _.tableFooterView = [[UIView alloc]init];
         _.delegate = self;
         _.dataSource =self;
-        _.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _.bounces=NO;
         _;
     });
     
@@ -419,7 +419,26 @@
     
     if (section!=3) {
         
-        
+        view = [[UIView alloc]init];
+        UILabel *label = [[UILabel alloc]init];
+        [view addSubview:label];
+        label.sd_layout
+        .bottomSpaceToView(view, 9)
+        .leftSpaceToView(view,12)
+        .rightSpaceToView(view,12)
+        .autoHeightRatio(0);
+        label.textColor = [UIColor colorWithHexString:@"666666"];
+        label.font = [UIFont systemFontOfSize:13];
+        if (section == 0) {
+            label.text = @"提醒范围";
+            
+        }else if (section ==1){
+            label.text = @"提醒课程";
+            
+        }else if (section == 2){
+            label.text = @"提醒方式";
+            
+        }
         
     }
     
@@ -430,7 +449,13 @@
     
     CGFloat height =0;
     if (section!=3) {
-        height = 57*ScrenScale;
+        
+        if (section == 0) {
+            height = 27*ScrenScale;
+        }else{
+            
+            height = 47*ScrenScale;
+        }
     }
     
     return height;
@@ -443,16 +468,6 @@
     
     if (section == 2) {
         view = [[UIView alloc]init];
-        view.backgroundColor = BACKGROUNDGRAY;
-        UIView *line = [[UIView alloc]init];
-        line.backgroundColor = SEPERATELINECOLOR_2;
-        [view addSubview:line];
-        line.sd_layout
-        .leftEqualToView(view)
-        .rightEqualToView(view)
-        .bottomEqualToView(view)
-        .heightIs(0.5);
-        
         UILabel *label = [[UILabel alloc]init];
         [view addSubview:label];
         label.sd_layout
@@ -462,7 +477,7 @@
         .autoHeightRatio(0);
         label.text = @"为了您能正常使用此功能，请在“系统设置”>“答疑时间”>“通知”中允许接收通知";
         label.textColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.0];
-        label.font = [UIFont systemFontOfSize:12*ScrenScale];
+        label.font = [UIFont systemFontOfSize:12];
         return view;
     }
     

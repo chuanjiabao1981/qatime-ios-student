@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/VideoClass_Player_InfoView.m"
-            timestampString = "516012143.641356"
+            filePath = "Qatime_Student/LivePlayerViewController.m"
+            timestampString = "516107518.665493"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "319"
-            endingLineNumber = "319"
-            landmarkName = "-setModel:"
+            startingLineNumber = "2107"
+            endingLineNumber = "2107"
+            landmarkName = "-onClickPlay:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/MyOrderViewController.m"
-            timestampString = "516025318.662323"
+            filePath = "Qatime_Student/LivePlayerViewController.m"
+            timestampString = "516107519.745514"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "746"
-            endingLineNumber = "746"
-            landmarkName = "-buyAgain:"
+            startingLineNumber = "2118"
+            endingLineNumber = "2118"
+            landmarkName = "-onClickPause:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/MyOrderViewController.m"
-            timestampString = "516025452.314285"
+            filePath = "Qatime_Student/VideoPlayerViewController.m"
+            timestampString = "516108073.241677"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "789"
-            endingLineNumber = "789"
-            landmarkName = "-buyAgain:"
+            startingLineNumber = "494"
+            endingLineNumber = "494"
+            landmarkName = "-syncUIStatus:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,13 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/MyOrderViewController.m"
-            timestampString = "516025452.530333"
+            filePath = "Qatime_Student/VideoPlayerViewController.m"
+            timestampString = "516108093.010246"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "790"
-            endingLineNumber = "790"
-            landmarkName = "-buyAgain:"
+            startingLineNumber = "500"
+            endingLineNumber = "500"
+            landmarkName = "-syncUIStatus:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -73,13 +73,45 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/MyOrderViewController.m"
-            timestampString = "516025452.846528"
+            filePath = "Qatime_Student/VideoPlayerViewController.m"
+            timestampString = "516108086.121893"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "791"
-            endingLineNumber = "791"
-            landmarkName = "-buyAgain:"
+            startingLineNumber = "382"
+            endingLineNumber = "382"
+            landmarkName = "-onClickPlay:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Qatime_Student/VideoPlayerViewController.m"
+            timestampString = "516108158.540095"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "390"
+            endingLineNumber = "390"
+            landmarkName = "-onClickPause:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Qatime_Student/VideoClassPlayerViewController.m"
+            timestampString = "516109077.119563"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "544"
+            endingLineNumber = "544"
+            landmarkName = "-onClickPlay:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -19,8 +19,13 @@
     
     //图片缓存管理器
     SDWebImageManager *manager;
+    
+    UIImageView *_studentImage;
 
 }
+
+@property (nonatomic, strong) UILabel *buyCount ;
+
 
 @end
 
@@ -102,10 +107,29 @@
         [_price setSingleLineAutoResizeWithMaxWidth:200];
         
         
+        //购买人数
+        _buyCount = [[UILabel alloc]init];
+        _buyCount.textColor = TITLECOLOR;
+        _buyCount.font = [UIFont systemFontOfSize:12*ScrenScale];
+        [_content addSubview:_buyCount];
+        _buyCount.sd_layout
+        .rightSpaceToView(_content, 10)
+        .bottomEqualToView(_teacherName)
+        .autoHeightRatio(0);
+        [_buyCount setSingleLineAutoResizeWithMaxWidth:200];
+        
+        _studentImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"老师"]];
+        [_content addSubview:_studentImage];
+        _studentImage.sd_layout
+        .topEqualToView(_buyCount)
+        .bottomEqualToView(_buyCount)
+        .rightSpaceToView(_buyCount, 5)
+        .widthEqualToHeight();
+        
+        
     }
     return self;
 }
-
 
 
 -(void)setModel:(TutoriumListInfo *)model{
@@ -113,25 +137,28 @@
     _model = model;
     
     /* 如果本地已经保留了图片缓存*/
-    if ([self diskImageExistsForURL:[NSURL URLWithString:model.publicize]]==YES) {
-        [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
-    }else{
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         
-        [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            _classImage.alpha = 0.0;
-            [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-                if (image) {
-                    
-                    [_classImage setImage:image];
-                }else{
-                    [_classImage setImage:[UIImage imageNamed:@"school"]];
-                }
-                _classImage.alpha = 1.0;
-            } completion:NULL];
+        [manager diskImageExistsForURL:[NSURL URLWithString:model.publicize] completion:^(BOOL isInCache) {
+            if (isInCache == YES) {
+                
+            }else{
+                _classImage.alpha = 0.0;
+                [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                    if (image) {
+                        
+                        [_classImage setImage:image];
+                    }else{
+                        [_classImage setImage:[UIImage imageNamed:@"school"]];
+                    }
+                    _classImage.alpha = 1.0;
+                } completion:NULL];
+                
+            }
             
         }];
-    }
+        
+    }];
     
     
     //课程名
@@ -143,6 +170,9 @@
     //老师名字
     _teacherName.text = model.teacher_name;
     
+    //购买人数
+    _buyCount.text = model.buy_tickets_count;
+    
 }
 
 -(void)setInteractionModel:(OneOnOneClass *)interactionModel{
@@ -150,25 +180,28 @@
     _interactionModel = interactionModel;
     
     /* 如果本地已经保留了图片缓存*/
-    if ([self diskImageExistsForURL:[NSURL URLWithString:interactionModel.publicize_app_url]]==YES) {
-        [_classImage sd_setImageWithURL:[NSURL URLWithString:interactionModel.publicize_app_url]];
-    }else{
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:interactionModel.publicize_app_url] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         
-        [_classImage sd_setImageWithURL:[NSURL URLWithString:interactionModel.publicize_app_url] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            _classImage.alpha = 0.0;
-            [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-                if (image) {
-                    
-                    [_classImage setImage:image];
-                }else{
-                    [_classImage setImage:[UIImage imageNamed:@"school"]];
-                }
-                _classImage.alpha = 1.0;
-            } completion:NULL];
+        [manager diskImageExistsForURL:[NSURL URLWithString:interactionModel.publicize_app_url] completion:^(BOOL isInCache) {
+            if (isInCache == YES) {
+                
+            }else{
+                _classImage.alpha = 0.0;
+                [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                    if (image) {
+                        
+                        [_classImage setImage:image];
+                    }else{
+                        [_classImage setImage:[UIImage imageNamed:@"school"]];
+                    }
+                    _classImage.alpha = 1.0;
+                } completion:NULL];
+                
+            }
             
         }];
-    }
+        
+    }];
     
     
     //课程名
@@ -179,14 +212,9 @@
     
     //老师名字
     _teacherName.text = [interactionModel.teacherNameString substringToIndex:interactionModel.teacherNameString.length-1];
+    //购买人数
+//    _buyCount.text = interactionModel.buy_tickets_count;
 
-}
-
-
-
-- (BOOL)diskImageExistsForURL:(NSURL *)url {
-    NSString *key = [manager cacheKeyForURL:url];
-    return [manager.imageCache diskImageExistsWithKey:key];
 }
 
 

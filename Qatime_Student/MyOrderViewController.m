@@ -39,6 +39,11 @@
 #import "CYLTableViewPlaceHolder.h"
 #import "HaveNoClassView.h"
 
+#import "TutoriumInfoViewController.h"
+#import "OneOnOneTutoriumInfoViewController.h"
+#import "VideoClassInfoViewController.h"
+
+
 /**刷新方式*/
 typedef enum : NSUInteger {
     PullToRefresh,
@@ -762,32 +767,30 @@ typedef enum : NSUInteger {
             productNumber = mod.orderID;
             payType = @"account";
             
-            NSString *classID ;
-            
-            
-            UIViewController *controller;
+//            NSString *classID ;
+           __kindof UIViewController *controller;
             //判断课程类型
             if ([mod.product_type isEqualToString:@"LiveStudio::Course"]) {
                 //直播课
                 course = @"courses";
                 courseNumber = [NSString stringWithFormat:@"%@",mod.product[@"id"]];
-                
+                controller = [[TutoriumInfoViewController alloc]initWithClassID:courseNumber];
                 
             }else if ([mod.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
                 //视频课
                 course = @"video_courses";
                 courseNumber = [NSString stringWithFormat:@"%@",mod.product_video_course[@"id"]];
+                controller = [[VideoClassInfoViewController alloc]initWithClassID:courseNumber];
                 
             }else if ([mod.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
                 //一对一
                 course = @"interactive_courses";
                 courseNumber = [NSString stringWithFormat:@"%@",mod.product_interactive_course[@"id"]];
+                controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:courseNumber];
             }
             
-            
-//            加载不同类型的辅导班详情
-            
-            
+            //加载不同类型的辅导班详情
+            [self.navigationController pushViewController:controller animated:YES];
             
         }
     }] ;

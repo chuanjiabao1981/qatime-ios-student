@@ -22,9 +22,9 @@
         _name.font = [UIFont systemFontOfSize:17*ScrenScale];
         _noticeSwitch = [[UISwitch alloc]init];
         
-        UIView *line = [[UIView alloc]init];
-        line.backgroundColor  = SEPERATELINECOLOR_2;
-        [self.contentView sd_addSubviews:@[_name,_noticeSwitch,line]];
+//        UIView *line = [[UIView alloc]init];
+//        line.backgroundColor  = SEPERATELINECOLOR_2;
+        [self.contentView sd_addSubviews:@[_name,_noticeSwitch/*,line*/]];
         
         _name.sd_layout
         .leftSpaceToView(self.contentView,12)
@@ -38,11 +38,11 @@
         .heightRatioToView(self, 0.3)
         .autoWidthRatio(0.5);
         
-        line.sd_layout
-        .leftEqualToView(self.contentView)
-        .rightEqualToView(self.contentView)
-        .bottomEqualToView(self.contentView)
-        .heightIs(0.5);
+//        line.sd_layout
+//        .leftEqualToView(self.contentView)
+//        .rightEqualToView(self.contentView)
+//        .bottomEqualToView(self.contentView)
+//        .heightIs(0.5);
         
     }
     

@@ -20,7 +20,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        
 #pragma mark- 滑动导航栏
         
         _segmentControl = [[HMSegmentedControl alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, self.height_sd*0.055)];

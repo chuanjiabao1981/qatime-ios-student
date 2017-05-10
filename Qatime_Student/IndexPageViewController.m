@@ -677,14 +677,25 @@
                 [self refreshNoClassData];
                 
             }else{
+                NSString *courseType ;
                 
                 for (NSDictionary *dics in arr) {
                     
+                    if ([dics[@"target_type"]isEqualToString:@"LiveStudio::Course"]) {
+                        courseType = @"live_studio_course";
+                        
+                    }else if ([dics[@"target_type"]isEqualToString:@"LiveStudio::InteractiveCourse"]){
+                        courseType = @"live_studio_interactive_course";
+
+                    }else if ([dics[@"target_type"]isEqualToString:@"LiveStudio::VideoCourse"]){
+                        courseType = @"live_studio_video_course";
+                    }
                     RecommandClasses *mod ;
-                    mod = [RecommandClasses yy_modelWithJSON:dics[@"live_studio_course"]];
+                    mod = [RecommandClasses yy_modelWithJSON:dics[courseType]];
+                    mod.target_type = [NSString stringWithFormat:@"%@",dics[@"target_type"]];
+                    mod.classID =dics[courseType][@"id"];
                     mod.tag_one = dics[@"tag_one"];
                     mod.tag_two = dics[@"tag_two"];
-                    mod.classID =dics[@"live_studio_course"][@"id"];
                     
                     if (mod == nil) {
                         
@@ -692,9 +703,7 @@
                         
                         [_classes addObject:mod];
                     }
-                    
                 }
-                
             }
             [_indexPageView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             
@@ -1143,7 +1152,7 @@
     
     QualityTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    TutoriumInfoViewController *controller;
+    __kindof UIViewController *controller;
     
     switch (indexPath.section) {
         case 0:{
@@ -1154,7 +1163,17 @@
                 
             }else{
             
-                controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.recommandModel.classID];
+                //判断精品课程类型
+                if ([cell.recommandModel.target_type isEqualToString:@"LiveStudio::Course"]) {
+                    controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.recommandModel.classID];
+                }else if ([cell.recommandModel.target_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+                    controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.recommandModel.classID];
+                }else if ([cell.recommandModel.target_type isEqualToString:@"LiveStudio::VideoCourse"]){
+                    controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.recommandModel.classID];
+                }
+                
+                
+                
             }
             
         }

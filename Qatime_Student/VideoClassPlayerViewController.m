@@ -14,6 +14,7 @@
 #import "UIView+PlaceholderImage.h"
 #import "UIViewController+HUD.h"
 #import "TeachersPublicViewController.h"
+#import "UIControl+RemoveTarget.h"
 
 //屏幕模式
 typedef enum : NSUInteger {
@@ -340,10 +341,10 @@ typedef enum : NSUInteger {
         UIButton *_ =[[UIButton alloc]init];
         [_ setImage:[UIImage imageNamed:@"ZFPlayer_play"] forState:UIControlStateNormal];
         _.alpha = 0.8;
-        [_playBtn addTarget:self action:@selector(onClickPlay:) forControlEvents:UIControlEventTouchUpInside];
+        [_ addTarget:self action:@selector(onClickPlay:) forControlEvents:UIControlEventTouchUpInside];
         [_bottomControlView addSubview:_];
         _.sd_layout
-        .leftSpaceToView(_bottomControlView,0)
+        .leftSpaceToView(_bottomControlView,8)
         .centerYEqualToView(_bottomControlView)
         .topSpaceToView(_bottomControlView,0)
         .bottomSpaceToView(_bottomControlView,0)
@@ -359,7 +360,7 @@ typedef enum : NSUInteger {
         [_ setImage:[UIImage imageNamed:@"ZFPlayer_pause"] forState:UIControlStateNormal];
         
         _.alpha = 0.8;
-        [_pauseBtn addTarget:self action:@selector(onClickPause:) forControlEvents:UIControlEventTouchUpInside];
+        [_ addTarget:self action:@selector(onClickPause:) forControlEvents:UIControlEventTouchUpInside];
         _.hidden = YES;
         [_bottomControlView addSubview:_];
         _.sd_layout
@@ -392,10 +393,11 @@ typedef enum : NSUInteger {
     
     
     //当前播放的时间点
-    self.currentTime = [[UILabel alloc] initWithFrame:CGRectMake(50, 15, 50, 20)];
+    self.currentTime = [[UILabel alloc] init];
     [self.bottomControlView addSubview:self.currentTime];
     self.currentTime.sd_layout
     .centerYEqualToView(_playBtn)
+    .leftSpaceToView(_playBtn, 5)
     .autoHeightRatio(0);
     [self.currentTime setSingleLineAutoResizeWithMaxWidth:200];
     self.currentTime.text = @"00:00:00"; //for test
@@ -415,7 +417,7 @@ typedef enum : NSUInteger {
     self.totalDuration.text = @"--:--:--";
     self.totalDuration.textAlignment = NSTextAlignmentCenter;
     self.totalDuration.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
-    self.totalDuration.font = [UIFont fontWithName:self.totalDuration.font.fontName size:13.0];
+    self.totalDuration.font = [UIFont fontWithName:self.totalDuration.font.fontName size:10.0];
     
     //播放进度条
     self.videoProgress = [[UISlider alloc] init];
@@ -495,12 +497,21 @@ typedef enum : NSUInteger {
     }
     
     if ([self.videoPlayer playbackState] == NELPMoviePlaybackStatePlaying) {
+        
         self.playBtn.hidden = YES;
+        [self.playBtn removeAllTargets];
+    
         self.pauseBtn.hidden = NO;
+        [_bottomControlView bringSubviewToFront:self.pauseBtn];
+        [self.pauseBtn addTarget:self action:@selector(onClickPause:) forControlEvents:UIControlEventTouchUpInside];
     }
     else {
         self.playBtn.hidden = NO;
+        [_bottomControlView bringSubviewToFront:self.playBtn];
         self.pauseBtn.hidden = YES;
+        [self.pauseBtn removeAllTargets];
+        
+        [self.playBtn addTarget:self action:@selector(onClickPlay:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncUIStatus:) object:nil];
@@ -531,7 +542,6 @@ typedef enum : NSUInteger {
 //开始播放
 - (void)onClickPlay:(id)sender{
     NSLog(@"click Play");
-    
     [self.videoPlayer play];
     [self syncUIStatus:NO];
 }
@@ -1145,13 +1155,19 @@ typedef enum : NSUInteger {
         }
         classcell.className.textColor = NAVIGATIONRED;
         
+        cell = classcell;
+        
     }else if (tableView.tag == 3){
         VideoClassProgressTableViewCell *classcell = [tableView cellForRowAtIndexPath:indexPath];
         for (VideoClassProgressTableViewCell *cells in _classList.visibleCells) {
             cells.className.textColor = [UIColor whiteColor];
         }
         classcell.className.textColor = NAVIGATIONRED;
+        
+        cell = classcell;
     }
+    
+    
     [_videoPlayer shutdown];
     [_videoPlayer.view removeFromSuperview];
     _videoPlayer = nil;
