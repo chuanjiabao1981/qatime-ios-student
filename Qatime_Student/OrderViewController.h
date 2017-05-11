@@ -32,7 +32,7 @@ typedef enum : NSUInteger {
  @param classID 辅导班编号
  @return 实例
  */
--(instancetype)initWithClassID:(NSString *)classID andClassType:(ClassOrderType)type;
+-(instancetype)initWithClassID:(NSString *)classID andClassType:(ClassOrderType)type andProductName:(NSString *)productName ;
 
 
 /**
@@ -42,6 +42,6 @@ typedef enum : NSUInteger {
  @param promotionCode 优惠码
  @return 实例
  */
--(instancetype)initWithClassID:(NSString *)classID andPromotionCode:(NSString *)promotionCode  andClassType:(ClassOrderType)type;
+-(instancetype)initWithClassID:(NSString *)classID andPromotionCode:(NSString *)promotionCode  andClassType:(ClassOrderType)type andProductName:(NSString *)productName ;
 
 @end

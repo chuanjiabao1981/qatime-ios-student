@@ -62,9 +62,6 @@
 @property(nonatomic,strong) TutoriumListInfo * tutoriumListInfo;
 
 
-
-
-
 @end
 
 

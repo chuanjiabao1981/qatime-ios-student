@@ -323,16 +323,16 @@
                     
                     /* 已开课的状态*/
                     if ([_dataDic[@"status"]isEqualToString:@"teaching"]||[_dataDic[@"status"]isEqualToString:@"pause"]||[_dataDic[@"status"]isEqualToString:@"closed"]) {
-                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ %@/%@ ",@"开课中",_dataDic[@"completed_lesson_count"],_dataDic[@"lesson_count"]];
+                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ [进度%@/%@] ",@"开课中",_dataDic[@"completed_lesson_count"],_dataDic[@"lesson_count"]];
                         _tutoriumInfoView.status.backgroundColor = [UIColor colorWithRed:0.14 green:0.80 blue:0.99 alpha:1.00];
                         
                     }else if ([_dataDic[@"status"]isEqualToString:@"missed"]||[_dataDic[@"status"]isEqualToString:@"init"]||[_dataDic[@"status"]isEqualToString:@"ready"]){
                         
-                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ - %@天",@"招生中",[self intervalSinceNow:_dataDic[@"live_start_time"] ]];
+                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ [距开课%@天]",@" 招生中",[self intervalSinceNow:_dataDic[@"live_start_time"] ]];
                         _tutoriumInfoView.status.backgroundColor = [UIColor colorWithRed:0.08 green:0.59 blue:0.09 alpha:1.00];
                         
                     }else if ([_dataDic[@"status"]isEqualToString:@"finished"]||[_dataDic[@"status"]isEqualToString:@"billing"]||[_dataDic[@"status"]isEqualToString:@"completed"]){
-                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ ,%@/%@",@"已结束",_dataDic[@"lesson_count"],_dataDic[@"lesson_count"]];
+                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ [进度%@/%@]",@"已结束",_dataDic[@"lesson_count"],_dataDic[@"lesson_count"]];
                         _tutoriumInfoView.status.backgroundColor = SEPERATELINECOLOR_2;
                         
                         //如果课程已结束,buybar不显示.什么都不显示了
@@ -356,9 +356,9 @@
                                 
                                 NSString *leftDays;
                                 if (leftDay>=1) {
-                                    leftDays = [NSString stringWithFormat:@"距开课%ld天",leftDay];
-                                }else if (leftDay>0&&leftDay<1){
-                                    leftDays = @"即将开课";
+                                    leftDays = [NSString stringWithFormat:@" 招生中距 [开课%ld天]",leftDay];
+                                }else {
+                                    leftDays = @" 即将开课 ";
                                     
                                 }
                                 _tutoriumInfoView.status.text = leftDays;
@@ -782,10 +782,10 @@
     
     if (_promotionCode) {
         
-        orderVC = [[OrderViewController alloc]initWithClassID:_classID andPromotionCode:_promotionCode andClassType:LiveClassType];
+        orderVC = [[OrderViewController alloc]initWithClassID:_classID andPromotionCode:_promotionCode andClassType:LiveClassType andProductName:_dataDic[@"name"]];
     }else{
         
-        orderVC= [[OrderViewController alloc]initWithClassID:_classID andClassType:LiveClassType];
+        orderVC= [[OrderViewController alloc]initWithClassID:_classID andClassType:LiveClassType andProductName:_dataDic[@"name"]];
     }
     
     [self.navigationController pushViewController:orderVC animated:YES];

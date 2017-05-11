@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "VideoClassInfo.h"
+#import "MyVideoClassList.h"
 @interface MyVideoClassTableViewCell : UITableViewCell
 
 /**课程图片*/
@@ -30,5 +31,8 @@
 
 /**model*/
 @property (nonatomic, strong) VideoClassInfo *model ;
+
+/**改为新接口后的model*/
+@property (nonatomic, strong) MyVideoClassList *myVideoClassListModel ;
 
 @end

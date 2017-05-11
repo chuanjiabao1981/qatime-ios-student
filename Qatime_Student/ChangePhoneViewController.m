@@ -46,10 +46,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-      
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
-    _navigationBar.titleLabel.text = @"验证绑定手机";
+    _navigationBar.titleLabel.text = @"绑定新手机";
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
@@ -64,48 +63,84 @@
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
 
-    
     _changePhoneView = [[ChangPhoneView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
     [self.view addSubview:_changePhoneView];
     
     [_changePhoneView.finishButton addTarget:self action:@selector(requestChangePasswrod) forControlEvents:UIControlEventTouchUpInside];
     
     [_changePhoneView.phoneNumber addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
-    [_changePhoneView.getKeyButton addTarget:self action:@selector(getCode:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
+//    [_changePhoneView.getKeyButton addTarget:self action:@selector(getCode:) forControlEvents:UIControlEventTouchUpInside];
+
 }
 
 
 /* 检查输入字符*/
 -(void)textDidChange:(id<UITextInput>)textInput{
    
-    if ([self isNumText:_changePhoneView.phoneNumber.text]) {
+    /* 手机号框*/
+    
+    if ([self isMobileNumber:_changePhoneView.phoneNumber.text]) {
+        
+        if ([_changePhoneView.getKeyButton.titleLabel.text isEqualToString:@"获取校验码"]) {
+            _changePhoneView.getKeyButton.enabled = YES;
+            [_changePhoneView.getKeyButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+            [_changePhoneView.getKeyButton setBackgroundColor:[UIColor whiteColor]];
+            _changePhoneView.getKeyButton.layer.borderColor = NAVIGATIONRED.CGColor;
+            
+            [_changePhoneView.getKeyButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+            
+        }else{
+            
+        }
         
     }else{
         
-       [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入正确的手机号." cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
-        _changePhoneView.phoneNumber.text = [_changePhoneView.phoneNumber.text substringToIndex:_changePhoneView.phoneNumber.text.length];
+        _changePhoneView.getKeyButton.enabled = NO;
+        [_changePhoneView.getKeyButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [_changePhoneView.getKeyButton removeTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [_changePhoneView.getKeyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_changePhoneView.getKeyButton setBackgroundColor:[UIColor lightGrayColor]];
+        _changePhoneView.getKeyButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     }
-
+    
     if (_changePhoneView.phoneNumber.text.length > 11) {
         _changePhoneView.phoneNumber.text = [_changePhoneView.phoneNumber.text substringToIndex:11];
-        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入11位手机号" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+        [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请输入11位手机号", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+    }
+    
+    
+    if (_changePhoneView.phoneNumber.text.length>0&&_changePhoneView.keyCode.text.length>0) {
+        
+        _changePhoneView.finishButton.enabled = YES;
+        [_changePhoneView.finishButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+        [_changePhoneView.finishButton setBackgroundColor: [UIColor whiteColor]];
+        _changePhoneView.finishButton.layer.borderColor = NAVIGATIONRED.CGColor;
+        
+    }else{
+        _changePhoneView.finishButton.enabled = NO;
+        
+        [_changePhoneView.finishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_changePhoneView.finishButton setBackgroundColor: [UIColor lightGrayColor]];
+        _changePhoneView.finishButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        
     }
     
 }
 
-//是否是纯数字
-- (BOOL)isNumText:(NSString *)str{
-    NSString * regex = @"^[0-9]*$";
-    NSPredicate * pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
-    BOOL isMatch = [pred evaluateWithObject:str];
-    if (isMatch) {
-        return YES;
-    }else{
-        return NO;
-    }
+// 正则判断手机号码地址格式
+- (BOOL)isMobileNumber:(NSString *)mobileNum {
+    
+    //    电信号段:133/153/180/181/189/177
+    //    联通号段:130/131/132/155/156/185/186/145/176
+    //    移动号段:134/135/136/137/138/139/150/151/152/157/158/159/182/183/184/187/188/147/178
+    //    虚拟运营商:170
+    
+    NSString *MOBILE = @"^1(1[0-9]|3[0-9]|4[57]|5[0-35-9]|8[0-9]|7[06-8])\\d{8}$";
+    NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
+    return [regextestmobile evaluateWithObject:mobileNum];
 }
+
 
 
 
@@ -172,23 +207,8 @@
     
 }
 
-// 正则判断手机号码地址格式
-- (BOOL)isMobileNumber:(NSString *)mobileNum {
-    
-    //    电信号段:133/153/180/181/189/177
-    //    联通号段:130/131/132/155/156/185/186/145/176
-    //    移动号段:134/135/136/137/138/139/150/151/152/157/158/159/182/183/184/187/188/147/178
-    //    虚拟运营商:170
-    
-    NSString *MOBILE = @"^1(1[0-9]|3[0-9]|4[57]|5[0-35-9]|8[0-9]|7[06-8])\\d{8}$";
-    
-    NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
-    
-    return [regextestmobile evaluateWithObject:mobileNum];
-}
-
 #pragma mark- 获取验证码的按钮点击事件
-- (void)getCode:(UIButton *)sender{
+- (void)getCheckCode:(UIButton *)sender{
     
     if (sender.enabled ==YES) {
         
@@ -248,9 +268,12 @@
             NSString *strTime = [NSString stringWithFormat:@"重发验证码(%d)",deadline];
             
             [button setTitle:strTime forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setBackgroundColor:[UIColor lightGrayColor]];
+            button.layer.borderColor = [UIColor lightGrayColor].CGColor;
             [button setEnabled:NO];
+
             
         });
         deadline--;
@@ -261,19 +284,17 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                
-                [button setTitle:@"获取校验码" forState:UIControlStateNormal];
-                [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [button setTitle:NSLocalizedString(@"获取校验码", nil) forState:UIControlStateNormal];
+                [button setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+                [button setBackgroundColor:[UIColor whiteColor]];
+                button.layer.borderColor = NAVIGATIONRED.CGColor;
                 
                 [button setEnabled:YES];
-                
-                
             });
         }
     });
     dispatch_resume(_timer);
     
-
 }
 
 

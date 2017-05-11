@@ -47,7 +47,7 @@
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     [self.view addSubview:_navigationBar];
-    _navigationBar.titleLabel.text = @"绑定新手机";
+    _navigationBar.titleLabel.text = @"验证绑定手机";
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
@@ -75,7 +75,7 @@
     
     if ([_getCodeView.codeText.text isEqualToString:@""]) {
         
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入收到的验证码    " preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入收到的验证码" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
         }] ;
@@ -96,7 +96,7 @@
                 
                 if ([dic[@"data"]isEqual:[NSNull null]]) {
                     /* 验证码正确*/
-                    [self loadingHUDStopLoadingWithTitle:@"验证码正确!"];
+                    [self loadingHUDStopLoadingWithTitle:@"验证码成功"];
                     ChangePhoneViewController *vc = [ChangePhoneViewController new];
                     [self.navigationController pushViewController:vc animated:YES];
                     
@@ -184,8 +184,10 @@
             NSString *strTime = [NSString stringWithFormat:@"重发验证码(%d)",deadline];
             
             [button setTitle:strTime forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setBackgroundColor:[UIColor lightGrayColor]];
+            button.layer.borderColor = [UIColor lightGrayColor].CGColor;
             [button setEnabled:NO];
             
         });
@@ -197,12 +199,12 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                
-                [button setTitle:@"获取校验码" forState:UIControlStateNormal];
-                [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [button setTitle:NSLocalizedString(@"获取校验码", nil) forState:UIControlStateNormal];
+                [button setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+                [button setBackgroundColor:[UIColor whiteColor]];
+                button.layer.borderColor = NAVIGATIONRED.CGColor;
                 
                 [button setEnabled:YES];
-                
                 
             });
         }

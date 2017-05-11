@@ -123,6 +123,23 @@
 }
 
 
+-(void)setMyVideoClassListModel:(MyVideoClassList *)myVideoClassListModel{
+    
+    _myVideoClassListModel = myVideoClassListModel;
+    
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:@""]];//接口里暂时还没有这个字段
+    _className.text = myVideoClassListModel.video_course.name;
+    _infos.text = [NSString stringWithFormat:@"%@%@/%@",myVideoClassListModel.video_course.grade,myVideoClassListModel.video_course.subject,myVideoClassListModel.video_course.teacher_name
+                   ];
+    if (myVideoClassListModel.buy_count!=myVideoClassListModel.used_count) {
+        _status.text = [NSString stringWithFormat:@"进度%ld/%ld",(long)myVideoClassListModel.used_count,(long)myVideoClassListModel.buy_count];
+    }else{
+         _status.text = @"全部课程已观看";
+    }
+    
+}
+
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code

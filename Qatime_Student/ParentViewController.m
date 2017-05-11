@@ -55,7 +55,6 @@
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
     
-    
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
         _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
@@ -88,36 +87,67 @@
 
 -(void)textDidChange:(id<UITextInput>)textInput{
     
-    if (![_parentView.parentPhoneText.text isEqualToString:@""]) {
-        _parentView.getCodeButton.enabled = YES;
-        [_parentView.getCodeButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
-        [ _parentView.getCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
-        _parentView.getCodeButton.layer.borderColor = BUTTONRED.CGColor;
+    /* 手机号框*/
+    if ([self isMobileNumber:_parentView.parentPhoneText.text]) {
+        if ([_parentView.getCodeButton.titleLabel.text isEqualToString:@"获取校验码"]) {
+            _parentView.getCodeButton.enabled = YES;
+            [_parentView.getCodeButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+            [_parentView.getCodeButton setBackgroundColor:[UIColor whiteColor]];
+            _parentView.getCodeButton.layer.borderColor = NAVIGATIONRED.CGColor;
+            
+            [_parentView.getCodeButton addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+            
+        }else{
+            
+            
+        }
         
     }else{
+        
         _parentView.getCodeButton.enabled = NO;
-        [ _parentView.getCodeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        [ _parentView.getCodeButton removeTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+        [_parentView.getCodeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [_parentView.getCodeButton removeTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [_parentView.getCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_parentView.getCodeButton setBackgroundColor:[UIColor lightGrayColor]];
         _parentView.getCodeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     }
     
     if (_parentView.parentPhoneText.text.length > 11) {
         _parentView.parentPhoneText.text = [_parentView.parentPhoneText.text substringToIndex:11];
-        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"请输入11位手机号" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+        [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请输入11位手机号", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
     }
     
-    if (_parentView.parentPhoneText.text.length>0&&_parentView.keyCodeText.text.length>0) {
+    
+    if (_parentView.parentPhoneText.text.length>0&&_parentView.keyCodeText.text.length>0){
         _parentView.finishButton.enabled = YES;
-        [_parentView.finishButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
-        _parentView.finishButton.layer.borderColor = BUTTONRED.CGColor;
+        [_parentView.finishButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+        [_parentView.finishButton setBackgroundColor: [UIColor whiteColor]];
+        _parentView.finishButton.layer.borderColor = NAVIGATIONRED.CGColor;
         
     }else{
         _parentView.finishButton.enabled = NO;
-        [_parentView.finishButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        
+        [_parentView.finishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_parentView.finishButton setBackgroundColor: [UIColor lightGrayColor]];
         _parentView.finishButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
         
     }
 }
+
+// 正则判断手机号码地址格式
+- (BOOL)isMobileNumber:(NSString *)mobileNum {
+    
+    //    电信号段:133/153/180/181/189/177
+    //    联通号段:130/131/132/155/156/185/186/145/176
+    //    移动号段:134/135/136/137/138/139/150/151/152/157/158/159/182/183/184/187/188/147/178
+    //    虚拟运营商:170
+    
+    NSString *MOBILE = @"^1(1[0-9]|3[0-9]|4[57]|5[0-35-9]|8[0-9]|7[06-8])\\d{8}$";
+    NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
+    return [regextestmobile evaluateWithObject:mobileNum];
+}
+
 
 
 #pragma mark- 向服务器请求修改家长手机号码
@@ -239,8 +269,10 @@
             NSString *strTime = [NSString stringWithFormat:@"重发验证码(%d)",deadline];
             
             [button setTitle:strTime forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
             
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setBackgroundColor:[UIColor lightGrayColor]];
+            button.layer.borderColor = [UIColor lightGrayColor].CGColor;
             [button setEnabled:NO];
             
         });
@@ -252,11 +284,13 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                [button setTitle:@"获取校验码" forState:UIControlStateNormal];
-                [button setTitleColor:BUTTONRED forState:UIControlStateNormal];
+                [button setTitle:NSLocalizedString(@"获取校验码", nil) forState:UIControlStateNormal];
+                [button setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+                [button setBackgroundColor:[UIColor whiteColor]];
+                button.layer.borderColor = NAVIGATIONRED.CGColor;
                 
                 [button setEnabled:YES];
-                
+
             });
         }
     });
@@ -274,7 +308,6 @@
             
         }
     }
-    
     
 }
 

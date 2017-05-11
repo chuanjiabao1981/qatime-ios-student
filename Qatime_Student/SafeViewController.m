@@ -363,8 +363,9 @@
                     break;
                     
                 case 2:{
-                    BindingMailViewController *binVC = [[BindingMailViewController alloc]init];
-                    [self.navigationController pushViewController:binVC animated:YES];
+                    
+                    VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]initWithType:BindingEmail];
+                    [self.navigationController pushViewController:pareVC animated:YES];
                     
                 }
                     break;
@@ -372,11 +373,11 @@
                 case 3:{
                     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]) {
                         
-                        VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]init];
+                        VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]initWithType:ParentPhoneType];
                         [self.navigationController pushViewController:pareVC animated:YES];
                     }
                     else if (![[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]||[[[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]isEqualToString:@""]||[[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]==nil){
-                        VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]init];
+                        VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]initWithType:ParentPhoneType];
                         [self.navigationController pushViewController:pareVC animated:YES];
                         
                     }

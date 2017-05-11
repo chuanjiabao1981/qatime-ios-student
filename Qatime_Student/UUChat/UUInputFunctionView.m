@@ -146,8 +146,6 @@
 
 
 
-
-
 //语音/文字输入切换
 - (void)voiceRecord:(UIButton *)sender{
     
@@ -180,8 +178,6 @@
         UIActionSheet *actionSheet= [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相机",@"来自相册",nil];
         [actionSheet showInView:self.window];
     }
-    
-    
     
 }
 
@@ -248,10 +244,6 @@
     }
     
 }
-
-
-
-
 
 #pragma mark - Mp3RecorderDelegate
 

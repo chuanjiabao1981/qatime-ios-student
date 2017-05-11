@@ -2671,11 +2671,13 @@
         if (_inputView.TextViewInput.inputView == nil) {
             _inputView.TextViewInput.yz_emotionKeyboard = self.emotionKeyboard;
             [sender setBackgroundImage:[UIImage imageNamed:@"toolbar-text"] forState:UIControlStateNormal];
+            _inputView.btnVoiceRecord.hidden = !_inputView.btnVoiceRecord.hidden;
             
         } else {
             _inputView.TextViewInput.inputView = nil;
             [sender setBackgroundImage:[UIImage imageNamed:@"face"] forState:UIControlStateNormal];
             [_inputView.TextViewInput reloadInputViews];
+            _inputView.btnVoiceRecord.hidden = !_inputView.btnVoiceRecord.hidden;
             
         }
         

@@ -58,14 +58,11 @@
         _keyCodeText.keyboardType = UIKeyboardTypeNumberPad;
         
 
-        
-        
         /* 获取验证码*/
-        
         _getCodeButton = [[UIButton alloc]init];
-//        _getCodeButton.backgroundColor = [UIColor lightGrayColor];
-        [_getCodeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        [_getCodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
+        _getCodeButton.backgroundColor = [UIColor lightGrayColor];
+        [_getCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_getCodeButton setTitle:@"获取校验码" forState:UIControlStateNormal];
         _getCodeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _getCodeButton.layer.borderWidth =1;
         

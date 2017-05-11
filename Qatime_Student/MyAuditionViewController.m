@@ -213,6 +213,7 @@ typedef enum : NSUInteger {
                  @"page":[NSString stringWithFormat:@"%ld",page],
                  @"per_page":[NSString stringWithFormat:@"%ld",per_page]}.mutableCopy;
         
+        //我的试听->直播课
         [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:dics completeSuccess:^(id  _Nullable responds) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqualToNumber:@1]) {
@@ -249,6 +250,8 @@ typedef enum : NSUInteger {
         
         dics = @{@"page":[NSString stringWithFormat:@"%ld",page],
                  @"per_page":[NSString stringWithFormat:@"%ld",per_page]}.mutableCopy;
+        
+        //我的试听 -> 视频课
         [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/video_courses/tasting",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:dics completeSuccess:^(id  _Nullable responds) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqualToNumber:@1]) {

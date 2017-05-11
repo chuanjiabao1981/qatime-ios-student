@@ -118,7 +118,7 @@
 #pragma mark- 余额支付
 - (void)payWithBalance{
     
-    [DCPaymentView showPayAlertWithTitle:@"支付订单" andDetail:@"请输入支付密码" andAmount:[_dataDic[@"amount"]  floatValue] completeHandle:^(NSString *inputPwd) {
+    [DCPaymentView showPayAlertWithTitle:@"请输入支付密码" andDetail:_dataDic[@"productName"] andAmount:[_dataDic[@"amount"]  floatValue] completeHandle:^(NSString *inputPwd) {
         
         [self loadingHUD];
         

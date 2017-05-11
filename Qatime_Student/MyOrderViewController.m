@@ -727,7 +727,8 @@ typedef enum : NSUInteger {
                                                                                                     @"updated_at":mod.updated_at==nil?@"":mod.updated_at,
                                                                                                     @"prepay_id":mod.prepay_id==nil?@"":mod.prepay_id,
                                                                                                     @"app_pay_params":mod.app_pay_params==nil?@"":mod.app_pay_params,
-                                                                                                    @"status":mod.status==nil?@"":mod.status}];
+                                                                                                    @"status":mod.status==nil?@"":mod.status,
+                                                                                                    @"productName":mod.product[@"name"]}];
                 [self.navigationController pushViewController:confirm animated:YES];
                 
             }else{
@@ -748,62 +749,48 @@ typedef enum : NSUInteger {
 /* 再次购买功能*/
 - (void)buyAgain:(UIButton *)sender{
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定重新购买该课程?" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    
+    [self loadingHUDStopLoadingWithTitle:@"正在加载订单信息"];
+    
+    __block NSString *productNumber = [NSString string];
+    __block NSString *payType=[NSString string];
+    
+    NSString *course;
+    NSString *courseNumber;
+    if (sender.tag>=600&&sender.tag<700) {
         
-    }] ;
-    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        Canceld *mod=_caneldArr[sender.tag-600];
+        productNumber = mod.orderID;
+        payType = @"account";
         
-        [self loadingHUDStopLoadingWithTitle:@"正在加载订单信息"];
-        
-        __block NSString *productNumber = [NSString string];
-        __block NSString *payType=[NSString string];
-        
-        NSString *course;
-        NSString *courseNumber;
-        if (sender.tag>=600&&sender.tag<700) {
+        //            NSString *classID ;
+        __kindof UIViewController *controller;
+        //判断课程类型
+        if ([mod.product_type isEqualToString:@"LiveStudio::Course"]) {
+            //直播课
+            course = @"courses";
+            courseNumber = [NSString stringWithFormat:@"%@",mod.product[@"id"]];
+            controller = [[TutoriumInfoViewController alloc]initWithClassID:courseNumber];
             
-            Canceld *mod=_caneldArr[sender.tag-600];
-            productNumber = mod.orderID;
-            payType = @"account";
+        }else if ([mod.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
+            //视频课
+            course = @"video_courses";
+            courseNumber = [NSString stringWithFormat:@"%@",mod.product_video_course[@"id"]];
+            controller = [[VideoClassInfoViewController alloc]initWithClassID:courseNumber];
             
-//            NSString *classID ;
-           __kindof UIViewController *controller;
-            //判断课程类型
-            if ([mod.product_type isEqualToString:@"LiveStudio::Course"]) {
-                //直播课
-                course = @"courses";
-                courseNumber = [NSString stringWithFormat:@"%@",mod.product[@"id"]];
-                controller = [[TutoriumInfoViewController alloc]initWithClassID:courseNumber];
-                
-            }else if ([mod.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
-                //视频课
-                course = @"video_courses";
-                courseNumber = [NSString stringWithFormat:@"%@",mod.product_video_course[@"id"]];
-                controller = [[VideoClassInfoViewController alloc]initWithClassID:courseNumber];
-                
-            }else if ([mod.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
-                //一对一
-                course = @"interactive_courses";
-                courseNumber = [NSString stringWithFormat:@"%@",mod.product_interactive_course[@"id"]];
-                controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:courseNumber];
-            }
-            
-            //加载不同类型的辅导班详情
-            [self.navigationController pushViewController:controller animated:YES];
-            
+        }else if ([mod.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+            //一对一
+            course = @"interactive_courses";
+            courseNumber = [NSString stringWithFormat:@"%@",mod.product_interactive_course[@"id"]];
+            controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:courseNumber];
         }
-    }] ;
-    
-    [alert addAction:cancel];
-    [alert addAction:sure];
-    
-    [self presentViewController:alert animated:YES completion:nil];
-    
-    
+        
+        //加载不同类型的辅导班详情
+        [self.navigationController pushViewController:controller animated:YES];
+        
+    }
+
 }
-
-
 
 
 #pragma mark- 购买成功后,跳转页面

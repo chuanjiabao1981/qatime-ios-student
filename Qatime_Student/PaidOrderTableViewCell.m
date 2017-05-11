@@ -160,7 +160,7 @@
     }else if ([paidModel.status isEqualToString:@"refunding"]){
         _status.text = @"退款中";
     }else if ([paidModel.status isEqualToString:@"completed"]){
-        _status.text = @"交易关闭";
+        _status.text = @"交易完成";
     }else if ([paidModel.status isEqualToString:@"refunded"]){
         self.status.text = @"已退款";
     }
@@ -173,10 +173,9 @@
         
     }else if ([paidModel.product_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
         //一对一课类型
-        
-        _unTips.hidden = NO;
-        _unTipsImage.hidden = NO;
-        _rightButton.hidden = YES;
+        _unTips.hidden = YES;
+        _unTipsImage.hidden = YES;
+        _rightButton.hidden = NO;
         
     }else{
         //暂定 视频课类型 不能退款的

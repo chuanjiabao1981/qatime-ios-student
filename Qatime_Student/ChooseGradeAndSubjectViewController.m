@@ -33,12 +33,13 @@
     
     self.navigationController.navigationBar.hidden = YES;
     
-    //基本信息(全部)
-    subjects = @[@"全部",@"语文",@"数学",@"英语",@"历史",@"物理",@"政治",@"地理",@"生物",@"化学"].mutableCopy;
-    
     
     //加载视图
     [self setupViews];
+    //基本信息(全部)
+    subjects = @[@"全部",@"语文",@"数学",@"英语",@"历史",@"物理",@"政治",@"地理",@"生物",@"化学"].mutableCopy;
+    
+    [_chooseView.subjectCollection reloadData];
     
     //是否是前一页传来的年级
     if (_selectedFilterGrade) {
@@ -51,6 +52,12 @@
         }
     }
     
+    
+    if (_selectedGrade == nil) {
+        _selectedGrade = @"高三";
+        [self chooseFilterGrade:[NSNotification notificationWithName:@"" object:@"高三"]];
+        [_chooseView.subjectCollection reloadData];
+    }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         //干掉筛选信息
@@ -62,9 +69,6 @@
         [self getTags];
         
     });
-    
-    //默认选择高三
-    [self setSelectedFilterGrade:@"高三"];
     
 }
 
@@ -87,10 +91,9 @@
             }
         }
         
-        subjects = nil;
+        subjects = @[].mutableCopy;
         
         //课程表变化
-        
         
         if ([[notification object] isEqualToString:@"初三"]) {
             //        语、数、英、物、化、政、历
@@ -134,7 +137,6 @@
     
     _chooseView = ({
         ChooseGradeAndSubjectView *_ = [[ChooseGradeAndSubjectView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height-TabBar_Height)];
-        
         _.delegate = self;
         _.subjectCollection.dataSource = self;
         _.subjectCollection.delegate = self;
@@ -148,11 +150,11 @@
     //注册类
     [_chooseView.subjectCollection registerClass:[ClassSubjectCollectionViewCell class] forCellWithReuseIdentifier:@"cellID"];
     
+    
 }
 
 //获取所有tag
 - (void)getTags{
-    
     
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/app_constant/tags",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
@@ -182,6 +184,7 @@
     if (subjects.count>indexPath.row) {
         
         cell.subject.text = subjects[indexPath.row];
+        
     }
     
     return cell;

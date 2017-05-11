@@ -52,4 +52,7 @@
 
 - (void)changeSendBtnWithPhoto:(BOOL)isPhoto;
 
+/**切换语音/文字输入*/
+- (void)voiceRecord:(UIButton *)sender;
+
 @end

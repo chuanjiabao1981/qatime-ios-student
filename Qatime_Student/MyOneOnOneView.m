@@ -28,9 +28,9 @@
             _.selectionIndicatorColor = BUTTONRED;
             _.selectionIndicatorHeight = 2;
             _.titleTextAttributes = @{NSForegroundColorAttributeName:TITLECOLOR,
-                                      NSFontAttributeName:[UIFont systemFontOfSize:14*ScrenScale]};
+                                      NSFontAttributeName:TEXT_FONTSIZE};
             _.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-                                              NSFontAttributeName:[UIFont systemFontOfSize:14*ScrenScale]};
+                                              NSFontAttributeName:TEXT_FONTSIZE};
             _.selectedSegmentIndex = 0;
             _.verticalDividerEnabled = NO;
             _;

@@ -241,7 +241,7 @@
             
            __block NSString *ticketToken ;
             
-         [DCPaymentView showPayAlertWithTitle:@"订单支付" andDetail:@"订单支付" andAmount:[dataInfo[@"amount"]floatValue] completeHandle:^(NSString *inputPwd) {
+         [DCPaymentView showPayAlertWithTitle:@"请输入支付密码" andDetail:@"订单支付" andAmount:[dataInfo[@"amount"]floatValue] completeHandle:^(NSString *inputPwd) {
              
              /* 请求ticket token*/
              [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/pay/ticket_token",Request_Header,dataInfo[@"id"]] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {

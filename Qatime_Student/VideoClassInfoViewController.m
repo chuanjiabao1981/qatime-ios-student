@@ -323,6 +323,7 @@ typedef enum : NSUInteger {
     if ([_classInfo.sell_type isEqualToString:@"charge"]) {
         
         if (_classInfo.taste_count>0) {
+            
             //去掉不支持试听的课程
             NSMutableArray <VideoClass *>*classesArray = @[].mutableCopy;
             for (VideoClass *mod in _classArray) {
@@ -330,7 +331,6 @@ typedef enum : NSUInteger {
                     [classesArray addObject:mod];
                 }
             }
-            
             //进入试听
             VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:classesArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:classesArray[0].video.name_url andIndexPath:nil];
             [self.navigationController pushViewController:controller animated:YES];
@@ -366,7 +366,7 @@ typedef enum : NSUInteger {
             
         }else{
             //购买下单
-            OrderViewController *controller = [[OrderViewController alloc]initWithClassID:_classID andClassType:VideoClassType];
+            OrderViewController *controller = [[OrderViewController alloc]initWithClassID:_classID andClassType:VideoClassType andProductName:_classInfo.name];
             [self.navigationController pushViewController:controller animated:YES];
             
         }
@@ -455,20 +455,23 @@ typedef enum : NSUInteger {
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     VideoClassListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if (cell.model.tastable == YES) {
+    
+    if (_classInfo.is_bought == YES) {
+        //进入观看
+        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
+        [self.navigationController pushViewController:controller animated:YES];
         
-        if (_classInfo.is_bought == YES) {
+    }else{
+        
+        if ([_classInfo.sell_type isEqualToString:@"free"]) {
+            
             //进入观看
             VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
             [self.navigationController pushViewController:controller animated:YES];
+            
         }else{
-            if ([_classInfo.sell_type isEqualToString:@"free"]) {
-                
-                //进入观看
-                VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
-                [self.navigationController pushViewController:controller animated:YES];
-                
-            }else{
+            
+            if (cell.model.tastable == YES) {
                 
                 NSMutableArray <VideoClass *>*arrs =@[].mutableCopy;
                 for (VideoClass *clas in _classArray) {
@@ -479,13 +482,17 @@ typedef enum : NSUInteger {
                 
                 VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:arrs andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
                 [self.navigationController pushViewController:controller animated:YES];
+                
+            }else{
+                [self loadingHUDStopLoadingWithTitle:@"尚未购买不够观看"];
+                
             }
             
+            
         }
-        
-    }else{
-        [self loadingHUDStopLoadingWithTitle:@"该课不支持试听"];
+
     }
+    
     
 }
 

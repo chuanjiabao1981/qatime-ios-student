@@ -82,12 +82,21 @@
     
     _model = model;
     _className.text = model.name;
-    [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"]];
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:_model.publicize] placeholderImage:[UIImage imageNamed:@"school"]];
     _grade.text = model.grade;
     _subjectName.text = model.subject;
     _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];
     
+}
+
+-(void)setOneOnOneModel:(OneOnOneClass *)oneOnOneModel{
     
+    _oneOnOneModel = oneOnOneModel;
+    _className.text = oneOnOneModel.name;
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:oneOnOneModel.publicize_app_url] placeholderImage:[UIImage imageNamed:@"school"]];
+    _grade.text = oneOnOneModel.grade;
+    _subjectName.text = oneOnOneModel.grade;
+    _priceLabel.text =[NSString stringWithFormat:@"¥%@",oneOnOneModel.price];
 }
 
 

@@ -1429,14 +1429,20 @@
     if (sender.superview == _inputView) {
         
         if (_inputView.TextViewInput.inputView == nil) {
+            //弹出表情键盘,如果是在录音状态,那就改成文本输入状态
             _inputView.TextViewInput.yz_emotionKeyboard = self.emotionKeyboard;
             [sender setBackgroundImage:[UIImage imageNamed:@"toolbar-text"] forState:UIControlStateNormal];
-            
         } else {
+            //收回表情键盘,如果是在输入状态,那就改成文本输入状态
             _inputView.TextViewInput.inputView = nil;
             [sender setBackgroundImage:[UIImage imageNamed:@"face"] forState:UIControlStateNormal];
             [_inputView.TextViewInput reloadInputViews];
             
+        }
+        
+        if (_inputView.TextViewInput.hidden == YES) {
+            
+            [_inputView voiceRecord:_inputView.voiceSwitchTextButton];
         }
         
     }

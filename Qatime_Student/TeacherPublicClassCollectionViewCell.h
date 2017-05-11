@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TutoriumList.h"
 #import "UIImageView+WebCache.h"
+#import "OneOnOneClass.h"
 
 @interface TeacherPublicClassCollectionViewCell : UICollectionViewCell
 
@@ -28,5 +29,7 @@
 
 /* model*/
 @property(nonatomic,strong) TutoriumListInfo *model ;
+/**一对一model*/
+@property (nonatomic, strong) OneOnOneClass *oneOnOneModel ;
 
 @end

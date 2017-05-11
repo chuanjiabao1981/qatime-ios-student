@@ -27,7 +27,7 @@
     }
     self.strName = dict[@"strName"];
     self.strId = dict[@"strId"];
-    self.strTime = [self changeTheDateString:dict[@"strTime"]];
+    self.strTime = [dict[@"strTime"]substringFromIndex:5];
     self.from = [dict[@"from"] intValue];
     self.messageID = dict[@"messageID"];
     

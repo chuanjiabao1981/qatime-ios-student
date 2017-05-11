@@ -58,8 +58,6 @@
     
     [self.passwordText addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
     
-    
-    
     self.finishButton.hidden = YES;
     self.findPayPasswordButton .hidden = YES;
     

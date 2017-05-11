@@ -15,6 +15,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        self.backgroundColor = BACKGROUNDGRAY;
         [self setupViews];
     }
     return self;
@@ -23,77 +25,84 @@
 
 - (void)setupViews{
     
+    UIView *text1 = [[UIView alloc]init];
+    [self addSubview:text1];
+    text1.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+    text1.layer.borderWidth = 1;
+    text1.backgroundColor = [UIColor whiteColor];
+    
+    text1.sd_layout
+    .leftSpaceToView(self, 30*ScrenScale)
+    .rightSpaceToView(self, 30*ScrenScale)
+    .topSpaceToView(self, 20*ScrenScale)
+    .heightIs(40*ScrenScale320);
+    
     _phoneNumber = [[UITextField alloc]init];
     _phoneNumber.placeholder = @"输入新手机号(仅支持大陆地区11位)";
-    _phoneNumber.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _phoneNumber.layer.borderWidth = 1;
     _phoneNumber.keyboardType = UIKeyboardTypeNumberPad;
     
+    [text1 addSubview:_phoneNumber];
+    _phoneNumber.sd_layout
+    .leftSpaceToView(text1,10*ScrenScale)
+    .topSpaceToView(text1,10*ScrenScale)
+    .rightSpaceToView(text1,10*ScrenScale)
+    .bottomSpaceToView(text1, 10*ScrenScale);
+    
+    UIView *text2 = [[UIView alloc]init];
+    [self addSubview:text2];
+    text2.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+    text2.layer.borderWidth = 1;
+    text2.backgroundColor = [UIColor whiteColor];
+    
+    text2.sd_layout
+    .topSpaceToView(text1,10*ScrenScale320)
+    .leftEqualToView(text1)
+    .widthRatioToView(text1, 0.6)
+    .heightRatioToView(text1, 1.0);
+
     _keyCode = [[UITextField alloc]init];
-    _keyCode.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _keyCode.layer.borderWidth = 1;
     _keyCode.placeholder = @"输入收到的验证码";
+    _keyCode.keyboardType = UIKeyboardTypeNumberPad;
+    
+    [text2 addSubview:_keyCode];
+    _keyCode.sd_layout
+    .leftSpaceToView(text2, 10*ScrenScale)
+    .rightSpaceToView(text2, 10*ScrenScale)
+    .topSpaceToView(text2, 10*ScrenScale)
+    .bottomSpaceToView(text2, 10*ScrenScale);
     
     _getKeyButton = [[UIButton alloc]init];
     [_getKeyButton setTitleColor: [UIColor whiteColor] forState:UIControlStateNormal];
     [_getKeyButton setTitle:@"获取验证码" forState:UIControlStateNormal];
-    [_getKeyButton setBackgroundColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1.00  ]];
+    [_getKeyButton setBackgroundColor:TITLECOLOR];
+    _getKeyButton.layer.borderWidth = 1;
+    _getKeyButton.layer.borderColor = TITLECOLOR.CGColor;
     
-    
-    _finishButton = [[UIButton alloc]init];
-    [_finishButton setTitleColor:[UIColor colorWithRed:0.79 green:0 blue:0 alpha:1.00] forState:UIControlStateNormal];
-    
-    _finishButton.layer.borderWidth =1;
-    _finishButton .layer.borderColor =[UIColor colorWithRed:0.79 green:0 blue:0 alpha:1.00].CGColor;
-    [_finishButton setTitle:@"完成" forState:UIControlStateNormal];
-    
-    
-    [self layoutViews];
-
-    
-}
-
-- (void)layoutViews{
-    
-    
-    [self sd_addSubviews:@[_phoneNumber,_keyCode,_getKeyButton,_finishButton]];
-    
-    
-    
-    _phoneNumber.sd_layout
-    .leftSpaceToView(self,20)
-    .topSpaceToView(self,30)
-    .rightSpaceToView(self,20)
-    .heightRatioToView(self,0.065);
-    
-    
-    
-    
-    _keyCode.sd_layout
-    .leftSpaceToView(self,20)
-    .heightRatioToView(self,0.065f)
-    .widthIs(self.width_sd/2)
-    .topSpaceToView(_phoneNumber,20);
+    [self addSubview:_getKeyButton];
     
     _getKeyButton.sd_layout
-    .leftSpaceToView(_keyCode,0)
-    .rightSpaceToView(self,20)
-    .heightRatioToView(_keyCode,1.0f)
-    .topEqualToView(_keyCode);
+    .leftSpaceToView(text2, 0)
+    .topEqualToView(text2)
+    .bottomEqualToView(text2)
+    .rightEqualToView(text1);
+    
+    _finishButton = [[UIButton alloc]init];
+    [_finishButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+    
+    _finishButton.layer.borderWidth =1;
+    _finishButton .layer.borderColor =NAVIGATIONRED.CGColor;
+    [_finishButton setTitle:@"完成" forState:UIControlStateNormal];
+    
+    [self addSubview:_finishButton];
     
     _finishButton.sd_layout
-    .leftSpaceToView(self,20)
-    .rightSpaceToView(self,20)
-    .topSpaceToView(_getKeyButton,20)
+    .leftEqualToView(text1)
+    .rightEqualToView(text1)
+    .topSpaceToView(_getKeyButton,20*ScrenScale)
     .heightRatioToView(_getKeyButton,1.0f);
     _finishButton.sd_cornerRadius = [NSNumber numberWithFloat:M_PI];
-    
-    
 
-    
-    
     
 }
-
 
 @end

@@ -73,20 +73,16 @@
 }
 
 
--(void)loadView{
-    [super loadView];
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0,0, self.view.width_sd, 64)];
-    
-    [self.view addSubview:_navigationBar];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0,0, self.view.width_sd, 64)];
+    [self.view addSubview:_navigationBar];
+    _navigationBar.titleLabel.text = @"退款申请";
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-    _navigationBar.titleLabel.text = @"退款申请";
-    
+
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
         _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
@@ -146,7 +142,7 @@
             
             [self setupView];
             
-            [self endHUD];
+            [self stopHUD];
             
         }else{
            /* 请求数据失败*/
@@ -293,17 +289,10 @@
     for (UIViewController *controller in self.navigationController.viewControllers) {
         if ([controller isMemberOfClass:[MyOrderViewController class]]) {
             [self.navigationController popToViewController:controller animated:YES];
-        }else if ([controller isMemberOfClass:[MyOrderViewController class]]){
-            [self.navigationController popToViewController:controller animated:YES];
-        }else{
-            
-            [self.navigationController popViewControllerAnimated:YES];
         }
-        
     }
 
 //    [self.navigationController popViewControllerAnimated:YES];
-    
     
 }
 

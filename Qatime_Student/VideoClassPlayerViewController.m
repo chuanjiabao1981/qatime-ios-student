@@ -99,8 +99,8 @@ typedef enum : NSUInteger {
 
 @implementation VideoClassPlayerViewController
 
-//初始化方法
--(instancetype)initWithClasses:(__kindof NSArray<VideoClass *> *)classes andTeacher:(Teacher *)teacher andVideoClassInfos:(VideoClassInfo *)classInfo andURLString:(NSString * _Nullable)URLString andIndexPath:(NSIndexPath * _Nullable)indexPath{
+//初始化方法1
+-(instancetype)initWithClasses:(__kindof NSArray <VideoClass *>*_Nullable)classes andTeacher:(Teacher *_Nullable)teacher andVideoClassInfos:(VideoClassInfo *_Nullable)classInfo andURLString:(NSString * _Nullable)URLString andIndexPath:(NSIndexPath * _Nullable)indexPath{
     
     self = [super init];
     if (self) {
@@ -293,22 +293,7 @@ typedef enum : NSUInteger {
         _;
     });
     
-    //文件名 、课程名
-    _fileName = ({
-        UILabel *_=[[UILabel alloc] init ];
-        _.textAlignment = NSTextAlignmentLeft; //文字居左
-        _.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
-        _.font = [UIFont fontWithName:_fileName.font.fontName size:13.0];
-        _.hidden = YES;
-        [_topControlView addSubview:_];
-        _.sd_layout
-        .leftSpaceToView(_playQuitBtn,0)
-        .topEqualToView(_topControlView)
-        .bottomEqualToView(_topControlView)
-        .rightSpaceToView(_topControlView,0);
-        _;
-    });
-    //缓冲提示
+        //缓冲提示
     self.bufferingIndicate = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [self.bufferingIndicate setCenter:CGPointMake(_mediaControl.centerX_sd, _mediaControl.centerY_sd)];
     [self.bufferingIndicate setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -472,6 +457,23 @@ typedef enum : NSUInteger {
     .widthEqualToHeight();
     [_classListBtn setEnlargeEdge:20];
     _classListBtn.hidden = YES;
+    
+    //文件名 、课程名
+    _fileName = ({
+        UILabel *_=[[UILabel alloc] init ];
+        _.textAlignment = NSTextAlignmentLeft; //文字居左
+        _.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
+        _.font = [UIFont fontWithName:_fileName.font.fontName size:13.0];
+        _.hidden = YES;
+        [_topControlView addSubview:_];
+        _.sd_layout
+        .leftSpaceToView(_playQuitBtn,0)
+        .topEqualToView(_topControlView)
+        .bottomEqualToView(_topControlView)
+        .rightSpaceToView(_classListBtn,20);
+        _;
+    });
+
     
 }
 
@@ -1112,6 +1114,7 @@ typedef enum : NSUInteger {
         
         if (indexPath == _indexPath) {
             cell.className.textColor = NAVIGATIONRED;
+            _fileName.text = cell.className.text;
         }
         tableCell = cell;
     }
@@ -1129,6 +1132,9 @@ typedef enum : NSUInteger {
             cell.model = _classListArray[indexPath.row];
         }
         
+        if (indexPath == _indexPath) {
+            cell.className.textColor = NAVIGATIONRED;
+        }
         
         tableCell = cell;
     }

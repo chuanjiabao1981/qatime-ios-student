@@ -99,11 +99,11 @@
         
         /**不支持退款的提示*/
         _tips = [[UIView alloc]init];
-        UIImageView *image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"发送失败"]];
+        UIImageView *image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"感叹号gray"]];
         UILabel *label = [[UILabel alloc]init];
         label.font = TEXT_FONTSIZE_MIN;
         label.text = @"该类型订单不支持退款";
-        label.textColor = NAVIGATIONRED;
+        label.textColor = TITLECOLOR;
         [_tips addSubview:image];
         [_tips addSubview:label];
         

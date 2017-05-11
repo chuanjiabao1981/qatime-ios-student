@@ -17,7 +17,7 @@
 #import "UITextView+Placeholder.h"
 
 
-@interface PersonalInfoEditViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate>{
+@interface PersonalInfoEditViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextViewDelegate>{
     
     NavigationBar *_navigationBar;
     
@@ -56,6 +56,9 @@
     
     NSString *_provinceID;
     NSString *_cityID;
+    
+    
+    NSInteger number;
     
 }
 
@@ -342,7 +345,6 @@
                 [cell.content setSingleLineAutoResizeWithMaxWidth:200];
                 [cell.content updateLayout];
                 
-                
                 if (_infoDic[@"province"]&&_infoDic[@"city"]) {
                     cell.subContent.text =_infoDic[@"province"];
                     cell.content.text =_infoDic[@"city"];
@@ -363,6 +365,7 @@
                 cell=[[EditDescriptionTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
                 cell.name.text = @"简介";
+                cell.nameText.delegate = self;
 //                cell.nameText.hidden = YES;
 //                [cell.nameText addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
                 if (_infoDic) {
@@ -584,11 +587,18 @@
     
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSURLSessionUploadTask *uploadTask;
+    
     uploadTask = [manager uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull uploadProgress) {
         
+        NSLog(@"%f",uploadProgress.fractionCompleted);
+       
         dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [hud setLabelText:[NSString stringWithFormat:@"正在提交 %ld%@",(NSInteger)uploadProgress.fractionCompleted*100,@"%"]];
+            if (uploadProgress.fractionCompleted == 1.0) {
+                [hud setLabelText:@"正在提交"];
+            }else{
+                
+                [hud setLabelText:[NSString stringWithFormat:@"正在提交 %ld%@",(NSInteger)uploadProgress.fractionCompleted*100,@"%"]];
+            }
         });
         
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
@@ -647,6 +657,43 @@
     }
     
 }
+
+/**
+ *  自适应字体
+ */
+-(CGSize)sizeWithString:(NSString*)string font:(UIFont*)font     width:(float)width {
+    
+    CGRect rect = [string boundingRectWithSize:CGSizeMake(width,   80000) options:NSStringDrawingTruncatesLastVisibleLine |   NSStringDrawingUsesFontLeading    |NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil];
+    return rect.size;
+}
+
+- (void)textViewDidChange:(UITextView *)textView{
+    
+    [_infoDic setValue:textView.text forKey:@"desc"];
+    
+    EditDescriptionTableViewCell * cell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    //获取文本中字体的size
+    CGSize size = [self sizeWithString:textView.text font:TITLEFONTSIZE width:textView.width];
+    NSLog(@"height = %f",size.height);
+    //获取一行的高度
+    CGSize size1 = [self sizeWithString:@"Hello" font:TITLEFONTSIZE width:textView.width];
+    NSInteger i = size.height/size1.height;
+    if (i==1) {
+        //设置全局的变量存储数字如果换行就改变这个全局变量
+        self->number = i;
+    }
+    if (self->number!=i) {
+        self->number = i;
+        NSLog(@"selfnum = %ld",self->number);
+        cell.height = size.height;
+        [_editTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0]] withRowAnimation:(UITableViewRowAnimationAutomatic)];
+    }
+    
+}
+
+
+
+
 
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{

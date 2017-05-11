@@ -80,7 +80,6 @@
             }
         }
         
-        
         if ([_dataDic[@"product_type"]isEqualToString:@"LiveStudio::Course"]) {
             
             _product = [_dataDic[@"product"] mutableCopy];
@@ -231,9 +230,9 @@
     _orderInfoView.creatTime.text = [_dataDic[@"created_at"] timeStampToDate];
     
     if (_dataDic[@"pay_at"]!=nil) {
-        if ([_dataDic[@"paay_at"]isEqualToString:@""]) {
+        if ([_dataDic[@"pay_at"]isEqualToString:@""]) {
             
-            _orderInfoView.payTime.text =@"未支付";
+            _orderInfoView.payTime.text =@"无";
             
         }else{
             _orderInfoView.payTime.text =[_dataDic[@"pay_at"] timeStampToDate];
@@ -334,7 +333,8 @@
                           @"amount":_dataDic[@"amount"],
                           @"created_at":_dataDic[@"created_at"],
                           @"pay_type":@"account",
-                          @"updated_at":_dataDic[@"updated_at"]
+                          @"updated_at":_dataDic[@"updated_at"],
+                          @"productName":_dataDic[@"name"]
                           };
     PayConfirmViewController *controller =[[PayConfirmViewController alloc]initWithData:pay];
     [self.navigationController pushViewController:controller animated:YES];
@@ -392,7 +392,7 @@
                 [self loginStates:dic];
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     /* 订单申请成功*/
-                    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:classID andClassType:classType];
+                    OrderViewController *orderVC = [[OrderViewController alloc]initWithClassID:classID andClassType:classType andProductName:dic[@"data"][@"name"]];
                     [self.navigationController pushViewController:orderVC animated:YES];
                     
                 }else{

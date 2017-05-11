@@ -219,10 +219,10 @@
     
     if (_promotionCode) {
         
-        orderVC = [[OrderViewController alloc]initWithClassID:_classID andPromotionCode:_promotionCode andClassType:InteractionType];
+        orderVC = [[OrderViewController alloc]initWithClassID:_classID andPromotionCode:_promotionCode andClassType:InteractionType andProductName:_dataDic[@"name"]];
     }else{
         
-        orderVC= [[OrderViewController alloc]initWithClassID:_classID andClassType:InteractionType];
+        orderVC= [[OrderViewController alloc]initWithClassID:_classID andClassType:InteractionType andProductName:_dataDic[@"name"]];
     }
     
     

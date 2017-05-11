@@ -103,6 +103,9 @@
     /* 请求教师个人详情*/
     [self requestTeachersInfoWithID:_teacherID];
     
+    //加载视图
+    [self setupViews];
+    
     
 }
 
@@ -135,7 +138,6 @@
     [_teachersPublicHeaderView.featuresView registerClass:[TeacherFeatureTagCollectionViewCell class] forCellWithReuseIdentifier:@"TeacherCell"];
     
     [_teachersPublicCollectionView registerClass:[TeacherPublicClassCollectionViewCell class] forCellWithReuseIdentifier:@"cellId"];
-    
     
     [_teachersPublicCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId"];
     
@@ -233,13 +235,13 @@
             if (indexPath.section == 0) {
                 
                 if (_oneOnOneClasses.count>indexPath.row) {
-                    collectionCell.model = _oneOnOneClasses[indexPath.row];
+                    collectionCell.oneOnOneModel = _oneOnOneClasses[indexPath.row];
                 }
                 
             }else if (indexPath.section ==1){
                 if (_publicClasses.count >indexPath.row) {
                     
-                    collectionCell.model = _publicClasses[indexPath.row];
+                    collectionCell.oneOnOneModel = _publicClasses[indexPath.row];
                     
                 }
             }
@@ -249,7 +251,6 @@
             if (_publicClasses.count >indexPath.row) {
                 
                 collectionCell.model = _publicClasses[indexPath.row];
-                
             }
         }
         
@@ -710,6 +711,8 @@
 #pragma mark- 教师详细信息请求
 - (void)requestTeachersInfoWithID:(NSString *)teacherID{
     
+    
+    [self loadingHUDStartLoadingWithTitle:nil];
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -719,9 +722,7 @@
         
         [self loginStates:dic];
         
-        NSString *status = [NSString stringWithFormat:@"%@",dic[@"status"]];
-        
-        if (![status isEqualToString:@"1"]) {
+        if (![dic[@"status"] isEqualToNumber:@1]) {
             /* 登录错误*/
             
         }else{
@@ -761,8 +762,7 @@
             }
             _videoCount = _videoClasses.count;
             
-            //加载视图
-            [self setupViews];
+            
            
             [_teachersPublicCollectionView reloadData];
             

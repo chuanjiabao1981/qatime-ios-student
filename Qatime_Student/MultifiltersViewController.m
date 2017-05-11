@@ -66,13 +66,13 @@
     _filters = @[
                  @[@"所有",@"近一个月",@"近两个月",@"近三个月",@"近半年",@"近一年"],
                  @[@"不限",@"招生中",@"开课中"],
-                 @[@"不限",@"免费试听",@"无试听"]
+//                 @[@"不限",@"免费试听",@"无试听"]
                  ];
     
     _filtersCompare =@[
                        @[@"allTime",@"1_months",@"2_months",@"3_months",@"6_months",@"1_year"],
                        @[@"allStatus",@"published",@"teaching"],
-                       @[@"all",@"免费试听",@"无试听"]
+//                       @[@"all",@"免费试听",@"无试听"]
                        ];
     
     //如果有数据,加载已选数据
@@ -191,6 +191,7 @@
     [_multiFiltersView.filtersCollection registerClass:[ClassSubjectCollectionViewCell class] forCellWithReuseIdentifier:@"cellId"];
     [_multiFiltersView.filtersCollection registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId"];
     [_multiFiltersView.filtersCollection registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId"];
+    [_multiFiltersView.filtersCollection registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId2"];
     
     
     //立即筛选按钮
@@ -265,9 +266,6 @@
             index++;
         }
     }
-    
-    
-    
     if ([[_filtersDic allKeys]count]==0) {
         
         //先全部弄成默认
@@ -283,14 +281,13 @@
                 cell.subject.textColor = TITLERED;
             }
         }
-        if (indexPath.section == 2) {
-            if (indexPath.row ==0) {
-                cell.subject.layer.borderColor = TITLERED.CGColor;
-                cell.subject.textColor = TITLERED;
-            }
-        }
+//        if (indexPath.section == 2) {
+//            if (indexPath.row ==0) {
+//                cell.subject.layer.borderColor = TITLERED.CGColor;
+//                cell.subject.textColor = TITLERED;
+//            }
+//        }
 
-        
     }else{
         
         if (_filtedArray.count!=0) {
@@ -316,19 +313,20 @@
                     }else{
                         cell.subject.layer.borderColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0].CGColor;
                         cell.subject.textColor = TITLECOLOR;
-                                            }
-                }else if (indexPath.section == 2){
-                    
-                    if ([indexPath isEqual:indexpath]) {
-                        cell.subject.layer.borderColor = TITLERED.CGColor;
-                        cell.subject.textColor = TITLERED;
-                    }else{
-                        
-                        cell.subject.layer.borderColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0].CGColor;
-                        cell.subject.textColor = TITLECOLOR;
                     }
-                    
                 }
+//                else if (indexPath.section == 2){
+//                    
+//                    if ([indexPath isEqual:indexpath]) {
+//                        cell.subject.layer.borderColor = TITLERED.CGColor;
+//                        cell.subject.textColor = TITLERED;
+//                    }else{
+//                        
+//                        cell.subject.layer.borderColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0].CGColor;
+//                        cell.subject.textColor = TITLECOLOR;
+//                    }
+//                    
+//                }
             }
         }
         
@@ -413,19 +411,19 @@
             }
         }
             break;
-        case 2:{
-            if ([cell.subject.text isEqualToString:@"不限"]) {
-                if (_filtersDic[@"试听状态"]) {
-                    [_filtersDic setValue:@"all" forKey:@"试听状态"];
-                }
-                
-            }else{
-                
-                [_filtersDic setValue:cell.subject.text forKey:@"试听状态"];
-            }
-            
-        }
-            break;
+//        case 2:{
+//            if ([cell.subject.text isEqualToString:@"不限"]) {
+//                if (_filtersDic[@"试听状态"]) {
+//                    [_filtersDic setValue:@"all" forKey:@"试听状态"];
+//                }
+//                
+//            }else{
+//                
+//                [_filtersDic setValue:cell.subject.text forKey:@"试听状态"];
+//            }
+//            
+//        }
+//            break;
     }
     
     
@@ -487,38 +485,8 @@
         
         //footer
         if (kind == UICollectionElementKindSectionFooter){
-            UICollectionReusableView *footer = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId" forIndexPath:indexPath];
+            UICollectionReusableView *footer = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId2" forIndexPath:indexPath];
             footer.backgroundColor = [UIColor whiteColor];
-            view = footer;
-        }
-        
-        
-    }
-    
-    //section 2
-    if (indexPath.section == 2) {
-        //header
-        if (kind == UICollectionElementKindSectionHeader){
-            UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId" forIndexPath:indexPath];
-            UILabel *label = [[UILabel alloc]init];
-            label.font = TEXT_FONTSIZE;
-            label.text = @"试听状态";
-            label.textColor = TITLECOLOR;
-            [header addSubview:label];
-            label.sd_layout
-            .leftSpaceToView(header,20*ScrenScale)
-            .bottomSpaceToView(header,0)
-            .autoHeightRatio(0);
-            [label setSingleLineAutoResizeWithMaxWidth:100];
-            
-            view = header;
-        }
-        
-        //footer
-        if (kind == UICollectionElementKindSectionFooter){
-            UICollectionReusableView *footer = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId" forIndexPath:indexPath];
-            footer.backgroundColor = [UIColor whiteColor];
-            
             sectionLabel3 = [[UILabel alloc]init];
             sectionLabel3.font = TEXT_FONTSIZE;
             sectionLabel3.text = @"开课时间";
@@ -607,11 +575,29 @@
             .topEqualToView(start)
             .bottomEqualToView(start);
             
-            
             view = footer;
         }
-        
     }
+    
+    //    //section 2
+    //    if (indexPath.section == 2) {
+    //        //header
+    //        if (kind == UICollectionElementKindSectionHeader){
+    //            UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId" forIndexPath:indexPath];
+    //            UILabel *label = [[UILabel alloc]init];
+    //            label.font = TEXT_FONTSIZE;
+    //            label.text = @"试听状态";
+    //            label.textColor = TITLECOLOR;
+    //            [header addSubview:label];
+    //            label.sd_layout
+    //            .leftSpaceToView(header,20*ScrenScale)
+    //            .bottomSpaceToView(header,0)
+    //            .autoHeightRatio(0);
+    //            [label setSingleLineAutoResizeWithMaxWidth:100];
+    //
+    //            view = header;
+    //        }
+    //    }
     
     return view;
     
@@ -629,7 +615,7 @@
     
     CGSize size = CGSizeZero;
     
-    if (section == 2) {
+    if (section == 1) {
         size = CGSizeMake(self.view.width_sd, 200*ScrenScale);
     }else{
         

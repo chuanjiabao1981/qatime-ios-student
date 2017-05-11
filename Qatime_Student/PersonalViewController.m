@@ -387,7 +387,13 @@
                 }
                     break;
                 case 3:{
-                    controller = [MyOneOnOneViewController new];
+                    
+                    [self loadingHUDStopLoadingWithTitle:@"正在开发中,敬请期待"];
+                    
+                    /**
+                     该版本暂时改为提示
+                     */
+//                    controller = [MyOneOnOneViewController new];
                 }
                     break;
                 case 4:{

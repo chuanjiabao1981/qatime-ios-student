@@ -23,7 +23,8 @@
 #import "VideoClassInfoViewController.h"
 #import "UIControl+RemoveTarget.h"
 #import "VideoClassPlayerViewController.h"
-#import "VideoClass.h"
+//#import "VideoClass.h"
+#import "MyVideoClassList.h"
 
 typedef enum : NSUInteger {
     PullToRefresh,  //下拉刷新
@@ -221,7 +222,7 @@ typedef enum : NSUInteger {
              @"page":[NSString stringWithFormat:@"%ld",page],
              @"per_page":[NSString stringWithFormat:@"%ld",per_page]}.mutableCopy;
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/video_courses",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:dics completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/video_courses/list",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:dics completeSuccess:^(id  _Nullable responds) {
        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
@@ -231,13 +232,12 @@ typedef enum : NSUInteger {
                 if (classType == MyVideoClassRequestTypeBought) {
                     //已购课程下拉刷新
                     for (NSDictionary *dicsdata in dic[@"data"]) {
-                        VideoClassInfo *mod = [VideoClassInfo yy_modelWithJSON:dicsdata];
-                        mod.classID = dicsdata[@"id"];
+                        MyVideoClassList *mod = [MyVideoClassList yy_modelWithJSON:dicsdata];
+                        mod.video_course = [Video_course yy_modelWithJSON:dicsdata[@"video_course"]];
+                        mod.video_course.classID =dicsdata[@"video_course"][@"id"];
                         [_boughtClassArray addObject:mod];
                         
                     }
-                    
-                    
                     
                     [_myVideoClassView.boughtClassTableView cyl_reloadData];
                     
@@ -246,8 +246,9 @@ typedef enum : NSUInteger {
                 }else if (classType == MyVideoClassRequestTypeFree){
                     
                     for (NSDictionary *dicsdata in dic[@"data"]) {
-                        VideoClassInfo *mod = [VideoClassInfo yy_modelWithJSON:dicsdata];
-                        mod.classID = dicsdata[@"id"];
+                        MyVideoClassList *mod = [MyVideoClassList yy_modelWithJSON:dicsdata];
+                        mod.video_course = [Video_course yy_modelWithJSON:dicsdata[@"video_course"]];
+                        mod.video_course.classID =dicsdata[@"video_course"][@"id"];
                         [_freeClassArray addObject:mod];
                         
                     }
@@ -364,7 +365,7 @@ typedef enum : NSUInteger {
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
         
         if (_boughtClassArray.count >indexPath.row) {
-            cell.model = _boughtClassArray[indexPath.row];
+            cell.myVideoClassListModel = _boughtClassArray[indexPath.row];
             cell.enterButton.tag = indexPath.row+100;
             [cell.enterButton removeAllTargets];
             [cell.enterButton addTarget:self action:@selector(enterClass:) forControlEvents:UIControlEventTouchUpInside];
@@ -381,7 +382,7 @@ typedef enum : NSUInteger {
         }
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
         if (_freeClassArray.count>indexPath.row) {
-            cell.model = _freeClassArray[indexPath.row];
+            cell.myVideoClassListModel = _freeClassArray[indexPath.row];
             cell.enterButton.tag = indexPath.row+200;
             [cell.enterButton removeAllTargets];
             [cell.enterButton addTarget:self action:@selector(enterClass:) forControlEvents:UIControlEventTouchUpInside];
@@ -405,7 +406,7 @@ typedef enum : NSUInteger {
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     MyVideoClassTableViewCell *cell = (MyVideoClassTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    VideoClassInfoViewController *controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
+    VideoClassInfoViewController *controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.myVideoClassListModel.video_course.classID];
     [self.navigationController pushViewController:controller animated:YES];
     
 }

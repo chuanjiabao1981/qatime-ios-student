@@ -66,7 +66,7 @@
             UICollectionView *_ = [[UICollectionView alloc]initWithFrame:_subjectView.bounds collectionViewLayout:layout];
             _.backgroundColor = [UIColor whiteColor];
             [_subjectView addSubview:_];
-            _.hidden = YES;
+            
             _;
         });
     }

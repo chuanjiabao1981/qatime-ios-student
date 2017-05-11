@@ -136,10 +136,16 @@
             break;
             
         case 1:{
-            [self.view addSubview:self.interactionClassFilterController.view];
-            [self.interactionClassFilterController didMoveToParentViewController:self];
-         
-            _filterView.mode = InteractionMode;
+            
+            [self loadingHUDStopLoadingWithTitle:@"正在开发中,敬请期待"];
+            
+            /**
+             该版本暂时去掉该功能
+             */
+//            [self.view addSubview:self.interactionClassFilterController.view];
+//            [self.interactionClassFilterController didMoveToParentViewController:self];
+//         
+//            _filterView.mode = InteractionMode;
             
         }
             break;
@@ -360,7 +366,7 @@
     _pops = [SnailQuickMaskPopups popupsWithMaskStyle:MaskStyleBlackTranslucent aView:self.tagsFilterView];
     
     //已选过 和未选过的情况
-    if (![sender.titleLabel.text isEqualToString:@"标签"]) {
+    if (![sender.titleLabel.text isEqualToString:@"不限"]) {
         //把tag选项表的所有按钮遍历成未选中状态
         NSInteger index = 0;
         for (NSString *title in _tags) {
@@ -387,15 +393,24 @@
     }else{
         
         ClassSubjectCollectionViewCell *cell = (ClassSubjectCollectionViewCell *)[_tagsFilterView.tagsCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-        cell.subject.textColor = [UIColor whiteColor];
-        cell.subject.backgroundColor = [UIColor orangeColor];
-        cell.subject.layer.borderColor = [UIColor orangeColor].CGColor;
+        cell.subject.textColor = NAVIGATIONRED;
+        cell.subject.backgroundColor = [UIColor whiteColor];
+        cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
         
     }
     
     [_pops presentWithAnimated:self completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
+        if ([sender.titleLabel.text isEqualToString:@"不限"]) {
         
+            //多加一条,防止第一次默认选择"不限"失败
+            ClassSubjectCollectionViewCell *cell = (ClassSubjectCollectionViewCell *)[_tagsFilterView.tagsCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+            cell.subject.textColor = NAVIGATIONRED;
+            cell.subject.backgroundColor = [UIColor whiteColor];
+            cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
+            
+        }
     }];
+
 }
 
 /**
@@ -705,9 +720,9 @@
     if ([filterDic[@"q[status_eq]"]isEqualToString:@"allStatus"]) {
         [filter setValue:@"" forKey:@"q[status_eq]"];
     }
-    if ([filterDic[@"试听状态"]isEqualToString:@"all"]) {
-        [filter setValue:@"" forKey:@"试听状态"];
-    }
+//    if ([filterDic[@"试听状态"]isEqualToString:@"all"]) {
+//        [filter setValue:@"" forKey:@"试听状态"];
+//    }
     
     if (filter) {
 //        [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{

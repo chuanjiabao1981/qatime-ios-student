@@ -10,6 +10,8 @@
 #import "NavigationBar.h"
 #import "VerifyPasswordView.h"
 #import "UIViewController+HUD.h"
+#import "BindingMailViewController.h"
+
 
 @interface VerifyPasswordViewController (){
     
@@ -22,12 +24,26 @@
     
     NSString *_ticketToken;
     
+    VerifyType _verifyType;
+    
 }
 @property (nonatomic, strong) VerifyPasswordView *mainView ;
 
 @end
 
 @implementation VerifyPasswordViewController
+
+-(instancetype)initWithType:(VerifyType)verifyType{
+    
+    self = [super init];
+    if (self) {
+       
+        _verifyType = verifyType;
+        
+    }
+    return self;
+}
+
 
 
 - (void)setupNavigation{
@@ -38,6 +54,7 @@
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     _navigationBar.titleLabel.text = @"验证密码";
 }
+
 
 - (void)setupMainView{
     
@@ -180,11 +197,19 @@
     
 }
 
-//进入家长手机修改页面
+//进入家长手机修改页面  或者 邮箱绑定页面
 - (void)nextPage{
     
-    ParentViewController *controller = [[ParentViewController alloc]initWithPhone:[[NSUserDefaults standardUserDefaults] valueForKey:@"parent_phone"] andTicketToken:_ticketToken];
-    [self.navigationController pushViewController:controller animated:YES];
+    if (_verifyType == ParentPhoneType) {
+        
+        ParentViewController *controller = [[ParentViewController alloc]initWithPhone:[[NSUserDefaults standardUserDefaults] valueForKey:@"parent_phone"] andTicketToken:_ticketToken];
+        [self.navigationController pushViewController:controller animated:YES];
+    }else if (_verifyType == BindingEmail){
+        
+        BindingMailViewController *controller = [[BindingMailViewController alloc]init];
+        [self.navigationController pushViewController:controller animated:YES];
+        
+    }
     
 }
 

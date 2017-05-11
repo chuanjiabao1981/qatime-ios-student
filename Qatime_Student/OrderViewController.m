@@ -42,7 +42,7 @@ typedef enum : NSUInteger {
     BOOL balanceEnable;
     
     /* 订单成功后,收到的数据,传入下一页*/
-    NSDictionary *dataDic;
+    NSMutableDictionary *dataDic;
     
     /* 优惠码*/
     NSString *_promotionCode;
@@ -56,26 +56,30 @@ typedef enum : NSUInteger {
     /**不可退款提示*/
     UIView *_warning;
     
+    /**产品名称*/
+    NSString *_productName;
+    
 }
 
 @end
 
 @implementation OrderViewController
 
--(instancetype)initWithClassID:(NSString *)classID andClassType:(ClassOrderType)type{
+-(instancetype)initWithClassID:(NSString *)classID andClassType:(ClassOrderType)type  andProductName:(NSString *)productName {
     
     self= [super init];
     if (self) {
         
         _classID = [NSString stringWithFormat:@"%@",classID];
         _orderType = type;
+        _productName = [NSString stringWithFormat:@"%@",productName];
         
     }
     return self;
     
 }
 
--(instancetype)initWithClassID:(NSString *)classID andPromotionCode:(NSString *)promotionCode andClassType:(ClassOrderType)type{
+-(instancetype)initWithClassID:(NSString *)classID andPromotionCode:(NSString *)promotionCode andClassType:(ClassOrderType)type  andProductName:(NSString *)productName {
     
     self= [super init];
     if (self) {
@@ -84,6 +88,7 @@ typedef enum : NSUInteger {
         
         _promotionCode = [NSString stringWithFormat:@"%@",promotionCode];
         _orderType = type;
+        _productName = [NSString stringWithFormat:@"%@",productName];
         
         hidePromotionCodeButton = YES;
         
@@ -555,7 +560,10 @@ typedef enum : NSUInteger {
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 下单成功*/
             [self loadingHUDStopLoadingWithTitle:nil];
-            dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
+            
+            dataDic = [NSMutableDictionary dictionaryWithDictionary:dic[@"data"]];
+            [dataDic setValue:_productName forKey:@"productName"];
+            
             
             PayConfirmViewController *controller = [[PayConfirmViewController alloc]initWithData:dataDic];
             [self.navigationController pushViewController:controller animated:YES];

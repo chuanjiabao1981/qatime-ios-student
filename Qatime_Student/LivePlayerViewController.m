@@ -1830,7 +1830,7 @@ bool ismute     = NO;
     NSLog(@"viewWillAppear");
     NSLog(@"Version = %@", [self.liveplayerTeacher getSDKVersion]);
     
-    [[UIApplication sharedApplication] setStatusBarHidden:TRUE];
+    [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     
 }
 
@@ -1852,7 +1852,6 @@ bool ismute     = NO;
     [self.liveplayerTeacher shutdown]; //退出播放并释放相关资源
     [self.liveplayerTeacher.view removeFromSuperview];
     self.liveplayerTeacher = nil;
-    
     
     /* 取消老师播放器的监听*/
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerDidPreparedToPlayNotification object:_liveplayerTeacher];
@@ -3777,19 +3776,31 @@ bool ismute     = NO;
 #pragma mark- 开始/关闭弹幕功能
 - (void)barragesSwitch{
     
-    if (barrageRunning == YES) {
-        _aBarrage.view.hidden = YES;
-        barrageRunning =NO;
-        [_barrage setImage:[UIImage imageNamed:@"barrage_off"] forState:UIControlStateNormal];
-        [_aBarrage stop];
-    }else if (barrageRunning == NO){
+    if (isFullScreen == YES) {
         
-        _aBarrage.view.hidden = NO;
-        barrageRunning = YES;
+        if (_aBarrage.view.hidden == YES) {
+            _aBarrage.view.hidden = NO;
+        }
+        if (barrageRunning==YES) {
+             [_barrage setImage:[UIImage imageNamed:@"barrage_off"] forState:UIControlStateNormal];
+        }else{
+            [_aBarrage start];
+            barrageRunning = YES;
+            [_barrage setImage:[UIImage imageNamed:@"barrage_on"] forState:UIControlStateNormal];
+        }
         
-        [_barrage setImage:[UIImage imageNamed:@"barrage_on"] forState:UIControlStateNormal];
-        
-        [_aBarrage start];
+    }else{
+        if (barrageRunning == YES) {
+            _aBarrage.view.hidden = YES;
+            barrageRunning =NO;
+            [_barrage setImage:[UIImage imageNamed:@"barrage_off"] forState:UIControlStateNormal];
+            [_aBarrage stop];
+        }else if (barrageRunning == NO){
+            _aBarrage.view.hidden = NO;
+            barrageRunning = YES;
+            [_barrage setImage:[UIImage imageNamed:@"barrage_on"] forState:UIControlStateNormal];
+            [_aBarrage start];
+        }
         
     }
 }

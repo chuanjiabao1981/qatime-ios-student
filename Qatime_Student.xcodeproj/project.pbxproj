@@ -654,6 +654,7 @@
 		54F47E881E092AF100D896DB /* SystemNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F47E871E092AF100D896DB /* SystemNotice.m */; };
 		54F47E8B1E09367900D896DB /* ChatList.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F47E8A1E09367900D896DB /* ChatList.m */; };
 		54F63A161E1F9EBB00758B42 /* UITextView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F63A151E1F9EBB00758B42 /* UITextView+Placeholder.m */; };
+		54F7E1B91EC40F1600337594 /* MyVideoClassList.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F7E1B81EC40F1600337594 /* MyVideoClassList.m */; };
 		54FA71561E07B107009D81FE /* ChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FA71551E07B107009D81FE /* ChatView.m */; };
 		54FA71591E07B111009D81FE /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FA71581E07B111009D81FE /* ChatViewController.m */; };
 		54FB1DB51DF10B9B00BA9A3C /* UIViewController+VideoStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FB1DB41DF10B9B00BA9A3C /* UIViewController+VideoStatus.m */; };
@@ -2001,6 +2002,8 @@
 		54F63A151E1F9EBB00758B42 /* UITextView+Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Placeholder.m"; sourceTree = "<group>"; };
 		54F63A1B1E1FA1B800758B42 /* UITextView_Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextView_Placeholder.h; sourceTree = "<group>"; };
 		54F6E1421E767A8F000E1D1D /* UIViewController_Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_Login.h; sourceTree = "<group>"; };
+		54F7E1B71EC40F1600337594 /* MyVideoClassList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyVideoClassList.h; sourceTree = "<group>"; };
+		54F7E1B81EC40F1600337594 /* MyVideoClassList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyVideoClassList.m; sourceTree = "<group>"; };
 		54FA71541E07B107009D81FE /* ChatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatView.h; sourceTree = "<group>"; };
 		54FA71551E07B107009D81FE /* ChatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatView.m; sourceTree = "<group>"; };
 		54FA71571E07B111009D81FE /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
@@ -2214,7 +2217,7 @@
 				54AB48B21DED2CF2008E3BC5 /* 我的直播课 */,
 				547E92BA1E8E2DA700160C6D /* 我的一对一 */,
 				54C451FE1E9C94B8002108F4 /* 我的视频课 */,
-				54D82AEC1EAEFA240034015F /* 我的试听课 */,
+				54D82AEC1EAEFA240034015F /* 我的试听 */,
 				54AB48B11DED2CF1008E3BC5 /* 安全管理 */,
 				54AB48B01DED2CEF008E3BC5 /* 系统设置 */,
 			);
@@ -5040,6 +5043,8 @@
 		54C452011E9CA5B9002108F4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				54F7E1B71EC40F1600337594 /* MyVideoClassList.h */,
+				54F7E1B81EC40F1600337594 /* MyVideoClassList.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -5130,10 +5135,10 @@
 		54CB265A1DEFFBAB00AE7414 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				54CB26611DEFFBDF00AE7414 /* ChangePhoneViewController.h */,
-				54CB26621DEFFBDF00AE7414 /* ChangePhoneViewController.m */,
 				545162C21DF53DF9000BD17A /* ChangePhoneGetCodeViewController.h */,
 				545162C31DF53DF9000BD17A /* ChangePhoneGetCodeViewController.m */,
+				54CB26611DEFFBDF00AE7414 /* ChangePhoneViewController.h */,
+				54CB26621DEFFBDF00AE7414 /* ChangePhoneViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -5141,10 +5146,10 @@
 		54CB265B1DEFFBAE00AE7414 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				54CB265E1DEFFBD300AE7414 /* ChangPhoneView.h */,
-				54CB265F1DEFFBD300AE7414 /* ChangPhoneView.m */,
 				545162BF1DF53DE6000BD17A /* ChangePhoneGetCodeView.h */,
 				545162C01DF53DE6000BD17A /* ChangePhoneGetCodeView.m */,
+				54CB265E1DEFFBD300AE7414 /* ChangPhoneView.h */,
+				54CB265F1DEFFBD300AE7414 /* ChangPhoneView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -5257,14 +5262,14 @@
 			name = YZMenuView;
 			sourceTree = "<group>";
 		};
-		54D82AEC1EAEFA240034015F /* 我的试听课 */ = {
+		54D82AEC1EAEFA240034015F /* 我的试听 */ = {
 			isa = PBXGroup;
 			children = (
 				54D82AEF1EAEFAF70034015F /* Model */,
 				54D82AEE1EAEFAF60034015F /* View */,
 				54D82AED1EAEFAF50034015F /* Controller */,
 			);
-			name = "我的试听课";
+			name = "我的试听";
 			sourceTree = "<group>";
 		};
 		54D82AED1EAEFAF50034015F /* Controller */ = {
@@ -6661,6 +6666,7 @@
 				54AC04101E8938E100817767 /* NIMTeamAnnouncementListCell.m in Sources */,
 				544E0CE41DD09FAE00884F31 /* IndexHeaderPageView.m in Sources */,
 				543BCAF81E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.m in Sources */,
+				54F7E1B91EC40F1600337594 /* MyVideoClassList.m in Sources */,
 				54294C7C1DDB373400677333 /* NELivePlayerControl.m in Sources */,
 				5413D2651DF7C74F00A8FDEC /* RechargeTableViewCell.m in Sources */,
 				54AC03D31E8938E100817767 /* NIMContactSelectViewController.m in Sources */,

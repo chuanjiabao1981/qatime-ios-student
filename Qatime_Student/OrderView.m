@@ -86,7 +86,29 @@
         [_classType setSingleLineAutoResizeWithMaxWidth:200];
         
         
-
+        /* 年级*/
+        UILabel *grade = [UILabel new];
+        grade.text = @"年        级";
+        grade.textColor = MineShaft;
+        grade.font = NormalFont;
+        [_infoView addSubview:grade];
+        
+        grade.sd_layout
+        .leftEqualToView(type)
+        .topSpaceToView(type,InterVal)
+        .autoHeightRatio(0);
+        [grade setSingleLineAutoResizeWithMaxWidth:200];
+        
+        _gradeLabel = [UILabel new];
+        _gradeLabel.textColor = Steel;
+        _gradeLabel.font = NormalFont;
+        [_infoView addSubview:_gradeLabel];
+        
+        _gradeLabel.sd_layout
+        .leftEqualToView(_classType)
+        .topEqualToView(grade)
+        .bottomEqualToView(grade);
+        [_gradeLabel setSingleLineAutoResizeWithMaxWidth:200];
         
         /* 科目*/
         UILabel *subject = [UILabel new];
@@ -96,8 +118,8 @@
         [_infoView addSubview:subject];
         
         subject.sd_layout
-        .leftEqualToView(type)
-        .topSpaceToView(type,InterVal)
+        .leftEqualToView(grade)
+        .topSpaceToView(grade,InterVal)
         .autoHeightRatio(0);
         [subject setSingleLineAutoResizeWithMaxWidth:200];
         
@@ -111,30 +133,7 @@
         .bottomEqualToView(subject)
         .leftSpaceToView(subject,20);
         [_subjectLabel setSingleLineAutoResizeWithMaxWidth:200];
-        
-        /* 年级*/
-        UILabel *grade = [UILabel new];
-        grade.text = @"年        级";
-        grade.textColor = MineShaft;
-        grade.font = NormalFont;
-        [_infoView addSubview:grade];
-        
-        grade.sd_layout
-        .leftEqualToView(subject)
-        .topSpaceToView(subject,InterVal)
-        .autoHeightRatio(0);
-        [grade setSingleLineAutoResizeWithMaxWidth:200];
-        
-        _gradeLabel = [UILabel new];
-        _gradeLabel.textColor = Steel;
-        _gradeLabel.font = NormalFont;
-        [_infoView addSubview:_gradeLabel];
-        
-        _gradeLabel.sd_layout
-        .leftEqualToView(_subjectLabel)
-        .topEqualToView(grade)
-        .bottomEqualToView(grade);
-        [_gradeLabel setSingleLineAutoResizeWithMaxWidth:200];
+
         
         /* 老师*/
         UILabel *teacher = [UILabel new];
@@ -143,8 +142,8 @@
         teacher.font = NormalFont;
         [_infoView addSubview:teacher];
         teacher.sd_layout
-        .leftEqualToView(grade)
-        .topSpaceToView(grade,InterVal)
+        .leftEqualToView(subject)
+        .topSpaceToView(subject,InterVal)
         .autoHeightRatio(0);
         [teacher setSingleLineAutoResizeWithMaxWidth:200];
         
@@ -154,7 +153,7 @@
         [_infoView addSubview:_teacheNameLabel];
         
         _teacheNameLabel.sd_layout
-        .leftEqualToView(_gradeLabel)
+        .leftEqualToView(_subjectLabel)
         .topEqualToView(teacher)
         .bottomEqualToView(teacher);
         [_teacheNameLabel setSingleLineAutoResizeWithMaxWidth:200];
@@ -399,7 +398,7 @@
         _applyButton = [[UIButton alloc]init];
         _applyButton.titleLabel.font = TITLEFONTSIZE;
         [_applyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_applyButton setTitle:@"立即报名" forState:UIControlStateNormal];
+        [_applyButton setTitle:@"立即支付" forState:UIControlStateNormal];
         _applyButton.backgroundColor = BUTTONRED;
         
         [applyView addSubview:_applyButton];

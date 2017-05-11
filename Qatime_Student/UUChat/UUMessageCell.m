@@ -383,28 +383,36 @@
     self.labelNum.text = messageFrame.message.strName;
     self.labelNum.textAlignment = NSTextAlignmentCenter;
     
-    if (messageFrame.nameF.origin.x > 160) {
-//        self.labelNum.frame = CGRectMake(messageFrame.nameF.origin.x - 50, messageFrame.nameF.origin.y + 3, 100, messageFrame.nameF.size.height);
-        [self.labelNum sd_clearAutoLayoutSettings];
-        self.labelNum.sd_layout
-        .topEqualToView(headImageBackView)
-        .rightSpaceToView(headImageBackView,5)
-        .autoHeightRatio(0);
-        [self.labelNum setSingleLineAutoResizeWithMaxWidth:200];
-        [self.labelNum updateLayout];
+    if (messageFrame.message.from == UUMessageFromMe) {
+        
+        self.labelNum.hidden = YES;
         
     }else{
-//        self.labelNum.frame = CGRectMake(messageFrame.nameF.origin.x, messageFrame.nameF.origin.y + 3, 80, messageFrame.nameF.size.height);
-        
-        [self.labelNum sd_clearAutoLayoutSettings];
-        self.labelNum.sd_layout
-        .topEqualToView(headImageBackView)
-        .leftSpaceToView(_btnHeadImage,20)
-        .autoHeightRatio(0);
-        [self.labelNum setSingleLineAutoResizeWithMaxWidth:200];
-        [self.labelNum updateLayout];
-        
+        self.labelNum.hidden = NO;
+        if (messageFrame.nameF.origin.x > 160) {
+            //        self.labelNum.frame = CGRectMake(messageFrame.nameF.origin.x - 50, messageFrame.nameF.origin.y + 3, 100, messageFrame.nameF.size.height);
+            [self.labelNum sd_clearAutoLayoutSettings];
+            self.labelNum.sd_layout
+            .topEqualToView(headImageBackView)
+            .rightSpaceToView(headImageBackView,5)
+            .autoHeightRatio(0);
+            [self.labelNum setSingleLineAutoResizeWithMaxWidth:200];
+            [self.labelNum updateLayout];
+            
+        }else{
+            //        self.labelNum.frame = CGRectMake(messageFrame.nameF.origin.x, messageFrame.nameF.origin.y + 3, 80, messageFrame.nameF.size.height);
+            
+            [self.labelNum sd_clearAutoLayoutSettings];
+            self.labelNum.sd_layout
+            .topEqualToView(headImageBackView)
+            .leftSpaceToView(_btnHeadImage,20)
+            .autoHeightRatio(0);
+            [self.labelNum setSingleLineAutoResizeWithMaxWidth:200];
+            [self.labelNum updateLayout];
+            
+        }
     }
+    
     
     // 4、设置内容
     
@@ -418,14 +426,13 @@
 //    self.btnContent.frame = messageFrame.contentF;
     
     
-    
     //判断:自己发送的消息
     if (messageFrame.message.from == UUMessageFromMe) {
         
         [self.btnContent sd_clearAutoLayoutSettings];
         
         self.btnContent.sd_layout
-        .topSpaceToView(self.labelNum,10)
+        .topSpaceToView(self.timeLabel,10)
         .rightSpaceToView(headImageBackView,10)
         .widthIs(messageFrame.contentF.size.width)
         .heightIs(messageFrame.contentF.size.height);
@@ -459,13 +466,12 @@
         [self.btnContent sd_clearAutoLayoutSettings];
         
         self.btnContent.sd_layout
-        .topSpaceToView(self.labelNum,10)
+        .topSpaceToView(self.timeLabel,10)
         .leftSpaceToView(_btnHeadImage,10)
         .widthIs(messageFrame.contentF.size.width)
         .heightIs(messageFrame.contentF.size.height);
         [self.btnContent updateLayout];
 
-        
         self.btnContent.isMyMessage = NO;
         //判断:消息类型是文本
         if (messageFrame.message.type == UUMessageTypeText) {
@@ -492,9 +498,9 @@
     if (messageFrame.message.from == UUMessageFromMe) {
         [_timeLabel sd_clearAutoLayoutSettings];
         _timeLabel.sd_layout
-        .rightSpaceToView(_labelNum,5)
-        .topEqualToView(_labelNum)
-        .bottomEqualToView(_labelNum);
+        .topEqualToView(headImageBackView)
+        .rightSpaceToView(headImageBackView,10)
+        .autoHeightRatio(0);
         [_timeLabel setSingleLineAutoResizeWithMaxWidth:200];
         
         [_timeLabel updateLayout];
