@@ -191,7 +191,7 @@
                 
             }else{
                 /* 登录失败,请重试*/
-                [self loadingHUDStopLoadingWithTitle:@"登录失败,请稍后重试"];
+                [self HUDStopWithTitle:@"登录失败,请稍后重试"];
             }
             
             

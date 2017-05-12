@@ -223,7 +223,7 @@
                         
                     }
                     
-                    [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                    [self HUDStopWithTitle:@"加载完成"];
                     
                 }else{
                     
@@ -258,7 +258,7 @@
         
         requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?status=%@",Request_Header,_idNumber,@"teaching"];
         
-        //        [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+        //        [self HUDStartWithTitle:@"正在加载"];
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -297,7 +297,7 @@
                         [_startedClassView addSubview:noview];
                         
                     }
-                    [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                    [self HUDStopWithTitle:@"加载完成"];
                     
                 }else{
                     
@@ -333,7 +333,7 @@
         
         requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?status=%@",Request_Header,_idNumber,@"completed"];
         
-        //        [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+        //        [self HUDStartWithTitle:@"正在加载"];
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -379,7 +379,7 @@
                         
                     }
                     
-                    [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                    [self HUDStopWithTitle:@"加载完成"];
                     
                 }else{
                     
@@ -417,7 +417,7 @@
         
         requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?cate=%@",Request_Header,_idNumber,@"taste"];
         
-        //        [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+        //        [self HUDStartWithTitle:@"正在加载"];
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -465,7 +465,7 @@
                         
                     }
                     
-                    [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+                    [self HUDStopWithTitle:@"加载完成"];
                     
                 }else{
                     
@@ -925,7 +925,8 @@
     MyTutoriumModel *mod = _unStartArr[sender.tag];
     TutoriumListInfo *info = [TutoriumListInfo yy_modelWithJSON:[self returnToDictionaryWithModel:mod]];
     
-    ChatViewController *controller = [[ChatViewController alloc]initWithClass:info];
+    
+    ChatViewController *controller = [[ChatViewController alloc]initWithClass:info ];
     [self.navigationController pushViewController:controller animated:YES];
     
 }

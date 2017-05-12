@@ -196,7 +196,7 @@
             
         }else{
             
-            [self loadingHUDStopLoadingWithTitle:@"加载错误,请从新登录"];
+            [self HUDStopWithTitle:@"加载错误,请从新登录"];
         }
         
         

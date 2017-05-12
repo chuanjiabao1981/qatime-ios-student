@@ -23,6 +23,9 @@
 
 #import "OneOnOneClass.h"
 #import "VideoClassInfo.h"
+#import "OneOnOneTutoriumInfoViewController.h"
+
+#import "VideoClassInfoViewController.h"
 
 @interface TeachersPublicViewController ()<UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>{
     
@@ -98,7 +101,7 @@
     
     _featuresArray = @[@"课程可退",@"资料完整",@"在线授课"];
     
-    [self loadingHUDStartLoadingWithTitle:@"加载中"];
+    [self HUDStartWithTitle:@"加载中"];
     
     /* 请求教师个人详情*/
     [self requestTeachersInfoWithID:_teacherID];
@@ -112,7 +115,7 @@
 //加载视图
 - (void)setupViews{
     
-    [self loadingHUDStartLoadingWithTitle:nil];
+    [self HUDStartWithTitle:nil];
     
     //比较特殊的导航栏
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
@@ -231,26 +234,88 @@
         static NSString * CellIdentifier = @"cellId";
         TeacherPublicClassCollectionViewCell * collectionCell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         
-        if (_oneOnOneClasses.count!=0) {
+        if (_publicCount!=0) {
             if (indexPath.section == 0) {
                 
-                if (_oneOnOneClasses.count>indexPath.row) {
-                    collectionCell.oneOnOneModel = _oneOnOneClasses[indexPath.row];
-                }
-                
-            }else if (indexPath.section ==1){
-                if (_publicClasses.count >indexPath.row) {
-                    
-                    collectionCell.oneOnOneModel = _publicClasses[indexPath.row];
-                    
+                if (_publicClasses.count>indexPath.row) {
+                    collectionCell.model = _publicClasses[indexPath.row];
+                    collectionCell.classType = LiveClassType;
                 }
             }
-            
-        }else{
-            
-            if (_publicClasses.count >indexPath.row) {
+            if (_oneOnOneCount!=0&&_videoCount!=0) {
+                //3个section
+                if (indexPath.section == 1) {
+                    
+                    if (_oneOnOneClasses.count>indexPath.row) {
+                        collectionCell.oneOnOneModel = _oneOnOneClasses[indexPath.row];
+                        collectionCell.classType = InteractiveClassType;
+                    }
+                }else if (indexPath.section == 2){
+                    
+                    if (_videoClasses.count>indexPath.row) {
+                        collectionCell.model = _videoClasses[indexPath.row];
+                        collectionCell.classType = VideoClassType;
+                    }
+                }
+            }else if (_oneOnOneCount!=0&&_videoCount==0){
+                //2个section
+                if (indexPath.section == 1) {
+                    
+                    if (_videoClasses.count>indexPath.row) {
+                        collectionCell.model = _videoClasses[indexPath.row];
+                        collectionCell.classType = VideoClassType;
+                    }
+                }
                 
-                collectionCell.model = _publicClasses[indexPath.row];
+            }else if (_oneOnOneCount==0&&_videoCount!=0){
+                //2个section
+                if (indexPath.section == 1) {
+                    
+                    if (_oneOnOneClasses.count>indexPath.row) {
+                        collectionCell.oneOnOneModel = _oneOnOneClasses[indexPath.row];
+                        collectionCell.classType = InteractiveClassType;
+                    }
+                }
+            }else if (_oneOnOneCount == 0 && _videoCount == 0){
+                //1个section
+            }
+        }else{
+            if (_oneOnOneCount==0&&_videoCount==0) {
+                
+                //2个section
+                if (indexPath.section == 0) {
+                    
+                    if (_oneOnOneClasses.count>indexPath.row) {
+                        collectionCell.oneOnOneModel = _oneOnOneClasses[indexPath.row];
+                        collectionCell.classType = InteractiveClassType;
+                    }
+                }else if (indexPath.section ==1){
+                    
+                    if (_videoClasses.count>indexPath.row) {
+                        collectionCell.model = _videoClasses[indexPath.row];
+                        collectionCell.classType = VideoClassType;
+                    }
+                }
+            }else if (_oneOnOneCount!=0&&_videoCount==0){
+                //1个section
+                if (indexPath.section == 0) {
+                    
+                    if (_videoClasses.count>indexPath.row) {
+                        collectionCell.model = _videoClasses[indexPath.row];
+                        collectionCell.classType = VideoClassType;
+                    }
+                }
+                
+            }else if (_oneOnOneCount==0&&_videoCount!=0){
+                //1个section
+                if (indexPath.section == 0) {
+                    if (_oneOnOneClasses.count>indexPath.row) {
+                        collectionCell.oneOnOneModel = _oneOnOneClasses[indexPath.row];
+                        collectionCell.classType = InteractiveClassType;
+                    }
+                }
+            }else if (_oneOnOneCount != 0 && _videoCount != 0){
+                //0个section
             }
         }
         
@@ -665,9 +730,36 @@
                         [header addSubview:_teachersPublicHeaderView];
                         _teachersPublicHeaderView.classList.text = @"视频课";
                         _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
+                    }else if (kind == UICollectionElementKindSectionFooter){
+                        NSString *CellIdentifier = @"footerId";
+                        //从缓存中获取 Headercell
+                        header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                        [header addSubview:self.sepLine];
+
                     }
                 }
-            }else if (_oneOnOneCount==0 &&_videoCount==0){
+            }else if (_oneOnOneCount!=0 &&_videoCount==0){
+                //一个section的情况
+                if (indexPath.section == 0) {
+                    //section的header
+                    if (kind == UICollectionElementKindSectionHeader){
+                        NSString *CellIdentifier = @"headerId";
+                        //从缓存中获取 Headercell
+                        header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                        [header addSubview:_teachersPublicHeaderView];
+                        _teachersPublicHeaderView.classList.text = @"一对一";
+                        _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
+                    }else if (kind == UICollectionElementKindSectionFooter){
+                        NSString *CellIdentifier = @"footerId";
+                        //从缓存中获取 Headercell
+                        header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+                        [header addSubview:self.sepLine];
+                        
+                    }
+                }
+
+            }
+            else if (_oneOnOneCount==0 &&_videoCount==0){
                 //啥数据都没有的情况
                 if (indexPath.section == 0) {
                     //section的header
@@ -684,8 +776,7 @@
         }
         
     }else{
-        
-        
+ 
     }
     
     
@@ -698,7 +789,18 @@
         
         TeacherPublicClassCollectionViewCell *cell = (TeacherPublicClassCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
         
-        TutoriumInfoViewController *controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+        //区分类型
+        UIViewController *controller;
+        if (cell.classType == LiveClassType) {
+            
+            controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+        }else if (cell.classType == InteractiveClassType){
+            
+            controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.oneOnOneModel.classID];
+        }else if (cell.classType == VideoClassType){
+            
+            controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
+        }
         
         [self.navigationController pushViewController:controller animated:YES];
         
@@ -712,7 +814,7 @@
 - (void)requestTeachersInfoWithID:(NSString *)teacherID{
     
     
-    [self loadingHUDStartLoadingWithTitle:nil];
+    [self HUDStartWithTitle:nil];
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -733,7 +835,7 @@
             //教师简介富文本
             _teacherPublicInfo.attributeDescription = [[NSMutableAttributedString alloc]initWithData:[_teacherPublicInfo.desc dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil  error:nil];
             
-            //yymodel解析教师公开课程数据
+            //yymodel解析教师直播课程数据
             NSMutableArray *publichArr =[NSMutableArray arrayWithArray: dic[@"data"][@"courses"]];
             
             for (NSDictionary *classDic in publichArr) {
@@ -769,12 +871,12 @@
             //加载头视图数据
             [self refreshTeacherInfoWith:_teacherPublicInfo];
             
-            [self loadingHUDStopLoadingWithTitle:nil];
+            [self HUDStopWithTitle:nil];
             
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-         [self loadingHUDStopLoadingWithTitle:nil];
+         [self HUDStopWithTitle:nil];
     }];
     
 }

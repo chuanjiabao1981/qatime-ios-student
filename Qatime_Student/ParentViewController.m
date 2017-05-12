@@ -173,7 +173,7 @@
         
     }else{
         
-        [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+        [self HUDStartWithTitle:@"正在加载"];
         [manager PUT:[NSString stringWithFormat:@"%@/api/v1/students/%@/parent_phone_ticket_token",Request_Header, _idNumber] parameters:@{@"ticket_token":_ticket_token,@"parent_phone":_parentView.parentPhoneText.text,@"captcha_confirmation":_parentView.keyCodeText.text} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary  *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -181,7 +181,7 @@
             NSLog(@"%@",dic);
             
             if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
-                [self loadingHUDStopLoadingWithTitle:@"修改成功!"];
+                [self HUDStopWithTitle:@"修改成功!"];
                 [self performSelector:@selector(returnFrontPage) withObject:nil afterDelay:1];
                 [[NSUserDefaults standardUserDefaults]setValue:dic[@"data"][@"parent_phone"] forKey:@"parent_phone"];
                 
@@ -231,12 +231,12 @@
             
             [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header] parameters:@{@"send_to":_parentView.parentPhoneText.text,@"key":@"send_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
-                [self loadingHUDStopLoadingWithTitle:@"发送成功"];
+                [self HUDStopWithTitle:@"发送成功"];
                 [self deadLineTimer:sender];
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
-                [self loadingHUDStopLoadingWithTitle:@"发送失败"];
+                [self HUDStopWithTitle:@"发送失败"];
                 
             }];
         }

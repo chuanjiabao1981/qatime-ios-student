@@ -235,7 +235,7 @@ typedef enum : NSUInteger {
             }
         }else{
             //获取数据失败
-            [self loadingHUDStopLoadingWithTitle:@"加载失败,请重试"];
+            [self HUDStopWithTitle:@"加载失败,请重试"];
             if (mode == PullToRefresh) {
                 [_classTableView.mj_header endRefreshing];
                 

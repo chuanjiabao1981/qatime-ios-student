@@ -45,6 +45,7 @@
     self = [super init];
     if (self) {
         
+        //筛选条件直接从本地拿
         if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Filter"]) {
             _filtersDic =[[[NSUserDefaults standardUserDefaults]valueForKey:@"Filter"] mutableCopy];
         }else{
@@ -266,71 +267,141 @@
             index++;
         }
     }
+    
     if ([[_filtersDic allKeys]count]==0) {
         
         //先全部弄成默认
         if (indexPath.section == 0) {
-            if (indexPath.row ==0) {
-                cell.subject.layer.borderColor = TITLERED.CGColor;
-                cell.subject.textColor = TITLERED;
+            if (indexPath.row == 0) {
+                
+                cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
+                cell.subject.textColor = NAVIGATIONRED;
+
+            }else{
+                
+                cell.subject.layer.borderColor = TITLECOLOR.CGColor;
+                cell.subject.textColor = TITLECOLOR;
             }
+            
         }
         if (indexPath.section == 1) {
-            if (indexPath.row ==0) {
-                cell.subject.layer.borderColor = TITLERED.CGColor;
-                cell.subject.textColor = TITLERED;
+            if (indexPath.row == 0) {
+                
+                cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
+                cell.subject.textColor = NAVIGATIONRED;
+                
+            }else{
+                
+                cell.subject.layer.borderColor = TITLECOLOR.CGColor;
+                cell.subject.textColor = TITLECOLOR;
             }
         }
-//        if (indexPath.section == 2) {
-//            if (indexPath.row ==0) {
-//                cell.subject.layer.borderColor = TITLERED.CGColor;
-//                cell.subject.textColor = TITLERED;
-//            }
-//        }
+
 
     }else{
+        //先全部弄成默认
+        if (indexPath.section == 0) {
+            
+            cell.subject.layer.borderColor = TITLECOLOR.CGColor;
+            cell.subject.textColor = TITLECOLOR;
+            
+        }
+        if (indexPath.section == 1) {
+            cell.subject.layer.borderColor = TITLECOLOR.CGColor;
+            cell.subject.textColor = TITLECOLOR;
+        }
+
         
-        if (_filtedArray.count!=0) {
+        if (_filtedArray.count==2) {
             
             for (NSIndexPath *indexpath in _filtedArray) {
                 
                 if (indexPath.section ==0) {
                     
-                    if ([indexPath isEqual:indexpath]) {
-                        cell.subject.layer.borderColor = TITLERED.CGColor;
-                        cell.subject.textColor = TITLERED;
+                    if (indexpath.section == indexPath.section &&indexpath.row == indexPath.row) {
                         
-                    }else{
-                        cell.subject.layer.borderColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0].CGColor;
-                        cell.subject.textColor = TITLECOLOR;
-
+                        cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
+                        cell.subject.textColor = NAVIGATIONRED;
                     }
+                    
                 }else if (indexPath.section == 1){
                     
-                    if ([indexPath isEqual:indexpath]) {
-                        cell.subject.layer.borderColor = TITLERED.CGColor;
-                        cell.subject.textColor = TITLERED;
-                    }else{
-                        cell.subject.layer.borderColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0].CGColor;
-                        cell.subject.textColor = TITLECOLOR;
+                    if (indexpath.section == indexPath.section &&indexpath.row == indexPath.row) {
+                        
+                        cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
+                        cell.subject.textColor = NAVIGATIONRED;
                     }
                 }
-//                else if (indexPath.section == 2){
-//                    
-//                    if ([indexPath isEqual:indexpath]) {
-//                        cell.subject.layer.borderColor = TITLERED.CGColor;
-//                        cell.subject.textColor = TITLERED;
-//                    }else{
-//                        
-//                        cell.subject.layer.borderColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0].CGColor;
-//                        cell.subject.textColor = TITLECOLOR;
-//                    }
-//                    
-//                }
+                
             }
+
+        }else if (_filtedArray.count == 1){
+           
+            
+            NSMutableArray *filtArr = _filtedArray.mutableCopy;
+            for (NSIndexPath *indexpath in filtArr) {
+                if (indexPath.section == 0) {
+                    
+                    [_filtedArray addObject:[NSIndexPath indexPathForRow:0 inSection:1]];
+                    
+                }else if (indexpath.section == 1){
+                    
+                    [_filtedArray addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
+                }
+            }
+            
+            for (NSIndexPath *indexpath in filtArr) {
+               
+                if (indexPath.section ==0) {
+                    
+                    if (indexpath.section == indexPath.section &&indexpath.row == indexPath.row) {
+                        cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
+                        cell.subject.textColor = NAVIGATIONRED;
+                    }
+                    
+                }else if (indexPath.section == 1){
+                    
+                    if (indexpath.section == indexPath.section &&indexpath.row == indexPath.row) {
+                        
+                        cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
+                        cell.subject.textColor = NAVIGATIONRED;
+                    }
+                }
+            }
+            
+        } else{
+            
+            //遍历成初始化状态
+            //先全部弄成默认
+            if (indexPath.section == 0) {
+                if (indexPath.row ==0) {
+                    cell.subject.layer.borderColor = TITLERED.CGColor;
+                    cell.subject.textColor = TITLERED;
+                }else{
+                    cell.subject.layer.borderColor = TITLECOLOR.CGColor;
+                    cell.subject.textColor = TITLECOLOR;
+                }
+            }
+            if (indexPath.section == 1) {
+                if (indexPath.row ==0) {
+                    cell.subject.layer.borderColor = TITLERED.CGColor;
+                    cell.subject.textColor = TITLERED;
+                }else{
+                    cell.subject.layer.borderColor = TITLECOLOR.CGColor;
+                    cell.subject.textColor = TITLECOLOR;
+                }
+            }
+
         }
         
     }
+    
+    
+    //数组里缺少哪个  就补充哪个
+    
+    
+    
+    
     
     return cell;
     
@@ -372,6 +443,7 @@
         item ++;
     }
     
+    
     ClassSubjectCollectionViewCell *cell = (ClassSubjectCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     cell.subject.layer.borderColor = TITLERED.CGColor;
     cell.subject.textColor = TITLERED;
@@ -380,9 +452,8 @@
         case 0:{
             if ([cell.subject.text isEqualToString:@"所有"]) {
                 if (_filtersDic[@"range"]) {
-                    [_filtersDic setValue:@"allTime" forKey:@"range"];
+                    [_filtersDic removeObjectForKey:@"range"];
                 }
-                
             }else if([cell.subject.text isEqualToString:@"近一个月"]){
                 [_filtersDic setValue:@"1_months" forKey:@"range"];
                 
@@ -403,7 +474,7 @@
             break;
         case 1:{
             if ([cell.subject.text isEqualToString:@"不限"]) {
-                [_filtersDic setValue:@"allStatus" forKey:@"q[status_eq]"];
+                [_filtersDic removeObjectForKey:@"q[status_eq]"];
             }else if ([cell.subject.text isEqualToString:@"招生中"]) {
                 [_filtersDic setValue:@"published" forKey:@"q[status_eq]"];
             }else if ([cell.subject.text isEqualToString:@"开课中"]) {

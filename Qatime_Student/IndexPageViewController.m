@@ -129,7 +129,7 @@
 - (void)loadView{
     [super loadView];
     
-    [self loadingHUDStartLoadingWithTitle:NSLocalizedString(@"正在加载数据", nil)];
+    [self HUDStartWithTitle:NSLocalizedString(@"正在加载数据", nil)];
     
     /* 导航栏加载*/
     _navigationBar = ({
@@ -819,7 +819,7 @@
 - (void)reloadData{
     
     /* collectionView重新加载数据*/
-    [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"数据加载完成", nil)];
+    [self HUDStopWithTitle:NSLocalizedString(@"数据加载完成", nil)];
 }
 
 
@@ -845,7 +845,7 @@
     if (collectionView.tag == 1) {
         
         if (_todayLives.count==0) {
-            items = 10;
+            items = 1;
         }else{
             items = _todayLives.count;
         }
@@ -876,11 +876,12 @@
         TodayLiveCollectionViewCell * liveCell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         
         if (_todayLives.count>indexPath.row) {
+           
             liveCell.model = _todayLives[indexPath.row];
         }else{
             [liveCell.classImageView setImage:[UIImage imageNamed:@"school"]];
-            liveCell.classNameLabel.text = @"今日直播课程";
-            liveCell.stateLabel.text = @"12:00-13:00 开始";
+            liveCell.classNameLabel.text = @"今日无直播课程";
+            liveCell.stateLabel.text = @"今日无直播课程";
             
         }
         
@@ -1004,18 +1005,22 @@
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
+    //今日直播
     if (collectionView.tag==1) {
-        
-        TodayLiveCollectionViewCell *cell = (TodayLiveCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-        
-        TutoriumInfoViewController *controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
-        
-//        OneOnOneTutoriumInfoViewController *controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:@"1"];
-        
-//        VideoClassInfoViewController *controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
-        controller.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:controller animated:YES];
-        
+        if (_todayLives.count==0) {
+            [self HUDStopWithTitle:@"今日无直播课程"];
+        }else{
+            
+            TodayLiveCollectionViewCell *cell = (TodayLiveCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+            
+            TutoriumInfoViewController *controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+            
+            //        OneOnOneTutoriumInfoViewController *controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:@"1"];
+            
+            //        VideoClassInfoViewController *controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
+            controller.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:controller animated:YES];
+        }
         
     }
     
@@ -1027,7 +1032,7 @@
             
             /* 数据请求错误*/
             
-            [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"该地区没有推荐教师", nil)];
+            [self HUDStopWithTitle:NSLocalizedString(@"该地区没有推荐教师", nil)];
             
             
         }else{
@@ -1159,7 +1164,7 @@
             
             if (_classes.count==0) {
                 
-                [self loadingHUDStopLoadingWithTitle:@"当前地区无精选内容"];
+                [self HUDStopWithTitle:@"当前地区无精选内容"];
                 
             }else{
             
@@ -1348,7 +1353,7 @@
 #pragma mark- 获取程序所有的基础信息
 - (void)requestBasicInformation{
     
-    [self loadingHUDStartLoadingWithTitle:NSLocalizedString(@"正在获取基础信息", nil)];
+    [self HUDStartWithTitle:NSLocalizedString(@"正在获取基础信息", nil)];
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -1397,11 +1402,11 @@
                 }
             }
             
-            [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"基础信息获取成功", nil)];
+            [self HUDStopWithTitle:NSLocalizedString(@"基础信息获取成功", nil)];
             
         }else{
             
-            [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"基础信息获取失败", nil)];
+            [self HUDStopWithTitle:NSLocalizedString(@"基础信息获取失败", nil)];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -1713,7 +1718,7 @@
 /* 制作城市信息plist文件*/
 - (void)makeCityList:(NSMutableArray *)cityList{
     
-    //    [self loadingHUDStartLoadingWithTitle:@"更新城市信息"];
+    //    [self HUDStartWithTitle:@"更新城市信息"];
     
     /* 保存城市名称的数据*/
     NSMutableArray *cityName = @[].mutableCopy;
@@ -1837,7 +1842,7 @@
     
     [self requestDataWithLocation:city.cityName];
     
-    [self loadingHUDStopLoadingWithTitle:[NSString stringWithFormat:@"%@%@",NSLocalizedString(@"已切换到", nil),city.cityName]];
+    [self HUDStopWithTitle:[NSString stringWithFormat:@"%@%@",NSLocalizedString(@"已切换到", nil),city.cityName]];
     
 }
 

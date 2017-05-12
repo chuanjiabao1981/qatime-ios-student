@@ -187,7 +187,7 @@
             
             if (![_changePasswordView.passwordText.text isEqualToString:@""]&&passwordSame == YES) {
                 
-                [self loadingHUDStartLoadingWithTitle:@"正在修改密码"];
+                [self HUDStartWithTitle:@"正在修改密码"];
                 AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
                 manager.requestSerializer = [AFHTTPRequestSerializer serializer];
                 manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -197,14 +197,14 @@
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                     [self loginStates:dic];
                     if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
-                        [self loadingHUDStopLoadingWithTitle:@"密码修改成功"];
+                        [self HUDStopWithTitle:@"密码修改成功"];
                         
                         [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                         
                         
                     }else{
                         
-                        [self loadingHUDStopLoadingWithTitle:@"您的信息有误!"];
+                        [self HUDStopWithTitle:@"您的信息有误!"];
                     }
                     
                 } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

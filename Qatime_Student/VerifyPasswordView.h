@@ -10,6 +10,10 @@
 
 @interface VerifyPasswordView : UIView
 
-@property(nonatomic,strong) NSMutableArray *imageArr;
+/**输入密码框*/
+@property (nonatomic, strong) UITextField *passwordText ;
+/**下一步按钮*/
+@property (nonatomic, strong) UIButton *nextButton ;
+
 
 @end

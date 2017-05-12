@@ -11,6 +11,12 @@
 #import "UIImageView+WebCache.h"
 #import "OneOnOneClass.h"
 
+typedef enum : NSUInteger {
+    LiveClassType,
+    InteractiveClassType,
+    VideoClassType,
+} ClassType;
+
 @interface TeacherPublicClassCollectionViewCell : UICollectionViewCell
 
 /* 课程名称*/
@@ -31,5 +37,7 @@
 @property(nonatomic,strong) TutoriumListInfo *model ;
 /**一对一model*/
 @property (nonatomic, strong) OneOnOneClass *oneOnOneModel ;
+
+@property (nonatomic, assign) ClassType classType ;
 
 @end

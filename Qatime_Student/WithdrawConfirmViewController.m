@@ -47,7 +47,7 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [self loadingHUDStopLoadingWithTitle:@"申请成功!"];
+    [self HUDStopWithTitle:@"申请成功!"];
     
     _navigationBar = ({
     
@@ -112,7 +112,7 @@
 /* 请求成功,弹提示框*/
 - (void)requestWithDrawSucess{
     
-//    [self loadingHUDStopLoadingWithTitle:@"提现申请成功!"];
+//    [self HUDStopWithTitle:@"提现申请成功!"];
     
     [self performSelector:@selector(pop) withObject:nil afterDelay:1];
     

@@ -195,7 +195,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 //                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
                     /* 保存用户信息*/
                     [self saveUserInfo:dic[@"data"] loginType:Wechat];
-                    [self loadingHUDStopLoadingWithTitle:@"登录成功"];
+                    [self HUDStopWithTitle:@"登录成功"];
                     
                     [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                     
@@ -213,7 +213,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         }else{
             /* 登录信息拉取失败*/
             
-            [self loadingHUDStopLoadingWithTitle:@"获取微信登录信息失败,请重试!"];
+            [self HUDStopWithTitle:@"获取微信登录信息失败,请重试!"];
             
         }
         
@@ -383,7 +383,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 //            hud.mode = MBProgressHUDModeDeterminate;
 //            //        hud.backgroundView.style = MBProgressHUDBackgroundStyleBlur;
 //            hud.labelText = @"正在登陆";
-            [self loadingHUDStartLoadingWithTitle:@"正在登录"];
+            [self HUDStartWithTitle:@"正在登录"];
             
             /* 对应接口要上传的用户登录账号密码*/
             NSDictionary *userInfo = @{@"login_account":[NSString stringWithFormat:@"%@",_loginAgainView.userName.text],
@@ -411,7 +411,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                     
                     [self saveUserInfo:dicGet loginType:Normal];
                     //
-                    [self loadingHUDStopLoadingWithTitle:@"登录成功"];
+                    [self HUDStopWithTitle:@"登录成功"];
                     
                     [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                     
@@ -642,7 +642,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 //    if ([WXApi isWXAppInstalled]==YES) {
 //        
 //    }else{
-//        [self loadingHUDStopLoadingWithTitle:@"登录失败，请使用手机号登录"];
+//        [self HUDStopWithTitle:@"登录失败，请使用手机号登录"];
 //    }
     
     //构造SendAuthReq结构体

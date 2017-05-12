@@ -162,7 +162,7 @@
     
     if ([self isMobileNumber:_changePhoneView.phoneNumber.text ]) {
         
-        [self loadingHUDStartLoadingWithTitle:@"正在发送申请"];
+        [self HUDStartWithTitle:@"正在发送申请"];
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -174,7 +174,7 @@
             
             if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
                 /* 修改成功*/
-                [self loadingHUDStopLoadingWithTitle:@"修改成功!"];
+                [self HUDStopWithTitle:@"修改成功!"];
                 
                 sleep(2);
                 
@@ -183,7 +183,7 @@
                 
             }else{
                 /* 修改失败*/
-                [self loadingHUDStopLoadingWithTitle:@"修改失败!"];
+                [self HUDStopWithTitle:@"修改失败!"];
                 
             }
             
@@ -222,7 +222,7 @@
             [self loginStates:dic];
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 
-                [self loadingHUDStopLoadingWithTitle:@"发送申请成功!"];
+                [self HUDStopWithTitle:@"发送申请成功!"];
                 
             }else{
                 

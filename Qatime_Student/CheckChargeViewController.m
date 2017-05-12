@@ -93,7 +93,7 @@
     /* 请求支付状态*/
     [self requestPayStatus];
     
-    [self loadingHUDStartLoadingWithTitle:nil];
+    [self HUDStartWithTitle:nil];
     
     
 }

@@ -91,7 +91,7 @@
 
     }else{
         
-        [self loadingHUDStartLoadingWithTitle:@"正在申请"];
+        [self HUDStartWithTitle:@"正在申请"];
         
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -103,12 +103,13 @@
             [self loginStates:dic];
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 /* 绑定成功*/
-                [self loadingHUDStopLoadingWithTitle:@"绑定成功!"];
+                [self HUDStopWithTitle:@"绑定成功!"];
+                
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"BindingEmail" object:nil];
+                [[NSUserDefaults standardUserDefaults]setValue:_bindingMailInfoView.mailText.text forKey:@"email"];
                 
                 [self performSelector:@selector(returnFrontPage) withObject:nil afterDelay:1];
-                
             }
-            
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
@@ -170,7 +171,7 @@
                 
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     
-                    [self loadingHUDStopLoadingWithTitle:@"发送申请成功!\n请查阅邮箱!"];
+                    [self HUDStopWithTitle:@"发送申请成功"];
                     
                 }else{
                     

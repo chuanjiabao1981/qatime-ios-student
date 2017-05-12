@@ -667,7 +667,7 @@ typedef enum : NSUInteger {
     
     if ([cell.paidModel.product_type isEqualToString:@"LiveStudio::VideoCourse"]) {
         
-        [self loadingHUDStopLoadingWithTitle:@"视频课不可退款"];
+        [self HUDStopWithTitle:@"视频课不可退款"];
         
     }else{
         
@@ -681,7 +681,7 @@ typedef enum : NSUInteger {
 /* 取消退款功能*/
 - (void)cancelRefund:(UIButton *)sender{
     
-    //    [self loadingHUDStartLoadingWithTitle:@"正在取消"];
+    //    [self HUDStartWithTitle:@"正在取消"];
     if (sender.tag>=400&&sender.tag<500) {
         Paid *mod = _paidArr[sender.tag-400];
         [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"确定取消退款?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
@@ -692,9 +692,9 @@ typedef enum : NSUInteger {
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
                     [self loginStates:dic];
                     if ([dic[@"status"]isEqualToNumber:@1]) {
-                        [self loadingHUDStopLoadingWithTitle:@"取消成功"];
+                        [self HUDStopWithTitle:@"取消成功"];
                     }else{
-                        [self loadingHUDStopLoadingWithTitle:@"服务器正忙,取消失败"];
+                        [self HUDStopWithTitle:@"服务器正忙,取消失败"];
                         
                     }
                     
@@ -733,11 +733,11 @@ typedef enum : NSUInteger {
                 
             }else{
                 
-                [self loadingHUDStopLoadingWithTitle:@"余额不足,请充值!"];
+                [self HUDStopWithTitle:@"余额不足,请充值!"];
             }
         }else{
             [self requestBalance];
-            [self loadingHUDStopLoadingWithTitle:@"正在获取余额数据,请稍后重试"];
+            [self HUDStopWithTitle:@"正在获取余额数据,请稍后重试"];
         }
         
     }
@@ -750,7 +750,7 @@ typedef enum : NSUInteger {
 - (void)buyAgain:(UIButton *)sender{
     
     
-    [self loadingHUDStopLoadingWithTitle:@"正在加载订单信息"];
+    [self HUDStopWithTitle:@"正在加载订单信息"];
     
     __block NSString *productNumber = [NSString string];
     __block NSString *payType=[NSString string];
@@ -818,7 +818,7 @@ typedef enum : NSUInteger {
 
 - (void)cancelOrder:(UIButton *)sender{
     
-    //    [self loadingHUDStartLoadingWithTitle:@"正在订单"];
+    //    [self HUDStartWithTitle:@"正在订单"];
     
     __block NSString *oderNumber = [NSString string];
     
@@ -893,7 +893,7 @@ typedef enum : NSUInteger {
         [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 数据请求成功*/
-            [self loadingHUDStopLoadingWithTitle:@"取消订单成功!"];
+            [self HUDStopWithTitle:@"取消订单成功!"];
             
             if (tags>=100&&tags<200) {
                 //                _unpaidArr = @[].mutableCopy;

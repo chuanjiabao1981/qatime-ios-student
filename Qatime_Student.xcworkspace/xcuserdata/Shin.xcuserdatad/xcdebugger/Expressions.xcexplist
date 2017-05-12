@@ -448,10 +448,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -492,18 +492,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[ProvinceChosenViewController tableView:didSelectRowAtIndexPath:]:ProvinceChosenViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_cityArray">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "-[TLCityPickerController tableView:numberOfRowsInSection:]:TLCityPickerController.m">
          <PersistentStrings>
             <PersistentString
                value = "self.data">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ProvinceChosenViewController tableView:didSelectRowAtIndexPath:]:ProvinceChosenViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_cityArray">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -780,6 +780,9 @@
          <PersistentStrings>
             <PersistentString
                value = "_filtedArray">
+            </PersistentString>
+            <PersistentString
+               value = "_filtersDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1160,6 +1163,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__41-[ChatViewController requestChatTeamUser]_block_invoke:ChatViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[AppDelegate application:didFinishLaunchingWithOptions:]:AppDelegate.m">
          <PersistentStrings>
             <PersistentString
@@ -1341,10 +1347,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1673,6 +1679,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__68-[LiveClassFilterViewController requestClass:withContentDictionary:]_block_invoke:LiveClassFilterViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__51-[ClassTimeViewController requestUnclosedClassList]_block_invoke:ClassTimeViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1709,6 +1718,9 @@
       </ContextState>
       <ContextState
          contextName = "__42-[PayConfirmViewController payWithBalance]_block_invoke_2:PayConfirmViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__44-[PersonalInfoEditViewController updateInfo]_block_invoke.414:PersonalInfoEditViewController.m">
       </ContextState>
       <ContextState
          contextName = "__43-[IndexPageViewController requestTodayLive]_block_invoke:IndexPageViewController.m">

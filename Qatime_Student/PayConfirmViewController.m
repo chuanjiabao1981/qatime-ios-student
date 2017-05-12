@@ -82,7 +82,7 @@
         }else{
             
             /* 数据拉取失败*/
-            [self loadingHUDStopLoadingWithTitle:@"获取数据失败!"];
+            [self HUDStopWithTitle:@"获取数据失败!"];
 
             [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
         }
@@ -145,7 +145,7 @@
                         NSLog(@"%@",dic[@"data"]);
                         
                         [self stopHUD];
-                        [self loadingHUDStopLoadingWithTitle:@"支付成功"];
+                        [self HUDStopWithTitle:@"支付成功"];
                         
                         [[NSNotificationCenter defaultCenter ]postNotificationName:@"RefreshTutoriumInfo" object:nil];
                         
@@ -156,7 +156,7 @@
                         /* 付款失败*/
                         [self stopHUD];
                          NSLog(@"%@",dic[@"data"]);
-                         [self loadingHUDStopLoadingWithTitle:@"购买失败!"];
+                         [self HUDStopWithTitle:@"购买失败!"];
                         [self performSelector:@selector(returnInfoPage) withObject:nil afterDelay:1];
                     }
                     

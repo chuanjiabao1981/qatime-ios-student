@@ -58,7 +58,7 @@
             
             [_.nextStepButton addTarget:self action:@selector(nextStep) forControlEvents:UIControlEventTouchUpInside];
         }else{
-            [self loadingHUDStopLoadingWithTitle:@"数据错误,请重新登录"];
+            [self HUDStopWithTitle:@"数据错误,请重新登录"];
             
             [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
             
@@ -82,7 +82,7 @@
 #pragma mark- 下一步
 - (void)nextStep{
     
-    [self loadingHUDStartLoadingWithTitle:@"正在验证"];
+    [self HUDStartWithTitle:@"正在验证"];
     
     if (![_bindingMailView.keyCodeText.text isEqualToString:@""]) {
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -96,14 +96,14 @@
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 /* 验证成功*/
                 /* 跳转到下一页*/
-                [self loadingHUDStopLoadingWithTitle:@"验证成功!"];
+                [self HUDStopWithTitle:@"验证成功!"];
                 
                 [self performSelector:@selector(nextPage) withObject:nil afterDelay:1];
                 
                 
             }else{
                 /* 验证失败*/
-                [self loadingHUDStopLoadingWithTitle:@"验证错误,请重试!"];
+                [self HUDStopWithTitle:@"验证错误,请重试!"];
                 
             }
             
@@ -149,7 +149,7 @@
             
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 
-                [self loadingHUDStopLoadingWithTitle:@"发送申请成功!"];
+                [self HUDStopWithTitle:@"发送申请成功!"];
                 
             }else{
                 

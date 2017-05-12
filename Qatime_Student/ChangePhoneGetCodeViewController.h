@@ -9,11 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "ChangePhoneGetCodeView.h"
 
+typedef enum : NSUInteger {
+    ChangeEmail,
+    ChangePhone,
+} VerifyType;
+
 @interface ChangePhoneGetCodeViewController : UIViewController
 
 @property(nonatomic,strong) ChangePhoneGetCodeView *getCodeView ;
 
-
+-(instancetype)initWithVerifyType:(VerifyType)verifyType;
 
 
 @end

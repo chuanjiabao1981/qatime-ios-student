@@ -115,7 +115,7 @@
 /**拉起苹果支付*/
 - (void)payForRecharge{
     
-    [self loadingHUDStartLoadingWithTitle:nil];
+    [self HUDStartWithTitle:nil];
     [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     
     [self buy:buyType];
@@ -237,7 +237,7 @@
 
 -(void) requestDidFinish:(SKRequest *)request{
     
-    [self loadingHUDStopLoadingWithTitle:nil];
+    [self HUDStopWithTitle:nil];
     NSLog(@"----------反馈信息结束--------------");
     
 }
@@ -332,7 +332,7 @@
         [alertView show];
     }else{
         
-        [self loadingHUDStopLoadingWithTitle:@"用户取消交易"];
+        [self HUDStopWithTitle:@"用户取消交易"];
     }
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
     

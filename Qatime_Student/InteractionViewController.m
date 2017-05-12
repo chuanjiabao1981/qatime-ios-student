@@ -1813,7 +1813,7 @@
         }else{
             /* 获取成员信息失败*/
             
-            [self loadingHUDStopLoadingWithTitle:@"获取聊天成员信息失败!"];
+            [self HUDStopWithTitle:@"获取聊天成员信息失败!"];
         }
         
         
@@ -1848,7 +1848,7 @@
     }else{
         
         _interactionView.chatTableView.hidden = NO;
-        [self loadingHUDStopLoadingWithTitle:@""];
+        [self HUDStopWithTitle:@""];
         [self makeMessages:messageArr];
     }
     
@@ -2115,7 +2115,7 @@
         
     }
     
-    [self loadingHUDStopLoadingWithTitle:@"加载完成!"];
+    [self HUDStopWithTitle:@"加载完成!"];
     [self performSelector:@selector(sendNoticeIn) withObject:nil afterDelay:1];
     
     [_interactionView.chatTableView reloadData];
@@ -2405,7 +2405,7 @@
     
     if ([funcView.TextViewInput.text isEqualToString:@""]||funcView.TextViewInput.text==nil) {
         
-        [self loadingHUDStopLoadingWithTitle:@"请输入聊天内容!"];
+        [self HUDStopWithTitle:@"请输入聊天内容!"];
         
     }else{
         

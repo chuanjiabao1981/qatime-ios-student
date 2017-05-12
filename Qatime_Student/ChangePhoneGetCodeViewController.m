@@ -14,6 +14,7 @@
 #import "UIViewController+HUD.h"
 
 #import "ChangePhoneViewController.h"
+#import "BindingMailInfoViewController.h"
 
 @interface ChangePhoneGetCodeViewController (){
     
@@ -22,6 +23,8 @@
     /* 保存电话号*/
     
     NSString *phoneNumber;
+    
+    VerifyType _verifyType;
 }
 
 
@@ -30,12 +33,12 @@
 @implementation ChangePhoneGetCodeViewController
 
 
-- (instancetype)initWithPhone:(NSString *)phone
-{
+-(instancetype)initWithVerifyType:(VerifyType)verifyType{
+    
     self = [super init];
     if (self) {
         
-        
+        _verifyType = verifyType;
         
     }
     return self;
@@ -61,9 +64,6 @@
     _getCodeView.phoneLabel .text = phoneNumber;
     
     [_getCodeView.nextButton addTarget:self action:@selector(nextStep) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
     
     
 }
@@ -96,9 +96,10 @@
                 
                 if ([dic[@"data"]isEqual:[NSNull null]]) {
                     /* 验证码正确*/
-                    [self loadingHUDStopLoadingWithTitle:@"验证码成功"];
-                    ChangePhoneViewController *vc = [ChangePhoneViewController new];
-                    [self.navigationController pushViewController:vc animated:YES];
+                    [self HUDStopWithTitle:@"验证码成功"];
+                    
+                    [self turnNextPage];
+                    
                     
                 }else{
                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"验证码错误!" preferredStyle:UIAlertControllerStyleAlert];
@@ -112,7 +113,7 @@
                 }
             }else{
                 
-                [self loadingHUDStopLoadingWithTitle:@"数据请求错误!"];
+                [self HUDStopWithTitle:@"数据请求错误!"];
             }
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -120,6 +121,21 @@
         }];
     }
  
+}
+
+/**验证tickettoken后进入下一页*/
+- (void)turnNextPage{
+    
+    if (_verifyType == ChangePhone) {
+        ChangePhoneViewController *vc = [ChangePhoneViewController new];
+        [self.navigationController pushViewController:vc animated:YES];
+
+    }else if (_verifyType == ChangeEmail){
+        
+        BindingMailInfoViewController *controller = [[BindingMailInfoViewController alloc]init];
+        [self.navigationController pushViewController:controller animated:YES];
+    }
+    
 }
 
 
@@ -138,7 +154,7 @@
             
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 
-                [self loadingHUDStopLoadingWithTitle:@"发送申请成功!"];
+                [self HUDStopWithTitle:@"发送申请成功!"];
                 
             }else{
                 

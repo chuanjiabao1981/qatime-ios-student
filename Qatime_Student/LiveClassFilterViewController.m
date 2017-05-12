@@ -93,6 +93,18 @@ typedef enum : NSUInteger {
     
     
     _isInitPull = NO;
+    
+    
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"Filters" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+       
+        NSDictionary *filter = [note object];
+        
+        [self requestClass:PullToRefresh withContentDictionary:filter];
+        
+        
+    }];
+    
+    
 
 }
 
@@ -220,10 +232,10 @@ typedef enum : NSUInteger {
                 //没有数据的情况
                 if (mode == PullToRefresh) {
                     //下拉刷新的时候
-                    [_classTableView.mj_header endRefreshingWithCompletionBlock:^{
-                        //刷新数据
-                        [_classTableView cyl_reloadData];
-                    }];
+                    [_classTableView.mj_header endRefreshing];
+                     //刷新数据
+                    [_classTableView cyl_reloadData];
+                   
                     
                 }else{
                     //上滑的时候
@@ -234,7 +246,7 @@ typedef enum : NSUInteger {
             }
         }else{
             //获取数据失败
-            [self loadingHUDStopLoadingWithTitle:@"加载失败,请重试"];
+            [self HUDStopWithTitle:@"加载失败,请重试"];
             if (mode == PullToRefresh) {
                 [_classTableView.mj_header endRefreshing];
                 

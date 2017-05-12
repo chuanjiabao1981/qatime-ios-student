@@ -238,7 +238,7 @@ typedef enum : NSUInteger {
                     }
                 }
             }else{
-                [self loadingHUDStopLoadingWithTitle:@"请稍后重试"];
+                [self HUDStopWithTitle:@"请稍后重试"];
                 [_myAudioView.liveClassList.mj_header endRefreshing];
                 [_myAudioView.liveClassList.mj_footer endRefreshing];
                 
@@ -276,7 +276,7 @@ typedef enum : NSUInteger {
                     }
                 }
             }else{
-                [self loadingHUDStopLoadingWithTitle:@"请稍后重试"];
+                [self HUDStopWithTitle:@"请稍后重试"];
                 [_myAudioView.videoClassList.mj_header endRefreshing];
                 [_myAudioView.videoClassList.mj_footer endRefreshing];
             }

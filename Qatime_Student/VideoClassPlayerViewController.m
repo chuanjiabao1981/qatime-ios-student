@@ -677,7 +677,7 @@ typedef enum : NSUInteger {
         
         if (faildTime>10) {
             
-            [self loadingHUDStopLoadingWithTitle:@"播放器加载失败"];
+            [self HUDStopWithTitle:@"播放器加载失败"];
             
         }else{
             //再次加载

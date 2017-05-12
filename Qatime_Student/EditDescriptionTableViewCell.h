@@ -14,4 +14,6 @@
 
 @property(nonatomic,strong) UITextView *nameText ;
 
+@property (nonatomic, strong) UILabel *letterNumber ;
+
 @end

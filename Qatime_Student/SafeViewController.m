@@ -106,7 +106,13 @@
         wechatIsBinding = NO;
     }
     
-    
+    /**绑定邮箱的监听*/
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"BindingEmail" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+       
+        SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+        
+        cell.balance.text = [[NSUserDefaults standardUserDefaults] valueForKey:@"email"];
+    }];
     
 }
 
@@ -174,7 +180,7 @@
             //            [_menuTableView reloadData];
         }else{
             /* 拉取个人信息失败*/
-            [self loadingHUDStopLoadingWithTitle:@"加载失败!"];
+            [self HUDStopWithTitle:@"加载失败!"];
             
         }
         
@@ -333,7 +339,7 @@
             switch (indexPath.row) {
                 case 0:{
                     
-                    ChangePhoneGetCodeViewController *phoneVC = [ChangePhoneGetCodeViewController new];
+                    ChangePhoneGetCodeViewController *phoneVC = [[ChangePhoneGetCodeViewController alloc]initWithVerifyType:ChangePhone];
                     [self.navigationController pushViewController:phoneVC animated:YES];
                     
                 }
@@ -364,7 +370,7 @@
                     
                 case 2:{
                     
-                    VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]initWithType:BindingEmail];
+                    ChangePhoneGetCodeViewController *pareVC = [[ChangePhoneGetCodeViewController alloc]initWithVerifyType:ChangeEmail];
                     [self.navigationController pushViewController:pareVC animated:YES];
                     
                 }
@@ -373,11 +379,11 @@
                 case 3:{
                     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]) {
                         
-                        VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]initWithType:ParentPhoneType];
+                        VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]init];
                         [self.navigationController pushViewController:pareVC animated:YES];
                     }
                     else if (![[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]||[[[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]isEqualToString:@""]||[[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]==nil){
-                        VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]initWithType:ParentPhoneType];
+                        VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]init];
                         [self.navigationController pushViewController:pareVC animated:YES];
                         
                     }
@@ -466,7 +472,7 @@
     //    if ([WXApi isWXAppInstalled]==YES) {
     //    }else{
     //
-    //        [self loadingHUDStopLoadingWithTitle:@"您尚未安装微信"];
+    //        [self HUDStopWithTitle:@"您尚未安装微信"];
     //
     //    }
     //构造SendAuthReq结构体
@@ -482,7 +488,7 @@
 /* 绑定微信*/
 - (void)RequestToBindingWechat:(NSNotification *)notification{
     
-    [self loadingHUDStartLoadingWithTitle:@"正在绑定"];
+    [self HUDStartWithTitle:@"正在绑定"];
     NSString *wechatCode = [notification object];
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -497,7 +503,7 @@
         if ([dic[@"status"]isEqualToNumber:@1]) {
             /* 绑定成功*/
             
-            [self loadingHUDStopLoadingWithTitle:@"绑定成功!"];
+            [self HUDStopWithTitle:@"绑定成功!"];
             
             [[NSNotificationCenter defaultCenter]postNotificationName:@"BindingWechat" object:@NO];
             
@@ -507,12 +513,12 @@
             
             
         }else{
-            [self loadingHUDStopLoadingWithTitle:@"绑定失败!"];
+            [self HUDStopWithTitle:@"绑定失败!"];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        [self loadingHUDStopLoadingWithTitle:@"绑定失败!"];
+        [self HUDStopWithTitle:@"绑定失败!"];
     }];
     
 }
@@ -545,7 +551,7 @@
 /* 解绑微信*/
 - (void)relieveWechat{
     
-    [self loadingHUDStartLoadingWithTitle:@"正在请求解绑"];
+    [self HUDStartWithTitle:@"正在请求解绑"];
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -557,7 +563,7 @@
         if ([dic[@"status"]isEqualToNumber:@1]) {
             if ([dic[@"data"]isEqualToString:@"ok"]) {
                 /* 解绑成功*/
-                [self loadingHUDStopLoadingWithTitle:@"解绑成功!"];
+                [self HUDStopWithTitle:@"解绑成功!"];
                 
                 wechatIsBinding = NO;
                 
@@ -565,12 +571,12 @@
                 
             }else{
                 /* 解绑失败*/
-                [self loadingHUDStopLoadingWithTitle:@"解绑失败!"];
+                [self HUDStopWithTitle:@"解绑失败!"];
             }
             
             
         }else{
-            [self loadingHUDStopLoadingWithTitle:@"解绑失败!"];
+            [self HUDStopWithTitle:@"解绑失败!"];
         }
         
         

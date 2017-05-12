@@ -137,7 +137,7 @@
             
         case 1:{
             
-            [self loadingHUDStopLoadingWithTitle:@"正在开发中,敬请期待"];
+            [self HUDStopWithTitle:@"正在开发中,敬请期待"];
             
             /**
              该版本暂时去掉该功能
@@ -720,23 +720,10 @@
     if ([filterDic[@"q[status_eq]"]isEqualToString:@"allStatus"]) {
         [filter setValue:@"" forKey:@"q[status_eq]"];
     }
-//    if ([filterDic[@"试听状态"]isEqualToString:@"all"]) {
-//        [filter setValue:@"" forKey:@"试听状态"];
-//    }
     
-    if (filter) {
-//        [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
-        
-//            [self requestClass:PullToRefresh withContentDictionary:filter];
-//        }];
-        
-    }else{
-        
-//        [_classTableView.mj_header beginRefreshingWithCompletionBlock:^{
-//            [self requestClass:PushToReadMore withContentDictionary:nil];
-            
-//        }];
-    }
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"Filters" object:filter];
+    
     
 }
 

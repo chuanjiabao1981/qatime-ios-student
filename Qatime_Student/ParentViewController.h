@@ -16,8 +16,6 @@
 /* 家长电话*/
 @property(nonatomic,strong) NSString *parentPhone ;
 
-
-
 - (instancetype)initWithPhone:(NSString *)phone andTicketToken:(NSString *)ticketToken;
 
 @end

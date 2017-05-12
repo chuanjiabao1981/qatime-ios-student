@@ -187,7 +187,7 @@
     
     _rechargeArr = @[].mutableCopy;
     
-    [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+    [self HUDStartWithTitle:@"正在加载数据"];
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -264,7 +264,7 @@
             
             /* 数据为0条*/
             
-            [self loadingHUDStopLoadingWithTitle:@"没有充值记录!"];
+            [self HUDStopWithTitle:@"没有充值记录!"];
             
             
         }
@@ -286,7 +286,7 @@
 - (void)requestWithDraw{
     
     //    _withDrawArr = @[].mutableCopy;
-    //    [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+    //    [self HUDStartWithTitle:@"正在加载数据"];
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -332,14 +332,14 @@
                 
 //                [_cashRecordView.withDrawView reloadData];
                 //                [_cashRecordView.withDrawView setNeedsDisplay];
-                [self loadingHUDStopLoadingWithTitle:@"加载成功!"];
+                [self HUDStopWithTitle:@"加载成功!"];
                 
                 
             }else{
                 
                 /* 数据为0条*/
                 
-                [self loadingHUDStopLoadingWithTitle:@"没有提现记录!"];
+                [self HUDStopWithTitle:@"没有提现记录!"];
                 
                 
             }
@@ -363,7 +363,7 @@
     
     
     //    _paymentArr = @[].mutableCopy;
-    //    [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+    //    [self HUDStartWithTitle:@"正在加载数据"];
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -407,13 +407,13 @@
                     
                 }
                 
-                [self loadingHUDStopLoadingWithTitle:@"加载成功!"];
+                [self HUDStopWithTitle:@"加载成功!"];
                 
             }else{
                 
                 /* 数据为0条*/
                 
-                [self loadingHUDStopLoadingWithTitle:@"没有消费记录!"];
+                [self HUDStopWithTitle:@"没有消费记录!"];
                 
             }
             
@@ -474,13 +474,13 @@
                     
                 }
                 
-                [self loadingHUDStopLoadingWithTitle:@"加载成功!"];
+                [self HUDStopWithTitle:@"加载成功!"];
                 
             }else{
                 
                 /* 数据为0条*/
                 
-                [self loadingHUDStopLoadingWithTitle:@"没有消费记录!"];
+                [self HUDStopWithTitle:@"没有消费记录!"];
                 
             }
             
@@ -786,7 +786,7 @@
        [self loginStates:dic];
        if ([dic[@"status"]isEqualToNumber:@1]) {
            /* 取消成功*/
-           [self loadingHUDStopLoadingWithTitle:@"取消成功"];
+           [self HUDStopWithTitle:@"取消成功"];
            RefundTableViewCell *cell = [_cashRecordView.refundView cellForRowAtIndexPath:indePath];
            cell.status.text = @"已取消";
            
@@ -814,7 +814,7 @@
             
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 /* 删除成功*/
-                [self loadingHUDStopLoadingWithTitle:@"取消成功!"];
+                [self HUDStopWithTitle:@"取消成功!"];
                 
 //                WithDrawTableViewCell *cell = [_cashRecordView.withDrawView cellForRowAtIndexPath:indexPath];
 //                cell.status.text = @"已取消";
@@ -823,17 +823,17 @@
                 
             }else{
                 
-                [self loadingHUDStopLoadingWithTitle:@"取消失败!"];
+                [self HUDStopWithTitle:@"取消失败!"];
             }
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
-            [self loadingHUDStopLoadingWithTitle:@"请求失败,请重试"];
+            [self HUDStopWithTitle:@"请求失败,请重试"];
             
         }];
         
     }else{
-        [self loadingHUDStopLoadingWithTitle:@"请求失败,请重试"];
+        [self HUDStopWithTitle:@"请求失败,请重试"];
         
     }
     

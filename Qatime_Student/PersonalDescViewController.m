@@ -156,7 +156,7 @@
     if (outOfLength == YES) {
         /* 超出范围了*/
         
-        [self loadingHUDStopLoadingWithTitle:@"超过30个字!请重新输入!"];
+        [self HUDStopWithTitle:@"超过30个字!请重新输入!"];
         
         
     }else{

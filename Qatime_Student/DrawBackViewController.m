@@ -120,13 +120,13 @@
     
     if (textView.text.length>=20) {
         [textView.text substringToIndex:20];
-        [self loadingHUDStopLoadingWithTitle:@"最多输入20个字"];
+        [self HUDStopWithTitle:@"最多输入20个字"];
     }
 }
 
 /* 请求退款信息数据*/
 - (void)requestDrawback{
-    [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+    [self HUDStartWithTitle:@"正在加载数据"];
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -146,7 +146,7 @@
             
         }else{
            /* 请求数据失败*/
-            [self loadingHUDStopLoadingWithTitle:@"服务器繁忙,请稍后重试"];
+            [self HUDStopWithTitle:@"服务器繁忙,请稍后重试"];
             
             [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
         }
@@ -207,21 +207,21 @@
         
     }else{
         
-        [self loadingHUDStartLoadingWithTitle:@"正在提交申请"];
+        [self HUDStartWithTitle:@"正在提交申请"];
         [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/refunds",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"order_id":_paidOrder.orderID,@"reason":_drawBackView.reason.text} completeSuccess:^(id  _Nullable responds) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             [self loginStates:dic];
             
             if ([dic[@"status"]isEqualToNumber:@1]) {
-                [self loadingHUDStopLoadingWithTitle:@"申请成功!"];
+                [self HUDStopWithTitle:@"申请成功!"];
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"RefundSuccess" object:nil];
                 
                 [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                 
                 
             }else{
-                [self loadingHUDStopLoadingWithTitle:@"服务器正忙,请稍后再试."];
+                [self HUDStopWithTitle:@"服务器正忙,请稍后再试."];
                  [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
             }
             

@@ -98,14 +98,14 @@
     
     if ([_withDrawView.moneyText.text isEqualToString:@""]) {
       
-        [self loadingHUDStopLoadingWithTitle:@"请输入提现金额!"];
+        [self HUDStopWithTitle:@"请输入提现金额!"];
       
 
     }else{
         
         if (_withDrawView.alipayButton.selected ==NO&&_withDrawView.transferButton.selected == NO) {
             
-            [self loadingHUDStopLoadingWithTitle:@"请选择提现方式!"];
+            [self HUDStopWithTitle:@"请选择提现方式!"];
             
         }else{
             
@@ -155,7 +155,7 @@
             
         }else{
             
-            [self loadingHUDStopLoadingWithTitle:@"获取余额数据错误!"];
+            [self HUDStopWithTitle:@"获取余额数据错误!"];
             
             
         }
@@ -331,11 +331,11 @@
         BOOL basicTest = [string isEqualToString:filtered];
         if (!basicTest) {
             
-            [self loadingHUDStopLoadingWithTitle:@"只能输入数字和小数点"];
+            [self HUDStopWithTitle:@"只能输入数字和小数点"];
             return NO;
         }
         if (NSNotFound != nDotLoc && range.location > nDotLoc + 2) {
-            [self loadingHUDStopLoadingWithTitle:@"小数点后最多两位"];
+            [self HUDStopWithTitle:@"小数点后最多两位"];
             return NO;
         }
     }

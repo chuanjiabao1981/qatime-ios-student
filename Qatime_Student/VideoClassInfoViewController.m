@@ -153,7 +153,7 @@ typedef enum : NSUInteger {
     //加载导航栏
     [self setupNavigation];
     
-    [self loadingHUDStopLoadingWithTitle:nil];
+    [self HUDStopWithTitle:nil];
     
     //请求数据
     [self requestData];
@@ -178,7 +178,7 @@ typedef enum : NSUInteger {
 /**请求数据*/
 - (void)requestData{
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@/detail",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             _classInfo = [VideoClassInfo yy_modelWithJSON:dic[@"data"]];
@@ -336,7 +336,7 @@ typedef enum : NSUInteger {
             [self.navigationController pushViewController:controller animated:YES];
         }else{
             //没反应
-            [self loadingHUDStopLoadingWithTitle:@"暂时不能试听"];
+            [self HUDStopWithTitle:@"暂时不能试听"];
         }
         
     }else if ([_classInfo.sell_type isEqualToString:@"free"]){
@@ -385,7 +385,7 @@ typedef enum : NSUInteger {
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
                 if ([dic[@"status"]isEqualToNumber:@1]) {
                     
-                    [self loadingHUDStopLoadingWithTitle:@"该课程已添加至“我的视频课”"];
+                    [self HUDStopWithTitle:@"该课程已添加至“我的视频课”"];
                     [self performSelector:@selector(enterStudy) withObject:nil afterDelay:2];
                     
                 }else{
@@ -484,7 +484,7 @@ typedef enum : NSUInteger {
                 [self.navigationController pushViewController:controller animated:YES];
                 
             }else{
-                [self loadingHUDStopLoadingWithTitle:@"尚未购买不够观看"];
+                [self HUDStopWithTitle:@"尚未购买不够观看"];
                 
             }
             

@@ -277,7 +277,7 @@ typedef enum : NSUInteger {
             
         case RefreshStateNone:{
             
-            [self loadingHUDStartLoadingWithTitle:@"正在刷新聊天列表"];
+            [self HUDStartWithTitle:@"正在刷新聊天列表"];
         }
             break;
     }
@@ -295,7 +295,7 @@ typedef enum : NSUInteger {
         
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
-            /* 请求近期聊天会话*/
+            /* 请求云信近期聊天会话*/
             _recentArr =  [NSMutableArray arrayWithArray:[[[NIMSDK sharedSDK]conversationManager]allRecentSessions]];
             
             /**在请求一次一对一聊天数据*/
@@ -400,7 +400,7 @@ typedef enum : NSUInteger {
                     [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                     
                 }else{
-                    [self loadingHUDStopLoadingWithTitle:nil];
+                    [self HUDStopWithTitle:nil];
                     [_noticeIndexView.chatListTableView.mj_header endRefreshing];
                     [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                 }
@@ -409,7 +409,7 @@ typedef enum : NSUInteger {
         }else{
             /* 数据错误*/
             
-            [self loadingHUDStopLoadingWithTitle:@"数据失败!"];
+            [self HUDStopWithTitle:@"数据失败!"];
         }
         
         
@@ -527,7 +527,7 @@ typedef enum : NSUInteger {
                     [_noticeIndexView.noticeTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                     
                 }else{
-                    [self loadingHUDStopLoadingWithTitle:nil];
+                    [self HUDStopWithTitle:nil];
                     [_noticeIndexView.noticeTableView.mj_header endRefreshing];
                     [_noticeIndexView.noticeTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                 }
@@ -695,7 +695,7 @@ typedef enum : NSUInteger {
         
         ChatListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         
-        ChatViewController *chatVC = [[ChatViewController alloc]initWithClass:cell.model.tutorium];
+        ChatViewController *chatVC = [[ChatViewController alloc]initWithClass:cell.model.tutorium ];
         chatVC.hidesBottomBarWhenPushed = YES;
         [self .navigationController pushViewController:chatVC animated:YES];
         
@@ -784,7 +784,7 @@ typedef enum : NSUInteger {
                         
                         NSLog(@"%@", error);
                         [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                        [self loadingHUDStopLoadingWithTitle:@"修改失败"];
+                        [self HUDStopWithTitle:@"修改失败"];
                     }
                     
                 }];
@@ -803,7 +803,7 @@ typedef enum : NSUInteger {
                         
                         NSLog(@"%@", error);
                         [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                        [self loadingHUDStopLoadingWithTitle:@"修改失败"];
+                        [self HUDStopWithTitle:@"修改失败"];
                         
                     }
                     

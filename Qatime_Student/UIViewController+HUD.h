@@ -24,7 +24,7 @@
  
  @param hudTitle 加载文字
  */
-- (void) loadingHUDStartLoadingWithTitle:(NSString * _Nullable)hudTitle;
+- (void) HUDStartWithTitle:(NSString * _Nullable)hudTitle;
 
 
 
@@ -33,7 +33,7 @@
  
  @param hudTitle 结束文字
  */
-- (void) loadingHUDStopLoadingWithTitle:(NSString *_Nullable)hudTitle;
+- (void) HUDStopWithTitle:(NSString *_Nullable)hudTitle;
 
 
 /**

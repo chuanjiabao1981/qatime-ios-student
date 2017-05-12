@@ -18,23 +18,45 @@
     if (self) {
         
         self.backgroundColor = BACKGROUNDGRAY;
-        _imageArr = @[].mutableCopy;
         
-        for (NSInteger i = 0; i<6; i++) {
-            UIImageView *image = [[UIImageView alloc]init];
-            image.frame = CGRectMake((self.width_sd-SQUAREWIDTH*6)/2+SQUAREWIDTH*i-1.6, 40, SQUAREWIDTH, SQUAREWIDTH) ;
-            image.layer.borderColor = [UIColor lightGrayColor].CGColor;
-            image.layer.borderWidth = 0.8;
-            image.userInteractionEnabled = YES;
-            image.contentMode = UIViewContentModeScaleAspectFit;
-            [self addSubview:image];
-            image.tag = i;
-            [_imageArr addObject:image];
-            
-        }
-            
-       
-    
+        UIView *text = [[UIView alloc]init];
+        [self addSubview:text];
+        text.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+        text.layer.borderWidth = 1;
+        text.backgroundColor = [UIColor whiteColor];
+        
+        text.sd_layout
+        .leftSpaceToView(self, 30*ScrenScale)
+        .rightSpaceToView(self, 30*ScrenScale)
+        .topSpaceToView(self, 30*ScrenScale)
+        .heightIs(40*ScrenScale320);
+        
+        
+        _passwordText = [[UITextField alloc]init];
+        [text addSubview:_passwordText];
+        _passwordText.placeholder = @"输入登录密码";
+        _passwordText.secureTextEntry = YES;
+        _passwordText.sd_layout
+        .leftSpaceToView(text, 10*ScrenScale)
+        .rightSpaceToView(text, 10*ScrenScale)
+        .topSpaceToView(text, 10*ScrenScale)
+        .bottomSpaceToView(text, 10*ScrenScale);
+        
+        
+        _nextButton = [[UIButton alloc]init];
+        _nextButton.layer.borderWidth = 1;
+        _nextButton.layer.borderColor = TITLECOLOR.CGColor;
+        [_nextButton setBackgroundColor:TITLECOLOR];
+        [_nextButton setTitle:@"下一步" forState:UIControlStateNormal];
+        [_nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        [self addSubview:_nextButton];
+        _nextButton.sd_layout
+        .leftEqualToView(text)
+        .rightEqualToView(text)
+        .topSpaceToView(text, 20*ScrenScale)
+        .heightRatioToView(text, 1.0);
+        
     }
     return self;
 }

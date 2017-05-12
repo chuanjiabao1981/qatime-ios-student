@@ -131,10 +131,10 @@
 /* 清除缓存*/
 - (void)clearCache{
     
-    [self loadingHUDStartLoadingWithTitle:@"正在清理"];
+    [self HUDStartWithTitle:@"正在清理"];
     NSString *cacheStr = [FileService getCachePath];
     [FileService clearCache:cacheStr];
-    [self loadingHUDStopLoadingWithTitle:@"清理完毕!"];
+    [self HUDStopWithTitle:@"清理完毕!"];
     
     [self getCacheSpace];
     
@@ -171,7 +171,7 @@
                 
                 /* 获取版本信息成功*/
                 if ([_version isEqualToString:_newVersion]) {
-                    [self loadingHUDStopLoadingWithTitle:@"已是最新版本"];
+                    [self HUDStopWithTitle:@"已是最新版本"];
                 }else{
                     
                     /* 检测到有新版的时候 弹出alert 提示是否升级*/
@@ -190,7 +190,7 @@
             }else{
                 
                 /* 数据是空的情况下就是没有数据,目前就是最新版本*/
-                [self loadingHUDStopLoadingWithTitle:@"已是最新版本!"];
+                [self HUDStopWithTitle:@"已是最新版本!"];
                 
             }
             
@@ -198,7 +198,7 @@
         }else{
             
 //            请求失败
-            [self loadingHUDStopLoadingWithTitle:@"请求数据失败"];
+            [self HUDStopWithTitle:@"请求数据失败"];
             
         }
         

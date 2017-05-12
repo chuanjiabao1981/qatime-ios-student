@@ -54,7 +54,7 @@
         _;
     });
     
-    [self loadingHUDStartLoadingWithTitle:NSLocalizedString(@"加载数据", nil)];
+    [self HUDStartWithTitle:NSLocalizedString(@"加载数据", nil)];
     
     //请求省份信息
     [self loadProvinceInfo];
@@ -84,7 +84,7 @@
   
 //    加载视图
     [self setUpViews];
-    [self loadingHUDStopLoadingWithTitle:nil];
+    [self HUDStopWithTitle:nil];
     
     
 }

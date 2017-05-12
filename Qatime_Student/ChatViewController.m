@@ -46,6 +46,7 @@
 #import "NSString+YYAdd.h"
 #import "UIViewController+TimeInterval.h"
 #import "KSPhotoBrowser.h"
+#import "NSNull+Json.h"
 
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelgate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate>{
     
@@ -69,6 +70,9 @@
     NSTimer *levelTimer;
     
     
+    NSString *_chat_teamID;
+    
+    
 }
 
 /* 刷新聊天记录*/
@@ -85,13 +89,15 @@
 
 @implementation ChatViewController
 
--(instancetype)initWithClass:(TutoriumListInfo *)tutorium{
+-(instancetype)initWithClass:(TutoriumListInfo *)tutorium {
     
     self = [super init];
     if (self) {
         
         
         _tutoriumInfo = tutorium;
+        
+        _chat_teamID  = tutorium.chat_team_id;
         
     }
     return self;
@@ -152,7 +158,7 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [self loadingHUDStartLoadingWithTitle:@"正在加载聊天记录"];
+    [self HUDStartWithTitle:@"正在加载聊天记录"];
     
     /* 初始化*/
     if (_tutoriumInfo) {
@@ -184,7 +190,6 @@
         
         
     }
-    
     
     NSLog(@"%ld",[[[NIMSDK sharedSDK]conversationManager] allUnreadCount]);
     
@@ -484,18 +489,22 @@
         /* 检测是否登录超时*/
         [self loginStates:dic];
         
-        if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-            
-            
-            NSMutableArray *users =[NSMutableArray arrayWithArray:dic[@"data"][@"chat_team"][@"accounts"]];
+        NSMutableArray *users ;
+        if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
+            if ([[dic[@"data"][@"chat_team"]description] isEqualToString:@"0(NSNull)"]) {
+                
+                users = @[].mutableCopy;
+            }else{
+                
+                
+                users =[NSMutableArray arrayWithArray:[dic[@"data"][@"chat_team"][@"accounts"]isEqual:[NSNull null]]?@"":dic[@"data"][@"chat_team"][@"accounts"]];
+            }
             
             for (NSDictionary *dic in users) {
-                
                 Chat_Account *mod  = [Chat_Account yy_modelWithJSON:dic];
                 
                 /* 获取到的用户信息存到userlist里*/
                 [_userList addObject:mod];
-                
             }
             
             [self requestChatHitstory];
@@ -503,7 +512,7 @@
         }else{
             /* 获取成员信息失败*/
             
-            [self loadingHUDStopLoadingWithTitle:@"获取聊天成员信息失败!"];
+            [self HUDStopWithTitle:@"获取聊天成员信息失败!"];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -546,7 +555,7 @@
     }else{
         
         _chatTableView.hidden = NO;
-        [self loadingHUDStopLoadingWithTitle:nil];
+        [self HUDStopWithTitle:nil];
         [self makeMessages:messageArr];
     }
     
@@ -813,7 +822,7 @@
         
     }
     
-    [self loadingHUDStopLoadingWithTitle:nil];
+    [self HUDStopWithTitle:nil];
     [self performSelector:@selector(sendNoticeIn) withObject:nil afterDelay:1];
     
     [_chatTableView reloadData];
@@ -1164,7 +1173,7 @@
     
     if ([funcView.TextViewInput.text isEqualToString:@""]||funcView.TextViewInput.text==nil) {
         
-        [self loadingHUDStopLoadingWithTitle:@"请输入聊天内容!"];
+        [self HUDStopWithTitle:@"请输入聊天内容!"];
         
     }else{
         

@@ -194,7 +194,7 @@
                                     if (dataDic[@"data"][@"remember_token"]){
                                         
                                         /* 发送成功提示框*/
-                                        [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"注册成功!", nil)];
+                                        [self HUDStopWithTitle:NSLocalizedString(@"注册成功!", nil)];
                                         
 #pragma mark- 把token和id(key : data)存储到本地沙盒路径
                                         

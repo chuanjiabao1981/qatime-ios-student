@@ -38,11 +38,16 @@
         _nameText.editable = YES;
         _nameText.placeholder = @"一句话介绍自己";
         
+        /**字数*/
+        _letterNumber = [[UILabel alloc]init];
+        _letterNumber.font = TEXT_FONTSIZE_MIN;
+        _letterNumber.textColor = TITLECOLOR;
+        
         /* 箭头*/
         //        _arrow = [[UIImageView alloc]init];
         //        [_arrow setImage:[UIImage imageNamed:@"rightArrow"]];
         //
-        [self.contentView sd_addSubviews:@[_name,_nameText]];
+        [self.contentView sd_addSubviews:@[_name,_nameText,_letterNumber]];
         
         /* 布局*/
         _name.sd_layout
@@ -54,9 +59,16 @@
         _nameText.sd_layout
         .leftSpaceToView(_name,20)
         .topSpaceToView(self.contentView,10)
-        .bottomSpaceToView(self.contentView,10)
-        .rightSpaceToView(self.contentView,20);
+        .rightSpaceToView(self.contentView,20)
+        .bottomSpaceToView(self.contentView, 20);
         
+        _letterNumber.sd_layout
+        .rightEqualToView(_nameText)
+        .bottomSpaceToView(self.contentView, 10*ScrenScale)
+        .autoHeightRatio(0);
+        [_letterNumber setSingleLineAutoResizeWithMaxWidth:40];
+        
+        [self setupAutoHeightWithBottomView:_nameText bottomMargin:10];
         
     }
     return self;

@@ -205,7 +205,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 #pragma mark- 微信请求code数据后,向后台申请openID
 - (void)wechatLoginSucess:(NSNotification *)notification{
     
-//    [self loadingHUDStartLoadingWithTitle:nil];
+//    [self HUDStartWithTitle:nil];
     NSString *code = [notification object];
     
     __block NSString *openID  = @"".mutableCopy;
@@ -224,7 +224,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                 [self stopHUD];
                 /* 保存用户信息*/
                 [self saveUserInfo:dic[@"data"] loginType:Wechat];
-                [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录成功", nil)];
+                [self HUDStopWithTitle:NSLocalizedString(@"登录成功", nil)];
                 
             }else{
                 /* 登录信息拉取信息成功*/
@@ -236,7 +236,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         }else{
             /* 登录信息拉取失败*/
             
-            [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"获取微信登录信息失败,请重试!", nil)];
+            [self HUDStopWithTitle:NSLocalizedString(@"获取微信登录信息失败,请重试!", nil)];
             
         }
         
@@ -382,7 +382,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 //            hud.mode = MBProgressHUDModeIndeterminate;
 //            hud.labelText = @"正在登陆";
 //            [hud show:YES];
-            [self loadingHUDStartLoadingWithTitle:NSLocalizedString(@"正在登录", nil)];
+            [self HUDStartWithTitle:NSLocalizedString(@"正在登录", nil)];
             
             /* 对应接口要上传的用户登录账号密码*/
             NSDictionary *userInfo = @{@"login_account":[NSString stringWithFormat:@"%@",_loginView.userName.text],
@@ -414,7 +414,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                         
                         [self saveUserInfo:dicGet loginType:Normal];
                         
-                        [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录成功", nil)];
+                        [self HUDStopWithTitle:NSLocalizedString(@"登录成功", nil)];
                         
                     }else{
                         /* 账户名密码错误提示*/
@@ -423,10 +423,10 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                         UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
                         [alert addAction:action];
                         
-                        [self loadingHUDStopLoadingWithTitle:nil];
+                        [self HUDStopWithTitle:nil];
                         [self presentViewController:alert animated:YES completion:nil];
                         
-//                        [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录失败", nil)];
+//                        [self HUDStopWithTitle:NSLocalizedString(@"登录失败", nil)];
                         
                         _wrongTimes ++;
                         if (_wrongTimes >=5) {
@@ -437,7 +437,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                         
                         
                     }
-//                    [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录成功", nil)];
+//                    [self HUDStopWithTitle:NSLocalizedString(@"登录成功", nil)];
                 }
                 
                 
@@ -446,7 +446,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                 
                 NSLog(@"%@",error);
                 
-                [self loadingHUDStopLoadingWithTitle:NSLocalizedString(@"登录失败", nil)];
+                [self HUDStopWithTitle:NSLocalizedString(@"登录失败", nil)];
                 
             }];
         }

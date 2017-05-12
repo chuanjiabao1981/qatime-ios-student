@@ -240,7 +240,7 @@ typedef enum : NSUInteger {
 /* 请求课程详细信息*/
 - (void)requestClassInfo{
     
-    [self loadingHUDStopLoadingWithTitle:nil];
+    [self HUDStopWithTitle:nil];
     if (_token&&_idNumber) {
         
         if (_classID!=nil) {
@@ -428,7 +428,7 @@ typedef enum : NSUInteger {
                 _orderView.promotionNum.text = [NSString stringWithFormat:@"已优惠 ¥%@",dic[@"data"][@"price"]];
                 
             }else{
-                [self loadingHUDStopLoadingWithTitle:@"输入的优惠码不正确"];
+                [self HUDStopWithTitle:@"输入的优惠码不正确"];
                 
             }
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -462,7 +462,7 @@ typedef enum : NSUInteger {
                 _orderView.promotionNum.text = [NSString stringWithFormat:@"已优惠 ¥%@",dic[@"data"][@"price"]];
                 
             }else{
-                [self loadingHUDStopLoadingWithTitle:@"输入的优惠码不正确"];
+                [self HUDStopWithTitle:@"输入的优惠码不正确"];
                 
             }
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -559,7 +559,7 @@ typedef enum : NSUInteger {
         [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             /* 下单成功*/
-            [self loadingHUDStopLoadingWithTitle:nil];
+            [self HUDStopWithTitle:nil];
             
             dataDic = [NSMutableDictionary dictionaryWithDictionary:dic[@"data"]];
             [dataDic setValue:_productName forKey:@"productName"];
@@ -607,7 +607,7 @@ typedef enum : NSUInteger {
 //                            
 //                        }else{
 //                            
-//                            [self loadingHUDStopLoadingWithTitle:@"支付密码暂不可用"];
+//                            [self HUDStopWithTitle:@"支付密码暂不可用"];
 //                        }
 //                    }
 //                    
@@ -648,13 +648,13 @@ typedef enum : NSUInteger {
 //            
 //            if (_orderType == LiveClassType) {
 //                
-//                [self loadingHUDStopLoadingWithTitle:@"订单申请失败!"];
+//                [self HUDStopWithTitle:@"订单申请失败!"];
 //            }else if (_orderType == InteractionType){
 //                
 //                if (dic[@"error"]) {
 //                    if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
 //                        
-//                        [self loadingHUDStopLoadingWithTitle:@"课程目前不对外招生"];
+//                        [self HUDStopWithTitle:@"课程目前不对外招生"];
 //                    }
 //                }
 //            }else if (_orderType == VideoClassType){
@@ -662,7 +662,7 @@ typedef enum : NSUInteger {
 //                if (dic[@"error"]) {
 //                    if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
 //                        
-//                        [self loadingHUDStopLoadingWithTitle:@"课程目前不对外招生"];
+//                        [self HUDStopWithTitle:@"课程目前不对外招生"];
 //                    }
 //                }
 //            }
@@ -672,7 +672,7 @@ typedef enum : NSUInteger {
             if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
                 if ([dic[@"error"][@"msg"] rangeOfString:@"目前不对外招生"].location != NSNotFound ) {
                  
-                    [self loadingHUDStopLoadingWithTitle:@"该课程目前不对外招生"];
+                    [self HUDStopWithTitle:@"该课程目前不对外招生"];
                 }
             }
         }

@@ -82,7 +82,7 @@
 
 /* 向服务器请求消息设置*/
 - (void)requestNoticeSetting{
-    [self loadingHUDStartLoadingWithTitle:@"加载设置"];
+    [self HUDStartWithTitle:@"加载设置"];
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -102,11 +102,11 @@
             /* 加载设置列表*/
             [self loadSettingView];
             
-            [self loadingHUDStopLoadingWithTitle:nil];
+            [self HUDStopWithTitle:nil];
             
         }else{
             /* 请求数据失败*/
-            [self loadingHUDStopLoadingWithTitle:@"加载失败!"];
+            [self HUDStopWithTitle:@"加载失败!"];
             
             [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
             
@@ -137,7 +137,7 @@
 /* 保存设置*/
 - (void)saveSettings{
     
-    [self loadingHUDStartLoadingWithTitle:@"保存中"];
+    [self HUDStartWithTitle:@"保存中"];
     NSMutableDictionary *saveDic = _settingDic;
     [saveDic removeObjectForKey:@"owner_id"];
     
@@ -151,7 +151,7 @@
         
         if ([dic[@"status"]isEqualToNumber:@1]) {
             /* 修改成功*/
-            [self loadingHUDStopLoadingWithTitle:@"保存成功!"];
+            [self HUDStopWithTitle:@"保存成功!"];
             
             [self performSelector:@selector(exit) withObject:nil afterDelay:1];
             

@@ -42,7 +42,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self loadingHUDStartLoadingWithTitle:@"正在转换"];
+    [self HUDStartWithTitle:@"正在转换"];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hide)];
     [self.textView addGestureRecognizer:tap];
@@ -84,14 +84,14 @@
            for (NSString *key  in dic) {
                if ([key isEqualToString:@"err_msg"]) {
                    
-                   [self loadingHUDStopLoadingWithTitle:nil];
+                   [self HUDStopWithTitle:nil];
                    
                    _textView.hidden = YES;
                    _faildView.hidden = NO;
                    
                    return ;
                }else{
-                   [self loadingHUDStopLoadingWithTitle:nil];
+                   [self HUDStopWithTitle:nil];
                   _textView.hidden = NO;
                     _faildView.hidden = YES;
                }

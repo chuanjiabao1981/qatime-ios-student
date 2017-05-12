@@ -140,7 +140,7 @@
                 if ([status isEqualToString:@"1"]){
                     
                     /* 发送成功提示框*/
-                    [self loadingHUDStopLoadingWithTitle:@"密码修改成功!"];
+                    [self HUDStopWithTitle:@"密码修改成功!"];
                     [self performSelector:@selector(backToFrontPage:) withObject:nil afterDelay:1];
                     
                     

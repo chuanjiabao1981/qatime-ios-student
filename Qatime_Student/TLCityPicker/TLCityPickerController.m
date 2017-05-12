@@ -492,7 +492,7 @@
 //    self.locationManager.delegate = self;
 //    
 //    NSLog(@"start gps");
-//    [self loadingHUDStartLoadingWithTitle:@"正在获取定位信息"];
+//    [self HUDStartWithTitle:@"正在获取定位信息"];
 //    
 //}
 //
@@ -548,7 +548,7 @@
 //             NSLog(@"An error occurred = %@", error);
 //         }
 //         
-//         [self loadingHUDStopLoadingWithTitle:@"定位成功"];
+//         [self HUDStopWithTitle:@"定位成功"];
 //         
 //         
 //         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"当前定位城市是%@,是否切换到该城市?",_loaclCity] preferredStyle:UIAlertControllerStyleAlert];

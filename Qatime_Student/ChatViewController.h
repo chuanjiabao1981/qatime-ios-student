@@ -27,7 +27,7 @@
 
 @property(nonatomic,strong) UUInputFunctionView *inputView ;
 
--(instancetype)initWithClass:(TutoriumListInfo *)tutorium;
+-(instancetype)initWithClass:(TutoriumListInfo *)tutorium ;
 
 
 

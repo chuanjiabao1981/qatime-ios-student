@@ -148,7 +148,7 @@
 /* 请求服务器,设置支付密码*/
 - (void)requestPayPassord{
     
-    [self loadingHUDStartLoadingWithTitle:@"正在设置"];
+    [self HUDStartWithTitle:@"正在设置"];
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -161,7 +161,7 @@
         
         if ([dic[@"status"]isEqualToNumber:@1]) {
             /* 设置支付密码成功*/
-            [self loadingHUDStopLoadingWithTitle:@"设置成功!"];
+            [self HUDStopWithTitle:@"设置成功!"];
             [self performSelector:@selector(setPaymentSuccess) withObject:nil afterDelay:1];
             
             [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"have_paypassword"];
@@ -171,7 +171,7 @@
             
         }else{
             /* 设置失败,*/
-            [self loadingHUDStopLoadingWithTitle:@"密码设置失败,请核对信息!"];
+            [self HUDStopWithTitle:@"密码设置失败,请核对信息!"];
             
         }
         

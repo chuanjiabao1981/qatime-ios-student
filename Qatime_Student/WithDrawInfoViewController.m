@@ -171,7 +171,7 @@
                     if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                         /* 请求成功*/
                         
-                        [self loadingHUDStopLoadingWithTitle:@"提现申请成功!"];
+                        [self HUDStopWithTitle:@"提现申请成功!"];
                         
                         WithdrawConfirmViewController *conVC = [[WithdrawConfirmViewController alloc]initWithData:dic[@"data"]];
                         
@@ -183,7 +183,7 @@
                         
                         UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                             
-                            [self loadingHUDStartLoadingWithTitle:@"正在取消..."];
+                            [self HUDStartWithTitle:@"正在取消..."];
                             MyWalletViewController *mwVC = [[MyWalletViewController alloc]init];
                             UIViewController *vc = nil;
                             
@@ -214,7 +214,7 @@
                         
                         UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                             
-                            [self loadingHUDStopLoadingWithTitle:@"提交失败"];
+                            [self HUDStopWithTitle:@"提交失败"];
                             
                         }] ;
                         

@@ -209,7 +209,7 @@
 /* 请求ticket token*/
 - (void)requestTicketToken:(NSString *)password{
     
-    [self loadingHUDStartLoadingWithTitle:@"核对密码"];
+    [self HUDStartWithTitle:@"核对密码"];
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -224,7 +224,7 @@
             if (dic[@"data"]!=nil) {
                 [[NSUserDefaults standardUserDefaults]setValue:dic[@"data"] forKey:@"ticket_token"];
             }
-            [self loadingHUDStopLoadingWithTitle:nil];
+            [self HUDStopWithTitle:nil];
             
             [self performSelector:@selector(changeNewPassword) withObject:nil afterDelay:1];
             
@@ -232,7 +232,7 @@
             
         }else{
             /* 获取失败*/
-            [self loadingHUDStopLoadingWithTitle:@"密码错误!"];
+            [self HUDStopWithTitle:@"密码错误!"];
             _passwordText.text = @"";
             for (UIImageView *image in _imageArr) {
                 [image setImage:nil];

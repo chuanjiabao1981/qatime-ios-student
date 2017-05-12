@@ -142,7 +142,7 @@
 //                [self loginStates:dic];
                 if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                     
-                    [self loadingHUDStopLoadingWithTitle:@"发送成功!"];
+                    [self HUDStopWithTitle:@"发送成功!"];
                     
                 }else{
                     
@@ -155,7 +155,7 @@
                     [self presentViewController:alert animated:YES completion:nil];
                     
                     
-//                    [self loadingHUDStopLoadingWithTitle:@""];
+//                    [self HUDStopWithTitle:@""];
                 }
                 
                 
@@ -246,7 +246,7 @@
         
         if (_authenticationView.checkCodeText.text.length>0) {
             
-            [self loadingHUDStartLoadingWithTitle:@"正在请求"];
+            [self HUDStartWithTitle:@"正在请求"];
             /* 发送验证申请*/
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -265,12 +265,12 @@
                         [[NSUserDefaults standardUserDefaults]setValue:dic[@"data"] forKey:@"ticket_token"];
                     }
                     
-                    [self loadingHUDStopLoadingWithTitle:@"验证成功!"];
+                    [self HUDStopWithTitle:@"验证成功!"];
                     
                     [self performSelector:@selector(nextPage) withObject:nil afterDelay:1];
                     
                 }else{
-                    [self loadingHUDStopLoadingWithTitle:@"登录密码或校验码错误!"];
+                    [self HUDStopWithTitle:@"登录密码或校验码错误!"];
                     
                 }
                 

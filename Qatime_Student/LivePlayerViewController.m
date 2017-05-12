@@ -2793,13 +2793,13 @@ bool ismute     = NO;
             
             /* 判断通知公告数量,HUD框提示加载信息*/
             if (_noticesArr==nil||_noticesArr.count ==0) {
-//                [self loadingHUDStopLoadingWithTitle:@"暂时没有公告!"];
+//                [self HUDStopWithTitle:@"暂时没有公告!"];
             }
             
             _membersArr = [_noticeAndMembers valueForKey:@"accounts"];
             
             if (_membersArr==nil||_membersArr.count==0) {
-//                [self loadingHUDStopLoadingWithTitle:@"暂时没有成员加入!"];
+//                [self HUDStopWithTitle:@"暂时没有成员加入!"];
             }
             
             
@@ -2925,7 +2925,7 @@ bool ismute     = NO;
                     
                 }else{
                     /* 获取数据失败*/
-                    [self loadingHUDStopLoadingWithTitle:@"获取教师信息失败"];
+                    [self HUDStopWithTitle:@"获取教师信息失败"];
                 }
                 
                 
@@ -2978,7 +2978,7 @@ bool ismute     = NO;
 /* 发送按钮在两秒内不可以重复点击*/
 - (void)sendeButtonCannotUse{
     
-    [self loadingHUDStopLoadingWithTitle:@"请稍后"];
+    [self HUDStopWithTitle:@"请稍后"];
 }
 
 #pragma mark- 语音部分
@@ -3134,7 +3134,7 @@ bool ismute     = NO;
     }else{
         
         _chatTableView.hidden = NO;
-        [self loadingHUDStopLoadingWithTitle:@""];
+        [self HUDStopWithTitle:@""];
         [self makeMessages:messageArr];
         [_chatTableView reloadData];
         [self tableViewScrollToBottom];
@@ -3384,7 +3384,7 @@ bool ismute     = NO;
     
     if (chatTime == 0) {
         
-        [self loadingHUDStartLoadingWithTitle:@"正在加载数据"];
+        [self HUDStartWithTitle:@"正在加载数据"];
         NIMHistoryMessageSearchOption *historyOption = [[NIMHistoryMessageSearchOption  alloc]init];
         historyOption.limit = 100;
         historyOption.order = NIMMessageSearchOrderDesc;
@@ -3410,14 +3410,14 @@ bool ismute     = NO;
         
         [_chatTableView.mj_header endRefreshing];
         
-        [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+        [self HUDStopWithTitle:@"加载完成"];
     }else{
         
         [self.chatTableView reloadData];
         //        [self tableViewScrollToBottom];
         [_chatTableView.mj_header endRefreshing];
         
-        [self loadingHUDStopLoadingWithTitle:@"加载完成"];
+        [self HUDStopWithTitle:@"加载完成"];
         
     }
     
@@ -3590,7 +3590,7 @@ bool ismute     = NO;
     
     if ([funcView.TextViewInput.text isEqualToString:@""]||funcView.TextViewInput.text==nil) {
         
-        [self loadingHUDStopLoadingWithTitle:@"请输入聊天内容!"];
+        [self HUDStopWithTitle:@"请输入聊天内容!"];
         
     }else{
         
@@ -4285,22 +4285,22 @@ bool ismute     = NO;
                             }
                         }else{
                             
-                            [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
+                            [self HUDStopWithTitle:@"回放次数已耗尽"];
                             
                         }
                         
                     }else{
-                        [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
+                        [self HUDStopWithTitle:@"暂无回放视频"];
                     }
                 }else{
-                    [self loadingHUDStopLoadingWithTitle:@"服务器正忙,请稍后再试"];
+                    [self HUDStopWithTitle:@"服务器正忙,请稍后再试"];
                 }
                 
             }];
             
             
         }else{
-            //            [self loadingHUDStopLoadingWithTitle:@"您尚未购买该课程!"];
+            //            [self HUDStopWithTitle:@"您尚未购买该课程!"];
         }
         
         

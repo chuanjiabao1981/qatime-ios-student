@@ -57,8 +57,9 @@
     NSString *_provinceID;
     NSString *_cityID;
     
-    
     NSInteger number;
+
+    UIView *footer;
     
 }
 
@@ -78,19 +79,18 @@
     
 }
 
-
 - (void)loadView{
     [super loadView];
     self.view.backgroundColor = BACKGROUNDGRAY;
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
     [self.view addSubview:_navigationBar];
     
-    _editTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd , self.view.height_sd*(0.15+0.07*6)+5) style:UITableViewStylePlain];
+    _editTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd , self.view.height_sd-Navigation_Height) style:UITableViewStylePlain];
     [self.view addSubview:_editTableView];
     
-    _editTableView.tableFooterView = [[UIView alloc]init];
     _editTableView.backgroundColor = BACKGROUNDGRAY;
     
+    footer = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 100)];
     
     /* 完成按钮*/
     
@@ -104,17 +104,18 @@
         _.layer.borderWidth = 1;
         _.layer.borderColor = BUTTONRED.CGColor;
         [_ addTarget:self action:@selector(updateInfo) forControlEvents:UIControlEventTouchUpInside];
-        
-        [self.view addSubview:_];
+        [footer addSubview:_];
         _.sd_layout
-        .leftSpaceToView(self.view,20)
-        .rightSpaceToView(self.view ,20)
-        .topSpaceToView(_editTableView,15)
+        .leftSpaceToView(footer,20)
+        .rightSpaceToView(footer ,20)
+        .topSpaceToView(footer,40)
         .heightIs(self.view.height_sd*0.065);
         _.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
         _;
     });
     
+    _editTableView.tableFooterView=footer;
+    _editTableView.sectionFooterHeight = 100;
 }
 
 - (void)viewDidLoad {
@@ -366,16 +367,14 @@
                 
                 cell.name.text = @"简介";
                 cell.nameText.delegate = self;
-//                cell.nameText.hidden = YES;
-//                [cell.nameText addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+                cell.letterNumber.hidden = YES;
                 if (_infoDic) {
                     if (_infoDic[@"desc"]) {
                         
-                        if ([_infoDic[@"desc"]isEqualToString:@""]) {
-                            
+                        if ([_infoDic[@"desc"]isEqualToString:@""]||[_infoDic[@"desc"]isEqualToString:@"未设置"]) {
                             cell.nameText.placeholder = @"一句话介绍自己";
                         }else{
-                            cell.nameText.text = _infoDic[@"desc"];
+                            cell.nameText.text =_infoDic[@"desc"];
                         }
                     }
                 }
@@ -389,7 +388,8 @@
     
     return cell;
 }
-#pragma mark- tableview datesource
+#pragma mark- tableview delegate
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSInteger height = 0;
@@ -397,7 +397,13 @@
     if (indexPath.row == 0) {
         height =  self.view.height_sd*0.15;
     }else{
-        height = self.view.height_sd*0.07;
+        if (indexPath.row!=6) {
+            
+            height = self.view.height_sd*0.07;
+        }else{
+            
+            height =  self.view.height_sd*0.14;
+        }
     }
     
     return height;
@@ -405,6 +411,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    [self resign];
     switch (indexPath.row) {
         case 0:{
             
@@ -471,7 +478,7 @@
         if (textField.text.length > 20) {
             textField.text = [textField.text substringToIndex:20];
             
-            _infoDic[@"description"] = textField.text;
+            _infoDic[@"desc"] = textField.text;
         }else{
             _infoDic[@"desc"] = textField.text;
             
@@ -500,7 +507,15 @@
     
     [UIView animateWithDuration:animationDuration animations:^{
         
-        [ self.view setFrame:CGRectMake(0, -keyboardRect.size.height/2, self.view.width_sd, self.view.height_sd)];
+        EditNameTableViewCell *namecell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+        EditDescriptionTableViewCell *desccell=[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+        if ([namecell.nameText isFirstResponder]==YES) {
+            
+            [ self.view setFrame:CGRectMake(0, -keyboardRect.size.height/2, self.view.width_sd, self.view.height_sd)];
+        }else if ([desccell.nameText isFirstResponder]==YES){
+            
+            [ self.view setFrame:CGRectMake(0, -keyboardRect.size.height, self.view.width_sd, self.view.height_sd)];
+        }
     }];
     
 }
@@ -529,6 +544,8 @@
     
     
 }
+
+
 
 /* 提交个人信息*/
 - (void)updateInfo{
@@ -567,6 +584,11 @@
         [_dataDic setObject:_infoDic[@"grade"]?_infoDic[@"grade"]:@"" forKey:@"grade"];
     }
     
+    //取出生日
+    EditBirthdayTableViewCell *birthcell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
+    if ([birthcell.content.text isEqualToString:@""]||[birthcell.content.text isEqualToString:@"未设置"]) {
+         [_dataDic setObject:_infoDic[@"birthday"]?_infoDic[@"birthday"]:@"" forKey:@"birthday"];
+    }
     
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"PUT" URLString:[NSString stringWithFormat:@"%@/api/v1/students/%@",Request_Header,_idNumber] parameters:_dataDic constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
@@ -580,7 +602,7 @@
     //    [request setHTTPMethod:@"PUT"];
     [request setCachePolicy:NSURLRequestReloadIgnoringCacheData];
     [request setTimeoutInterval:15];
-    //    [self loadingHUDStartLoadingWithTitle:@"正在提交"];
+    //    [self HUDStartWithTitle:@"正在提交"];
     __block MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelFont = [UIFont systemFontOfSize:14*ScrenScale];
@@ -617,14 +639,15 @@
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangeInfoSuccess" object:dic];
                 
                 [hud hide:YES];
-                [self loadingHUDStopLoadingWithTitle:@"修改成功"];
+                [self HUDStopWithTitle:@"保存成功"];
                 
                 
                 [self performSelector:@selector(returnRoot) withObject:nil afterDelay:1];
                 
+            }else{
+                [hud hide:YES];
+                [self HUDStopWithTitle:@"保存失败,请填写正确的信息"];
             }
-            
-            
         }
     }];
     
@@ -658,13 +681,26 @@
     
 }
 
-/**
- *  自适应字体
- */
--(CGSize)sizeWithString:(NSString*)string font:(UIFont*)font     width:(float)width {
+- (void)textViewDidBeginEditing:(UITextView *)textView{
     
-    CGRect rect = [string boundingRectWithSize:CGSizeMake(width,   80000) options:NSStringDrawingTruncatesLastVisibleLine |   NSStringDrawingUsesFontLeading    |NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil];
-    return rect.size;
+    EditDescriptionTableViewCell * cell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    
+    if (cell.letterNumber.hidden  == YES) {
+        cell.letterNumber.hidden = NO;
+    }
+    if ([textView.text isEqualToString:@""]||[textView.text isEqualToString:@"未设置"]) {
+        textView.text = @"";
+        cell.letterNumber.text = @"30";
+        [cell.letterNumber updateLayout];
+    }
+}
+-(void)textViewDidEndEditing:(UITextView *)textView{
+    
+    EditDescriptionTableViewCell * cell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    
+    if (cell.letterNumber.hidden  == NO) {
+        cell.letterNumber.hidden = YES;
+    }
 }
 
 - (void)textViewDidChange:(UITextView *)textView{
@@ -672,34 +708,23 @@
     [_infoDic setValue:textView.text forKey:@"desc"];
     
     EditDescriptionTableViewCell * cell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
-    //获取文本中字体的size
-    CGSize size = [self sizeWithString:textView.text font:TITLEFONTSIZE width:textView.width];
-    NSLog(@"height = %f",size.height);
-    //获取一行的高度
-    CGSize size1 = [self sizeWithString:@"Hello" font:TITLEFONTSIZE width:textView.width];
-    NSInteger i = size.height/size1.height;
-    if (i==1) {
-        //设置全局的变量存储数字如果换行就改变这个全局变量
-        self->number = i;
-    }
-    if (self->number!=i) {
-        self->number = i;
-        NSLog(@"selfnum = %ld",self->number);
-        cell.height = size.height;
-        [_editTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0]] withRowAnimation:(UITableViewRowAnimationAutomatic)];
-    }
     
+    if (cell.nameText.text.length<30) {
+        cell.letterNumber.text  = [NSString stringWithFormat:@"%ld",30-cell.nameText.text.length];
+    }else{
+        
+        cell.letterNumber.text =@"0";
+        
+        cell.nameText.text = [cell.nameText.text substringToIndex:30];
+    }
+
 }
-
-
-
-
 
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
     EditNameTableViewCell *nameCell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-    EditNameTableViewCell *descCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    EditDescriptionTableViewCell *descCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
     
     if ([nameCell.nameText isFirstResponder]) {
         
@@ -711,9 +736,22 @@
     }
     
 }
+
+
 - (void)resign{
+  
     EditNameTableViewCell *nameCell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-    EditNameTableViewCell *descCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0]];
+    EditDescriptionTableViewCell *descCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    
+    if ([nameCell.nameText isFirstResponder]) {
+        
+        [nameCell.nameText resignFirstResponder];
+    }
+    if ([descCell.nameText isFirstResponder]) {
+        
+        [descCell.nameText resignFirstResponder];
+    }
+
     [nameCell resignFirstResponder];
     [descCell resignFirstResponder];
     

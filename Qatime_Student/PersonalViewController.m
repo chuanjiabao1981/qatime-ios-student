@@ -388,7 +388,7 @@
                     break;
                 case 3:{
                     
-                    [self loadingHUDStopLoadingWithTitle:@"正在开发中,敬请期待"];
+                    [self HUDStopWithTitle:@"正在开发中,敬请期待"];
                     
                     /**
                      该版本暂时改为提示

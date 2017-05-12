@@ -208,7 +208,7 @@
         [self payForRecharge];
         
     }else{
-        [self loadingHUDStopLoadingWithTitle:@"请选择充值金额"];
+        [self HUDStopWithTitle:@"请选择充值金额"];
     }
     
 }
@@ -217,7 +217,7 @@
 /**拉起苹果支付*/
 - (void)payForRecharge{
     
-    [self loadingHUDStartLoadingWithTitle:nil];
+    [self HUDStartWithTitle:nil];
     [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     
 //    switch (_product.price.integerValue) {
@@ -319,7 +319,7 @@
 
 -(void) requestDidFinish:(SKRequest *)request{
     
-    [self loadingHUDStopLoadingWithTitle:nil];
+    [self HUDStopWithTitle:nil];
     NSLog(@"----------反馈信息结束--------------");
     
 }
@@ -414,7 +414,7 @@
         [alertView show];
     }else{
         
-        [self loadingHUDStopLoadingWithTitle:@"用户取消交易"];
+        [self HUDStopWithTitle:@"用户取消交易"];
     }
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
     

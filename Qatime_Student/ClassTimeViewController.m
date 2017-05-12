@@ -144,7 +144,7 @@ typedef enum : NSUInteger {
     isLogin = [[NSUserDefaults standardUserDefaults]boolForKey:@"Login"];
     if (isLogin==YES&&_token&&_idNumber) {
         _notLoginView.hidden = YES;
-        //        [self loadingHUDStartLoadingWithTitle:nil];
+        //        [self HUDStartWithTitle:nil];
     }else{
         _notLoginView.hidden = NO;
     }

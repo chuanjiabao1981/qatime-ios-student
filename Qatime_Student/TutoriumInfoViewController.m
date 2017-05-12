@@ -258,7 +258,7 @@
 /** 根据初始化传值进来的id 进行网络请求*/
 - (void)requestClassesInfoWith:(NSString *)classid{
     
-    [self loadingHUDStartLoadingWithTitle:nil];
+    [self HUDStartWithTitle:nil];
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -503,7 +503,7 @@
                     [_tutoriumInfoView.classFeature updateLayout];
                     
                     
-                    [self loadingHUDStopLoadingWithTitle:nil];
+                    [self HUDStopWithTitle:nil];
                     
                 }else{
                     /* 返回的教师数据是错误的*/
@@ -678,7 +678,7 @@
                     
                     [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
                     
-                    [self loadingHUDStopLoadingWithTitle:@"加入成功"];
+                    [self HUDStopWithTitle:@"加入成功"];
                     
                     
                     /* 发送全局通知,发送加入试听课程通知*/
@@ -688,7 +688,7 @@
                     
                     /* 重新登录*/
                     
-                    //                    [self loadingHUDStopLoadingWithTitle:@"登录超时,请重新登录!"];
+                    //                    [self HUDStopWithTitle:@"登录超时,请重新登录!"];
                     //
                     //                    [self performSelector:@selector(loginAgain) withObject:nil afterDelay:2];
                     
@@ -702,7 +702,7 @@
             
         }else{
             
-            [self loadingHUDStopLoadingWithTitle:@"该课程不支持试听"];
+            [self HUDStopWithTitle:@"该课程不支持试听"];
         }
     }
     
@@ -725,7 +725,7 @@
             
             
         }else{
-            [self loadingHUDStopLoadingWithTitle:@"试听次数用尽"];
+            [self HUDStopWithTitle:@"试听次数用尽"];
         }
     }
     
@@ -767,7 +767,7 @@
             }
         }else{
             
-            [self loadingHUDStopLoadingWithTitle:@"当前课程不支持购买"];
+            [self HUDStopWithTitle:@"当前课程不支持购买"];
             
         }
         
@@ -968,15 +968,15 @@
                                 
                             }else{
                                 
-                                [self loadingHUDStopLoadingWithTitle:@"回放次数已耗尽"];
+                                [self HUDStopWithTitle:@"回放次数已耗尽"];
                                 
                             }
                             
                         }else{
-                            [self loadingHUDStopLoadingWithTitle:@"暂无回放视频"];
+                            [self HUDStopWithTitle:@"暂无回放视频"];
                         }
                     }else{
-                        [self loadingHUDStopLoadingWithTitle:@"服务器繁忙,请稍后重试"];
+                        [self HUDStopWithTitle:@"服务器繁忙,请稍后重试"];
                     }
                     
                 }];

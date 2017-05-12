@@ -37,7 +37,7 @@ static const void *endHUDKey = &endHUDKey;
 
 
 
-- (void)loadingHUDStartLoadingWithTitle:(NSString * _Nullable)hudTitle{
+- (void)HUDStartWithTitle:(NSString * _Nullable)hudTitle{
             
         /* HUD框 提示*/
         self.loadingHUD=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -52,7 +52,7 @@ static const void *endHUDKey = &endHUDKey;
 
 
 /* HUD框 加载完成*/
-- (void)loadingHUDStopLoadingWithTitle:(NSString * _Nullable)hudTitle{
+- (void)HUDStopWithTitle:(NSString * _Nullable)hudTitle{
     
     if (hudTitle == nil) {
         

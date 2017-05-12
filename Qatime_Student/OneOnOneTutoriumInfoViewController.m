@@ -107,7 +107,7 @@
     //加载数据
     [self requestData];
     
-    [self loadingHUDStartLoadingWithTitle:@"正在加载"];
+    [self HUDStartWithTitle:@"正在加载"];
     
     
 }
@@ -190,7 +190,7 @@
         }else{
             //数据错误
         }
-        [self loadingHUDStopLoadingWithTitle:nil];
+        [self HUDStopWithTitle:nil];
     }];
     
 }

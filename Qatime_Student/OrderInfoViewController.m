@@ -299,7 +299,7 @@
     [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"确定取消该订单?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
        
         if (buttonIndex!=0) {
-            [self loadingHUDStartLoadingWithTitle:@"正在取消"];
+            [self HUDStartWithTitle:@"正在取消"];
             [self PUTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/cancel",Request_Header,_dataDic[@"orderNumber"]] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil
                 completeSuccess:^(id  _Nullable responds) {
                    
@@ -307,13 +307,13 @@
                     [self loginStates:dic];
                     if ([dic[@"status"]isEqualToNumber:@1]) {
                         /* 取消成功*/
-                        [self loadingHUDStopLoadingWithTitle:@"取消成功"];
+                        [self HUDStopWithTitle:@"取消成功"];
                         [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                         [[NSNotificationCenter defaultCenter]postNotificationName:@"DeleteOrder" object:nil];
                         
                     }else{
                         /* 取消失败*/
-                        [self loadingHUDStopLoadingWithTitle:@"服务正忙,请稍后重试"];
+                        [self HUDStopWithTitle:@"服务正忙,请稍后重试"];
                         [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                     }
                     
@@ -357,7 +357,7 @@
     }] ;
     UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
-        [self loadingHUDStopLoadingWithTitle:@"正在加载订单信息"];
+        [self HUDStopWithTitle:@"正在加载订单信息"];
         
         
         NSString *course;
@@ -401,14 +401,14 @@
                         
                         if ([dic[@"error"][@"msg"] rangeOfString:@"已经"].location!= NSNotFound) {
                             
-                            [self loadingHUDStopLoadingWithTitle:@"您已经购买过该课程"];
+                            [self HUDStopWithTitle:@"您已经购买过该课程"];
                         }else if ([dic[@"error"][@"msg"] rangeOfString:@"目前"].location!= NSNotFound){
-                            [self loadingHUDStopLoadingWithTitle:@"课程目前不对外招生"];
+                            [self HUDStopWithTitle:@"课程目前不对外招生"];
                         }
                         
                     }else{
                         
-                        [self loadingHUDStopLoadingWithTitle:@"该课程已过期"];
+                        [self HUDStopWithTitle:@"该课程已过期"];
                     }
                     
                     [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
@@ -434,7 +434,7 @@
     mod.orderID = _dataDic[@"orderID"];
     
     if ([mod.product_type isEqualToString:@"LiveStudio::VideoCourse"]) {
-        [self loadingHUDStopLoadingWithTitle:@"视频课不可退款"];
+        [self HUDStopWithTitle:@"视频课不可退款"];
     }else{
         
         DrawBackViewController *back = [[DrawBackViewController alloc]initWithPaidOrder:mod];
@@ -454,11 +454,11 @@
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
                 [self loginStates:dic];
                 if ([dic[@"status"]isEqualToNumber:@1]) {
-                    [self loadingHUDStopLoadingWithTitle:@"取消成功!"];
+                    [self HUDStopWithTitle:@"取消成功!"];
                     [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                     
                 }else{
-                    [self loadingHUDStopLoadingWithTitle:@"取消失败!"];
+                    [self HUDStopWithTitle:@"取消失败!"];
                     [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                     
                 }

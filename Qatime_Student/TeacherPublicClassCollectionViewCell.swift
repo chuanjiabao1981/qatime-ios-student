@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class TeacherPublicClassCollectionViewCell: UICollectionViewCell {
    
     //属性定义

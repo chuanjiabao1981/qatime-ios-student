@@ -109,13 +109,13 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
     
     
-    [self loadingHUDStartLoadingWithTitle:@"正在获取年级信息"];
+    [self HUDStartWithTitle:@"正在获取年级信息"];
     
 }
 
 - (void)readGradeOver{
     
-    [self loadingHUDStopLoadingWithTitle:nil];
+    [self HUDStopWithTitle:nil];
     
 }
 
@@ -292,7 +292,7 @@
                                         @"city_id":_cityID
                                         };
             
-            [self loadingHUDStartLoadingWithTitle:@"绑定中"];
+            [self HUDStartWithTitle:@"绑定中"];
             
             /* 验证码 请求状态*/
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -314,7 +314,7 @@
                         
                         /* 发送成功提示框*/
                         
-                        [self loadingHUDStopLoadingWithTitle:@"绑定成功!"];
+                        [self HUDStopWithTitle:@"绑定成功!"];
 #pragma mark- 把token和id(key : data)存储到本地沙盒路径
                         
                         NSString *tokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
@@ -355,7 +355,7 @@
                     }
                     else if (![[dataDic allKeys]containsObject:@"remember_token"]){
                         
-                        [self loadingHUDStopLoadingWithTitle:nil];
+                        [self HUDStopWithTitle:nil];
                         
                         [self showAlertWith:@"验证失败！请仔细填写信息!"];
                         
@@ -365,7 +365,7 @@
                     if (dataDic) {
                         
                         if ([[[dataDic valueForKey:@"error"]valueForKey:@"code"] isEqualToNumber:@3002]) {
-                            [self loadingHUDStopLoadingWithTitle:nil];
+                            [self HUDStopWithTitle:nil];
                             [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"该手机已注册,请登录后进入个人中心>安全设置进行绑定。" cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@[@"新号码注册",@"登录"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                                 
                                 if (buttonIndex ==2 ) {

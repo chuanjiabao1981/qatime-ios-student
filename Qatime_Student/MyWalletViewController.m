@@ -73,7 +73,7 @@
     }
 
     
-    [self loadingHUDStartLoadingWithTitle:@"正在获取数据"];
+    [self HUDStartWithTitle:@"正在获取数据"];
     
     _menuName = @[@"充值记录",@"消费记录",@"退款记录"];
     
@@ -137,7 +137,7 @@
                         
             [_myWalletView updateLayout];
             
-            [self loadingHUDStopLoadingWithTitle:@"数据加载成功!"];
+            [self HUDStopWithTitle:@"数据加载成功!"];
         }else{
             
             /* 登录超时*/
@@ -155,7 +155,7 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         
-        [self loadingHUDStopLoadingWithTitle:@"数据获取失败!请重试"];
+        [self HUDStopWithTitle:@"数据获取失败!请重试"];
     }];
     
 }
@@ -205,7 +205,7 @@
 
 #pragma mark- 进入充值页面
 - (void)recharge{
-//    [self loadingHUDStopLoadingWithTitle:@"请使用网页端进行充值"];
+//    [self HUDStopWithTitle:@"请使用网页端进行充值"];
     ChargeViewController *cVC = [ChargeViewController new];
     [self.navigationController pushViewController:cVC animated:YES];
 }
