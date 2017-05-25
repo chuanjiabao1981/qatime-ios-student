@@ -10,6 +10,7 @@
 #import "NELivePlayerControl.h"
 
 #import "NavigationBar.h"
+#import "NSNull+Json.h"
 
 #import <MediaPlayer/MediaPlayer.h>
 
@@ -539,9 +540,9 @@ bool ismute     = NO;
     /* 白板的 播放器*/
     _liveplayerBoard = ({
         NELivePlayerController *_= [[NELivePlayerController alloc] initWithContentURL:_boardPullAddress];
-        
         _.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
         [_ setScalingMode:NELPMovieScalingModeAspectFit];
+        
         if (_ == nil) {
             // 返回空则表示初始化失败
             //            NSLog(@"player initilize failed, please tay again!");
@@ -1828,7 +1829,7 @@ bool ismute     = NO;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     NSLog(@"viewWillAppear");
-    NSLog(@"Version = %@", [self.liveplayerTeacher getSDKVersion]);
+//    NSLog(@"Version = %@", [self.liveplayerTeacher getSDKVersion]);
     
     [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     
@@ -2817,7 +2818,10 @@ bool ismute     = NO;
             
             /* 解析 聊天成员 数据*/
             
-            _chatList = dataDic[@"chat_team"][@"accounts"];
+            if (![[dataDic[@"chat_team"]description]isEqualToString:@"0(NSNull)"]) {
+                
+                _chatList = dataDic[@"chat_team"][@"accounts"];
+            }
             
             /* 保存课程信息*/
             _classesArr = dataDic[@"lessons"];
@@ -2935,7 +2939,8 @@ bool ismute     = NO;
             [_infoHeaderView layoutIfNeeded];
             
             if (dataDic) {
-                
+                _teacherPullAddress =[NSURL URLWithString:dataDic[@"camera_pull_stream"]];
+                _boardPullAddress = [NSURL URLWithString:dataDic[@"board_pull_stream"]];
                 if ([dataDic[@"is_bought"]boolValue]==NO) {
                     /* 如果用户还没有购买该课程*/
                     /* 已经试听过*/
@@ -2948,7 +2953,7 @@ bool ismute     = NO;
                     }else{
                         _teacherPullAddress =[NSURL URLWithString:dataDic[@"camera_pull_stream"]];
                     }
-                    
+                    _teacherPullAddress =[NSURL URLWithString:dataDic[@"camera_pull_stream"]];
                     _boardPullAddress = [NSURL URLWithString:dataDic[@"board_pull_stream"]];
                     
                     

@@ -1362,6 +1362,7 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         [self loginStates:dic];
+        [self HUDStopWithTitle:nil];
         
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"BasicInformation"];
@@ -1388,8 +1389,7 @@
             
             //加工城市信息 ->去掉当地没有工作站的数据
             
-            
-            
+
 #pragma mark- 写完城市信息plist之后,开始定位
             
             if (YES) {
@@ -1410,7 +1410,7 @@
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+        [self HUDStopWithTitle:nil];
     }];
     
     

@@ -115,6 +115,16 @@
         [self userLogin:note];
     }];
     
+    /**监听用户退出登录*/
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"userLogOut" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+       
+        [_headView.headImageView setImage:[UIImage imageNamed:@"人"]];
+        _headView.name.text = @"未登录";
+        SettingTableViewCell *cell = [_personalView.settingTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0 ]];
+        cell.balance.text = @"";
+        
+    }];
+    
 }
 
 /* 页面加载方法*/
@@ -316,8 +326,6 @@
         cell.settingName.text = _settingName[indexPath.row];
         cell.arrow.hidden = YES;
         
-        
-        
         if (indexPath.row ==0) {
             cell.arrow.hidden = YES;
             
@@ -388,12 +396,12 @@
                     break;
                 case 3:{
                     
-                    [self HUDStopWithTitle:@"正在开发中,敬请期待"];
+//                    [self HUDStopWithTitle:@"正在开发中,敬请期待"];
                     
                     /**
                      该版本暂时改为提示
                      */
-//                    controller = [MyOneOnOneViewController new];
+                    controller = [MyOneOnOneViewController new];
                 }
                     break;
                 case 4:{
@@ -430,6 +438,22 @@
             
             [self logOutAlert];
         }
+    }
+    
+}
+
+/**用户是否登录*/
+-(BOOL)userLogin{
+    
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
+            return  YES;
+        }else{
+            return NO;
+        }
+    }else{
+        
+        return NO;
     }
     
 }

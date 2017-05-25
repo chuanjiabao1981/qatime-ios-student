@@ -62,7 +62,6 @@
  */
 @property (nonatomic, weak)   UIViewController *currentChildViewController;
 
-
 /**
  用户互动权限
  */
@@ -365,6 +364,8 @@ NTES_FORBID_INTERACTIVE_POP
 {
 //    DDLogInfo(@"Meeting %@ ...", connected ? @"connected" : @"disconnected");
     if (connected) {
+        
+        
     }
     else {
         [self.view.window makeToast:@"音视频服务连接异常" duration:2.0 position:CSToastPositionCenter];

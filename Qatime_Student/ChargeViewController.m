@@ -115,6 +115,7 @@
     
     
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/itunes_products",Request_Header] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        
         NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         
         if ([dic[@"status"]isEqualToNumber:@1]) {
@@ -128,9 +129,8 @@
             [_chargeView.chargeMenu reloadSections:[NSIndexSet indexSetWithIndex:0]];
         }
         
-        
     }];
-    
+        
 }
 
 

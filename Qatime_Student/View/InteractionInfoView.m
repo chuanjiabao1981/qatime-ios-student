@@ -93,79 +93,100 @@
         .autoHeightRatio(0);
         [_subjectLabel setSingleLineAutoResizeWithMaxWidth:100.0f];
         
-        /* 课时 进度*/
-        _classCount=[[UILabel alloc]init];
-        _classCount.font = TEXT_FONTSIZE;
-        _classCount.textColor = TITLECOLOR;
-        [self addSubview:_classCount];
-        _classCount.sd_layout
+        /**总课时长*/
+        _classDuring=[[UILabel alloc]init];
+        _classDuring.font = TEXT_FONTSIZE;
+        _classDuring.textColor = TITLECOLOR;
+        [self addSubview:_classDuring];
+        _classDuring.sd_layout
         .leftEqualToView(_gradeLabel)
         .topSpaceToView(_gradeLabel,10)
         .autoHeightRatio(0);
-        [_classCount setSingleLineAutoResizeWithMaxWidth:200];
+        [_classDuring setSingleLineAutoResizeWithMaxWidth:200];
         
         UIImageView *book3 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"菱形"]];
         [self addSubview:book3];
-        book3.sd_layout
-        .leftEqualToView(book1)
-        .rightEqualToView(book1)
-        .widthRatioToView(book1,1.0)
-        .centerYEqualToView(_classCount)
-        .heightRatioToView(book1,1.0);
         
-        /* 直播时间*/
-        _liveTimeLabel = [[UILabel alloc]init];
-        _liveTimeLabel.font = TEXT_FONTSIZE;
-        _liveTimeLabel.textColor =TITLECOLOR;
-        [self addSubview:_liveTimeLabel];
-        _liveTimeLabel.sd_layout
-        .leftEqualToView(_classCount)
-        .topSpaceToView(_classCount,10)
+        book3.sd_layout
+        .centerXEqualToView(book1)
+        .widthRatioToView(book2, 1.0f)
+        .heightEqualToWidth()
+        .centerYEqualToView(_classDuring);
+
+        
+        /**每节课时长*/
+        _classPerDuring = [[UILabel alloc]init];
+        _classPerDuring.font = TEXT_FONTSIZE;
+        _classPerDuring.textColor = TITLECOLOR;
+        [self addSubview:_classPerDuring];
+        _classPerDuring.sd_layout
+        .leftEqualToView(_subjectLabel)
+        .topEqualToView(_classDuring)
         .autoHeightRatio(0);
-        [_liveTimeLabel setSingleLineAutoResizeWithMaxWidth:500];
+        [_classPerDuring setSingleLineAutoResizeWithMaxWidth:200];
+        
+        UIImageView *book3_3 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"菱形"]];
+        [self addSubview:book3_3];
+        book3_3.sd_layout
+        .leftEqualToView(book2)
+        .rightEqualToView(book2)
+        .centerYEqualToView(_classPerDuring)
+        .heightEqualToWidth();
+
+        
+        /**课时*/
+        _classCountLabel = [[UILabel alloc]init];
+        _classCountLabel.font = TEXT_FONTSIZE;
+        _classCountLabel.textColor =TITLECOLOR;
+        [self addSubview:_classCountLabel];
+        _classCountLabel.sd_layout
+        .leftEqualToView(_classDuring)
+        .topSpaceToView(_classDuring,10)
+        .autoHeightRatio(0);
+        [_classCountLabel setSingleLineAutoResizeWithMaxWidth:500];
         
         UIImageView *image4  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"菱形"]];
         [self addSubview:image4];
         image4.sd_layout
-        .leftEqualToView(book3)
-        .rightEqualToView(book3)
-        .heightRatioToView(book3,1.0)
-        .centerYEqualToView(_liveTimeLabel)
-        .widthRatioToView(book3,1.0);
+        .leftEqualToView(book1)
+        .rightEqualToView(book1)
+        .heightRatioToView(book1,1.0)
+        .centerYEqualToView(_classCountLabel)
+        .widthRatioToView(book1,1.0);
         
         
-        //标签设置项
-        _config = [[TTGTextTagConfig alloc]init];
-        _config.tagTextColor = TITLECOLOR;
-        _config.tagBackgroundColor = [UIColor whiteColor];
-        _config.tagBorderColor = [UIColor colorWithRed:0.88 green:0.60 blue:0.60 alpha:1.00];
-        _config.tagShadowColor = [UIColor clearColor];
-        _config.tagCornerRadius = 0;
-        _config.tagExtraSpace = CGSizeMake(15, 5);
-        _config.tagTextFont = TEXT_FONTSIZE;
+//        //标签设置项
+//        _config = [[TTGTextTagConfig alloc]init];
+//        _config.tagTextColor = TITLECOLOR;
+//        _config.tagBackgroundColor = [UIColor whiteColor];
+//        _config.tagBorderColor = [UIColor colorWithRed:0.88 green:0.60 blue:0.60 alpha:1.00];
+//        _config.tagShadowColor = [UIColor clearColor];
+//        _config.tagCornerRadius = 0;
+//        _config.tagExtraSpace = CGSizeMake(15, 5);
+//        _config.tagTextFont = TEXT_FONTSIZE;
 
         
-        //课程标签
-        UILabel *tags = [[UILabel alloc]init];
-        [self addSubview:tags];
-        tags.text = @"课程标签";
-        tags.font = TITLEFONTSIZE;
-        tags.sd_layout
-        .topSpaceToView(_liveTimeLabel,20)
-        .leftEqualToView(info)
-        .autoHeightRatio(0);
-        [tags setSingleLineAutoResizeWithMaxWidth:100];
-        
-        //课程标签图
-        _classTagsView = [[TTGTextTagCollectionView alloc]init];
-        _classTagsView.alignment = TTGTagCollectionAlignmentLeft;
-        _classTagsView.enableTagSelection = NO;
-        [self addSubview:_classTagsView];
-        _classTagsView.sd_layout
-        .leftEqualToView(tags)
-        .rightSpaceToView(self,20)
-        .topSpaceToView(tags,10)
-        .heightIs(200);
+//        //课程标签
+//        UILabel *tags = [[UILabel alloc]init];
+//        [self addSubview:tags];
+//        tags.text = @"课程标签";
+//        tags.font = TITLEFONTSIZE;
+//        tags.sd_layout
+//        .topSpaceToView(_classCountLabel,20)
+//        .leftEqualToView(info)
+//        .autoHeightRatio(0);
+//        [tags setSingleLineAutoResizeWithMaxWidth:100];
+//        
+//        //课程标签图
+//        _classTagsView = [[TTGTextTagCollectionView alloc]init];
+//        _classTagsView.alignment = TTGTagCollectionAlignmentLeft;
+//        _classTagsView.enableTagSelection = NO;
+//        [self addSubview:_classTagsView];
+//        _classTagsView.sd_layout
+//        .leftEqualToView(tags)
+//        .rightSpaceToView(self,20)
+//        .topSpaceToView(tags,10)
+//        .heightIs(200);
         
         //课程目标
         UILabel *taget = [[UILabel alloc]init];
@@ -174,8 +195,8 @@
         taget.font = TITLEFONTSIZE;
         taget.text = @"课程目标";
         taget.sd_layout
-        .leftEqualToView(tags)
-        .topSpaceToView(_classTagsView,20)
+        .topSpaceToView(_classCountLabel,20)
+        .leftEqualToView(info)
         .autoHeightRatio(0);
         [taget setSingleLineAutoResizeWithMaxWidth:100];
         
@@ -220,7 +241,7 @@
         [_descriptions setText:@"辅导简介"];
         [self addSubview:_descriptions];
         _descriptions.sd_layout
-        .leftEqualToView(tags)
+        .leftEqualToView(suit)
         .topSpaceToView(_suitable,20)
         .autoHeightRatio(0);
         [_descriptions setSingleLineAutoResizeWithMaxWidth:100];
@@ -246,7 +267,7 @@
         .topSpaceToView(_classDescriptionLabel,20)
         .heightIs(10);
         
-#pragma mark- 教师详情页
+#pragma mark- 教师组
         
 //        /* 教师头像*/
 //        _teacherHeadImage = [[UIImageView alloc]init];
@@ -393,23 +414,27 @@
 
 
 //赋值
-- (void)setClassModel:(TutoriumListInfo *)classModel{
+- (void)setClassModel:(OneOnOneClass *)classModel{
     
     _classModel = classModel;
     _classNameLabel.text = classModel.name;
-    _subjectLabel.text = classModel.subject;
     _gradeLabel.text = classModel.grade;
+    [_gradeLabel updateLayout];
+    _subjectLabel.text = classModel.subject;
+    [_subjectLabel updateLayout];
     
-    _classCount.text = [NSString stringWithFormat:@"共%@课",classModel.preset_lesson_count];
-    _liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[classModel.live_start_time substringWithRange:NSMakeRange(0, 10)],[classModel.live_end_time substringWithRange:NSMakeRange(0, 10)]];
-
-    [_classTagsView addTags:classModel.tag_list withConfig:_config];
+    _classPerDuring.text = @"45分钟/课";
+    _classCountLabel.text = [NSString stringWithFormat:@"共%@课",classModel.lessons_count];
+    _classDuring.text = @"共450分钟";
+    
+    
+//    [_classTagsView addTags:classModel.tag_list withConfig:_config];
     
     _classTarget.text = classModel.objective;
     _suitable.text = classModel.suit_crowd;
     
     //课程简介富文本
-    NSMutableAttributedString *attDesc = [[NSMutableAttributedString alloc]initWithData:[classModel.describe dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }  documentAttributes:nil error:nil];
+    NSMutableAttributedString *attDesc = [[NSMutableAttributedString alloc]initWithData:[classModel.descriptions dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }  documentAttributes:nil error:nil];
     _classDescriptionLabel.attributedText = attDesc;
     
 

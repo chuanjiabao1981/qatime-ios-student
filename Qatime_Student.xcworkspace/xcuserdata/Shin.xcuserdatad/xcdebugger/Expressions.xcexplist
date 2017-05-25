@@ -303,6 +303,14 @@
          contextName = "__34-[IndexPageViewController getTags]_block_invoke:IndexPageViewController.m">
       </ContextState>
       <ContextState
+         contextName = "__45-[CheckChargeViewController requestPayStatus]_block_invoke_2:CheckChargeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "checkTime">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[OrderInfoViewController initWithPaid:]:OrderInfoViewController.m">
       </ContextState>
       <ContextState
@@ -448,10 +456,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -471,6 +479,14 @@
       </ContextState>
       <ContextState
          contextName = "__34-[MyOrderViewController buyAgain:]_block_invoke_3:MyOrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[NTESMeetingNetCallManager joinMeeting:delegate:]:NTESMeetingNetCallManager.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_meeting">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[ViewController viewDidLoad]:ViewController.m">
@@ -506,6 +522,9 @@
                value = "_cityArray">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChargeViewController paymentQueue:updatedTransactions:]:ChargeViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NIMSessionViewController makeUI]:NIMSessionViewController.m">
@@ -586,6 +605,14 @@
       </ContextState>
       <ContextState
          contextName = "-[OrderViewController touchesBegan:withEvent:]:OrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__50-[NTESMeetingNetCallManager joinMeeting:delegate:]_block_invoke:NTESMeetingNetCallManager.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_meeting">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
@@ -1174,6 +1201,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__46-[LoginAgainViewController wechatLoginSucess:]_block_invoke:LoginAgainViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[ClassTimeViewController requestUnclosedClassList]:ClassTimeViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1200,6 +1230,9 @@
       </ContextState>
       <ContextState
          contextName = "-[ChatViewController tableView:cellForRowAtIndexPath:]:ChatViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[InteractionViewController setupChatRoomFunc]:InteractionViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[TutoriumInfoViewController scrollViewDidScroll:]:TutoriumInfoViewController.m">
@@ -1347,10 +1380,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

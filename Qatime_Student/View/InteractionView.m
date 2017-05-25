@@ -133,7 +133,7 @@
         _teacherCameraView = [[NTESMeetingActorsView alloc]init];
         _teacherCameraView.frame = CGRectMake(0, 0, self.width_sd, self.width_sd/16*9);
 //        _teacherCameraView.canMove = NO;
-        [_teacherCameraView makePlaceHolderImage:[UIImage imageNamed:@"PlayerHolder"]];
+//        [_teacherCameraView makePlaceHolderImage:[UIImage imageNamed:@"PlayerHolder"]];
     }
     
     return _teacherCameraView;

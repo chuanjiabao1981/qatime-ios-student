@@ -14,7 +14,7 @@
 #import "WXApiObject.h"
 #import "UIViewController+HUD.h"
 #import "UIViewController+HUD.h"
- 
+
 
 #import "Chat_Account.h"
 
@@ -81,7 +81,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
-//    _navigationBar.backgroundColor= [UIColor whiteColor];
+    //    _navigationBar.backgroundColor= [UIColor whiteColor];
     
     _navigationBar.titleLabel.text = @"登录";
     
@@ -159,7 +159,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
      @param sendAuthRequest
      @return
      */
-//        [_loginAgainView.wechatButton addTarget:self action:@selector(mypage) forControlEvents:UIControlEventTouchUpInside];
+    //        [_loginAgainView.wechatButton addTarget:self action:@selector(mypage) forControlEvents:UIControlEventTouchUpInside];
     
     
     
@@ -188,25 +188,25 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-            for (NSString *key in dic[@"data"]) {
-                if ([key isEqualToString:@"remember_token"]) {
-                    /* 在后台查到该用户的信息*/
-                    
-//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
-                    /* 保存用户信息*/
-                    [self saveUserInfo:dic[@"data"] loginType:Wechat];
-                    [self HUDStopWithTitle:@"登录成功"];
-                    
-                    [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
-                    
-                }else{
-                    
-                    /* 登录信息拉取信息成功*/
-                    openID = dic[@"data"][@"openid"];
-                    
-                    BindingViewController *bVC = [[BindingViewController alloc]initWithOpenID:openID];
-                    [self.navigationController pushViewController:bVC animated:YES];
-                }
+            
+            if ([[dic[@"data"]allKeys]containsObject:@"remember_token"]) {
+                /* 在后台查到该用户的信息*/
+                
+                //                    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+                /* 保存用户信息*/
+                [self saveUserInfo:dic[@"data"] loginType:Wechat];
+                [self stopHUD];
+                [self HUDStopWithTitle:@"登录成功"];
+                
+                [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
+                
+            }else{
+                
+                /* 登录信息拉取信息成功*/
+                openID = dic[@"data"][@"openid"];
+                
+                BindingViewController *bVC = [[BindingViewController alloc]initWithOpenID:openID];
+                [self.navigationController pushViewController:bVC animated:YES];
             }
             
             
@@ -349,9 +349,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         [self presentViewController:alert animated:YES completion:nil];
         
     }
-    
-    
-    
+
     if (![_loginAgainView.userName.text isEqualToString:@""]&![_loginAgainView.passWord.text isEqualToString:@""]) {
         
         /* 判断是否需要输入验证码*/
@@ -378,11 +376,11 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         
         /* 不需要输入验证码或者验证码输入正确的情况*/
         if (needCheckCaptcha == NO || (needCheckCaptcha == YES&&[_loginAgainView.keyCodeText.text.lowercaseString isEqualToString:_captcha.lowercaseString])) {
-//            /* HUD框 提示正在登陆*/
-//            MBProgressHUD *hud=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//            hud.mode = MBProgressHUDModeDeterminate;
-//            //        hud.backgroundView.style = MBProgressHUDBackgroundStyleBlur;
-//            hud.labelText = @"正在登陆";
+            //            /* HUD框 提示正在登陆*/
+            //            MBProgressHUD *hud=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            //            hud.mode = MBProgressHUDModeDeterminate;
+            //            //        hud.backgroundView.style = MBProgressHUDBackgroundStyleBlur;
+            //            hud.labelText = @"正在登陆";
             [self HUDStartWithTitle:@"正在登录"];
             
             /* 对应接口要上传的用户登录账号密码*/
@@ -411,6 +409,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                     
                     [self saveUserInfo:dicGet loginType:Normal];
                     //
+                    [self stopHUD];
                     [self HUDStopWithTitle:@"登录成功"];
                     
                     [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
@@ -427,7 +426,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                         
                     }
                     
-                    
+                    [self stopHUD];
                     /* 账户名密码错误提示*/
                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"警告" message:@"账户名或密码错误！" preferredStyle:UIAlertControllerStyleAlert];
                     
@@ -436,17 +435,14 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                     
                     [self presentViewController:alert animated:YES completion:nil];
                     
-                    
-                    
                 }
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
                 NSLog(@"%@",error);
                 
-                MBProgressHUD *hud2=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                hud2.mode = MBProgressHUDModeText;
-                hud2.labelText = @"登陆失败";
+                [self stopHUD];
+                [self HUDStopWithTitle:@"登录失败,请稍后重试"];
                 
             }];
         }
@@ -568,7 +564,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLoginAgain" object:nil];
     
-//    [self.navigationController popViewControllerAnimated:YES];
+    //    [self.navigationController popViewControllerAnimated:YES];
     
 }
 
@@ -639,11 +635,11 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 #pragma mark- 微信直接拉起请求
 -(void)sendAuthRequest{
     
-//    if ([WXApi isWXAppInstalled]==YES) {
-//        
-//    }else{
-//        [self HUDStopWithTitle:@"登录失败，请使用手机号登录"];
-//    }
+    //    if ([WXApi isWXAppInstalled]==YES) {
+    //
+    //    }else{
+    //        [self HUDStopWithTitle:@"登录失败，请使用手机号登录"];
+    //    }
     
     //构造SendAuthReq结构体
     SendAuthReq* req =[[SendAuthReq alloc ] init ]  ;
@@ -656,7 +652,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 }
 
 - (void)returnLastPage{
-
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 

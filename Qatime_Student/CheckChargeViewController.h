@@ -19,7 +19,6 @@ typedef NS_ENUM(NSUInteger, PayStatus) {
     
 };
 
-
 @interface CheckChargeViewController : UIViewController
 
 @property(nonatomic,strong) CheckChargeView *checkChargeView ;

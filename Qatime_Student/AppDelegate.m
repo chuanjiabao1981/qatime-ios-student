@@ -23,7 +23,7 @@
 
 #import <sys/utsname.h>
 #import "RealReachability.h"
-#import <JSPatchPlatform/JSPatch.h>
+
 
 
 //#import <iflyMSC/iflyMSC.h>
@@ -128,10 +128,10 @@
     }
     
     
-    /* 增加热修复技术*/
-    [JSPatch startWithAppKey:@"f3da4b3b9ce10b8e"];
-    [JSPatch sync];
-    
+//    /* 增加热修复技术*/
+//    [JSPatch startWithAppKey:@"f3da4b3b9ce10b8e"];
+//    [JSPatch sync];
+//    
     /* 键盘管理器*/
 //    [[IQKeyboardManager sharedManager]setEnable:YES];
     
@@ -699,11 +699,19 @@
 /* 修改rootViewController为系统的主页controller*/
 - (void)changeRootViewConroller:(NSNotification *)notification{
     
-    [UIView transitionFromView:_window.rootViewController.view toView:_viewController.view duration:0.5 options:UIViewAnimationOptionTransitionFlipFromLeft completion:^(BOOL finished) {
+    
+    if ([_window.rootViewController isEqual:_viewController]) {
         
-        [_window setRootViewController:_viewController];
-        _viewController.selectedIndex = 0;
-    }];
+    }else{
+        
+        [UIView transitionFromView:_window.rootViewController.view toView:_viewController.view duration:0.5 options:UIViewAnimationOptionTransitionFlipFromLeft completion:^(BOOL finished) {
+            
+            [_window setRootViewController:_viewController];
+            _viewController.selectedIndex = 0;
+        }];
+        
+    }
+    
     
     /*登录成功后,上传设备信息*/
     dispatch_queue_t info = dispatch_queue_create("info", DISPATCH_QUEUE_SERIAL);
@@ -815,6 +823,7 @@
                 /* 如果只是登录*/
                 
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"WechatLoginSucess" object:respdata.code];
+            
             }
             
             

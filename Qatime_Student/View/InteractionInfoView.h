@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TTGTextTagCollectionView.h"
 
-#import "TutoriumList.h"
+#import "OneOnOneClass.h"
 #import "Teacher.h"
 @interface InteractionInfoView : UIView
 
@@ -19,14 +19,17 @@
 @property(nonatomic,strong) UILabel *subjectLabel ;
 /* 年级名*/
 @property(nonatomic,strong) UILabel *gradeLabel ;
-/* 课程数量*/
-@property(nonatomic,strong) UILabel *classCount ;
 
-/* 直播时间*/
-@property(nonatomic,strong) UILabel *liveTimeLabel;
+/**总课时*/
+@property(nonatomic,strong) UILabel *classDuring ;
+
+@property (nonatomic, strong) UILabel *classPerDuring ;
+
+/**课时数量*/
+@property(nonatomic,strong) UILabel *classCountLabel;
 
 /* 课程标签图*/
-@property (nonatomic, strong) TTGTextTagCollectionView *classTagsView ;
+//@property (nonatomic, strong) TTGTextTagCollectionView *classTagsView ;
 
 /* 课程目标*/
 @property (nonatomic, strong) UILabel *classTarget ;
@@ -74,7 +77,8 @@
 @property(nonatomic,strong) UIView *layoutLine;
 
 /**赋值用的model*/
-@property (nonatomic, strong) TutoriumListInfo *classModel ;
+//@property (nonatomic, strong) TutoriumListInfo *classModel ;
+@property (nonatomic, strong) OneOnOneClass *classModel ;
 @property (nonatomic, strong) Teacher *teacherModel ;
 
 @end

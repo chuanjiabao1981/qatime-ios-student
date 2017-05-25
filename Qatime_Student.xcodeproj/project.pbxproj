@@ -275,8 +275,6 @@
 		5492FC891E7A6DC600F89593 /* ChooseClassTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492FC881E7A6DC600F89593 /* ChooseClassTableViewCell.m */; };
 		5492FC8C1E7A7BA800F89593 /* MultiFiltersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492FC8B1E7A7BA800F89593 /* MultiFiltersView.m */; };
 		5492FC8F1E7A7BB800F89593 /* MultifiltersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5492FC8E1E7A7BB800F89593 /* MultifiltersViewController.m */; };
-		5493450C1E4B0571005849B2 /* JSPatchPlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */; };
-		5493450E1E4B058B005849B2 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5493450D1E4B058B005849B2 /* JavaScriptCore.framework */; };
 		5493D48C1E0B81A40085A39E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5493D48B1E0B81A40085A39E /* CoreLocation.framework */; };
 		5493D4A51E0B98F70085A39E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5493D4A41E0B98F70085A39E /* MapKit.framework */; };
 		5493D4A81E0BAAE00085A39E /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 5493D4A71E0BAAE00085A39E /* City.m */; };
@@ -287,6 +285,7 @@
 		5493D4CD1E0BE1050085A39E /* TLCityPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5493D4C51E0BE1050085A39E /* TLCityPickerController.m */; };
 		5493D4CE1E0BE1050085A39E /* TLCityPickerSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5493D4C81E0BE1050085A39E /* TLCityPickerSearchResultController.m */; };
 		5496A3AB1DE591680096ECE5 /* NSAttributedString+EmojiExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 5496A3AA1DE591680096ECE5 /* NSAttributedString+EmojiExtension.m */; };
+		54990FE91ED47112005B5BC2 /* UIImage+Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 54990FE81ED47112005B5BC2 /* UIImage+Color.m */; };
 		549A050D1DC8396800B3564D /* SignUpInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A050C1DC8396800B3564D /* SignUpInfoViewController.m */; };
 		549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A050F1DC8398300B3564D /* SignUpInfoView.m */; };
 		549A05191DC86EBB00B3564D /* HcdDateTimePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05141DC86EBB00B3564D /* HcdDateTimePickerView.m */; };
@@ -1225,7 +1224,6 @@
 		5492FC8B1E7A7BA800F89593 /* MultiFiltersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiFiltersView.m; sourceTree = "<group>"; };
 		5492FC8D1E7A7BB800F89593 /* MultifiltersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultifiltersViewController.h; sourceTree = "<group>"; };
 		5492FC8E1E7A7BB800F89593 /* MultifiltersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultifiltersViewController.m; sourceTree = "<group>"; };
-		5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JSPatchPlatform.framework; sourceTree = "<group>"; };
 		5493450D1E4B058B005849B2 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		5493D48B1E0B81A40085A39E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		5493D4A41E0B98F70085A39E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -1245,6 +1243,8 @@
 		5493D4C81E0BE1050085A39E /* TLCityPickerSearchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLCityPickerSearchResultController.m; sourceTree = "<group>"; };
 		5496A3A91DE591680096ECE5 /* NSAttributedString+EmojiExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+EmojiExtension.h"; sourceTree = "<group>"; };
 		5496A3AA1DE591680096ECE5 /* NSAttributedString+EmojiExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+EmojiExtension.m"; sourceTree = "<group>"; };
+		54990FE71ED47112005B5BC2 /* UIImage+Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Color.h"; sourceTree = "<group>"; };
+		54990FE81ED47112005B5BC2 /* UIImage+Color.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Color.m"; sourceTree = "<group>"; };
 		549A050B1DC8396800B3564D /* SignUpInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpInfoViewController.h; sourceTree = "<group>"; };
 		549A050C1DC8396800B3564D /* SignUpInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpInfoViewController.m; sourceTree = "<group>"; };
 		549A050E1DC8398300B3564D /* SignUpInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpInfoView.h; sourceTree = "<group>"; };
@@ -2056,14 +2056,12 @@
 				54AC01FD1E88FE5C00817767 /* libopus.a in Frameworks */,
 				54E8B6A31E5EF1B600A9703F /* AddressBook.framework in Frameworks */,
 				54E8B6A11E5EF1AF00A9703F /* Contacts.framework in Frameworks */,
-				5493450E1E4B058B005849B2 /* JavaScriptCore.framework in Frameworks */,
 				5493D4A51E0B98F70085A39E /* MapKit.framework in Frameworks */,
 				5493D48C1E0B81A40085A39E /* CoreLocation.framework in Frameworks */,
 				547FBF2A1DF681B300955A9E /* libUMessage_Sdk_1.4.0.a in Frameworks */,
 				547FBF1E1DF658C000955A9E /* UserNotifications.framework in Frameworks */,
 				54CB26731DF0302900AE7414 /* Security.framework in Frameworks */,
 				54294CD61DDB3CD500677333 /* libz.1.tbd in Frameworks */,
-				5493450C1E4B0571005849B2 /* JSPatchPlatform.framework in Frameworks */,
 				54294CC31DDB3AC400677333 /* libstdc++.tbd in Frameworks */,
 				5429159F1DD9DDED00EE1A70 /* libz.tbd in Frameworks */,
 				54294CC21DDB3AAE00677333 /* libbz2.tbd in Frameworks */,
@@ -2453,7 +2451,6 @@
 			children = (
 				543E234F1E2CE80C00381F10 /* 支付密码框 */,
 				541E20011E1398DB007CF5D1 /* 异常捕获 */,
-				5457317E1E022E5A00F45C03 /* 支付密码 */,
 				5457317D1E022E4700F45C03 /* 该月无课程覆盖图 */,
 				54B9CAFD1DFE4E6C003961FF /* 试听购买栏 */,
 				541F91D91DC9BB8D00180BE8 /* 导航栏 */,
@@ -2835,13 +2832,6 @@
 				545731801E022E7700F45C03 /* HaveNoClassView.m */,
 			);
 			name = "该月无课程覆盖图";
-			sourceTree = "<group>";
-		};
-		5457317E1E022E5A00F45C03 /* 支付密码 */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "支付密码";
 			sourceTree = "<group>";
 		};
 		545B86F81E650F0E00A157F0 /* 二维码扫描 */ = {
@@ -3509,7 +3499,6 @@
 				54B45D171E5C34410027F958 /* Qatime_Student-Bridging-Header.h */,
 				543BCB121E794AE900AD6721 /* SnailQuickMaskPopups */,
 				54B45D081E5C30670027F958 /* JTSegmentControl */,
-				5493450B1E4B0571005849B2 /* JSPatchPlatform.framework */,
 				54F32F741E373142000F8926 /* Reachability */,
 				54B73CFF1DE3E85A00B7A7EB /* ChineseSorting */,
 				549C8D4F1EB1C64500CCD2FB /* JBWatchActivityIndicator */,
@@ -5955,6 +5944,8 @@
 				548F70B21E8BACD30062C71E /* UIView+PlaceholderImage.m */,
 				540CC97D1EB96FA700387E8F /* NSNull+Json.h */,
 				540CC97E1EB96FA700387E8F /* NSNull+Json.m */,
+				54990FE71ED47112005B5BC2 /* UIImage+Color.h */,
+				54990FE81ED47112005B5BC2 /* UIImage+Color.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -6746,6 +6737,7 @@
 				5435D9521DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m in Sources */,
 				542021141E2DF7F100517A47 /* Refund.m in Sources */,
 				54AC03CD1E8938E100817767 /* NIMGroupedDataCollection.m in Sources */,
+				54990FE91ED47112005B5BC2 /* UIImage+Color.m in Sources */,
 				544B61FD1E9647F100D7B160 /* NSSet+LCActionSheet.m in Sources */,
 				545B3BAD1E0AA2DD00751D08 /* GradeList.m in Sources */,
 				54AC04251E8938E100817767 /* UIImage+NIMGIF.m in Sources */,

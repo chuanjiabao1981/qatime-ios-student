@@ -137,15 +137,15 @@
             
         case 1:{
             
-            [self HUDStopWithTitle:@"正在开发中,敬请期待"];
+//            [self HUDStopWithTitle:@"正在开发中,敬请期待"];
             
             /**
              该版本暂时去掉该功能
              */
-//            [self.view addSubview:self.interactionClassFilterController.view];
-//            [self.interactionClassFilterController didMoveToParentViewController:self];
-//         
-//            _filterView.mode = InteractionMode;
+            [self.view addSubview:self.interactionClassFilterController.view];
+            [self.interactionClassFilterController didMoveToParentViewController:self];
+         
+            _filterView.mode = InteractionMode;
             
         }
             break;

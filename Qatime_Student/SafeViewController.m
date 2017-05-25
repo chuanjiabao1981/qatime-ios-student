@@ -466,7 +466,7 @@
     return CGRectGetHeight(self.view.frame)/12.0;
 }
 
-
+/**拉起微信*/
 -(void)sendAuthRequest{
     
     //    if ([WXApi isWXAppInstalled]==YES) {
@@ -526,7 +526,7 @@
 /* 绑定成功*/
 - (void)bindingSuccess:(NSString *)code{
     
-    NSIndexPath *index = [NSIndexPath indexPathForRow:2 inSection:0];
+    NSIndexPath *index = [NSIndexPath indexPathForRow:1 inSection:0];
     SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:index];
     cell.balance.text = @" 取消绑定 ";
     

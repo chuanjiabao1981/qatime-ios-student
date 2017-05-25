@@ -19,6 +19,7 @@
 #import "YYModel.h"
 
 #import "HaveNoClassView.h"
+#import "InteractionViewController.h"
 
 
 typedef enum : NSUInteger {
@@ -51,6 +52,11 @@ typedef enum : NSUInteger {
     
     /**选择"已结束"的次数*/
    __block NSInteger refreshNum;
+    
+    
+    /**课程详情*/
+    NSMutableDictionary *_interactiveInfo;
+    
 }
 
 
@@ -365,6 +371,20 @@ typedef enum : NSUInteger {
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return 100;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
+    StartedTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    //ChatRoom
+    NIMChatroom *chatroom = [[NIMChatroom alloc]init];
+    chatroom.roomId = cell.model.chat_team_id;
+    
+    InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:cell.model.classID];
+    [self.navigationController pushViewController:controller animated:YES];
+    
 }
 
 

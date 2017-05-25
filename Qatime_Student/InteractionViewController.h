@@ -65,21 +65,13 @@
  */
 @property(nonatomic,strong) UUInputFunctionView *inputView ;
 
-
-//@property (nonatomic, strong) <#NSClass*#> <#Var Name#> ;
-
-
 /**
- 初始化方法
+ 初始化方法3
 
- @param chatroom 传入chatroom对象
- @param notices 通知数组
- @param classInfo 课程信息
- @param teachers 教师组列表
- @param classes 课程列表
- @param members 成员列表
+ @param chatroom 聊天室对象
  @return 对象
  */
-- (instancetype)initWithChatroom:(NIMChatroom *)chatroom andNotice:(NSArray <Notice *>*)notices andTutorium:(TutoriumListInfo *)classInfo andTeacher:(NSArray <Teacher *>*)teachers andClasses:(NSArray <OneOnOneClass *>*)classes andOnlineMembers:(NSArray <Members *>*)members;
+- (instancetype)initWithChatroom:(NIMChatroom *)chatroom andClassID:(NSString *)classID;
+
 
 @end

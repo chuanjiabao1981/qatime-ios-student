@@ -12,6 +12,8 @@
 #import "MemberListTableViewCell.h"
 #import "NoticeTableViewCell.h"
 #import "ClassesListTableViewCell.h"
+#import "CYLTableViewPlaceHolder.h"
+#import "HaveNoClassView.h"
 
 #import "MJRefresh.h"
 #import "ChatModel.h"
@@ -42,6 +44,7 @@
 
 #import "LivePlayerViewController.h"
 #import <NIMSDK/NIMSDK.h>
+#import <NIMAVChat/NIMAVChat.h>
 #import <AVFoundation/AVFoundation.h>
 #import "UIAlertController+Blocks.h"
 //#import <AVFoundation/AVAudioSettings.h>
@@ -53,10 +56,11 @@
 #import "UIViewController+TimeInterval.h"
 #import "InteractionTeacherListTableViewCell.h"
 #import "TeachersPublicViewController.h"
+#import "OneOnOneClass.h"
 
+#import "InteractionLesson.h"
 
-
-@interface InteractionViewController ()<UITableViewDelegate,UITableViewDataSource,InteractionControlDelegate,InteractionOverlayDelegate,TTGTextTagCollectionViewDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NTESColorSelectViewDelegate, NTESMeetingRTSManagerDelegate, NTESWhiteboardCmdHandlerDelegate,NIMChatroomManager,NTESActorSelectViewDelegate,NTESMeetingNetCallManagerDelegate,NIMChatroomManager,NTESMeetingRolesManagerDelegate,NIMChatroomManagerDelegate>{
+@interface InteractionViewController ()<UITableViewDelegate,UITableViewDataSource,InteractionControlDelegate,InteractionOverlayDelegate,TTGTextTagCollectionViewDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NTESColorSelectViewDelegate, NTESMeetingRTSManagerDelegate, NTESWhiteboardCmdHandlerDelegate,NIMChatroomManager,NTESActorSelectViewDelegate,NTESMeetingNetCallManagerDelegate,NIMChatroomManager,NTESMeetingRolesManagerDelegate,NIMChatroomManagerDelegate,NTESDocumentHandlerDelegate>{
     
     //详细信息的头视图
     InteractionInfoView *_infoView ;
@@ -85,7 +89,23 @@
     /**是否要显示全部教师信息*/
     BOOL showAllTeachers;
     
+    
+    /**辅导班ID*/
+    NSString *_classID;
+    
+    /**当前课程ID*/
+    NSString *_courseID;
+    
+    /**轮询后台时间*/
+    NSInteger _pollTime;
+    
+    /**白板和互动功能的Room ID*/
+    __block NSString *_roomID;
 }
+
+////////////////////////////////////////
+
+//基础信息
 
 /**
  所在课程信息
@@ -95,26 +115,25 @@
 /**
  课程通知的数组
  */
-@property(nonatomic,strong) NSArray <Notice *>*noticeArray;
+@property(nonatomic,strong) NSMutableArray <Notice *>*noticeArray;
 
 /**
  教师组信息
  */
-@property(nonatomic,strong) NSArray <Teacher *>*teachersArray;
+@property(nonatomic,strong) NSMutableArray <Teacher *>*teachersArray;
 
 /**
  在线成员
  */
-@property(nonatomic,strong) NSArray <Members *>*membersArray;
+@property(nonatomic,strong) NSMutableArray <Members *>*membersArray;
 
 /**
  课程列表
  */
-@property(nonatomic,strong) NSArray <Classes *>*classesArray;
+@property(nonatomic,strong) NSMutableArray <InteractionLesson *>*classesArray;
 ////////////////////////////////////////////////////////////////////////////////
 
 //会话部分专用属性
-
 
 /**
  视频视图
@@ -139,6 +158,11 @@
 
 @property (nonatomic, assign) BOOL readyForFullScreen;
 
+/**音视频会话管理类*/
+@property (nonatomic, strong) NTESMeetingNetCallManager *meetingNetCallManager ;
+
+@property (nonatomic, strong) NTESMeetingRolesManager *meetingRolesManager ;
+
 ////////////////////////////////////////////////////////////////////////////////
 
 //白板部分专用属性
@@ -161,7 +185,7 @@
 
 @property (nonatomic, strong) NTESWhiteboardCmdHandler *cmdHander;
 
-//@property (nonatomic, strong) NTESDocumentHandler *docHander;
+@property (nonatomic, strong) NTESDocumentHandler *docHander;
 
 @property (nonatomic, strong) NTESWhiteboardLines *lines;
 
@@ -199,10 +223,6 @@
 
 @property (nonatomic, assign) BOOL isJoined ;
 
-
-
-
-
 ////////////////////////////////////////////////////////////////////////////////
 
 //聊天部分专用属性
@@ -215,38 +235,35 @@
 /* 与web端同步的表情专用的键盘*/
 @property (strong, nonatomic) YZEmotionKeyboard *emotionKeyboard;
 
-
-
 @end
 
 @implementation InteractionViewController
 
-//初始化聊天室信息
--(instancetype)initWithChatroom:(NIMChatroom *)chatroom andNotice:(NSArray<Notice *> *)notices andTutorium:(TutoriumListInfo *)classInfo andTeacher:(NSArray<Teacher *> *)teachers andClasses:(NSArray<Classes *> *)classes andOnlineMembers:(NSArray<Members *> *)members{
+NTES_USE_CLEAR_BAR
+NTES_FORBID_INTERACTIVE_POP
+
+/**测试阶段使用这个方法 ,减少前一页的冗余 */
+-(instancetype)initWithChatroom:(NIMChatroom *)chatroom andClassID:(NSString *)classID {
     self = [super init];
     if (self) {
         
         _chatroom = chatroom;
-        _classInfo = classInfo;
-        _noticeArray = notices.mutableCopy;
-        _teachersArray = teachers.mutableCopy;
-        _membersArray = members.mutableCopy;
-        _classesArray = classes.mutableCopy;
+        
+        _classID = [NSString stringWithFormat:@"%@",classID];
+        
         
     }
     return self;
-    
 }
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [[UIApplication sharedApplication]setStatusBarHidden:YES];
     
-    [self checkPermission];
+//    [self checkPermission];
     self.actorsView.isFullScreen = NO;
     
 }
-
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -258,16 +275,14 @@
     [self setupViews];
     //加载完成后5s,隐藏控制栏
     [self performSelector:@selector(hideControlerOnAlpha) withObject:nil afterDelay:5];
-    
-    //加载会话功能
-    [self setupChatRoomFunc];
-    
-    //加载白板功能
-    [self setupWhiteBoard];
-    
-    //聊天功能初始化
+    //请求课程基础数据
+    [self requestClassData];
+    //普通群组聊天功能初始化
     [self setupChatFunc];
     
+    //云信强制自动登录一次
+    [self loginNIM];
+
 }
 
 
@@ -277,6 +292,13 @@
 - (void)makeData{
     
     showAllTeachers = NO;
+    
+    _teachersArray = @[].mutableCopy;
+    
+    _classesArray = @[].mutableCopy;
+    
+    /**轮训时间*/
+    _pollTime = 5;
     
 }
 
@@ -288,7 +310,6 @@
     //主视图
     _interactionView = [[InteractionView alloc]initWithFrame:self.view.bounds];
     [self.view addSubview:_interactionView];
-    
     
     //segment切换
     [self.interactionView.scrollView updateLayout];
@@ -317,19 +338,149 @@
     _interactionView.topControl.delegate = self;
     _interactionView.delegate = self;
     
-    
     //指定header
     _infoView = [[InteractionInfoView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 400)];
     
-    //视图赋值
-    _infoView.classModel = _classInfo;
-//    _infoView.teacherModel = _teacher;
-    
-    _infoView.classTagsView.delegate = self;
-    
-    [_infoView.layoutLine updateLayout];
     _interactionView.classListTableView.tableHeaderView  = _infoView;
-    _interactionView.classListTableView.tableHeaderView.size = CGSizeMake(self.view.width_sd, _infoView.height_sd);
+    
+}
+
+/**云信强制登录方法*/
+- (void)loginNIM{
+    
+    NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"];
+    NIMAutoLoginData *lodata = [[NIMAutoLoginData alloc]init];
+    lodata.account =chatDic [@"accid"];
+    lodata.token = chatDic[@"token"];
+    [[NIMSDK sharedSDK].loginManager addDelegate:self];
+    [[[NIMSDK sharedSDK]loginManager]autoLogin:lodata];
+}
+
+#pragma mark- 轮询后台roomID方法
+
+/**
+ 轮询后台roomID方法,每个pollTime周期执行一次.
+ 1.拿到roomID后,初始化白板和音视频互动
+ 2.拿不到就继续轮询
+ */
+- (void)getRoomID{
+    
+    NSLog(@"开始轮询后台接口");
+    //后台拿状态
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/live_status",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+            if (dic[@"data"][@"live_info"][@"room_id"]) {
+                if (![dic[@"data"][@"live_info"][@"room_id"]isEqualToString:@""]) {
+                    
+                    //获取到Room ID,此时,初始化白板和互动功能.
+                    NSLog(@"获取到Room ID,初始化白板和互动功能.");
+                    _roomID = [NSString stringWithFormat:@"%@",dic[@"data"][@"live_info"][@"room_id"]];
+                    
+                    //加载会话功能
+                    [self setupChatRoomFunc];
+                    
+                    //加载白板功能
+                    [self setupWhiteBoard];
+                    
+//                    return ;
+                }else{
+                    NSLog(@"未获取到Room ID");
+                    /**拿不到就继续轮询*/
+                    [self performSelector:@selector(getRoomID) withObject:nil afterDelay:_pollTime];
+                }
+            }
+        }
+        
+    } failure:^(id  _Nullable erros) {
+        
+    }];
+}
+
+
+#pragma mark- 基础数据功能部分
+
+/**请求课程基础数据*/
+- (void)requestClassData{
+    
+    //基础数据部分.
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil  completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+            NSLog(@"%@",dic[@"data"]);
+            
+            OneOnOneClass *ononon = [OneOnOneClass yy_modelWithJSON:dic[@"data"]];
+            ononon.descriptions = dic[@"data"][@"description"];
+            _infoView.classModel = ononon;
+            
+            for (NSDictionary *teacher in dic[@"data"][@"teachers"]) {
+                
+                Teacher *mod = [Teacher yy_modelWithJSON:teacher];
+                mod.teacherID = teacher[@"id"];
+                [_teachersArray addObject:mod];
+            }
+            
+            for (NSDictionary *classes in dic[@"data"][@"interactive_lessons"]) {
+                
+                InteractionLesson *mod = [InteractionLesson yy_modelWithJSON:classes];
+                mod.classID = classes[@"id"];
+                mod.teacher = [Teacher yy_modelWithJSON:classes[@"teacher"]];
+                [_classesArray addObject:mod];
+            }
+            
+            
+            [_infoView.layoutLine updateLayout];
+            _interactionView.classListTableView.tableHeaderView.size = CGSizeMake(self.view.width_sd, _infoView.height_sd);
+            [_interactionView.classListTableView reloadData];
+            
+        }
+        
+    } failure:^(id  _Nullable erros) {
+        [self stopHUD];
+        
+    }];
+    
+    
+    //课程公告,成员列表部分.
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/realtime",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            //            "announcements": [],
+            //            "members": []
+            //加载成员信息
+            _membersArray = @[].mutableCopy;
+            for (NSDictionary *members in dic[@"data"][@"members"]) {
+                Members *mod = [Members yy_modelWithJSON:members];
+                [_membersArray addObject:mod];
+            }
+            [_interactionView.membersTableView cyl_reloadData];
+            
+            //加载辅导班公告
+            _noticeArray = @[].mutableCopy;
+            for (NSDictionary *notices in dic[@"data"][@"announcements"]) {
+                Notice *mod = [Notice yy_modelWithJSON:notices];
+                [_noticeArray addObject:mod];
+            }
+            [_interactionView.noticeTableView cyl_reloadData];
+            
+        }else{
+            
+            [_interactionView.membersTableView cyl_reloadData];
+            [_interactionView.noticeTableView cyl_reloadData];
+        }
+        
+    } failure:^(id  _Nullable erros) {
+        
+        [self stopHUD];
+    }];
     
 }
 
@@ -338,15 +489,71 @@
     
     [UIApplication sharedApplication].idleTimerDisabled = YES;
     self.view.backgroundColor = [UIColor whiteColor];
-    
     [self.interactionView.teacherCameraView addSubview:self.actorsView];
-    //加载互动控制栏
-    [self setupControl];
-    [[NIMSDK sharedSDK].chatroomManager addDelegate:self];
-    [[NIMSDK sharedSDK].loginManager addDelegate:self];
-    [[NTESMeetingRolesManager sharedInstance] setDelegate:self];
-    [[NTESMeetingNetCallManager sharedInstance] joinMeeting:_chatroom.roomId delegate:self];
     
+    //角色管理器
+    _meetingRolesManager = [[NTESMeetingRolesManager alloc]init];
+    [_meetingRolesManager setDelegate:self];
+    
+    //加入音视频会话
+    //音视频会话管理类直接调用加入meetingroom的方法
+    _meetingNetCallManager = [[NTESMeetingNetCallManager alloc]init];
+    [_meetingNetCallManager joinMeeting:_roomID delegate:self];
+    
+    //加载互动控制栏
+    [self setupBarButtonItem];
+    [self setupControl];
+    
+}
+- (void)setupBarButtonItem
+{
+    //根据用户角色判断导航栏rightBarButtonItem显示 老师右边三个btn
+    if ([[[NTESMeetingRolesManager sharedInstance] myRole] isManager]) {
+//        [self refreshTecNavBar];
+    }
+    //学生端 互动前2个btn 互动后4个btn
+    else
+    {
+        [self refreshStdNavBar];
+    }
+    
+    //显示左边leftBarButtonItem
+    UIView * leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 200, 30)];
+    //左边返回button
+    UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [leftButton setImage:[UIImage imageNamed:@"chatroom_back_normal"] forState:UIControlStateNormal];
+    [leftButton setImage:[UIImage imageNamed:@"chatroom_back_selected"] forState:UIControlStateHighlighted];
+    [leftButton addTarget:self action:@selector(onBack:) forControlEvents:UIControlEventTouchUpInside];
+    [leftButton sizeToFit];
+    
+    //房间号label
+    NSString * string =  [NSString stringWithFormat:@"房间：%@", _chatroom.roomId];
+    CGRect rectTitle = [string boundingRectWithSize:CGSizeMake(999, 30)
+                                            options:NSStringDrawingUsesLineFragmentOrigin
+                                         attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12]}
+                                            context:nil];
+    
+    
+    UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(40, 0, rectTitle.size.width+20, 30)];
+    title.font = [UIFont systemFontOfSize:12];
+    title.textColor = [UIColor whiteColor];
+    title.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
+    title.text = string;
+    title.textAlignment = NSTextAlignmentCenter;
+    
+    title.layer.cornerRadius = 15;
+    title.layer.masksToBounds = YES;
+    [leftView addSubview:leftButton];
+    [leftView addSubview:title];
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+    self.navigationItem.leftItemsSupplementBackButton = NO;
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    NSMutableArray *arrayItems=[NSMutableArray array];
+    [arrayItems addObject:negativeSpacer];
+    [arrayItems addObject:leftItem];
+    negativeSpacer.width = -7;
+    
+    self.navigationItem.leftBarButtonItems = arrayItems;
 }
 
 - (CGFloat)meetingActorsViewHeight
@@ -366,20 +573,18 @@
 }
 
 #pragma mark - NIMInputDelegate
-- (void)showInputView
-{
+- (void)showInputView{
     self.keyboradIsShown = YES;
 }
 
-- (void)hideInputView
-{
+- (void)hideInputView{
     self.keyboradIsShown = NO;
 }
 
 #pragma mark - NIMChatroomManagerDelegate
-- (void)chatroom:(NSString *)roomId beKicked:(NIMChatroomKickReason)reason
-{
-    if ([roomId isEqualToString:self.chatroom.roomId]) {
+- (void)chatroom:(NSString *)roomId beKicked:(NIMChatroomKickReason)reason{
+    
+    if ([roomId isEqualToString:_roomID]) {
         
         NSString *toast;
         
@@ -403,7 +608,7 @@
             }
         }
         
-        //        DDLogInfo(@"chatroom be kicked, roomId:%@  rease:%zd",roomId,reason);
+        //                DDLogInfo(@"chatroom be kicked, roomId:%@  rease:%zd",roomId,reason);
         
         //判断 当前页面是document列表的情况
         if ([self.navigationController.visibleViewController isKindOfClass:[NTESDocumentViewController class]]) {
@@ -434,11 +639,11 @@
 }
 
 #pragma mark - NTESMeetingNetCallManagerDelegate
-- (void)onJoinMeetingFailed:(NSString *)name error:(NSError *)error
-{
+- (void)onJoinMeetingFailed:(NSString *)name error:(NSError *)error{
+    
     [self.view.window makeToast:@"无法加入视频，退出房间" duration:3.0 position:CSToastPositionCenter];
     
-    if ([[[NTESMeetingRolesManager sharedInstance] myRole] isManager]) {
+    if ([[_meetingRolesManager myRole] isManager]) {
         [self requestCloseChatRoom];
     }
     
@@ -447,11 +652,12 @@
         [wself pop];
     });
 }
+//连接meeting的状态
+- (void)onMeetingConntectStatus:(BOOL)connected{
 
-- (void)onMeetingConntectStatus:(BOOL)connected
-{
-    //    DDLogInfo(@"Meeting %@ ...", connected ? @"connected" : @"disconnected");
     if (connected) {
+     
+        [_meetingNetCallManager setBypassLiveStreaming:YES];
     }
     else {
         [self.view.window makeToast:@"音视频服务连接异常" duration:2.0 position:CSToastPositionCenter];
@@ -459,9 +665,8 @@
     }
 }
 
-- (void)onSetBypassStreamingEnabled:(BOOL)enabled error:(NSUInteger)code
-{
-    //    DDLogError(@"Set bypass enabled %d error %zd", enabled, code);
+- (void)onSetBypassStreamingEnabled:(BOOL)enabled error:(NSUInteger)code{
+    
     NSString *toast = [NSString stringWithFormat:@"%@互动直播失败 (%zd)", enabled ? @"开启" : @"关闭", code];
     [self.view.window makeToast:toast duration:3.0 position:CSToastPositionCenter];
 }
@@ -506,7 +711,7 @@
 {
     [self removeActorSelectView];
     
-    BOOL accepted = [[NTESMeetingNetCallManager sharedInstance] setBypassLiveStreaming:NO];
+    BOOL accepted = [_meetingNetCallManager setBypassLiveStreaming:NO];
     
     if (!accepted) {
         [self.view.window makeToast:@"关闭互动直播被拒绝" duration:3.0 position:CSToastPositionTop];
@@ -537,18 +742,18 @@
     _isRemainStdNav = NO;
     
     if (audioOn) {
-        [[NTESMeetingRolesManager sharedInstance] setMyAudio:YES];
+        [_meetingRolesManager setMyAudio:YES];
     }
     
     if (videoOn) {
-        [[NTESMeetingRolesManager sharedInstance] setMyVideo:YES];
+        [_meetingRolesManager setMyVideo:YES];
     }
     
     if (whiteboardOn) {
-        [[NTESMeetingRolesManager sharedInstance] setMyWhiteBoard:YES];
+        [_meetingRolesManager setMyWhiteBoard:YES];
     }
     
-    BOOL accepted = [[NTESMeetingNetCallManager sharedInstance] setBypassLiveStreaming:YES];
+    BOOL accepted = [_meetingNetCallManager setBypassLiveStreaming:YES];
     
     if (!accepted) {
         [self.view.window makeToast:@"开启互动直播被拒绝" duration:3.0 position:CSToastPositionTop];
@@ -580,25 +785,35 @@
     
     return NO;
 }
+
 //加载自定义的控制栏
 - (void)setupControl{
     //    [self refreshStdNavBar];
-    
     [self.interactionView.teacherCameraView bringSubviewToFront:self.interactionView.cameraOverlay];
     //刷新控制栏
     [self refreshControl];
     
 }
+
 /**刷新控制栏*/
 - (void)refreshControl{
     
-    NTESMeetingRole *myRole = [[NTESMeetingRolesManager sharedInstance] myRole];
+    //获取到自己的角色权限 有的话就是加入成功了 没有的话 就继续加入
+//    NTESMeetingRole *myRole = [_meetingRolesManager myRole];
+//    if (myRole) {
+//        //加入成功了
+//        
+//    }else{
+//        //再次发起加入
+//        
+//    }
+    
 }
 
 
 -(void)refreshStdNavBar
 {
-    NTESMeetingRole *myRole = [[NTESMeetingRolesManager sharedInstance] myRole];
+    NTESMeetingRole *myRole = [_meetingRolesManager myRole];
     NSString *audioImage = myRole.audioOn ? @"chatroom_audio_on" : @"chatroom_audio_off";
     NSString *videoImage = myRole.videoOn ? @"chatroom_video_on" : @"chatroom_video_off";
     NSString *audioImageSelected = myRole.audioOn ? @"chatroom_audio_selected" : @"chatroom_audio_off_selected";
@@ -680,7 +895,7 @@
 ////demo的返回上一页
 - (void)onBack:(id)sender
 {
-    NTESMeetingRole *myRole = [[NTESMeetingRolesManager sharedInstance] myRole];
+    NTESMeetingRole *myRole = [_meetingRolesManager myRole];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"确定退出直播吗？" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"退出", nil];
     [alert showAlertWithCompletionHandler:^(NSInteger index) {
         switch (index) {
@@ -717,31 +932,31 @@
 //举手按钮
 - (void)onRaiseHandPressed:(id)sender
 {
-    UIButton *btn = (UIButton*)sender;
-    NTESMeetingRole *myRole = [[NTESMeetingRolesManager sharedInstance] myRole];
-    if (btn.tag == 10001) {
+//    UIButton *btn = (UIButton*)sender;
+    NTESMeetingRole *myRole = [_meetingRolesManager myRole];
+//    if (btn.tag == 10001) {
         [[NIMAVChatSDK sharedSDK].netCallManager setMeetingRole:NO];
         myRole.isActor = NO;
         myRole.isRaisingHand = YES;
         myRole.videoOn = NO;
         myRole.audioOn = NO;
         myRole.whiteboardOn = NO;
-    }
-    [[NTESMeetingRolesManager sharedInstance] changeRaiseHand];
+//    }
+    [_meetingRolesManager changeRaiseHand];
 }
 
 - (void)onSelfVideoPressed:(id)sender
 {
-    BOOL videoIsOn = [NTESMeetingRolesManager sharedInstance].myRole.videoOn;
+    BOOL videoIsOn = _meetingRolesManager.myRole.videoOn;
     
-    [[NTESMeetingRolesManager sharedInstance] setMyVideo:!videoIsOn];
+    [_meetingRolesManager setMyVideo:!videoIsOn];
 }
 
 - (void)onSelfAudioPressed:(id)sender
 {
-    BOOL audioIsOn = [NTESMeetingRolesManager sharedInstance].myRole.audioOn;
+    BOOL audioIsOn = _meetingRolesManager.myRole.audioOn;
     
-    [[NTESMeetingRolesManager sharedInstance] setMyAudio:!audioIsOn];
+    [_meetingRolesManager setMyAudio:!audioIsOn];
 }
 
 - (void)requestCloseChatRoom
@@ -796,22 +1011,18 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-
-
-
-
 #pragma mark- 白板功能
 
 //初始化白板
 - (void)setupWhiteBoard{
     
-    _name = _chatroom.roomId;
-    _managerUid = _chatroom.creator;
+    _name = _roomID;
+    _managerUid = _chatroom.creator;  //改为后台获取到的拥有者
     _cmdHander = [[NTESWhiteboardCmdHandler alloc] initWithDelegate:self];
-    //    _docHander = [[NTESDocumentHandler alloc]initWithDelegate:self];
+    _docHander = [[NTESDocumentHandler alloc]initWithDelegate:self];
     [[NTESMeetingRTSManager sharedInstance] setDataHandler:_cmdHander];
     _colors = @[@(0x000000), @(0xd1021c), @(0xfddc01), @(0x7dd21f), @(0x228bf7), @(0x9b0df5)];
-    if([NTESMeetingRolesManager sharedInstance].myRole.isManager){
+    if(_meetingRolesManager.myRole.isManager){
         _myDrawColorRGB = [_colors[0] intValue];
     }
     else
@@ -824,8 +1035,7 @@
     
     _docInfoDic = [NSMutableDictionary dictionary];
     
-    
-    _isManager = [NTESMeetingRolesManager sharedInstance].myRole.isManager;
+    _isManager = _meetingRolesManager.myRole.isManager;
     [[NTESMeetingRTSManager sharedInstance] setDelegate:self];
     
     NSError *error;
@@ -958,7 +1168,6 @@
         self.pageNumLabel.centerY = self.colorSelectButton.centerY;
     }
     
-    
     self.previousButton.right = self.pageNumLabel.left - 5.f;
     self.previousButton.centerY = self.colorSelectButton.centerY;
     
@@ -970,19 +1179,19 @@
     self.imgloadLabel.centerX = self.drawView.width / 2.f;
     self.imgloadLabel.centerY = self.drawView.height / 2.f;
     
-    
 }
 
-- (void)checkPermission
-{
-    if ([NTESMeetingRolesManager sharedInstance].myRole.whiteboardOn && _isJoined) {
+/**检查权限*/
+- (void)checkPermission{
+    
+    if (_meetingRolesManager.myRole.whiteboardOn && _isJoined) {
         self.hintLabel.hidden = YES;
         [self.colorSelectButton setBackgroundColor:UIColorFromRGB(_myDrawColorRGB)];
         self.colorSelectButton.enabled = YES;
         self.cancelLineButton.enabled = YES;
         self.clearAllButton.enabled = YES;
-    }
-    else {
+        
+    }else {
         self.hintLabel.hidden = NO;
         [self.colorSelectButton setBackgroundColor:UIColorFromRGB(_myDrawColorRGB)];
         self.colorSelectButton.enabled = YES;
@@ -1072,7 +1281,7 @@
         circle.layer.cornerRadius = 17.f / 2.f;
         circle.layer.borderColor = [UIColor whiteColor].CGColor;
         circle.layer.borderWidth = 1;
-        [circle setUserInteractionEnabled:NO];
+        [circle setUserInteractionEnabled:YES];
         [_colorSelectButton addSubview:circle];
     }
     return _colorSelectButton;
@@ -1249,9 +1458,9 @@
 
 - (void)onOpenDocumentPressed:(id)sender
 {
-    //    NTESDocumentViewController *docVc = [[NTESDocumentViewController alloc]init];
-    //    docVc.delegate = self;
-    //    [self.navigationController pushViewController:docVc animated:YES];
+    NTESDocumentViewController *docVc = [[NTESDocumentViewController alloc]init];
+    docVc.delegate = self;
+    [self.navigationController pushViewController:docVc animated:YES];
 }
 
 - (void)onNextPagePressed:(id)sender
@@ -1313,7 +1522,7 @@
 
 - (void)onPointCollected:(CGPoint)p type:(NTESWhiteboardPointType)type
 {
-    if (!([NTESMeetingRolesManager sharedInstance].myRole.whiteboardOn)) {
+    if (!(_meetingRolesManager.myRole.whiteboardOn)) {
         return;
     }
     
@@ -1321,9 +1530,9 @@
         return;
     }
     
-    //    if (p.x < 0 || p.y < 0 || p.x > _drawView.frame.size.width || p.y > _drawView.frame.size.height) {
-    //        return;
-    //    }
+    if (p.x < 0 || p.y < 0 || p.x > _drawView.frame.size.width || p.y > _drawView.frame.size.height) {
+        return;
+    }
     
     NTESWhiteboardPoint *point = [[NTESWhiteboardPoint alloc] init];
     point.type = type;
@@ -1339,9 +1548,9 @@
 - (void)onReserve:(NSString *)name result:(NSError *)result
 {
     if (result == nil) {
-        //        NSError *result = [[NTESMeetingRTSManager sharedInstance] joinConference:_name];
+        NSError *result = [[NTESMeetingRTSManager sharedInstance] joinConference:_name];
+        //                        DDLogError(@"join rts conference: %@ result %zd", _name, result.code);
         //                DDLogError(@"join rts conference: %@ result %zd", _name, result.code);
-        //        DDLogError(@"join rts conference: %@ result %zd", _name, result.code);
     }
     else {
         [self.view makeToast:[NSString stringWithFormat:@"预订白板出错:%zd", result.code]];
@@ -1454,7 +1663,7 @@
     }
     if (![self.docInfoDic objectForKey:shareInfo.docId])
     {
-        //        [_docHander inquireDocInfo:shareInfo.docId];
+        [_docHander inquireDocInfo:shareInfo.docId];
     }
     else
     {
@@ -1509,21 +1718,23 @@
 }
 
 #pragma mark - NIMLoginManagerDelegate
-- (void)onLogin:(NIMLoginStep)step
-{
+- (void)onLogin:(NIMLoginStep)step{
+    
     if (step == NIMLoginStepLoginOK) {
+        
+        NSLog(@"云信聊天登陆成功");
+        
         if (!_isJoined) {
-            //            NSError *result = [[NTESMeetingRTSManager sharedInstance] joinConference:_name];
-            //            DDLogError(@"Rejoin rts conference: %@ result %zd", _name, result.code);
+            /**
+             加载完这些基础数据和功能后,开始在服务器轮询roomid,拿到后进入,拿不到不进入.
+             */
+            /**后台轮询roomid方法*/
+            
+            [self performSelector:@selector(getRoomID) withObject:nil afterDelay:_pollTime];
+            
         }
     }
     
-    if (step == NIMLoginStepLoginOK) {
-        if (![[NTESMeetingNetCallManager sharedInstance] isInMeeting]) {
-            [self.view makeToast:@"登录成功，重新进入房间"];
-            [[NTESMeetingNetCallManager sharedInstance] joinMeeting:_chatroom.roomId delegate:self];
-        }
-    }
 }
 
 #pragma mark - private method
@@ -1582,7 +1793,6 @@
 //初始化聊天功能
 - (void)setupChatFunc{
     
-    
     //聊天输入框
     _inputView = ({
         
@@ -1597,12 +1807,8 @@
         _;
     });
     
-    /* 初始化*/
-    if (_tutoriumInfo) {
-        
-        _session  = [NIMSession session:_tutoriumInfo.chat_team_id type:NIMSessionTypeTeam];
-    }
-    
+    /**初始化聊天session*/
+    _session  = [NIMSession session:_chatroom.roomId type:NIMSessionTypeTeam];
     _chat_Account = [Chat_Account yy_modelWithJSON:[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"]];
     
     _userList = @[].mutableCopy;
@@ -1611,6 +1817,7 @@
     self.chatModel.isGroupChat = YES;
     [self.chatModel populateRandomDataSource];
     
+    //登录云信
     if ([[NSUserDefaults standardUserDefaults]boolForKey:@"NIMSDKLogin"]) {
         
         [[NIMSDK sharedSDK].chatManager addDelegate:self];
@@ -1753,14 +1960,10 @@
 - (void)checkMic{
     
     [self checkMicVolum];
-    
-    
 }
 
 //开始录制的方法
 - (void)recordStart{
-    
-    //    [_iFlySpeechRecognizer startListening];
     [self checkMic];
     
 }
@@ -1807,13 +2010,12 @@
                 
             }
             
-            
             [self requestChatHitstory];
             
         }else{
             /* 获取成员信息失败*/
             
-            [self HUDStopWithTitle:@"获取聊天成员信息失败!"];
+            //            [self HUDStopWithTitle:@"获取聊天成员信息失败!"];
         }
         
         
@@ -1824,8 +2026,7 @@
 }
 
 
-- (void)registerForKeyboardNotifications
-{
+- (void)registerForKeyboardNotifications{
     //使用NSNotificationCenter 鍵盤出現時
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     
@@ -2122,8 +2323,6 @@
     [self tableViewScrollToBottom];
 }
 
-
-
 /* 发送您已加入聊天室的通知消息*/
 
 - (void)sendNoticeIn{
@@ -2158,8 +2357,6 @@
     
     
 }
-
-
 
 //即将发送消息回调
 - (void)willSendMessage:(NIMMessage *)message{
@@ -2219,7 +2416,6 @@
 }
 //重新发送消息 主动方法
 //- (BOOL)resendMessage:(NIMMessage *)message error:(NSError **)error
-
 
 
 /* 接收消息的回调*/
@@ -2340,8 +2536,6 @@
     
 }
 
-
-
 /* 接收到消息后 ，在本地创建消息*/
 - (void)makeOthersMessageWith:(NSInteger)msgNum andMessage:(UUMessage *)message{
     
@@ -2398,7 +2592,6 @@
         }
     }
 }
-
 
 
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message{
@@ -2591,12 +2784,7 @@
     [[NIMSDK sharedSDK].chatManager addDelegate:self];
     [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
     
-    
-    
 }
-
-
-
 
 
 // 获取表情字符串
@@ -2641,8 +2829,7 @@
 
 
 //懒加载表情键盘
-- (YZEmotionKeyboard *)emotionKeyboard
-{
+- (YZEmotionKeyboard *)emotionKeyboard{
     // 创建表情键盘
     if (_emotionKeyboard == nil) {
         
@@ -2660,8 +2847,6 @@
     }
     return _emotionKeyboard;
 }
-
-
 
 //点击表情按钮的点击事件
 - (void)emojiKeyboardShow:(UIButton *)sender{
@@ -2683,8 +2868,6 @@
         
     }
 }
-
-
 
 - (void)keyboardWillShow:(NSNotification *)notification {
     
@@ -2735,11 +2918,9 @@
     [self tableViewScrollToBottom];
 }
 
-
-
-
-
+//点击空白处
 - (void)tapSpace{
+    
     [_inputView.TextViewInput resignFirstResponder];
     [_inputView changeSendBtnWithPhoto:YES];
     
@@ -2824,9 +3005,6 @@
     
 }
 
-
-
-
 #pragma mark- UITableView datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
@@ -2855,17 +3033,19 @@
         case 3:{
             
             if (section == 0) {
-//                if (showAllTeachers ==NO) {
-//                    if (_teachersArray.count>=2) {
-//                        rows = 2;
-//                    }else{
-//                        rows = _teachersArray.count;
-//                    }
-//                }else{
-//                    
-//                    rows = _teachersArray.count;
-//                }
-                rows = _teachersArray.count;
+                
+                if (showAllTeachers == NO) {
+                    
+                    if (_teachersArray.count>=2) {
+                        rows = 2;
+                    }else{
+                        rows = _teachersArray.count;
+                    }
+                }else{
+                    
+                    rows = _teachersArray.count;
+                }
+                //                rows = _teachersArray.count;
                 
             }else if (section == 1){
                 
@@ -2955,7 +3135,7 @@
                     }
                     
                     tableCell = cell;
-
+                    
                 }
                     break;
                     
@@ -2968,14 +3148,14 @@
                     }
                     if (_classesArray.count>indexPath.row) {
                         
-                        cell.classModel = _classesArray[indexPath.row];
+                        cell.interactiveModel = _classesArray[indexPath.row];
                         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                         cell.replay.hidden = YES;
                         
                     }
                     
                     tableCell = cell;
-
+                    
                 }
                     break;
             }
@@ -3046,11 +3226,11 @@
             
             switch (indexPath.section) {
                 case 0:
-                    height = 120;
+                    height = 100;
                     break;
                     
                 case 1:
-                    height = [tableView cellHeightForIndexPath:indexPath model:_classesArray[indexPath.row] keyPath:@"classModel" cellClass:[ClassesListTableViewCell class] contentViewWidth:self.view.width_sd];
+                    height = [tableView cellHeightForIndexPath:indexPath model:_classesArray[indexPath.row] keyPath:@"interactiveModel" cellClass:[ClassesListTableViewCell class] contentViewWidth:self.view.width_sd];
                     break;
             }
             
@@ -3073,12 +3253,12 @@
     UIView *view;
     if (tableView.tag == 3) {
         if (section == 0) {
-            if (showAllTeachers == NO) {
-                
+            if (_teachersArray.count>2) {
                 view = [[UIView alloc]init];
                 view.size = CGSizeMake(self.view.width_sd, 40);
                 view.backgroundColor = SEPERATELINECOLOR;
                 UIButton *allButton = [[UIButton alloc]init];
+                [view addSubview:allButton];
                 allButton.sd_layout
                 .leftSpaceToView(view, 0)
                 .rightSpaceToView(view, 0)
@@ -3089,7 +3269,7 @@
                 [allButton setTitleColor:TITLECOLOR forState:UIControlStateNormal];
                 allButton.titleLabel.font = TEXT_FONTSIZE;
                 [allButton addTarget:self action:@selector(showAllTeachers:) forControlEvents:UIControlEventTouchUpInside];
-
+                
                 
             }else{
                 view = [[UIView alloc]init];
@@ -3156,13 +3336,10 @@
     [_interactionView.classListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     
     //SDAutoLayout刷新section的方法
-//    [_interactionView.classListTableView reloadDataWithInsertingDataAtTheBeginingOfSection:0 newDataCount:_teachersArray.count];
+    //    [_interactionView.classListTableView reloadDataWithInsertingDataAtTheBeginingOfSection:0 newDataCount:_teachersArray.count];
     
     
 }
-
-
-
 
 #pragma mark- InteractionControl delegate
 //返回上一页
@@ -3212,7 +3389,7 @@
 //开关摄像头
 - (void)turnCamera:(UIButton *)sender{
     
-    BOOL videoIsOn = [NTESMeetingRolesManager sharedInstance].myRole.videoOn;
+    BOOL videoIsOn = _meetingRolesManager.myRole.videoOn;
     
     
     if (videoIsOn == YES) {
@@ -3223,14 +3400,14 @@
         
     }
     
-    [[NTESMeetingRolesManager sharedInstance] setMyVideo:!videoIsOn];
+    [_meetingRolesManager setMyVideo:!videoIsOn];
     
 }
 
 //开关声音
 - (void)turnVoice:(UIButton *)sender{
     
-    BOOL audioIsOn = [NTESMeetingRolesManager sharedInstance].myRole.audioOn;
+    BOOL audioIsOn = _meetingRolesManager.myRole.audioOn;
     
     if (audioIsOn == YES) {
         [sender setImage:[UIImage imageNamed:@"mic_off"] forState:UIControlStateNormal];
@@ -3239,7 +3416,7 @@
         [sender setImage:[UIImage imageNamed:@"mic_on"] forState:UIControlStateNormal];
     }
     
-    [[NTESMeetingRolesManager sharedInstance] setMyAudio:!audioIsOn];
+    [_meetingRolesManager setMyAudio:!audioIsOn];
     
 }
 //自动隐藏控制栏
@@ -3278,54 +3455,41 @@
 }
 
 
-
-#pragma mark- TTTextTagView delegate
-
-- (void)textTagCollectionView:(TTGTextTagCollectionView *)textTagCollectionView updateContentSize:(CGSize)contentSize{
-    
-    if (textTagCollectionView == _infoView.classTagsView) {
-        
-        [textTagCollectionView clearAutoHeigtSettings];
-        textTagCollectionView.sd_layout
-        .heightIs(contentSize.height);
-        [textTagCollectionView updateLayout];
-        
-        [_infoView updateLayout];
-        _interactionView.classListTableView.tableHeaderView.size = CGSizeMake(self.view.width_sd, _infoView.height_sd);
-        
-        [_interactionView.classListTableView reloadData];
-        
-        
-    }
-    
-}
-
-
-
-
-
-
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [[UIApplication sharedApplication]setStatusBarHidden:NO];
-    
-    
 }
 
 
 - (void)dealloc{
+    
     [[NTESMeetingRTSManager sharedInstance] leaveCurrentConference];
     
     [[NIMSDK sharedSDK].chatroomManager exitChatroom:_chatroom.roomId completion:nil];
     [[NIMSDK sharedSDK].chatroomManager removeDelegate:self];
     [UIApplication sharedApplication].idleTimerDisabled = NO;
-    [[NTESMeetingNetCallManager sharedInstance] leaveMeeting];
+    [_meetingNetCallManager leaveMeeting];
 }
 
-- (BOOL)shouldAutomaticallyForwardAppearanceMethods
-{
+- (BOOL)shouldAutomaticallyForwardAppearanceMethods{
+    
     return NO;
 }
+
+
+//tableview 的占位图
+- (UIView *)makePlaceHolderView{
+    
+    HaveNoClassView *view =[[HaveNoClassView alloc]initWithTitle:@"暂无数据"];
+    return view;
+}
+
+- (BOOL)enableScrollWhenPlaceHolderViewShowing{
+    
+    return YES;
+}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

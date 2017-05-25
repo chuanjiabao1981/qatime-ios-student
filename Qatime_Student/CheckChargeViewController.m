@@ -10,6 +10,7 @@
 #import "NavigationBar.h"
 #import "MyWalletViewController.h"
 #import "UIViewController+HUD.h"
+#import "UIAlertController+Blocks.h"
 
 #define RED [UIColor colorWithRed:0.84 green:0.13 blue:0.10 alpha:1.00]
 #define GREEN [UIColor colorWithRed:0.20 green:0.67 blue:0.15 alpha:1.00]
@@ -178,8 +179,32 @@
             }
             
         }else{
-            [self requestPayStatus];
             
+//            if ([dic[@"error"][@"code"]isEqualToNumber:@9999]) {
+//                [self stopHUD];
+//                [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"服务器忙碌,暂时查询不到您的充值信息\n充值成功后,您可在系统消息内查看您的充值情况." cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+//                   
+//                    if (buttonIndex == 0) {
+//                        
+//                        [self.navigationController popViewControllerAnimated:YES];
+//                    }
+//                }];
+//            }
+            if (checkTime>=20) {
+                
+                [self stopHUD];
+                [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"服务器忙碌,暂时查询不到您的充值信息\n充值成功后,您可在系统消息内查看您的充值情况." cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                    
+                    if (buttonIndex == 0) {
+                        
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }
+                }];
+
+            }else{
+                
+                [self requestPayStatus];
+            }
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"购买失败，请重试"delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"重试", nil];
@@ -193,6 +218,9 @@
  在当前验证失败之后,在下次系统启动的时候,发送充值验证
  */
 - (void)offlineCheck{
+    
+    
+    
     
     
 }

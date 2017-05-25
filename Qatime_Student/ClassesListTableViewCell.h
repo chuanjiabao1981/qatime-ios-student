@@ -10,7 +10,7 @@
 #import "ClassesInfo_Time.h"
 #import "Classes.h"
 #import "OneOnOneClass.h"
-
+#import "InteractionLesson.h"
 
 @interface ClassesListTableViewCell : UITableViewCell
 
@@ -42,6 +42,9 @@
 
 /**一对一课程的modle*/
 @property (nonatomic, strong) OneOnOneClass *interactionModel ;
+
+/**一对一课程model 在课程列表中使用*/
+@property (nonatomic, strong) InteractionLesson *interactiveModel ;
 
 
 

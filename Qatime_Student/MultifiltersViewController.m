@@ -219,13 +219,11 @@
 ///立即筛选
 - (void)filtered{
     
-    if ([[_filtersDic allKeys]count]!=0) {
-        
-        [[NSUserDefaults standardUserDefaults]setValue:_filtersDic forKey:@"Filter"];
-        
-    }else{
-        
-    }
+    
+    
+    [[NSUserDefaults standardUserDefaults]setValue:_filtersDic forKey:@"Filter"];
+    
+    
     
     [self returnLastPage];
     self.componentsBlock(hasChange);
@@ -296,8 +294,7 @@
                 cell.subject.textColor = TITLECOLOR;
             }
         }
-
-
+        
     }else{
         //先全部弄成默认
         if (indexPath.section == 0) {
@@ -310,7 +307,7 @@
             cell.subject.layer.borderColor = TITLECOLOR.CGColor;
             cell.subject.textColor = TITLECOLOR;
         }
-
+        
         
         if (_filtedArray.count==2) {
             
@@ -337,10 +334,9 @@
 
         }else if (_filtedArray.count == 1){
            
-            
             NSMutableArray *filtArr = _filtedArray.mutableCopy;
             for (NSIndexPath *indexpath in filtArr) {
-                if (indexPath.section == 0) {
+                if (indexpath.section == 0) {
                     
                     [_filtedArray addObject:[NSIndexPath indexPathForRow:0 inSection:1]];
                     
@@ -350,7 +346,7 @@
                 }
             }
             
-            for (NSIndexPath *indexpath in filtArr) {
+            for (NSIndexPath *indexpath in _filtedArray) {
                
                 if (indexPath.section ==0) {
                     

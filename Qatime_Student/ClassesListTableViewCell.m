@@ -306,7 +306,46 @@
         _class_status = [NSString stringWithFormat:@"已结束"];
     }
 
+}
+
+-(void)setInteractiveModel:(InteractionLesson *)interactiveModel{
     
+    _interactiveModel = interactiveModel;
+    
+    _className.text = interactiveModel.name;
+    _classDate .text = interactiveModel.class_date;
+    _classTime .text = [NSString stringWithFormat:@"%@ - %@",interactiveModel.start_time,interactiveModel.end_time];
+    /* 已开课的状态*/
+    
+    if ([interactiveModel.status isEqualToString:@"init"]) {
+        _status.text =@"未开始";
+        _class_status = [NSString stringWithFormat:@"未开始"];
+    }else if([interactiveModel.status isEqualToString:@"ready"]){
+        _status.text =@"待上课";
+        _class_status = [NSString stringWithFormat:@"待上课"];
+    }else if([interactiveModel.status isEqualToString:@"teaching"]){
+        _status.text =@"直播中";
+        _class_status = [NSString stringWithFormat:@"直播中"];
+    }else if([interactiveModel.status isEqualToString:@"closed"]){
+        _status.text =@"已直播";
+        _class_status = [NSString stringWithFormat:@"已直播"];
+    }else if([interactiveModel.status isEqualToString:@"finished"]){
+        _status.text =@"已结束";
+        _class_status = [NSString stringWithFormat:@"已结束"];
+    }else if([interactiveModel.status isEqualToString:@"pause"]){
+        _status.text =@"暂停中";
+        _class_status = [NSString stringWithFormat:@"暂停中"];
+    }else if([interactiveModel.status isEqualToString:@"missed"]){
+        _status.text =@"待补课";
+        _class_status = [NSString stringWithFormat:@"待补课"];
+    }else if([interactiveModel.status isEqualToString:@"billing"]){
+        _status.text =@"已结束";
+        _class_status = [NSString stringWithFormat:@"已结束"];
+    }else if([interactiveModel.status isEqualToString:@"completed"]){
+        _status.text =@"已结束";
+        _class_status = [NSString stringWithFormat:@"已结束"];
+    }
+
     
 }
 
