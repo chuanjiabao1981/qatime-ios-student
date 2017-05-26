@@ -450,18 +450,29 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[NTESMeetingNetCallManager joinMeeting:delegate:]:NTESMeetingNetCallManager.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_meeting">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke:LivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
-            </PersistentString>
-            <PersistentString
                value = "_videoClassInfo">
             </PersistentString>
+            <PersistentString
+               value = "_classesArr">
+            </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__34-[MyOrderViewController buyAgain:]_block_invoke_3:MyOrderViewController.m">
       </ContextState>
       <ContextState
          contextName = "__46-[NELivePlayerViewController requestClassInfo]_block_invoke:NELivePlayerViewController.m">
@@ -474,17 +485,6 @@
             </PersistentString>
             <PersistentString
                value = "_teacher">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__34-[MyOrderViewController buyAgain:]_block_invoke_3:MyOrderViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[NTESMeetingNetCallManager joinMeeting:delegate:]:NTESMeetingNetCallManager.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_meeting">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -595,10 +595,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__42-[ClassSettingViewController saveSettings]_block_invoke:ClassSettingViewController.m">
+         contextName = "__50-[NTESMeetingNetCallManager joinMeeting:delegate:]_block_invoke:NTESMeetingNetCallManager.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_meeting">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
+         contextName = "__42-[ClassSettingViewController saveSettings]_block_invoke:ClassSettingViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[TutoriumInfoViewController switchClassData:]:TutoriumInfoViewController.m">
@@ -607,12 +612,7 @@
          contextName = "-[OrderViewController touchesBegan:withEvent:]:OrderViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__50-[NTESMeetingNetCallManager joinMeeting:delegate:]_block_invoke:NTESMeetingNetCallManager.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_meeting">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
@@ -859,6 +859,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_isManager">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[InteractionViewController setupWhiteBoard]:InteractionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_meetingRolesManager">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1380,10 +1388,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

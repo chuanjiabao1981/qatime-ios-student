@@ -1,3 +1,4 @@
+
 //
 //  InteractionViewController.m
 //  Qatime_Student
@@ -163,6 +164,8 @@
 
 @property (nonatomic, strong) NTESMeetingRolesManager *meetingRolesManager ;
 
+@property (nonatomic, strong) NTESMeetingRTSManager *meetingRTSManager ;
+
 ////////////////////////////////////////////////////////////////////////////////
 
 //白板部分专用属性
@@ -268,7 +271,6 @@ NTES_FORBID_INTERACTIVE_POP
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    
     //初始化数据
     [self makeData];
     //加载视图
@@ -279,7 +281,6 @@ NTES_FORBID_INTERACTIVE_POP
     [self requestClassData];
     //普通群组聊天功能初始化
     [self setupChatFunc];
-    
     //云信强制自动登录一次
     [self loginNIM];
 
@@ -307,7 +308,7 @@ NTES_FORBID_INTERACTIVE_POP
  */
 - (void)setupViews{
     
-    //主视图
+    //主视图 包含视频播放器
     _interactionView = [[InteractionView alloc]initWithFrame:self.view.bounds];
     [self.view addSubview:_interactionView];
     
@@ -347,7 +348,6 @@ NTES_FORBID_INTERACTIVE_POP
 
 /**云信强制登录方法*/
 - (void)loginNIM{
-    
     NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"];
     NIMAutoLoginData *lodata = [[NIMAutoLoginData alloc]init];
     lodata.account =chatDic [@"accid"];
@@ -380,11 +380,11 @@ NTES_FORBID_INTERACTIVE_POP
                     NSLog(@"获取到Room ID,初始化白板和互动功能.");
                     _roomID = [NSString stringWithFormat:@"%@",dic[@"data"][@"live_info"][@"room_id"]];
                     
-                    //加载会话功能
-                    [self setupChatRoomFunc];
-                    
                     //加载白板功能
                     [self setupWhiteBoard];
+                    
+                    //加载会话功能
+                    [self setupChatRoomFunc];
                     
 //                    return ;
                 }else{
@@ -1020,7 +1020,10 @@ NTES_FORBID_INTERACTIVE_POP
     _managerUid = _chatroom.creator;  //改为后台获取到的拥有者
     _cmdHander = [[NTESWhiteboardCmdHandler alloc] initWithDelegate:self];
     _docHander = [[NTESDocumentHandler alloc]initWithDelegate:self];
-    [[NTESMeetingRTSManager sharedInstance] setDataHandler:_cmdHander];
+    
+    _meetingRTSManager = [[NTESMeetingRTSManager alloc]init];
+    
+    [_meetingRTSManager setDataHandler:_cmdHander];
     _colors = @[@(0x000000), @(0xd1021c), @(0xfddc01), @(0x7dd21f), @(0x228bf7), @(0x9b0df5)];
     if(_meetingRolesManager.myRole.isManager){
         _myDrawColorRGB = [_colors[0] intValue];
@@ -1036,14 +1039,15 @@ NTES_FORBID_INTERACTIVE_POP
     _docInfoDic = [NSMutableDictionary dictionary];
     
     _isManager = _meetingRolesManager.myRole.isManager;
-    [[NTESMeetingRTSManager sharedInstance] setDelegate:self];
+    [_meetingRTSManager setDelegate:self];
+    
     
     NSError *error;
     if (_isManager) {
-        error = [[NTESMeetingRTSManager sharedInstance] reserveConference:_name];
+        error = [_meetingRTSManager reserveConference:_name];
     }
     else {
-        error = [[NTESMeetingRTSManager sharedInstance] joinConference:_name];
+        error = [_meetingRTSManager joinConference:_name];
     }
     
     if (error) {
@@ -1548,7 +1552,7 @@ NTES_FORBID_INTERACTIVE_POP
 - (void)onReserve:(NSString *)name result:(NSError *)result
 {
     if (result == nil) {
-        NSError *result = [[NTESMeetingRTSManager sharedInstance] joinConference:_name];
+        NSError *result = [_meetingRTSManager joinConference:_name];
         //                        DDLogError(@"join rts conference: %@ result %zd", _name, result.code);
         //                DDLogError(@"join rts conference: %@ result %zd", _name, result.code);
     }
@@ -1582,7 +1586,7 @@ NTES_FORBID_INTERACTIVE_POP
     [self.view makeToast:[NSString stringWithFormat:@"已离开白板:%zd", error.code]];
     _isJoined = NO;
     
-    //    NSError *result = [[NTESMeetingRTSManager sharedInstance] joinConference:_name];
+    //    NSError *result = [_meetingRTSManager joinConference:_name];
     //    DDLogError(@"Rejoin rts conference: %@ result %zd", _name, result.code);
     
     [self checkPermission];
@@ -3458,17 +3462,24 @@ NTES_FORBID_INTERACTIVE_POP
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [[UIApplication sharedApplication]setStatusBarHidden:NO];
+    
 }
 
+- (void)viewDidDisappear:(BOOL)animated{
+    
+    [super viewDidDisappear:animated];
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(getRoomID) object:nil];
+}
 
 - (void)dealloc{
     
-    [[NTESMeetingRTSManager sharedInstance] leaveCurrentConference];
-    
+    [_meetingRTSManager leaveCurrentConference];
     [[NIMSDK sharedSDK].chatroomManager exitChatroom:_chatroom.roomId completion:nil];
     [[NIMSDK sharedSDK].chatroomManager removeDelegate:self];
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [_meetingNetCallManager leaveMeeting];
+    
 }
 
 - (BOOL)shouldAutomaticallyForwardAppearanceMethods{

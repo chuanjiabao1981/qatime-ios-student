@@ -241,7 +241,6 @@
             
         }];
         
-        
     }
     
 }
@@ -250,7 +249,6 @@
 #pragma mark- 倒计时方法封装
 /* 倒计时方法封装*/
 - (void)deadLineTimer:(UIButton *)button{
-    
     
     /* 按钮倒计时*/
     __block int deadline=CheckCodeTime;

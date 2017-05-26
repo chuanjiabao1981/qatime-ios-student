@@ -59,7 +59,6 @@
  */
 @property (nonatomic, strong) InteractionView *interactionView ;
 
-
 /**
  聊天输入框
  */
