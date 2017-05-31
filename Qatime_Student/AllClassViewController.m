@@ -19,6 +19,8 @@
 
 #import "TutoriumInfoViewController.h"
 #import "UITableView+CYLTableViewPlaceHolder.h"
+#import "OneOnOneTutoriumInfoViewController.h"
+#import "VideoClassInfoViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -522,11 +524,23 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    UIViewController *controller;
+    
     ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    TutoriumInfoViewController *infoVC= [[TutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
     
-    [self.navigationController pushViewController:infoVC animated:YES];
+    if ([cell.type.text containsString:@"直播"]) {
+        //直播课
+        controller= [[TutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
+    }else if ([cell.type.text containsString:@"视频"]){
+        //视频课
+        controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.course_id];
+    }else if ([cell.type.text containsString:@"一对一"]){
+        //一对一
+        controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
+    }
     
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
     
 }
 

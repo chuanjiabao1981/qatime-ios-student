@@ -115,8 +115,8 @@
     [self doSendCmds];
 }
 
-- (void)doSendCmds
-{
+- (void)doSendCmds{
+    
     if (_cmdsSendBuffer.length) {
         NSString *cmd =  [NTESWhiteboardCommand packetIdCommand:_refPacketID++];
         [_cmdsSendBuffer appendString:cmd];

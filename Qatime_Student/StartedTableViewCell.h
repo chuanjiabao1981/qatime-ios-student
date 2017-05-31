@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MyTutoriumModel.h"
+#import "Interactive.h"
 
 
 @interface StartedTableViewCell : UITableViewCell
@@ -65,6 +66,8 @@
 @property(nonatomic,strong) MyTutoriumModel *model ;
 
  ;
+
+@property (nonatomic, strong) Interactive *interactiveModel ;
 
 
 @end

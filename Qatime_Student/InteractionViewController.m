@@ -61,7 +61,7 @@
 
 #import "InteractionLesson.h"
 
-@interface InteractionViewController ()<UITableViewDelegate,UITableViewDataSource,InteractionControlDelegate,InteractionOverlayDelegate,TTGTextTagCollectionViewDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NTESColorSelectViewDelegate, NTESMeetingRTSManagerDelegate, NTESWhiteboardCmdHandlerDelegate,NIMChatroomManager,NTESActorSelectViewDelegate,NTESMeetingNetCallManagerDelegate,NIMChatroomManager,NTESMeetingRolesManagerDelegate,NIMChatroomManagerDelegate,NTESDocumentHandlerDelegate>{
+@interface InteractionViewController ()<UITableViewDelegate,UITableViewDataSource,InteractionControlDelegate,InteractionOverlayDelegate,TTGTextTagCollectionViewDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NTESColorSelectViewDelegate, NTESMeetingRTSManagerDelegate, NTESWhiteboardCmdHandlerDelegate,NIMChatroomManager,NTESActorSelectViewDelegate,NTESMeetingNetCallManagerDelegate,NIMChatroomManager,NTESMeetingRolesManagerDelegate,NIMChatroomManagerDelegate,NTESDocumentHandlerDelegate,NTESDocumentViewControllerDelegate,NIMNetCallManagerDelegate>{
     
     //详细信息的头视图
     InteractionInfoView *_infoView ;
@@ -172,14 +172,14 @@
 @property (nonatomic, strong) NTESWhiteboardDrawView *drawView;
 
 @property (nonatomic, strong) UIView *controlPannel;
-
+/**清除白板区域*/
 @property (nonatomic, strong) UIButton *clearAllButton;
-
+/**取消绘制按钮*/
 @property (nonatomic, strong) UIButton *cancelLineButton;
 
 /**选择颜色按钮*/
 @property (nonatomic, strong) UIButton *colorSelectButton;
-
+/**共享文档按钮*/
 @property (nonatomic, strong) UIButton *openDocumentButton;
 
 @property (nonatomic, strong) NTESColorSelectView *colorSelectView;
@@ -193,7 +193,7 @@
 @property (nonatomic, strong) NTESWhiteboardLines *lines;
 
 @property (nonatomic, strong) NSArray *colors;
-
+/**我的UID*/
 @property (nonatomic, strong) NSString *myUid;
 
 @property (nonatomic, strong) UIView *laserView;
@@ -216,14 +216,13 @@
 
 @property (nonatomic, strong) NSMutableDictionary *docInfoDic;
 
-@property (nonatomic, assign) BOOL isManager ;
-
+/**白板名*/
 @property (nonatomic, strong) NSString *name ;
-
+/**管理者UID -->accid*/
 @property (nonatomic, strong) NSString *managerUid ;
-
+/**绘画的色值*/
 @property (nonatomic) int myDrawColorRGB ;
-
+/**是否加入成功*/
 @property (nonatomic, assign) BOOL isJoined ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -380,13 +379,33 @@ NTES_FORBID_INTERACTIVE_POP
                     NSLog(@"获取到Room ID,初始化白板和互动功能.");
                     _roomID = [NSString stringWithFormat:@"%@",dic[@"data"][@"live_info"][@"room_id"]];
                     
+                    NIMNetCallMeeting *meeting = [[NIMNetCallMeeting alloc]init];
+                    meeting.name = _roomID;
+                    //加入房间
+                    [[NIMAVChatSDK sharedSDK].netCallManager addDelegate:self];
+                    [[NIMAVChatSDK sharedSDK].netCallManager joinMeeting:meeting completion:^(NIMNetCallMeeting * _Nonnull meeting, NSError * _Nonnull error) {
+                        
+                        NSLog(@"加入房间成功");
+                        meeting.option.enableBypassStreaming = YES;
+                        meeting.option.videoHandler = ^(CMSampleBufferRef  _Nonnull sampleBuffer) {
+                            //视频数据回调
+                        } ;
+                        meeting.option.audioHandler = ^NSUInteger(SInt16 * _Nonnull audioSamples, NSUInteger samplesNumber, Float64 sampleRate) {
+                            //音频回调
+                            return 0;
+                        };
+
+
+                        
+                    }];
+                    
+                    
                     //加载白板功能
-                    [self setupWhiteBoard];
+//                    [self setupWhiteBoard];
+//                    //加载会话功能
+//                    [self setupChatRoomFunc];
                     
-                    //加载会话功能
-                    [self setupChatRoomFunc];
                     
-//                    return ;
                 }else{
                     NSLog(@"未获取到Room ID");
                     /**拿不到就继续轮询*/
@@ -399,6 +418,7 @@ NTES_FORBID_INTERACTIVE_POP
         
     }];
 }
+
 
 
 #pragma mark- 基础数据功能部分
@@ -502,58 +522,16 @@ NTES_FORBID_INTERACTIVE_POP
     
     //加载互动控制栏
     [self setupBarButtonItem];
-    [self setupControl];
+    
     
 }
-- (void)setupBarButtonItem
-{
-    //根据用户角色判断导航栏rightBarButtonItem显示 老师右边三个btn
-    if ([[[NTESMeetingRolesManager sharedInstance] myRole] isManager]) {
-//        [self refreshTecNavBar];
-    }
-    //学生端 互动前2个btn 互动后4个btn
-    else
-    {
-        [self refreshStdNavBar];
-    }
+
+/**加载互动控制栏*/
+- (void)setupBarButtonItem{
     
-    //显示左边leftBarButtonItem
-    UIView * leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 200, 30)];
-    //左边返回button
-    UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [leftButton setImage:[UIImage imageNamed:@"chatroom_back_normal"] forState:UIControlStateNormal];
-    [leftButton setImage:[UIImage imageNamed:@"chatroom_back_selected"] forState:UIControlStateHighlighted];
-    [leftButton addTarget:self action:@selector(onBack:) forControlEvents:UIControlEventTouchUpInside];
-    [leftButton sizeToFit];
-    
-    //房间号label
-    NSString * string =  [NSString stringWithFormat:@"房间：%@", _chatroom.roomId];
-    CGRect rectTitle = [string boundingRectWithSize:CGSizeMake(999, 30)
-                                            options:NSStringDrawingUsesLineFragmentOrigin
-                                         attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12]}
-                                            context:nil];
-    
-    
-    UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(40, 0, rectTitle.size.width+20, 30)];
-    title.font = [UIFont systemFontOfSize:12];
-    title.textColor = [UIColor whiteColor];
-    title.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
-    title.text = string;
-    title.textAlignment = NSTextAlignmentCenter;
-    
-    title.layer.cornerRadius = 15;
-    title.layer.masksToBounds = YES;
-    [leftView addSubview:leftButton];
-    [leftView addSubview:title];
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-    self.navigationItem.leftItemsSupplementBackButton = NO;
-    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    NSMutableArray *arrayItems=[NSMutableArray array];
-    [arrayItems addObject:negativeSpacer];
-    [arrayItems addObject:leftItem];
-    negativeSpacer.width = -7;
-    
-    self.navigationItem.leftBarButtonItems = arrayItems;
+    [self refreshStdNavBar];
+    [self setupControl];
+
 }
 
 - (CGFloat)meetingActorsViewHeight
@@ -571,6 +549,35 @@ NTES_FORBID_INTERACTIVE_POP
     }
     return _actorsView;
 }
+#pragma mark- NIMNetCallManagerDelegate
+
+//用户加入音视频会话成功的回调
+- (void)onUserJoined:(NSString *)uid meeting:(NIMNetCallMeeting *)meeting{
+    
+    [[NIMAVChatSDK sharedSDK].netCallManager setMeetingRole:YES];
+    
+    //管理角色
+    _meetingRolesManager = [[NTESMeetingRolesManager alloc]init];
+    _meetingRolesManager.delegate = self;
+    [_meetingRolesManager updateMeetingUser:uid isJoined:YES];
+    
+    //加入meeting
+    _meetingNetCallManager = [[NTESMeetingNetCallManager alloc]init];
+    [_meetingNetCallManager joinMeeting:_roomID delegate:self];
+    
+    _meetingRTSManager = [[NTESMeetingRTSManager alloc]init];
+    _meetingRTSManager.delegate = self;
+    [_meetingRTSManager joinConference:_roomID];
+    
+    
+}
+
+/**设置互动的回调结果*/
+- (void)onSetBypassStreamingEnabled:(BOOL)enabled result:(nullable NSError *)result{
+
+    
+}
+
 
 #pragma mark - NIMInputDelegate
 - (void)showInputView{
@@ -580,6 +587,10 @@ NTES_FORBID_INTERACTIVE_POP
 - (void)hideInputView{
     self.keyboradIsShown = NO;
 }
+
+
+
+
 
 #pragma mark - NIMChatroomManagerDelegate
 - (void)chatroom:(NSString *)roomId beKicked:(NIMChatroomKickReason)reason{
@@ -643,10 +654,6 @@ NTES_FORBID_INTERACTIVE_POP
     
     [self.view.window makeToast:@"无法加入视频，退出房间" duration:3.0 position:CSToastPositionCenter];
     
-    if ([[_meetingRolesManager myRole] isManager]) {
-        [self requestCloseChatRoom];
-    }
-    
     __weak typeof(self) wself = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [wself pop];
@@ -673,6 +680,7 @@ NTES_FORBID_INTERACTIVE_POP
 
 #pragma mark - NTESMeetingRolesManagerDelegate
 
+//更新角色
 - (void)meetingRolesUpdate
 {
     [self.actorsView updateActors];
@@ -1016,6 +1024,7 @@ NTES_FORBID_INTERACTIVE_POP
 //初始化白板
 - (void)setupWhiteBoard{
     
+    //name写成房间id号
     _name = _roomID;
     _managerUid = _chatroom.creator;  //改为后台获取到的拥有者
     _cmdHander = [[NTESWhiteboardCmdHandler alloc] initWithDelegate:self];
@@ -1025,30 +1034,21 @@ NTES_FORBID_INTERACTIVE_POP
     
     [_meetingRTSManager setDataHandler:_cmdHander];
     _colors = @[@(0x000000), @(0xd1021c), @(0xfddc01), @(0x7dd21f), @(0x228bf7), @(0x9b0df5)];
-    if(_meetingRolesManager.myRole.isManager){
-        _myDrawColorRGB = [_colors[0] intValue];
-    }
-    else
-    {
-        _myDrawColorRGB = [_colors[4] intValue];
-    }
+    
+    _myDrawColorRGB = [_colors[4] intValue];
+    
     _lines = [[NTESWhiteboardLines alloc] init];
     
     _myUid = [[NIMSDK sharedSDK].loginManager currentAccount];
     
     _docInfoDic = [NSMutableDictionary dictionary];
     
-    _isManager = _meetingRolesManager.myRole.isManager;
+    
     [_meetingRTSManager setDelegate:self];
     
-    
     NSError *error;
-    if (_isManager) {
-        error = [_meetingRTSManager reserveConference:_name];
-    }
-    else {
-        error = [_meetingRTSManager joinConference:_name];
-    }
+    
+    error = [_meetingRTSManager joinConference:_name];
     
     if (error) {
         //        DDLogError(@"Error %zd reserve/join rts conference: %@", error.code, _name);
@@ -1079,21 +1079,8 @@ NTES_FORBID_INTERACTIVE_POP
     [self.controlPannel addSubview:self.pageNumLabel];
     [self.pageNumLabel setHidden:YES];
     
-    if (_isManager) {
-        [self.controlPannel addSubview:self.clearAllButton];
-        [self.controlPannel addSubview:self.openDocumentButton];
-        [self.controlPannel addSubview:self.previousButton];
-        [self.controlPannel addSubview:self.nextButton];
-        [self.drawView addSubview:self.closeDocButton];
-        [self.drawView addSubview:self.imgloadLabel];
-        [self.nextButton setHidden:YES];
-        [self.previousButton setHidden:YES];
-        [self.closeDocButton setHidden:YES];
-        [self.imgloadLabel setHidden:YES];
-    }
-    else {
-        [self.controlPannel addSubview:self.hintLabel];
-    }
+    [self.controlPannel addSubview:self.hintLabel];
+    
     
 }
 
@@ -1162,15 +1149,10 @@ NTES_FORBID_INTERACTIVE_POP
     self.nextButton.right = self.interactionView.whiteBoardView.width_sd- 10.f;
     self.nextButton.centerY = self.colorSelectButton.centerY;
     
-    if (_isManager) {
-        self.pageNumLabel.right = self.nextButton.left - 5.f;
-        self.pageNumLabel.centerY = self.colorSelectButton.centerY;
-    }
-    else
-    {
-        self.pageNumLabel.right = self.interactionView.whiteBoardView.width_sd - 15.f;
-        self.pageNumLabel.centerY = self.colorSelectButton.centerY;
-    }
+    
+    self.pageNumLabel.right = self.interactionView.whiteBoardView.width_sd - 15.f;
+    self.pageNumLabel.centerY = self.colorSelectButton.centerY;
+    
     
     self.previousButton.right = self.pageNumLabel.left - 5.f;
     self.previousButton.centerY = self.colorSelectButton.centerY;
@@ -1430,9 +1412,6 @@ NTES_FORBID_INTERACTIVE_POP
     [self.pageNumLabel sizeToFit];
     [self.view setNeedsLayout];
     
-    if (_isManager) {
-        [self onClearAllPressed:nil];
-    }
 }
 #pragma mark - User Interactions
 - (void)onClearAllPressed:(id)sender
@@ -1567,17 +1546,8 @@ NTES_FORBID_INTERACTIVE_POP
         _isJoined = YES;
         [self checkPermission];
         
-        if (_isManager) {
-            [_cmdHander sendPureCmd:NTESWhiteBoardCmdTypeSyncPrepare to:nil];
-            if ([_lines hasLines]) {
-                [_cmdHander sync:[_lines allLines] toUser:nil];
-            }
-            [self onSendDocShareInfoToUser:nil];
-        }
-        else {
-            [_lines clear];
-            [_cmdHander sendPureCmd:NTESWhiteBoardCmdTypeSyncRequest to:_managerUid];
-        }
+        [_lines clear];
+        [_cmdHander sendPureCmd:NTESWhiteBoardCmdTypeSyncRequest to:_managerUid];
     }
 }
 
@@ -1628,12 +1598,12 @@ NTES_FORBID_INTERACTIVE_POP
 
 - (void)onReceiveSyncRequestFrom:(NSString *)sender
 {
-    if (_isManager) {
-        [_cmdHander sync:[_lines allLines] toUser:sender];
-        if (!self.docView.hidden) {
-            [self onSendDocShareInfoToUser:sender];
-        }
-    }
+//    if (_isManager) {
+//        [_cmdHander sync:[_lines allLines] toUser:sender];
+//        if (!self.docView.hidden) {
+//            [self onSendDocShareInfoToUser:sender];
+//        }
+//    }
 }
 
 - (void)onReceiveSyncPoints:(NSMutableArray *)points owner:(NSString *)owner
@@ -1724,6 +1694,8 @@ NTES_FORBID_INTERACTIVE_POP
 #pragma mark - NIMLoginManagerDelegate
 - (void)onLogin:(NIMLoginStep)step{
     
+    NSLog(@"%ld",(long)step);
+    
     if (step == NIMLoginStepLoginOK) {
         
         NSLog(@"云信聊天登陆成功");
@@ -1733,11 +1705,19 @@ NTES_FORBID_INTERACTIVE_POP
              加载完这些基础数据和功能后,开始在服务器轮询roomid,拿到后进入,拿不到不进入.
              */
             /**后台轮询roomid方法*/
+            _myUid = [[NIMSDK sharedSDK].loginManager currentAccount];
             
             [self performSelector:@selector(getRoomID) withObject:nil afterDelay:_pollTime];
             
         }
     }
+    
+}
+
+/**自动登录失败回调*/
+- (void)onAutoLoginFailed:(NSError *)error{
+    
+    NSLog(@"%@", error);
     
 }
 

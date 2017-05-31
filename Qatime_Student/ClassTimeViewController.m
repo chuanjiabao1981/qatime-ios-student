@@ -27,6 +27,9 @@
 #import "UIAlertController+Blocks.h"
 #import "HaveNoClassView.h"
 #import "UIViewController+AFHTTP.h"
+#import "OneOnOneTutoriumInfoViewController.h"
+
+#import "VideoClassInfoViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -445,12 +448,25 @@ typedef enum : NSUInteger {
     
     NSString *classID;
     
+    UIViewController *controller ;
+    
     if (tableView.tag ==1) {
         
         if (_unclosedArr.count!=0) {
             
             ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             classID = cell.model.course_id;
+            
+            if ([cell.type.text containsString:@"直播"]) {
+                //直播课
+                controller= [[TutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
+            }else if ([cell.type.text containsString:@"视频"]){
+                //视频课
+                controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.course_id];
+            }else if ([cell.type.text containsString:@"一对一"]){
+                //一对一
+                controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
+            }
             
         }
     }
@@ -464,12 +480,10 @@ typedef enum : NSUInteger {
         }
     }
     
-    NSLog(@"%@",classID);
     
-    TutoriumInfoViewController *infoVC= [[TutoriumInfoViewController alloc]initWithClassID:classID];
-    infoVC.hidesBottomBarWhenPushed = YES;
+    controller.hidesBottomBarWhenPushed = YES;
     
-    [self.navigationController pushViewController:infoVC animated:YES];
+    [self.navigationController pushViewController:controller animated:YES];
     
     
     

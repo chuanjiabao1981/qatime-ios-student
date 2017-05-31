@@ -224,7 +224,6 @@
         if (cell==nil) {
             cell=[[SettingTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
             
-            
             cell.settingName.sd_layout
             .leftSpaceToView(cell.contentView,20);
             

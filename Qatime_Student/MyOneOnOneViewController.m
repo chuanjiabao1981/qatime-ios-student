@@ -21,6 +21,9 @@
 #import "HaveNoClassView.h"
 #import "InteractionViewController.h"
 
+#import "Interactive.h"
+#import "OneOnOneTutoriumInfoViewController.h"
+
 
 typedef enum : NSUInteger {
     PullToRefresh,
@@ -113,7 +116,6 @@ typedef enum : NSUInteger {
         
         _.scrollView.delegate = self;
     
-        
         //上滑下拉刷新
         _.onStudyTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
             
@@ -149,13 +151,9 @@ typedef enum : NSUInteger {
         refreshNum ++;
     };
     
-    
-    
-    
 }
 
 #pragma mark- Request data
-
 
 /**
  请求一对一数据
@@ -179,7 +177,7 @@ typedef enum : NSUInteger {
     }
     
     //数据只请求一次,请求回来数据之后,在根据不同情况进行数据分配
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/interactive_courses",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"status":state,@"page":[NSString stringWithFormat:@"%ld",page],@"per_page":@"10"} completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/interactive_courses/list",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"status":state,@"page":[NSString stringWithFormat:@"%ld",page],@"per_page":@"10"} completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         
@@ -199,7 +197,9 @@ typedef enum : NSUInteger {
                                 
                             }else{
                                 for (NSDictionary *dics in dic[@"data"]) {
-                                    MyTutoriumModel *mod = [MyTutoriumModel yy_modelWithJSON:dics];
+                                    Interactive *mod = [Interactive yy_modelWithJSON:dics];
+                                    mod.interactive_course = [InteractiveCourse yy_modelWithJSON:dics[@"interactive_course"]];
+                                    mod.interactive_course.classID =dics[@"interactive_course"][@"id"];
                                     mod.classID = dics[@"id"];
                                     [_onStudyArray addObject:mod];
                                 }
@@ -338,7 +338,9 @@ typedef enum : NSUInteger {
             }
             if (_onStudyArray.count>indexPath.row) {
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-                cell.model = _onStudyArray[indexPath.row];
+                cell.interactiveModel = _onStudyArray[indexPath.row];
+                cell.enterButton.tag = indexPath.row+10;
+                [cell.enterButton addTarget:self action:@selector(enterInteractive:) forControlEvents:UIControlEventTouchUpInside];
             }
             
             
@@ -357,7 +359,7 @@ typedef enum : NSUInteger {
             }
             if (_finishedArray.count>indexPath.row) {
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-                cell.model = _finishedArray[indexPath.row];
+                cell.interactiveModel = _finishedArray[indexPath.row];
             }
             tableCell = cell;
         }
@@ -375,16 +377,25 @@ typedef enum : NSUInteger {
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
     StartedTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    //ChatRoom
-    NIMChatroom *chatroom = [[NIMChatroom alloc]init];
-    chatroom.roomId = cell.model.chat_team_id;
-    
-    InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:cell.model.classID];
+    OneOnOneTutoriumInfoViewController *controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.interactiveModel.interactive_course.classID];
     [self.navigationController pushViewController:controller animated:YES];
     
+    
+    
+}
+
+/**进入一对一互动直播*/
+- (void)enterInteractive:(UIButton *)sender{
+    
+    Interactive *mod = _onStudyArray[sender.tag-10];
+    //MeetingRoom
+    NIMChatroom *chatroom = [[NIMChatroom alloc]init];
+    
+    InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:mod.interactive_course.classID];
+    [self.navigationController pushViewController:controller animated:YES];
+ 
 }
 
 

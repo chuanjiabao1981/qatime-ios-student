@@ -105,7 +105,6 @@
         [_grade setSingleLineAutoResizeWithMaxWidth:100];
         
         /* 科目布局*/
-        
         _subject .sd_layout
         .leftSpaceToView(_grade,0)
         .topEqualToView(_grade)
@@ -158,6 +157,19 @@
     _className.text = model.name;
     
   
+    
+}
+
+-(void)setInteractiveModel:(Interactive *)interactiveModel{
+    
+    _interactiveModel = interactiveModel;
+    /* model数据对应的空间赋值*/
+    [_classImage sd_setImageWithURL:interactiveModel.interactive_course.publicize[@"list_url"]];
+    _grade.text = interactiveModel.interactive_course.grade;
+    _subject.text = interactiveModel.interactive_course.subject;
+    _className.text=interactiveModel.interactive_course.name;
+    
+    
     
 }
 

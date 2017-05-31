@@ -9,6 +9,14 @@
 #import "StartedTableViewCell.h"
 #import "UIImageView+WebCache.h"
 
+@interface StartedTableViewCell (){
+    
+    
+    UILabel *line;
+}
+
+@end
+
 @implementation StartedTableViewCell
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
@@ -57,7 +65,7 @@
         _subject.font = [UIFont systemFontOfSize:14*ScrenScale];
         
         /* 斜杠*/
-        UILabel *line = [[UILabel alloc]init];
+        line = [[UILabel alloc]init];
         line.textColor = [UIColor grayColor];
         line.font = [UIFont systemFontOfSize:14*ScrenScale];
         line.text = @"/";
@@ -120,18 +128,9 @@
         .leftEqualToView(_content)
         .autoWidthRatio(1.0);
         
-        /* 状态label布局*/
-        
-//        _status.sd_layout
-//        .leftSpaceToView(_classImage,10*ScrenScale)
-//        .topSpaceToView(_content,5*ScrenScale)
-//        .autoHeightRatio(0);
-        
-//        [_status setSingleLineAutoResizeWithMaxWidth:200];
-        
         /* 课程名称布局*/
         _className.sd_layout
-        .leftSpaceToView(_classImage,2*ScrenScale)
+        .leftSpaceToView(_classImage,10*ScrenScale)
         .topSpaceToView(_content,5*ScrenScale)
         .rightSpaceToView(_content,10*ScrenScale)
         .autoHeightRatio(0);
@@ -216,21 +215,45 @@
 
 - (void)setModel:(MyTutoriumModel *)model{
     
-    
     _model = model;
-    
     /* model数据对应的空间赋值*/
     [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
-    
-    
     _grade.text = model.grade;
     _subject.text = model.subject;
     _teacherName.text = model.teacher_name;
     _className.text = model.name;
-    
     _presentCount.text = model.completed_lesson_count;
     _totalCount.text = model.preset_lesson_count;
 
+}
+
+-(void)setInteractiveModel:(Interactive *)interactiveModel{
+    
+    _interactiveModel = interactiveModel;
+    /* model数据对应的空间赋值*/
+    [_classImage sd_setImageWithURL:interactiveModel.interactive_course.publicize[@"list_url"]];
+    _className.text=interactiveModel.interactive_course.name;
+    [_className updateLayout];
+    _grade.text = interactiveModel.interactive_course.grade;
+    _subject.text = interactiveModel.interactive_course.subject;
+    //教师名字
+    __block NSMutableString *teachers = @"".mutableCopy;
+    NSInteger teacherNum = 0;
+    for (NSDictionary *teacher in interactiveModel.interactive_course.teachers) {
+        
+        if (teacherNum == 0) {
+            
+            teachers = [NSMutableString stringWithFormat:@"%@",teacher[@"name"]];
+        }else{
+            teachers = [NSMutableString stringWithFormat:@"/%@",teacher[@"name"]];
+        }
+        teacherNum++;
+    }
+    
+    _teacherName.text = teachers;
+    _presentCount.text = [NSString stringWithFormat:@"%ld",(long)interactiveModel.interactive_course.completed_lessons_count];
+    _totalCount.text = [NSString stringWithFormat:@"%ld",interactiveModel.interactive_course.lessons_count];
+    
 }
 
 

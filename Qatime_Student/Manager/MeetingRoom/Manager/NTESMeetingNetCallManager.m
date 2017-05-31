@@ -19,6 +19,8 @@
 
 @property (nonatomic, strong) NIMNetCallMeeting *meeting;
 @property (nonatomic, weak) id<NTESMeetingNetCallManagerDelegate>delegate;
+@property (nonatomic, strong) NTESMeetingRolesManager *roles;
+
 
 @end
 
@@ -49,15 +51,13 @@
             if (wself.delegate) {
                 [wself.delegate onJoinMeetingFailed:meeting.name error:error];
             }
-            
         }else {
             _isInMeeting = YES;
             [[NIMAVChatSDK sharedSDK].netCallManager setMeetingRole:YES];
-            
-            NTESMeetingRolesManager *roles = [[NTESMeetingRolesManager alloc]init];
-            NTESMeetingRole *myRole = roles.myRole;
-            [NTESNetcallManager setMute:!myRole.audioOn];
-            [NTESNetcallManager setCameraDisable:!myRole.videoOn];
+            _roles = [[NTESMeetingRolesManager alloc]init];
+//            NTESMeetingRole *myRole = _roles.myRole;
+            [NTESNetcallManager setMute:NO];
+            [NTESNetcallManager setCameraDisable:NO];
             if (wself.delegate) {
                 [wself.delegate onMeetingConntectStatus:YES];
             }

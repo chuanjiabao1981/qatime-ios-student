@@ -82,6 +82,8 @@
 		542C17441DFA508A0088DB3F /* Canceld.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C17431DFA508A0088DB3F /* Canceld.m */; };
 		542F09221EA8A6170062090D /* VerifyPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F09211EA8A6170062090D /* VerifyPasswordViewController.m */; };
 		542F09281EA8A63B0062090D /* VerifyPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F09271EA8A63B0062090D /* VerifyPasswordView.m */; };
+		542F94EC1EDE73D3008279E0 /* InteractiveCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F94EB1EDE73D3008279E0 /* InteractiveCourse.m */; };
+		542F94EF1EDE8C29008279E0 /* Interactive.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F94EE1EDE8C29008279E0 /* Interactive.m */; };
 		543278661E8CE50200F7A2D9 /* IJKFloatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543278651E8CE50200F7A2D9 /* IJKFloatingView.m */; };
 		5435D9341DD2B42100DD4FCC /* RecommandClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9331DD2B42100DD4FCC /* RecommandClasses.m */; };
 		5435D9371DD2C12300DD4FCC /* ClassesListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9361DD2C12300DD4FCC /* ClassesListTableViewCell.m */; };
@@ -810,6 +812,10 @@
 		542F09211EA8A6170062090D /* VerifyPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyPasswordViewController.m; sourceTree = "<group>"; };
 		542F09261EA8A63B0062090D /* VerifyPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyPasswordView.h; sourceTree = "<group>"; };
 		542F09271EA8A63B0062090D /* VerifyPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyPasswordView.m; sourceTree = "<group>"; };
+		542F94EA1EDE73D3008279E0 /* InteractiveCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveCourse.h; sourceTree = "<group>"; };
+		542F94EB1EDE73D3008279E0 /* InteractiveCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractiveCourse.m; sourceTree = "<group>"; };
+		542F94ED1EDE8C29008279E0 /* Interactive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Interactive.h; sourceTree = "<group>"; };
+		542F94EE1EDE8C29008279E0 /* Interactive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Interactive.m; sourceTree = "<group>"; };
 		543278641E8CE50200F7A2D9 /* IJKFloatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IJKFloatingView.h; path = ../View/IJKFloatingView.h; sourceTree = "<group>"; };
 		543278651E8CE50200F7A2D9 /* IJKFloatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IJKFloatingView.m; path = ../View/IJKFloatingView.m; sourceTree = "<group>"; };
 		5435D9321DD2B42100DD4FCC /* RecommandClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommandClasses.h; sourceTree = "<group>"; };
@@ -3098,6 +3104,10 @@
 		547E92BD1E8E30F600160C6D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				542F94EA1EDE73D3008279E0 /* InteractiveCourse.h */,
+				542F94EB1EDE73D3008279E0 /* InteractiveCourse.m */,
+				542F94ED1EDE8C29008279E0 /* Interactive.h */,
+				542F94EE1EDE8C29008279E0 /* Interactive.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -6383,6 +6393,7 @@
 				548328CC1DDC6F360053AB29 /* NSDate+Utils.m in Sources */,
 				54AC04B61E89398E00817767 /* NTESChatroomMessageDataProvider.m in Sources */,
 				54AC027C1E892D3C00817767 /* UIAlertView+NTESBlock.m in Sources */,
+				542F94EF1EDE8C29008279E0 /* Interactive.m in Sources */,
 				54AC04061E8938E100817767 /* NIMTeamInfoData.m in Sources */,
 				544B61FC1E9647F100D7B160 /* LCActionSheetConfig.m in Sources */,
 				54AC04B81E89398E00817767 /* NTESMeetingRoomCreateViewController.m in Sources */,
@@ -6508,6 +6519,7 @@
 				547E898A1DD1BC9900749366 /* RecommandTeacher.m in Sources */,
 				54AC02531E892CEE00817767 /* NTESDataManager.m in Sources */,
 				547E92C31E8E313200160C6D /* MyOneOnOneViewController.m in Sources */,
+				542F94EC1EDE73D3008279E0 /* InteractiveCourse.m in Sources */,
 				545162CB1DF5597E000BD17A /* PersonalInfoView.m in Sources */,
 				54DBA4B61DE4423300A67A90 /* YZTextAttachment.m in Sources */,
 				54AC03D21E8938E100817767 /* NIMContactSelectTabView.m in Sources */,
