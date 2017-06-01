@@ -25,6 +25,7 @@
 #import "UIViewController+AFHTTP.h"
 #import "MJRefresh.h"
 #import "TutoriumInfoViewController.h"
+#import "Interactive.h"
 
 typedef enum : NSUInteger {
     RefreshStatePushLoadMore,
@@ -282,7 +283,7 @@ typedef enum : NSUInteger {
             break;
     }
     
-    
+    //请求直播课聊天会话列表
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -322,20 +323,30 @@ typedef enum : NSUInteger {
                             [dicArr addObjectsFromArray:[NSMutableArray arrayWithArray:dataDic[@"data"]]];
                             
                             for (NSDictionary *tutorium in dicArr) {
-                                
-                                TutoriumListInfo *info = [TutoriumListInfo yy_modelWithJSON:tutorium];
-                                info.classID = tutorium[@"id"];
-                                
-                                info.notify =  [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.chat_team_id];
-                                NSLog(@"%d",info.notify);
-                                
-                                /* 已购买的或者试听尚未结束的 ,加入聊天列表*/
-                                if ([info.taste_count integerValue]<[info.preset_lesson_count integerValue]||info.is_bought == YES) {
+                            
+                                /**
+                                 用teachers字段进行区分课程类型
+                                 */
+                                if (![[tutorium allKeys]containsObject:@"teachers"]) {
+                                    //不包含就是直播课
                                     
-                                    [_myClassArray addObject:info];
+                                    TutoriumListInfo *info = [TutoriumListInfo yy_modelWithJSON:tutorium];
+                                    info.classID = tutorium[@"id"];
+                                    
+                                    info.notify =  [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.chat_team_id];
+                                    /* 已购买的或者试听尚未结束的 ,加入聊天列表*/
+                                    if ([info.taste_count integerValue]<[info.preset_lesson_count integerValue]||info.is_bought == YES) {
+                                        [_myClassArray addObject:info];
+                                    }
+                                    
+                                }else{
+                                    //包含就是一对一
+                                    InteractiveCourse  *mod = [InteractiveCourse yy_modelWithJSON:tutorium ];
+                                    mod.classID = tutorium[@"id"];
+                                    mod.notify = [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:mod.chat_team_id];
+                                    [_myClassArray addObject:mod];
                                 }
                             }
-                            
                             
                             if (_myClassArray&&_recentArr) {
                                 

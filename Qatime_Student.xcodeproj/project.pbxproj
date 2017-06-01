@@ -27,7 +27,6 @@
 		5413D26E1DF7CF1C00A8FDEC /* Recharge.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D26D1DF7CF1C00A8FDEC /* Recharge.m */; };
 		5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2701DF7CF2900A8FDEC /* WithDraw.m */; };
 		5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2731DF7CF3000A8FDEC /* Payment.m */; };
-		5413D2781DF7D0DF00A8FDEC /* UIViewController+Token.m in Sources */ = {isa = PBXBuildFile; fileRef = 5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */; };
 		5414AD671E9F1BE0002818FB /* VideoClass_Player_InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5414AD661E9F1BE0002818FB /* VideoClass_Player_InfoView.m */; };
 		5414AD6A1E9F719B002818FB /* VideoClassBuyBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5414AD691E9F719B002818FB /* VideoClassBuyBar.m */; };
 		5417AC181E715CF70068941D /* CityListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5417AC171E715CF70068941D /* CityListTableViewCell.m */; };
@@ -157,6 +156,13 @@
 		54504ACC1E9E0E7F00EFCF8E /* VideoClassPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54504ACB1E9E0E7F00EFCF8E /* VideoClassPlayerView.m */; };
 		54504AD01E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54504ACF1E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.m */; };
 		54504AD21E9E220500EFCF8E /* libNELivePlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54504AD11E9E220500EFCF8E /* libNELivePlayer.a */; };
+		545074581EDFB2970012A383 /* UIViewController+Token.m in Sources */ = {isa = PBXBuildFile; fileRef = 545074571EDFB2970012A383 /* UIViewController+Token.m */; };
+		5450745F1EDFB3830012A383 /* InteractionChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5450745E1EDFB3830012A383 /* InteractionChatViewController.m */; };
+		545074621EDFB4400012A383 /* InteractionMemberListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545074611EDFB4400012A383 /* InteractionMemberListViewController.m */; };
+		545074651EDFB4AB0012A383 /* InteractionNoticeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545074641EDFB4AB0012A383 /* InteractionNoticeViewController.m */; };
+		545074681EDFB4CC0012A383 /* InteractionClassInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545074671EDFB4CC0012A383 /* InteractionClassInfoViewController.m */; };
+		5450746E1EE005F80012A383 /* SAMKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5450746B1EE005F80012A383 /* SAMKeychain.m */; };
+		5450746F1EE005F80012A383 /* SAMKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 5450746D1EE005F80012A383 /* SAMKeychainQuery.m */; };
 		545162B11DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162B01DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m */; };
 		545162BB1DF50D85000BD17A /* ChangePasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162BA1DF50D85000BD17A /* ChangePasswordView.m */; };
 		545162BE1DF50D99000BD17A /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162BD1DF50D99000BD17A /* ChangePasswordViewController.m */; };
@@ -746,8 +752,6 @@
 		5413D2721DF7CF3000A8FDEC /* Payment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Payment.h; sourceTree = "<group>"; };
 		5413D2731DF7CF3000A8FDEC /* Payment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Payment.m; sourceTree = "<group>"; };
 		5413D2751DF7D0AE00A8FDEC /* UIViewController_Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_Token.h; sourceTree = "<group>"; };
-		5413D2761DF7D0DF00A8FDEC /* UIViewController+Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Token.h"; sourceTree = "<group>"; };
-		5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Token.m"; sourceTree = "<group>"; };
 		5414AD651E9F1BDF002818FB /* VideoClass_Player_InfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClass_Player_InfoView.h; sourceTree = "<group>"; };
 		5414AD661E9F1BE0002818FB /* VideoClass_Player_InfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClass_Player_InfoView.m; sourceTree = "<group>"; };
 		5414AD681E9F719B002818FB /* VideoClassBuyBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassBuyBar.h; sourceTree = "<group>"; };
@@ -958,6 +962,20 @@
 		54504ACE1E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassProgressTableViewCell.h; sourceTree = "<group>"; };
 		54504ACF1E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassProgressTableViewCell.m; sourceTree = "<group>"; };
 		54504AD11E9E220500EFCF8E /* libNELivePlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNELivePlayer.a; path = Qatime_Student/LivePlayer_iOS_SDK/libs/libNELivePlayer.a; sourceTree = "<group>"; };
+		545074561EDFB2970012A383 /* UIViewController+Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Token.h"; sourceTree = "<group>"; };
+		545074571EDFB2970012A383 /* UIViewController+Token.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Token.m"; sourceTree = "<group>"; };
+		5450745D1EDFB3830012A383 /* InteractionChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionChatViewController.h; sourceTree = "<group>"; };
+		5450745E1EDFB3830012A383 /* InteractionChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionChatViewController.m; sourceTree = "<group>"; };
+		545074601EDFB4400012A383 /* InteractionMemberListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionMemberListViewController.h; sourceTree = "<group>"; };
+		545074611EDFB4400012A383 /* InteractionMemberListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionMemberListViewController.m; sourceTree = "<group>"; };
+		545074631EDFB4AB0012A383 /* InteractionNoticeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionNoticeViewController.h; sourceTree = "<group>"; };
+		545074641EDFB4AB0012A383 /* InteractionNoticeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionNoticeViewController.m; sourceTree = "<group>"; };
+		545074661EDFB4CC0012A383 /* InteractionClassInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionClassInfoViewController.h; sourceTree = "<group>"; };
+		545074671EDFB4CC0012A383 /* InteractionClassInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionClassInfoViewController.m; sourceTree = "<group>"; };
+		5450746A1EE005F80012A383 /* SAMKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMKeychain.h; sourceTree = "<group>"; };
+		5450746B1EE005F80012A383 /* SAMKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMKeychain.m; sourceTree = "<group>"; };
+		5450746C1EE005F80012A383 /* SAMKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMKeychainQuery.h; sourceTree = "<group>"; };
+		5450746D1EE005F80012A383 /* SAMKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMKeychainQuery.m; sourceTree = "<group>"; };
 		545162AF1DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+EnlargeTouchArea.h"; sourceTree = "<group>"; };
 		545162B01DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+EnlargeTouchArea.m"; sourceTree = "<group>"; };
 		545162B91DF50D85000BD17A /* ChangePasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordView.h; sourceTree = "<group>"; };
@@ -2045,6 +2063,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54CB26731DF0302900AE7414 /* Security.framework in Frameworks */,
 				54504AD21E9E220500EFCF8E /* libNELivePlayer.a in Frameworks */,
 				54A6C4A11E97393700B56135 /* StoreKit.framework in Frameworks */,
 				54AC02051E88FF0200817767 /* NIMAVChat.framework in Frameworks */,
@@ -2066,7 +2085,6 @@
 				5493D48C1E0B81A40085A39E /* CoreLocation.framework in Frameworks */,
 				547FBF2A1DF681B300955A9E /* libUMessage_Sdk_1.4.0.a in Frameworks */,
 				547FBF1E1DF658C000955A9E /* UserNotifications.framework in Frameworks */,
-				54CB26731DF0302900AE7414 /* Security.framework in Frameworks */,
 				54294CD61DDB3CD500677333 /* libz.1.tbd in Frameworks */,
 				54294CC31DDB3AC400677333 /* libstdc++.tbd in Frameworks */,
 				5429159F1DD9DDED00EE1A70 /* libz.tbd in Frameworks */,
@@ -2713,6 +2731,34 @@
 				549A979D1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m */,
 			);
 			name = cell;
+			sourceTree = "<group>";
+		};
+		545074591EDFB3490012A383 /* 一对一页面子控制器 */ = {
+			isa = PBXGroup;
+			children = (
+				54AC02071E892BF700817767 /* NTESMeetingWhiteboardViewController.h */,
+				54AC02081E892BF700817767 /* NTESMeetingWhiteboardViewController.m */,
+				5450745D1EDFB3830012A383 /* InteractionChatViewController.h */,
+				5450745E1EDFB3830012A383 /* InteractionChatViewController.m */,
+				545074631EDFB4AB0012A383 /* InteractionNoticeViewController.h */,
+				545074641EDFB4AB0012A383 /* InteractionNoticeViewController.m */,
+				545074661EDFB4CC0012A383 /* InteractionClassInfoViewController.h */,
+				545074671EDFB4CC0012A383 /* InteractionClassInfoViewController.m */,
+				545074601EDFB4400012A383 /* InteractionMemberListViewController.h */,
+				545074611EDFB4400012A383 /* InteractionMemberListViewController.m */,
+			);
+			name = "一对一页面子控制器";
+			sourceTree = "<group>";
+		};
+		545074691EE005EA0012A383 /* SAMKeyChain */ = {
+			isa = PBXGroup;
+			children = (
+				5450746A1EE005F80012A383 /* SAMKeychain.h */,
+				5450746B1EE005F80012A383 /* SAMKeychain.m */,
+				5450746C1EE005F80012A383 /* SAMKeychainQuery.h */,
+				5450746D1EE005F80012A383 /* SAMKeychainQuery.m */,
+			);
+			name = SAMKeyChain;
 			sourceTree = "<group>";
 		};
 		545162B61DF50D62000BD17A /* 修改密码 */ = {
@@ -3503,6 +3549,7 @@
 		54A153A81DC6F09D0070B508 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				545074691EE005EA0012A383 /* SAMKeyChain */,
 				54EBCFF11EB2E5930011344D /* AuthenCode */,
 				543BCAF21E78F3F600AD6721 /* SDAutoLayout */,
 				544B61EF1E9647DB00D7B160 /* LCActionSheet */,
@@ -3891,8 +3938,7 @@
 		54AC020D1E892BFA00817767 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				54AC02071E892BF700817767 /* NTESMeetingWhiteboardViewController.h */,
-				54AC02081E892BF700817767 /* NTESMeetingWhiteboardViewController.m */,
+				545074591EDFB3490012A383 /* 一对一页面子控制器 */,
 				54AC02091E892BF700817767 /* NTESDocumentViewController.h */,
 				54AC020A1E892BF700817767 /* NTESDocumentViewController.m */,
 				548F0E7F1E8A51B000A12C6D /* InteractionViewController.h */,
@@ -5926,8 +5972,8 @@
 				545162AF1DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.h */,
 				545162B01DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m */,
 				5413D2751DF7D0AE00A8FDEC /* UIViewController_Token.h */,
-				5413D2761DF7D0DF00A8FDEC /* UIViewController+Token.h */,
-				5413D2771DF7D0DF00A8FDEC /* UIViewController+Token.m */,
+				545074561EDFB2970012A383 /* UIViewController+Token.h */,
+				545074571EDFB2970012A383 /* UIViewController+Token.m */,
 				54AA307A1DF9427D009E0D04 /* NSString+TimeStamp.h */,
 				54AA307B1DF9427D009E0D04 /* NSString+TimeStamp.m */,
 				541E20051E13B9AF007CF5D1 /* NSDate+ChangeUTC.h */,
@@ -6436,7 +6482,9 @@
 				544AD3D11EC098FE002F567D /* WorkFlowView.m in Sources */,
 				54AC04B91E89398E00817767 /* NTESMeetingRoomSearchViewController.m in Sources */,
 				54AC04C61E89398E00817767 /* common.c in Sources */,
+				5450745F1EDFB3830012A383 /* InteractionChatViewController.m in Sources */,
 				54AB48DB1DED5196008E3BC5 /* MyOrderViewController.m in Sources */,
+				545074651EDFB4AB0012A383 /* InteractionNoticeViewController.m in Sources */,
 				548328EE1DDC6F360053AB29 /* UUMessageContentButton.m in Sources */,
 				54AC04D31E89398E00817767 /* ijksdl_mutex.c in Sources */,
 				548328EB1DDC6F360053AB29 /* UUInputFunctionView.m in Sources */,
@@ -6455,6 +6503,7 @@
 				5448AEA81E054C7A007B1DF9 /* ChatListTableViewCell.m in Sources */,
 				54294C701DDB062000677333 /* Teacher.m in Sources */,
 				54AB49001DEDABCC008E3BC5 /* EndedTableViewCell.m in Sources */,
+				545074621EDFB4400012A383 /* InteractionMemberListViewController.m in Sources */,
 				54AC027D1E892D3C00817767 /* UIImage+NTES.m in Sources */,
 				543BCB031E79157400AD6721 /* ChooseGradeAndSubjectViewController.m in Sources */,
 				543E23491E2C8D4000381F10 /* AuthenticationViewController.m in Sources */,
@@ -6470,6 +6519,7 @@
 				54AC02191E892C4A00817767 /* NTESMeetingRTSManager.m in Sources */,
 				544AD3C21EC02C7B002F567D /* UINavigationController+ZFPlayerRotation.m in Sources */,
 				54AC04041E8938E100817767 /* NIMTeamCardOperationItem.m in Sources */,
+				5450746F1EE005F80012A383 /* SAMKeychainQuery.m in Sources */,
 				541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */,
 				54AC03DC1E8938E100817767 /* NIMInputToolBar.m in Sources */,
 				54AC027E1E892D3C00817767 /* UIImage+NTESColor.m in Sources */,
@@ -6505,6 +6555,7 @@
 				54AC04CD1E89398E00817767 /* renderer_yuv420p.c in Sources */,
 				5444BD2B1E67BFAE00A75AD1 /* TeacherPublicClassCollectionViewCell.swift in Sources */,
 				545162D11DF55BEC000BD17A /* UserInfoModel.m in Sources */,
+				5450746E1EE005F80012A383 /* SAMKeychain.m in Sources */,
 				5435D9341DD2B42100DD4FCC /* RecommandClasses.m in Sources */,
 				545162BE1DF50D99000BD17A /* ChangePasswordViewController.m in Sources */,
 				54C9A8D11E12159700B81EBF /* PlayerView.m in Sources */,
@@ -6648,7 +6699,6 @@
 				5444BD2F1E68206D00A75AD1 /* UINavigationController+StatusBar.m in Sources */,
 				543BCAF91E78F3F700AD6721 /* UIView+SDAutoLayout.m in Sources */,
 				54F3BA181DFC3013003998D0 /* UIViewController+Login.m in Sources */,
-				5413D2781DF7D0DF00A8FDEC /* UIViewController+Token.m in Sources */,
 				54AC027B1E892D3C00817767 /* UIActionSheet+NTESBlock.m in Sources */,
 				54AC02AF1E892FD100817767 /* UINavigationController+Swizzling.m in Sources */,
 				54F3BA2D1DFC7130003998D0 /* WithDrawView.m in Sources */,
@@ -6778,6 +6828,7 @@
 				54B914A81E6D790500F377ED /* EditLocationTableViewCell.m in Sources */,
 				54504AC91E9E0E5F00EFCF8E /* VideoClassPlayerViewController.m in Sources */,
 				544B61FB1E9647F100D7B160 /* LCActionSheetCell.m in Sources */,
+				545074581EDFB2970012A383 /* UIViewController+Token.m in Sources */,
 				54A991851E34BCB20001D3D9 /* NoticeWaysTableViewCell.m in Sources */,
 				54660F601E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m in Sources */,
 				5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */,
@@ -6891,6 +6942,7 @@
 				5414AD671E9F1BE0002818FB /* VideoClass_Player_InfoView.m in Sources */,
 				54634D981DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m in Sources */,
 				5493D4CB1E0BE1050085A39E /* TLCityGroupCell.m in Sources */,
+				545074681EDFB4CC0012A383 /* InteractionClassInfoViewController.m in Sources */,
 				545226051E2482C800F36280 /* EditHeadTableViewCell.m in Sources */,
 				5407C9931DE7DE7500DB04C8 /* NSData+YYAdd.m in Sources */,
 				54AC03EB1E8938E100817767 /* NIMUnsupportContentConfig.m in Sources */,

@@ -4,7 +4,7 @@
 //
 //  Created by fenric on 16/10/25.
 //  Copyright © 2016年 Netease. All rights reserved.
-//
+//  一对一白板子控制器
 
 #import "NTESMeetingWhiteboardViewController.h"
 
@@ -12,7 +12,6 @@
 {
     
 }
-
 
 @end
 

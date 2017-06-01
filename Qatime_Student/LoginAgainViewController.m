@@ -23,7 +23,7 @@
 typedef NS_ENUM(NSUInteger, LoginType) {
     Normal =0, //账号密码登录
     Wechat,  //微信登录
-    
+    Guest,   //游客登录
 };
 
 @interface LoginAgainViewController ()<UITextFieldDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate,WXApiDelegate>{

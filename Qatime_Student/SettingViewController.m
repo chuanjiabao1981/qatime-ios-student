@@ -287,27 +287,38 @@
 }
 
 #pragma mark- 用户退出登录
+
+/**用户退出登录*/
 - (void)userLogOut{
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否确认切换?" preferredStyle:UIAlertControllerStyleAlert];
     /* 确定退出*/
     UIAlertAction *actionSure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
-        NSString *userFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
-        
-        [[NSFileManager defaultManager]removeItemAtPath:userFilePath error:nil];
-        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"id"];
-        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"remember_token"];
-        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"chat_account"];
-        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"openID"];
-        [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Login"];
-        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"avatar_url"];
-        
-        /* 云信退出登录*/
-        [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error){}];
-        
-        /* 发消息 给appdelegate*/
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"]==YES) {
+            //游客退出登录-->只修改rootcontroller
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"guestLogOut" object:nil];
+            
+        }else{
+            
+            NSString *userFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
+            
+            [[NSFileManager defaultManager]removeItemAtPath:userFilePath error:nil];
+            [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"id"];
+            [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"remember_token"];
+            [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"chat_account"];
+            [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"openID"];
+            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Login"];
+            [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"avatar_url"];
+            
+            /* 云信退出登录*/
+            [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error){}];
+            
+            /* 发消息 给appdelegate*/
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
+            
+            [self.navigationController popViewControllerAnimated:YES];
+        }
         
     }];
     UIAlertAction *actionCancel=[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {

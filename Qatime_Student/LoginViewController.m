@@ -20,11 +20,15 @@
 #import "UIViewController+HUD.h"
 
 #import <NIMSDK/NIMSDK.h>
+#import "SAMKeychain.h"
+#import "UIViewController+AFHTTP.h"
+#import "UIAlertController+Blocks.h"
 
 
 typedef NS_ENUM(NSUInteger, LoginType) {
     Normal =0, //账号密码登录
     Wechat,  //微信登录
+    Guest,   //游客登录
     
 };
 
@@ -55,6 +59,9 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     /* 是否有返回键*/
     BOOL haveReturnButton;
     
+    
+    BOOL needCheckGuest;
+    
 
 }
 
@@ -80,6 +87,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 
     [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleDefault];
     needCheckCaptcha = NO;
+    
     _wrongTimes = 0;
     _captcha =[NSMutableString string ];
     
@@ -123,6 +131,12 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     
     [self registerForKeyboardNotifications];
+    
+    if ([SAMKeychain allAccounts]==nil) {
+        needCheckGuest = NO;
+    }else{
+        needCheckGuest = YES;
+    }
     
 }
 
@@ -201,6 +215,42 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    
+    if (needCheckGuest == YES) {
+        
+        if (textField == _loginView.userName) {
+            NSArray *keys = [SAMKeychain allAccounts];
+            if (keys == nil) {
+                //没有用户信息,不管
+            }else{
+                
+                [UIAlertController showAlertInViewController:self withTitle:@"警告!" message:@"系统检测到您之前使用游客身份登录,如您使用其他账号登录则无法找回之前登录的所有信息(包括账户资金和一切消费记录)!\n是否确定使用新的账户登录?" cancelButtonTitle:@"我要完善当前账号信息" destructiveButtonTitle:nil otherButtonTitles:@[@"确定使用新账号登录"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                    
+                    if (buttonIndex == 0) {
+                        //绑定和完善当前账号信息
+                        
+                    }else{
+                        //使用新账号,登录成功后会冲掉原有的游客信息
+                        
+                        needCheckGuest = NO;
+                        [textField becomeFirstResponder];
+                    }
+                    
+                }];
+            }
+            
+        }
+        
+    }else{
+        
+        
+    }
+    
+    
+}
+
+
 
 #pragma mark- 微信请求code数据后,向后台申请openID
 - (void)wechatLoginSucess:(NSNotification *)notification{
@@ -257,15 +307,71 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
 }
 
-
-
-#pragma mark- 跳过登录直接进入主页
+#pragma mark- /////跳过登录直接进入主页////// 游客模式
+/**
+ 苹果审核,要求用户必须在未登录的情况下也能进行购买(IAP)消费.
+ 在用户进行够买或者支付时,提醒用户进行登录或者注册或者绑定,否则可能造成财产损失或记录丢失.
+ */
 - (void)enterWithoutLogin{
     
-    [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Login"];
+    /**
+     使用用户的UUID作为用户密码,来保存用户数据
+     存储使用keychain,三方库SAMKeyChain
+     */
     
-    
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"EnterWithoutLogin" object:nil];
+    //检查是不是登陆过
+    NSArray  *keys = [SAMKeychain allAccounts];
+    if (keys == nil) {
+        [self HUDStartWithTitle:nil];
+        //该变量做为密码
+        NSString *_guestPassWord = [NSUUID UUID].UUIDString;
+        [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/user/guests",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"password":_guestPassWord,@"password_confirmation":_guestPassWord} completeSuccess:^(id  _Nullable responds) {
+            [self stopHUD];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                //userdefult保存用户id和token 和临时密码
+                [self saveUserInfo:dic[@"data"] loginType:Guest];
+                
+                NSError *error = [[NSError alloc]init];
+                //keychain保存用户账户名
+                [SAMKeychain setPassword:[NSString stringWithFormat:@"%@",dic[@"data"][@"user"][@"id"]] forService:@"Qatime_Student" account:@"id" error:&error];
+                //第二组keychain保存token
+                [SAMKeychain setPassword:dic[@"data"][@"remember_token"] forService:@"Qatime_Student" account:@"Remember-Token" error:&error];
+                //第三组keychain保存用户密码
+                [SAMKeychain setPassword:_guestPassWord forService:@"Qatime_Student" account:@"password" error:&error];
+                
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+                
+            }
+            
+        } failure:^(id  _Nullable erros) {
+            
+        }];
+        
+        
+    }else{
+        
+        //曾经使用这个手机登录过
+//        NSString *name = [NSString stringWithFormat:@"游客%@",[SAMKeychain passwordForService:@"Qatime_Student" account:@"id"]];
+        
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"系统检测到您之前以游客方式登录,是否仍使用游客身份登录?" cancelButtonTitle:@"使用已有账号登录" destructiveButtonTitle:nil otherButtonTitles:@[@"仍使用游客身份登录",@"前往注册"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+            
+            if (buttonIndex == 0) {
+                //使用现有账号登录
+            }else if (buttonIndex == 2) {
+                //仍使用游客身份登录
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+                [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
+                [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"is_Guest"];
+                
+            }else if (buttonIndex == 3){
+                //前往注册
+                [self enterSignUpPage:nil];
+            }
+            
+        }];
+        
+    }
     
 }
 #pragma mark- 输入密码次数达到5次
@@ -314,7 +420,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     SignUpViewController *_signUpViewController = [[SignUpViewController alloc]init];
     
     [self.navigationController pushViewController:_signUpViewController animated:YES];
-    
     
 }
 
@@ -412,6 +517,19 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                     
                     if (dicGet[@"remember_token"]) {
                         
+                        //登录成功
+                        //不用干掉之前存储的keychain信息,增加新的keychain信息
+                        NSArray *keys =  [SAMKeychain allAccounts];
+                        NSError *error = [[NSError alloc]init];
+                        if (keys!=nil) {
+                            
+                            for (NSDictionary *acc in keys) {
+                                
+                                [SAMKeychain deletePasswordForService:@"Qatime_Student" account:acc[@"acct"] error:&error];
+                            }
+                            
+                        }
+                        
                         [self saveUserInfo:dicGet loginType:Normal];
                         
                         [self HUDStopWithTitle:NSLocalizedString(@"登录成功", nil)];
@@ -461,15 +579,12 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 - (void)saveUserInfo:(NSDictionary *)userDic loginType:(LoginType)loginType{
     
 #pragma mark- 本地登录成功后 保存token文件，并且转到主页面
-    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
+    
     
     NSString *userTokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
     
     NSLog(@"保存的数据\n%@",userDic);
-    /* 归档*/
-    [NSKeyedArchiver archiveRootObject:userDic toFile:userTokenFilePath];
-    
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+   
     
     /* 另存一份userdefault  只存token和id*/
     
@@ -482,7 +597,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     [[NSUserDefaults standardUserDefaults]setObject:remember_token forKey:@"remember_token"];
     [[NSUserDefaults standardUserDefaults]setObject:userID forKey:@"id"];
-    
     
     NSLog(@"token:%@,id:%@",remember_token,userID);
     
@@ -517,10 +631,26 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     switch (loginType) {
         case 0:
             type = [NSString stringWithFormat:@"Normal"];
+            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"is_Guest"];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
+            /* 归档*/
+            [NSKeyedArchiver archiveRootObject:userDic toFile:userTokenFilePath];
             break;
             
         case 1:
             type = [NSString stringWithFormat:@"Wechat"];
+            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"is_Guest"];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
+            /* 归档*/
+            [NSKeyedArchiver archiveRootObject:userDic toFile:userTokenFilePath];
+            break;
+            
+            case 2:
+            type = [NSString stringWithFormat:@"Guest"];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"is_Guest"];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
             break;
     }
     

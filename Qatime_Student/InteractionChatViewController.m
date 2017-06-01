@@ -1,12 +1,13 @@
 //
-//  ChatViewController.m
+//  InteractionChatViewController.m
 //  Qatime_Student
 //
-//  Created by Shin on 2016/12/19.
-//  Copyright © 2016年 WWTD. All rights reserved.
+//  Created by Shin on 2017/6/1.
+//  Copyright © 2017年 WWTD. All rights reserved.
 //
+//  一对一聊天子控制器
 
-#import "ChatViewController.h"
+#import "InteractionChatViewController.h"
 #import "MJRefresh.h"
 #import "ChatModel.h"
 #import "YZEmotionKeyboard.h"
@@ -47,19 +48,17 @@
 #import "UIViewController+TimeInterval.h"
 #import "KSPhotoBrowser.h"
 #import "NSNull+Json.h"
-#import "InteractiveCourse.h"
+
 #import "TutoriumList.h"
-#import "InteractionViewController.h"
 
 
-
-@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelgate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate>{
+@interface InteractionChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelgate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate>{
     
     NSString *_token;
     NSString *_idNumber;
     
     /* 聊天室的信息*/
-    id _tutoriumInfo;
+//    TutoriumListInfo *_tutoriumInfo;
     
     /* 会话*/
     NIMSession *_session;
@@ -74,8 +73,12 @@
     AVAudioRecorder *recorder;
     NSTimer *levelTimer;
     
+    /**聊天室id*/
     NSString *_chat_teamID;
     
+    /**课程id*/
+    NSString *_classID;
+
 }
 
 /* 刷新聊天记录*/
@@ -86,53 +89,30 @@
 /* 与web端同步的表情专用的键盘*/
 @property (strong, nonatomic) YZEmotionKeyboard *emotionKeyboard;
 
-
 @end
 
-@implementation ChatViewController
+@implementation InteractionChatViewController
 
--(instancetype)initWithClass:(id)tutorium {
+-(instancetype)initWithChatTeamID:(NSString *)chatTeamID andClassID:(NSString *)classID{
     
     self = [super init];
     if (self) {
         
-        if ([tutorium isMemberOfClass:[TutoriumListInfo class]]) {
-            _tutoriumInfo =(TutoriumListInfo *)tutorium;
-            _chat_teamID = [(TutoriumListInfo *)tutorium valueForKey:@"chat_team_id"];
-        }else if ([tutorium isMemberOfClass:[InteractiveCourse class]]){
-            _tutoriumInfo =(InteractiveCourse *)tutorium;
-            _chat_teamID = [(InteractiveCourse *)tutorium valueForKey:@"chat_team_id"];
-        }
+//        _tutoriumInfo = tutorium;
+        
+        _chat_teamID  = chatTeamID;
         
     }
     return self;
 }
 
 
-
 - (void)loadView{
     
     [super loadView ];
     
-    _navigationBar = ({
-        NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
-        _.titleLabel.text = [_tutoriumInfo valueForKey:@"name"];
-        
-        //
-        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-        [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-        
-        [_.rightButton setImage:[UIImage imageNamed:@"Enter"] forState:UIControlStateNormal];
-        [_.rightButton addTarget:self action:@selector(enterLive) forControlEvents:UIControlEventTouchUpInside];
-        
-        [self.view addSubview:_];
-        _;
-        
-    });
-    
-    
     _chatTableView = ({
-        UITableView *_=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-50) style:UITableViewStylePlain];
+        UITableView *_=[[UITableView alloc]initWithFrame:self.view.bounds style:UITableViewStylePlain];
         _.separatorStyle = UITableViewCellSeparatorStyleNone;
         _.delegate = self;
         _.dataSource = self;
@@ -165,9 +145,9 @@
     [self HUDStartWithTitle:@"正在加载聊天记录"];
     
     /* 初始化*/
-    if (_tutoriumInfo) {
+    if (_chat_teamID) {
         
-        _session  = [NIMSession session:[_tutoriumInfo valueForKey:@"chat_team_id"] type:NIMSessionTypeTeam];
+        _session  = [NIMSession session:_chat_teamID type:NIMSessionTypeTeam];
     }
     
     _chat_Account = [Chat_Account yy_modelWithJSON:[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"]];
@@ -486,7 +466,7 @@
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses/%@",Request_Header,_idNumber,[_tutoriumInfo valueForKey:@"classID"]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses/%@",Request_Header,_idNumber,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
@@ -1462,25 +1442,14 @@
 }
 
 
-#pragma mark- 进入直播
-- (void)enterLive{
-    
-    UIViewController *controller;
-    if ([_tutoriumInfo isKindOfClass:[TutoriumListInfo class]]) {
-        
-        controller =[[LivePlayerViewController alloc]initWithClassID:[_tutoriumInfo valueForKey:@"classID"]];
-
-    }else if ([_tutoriumInfo isKindOfClass:[InteractiveCourse class]]){
-        NIMChatroom *room = [[NIMChatroom alloc]init];
-        
-        controller =[[InteractionViewController alloc]initWithChatroom:room andClassID:[_tutoriumInfo valueForKey:@"classID"] andChatTeamID:[_tutoriumInfo valueForKey:@"chat_team_id"]];
-        
-    }
-    
-    [self.navigationController pushViewController:controller animated:YES];
-    
-    
-}
+//#pragma mark- 进入
+//- (void)enterLive{
+//    
+//    LivePlayerViewController *playerVC = [[LivePlayerViewController alloc]initWithClassID:_classID];
+//    [self.navigationController pushViewController:playerVC animated:YES];
+//    
+//    
+//}
 
 
 #pragma mark- 音频功能的所有回调
@@ -1630,20 +1599,19 @@
     
 }
 
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 /*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end

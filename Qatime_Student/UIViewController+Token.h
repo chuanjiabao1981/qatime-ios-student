@@ -11,6 +11,15 @@
 
 @interface UIViewController (Token)
 
-- (void)getToken;
+@property (nonatomic, strong) NSString *token ;
+
+@property (nonatomic, strong) NSString *teacherID ;
+
+
+/**提出token*/
+-(NSString *)getToken;
+
+/**提出techerID*/
+-(NSString *)getTeacherID;
 
 @end
