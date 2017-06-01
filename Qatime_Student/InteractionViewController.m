@@ -395,8 +395,6 @@ NTES_FORBID_INTERACTIVE_POP
                             return 0;
                         };
 
-
-                        
                     }];
                     
                     
@@ -1026,11 +1024,12 @@ NTES_FORBID_INTERACTIVE_POP
     
     //name写成房间id号
     _name = _roomID;
+    
     _managerUid = _chatroom.creator;  //改为后台获取到的拥有者
     _cmdHander = [[NTESWhiteboardCmdHandler alloc] initWithDelegate:self];
     _docHander = [[NTESDocumentHandler alloc]initWithDelegate:self];
     
-    _meetingRTSManager = [[NTESMeetingRTSManager alloc]init];
+//    _meetingRTSManager = [[NTESMeetingRTSManager alloc]init];
     
     [_meetingRTSManager setDataHandler:_cmdHander];
     _colors = @[@(0x000000), @(0xd1021c), @(0xfddc01), @(0x7dd21f), @(0x228bf7), @(0x9b0df5)];
@@ -1048,7 +1047,7 @@ NTES_FORBID_INTERACTIVE_POP
     
     NSError *error;
     
-    error = [_meetingRTSManager joinConference:_name];
+//    error = [_meetingRTSManager joinConference:_name];
     
     if (error) {
         //        DDLogError(@"Error %zd reserve/join rts conference: %@", error.code, _name);
@@ -1540,6 +1539,7 @@ NTES_FORBID_INTERACTIVE_POP
     }
 }
 
+//加入会话的回调
 - (void)onJoin:(NSString *)name result:(NSError *)result
 {
     if (result == nil) {
@@ -1548,6 +1548,9 @@ NTES_FORBID_INTERACTIVE_POP
         
         [_lines clear];
         [_cmdHander sendPureCmd:NTESWhiteBoardCmdTypeSyncRequest to:_managerUid];
+        
+        //加载白板
+        [self setupWhiteBoard];
     }
 }
 
