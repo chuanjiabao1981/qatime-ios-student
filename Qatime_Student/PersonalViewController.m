@@ -60,6 +60,9 @@
     /* 是否登录*/
     BOOL login;
     
+    /**是否是游客*/
+    BOOL is_Guest;
+    
 }
 
 @end
@@ -90,8 +93,6 @@
     
     _personalView.settingTableView.delegate = self;
     _personalView.settingTableView.dataSource = self;
-//    _personalView.settingTableView.tableHeaderView = _headView;
-//    _personalView.settingTableView.tableHeaderView.size = CGSizeMake(SCREENWIDTH, SCREENHEIGHT*2/5);
     
     _personalView.settingTableView.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
     
@@ -108,7 +109,7 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeHead:) name:@"ChangeInfoSuccess" object:nil];
     
     /**重新登录后的个人信息改动监听*/
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogin:) name:@"UserLogin" object:nil];
+    //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogin:) name:@"UserLogin" object:nil];
     
     [[NSNotificationCenter defaultCenter]addObserverForName:@"UserLogin" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
         
@@ -117,7 +118,7 @@
     
     /**监听用户退出登录*/
     [[NSNotificationCenter defaultCenter]addObserverForName:@"userLogOut" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-       
+        
         [_headView.headImageView setImage:[UIImage imageNamed:@"人"]];
         _headView.name.text = @"未登录";
         SettingTableViewCell *cell = [_personalView.settingTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0 ]];
@@ -139,36 +140,49 @@
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
+    /**取出是否是游客*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"is_Guest"]) {
+        is_Guest = [[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"];
+    }
+    
     /* 取出用户名*/
     
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"name"]) {
         
         _name = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"name"]];
-        
     }
     
-    
     /* 取出头像信息*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"avatar_url"]) {
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"]==YES) {
+        _avatarStr = @"";
+    }else{
         
-        _avatarStr = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"avatar_url"]];
-        
+        if ([[NSUserDefaults standardUserDefaults]objectForKey:@"avatar_url"]) {
+            _avatarStr = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"avatar_url"]];
+        }
     }
     
     
     /* 取出登录状态*/
-    
     login = [[NSUserDefaults standardUserDefaults]boolForKey:@"Login"];
-    
-    
     
     if (login) {
         
-        [_headView.headImageView sd_setImageWithURL:[NSURL URLWithString:_avatarStr]];
-        
-        _headView.name .text = _name;
+        if (is_Guest == YES) {
+            
+            [_headView.headImageView setImage:[UIImage imageNamed:@"人"]];
+            if ([_name isEqualToString:_idNumber]) {
+                _headView.name .text = [NSString stringWithFormat:@"游客%@", _name];
+            }else{
+                 _headView.name .text = [NSString stringWithFormat:@"%@", _name];
+            }
+        }else{
+            
+            [_headView.headImageView sd_setImageWithURL:[NSURL URLWithString:_avatarStr]];
+            _headView.name .text = _name;
+            
+        }
     }else{
-        
         [_headView.headImageView setImage:[UIImage imageNamed:@"人"]];
         _headView.name .text = @"点击头像登录";
         
@@ -396,7 +410,7 @@
                     break;
                 case 3:{
                     
-//                    [self HUDStopWithTitle:@"正在开发中,敬请期待"];
+                    //                    [self HUDStopWithTitle:@"正在开发中,敬请期待"];
                     
                     /**
                      该版本暂时改为提示
@@ -407,7 +421,7 @@
                 case 4:{
                     
                     controller = [[MyVideoClassViewController alloc]init];
-            
+                    
                 }
                     break;
                 case 5:{
@@ -426,7 +440,7 @@
                 }
                     break;
                 case 8:{
-                    controller = [AboutUsViewController new];  
+                    controller = [AboutUsViewController new];
                 }
                     break;
             }

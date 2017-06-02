@@ -92,6 +92,8 @@
 		5435D9491DD3160600DD4FCC /* TeachersPublicHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9481DD3160600DD4FCC /* TeachersPublicHeaderView.m */; };
 		5435D94F1DD31B4700DD4FCC /* TeachersPublicInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D94E1DD31B4700DD4FCC /* TeachersPublicInfo.m */; };
 		5435D9521DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9511DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m */; };
+		54366EA01EE102460071A5F9 /* GuestBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54366E9F1EE102460071A5F9 /* GuestBindingViewController.m */; };
+		54366EA71EE114AC0071A5F9 /* GuestBindingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54366EA61EE114AC0071A5F9 /* GuestBindingView.m */; };
 		543A4D481E89F775004C5C9E /* NTESEnterRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543A4D401E89F775004C5C9E /* NTESEnterRoomViewController.m */; };
 		543A4D491E89F775004C5C9E /* NTESEnterRoomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 543A4D411E89F775004C5C9E /* NTESEnterRoomViewController.xib */; };
 		543A4D4A1E89F775004C5C9E /* NTESLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543A4D431E89F775004C5C9E /* NTESLoginViewController.m */; };
@@ -838,6 +840,10 @@
 		5435D94E1DD31B4700DD4FCC /* TeachersPublicInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeachersPublicInfo.m; sourceTree = "<group>"; };
 		5435D9501DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeacherPublicClassCollectionViewCell.h; sourceTree = "<group>"; };
 		5435D9511DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeacherPublicClassCollectionViewCell.m; sourceTree = "<group>"; };
+		54366E9E1EE102460071A5F9 /* GuestBindingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestBindingViewController.h; sourceTree = "<group>"; };
+		54366E9F1EE102460071A5F9 /* GuestBindingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestBindingViewController.m; sourceTree = "<group>"; };
+		54366EA51EE114AC0071A5F9 /* GuestBindingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestBindingView.h; sourceTree = "<group>"; };
+		54366EA61EE114AC0071A5F9 /* GuestBindingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestBindingView.m; sourceTree = "<group>"; };
 		543A4D3F1E89F775004C5C9E /* NTESEnterRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESEnterRoomViewController.h; sourceTree = "<group>"; };
 		543A4D401E89F775004C5C9E /* NTESEnterRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESEnterRoomViewController.m; sourceTree = "<group>"; };
 		543A4D411E89F775004C5C9E /* NTESEnterRoomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NTESEnterRoomViewController.xib; sourceTree = "<group>"; };
@@ -2365,6 +2371,33 @@
 			name = View;
 			sourceTree = "<group>";
 		};
+		54366E981EE0F9FA0071A5F9 /* 游客绑定 */ = {
+			isa = PBXGroup;
+			children = (
+				54366E9A1EE102250071A5F9 /* View */,
+				54366E991EE102230071A5F9 /* Controller */,
+			);
+			name = "游客绑定";
+			sourceTree = "<group>";
+		};
+		54366E991EE102230071A5F9 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54366E9E1EE102460071A5F9 /* GuestBindingViewController.h */,
+				54366E9F1EE102460071A5F9 /* GuestBindingViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54366E9A1EE102250071A5F9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54366EA51EE114AC0071A5F9 /* GuestBindingView.h */,
+				54366EA61EE114AC0071A5F9 /* GuestBindingView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		543A4D3E1E89F775004C5C9E /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -3025,6 +3058,7 @@
 		546978531DC723A2001695F4 /* 登录页面 */ = {
 			isa = PBXGroup;
 			children = (
+				54366E981EE0F9FA0071A5F9 /* 游客绑定 */,
 				546978611DC7258B001695F4 /* 注册页面 */,
 				54CB26651DEFFE4400AE7414 /* 登录界面 */,
 				54F3BA1C1DFC43FC003998D0 /* 重新登录页面 */,
@@ -6769,6 +6803,7 @@
 				54B4C1921DF8417400E31794 /* ConfirmChargeViewController.m in Sources */,
 				543E512C1E5D7B180001551D /* YZBadge.m in Sources */,
 				54AC04DD1E89398E00817767 /* NTESMeetingActorsView.m in Sources */,
+				54366EA01EE102460071A5F9 /* GuestBindingViewController.m in Sources */,
 				54AC025C1E892CEE00817767 /* NTESTimerHolder.m in Sources */,
 				54AC03FC1E8938E100817767 /* NIMSessionNotificationContentView.m in Sources */,
 				54AA30821DF950CA009E0D04 /* CheckChargeView.m in Sources */,
@@ -6940,6 +6975,7 @@
 				541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */,
 				5414AD6A1E9F719B002818FB /* VideoClassBuyBar.m in Sources */,
 				5414AD671E9F1BE0002818FB /* VideoClass_Player_InfoView.m in Sources */,
+				54366EA71EE114AC0071A5F9 /* GuestBindingView.m in Sources */,
 				54634D981DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m in Sources */,
 				5493D4CB1E0BE1050085A39E /* TLCityGroupCell.m in Sources */,
 				545074681EDFB4CC0012A383 /* InteractionClassInfoViewController.m in Sources */,

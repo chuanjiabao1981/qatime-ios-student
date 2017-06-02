@@ -49,6 +49,8 @@
     
     UINavigationController *chooseVC;
     
+    UINavigationController *naviVC;
+    
     /* 推送部分*/
     NSDictionary *remoteNotification;
 
@@ -111,7 +113,10 @@
             if (accounts ==nil) {
                 /* 如果没有登录信息,登录页作为root*/
                 _loginViewController = [[LoginViewController alloc]init];
-                UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
+                
+                naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
+                [naviVC setNavigationBarHidden:YES];
+                
                 [_window setRootViewController:naviVC];
             }else{
                 
@@ -265,7 +270,6 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnPushAlert:) name:@"NotificationAlert" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnNotification:) name:@"Notification" object:nil];
     
-    
     /* 监听跳转到root后的tabbar变化*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(hideTabbar) name:@"PopToRoot" object:nil];
     
@@ -308,7 +312,6 @@
     
     /* 所有消息变为已读*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(allMessageRead) name:@"AllMessageRead" object:nil];
-    
     
 }
 
@@ -727,11 +730,16 @@
 /* 修改rootViewController为系统的主页controller*/
 - (void)changeRootViewConroller:(NSNotification *)notification{
     
-    
     if ([_window.rootViewController isEqual:_viewController]) {
         
-    }else{
         
+    }else{
+        _viewController = [[LCTabBarController alloc]init];
+        _viewController.tabBar.backgroundColor = [UIColor whiteColor];
+        _viewController.itemTitleColor = [UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:1.00];
+        _viewController.selectedItemTitleColor = NAVIGATIONRED;
+        _viewController.viewControllers = @[indexPageVC,/*tutoriumVC,*/chooseVC,classTimeVC,noticeVC,personalVC];
+//        [self setTabBarController];
         [UIView transitionFromView:_window.rootViewController.view toView:_viewController.view duration:0.5 options:UIViewAnimationOptionTransitionFlipFromLeft completion:^(BOOL finished) {
             
             [_window setRootViewController:_viewController];
@@ -777,7 +785,8 @@
     
     _loginViewController = [[LoginViewController alloc]init];
     
-    UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
+    naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
+    [naviVC setNavigationBarHidden:YES];
     
     [UIView transitionFromView:_window.rootViewController.view toView:naviVC.view duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
         
@@ -794,7 +803,10 @@
         _loginViewController = [[LoginViewController alloc]init];
     }
     
-    UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
+        naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
+        [naviVC setNavigationBarHidden:YES];
+    
+    
     
     [UIView transitionFromView:_window.rootViewController.view toView:naviVC.view duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
         
@@ -918,7 +930,7 @@
 /* 隐藏选项卡*/
 - (void)tabbarHide{
     
-    self.viewController.tabBar.hidden = YES;
+//    self.viewController.tabBar.hidden = YES;
     
 }
 

@@ -25,6 +25,10 @@
 #import "SetPayPasswordViewController.h"
 #import "UIViewController+AFHTTP.h"
 #import "VerifyPasswordViewController.h"
+#import "ChangePhoneViewController.h"
+#import "BindingMailInfoViewController.h"
+
+#import "GuestBindingViewController.h"
 
 @interface SafeViewController ()<WXApiDelegate>{
     
@@ -42,6 +46,9 @@
     
     /* 是否绑定了微信*/
     BOOL wechatIsBinding;
+    
+    /**是否是游客*/
+    BOOL is_Guest;
     
 }
 
@@ -80,6 +87,12 @@
     }
     
     
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"is_Guest"]) {
+        
+        is_Guest = [[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"];
+    }
+    
+    
     /* 请求个人详细信息*/
     
     [self requestUserInfo];
@@ -111,7 +124,7 @@
        
         SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
         
-        cell.balance.text = [[NSUserDefaults standardUserDefaults] valueForKey:@"email"];
+        cell.balance.text = [[NSUserDefaults standardUserDefaults] valueForKey:[note object]];
     }];
     
 }
@@ -338,8 +351,23 @@
             switch (indexPath.row) {
                 case 0:{
                     
-                    ChangePhoneGetCodeViewController *phoneVC = [[ChangePhoneGetCodeViewController alloc]initWithVerifyType:ChangePhone];
-                    [self.navigationController pushViewController:phoneVC animated:YES];
+                    UIViewController *controller ;
+                    SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:indexPath];
+                    if (is_Guest==YES) {
+                        
+                        if ([cell.balance.text isEqualToString:@"未绑定"]) {
+                            
+                            controller = [[ChangePhoneViewController alloc]init];
+                        }else{
+                            controller = [[ChangePhoneGetCodeViewController alloc]initWithVerifyType:ChangePhone];
+                        }
+                        
+                    }else{
+                        
+                        controller = [[ChangePhoneGetCodeViewController alloc]initWithVerifyType:ChangePhone];
+                    }
+                    
+                    [self.navigationController pushViewController:controller animated:YES];
                     
                 }
                     break;
@@ -369,13 +397,66 @@
                     
                 case 2:{
                     
-                    ChangePhoneGetCodeViewController *pareVC = [[ChangePhoneGetCodeViewController alloc]initWithVerifyType:ChangeEmail];
-                    [self.navigationController pushViewController:pareVC animated:YES];
+                    UIViewController *controller ;
+                    SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                    
+                    if (is_Guest==YES) {
+                        if ([cell.balance.text isEqualToString:@"未绑定"]) {
+                            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"系统需要使用您的手机接收校验码,请先绑定手机." cancelButtonTitle:@"前往绑定手机" destructiveButtonTitle:nil otherButtonTitles:@[@"暂不绑定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                                if (buttonIndex == 0) {
+                                    //先绑定手机
+                                    ChangePhoneViewController *controller = [[ChangePhoneViewController alloc]init];
+                                    [self.navigationController pushViewController:controller animated:YES];
+                                }else{
+                                    
+                                }
+                                
+                            }];
+                            
+                        }else{
+                            controller = [[ChangePhoneGetCodeViewController alloc]initWithVerifyType:ChangeEmail];
+                        }
+                        
+                    }else{
+                        
+                        controller = [[ChangePhoneGetCodeViewController alloc]initWithVerifyType:ChangeEmail];
+                    }
+                    
+                    [self.navigationController pushViewController:controller animated:YES];
                     
                 }
                     break;
-
+                    
                 case 3:{
+                    
+                    if (is_Guest==YES) {
+                        
+                        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"绑定家长手机需要验证您的登录密码,您尚未设置登录密码,是否前往设置?" cancelButtonTitle:@"前往设置" destructiveButtonTitle:nil otherButtonTitles:@[@"放弃设置"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                            
+                            if (buttonIndex == 0) {
+                                
+                                NSString *phone;
+                                if ([[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]) {
+                                    phone = [[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"];
+                                }
+                                UIViewController *controller;
+                                phone?controller = [[GuestBindingViewController alloc]initWithPhoneNumber:phone]:[[GuestBindingViewController alloc]init];
+                                [self.navigationController pushViewController:controller animated:YES];
+                                
+                            }else{
+                                
+                                
+                            }
+                            
+                        }];
+                    }else{
+                        
+                        
+                    }
+                    
+                    
+                    
+                    
                     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]) {
                         
                         VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]init];

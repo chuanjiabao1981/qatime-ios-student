@@ -73,7 +73,7 @@
     
     _getKeyButton = [[UIButton alloc]init];
     [_getKeyButton setTitleColor: [UIColor whiteColor] forState:UIControlStateNormal];
-    [_getKeyButton setTitle:@"获取验证码" forState:UIControlStateNormal];
+    [_getKeyButton setTitle:@"获取校验码" forState:UIControlStateNormal];
     [_getKeyButton setBackgroundColor:TITLECOLOR];
     _getKeyButton.layer.borderWidth = 1;
     _getKeyButton.layer.borderColor = TITLECOLOR.CGColor;

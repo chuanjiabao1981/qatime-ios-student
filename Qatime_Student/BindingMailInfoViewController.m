@@ -105,8 +105,8 @@
                 /* 绑定成功*/
                 [self HUDStopWithTitle:@"绑定成功!"];
                 
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"BindingEmail" object:nil];
                 [[NSUserDefaults standardUserDefaults]setValue:_bindingMailInfoView.mailText.text forKey:@"email"];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"BindingEmail" object:_bindingMailInfoView.mailText.text];
                 
                 [self performSelector:@selector(returnFrontPage) withObject:nil afterDelay:1];
             }
