@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AuthenCode.h"
 
 @interface LoginAgainView : UIView
 /* 注册按钮*/
@@ -30,6 +31,7 @@
 
 /* 验证码按钮*/
 @property(nonatomic,strong) UIButton *keyCodeButton ;
+@property (nonatomic, strong) AuthenCode *authenCode ;
 
 /* 外边框*/
 @property(nonatomic,strong) UIView *text2 ;

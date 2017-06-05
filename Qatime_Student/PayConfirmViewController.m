@@ -19,6 +19,8 @@
 #import "TutoriumInfoViewController.h"
 #import "MyOrderViewController.h"
 #import "CheckOrderViewController.h"
+#import "GuestBindingViewController.h"
+#import "SafeViewController.h"
 
 @interface PayConfirmViewController (){
     
@@ -32,6 +34,9 @@
     
     /* 订单支付token*/
     NSString *_ticketToken;
+    
+    /**是否是游客身份*/
+    BOOL is_Guest;
     
 }
 
@@ -101,6 +106,10 @@
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
+    //是不是游客
+    is_Guest  = [[NSUserDefaults standardUserDefaults]valueForKey:@"is_Guest"]?[[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"]:NO;
+    
+    
     /* 注册微信支付成功或失败的通知*/
 //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(CheckPayStatus) name:@"ChargeSucess" object:nil];
     
@@ -109,10 +118,59 @@
 #pragma mark- 支付订单
 - (void)payForOrder{
 
-    /* 余额支付*/
-    [self payWithBalance];
+    if (is_Guest) {
+        //游客登录购买啥的
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"系统检测到您尚未登录!系统无法保证您的充值信息和购买记录能够保存完整,不能确保您的资金账户安全,是否确定购买?" cancelButtonTitle:@"我要登录" destructiveButtonTitle:nil otherButtonTitles:@[@"确定购买"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+            
+            if (buttonIndex == 0) {
+                
+                //登录账号页面
+                [self loginAgain];
+                
+            }else{
+                
+                //直接购买啥也不管了
+                
+                //在这儿判断 这个游客 是否设置了支付密码
+                if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
+                    if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==NO) {
+                        //没支付密码的游客
+                        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"您尚未设置支付密码!请您前往设置支付密码,保障您的账户资金安全!" cancelButtonTitle:@"前往设置" destructiveButtonTitle:nil otherButtonTitles:@[@"暂不设置"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                            
+                            if (buttonIndex == 0) {
+                                //去设置支付密码
+                                SafeViewController *controller = [[SafeViewController alloc]init];
+                                [self.navigationController pushViewController:controller animated:YES];
+                                
+                            }else{
+                                //什么也不做了
+                                
+                            }
+                            
+                        }];
+                        
+                    }else{
+                        //有支付密码的游客o(╯□╰)o
+                        
+                        /* 余额支付*/
+                        [self payWithBalance];
+                    }
+                }
+                
+            }
+            
+        }];
+        
+        
+    }else{
+        //普通用户直接购买即可
+        /* 余额支付*/
+        [self payWithBalance];
+        
+    }
     
 }
+
 
 
 #pragma mark- 余额支付

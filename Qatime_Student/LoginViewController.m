@@ -60,7 +60,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     /* 是否有返回键*/
     BOOL haveReturnButton;
     
-    
+    //是否需要检查用户信息
     BOOL needCheckGuest;
     
 
@@ -112,7 +112,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyCodeAppear) name:@"FivethWrongTime" object:nil];
     
     /* 验证码按钮的点击事件*/
-    [_loginView.keyCodeButton addTarget:self action:@selector(makeCaptcha) forControlEvents:UIControlEventTouchUpInside];
+//    [_loginView.keyCodeButton addTarget:self action:@selector(makeCaptcha) forControlEvents:UIControlEventTouchUpInside];
     
     
     /* 微信按钮加点击事件 点击登录*/
@@ -133,6 +133,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     [self registerForKeyboardNotifications];
     
+    //检查是否需要检查用户信息
     if ([SAMKeychain allAccounts]==nil) {
         needCheckGuest = NO;
     }else{
@@ -256,8 +257,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         
         
     }
-    
-    
+     
 }
 
 
@@ -434,6 +434,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     _loginView.keyCodeButton.hidden = NO;
     _loginView.text3.hidden = NO;
     _loginView.keyCodeText.hidden = NO;
+    
     
     if ([UIScreen mainScreen].bounds.size.width!= 320) {
   
@@ -633,6 +634,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
 #pragma mark- 本地登录成功后 保存token文件，并且转到主页面
     
+    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
     
     NSString *userTokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
     

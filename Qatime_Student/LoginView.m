@@ -220,7 +220,6 @@
         _authenCode = [[AuthenCode alloc]initWithFrame:CGRectMake(0, 0, _keyCodeButton.width_sd, _keyCodeButton.height_sd)];
         [_keyCodeButton addSubview: _authenCode];
         
-        
         /* 验证码框*/
         _text3 = [[UIView alloc]init];
         _text3.layer.borderWidth =1;

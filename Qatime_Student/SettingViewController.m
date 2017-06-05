@@ -309,7 +309,7 @@
             [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"chat_account"];
             [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"openID"];
             [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Login"];
-            [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"avatar_url"];
+//            [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"avatar_url"];
             
             /* 云信退出登录*/
             [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error){}];

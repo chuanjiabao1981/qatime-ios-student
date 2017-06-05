@@ -30,13 +30,11 @@
 
 #import "GuestBindingViewController.h"
 
+#import "UIViewController+Token.h"
+
 @interface SafeViewController ()<WXApiDelegate>{
     
     NavigationBar *_navigationBar;
-    
-    NSString *_token;
-    NSString *_idNumber;
-    
     
     /* 菜单名称*/
     NSArray *_menuName;
@@ -75,17 +73,6 @@
     });
     
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-    
     
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"is_Guest"]) {
         
@@ -145,8 +132,8 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/students/%@/info",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/students/%@/info",Request_Header,[self getStudentID]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSMutableDictionary *getDic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
@@ -440,7 +427,17 @@
                                     phone = [[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"];
                                 }
                                 UIViewController *controller;
-                                phone?controller = [[GuestBindingViewController alloc]initWithPhoneNumber:phone]:[[GuestBindingViewController alloc]init];
+                                if (phone) {
+                                    if (![phone isEqualToString:@"未绑定"]) {
+                                        
+                                        controller = [[GuestBindingViewController alloc]initWithPhoneNumber:phone];
+                                    }else{
+                                       controller = [[GuestBindingViewController alloc]init];
+                                    }
+                                }else{
+                                   controller = [[GuestBindingViewController alloc]init];
+                                }
+                                
                                 [self.navigationController pushViewController:controller animated:YES];
                                 
                             }else{
@@ -451,21 +448,18 @@
                         }];
                     }else{
                         
+                        //普通用户
                         
-                    }
-                    
-                    
-                    
-                    
-                    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]) {
-                        
-                        VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]init];
-                        [self.navigationController pushViewController:pareVC animated:YES];
-                    }
-                    else if (![[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]||[[[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]isEqualToString:@""]||[[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]==nil){
-                        VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]init];
-                        [self.navigationController pushViewController:pareVC animated:YES];
-                        
+                        if ([[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]) {
+                            
+                            VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]init];
+                            [self.navigationController pushViewController:pareVC animated:YES];
+                        }
+                        else if (![[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]||[[[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]isEqualToString:@""]||[[NSUserDefaults standardUserDefaults]objectForKey:@"parent_phone"]==nil){
+                            VerifyPasswordViewController *pareVC = [[VerifyPasswordViewController alloc]init];
+                            [self.navigationController pushViewController:pareVC animated:YES];
+                            
+                        }
                     }
                     
                 }
@@ -479,36 +473,63 @@
             switch (indexPath.row) {
                 case 0:{
                     
-                    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置或修改后将在24小时内不能使用支付密码,是否继续?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"继续"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                        if (buttonIndex!=0) {
-                            
-                            if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
-                                if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==YES) {
-                                    /* 已经设置过支付密码,更改支付密码*/
-                                    SetPayPasswordViewController *setPass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
-                                    [self.navigationController pushViewController:setPass animated:YES];
+                    if (is_Guest) {
+                        //游客设置
+                        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
+                            if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==NO) {
+                                //未设置支付密码的游客
+                                [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置支付密码需要验证您的登录密码和绑定手机号,是否前去绑定?" cancelButtonTitle:@"前往绑定" destructiveButtonTitle:nil otherButtonTitles:@[@"暂不绑定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                                     
-                                }else if([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==NO){
-                                    /* 初次设置支付密码*/
-                                    AuthenticationViewController *authentication =[[AuthenticationViewController alloc]init];
-                                    [self.navigationController pushViewController:authentication animated:YES];
+                                    if (buttonIndex == 0) {
+                                        //去绑定
+                                        
+                                        GuestBindingViewController *controller = [[GuestBindingViewController alloc]init];
+                                        [self.navigationController pushViewController:controller animated:YES];
+                                        
+                                    }else{
+                                        //不绑定啥也不做
+                                        
+                                    }
                                     
-                                    SetPayPasswordViewController *newpass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
-                                    [self.navigationController pushViewController:newpass animated:YES];
-                                    
-                                }
+                                }];
                             }
                         }
+                    }else{
                         
-                    }];
-                    
+                        //普通用户直接提示
+                        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"新设置或修改后将在24小时内不能使用支付密码,是否继续?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"继续"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                            if (buttonIndex!=0) {
+                                
+                                if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
+                                    if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==YES) {
+                                        /* 已经设置过支付密码,更改支付密码*/
+                                        SetPayPasswordViewController *setPass = [[SetPayPasswordViewController alloc]initWithPageType:VerifyPassword];
+                                        [self.navigationController pushViewController:setPass animated:YES];
+                                        
+                                    }else if([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==NO){
+                                        /* 初次设置支付密码*/
+                                        AuthenticationViewController *authentication =[[AuthenticationViewController alloc]init];
+                                        [self.navigationController pushViewController:authentication animated:YES];
+
+                                    }
+                                }
+                            }
+                            
+                        }];
+                    }
                 }
                     break;
                 case 1:{
                     
-                    ChangePasswordViewController *changVC = [ChangePasswordViewController new];
-                    [self.navigationController pushViewController:changVC animated:YES];
+                    UIViewController *controller;
+                    if (is_Guest) {
+                        controller  = [[GuestBindingViewController alloc]init];
+                    }else{
+                        
+                        controller = [ChangePasswordViewController new];
+                    }
                     
+                    [self.navigationController pushViewController:controller animated:YES];
                     
                 }
                     break;
@@ -573,8 +594,8 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager POST:[NSString stringWithFormat:@"%@/api/v1/users/%@/wechat",Request_Header,_idNumber] parameters:@{@"code":wechatCode} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
+    [manager POST:[NSString stringWithFormat:@"%@/api/v1/users/%@/wechat",Request_Header,[self getStudentID]] parameters:@{@"code":wechatCode} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         /* <# State #>*/
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
@@ -613,7 +634,7 @@
     wechatIsBinding = YES;
     
     /*绑定成功后,请求一下个人信息,获取openid*/
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/students/%@/info",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/students/%@/info",Request_Header,[self getStudentID]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         [self loginStates:dic];
@@ -635,8 +656,8 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager DELETE:[NSString stringWithFormat:@"%@/api/v1/users/%@/wechat",Request_Header,_idNumber] parameters:@{@"openid":[[NSUserDefaults standardUserDefaults]valueForKey:@"openID"]} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
+    [manager DELETE:[NSString stringWithFormat:@"%@/api/v1/users/%@/wechat",Request_Header,[self getStudentID]] parameters:@{@"openid":[[NSUserDefaults standardUserDefaults]valueForKey:@"openID"]} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         

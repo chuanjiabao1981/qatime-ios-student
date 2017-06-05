@@ -21,6 +21,9 @@
 #import "LivePlayerViewController.h"
 #import "ChatViewController.h"
 #import "UIControl+RemoveTarget.h"
+#import "UIViewController+Token.h"
+#import "CYLTableViewPlaceHolder.h"
+#import "HaveNoClassView.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -29,9 +32,6 @@
 @interface MyClassViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>{
     
     NavigationBar *_navigationBar;
-    
-    NSString *_token;
-    NSString *_idNumber;
     
     /* 保存课程数据的数组们*/
     
@@ -73,16 +73,6 @@
         [weakSelf.myClassView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-40) animated:YES];
     }];
     [_myClassView.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
-    
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-    
     
     /* 所有数据初始化*/
     _allClassArr = @[].mutableCopy;
@@ -180,13 +170,13 @@
     
     NSString *requestURL;
     
-    if (_token&&_idNumber) {
+    if ([self getToken]&&[self getStudentID]) {
         
-        requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?status=%@",Request_Header,_idNumber,@"published"];
+        requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?status=%@",Request_Header,[self getStudentID],@"published"];
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+        [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
         [manager GET:requestURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -254,15 +244,15 @@
     
     NSString *requestURL;
     
-    if (_token&&_idNumber) {
+    if ([self getToken]&&[self getStudentID]) {
         
-        requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?status=%@",Request_Header,_idNumber,@"teaching"];
+        requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?status=%@",Request_Header,[self getStudentID],@"teaching"];
         
         //        [self HUDStartWithTitle:@"正在加载"];
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+        [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
         [manager GET:requestURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -329,15 +319,15 @@
     
     NSString *requestURL;
     
-    if (_token&&_idNumber) {
+    if ([self getToken]&&[self getStudentID]) {
         
-        requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?status=%@",Request_Header,_idNumber,@"completed"];
+        requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?status=%@",Request_Header,[self getStudentID],@"completed"];
         
         //        [self HUDStartWithTitle:@"正在加载"];
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+        [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
         [manager GET:requestURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -413,15 +403,15 @@
     
     NSString *requestURL;
     
-    if (_token&&_idNumber) {
+    if ([self getToken]&&[self getStudentID]) {
         
-        requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?cate=%@",Request_Header,_idNumber,@"taste"];
+        requestURL = [NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses?cate=%@",Request_Header,[self getStudentID],@"taste"];
         
         //        [self HUDStartWithTitle:@"正在加载"];
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+        [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
         [manager GET:requestURL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -990,6 +980,18 @@
         [_myClassView.segmentControl setSelectedSegmentIndex:page animated:YES];
         
     }
+}
+
+- (UIView *)makePlaceHolderView{
+    
+    HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"当前无课程"];
+    return view;
+}
+
+
+- (BOOL)enableScrollWhenPlaceHolderViewShowing{
+    
+    return NO;
 }
 
 

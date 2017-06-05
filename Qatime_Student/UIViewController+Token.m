@@ -11,7 +11,7 @@
 
 static const void *TokenKey = &TokenKey;
 
-static const void *TeacherIDKey = &TeacherIDKey;
+static const void *StudentIDKey = &StudentIDKey;
 
 
 @implementation UIViewController (Token)
@@ -28,14 +28,16 @@ static const void *TeacherIDKey = &TeacherIDKey;
     return objc_getAssociatedObject(self, TokenKey);
 }
 
--(void)setTeacherID:(NSString *)teacherID{
+-(void)setStudentID:(NSString *)studentID{
     
-    objc_setAssociatedObject(self, TeacherIDKey, teacherID, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, StudentIDKey, studentID, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
 }
 
--(NSString *)teacherID{
+-(NSString *)studentID{
     
-    return objc_getAssociatedObject(self, TeacherIDKey);
+    return objc_getAssociatedObject(self, StudentIDKey);
+    
 }
 
 
@@ -46,23 +48,29 @@ static const void *TeacherIDKey = &TeacherIDKey;
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
         self.token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
     }else{
-        self.token = @"";
+        self.token = [SAMKeychain passwordForService:@"Qatime_Student" account:@"Remember-Token"];
     }
     return self.token;
-    
 }
+
+
+
 
 /**获取id方法*/
 
--(NSString *)getTeacherID{
+-(NSString *)getStudentID{
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
         
-        self.teacherID = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
+        self.studentID = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }else{
         
-        self.teacherID = @"";
+        self.studentID = [SAMKeychain passwordForService:@"Qatime_Student" account:@"id"];
     }
-    return self.teacherID;
+    return self.studentID;
 }
+
+
+
+
 
 @end

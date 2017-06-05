@@ -43,10 +43,6 @@ typedef enum : NSUInteger {
     
     NavigationBar *_navigationBar;
     
-    NSString *_token;
-    NSString *_idNumber;
-    
-    
     /**学习中 数组*/
     NSMutableArray *_onStudyArray;
     
@@ -180,7 +176,7 @@ typedef enum : NSUInteger {
     }
     
     //数据只请求一次,请求回来数据之后,在根据不同情况进行数据分配
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/interactive_courses/list",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"status":state,@"page":[NSString stringWithFormat:@"%ld",page],@"per_page":@"10"} completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/interactive_courses/list",Request_Header,[self getStudentID]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:@{@"status":state,@"page":[NSString stringWithFormat:@"%ld",page],@"per_page":@"10"} completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         
@@ -294,11 +290,19 @@ typedef enum : NSUInteger {
             }
         }else{
             //获取数据失败
-            
+//            [_myView.onStudyTableView.mj_header endRefreshingWithCompletionBlock:^{
+//                
+//                [_myView.onStudyTableView cyl_reloadData];
+//            }];
             
         }
         
     }failure:^(id  _Nullable erros) {
+        
+//        [_myView.onStudyTableView.mj_header endRefreshingWithCompletionBlock:^{
+//            
+//            [_myView.onStudyTableView cyl_reloadData];
+//        }];
         
     }];
     

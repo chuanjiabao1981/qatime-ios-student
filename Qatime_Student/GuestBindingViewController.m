@@ -15,6 +15,10 @@
 #import <NIMSDK/NIMSDK.h>
 #import "UIControl+RemoveTarget.h"
 
+
+#import "SafeViewController.h"
+#import "MyWalletViewController.h"
+
 typedef NS_ENUM(NSUInteger, LoginType) {
     Normal =0, //账号密码登录
     Wechat,  //微信登录
@@ -447,6 +451,10 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                                 [SAMKeychain setPassword:_mainView.passwordText.text forService:@"Qatime_Student" account:_mainView.phoneText.text error:&error];
                                 [self HUDStopWithTitle:@"绑定成功!"];
                                 
+                                ///绑定成功后的跳转
+                                [self backToAssign];
+                                
+                                
                             }else{
                                 //绑定失败
                                 [self HUDStopWithTitle:@"绑定失败,请稍后再试"];
@@ -608,6 +616,31 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     }
     
 }
+
+
+//指定页面跳转
+- (void)backToAssign{
+    
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        
+        if ([controller isMemberOfClass:[SafeViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+        }else if([controller isMemberOfClass:[MyWalletViewController class]]){
+            [self.navigationController popToViewController:controller animated:YES];
+        }
+        
+        
+        else{
+            
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        
+    }
+   
+}
+
+
+
 
 
 - (void)resign{

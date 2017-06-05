@@ -28,15 +28,12 @@
 #import "MyVideoClassViewController.h"
 #import "AboutUsViewController.h"
 #import "MyAuditionViewController.h"
+#import "UIViewController+Token.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.width
 
 @interface PersonalViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate>{
-    
-    
-    NSString *_token;
-    NSString *_idNumber;
     
     LivePlayerViewController *neVideoVC;
     
@@ -77,7 +74,6 @@
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     
-    
     /* 菜单名*/
     _settingName = @[@"我的钱包",@"我的订单",@"我的直播课",@"我的一对一",@"我的视频课",@"我的试听",@"安全管理",@"系统设置",@"关于我们"];
     
@@ -103,7 +99,8 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogin:) name:@"UserLoginAgain" object:nil];
     
     /* 如果是充值成功,充值成功后刷新钱包金额*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshAmount) name:@"ChargeSucess" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshAmount) name:@"ChargeSuccess" object:nil];
+
     
     /* 修改个人信息成功后的回调*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeHead:) name:@"ChangeInfoSuccess" object:nil];
@@ -131,15 +128,6 @@
 /* 页面加载方法*/
 - (void)setupPages{
     
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-    
     /**取出是否是游客*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"is_Guest"]) {
         is_Guest = [[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"];
@@ -147,13 +135,19 @@
     
     /* 取出用户名*/
     
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"name"]) {
+    if (is_Guest == YES) {
         
-        _name = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"name"]];
+        _name = [NSString stringWithFormat:@"%@",[SAMKeychain passwordForService:@"Qatime_Student" account:@"id"]];
+        
+    }else{
+        
+        if ([[NSUserDefaults standardUserDefaults]objectForKey:@"name"]) {
+            _name = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"name"]];
+        }
     }
     
     /* 取出头像信息*/
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"]==YES) {
+    if (is_Guest==YES) {
         _avatarStr = @"";
     }else{
         
@@ -161,7 +155,6 @@
             _avatarStr = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"avatar_url"]];
         }
     }
-    
     
     /* 取出登录状态*/
     login = [[NSUserDefaults standardUserDefaults]boolForKey:@"Login"];
@@ -171,7 +164,7 @@
         if (is_Guest == YES) {
             
             [_headView.headImageView setImage:[UIImage imageNamed:@"人"]];
-            if ([_name isEqualToString:_idNumber]) {
+            if ([_name isEqualToString:[self getStudentID]]) {
                 _headView.name .text = [NSString stringWithFormat:@"游客%@", _name];
             }else{
                  _headView.name .text = [NSString stringWithFormat:@"%@", _name];
@@ -233,8 +226,8 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,[self getStudentID]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
@@ -275,14 +268,11 @@
             
             
             /* 获取失败*/
-            
         }
-        
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-    
     
 }
 
@@ -410,12 +400,12 @@
                     break;
                 case 3:{
                     
-                    //                    [self HUDStopWithTitle:@"正在开发中,敬请期待"];
+                                        [self HUDStopWithTitle:@"正在开发中,敬请期待"];
                     
                     /**
                      该版本暂时改为提示
                      */
-                    controller = [MyOneOnOneViewController new];
+//                    controller = [MyOneOnOneViewController new];
                 }
                     break;
                 case 4:{
