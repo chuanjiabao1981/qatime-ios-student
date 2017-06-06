@@ -168,7 +168,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
             /**
              以本地是否保存了@"Remember-Token"为用户名的keychain作为依据
              */
-            if ([SAMKeychain passwordForService:@"Qatime_Student" account:@"Remember-Token"]==nil) {
+            if ([SAMKeychain passwordForService:Qatime_Service account:@"Remember-Token"]==nil) {
                 //没有不管,可以直接输入字符
                 
             }else{
@@ -421,13 +421,13 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                         
                         for (NSDictionary *acc in keys) {
                             
-                            [SAMKeychain deletePasswordForService:@"Qatime_Student" account:acc[@"acct"] error:&error];
+                            [SAMKeychain deletePasswordForService:Qatime_Service account:acc[@"acct"] error:&error];
                         }
                         
                     }
                     
                     //存储新的key
-                    [SAMKeychain setPassword:_loginAgainView.passWord.text forService:@"Qatime_Student" account:_loginAgainView.userName.text error:&error];
+                    [SAMKeychain setPassword:_loginAgainView.passWord.text forService:Qatime_Service account:_loginAgainView.userName.text error:&error];
 
                     [self saveUserInfo:dicGet loginType:Normal];
                     //

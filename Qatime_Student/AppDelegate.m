@@ -123,8 +123,8 @@
                 /* 如果有游客登录信息,直接登录,并保存token和id*/
                 [_window setRootViewController:_viewController];
                 
-                NSString *userid = [SAMKeychain passwordForService:@"Qatime_Student" account:@"id"];
-                NSString *token = [SAMKeychain passwordForService:@"Qatime_Student" account:@"Remember-Token"];
+                NSString *userid = [SAMKeychain passwordForService:Qatime_Service account:@"id"];
+                NSString *token = [SAMKeychain passwordForService:Qatime_Service account:@"Remember-Token"];
                 [[NSUserDefaults standardUserDefaults]setObject:userid forKey:@"id"];
                 [[NSUserDefaults standardUserDefaults]setObject:token forKey:@"remember-token"];
                 NSLog(@"token:%@,id:%@",token,userid);
@@ -387,13 +387,9 @@
     classTimeVC = [[UINavigationController alloc]initWithRootViewController:_classTimeViewController];
     noticeVC = [[UINavigationController alloc]initWithRootViewController:_noticeIndexViewController];
     personalVC = [[UINavigationController alloc]initWithRootViewController:_personalViewController];
-    
     chooseVC = [[UINavigationController alloc]initWithRootViewController:_chooseClassViewController];
 
 }
-
-
-
 
 
 #pragma mark- 注册推送
@@ -1021,7 +1017,7 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager POST:[NSString stringWithFormat:@"%@/api/v1/system/device_info",Request_Header] parameters:@{@"user_id":idNumber==nil?@"":idNumber,@"device_token":device_token==nil?@"":device_token,@"device_model":device_model==nil?@"":device_model,@"app_name":@"Qatime_Student",@"app_version":app_version==nil?@"":app_version} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@/api/v1/system/device_info",Request_Header] parameters:@{@"user_id":idNumber==nil?@"":idNumber,@"device_token":device_token==nil?@"":device_token,@"device_model":device_model==nil?@"":device_model,@"app_name":Qatime_Service,@"app_version":app_version==nil?@"":app_version} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {

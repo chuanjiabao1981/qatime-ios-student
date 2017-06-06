@@ -464,10 +464,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1397,10 +1397,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1918,6 +1918,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_recentArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[InteractionViewController makeChildViewControllers]:InteractionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatTeamID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

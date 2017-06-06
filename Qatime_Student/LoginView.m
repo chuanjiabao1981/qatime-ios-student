@@ -32,7 +32,7 @@
         /* 跳过登录*/
         _acrossLogin = [[UIButton alloc]init];
         [self addSubview:_acrossLogin];
-        [_acrossLogin setTitle:NSLocalizedString(@"直接进入", comment:"") forState:UIControlStateNormal];
+        [_acrossLogin setTitle:NSLocalizedString(@"游客登录", comment:"") forState:UIControlStateNormal];
         [_acrossLogin setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _acrossLogin.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         [_acrossLogin setBackgroundColor:[UIColor whiteColor]];

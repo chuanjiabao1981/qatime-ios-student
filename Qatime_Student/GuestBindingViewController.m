@@ -14,6 +14,7 @@
 #import "SAMKeychain.h"
 #import <NIMSDK/NIMSDK.h>
 #import "UIControl+RemoveTarget.h"
+#import "LoginViewController.h"
 
 
 #import "SafeViewController.h"
@@ -69,8 +70,8 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 /**加载基础数据*/
 - (void)makeData{
     
-    _token = [NSString stringWithFormat:@"%@",[SAMKeychain passwordForService:@"Qatime_Student" account:@"Remember-Token"]];
-    _id = [NSString stringWithFormat:@"%@",[SAMKeychain passwordForService:@"Qatime_Student" account:@"id"]];
+    _token = [NSString stringWithFormat:@"%@",[SAMKeychain passwordForService:Qatime_Service account:@"Remember-Token"]];
+    _id = [NSString stringWithFormat:@"%@",[SAMKeychain passwordForService:Qatime_Service account:@"id"]];
 }
 
 
@@ -424,8 +425,10 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                             [self stopHUD];
                             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
                             if ([dic[@"status"]isEqualToNumber:@1]) {
-                                //绑定成功
+                                
+                                //绑定成功 如同登录成功
                                 [self saveUserInfo:dic[@"data"] loginType:Normal];
+                                
                                 //绑定成功后,干掉所有游客信息keychain,并保存当前用户的keychain
                                 NSError *error = [[NSError alloc]init];
                                 
@@ -434,21 +437,19 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                                     
                                     if ([key[@"acct"]isEqualToString:@"Remember-Token"]) {
                                         
-                                        [SAMKeychain deletePasswordForService:@"Qatime_Student" account:@"Remember-Token" error:&error];
+                                        [SAMKeychain deletePasswordForService:Qatime_Service account:@"Remember-Token" error:&error];
                                     }else if ([key[@"acct"]isEqualToString:@"id"]){
                                         
-                                        [SAMKeychain deletePasswordForService:@"Qatime_Student" account:@"id" error:&error];
+                                        [SAMKeychain deletePasswordForService:Qatime_Service account:@"id" error:&error];
                                         
                                     }else if ([key[@"acct"]isEqualToString:@"password"]){
                                         
-                                        [SAMKeychain deletePasswordForService:@"Qatime_Student" account:@"password" error:&error];
+                                        [SAMKeychain deletePasswordForService:Qatime_Service account:@"password" error:&error];
                                     }
                                     
                                 }
                                 
-                                
-                                
-                                [SAMKeychain setPassword:_mainView.passwordText.text forService:@"Qatime_Student" account:_mainView.phoneText.text error:&error];
+                                [SAMKeychain setPassword:_mainView.passwordText.text forService:Qatime_Service account:_mainView.phoneText.text error:&error];
                                 [self HUDStopWithTitle:@"绑定成功!"];
                                 
                                 ///绑定成功后的跳转
@@ -627,10 +628,11 @@ typedef NS_ENUM(NSUInteger, LoginType) {
             [self.navigationController popToViewController:controller animated:YES];
         }else if([controller isMemberOfClass:[MyWalletViewController class]]){
             [self.navigationController popToViewController:controller animated:YES];
-        }
-        
-        
-        else{
+        }else if ([controller isMemberOfClass:[LoginViewController class]]){
+            //从登录页过来的就直接登录吧 , 绑定手机和密码了也干不了啥别的了
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+            
+        }else{
             
             [self.navigationController popViewControllerAnimated:YES];
         }

@@ -48,7 +48,7 @@ static const void *StudentIDKey = &StudentIDKey;
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
         self.token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
     }else{
-        self.token = [SAMKeychain passwordForService:@"Qatime_Student" account:@"Remember-Token"];
+        self.token = [SAMKeychain passwordForService:Qatime_Service account:@"Remember-Token"];
     }
     return self.token;
 }
@@ -64,7 +64,7 @@ static const void *StudentIDKey = &StudentIDKey;
         self.studentID = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }else{
         
-        self.studentID = [SAMKeychain passwordForService:@"Qatime_Student" account:@"id"];
+        self.studentID = [SAMKeychain passwordForService:Qatime_Service account:@"id"];
     }
     return self.studentID;
 }

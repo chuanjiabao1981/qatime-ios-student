@@ -29,6 +29,7 @@
 #import "AboutUsViewController.h"
 #import "MyAuditionViewController.h"
 #import "UIViewController+Token.h"
+#import "GuestBindingViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.width
@@ -137,7 +138,7 @@
     
     if (is_Guest == YES) {
         
-        _name = [NSString stringWithFormat:@"%@",[SAMKeychain passwordForService:@"Qatime_Student" account:@"id"]];
+        _name = [NSString stringWithFormat:@"%@",[SAMKeychain passwordForService:Qatime_Service account:@"id"]];
         
     }else{
         
@@ -383,7 +384,7 @@
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
         if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
             
-            UIViewController *controller;
+           __block UIViewController *controller;
             switch (indexPath.row) {
                 case 0:{
                     controller = [MyWalletViewController new];
@@ -400,12 +401,12 @@
                     break;
                 case 3:{
                     
-                                        [self HUDStopWithTitle:@"正在开发中,敬请期待"];
+//                    [self HUDStopWithTitle:@"正在开发中,敬请期待"];
                     
                     /**
                      该版本暂时改为提示
                      */
-//                    controller = [MyOneOnOneViewController new];
+                    controller = [MyOneOnOneViewController new];
                 }
                     break;
                 case 4:{
@@ -421,7 +422,38 @@
                 }
                     break;
                 case 6:{
+                    if (is_Guest == YES) {
+                        //是游客就让游客去绑定
+                        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"游客账号不能进行此操作!\n请先绑定账号!" cancelButtonTitle:@"前往绑定" destructiveButtonTitle:nil otherButtonTitles:@[@"暂不绑定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                            
+                            if (buttonIndex == 0) {
+                                //前往绑定游客账号
+                                
+                                if ([[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]) {
+                                    
+                                controller  = [[GuestBindingViewController alloc]initWithPhoneNumber:[[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]];
+                                }else{
+                                    
+                                    controller = [[GuestBindingViewController alloc]init];
+                                }
+                                
+                                controller.hidesBottomBarWhenPushed = YES;
+                                [self.navigationController pushViewController:controller animated:YES];
+                                
+                            }else{
+                                //不绑定直接进入安全管理
+                                controller = [SafeViewController new];
+                                controller.hidesBottomBarWhenPushed = YES;
+                                [self.navigationController pushViewController:controller animated:YES];
+                            }
+                            
+                        }];
+                        
+                    }else{
+                        
                     controller = [SafeViewController new];
+                        
+                    }
                     
                 }
                     break;

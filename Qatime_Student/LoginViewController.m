@@ -228,7 +228,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
             /**
              以本地是否保存了@"Remember-Token"为用户名的keychain作为依据
              */
-            if ([SAMKeychain passwordForService:@"Qatime_Student" account:@"Remember-Token"]==nil) {
+            if ([SAMKeychain passwordForService:Qatime_Service account:@"Remember-Token"]==nil) {
                 //没有不管,可以直接输入字符
                 
             }else{
@@ -333,7 +333,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     /**
      以keychian中保存的@"Remember-Token"字段作为依据,有则用游客登陆过,没有就直接申请游客账户然后进入主页
      */
-    if ([SAMKeychain passwordForService:@"Qatime_Student" account:@"Remember-Token"]==nil) {
+    if ([SAMKeychain passwordForService:Qatime_Service account:@"Remember-Token"]==nil) {
         //没有游客账号,有可能保存了用户账号
         //遍历所有key 如果没有@"Remember-Token",@"id",@"password"这三个字段,但是有其他字段,就算是登录过
         NSArray *allKeys = [SAMKeychain allAccounts];
@@ -407,11 +407,11 @@ typedef NS_ENUM(NSUInteger, LoginType) {
             
             NSError *error = [[NSError alloc]init];
             //keychain保存用户账户名
-            [SAMKeychain setPassword:[NSString stringWithFormat:@"%@",dic[@"data"][@"user"][@"id"]] forService:@"Qatime_Student" account:@"id" error:&error];
+            [SAMKeychain setPassword:[NSString stringWithFormat:@"%@",dic[@"data"][@"user"][@"id"]] forService:Qatime_Service account:@"id" error:&error];
             //第二组keychain保存token
-            [SAMKeychain setPassword:dic[@"data"][@"remember_token"] forService:@"Qatime_Student" account:@"Remember-Token" error:&error];
+            [SAMKeychain setPassword:dic[@"data"][@"remember_token"] forService:Qatime_Service account:@"Remember-Token" error:&error];
             //第三组keychain保存用户密码
-            [SAMKeychain setPassword:_guestPassWord forService:@"Qatime_Student" account:@"password" error:&error];
+            [SAMKeychain setPassword:_guestPassWord forService:Qatime_Service account:@"password" error:&error];
             
             [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
             
@@ -468,9 +468,37 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 /* 注册按钮点击事件*/
 - (void)enterSignUpPage:(UIButton *)sender{
     
-    SignUpViewController *_signUpViewController = [[SignUpViewController alloc]init];
+    /**
+     检测用户是不是用游客用户登录过.
+     有游客账户信息,提示用户绑定
+     或者依然注册.
+     */
     
-    [self.navigationController pushViewController:_signUpViewController animated:YES];
+    if ([SAMKeychain passwordForService:Qatime_Service account:@"Remember-Token"]) {
+        //有过游客账户
+        
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"系统检测到您之前试用过游客登录,您是否需要绑定账号?" cancelButtonTitle:@"前往绑定" destructiveButtonTitle:nil otherButtonTitles:@[@"注册新账号"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+            if (buttonIndex == 0) {
+                //绑定账号
+                GuestBindingViewController *controller = [[GuestBindingViewController alloc]init];
+                [self.navigationController pushViewController:controller animated:YES];
+                
+            }else{
+                //直接注册啥也不管
+                SignUpViewController *_signUpViewController = [[SignUpViewController alloc]init];
+                [self.navigationController pushViewController:_signUpViewController animated:YES];
+            }
+            
+        }];
+        
+    }else{
+
+        //没有游客账户直接登录
+        SignUpViewController *_signUpViewController = [[SignUpViewController alloc]init];
+        [self.navigationController pushViewController:_signUpViewController animated:YES];
+        
+    }
+    
     
 }
 
@@ -576,13 +604,13 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                             
                             for (NSDictionary *acc in keys) {
                                 
-                                [SAMKeychain deletePasswordForService:@"Qatime_Student" account:acc[@"acct"] error:&error];
+                                [SAMKeychain deletePasswordForService:Qatime_Service account:acc[@"acct"] error:&error];
                             }
                             
                         }
                         
                         //存储新的key
-                        [SAMKeychain setPassword:_loginView.passWord.text forService:@"Qatime_Student" account:_loginView.userName.text error:&error];
+                        [SAMKeychain setPassword:_loginView.passWord.text forService:Qatime_Service account:_loginView.userName.text error:&error];
                         
                         [self saveUserInfo:dicGet loginType:Normal];
                         

@@ -100,7 +100,7 @@
 /**视频页面*/
 @property (nonatomic, strong) NTESMeetingActorsView *actorsView;
 
-/**当前子控制器*/
+/**当前子控制器*/ 
 @property (nonatomic, weak)   UIViewController *currentChildViewController;
 /**允许用户的alert*/
 @property (nonatomic, strong) UIAlertView *actorEnabledAlert;
@@ -156,20 +156,17 @@ NTES_FORBID_INTERACTIVE_POP
 }
 
 
-/**
- 初始化数据
- */
+/**初始化数据*/
 - (void)makeData{
 
 }
 
-/**
- 加载视图
- */
+/**加载视图*/
 - (void)setupViews{
     
     [UIApplication sharedApplication].idleTimerDisabled = YES;
     self.view.backgroundColor = [UIColor whiteColor];
+    //加载所有子控制器
     [self setupChildViewController];
     [self.view addSubview:self.actorsView];
     [self.view addSubview:self.actionView];

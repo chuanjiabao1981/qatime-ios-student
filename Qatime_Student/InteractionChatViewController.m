@@ -457,8 +457,6 @@
 //}
 
 
-
-
 /* 请求聊天用户*/
 - (void)requestChatTeamUser{
     
