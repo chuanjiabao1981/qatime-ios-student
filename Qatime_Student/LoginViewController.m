@@ -534,8 +534,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         
     }
     
-    
-    
     if (![_loginView.userName.text isEqualToString:@""]&![_loginView.passWord.text isEqualToString:@""]) {
        
         /* 判断是否需要输入验证码*/
@@ -805,8 +803,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
     [self cancelAllRespond];
-    
-    
     
 }
 

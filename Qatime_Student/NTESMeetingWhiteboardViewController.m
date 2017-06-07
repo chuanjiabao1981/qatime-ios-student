@@ -202,7 +202,6 @@
     self.imgloadLabel.centerX = self.drawView.width / 2.f;
     self.imgloadLabel.centerY = self.drawView.height / 2.f;
     
-
 }
 
 - (void)checkPermission

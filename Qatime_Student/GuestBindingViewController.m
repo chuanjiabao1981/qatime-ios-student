@@ -103,7 +103,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         _mainView.getCheckCodeBtn.layer.borderColor = NAVIGATIONRED.CGColor;
         
         [_mainView.getCheckCodeBtn addTarget:self action:@selector(getCheckCode:) forControlEvents:UIControlEventTouchUpInside];
-
+        
     }
     
     //输入框代理
@@ -119,7 +119,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     //增加键盘监听
     [self registerForKeyboardNotifications];
-
+    
 }
 
 /**注册键盘监听*/
@@ -212,7 +212,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     if (_mainView.phoneText.text.length > 11) {
         _mainView.phoneText.text = [_mainView.phoneText.text substringToIndex:11];
         [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请输入11位手机号", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-        
+            
             _mainView.getCheckCodeBtn.enabled = YES;
             [_mainView.getCheckCodeBtn setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
             [_mainView.getCheckCodeBtn setBackgroundColor:[UIColor whiteColor]];
@@ -239,7 +239,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         _mainView.finishBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
         
     }
-  
+    
 }
 
 /*点击按钮  获取验证码*/
@@ -251,29 +251,58 @@ typedef NS_ENUM(NSUInteger, LoginType) {
      */
     if ([self isMobileNumber:_mainView.phoneText.text]){
         
-        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        
-        [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header] parameters:@{@"send_to":_mainView.phoneText.text,@"key":@"register_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //先判断该手机号是不是已经注册了
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/user/check",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"account":_mainView.phoneText.text} completeSuccess:^(id  _Nullable responds) {
             
-            /* 发送成功提示框*/
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud.mode = MBProgressHUDModeText;
-            [hud setLabelText:NSLocalizedString(@"发送成功!", nil)];
-            hud.yOffset= 150.f;
-            hud.removeFromSuperViewOnHide = YES;
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                
+                if ([dic[@"data"]boolValue]==YES) {
+                    
+                    //已经被占用
+                    [self HUDStopWithTitle:@"该手机号码已经被注册"];
+                    
+                }else{
+                    //可以使用该手机进行账户绑定
+                    
+                    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+                    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+                    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+                    
+                    [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header] parameters:@{@"send_to":_mainView.phoneText.text,@"key":@"register_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                        
+                        /* 发送成功提示框*/
+                        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+                        hud.mode = MBProgressHUDModeText;
+                        [hud setLabelText:NSLocalizedString(@"发送成功!", nil)];
+                        hud.yOffset= 150.f;
+                        hud.removeFromSuperViewOnHide = YES;
+                        
+                        
+                        /* 重新发送验证码*/
+                        [self deadLineTimer:_mainView.getCheckCodeBtn];
+                        
+                        [hud hide:YES afterDelay:2.0];
+                        
+                        
+                    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                        
+                    }];
+                    
+                }
+                
+            }else{
+                //网络错误
+                [self HUDStopWithTitle:@"网络繁忙,请稍后重试"];
+            }
             
-            
-            /* 重新发送验证码*/
-            [self deadLineTimer:_mainView.getCheckCodeBtn];
-            
-            [hud hide:YES afterDelay:2.0];
-            
-            
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        } failure:^(id  _Nullable erros) {
+            //网络错误
+            [self HUDStopWithTitle:@"网络繁忙,请稍后重试."];
             
         }];
+        
+        
     }
     
     /* 手机号输入为空或错误的情况*/
@@ -284,7 +313,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         }];
         
     }
-
+    
 }
 
 #pragma mark- 倒计时方法封装
@@ -365,11 +394,11 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 
 #pragma mark- UISwitch Changed
 - (void)switchChange:(UISwitch *)switcher{
-
+    
     if (switcher.on == YES) {
         if (_mainView.phoneText.text.length>0&&_mainView.chekCodeText.text.length>0&&_mainView.passwordText.text.length>0&&_mainView.passwordConfirmText.text.length>0){
             
-         //所有信息正确,绑定按钮可用
+            //所有信息正确,绑定按钮可用
             _mainView.finishBtn.enabled = YES;
             [_mainView.finishBtn setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
             [_mainView.finishBtn setBackgroundColor: [UIColor whiteColor]];
@@ -384,7 +413,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         [_mainView.finishBtn setBackgroundColor: SEPERATELINECOLOR_2];
         _mainView.finishBtn.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
         [_mainView.finishBtn removeAllTargets];
-
+        
     }
 }
 
@@ -474,7 +503,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         }
         
     }
-
+    
 }
 
 /* 登录成功后,保存用户信息*/
@@ -574,7 +603,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         
     }
     
-    
     /* 发出一条消息:登录方式*/
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"Login_Type" object:type];
@@ -638,7 +666,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         }
         
     }
-   
+    
 }
 
 
@@ -677,13 +705,13 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

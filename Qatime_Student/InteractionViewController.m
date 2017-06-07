@@ -264,6 +264,8 @@ NTES_FORBID_INTERACTIVE_POP
     }
 }
 
+
+//
 - (NSArray *)makeChildViewControllers{
     
     self.whiteboardVC = [[NTESMeetingWhiteboardViewController alloc] initWithChatroom:self.chatroom];

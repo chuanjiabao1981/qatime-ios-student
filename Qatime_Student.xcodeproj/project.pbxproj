@@ -6270,7 +6270,7 @@
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = UMV383V3WA;
 						LastSwiftMigration = 0820;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -7182,7 +7182,9 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Qatime_Student/Qatime_Student.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7254,6 +7256,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.qatime.QatimeStudent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "210a1aa1-84d6-4aab-bb81-b124367422ae";
+				PROVISIONING_PROFILE_SPECIFIER = "XC iOS: cn.qatime.QatimeStudent";
 				SWIFT_OBJC_BRIDGING_HEADER = "Qatime_Student/Qatime_Student-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -7270,7 +7274,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Qatime_Student/Qatime_Student.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7342,6 +7347,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.qatime.QatimeStudent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "210a1aa1-84d6-4aab-bb81-b124367422ae";
+				PROVISIONING_PROFILE_SPECIFIER = "XC iOS: cn.qatime.QatimeStudent";
 				SWIFT_OBJC_BRIDGING_HEADER = "Qatime_Student/Qatime_Student-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;

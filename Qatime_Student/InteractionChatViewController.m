@@ -107,36 +107,6 @@
 }
 
 
-- (void)loadView{
-    
-    [super loadView ];
-    
-    _chatTableView = ({
-        UITableView *_=[[UITableView alloc]initWithFrame:self.view.bounds style:UITableViewStylePlain];
-        _.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _.delegate = self;
-        _.dataSource = self;
-        [self.view addSubview:_];
-        
-        _;
-    });
-    
-    _inputView = ({
-        
-        UUInputFunctionView *_=[[UUInputFunctionView alloc]initWithSuperVC:self];
-        
-        _.frame = CGRectMake(0, self.view.height_sd-50, self.view.width_sd, 50);
-        [_.btnChangeVoiceState addTarget:self action:@selector(emojiKeyboardShow:) forControlEvents:UIControlEventTouchUpInside];
-        _.TextViewInput.placeholder = @"请输入要发送的信息";
-        
-        _.delegate= self;
-        
-        [self.view addSubview:_];
-        _;
-    });
-    
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -154,28 +124,21 @@
     
     _userList = @[].mutableCopy;
     
-    
     self.chatModel = [[ChatModel alloc]init];
     self.chatModel.isGroupChat = YES;
     [self.chatModel populateRandomDataSource];
     
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:@"NIMSDKLogin"]) {
-        
-        [[NIMSDK sharedSDK].chatManager addDelegate:self];
-        
-    }else{
-        
-        /* 强制自动登录一次*/
-        [[NIMSDK sharedSDK].loginManager addDelegate:self];
-        NIMAutoLoginData *loginData = [[NIMAutoLoginData alloc]init];
-        loginData.account = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"accid"];
-        loginData.token =[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"token"];
-        [[NIMSDK sharedSDK].loginManager autoLogin:loginData];
-        
-        
-    }
     
-    NSLog(@"%ld",[[[NIMSDK sharedSDK]conversationManager] allUnreadCount]);
+    /* 强制自动登录一次*/
+    [[NIMSDK sharedSDK].loginManager addDelegate:self];
+    NIMAutoLoginData *loginData = [[NIMAutoLoginData alloc]init];
+    loginData.account = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"accid"];
+    loginData.token =[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"token"];
+    [[NIMSDK sharedSDK].loginManager autoLogin:loginData];
+    
+    [[NIMSDK sharedSDK].chatManager addDelegate:self];
+    
+    NSLog(@"聊天未读消息%ld条",[[[NIMSDK sharedSDK]conversationManager] allUnreadCount]);
     
     if (_session) {
         
@@ -196,11 +159,12 @@
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
+    //基础数据加载完毕,开始加载视图
+    [self setupMainView];
+    
+    
     /* 获取一次所有成员信息*/
     [self requestChatTeamUser];
-    
-    /* 加载百度语音*/
-    //    [self iBaiduLoad];
     
     
     /* 聊天信息 加个点击手势,取消输入框响应*/
@@ -221,66 +185,45 @@
     
 }
 
-/* 加载讯飞语音*/
-//- (void)iFlyload{
-//    _iFlySpeechRecognizer = [IFlySpeechRecognizer sharedInstance]; //
-//    _iFlySpeechRecognizer.delegate = self;
-//    [_iFlySpeechRecognizer setParameter:@"cloud" forKey:[IFlySpeechConstant ENGINE_TYPE]];
-//    //iat
-//    [_iFlySpeechRecognizer setParameter:@"iat" forKey:[IFlySpeechConstant IFLY_DOMAIN]];
-//
-//    speechResult = @"".mutableCopy;
+/**加载主视图*/
+- (void)setupMainView{
+    
+    _chatTableView = ({
+        UITableView *_=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd-50) style:UITableViewStylePlain];
+        _.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _.delegate = self;
+        _.dataSource = self;
+        [self.view addSubview:_];
+        _.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .topSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .bottomSpaceToView(self.view, 50);
+        
+        _;
+    });
+    
+    _inputView = ({
+        
+        UUInputFunctionView *_=[[UUInputFunctionView alloc]initWithSuperVC:self];
+        
+//        _.frame = CGRectMake(0, self.view.height_sd-50, self.view.width_sd, 50);
 
-//}
+        [_.btnChangeVoiceState addTarget:self action:@selector(emojiKeyboardShow:) forControlEvents:UIControlEventTouchUpInside];
+        _.TextViewInput.placeholder = @"请输入要发送的信息";
+        
+        _.delegate= self;
+        
+        [self.view addSubview:_];
+        _.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .bottomSpaceToView(self.view, 0)
+        .heightIs(50);
+        _;
+    });
 
-/* 加载百度语音*/
-//- (void)iBaiduLoad{
-//
-//    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Baidu_Token"]) {
-//
-//        NSDictionary *dic =[[NSUserDefaults standardUserDefaults]valueForKey:@"Baidu_Token"];
-//        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-//        formatter.dateFormat = @"yyyy-MM-dd";
-//
-//        if ([[UIViewController dateTimeDifferenceWithStartTime:dic[@"Time"] endTime:[formatter stringFromDate:[NSDate date]]]integerValue]>28) {
-//
-//
-//        }else{
-//
-//            [self requestBaiduToken];
-//
-//        }
-//
-//
-//    }else{
-//        [self requestBaiduToken];
-//    }
-//
-//
-//}
-//
-///* 请求accessToken*/
-//- (void)requestBaiduToken{
-//
-//    [self POSTSessionURL:@"https://openapi.baidu.com/oauth/2.0/token" withHeaderInfo:nil andHeaderfield:nil parameters:@{@"grant_type":@"client_credentials",@"client_id":@"ETA52Kd3poCZULASv7KVtZWN",@"client_secret":@"545f54900c92233dd52f32081cbc06f7",@"scope":@"public"} completeSuccess:^(id  _Nullable responds) {
-//
-//        NSDictionary  *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-//
-//        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-//        formatter.dateFormat = @"yyyy-MM-dd";
-//        //保存本地日期
-//        NSMutableDictionary *dicToken = dic.mutableCopy;
-//        [dicToken setValue:[formatter stringFromDate:[NSDate date]] forKey:@"Time"];
-//
-//        NSLog(@"%@",dicToken);
-//
-//        [[NSUserDefaults standardUserDefaults]setValue:dic forKey:@"Baidu_Token"];
-//    }];
-//
-//}
-
-
-
+}
 
 /* 开始检测麦克风声音*/
 - (void)checkMicVolum{
@@ -298,9 +241,6 @@
                               [NSNumber numberWithInt: 2], AVNumberOfChannelsKey,
                               [NSNumber numberWithInt: AVAudioQualityMax], AVEncoderAudioQualityKey,
                               nil];
-    
-    
-    
     NSError *error;
     
     recorder = [[AVAudioRecorder alloc] initWithURL:url settings:settings error:&error];
@@ -311,11 +251,11 @@
         [recorder record];
         levelTimer = [NSTimer scheduledTimerWithTimeInterval: 0.1 target: self selector: @selector(levelTimerCallback) userInfo: nil repeats: YES];
         
-        
     }
     else
     {
         NSLog(@"%@", [error description]);
+
     }
 }
 
@@ -389,73 +329,6 @@
     
 }
 
-/* 发送带翻译的语音消息*/
-//- (void)translateFinish:(NSNotification *)notification{
-
-//    NSMutableString *translate = [notification object];
-
-//    _voiceMessage.remoteExt  = @{@"translate":translate};
-
-//发送带翻译的语音消息
-//    [[NIMSDK sharedSDK].chatManager addDelegate:self];
-//    [[NIMSDK sharedSDK].chatManager sendMessage:_voiceMessage toSession:_session error:nil];
-
-//}
-
-/* 语音识别回调*/
-//- (void) onResults:(NSArray *) results isLast:(BOOL) isLast{
-//
-//    NSDictionary *dic = [results objectAtIndex:0];
-//
-//    for (NSString *key in dic) {
-//
-//        if ([dic[key] isEqualToString:@"100"]) {
-//
-//            NSDictionary *disc= [key jsonValueDecoded];
-//
-//            for (NSDictionary *letterDic in disc[@"ws"]) {
-//
-//                NSLog(@"%@",letterDic);
-//
-//                for (NSDictionary *leArr in letterDic[@"cw"]) {
-//
-//                    [speechResult appendFormat:@"%@", [NSString stringWithFormat:@"%@", [NSData dataWithData:leArr[@"w"]]]];
-//
-////                    NSLog(@"识别消息:%@",speechResult);
-//                }
-//
-//            }
-//
-//            if ([disc[@"ls"]boolValue]==YES) {
-//
-//                /* 发送翻译完毕的通知*/
-//                [[NSNotificationCenter defaultCenter]postNotificationName:@"TranslateFinish" object:speechResult];
-//
-//                speechResult = @"".mutableCopy;
-//
-//            }else{
-//
-//            }
-//
-//        }
-//    }
-//
-//
-//}
-//
-///* 发送一条带有翻译内容的语音消息*/
-//- (void)sendMesseges:(NIMMessage *)voiceMessage withTranslate:(NSMutableString *)translateStr{
-//
-//
-//
-//
-//}
-
-//- (void) onError:(IFlySpeechError*) error{
-//
-//
-//}
-
 
 /* 请求聊天用户*/
 - (void)requestChatTeamUser{
@@ -519,6 +392,8 @@
 -(void)onLogin:(NIMLoginStep)step{
     
     if (NIMLoginStepLoginOK) {
+        //登录成功...
+        //然后干点什么?
         
         
     }
@@ -1469,9 +1344,9 @@
     
     [UIView animateWithDuration:animationDuration animations:^{
         
-        [_inputView setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height -50-keyboardRect.size.height , self.view.width_sd, 50)];
+        [_inputView setFrame:CGRectMake(0, self.view.height_sd -50-keyboardRect.size.height , self.view.width_sd, 50)];
         
-        [ _chatTableView setFrame:CGRectMake(0, 64 , self.view.width_sd, self.view.height_sd-64-50-keyboardRect.size.height)];
+        [ _chatTableView setFrame:CGRectMake(0, -keyboardRect.size.height , self.view.width_sd, self.view.height_sd-50)];
         
     }];
     
@@ -1491,8 +1366,8 @@
     [animationDurationValue getValue:&animationDuration];
     
     [UIView animateWithDuration:animationDuration animations:^{
-        
-        [_inputView setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height -50, self.view.width_sd, 50)];
+    
+        [_inputView setFrame:CGRectMake(0, self.view.height_sd -50, self.view.width_sd, 50)];
         
         [_chatTableView setFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-50)];
         
