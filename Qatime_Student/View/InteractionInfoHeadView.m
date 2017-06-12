@@ -1,16 +1,16 @@
 //
-//  InteractionClassInfoHeaderView.m
+//  InteractionInfoHeadView.m
 //  Qatime_Student
 //
 //  Created by Shin on 2017/3/28.
 //  Copyright © 2017年 WWTD. All rights reserved.
 //
 
-#import "InteractionInfoView.h"
+#import "InteractionInfoHeadView.h"
 #import "UIImageView+WebCache.h"
 #import "NSString+ChangeYearsToChinese.h"
 
-@interface InteractionClassInfoHeaderView (){
+@interface InteractionInfoHeadView (){
     
     TTGTextTagConfig *_config;
     
@@ -18,17 +18,16 @@
 
 @end
 
-@implementation InteractionClassInfoHeaderView
+@implementation InteractionInfoHeadView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         
-        
 #pragma mark- 辅导班的详情页面
         
-        
+        self.backgroundColor = [UIColor whiteColor];
         /* 辅导班概况 的所有label*/
         
         /* 课程名*/
@@ -155,39 +154,6 @@
         .widthRatioToView(book1,1.0);
         
         
-//        //标签设置项
-//        _config = [[TTGTextTagConfig alloc]init];
-//        _config.tagTextColor = TITLECOLOR;
-//        _config.tagBackgroundColor = [UIColor whiteColor];
-//        _config.tagBorderColor = [UIColor colorWithRed:0.88 green:0.60 blue:0.60 alpha:1.00];
-//        _config.tagShadowColor = [UIColor clearColor];
-//        _config.tagCornerRadius = 0;
-//        _config.tagExtraSpace = CGSizeMake(15, 5);
-//        _config.tagTextFont = TEXT_FONTSIZE;
-
-        
-//        //课程标签
-//        UILabel *tags = [[UILabel alloc]init];
-//        [self addSubview:tags];
-//        tags.text = @"课程标签";
-//        tags.font = TITLEFONTSIZE;
-//        tags.sd_layout
-//        .topSpaceToView(_classCountLabel,20)
-//        .leftEqualToView(info)
-//        .autoHeightRatio(0);
-//        [tags setSingleLineAutoResizeWithMaxWidth:100];
-//        
-//        //课程标签图
-//        _classTagsView = [[TTGTextTagCollectionView alloc]init];
-//        _classTagsView.alignment = TTGTagCollectionAlignmentLeft;
-//        _classTagsView.enableTagSelection = NO;
-//        [self addSubview:_classTagsView];
-//        _classTagsView.sd_layout
-//        .leftEqualToView(tags)
-//        .rightSpaceToView(self,20)
-//        .topSpaceToView(tags,10)
-//        .heightIs(200);
-        
         //课程目标
         UILabel *taget = [[UILabel alloc]init];
         [self addSubview:taget];
@@ -256,156 +222,8 @@
         .autoHeightRatio(0)
         .rightSpaceToView(self,20);
         
-        /* 分割线1*/
-        UIView *line1 =[[UIView alloc]init];
-        line1.backgroundColor = SEPERATELINECOLOR;
-        [self addSubview:line1];
-        
-        line1.sd_layout
-        .leftEqualToView(self)
-        .rightEqualToView(self)
-        .topSpaceToView(_classDescriptionLabel,20)
-        .heightIs(10);
-        
-#pragma mark- 教师组
-        
-//        /* 教师头像*/
-//        _teacherHeadImage = [[UIImageView alloc]init];
-//        [self addSubview:_teacherHeadImage];
-//        _teacherHeadImage.sd_layout
-//        .topSpaceToView(line1,10)
-//        .leftSpaceToView(self,10)
-//        .heightIs(60)
-//        .widthEqualToHeight();
-//        _teacherHeadImage.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
-//        
-//        /* 教师姓名*/
-//        _teacherNameLabel =[[UILabel alloc]init];
-//        _teacherNameLabel.font = TITLEFONTSIZE;
-//        _teacherNameLabel.textColor = TITLECOLOR;
-//        [self addSubview:_teacherNameLabel];
-//        
-//        _teacherNameLabel.sd_layout
-//        .leftSpaceToView(_teacherHeadImage,10)
-//        .centerYEqualToView(_teacherHeadImage)
-//        .autoHeightRatio(0);
-//        [_teacherNameLabel setSingleLineAutoResizeWithMaxWidth:100];
-//        
-//        /* 性别*/
-//        _genderImage  = [[UIImageView alloc]init];
-//        [self addSubview:_genderImage];
-//        
-//        _genderImage.sd_layout
-//        .leftSpaceToView(_teacherNameLabel,5)
-//        .centerYEqualToView(_teacherNameLabel)
-//        .heightRatioToView(_teacherNameLabel,0.6f)
-//        .widthEqualToHeight();
-//        
-//        //所在学校
-//        UILabel *school = [[UILabel alloc]init];
-//        [self addSubview:school];
-//        school.font = TITLEFONTSIZE;
-//        school.text = @"所在学校";
-//        school.sd_layout
-//        .topSpaceToView(_teacherHeadImage,20)
-//        .leftEqualToView(_descriptions)
-//        .autoHeightRatio(0);
-//        [school setSingleLineAutoResizeWithMaxWidth:100];
-//        
-//        _workPlace= [[UILabel alloc]init];
-//        _workPlace.font = TEXT_FONTSIZE;
-//        _workPlace.textColor = TITLECOLOR;
-//        [self addSubview:_workPlace];
-//        _workPlace.sd_layout
-//        .leftEqualToView(school)
-//        .topSpaceToView(school,10)
-//        .autoHeightRatio(0);
-//        [_workPlace setSingleLineAutoResizeWithMaxWidth:300];
-//        
-//        /* 教龄*/
-//        UILabel *teachYear = [[UILabel alloc]init];
-//        teachYear.font = TITLEFONTSIZE;
-//        teachYear.text = @"执教年数";
-//        [self addSubview:teachYear];
-//        
-//        teachYear.sd_layout
-//        .leftEqualToView(school)
-//        .topSpaceToView(_workPlace,20)
-//        .autoHeightRatio(0);
-//        [teachYear setSingleLineAutoResizeWithMaxWidth:100];
-//        
-//        _teaching_year= [[UILabel alloc]init];
-//        _teaching_year.font = TEXT_FONTSIZE;
-//        _teaching_year.textColor = TITLECOLOR;
-//        [self addSubview:_teaching_year];
-//        
-//        _teaching_year.sd_layout
-//        .leftEqualToView(teachYear)
-//        .topSpaceToView(teachYear,10)
-//        .autoHeightRatio(0);
-//        [_teaching_year setSingleLineAutoResizeWithMaxWidth:300];
-//        
-//        //目前不做的教师标签
-//        UILabel *teacherTag = [[UILabel alloc]init];
-//        teacherTag.font = TITLEFONTSIZE;
-//        teacherTag.text = @"教师标签";
-//        [self addSubview:teacherTag];
-//        teacherTag.sd_layout
-//        .leftEqualToView(teachYear)
-//        .topSpaceToView(_teaching_year,20)
-//        .autoHeightRatio(0);
-//        [teacherTag setSingleLineAutoResizeWithMaxWidth:100];
-//        teacherTag.hidden = YES;
-//        
-//        //教师标签
-//        _teacherTagsView = [[TTGTextTagCollectionView alloc]init];
-//        _teacherTagsView.alignment = TTGTagCollectionAlignmentLeft;
-//        _teacherTagsView.enableTagSelection = NO;
-//        [self addSubview:_teacherTagsView];
-//        _teacherTagsView.sd_layout
-//        .leftEqualToView(teacherTag)
-//        .rightSpaceToView(self,20)
-//        .topSpaceToView(teacherTag,10)
-//        .heightIs(200);
-//        _teacherTagsView.hidden = YES;
-//        
-//        /* 自我介绍标题*/
-//        _selfIntroLabel =[[UILabel alloc]init];
-//        _selfIntroLabel.font = TITLEFONTSIZE;
-//        _selfIntroLabel.text =@"自我介绍";
-//        [self addSubview:_selfIntroLabel];
-//        
-//        _selfIntroLabel.sd_layout
-//        .leftEqualToView(teachYear)
-//        .topSpaceToView(_teaching_year,20)
-//        .autoHeightRatio(0);
-//        [_selfIntroLabel setSingleLineAutoResizeWithMaxWidth:100];
-//        
-//        /* 自我介绍*/
-//        _selfInterview= [[UILabel alloc]init];
-//        _selfInterview.font = TEXT_FONTSIZE;
-//        _selfInterview.textColor = TITLECOLOR;
-//        _selfInterview.isAttributedContent = YES;
-//        [self addSubview:_selfInterview];
-//        
-//        _selfInterview.sd_layout
-//        .leftEqualToView(_selfIntroLabel)
-//        .rightSpaceToView(self,20)
-//        .topSpaceToView(_selfIntroLabel,10)
-//        .autoHeightRatio(0);
-        
-        /* 自动布局参考线*/
-        _layoutLine = [[UIView alloc]init];
-        _layoutLine.backgroundColor =[UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.00];
-        [self addSubview:_layoutLine];
-        _layoutLine.sd_layout
-        .leftEqualToView(self)
-        .rightEqualToView(self)
-        .topSpaceToView(_classDescriptionLabel,20)
-        .heightIs(10);
-        
         //自动刷新自身的高度
-        [self setupAutoHeightWithBottomView:_layoutLine bottomMargin:10];
+        [self setupAutoHeightWithBottomView:_classDescriptionLabel bottomMargin:20];
         
         
     }
@@ -439,31 +257,6 @@
     
 
 }
-
-//- (void)setTeacherModel:(Teacher *)teacherModel{
-//    
-//    _teacherModel = teacherModel;
-//    [_teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:teacherModel.avatar_url] placeholderImage:[UIImage imageNamed:@"人"]];
-//    
-//    _teacherNameLabel.text = teacherModel.name;
-//    
-//    if ([teacherModel.gender isEqualToString:@"male"]) {
-//        
-//        [_genderImage setImage:[UIImage imageNamed:@"male"]];
-//    }else if([teacherModel.gender isEqualToString:@"female"]){
-//        [_genderImage setImage:[UIImage imageNamed:@"female"]];
-//    }else{
-//        [_genderImage setImage:nil];
-//    }
-//    
-//    _teaching_year.text = [teacherModel.teaching_years changeEnglishYearsToChinese];
-//    _workPlace.text = teacherModel.school;
-//    
-//    NSMutableAttributedString *attDesc = [[NSMutableAttributedString alloc]initWithData:[teacherModel.desc dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-//    _selfInterview.attributedText = attDesc;
-//        
-//}
-
 
 
 @end

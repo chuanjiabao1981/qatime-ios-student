@@ -10,4 +10,10 @@
 
 @interface InteractionNoticeViewController : UIViewController
 
+@property (nonatomic, strong) UITableView *noticeTableView ;
+
+
+
+-(instancetype)initWithClassID:(NSString *)classID;
+
 @end

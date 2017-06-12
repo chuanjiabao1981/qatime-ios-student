@@ -61,7 +61,7 @@
     
     [_cmdsSendBuffer appendString:cmd];
     
-    if (_cmdsSendBuffer.length > NTESSendCmdMaxSize) {
+    if (_cmdsSendBuffer.length < NTESSendCmdMaxSize) {
         [self doSendCmds];
     }
 }
@@ -121,9 +121,11 @@
         NSString *cmd =  [NTESWhiteboardCommand packetIdCommand:_refPacketID++];
         [_cmdsSendBuffer appendString:cmd];
         
-        [[NTESMeetingRTSManager sharedInstance] sendRTSData:[_cmdsSendBuffer dataUsingEncoding:NSUTF8StringEncoding] toUser:nil];
+//        NTESMeetingRTSManager *meetingRTSManager = [[NTESMeetingRTSManager alloc]init];
+        [[NTESMeetingRTSManager defaultManager] sendRTSData:[_cmdsSendBuffer dataUsingEncoding:NSUTF8StringEncoding] toUser:nil];
         
-//        NSLog(@"send data %@", _cmdsSendBuffer);
+        
+        //        NSLog(@"send data %@", _cmdsSendBuffer);
         
         [_cmdsSendBuffer setString:@""];
     }

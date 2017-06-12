@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "InteractionInfoView.h"
+#import "InteractionInfoHeadView.h"
 #import "FJFloatingView.h"
 #import "HMSegmentedControl.h"
 #import "InteractionControl.h"
@@ -96,7 +96,7 @@
 /**
  课程详情图
  */
-@property (nonatomic, strong) InteractionInfoView *classInfoView ;
+@property (nonatomic, strong) InteractionInfoHeadView *classInfoView ;
 
 /**
  成员视图

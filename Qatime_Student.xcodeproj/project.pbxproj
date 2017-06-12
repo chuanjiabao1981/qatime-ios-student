@@ -276,7 +276,7 @@
 		548D1D911EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D901EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.m */; };
 		548F0E7E1E8A51A400A12C6D /* InteractionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E7D1E8A51A400A12C6D /* InteractionView.m */; };
 		548F0E811E8A51B000A12C6D /* InteractionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E801E8A51B000A12C6D /* InteractionViewController.m */; };
-		548F0E9A1E8A826400A12C6D /* InteractionInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E991E8A826400A12C6D /* InteractionInfoView.m */; };
+		548F0E9A1E8A826400A12C6D /* InteractionInfoHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E991E8A826400A12C6D /* InteractionInfoHeadView.m */; };
 		548F70AD1E8B5FE50062C71E /* InteractionControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F70AC1E8B5FE50062C71E /* InteractionControl.m */; };
 		548F70B01E8B63B70062C71E /* InteractionWhiteBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F70AF1E8B63B70062C71E /* InteractionWhiteBoardView.m */; };
 		548F70B31E8BACD30062C71E /* UIView+PlaceholderImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F70B21E8BACD30062C71E /* UIView+PlaceholderImage.m */; };
@@ -603,6 +603,7 @@
 		54C452071E9CA5DF002108F4 /* MyVideoClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C452061E9CA5DF002108F4 /* MyVideoClassViewController.m */; };
 		54C525191E7BAC000005B5A0 /* TTGTagCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C525121E7BAC000005B5A0 /* TTGTagCollectionView.m */; };
 		54C5251A1E7BAC000005B5A0 /* TTGTextTagCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C525141E7BAC000005B5A0 /* TTGTextTagCollectionView.m */; };
+		54C7343E1EE8FAA200CB86BE /* InteractionNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C7343D1EE8FAA200CB86BE /* InteractionNotice.m */; };
 		54C9A8CE1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C9A8CD1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m */; };
 		54C9A8D11E12159700B81EBF /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C9A8D01E12159700B81EBF /* PlayerView.m */; };
 		54CB26601DEFFBD300AE7414 /* ChangPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CB265F1DEFFBD300AE7414 /* ChangPhoneView.m */; };
@@ -1236,8 +1237,8 @@
 		548F0E7D1E8A51A400A12C6D /* InteractionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionView.m; sourceTree = "<group>"; };
 		548F0E7F1E8A51B000A12C6D /* InteractionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionViewController.h; sourceTree = "<group>"; };
 		548F0E801E8A51B000A12C6D /* InteractionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionViewController.m; sourceTree = "<group>"; };
-		548F0E981E8A826400A12C6D /* InteractionInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionInfoView.h; sourceTree = "<group>"; };
-		548F0E991E8A826400A12C6D /* InteractionInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionInfoView.m; sourceTree = "<group>"; };
+		548F0E981E8A826400A12C6D /* InteractionInfoHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InteractionInfoHeadView.h; path = View/InteractionInfoHeadView.h; sourceTree = "<group>"; };
+		548F0E991E8A826400A12C6D /* InteractionInfoHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InteractionInfoHeadView.m; path = View/InteractionInfoHeadView.m; sourceTree = "<group>"; };
 		548F70AB1E8B5FE50062C71E /* InteractionControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionControl.h; sourceTree = "<group>"; };
 		548F70AC1E8B5FE50062C71E /* InteractionControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionControl.m; sourceTree = "<group>"; };
 		548F70AE1E8B63B70062C71E /* InteractionWhiteBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionWhiteBoardView.h; sourceTree = "<group>"; };
@@ -1896,6 +1897,8 @@
 		54C525121E7BAC000005B5A0 /* TTGTagCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGTagCollectionView.m; sourceTree = "<group>"; };
 		54C525131E7BAC000005B5A0 /* TTGTextTagCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTGTextTagCollectionView.h; sourceTree = "<group>"; };
 		54C525141E7BAC000005B5A0 /* TTGTextTagCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGTextTagCollectionView.m; sourceTree = "<group>"; };
+		54C7343C1EE8FAA200CB86BE /* InteractionNotice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionNotice.h; sourceTree = "<group>"; };
+		54C7343D1EE8FAA200CB86BE /* InteractionNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionNotice.m; sourceTree = "<group>"; };
 		54C9A8CC1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMJKeyboardShowHiddenNotificationCenter.h; sourceTree = "<group>"; };
 		54C9A8CD1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMJKeyboardShowHiddenNotificationCenter.m; sourceTree = "<group>"; };
 		54C9A8CF1E12159700B81EBF /* PlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
@@ -2284,11 +2287,11 @@
 		54294C761DDB355300677333 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				54FCBAF01DD5CB520094BF58 /* Cell */,
 				54294C781DDB373400677333 /* NELivePlayerControl.h */,
 				54294C791DDB373400677333 /* NELivePlayerControl.m */,
 				54C9A8CF1E12159700B81EBF /* PlayerView.h */,
 				54C9A8D01E12159700B81EBF /* PlayerView.m */,
-				54FCBAF01DD5CB520094BF58 /* Cell */,
 				54FCBADE1DD5B3050094BF58 /* LiveClassInfoView.h */,
 				54FCBADF1DD5B3050094BF58 /* LiveClassInfoView.m */,
 				54294C681DDAFCF600677333 /* ClassList.h */,
@@ -2769,16 +2772,11 @@
 		545074591EDFB3490012A383 /* 一对一页面子控制器 */ = {
 			isa = PBXGroup;
 			children = (
-				54AC02071E892BF700817767 /* NTESMeetingWhiteboardViewController.h */,
-				54AC02081E892BF700817767 /* NTESMeetingWhiteboardViewController.m */,
-				5450745D1EDFB3830012A383 /* InteractionChatViewController.h */,
-				5450745E1EDFB3830012A383 /* InteractionChatViewController.m */,
-				545074631EDFB4AB0012A383 /* InteractionNoticeViewController.h */,
-				545074641EDFB4AB0012A383 /* InteractionNoticeViewController.m */,
-				545074661EDFB4CC0012A383 /* InteractionClassInfoViewController.h */,
-				545074671EDFB4CC0012A383 /* InteractionClassInfoViewController.m */,
-				545074601EDFB4400012A383 /* InteractionMemberListViewController.h */,
-				545074611EDFB4400012A383 /* InteractionMemberListViewController.m */,
+				54FFDA7B1EE943DD00546E01 /* 白板 */,
+				54FFDA7A1EE943DC00546E01 /* 聊天 */,
+				54FFDA791EE943DB00546E01 /* 公告 */,
+				54FFDA781EE943DA00546E01 /* 详情 */,
+				54FFDA771EE943D900546E01 /* 成员 */,
 			);
 			name = "一对一页面子控制器";
 			sourceTree = "<group>";
@@ -4021,8 +4019,6 @@
 				54AC022C1E892C6200817767 /* NTESWhiteboardDrawView.m */,
 				548F70AE1E8B63B70062C71E /* InteractionWhiteBoardView.h */,
 				548F70AF1E8B63B70062C71E /* InteractionWhiteBoardView.m */,
-				548F0E981E8A826400A12C6D /* InteractionInfoView.h */,
-				548F0E991E8A826400A12C6D /* InteractionInfoView.m */,
 				548F70AB1E8B5FE50062C71E /* InteractionControl.h */,
 				548F70AC1E8B5FE50062C71E /* InteractionControl.m */,
 				548F0E7C1E8A51A400A12C6D /* InteractionView.h */,
@@ -5192,6 +5188,15 @@
 			path = TTGTagCollectionView;
 			sourceTree = "<group>";
 		};
+		54C7343B1EE8FA9000CB86BE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54C7343C1EE8FAA200CB86BE /* InteractionNotice.h */,
+				54C7343D1EE8FAA200CB86BE /* InteractionNotice.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		54C9A8CB1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter */ = {
 			isa = PBXGroup;
 			children = (
@@ -6105,6 +6110,70 @@
 			name = Cell;
 			sourceTree = "<group>";
 		};
+		54FFDA771EE943D900546E01 /* 成员 */ = {
+			isa = PBXGroup;
+			children = (
+				545074601EDFB4400012A383 /* InteractionMemberListViewController.h */,
+				545074611EDFB4400012A383 /* InteractionMemberListViewController.m */,
+			);
+			name = "成员";
+			sourceTree = "<group>";
+		};
+		54FFDA781EE943DA00546E01 /* 详情 */ = {
+			isa = PBXGroup;
+			children = (
+				54FFDA7C1EE9443300546E01 /* View */,
+				54FFDA7D1EE9443A00546E01 /* Controller */,
+			);
+			name = "详情";
+			sourceTree = "<group>";
+		};
+		54FFDA791EE943DB00546E01 /* 公告 */ = {
+			isa = PBXGroup;
+			children = (
+				54C7343B1EE8FA9000CB86BE /* Model */,
+				545074631EDFB4AB0012A383 /* InteractionNoticeViewController.h */,
+				545074641EDFB4AB0012A383 /* InteractionNoticeViewController.m */,
+			);
+			name = "公告";
+			sourceTree = "<group>";
+		};
+		54FFDA7A1EE943DC00546E01 /* 聊天 */ = {
+			isa = PBXGroup;
+			children = (
+				5450745D1EDFB3830012A383 /* InteractionChatViewController.h */,
+				5450745E1EDFB3830012A383 /* InteractionChatViewController.m */,
+			);
+			name = "聊天";
+			sourceTree = "<group>";
+		};
+		54FFDA7B1EE943DD00546E01 /* 白板 */ = {
+			isa = PBXGroup;
+			children = (
+				54AC02071E892BF700817767 /* NTESMeetingWhiteboardViewController.h */,
+				54AC02081E892BF700817767 /* NTESMeetingWhiteboardViewController.m */,
+			);
+			name = "白板";
+			sourceTree = "<group>";
+		};
+		54FFDA7C1EE9443300546E01 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				548F0E981E8A826400A12C6D /* InteractionInfoHeadView.h */,
+				548F0E991E8A826400A12C6D /* InteractionInfoHeadView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54FFDA7D1EE9443A00546E01 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				545074661EDFB4CC0012A383 /* InteractionClassInfoViewController.h */,
+				545074671EDFB4CC0012A383 /* InteractionClassInfoViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
 		61F0B31770950FCD751F0794 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -6270,7 +6339,7 @@
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = UMV383V3WA;
 						LastSwiftMigration = 0820;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -6760,7 +6829,7 @@
 				54AC04271E8938E100817767 /* UIView+NIMWebCacheOperation.m in Sources */,
 				5417C48C1E31B85000DD0795 /* app_pay_params.m in Sources */,
 				54AC04B31E89398E00817767 /* NTESChatroomListViewController.m in Sources */,
-				548F0E9A1E8A826400A12C6D /* InteractionInfoView.m in Sources */,
+				548F0E9A1E8A826400A12C6D /* InteractionInfoHeadView.m in Sources */,
 				54AC04121E8938E100817767 /* NIMTeamSwitchTableViewCell.m in Sources */,
 				541E20071E13B9AF007CF5D1 /* NSDate+ChangeUTC.m in Sources */,
 				5407C9991DE7DE9200DB04C8 /* UIDevice+YYAdd.m in Sources */,
@@ -6923,6 +6992,7 @@
 				5492FC891E7A6DC600F89593 /* ChooseClassTableViewCell.m in Sources */,
 				54DBA4BA1DE442D900A67A90 /* YZInputView.m in Sources */,
 				5407C9961DE7DE8400DB04C8 /* NSNumber+YYAdd.m in Sources */,
+				54C7343E1EE8FAA200CB86BE /* InteractionNotice.m in Sources */,
 				541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */,
 				546A54771DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.m in Sources */,
 				545162C41DF53DF9000BD17A /* ChangePhoneGetCodeViewController.m in Sources */,
@@ -7182,9 +7252,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Qatime_Student/Qatime_Student.entitlements;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7256,8 +7325,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.qatime.QatimeStudent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "210a1aa1-84d6-4aab-bb81-b124367422ae";
-				PROVISIONING_PROFILE_SPECIFIER = "XC iOS: cn.qatime.QatimeStudent";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Qatime_Student/Qatime_Student-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -7274,8 +7343,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Qatime_Student/Qatime_Student.entitlements;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7347,8 +7416,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.qatime.QatimeStudent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "210a1aa1-84d6-4aab-bb81-b124367422ae";
-				PROVISIONING_PROFILE_SPECIFIER = "XC iOS: cn.qatime.QatimeStudent";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Qatime_Student/Qatime_Student-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;

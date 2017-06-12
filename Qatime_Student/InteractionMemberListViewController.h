@@ -10,4 +10,10 @@
 
 @interface InteractionMemberListViewController : UIViewController
 
+
+@property (nonatomic, strong) UITableView  *membersTableView ;
+
+
+-(instancetype)initWithClassID:(NSString *)classID;
+
 @end

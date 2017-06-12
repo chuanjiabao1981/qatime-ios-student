@@ -59,10 +59,7 @@
  */
 @property (nonatomic, strong) InteractionView *interactionView ;
 
-/**
- 聊天输入框
- */
-@property(nonatomic,strong) UUInputFunctionView *inputView ;
+
 
 /**
  初始化方法3

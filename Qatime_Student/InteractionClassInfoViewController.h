@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "InteractionInfoHeadView.h"
 
 @interface InteractionClassInfoViewController : UIViewController
+
+@property (nonatomic, strong) InteractionInfoHeadView *headView ;
+@property (nonatomic, strong) UITableView *mainView ;
+
+-(instancetype)initWithClassID:(NSString *)classID;
 
 @end

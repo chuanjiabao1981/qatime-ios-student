@@ -304,10 +304,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         
     }];
     
-
 }
-
-
 
 
 
@@ -508,149 +505,151 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 - (void)userLogin:(UIButton *)sender{
     
     /* 取消输入框响应*/
+
     [self cancelAllRespond];
     
     /* 如果用户名为空*/
-    if ([_loginView.userName.text isEqualToString:@""]) {
+    if (_loginView.userName.text) {
         
-        /* 弹出alert框 提示输入账户名*/
-        UIAlertController *alert =[UIAlertController alertControllerWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"账号不能为空!", nil) preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action1=[UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:action1];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-        
-    }
-    
-    /* 如果密码为空*/
-    if ([_loginView.passWord.text isEqualToString:@""]) {
-        
-        /* 弹出alert框 提示输入账户名*/
-        UIAlertController *alert =[UIAlertController alertControllerWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"密码不能为空", nil) preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action1=[UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:action1];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-        
-    }
-    
-    if (![_loginView.userName.text isEqualToString:@""]&![_loginView.passWord.text isEqualToString:@""]) {
-       
-        /* 判断是否需要输入验证码*/
-        if (needCheckCaptcha == YES&&[_loginView.keyCodeText.text isEqualToString:@""]) {
+        if ([_loginView.userName.text isEqualToString:@""]) {
             
-            /* 弹出alert框 提示输入验证码*/
-            UIAlertController *alert =[UIAlertController alertControllerWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请输入验证码!", nil) preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action1=[UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
-            [alert addAction:action1];
+            /**提示输入账户名*/
+            [self HUDStopWithTitle:NSLocalizedString(@"账号不能为空!", nil)];
             
-            [self presentViewController:alert animated:YES completion:nil];
-        }
-        if (needCheckCaptcha == YES&&![_loginView.keyCodeText.text.lowercaseString isEqualToString:_loginView.authenCode.authCodeStr.lowercaseString]) {
-            
-            /* 弹出alert框 提示输入正确的验证码*/
-            UIAlertController *alert =[UIAlertController alertControllerWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请输入正确的验证码!", nil) preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action1=[UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
-            [alert addAction:action1];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-        }
-        
-    
-        /* 不需要输入验证码或者验证码输入正确的情况*/
-        if (needCheckCaptcha == NO || (needCheckCaptcha == YES&&[_loginView.keyCodeText.text.lowercaseString isEqualToString:_loginView.authenCode.authCodeStr.lowercaseString])) {
-            /* HUD框 提示正在登陆*/
-//            MBProgressHUD *hud=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//            hud.mode = MBProgressHUDModeIndeterminate;
-//            hud.labelText = @"正在登陆";
-//            [hud show:YES];
-            [self HUDStartWithTitle:NSLocalizedString(@"正在登录", nil)];
-            
-            /* 对应接口要上传的用户登录账号密码*/
-            NSDictionary *userInfo = @{@"login_account":[NSString stringWithFormat:@"%@",_loginView.userName.text],
-                                       @"password":[NSString stringWithFormat:@"%@",_loginView.passWord.text],
-                                       @"client_type":@"app",
-                                       @"client_cate":@"student_client"};
-            
-            /* 登录请求*/
-            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-            [manager POST:[NSString stringWithFormat:@"%@/api/v1/sessions",Request_Header ]parameters:userInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        }else{
+            //没毛病,验证密码
+            /* 如果密码为空*/
+            if (_loginView.passWord.text) {
                 
-                /* 解析返回数据*/
-                NSDictionary *userInfoGet=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                
-                NSLog(@"%@",userInfoGet);
-                
-                NSDictionary *dicGet=[NSDictionary dictionaryWithDictionary:userInfoGet[@"data"]];
-                
-                NSLog(@"%@",dicGet);
-                
-                /* 如果返回的字段里包含key值“remember_token“ 为登录成功*/
-                /* 如果登录成功*/
-                
-                if ([userInfoGet[@"status"]isEqualToNumber:@1]) {
+                if ([_loginView.passWord.text isEqualToString:@""]) {
                     
-                    if (dicGet[@"remember_token"]) {
+                    [self HUDStopWithTitle:NSLocalizedString(@"密码不能为空", nil)];
+                }else{
+                    //账户密码都不是空的
+                    /** 判断是否需要输入验证码*/
+                    if (needCheckCaptcha == YES&&[_loginView.keyCodeText.text isEqualToString:@""]) {
                         
-                        //登录成功
-                        //不用干掉之前存储的keychain信息,增加新的keychain信息
-                        NSArray *keys =  [SAMKeychain allAccounts];
-                        NSError *error = [[NSError alloc]init];
-                        if (keys!=nil) {
-                            
-                            for (NSDictionary *acc in keys) {
-                                
-                                [SAMKeychain deletePasswordForService:Qatime_Service account:acc[@"acct"] error:&error];
-                            }
-                            
-                        }
-                        
-                        //存储新的key
-                        [SAMKeychain setPassword:_loginView.passWord.text forService:Qatime_Service account:_loginView.userName.text error:&error];
-                        
-                        [self saveUserInfo:dicGet loginType:Normal];
-                        
-                        [self HUDStopWithTitle:NSLocalizedString(@"登录成功", nil)];
-                        
-                    }else{
-                        /* 账户名密码错误提示*/
-                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"警告", nil) message:NSLocalizedString(@"账户名或密码错误!", nil) preferredStyle:UIAlertControllerStyleAlert];
-                        
-                        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
-                        [alert addAction:action];
-                        
-                        [self HUDStopWithTitle:nil];
-                        [self presentViewController:alert animated:YES completion:nil];
-                        
-//                        [self HUDStopWithTitle:NSLocalizedString(@"登录失败", nil)];
-                        
-                        _wrongTimes ++;
-                        if (_wrongTimes >=5) {
-                            
-                            [[NSNotificationCenter defaultCenter]postNotificationName:@"FivethWrongTime" object:nil];
+                        [self HUDStopWithTitle:NSLocalizedString(@"请输入验证码", nil) ];
+                    
+                    }else if (needCheckCaptcha == YES&&![_loginView.keyCodeText.text isEqualToString:@""]){
+                        //需要输入验证码的情况下输入了验证码
+                        if (needCheckCaptcha == YES&&![_loginView.keyCodeText.text.lowercaseString isEqualToString:_loginView.authenCode.authCodeStr.lowercaseString]) {
+                            /** 提示输入正确的验证码*/
+                           
+                            [self HUDStopWithTitle:NSLocalizedString(@"请输入正确的验证码!", nil)];
+                        }else if (needCheckCaptcha == YES&&[_loginView.keyCodeText.text.lowercaseString isEqualToString:_loginView.authenCode.authCodeStr.lowercaseString]){
+                            //用户输入的验证码是对的
+                            //发起登录请求
+                            [self userLogin];
                             
                         }
                         
+                    }else if (needCheckCaptcha == NO){
+                        //发起登录请求
+                        [self userLogin];
                         
                     }
-//                    [self HUDStopWithTitle:NSLocalizedString(@"登录成功", nil)];
+                }
+            }else{
+                 [self HUDStopWithTitle:NSLocalizedString(@"密码不能为空", nil)];
+            
+            }
+        }
+    }else{
+        /**提示输入账户名*/
+        [self HUDStopWithTitle:NSLocalizedString(@"账号不能为空!", nil)];
+    
+    }
+    
+    
+    
+}
+
+/**用户发起登录请求*/
+- (void)userLogin{
+    
+    [self HUDStartWithTitle:NSLocalizedString(@"正在登录", nil)];
+    
+    /* 对应接口要上传的用户登录账号密码*/
+    NSDictionary *userInfo = @{@"login_account":[NSString stringWithFormat:@"%@",_loginView.userName.text],
+                               @"password":[NSString stringWithFormat:@"%@",_loginView.passWord.text],
+                               @"client_type":@"app",
+                               @"client_cate":@"student_client"};
+    
+    /* 登录请求*/
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager POST:[NSString stringWithFormat:@"%@/api/v1/sessions",Request_Header ]parameters:userInfo progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        /* 解析返回数据*/
+        NSDictionary *userInfoGet=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        NSLog(@"%@",userInfoGet);
+        
+        NSDictionary *dicGet=[NSDictionary dictionaryWithDictionary:userInfoGet[@"data"]];
+        
+        NSLog(@"%@",dicGet);
+        
+        /* 如果返回的字段里包含key值“remember_token“ 为登录成功*/
+        /* 如果登录成功*/
+        
+        if ([userInfoGet[@"status"]isEqualToNumber:@1]) {
+            
+            if (dicGet[@"remember_token"]) {
+                
+                //登录成功
+                //不用干掉之前存储的keychain信息,增加新的keychain信息
+                NSArray *keys =  [SAMKeychain allAccounts];
+                NSError *error = [[NSError alloc]init];
+                if (keys!=nil) {
+                    
+                    for (NSDictionary *acc in keys) {
+                        
+                        [SAMKeychain deletePasswordForService:Qatime_Service account:acc[@"acct"] error:&error];
+                    }
+                    
+                }
+                
+                //存储新的key
+                [SAMKeychain setPassword:_loginView.passWord.text forService:Qatime_Service account:_loginView.userName.text error:&error];
+                
+                [self saveUserInfo:dicGet loginType:Normal];
+                
+                [self HUDStopWithTitle:NSLocalizedString(@"登录成功", nil)];
+                
+            }else{
+                /* 账户名密码错误提示*/
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"警告", nil) message:NSLocalizedString(@"账户名或密码错误!", nil) preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"确定", nil) style:UIAlertActionStyleDefault handler:nil];
+                [alert addAction:action];
+                
+                [self HUDStopWithTitle:nil];
+                [self presentViewController:alert animated:YES completion:nil];
+                
+                //                        [self HUDStopWithTitle:NSLocalizedString(@"登录失败", nil)];
+                
+                _wrongTimes ++;
+                if (_wrongTimes >=5) {
+                    
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"FivethWrongTime" object:nil];
+                    
                 }
                 
                 
-                
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                
-                NSLog(@"%@",error);
-                
-                [self HUDStopWithTitle:NSLocalizedString(@"登录失败", nil)];
-                
-            }];
+            }
+            //                    [self HUDStopWithTitle:NSLocalizedString(@"登录成功", nil)];
         }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        NSLog(@"%@",error);
+        
+        [self HUDStopWithTitle:NSLocalizedString(@"登录失败", nil)];
+        
+    }];
 
-    }
-    
 }
 
 
@@ -809,9 +808,18 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 /* 取消响应*/
 - (void)cancelAllRespond{
     
-    [_loginView.userName resignFirstResponder];
-    [_loginView.passWord resignFirstResponder];
-    [_loginView.keyCodeText resignFirstResponder];
+    if ([_loginView.userName isFirstResponder]==YES) {
+        
+        [_loginView.userName resignFirstResponder];
+    }
+    if ([_loginView.passWord isFirstResponder]==YES) {
+        
+        [_loginView.passWord resignFirstResponder];
+    }
+    if ([_loginView.keyCodeText isFirstResponder]) {
+        
+        [_loginView.keyCodeText resignFirstResponder];
+    }
 }
 
 #pragma mark- 微信直接拉起请求

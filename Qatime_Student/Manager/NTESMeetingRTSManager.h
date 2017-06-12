@@ -46,4 +46,7 @@
 
 - (BOOL)isJoined;
 
+
++(NTESMeetingRTSManager *)defaultManager;
+
 @end

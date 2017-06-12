@@ -7,26 +7,73 @@
 //  一对一白板子控制器
 
 #import "NTESMeetingWhiteboardViewController.h"
+#import "UIViewController+AFHTTP.h"
+#import "UIViewController+Token.h"
+#import "UIView+NIMKitToast.h"
+#import <NIMAVChat/NIMAVChat.h>
+#import "UIView+Toast.h"
 
-@interface NTESMeetingWhiteboardViewController ()<NTESColorSelectViewDelegate, NTESMeetingRTSManagerDelegate, NTESWhiteboardCmdHandlerDelegate, NIMLoginManagerDelegate,NTESDocumentHandlerDelegate>
-{
+
+@interface NTESMeetingWhiteboardViewController ()<NTESColorSelectViewDelegate, NTESMeetingRTSManagerDelegate, NTESWhiteboardCmdHandlerDelegate, NIMLoginManagerDelegate,NTESDocumentHandlerDelegate>{
+    
+    NSString *_classID;
+    
+    NSString *_roomID;
     
 }
+
+
+//各种管理器
+//@property (nonatomic, strong) NTESMeetingRTSManager *meetingRTSManager ;
+@property (nonatomic, strong) NTESMeetingRolesManager *meetingRolesManager ;
+
 
 @end
 
 @implementation NTESMeetingWhiteboardViewController
 
+
+-(instancetype)initWithClassID:(NSString *)classID{
+    
+    if (self = [super init]) {
+        
+        _classID = [NSString stringWithFormat:@"%@",classID];
+        _name = _classID;
+//        _managerUid = room.creator;
+        _cmdHander = [[NTESWhiteboardCmdHandler alloc] initWithDelegate:self];
+        _docHander = [[NTESDocumentHandler alloc]initWithDelegate:self];
+        
+        //初始化管理器
+//        [NTESMeetingRTSManager defaultManager] = [[NTESMeetingRTSManager alloc]init];
+        _meetingRolesManager = [[NTESMeetingRolesManager alloc]init];
+        
+        [[NTESMeetingRTSManager defaultManager] setDataHandler:_cmdHander];
+        _colors = @[@(0x000000), @(0xd1021c), @(0xfddc01), @(0x7dd21f), @(0x228bf7), @(0x9b0df5)];
+        if(_meetingRolesManager.myRole.isManager){
+            _myDrawColorRGB = [_colors[0] intValue];
+        }else{
+            _myDrawColorRGB = [_colors[4] intValue];
+        }
+        _lines = [[NTESWhiteboardLines alloc] init];
+        
+        _myUid = [[NIMSDK sharedSDK].loginManager currentAccount];
+        
+        _docInfoDic = [NSMutableDictionary dictionary];
+    }
+    return self;
+}
+
+
 - (instancetype)initWithChatroom:(NIMChatroom *)room
 {
     if (self = [super init]) {
         _name = room.roomId;
-        _managerUid = room.creator;
+//        _managerUid = room.creator;
         _cmdHander = [[NTESWhiteboardCmdHandler alloc] initWithDelegate:self];
         _docHander = [[NTESDocumentHandler alloc]initWithDelegate:self];
-        [[NTESMeetingRTSManager sharedInstance] setDataHandler:_cmdHander];
+        [[NTESMeetingRTSManager defaultManager] setDataHandler:_cmdHander];
         _colors = @[@(0x000000), @(0xd1021c), @(0xfddc01), @(0x7dd21f), @(0x228bf7), @(0x9b0df5)];
-        if([NTESMeetingRolesManager sharedInstance].myRole.isManager){
+        if(_meetingRolesManager.myRole.isManager){
         _myDrawColorRGB = [_colors[0] intValue];
         }
         else
@@ -45,32 +92,87 @@
 
 - (void)dealloc
 {
-    [[NTESMeetingRTSManager sharedInstance] leaveCurrentConference];
+    [[NTESMeetingRTSManager defaultManager] leaveCurrentConference];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
-    _isManager = [NTESMeetingRolesManager sharedInstance].myRole.isManager;
-    [[NTESMeetingRTSManager sharedInstance] setDelegate:self];
     
-    NSError *error;
-    if (_isManager) {
-        error = [[NTESMeetingRTSManager sharedInstance] reserveConference:_name];
-    }
-    else {
-        error = [[NTESMeetingRTSManager sharedInstance] joinConference:_name];
-    }
     
-    if (error) {
-//        DDLogError(@"Error %zd reserve/join rts conference: %@", error.code, _name);
-    }
+    //白板进来什么都不做,先找服务器刷roomID
+    [self getRoomID];
+    
+    
     
     [self initUI];
 }
 
-- (void)initUI
-{
+/**获取roomID*/
+- (void)getRoomID{
+    
+   [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/live_status",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+       NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+       if ([dic[@"status"]isEqualToNumber:@1]) {
+           
+           if ([dic[@"data"][@"live_info"][@"room_id"] isEqualToString:@""]) {
+               //没有roomID,3秒后再次获取
+               [self performSelector:@selector(getRoomID) withObject:nil afterDelay:3];
+           }else{
+               
+               [NSObject cancelPreviousPerformRequestsWithTarget:self];
+               
+               //有roomID了 可以开始玩耍了
+               _roomID = [NSString stringWithFormat:@"%@",dic[@"data"][@"live_info"][@"room_id"]];
+               
+//               _isManager = _meetingRolesManager.myRole.isManager;
+               [[NTESMeetingRTSManager defaultManager] setDelegate:self];
+               
+               [[NTESMeetingRTSManager defaultManager] joinConference:_roomID];
+               
+               
+               NSError *error;
+//               if (_isManager) {
+//                   error = [[NTESMeetingRTSManager defaultManager] reserveConference:_roomID];
+//               }
+//               else {
+                   error = [[NTESMeetingRTSManager defaultManager] joinConference:_roomID];
+//               }
+               
+               if (error) {
+                   //        DDLogError(@"Error %zd reserve/join rts conference: %@", error.code, _name);
+               }
+
+               
+               
+               
+               
+           }
+           
+       }else{
+           
+           //没有roomID,3秒后再次获取
+           [self performSelector:@selector(getRoomID) withObject:nil afterDelay:3];
+
+       }
+       
+   } failure:^(id  _Nullable erros) {
+       //没有roomID,3秒后再次获取
+       [self performSelector:@selector(getRoomID) withObject:nil afterDelay:3];
+
+   }];
+}
+
+
+
+
+
+
+
+
+
+- (void)initUI{
+    
     self.view.backgroundColor = UIColorFromRGB(0xedf1f5);
     [self.view addSubview:self.docView];
 
@@ -90,33 +192,33 @@
     [self.controlPannel addSubview:self.pageNumLabel];
     [self.pageNumLabel setHidden:YES];
 
-    if (_isManager) {
-        [self.controlPannel addSubview:self.clearAllButton];
-        [self.controlPannel addSubview:self.openDocumentButton];
-        [self.controlPannel addSubview:self.previousButton];
-        [self.controlPannel addSubview:self.nextButton];
-        [self.drawView addSubview:self.closeDocButton];
-        [self.drawView addSubview:self.imgloadLabel];
-        [self.nextButton setHidden:YES];
-        [self.previousButton setHidden:YES];
-        [self.closeDocButton setHidden:YES];
-        [self.imgloadLabel setHidden:YES];
-    }
-    else {
+//    if (_isManager) {
+//        [self.controlPannel addSubview:self.clearAllButton];
+//        [self.controlPannel addSubview:self.openDocumentButton];
+//        [self.controlPannel addSubview:self.previousButton];
+//        [self.controlPannel addSubview:self.nextButton];
+//        [self.drawView addSubview:self.closeDocButton];
+//        [self.drawView addSubview:self.imgloadLabel];
+//        [self.nextButton setHidden:YES];
+//        [self.previousButton setHidden:YES];
+//        [self.closeDocButton setHidden:YES];
+//        [self.imgloadLabel setHidden:YES];
+//    }
+//    else {
         [self.controlPannel addSubview:self.hintLabel];
-    }
+//    }
     
 }
 
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated{
+    
     [super viewWillAppear:animated];
     [self checkPermission];
 }
 
-- (void)viewDidLayoutSubviews
-{
+- (void)viewDidLayoutSubviews{
+    
     [super viewDidLayoutSubviews];
     
     CGFloat spacing = 15.f;
@@ -180,15 +282,15 @@
     self.nextButton.right = self.view.width - 10.f;
     self.nextButton.centerY = self.colorSelectButton.centerY;
     
-    if (_isManager) {
-        self.pageNumLabel.right = self.nextButton.left - 5.f;
-        self.pageNumLabel.centerY = self.colorSelectButton.centerY;
-    }
-    else
-    {
+//    if (_isManager) {
+//        self.pageNumLabel.right = self.nextButton.left - 5.f;
+//        self.pageNumLabel.centerY = self.colorSelectButton.centerY;
+//    }
+//    else
+//    {
         self.pageNumLabel.right = self.view.width - 15.f;
         self.pageNumLabel.centerY = self.colorSelectButton.centerY;
-    }
+//    }
     
 
     self.previousButton.right = self.pageNumLabel.left - 5.f;
@@ -204,24 +306,29 @@
     
 }
 
-- (void)checkPermission
-{
-    if ([NTESMeetingRolesManager sharedInstance].myRole.whiteboardOn && _isJoined) {
-        self.hintLabel.hidden = YES;
-        [self.colorSelectButton setBackgroundColor:UIColorFromRGB(_myDrawColorRGB)];
-        self.colorSelectButton.enabled = YES;
-        self.cancelLineButton.enabled = YES;
-        self.clearAllButton.enabled = YES;
-    }
-    else {
-        self.hintLabel.hidden = NO;
-        [self.colorSelectButton setBackgroundColor:[UIColor clearColor]];
-        self.colorSelectButton.enabled = NO;
-        self.cancelLineButton.enabled = NO;
-        self.clearAllButton.enabled = NO;
-        self.colorSelectView.hidden = YES;
-
-    }
+- (void)checkPermission{
+//    if (_meetingRolesManager.myRole.whiteboardOn && _isJoined) {
+//        self.hintLabel.hidden = YES;
+//        [self.colorSelectButton setBackgroundColor:UIColorFromRGB(_myDrawColorRGB)];
+//        self.colorSelectButton.enabled = YES;
+//        self.cancelLineButton.enabled = YES;
+//        self.clearAllButton.enabled = YES;
+//    }
+//    else {
+//        self.hintLabel.hidden = NO;
+//        [self.colorSelectButton setBackgroundColor:[UIColor clearColor]];
+//        self.colorSelectButton.enabled = YES;
+//        self.cancelLineButton.enabled = YES;
+//        self.clearAllButton.enabled = YES;
+//        self.colorSelectView.hidden = YES;
+//
+//    }
+    
+    self.hintLabel.hidden = YES;
+    [self.colorSelectButton setBackgroundColor:UIColorFromRGB(_myDrawColorRGB)];
+    self.colorSelectButton.enabled = YES;
+    self.cancelLineButton.enabled = YES;
+    self.clearAllButton.enabled = YES;
 }
 
 - (UIView *)drawView
@@ -450,9 +557,7 @@
     [self.pageNumLabel sizeToFit];
     [self.view setNeedsLayout];
     
-    if (_isManager) {
-        [self onClearAllPressed:nil];
-    }
+
 }
 #pragma mark - User Interactions
 - (void)onClearAllPressed:(id)sender
@@ -541,19 +646,11 @@
     [self onPointCollected:p type:NTESWhiteboardPointTypeEnd];
 }
 
-- (void)onPointCollected:(CGPoint)p type:(NTESWhiteboardPointType)type
-{
-    if (!([NTESMeetingRolesManager sharedInstance].myRole.whiteboardOn)) {
+- (void)onPointCollected:(CGPoint)p type:(NTESWhiteboardPointType)type{
+
+    if (p.x < 0 || p.y < 0 || p.x > _drawView.frame.size.width || p.y > _drawView.frame.size.height) {
         return;
     }
-    
-    if (!_isJoined) {
-        return;
-    }
-    
-//    if (p.x < 0 || p.y < 0 || p.x > _drawView.frame.size.width || p.y > _drawView.frame.size.height) {
-//        return;
-//    }
     
     NTESWhiteboardPoint *point = [[NTESWhiteboardPoint alloc] init];
     point.type = type;
@@ -565,11 +662,19 @@
 }
 
 
+# pragma mark - NTESMeetingRTSDataManagerDelegate
+- (void)handleReceivedData:(NSData *)data sender:(NSString *)sender{
+    
+    
+    
+}
+
+
 # pragma mark - NTESMeetingRTSManagerDelegate
 - (void)onReserve:(NSString *)name result:(NSError *)result
 {
     if (result == nil) {
-        NSError *result = [[NTESMeetingRTSManager sharedInstance] joinConference:_name];
+        NSError *result = [[NTESMeetingRTSManager defaultManager] joinConference:_name];
 //        DDLogError(@"join rts conference: %@ result %zd", _name, result.code);
     }
     else {
@@ -580,20 +685,22 @@
 - (void)onJoin:(NSString *)name result:(NSError *)result
 {
     if (result == nil) {
-        _isJoined = YES;
-        [self checkPermission];
         
-        if (_isManager) {
-            [_cmdHander sendPureCmd:NTESWhiteBoardCmdTypeSyncPrepare to:nil];
-            if ([_lines hasLines]) {
-                [_cmdHander sync:[_lines allLines] toUser:nil];
-            }
-            [self onSendDocShareInfoToUser:nil];
-        }
-        else {
+        if (_isJoined == YES) {
+            
+        }else{
+            _isJoined = YES;
+            [self checkPermission];
+            [self.view makeToast:@"进入互动成功了"];
             [_lines clear];
-            [_cmdHander sendPureCmd:NTESWhiteBoardCmdTypeSyncRequest to:_managerUid];
+            [_cmdHander sendPureCmd:NTESWhiteBoardCmdTypeSyncRequest to:nil];
+            
         }
+
+    }else{
+        
+        [self.view makeToast:@"进入互动失败"];
+        
     }
 }
 
@@ -602,7 +709,7 @@
     [self.view makeToast:[NSString stringWithFormat:@"已离开白板:%zd", error.code]];
     _isJoined = NO;
     
-    NSError *result = [[NTESMeetingRTSManager sharedInstance] joinConference:_name];
+    NSError *result = [[NTESMeetingRTSManager defaultManager] joinConference:_name];
 //    DDLogError(@"Rejoin rts conference: %@ result %zd", _name, result.code);
     
     [self checkPermission];
@@ -644,12 +751,12 @@
 
 - (void)onReceiveSyncRequestFrom:(NSString *)sender
 {
-    if (_isManager) {
-        [_cmdHander sync:[_lines allLines] toUser:sender];
-        if (!self.docView.hidden) {
-            [self onSendDocShareInfoToUser:sender];
-        }
-    }
+//    if (_isManager) {
+//        [_cmdHander sync:[_lines allLines] toUser:sender];
+//        if (!self.docView.hidden) {
+//            [self onSendDocShareInfoToUser:sender];
+//        }
+//    }
 }
 
 - (void)onReceiveSyncPoints:(NSMutableArray *)points owner:(NSString *)owner
@@ -668,13 +775,13 @@
     self.laserView.center = p;
 }
 
--(void)onReceiveHiddenLaserfrom:(NSString *)sender
-{
+-(void)onReceiveHiddenLaserfrom:(NSString *)sender{
+    
     [self.laserView setHidden:YES];
 }
 
--(void)onReceiveDocShareInfo:(NTESDocumentShareInfo *)shareInfo from:(NSString *)sender
-{
+-(void)onReceiveDocShareInfo:(NTESDocumentShareInfo *)shareInfo from:(NSString *)sender{
+    
     self.currentPage = shareInfo.currentPage;
     if (shareInfo.currentPage == 0) {
         self.drawView.backgroundColor = [UIColor whiteColor];
@@ -742,7 +849,7 @@
 {
     if (step == NIMLoginStepLoginOK) {
         if (!_isJoined) {
-            NSError *result = [[NTESMeetingRTSManager sharedInstance] joinConference:_name];
+            NSError *result = [[NTESMeetingRTSManager defaultManager] joinConference:_classID];
 //            DDLogError(@"Rejoin rts conference: %@ result %zd", _name, result.code);
         }
     }

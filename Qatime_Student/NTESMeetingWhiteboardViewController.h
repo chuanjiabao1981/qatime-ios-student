@@ -72,11 +72,11 @@
 
 @property (nonatomic, strong) NSMutableDictionary *docInfoDic;
 
-@property (nonatomic, assign) BOOL isManager ;
+//@property (nonatomic, assign) BOOL isManager ;
 
 @property (nonatomic, strong) NSString *name ;
 
-@property (nonatomic, strong) NSString *managerUid ;
+//@property (nonatomic, strong) NSString *managerUid ;
 
 @property (nonatomic) int myDrawColorRGB ;
 
@@ -85,6 +85,9 @@
 
 
 - (instancetype)initWithChatroom:(NIMChatroom *)room;
+
+-(instancetype)initWithClassID:(NSString *)classID;
+
 
 - (void)checkPermission;
 

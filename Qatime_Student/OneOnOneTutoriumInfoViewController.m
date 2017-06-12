@@ -206,8 +206,15 @@
 
 /**进入互动课程*/
 - (void)enterClass{
+    /**
+     直接进入一对一互动直播
+     */
+    NIMChatroom *chatRoom = [[NIMChatroom alloc]init];
+    chatRoom.roomId = _dataDic[@"chat_team_id"] ;
+    InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatRoom andClassID:_classID andChatTeamID:_dataDic[@"chat_team_id"]];
     
-    OneOnOneTutoriumInfoViewController *controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:_classID];
+    
+//    OneOnOneTutoriumInfoViewController *controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:_classID];
     [self.navigationController pushViewController:controller animated:YES];
     
 }

@@ -77,6 +77,7 @@
     return [[NTESServiceManager sharedManager] singletonByClass:[self class]];
 }
 
+
 - (void)start
 {
 //    DDLogDebug(@"NIMService %@ Started", self);

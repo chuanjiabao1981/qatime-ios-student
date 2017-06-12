@@ -405,12 +405,11 @@ typedef enum : NSUInteger {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             
-            //MeetingRoom
+            [self stopHUD];
+            
             NIMChatroom *chatroom = [[NIMChatroom alloc]init];
-            //    NTESMeetingViewController *controller = [[NTESMeetingViewController alloc]init];
             InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:mod.interactive_course.classID andChatTeamID:dic[@"data"][@"chat_team_id"]];
             [self.navigationController pushViewController:controller animated:YES];
-            
             
         }else{
          //服务器正忙,稍后再试

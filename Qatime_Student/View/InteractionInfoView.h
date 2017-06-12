@@ -1,5 +1,5 @@
 //
-//  InteractionInfoView.h
+//  InteractionClassInfoHeaderView.h
 //  Qatime_Student
 //
 //  Created by Shin on 2017/3/28.
@@ -11,7 +11,8 @@
 
 #import "OneOnOneClass.h"
 #import "Teacher.h"
-@interface InteractionInfoView : UIView
+
+@interface InteractionClassInfoHeaderView : UIView
 
 /*课程名*/
 @property(nonatomic,strong) UILabel *classNameLabel ;
