@@ -23,6 +23,8 @@
 #import "TutoriumInfoViewController.h"
 #import "VideoClassInfoViewController.h"
 
+#import "UIViewController+Token.h"
+
 
 typedef enum : NSUInteger {
     PullToRefresh,  //下拉刷新
@@ -39,9 +41,6 @@ typedef enum : NSUInteger {
 @interface MyAuditionViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     NavigationBar *_navigationBar;
     
-    NSString *_token;
-    NSString *_idNumber;
-    
     /**直播课程的数据*/
     NSMutableArray *_liveClassArray;
     
@@ -57,12 +56,11 @@ typedef enum : NSUInteger {
     /**segment item2的刷新次数*/
     __block NSInteger refreshNum;
     
-
-    
     //教师
     Teacher *_teacher;
     
     /**课程详情*/
+    
     
 }
 
@@ -153,25 +151,12 @@ typedef enum : NSUInteger {
     _liveClassArray = @[].mutableCopy;
     _videoClassArray = @[].mutableCopy;
     
-    [self getToken];
-    
     //加载导航栏
     [self setupNavigation];
     
     //主视图
     [self setupMainView];
     
-}
-
-- (void)getToken{
-    
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
 }
 
 /**
@@ -214,7 +199,7 @@ typedef enum : NSUInteger {
                  @"per_page":[NSString stringWithFormat:@"%ld",per_page]}.mutableCopy;
         
         //我的试听->直播课
-        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:dics completeSuccess:^(id  _Nullable responds) {
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses",Request_Header,[self getStudentID]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:dics completeSuccess:^(id  _Nullable responds) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqualToNumber:@1]) {
                 
@@ -252,7 +237,7 @@ typedef enum : NSUInteger {
                  @"per_page":[NSString stringWithFormat:@"%ld",per_page]}.mutableCopy;
         
         //我的试听 -> 视频课
-        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/video_courses/tasting",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:dics completeSuccess:^(id  _Nullable responds) {
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/video_courses/tasting",Request_Header,[self getStudentID]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:dics completeSuccess:^(id  _Nullable responds) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqualToNumber:@1]) {
                 

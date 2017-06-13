@@ -34,6 +34,9 @@
     /* 菜单名*/
     NSArray *_menuName;
     
+    /**是否是游客*/
+    BOOL is_Guest;
+    
 }
 
 @end
@@ -68,14 +71,18 @@
         _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
     }
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
 
     
     [self HUDStartWithTitle:@"正在获取数据"];
     
+    
+    //部分基础数据
     _menuName = @[@"充值记录",@"消费记录",@"退款记录"];
+    
+    //是否游客
+    is_Guest = [[NSUserDefaults standardUserDefaults]valueForKey:@"is_Guest"]?[[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"]:NO;
     
     /* 请求钱包数据*/
     [self requestWallet];
@@ -99,6 +106,11 @@
         
         [self requestWallet];
         
+    }];
+    
+    /**监听重新登录*/
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"LoginSuccess" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        [self requestWallet];
     }];
     
 
@@ -205,9 +217,31 @@
 
 #pragma mark- 进入充值页面
 - (void)recharge{
-//    [self HUDStopWithTitle:@"请使用网页端进行充值"];
-    ChargeViewController *cVC = [ChargeViewController new];
-    [self.navigationController pushViewController:cVC animated:YES];
+
+    if (is_Guest == YES) {
+        //游客充值...
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"您还未登录!\n未登录情况下进行充值、购买等操作将无法保证您的购买记录和资金账户安全!是否登录?" cancelButtonTitle:@"前往登录" destructiveButtonTitle:nil otherButtonTitles:@[@"不登录"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+            
+            if (buttonIndex == 0) {
+                //登录一下子
+                [self loginAgain];
+                
+                
+            }else{
+                ///什么也不错,直接购买
+                ChargeViewController *charge = [[ChargeViewController alloc]init];
+                [self.navigationController pushViewController:charge animated:YES];
+            }
+            
+        }];
+        
+        
+    }else{
+        //普通用户充值
+      ChargeViewController *controller = [ChargeViewController new];
+        [self.navigationController pushViewController:controller animated:YES];
+    }
+    
 }
 
 #pragma mark- 进入提现页面

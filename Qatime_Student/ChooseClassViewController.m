@@ -144,7 +144,6 @@
              */
             [self.view addSubview:self.interactionClassFilterController.view];
             [self.interactionClassFilterController didMoveToParentViewController:self];
-         
             _filterView.mode = InteractionMode;
             
         }

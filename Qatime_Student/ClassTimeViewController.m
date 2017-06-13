@@ -465,6 +465,7 @@ typedef enum : NSUInteger {
                 controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.course_id];
             }else if ([cell.type.text containsString:@"一对一"]){
                 //一对一
+//                [self HUDStopWithTitle:@"正在开发中,敬请期待"];
                 controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
             }
             

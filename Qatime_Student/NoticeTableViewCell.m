@@ -103,6 +103,18 @@
 }
 
 
+-(void)setInteractionNoticeModel:(InteractionNotice *)interactionNoticeModel{
+    
+    
+    _interactionNoticeModel = interactionNoticeModel;
+    
+    _edit_at.text = interactionNoticeModel.edit_at;
+    
+    _announcement.text = interactionNoticeModel.announcement;
+    
+}
+
+
 
 
 

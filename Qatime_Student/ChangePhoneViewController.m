@@ -10,8 +10,10 @@
  
 #import "UIViewController+HUD.h"
 #import "UIViewController+HUD.h"
- 
+#import "GuestBindingViewController.h"
+
 #import "UIAlertController+Blocks.h"
+
 
 
 @interface ChangePhoneViewController ()<UITextInputDelegate>{
@@ -22,6 +24,9 @@
     
     NSString *_token;
     NSString *_idNumber;
+    
+    /**是否是游客*/
+    BOOL is_Guest;
     
     
 }
@@ -62,6 +67,10 @@
         
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
+    
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"is_Guest"]) {
+        is_Guest = [[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"];
+    }
 
     _changePhoneView = [[ChangPhoneView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
     [self.view addSubview:_changePhoneView];
@@ -69,6 +78,7 @@
     [_changePhoneView.finishButton addTarget:self action:@selector(requestChangePasswrod) forControlEvents:UIControlEventTouchUpInside];
     
     [_changePhoneView.phoneNumber addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [_changePhoneView.keyCode addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
 //    [_changePhoneView.getKeyButton addTarget:self action:@selector(getCode:) forControlEvents:UIControlEventTouchUpInside];
 
 }
@@ -176,10 +186,25 @@
                 /* 修改成功*/
                 [self HUDStopWithTitle:@"修改成功!"];
                 
-                sleep(2);
-                
-                
-                [self.navigationController popToRootViewControllerAnimated:YES];
+                if (is_Guest==YES) {
+                    
+                    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"绑定成功!\n是否要完善其他信息?" cancelButtonTitle:@"前往完善" destructiveButtonTitle:nil otherButtonTitles:@[@"取消"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                       
+                        if (buttonIndex == 0) {
+                            //前往绑定信息去
+                            GuestBindingViewController *controller = [[GuestBindingViewController alloc]initWithPhoneNumber:_changePhoneView.phoneNumber.text];
+                            [self.navigationController pushViewController:controller animated:YES];
+                            
+                        }else{
+                            
+                            
+                        }
+                    }];
+                    
+                }else{
+                    
+                    [self performSelector:@selector(returnToRoot) withObject:nil afterDelay:1];
+                }
                 
             }else{
                 /* 修改失败*/
@@ -296,7 +321,10 @@
 }
 
 
-
+- (void)returnToRoot{
+    
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 
 
 - (void)returnLastPage{

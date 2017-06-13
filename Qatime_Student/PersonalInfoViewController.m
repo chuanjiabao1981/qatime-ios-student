@@ -89,6 +89,10 @@
     /* 照片的url*/
     NSURL *_imageURL;
     
+    /**是否是游客*/
+    BOOL is_Guest;
+    
+    
 }
 @end
 
@@ -169,6 +173,10 @@
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"is_Guest"]) {
+        is_Guest = [[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"];
+    }
+    
     _nameArr = @[@"头像",@"姓名",@"性别",@"生日",@"年级",@"地区",@"简介"];
     
     /* 如果是从注册页面传值过来的*/
@@ -206,14 +214,9 @@
             for (NSString *key in _dic[@"data"]) {
                 
                 if ([_dataDic valueForKey:key]==nil||[[_dataDic valueForKey:key] isEqual:[NSNull null]] ) {
-                    
                     [_dataDic setValue:@"未设置" forKey:key];
-                    
                 }
-                
             }
-            
-            NSLog(@"%@",_dataDic);
         }else{
             
             [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"登录超时!\n请重新登录" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
@@ -352,7 +355,18 @@
             switch (indexPath.row) {
                 case 1:{
                     
-                    cell.content.text =[NSString stringWithFormat:@"%@",[_dataDic valueForKey:@"name"]];
+                    if (is_Guest == YES) {
+                        
+                        if ([_dataDic[@"name"] isEqualToString:_idNumber]) {
+                            cell.content.text =[NSString stringWithFormat:@"游客%@",[_dataDic valueForKey:@"name"]];
+                        }else{
+                            cell.content.text =[NSString stringWithFormat:@"%@",[_dataDic valueForKey:@"name"]];
+                        }
+                        
+                    }else{
+                        
+                        cell.content.text =[NSString stringWithFormat:@"%@",[_dataDic valueForKey:@"name"]];
+                    }
                     
                 }
                     break;

@@ -12,7 +12,7 @@
 #import "SignUpInfoViewController.h"
 #import "UIAlertController+Blocks.h"
 #import "UIViewController+HUD.h"
-#import "UIAlertController+Blocks.h"
+#import "UIViewController+AFHTTP.h"
 
 @interface SignUpViewController ()<UITextFieldDelegate,UITextInputDelegate>{
     
@@ -120,9 +120,9 @@
     /* 测试口  直接跳转*/
     
     /* 进入下一页*/
-    _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
-    
-    [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
+    //    _signUpInfoViewController = [[SignUpInfoViewController alloc]init];
+    //
+    //    [self.navigationController pushViewController:_signUpInfoViewController animated:YES];
     
     ////////////////////////////////////////////
     
@@ -336,41 +336,68 @@
     /* 手机号码正确的情况
      正则表达式 判断手机号的正确或错误
      */
-    if ([self isMobileNumber:_signUpView.phoneNumber.text]){
-        
-        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        
-        [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header] parameters:@{@"send_to":_signUpView.phoneNumber.text,@"key":@"register_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            
-            /* 发送成功提示框*/
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud.mode = MBProgressHUDModeText;
-            [hud setLabelText:NSLocalizedString(@"发送成功!", nil)];
-            hud.yOffset= 150.f;
-            hud.removeFromSuperViewOnHide = YES;
-            
-            
-            /* 重新发送验证码*/
-            [self deadLineTimer:_signUpView.getCheckCodeButton];
-            
-            [hud hide:YES afterDelay:2.0];
-            
-            
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            
-        }];
-    }
     
+    if ([self isMobileNumber:_signUpView.phoneNumber.text]){
+        //先验证这手机号有么有被注册或者绑定
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/user/check",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"account":_signUpView.phoneNumber.text} completeSuccess:^(id  _Nullable responds) {
+            
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                
+                
+                if ([dic[@"data"]boolValue] == YES ) {
+                    //账号被注册了
+                    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"该手机号码已经被注册" cancelButtonTitle:@"确定" destructiveButtonTitle:nil  otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                        
+                    }];
+                    
+                }else{
+                    
+                    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+                    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+                    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+                    
+                    [manager POST:[NSString stringWithFormat:@"%@/api/v1/captcha",Request_Header] parameters:@{@"send_to":_signUpView.phoneNumber.text,@"key":@"register_captcha"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                        
+                        /* 发送成功提示框*/
+                        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+                        hud.mode = MBProgressHUDModeText;
+                        [hud setLabelText:NSLocalizedString(@"发送成功!", nil)];
+                        hud.yOffset= 150.f;
+                        hud.removeFromSuperViewOnHide = YES;
+                        
+                        
+                        /* 重新发送验证码*/
+                        [self deadLineTimer:_signUpView.getCheckCodeButton];
+                        
+                        [hud hide:YES afterDelay:2.0];
+                        
+                        
+                    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                        
+                    }];
+                }
+                
+            }else{
+                
+                [self HUDStopWithTitle:@"验证失败,请稍后重试"];
+            }
+            
+         } failure:^(id  _Nullable erros) {
+             //请求失败
+             [self HUDStopWithTitle:@"网络繁忙,请稍后重试"];
+         }];
+        
+        
+    }
     /* 手机号输入为空或错误的情况*/
     else  {
         
         [self showAlertWith:NSLocalizedString(@"请输入正确的手机号!", nil)];
     }
-    
-    
 }
+    
+
 
 
 // 正则判断手机号码地址格式

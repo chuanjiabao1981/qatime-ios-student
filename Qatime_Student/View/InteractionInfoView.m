@@ -1,5 +1,5 @@
 //
-//  InteractionInfoView.m
+//  InteractionClassInfoHeaderView.m
 //  Qatime_Student
 //
 //  Created by Shin on 2017/3/28.
@@ -10,7 +10,7 @@
 #import "UIImageView+WebCache.h"
 #import "NSString+ChangeYearsToChinese.h"
 
-@interface InteractionInfoView (){
+@interface InteractionClassInfoHeaderView (){
     
     TTGTextTagConfig *_config;
     
@@ -18,7 +18,7 @@
 
 @end
 
-@implementation InteractionInfoView
+@implementation InteractionClassInfoHeaderView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {

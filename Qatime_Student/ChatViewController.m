@@ -47,6 +47,11 @@
 #import "UIViewController+TimeInterval.h"
 #import "KSPhotoBrowser.h"
 #import "NSNull+Json.h"
+#import "InteractiveCourse.h"
+#import "TutoriumList.h"
+#import "InteractionViewController.h"
+
+
 
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelgate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate>{
     
@@ -54,7 +59,7 @@
     NSString *_idNumber;
     
     /* 聊天室的信息*/
-    TutoriumListInfo *_tutoriumInfo;
+    id _tutoriumInfo;
     
     /* 会话*/
     NIMSession *_session;
@@ -69,9 +74,7 @@
     AVAudioRecorder *recorder;
     NSTimer *levelTimer;
     
-    
     NSString *_chat_teamID;
-    
     
 }
 
@@ -79,7 +82,6 @@
 @property (strong, nonatomic) MJRefreshHeader *head;
 /* 聊天信息*/
 @property (strong, nonatomic) ChatModel *chatModel;
-
 
 /* 与web端同步的表情专用的键盘*/
 @property (strong, nonatomic) YZEmotionKeyboard *emotionKeyboard;
@@ -89,15 +91,18 @@
 
 @implementation ChatViewController
 
--(instancetype)initWithClass:(TutoriumListInfo *)tutorium {
+-(instancetype)initWithClass:(id)tutorium {
     
     self = [super init];
     if (self) {
         
-        
-        _tutoriumInfo = tutorium;
-        
-        _chat_teamID  = tutorium.chat_team_id;
+        if ([tutorium isMemberOfClass:[TutoriumListInfo class]]) {
+            _tutoriumInfo =(TutoriumListInfo *)tutorium;
+            _chat_teamID = [(TutoriumListInfo *)tutorium valueForKey:@"chat_team_id"];
+        }else if ([tutorium isMemberOfClass:[InteractiveCourse class]]){
+            _tutoriumInfo =(InteractiveCourse *)tutorium;
+            _chat_teamID = [(InteractiveCourse *)tutorium valueForKey:@"chat_team_id"];
+        }
         
     }
     return self;
@@ -111,8 +116,7 @@
     
     _navigationBar = ({
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
-        _.titleLabel.text = _tutoriumInfo.name;
-        
+        _.titleLabel.text = [_tutoriumInfo valueForKey:@"name"];
         
         //
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
@@ -163,7 +167,7 @@
     /* 初始化*/
     if (_tutoriumInfo) {
         
-        _session  = [NIMSession session:_tutoriumInfo.chat_team_id type:NIMSessionTypeTeam];
+        _session  = [NIMSession session:[_tutoriumInfo valueForKey:@"chat_team_id"] type:NIMSessionTypeTeam];
     }
     
     _chat_Account = [Chat_Account yy_modelWithJSON:[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"]];
@@ -482,7 +486,7 @@
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses/%@",Request_Header,_idNumber,_tutoriumInfo.classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses/%@",Request_Header,_idNumber,[_tutoriumInfo valueForKey:@"classID"]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
@@ -1461,8 +1465,19 @@
 #pragma mark- 进入直播
 - (void)enterLive{
     
-    LivePlayerViewController *playerVC = [[LivePlayerViewController alloc]initWithClassID:_tutoriumInfo.classID];
-    [self.navigationController pushViewController:playerVC animated:YES];
+    UIViewController *controller;
+    if ([_tutoriumInfo isKindOfClass:[TutoriumListInfo class]]) {
+        
+        controller =[[LivePlayerViewController alloc]initWithClassID:[_tutoriumInfo valueForKey:@"classID"]];
+
+    }else if ([_tutoriumInfo isKindOfClass:[InteractiveCourse class]]){
+        NIMChatroom *room = [[NIMChatroom alloc]init];
+        
+        controller =[[InteractionViewController alloc]initWithChatroom:room andClassID:[_tutoriumInfo valueForKey:@"classID"] andChatTeamID:[_tutoriumInfo valueForKey:@"chat_team_id"]];
+        
+    }
+    
+    [self.navigationController pushViewController:controller animated:YES];
     
     
 }

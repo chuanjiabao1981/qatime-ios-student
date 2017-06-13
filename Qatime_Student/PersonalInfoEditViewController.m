@@ -246,7 +246,7 @@
             EditNameTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
             if (cell==nil) {
                 cell=[[EditNameTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-                
+                [cell.nameText addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
                 if (_infoDic) {
                     
                     cell.nameText.text = _infoDic[@"name"];
@@ -463,6 +463,7 @@
     }
     
 }
+
 - (void)textFieldDidChange:(UITextField *)textField{
     
     EditNameTableViewCell *nameCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
@@ -470,16 +471,15 @@
     
     if (textField == nameCell.nameText) {
         
-        _infoDic[@"name"] = textField.text;
+        [_infoDic setValue:textField.text forKey:@"name"];
         
     }else if(textField == descCell.nameText) {
         
         if (textField.text.length > 20) {
             textField.text = [textField.text substringToIndex:20];
-            
-            _infoDic[@"desc"] = textField.text;
+            [_infoDic setValue:textField.text forKey:@"desc"];
         }else{
-            _infoDic[@"desc"] = textField.text;
+            [_infoDic setValue:textField.text forKey:@"desc"];
             
         }
     }
@@ -639,7 +639,6 @@
                 
                 [hud hide:YES];
                 [self HUDStopWithTitle:@"保存成功"];
-                
                 
                 [self performSelector:@selector(returnRoot) withObject:nil afterDelay:1];
                 

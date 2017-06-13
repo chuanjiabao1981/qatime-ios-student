@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Notice.h"
+#import "InteractionNotice.h"
 
 @interface NoticeTableViewCell : UITableViewCell
 
@@ -30,6 +31,8 @@
 
 /* notice model*/
 @property(nonatomic,strong) Notice *model ;
+
+@property (nonatomic, strong) InteractionNotice *interactionNoticeModel ;
 
 
 @end

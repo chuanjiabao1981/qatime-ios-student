@@ -8,9 +8,19 @@
 
 #import <UIKit/UIKit.h>
 #import "UIViewController_Token.h"
+#import "SAMKeychain.h"
 
 @interface UIViewController (Token)
 
-- (void)getToken;
+@property (nonatomic, strong) NSString *token ;
+
+@property (nonatomic, strong) NSString *studentID ;
+
+
+/**提出token*/
+-(NSString *)getToken;
+
+/**提出studentID*/
+-(NSString *)getStudentID;
 
 @end

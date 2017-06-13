@@ -25,6 +25,7 @@
 #import "VideoClassPlayerViewController.h"
 //#import "VideoClass.h"
 #import "MyVideoClassList.h"
+#import "UIViewController+Token.h"
 
 typedef enum : NSUInteger {
     PullToRefresh,  //下拉刷新
@@ -41,9 +42,6 @@ typedef enum : NSUInteger {
 @interface MyVideoClassViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
     NavigationBar *_navigationBar;
-    
-    NSString *_token;
-    NSString *_idNumber;
     
     /**已购课程的数据*/
     NSMutableArray *_boughtClassArray;
@@ -161,8 +159,6 @@ typedef enum : NSUInteger {
     _boughtVideoArray = @[].mutableCopy;
     _freeVideoArray = @[].mutableCopy;
     
-    [self getToken];
-    
     //加载导航栏
     [self setupNavigation];
     
@@ -171,16 +167,7 @@ typedef enum : NSUInteger {
     
 }
 
-- (void)getToken{
-    
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-}
+
 
 
 /**
@@ -222,7 +209,7 @@ typedef enum : NSUInteger {
              @"page":[NSString stringWithFormat:@"%ld",page],
              @"per_page":[NSString stringWithFormat:@"%ld",per_page]}.mutableCopy;
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/video_courses/list",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:dics completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/video_courses/list",Request_Header,[self getStudentID]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:dics completeSuccess:^(id  _Nullable responds) {
        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {

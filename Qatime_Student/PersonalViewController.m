@@ -28,15 +28,13 @@
 #import "MyVideoClassViewController.h"
 #import "AboutUsViewController.h"
 #import "MyAuditionViewController.h"
+#import "UIViewController+Token.h"
+#import "GuestBindingViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.width
 
 @interface PersonalViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate>{
-    
-    
-    NSString *_token;
-    NSString *_idNumber;
     
     LivePlayerViewController *neVideoVC;
     
@@ -60,6 +58,9 @@
     /* 是否登录*/
     BOOL login;
     
+    /**是否是游客*/
+    BOOL is_Guest;
+    
 }
 
 @end
@@ -73,7 +74,6 @@
     self.view.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.00];
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
-    
     
     /* 菜单名*/
     _settingName = @[@"我的钱包",@"我的订单",@"我的直播课",@"我的一对一",@"我的视频课",@"我的试听",@"安全管理",@"系统设置",@"关于我们"];
@@ -90,8 +90,6 @@
     
     _personalView.settingTableView.delegate = self;
     _personalView.settingTableView.dataSource = self;
-//    _personalView.settingTableView.tableHeaderView = _headView;
-//    _personalView.settingTableView.tableHeaderView.size = CGSizeMake(SCREENWIDTH, SCREENHEIGHT*2/5);
     
     _personalView.settingTableView.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
     
@@ -102,13 +100,14 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogin:) name:@"UserLoginAgain" object:nil];
     
     /* 如果是充值成功,充值成功后刷新钱包金额*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshAmount) name:@"ChargeSucess" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshAmount) name:@"ChargeSuccess" object:nil];
+
     
     /* 修改个人信息成功后的回调*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeHead:) name:@"ChangeInfoSuccess" object:nil];
     
     /**重新登录后的个人信息改动监听*/
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogin:) name:@"UserLogin" object:nil];
+    //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLogin:) name:@"UserLogin" object:nil];
     
     [[NSNotificationCenter defaultCenter]addObserverForName:@"UserLogin" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
         
@@ -117,7 +116,7 @@
     
     /**监听用户退出登录*/
     [[NSNotificationCenter defaultCenter]addObserverForName:@"userLogOut" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-       
+        
         [_headView.headImageView setImage:[UIImage imageNamed:@"人"]];
         _headView.name.text = @"未登录";
         SettingTableViewCell *cell = [_personalView.settingTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0 ]];
@@ -130,45 +129,54 @@
 /* 页面加载方法*/
 - (void)setupPages{
     
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
+    /**取出是否是游客*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"is_Guest"]) {
+        is_Guest = [[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"];
     }
     
     /* 取出用户名*/
     
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"name"]) {
+    if (is_Guest == YES) {
         
-        _name = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"name"]];
+        _name = [NSString stringWithFormat:@"%@",[SAMKeychain passwordForService:Qatime_Service account:@"id"]];
         
+    }else{
+        
+        if ([[NSUserDefaults standardUserDefaults]objectForKey:@"name"]) {
+            _name = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"name"]];
+        }
     }
-    
     
     /* 取出头像信息*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"avatar_url"]) {
+    if (is_Guest==YES) {
+        _avatarStr = @"";
+    }else{
         
-        _avatarStr = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"avatar_url"]];
-        
+        if ([[NSUserDefaults standardUserDefaults]objectForKey:@"avatar_url"]) {
+            _avatarStr = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"avatar_url"]];
+        }
     }
     
-    
     /* 取出登录状态*/
-    
     login = [[NSUserDefaults standardUserDefaults]boolForKey:@"Login"];
-    
-    
     
     if (login) {
         
-        [_headView.headImageView sd_setImageWithURL:[NSURL URLWithString:_avatarStr]];
-        
-        _headView.name .text = _name;
+        if (is_Guest == YES) {
+            
+            [_headView.headImageView setImage:[UIImage imageNamed:@"人"]];
+            if ([_name isEqualToString:[self getStudentID]]) {
+                _headView.name .text = [NSString stringWithFormat:@"游客%@", _name];
+            }else{
+                 _headView.name .text = [NSString stringWithFormat:@"%@", _name];
+            }
+        }else{
+            
+            [_headView.headImageView sd_setImageWithURL:[NSURL URLWithString:_avatarStr]];
+            _headView.name .text = _name;
+            
+        }
     }else{
-        
         [_headView.headImageView setImage:[UIImage imageNamed:@"人"]];
         _headView.name .text = @"点击头像登录";
         
@@ -219,8 +227,8 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,[self getStudentID]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
@@ -261,14 +269,11 @@
             
             
             /* 获取失败*/
-            
         }
-        
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-    
     
 }
 
@@ -379,7 +384,7 @@
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
         if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
             
-            UIViewController *controller;
+           __block UIViewController *controller;
             switch (indexPath.row) {
                 case 0:{
                     controller = [MyWalletViewController new];
@@ -407,7 +412,7 @@
                 case 4:{
                     
                     controller = [[MyVideoClassViewController alloc]init];
-            
+                    
                 }
                     break;
                 case 5:{
@@ -417,7 +422,38 @@
                 }
                     break;
                 case 6:{
+                    if (is_Guest == YES) {
+                        //是游客就让游客去绑定
+                        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"游客账号不能进行此操作!\n请先绑定账号!" cancelButtonTitle:@"前往绑定" destructiveButtonTitle:nil otherButtonTitles:@[@"暂不绑定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                            
+                            if (buttonIndex == 0) {
+                                //前往绑定游客账号
+                                
+                                if ([[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]) {
+                                    
+                                controller  = [[GuestBindingViewController alloc]initWithPhoneNumber:[[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]];
+                                }else{
+                                    
+                                    controller = [[GuestBindingViewController alloc]init];
+                                }
+                                
+                                controller.hidesBottomBarWhenPushed = YES;
+                                [self.navigationController pushViewController:controller animated:YES];
+                                
+                            }else{
+                                //不绑定直接进入安全管理
+                                controller = [SafeViewController new];
+                                controller.hidesBottomBarWhenPushed = YES;
+                                [self.navigationController pushViewController:controller animated:YES];
+                            }
+                            
+                        }];
+                        
+                    }else{
+                        
                     controller = [SafeViewController new];
+                        
+                    }
                     
                 }
                     break;
@@ -426,7 +462,7 @@
                 }
                     break;
                 case 8:{
-                    controller = [AboutUsViewController new];  
+                    controller = [AboutUsViewController new];
                 }
                     break;
             }

@@ -261,14 +261,14 @@
     return _classListTableView;
 }
 
--(InteractionInfoView *)classInfoView{
-    
-    if (!_classInfoView) {
-        _classInfoView =[[InteractionInfoView alloc]init];
-    
-    }
-    return _classInfoView;
-}
+//-(InteractionInfoView *)classInfoView{
+//    
+//    if (!_classInfoView) {
+//        _classInfoView =[[InteractionInfoView alloc]init];
+//    
+//    }
+//    return _classInfoView;
+//}
 
 
 -(UITableView *)membersTableView{

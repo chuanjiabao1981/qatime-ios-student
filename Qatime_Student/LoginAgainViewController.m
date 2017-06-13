@@ -13,17 +13,20 @@
 #import "WXApi.h"
 #import "WXApiObject.h"
 #import "UIViewController+HUD.h"
-#import "UIViewController+HUD.h"
-
+#import <NIMSDK/NIMSDK.h>
+#import "UIAlertController+Blocks.h"
+#import "GuestBindingViewController.h"
 
 #import "Chat_Account.h"
 
 #import "BindingViewController.h"
 
+#import "SAMKeychain.h"
+
 typedef NS_ENUM(NSUInteger, LoginType) {
     Normal =0, //账号密码登录
     Wechat,  //微信登录
-    
+    Guest,   //游客登录
 };
 
 @interface LoginAgainViewController ()<UITextFieldDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate,WXApiDelegate>{
@@ -53,6 +56,8 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     /* 是否有返回键*/
     BOOL haveReturnButton;
     
+    //是否需要检查用户信息
+    BOOL needCheckGuest;
     
     
 }
@@ -81,7 +86,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
-    //    _navigationBar.backgroundColor= [UIColor whiteColor];
     
     _navigationBar.titleLabel.text = @"登录";
     
@@ -91,18 +95,12 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
-    
     needCheckCaptcha = NO;
     _wrongTimes = 0;
     _captcha =[NSMutableString string ];
     
     _loginAgainView = [[LoginAgainView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
     [self.view addSubview:_loginAgainView];
-    
-    //    /* status bar的绿色*/
-    //    UIView *status=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 20)];
-    //    [self .view addSubview:status];
-    //    [status setBackgroundColor:[UIColor colorWithRed:26/255.0 green:183/255.0 blue:159/255.0 alpha:1.0]];
     
     [_loginAgainView.signUpButton addTarget:self action:@selector(enterSignUpPage:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -112,31 +110,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     _loginAgainView.passWord.secureTextEntry = YES;
     
     
-    
-    
-    //增加监听，当键盘出现或改变时收出消息
-    
-    //    [[NSNotificationCenter defaultCenter] addObserver:self
-    //
-    //                                             selector:@selector(keyboardWillShow:)
-    //
-    //                                                 name:UIKeyboardWillShowNotification
-    //
-    //                                               object:nil];
-    //
-    
-    
-    //增加监听，当键退出时收出消息
-    
-    //    [[NSNotificationCenter defaultCenter] addObserver:self
-    //
-    //                                             selector:@selector(keyboardWillHide:)
-    //
-    //                                                 name:UIKeyboardWillHideNotification
-    //
-    //                                               object:nil];
-    
-    
     /* 忘记密码按钮*/
     [_loginAgainView.forgottenPassorwdButton addTarget:self action:@selector(forgetPassword) forControlEvents:UIControlEventTouchUpInside];
     
@@ -144,7 +117,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyCodeAppear) name:@"FivethWrongTime" object:nil];
     /* 验证码按钮的点击事件*/
-    [_loginAgainView.keyCodeButton addTarget:self action:@selector(makeCaptcha) forControlEvents:UIControlEventTouchUpInside];
+//    [_loginAgainView.keyCodeButton addTarget:self action:@selector(makeCaptcha) forControlEvents:UIControlEventTouchUpInside];
     
     
     /* 微信按钮加点击事件 点击登录*/
@@ -171,7 +144,63 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     /* 添加微信登录成功的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(wechatLoginSucess:) name:@"WechatLoginSucess" object:nil];
+    
+    
+    //检查是否需要检查用户信息
+    if ([SAMKeychain allAccounts]==nil) {
+        needCheckGuest = NO;
+    }else{
+        needCheckGuest = YES;
+    }
+
 }
+
+#pragma mark- UITextField delegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    
+    if (needCheckGuest == YES) {
+        
+        if (textField == _loginAgainView.userName) {
+            NSArray *keys = [SAMKeychain allAccounts];
+            
+            //访问本地钥匙串,看是否有游客信息,有则提示,没有的话就没事
+            /**
+             以本地是否保存了@"Remember-Token"为用户名的keychain作为依据
+             */
+            if ([SAMKeychain passwordForService:Qatime_Service account:@"Remember-Token"]==nil) {
+                //没有不管,可以直接输入字符
+                
+            }else{
+                
+                [UIAlertController showAlertInViewController:self withTitle:@"警告!" message:@"系统检测到您之前使用游客身份登录,如您使用其他账号登录则无法找回之前登录的所有信息(包括账户资金和一切消费记录)!\n是否确定使用新的账户登录?" cancelButtonTitle:@"我要完善当前账号信息" destructiveButtonTitle:nil otherButtonTitles:@[@"确定使用新账号登录"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                    
+                    if (buttonIndex == 0) {
+                        //绑定和完善当前账号信息 前往绑定
+                        GuestBindingViewController *controller = [[GuestBindingViewController alloc]init];
+                        [self.navigationController pushViewController:controller animated:YES];
+                        
+                        
+                    }else{
+                        //使用新账号,登录成功后会冲掉原有的游客信息
+                        
+                        needCheckGuest = NO;
+                        [textField becomeFirstResponder];
+                    }
+                    
+                }];
+            }
+            
+        }
+        
+    }else{
+        
+        
+    }
+    
+    
+}
+
 
 
 #pragma mark- 微信请求code数据
@@ -255,42 +284,14 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     _loginAgainView.keyCodeButton.hidden = NO;
     _loginAgainView.text3.hidden = NO;
     _loginAgainView.keyCodeText.hidden = NO;
+    _loginAgainView.authenCode.hidden = NO;
+    [_loginAgainView.authenCode updateLayout];
     
-    _loginAgainView.loginButton.sd_resetLayout
-    .topSpaceToView(_loginAgainView.text3,20)
-    .leftEqualToView(_loginAgainView.text3)
-    .rightEqualToView(_loginAgainView.keyCodeButton)
-    .heightRatioToView(_loginAgainView.text2,0.8);
-    
-    
-    [self makeCaptcha];
-    
-    
-    
-    
+    _loginAgainView.loginButton.sd_layout
+    .topSpaceToView(_loginAgainView.text3, 20*ScrenScale);
+    [_loginAgainView.loginButton updateLayout];
     
 }
-
-- (void)makeCaptcha{
-    
-    _captcha = [NSMutableString string];
-    
-    
-    /* 生成验证码的方法*/
-    NSArray  *changeArray = [[NSArray alloc] initWithObjects:@"0",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z",@"a",@"b",@"c",@"d",@"e",@"f",@"g",@"h",@"i",@"j",@"k",@"l",@"m",@"n",@"o",@"p",@"q",@"r",@"s",@"t",@"u",@"v",@"w",@"x",@"y",@"z",nil];
-    
-    //随机从数组中选取需要个数的字符，然后拼接为一个字符串
-    for(int i = 0; i < 4; i++)
-    {
-        NSInteger index = arc4random() % ([changeArray count] - 1);
-        NSString *getStr = [changeArray objectAtIndex:index];
-        
-        _captcha = (NSMutableString *)[_captcha stringByAppendingString:getStr];
-    }
-    
-    [_loginAgainView.keyCodeButton setTitle:_captcha forState:UIControlStateNormal];
-}
-
 
 
 #pragma mark- 忘记密码点击事件
@@ -299,8 +300,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     /* 弹出找回密码页面*/
     findPasswordViewController = [[FindPasswordViewController alloc]init];
     [self.navigationController pushViewController:findPasswordViewController animated:YES];
-    
-    
     
     
 }
@@ -313,7 +312,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     [self.navigationController pushViewController:_signUpViewController animated:YES];
     
-    
 }
 
 #pragma mark- 登录按钮点击事件
@@ -324,6 +322,14 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     /* 取消输入框响应*/
     [self cancelAllRespond];
+    
+    
+    
+    //友情判断 ,是不是还有游客信息,要是有的话就提示 ,没有的话就算了.
+    //应该是有
+    
+    
+    
     
     
     /* 如果用户名为空*/
@@ -362,7 +368,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
             
             [self presentViewController:alert animated:YES completion:nil];
         }
-        if (needCheckCaptcha == YES&&![_loginAgainView.keyCodeText.text.lowercaseString isEqualToString:_captcha.lowercaseString]) {
+        if (needCheckCaptcha == YES&&![_loginAgainView.keyCodeText.text.lowercaseString isEqualToString:_loginAgainView.authenCode.authCodeStr.lowercaseString]) {
             
             /* 弹出alert框 提示输入正确的验证码*/
             UIAlertController *alert =[UIAlertController alertControllerWithTitle:@"提示" message:@"请输入正确的验证码！" preferredStyle:UIAlertControllerStyleAlert];
@@ -375,7 +381,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         
         
         /* 不需要输入验证码或者验证码输入正确的情况*/
-        if (needCheckCaptcha == NO || (needCheckCaptcha == YES&&[_loginAgainView.keyCodeText.text.lowercaseString isEqualToString:_captcha.lowercaseString])) {
+        if (needCheckCaptcha == NO || (needCheckCaptcha == YES&&[_loginAgainView.keyCodeText.text.lowercaseString isEqualToString:_loginAgainView.authenCode.authCodeStr.lowercaseString])) {
             //            /* HUD框 提示正在登陆*/
             //            MBProgressHUD *hud=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
             //            hud.mode = MBProgressHUDModeDeterminate;
@@ -407,10 +413,28 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                 /* 如果登录成功*/
                 if ([[dicGet allKeys]containsObject:@"remember_token" ]) {
                     
+                    
+                    //不用干掉之前存储的keychain信息,增加新的keychain信息
+                    NSArray *keys =  [SAMKeychain allAccounts];
+                    NSError *error = [[NSError alloc]init];
+                    if (keys!=nil) {
+                        
+                        for (NSDictionary *acc in keys) {
+                            
+                            [SAMKeychain deletePasswordForService:Qatime_Service account:acc[@"acct"] error:&error];
+                        }
+                        
+                    }
+                    
+                    //存储新的key
+                    [SAMKeychain setPassword:_loginAgainView.passWord.text forService:Qatime_Service account:_loginAgainView.userName.text error:&error];
+
                     [self saveUserInfo:dicGet loginType:Normal];
                     //
                     [self stopHUD];
                     [self HUDStopWithTitle:@"登录成功"];
+                    
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"LoginSuccess" object:nil];
                     
                     [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                     
@@ -461,8 +485,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     NSString *userTokenFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
     
     NSLog(@"保存的数据\n%@",userDic);
-    /* 归档*/
-    [NSKeyedArchiver archiveRootObject:userDic toFile:userTokenFilePath];
+    
     
     /* 另存一份userdefault  只存token和id*/
     
@@ -471,12 +494,10 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     NSDictionary *user=[NSDictionary dictionaryWithDictionary:userDic[@"user"]];
     NSLog(@"%@",user);
     
-    
     NSString *userID = [NSString stringWithFormat:@"%@",[[userDic valueForKey:@"user"] valueForKey:@"id"]];
     
     [[NSUserDefaults standardUserDefaults]setObject:remember_token forKey:@"remember_token"];
     [[NSUserDefaults standardUserDefaults]setObject:userID forKey:@"id"];
-    
     
     NSLog(@"token:%@,id:%@",remember_token,userID);
     
@@ -511,10 +532,26 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     switch (loginType) {
         case 0:
             type = [NSString stringWithFormat:@"Normal"];
+            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"is_Guest"];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
+            /* 归档*/
+            [NSKeyedArchiver archiveRootObject:userDic toFile:userTokenFilePath];
             break;
             
         case 1:
             type = [NSString stringWithFormat:@"Wechat"];
+            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"is_Guest"];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
+            /* 归档*/
+            [NSKeyedArchiver archiveRootObject:userDic toFile:userTokenFilePath];
+            break;
+            
+        case 2:
+            type = [NSString stringWithFormat:@"Guest"];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"is_Guest"];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
             break;
     }
     
@@ -536,13 +573,11 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         
     }
     
-    
     /* 发出一条消息:登录方式*/
     
-    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"Login_Type" object:type];
     
 #pragma mark- 把用户聊天账户信息存本地
-    
     
     /* 另存一份userdefault  只存chat_account*/
     
@@ -552,19 +587,30 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     if ([chatAccount valueForKey:@"chat_account"]!=nil&&![[chatAccount valueForKey:@"chat_account"] isEqual:[NSNull null]]) {
         
-        NSDictionary *chat_accountDic = [NSDictionary dictionaryWithDictionary:[chatAccount valueForKey:@"chat_account"]];
+        NSMutableDictionary *chat_accountDic = [NSMutableDictionary dictionaryWithDictionary:[chatAccount valueForKey:@"chat_account"]];
         
         NSLog(@"%@",chat_accountDic);
+        NSDictionary *chat = chat_accountDic.mutableCopy;
         
+        for (NSString *key in chat) {
+            if ([chat_accountDic[key] isEqual:[NSNull null]]||chat_accountDic[key]==nil) {
+                chat_accountDic[key] = @"";
+            }
+        }
         
         [[NSUserDefaults standardUserDefaults]setObject:chat_accountDic forKey:@"chat_account"];
         
+        /* 登录云信*/
+        if ([[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"]) {
+            NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"];
+            NIMAutoLoginData *lodata = [[NIMAutoLoginData alloc]init];
+            lodata.account =chatDic [@"accid"];
+            lodata.token = chatDic[@"token"];
+            [[[NIMSDK sharedSDK]loginManager]autoLogin:lodata];
+            
+        }
+        
     }
-    
-    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLoginAgain" object:nil];
-    
-    //    [self.navigationController popViewControllerAnimated:YES];
     
 }
 

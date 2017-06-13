@@ -41,7 +41,7 @@
         _nextStepButton.layer.borderWidth = 1;
         _nextStepButton.layer.borderColor = NAVIGATIONRED.CGColor;
         
-        [_nextStepButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_nextStepButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
         [_nextStepButton setTitle:@"下一步" forState:UIControlStateNormal];
         
         /*布局*/

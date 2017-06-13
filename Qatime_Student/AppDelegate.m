@@ -23,6 +23,7 @@
 
 #import <sys/utsname.h>
 #import "RealReachability.h"
+#import "SAMKeychain.h"
 
 
 
@@ -47,6 +48,8 @@
     UINavigationController *noticeVC;
     
     UINavigationController *chooseVC;
+    
+    UINavigationController *naviVC;
     
     /* 推送部分*/
     NSDictionary *remoteNotification;
@@ -89,7 +92,6 @@
     /* 设置TabBarController*/
     [self setTabBarController];
     
-    
     /* 判断是否是第一次进入程序,加载引导图页面*/
     NSUserDefaults *useDef = [NSUserDefaults standardUserDefaults];
     // 使用 NSUserDefaults 读取用户数据
@@ -105,13 +107,42 @@
         /* 根据本地保存的用户文件  判断是否登录*/
         NSString *userFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
         if (![[NSFileManager defaultManager]fileExistsAtPath:userFilePath]) {
-            /* 如果没有登录信息,登录页作为root*/
-            _loginViewController = [[LoginViewController alloc]init];
-            UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
-            [_window setRootViewController:naviVC];
+            /**如果没有登录信息,查询keychain是否有保存游客信息*/
+            
+            NSArray *accounts = [SAMKeychain allAccounts];
+            if (accounts ==nil) {
+                /* 如果没有登录信息,登录页作为root*/
+                _loginViewController = [[LoginViewController alloc]init];
+                
+                naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
+                [naviVC setNavigationBarHidden:YES];
+                
+                [_window setRootViewController:naviVC];
+            }else{
+                
+                /* 如果有游客登录信息,直接登录,并保存token和id*/
+                [_window setRootViewController:_viewController];
+                
+                NSString *userid = [SAMKeychain passwordForService:Qatime_Service account:@"id"];
+                NSString *token = [SAMKeychain passwordForService:Qatime_Service account:@"Remember-Token"];
+                [[NSUserDefaults standardUserDefaults]setObject:userid forKey:@"id"];
+                [[NSUserDefaults standardUserDefaults]setObject:token forKey:@"remember-token"];
+                NSLog(@"token:%@,id:%@",token,userid);
+                
+                [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
+                [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"is_Guest"];
+                
+                /* 上传用户信息*/
+                dispatch_queue_t info = dispatch_queue_create("info", DISPATCH_QUEUE_SERIAL);
+                dispatch_async(info, ^{
+                    [self sendDeviceInfo];
+                    
+                });
+                
+            }
             
         }else{
-            /* 如果有登录信息,直接登录,并保存token和id*/
+            /* 如果有普通用户信息,直接登录,并保存token和id*/
             [_window setRootViewController:_viewController];
             NSString *token= [[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"];
             NSString *userid=[[NSUserDefaults standardUserDefaults]objectForKey:@"id"];
@@ -126,7 +157,6 @@
             
         }
     }
-    
     
 //    /* 增加热修复技术*/
 //    [JSPatch startWithAppKey:@"f3da4b3b9ce10b8e"];
@@ -228,7 +258,7 @@
     /* 用户在应用程序里登录*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userLoginAgain:) name:@"UserLoginAgain" object:nil];
     /* 直接进入而没有登录*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeRootViewConroller:) name:@"EnterWithoutLogin" object:nil];
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeRootViewConroller:) name:@"EnterWithoutLogin" object:nil];
     /* 监听登录方式:账号密码登录(Normal)或是微信登录(wechat)*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ChangeLoginRoot:) name:@"Login_Type" object:nil];
     
@@ -240,7 +270,6 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnPushAlert:) name:@"NotificationAlert" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnNotification:) name:@"Notification" object:nil];
     
-    
     /* 监听跳转到root后的tabbar变化*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(hideTabbar) name:@"PopToRoot" object:nil];
     
@@ -250,6 +279,10 @@
     
     /**选择年级的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeItem:) name:@"ChooseGrade" object:nil];
+    
+    
+    /**监听游客退出登录*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(guestLogOut) name:@"guestLogOut" object:nil];
     
     
     /* 获取推送消息内容 10以下系统获取方法*/
@@ -279,7 +312,6 @@
     
     /* 所有消息变为已读*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(allMessageRead) name:@"AllMessageRead" object:nil];
-    
     
 }
 
@@ -355,13 +387,9 @@
     classTimeVC = [[UINavigationController alloc]initWithRootViewController:_classTimeViewController];
     noticeVC = [[UINavigationController alloc]initWithRootViewController:_noticeIndexViewController];
     personalVC = [[UINavigationController alloc]initWithRootViewController:_personalViewController];
-    
     chooseVC = [[UINavigationController alloc]initWithRootViewController:_chooseClassViewController];
 
 }
-
-
-
 
 
 #pragma mark- 注册推送
@@ -698,11 +726,16 @@
 /* 修改rootViewController为系统的主页controller*/
 - (void)changeRootViewConroller:(NSNotification *)notification{
     
-    
     if ([_window.rootViewController isEqual:_viewController]) {
         
-    }else{
         
+    }else{
+        _viewController = [[LCTabBarController alloc]init];
+        _viewController.tabBar.backgroundColor = [UIColor whiteColor];
+        _viewController.itemTitleColor = [UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:1.00];
+        _viewController.selectedItemTitleColor = NAVIGATIONRED;
+        _viewController.viewControllers = @[indexPageVC,/*tutoriumVC,*/chooseVC,classTimeVC,noticeVC,personalVC];
+//        [self setTabBarController];
         [UIView transitionFromView:_window.rootViewController.view toView:_viewController.view duration:0.5 options:UIViewAnimationOptionTransitionFlipFromLeft completion:^(BOOL finished) {
             
             [_window setRootViewController:_viewController];
@@ -734,8 +767,9 @@
         
     });
 
-    
 }
+
+
 
 /* 用户退出登录后 跳转到登录页面*/
 - (void)userLogOut{
@@ -747,13 +781,34 @@
     
     _loginViewController = [[LoginViewController alloc]init];
     
-    UINavigationController *naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
+    naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
+    [naviVC setNavigationBarHidden:YES];
     
     [UIView transitionFromView:_window.rootViewController.view toView:naviVC.view duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
         
         [_window setRootViewController:naviVC];
     }];
     
+}
+
+/**游客退出登录 切换root*/
+- (void)guestLogOut{
+    
+    if (!_loginViewController) {
+        
+        _loginViewController = [[LoginViewController alloc]init];
+    }
+    
+        naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
+        [naviVC setNavigationBarHidden:YES];
+    
+    
+    
+    [UIView transitionFromView:_window.rootViewController.view toView:naviVC.view duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
+        
+        [_window setRootViewController:naviVC];
+    }];
+
     
 }
 
@@ -871,7 +926,7 @@
 /* 隐藏选项卡*/
 - (void)tabbarHide{
     
-    self.viewController.tabBar.hidden = YES;
+//    self.viewController.tabBar.hidden = YES;
     
 }
 
@@ -962,7 +1017,7 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager POST:[NSString stringWithFormat:@"%@/api/v1/system/device_info",Request_Header] parameters:@{@"user_id":idNumber==nil?@"":idNumber,@"device_token":device_token==nil?@"":device_token,@"device_model":device_model==nil?@"":device_model,@"app_name":@"Qatime_Student",@"app_version":app_version==nil?@"":app_version} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:[NSString stringWithFormat:@"%@/api/v1/system/device_info",Request_Header] parameters:@{@"user_id":idNumber==nil?@"":idNumber,@"device_token":device_token==nil?@"":device_token,@"device_model":device_model==nil?@"":device_model,@"app_name":Qatime_Service,@"app_version":app_version==nil?@"":app_version} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {

@@ -34,4 +34,10 @@
 @property (nonatomic, assign) BOOL off_shelve ;
 
 
+/**专门为聊天功能增加一个notify属性*/
+@property (nonatomic, assign) BOOL notify ;
+/**专门为聊天功能增加一个chat_team_id属性*/
+@property (nonatomic, strong) NSString *chat_team_id ;
+
+
 @end

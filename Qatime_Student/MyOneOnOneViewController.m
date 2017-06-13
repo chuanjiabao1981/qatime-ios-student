@@ -23,6 +23,9 @@
 
 #import "Interactive.h"
 #import "OneOnOneTutoriumInfoViewController.h"
+#import "NTESMeetingViewController.h"
+#import "UIViewController+Token.h"
+#import "UIViewController+HUD.h"
 
 
 typedef enum : NSUInteger {
@@ -39,10 +42,6 @@ typedef enum : NSUInteger {
 @interface MyOneOnOneViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
     NavigationBar *_navigationBar;
-    
-    NSString *_token;
-    NSString *_idNumber;
-    
     
     /**学习中 数组*/
     NSMutableArray *_onStudyArray;
@@ -177,9 +176,11 @@ typedef enum : NSUInteger {
     }
     
     //数据只请求一次,请求回来数据之后,在根据不同情况进行数据分配
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/interactive_courses/list",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"status":state,@"page":[NSString stringWithFormat:@"%ld",page],@"per_page":@"10"} completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/interactive_courses/list",Request_Header,[self getStudentID]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:@{@"status":state,@"page":[NSString stringWithFormat:@"%ld",page],@"per_page":@"10"} completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        
+        [self loginStates:dic];
         
         if ([dic[@"status"]isEqualToNumber:@1]) {
             
@@ -289,12 +290,21 @@ typedef enum : NSUInteger {
             }
         }else{
             //获取数据失败
-            
+//            [_myView.onStudyTableView.mj_header endRefreshingWithCompletionBlock:^{
+//                
+//                [_myView.onStudyTableView cyl_reloadData];
+//            }];
             
         }
         
+    }failure:^(id  _Nullable erros) {
+        
+//        [_myView.onStudyTableView.mj_header endRefreshingWithCompletionBlock:^{
+//            
+//            [_myView.onStudyTableView cyl_reloadData];
+//        }];
+        
     }];
-    
     
 }
 
@@ -388,30 +398,32 @@ typedef enum : NSUInteger {
 
 /**进入一对一互动直播*/
 - (void)enterInteractive:(UIButton *)sender{
-    
+    [self HUDStartWithTitle:nil];
     Interactive *mod = _onStudyArray[sender.tag-10];
-    //MeetingRoom
-    NIMChatroom *chatroom = [[NIMChatroom alloc]init];
+    //取一次chat_team_id
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@",Request_Header,mod.interactive_course.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+            [self stopHUD];
+            
+            NIMChatroom *chatroom = [[NIMChatroom alloc]init];
+            InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:mod.interactive_course.classID andChatTeamID:dic[@"data"][@"chat_team_id"]];
+            [self.navigationController pushViewController:controller animated:YES];
+            
+        }else{
+         //服务器正忙,稍后再试
+            [self HUDStopWithTitle:@"服务器正忙,请稍后再试"];
+        }
+    } failure:^(id  _Nullable erros) {
+        [self HUDStopWithTitle:@"网络不给力,请稍后再试"];
+    }];
     
-    InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:mod.interactive_course.classID];
-    [self.navigationController pushViewController:controller animated:YES];
+    
  
 }
 
 
-
-- (void)getToken{
-    
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-    
-}
 #pragma mark- scrollview delegate
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{

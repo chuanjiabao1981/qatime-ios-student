@@ -108,6 +108,12 @@
 
 #define CheckCodeTime 30
 
+//服务名 KeyChain专用
+#define Qatime_Service @"Qatime_Student"
+
+
+
+
 // 判断系统版本
 #define iOS7 ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
 

@@ -21,6 +21,7 @@
 #import "ConfirmRechargeViewController.h"
 #import "ItunesProduct.h"
 #import "CheckChargeViewController.h"
+#import "GuestBindingViewController.h"
 
 //在内购项目中创的商品单号
 //#define Product_50 @"Charge_50"//50
@@ -57,6 +58,9 @@
     
     int buyType;
     
+    //是否是游客
+    BOOL is_Guest;
+    
 }
 
 @end
@@ -84,7 +88,8 @@
     _dataDic = @{}.mutableCopy;
     _productArray = @[].mutableCopy;
     
-
+    //判断是不是游客
+    is_Guest = [[NSUserDefaults standardUserDefaults]valueForKey:@"is_Guest"]?[[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"]:NO;
     
 }
 
@@ -203,14 +208,41 @@
 /**下单充值*/
 - (void)charge{
     
-    if (_chargePrice) {
+    //判断是否是游客
+    if (is_Guest == YES) {
         
-        [self payForRecharge];
+        //游客
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"使用游客账号执行此操作存账号和资金安全风险，请谨慎操作！" cancelButtonTitle:@"绑定账号" destructiveButtonTitle:nil otherButtonTitles:@[@"无视风险"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+            
+            if (buttonIndex == 0) {
+                //绑定账号
+                GuestBindingViewController *controller = [[GuestBindingViewController alloc]init];
+                [self.navigationController pushViewController:controller animated:YES];
+                
+            }else{
+                //无视风险直接充值....
+                if (_chargePrice) {
+                    
+                    [self payForRecharge];
+                    
+                }else{
+                    [self HUDStopWithTitle:@"请选择充值金额"];
+                }
+            }
+            
+        }];
         
     }else{
-        [self HUDStopWithTitle:@"请选择充值金额"];
+        //普通用户
+        if (_chargePrice) {
+            
+            [self payForRecharge];
+            
+        }else{
+            [self HUDStopWithTitle:@"请选择充值金额"];
+        }
     }
-    
+
 }
 
 #pragma mark- 重中之重 !  支付方法

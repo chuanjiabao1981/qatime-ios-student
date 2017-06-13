@@ -16,7 +16,11 @@
 @property (nonatomic, strong) NSString *buy_count ;
 @property (nonatomic, strong) NSString *lesson_price ;
 @property (nonatomic, strong) NSString *status ;
+
 @property (nonatomic, strong) InteractiveCourse *interactive_course ;
+
+//专门为聊天增加一个提醒属性
+@property (nonatomic, assign) BOOL notify ;
 
 
 //"id": 719,

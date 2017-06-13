@@ -418,6 +418,22 @@
          contextName = "-[ChooseClassViewController multiFiltersRequest:]:ChooseClassViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[NTESWhiteboardCmdHandler sendMyPoint:]:NTESWhiteboardCmdHandler.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_cmdsSendBuffer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__48-[NTESMeetingWhiteboardViewController getRoomID]_block_invoke:NTESMeetingWhiteboardViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_isManager">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[VideoPlayerViewController zf_controlView:resolutionAction:]:VideoPlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -464,10 +480,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -635,6 +651,22 @@
          contextName = "__38-[ChangePasswordViewController finish]_block_invoke_4:ChangePasswordViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[NTESMeetingRTSManager onJoinConference:result:]:NTESMeetingRTSManager.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_currentConference">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NTESWhiteboardCmdHandler doSendCmds]:NTESWhiteboardCmdHandler.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_cmdsSendBuffer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[VideoInfoView initWithFrame:]:VideoInfoView.m">
          <PersistentStrings>
             <PersistentString
@@ -733,6 +765,9 @@
                value = "_dataArr">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__49-[OneOnOneTutoriumInfoViewController requestData]_block_invoke:OneOnOneTutoriumInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[VideoClassFilterViewController tableView:didSelectRowAtIndexPath:]:VideoClassFilterViewController.m">
@@ -861,6 +896,9 @@
          contextName = "-[NTESMeetingWhiteboardViewController viewDidLoad]:NTESMeetingWhiteboardViewController.m">
          <PersistentStrings>
             <PersistentString
+               value = "_name">
+            </PersistentString>
+            <PersistentString
                value = "_isManager">
             </PersistentString>
          </PersistentStrings>
@@ -934,10 +972,21 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__33-[SignUpViewController nextStep:]_block_invoke:SignUpViewController.m">
+         contextName = "-[NTESMeetingWhiteboardViewController onJoin:result:]:NTESMeetingWhiteboardViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_cmdHander">
+            </PersistentString>
+            <PersistentString
+               value = "_lines">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__50-[ChangePhoneViewController requestChangePasswrod]_block_invoke_2:ChangePhoneViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__33-[SignUpViewController nextStep:]_block_invoke:SignUpViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[UUInputFunctionView sendMessage:]:UUInputFunctionView.m">
@@ -1364,6 +1413,14 @@
          contextName = "__34-[MyOrderViewController buyAgain:]_block_invoke_2:MyOrderViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[NTESMeetingWhiteboardViewController onPointCollected:type:]:NTESMeetingWhiteboardViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_myUid">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[TLCityPickerController data]:TLCityPickerController.m">
          <PersistentStrings>
             <PersistentString
@@ -1397,10 +1454,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1768,6 +1825,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[NTESMeetingRTSManager sendRTSData:toUser:]:NTESMeetingRTSManager.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_currentConference">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[ChatViewController sendMessage:didCompleteWithError:]:ChatViewController.m">
       </ContextState>
       <ContextState
@@ -1918,6 +1983,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_recentArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[InteractionViewController makeChildViewControllers]:InteractionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatTeamID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

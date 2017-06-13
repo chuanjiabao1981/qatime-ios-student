@@ -59,10 +59,7 @@
  */
 @property (nonatomic, strong) InteractionView *interactionView ;
 
-/**
- 聊天输入框
- */
-@property(nonatomic,strong) UUInputFunctionView *inputView ;
+
 
 /**
  初始化方法3
@@ -70,7 +67,7 @@
  @param chatroom 聊天室对象
  @return 对象
  */
-- (instancetype)initWithChatroom:(NIMChatroom *)chatroom andClassID:(NSString *)classID;
+- (instancetype)initWithChatroom:(NIMChatroom *)chatroom andClassID:(NSString *)classID andChatTeamID:(NSString *)chatTeamID;
 
 
 @end

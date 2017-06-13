@@ -40,12 +40,6 @@
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         
-        
-        
-        
-        
-        
-        
         /* 输入账号密码*/
         /* 框1 输入用户账号*/
         
@@ -98,8 +92,6 @@
         [_forgottenPassorwdButton setTitleColor:[UIColor grayColor]  forState:UIControlStateNormal];
         
         
-        
-        
         /* 登录按钮*/
         _loginButton =[[UIButton alloc]init];
         _loginButton.layer.borderColor =[UIColor colorWithRed:0.79 green:0.0 blue:0.0 alpha:1.00].CGColor;
@@ -145,11 +137,30 @@
         
         /* 验证码按钮*/
         _keyCodeButton = [[UIButton alloc]init];
-        _keyCodeButton.backgroundColor = [UIColor lightGrayColor];
+        //        _keyCodeButton.backgroundColor = [UIColor lightGrayColor];
         [_keyCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self addSubview:_keyCodeButton];
         _keyCodeButton.hidden = YES;
         _keyCodeButton.titleLabel.font = [UIFont systemFontOfSize:22*ScrenScale];
+        
+        /* 验证码生成*/
+        _keyCodeButton.sd_layout
+        .rightEqualToView(_text2)
+        .heightRatioToView(_text2,0.9)
+        .topSpaceToView(_text2,20)
+        .widthRatioToView(_text2,2/5.0f);
+        
+        [_keyCodeButton updateLayout];
+        
+        /**自动变换验证码*/
+        _authenCode = [[AuthenCode alloc]initWithFrame:CGRectMake(0, 0, _keyCodeButton.width_sd, _keyCodeButton.height_sd)];
+        [_keyCodeButton addSubview: _authenCode];
+        _authenCode.sd_layout
+        .leftSpaceToView(_keyCodeButton, 0)
+        .rightSpaceToView(_keyCodeButton, 0)
+        .topSpaceToView(_keyCodeButton, 0)
+        .bottomSpaceToView(_keyCodeButton, 0);
+        
         
         /* 验证码框*/
         _text3 = [[UIView alloc]init];
