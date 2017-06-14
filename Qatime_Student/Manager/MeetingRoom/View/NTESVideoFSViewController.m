@@ -32,7 +32,6 @@
     [self.view addSubview:_videoView];
     [self.view addSubview:_backBtn];
 
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -62,11 +61,8 @@
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
-- (void)onRemoteYUVReady:(NSData *)yuvData
-                   width:(NSUInteger)width
-                  height:(NSUInteger)height
-                    from:(NSString *)user
-{
+- (void)onRemoteYUVReady:(NSData *)yuvData width:(NSUInteger)width height:(NSUInteger)height from:(NSString *)user{
+    
     [_videoView render:yuvData width:width height:height];
 }
 

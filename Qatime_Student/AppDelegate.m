@@ -326,6 +326,7 @@
 
 //所有消息已读
 - (void)allMessageRead{
+    
     _noticeIndexViewController.tabBarItem.badgeValue = nil;
     
 }

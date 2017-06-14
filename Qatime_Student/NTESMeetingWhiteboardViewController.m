@@ -20,12 +20,11 @@
     
     NSString *_roomID;
     
+    UILabel *whiteBoardStatusLabel;
+    UILabel *whiteBoardTipsLabel;
+    
 }
 
-
-//各种管理器
-//@property (nonatomic, strong) NTESMeetingRTSManager *meetingRTSManager ;
-@property (nonatomic, strong) NTESMeetingRolesManager *meetingRolesManager ;
 
 
 @end
@@ -39,19 +38,38 @@
         
         _classID = [NSString stringWithFormat:@"%@",classID];
         _name = _classID;
-//        _managerUid = room.creator;
         _cmdHander = [[NTESWhiteboardCmdHandler alloc] initWithDelegate:self];
         _docHander = [[NTESDocumentHandler alloc]initWithDelegate:self];
-        
-        //初始化管理器
-//        [NTESMeetingRTSManager defaultManager] = [[NTESMeetingRTSManager alloc]init];
-        _meetingRolesManager = [[NTESMeetingRolesManager alloc]init];
-        
+        //加载白板服务
         [[NTESMeetingRTSManager defaultManager] setDataHandler:_cmdHander];
         _colors = @[@(0x000000), @(0xd1021c), @(0xfddc01), @(0x7dd21f), @(0x228bf7), @(0x9b0df5)];
-        if(_meetingRolesManager.myRole.isManager){
+        //根据自己的角色,判断画笔颜色
+        if([NTESMeetingRolesManager defaultManager].myRole.isManager){
             _myDrawColorRGB = [_colors[0] intValue];
         }else{
+            _myDrawColorRGB = [_colors[4] intValue];
+        }
+        _lines = [[NTESWhiteboardLines alloc] init];
+        _myUid = [[NIMSDK sharedSDK].loginManager currentAccount];
+        _docInfoDic = [NSMutableDictionary dictionary];
+    }
+    return self;
+}
+
+
+- (instancetype)initWithChatroom:(NIMChatroom *)room{
+    if (self = [super init]) {
+        _name = room.roomId;
+        //        _managerUid = room.creator;
+        _cmdHander = [[NTESWhiteboardCmdHandler alloc] initWithDelegate:self];
+        _docHander = [[NTESDocumentHandler alloc]initWithDelegate:self];
+        [[NTESMeetingRTSManager defaultManager] setDataHandler:_cmdHander];
+        _colors = @[@(0x000000), @(0xd1021c), @(0xfddc01), @(0x7dd21f), @(0x228bf7), @(0x9b0df5)];
+        if([NTESMeetingRolesManager defaultManager].myRole.isManager){
+            _myDrawColorRGB = [_colors[0] intValue];
+        }
+        else
+        {
             _myDrawColorRGB = [_colors[4] intValue];
         }
         _lines = [[NTESWhiteboardLines alloc] init];
@@ -59,115 +77,68 @@
         _myUid = [[NIMSDK sharedSDK].loginManager currentAccount];
         
         _docInfoDic = [NSMutableDictionary dictionary];
+        
     }
     return self;
 }
 
-
-- (instancetype)initWithChatroom:(NIMChatroom *)room
-{
-    if (self = [super init]) {
-        _name = room.roomId;
-//        _managerUid = room.creator;
-        _cmdHander = [[NTESWhiteboardCmdHandler alloc] initWithDelegate:self];
-        _docHander = [[NTESDocumentHandler alloc]initWithDelegate:self];
-        [[NTESMeetingRTSManager defaultManager] setDataHandler:_cmdHander];
-        _colors = @[@(0x000000), @(0xd1021c), @(0xfddc01), @(0x7dd21f), @(0x228bf7), @(0x9b0df5)];
-        if(_meetingRolesManager.myRole.isManager){
-        _myDrawColorRGB = [_colors[0] intValue];
-        }
-        else
-        {
-         _myDrawColorRGB = [_colors[4] intValue];
-        }
-        _lines = [[NTESWhiteboardLines alloc] init];
-        
-        _myUid = [[NIMSDK sharedSDK].loginManager currentAccount];
-        
-        _docInfoDic = [NSMutableDictionary dictionary];
-
-    }
-    return self;
-}
-
-- (void)dealloc
-{
+- (void)dealloc{
+    
     [[NTESMeetingRTSManager defaultManager] leaveCurrentConference];
 }
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
     
-    
     //白板进来什么都不做,先找服务器刷roomID
     [self getRoomID];
     
-    
-    
     [self initUI];
+    
 }
+
+
 
 /**获取roomID*/
 - (void)getRoomID{
     
-   [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/live_status",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-       NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-       if ([dic[@"status"]isEqualToNumber:@1]) {
-           
-           if ([dic[@"data"][@"live_info"][@"room_id"] isEqualToString:@""]) {
-               //没有roomID,3秒后再次获取
-               [self performSelector:@selector(getRoomID) withObject:nil afterDelay:3];
-           }else{
-               
-               [NSObject cancelPreviousPerformRequestsWithTarget:self];
-               
-               //有roomID了 可以开始玩耍了
-               _roomID = [NSString stringWithFormat:@"%@",dic[@"data"][@"live_info"][@"room_id"]];
-               
-//               _isManager = _meetingRolesManager.myRole.isManager;
-               [[NTESMeetingRTSManager defaultManager] setDelegate:self];
-               
-               [[NTESMeetingRTSManager defaultManager] joinConference:_roomID];
-               
-               
-               NSError *error;
-//               if (_isManager) {
-//                   error = [[NTESMeetingRTSManager defaultManager] reserveConference:_roomID];
-//               }
-//               else {
-                   error = [[NTESMeetingRTSManager defaultManager] joinConference:_roomID];
-//               }
-               
-               if (error) {
-                   //        DDLogError(@"Error %zd reserve/join rts conference: %@", error.code, _name);
-               }
-
-               
-               
-               
-               
-           }
-           
-       }else{
-           
-           //没有roomID,3秒后再次获取
-           [self performSelector:@selector(getRoomID) withObject:nil afterDelay:3];
-
-       }
-       
-   } failure:^(id  _Nullable erros) {
-       //没有roomID,3秒后再次获取
-       [self performSelector:@selector(getRoomID) withObject:nil afterDelay:3];
-
-   }];
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/live_status",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+            if ([dic[@"data"][@"live_info"][@"room_id"] isEqualToString:@""]) {
+                //没有roomID,3秒后再次获取
+                [self performSelector:@selector(getRoomID) withObject:nil afterDelay:3];
+            }else{
+                
+                [NSObject cancelPreviousPerformRequestsWithTarget:self];
+                
+                //有roomID了 可以开始玩耍了
+                _roomID = [NSString stringWithFormat:@"%@",dic[@"data"][@"live_info"][@"room_id"]];
+                
+                //加入白板会话
+                [[NTESMeetingRTSManager defaultManager] setDelegate:self];
+                [[NTESMeetingRTSManager defaultManager] joinConference:_roomID];
+                
+                //给上级controller(本页面的控制器)发送roomid消息
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"RoomID" object:_roomID];
+                
+                
+            }
+            
+        }else{
+            
+            //没有roomID,3秒后再次获取
+            [self performSelector:@selector(getRoomID) withObject:nil afterDelay:3];
+            
+        }
+        
+    } failure:^(id  _Nullable erros) {
+        //没有roomID,3秒后再次获取
+        [self performSelector:@selector(getRoomID) withObject:nil afterDelay:3];
+        
+    }];
 }
-
-
-
-
-
-
 
 
 
@@ -175,7 +146,12 @@
     
     self.view.backgroundColor = UIColorFromRGB(0xedf1f5);
     [self.view addSubview:self.docView];
-
+    
+    //在这儿新建一个图,贴到白板上方(奇葩需求)
+    
+    
+    
+    
     [self.view addSubview:self.drawView];
     
     [self.view addSubview:self.controlPannel];
@@ -186,27 +162,27 @@
     [self.laserView setHidden:YES];
     
     [self.colorSelectView setHidden:YES];
-
+    
     [self.controlPannel addSubview:self.cancelLineButton];
     [self.controlPannel addSubview:self.colorSelectButton];
     [self.controlPannel addSubview:self.pageNumLabel];
     [self.pageNumLabel setHidden:YES];
-
-//    if (_isManager) {
-//        [self.controlPannel addSubview:self.clearAllButton];
-//        [self.controlPannel addSubview:self.openDocumentButton];
-//        [self.controlPannel addSubview:self.previousButton];
-//        [self.controlPannel addSubview:self.nextButton];
-//        [self.drawView addSubview:self.closeDocButton];
-//        [self.drawView addSubview:self.imgloadLabel];
-//        [self.nextButton setHidden:YES];
-//        [self.previousButton setHidden:YES];
-//        [self.closeDocButton setHidden:YES];
-//        [self.imgloadLabel setHidden:YES];
-//    }
-//    else {
-        [self.controlPannel addSubview:self.hintLabel];
-//    }
+    
+    //    if (_isManager) {
+    //        [self.controlPannel addSubview:self.clearAllButton];
+    //        [self.controlPannel addSubview:self.openDocumentButton];
+    //        [self.controlPannel addSubview:self.previousButton];
+    //        [self.controlPannel addSubview:self.nextButton];
+    //        [self.drawView addSubview:self.closeDocButton];
+    //        [self.drawView addSubview:self.imgloadLabel];
+    //        [self.nextButton setHidden:YES];
+    //        [self.previousButton setHidden:YES];
+    //        [self.closeDocButton setHidden:YES];
+    //        [self.imgloadLabel setHidden:YES];
+    //    }
+    //    else {
+    [self.controlPannel addSubview:self.hintLabel];
+    //    }
     
 }
 
@@ -222,7 +198,7 @@
     [super viewDidLayoutSubviews];
     
     CGFloat spacing = 15.f;
-
+    
     self.controlPannel.width = self.view.width + 2.f;
     self.controlPannel.height = 50.f;
     self.controlPannel.left = - 1.f;
@@ -231,16 +207,16 @@
     self.colorSelectButton.left = spacing;
     self.colorSelectButton.bottom = self.controlPannel.height - 7.f;
     
-
+    
     self.cancelLineButton.left = self.colorSelectButton.right + spacing;
     self.cancelLineButton.bottom = self.colorSelectButton.bottom;
-
+    
     self.clearAllButton.left = self.cancelLineButton.right + spacing;
     self.clearAllButton.bottom = self.cancelLineButton.bottom;
-
+    
     self.openDocumentButton.left = self.clearAllButton.right + spacing;
     self.openDocumentButton.bottom = self.clearAllButton.bottom;
-
+    
     
     self.colorSelectView.width = 34.f;
     self.colorSelectView.height = self.colorSelectView.width * _colors.count;
@@ -251,7 +227,7 @@
         self.colorSelectView.height = self.view.height - self.controlPannel.height;
         self.colorSelectView.bottom = self.controlPannel.top;
     }
-
+    
     
     self.hintLabel.left = self.cancelLineButton.right + spacing / 2.f;
     self.hintLabel.centerY = self.controlPannel.height / 2.f;
@@ -282,20 +258,13 @@
     self.nextButton.right = self.view.width - 10.f;
     self.nextButton.centerY = self.colorSelectButton.centerY;
     
-//    if (_isManager) {
-//        self.pageNumLabel.right = self.nextButton.left - 5.f;
-//        self.pageNumLabel.centerY = self.colorSelectButton.centerY;
-//    }
-//    else
-//    {
-        self.pageNumLabel.right = self.view.width - 15.f;
-        self.pageNumLabel.centerY = self.colorSelectButton.centerY;
-//    }
+    self.pageNumLabel.right = self.view.width - 15.f;
+    self.pageNumLabel.centerY = self.colorSelectButton.centerY;
     
-
+    
     self.previousButton.right = self.pageNumLabel.left - 5.f;
     self.previousButton.centerY = self.colorSelectButton.centerY;
-
+    
     self.closeDocButton.right = self.drawView.width - 5.f;
     self.closeDocButton.top = 5.f;
     
@@ -307,22 +276,22 @@
 }
 
 - (void)checkPermission{
-//    if (_meetingRolesManager.myRole.whiteboardOn && _isJoined) {
-//        self.hintLabel.hidden = YES;
-//        [self.colorSelectButton setBackgroundColor:UIColorFromRGB(_myDrawColorRGB)];
-//        self.colorSelectButton.enabled = YES;
-//        self.cancelLineButton.enabled = YES;
-//        self.clearAllButton.enabled = YES;
-//    }
-//    else {
-//        self.hintLabel.hidden = NO;
-//        [self.colorSelectButton setBackgroundColor:[UIColor clearColor]];
-//        self.colorSelectButton.enabled = YES;
-//        self.cancelLineButton.enabled = YES;
-//        self.clearAllButton.enabled = YES;
-//        self.colorSelectView.hidden = YES;
-//
-//    }
+    //    if ([NTESMeetingRolesManager defaultManager].myRole.whiteboardOn && _isJoined) {
+    //        self.hintLabel.hidden = YES;
+    //        [self.colorSelectButton setBackgroundColor:UIColorFromRGB(_myDrawColorRGB)];
+    //        self.colorSelectButton.enabled = YES;
+    //        self.cancelLineButton.enabled = YES;
+    //        self.clearAllButton.enabled = YES;
+    //    }
+    //    else {
+    //        self.hintLabel.hidden = NO;
+    //        [self.colorSelectButton setBackgroundColor:[UIColor clearColor]];
+    //        self.colorSelectButton.enabled = YES;
+    //        self.cancelLineButton.enabled = YES;
+    //        self.clearAllButton.enabled = YES;
+    //        self.colorSelectView.hidden = YES;
+    //
+    //    }
     
     self.hintLabel.hidden = YES;
     [self.colorSelectButton setBackgroundColor:UIColorFromRGB(_myDrawColorRGB)];
@@ -338,7 +307,7 @@
         _drawView.backgroundColor = [UIColor whiteColor];
         _drawView.layer.borderWidth = 1;
         _drawView.layer.borderColor = UIColorFromRGB(0xd7dade).CGColor;
-
+        
         _drawView.dataSource = _lines;
     }
     return _drawView;
@@ -391,7 +360,7 @@
         [_cancelLineButton setBackgroundImage:[UIImage imageNamed:@"btn_whiteboard_cancel_normal"] forState:UIControlStateNormal];
         [_cancelLineButton setBackgroundImage:[UIImage imageNamed:@"btn_whiteboard_cancel_pressed"] forState:UIControlStateHighlighted];
         [_cancelLineButton setBackgroundImage:[UIImage imageNamed:@"btn_whiteboard_cancel_disabled"] forState:UIControlStateDisabled];
-
+        
     }
     return _cancelLineButton;
 }
@@ -403,7 +372,7 @@
         _colorSelectButton.layer.cornerRadius = 35.f / 2.f;
         [_colorSelectButton setBackgroundColor:UIColorFromRGB(_myDrawColorRGB)];
         [_colorSelectButton setBackgroundImage:[UIImage imageNamed:@"btn_whiteboard_select_color_disabled"] forState:UIControlStateDisabled];
-
+        
         [_colorSelectButton addTarget:self action:@selector(onColorSelectPressed:)  forControlEvents:UIControlEventTouchUpInside];
         
         UIView *circle = [[UIView alloc] initWithFrame:CGRectMake(9.f, 9.f, 17.f, 17.f)];
@@ -424,9 +393,9 @@
         
         [_openDocumentButton setBackgroundImage:[UIImage imageNamed:@"btn_whiteboard_file_normal"] forState:UIControlStateNormal];
         [_openDocumentButton setBackgroundImage:[UIImage imageNamed:@"btn_whiteboard_file_pressed"] forState:UIControlStateHighlighted];
-
-
-
+        
+        
+        
     }
     return _openDocumentButton;
 }
@@ -453,7 +422,7 @@
         [_nextButton setImage:[UIImage imageNamed:@"btn_whiteboard_page_next"] forState:UIControlStateNormal];
         [_nextButton setImage:[UIImage imageNamed:@"btn_whiteboard_page_next_pressed"] forState:UIControlStateHighlighted];
         [_nextButton setImage:[UIImage imageNamed:@"btn_whiteboard_page_next_disable"] forState:UIControlStateDisabled];
-
+        
     }
     return _nextButton;
 }
@@ -508,7 +477,7 @@
     if (!_pageNumLabel) {
         _pageNumLabel = [[UILabel alloc] init];
         _pageNumLabel.text = [NSString stringWithFormat:@"%d/%lu",_currentPage,(unsigned long)_docInfo.numberOfPages];
-                _pageNumLabel.textColor = UIColorFromRGB(0x999999);
+        _pageNumLabel.textColor = UIColorFromRGB(0x999999);
         _pageNumLabel.font = [UIFont systemFontOfSize:15.f];
         _pageNumLabel.textAlignment = NSTextAlignmentCenter;
         [_pageNumLabel sizeToFit];
@@ -557,7 +526,7 @@
     [self.pageNumLabel sizeToFit];
     [self.view setNeedsLayout];
     
-
+    
 }
 #pragma mark - User Interactions
 - (void)onClearAllPressed:(id)sender
@@ -647,7 +616,7 @@
 }
 
 - (void)onPointCollected:(CGPoint)p type:(NTESWhiteboardPointType)type{
-
+    
     if (p.x < 0 || p.y < 0 || p.x > _drawView.frame.size.width || p.y > _drawView.frame.size.height) {
         return;
     }
@@ -662,20 +631,11 @@
 }
 
 
-# pragma mark - NTESMeetingRTSDataManagerDelegate
-- (void)handleReceivedData:(NSData *)data sender:(NSString *)sender{
-    
-    
-    
-}
-
-
 # pragma mark - NTESMeetingRTSManagerDelegate
 - (void)onReserve:(NSString *)name result:(NSError *)result
 {
     if (result == nil) {
         NSError *result = [[NTESMeetingRTSManager defaultManager] joinConference:_name];
-//        DDLogError(@"join rts conference: %@ result %zd", _name, result.code);
     }
     else {
         [self.view makeToast:[NSString stringWithFormat:@"预订白板出错:%zd", result.code]];
@@ -696,10 +656,10 @@
             [_cmdHander sendPureCmd:NTESWhiteBoardCmdTypeSyncRequest to:nil];
             
         }
-
+        
     }else{
         
-        [self.view makeToast:@"进入互动失败"];
+//        [self.view makeToast:@"进入互动失败"];
         
     }
 }
@@ -710,7 +670,6 @@
     _isJoined = NO;
     
     NSError *result = [[NTESMeetingRTSManager defaultManager] joinConference:_name];
-//    DDLogError(@"Rejoin rts conference: %@ result %zd", _name, result.code);
     
     [self checkPermission];
 }
@@ -747,16 +706,13 @@
         [_lines clear];
         [_cmdHander sendPureCmd:NTESWhiteBoardCmdTypeSyncPrepareAck to:sender];
     }
+    
+    
 }
 
-- (void)onReceiveSyncRequestFrom:(NSString *)sender
-{
-//    if (_isManager) {
-//        [_cmdHander sync:[_lines allLines] toUser:sender];
-//        if (!self.docView.hidden) {
-//            [self onSendDocShareInfoToUser:sender];
-//        }
-//    }
+- (void)onReceiveSyncRequestFrom:(NSString *)sender{
+    
+    
 }
 
 - (void)onReceiveSyncPoints:(NSMutableArray *)points owner:(NSString *)owner
@@ -771,7 +727,7 @@
 - (void)onReceiveLaserPoint:(NTESWhiteboardPoint *)point from:(NSString *)sender
 {
     [self.laserView setHidden:NO];
-     CGPoint p = CGPointMake(point.xScale * self.drawView.frame.size.width , point.yScale * self.drawView.frame.size.height);
+    CGPoint p = CGPointMake(point.xScale * self.drawView.frame.size.width , point.yScale * self.drawView.frame.size.height);
     self.laserView.center = p;
 }
 
@@ -850,7 +806,7 @@
     if (step == NIMLoginStepLoginOK) {
         if (!_isJoined) {
             NSError *result = [[NTESMeetingRTSManager defaultManager] joinConference:_classID];
-//            DDLogError(@"Rejoin rts conference: %@ result %zd", _name, result.code);
+            //            DDLogError(@"Rejoin rts conference: %@ result %zd", _name, result.code);
         }
     }
 }
@@ -889,12 +845,12 @@
 -(NSString *)getFilePathWithPage:(NSInteger)pageNum
 {
     NSString *filePath = [[NTESDocumentHandler getFilePathPrefix:self.docInfo.docId]stringByAppendingString:[NSString stringWithFormat:@"%@_%zd.png",self.docInfo.docName,pageNum]];
-                            
-     return filePath;
+    
+    return filePath;
 }
 
 -(UIImage *)loadImage:(NSString*)filePath{
-
+    
     NSFileManager *fm = [NSFileManager defaultManager];
     if ([fm fileExistsAtPath:filePath]) {
         NSData * data = [NSData dataWithContentsOfFile:filePath];

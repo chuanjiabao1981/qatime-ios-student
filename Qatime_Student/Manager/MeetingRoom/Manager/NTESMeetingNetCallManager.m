@@ -26,6 +26,16 @@
 
 @implementation NTESMeetingNetCallManager
 
++(NTESMeetingNetCallManager *)defaultManager{
+    
+    static NTESMeetingNetCallManager *defaultManager = nil;
+    static dispatch_once_t predicate;
+    dispatch_once(&predicate, ^{
+        defaultManager = [[self alloc] init];
+    });
+    return defaultManager;
+}
+
 - (void)joinMeeting:(NSString *)name delegate:(id<NTESMeetingNetCallManagerDelegate>)delegate{
     
     if (_meeting) {
@@ -37,7 +47,7 @@
     _meeting = [[NIMNetCallMeeting alloc] init];
     _meeting.name = name;
     _meeting.type = NIMNetCallTypeVideo;
-    _meeting.actor = [NTESMeetingRolesManager sharedInstance].myRole.isActor;
+    _meeting.actor = [NTESMeetingRolesManager defaultManager].myRole.isActor;
     
     [self fillNetCallOption:_meeting];
     
@@ -61,8 +71,8 @@
             if (wself.delegate) {
                 [wself.delegate onMeetingConntectStatus:YES];
             }
-            NSString *myUid = [NTESMeetingRolesManager sharedInstance].myRole.uid;
-            [[NTESMeetingRolesManager sharedInstance] updateMeetingUser:myUid isJoined:YES];
+            NSString *myUid = [NTESMeetingRolesManager defaultManager].myRole.uid;
+            [[NTESMeetingRolesManager defaultManager] updateMeetingUser:myUid isJoined:YES];
         }
     }];
     
@@ -89,7 +99,7 @@
 {
     //    DDLogInfo(@"user %@ joined meeting", uid);
     if ([meeting.name isEqualToString:_meeting.name]) {
-        [[NTESMeetingRolesManager sharedInstance] updateMeetingUser:uid isJoined:YES];
+        [[NTESMeetingRolesManager defaultManager] updateMeetingUser:uid isJoined:YES];
     }
 }
 
@@ -99,7 +109,7 @@
     //    DDLogInfo(@"user %@ left meeting", uid);
     
     if ([meeting.name isEqualToString:_meeting.name]) {
-        [[NTESMeetingRolesManager sharedInstance] updateMeetingUser:uid isJoined:NO];
+        [[NTESMeetingRolesManager defaultManager] updateMeetingUser:uid isJoined:NO];
     }
 }
 
@@ -128,7 +138,7 @@
         [volumes setObject:[self volumeLevel:info.volume] forKey:info.uid];
     }
     
-    [[NTESMeetingRolesManager sharedInstance] updateVolumes:volumes];
+    [[NTESMeetingRolesManager defaultManager] updateVolumes:volumes];
 }
 
 - (void)onSetBypassStreamingEnabled:(BOOL)enabled result:(NSError *)result
@@ -167,7 +177,7 @@
     option.preferredVideoQuality = [[NTESBundleSetting sharedConfig] preferredVideoQuality];
     option.bypassStreamingVideoMixMode = [[NTESBundleSetting sharedConfig] bypassVideoMixMode];
     
-    BOOL isManager = [NTESMeetingRolesManager sharedInstance].myRole.isManager;
+    BOOL isManager = [NTESMeetingRolesManager defaultManager].myRole.isManager;
     
     //会议的观众这里默认用低清发送视频
     if (option.preferredVideoQuality == NIMNetCallVideoQualityDefault) {
@@ -176,7 +186,7 @@
         }
     }
     
-    option.bypassStreamingUrl = isManager ? [[NTESMeetingRolesManager sharedInstance] livePushUrl] : nil;
+    option.bypassStreamingUrl = isManager ? [[NTESMeetingRolesManager defaultManager] livePushUrl] : nil;
     option.enableBypassStreaming = isManager;
     
     _meeting.option = option;

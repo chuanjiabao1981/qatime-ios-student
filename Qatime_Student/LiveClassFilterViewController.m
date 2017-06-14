@@ -129,7 +129,6 @@ typedef enum : NSUInteger {
                 [_.mj_header endRefreshing];
                 
             }else{
-//                                _isInitPull = NO;
                 [self requestClass:PullToRefresh withContentDictionary:_filterDic];
             }
         }];
@@ -153,9 +152,11 @@ typedef enum : NSUInteger {
 
 //下拉加载数据
 - (void)requestClass:(RefreshMode)mode withContentDictionary:( nullable __kindof NSDictionary * )contentDic{
-//    self.isInitPull = NO;
+    
+    //1.页数赋值
     if (mode==PullToRefresh) {
         _page = 1;
+        
         [_filterDic setObject:[NSString stringWithFormat:@"%ld",_page] forKey:@"page"];
         _classesArray = @[].mutableCopy;
         
@@ -171,10 +172,11 @@ typedef enum : NSUInteger {
         [_filterDic setObject:[NSString stringWithFormat:@"%ld",_page] forKey:@"page"];
     }
     
+    //2.字典值拼接
     if (mode == PullToRefresh) {
         
         if (contentDic==nil) {
-            
+            //首页传值过来的筛选方法
             if ([_subject isEqualToString:@"全部"]) {
                 
                 _filterDic = [NSMutableDictionary dictionaryWithDictionary: @{@"q[grade_eq]":_grade,
@@ -182,20 +184,60 @@ typedef enum : NSUInteger {
                                                                               @"per_page":[NSString stringWithFormat:@"%ld",_perPage],
                                                                               @"sort_by":@"published_at"}];
             }else{
-                
+                //其他科目
                 _filterDic = [NSMutableDictionary dictionaryWithDictionary:@{@"q[subject_eq]":_subject,
                                                                              @"q[grade_eq]":_grade,
                                                                              @"page":[NSString stringWithFormat:@"%ld",_page],
                                                                              @"per_page":[NSString stringWithFormat:@"%ld",_perPage]}];
             }
         }else{
-            [_filterDic addEntriesFromDictionary:contentDic];
+            //筛选方法
+            
+            if ([[contentDic allKeys]count]==0) {
+                //默认或者说是没有筛选条件的筛选
+                
+                if (_filterDic[@"range"]) {
+                    [_filterDic removeObjectForKey:@"range"];
+                }else{
+                    
+                }
+                
+                
+                if (_filterDic[@"q[status_eq]"]) {
+                    [_filterDic removeObjectForKey:@"q[status_eq]"];
+                }else{
+                    
+                }
+                
+                
+            }else{
+                //有各种筛选条件的筛选
+                
+                if (!contentDic[@"range"]) {
+                    if (_filterDic[@"range"]) {
+                        [_filterDic removeObjectForKey:@"range"];
+                    }else{
+                        
+                    }
+                }
+                
+                if (!contentDic[@"q[status_eq]"]) {
+                    if (_filterDic[@"q[status_eq]"]) {
+                        [_filterDic removeObjectForKey:@"q[status_eq]"];
+                    }else{
+                        
+                    }
+                }
+                
+                [_filterDic addEntriesFromDictionary:contentDic];
+            }
         }
     }else{
-        
+        //上滑加载更多
         [_filterDic addEntriesFromDictionary:contentDic];
         
     }
+    
     
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/%@/search",Request_Header,_course] withHeaderInfo:nil andHeaderfield:nil parameters:_filterDic completeSuccess:^(id  _Nullable responds) {
         
@@ -217,15 +259,13 @@ typedef enum : NSUInteger {
                 
                 if (mode == PullToRefresh) {
                     
-                    [_classTableView.mj_header endRefreshingWithCompletionBlock:^{
-                        //刷新数据
-                        [_classTableView cyl_reloadData];
-                    }];
+                    [_classTableView.mj_header endRefreshing];
+                    //刷新数据
+                    [_classTableView cyl_reloadData];
                 }else{
-                    [_classTableView.mj_footer endRefreshingWithCompletionBlock:^{
-                        //刷新数据
-                        [_classTableView cyl_reloadData];
-                    }];
+                    [_classTableView.mj_footer endRefreshing];
+                    //刷新数据
+                    [_classTableView cyl_reloadData];
                 }
                 
             }else{
@@ -340,8 +380,6 @@ typedef enum : NSUInteger {
     }];
     
 }
-
-
 
 
 -(UIView *)makePlaceHolderView{

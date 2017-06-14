@@ -60,6 +60,9 @@ typedef enum : NSUInteger {
     /*未读消息总数量*/
     NSInteger unreadCont;
     
+    NSString *unreadCountStr;//专门用来监听的
+    
+    
     
     /* 下拉刷新页数*/
     NSInteger noticePage;
@@ -148,6 +151,7 @@ typedef enum : NSUInteger {
     
     noticePage = 1;
     unreadCont = 0;
+    unreadCountStr = @"";
     
     
     NSLog(@"%@",[[[NIMSDK sharedSDK]teamManager]allMyTeams]);
@@ -201,6 +205,21 @@ typedef enum : NSUInteger {
         [self requestNotices:RefreshStatePushLoadMore];
         
     }];
+    
+    
+    //监听未读消息数量
+    
+    [self addObserver:self forKeyPath:@"unreadCountStr" options:NSKeyValueObservingOptionNew context:nil];
+    
+    
+    
+    
+}
+
+//小监听回调
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    
+    
     
     
 }
@@ -370,6 +389,9 @@ typedef enum : NSUInteger {
                                             
                                         }
                                         
+                                        unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
+                                        
+                                        
                                     }
                                     [_chatListArr addObject:mod];
                                     
@@ -492,6 +514,8 @@ typedef enum : NSUInteger {
                 
             }else{
                 /* 有数据的情况下*/
+                unreadCont += dataArr.count;
+                unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
                 
                 for (NSDictionary *dics in dataArr) {
                     SystemNotice *notice = [SystemNotice yy_modelWithJSON:dics];
@@ -523,6 +547,7 @@ typedef enum : NSUInteger {
                             
                             [_noticeIndexView.segmentControl showBridgeWithShow:YES index:1];
                             unreadCont++;
+                            unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
                             /* 未读消息添加到这个数组*/
                             [unreadArr addObject:notice.noticeID];
                             
@@ -717,6 +742,7 @@ typedef enum : NSUInteger {
         cell.badge.hidden = YES;
         
         unreadCont -= cell.badgeNumber;
+        unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
         if (unreadCont == 0) {
             [self badgeHide];
         }
@@ -840,6 +866,7 @@ typedef enum : NSUInteger {
             if ([message.session.sessionId isEqualToString:chat.tutorium.chat_team_id]){
                 chat.badge+=1;
                 unreadCont +=1;
+                unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
                 chat.lastTime = message.timestamp;
                 
                 [_noticeIndexView.chatListTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index-1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
@@ -872,7 +899,10 @@ typedef enum : NSUInteger {
     /* badge的判断和增加*/
     
     if (_noticeIndexView.segmentControl.selectedIndex == 1) {
+        
         [_noticeIndexView.segmentControl showBridgeWithShow:YES index:0];
+        
+        
     }else{
         [_noticeIndexView.segmentControl showBridgeWithShow:NO index:0];
     }
@@ -887,6 +917,7 @@ typedef enum : NSUInteger {
             
             chat.badge+=1;
             unreadCont +=1;
+            unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
             
             [_noticeIndexView.chatListTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index-1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
             
@@ -946,12 +977,20 @@ typedef enum : NSUInteger {
                             if ([dic[@"status"]isEqualToNumber:@1]) {
                                 
                                 unreadCont -=unreadArr.count;
+                                unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
                                 if(unreadCont == 0) {
                                     [self badgeHide];
                                 }
                                 unreadArr = @[].mutableCopy;
                                 [_noticeIndexView.segmentControl showBridgeWithShow:NO index:1];
                                 
+                                //这时候如果没有未读的聊天消息,tabbar的badge也应该消失.
+                                
+                                if ( [[NIMSDK sharedSDK].conversationManager allUnreadCount]==0) {
+                                    
+                                    [[NSNotificationCenter defaultCenter]postNotificationName:@"AllMessageRead" object:nil];
+                                }
+                               
                             }else{
                                 
                                 

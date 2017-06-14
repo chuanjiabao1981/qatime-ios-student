@@ -65,19 +65,52 @@
 #import "InteractionMemberListViewController.h"
 #import "InteractionClassInfoViewController.h"
 #import "InteractionNoticeViewController.h"
+#import "IJKFloatingView.h"
+#import "UIView+PlaceholderImage.h"
+
+typedef enum : NSUInteger {
+    /**
+     *  前置摄像头
+     */
+    FrontCamera,
+    /**
+     *  后置摄像头
+     */
+    BackCamera,
+} CurrentCamera;
 
 
-
-@interface InteractionViewController ()<NTESMeetingActionViewDataSource,NTESMeetingActionViewDelegate,NIMInputDelegate,NIMChatroomManagerDelegate,NTESMeetingNetCallManagerDelegate,NTESActorSelectViewDelegate,NTESMeetingRolesManagerDelegate,NIMLoginManagerDelegate>{
+@interface InteractionViewController ()<NTESMeetingActionViewDataSource,NTESMeetingActionViewDelegate,NIMInputDelegate,NIMChatroomManagerDelegate,NTESMeetingNetCallManagerDelegate,NTESActorSelectViewDelegate,NTESMeetingRolesManagerDelegate,NIMLoginManagerDelegate,NIMNetCallManager>{
     
     //课程id
     NSString *_classID;
     
     //加入音视频会话用的roomID
-    NSString *_roomID;
+    __block NSString *_roomID;
     
     //群组聊天用的chatTeamID
     NSString *_chatTeamID;
+    
+    __block IJKFloatingView *_floatingView ;
+    
+    __block IJKFloatingView *cameraView;
+    
+    __block IJKFloatingView *_teacherView;
+    
+    __block IJKFloatingView *_teacherCamera;
+    
+    //本地摄像头状态,默认开启
+    CurrentCamera _currentCamera;
+    
+    //本地摄像头,默认开始状态
+    BOOL _videoON;
+    
+    //本地麦克风,默认开启状态
+    BOOL _audioON;
+    
+    
+    //全屏状态
+    BOOL is_fullScreen;
     
     
 }
@@ -99,7 +132,7 @@
 /**视频页面*/
 @property (nonatomic, strong) NTESMeetingActorsView *actorsView;
 
-/**当前子控制器*/ 
+/**当前子控制器*/
 @property (nonatomic, weak)   UIViewController *currentChildViewController;
 /**允许用户的alert*/
 @property (nonatomic, strong) UIAlertView *actorEnabledAlert;
@@ -125,6 +158,10 @@
 @property (nonatomic, strong) UIButton *videoSwitchBtn ;
 /**音频开关按钮*/
 @property (nonatomic, strong) UIButton *audioSwitchBtn ;
+
+/**返回按钮*/
+@property (nonatomic, strong) UIButton *backBtn ;
+
 
 
 @end
@@ -154,18 +191,15 @@ NTES_FORBID_INTERACTIVE_POP
     [[UIApplication sharedApplication]setStatusBarHidden:YES];
     [self.currentChildViewController beginAppearanceTransition:YES animated:animated];
     self.actorsView.isFullScreen = NO;
-    
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //不允许侧滑返回
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     //初始化数据
     [self makeData];
@@ -175,12 +209,82 @@ NTES_FORBID_INTERACTIVE_POP
      */
     [self setupViews];
     
+    //状态栏隐藏/显示
+    [self performSelector:@selector(hideControlView) withObject:nil afterDelay:8];
+    
+    //接受子控制器传来的roomID
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"RoomID" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        
+        _roomID = [note object];
+        
+        [[NTESMeetingNetCallManager defaultManager] joinMeeting:_roomID delegate:self];
+    }];
+    
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"SelfCameraReady" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        
+        cameraView = self.actorsView.selfCamera.copy;
+        
+        [_floatingView addSubview:cameraView];
+        cameraView.sd_layout
+        .leftSpaceToView(_floatingView, 0)
+        .rightSpaceToView(_floatingView, 0)
+        .topSpaceToView(_floatingView, 0)
+        .bottomSpaceToView(_floatingView, 0);
+        
+    }];
+    
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"DesktopSharedOn" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        //教师端开启屏幕共享
+        
+        //直接全屏
+        if (is_fullScreen == YES) {
+        }else{
+            [self scaleAction:_fullScreenBtn];
+        }
+        //关掉白板
+        [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:NO];
+        
+    }];
+    
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"DesktopSharedOff" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        //教师端关闭屏幕共享
+        //直接全屏
+        if (is_fullScreen == YES) {
+            [self scaleAction:_fullScreenBtn];
+        }else{
+            
+        }
+        //开启白板
+        [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:YES];
+        
+    }];
+    
+    
+    
+    /* 全屏模式的监听-->在runtime机制下不可进行屏幕旋转的时候,强制进行屏幕旋转*/
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onDeviceOrientationChange) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+    /* 支持全屏*/
+    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"SupportedLandscape"];
+    
+    
 }
 
 
 /**初始化数据*/
 - (void)makeData{
-
+    
+    is_fullScreen = NO;
+    
+    //默认使用前置摄像头推流
+    _currentCamera = FrontCamera;
+    
+    //默认开启摄像头和音频
+    _videoON = YES;
+    
+    _audioON = YES;
+    
 }
 
 /**加载视图*/
@@ -190,23 +294,36 @@ NTES_FORBID_INTERACTIVE_POP
     self.view.backgroundColor = [UIColor whiteColor];
     //加载所有子控制器
     [self setupChildViewController];
-    [self.view addSubview:self.actorsView];
     [self.view addSubview:self.actionView];
+    [self.view addSubview:self.actorsView];
     [self.actionView reloadData];
     
     //加载顶部控制栏
     [self setupControlView];
     
-    [self setupBarButtonItem];
-    
-    
-    
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
+    [[NTESMeetingRolesManager defaultManager] setDelegate:self];
     
-    [[NTESMeetingRolesManager sharedInstance] setDelegate:self];
-    [[NTESMeetingNetCallManager sharedInstance] joinMeeting:_chatroom.roomId delegate:self];
+    _floatingView = [[IJKFloatingView alloc]initWithFrame:CGRectMake(20, 20, self.view.width_sd/4, self.view.width_sd/4/9*16)];
+    _floatingView.backgroundColor = [UIColor whiteColor];
+    _floatingView.canMove = YES;
+    [self.view addSubview:_floatingView];
+    
+    
+    _teacherView = [[IJKFloatingView alloc]init];
+    _teacherView.canMove = NO;
+    [self.actorsView addSubview:_teacherView];
+    _teacherView.sd_layout
+    .leftSpaceToView(self.actorsView, 0)
+    .rightSpaceToView(self.actorsView, 0)
+    .topSpaceToView(self.actorsView, 0)
+    .bottomSpaceToView(self.actorsView, 0);
+    
     
 }
+
+
+
 
 /**加载控制栏*/
 - (void)setupControlView{
@@ -214,21 +331,78 @@ NTES_FORBID_INTERACTIVE_POP
     _controlView = [[UIView alloc]init];
     [self.view addSubview:_controlView];
     _controlView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.6];
+    _controlView.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .topSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .heightIs(40);
     
+    
+    ///顺序从右往左
     //全屏按钮
     _fullScreenBtn = [[UIButton alloc]init];
     [_controlView addSubview:_fullScreenBtn];
+    [_fullScreenBtn setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
+    [_fullScreenBtn addTarget:self action:@selector(scaleAction:) forControlEvents:UIControlEventTouchUpInside];
+    _fullScreenBtn.sd_layout
+    .rightSpaceToView(_controlView, 20*ScrenScale)
+    .topSpaceToView(_controlView, 10*ScrenScale)
+    .bottomSpaceToView(_controlView, 10*ScrenScale)
+    .widthEqualToHeight();
+    [_fullScreenBtn setEnlargeEdge:20];
     
     //切换前后摄像头按钮
+    _switchCameraBtn  = [[UIButton alloc]init];
+    [_controlView addSubview:_switchCameraBtn];
+    [_switchCameraBtn setImage:[UIImage imageNamed:@"switch_camera"] forState:UIControlStateNormal];
+    _switchCameraBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [_switchCameraBtn addTarget:self action:@selector(switchCameraAction:) forControlEvents:UIControlEventTouchUpInside];
+    _switchCameraBtn.sd_layout
+    .rightSpaceToView(_fullScreenBtn, 20*ScrenScale)
+    .topEqualToView(_fullScreenBtn)
+    .bottomEqualToView(_fullScreenBtn)
+    .widthEqualToHeight();
+    [_switchCameraBtn setEnlargeEdge:20];
     
     //视频开关
+    _videoSwitchBtn  = [[UIButton alloc]init];
+    [_controlView addSubview:_videoSwitchBtn];
+    [_videoSwitchBtn setImage:[UIImage imageNamed:@"camera_on"] forState:UIControlStateNormal];
+    [_videoSwitchBtn addTarget:self action:@selector(videoSwitchAction:) forControlEvents:UIControlEventTouchUpInside];
+    _videoSwitchBtn.sd_layout
+    .rightSpaceToView(_switchCameraBtn, 20*ScrenScale)
+    .topEqualToView(_fullScreenBtn)
+    .bottomEqualToView(_fullScreenBtn)
+    .widthEqualToHeight();
+    [_videoSwitchBtn setEnlargeEdge:20];
+    
     
     //音频开关
+    _audioSwitchBtn = [[UIButton alloc]init];
+    [_controlView addSubview:_audioSwitchBtn];
+    [_audioSwitchBtn setImage:[UIImage imageNamed:@"mic_on"] forState:UIControlStateNormal];
+    [_audioSwitchBtn addTarget:self action:@selector(audioSwitchAction:) forControlEvents:UIControlEventTouchUpInside];
+    _audioSwitchBtn.sd_layout
+    .rightSpaceToView(_videoSwitchBtn, 20*ScrenScale)
+    .topEqualToView(_fullScreenBtn)
+    .bottomEqualToView(_fullScreenBtn)
+    .widthEqualToHeight();
+    [_audioSwitchBtn setEnlargeEdge:20];
     
+    
+    //返回按钮
+    _backBtn = [[UIButton alloc]init];
+    [_controlView addSubview:_backBtn];
+    [_backBtn setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+    [_backBtn addTarget:self action:@selector(exitInteraction) forControlEvents:UIControlEventTouchUpInside];
+    _backBtn.sd_layout
+    .leftSpaceToView(_controlView, 10*ScrenScale)
+    .centerYEqualToView(_controlView)
+    .widthIs(30*ScrenScale)
+    .heightEqualToWidth();
+    [_backBtn setEnlargeEdge:20];
     
 }
-
-
 
 
 #pragma mark - NTESMeetingActionViewDataSource
@@ -263,7 +437,6 @@ NTES_FORBID_INTERACTIVE_POP
         self.currentChildViewController = child;
         [lastChild endAppearanceTransition];
         [child endAppearanceTransition];
-        //        [self revertInputView];
     });
 }
 
@@ -272,8 +445,7 @@ NTES_FORBID_INTERACTIVE_POP
 {
     [self.view.window makeToast:@"无法加入视频，退出房间" duration:3.0 position:CSToastPositionCenter];
     
-    if ([[[NTESMeetingRolesManager sharedInstance] myRole] isManager]) {
-        //        [self requestCloseChatRoom];
+    if ([[[NTESMeetingRolesManager defaultManager] myRole] isManager]) {
     }
     
     __weak typeof(self) wself = self;
@@ -289,20 +461,19 @@ NTES_FORBID_INTERACTIVE_POP
     }
 }
 
-- (void)onMeetingConntectStatus:(BOOL)connected
-{
-    //    DDLogInfo(@"Meeting %@ ...", connected ? @"connected" : @"disconnected");
+- (void)onMeetingConntectStatus:(BOOL)connected{
+    
     if (connected) {
-    }
-    else {
+        
+        
+    }else {
         [self.view.window makeToast:@"音视频服务连接异常" duration:2.0 position:CSToastPositionCenter];
         [self.actorsView stopLocalPreview];
     }
 }
 
-- (void)onSetBypassStreamingEnabled:(BOOL)enabled error:(NSUInteger)code
-{
-    //    DDLogError(@"Set bypass enabled %d error %zd", enabled, code);
+- (void)onSetBypassStreamingEnabled:(BOOL)enabled error:(NSUInteger)code{
+    
     NSString *toast = [NSString stringWithFormat:@"%@互动直播失败 (%zd)", enabled ? @"开启" : @"关闭", code];
     [self.view.window makeToast:toast duration:3.0 position:CSToastPositionCenter];
 }
@@ -312,30 +483,34 @@ NTES_FORBID_INTERACTIVE_POP
 - (void)meetingRolesUpdate
 {
     [self.actorsView updateActors];
-    //    [self.memberListVC refresh];
     [self.whiteboardVC checkPermission];
-    [self setupBarButtonItem];
+    if (!self.actorSelectView) {
+        _isRemainStdNav = YES;
+        self.actorSelectView = [[NTESActorSelectView alloc] initWithFrame:self.view.bounds];
+        self.actorSelectView.delegate = self;
+        [self.actorSelectView setUserInteractionEnabled:YES];
+        [self.actorSelectView okPressed];
+    }
+    
 }
 
-- (void)meetingVolumesUpdate
-{
-    //    [self.memberListVC refresh];
+- (void)meetingVolumesUpdate{
+    
 }
 
-- (void)chatroomMembersUpdated:(NSArray *)members entered:(BOOL)entered
-{
-    //    [self.memberListVC updateMembers:members entered:entered];
+- (void)chatroomMembersUpdated:(NSArray *)members entered:(BOOL)entered{
+    
 }
 
-- (void)meetingMemberRaiseHand
-{
+- (void)meetingMemberRaiseHand{
+    
     if (self.actionView.segmentedControl.selectedSegmentIndex != 2) {
         self.actionView.unreadRedTip.hidden = NO;
     }
 }
 
-- (void)meetingActorBeenEnabled
-{
+- (void)meetingActorBeenEnabled{
+    
     if (!self.actorSelectView) {
         _isRemainStdNav = YES;
         self.actorSelectView = [[NTESActorSelectView alloc] initWithFrame:self.view.bounds];
@@ -345,11 +520,9 @@ NTES_FORBID_INTERACTIVE_POP
     }
 }
 
-- (void)meetingActorBeenDisabled
-{
-    //    [self removeActorSelectView];
+- (void)meetingActorBeenDisabled{
     
-    BOOL accepted = [[NTESMeetingNetCallManager sharedInstance] setBypassLiveStreaming:NO];
+    BOOL accepted = [[NTESMeetingNetCallManager defaultManager] setBypassLiveStreaming:NO];
     
     if (!accepted) {
         [self.view.window makeToast:@"关闭互动直播被拒绝" duration:3.0 position:CSToastPositionTop];
@@ -365,33 +538,26 @@ NTES_FORBID_INTERACTIVE_POP
 
 -(void)meetingRolesShowFullScreen:(NSString*)notifyExt
 {
-    //    if ([self showFullScreenBtn:notifyExt]) {
-    //        self.actorsView.showFullScreenBtn = YES;
-    //    }
-    //    else
-    //    {
-    //        self.actorsView.showFullScreenBtn = NO;
-    //    }
+    
 }
 #pragma mark - NTESActorSelectViewDelegate
-- (void)onSelectedAudio:(BOOL)audioOn video:(BOOL)videoOn whiteboard:(BOOL)whiteboardOn
-{
-    //    [self removeActorSelectView];
+- (void)onSelectedAudio:(BOOL)audioOn video:(BOOL)videoOn whiteboard:(BOOL)whiteboardOn{
+    
     _isRemainStdNav = NO;
     
     if (audioOn) {
-        [[NTESMeetingRolesManager sharedInstance] setMyAudio:YES];
+        [[NTESMeetingRolesManager defaultManager] setMyAudio:YES];
     }
     
     if (videoOn) {
-        [[NTESMeetingRolesManager sharedInstance] setMyVideo:YES];
+        [[NTESMeetingRolesManager defaultManager] setMyVideo:YES];
     }
     
     if (whiteboardOn) {
-        [[NTESMeetingRolesManager sharedInstance] setMyWhiteBoard:YES];
+        [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:YES];
     }
     
-    BOOL accepted = [[NTESMeetingNetCallManager sharedInstance] setBypassLiveStreaming:YES];
+    BOOL accepted = [[NTESMeetingNetCallManager defaultManager] setBypassLiveStreaming:YES];
     
     if (!accepted) {
         [self.view.window makeToast:@"开启互动直播被拒绝" duration:3.0 position:CSToastPositionTop];
@@ -399,10 +565,175 @@ NTES_FORBID_INTERACTIVE_POP
 }
 
 
+#pragma mark- Actions
+
+/**全屏功能*/
+- (void)scaleAction:(UIButton *)sender{
+    
+    if (is_fullScreen == NO) {
+        //切换成全屏
+        [sender setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
+        //再捎带着切个全屏
+        [self turnFullScreen];
+        
+    }else{
+        //切回竖屏
+        [sender setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
+        //切回竖屏方法
+        [self turnPortrait];
+    }
+    
+}
+
+/**变全屏*/
+- (void)turnFullScreen{
+    /** 强制转成横屏 只能往右转*/
+    [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+}
+/**变竖屏*/
+- (void)turnPortrait{
+    /**强制竖屏 */
+    [self interfaceOrientation:UIInterfaceOrientationPortrait];
+
+}
 
 
 
+//在点击全屏按钮的情况下，强制改变屏幕方向
+- (void)interfaceOrientation:(UIInterfaceOrientation)orientation{
+    
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+        SEL selector = NSSelectorFromString(@"setOrientation:");
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+        [invocation setSelector:selector];
+        [invocation setTarget:[UIDevice currentDevice]];
+        int val = orientation;
+        [invocation setArgument:&val atIndex:2];
+        [invocation invoke];
+    }
+    
+}
 
+- (void)onDeviceOrientationChange{
+    
+    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+    if (orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown || orientation == UIDeviceOrientationUnknown || orientation == UIDeviceOrientationPortraitUpsideDown) {
+        
+        return;
+    }
+    [self.view layoutIfNeeded];
+}
+
+//全屏播放视频后，播放器的适配和全屏旋转
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    
+    /* 切换到竖屏*/
+    if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
+       //教师摄像头变小
+        [self teacherCameraTurnsPortrait];
+        
+        is_fullScreen = NO;
+        
+    }
+    /* 切换到横屏*/
+    else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+        //教师摄像头变大
+        [self teacherCameraTurnsFullScreen];
+        is_fullScreen = YES;
+        
+    }
+}
+
+/**教师摄像头变全屏*/
+- (void)teacherCameraTurnsFullScreen{
+    
+    [UIView animateWithDuration:0.3 animations:^{
+       
+        self.actorsView.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .topSpaceToView(self.view, 0)
+        .bottomSpaceToView(self.view, 0);
+        
+        [self.actorsView updateLayout];
+        
+    }];
+    
+}
+
+/**教师摄像头变竖屏*/
+- (void)teacherCameraTurnsPortrait{
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        self.actorsView.sd_resetLayout
+        .leftSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .topSpaceToView(self.view, 0)
+        .autoHeightRatio(9/16.0);
+        
+        [self.actorsView updateLayout];
+//        [self.actionView layoutSubviews];
+        
+    }];
+
+    
+}
+
+
+
+/**前后摄像头切换功能*/
+- (void)switchCameraAction:(UIButton *)sender{
+    
+    if (_currentCamera == BackCamera) {
+        
+        [[NIMAVChatSDK sharedSDK].netCallManager switchCamera:NIMNetCallCameraFront];
+        
+        _currentCamera = FrontCamera;
+        
+    }else{
+        
+        [[NIMAVChatSDK sharedSDK].netCallManager switchCamera:NIMNetCallCameraBack];
+        _currentCamera = BackCamera;
+        
+    }
+    
+    
+}
+
+
+/**摄像头开关*/
+- (void)videoSwitchAction:(UIButton *)sender{
+
+    if (_videoON == YES) {
+        [sender setImage:[UIImage imageNamed:@"camera_off"] forState:UIControlStateNormal];
+        _floatingView.hidden = YES;
+        _videoON = NO;
+    }else{
+        [sender setImage:[UIImage imageNamed:@"camera_on"] forState:UIControlStateNormal];
+        _floatingView.hidden = NO;
+        _videoON = YES;
+    }
+    
+    [[NTESMeetingRolesManager defaultManager] setMyVideo:_videoON];
+    
+}
+
+/**音频开关*/
+- (void)audioSwitchAction:(UIButton *)sender{
+    
+    
+    if (_audioON == YES) {
+        [sender setImage:[UIImage imageNamed:@"mic_off"] forState:UIControlStateNormal];
+        _audioON = NO;
+    }else{
+        [sender setImage:[UIImage imageNamed:@"mic_on"] forState:UIControlStateNormal];
+        _audioON = YES;
+    }
+    
+    [[NTESMeetingRolesManager defaultManager] setMyAudio:_audioON];
+    
+}
 
 
 #pragma mark- Get
@@ -417,8 +748,12 @@ NTES_FORBID_INTERACTIVE_POP
         return nil;
     }
     if (!_actorsView) {
-        _actorsView = [[NTESMeetingActorsView alloc] initWithFrame:CGRectMake(0, 0, self.view.width,self.meetingActorsViewHeight)];
-        _actorsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _actorsView = [[NTESMeetingActorsView alloc] initWithFrame:CGRectMake(0, 0, self.view.width_sd,self.view.width_sd/16*9)];
+        _actorsView.teacherCamera.frame = _actorsView.frame;
+        //点击手势 ,显示控制栏
+        UITapGestureRecognizer *tapControl = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(controlControlView)];
+        [_actorsView addGestureRecognizer:tapControl];
+        
     }
     return _actorsView;
 }
@@ -437,14 +772,6 @@ NTES_FORBID_INTERACTIVE_POP
     }
     return _actionView;
 }
-
-
-
-
-
-
-
-
 
 
 #pragma mark - Private
@@ -475,188 +802,133 @@ NTES_FORBID_INTERACTIVE_POP
     return @[self.whiteboardVC,self.chatVC,self.noticeVC,self.infoVC,self.memberVC];
 }
 
-- (void)setupBarButtonItem
-{
-    //根据用户角色判断导航栏rightBarButtonItem显示 老师右边三个btn
-    if ([[[NTESMeetingRolesManager sharedInstance] myRole] isManager]) {
-        [self refreshTecNavBar];
+/**播放器的点击控制*/
+- (void)controlControlView{
+    
+    if (_controlView.hidden == YES) {
+        
+        [self controlViewShow];
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            _controlView.alpha = 1;
+            
+        }];
+        
+    }else{
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            _controlView.alpha = 0;
+            
+        }];
+        [self performSelector:@selector(controlViewHide) withObject:nil afterDelay:0.5];
     }
-    //学生端 互动前2个btn 互动后4个btn
-    else
-    {
-        [self refreshStdNavBar];
-    }
-    
-    //显示左边leftBarButtonItem
-    UIView * leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 200, 30)];
-    //左边返回button
-    UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [leftButton setImage:[UIImage imageNamed:@"chatroom_back_normal"] forState:UIControlStateNormal];
-    [leftButton setImage:[UIImage imageNamed:@"chatroom_back_selected"] forState:UIControlStateHighlighted];
-    [leftButton addTarget:self action:@selector(onBack:) forControlEvents:UIControlEventTouchUpInside];
-    [leftButton sizeToFit];
-    
-    //房间号label
-    NSString * string =  [NSString stringWithFormat:@"房间：%@", _chatroom.roomId];
-    CGRect rectTitle = [string boundingRectWithSize:CGSizeMake(999, 30)
-                                            options:NSStringDrawingUsesLineFragmentOrigin
-                                         attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12]}
-                                            context:nil];
     
     
-    UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(40, 0, rectTitle.size.width+20, 30)];
-    title.font = [UIFont systemFontOfSize:12];
-    title.textColor = [UIColor whiteColor];
-    title.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
-    title.text = string;
-    title.textAlignment = NSTextAlignmentCenter;
     
-    title.layer.cornerRadius = 15;
-    title.layer.masksToBounds = YES;
-    [leftView addSubview:leftButton];
-    [leftView addSubview:title];
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-    self.navigationItem.leftItemsSupplementBackButton = NO;
-    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    NSMutableArray *arrayItems=[NSMutableArray array];
-    [arrayItems addObject:negativeSpacer];
-    [arrayItems addObject:leftItem];
-    negativeSpacer.width = -7;
-    
-    self.navigationItem.leftBarButtonItems = arrayItems;
 }
 
--(void)refreshTecNavBar
-{
-    CGFloat btnWidth = 30;
-    CGFloat btnHeight = 30;
-    CGFloat btnMargin = 7;
+
+
+
+/**隐藏状态栏*/
+- (void)hideControlView{
     
-    UIView * rightView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 3*btnMargin+3*btnWidth, 30)];
-    NTESMeetingRole *myRole = [[NTESMeetingRolesManager sharedInstance] myRole];
-    NSString *audioImage = myRole.audioOn ? @"chatroom_audio_on" : @"chatroom_audio_off";
-    NSString *audioImageSelected = myRole.audioOn ? @"chatroom_audio_selected" : @"chatroom_audio_off_selected";
-    
-    NSString *videoImage = myRole.videoOn ? @"chatroom_video_on" : @"chatroom_video_off";
-    NSString *videoImageSelected = myRole.audioOn ? @"chatroom_video_selected" : @"chatroom_video_off_selected";
+    [self animatedHideControlView];
     
     
-    //音频按钮
-    UIButton *audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    audioButton.frame = CGRectMake(3*btnMargin+2*btnWidth, 0, btnWidth, btnHeight);
-    [audioButton setImage:[UIImage imageNamed:audioImage] forState:UIControlStateNormal];
-    [audioButton setImage:[UIImage imageNamed:audioImageSelected] forState:UIControlStateHighlighted];
-    [audioButton addTarget:self action:@selector(onSelfAudioPressed:) forControlEvents:UIControlEventTouchUpInside];
-    //视频按钮
-    UIButton *videoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    videoButton.frame = CGRectMake(2*btnMargin+btnWidth, 0, btnWidth, btnHeight);
-    [videoButton setImage:[UIImage imageNamed:videoImage] forState:UIControlStateNormal];
-    [videoButton setImage:[UIImage imageNamed:videoImageSelected] forState:UIControlStateHighlighted];
-    [videoButton addTarget:self action:@selector(onSelfVideoPressed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [rightView addSubview:audioButton];
-    [rightView addSubview:videoButton];
-    
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:rightView];
-    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    NSMutableArray *arrayItems=[NSMutableArray array];
-    [arrayItems addObject:negativeSpacer];
-    [arrayItems addObject:rightItem];
-    negativeSpacer.width = -btnMargin;
-    self.navigationItem.rightBarButtonItems = arrayItems;
-    
-}
--(void)refreshStdNavBar
-{
-    NTESMeetingRole *myRole = [[NTESMeetingRolesManager sharedInstance] myRole];
-    NSString *audioImage = myRole.audioOn ? @"chatroom_audio_on" : @"chatroom_audio_off";
-    NSString *videoImage = myRole.videoOn ? @"chatroom_video_on" : @"chatroom_video_off";
-    NSString *audioImageSelected = myRole.audioOn ? @"chatroom_audio_selected" : @"chatroom_audio_off_selected";
-    NSString *videoImageSelected = myRole.audioOn ? @"chatroom_video_selected" : @"chatroom_video_off_selected";
-    CGFloat btnWidth = 30;
-    CGFloat btnHeight = 30;
-    CGFloat btnMargin = 7;
-    if (myRole.isActor&&!_isRemainStdNav) {  //有发言权限，变成3个按钮
-        UIView * rightView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,4*(btnWidth+btnMargin), btnHeight)];
-        //视频按钮
-        UIButton *videoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        videoButton.frame = CGRectMake(2*btnMargin+btnWidth, 0, btnWidth, btnHeight);
-        [videoButton setImage:[UIImage imageNamed:videoImage] forState:UIControlStateNormal];
-        [videoButton setImage:[UIImage imageNamed:videoImageSelected] forState:UIControlStateHighlighted];
-        [videoButton addTarget:self action:@selector(onSelfVideoPressed:) forControlEvents:UIControlEventTouchUpInside];
-        //音频按钮
-        UIButton *audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        audioButton.frame = CGRectMake(3*btnMargin+2*btnWidth, 0, btnWidth, btnHeight);
-        [audioButton setImage:[UIImage imageNamed:audioImage] forState:UIControlStateNormal];
-        [audioButton setImage:[UIImage imageNamed:audioImageSelected] forState:UIControlStateHighlighted];
-        [audioButton addTarget:self action:@selector(onSelfAudioPressed:) forControlEvents:UIControlEventTouchUpInside];
-        //结束按钮
-        UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        cancelButton.frame = CGRectMake(4*btnMargin+3*btnWidth, 0, btnWidth, btnHeight);
-        [cancelButton setBackgroundImage:[UIImage imageNamed:@"chatroom_interaction_bottom"] forState:UIControlStateNormal];
-        [cancelButton setBackgroundImage:[UIImage imageNamed:@"chatroom_interaction_bottom_selected"] forState:UIControlStateHighlighted];
-        
-        cancelButton.titleLabel.font = [UIFont systemFontOfSize:11];
-        [cancelButton setTitle:@"结束" forState:UIControlStateNormal];
-        [cancelButton addTarget:self action:@selector(onCancelInteraction:) forControlEvents:UIControlEventTouchUpInside];
-        cancelButton.tag = 10001;
-        
-        [rightView addSubview:audioButton];
-        [rightView addSubview:videoButton];
-        [rightView addSubview:cancelButton];
-        
-        UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:rightView];
-        UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        NSMutableArray *arrayItems=[NSMutableArray array];
-        [arrayItems addObject:negativeSpacer];
-        [arrayItems addObject:rightItem];
-        negativeSpacer.width = -btnMargin;
-        self.navigationItem.rightBarButtonItems = arrayItems;
-        
-        
-    }
-    else
-    {
-        UIView * rightView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 2*(btnWidth+btnMargin), btnHeight)];
-        //互动按钮
-        UIButton *raiseHandButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        raiseHandButton.frame = CGRectMake(btnWidth+2*btnMargin, 0, btnWidth, btnHeight);
-        
-        if (!myRole.isRaisingHand) {
-            [raiseHandButton setImage:[UIImage imageNamed:@"chatroom_interaction"] forState:UIControlStateNormal];
-            [raiseHandButton setImage:[UIImage imageNamed:@"chatroom_interaction_selected"] forState:UIControlStateHighlighted];
-        }
-        else{
-            [raiseHandButton setBackgroundImage:[UIImage imageNamed:@"chatroom_interaction_bottom"] forState:UIControlStateNormal];
-            [raiseHandButton setBackgroundImage:[UIImage imageNamed:@"chatroom_interaction_bottom_selected"] forState:UIControlStateHighlighted];
-            raiseHandButton.titleLabel.font = [UIFont systemFontOfSize:11];
-            [raiseHandButton setTitle:@"取消" forState:UIControlStateNormal];
-        }
-        
-        [raiseHandButton addTarget:self action:@selector(onRaiseHandPressed:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [rightView addSubview:raiseHandButton];
-        UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        
-        UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:rightView];
-        
-        NSMutableArray *arrayItems=[NSMutableArray array];
-        [arrayItems addObject:negativeSpacer];
-        [arrayItems addObject:rightItem];
-        negativeSpacer.width = -btnMargin;
-        self.navigationItem.rightBarButtonItems = arrayItems;
-        
-        
-    }
 }
 
+/**控制栏动画隐藏*/
+- (void)animatedHideControlView{
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        _controlView.alpha = 0;
+        
+    }];
+    [self performSelector:@selector(controlViewHide) withObject:nil afterDelay:0.5];
+    
+    
+    
+}
+/**无动画隐藏控制栏*/
+- (void)controlViewHide{
+    _controlView.hidden = YES;
+}
+
+/**控制栏动画显示*/
+- (void)animatedShowControlView{
+    
+    [self performSelector:@selector(controlViewShow) withObject:nil afterDelay:0.5];
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        _controlView.alpha =1 ;
+        
+    }];
+    
+}
+/**无动画隐藏控制栏*/
+- (void)controlViewShow{
+    _controlView.hidden = NO;
+    
+    [self performSelector:@selector(animatedHideControlView) withObject:nil afterDelay:10];
+    
+}
+
+
+#pragma mark- touches
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
+    
+    
+}
+
+//用户可能不小心按了一下返回键 o(╯□╰)o
+- (void)exitInteraction{
+    
+    if (is_fullScreen == YES) {
+        //返回竖屏
+        [self scaleAction:_fullScreenBtn];
+        
+    }else{
+        
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"确定要退出互动直播吗?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+            
+            if (buttonIndex == 0) {
+                //手滑了
+            }else{
+                
+                [self returnLastPage];
+            }
+            
+        }];
+    }
+    
+    
+    
+}
+
+- (void)returnLastPage{
+    
+    [[NIMAVChatSDK sharedSDK].netCallManager setBypassStreamingEnabled:NO];
+    [[NTESMeetingRolesManager defaultManager] setMyAudio:NO];
+    [[NTESMeetingRolesManager defaultManager] setMyVideo:NO];
+    [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:NO];
+
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 
 - (void)dealloc{
     [[NIMSDK sharedSDK].chatroomManager exitChatroom:_chatroom.roomId completion:nil];
     [[NIMSDK sharedSDK].chatroomManager removeDelegate:self];
     [UIApplication sharedApplication].idleTimerDisabled = NO;
-    [[NTESMeetingNetCallManager sharedInstance] leaveMeeting];
+    [[NTESMeetingNetCallManager defaultManager] leaveMeeting];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {

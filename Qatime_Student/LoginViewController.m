@@ -398,17 +398,19 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/user/guests",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"password":_guestPassWord,@"password_confirmation":_guestPassWord} completeSuccess:^(id  _Nullable responds) {
         [self stopHUD];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        
         if ([dic[@"status"]isEqualToNumber:@1]) {
             //userdefult保存用户id和token 和临时密码
             [self saveUserInfo:dic[@"data"] loginType:Guest];
             
-            NSError *error = [[NSError alloc]init];
+            
             //keychain保存用户账户名
-            [SAMKeychain setPassword:[NSString stringWithFormat:@"%@",dic[@"data"][@"user"][@"id"]] forService:Qatime_Service account:@"id" error:&error];
+            [SAMKeychain setPassword:[NSString stringWithFormat:@"%@",dic[@"data"][@"user"][@"id"]] forService:Qatime_Service account:@"id"];
             //第二组keychain保存token
-            [SAMKeychain setPassword:dic[@"data"][@"remember_token"] forService:Qatime_Service account:@"Remember-Token" error:&error];
+            [SAMKeychain setPassword:dic[@"data"][@"remember_token"] forService:Qatime_Service account:@"Remember-Token"];
+            
             //第三组keychain保存用户密码
-            [SAMKeychain setPassword:_guestPassWord forService:Qatime_Service account:@"password" error:&error];
+            [SAMKeychain setPassword:_guestPassWord forService:Qatime_Service account:@"password" ];
             
             [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
             
@@ -601,18 +603,18 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                 //登录成功
                 //不用干掉之前存储的keychain信息,增加新的keychain信息
                 NSArray *keys =  [SAMKeychain allAccounts];
-                NSError *error = [[NSError alloc]init];
+//                NSError *error = [[NSError alloc]init];
                 if (keys!=nil) {
                     
                     for (NSDictionary *acc in keys) {
                         
-                        [SAMKeychain deletePasswordForService:Qatime_Service account:acc[@"acct"] error:&error];
+                        [SAMKeychain deletePasswordForService:Qatime_Service account:acc[@"acct"] ];
                     }
                     
                 }
                 
                 //存储新的key
-                [SAMKeychain setPassword:_loginView.passWord.text forService:Qatime_Service account:_loginView.userName.text error:&error];
+                [SAMKeychain setPassword:_loginView.passWord.text forService:Qatime_Service account:_loginView.userName.text ];
                 
                 [self saveUserInfo:dicGet loginType:Normal];
                 

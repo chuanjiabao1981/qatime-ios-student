@@ -177,6 +177,18 @@
     
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+    id copyInstance = [[[self class] allocWithZone:zone] init];
+    size_t instanceSize = class_getInstanceSize([self class]);
+    memcpy((__bridge void *)(copyInstance), (__bridge const  void *)(self), instanceSize);
+    return copyInstance;
+}
+
+-(id)mutableCopyWithZone:(NSZone *)zone{
+    return [self copyWithZone:zone];
+}
+
+
 
 - (void)dealloc{
     

@@ -459,26 +459,26 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                                 [self saveUserInfo:dic[@"data"] loginType:Normal];
                                 
                                 //绑定成功后,干掉所有游客信息keychain,并保存当前用户的keychain
-                                NSError *error = [[NSError alloc]init];
+//                                NSError *error = [[NSError alloc]init];
                                 
                                 NSArray *allKeys = [SAMKeychain allAccounts];
                                 for (NSDictionary *key in allKeys) {
                                     
                                     if ([key[@"acct"]isEqualToString:@"Remember-Token"]) {
                                         
-                                        [SAMKeychain deletePasswordForService:Qatime_Service account:@"Remember-Token" error:&error];
+                                        [SAMKeychain deletePasswordForService:Qatime_Service account:@"Remember-Token" ];
                                     }else if ([key[@"acct"]isEqualToString:@"id"]){
                                         
-                                        [SAMKeychain deletePasswordForService:Qatime_Service account:@"id" error:&error];
+                                        [SAMKeychain deletePasswordForService:Qatime_Service account:@"id"];
                                         
                                     }else if ([key[@"acct"]isEqualToString:@"password"]){
                                         
-                                        [SAMKeychain deletePasswordForService:Qatime_Service account:@"password" error:&error];
+                                        [SAMKeychain deletePasswordForService:Qatime_Service account:@"password"];
                                     }
                                     
                                 }
                                 
-                                [SAMKeychain setPassword:_mainView.passwordText.text forService:Qatime_Service account:_mainView.phoneText.text error:&error];
+                                [SAMKeychain setPassword:_mainView.passwordText.text forService:Qatime_Service account:_mainView.phoneText.text ];
                                 [self HUDStopWithTitle:@"绑定成功!"];
                                 
                                 ///绑定成功后的跳转

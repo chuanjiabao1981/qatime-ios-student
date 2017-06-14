@@ -42,6 +42,8 @@
 
 @property(nonatomic, copy) NSString *livePlayUrl;
 
++(NTESMeetingRolesManager *)defaultManager;
+
 
 - (void)startNewMeeting:(NIMChatroomMember *)me
            withChatroom:(NIMChatroom *)chatroom
@@ -72,5 +74,6 @@
 - (void)updateMeetingUser:(NSString *)user isJoined:(BOOL)joined;
 
 - (void)updateVolumes:(NSDictionary<NSString *, NSNumber *> *)volumes;
+
 
 @end

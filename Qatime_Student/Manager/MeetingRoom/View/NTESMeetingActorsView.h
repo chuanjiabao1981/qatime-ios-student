@@ -7,12 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "IJKFloatingView.h"
 @interface NTESMeetingActorsView : UIView
 
 @property (nonatomic) BOOL isFullScreen;
 
 @property (nonatomic) BOOL showFullScreenBtn;
+
+
+@property (nonatomic, strong) IJKFloatingView *teacherCamera ;
+@property (nonatomic, strong) IJKFloatingView *selfCamera ;
+
 
 - (void)updateActors;
 

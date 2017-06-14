@@ -18,4 +18,6 @@
 
 @property (nonatomic, weak) id<NTESActorSelectViewDelegate> delegate;
 
+- (void)okPressed;
+
 @end

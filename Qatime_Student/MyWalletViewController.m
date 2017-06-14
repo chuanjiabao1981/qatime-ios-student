@@ -217,30 +217,10 @@
 
 #pragma mark- 进入充值页面
 - (void)recharge{
-
-    if (is_Guest == YES) {
-        //游客充值...
-        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"您还未登录!\n未登录情况下进行充值、购买等操作将无法保证您的购买记录和资金账户安全!是否登录?" cancelButtonTitle:@"前往登录" destructiveButtonTitle:nil otherButtonTitles:@[@"不登录"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-            
-            if (buttonIndex == 0) {
-                //登录一下子
-                [self loginAgain];
-                
-                
-            }else{
-                ///什么也不错,直接购买
-                ChargeViewController *charge = [[ChargeViewController alloc]init];
-                [self.navigationController pushViewController:charge animated:YES];
-            }
-            
-        }];
-        
-        
-    }else{
-        //普通用户充值
-      ChargeViewController *controller = [ChargeViewController new];
-        [self.navigationController pushViewController:controller animated:YES];
-    }
+    
+    //用户充值
+    ChargeViewController *controller = [ChargeViewController new];
+    [self.navigationController pushViewController:controller animated:YES];
     
 }
 

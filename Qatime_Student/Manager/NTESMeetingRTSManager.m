@@ -29,12 +29,12 @@
 
 +(NTESMeetingRTSManager *)defaultManager{
     
-    static NTESMeetingRTSManager *sharedAccountManagerInstance = nil;
+    static NTESMeetingRTSManager *defaultManager = nil;
     static dispatch_once_t predicate;
     dispatch_once(&predicate, ^{
-        sharedAccountManagerInstance = [[self alloc] init];
+        defaultManager = [[self alloc] init];
     });
-    return sharedAccountManagerInstance;
+    return defaultManager;
 }
 
 - (void)dealloc
@@ -92,14 +92,14 @@
     return accepted;
 }
 
-- (BOOL)isJoined
-{
+- (BOOL)isJoined{
+    
     return _currentConference != nil;
 }
 
 
-- (void)handleReceivedData:(NIMRTSConferenceData *)data
-{
+- (void)handleReceivedData:(NIMRTSConferenceData *)data{
+    
     if (_dataHandler) {
         [_dataHandler handleReceivedData:data.data sender:data.uid];
     }

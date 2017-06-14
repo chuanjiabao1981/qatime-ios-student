@@ -25,6 +25,17 @@
  */
 @property (nonatomic, strong) UIScrollView *gradeMenu ;
 
+
+
+/**
+ 查看全部老师和直播回放
+ */
+@property (nonatomic, strong) UIView *checkAndReview;
+@property (nonatomic, strong) UIButton *allTeachersBtn ;
+@property (nonatomic, strong) UIButton *reviewBtn ;
+
+
+
 /**
  今日直播 滚动视图
  */

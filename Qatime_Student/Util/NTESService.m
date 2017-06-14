@@ -72,6 +72,10 @@
 
 #pragma mark - NIMService
 @implementation NTESService
+
+
+
+
 + (instancetype)sharedInstance
 {
     return [[NTESServiceManager sharedManager] singletonByClass:[self class]];

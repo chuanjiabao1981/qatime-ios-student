@@ -29,14 +29,11 @@
         _overlay.is_private = 0;
         _overlay.sar_num = 0;
         _overlay.sar_den = 0;
-        
     }
     return self;
 }
-- (void) render: (NSData *)yuvData
-          width:(NSUInteger)width
-         height:(NSUInteger)height
-{
+- (void) render: (NSData *)yuvData  width:(NSUInteger)width height:(NSUInteger)height{
+    
     if (yuvData) {
         _overlay.w = (int)width;
         _overlay.h = (int)height;

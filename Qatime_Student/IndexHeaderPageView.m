@@ -40,7 +40,6 @@
         _gradeMenu.showsHorizontalScrollIndicator = NO;
         
         NSArray *gradeArr= @[@"高三",@"高二",@"高一",@"初三",@"初二",@"初一",@"六年级",@"五年级",@"四年级",@"三年级",@"二年级",@"一年级"];
-        
         _buttons = @[].mutableCopy;
         
         //遍历按钮.

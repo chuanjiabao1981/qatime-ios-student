@@ -317,6 +317,19 @@
             /* 发消息 给appdelegate*/
             [[NSNotificationCenter defaultCenter]postNotificationName:@"userLogOut" object:nil];
             
+            /* 向服务器发送退出登录状态*/
+            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+            [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults]valueForKey:@"token"] forHTTPHeaderField:@"Remember-Token"];
+            [manager DELETE:[NSString stringWithFormat:@"%@/api/v1/sessions",Request_Header] parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                
+            }];
+            
+
+            
             [self.navigationController popViewControllerAnimated:YES];
         }
         
@@ -337,20 +350,7 @@
         
     }];
     
-    
-    
-    /* 向服务器发送退出登录状态*/
-    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults]valueForKey:@"token"] forHTTPHeaderField:@"Remember-Token"];
-    [manager DELETE:[NSString stringWithFormat:@"%@/api/v1/sessions",Request_Header] parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-    }];
-
-}
+    }
 
 
 /* 返回上一页*/

@@ -31,6 +31,8 @@ typedef NS_ENUM(NSUInteger, NTESWhiteBoardCmdType){
     NTESWhiteBoardCmdTypeLaserPenEnd   = 13,
     
     NTESWhiteBoardCmdTypeDocShare      = 14,
+    
+    NTESDesktopShared                  = 15,
 
 };
 

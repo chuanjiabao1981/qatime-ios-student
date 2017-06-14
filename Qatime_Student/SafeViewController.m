@@ -694,7 +694,7 @@
 - (void)changeWechatBindingStatus{
     
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"openID"];
-    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:2 inSection:0];
+    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:1 inSection:0];
     SettingTableViewCell *cell = [_menuTableView cellForRowAtIndexPath:indexpath];
     
     cell.balance.text = @" 马上绑定 ";

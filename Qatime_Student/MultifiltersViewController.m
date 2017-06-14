@@ -219,11 +219,7 @@
 ///立即筛选
 - (void)filtered{
     
-    
-    
     [[NSUserDefaults standardUserDefaults]setValue:_filtersDic forKey:@"Filter"];
-    
-    
     
     [self returnLastPage];
     self.componentsBlock(hasChange);

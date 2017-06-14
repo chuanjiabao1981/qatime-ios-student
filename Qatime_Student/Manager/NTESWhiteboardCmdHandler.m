@@ -214,6 +214,24 @@
                 [self handleReceivedDocShareData:cmd sender:sender];
                 break;
             }
+            
+            case NTESDesktopShared:{
+                //收到屏幕共享通知
+                
+                NSLog(@"%@",cmdString);
+                NSMutableString *deskStr = @"".mutableCopy;
+                deskStr  = [cmdString substringWithRange:NSMakeRange(3, 1)].mutableCopy;
+                if (deskStr.integerValue == 1) {
+                    //此时关闭白板,自动全屏模式
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"DesktopSharedOn" object:nil];
+                    
+                }else if (deskStr.integerValue == 0){
+                    //此时白板开启,恢复正常模式
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"DesktopSharedOff" object:nil];
+                }
+                
+                
+            }
 
             default:
                 break;

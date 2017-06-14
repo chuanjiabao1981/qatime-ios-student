@@ -76,6 +76,7 @@
 #import "CYLTableViewPlaceHolder.h"
 #import "HaveNoClassView.h"
 #import "KSPhotoBrowser.h"
+#import "NSNull+Json.h"
 
 
 #define APP_WIDTH self.view.frame.size.width
@@ -2643,12 +2644,7 @@ bool ismute     = NO;
     
     /* 全屏模式的监听-->在runtime机制下不可进行屏幕旋转的时候,强制进行屏幕旋转*/
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onDeviceOrientationChange)
-                                                 name:UIDeviceOrientationDidChangeNotification
-                                               object:nil
-     ];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onDeviceOrientationChange) name:UIDeviceOrientationDidChangeNotification object:nil];
     
     /* 支持全屏*/
     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"SupportedLandscape"];
@@ -2939,8 +2935,16 @@ bool ismute     = NO;
             [_infoHeaderView layoutIfNeeded];
             
             if (dataDic) {
-                _teacherPullAddress =[NSURL URLWithString:dataDic[@"camera_pull_stream"]];
-                _boardPullAddress = [NSURL URLWithString:dataDic[@"board_pull_stream"]];
+//                
+//                if ([_teacherPullAddress isEqual:[NSNull null]]) {
+//                    _teacherPullAddress = [NSURL URLWithString:@""];
+//                }
+//                if ([_boardPullAddress isEqual:[NSNull null]]) {
+//                    _boardPullAddress = [NSURL URLWithString:@""];
+//                }
+                
+                _teacherPullAddress =[NSURL URLWithString:[dataDic[@"camera_pull_stream"]description]];
+                _boardPullAddress = [NSURL URLWithString:[dataDic[@"board_pull_stream"]description]];
                 if ([dataDic[@"is_bought"]boolValue]==NO) {
                     /* 如果用户还没有购买该课程*/
                     /* 已经试听过*/
@@ -2953,8 +2957,10 @@ bool ismute     = NO;
                     }else{
                         _teacherPullAddress =[NSURL URLWithString:dataDic[@"camera_pull_stream"]];
                     }
-                    _teacherPullAddress =[NSURL URLWithString:dataDic[@"camera_pull_stream"]];
-                    _boardPullAddress = [NSURL URLWithString:dataDic[@"board_pull_stream"]];
+                    //可以试听 ,直接URL赋值
+                    _teacherPullAddress =[NSURL URLWithString:[dataDic[@"camera_pull_stream"]description]];
+                    _boardPullAddress = [NSURL URLWithString:[dataDic[@"board_pull_stream"]description]];
+
                     
                     
                 }else{
@@ -2969,7 +2975,6 @@ bool ismute     = NO;
                 /* 重新加载播放器*/
                 [self reloadPlayerView];
             }
-            
             
         }
         

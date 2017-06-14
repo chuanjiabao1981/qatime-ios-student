@@ -32,6 +32,19 @@
 
 @implementation NTESMeetingRolesManager
 
++(NTESMeetingRolesManager *)defaultManager{
+    
+    static NTESMeetingRolesManager *defaultManager = nil;
+    static dispatch_once_t predicate;
+    dispatch_once(&predicate, ^{
+        defaultManager = [[self alloc] init];
+    });
+    return defaultManager;
+    
+}
+
+
+
 - (void)startNewMeeting:(NIMChatroomMember *)me
            withChatroom:(NIMChatroom *)chatroom
              newCreated:(BOOL)newCreated

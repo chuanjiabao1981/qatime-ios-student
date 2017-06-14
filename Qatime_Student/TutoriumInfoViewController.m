@@ -36,7 +36,7 @@
 #import "TeacherFeatureTagCollectionViewCell.h"
 #import "Features.h"
 #import "WorkFlowTableViewCell.h"
-
+#import "ClassTimeViewController.h"
 
 
 @interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,TTGTextTagCollectionViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>{
@@ -1155,6 +1155,12 @@
 
 
 - (void)returnLastpage{
+    
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isMemberOfClass:[ClassTimeViewController class]]) {
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"PopToRoot" object:nil];
+        }
+    }
     
     
     if (_promotionCode) {

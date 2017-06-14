@@ -416,18 +416,18 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                     
                     //不用干掉之前存储的keychain信息,增加新的keychain信息
                     NSArray *keys =  [SAMKeychain allAccounts];
-                    NSError *error = [[NSError alloc]init];
+//                    NSError *error = [[NSError alloc]init];
                     if (keys!=nil) {
                         
                         for (NSDictionary *acc in keys) {
                             
-                            [SAMKeychain deletePasswordForService:Qatime_Service account:acc[@"acct"] error:&error];
+                            [SAMKeychain deletePasswordForService:Qatime_Service account:acc[@"acct"]];
                         }
                         
                     }
                     
                     //存储新的key
-                    [SAMKeychain setPassword:_loginAgainView.passWord.text forService:Qatime_Service account:_loginAgainView.userName.text error:&error];
+                    [SAMKeychain setPassword:_loginAgainView.passWord.text forService:Qatime_Service account:_loginAgainView.userName.text ];
 
                     [self saveUserInfo:dicGet loginType:Normal];
                     //

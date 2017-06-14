@@ -415,15 +415,15 @@
          contextName = "__41-[OrderViewController checkPromotionCode]_block_invoke:OrderViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[ChooseClassViewController multiFiltersRequest:]:ChooseClassViewController.m">
-      </ContextState>
-      <ContextState
          contextName = "-[NTESWhiteboardCmdHandler sendMyPoint:]:NTESWhiteboardCmdHandler.m">
          <PersistentStrings>
             <PersistentString
                value = "_cmdsSendBuffer">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChooseClassViewController multiFiltersRequest:]:ChooseClassViewController.m">
       </ContextState>
       <ContextState
          contextName = "__48-[NTESMeetingWhiteboardViewController getRoomID]_block_invoke:NTESMeetingWhiteboardViewController.m">
@@ -480,10 +480,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -551,6 +551,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[NTESMeetingActorsView updateActors]:NTESMeetingActorsView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_localVideoLayer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[NoticeIndexViewController tableView:didSelectRowAtIndexPath:]:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
@@ -603,10 +611,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__copy_helper_block_:PersonalInfoViewController.m">
+         contextName = "-[NTESMeetingRTSManager onJoinConference:result:]:NTESMeetingRTSManager.m">
          <PersistentStrings>
             <PersistentString
-               value = "_dataDic">
+               value = "_currentConference">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -631,7 +639,12 @@
          contextName = "-[OrderViewController touchesBegan:withEvent:]:OrderViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
+         contextName = "__copy_helper_block_:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
@@ -651,12 +664,7 @@
          contextName = "__38-[ChangePasswordViewController finish]_block_invoke_4:ChangePasswordViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[NTESMeetingRTSManager onJoinConference:result:]:NTESMeetingRTSManager.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_currentConference">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NTESWhiteboardCmdHandler doSendCmds]:NTESWhiteboardCmdHandler.m">
@@ -822,6 +830,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[NTESIJKSDLGLView displayInternal:clear:]:IJKSDLGLView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_scaleFactor">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[LoginViewController sendAuthRequest]:LoginViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -853,6 +869,14 @@
       </ContextState>
       <ContextState
          contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.441:PersonalInfoViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[IndexPageViewController viewDidLoad]:IndexPageViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "headerSize">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[YZEmotionKeyboard didSelectEmotion:]:YZEmotionKeyboard.m">
@@ -1124,15 +1148,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[TutoriumInfoViewController listen]:TutoriumInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-            <PersistentString
-               value = "teacher">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[NTESMeetingRTSManager handleReceivedData:]:NTESMeetingRTSManager.m">
       </ContextState>
       <ContextState
          contextName = "-[OrderInfoViewController initWithUnpaid:]:OrderInfoViewController.m">
@@ -1150,6 +1166,17 @@
             </PersistentString>
             <PersistentString
                value = "[NTESMeetingRolesManager sharedInstance]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumInfoViewController listen]:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+            <PersistentString
+               value = "teacher">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1320,6 +1347,20 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[NTESMeetingActorsView startLocalPreview:]:NTESMeetingActorsView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[self localViewIndex]">
+            </PersistentString>
+            <PersistentString
+               value = "_actorViews">
+            </PersistentString>
+            <PersistentString
+               value = "_localVideoLayer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[SafeViewController tableView:cellForRowAtIndexPath:]:SafeViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1454,10 +1495,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1582,6 +1623,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[NTESMeetingActorsView layoutSubviews]:NTESMeetingActorsView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_backgroundViews">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NTESIJKSDLGLView display:clear:]:IJKSDLGLView.m">
+      </ContextState>
+      <ContextState
          contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke.204:NoticeIndexViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1597,6 +1649,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NTESMeetingActorsView initWithFrame:]:NTESMeetingActorsView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_actorViews">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1762,6 +1822,9 @@
                value = "_isJoined">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NTESWhiteboardCmdHandler handleReceivedData:sender:]:NTESWhiteboardCmdHandler.m">
       </ContextState>
       <ContextState
          contextName = "-[PersonalInfoViewController updateUserInfo]:PersonalInfoViewController.m">

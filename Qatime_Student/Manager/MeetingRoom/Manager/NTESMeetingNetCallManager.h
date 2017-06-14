@@ -25,6 +25,8 @@
 
 @property(nonatomic, readonly) BOOL isInMeeting;
 
++(NTESMeetingNetCallManager *)defaultManager;
+
 - (void)joinMeeting:(NSString *)name delegate:(id<NTESMeetingNetCallManagerDelegate>)delegate;
 
 - (void)leaveMeeting;

@@ -237,7 +237,7 @@ NTES_FORBID_INTERACTIVE_POP
 
 - (CGFloat)meetingActorsViewHeight
 {
-    return NIMKit_UIScreenWidth * 220.f / 320.f;
+    return NIMKit_UIScreenWidth ;
 }
 
 - (NTESMeetingActorsView *)actorsView{
