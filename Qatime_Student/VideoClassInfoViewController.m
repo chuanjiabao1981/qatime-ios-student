@@ -181,8 +181,8 @@ typedef enum : NSUInteger {
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@/detail",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
-            _classInfo = [VideoClassInfo yy_modelWithJSON:dic[@"data"]];
-            _classInfo.classID = dic[@"data"][@"id"];
+            _classInfo = [VideoClassInfo yy_modelWithJSON:dic[@"data"][@"video_course"]];
+            _classInfo.classID = dic[@"data"][@"video_course"][@"id"];
            
             //特色
             for (NSString *key in dic[@"data"][@"icons"]) {

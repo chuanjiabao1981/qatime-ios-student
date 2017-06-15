@@ -44,5 +44,7 @@
 @property (nonatomic, assign) BOOL is_bought ;
 @property (nonatomic, assign) BOOL tastes ;
 
+@property (nonatomic, strong) NSString *product_type ;
+
 
 @end

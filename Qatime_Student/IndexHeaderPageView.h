@@ -35,11 +35,13 @@
 @property (nonatomic, strong) UIButton *reviewBtn ;
 
 
-
 /**
  今日直播 滚动视图
  */
 @property (nonatomic, strong) UICollectionView *todayLiveScrollView ;
+
+/**推荐教师*/
+@property (nonatomic, strong) UICollectionView *recommandTeachersView ;
 
 /**
  精选内容 栏

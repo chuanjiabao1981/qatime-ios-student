@@ -52,7 +52,7 @@
     
     if (!_leftButton) {
         
-        _leftButton = [[UIButton alloc]initWithFrame:CGRectMake(10*ScrenScale, 30, 30*ScrenScale, 30*ScrenScale)];
+        _leftButton = [[UIButton alloc]initWithFrame:CGRectMake(10*ScrenScale, 25, 30*ScrenScale, 30*ScrenScale)];
         _leftButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
         //    [_leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [self.contentView addSubview:_leftButton];
@@ -67,7 +67,7 @@
     
     if (!_rightButton) {
         
-        _rightButton = [[UIButton alloc]initWithFrame:CGRectMake(self.width_sd-50*ScrenScale, 30, 30*ScrenScale, 30*ScrenScale)];
+        _rightButton = [[UIButton alloc]initWithFrame:CGRectMake(self.width_sd-50*ScrenScale, 25, 30*ScrenScale, 30*ScrenScale)];
         [self.contentView addSubview:_rightButton];
         [_rightButton setEnlargeEdge:20];
     }

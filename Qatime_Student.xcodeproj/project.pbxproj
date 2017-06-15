@@ -335,6 +335,13 @@
 		54AB48FD1DEDA563008E3BC5 /* StartedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48FC1DEDA563008E3BC5 /* StartedTableViewCell.m */; };
 		54AB49001DEDABCC008E3BC5 /* EndedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB48FF1DEDABCC008E3BC5 /* EndedTableViewCell.m */; };
 		54AB49031DEDB1BA008E3BC5 /* ListenTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB49021DEDB1BA008E3BC5 /* ListenTableViewCell.m */; };
+		54AB63C41EF25DC50022E573 /* SearchTipsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB63C31EF25DC50022E573 /* SearchTipsViewController.m */; };
+		54AB63C71EF25DD30022E573 /* SearchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB63C61EF25DD30022E573 /* SearchView.m */; };
+		54AB63CA1EF25DE00022E573 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB63C91EF25DE00022E573 /* SearchViewController.m */; };
+		54AB63CE1EF29E0C0022E573 /* SearchingClassesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB63CD1EF29E0C0022E573 /* SearchingClassesTableViewCell.m */; };
+		54AB63D11EF29E1A0022E573 /* SearchingTeachersTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB63D01EF29E1A0022E573 /* SearchingTeachersTableViewCell.m */; };
+		54AB63D51EF2AA500022E573 /* ClassSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB63D41EF2AA500022E573 /* ClassSearch.m */; };
+		54AB63D81EF2AA5B0022E573 /* TeachersSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AB63D71EF2AA5B0022E573 /* TeachersSearch.m */; };
 		54AC01F91E88FE5C00817767 /* libnio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54AC01EC1E88FE5C00817767 /* libnio.a */; };
 		54AC01FA1E88FE5C00817767 /* libnts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54AC01ED1E88FE5C00817767 /* libnts.a */; };
 		54AC01FB1E88FE5C00817767 /* libnvs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54AC01EE1E88FE5C00817767 /* libnvs.a */; };
@@ -1356,6 +1363,20 @@
 		54AB48FF1DEDABCC008E3BC5 /* EndedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EndedTableViewCell.m; sourceTree = "<group>"; };
 		54AB49011DEDB1BA008E3BC5 /* ListenTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListenTableViewCell.h; sourceTree = "<group>"; };
 		54AB49021DEDB1BA008E3BC5 /* ListenTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListenTableViewCell.m; sourceTree = "<group>"; };
+		54AB63C21EF25DC50022E573 /* SearchTipsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTipsViewController.h; sourceTree = "<group>"; };
+		54AB63C31EF25DC50022E573 /* SearchTipsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTipsViewController.m; sourceTree = "<group>"; };
+		54AB63C51EF25DD30022E573 /* SearchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchView.h; sourceTree = "<group>"; };
+		54AB63C61EF25DD30022E573 /* SearchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchView.m; sourceTree = "<group>"; };
+		54AB63C81EF25DE00022E573 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		54AB63C91EF25DE00022E573 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		54AB63CC1EF29E0C0022E573 /* SearchingClassesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchingClassesTableViewCell.h; sourceTree = "<group>"; };
+		54AB63CD1EF29E0C0022E573 /* SearchingClassesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchingClassesTableViewCell.m; sourceTree = "<group>"; };
+		54AB63CF1EF29E1A0022E573 /* SearchingTeachersTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchingTeachersTableViewCell.h; sourceTree = "<group>"; };
+		54AB63D01EF29E1A0022E573 /* SearchingTeachersTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchingTeachersTableViewCell.m; sourceTree = "<group>"; };
+		54AB63D31EF2AA500022E573 /* ClassSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassSearch.h; sourceTree = "<group>"; };
+		54AB63D41EF2AA500022E573 /* ClassSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassSearch.m; sourceTree = "<group>"; };
+		54AB63D61EF2AA5B0022E573 /* TeachersSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeachersSearch.h; sourceTree = "<group>"; };
+		54AB63D71EF2AA5B0022E573 /* TeachersSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeachersSearch.m; sourceTree = "<group>"; };
 		54AC01EC1E88FE5C00817767 /* libnio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libnio.a; sourceTree = "<group>"; };
 		54AC01ED1E88FE5C00817767 /* libnts.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libnts.a; sourceTree = "<group>"; };
 		54AC01EE1E88FE5C00817767 /* libnvs.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libnvs.a; sourceTree = "<group>"; };
@@ -2258,6 +2279,7 @@
 		541F91DE1DC9BBAA00180BE8 /* 主页页面 */ = {
 			isa = PBXGroup;
 			children = (
+				54AB63B81EF25BF50022E573 /* 搜索 */,
 				54FCBAAD1DD58A530094BF58 /* 主页 */,
 				545B86F81E650F0E00A157F0 /* 二维码扫描 */,
 				547A7EF81DD4128C00F1282B /* 教师公开页 */,
@@ -3906,6 +3928,83 @@
 				54AB49021DEDB1BA008E3BC5 /* ListenTableViewCell.m */,
 			);
 			name = Cell;
+			sourceTree = "<group>";
+		};
+		54AB63B81EF25BF50022E573 /* 搜索 */ = {
+			isa = PBXGroup;
+			children = (
+				54AB63BA1EF25D630022E573 /* 搜索提示页 */,
+				54AB63B91EF25D620022E573 /* 搜索页面 */,
+			);
+			name = "搜索";
+			sourceTree = "<group>";
+		};
+		54AB63B91EF25D620022E573 /* 搜索页面 */ = {
+			isa = PBXGroup;
+			children = (
+				54AB63D21EF2AA340022E573 /* Model */,
+				54AB63BE1EF25D8C0022E573 /* View */,
+				54AB63BC1EF25D740022E573 /* Controller */,
+			);
+			name = "搜索页面";
+			sourceTree = "<group>";
+		};
+		54AB63BA1EF25D630022E573 /* 搜索提示页 */ = {
+			isa = PBXGroup;
+			children = (
+				54AB63BB1EF25D710022E573 /* Controller */,
+			);
+			name = "搜索提示页";
+			sourceTree = "<group>";
+		};
+		54AB63BB1EF25D710022E573 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54AB63C21EF25DC50022E573 /* SearchTipsViewController.h */,
+				54AB63C31EF25DC50022E573 /* SearchTipsViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54AB63BC1EF25D740022E573 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54AB63C81EF25DE00022E573 /* SearchViewController.h */,
+				54AB63C91EF25DE00022E573 /* SearchViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54AB63BE1EF25D8C0022E573 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54AB63CB1EF29DF20022E573 /* Cell */,
+				54AB63C51EF25DD30022E573 /* SearchView.h */,
+				54AB63C61EF25DD30022E573 /* SearchView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54AB63CB1EF29DF20022E573 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				54AB63CC1EF29E0C0022E573 /* SearchingClassesTableViewCell.h */,
+				54AB63CD1EF29E0C0022E573 /* SearchingClassesTableViewCell.m */,
+				54AB63CF1EF29E1A0022E573 /* SearchingTeachersTableViewCell.h */,
+				54AB63D01EF29E1A0022E573 /* SearchingTeachersTableViewCell.m */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
+		54AB63D21EF2AA340022E573 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54AB63D31EF2AA500022E573 /* ClassSearch.h */,
+				54AB63D41EF2AA500022E573 /* ClassSearch.m */,
+				54AB63D61EF2AA5B0022E573 /* TeachersSearch.h */,
+				54AB63D71EF2AA5B0022E573 /* TeachersSearch.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		54AC01EA1E88FE5C00817767 /* NIMAVChat */ = {
@@ -6718,6 +6817,7 @@
 				5435D9371DD2C12300DD4FCC /* ClassesListTableViewCell.m in Sources */,
 				54AC04B41E89398E00817767 /* NTESChatroomMaker.m in Sources */,
 				5471C8021E8F87FD0098E509 /* ClassListTableView.m in Sources */,
+				54AB63D51EF2AA500022E573 /* ClassSearch.m in Sources */,
 				54AC02B91E892FD100817767 /* NTESMarginButton.m in Sources */,
 				54AC04E01E89398E00817767 /* NTESChatroomUnknowContentView.m in Sources */,
 				5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */,
@@ -6766,6 +6866,7 @@
 				549AE7621E013DAC001DD2ED /* BindingMailInfoView.m in Sources */,
 				54AC03EE1E8938E100817767 /* NIMMessageCellMaker.m in Sources */,
 				54E00B151E5AEAD60056C74F /* TranslateViewController.m in Sources */,
+				54AB63D11EF29E1A0022E573 /* SearchingTeachersTableViewCell.m in Sources */,
 				544E0CDB1DD0806900884F31 /* YZSquareMenuCell.m in Sources */,
 				54AC021A1E892C4A00817767 /* NTESWhiteboardCmdHandler.m in Sources */,
 				54C452041E9CA5D1002108F4 /* MyVideoClassView.m in Sources */,
@@ -6803,6 +6904,7 @@
 				543BCAF91E78F3F700AD6721 /* UIView+SDAutoLayout.m in Sources */,
 				54F3BA181DFC3013003998D0 /* UIViewController+Login.m in Sources */,
 				54AC027B1E892D3C00817767 /* UIActionSheet+NTESBlock.m in Sources */,
+				54AB63D81EF2AA5B0022E573 /* TeachersSearch.m in Sources */,
 				54AC02AF1E892FD100817767 /* UINavigationController+Swizzling.m in Sources */,
 				54F3BA2D1DFC7130003998D0 /* WithDrawView.m in Sources */,
 				549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */,
@@ -6810,6 +6912,7 @@
 				54AC02B21E892FD100817767 /* UIViewController+Swizzling.m in Sources */,
 				543BCB111E7932AF00AD6721 /* ClassFilterView.m in Sources */,
 				54AC02251E892C5300817767 /* NTESWhiteboardCommand.m in Sources */,
+				54AB63CA1EF25DE00022E573 /* SearchViewController.m in Sources */,
 				54AC04B71E89398E00817767 /* NTESChatroomViewController.m in Sources */,
 				54AC04BE1E89398E00817767 /* NTESLocationPoint.m in Sources */,
 				5413D26B1DF7C76B00A8FDEC /* PaymentTableViewCell.m in Sources */,
@@ -6965,6 +7068,7 @@
 				54B610381E83BA0B00DA8E7A /* ClassNotice.m in Sources */,
 				54AC03EF1E8938E100817767 /* NIMMessageMaker.m in Sources */,
 				54AC03E41E8938E100817767 /* NIMCellLayoutDefaultConfig.m in Sources */,
+				54AB63C71EF25DD30022E573 /* SearchView.m in Sources */,
 				54AC03CA1E8938E100817767 /* NIMMemberGroupView.m in Sources */,
 				547E92D41E8E813B00160C6D /* OneOnOneClass.m in Sources */,
 				54634D991DDEAC1F0070C0FF /* FJFloatingView.m in Sources */,
@@ -6977,6 +7081,7 @@
 				548328EA1DDC6F360053AB29 /* UUImageAvatarBrowser.m in Sources */,
 				54AC03C41E8938E100817767 /* UIView+NIM.m in Sources */,
 				543E0CC11DFFDA82004B24FD /* PayConfirmViewController.m in Sources */,
+				54AB63CE1EF29E0C0022E573 /* SearchingClassesTableViewCell.m in Sources */,
 				542C17381DFA50460088DB3F /* PaidOrderTableViewCell.m in Sources */,
 				54AC04BC1E89398E00817767 /* NTESCustomAttachmentDecoder.m in Sources */,
 				54AC025E1E892CEE00817767 /* NTESPinyinConverter.m in Sources */,
@@ -7075,6 +7180,7 @@
 				5493D4CC1E0BE1050085A39E /* TLCityHeaderView.m in Sources */,
 				543A4D4C1E89F775004C5C9E /* NTESRegisterViewController.m in Sources */,
 				54AB48FA1DED7C09008E3BC5 /* MyTutoriumModel.m in Sources */,
+				54AB63C41EF25DC50022E573 /* SearchTipsViewController.m in Sources */,
 				547A7EFD1DD416F100F1282B /* ListenAndBuyTabBar.m in Sources */,
 				54652E081DEE9D1900F4607C /* AboutUsView.m in Sources */,
 				54504ACC1E9E0E7F00EFCF8E /* VideoClassPlayerView.m in Sources */,
