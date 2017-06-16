@@ -15,6 +15,16 @@
 #import "CYLTableViewPlaceHolder.h"
 #import "HaveNoClassView.h"
 #import "YYModel.h"
+#import "MJRefresh.h"
+#import "SearchingClassesTableViewCell.h"
+#import "SearchingTeachersTableViewCell.h"
+#import "UIViewController+HUD.h"
+
+#import "TutoriumInfoViewController.h"
+#import "VideoClassInfoViewController.h"
+#import "InteractionClassInfoViewController.h"
+
+#import "TeachersPublicViewController.h"
 
 //下拉刷新方式
 typedef enum : NSUInteger {
@@ -165,24 +175,39 @@ typedef enum : NSUInteger {
     _mainView.teacherSearchResultView.dataSource = self;
     _mainView.teacherSearchResultView.tag = 2;
     
-    typeof(self) __weak weakSelf = self;
-    _mainView.segmentControl.indexChangeBlock = ^(NSInteger index) {
-        [weakSelf.mainView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd*index, 0, weakSelf.view.width_sd, weakSelf.mainView.scrollView.height_sd) animated:YES];
-    };
-
-}
+    //下拉上滑
+    _mainView.classSearchResultView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [self requestClassesWithRefreshType:PullToReload];
+    }];
+    
+    _mainView.classSearchResultView.mj_footer = [MJRefreshAutoFooter footerWithRefreshingBlock:^{
+        [self requestClassesWithRefreshType:PushToLoadMore];
+    }];
+    
+    _mainView.teacherSearchResultView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+       
+        [self requestTeachersWithRefreshType:PullToReload];
+    }];
+    
+    _mainView.teacherSearchResultView.mj_footer = [MJRefreshAutoFooter footerWithRefreshingBlock:^{
+       
+        [self requestTeachersWithRefreshType:PushToLoadMore];
+    }];
+    
+    
+   }
 /**请求搜索数据*/
 - (void)requestSearchDataWithType:(RequestType)requestType andRefreshType:(RefreshType)refreshType {
     
     //数据类型
 //    NSString *course;
     if (requestType == DefaultSearch &&refreshType == DefaultLoad) {
-        
         _classesPage = 1;
         _teachersPage = 1;
         [self requestClassesWithRefreshType:DefaultLoad];
-        [self requestClassesWithRefreshType:DefaultLoad];
+        [self requestTeachersWithRefreshType:DefaultLoad];
     }
+    
 }
 
 
@@ -193,13 +218,12 @@ typedef enum : NSUInteger {
  */
 - (void)requestClassesWithRefreshType:(RefreshType)refreshType{
     
-    if (refreshType == PullToReload) {
+    if (refreshType!=PushToLoadMore) {
         _classesArr = @[].mutableCopy;
         _classesPage = 1;
     }else{
         _classesPage++;
     }
-    
     
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/home/search",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"search_cate":@"course",@"search_key":_searchKeyStr,@"page":[NSString stringWithFormat:@"%ld",_classesPage],@"per_page":@"10"} completeSuccess:^(id  _Nullable responds) {
         
@@ -208,20 +232,33 @@ typedef enum : NSUInteger {
             //搜索数据成功
             for (NSDictionary *classes in dic[@"data"]) {
                 
-                ClassSearch *mod = [ClassSearch yy_modelWithJSON:classes];
-                mod.classID = classes[@"id"];
+                ClassSearch *mod = [ClassSearch yy_modelWithJSON:classes[@"product"]];
+                mod.classID = classes[@"product"][@"id"];
+                mod.product_type = classes[@"product_type"];
                 [_classesArr addObject:mod];
             }
+            if ([dic[@"data"]count]<10) {
+                [_mainView.classSearchResultView.mj_footer  endRefreshingWithNoMoreData];
+            }
+            
+            _classesCount = _classesArr.count;
             if (refreshType == PullToReload) {
+                
+                [_mainView.classSearchResultView.mj_header endRefreshing];
+                
+            }else if (refreshType == PushToLoadMore){
+                
+                [_mainView.classSearchResultView.mj_footer endRefreshing];
+                
+            }else if (refreshType == DefaultLoad){
                 
             }
             
-            
+            [self HUDStopWithTitle:nil];
             [_mainView.classSearchResultView cyl_reloadData];
             //此时回传查询出来的数量有多少
             [self refreshSegment];
             
-        
         }else{
             
         }
@@ -238,7 +275,54 @@ typedef enum : NSUInteger {
  @param refreshType 刷新类型
  */
 - (void)requestTeachersWithRefreshType:(RefreshType)refreshType{
+    if (refreshType!=PushToLoadMore) {
+        _teachersArr = @[].mutableCopy;
+        _teachersPage = 1;
+    }else{
+        _teachersPage++;
+    }
     
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/home/search",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"search_cate":@"teacher",@"search_key":_searchKeyStr,@"page":[NSString stringWithFormat:@"%ld",_teachersPage],@"per_page":@"10"} completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            //搜索数据成功
+            for (NSDictionary *teachers in dic[@"data"]) {
+                
+                TeachersSearch *mod = [TeachersSearch yy_modelWithJSON:teachers];
+                mod.teacherID = teachers[@"id"];
+                [_teachersArr addObject:mod];
+            }
+            
+            if ([dic[@"data"] count]<10) {
+                [_mainView.teacherSearchResultView.mj_footer  endRefreshingWithNoMoreData];
+            }
+            
+            if (refreshType == PullToReload) {
+                _teachersCount = _teachersArr.count;
+                [_mainView.teacherSearchResultView.mj_header endRefreshing];
+                
+            }else if (refreshType == PushToLoadMore){
+                _teachersCount += _teachersArr.count;
+                [_mainView.teacherSearchResultView.mj_footer endRefreshing];
+                
+            }else if (refreshType == DefaultLoad){
+                _teachersCount = _teachersArr.count;
+            }
+            
+            
+            [_mainView.teacherSearchResultView cyl_reloadData];
+            //此时回传查询出来的数量有多少
+            [self refreshSegment];
+            
+        }else{
+            
+        }
+        
+    } failure:^(id  _Nullable erros) {
+        
+    }];
+
     
 }
 
@@ -266,23 +350,72 @@ typedef enum : NSUInteger {
     
 }
 
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    
+    if ([textField.text isEqualToString:@""]) {
+        [self HUDStopWithTitle:@"请输入搜索内容"];
+    }else{
+        _searchKeyStr = textField.text;
+        [self HUDStartWithTitle:nil];
+        [self requestSearchDataWithType:DefaultSearch andRefreshType:DefaultLoad];
+    }
+    
+    return [self.view endEditing:YES];
+}
+
 
 
 #pragma mark- UITableView datasource
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 10;
+    NSInteger rows ;
+    if (tableView.tag == 1) {
+        rows = _classesArr.count;
+    }else{
+        rows = _teachersArr.count;
+    }
+    
+    return rows;
     
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    /* cell的重用队列*/
-    static NSString *cellIdenfier = @"cell";
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-    if (cell==nil) {
-        cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+    
+    UITableViewCell *cell;
+    
+    if (tableView.tag == 1) {
+    
+        static NSString *cellIdenfier = @"classcell";
+        SearchingClassesTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+        if (cell==nil) {
+            cell=[[SearchingClassesTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+        }
+        
+        if (_classesArr.count>indexPath.row) {
+            cell.model = _classesArr[indexPath.row];
+        }
+        
+        return  cell;
+        
+
+        
+    } else if(tableView.tag == 2) {
+        
+        static NSString *cellIdenfier = @"teachercell";
+        SearchingTeachersTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+        if (cell==nil) {
+            cell=[[SearchingTeachersTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+        }
+        if (_teachersArr.count>indexPath.row) {
+            cell.model = _teachersArr[indexPath.row];
+        }
+        
+        return  cell;
+        
+
+        
     }
     
     return  cell;
@@ -291,6 +424,39 @@ typedef enum : NSUInteger {
 
 
 #pragma mark- UITableView delegate
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return 100*ScrenScale;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+    UIViewController *controller;
+    if (tableView.tag == 1) {
+        SearchingClassesTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        if ([cell.model.product_type isEqualToString:@"LiveStudio::Course"]) {
+            //直播课
+            controller  = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+        }else if ([cell.model.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+            //一对一
+            controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+        }else if ([cell.model.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
+            //视频课
+            controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
+        }
+        
+        
+    }else{
+        SearchingTeachersTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        controller = [[TeachersPublicViewController alloc]initWithTeacherID:cell.model.teacherID];
+    }
+    
+    [self.navigationController pushViewController:controller animated:YES];
+    
+}
+
+
 
 
 
@@ -314,6 +480,8 @@ typedef enum : NSUInteger {
     for (UIViewController *controller in self.navigationController.viewControllers) {
         if ([controller isMemberOfClass:[IndexPageViewController class]]) {
             [self.navigationController popToViewController:controller animated:YES];
+            
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"PopToRoot" object:nil];
         }
     }
     
@@ -330,7 +498,7 @@ typedef enum : NSUInteger {
 
 - (BOOL)enableScrollWhenPlaceHolderViewShowing{
     
-    return NO;
+    return YES;
 }
 
 

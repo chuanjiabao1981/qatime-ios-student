@@ -18,4 +18,6 @@
 
 
 @property (nonatomic, strong) ClassSearch *model;
+
+
 @end

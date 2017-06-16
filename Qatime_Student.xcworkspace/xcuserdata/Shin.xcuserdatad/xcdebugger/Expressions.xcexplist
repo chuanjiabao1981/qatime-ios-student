@@ -311,6 +311,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[SearchViewController refreshSegment]:SearchViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classesCount">
+            </PersistentString>
+            <PersistentString
+               value = "_teachersCount">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[OrderInfoViewController initWithPaid:]:OrderInfoViewController.m">
       </ContextState>
       <ContextState
@@ -1604,6 +1615,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__54-[SearchViewController requestClassesWithRefreshType:]_block_invoke:SearchViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classesPage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__43-[NoticeIndexViewController requestNotices]_block_invoke:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
@@ -1623,15 +1642,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[NTESIJKSDLGLView display:clear:]:IJKSDLGLView.m">
+      </ContextState>
+      <ContextState
          contextName = "-[NTESMeetingActorsView layoutSubviews]:NTESMeetingActorsView.m">
          <PersistentStrings>
             <PersistentString
                value = "_backgroundViews">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NTESIJKSDLGLView display:clear:]:IJKSDLGLView.m">
       </ContextState>
       <ContextState
          contextName = "__43-[NoticeIndexViewController requestMyClass]_block_invoke.204:NoticeIndexViewController.m">

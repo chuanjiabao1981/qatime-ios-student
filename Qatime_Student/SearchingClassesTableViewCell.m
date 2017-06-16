@@ -16,14 +16,15 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
+//        self.selectionStyle = UITableViewCellSelectionStyleNone;
         //课程图
         _classImage = [[UIImageView alloc]init];
         [self.contentView addSubview:_classImage];
         _classImage.sd_layout
-        .leftSpaceToView(self.contentView, 0)
         .topSpaceToView(self.contentView, 8*ScrenScale)
         .bottomSpaceToView(self.contentView, 0)
-        .autoWidthRatio(16/9.f);
+        .leftSpaceToView(self.contentView, 10*ScrenScale)
+        .widthIs((100*ScrenScale-10*ScrenScale)/10*16.f);
         
         //课程名
         _className = [[UILabel alloc]init];
@@ -70,8 +71,10 @@
         .rightSpaceToView(self.contentView, 0)
         .bottomSpaceToView(self.contentView, 0)
         .heightIs(0.5);
-
         
+        
+        [self setupAutoHeightWithBottomView:line bottomMargin:0];
+
     }
     return self;
 }

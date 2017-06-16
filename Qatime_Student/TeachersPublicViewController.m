@@ -109,7 +109,7 @@
     //加载视图
     [self setupViews];
     
-    
+    [self HUDStartWithTitle:nil];
 }
 
 //加载视图
@@ -864,9 +864,8 @@
             }
             _videoCount = _videoClasses.count;
             
-            
-           
             [_teachersPublicCollectionView reloadData];
+        
             
             //加载头视图数据
             [self refreshTeacherInfoWith:_teacherPublicInfo];

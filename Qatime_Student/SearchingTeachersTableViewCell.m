@@ -18,6 +18,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
+//        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         //头像
         _headImage = [[UIImageView alloc]init];
         [self.contentView addSubview:_headImage];
@@ -27,6 +29,8 @@
         .bottomSpaceToView(self.contentView, 15*ScrenScale)
         .widthEqualToHeight();
         _headImage.sd_cornerRadiusFromHeightRatio = @0.5;
+        _headImage.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+        _headImage.layer.borderWidth = 0.5;
         
         //教师名
         _teacherName = [[UILabel alloc]init];
@@ -47,10 +51,11 @@
         _teachingYears.sd_layout
         .leftEqualToView(_teacherName)
         .centerYEqualToView(_headImage);
-        [_teachingYears setupAutoSizeWithHorizontalPadding:5 buttonHeight:30*ScrenScale];
+        [_teachingYears setupAutoSizeWithHorizontalPadding:5 buttonHeight:20*ScrenScale];
         _teachingYears.sd_cornerRadiusFromHeightRatio = @0.5;
         _teachingYears.layer.borderColor = [UIColor colorWithHexString:@"999999"].CGColor;
         _teachingYears.layer.borderWidth = 0.6;
+        _teachingYears.enabled = NO;
         
         //教师详情
         _teacherInfo = [[UILabel alloc]init];
@@ -62,6 +67,7 @@
         .bottomEqualToView(_headImage)
         .autoHeightRatio(0)
         .rightSpaceToView(self.contentView, 10);
+        [_teacherInfo setMaxNumberOfLinesToShow:1];
         _teacherInfo.textAlignment = NSTextAlignmentLeft;
         
         

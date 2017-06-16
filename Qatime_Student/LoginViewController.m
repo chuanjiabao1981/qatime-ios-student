@@ -403,7 +403,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
             //userdefult保存用户id和token 和临时密码
             [self saveUserInfo:dic[@"data"] loginType:Guest];
             
-            
             //keychain保存用户账户名
             [SAMKeychain setPassword:[NSString stringWithFormat:@"%@",dic[@"data"][@"user"][@"id"]] forService:Qatime_Service account:@"id"];
             //第二组keychain保存token

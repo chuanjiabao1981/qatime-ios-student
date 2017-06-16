@@ -149,7 +149,12 @@
     
     /* 取出头像信息*/
     if (is_Guest==YES) {
-        _avatarStr = @"";
+        if ([[NSUserDefaults standardUserDefaults]objectForKey:@"avatar_url"]) {
+            _avatarStr = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"avatar_url"]];
+        }else{
+            
+            _avatarStr = @"";
+        }
     }else{
         
         if ([[NSUserDefaults standardUserDefaults]objectForKey:@"avatar_url"]) {
@@ -164,7 +169,16 @@
         
         if (is_Guest == YES) {
             
-            [_headView.headImageView setImage:[UIImage imageNamed:@"人"]];
+            if (_avatarStr) {
+                [_headView.headImageView sd_setImageWithURL:[NSURL URLWithString:_avatarStr]];
+                
+                
+            }else{
+                
+                [_headView.headImageView setImage:[UIImage imageNamed:@"人"]];
+            }
+            
+            
             if ([_name isEqualToString:[self getStudentID]]) {
                 _headView.name .text = [NSString stringWithFormat:@"游客%@", _name];
             }else{

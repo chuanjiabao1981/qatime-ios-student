@@ -38,10 +38,19 @@
         .rightSpaceToView(self, 0)
         .topSpaceToView(_segmentControl, 0)
         .bottomSpaceToView(self, 0);
-        _scrollView.contentSize = CGSizeMake(self.width_sd*2, self.height_sd-_segmentControl.height_sd);
+        _scrollView.contentSize = CGSizeMake(100, 100);
         _scrollView.pagingEnabled = YES;
         _scrollView.showsVerticalScrollIndicator = NO;
         _scrollView.showsHorizontalScrollIndicator = NO;
+        _scrollView.bounces = NO;
+        
+        typeof(self) __weak weakSelf = self;
+        [weakSelf.segmentControl setIndexChangeBlock:^(NSInteger index) {
+            
+            [weakSelf.scrollView scrollRectToVisible:CGRectMake(weakSelf.width_sd * index, 0, weakSelf.width_sd, weakSelf.height_sd) animated:YES];
+            
+        }];
+
         
         //课程页面
         _classSearchResultView = [[UITableView alloc]init];
@@ -52,7 +61,6 @@
         .bottomSpaceToView(_scrollView, 0)
         .widthRatioToView(self, 1.0);
         _classSearchResultView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _classSearchResultView.backgroundColor = [UIColor redColor];
         
         //教师页面
         _teacherSearchResultView = [[UITableView alloc]init];

@@ -103,6 +103,7 @@
     _mainView.delegate = self;
     _mainView.alignment = TTGTagCollectionAlignmentFillByExpandingSpace;
     _mainView.scrollDirection = TTGTagCollectionScrollDirectionVertical;
+    _mainView.enableTagSelection = NO;
     [self.view addSubview:_mainView];
     _mainView.sd_layout
     .leftEqualToView(_tips)
@@ -115,6 +116,7 @@
     config.tagBackgroundColor = SEPERATELINECOLOR;
     config.tagTextColor = TITLECOLOR;
     config.tagShadowColor = [UIColor clearColor];
+    
     
     [_mainView addTags:@[@"高考",@"语文",@"初二",@"动态电路",@"力学",@"必修"]  withConfig:config];
     
