@@ -19,5 +19,6 @@
 @property (nonatomic, strong) NSString *city ;
 @property (nonatomic, strong) NSString *school ;
 @property (nonatomic, strong) NSString *teaching_years ;
+@property (nonatomic, strong) NSString *gender ;
 
 @end

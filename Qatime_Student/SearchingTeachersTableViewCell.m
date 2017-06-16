@@ -43,6 +43,15 @@
         .autoHeightRatio(0);
         [_teacherName setSingleLineAutoResizeWithMaxWidth:400];
         
+        //性别图
+        _genderImage = [[UIImageView alloc]init];
+        [self.contentView addSubview:_genderImage];
+        _genderImage.sd_layout
+        .leftSpaceToView(_teacherName, 10*ScrenScale)
+        .centerYEqualToView(_teacherName)
+        .heightRatioToView(_teacherName, 0.5)
+        .widthEqualToHeight();
+        
         //教龄
         _teachingYears = [[UIButton alloc]init];
         _teachingYears .titleLabel.font = [UIFont systemFontOfSize:12*ScrenScale];
@@ -65,9 +74,11 @@
         _teacherInfo.sd_layout
         .leftEqualToView(_teacherName)
         .bottomEqualToView(_headImage)
-        .autoHeightRatio(0)
-        .rightSpaceToView(self.contentView, 10);
+        .rightSpaceToView(self.contentView, 10)
+        .heightIs(15*ScrenScale);
+        
         [_teacherInfo setMaxNumberOfLinesToShow:1];
+        [_teacherInfo updateLayout];
         _teacherInfo.textAlignment = NSTextAlignmentLeft;
         
         
@@ -94,7 +105,17 @@
     [_headImage sd_setImageWithURL:[NSURL URLWithString:model.avatar_url]];
     _teacherName.text = model.name;
     [_teachingYears setTitle:[model.teaching_years changeEnglishYearsToChinese] forState:UIControlStateNormal];
-    _teacherInfo.text = [[[[[model.category stringByAppendingString:model.subject]stringByAppendingString:@" | "]stringByAppendingString:model.province]stringByAppendingString:model.city]stringByAppendingString:model.school];
+    _teacherInfo.text = [[[[[model.category stringByAppendingString:model.subject==nil?@"":model.subject]stringByAppendingString:@" | "]stringByAppendingString:model.province==nil?@"":model.province]stringByAppendingString:model.city==nil?@"":model.city]stringByAppendingString:model.school==nil?@"":model.school];
+    
+    if (model.gender) {
+        if ([model.gender isEqualToString:@"male"]) {
+            [_genderImage setImage:[UIImage imageNamed:@"男"]];
+        }else{
+            [_genderImage setImage:[UIImage imageNamed:@"女"]];
+        }
+    }else{
+        
+    }
     
 }
 

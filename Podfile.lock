@@ -15,15 +15,15 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - BarrageRenderer (1.9.1)
-  - BEMCheckBox (1.4.0)
+  - BEMCheckBox (1.4.1)
   - CocoaLumberjack (3.2.0):
     - CocoaLumberjack/Default (= 3.2.0)
     - CocoaLumberjack/Extensions (= 3.2.0)
   - CocoaLumberjack/Default (3.2.0)
   - CocoaLumberjack/Extensions (3.2.0):
     - CocoaLumberjack/Default
-  - FSCalendar (2.7.6)
-  - KSPhotoBrowser (0.0.5):
+  - FSCalendar (2.7.8)
+  - KSPhotoBrowser (0.1.3):
     - YYWebImage (~> 1.0.5)
   - LCTabBarController (1.3.6)
   - M13BadgeView (1.0.4)
@@ -41,6 +41,7 @@ PODS:
   - SDWebImage (4.0.0):
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
+  - SnailPopupController (2.0.6)
   - SVProgressHUD (2.1.2)
   - Toast (3.1.0)
   - WZLBadge (1.2.6)
@@ -70,6 +71,7 @@ DEPENDENCIES:
   - RealReachability
   - SDCycleScrollView
   - SDWebImage
+  - SnailPopupController
   - SVProgressHUD
   - Toast
   - WZLBadge
@@ -80,10 +82,10 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   BarrageRenderer: 55bbe4557d48adbdca6c1ebdfef96946fdb5e5b2
-  BEMCheckBox: e18e4a148905b290bd03d98b767651c104f4eda3
+  BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   CocoaLumberjack: 9b4aed7073d242f29cc2f62068d995faf67f703a
-  FSCalendar: feef792968ca0166bafc93e02fcd840b07d256e5
-  KSPhotoBrowser: 9fe1b572f7b3e003de36c32dde9beaddce1cd206
+  FSCalendar: 09369a2bf554ba71cd8e8cfb627e2df22a2c2af4
+  KSPhotoBrowser: 2c7a58cce183556e86dce863748e41133310345b
   LCTabBarController: 9175d6073b60f4c40e948a0245be8b7e3afe566e
   M13BadgeView: 700dd0714fdc837c0cf1c8c004454963ec22441f
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
@@ -93,6 +95,7 @@ SPEC CHECKSUMS:
   RealReachability: e6c8a2bbffa316006e8c282efc1ee2567d61a920
   SDCycleScrollView: e3ade90e9b3159bec04330b208fbfd81c3f3b671
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
+  SnailPopupController: 9076caaca21d997c46b61d49f438bfc7ac39d917
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   Toast: 14a93686d6c8bfe2727afd342414e35660a8a1f3
   WZLBadge: 9ec779dcfd94c825518b395e8315fccaabff1bfa
@@ -102,6 +105,6 @@ SPEC CHECKSUMS:
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
   YYWebImage: 5f7f36aee2ae293f016d418c7d6ba05c4863e928
 
-PODFILE CHECKSUM: 7851f6bc2102e75bed92a419620c2b8e253b0741
+PODFILE CHECKSUM: e6c1d43e7f33a4405d6eed2881311192da172e20
 
 COCOAPODS: 1.2.0

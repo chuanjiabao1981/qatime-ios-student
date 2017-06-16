@@ -11,6 +11,7 @@ pod 'SDWebImage'
 pod 'MJRefresh'
 pod 'YYModel'
 pod 'RealReachability'
+pod 'SnailPopupController'
 #pod 'FMDB'
 #pod 'ZFPlayer'
 

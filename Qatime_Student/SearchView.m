@@ -27,8 +27,9 @@
         _segmentControl.selectionIndicatorColor = BUTTONRED;
         _segmentControl.selectionIndicatorHeight = 1;
         _segmentControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
-        _segmentControl.backgroundColor = SEPERATELINECOLOR;
         _segmentControl.titleTextAttributes = @{NSFontAttributeName:TEXT_FONTSIZE};
+        _segmentControl.borderType = HMSegmentedControlBorderTypeBottom;
+        _segmentControl.borderColor = SEPERATELINECOLOR_2;
         
         //scrollview
         _scrollView = [[UIScrollView alloc]init];

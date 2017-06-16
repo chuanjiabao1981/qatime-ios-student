@@ -9,27 +9,23 @@
 #import "KSPhotoView.h"
 #import "KSPhotoItem.h"
 #import "KSProgressLayer.h"
-
-#if __has_include(<YYWebImage/YYWebImage.h>)
-#import <YYWebImage/YYWebImage.h>
-#else
-#import "YYWebImage.h"
-#endif
+#import "KSImageManagerProtocol.h"
 
 const CGFloat kKSPhotoViewPadding = 10;
 const CGFloat kKSPhotoViewMaxScale = 3;
 
-@interface KSPhotoView ()<UIScrollViewDelegate>
+@interface KSPhotoView ()<UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
-@property (nonatomic, strong, readwrite) YYAnimatedImageView *imageView;
+@property (nonatomic, strong, readwrite) UIImageView *imageView;
 @property (nonatomic, strong, readwrite) KSProgressLayer *progressLayer;
 @property (nonatomic, strong, readwrite) KSPhotoItem *item;
+@property (nonatomic, strong) id<KSImageManager> imageManager;
 
 @end
 
 @implementation KSPhotoView
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame imageManager:(id<KSImageManager>)imageManager {
     self = [super initWithFrame:frame];
     if (self) {
         self.bouncesZoom = YES;
@@ -39,7 +35,7 @@ const CGFloat kKSPhotoViewMaxScale = 3;
         self.showsVerticalScrollIndicator = YES;
         self.delegate = self;
         
-        _imageView = [[YYAnimatedImageView alloc] init];
+        _imageView = [[UIImageView alloc] init];
         _imageView.backgroundColor = [UIColor darkGrayColor];
         _imageView.contentMode = UIViewContentModeScaleAspectFill;
         _imageView.clipsToBounds = YES;
@@ -50,13 +46,15 @@ const CGFloat kKSPhotoViewMaxScale = 3;
         _progressLayer.position = CGPointMake(frame.size.width/2, frame.size.height/2);
         _progressLayer.hidden = YES;
         [self.layer addSublayer:_progressLayer];
+        
+        _imageManager = imageManager;
     }
     return self;
 }
 
 - (void)setItem:(KSPhotoItem *)item determinate:(BOOL)determinate {
     _item = item;
-    [_imageView yy_cancelCurrentImageRequest];
+    [_imageManager cancelImageRequestForImageView:_imageView];
     if (item) {
         if (item.image) {
             _imageView.image = item.image;
@@ -67,7 +65,7 @@ const CGFloat kKSPhotoViewMaxScale = 3;
             return;
         }
         __weak typeof(self) wself = self;
-        YYWebImageProgressBlock progressBlock = nil;
+        KSImageManagerProgressBlock progressBlock = nil;
         if (determinate) {
             progressBlock = ^(NSInteger receivedSize, NSInteger expectedSize) {
                 __strong typeof(wself) sself = wself;
@@ -81,9 +79,9 @@ const CGFloat kKSPhotoViewMaxScale = 3;
         _progressLayer.hidden = NO;
         
         _imageView.image = item.thumbImage;
-        [_imageView yy_setImageWithURL:item.imageUrl placeholder:item.thumbImage options:kNilOptions progress:progressBlock transform:nil completion:^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
+        [_imageManager setImageForImageView:_imageView withURL:item.imageUrl placeholder:item.thumbImage progress:progressBlock completion:^(UIImage *image, NSURL *url, BOOL finished, NSError *error) {
             __strong typeof(wself) sself = wself;
-            if (stage == YYWebImageStageFinished) {
+            if (finished) {
                 [sself resizeImageView];
             }
             [sself.progressLayer stopSpin];
@@ -126,8 +124,20 @@ const CGFloat kKSPhotoViewMaxScale = 3;
 }
 
 - (void)cancelCurrentImageLoad {
-    [_imageView yy_cancelCurrentImageRequest];
+    [_imageManager cancelImageRequestForImageView:_imageView];
     [_progressLayer stopSpin];
+}
+
+- (BOOL)isScrollViewOnTopOrBottom {
+    CGPoint translation = [self.panGestureRecognizer translationInView:self];
+    if (translation.y > 0 && self.contentOffset.y <= 0) {
+        return YES;
+    }
+    CGFloat maxOffsetY = floor(self.contentSize.height - self.bounds.size.height);
+    if (translation.y < 0 && self.contentOffset.y >= maxOffsetY) {
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - ScrollViewDelegate
@@ -146,5 +156,19 @@ const CGFloat kKSPhotoViewMaxScale = 3;
     _imageView.center = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX,
                                  scrollView.contentSize.height * 0.5 + offsetY);
 }
+
+#pragma mark - GestureRecognizerDelegate
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer == self.panGestureRecognizer) {
+        if (gestureRecognizer.state == UIGestureRecognizerStatePossible) {
+            if ([self isScrollViewOnTopOrBottom]) {
+                return NO;
+            }
+        }
+    }
+    return YES;
+}
+
 
 @end

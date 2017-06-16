@@ -194,8 +194,9 @@ typedef enum : NSUInteger {
         [self requestTeachersWithRefreshType:PushToLoadMore];
     }];
     
-    
-   }
+    //转起来
+    [self HUDStartWithTitle:nil];
+}
 /**请求搜索数据*/
 - (void)requestSearchDataWithType:(RequestType)requestType andRefreshType:(RefreshType)refreshType {
     

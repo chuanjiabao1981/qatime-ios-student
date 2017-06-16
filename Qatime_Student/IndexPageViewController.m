@@ -46,6 +46,7 @@
 #import "UIViewController+Login.h"
 
 #import "SearchTipsViewController.h"
+#import "AllTeachersViewController.h"
 
 
 
@@ -316,6 +317,14 @@
         
     }];
     
+    //target action
+    
+    [_headerView .allTeachersBtn addTarget:self action:@selector(allTeachers) forControlEvents:UIControlEventTouchUpInside];
+    [_headerView.reviewBtn addTarget:self action:@selector(review) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    
     //推荐教师视图  0.1.5首页修改的时候干掉
 //    UICollectionViewFlowLayout *teacherLayout = [[UICollectionViewFlowLayout alloc]init];
 //    teacherLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -372,6 +381,25 @@
     }
     
 }
+
+#pragma mark- 查看所有教师和回放课程部分
+
+/**进入查看所有教师页面*/
+- (void)allTeachers{
+    
+    AllTeachersViewController *controller = [[AllTeachersViewController alloc]init];
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
+    
+}
+
+/**进入回放页面*/
+- (void)review{
+    
+    
+}
+
+
 
 #pragma mark- 请求今日直播数据
 - (void)requestTodayLive{

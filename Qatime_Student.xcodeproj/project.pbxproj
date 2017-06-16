@@ -647,6 +647,8 @@
 		54DBEB101E9B55DB000EEB00 /* InteractionClassFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBEB041E9B55DB000EEB00 /* InteractionClassFilterViewController.m */; };
 		54DBEB111E9B55DB000EEB00 /* VideoClassFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBEB051E9B55DB000EEB00 /* VideoClassFilterViewController.m */; };
 		54DBEB121E9B55DB000EEB00 /* LiveClassFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBEB061E9B55DB000EEB00 /* LiveClassFilterViewController.m */; };
+		54DD7E7A1EF3B3D400EAE234 /* AllTeachersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DD7E791EF3B3D400EAE234 /* AllTeachersViewController.m */; };
+		54DD7E801EF3B45900EAE234 /* AllteachersFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DD7E7F1EF3B45900EAE234 /* AllteachersFilterView.m */; };
 		54E00B151E5AEAD60056C74F /* TranslateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E00B141E5AEAD60056C74F /* TranslateViewController.m */; };
 		54E00B171E5AEF020056C74F /* NTESAudio2TextViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54E00B161E5AEF020056C74F /* NTESAudio2TextViewController.xib */; };
 		54E120CE1DDC2CA5004F8012 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E120CD1DDC2CA5004F8012 /* CoreText.framework */; };
@@ -1988,6 +1990,10 @@
 		54DBEB071E9B55DB000EEB00 /* InteractionClassFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionClassFilterViewController.h; sourceTree = "<group>"; };
 		54DBEB081E9B55DB000EEB00 /* VideoClassFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassFilterViewController.h; sourceTree = "<group>"; };
 		54DBEB0B1E9B55DB000EEB00 /* LiveClassFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveClassFilterViewController.h; sourceTree = "<group>"; };
+		54DD7E781EF3B3D400EAE234 /* AllTeachersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllTeachersViewController.h; sourceTree = "<group>"; };
+		54DD7E791EF3B3D400EAE234 /* AllTeachersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllTeachersViewController.m; sourceTree = "<group>"; };
+		54DD7E7E1EF3B45900EAE234 /* AllteachersFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllteachersFilterView.h; sourceTree = "<group>"; };
+		54DD7E7F1EF3B45900EAE234 /* AllteachersFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllteachersFilterView.m; sourceTree = "<group>"; };
 		54E00B131E5AEAD60056C74F /* TranslateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TranslateViewController.h; sourceTree = "<group>"; };
 		54E00B141E5AEAD60056C74F /* TranslateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TranslateViewController.m; sourceTree = "<group>"; };
 		54E00B161E5AEF020056C74F /* NTESAudio2TextViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NTESAudio2TextViewController.xib; sourceTree = "<group>"; };
@@ -2279,6 +2285,8 @@
 		541F91DE1DC9BBAA00180BE8 /* 主页页面 */ = {
 			isa = PBXGroup;
 			children = (
+				54DD7E731EF3AF0700EAE234 /* 全部老师 */,
+				54DD7E721EF3AF0600EAE234 /* 精彩回放 */,
 				54AB63B81EF25BF50022E573 /* 搜索 */,
 				54FCBAAD1DD58A530094BF58 /* 主页 */,
 				545B86F81E650F0E00A157F0 /* 二维码扫描 */,
@@ -5561,6 +5569,56 @@
 			name = "筛选页 子控制器类页面";
 			sourceTree = "<group>";
 		};
+		54DD7E721EF3AF0600EAE234 /* 精彩回放 */ = {
+			isa = PBXGroup;
+			children = (
+				54DD7E771EF3AF6900EAE234 /* View */,
+				54DD7E761EF3AF6700EAE234 /* Controller */,
+			);
+			name = "精彩回放";
+			sourceTree = "<group>";
+		};
+		54DD7E731EF3AF0700EAE234 /* 全部老师 */ = {
+			isa = PBXGroup;
+			children = (
+				54DD7E751EF3AF6000EAE234 /* View */,
+				54DD7E741EF3AF5E00EAE234 /* Controller */,
+			);
+			name = "全部老师";
+			sourceTree = "<group>";
+		};
+		54DD7E741EF3AF5E00EAE234 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54DD7E781EF3B3D400EAE234 /* AllTeachersViewController.h */,
+				54DD7E791EF3B3D400EAE234 /* AllTeachersViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54DD7E751EF3AF6000EAE234 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54DD7E7E1EF3B45900EAE234 /* AllteachersFilterView.h */,
+				54DD7E7F1EF3B45900EAE234 /* AllteachersFilterView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54DD7E761EF3AF6700EAE234 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54DD7E771EF3AF6900EAE234 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		54E00B0D1E5A90100056C74F /* 个人信息修改页面 */ = {
 			isa = PBXGroup;
 			children = (
@@ -6788,6 +6846,7 @@
 				54F3BA301DFC7140003998D0 /* WithDrawViewController.m in Sources */,
 				54AC04C91E89398E00817767 /* yuv420sp.fsh.c in Sources */,
 				54AC03E81E8938E100817767 /* NIMNotificationContentConfig.m in Sources */,
+				54DD7E7A1EF3B3D400EAE234 /* AllTeachersViewController.m in Sources */,
 				5493D4A81E0BAAE00085A39E /* City.m in Sources */,
 				5471C7F01E8F43DA0098E509 /* OneOnOneLessonTableViewCell.m in Sources */,
 				54AC04D11E89398E00817767 /* shader.c in Sources */,
@@ -6843,6 +6902,7 @@
 				5454D2B11EC1824F0045F4C9 /* UITabBarController+Rotation.m in Sources */,
 				5493D4CA1E0BE1050085A39E /* TLCity.m in Sources */,
 				54AC04281E8938E100817767 /* NIMIndefiniteAnimatedView.m in Sources */,
+				54DD7E801EF3B45900EAE234 /* AllteachersFilterView.m in Sources */,
 				54AC04191E8938E100817767 /* NIMAttributedLabel.m in Sources */,
 				545162B11DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m in Sources */,
 				54AC02811E892D3C00817767 /* UIScrollView+NTESPullToRefresh.m in Sources */,

@@ -17,6 +17,7 @@
 
 static const NSTimeInterval kAnimationDuration = 0.3;
 static const NSTimeInterval kSpringAnimationDuration = 0.5;
+static Class imageManagerClass = nil;
 
 @interface KSPhotoBrowser () <UIScrollViewDelegate, UIViewControllerTransitioningDelegate, CAAnimationDelegate> {
     CGPoint _startLocation;
@@ -31,6 +32,7 @@ static const NSTimeInterval kSpringAnimationDuration = 0.5;
 @property (nonatomic, strong) UIPageControl *pageControl;
 @property (nonatomic, strong) UILabel *pageLabel;
 @property (nonatomic, assign) BOOL presented;
+@property (nonatomic, strong) id<KSImageManager> imageManager;
 
 @end
 
@@ -64,6 +66,11 @@ static const NSTimeInterval kSpringAnimationDuration = 0.5;
         
         _reusableItemViews = [[NSMutableSet alloc] init];
         _visibleItemViews = [[NSMutableArray alloc] init];
+        
+        if (imageManagerClass == nil) {
+            imageManagerClass = KSYYImageManager.class;
+        }
+        _imageManager = [[imageManagerClass alloc] init];
     }
     return self;
 }
@@ -91,10 +98,12 @@ static const NSTimeInterval kSpringAnimationDuration = 0.5;
     [self.view addSubview:_scrollView];
     
     if (_pageindicatorStyle == KSPhotoBrowserPageIndicatorStyleDot) {
-        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-40, self.view.bounds.size.width, 20)];
-        _pageControl.numberOfPages = _photoItems.count;
-        _pageControl.currentPage = _currentPage;
-        [self.view addSubview:_pageControl];
+        if (_photoItems.count > 1) {
+            _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-40, self.view.bounds.size.width, 20)];
+            _pageControl.numberOfPages = _photoItems.count;
+            _pageControl.currentPage = _currentPage;
+            [self.view addSubview:_pageControl];
+        }
     } else {
         _pageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-40, self.view.bounds.size.width, 20)];
         _pageLabel.textColor = [UIColor whiteColor];
@@ -118,12 +127,11 @@ static const NSTimeInterval kSpringAnimationDuration = 0.5;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+   
     KSPhotoItem *item = [_photoItems objectAtIndex:_currentPage];
     KSPhotoView *photoView = [self photoViewForPage:_currentPage];
-    YYWebImageManager *manager = [YYWebImageManager sharedManager];
-    NSString *key = [manager cacheKeyForURL:item.imageUrl];
-    if ([manager.cache getImageForKey:key withType:YYImageCacheTypeMemory]) {
+    
+    if ([_imageManager imageFromMemoryForURL:item.imageUrl]) {
         [self configPhotoView:photoView withItem:item];
     } else {
         photoView.imageView.image = item.thumbImage;
@@ -178,6 +186,10 @@ static const NSTimeInterval kSpringAnimationDuration = 0.5;
     [vc presentViewController:self animated:NO completion:nil];
 }
 
++ (void)setImageManagerClass:(Class<KSImageManager>)cls {
+    imageManagerClass = cls;
+}
+
 // MARK: - Private
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -196,7 +208,7 @@ static const NSTimeInterval kSpringAnimationDuration = 0.5;
 - (KSPhotoView *)dequeueReusableItemView {
     KSPhotoView *photoView = [_reusableItemViews anyObject];
     if (photoView == nil) {
-        photoView = [[KSPhotoView alloc] initWithFrame:_scrollView.bounds];
+        photoView = [[KSPhotoView alloc] initWithFrame:_scrollView.bounds imageManager:_imageManager];
     } else {
         [_reusableItemViews removeObject:photoView];
     }
@@ -325,7 +337,7 @@ static const NSTimeInterval kSpringAnimationDuration = 0.5;
             [self handlePanBegin];
             break;
         case UIGestureRecognizerStateChanged: {
-            double percent = 1 - fabs(point.y)/(self.view.frame.size.height/2);
+            double percent = 1 - fabs(point.y) / self.view.frame.size.height;
             percent = MAX(percent, 0);
             double s = MAX(percent, 0.5);
             CGAffineTransform translation = CGAffineTransformMakeTranslation(point.x/s, point.y/s);
@@ -416,7 +428,7 @@ static const NSTimeInterval kSpringAnimationDuration = 0.5;
 }
 
 - (void)configPageLabelWithPage:(NSUInteger)page {
-    _pageLabel.text = [NSString stringWithFormat:@"%ld / %ld", page+1, _photoItems.count];
+    _pageLabel.text = [NSString stringWithFormat:@"%lu / %lu", page+1, _photoItems.count];
 }
 
 - (void)handlePanBegin {
