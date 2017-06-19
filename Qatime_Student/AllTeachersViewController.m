@@ -55,6 +55,9 @@ typedef enum : NSUInteger {
     //科目菜单选择
     BOOL subjecteMenuShow;
     
+    //蒙版
+    UIView *_maskView;
+    
 }
 
 @end
@@ -79,8 +82,14 @@ typedef enum : NSUInteger {
     //加载主视图
     [self setupMainView];
     
+    //加载蒙版
+    [self setupMaskView];
+    
     //科目筛选栏
     [self setupSubjectFilterView];
+    
+    //调整视图层级结构
+    [self turnShelf];
     
     //请求数据(默认请求一次全部数据)
     [self requestTeachersWithLoadType:PullToRefresh];
@@ -167,13 +176,28 @@ typedef enum : NSUInteger {
         [self requestTeachersWithLoadType:PushToLoadMore];
     }];
     
+    [_mainView updateLayout];
+    
+}
+
+/**加载蒙版*/
+- (void)setupMaskView{
+    
+    _maskView = [[UIView alloc]initWithFrame:_mainView.frame];
+    _maskView.hidden = YES;
+    _maskView.alpha = 0;
+    [self.view addSubview:_maskView];
+    _maskView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.5];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(maskHide:)];
+    [_maskView addGestureRecognizer:tap];
+    
 }
 
 /**加载科目筛选栏*/
 - (void)setupSubjectFilterView{
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
-    layout.itemSize = CGSizeMake(self.view.width_sd/4-1, 40);
+    layout.itemSize = CGSizeMake(self.view.width_sd/4-8, 40);
     layout.minimumLineSpacing = 0;
     layout.minimumLineSpacing = 0;
     _subjectFilterView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
@@ -182,14 +206,25 @@ typedef enum : NSUInteger {
     _subjectFilterView.sd_layout
     .leftSpaceToView(self.view, 0)
     .rightSpaceToView(self.view, 0)
-    .topSpaceToView(self.view, -100)
-    .heightIs(100);
+    .topSpaceToView(self.view, -120)
+    .heightIs(120);
     
     _subjectFilterView.delegate = self;
     _subjectFilterView.dataSource = self;
     
+    _subjectFilterView.userInteractionEnabled = YES;
+    
+    
     // collectionView 注册cell
     [_subjectFilterView registerClass:[ClassSubjectCollectionViewCell class] forCellWithReuseIdentifier:@"cellId"];
+    
+}
+
+/**调整视图层级结构*/
+- (void)turnShelf{
+    
+//    [self.view bringSubviewToFront:_navigationBar];
+//    [self.view bringSubviewToFront:_filterView];
     
 }
 
@@ -206,9 +241,12 @@ typedef enum : NSUInteger {
         [_teachersArr removeAllObjects];
         [_mainView.mj_footer resetNoMoreData];
         _teachersPage = 1;
+        [_filterDic setValue:[NSString stringWithFormat:@"%ld",_teachersPage] forKey:@"page"];
     }else if (refreshType == PushToLoadMore){
         _teachersPage++;
+        [_filterDic setValue:[NSString stringWithFormat:@"%ld",_teachersPage] forKey:@"page"];
     }
+    
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/home/teachers",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:_filterDic completeSuccess:^(id  _Nullable responds) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
@@ -296,8 +334,28 @@ typedef enum : NSUInteger {
 
 }
 
-
 #pragma mark- UICollectionView delegate
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    ClassSubjectCollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    _filterView.subjectLabel.text = cell.subject.text;
+    if ([cell.subject.text isEqualToString:@"全科"]) {
+        
+        if (_filterDic[@"subject_eq"]) {
+            [_filterDic removeObjectForKey:@"subject_eq"];
+        }
+    }else {
+        
+        [_filterDic setValue:cell.subject.text forKey:@"subject_eq"];
+    }
+    
+    //蒙版消失
+    [self maskHideAnimated];
+    
+    //开始筛选
+    [self requestTeachersWithLoadType:PullToRefresh];
+    
+}
 
 
 #pragma mark- Target Action
@@ -316,7 +374,6 @@ typedef enum : NSUInteger {
         
     }else{
         [_filterDic setValue:sender.titleLabel.text forKey:@"category_eq"];
-        
     }
     
     [_mainView.mj_header beginRefreshing];
@@ -327,20 +384,28 @@ typedef enum : NSUInteger {
 - (void)subjectMenu{
     
     if (subjecteMenuShow == NO) {
+        _maskView.hidden = NO;
         
-        UIView *maskView = [[UIView alloc]initWithFrame:_mainView.frame];
-        maskView.alpha = 0;
-        [self.view addSubview:maskView];
-        maskView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.5];
-        
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(maskHide:)];
-        [maskView addGestureRecognizer:tap];
         [UIView animateWithDuration:0.3 animations:^{
-            maskView.alpha = 1;
+            _maskView.alpha = 1;
+            
+            _subjectFilterView.alpha = 1;
+        }];
+        
+        subjecteMenuShow = YES;
+        
+        //科目筛选菜单拉出来
+        [UIView animateWithDuration:0.3 animations:^{
+           
+            _subjectFilterView.sd_layout
+            .topSpaceToView(_filterView, 0);
+            [_subjectFilterView updateLayout];
+            
         }];
         
     }else{
         
+        [self maskHideAnimated];
         
     }
     
@@ -352,19 +417,36 @@ typedef enum : NSUInteger {
     
     [UIView animateWithDuration:0.3 animations:^{
         tap.view.alpha = 0;
-        
-        
+        _subjectFilterView.alpha = 0;
     }];
     
     [self performSelector:@selector(maskhide:) withObject:tap.view afterDelay:0.5];
-    
 }
+
+/**万能调用 蒙版和菜单双双消失*/
+- (void)maskHideAnimated{
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        _maskView.alpha = 0;
+        
+        _subjectFilterView.sd_layout
+        .topSpaceToView(self.view, -120);
+        [_subjectFilterView updateLayout];
+    }];
+    
+    [self performSelector:@selector(maskViewHide) withObject:nil afterDelay:0.3];
+}
+
+- (void)maskViewHide{
+    _maskView.hidden = YES;
+    subjecteMenuShow = NO;
+}
+
+
 - (void)maskhide:(UIView *)view{
     view.hidden = YES;
 }
-
-
-
 
 
 
@@ -381,14 +463,12 @@ typedef enum : NSUInteger {
 }
 
 
-
-
-
 - (void)returnLastPage{
     
     [self.navigationController popViewControllerAnimated:YES];
     
 }
+
 
 
 - (void)didReceiveMemoryWarning {

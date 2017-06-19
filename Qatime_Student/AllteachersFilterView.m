@@ -93,25 +93,25 @@
             .bottomSpaceToView(self, 0)
             .widthIs(60);
             
-            UILabel *label = [[UILabel alloc]init];
-            label.userInteractionEnabled = NO;
-            [_ addSubview:label];
-            label.textColor = TITLECOLOR;
-            label.text = @"全科";
-            label.font = [UIFont systemFontOfSize:15*ScrenScale];
-            label.sd_layout
+            _subjectLabel = [[UILabel alloc]init];
+            _subjectLabel.userInteractionEnabled = NO;
+            [_ addSubview:_subjectLabel];
+            _subjectLabel.textColor = TITLECOLOR;
+            _subjectLabel.text = @"全科";
+            _subjectLabel.font = [UIFont systemFontOfSize:15*ScrenScale];
+            _subjectLabel.sd_layout
             .rightSpaceToView(_,15*ScrenScale)
             .centerYEqualToView(_)
             .autoHeightRatio(0);
-            [label setSingleLineAutoResizeWithMaxWidth:100];
+            [_subjectLabel setSingleLineAutoResizeWithMaxWidth:100];
             
             UIImageView *image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"筛选"]];
             image.userInteractionEnabled = NO;
             [_ addSubview:image];
             image.sd_layout
-            .rightSpaceToView(label,5)
-            .topEqualToView(label)
-            .bottomEqualToView(label)
+            .rightSpaceToView(_subjectLabel,5)
+            .topEqualToView(_subjectLabel)
+            .bottomEqualToView(_subjectLabel)
             .widthEqualToHeight();
             
             //竖边栏

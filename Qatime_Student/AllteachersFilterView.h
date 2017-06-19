@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UIButton *primarySchoolBtn ;
 
 @property (nonatomic, strong) UIControl *subjectBtn ;
+@property (nonatomic, strong) UILabel *subjectLabel ;
 
 
 @property (nonatomic, strong) NSMutableArray *allBtnsArr ;
