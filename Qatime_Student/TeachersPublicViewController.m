@@ -864,9 +864,19 @@
             }
             _videoCount = _videoClasses.count;
             
-            [_teachersPublicCollectionView reloadData];
+            //如果什么课程都没有,就显示个header而已
+            if ([dic[@"data"][@"courses"] count]==0&&[dic[@"data"][@"interactie_courses"]count]==0&&[dic[@"data"][@"video_courses"]count]==0) {
+                
+                [_teachersPublicHeaderView removeFromSuperview];
+                [self.view addSubview:_teachersPublicHeaderView];
+                _teachersPublicHeaderView.frame = _teachersPublicCollectionView.frame ;
+                _teachersPublicHeaderView.classList.hidden = YES;
+                
+            }else{
+                
+                [_teachersPublicCollectionView reloadData];
+            }
         
-            
             //加载头视图数据
             [self refreshTeacherInfoWith:_teacherPublicInfo];
             

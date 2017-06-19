@@ -393,9 +393,10 @@
     
 }
 
-/**进入回放页面*/
+/**精彩回放列表*/
 - (void)review{
     
+    [self HUDStopWithTitle:@"正在开发中,敬请期待"];
     
 }
 

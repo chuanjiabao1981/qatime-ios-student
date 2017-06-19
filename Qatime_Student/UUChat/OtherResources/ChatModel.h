@@ -49,4 +49,10 @@
 
 
 
+#pragma mark- 公告消息
+/**添加公告消息*/
+- (void)addSpecifiedNotificationItem:(NSString *)notification;
+
+
+
 @end

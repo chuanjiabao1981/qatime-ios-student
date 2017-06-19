@@ -295,8 +295,8 @@ typedef enum : NSUInteger {
     if (_teachersArr.count>indexPath.row) {
         
         cell.model = _teachersArr[indexPath.row];
-        [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     }
+    [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     
     return  cell;
     

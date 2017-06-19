@@ -308,8 +308,20 @@ static NSString *previousTime = nil;
     
 }
 
+/**添加公告消息*/
+- (void)addSpecifiedNotificationItem:(NSString *)notification{
+    
+    UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
+    UUMessage *message = [[UUMessage alloc] init];
+    message.isRichText = NO;
+    message.strContent = notification;
+    message.type = UUMessagetypeNotice;
+    message.from = UUMessageFromeSystem;
+    
+    [messageFrame setMessage:message];
+    [self.dataSource addObject:messageFrame];
 
-
+}
 
 
 @end

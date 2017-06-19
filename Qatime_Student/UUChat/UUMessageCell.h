@@ -39,7 +39,11 @@
 
 @property (nonatomic, retain)UIButton *btnHeadImage;
 
+//气泡内容
 @property (nonatomic, retain)UUMessageContentButton *btnContent;
+
+//系统公告内容
+@property (nonatomic, strong) UILabel *noticeLabel ;
 
 @property (nonatomic, retain)UUMessageFrame *messageFrame;
 

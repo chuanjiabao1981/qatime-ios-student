@@ -26,6 +26,7 @@
 #import "MJRefresh.h"
 #import "TutoriumInfoViewController.h"
 #import "Interactive.h"
+#import "CYLTableViewPlaceHolder.h"
 
 typedef enum : NSUInteger {
     RefreshStatePushLoadMore,
@@ -159,11 +160,7 @@ typedef enum : NSUInteger {
     /* 如果用户加入新的试听课程,或者是用户是第一次进入程序,向远程服务器拉取聊天历史记录*/
     /* 判断是不是第一次登陆*/
     
-    /* 获取我的辅导班列表*/
-    [self requestMyClass:RefreshStateNone];
     
-    /* 请求通知消息,收到的消息存到本地数据库,文件名:notice.db*/
-    [self requestNotices:RefreshStateNone];
     
     [[[NIMSDK sharedSDK]loginManager]addDelegate:self];
     
@@ -205,6 +202,13 @@ typedef enum : NSUInteger {
         [self requestNotices:RefreshStatePushLoadMore];
         
     }];
+    
+    
+    /* 获取我的辅导班列表*/
+    [self requestMyClass:RefreshStateNone];
+    
+    /* 请求通知消息*/
+    [self requestNotices:RefreshStateNone];
     
     
     //监听未读消息数量
@@ -325,12 +329,13 @@ typedef enum : NSUInteger {
                 if ([dataDic[@"status"]isEqualToNumber:@1]) {
                     
                     if ([dic[@"data"] count ] ==0 && [dataDic[@"data"]count]==0) {
-                        /* 没有加入聊天的情况*/
-                        HaveNoClassView *noChat = [[HaveNoClassView  alloc]init];
-                        noChat.titleLabel.text = @"当前无课程";
-                        
-                        noChat.frame = CGRectMake(0, 0, self.view.width_sd,_noticeIndexView.scrollView.height_sd);
-                        [_noticeIndexView.chatListTableView addSubview:noChat];
+//                        /* 没有加入聊天的情况*/
+//                        HaveNoClassView *noChat = [[HaveNoClassView  alloc]init];
+//                        noChat.titleLabel.text = @"当前无课程";
+//                        
+//                        noChat.frame = CGRectMake(0, 0, self.view.width_sd,_noticeIndexView.scrollView.height_sd);
+//                        [_noticeIndexView.chatListTableView addSubview:noChat];
+                        [_noticeIndexView.chatListTableView cyl_reloadData];
                         
                     }else{
                         
@@ -442,12 +447,15 @@ typedef enum : NSUInteger {
         }else{
             /* 数据错误*/
             
-            [self HUDStopWithTitle:@"数据失败!"];
+            [self HUDStopWithTitle:@"加载失败,请稍后重试!"];
+            [_noticeIndexView.chatListTableView.mj_header endRefreshing];
+            [_noticeIndexView.chatListTableView cyl_reloadData];
         }
         
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+         [_noticeIndexView.chatListTableView.mj_header endRefreshing];
+        [_noticeIndexView.chatListTableView cyl_reloadData];
     }];
     
     
@@ -498,19 +506,11 @@ typedef enum : NSUInteger {
                 
                 if (state!=RefreshStatePushLoadMore) {
                     
-                    /* 没有数据*/
-                    /* 没有加入聊天的情况*/
-                    HaveNoClassView *noNotice = [[HaveNoClassView  alloc]init];
-                    noNotice.titleLabel.text = @"当前无通知";
-                    noNotice.frame  = CGRectMake(0, 0, self.view.width_sd,_noticeIndexView.scrollView.height_sd);
-                    
-                    [_noticeIndexView.noticeTableView addSubview:noNotice];
-                    _noticeIndexView.noticeTableView.scrollEnabled = NO;
+                    [_noticeIndexView.noticeTableView cyl_reloadData];
                 }else{
                     
                     [_noticeIndexView.noticeTableView.mj_footer endRefreshingWithNoMoreData];
                 }
-                
                 
             }else{
                 /* 有数据的情况下*/
@@ -573,11 +573,16 @@ typedef enum : NSUInteger {
         }else{
             /* 请求失败*/
             
+            [self HUDStopWithTitle:@"数据加载失败,请稍后重试"];
+            [_noticeIndexView.noticeTableView.mj_header endRefreshing];
+            [_noticeIndexView.noticeTableView cyl_reloadData];
+            
         }
         
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+        [_noticeIndexView.noticeTableView.mj_header endRefreshing];
+        [_noticeIndexView.noticeTableView cyl_reloadData];
     }];
     
     noticePage++;
@@ -595,22 +600,14 @@ typedef enum : NSUInteger {
     
     switch (tableView.tag) {
         case 2:
-            if (_chatListArr.count == 0) {
-                rows = 1;
-            }else{
-                rows = _chatListArr.count;
-                
-            }
+            
+            rows = _chatListArr.count;
             
             break;
             
         case 3:{
-            if (_noticeArray.count == 0) {
-                rows = 1;
-            }else{
-                rows = _noticeArray.count;
-                
-            }
+            
+            rows = _noticeArray.count;
             
         }
             
@@ -1029,6 +1026,16 @@ typedef enum : NSUInteger {
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"AllMessageRead" object:nil];
     
+}
+
+#pragma mark- UITableView empty delegate
+- (UIView *)makePlaceHolderView{
+    HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"当前暂无数据"];
+    return view;
+}
+- (BOOL)enableScrollWhenPlaceHolderViewShowing{
+    
+    return YES;
 }
 
 

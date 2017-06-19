@@ -587,7 +587,7 @@
 - (void)makeMessages:(NSArray<NIMMessage *> * ) messages{
     
     for (NIMMessage *message in messages) {
-        if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio) {
+        if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio||message.messageType == NIMMessageTypeNotification) {
             
             _chatTableView.hidden = NO;
             /* 如果是文本消息*/
@@ -719,7 +719,6 @@
             }else if (message.messageType ==NIMMessageTypeImage){
                 /* 如果收到的消息类型是图片的话 */
                 
-                
                 /* 如果消息是自己发的*/
                 if ([message.from isEqualToString:_chat_Account.accid]){
                     
@@ -819,9 +818,18 @@
                     
                     [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                 }
+            }
+            //如果收到系统/公告消息
+            else if(message.messageType == NIMMessageTypeNotification){
+                
+                NSLog(@"公告历史消息:%@",message.text);
+                [self dealTheFunctionData:nil andMessage:message];
                 
             }
-            
+//
+        }else{
+        
+            NSLog(@"其他消息类型:类型:%ld,内容:%@",(long)message.messageType,message.text);
         }
         
     }
@@ -861,6 +869,12 @@
     }else if ([dic[@"type"]isEqualToNumber:@2]){
         /* 语音类型消息*/
         [self.chatModel addSpecifiedVoiceItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name andMessage:message];
+    }
+    
+    if (message.messageType == NIMMessageTypeNotification) {
+        
+        //公告消息类型
+        [self.chatModel addSpecifiedNotificationItem:message.text];
     }
     
     [self.chatTableView reloadData];
@@ -1039,6 +1053,10 @@
         
         [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
         
+    }else if (message.messageType == NIMMessageTypeNotification){
+        
+        NSLog(@"收到通知消息");
+        NSLog(@"%@",message.text);
     }
     
     

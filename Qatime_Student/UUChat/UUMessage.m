@@ -86,7 +86,9 @@
             self.strVoiceTime = dict[@"strVoiceTime"];
             break;
             
-        default:
+        case 5:
+            self.type = UUMessagetypeNotice;
+            self.strContent = dict[@"message"];
             break;
     }
 }
