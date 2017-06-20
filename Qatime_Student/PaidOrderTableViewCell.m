@@ -31,6 +31,7 @@
         /* 课程名*/
         _name =[[UILabel alloc]init];
         _name.textColor = [UIColor blackColor];
+        _name.font = TITLEFONTSIZE;
         [self.contentView addSubview:_name];
         /* 课程名*/
         _name.sd_layout
@@ -89,6 +90,7 @@
         
         /* 右侧button*/
         _rightButton = [[UIButton alloc]init];
+        _rightButton.titleLabel.font = TEXT_FONTSIZE;
         _rightButton.layer.borderColor = [UIColor redColor].CGColor;
         _rightButton.layer.borderWidth = 0.8;
         [_rightButton setTitle:@"申请退款" forState:UIControlStateNormal];

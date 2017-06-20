@@ -30,8 +30,6 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
       
-    
-    
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     
     _navigationBar.titleLabel.text = @"关于我们";

@@ -21,6 +21,7 @@
 #import "UIViewController+AFHTTP.h"
 #import "DCPaymentView.h"
 #import "ChargeViewController.h"
+#import "IndexPageViewController.h"
 
 typedef enum : NSUInteger {
     AutoWrite,  //扫码自动填写的优惠码
@@ -35,7 +36,6 @@ typedef enum : NSUInteger {
     NSString *_idNumber;
     
     /* 保存一个比较用的价格*/
-    
     CGFloat price;
     
     /* 是否可以使用余额*/
@@ -58,6 +58,9 @@ typedef enum : NSUInteger {
     
     /**产品名称*/
     NSString *_productName;
+    
+    /**当前价格*/
+    NSString *_amount;
     
 }
 
@@ -415,23 +418,24 @@ typedef enum : NSUInteger {
     if (![_orderView.promotionText.text isEqualToString:@""]) {
         //验证优惠码
         
+        //新的优惠码验证逻辑 必须传优惠码 和 课程价格
         _promotionCode =_orderView.promotionText.text;
-        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager POST:[NSString stringWithFormat:@"%@/api/v1/payment/coupons/%@/verify",Request_Header,_promotionCode] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/coupons/%@/verify",Request_Header,_promotionCode] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"amount":[NSString stringWithFormat:@"%f",price]} completeSuccess:^(id  _Nullable responds) {
             
             NSError *error = [NSError new];
-            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:&error];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:&error];
             if ([dic[@"status"] isEqualToNumber:@1]) {
                 
-                _orderView.promotionNum.text = [NSString stringWithFormat:@"已优惠 ¥%@",dic[@"data"][@"price"]];
+                _orderView.promotionNum.text = [NSString stringWithFormat:@"已优惠 ¥%@",dic[@"data"][@"coupon_amount"]];
+                //付款金额也要修改
+                _orderView.totalMoneyLabel.text = [NSString stringWithFormat:@"¥%.2f",[dic[@"data"][@"total_amount"]floatValue]-[dic[@"data"][@"coupon_amount"]floatValue]];
                 
             }else{
                 [self HUDStopWithTitle:@"输入的优惠码不正确"];
                 
             }
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+        } failure:^(id  _Nullable erros) {
             
         }];
         
@@ -483,7 +487,7 @@ typedef enum : NSUInteger {
     
     if (sender.selected ==NO) {
         sender.selected =YES;
-
+        
         [sender setImage:[UIImage imageNamed:@"selectedCircle"] forState:UIControlStateNormal];
         
     }else{
@@ -568,110 +572,11 @@ typedef enum : NSUInteger {
             PayConfirmViewController *controller = [[PayConfirmViewController alloc]initWithData:dataDic];
             [self.navigationController pushViewController:controller animated:YES];
             
-//            //有支付密码
-//            if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
-//                if ([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==YES) {
-//                    
-//                    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"PayPasswordUseable"]) {
-//                        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"PayPasswordUseable"]) {
-//                            
-//                            [DCPaymentView showPayAlertWithTitle:@"订单支付" andDetail:@"订单支付" andAmount:[dataDic[@"amount"]floatValue] completeHandle:^(NSString *inputPwd) {
-//                                
-//                                /* 请求ticket token*/
-//                                [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/pay/ticket_token",Request_Header,dataDic[@"id"]] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"password":inputPwd} completeSuccess:^(id  _Nullable responds) {
-//                                    
-//                                    NSDictionary *dics = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-//                                    if ([dics[@"status"]isEqualToNumber:@1]) {
-//                                        
-//                                        [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/pay",Request_Header,dataDic[@"id"] ] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"ticket_token":dics[@"data"]} completeSuccess:^(id  _Nullable responds) {
-//                                            
-//                                            NSDictionary *paymentDic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-//                                            if ([paymentDic[@"status"]isEqualToNumber:@1]) {
-//                                                //支付成功了
-//                                                
-//                                                
-//                                                
-//                                            }else{
-//                                                
-//                                                //支付失败
-//                                            }
-//                                            
-//                                        }];
-//                                    }else{
-//                                        
-//                                        
-//                                    }
-//                                    
-//                                }];
-//                            }];
-//                            
-//                        }else{
-//                            
-//                            [self HUDStopWithTitle:@"支付密码暂不可用"];
-//                        }
-//                    }
-//                    
-//                }else{
-//                    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"尚未设置支付密码!\n是否前往设置?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"前往设置"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-//                       
-//                        if (buttonIndex == 0) {
-//                            
-//                        }else{
-//                            
-//                            //设置支付密码去
-//                        }
-//                        
-//                    }];
-//                }
-//            }else{
-//                
-//                [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"尚未设置支付密码!\n是否前往设置?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"前往设置"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-//                    
-//                    if (buttonIndex == 0) {
-//                        
-//                    }else{
-//                        
-//                        //设置支付密码去
-//                    }
-//
-//                    
-//                    
-//                }];
-//            }
-//            
-//            
-//            
-//            
-//            
-//            
-//        }else{
-//            
-//            if (_orderType == LiveClassType) {
-//                
-//                [self HUDStopWithTitle:@"订单申请失败!"];
-//            }else if (_orderType == InteractionType){
-//                
-//                if (dic[@"error"]) {
-//                    if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
-//                        
-//                        [self HUDStopWithTitle:@"课程目前不对外招生"];
-//                    }
-//                }
-//            }else if (_orderType == VideoClassType){
-//                
-//                if (dic[@"error"]) {
-//                    if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
-//                        
-//                        [self HUDStopWithTitle:@"课程目前不对外招生"];
-//                    }
-//                }
-//            }
-//
         }else{
             
             if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
                 if ([dic[@"error"][@"msg"] rangeOfString:@"目前不对外招生"].location != NSNotFound ) {
-                 
+                    
                     [self HUDStopWithTitle:@"该课程目前不对外招生"];
                 }
             }
@@ -687,7 +592,7 @@ typedef enum : NSUInteger {
 
 #pragma mark- 跳转到支付确认页面
 - (void)turnToPayPage{
-  
+    
     
 }
 
@@ -711,7 +616,6 @@ typedef enum : NSUInteger {
     [UIView animateWithDuration:animationDuration animations:^{
         
         self.view.frame = CGRectMake(0, -keyboardRect.size.height/2, self.view.width_sd, self.view.height_sd);
-        
     }];
     
 }
@@ -746,7 +650,17 @@ typedef enum : NSUInteger {
     
     if (_promotionCode) {
         
-        //        [self.navigationController popToRootViewControllerAnimated:YES];
+        for (UIViewController *controller in self.navigationController.viewControllers) {
+            
+            if ([controller isMemberOfClass:[IndexPageViewController class]]) {
+                
+                [self.navigationController popToViewController:controller animated:YES];
+                
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"PopToRoot" object:nil];
+            }else{
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        }
         
     }else{
         

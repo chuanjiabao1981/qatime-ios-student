@@ -18,4 +18,6 @@
 
 @property(nonatomic,strong) UITableView *menuTableView ;
 
+@property (nonatomic, strong) UILabel *versionLabel ;
+
 @end

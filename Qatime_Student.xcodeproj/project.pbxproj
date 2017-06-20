@@ -2278,6 +2278,7 @@
 				54D82AEC1EAEFA240034015F /* 我的试听 */,
 				54AB48B11DED2CF1008E3BC5 /* 安全管理 */,
 				54AB48B01DED2CEF008E3BC5 /* 系统设置 */,
+				54652E1D1DEEB8D700F4607C /* 关于我们 */,
 			);
 			name = "个人页面";
 			sourceTree = "<group>";
@@ -3723,7 +3724,6 @@
 			isa = PBXGroup;
 			children = (
 				54652E1C1DEEB8BD00F4607C /* 系统设置主页 */,
-				54652E1D1DEEB8D700F4607C /* 关于我们 */,
 				54652E1B1DEEB8B300F4607C /* 提醒设置 */,
 			);
 			name = "系统设置";

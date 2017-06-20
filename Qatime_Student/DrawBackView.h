@@ -32,9 +32,16 @@
 @property(nonatomic,strong) UILabel *enableDrawbackPrice ;
 
 /* 退款原因*/
-@property(nonatomic,strong) UITextView *reason ;
+//@property(nonatomic,strong) UITextView *reason ;
+
+/**箭头按钮,选择退款原因*/
+@property (nonatomic, strong) UIButton *arrow ;
+
+@property (nonatomic, strong) UILabel *reason ;
 
 /* 提交按钮*/
 @property(nonatomic,strong) UIButton *finishButton ;
+
+@property (nonatomic, strong) UILabel *phoneTips ;
 
 @end

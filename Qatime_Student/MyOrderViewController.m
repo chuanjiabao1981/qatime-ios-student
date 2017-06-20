@@ -245,7 +245,18 @@ typedef enum : NSUInteger {
     /**退款成功的回调*/
     [[NSNotificationCenter defaultCenter]addObserverForName:@"RefundSuccess" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
         
-        [_myOrderView.paidView.mj_header beginRefreshing];
+        for (PaidOrderTableViewCell *cell in _myOrderView.paidView.visibleCells) {
+            
+            if ([cell.paidModel.orderID isEqualToString:[note object]]) {
+                [cell.rightButton setTitle:@"取消退款" forState:UIControlStateNormal];
+                [cell.rightButton removeAllTargets];
+                [cell.rightButton addTarget:self action:@selector(cancelRefund:) forControlEvents:UIControlEventTouchUpInside];
+                
+            }
+        }
+        
+        
+//        [_myOrderView.paidView.mj_header beginRefreshing];
     }];
     
     /**付款成功后的回调*/
@@ -524,6 +535,7 @@ typedef enum : NSUInteger {
                     [cell.rightButton setTitle:@"取消退款" forState:UIControlStateNormal];
                     [cell.rightButton removeAllTargets];
                     [cell.rightButton addTarget:self action:@selector(cancelRefund:) forControlEvents:UIControlEventTouchUpInside];
+                    
                 }else if ([cell.paidModel.status isEqualToString:@"completed"]){
                     
                 }
@@ -693,6 +705,17 @@ typedef enum : NSUInteger {
                     [self loginStates:dic];
                     if ([dic[@"status"]isEqualToNumber:@1]) {
                         [self HUDStopWithTitle:@"取消成功"];
+                        
+                        //取消成功后,修改该cell的按钮情况
+                        for (PaidOrderTableViewCell *cell in _myOrderView.paidView.visibleCells) {
+                            if ([cell.paidModel.orderID isEqualToString:dic[@"data"][@"transaction_no"] ]) {
+                                [cell.rightButton setTitle:@"申请退款" forState:UIControlStateNormal];
+                                [cell.rightButton removeAllTargets];
+                                [cell.rightButton addTarget:self action:@selector(repage:) forControlEvents:UIControlEventTouchUpInside];
+                            }
+                        }
+                        
+                       
                     }else{
                         [self HUDStopWithTitle:@"服务器正忙,取消失败"];
                         
@@ -745,10 +768,8 @@ typedef enum : NSUInteger {
 }
 
 
-
 /* 再次购买功能*/
 - (void)buyAgain:(UIButton *)sender{
-    
     
     [self HUDStopWithTitle:@"正在加载订单信息"];
     

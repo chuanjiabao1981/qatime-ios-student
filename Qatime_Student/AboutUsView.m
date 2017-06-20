@@ -47,33 +47,48 @@
         _menuTableView.bounces = NO;
         _menuTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
-        [self sd_addSubviews:@[_logo,_aboutUs,_menuTableView]];
+        //版本号
+        _versionLabel = [[UILabel alloc]init];
+        _versionLabel.font = TEXT_FONTSIZE;
+        _versionLabel.textColor = TITLECOLOR;
+        _versionLabel.text = [NSString stringWithFormat:@"当前版本: V%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+        
+        
+        [self sd_addSubviews:@[_logo,_aboutUs,_menuTableView,_versionLabel]];
         
         /* 布局*/
         _logo.sd_layout
-        .topSpaceToView(self,60*ScrenScale)
-        .leftSpaceToView(self,60*ScrenScale)
-        .rightSpaceToView(self,60*ScrenScale)
+        .topSpaceToView(self,40*ScrenScale)
+        .leftSpaceToView(self,80*ScrenScale)
+        .rightSpaceToView(self,80*ScrenScale)
         .autoHeightRatio(112/479.0f);
         
         _aboutUs.sd_layout
-        .topSpaceToView(_logo,50*ScrenScale)
+        .topSpaceToView(_logo,40*ScrenScale)
         .leftSpaceToView(self,20*ScrenScale)
         .rightSpaceToView(self,20*ScrenScale)
         .autoHeightRatio(0);
         
         _menuTableView.sd_layout
-        .topSpaceToView(_aboutUs,40*ScrenScale)
+        .topSpaceToView(_aboutUs,30*ScrenScale)
         .leftSpaceToView(self,0)
         .rightSpaceToView(self,0)
-        .heightIs(200*ScrenScale);
+        .heightIs(150*ScrenScale);
         
-        [_menuTableView updateLayout];
+        _versionLabel.sd_layout
+        .centerXEqualToView(self)
+        .topSpaceToView(_menuTableView, 30*ScrenScale)
+        .autoHeightRatio(0);
+        [_versionLabel setSingleLineAutoResizeWithMaxWidth:200];
         
-        if (_menuTableView.bottom_sd>self.bottom_sd) {
-            
-            self.contentSize = CGSizeMake(self.width_sd, _menuTableView.bottom_sd);
-        }
+        
+        [self setupAutoHeightWithBottomView:_versionLabel bottomMargin:20];
+//        [_menuTableView updateLayout];
+        
+//        if (_menuTableView.bottom_sd>self.bottom_sd) {
+//            
+//            self.contentSize = CGSizeMake(self.width_sd, _menuTableView.bottom_sd);
+//        }
         
     }
     return self;
