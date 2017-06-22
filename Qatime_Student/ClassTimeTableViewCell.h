@@ -20,10 +20,10 @@
 /**课程类型*/
 @property (nonatomic, strong) UILabel *type ;
 
-/**
- 课程名称
- */
+/**是否试听课*/
+@property (nonatomic, strong) UILabel *isTaste ;
 
+/**课程名称*/
 @property(nonatomic,strong) UILabel *name ;
 
 @property(nonatomic,strong) UILabel *className ;
@@ -60,5 +60,7 @@
 
 /* 外框content*/
 @property(nonatomic,strong) UIView *content;
+
+- (void)showTasteState:(BOOL)show;
 
 @end

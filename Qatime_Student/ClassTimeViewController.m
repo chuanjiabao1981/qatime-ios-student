@@ -276,6 +276,26 @@ typedef enum : NSUInteger {
                 
             }
             
+        }else{
+            
+            if (classtype == UnstartClass) {
+                if (refreshType == PullToRefresh) {
+                    
+                    [_classTimeView.notClassView.notClassTableView.mj_header endRefreshing];
+                    
+                }else{
+                    [_classTimeView.notClassView.notClassTableView.mj_footer endRefreshing];
+                }
+            }else{
+                if (refreshType == PullToRefresh) {
+                    
+                    [_classTimeView.alreadyClassView.alreadyClassTableView.mj_header endRefreshing];
+                    
+                }else{
+                    
+                    [_classTimeView.alreadyClassView.alreadyClassTableView.mj_footer endRefreshing];
+                }
+            }
         }
         
     }];
@@ -385,6 +405,8 @@ typedef enum : NSUInteger {
             }else{
                 cell.enterButton.hidden = NO;
             }
+            
+//            cell showTasteState:cell.model.
             
             cell.enterButton.tag = indexPath.row+10;
             [cell.enterButton addTarget:self action:@selector(enterLive:) forControlEvents:UIControlEventTouchUpInside];

@@ -1,19 +1,13 @@
-
 //
-//  VideoClassPlayerViewController.m
+//  ReplayLessonsViewController.m
 //  Qatime_Student
 //
-//  Created by Shin on 2017/4/12.
+//  Created by Shin on 2017/6/22.
 //  Copyright © 2017年 WWTD. All rights reserved.
 //
 
-#import "VideoClassPlayerViewController.h"
-#import "VideoClassPlayerView.h"
-#import "VideoClassProgressTableViewCell.h"
-#import "VideoClassFullScreenListTableViewCell.h"
-#import "UIView+PlaceholderImage.h"
+#import "ReplayLessonsViewController.h"
 #import "UIViewController+HUD.h"
-#import "TeachersPublicViewController.h"
 #import "UIControl+RemoveTarget.h"
 
 //屏幕模式
@@ -21,33 +15,16 @@ typedef enum : NSUInteger {
     PortraitMode,
     FullScreenMode,
 } ScreenMode;
-
-@interface VideoClassPlayerViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
+@interface ReplayLessonsViewController (){
     
     /**播放器的底视图*/
     UIView *_playerView;
     
-    /**课程数据*/
-    NSMutableArray <VideoClass *>*_classListArray;
-    
-    /**教师详情数据*/
-    Teacher *_teacher;
-    
-    /**课程详情信息*/
-    VideoClassInfo *_classInfo;
-    
-    /**选中的条目->正在播放的条目*/
-    NSIndexPath *_indexPath;
+    /**播放url*/
+    //NSString *_urlString;
     
     /**屏幕模式*/
     ScreenMode _screenMode;
-    
-    /**播放源数组*/
-    //    NSMutableArray *datas;
-    
-    /**初始化的播放源*/
-    NSString *_urlString;
-    
     /**是否全屏*/
     BOOL isFullScreen;
     
@@ -56,16 +33,12 @@ typedef enum : NSUInteger {
     
     /**播放器加载次数*/
     NSInteger faildTime;
+    
+    /**一个对象*/
+    ReplayLesson *_replayLesson;
 }
-/**主视图*/
-@property (nonatomic, strong) VideoClassPlayerView *mainView ;
-
-/**全屏模式下的选课列表*/
-@property (nonatomic, strong) UITableView *classList ;
-
 
 /**播放器相关的属性*/
-
 @property (nonatomic, strong) UIView *playerView;
 @property (nonatomic, strong) UIControl *controlOverlay;
 @property (nonatomic, strong) UIView *topControlView;
@@ -89,48 +62,22 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, strong) UIButton *resolutionBtn;
 
-/**全屏状态下的课程列表按钮*/
-@property (nonatomic, strong) UIButton *classListBtn ;
-
 /**控制层*/
 @property(nonatomic, strong)  NELivePlayerControl *mediaControl;
-
 @end
 
-@implementation VideoClassPlayerViewController
+@implementation ReplayLessonsViewController
 
-//初始化方法1
--(instancetype)initWithClasses:(__kindof NSArray <VideoClass *>*_Nullable)classes andTeacher:(Teacher *_Nullable)teacher andVideoClassInfos:(VideoClassInfo *_Nullable)classInfo andURLString:(NSString * _Nullable)URLString andIndexPath:(NSIndexPath * _Nullable)indexPath{
+
+-(instancetype)initWithLesson:(ReplayLesson *)replayLesson{
     
     self = [super init];
     if (self) {
         
-        _classListArray = [NSMutableArray arrayWithArray:classes];
-        _teacher = teacher;
-        _classInfo = classInfo;
-        
-        if (URLString ==nil) {
-            
-            _urlString = [NSString stringWithFormat:@"%@",_classListArray[0].video.name_url];
-            
-        }else{
-            _urlString = [NSString stringWithFormat:@"%@",URLString];
-        }
-        
-        
-        if (indexPath == nil) {
-            _indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        }else{
-            
-            _indexPath = indexPath;
-        }
-        
+        _replayLesson = replayLesson;
     }
     return self;
-    
 }
-
-
 
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -139,42 +86,11 @@ typedef enum : NSUInteger {
     [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     
 }
-
-
-
-- (void)viewDidDisappear:(BOOL)animated{
-    
-    [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    
-    [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"SupportedLandscape"];
-    
-    [self.videoPlayer shutdown]; //退出播放并释放相关资源
-    [self.videoPlayer.view removeFromSuperview];
-    self.videoPlayer = nil;
-    
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerDidPreparedToPlayNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerLoadStateChangedNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerPlaybackFinishedNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstVideoDisplayedNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstAudioDisplayedNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerVideoParseErrorNotification object:_videoPlayer];
-    
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIDeviceOrientationDidChangeNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"TurnDownFullScreen" object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"FullScreen" object:_videoPlayer];
-    
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
-    
-    _screenMode = PortraitMode;
-    
-     faildTime = 0;
     
     //加载播放器
-    [self setupVideoPlayerWithURL:_urlString];
+    [self setupVideoPlayerWithURL:[NSURL URLWithString:@"http://baobab.wdjcdn.com/1456117847747a_x264.mp4"]];
     
     //加载播放器的监听
     [self addNotifications];
@@ -186,42 +102,115 @@ typedef enum : NSUInteger {
     
     /* 支持全屏*/
     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"SupportedLandscape"];
-    
+
 }
 
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+/**加载主视图*/
+- (void)setupMainView{
     
-    if ([change[@"new"] integerValue]==0) {
-        
-        NSLog(@"切回竖屏模式");
-    }else{
-        NSLog(@"切换至全屏模式");
-    }
+    _mainView = [[UIView alloc]init];
+    
     
 }
 
 /**加载视频播放器*/
-- (void)setupVideoPlayerWithURL:(NSString *)urlString{
+- (void)setupVideoPlayerWithURL:(NSURL *)urlString{
     
     if (!_videoPlayer) {
-        _videoPlayer = [[NELivePlayerController alloc]initWithContentURL:[NSURL URLWithString:urlString]];
-        
+        _videoPlayer = [[NELivePlayerController alloc]initWithContentURL:urlString];
+        [NELivePlayerController setLogLevel:NELP_LOG_DEFAULT];//输出详细的加载信息
         _videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
         [_videoPlayer setScalingMode:NELPMovieScalingModeAspectFit];
         
         /* 播放器的设置*/
-        [_videoPlayer isLogToFile:YES];
-        [_videoPlayer setBufferStrategy:NELPLowDelay]; //直播低延时模式
+        [_videoPlayer isLogToFile:NO];
+        [_videoPlayer setBufferStrategy:NELPAntiJitter]; //本地视频和点播的速率解析
         [_videoPlayer setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
         [_videoPlayer setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
-        [_videoPlayer setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
+        [_videoPlayer setHardwareDecoder:YES]; //设置解码模式，是否开启硬件解码
         [_videoPlayer setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
         [_videoPlayer prepareToPlay]; //初始化视频文件
         
-        if (!_playerView) {
+        //if (!_playerView) {
             
             [self setupVideoPlayerView];
+        //}
+    }
+    
+}
+
+/**添加一系列监听*/
+- (void)addNotifications{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerDidPreparedToPlay:) name:NELivePlayerDidPreparedToPlayNotification object:_videoPlayer];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NeLivePlayerloadStateChanged:) name:NELivePlayerLoadStateChangedNotification object:_videoPlayer];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerPlayBackFinished:) name:NELivePlayerPlaybackFinishedNotification  object:_videoPlayer];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerFirstVideoDisplayed:)name:NELivePlayerFirstVideoDisplayedNotification object:_videoPlayer];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerFirstAudioDisplayed:) name:NELivePlayerFirstAudioDisplayedNotification object:_videoPlayer];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerReleaseSuccess:) name:NELivePlayerReleaseSueecssNotification object:_videoPlayer];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerVideoParseError:) name:NELivePlayerVideoParseErrorNotification object:_videoPlayer];
+    
+    /* 变为全屏后的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnFullScreen:) name:@"FullScreen" object:nil];
+    
+    /* 切换回竖屏后的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnDownFullScreen:) name:@"TurnDownFullScreen" object:nil];
+}
+/**加载播放器底层视图*/
+- (void)setupVideoPlayerView{
+    
+    _playerView = [[UIView alloc]init];
+    [self.view addSubview:_playerView];
+    
+    _playerView.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .topSpaceToView(self.view, 0)
+    .heightIs(self.view.width_sd/16.0*9.0);
+    
+    UIImageView *place = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"PlayerHolder"]];
+    [_playerView addSubview:place];
+    place.sd_layout
+    .leftEqualToView(_playerView)
+    .rightEqualToView(_playerView)
+    .topEqualToView(_playerView)
+    .bottomEqualToView(_playerView);
+    
+    [self setupControl];
+    
+    [self setupMainView];
+    
+    /**播放器初始化*/
+    
+    if (_videoPlayer==nil) {
+        // 返回空则表示初始化失败
+        faildTime ++;
+        NSLog(@"播放器初始化失败!!!!");
+        
+        if (faildTime>10) {
+            
+            [self HUDStopWithTitle:@"播放器加载失败"];
+            
+        }else{
+            //再次加载
+            [self setupVideoPlayerWithURL:[NSURL URLWithString:@"http://baobab.wdjcdn.com/1456117847747a_x264.mp4"]];
+            
         }
+        
+    }else{
+        NSLog(@"播放器初始化成功!!!!");
+        [_playerView addSubview:self.videoPlayer.view];
+        self.videoPlayer.view.sd_layout
+        .leftSpaceToView(_playerView, 0)
+        .rightSpaceToView(_playerView, 0)
+        .topSpaceToView(_playerView, 0)
+        .bottomSpaceToView(_playerView, 0);
+        
     }
     
 }
@@ -293,7 +282,7 @@ typedef enum : NSUInteger {
         _;
     });
     
-        //缓冲提示
+    //缓冲提示
     self.bufferingIndicate = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [self.bufferingIndicate setCenter:CGPointMake(_mediaControl.centerX_sd, _mediaControl.centerY_sd)];
     [self.bufferingIndicate setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -415,51 +404,19 @@ typedef enum : NSUInteger {
     [[UISlider appearance] setThumbImage:[UIImage imageNamed:@"btn_player_slider_thumb"] forState:UIControlStateNormal];
     [[UISlider appearance] setMaximumTrackImage:[UIImage imageNamed:@"btn_player_slider_all"] forState:UIControlStateNormal];
     [[UISlider appearance] setMinimumTrackImage:[UIImage imageNamed:@"btn_player_slider_played"] forState:UIControlStateNormal];
-    
     [self.videoProgress addTarget:self action:@selector(onClickSeek:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-//    切换清晰度按钮
+    /*
+    //    切换清晰度按钮
     self.resolutionBtn = [[UIButton alloc]init];
-//                          WithFrame:CGRectMake(videoScreenHeight-60, 5, 40, 40)];
+    //                          WithFrame:CGRectMake(videoScreenHeight-60, 5, 40, 40)];
     [self.resolutionBtn setTitle:@"标清" forState:UIControlStateNormal];
     [self.resolutionBtn setTitleColor:[[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1] forState:UIControlStateNormal];
     [self.bottomControlView addSubview:self.resolutionBtn];
     [self.resolutionBtn addTarget:self action:@selector(chooseResolution:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    //课程列表
-    _classList = [[UITableView alloc]init];
-    [_controlOverlay addSubview:_classList];
-    _classList.delegate = self;
-    _classList.dataSource =self;
-    _classList.tag = 3;
-    _classList.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
-    _classList.alpha = 0.8f;
-    _classList.sd_layout
-    .rightSpaceToView(_controlOverlay, 0)
-    .topSpaceToView(_topControlView, 0)
-    .bottomSpaceToView(_bottomControlView, 0)
-    .widthRatioToView(_controlOverlay, 1/3.0);
-    _classList.hidden  = YES;
-    _classList.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    
-    //弹出课程列表的按钮
-    _classListBtn = [[UIButton alloc]init];
-    [_topControlView addSubview:_classListBtn];
-    [_classListBtn setImage:[UIImage imageNamed:@"class"] forState:UIControlStateNormal];
-    [_classListBtn addTarget:self action:@selector(onClickClassList:) forControlEvents:UIControlEventTouchUpInside];
-    _classListBtn .sd_layout
-    .rightSpaceToView(_topControlView, 30*ScrenScale)
-    .topSpaceToView(_topControlView, 10)
-    .bottomSpaceToView(_topControlView, 10)
-    .widthEqualToHeight();
-    [_classListBtn setEnlargeEdge:20];
-    _classListBtn.hidden = YES;
+     */
     
     //文件名 、课程名
-    _fileName = ({
+    /*_fileName = ({
         UILabel *_=[[UILabel alloc] init ];
         _.textAlignment = NSTextAlignmentLeft; //文字居左
         _.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
@@ -472,8 +429,33 @@ typedef enum : NSUInteger {
         .bottomEqualToView(_topControlView)
         .rightSpaceToView(_classListBtn,20);
         _;
-    });
+    });*/
+    
+    
+}
 
+
+
+- (void)viewDidDisappear:(BOOL)animated{
+    
+    [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+    
+    [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"SupportedLandscape"];
+    
+    [self.videoPlayer shutdown]; //退出播放并释放相关资源
+    [self.videoPlayer.view removeFromSuperview];
+    self.videoPlayer = nil;
+    
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerDidPreparedToPlayNotification object:_videoPlayer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerLoadStateChangedNotification object:_videoPlayer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerPlaybackFinishedNotification object:_videoPlayer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstVideoDisplayedNotification object:_videoPlayer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstAudioDisplayedNotification object:_videoPlayer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerVideoParseErrorNotification object:_videoPlayer];
+    
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIDeviceOrientationDidChangeNotification object:_videoPlayer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"TurnDownFullScreen" object:_videoPlayer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"FullScreen" object:_videoPlayer];
     
 }
 
@@ -502,7 +484,7 @@ typedef enum : NSUInteger {
         
         self.playBtn.hidden = YES;
         [self.playBtn removeAllTargets];
-    
+        
         self.pauseBtn.hidden = NO;
         [_bottomControlView bringSubviewToFront:self.pauseBtn];
         [self.pauseBtn addTarget:self action:@selector(onClickPause:) forControlEvents:UIControlEventTouchUpInside];
@@ -530,9 +512,7 @@ typedef enum : NSUInteger {
         //
         
         NSLog(@"click back!");
-//        if (self.presentingViewController) {
-//            [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-//        }
+    
         /* 全屏状态下的点击事件*/
     }else if (isFullScreen == YES){
         
@@ -625,127 +605,7 @@ typedef enum : NSUInteger {
     [self syncUIStatus:NO];
 }
 
-/**显示课程列表*/
-- (void)onClickClassList:(id)sender{
-    
-    if (isFullScreen == YES) {
-    
-        if (_classList.hidden == YES) {
-            _classList.hidden = NO;
-        }else{
-            
-            _classList.hidden = YES;
-        }
-        
-    }
-}
-
-
-
-
-/**加载播放器底层视图*/
-- (void)setupVideoPlayerView{
-    
-    _playerView = [[UIView alloc]init];
-//    [_playerView makePlaceHolderImage:[UIImage imageNamed:@"PlayerHolder"]];
-    [self.view addSubview:_playerView];
-    
-    _playerView.sd_layout
-    .leftSpaceToView(self.view, 0)
-    .rightSpaceToView(self.view, 0)
-    .topSpaceToView(self.view, 0)
-    .heightIs(self.view.width_sd/16.0*9.0);
-    
-    UIImageView *place = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"PlayerHolder"]];
-    [_playerView addSubview:place];
-    place.sd_layout
-    .leftEqualToView(_playerView)
-    .rightEqualToView(_playerView)
-    .topEqualToView(_playerView)
-    .bottomEqualToView(_playerView);
-    
-    [self setupControl];
-    
-    [self setupMainView];
-    
-    /**播放器初始化*/
-    
-    if (_videoPlayer==nil) {
-        // 返回空则表示初始化失败
-        faildTime ++;
-        NSLog(@"播放器初始化失败!!!!");
-        
-        if (faildTime>10) {
-            
-            [self HUDStopWithTitle:@"播放器加载失败"];
-            
-        }else{
-            //再次加载
-            [self setupVideoPlayerWithURL:_urlString];
-            
-        }
-        
-    }else{
-        NSLog(@"播放器初始化成功!!!!");
-        [_playerView addSubview:self.videoPlayer.view];
-        self.videoPlayer.view.sd_layout
-        .leftSpaceToView(_playerView, 0)
-        .rightSpaceToView(_playerView, 0)
-        .topSpaceToView(_playerView, 0)
-        .bottomSpaceToView(_playerView, 0);
-        
-      
-    }
-    
-}
-
-/* 切换清晰度功能*/
-- (void)chooseResolution:(UIButton *)sender{
-    
-    
-}
-
-
-/**加载主视图*/
-- (void)setupMainView{
-    
-    _mainView = [[VideoClassPlayerView alloc]init];
-    [self.view addSubview:_mainView];
-    _mainView.sd_layout
-    .leftSpaceToView(self.view, 0)
-    .rightSpaceToView(self.view, 0)
-    .topSpaceToView(_playerView, 0)
-    .bottomSpaceToView(self.view, 0);
-    
-    _mainView.classVideoListTableView.delegate = self;
-    _mainView.classVideoListTableView.dataSource = self;
-    _mainView.classVideoListTableView.tag = 1;
-    
-    _mainView.scrollView.delegate = self;
-    _mainView.scrollView.tag = 2;
-    
-    _mainView.model = _classInfo;
-    
-    typeof(self) __weak weakSelf = self;
-    _mainView.segmentControl.indexChangeBlock = ^(NSInteger index) {
-        [weakSelf.mainView.scrollView scrollRectToVisible:CGRectMake(weakSelf.view.width_sd*index, 0, weakSelf.view.width_sd, weakSelf.mainView.scrollView.height_sd) animated:YES];
-    };
-    
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(teacherInfo)];
-    _mainView.infoView.teacherHeadImage.userInteractionEnabled = YES;
-    [_mainView.infoView.teacherHeadImage addGestureRecognizer:tap];
-    
-}
-
-/**加载教师详情页*/
-- (void)teacherInfo{
-    
-    TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:_teacher.teacherID];
-    [self.navigationController pushViewController:controller animated:YES];
-    
-}
-
+#pragma mark- 控制层点击事件
 /* 控制层点击事件*/
 - (void)onClickMediaControl:(id)sender{
     NSLog(@"click mediacontrol");
@@ -783,40 +643,12 @@ typedef enum : NSUInteger {
 
 /* 控制层出现,不带动画*/
 - (void)showControlOverlay{
-    
     self.controlOverlay.hidden = NO;
-    
 }
 
 /* 控制层隐藏 不带动画*/
 - (void)hideControlOverlay{
     self.controlOverlay.hidden = YES;
-    
-    _classList.hidden = YES;
-}
-
-
-/**添加一系列监听*/
-- (void)addNotifications{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerDidPreparedToPlay:) name:NELivePlayerDidPreparedToPlayNotification object:_videoPlayer];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NeLivePlayerloadStateChanged:) name:NELivePlayerLoadStateChangedNotification object:_videoPlayer];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerPlayBackFinished:) name:NELivePlayerPlaybackFinishedNotification  object:_videoPlayer];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerFirstVideoDisplayed:)name:NELivePlayerFirstVideoDisplayedNotification object:_videoPlayer];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerFirstAudioDisplayed:) name:NELivePlayerFirstAudioDisplayedNotification object:_videoPlayer];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerReleaseSuccess:) name:NELivePlayerReleaseSueecssNotification object:_videoPlayer];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerVideoParseError:) name:NELivePlayerVideoParseErrorNotification object:_videoPlayer];
-    
-    /* 变为全屏后的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnFullScreen:) name:@"FullScreen" object:nil];
-    
-    /* 切换回竖屏后的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnDownFullScreen:) name:@"TurnDownFullScreen" object:nil];
 }
 - (void)NELivePlayerDidPreparedToPlay:(NSNotification*)notification
 {
@@ -920,7 +752,7 @@ typedef enum : NSUInteger {
         self.scaleModeBtn.titleLabel.tag = 0;
         
         /* 显示segment和scrollview*/
-        [self showSegmentAndScrollViews];
+        //[self showSegmentAndScrollViews];
         
         [[NSNotificationCenter defaultCenter]postNotificationName:@"TurnDownFullScreen" object:nil];
         
@@ -934,7 +766,7 @@ typedef enum : NSUInteger {
         self.scaleModeBtn.titleLabel.tag = 1;
         
         /* 切换到横屏 隐藏segment和scrollview*/
-        [self hideSegementAndScrollViews];
+       // [self hideSegementAndScrollViews];
         /* 全屏状态  发送消息通知*/
         [[NSNotificationCenter defaultCenter]postNotificationName:@"FullScreen" object:nil];
         
@@ -942,33 +774,13 @@ typedef enum : NSUInteger {
     }
 }
 
-#pragma mark- 隐藏segment和滑动视图
-- (void)hideSegementAndScrollViews{
-    
-    _mainView.segmentControl.hidden = YES;
-    _mainView.scrollView.hidden = YES;
-    
-}
-
-#pragma mark- 显示segment和滑动视图
-- (void)showSegmentAndScrollViews{
-    
-    _mainView.segmentControl.hidden = NO;
-    _mainView.scrollView.hidden = NO;
-    
-    [_mainView.segmentControl updateLayout];
-    [_mainView.scrollView updateLayout];
-    _mainView.scrollView.contentSize = CGSizeMake(self.view.width_sd*4, _mainView.scrollView.height_sd);
-}
-
-
 #pragma mark- 变成全屏后的监听
 - (void)turnFullScreen:(NSNotification *)notification{
     
     [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:5];
     
     isFullScreen = YES;
- 
+    
     /* 全屏页面布局的变化*/
     _scaleModeBtn.hidden = YES;
     [self playerViewTurnFullScreenLayout];
@@ -985,17 +797,12 @@ typedef enum : NSUInteger {
     
     [self.view updateLayout];
     [self.view layoutIfNeeded];
-    [_mainView updateLayout];
-    [_mainView.scrollView updateLayout];
-    
+
     [self playerViewTurnPotraitScreenLayout];
     _scaleModeBtn.hidden = NO;
-    [self.mainView.scrollView scrollRectToVisible:CGRectMake(self.mainView.segmentControl.selectedSegmentIndex * self.view.width_sd, 0, self.view.width_sd, self.view.height_sd-64-49) animated:NO];
-    
+   
     [self mediaControlTurnDownFullScreenModeWithMainView:_playerView];
-    
-    [_mainView.classVideoListTableView reloadData];
-    
+ 
 }
 
 /**播放器变为全屏布局*/
@@ -1029,7 +836,6 @@ typedef enum : NSUInteger {
     
     _mediaControl.hidden  = NO;
     _fileName.hidden = NO;
-    _classListBtn.hidden = NO;
     [self.view bringSubviewToFront:_mediaControl];
     
     
@@ -1050,14 +856,14 @@ typedef enum : NSUInteger {
     
     _resolutionBtn.hidden = NO;
     
-   
+    
 }
 
 /* 控制层切回竖屏模式的方法*/
 - (void)mediaControlTurnDownFullScreenModeWithMainView:(__kindof UIView *)playerView{
-
+    
     _resolutionBtn.hidden  = YES;
-    _classListBtn.hidden = YES;
+    
     _mediaControl.sd_resetLayout
     .topSpaceToView(self.view,0)
     .leftEqualToView(self.view)
@@ -1084,163 +890,6 @@ typedef enum : NSUInteger {
 
 
 
-#pragma mark- UITableView datasource
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    return _classListArray.count;
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    UITableViewCell *tableCell;
-    
-    if (tableView.tag == 1) {
-        
-        /* cell的重用队列*/
-        static NSString *cellIdenfier = @"cell";
-        VideoClassProgressTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-        if (cell==nil) {
-            cell=[[VideoClassProgressTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-        }
-        
-        if (_classListArray.count>indexPath.row) {
-            cell.numbers.text = [NSString stringWithFormat:@"%ld",indexPath.row];
-            cell.model = _classListArray[indexPath.row];
-        }
-        
-        if (indexPath == _indexPath) {
-            cell.className.textColor = NAVIGATIONRED;
-            _fileName.text = cell.className.text;
-        }
-        tableCell = cell;
-    }
-    
-    if (tableView.tag == 3) {
-        /* cell的重用队列*/
-        static NSString *cellIdenfier = @"tableCell";
-        VideoClassFullScreenListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-        if (cell==nil) {
-            cell=[[VideoClassFullScreenListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"tableCell"];
-        }
-        
-        if (_classListArray.count>indexPath.row) {
-            cell.numbers.text = [NSString stringWithFormat:@"%ld",indexPath.row+1];
-            cell.model = _classListArray[indexPath.row];
-        }
-        
-        if (indexPath == _indexPath) {
-            cell.className.textColor = NAVIGATIONRED;
-        }
-        
-        tableCell = cell;
-    }
-    
-    
-    return  tableCell;
-}
-
-
-#pragma mark- UITableView delegate
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    return [tableView cellHeightForIndexPath:indexPath cellContentViewWidth:self.view.width_sd tableView:tableView];
-}
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    VideoClassProgressTableViewCell *cell;
-    
-    if (tableView.tag ==1) {
-        VideoClassProgressTableViewCell *classcell = [tableView cellForRowAtIndexPath:indexPath];
-        for (VideoClassProgressTableViewCell *cells in _mainView.classVideoListTableView.visibleCells) {
-            cells.className.textColor = [UIColor blackColor];
-        }
-        classcell.className.textColor = NAVIGATIONRED;
-        
-        cell = classcell;
-        
-    }else if (tableView.tag == 3){
-        VideoClassProgressTableViewCell *classcell = [tableView cellForRowAtIndexPath:indexPath];
-        for (VideoClassProgressTableViewCell *cells in _classList.visibleCells) {
-            cells.className.textColor = [UIColor whiteColor];
-        }
-        classcell.className.textColor = NAVIGATIONRED;
-        
-        cell = classcell;
-    }
-    
-    
-    [_videoPlayer shutdown];
-    [_videoPlayer.view removeFromSuperview];
-    _videoPlayer = nil;
-    
-    _videoPlayer = [[NELivePlayerController alloc]initWithContentURL:[NSURL URLWithString:cell.model.video.name_url]];
-
-    _videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    [_videoPlayer setScalingMode:NELPMovieScalingModeAspectFit];
-    
-    /* 播放器的设置*/
-    [_videoPlayer isLogToFile:YES];
-    [_videoPlayer setBufferStrategy:NELPLowDelay]; //直播低延时模式
-    [_videoPlayer setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
-    [_videoPlayer setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
-    [_videoPlayer setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
-    [_videoPlayer setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
-    [_videoPlayer prepareToPlay]; //初始化视频文件
-    
-    [_playerView addSubview:_videoPlayer.view];
-    
-    _videoPlayer.view.sd_layout
-    .leftSpaceToView(_playerView, 0)
-    .topSpaceToView(_playerView, 0)
-    .bottomSpaceToView(_playerView, 0)
-    .rightSpaceToView(_playerView, 0);
-    [_videoPlayer.view updateLayout];
-    
-    _fileName.text = cell.model.name;
-    
-}
-
-
-#pragma mark- UIScrollView delegate
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    if (scrollView.tag == 2) {
-        CGFloat pageWidth = scrollView.frame.size.width;
-        NSInteger page = scrollView.contentOffset.x / pageWidth;
-        [_mainView.segmentControl setSelectedSegmentIndex:page animated:YES];
-    }
-}
-
-
-
-//返回按钮的回调
-- (void)zf_playerBackAction{
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    
-}
-
-//切换清晰度的回调
-- (void)zf_playerChooseSharpness:(UIButton *)sender{
-    
-    if ([sender.titleLabel.text isEqualToString:@"标清"]) {
-        //切换至标清播放源
-    }else if ([sender.titleLabel.text isEqualToString:@"高清"]){
-        //切换至高清播放源
-    }
-}
-
-//点击课程列表
-- (void)zf_playerDownload:(NSString *)url{
-    
-}
-
--(void)dealloc{
-    
-    //    [self.videoPlayer removeObserver:self forKeyPath:@"isFullScreen"];
-}
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -1248,13 +897,13 @@ typedef enum : NSUInteger {
 }
 
 /*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end

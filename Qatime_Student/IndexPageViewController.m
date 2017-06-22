@@ -48,6 +48,8 @@
 #import "SearchTipsViewController.h"
 #import "AllTeachersViewController.h"
 
+#import "ReplayViewController.h"
+
 
 
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate,LCTabBarDelegate,UITableViewDelegate,UITableViewDataSource>{
@@ -396,7 +398,11 @@
 /**精彩回放列表*/
 - (void)review{
     
-    [self HUDStopWithTitle:@"正在开发中,敬请期待"];
+//    [self HUDStopWithTitle:@"正在开发中,敬请期待"];
+    
+    ReplayViewController *controller = [[ReplayViewController alloc]init];
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
     
 }
 

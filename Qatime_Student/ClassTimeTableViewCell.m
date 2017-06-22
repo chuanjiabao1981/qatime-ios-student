@@ -25,6 +25,7 @@
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
 //        self.contentView.backgroundColor = BACKGROUNDGRAY;
+        
         /* contentview的裁边*/
         _content = [[UIView alloc]init];
         [self.contentView addSubview:_content];
@@ -50,6 +51,13 @@
         .rightSpaceToView(_classImage, 0)
         .bottomSpaceToView(_classImage, 0)
         .autoHeightRatio(0);
+        
+        /**试听状态*/
+        _isTaste = [[UILabel alloc]init];
+        _isTaste.backgroundColor = TITLECOLOR;
+        _isTaste.text = @" 试听 ";
+        _isTaste.textColor = [UIColor whiteColor];
+        
         
         /* 课程名称*/
         _name = [[UILabel alloc]init];
@@ -97,7 +105,7 @@
          [_enterButton setTitle:@"进入" forState:UIControlStateNormal];
         
         /* 所有控件的布局*/
-        [_content sd_addSubviews:@[_classImage,_name,_className,_grade,_subject,line,_teacherName,_status,_date,_enterButton]];
+        [_content sd_addSubviews:@[_classImage,_isTaste,_name,_className,_grade,_subject,line,_teacherName,_status,_date,_enterButton]];
         
         /* 课程图片布局*/
         _classImage.sd_layout
@@ -106,12 +114,17 @@
         .leftSpaceToView(_content,0)
         .autoWidthRatio(1.0);
         
-        /* 课程名称布局*/
+        /**试听状态*/
+        _isTaste.sd_layout
+        .leftSpaceToView(_classImage, 10*ScrenScale)
+        .topSpaceToView(_content, 5*ScrenScale)
+        .autoHeightRatio(0);
+        [_isTaste setSingleLineAutoResizeWithMaxWidth:200];
         
+        /* 课程名称布局*/
         _name.sd_layout
-        .leftSpaceToView(_classImage,10*ScrenScale)
+        .leftSpaceToView(_isTaste,2*ScrenScale)
         .topSpaceToView(_content,5*ScrenScale);
-//        .autoHeightRatio(0);
         [_name setSingleLineAutoResizeWithMaxWidth:100];
         
         _className.sd_layout
@@ -225,8 +238,54 @@
         _type.text = @"视频课";
     }
 
-
 }
+
+/**是否显示试听状态*/
+- (void)showTasteState:(BOOL)show{
+    
+    if (show == YES) {
+        
+        _isTaste.hidden = NO;
+        
+        [_isTaste sd_clearAutoLayoutSettings];
+        _isTaste.sd_layout
+        .leftSpaceToView(_classImage, 10*ScrenScale)
+        .topSpaceToView(_content, 5*ScrenScale)
+        .autoHeightRatio(0);
+        [_isTaste setSingleLineAutoResizeWithMaxWidth:200];
+        
+        [_name sd_clearAutoLayoutSettings];
+        _name.sd_layout
+        .leftSpaceToView(_isTaste,2*ScrenScale)
+        .topSpaceToView(_content,5*ScrenScale);
+        [_name setSingleLineAutoResizeWithMaxWidth:100];
+        
+        [_isTaste updateLayout];
+        [_name updateLayout];
+        
+    }else{
+        
+        _isTaste.hidden = YES;
+        [_isTaste sd_clearAutoLayoutSettings];
+        
+        [_name sd_clearAutoLayoutSettings];
+        _name.sd_layout
+        .leftSpaceToView(_classImage,10*ScrenScale)
+        .topSpaceToView(_content,5*ScrenScale);
+        [_name setSingleLineAutoResizeWithMaxWidth:100];
+        
+        [_name updateLayout];
+        
+        
+    }
+    
+    
+}
+
+
+
+
+
 
 //-(void)setEnterButtonHidden:(BOOL)enterButtonHidden{
 //    

@@ -47,10 +47,10 @@
 //#define SCREENWIDTH [UIScreen mainScreen].bounce.size.width
 
 /* 背景灰色*/
-#define BACKGROUNDGRAY [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0]
+#define BACKGROUNDGRAY [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1.0]
 
 /* 分割线灰色*/
-#define SEPERATELINECOLOR [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0]
+#define SEPERATELINECOLOR [UIColor colorWithRed:0.96 green:0.96 blue:0.96 alpha:1.0]
 
 /* 分割线灰色2*/
 #define SEPERATELINECOLOR_2 [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0]

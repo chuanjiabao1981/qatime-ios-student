@@ -83,12 +83,7 @@
         
         
         [self setupAutoHeightWithBottomView:_versionLabel bottomMargin:20];
-//        [_menuTableView updateLayout];
-        
-//        if (_menuTableView.bottom_sd>self.bottom_sd) {
-//            
-//            self.contentSize = CGSizeMake(self.width_sd, _menuTableView.bottom_sd);
-//        }
+
         
     }
     return self;
