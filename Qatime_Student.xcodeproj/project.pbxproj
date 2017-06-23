@@ -694,6 +694,7 @@
 		54FCBAF61DD5D4500094BF58 /* LiveClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAF51DD5D4500094BF58 /* LiveClassInfo.m */; };
 		54FCBAF91DD5DCE50094BF58 /* Notice.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAF81DD5DCE50094BF58 /* Notice.m */; };
 		54FCBAFC1DD5DCEE0094BF58 /* Members.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FCBAFB1DD5DCEE0094BF58 /* Members.m */; };
+		54FFF41E1EFCF9410065D80C /* ReplayLessonInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FFF41D1EFCF9410065D80C /* ReplayLessonInfo.m */; };
 		F249EFD4707A4E4121B5BF4D /* libPods-Qatime_Student.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0908EB8F55388D2CA5802D18 /* libPods-Qatime_Student.a */; };
 /* End PBXBuildFile section */
 
@@ -2111,6 +2112,8 @@
 		54FCBAF81DD5DCE50094BF58 /* Notice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notice.m; sourceTree = "<group>"; };
 		54FCBAFA1DD5DCEE0094BF58 /* Members.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Members.h; sourceTree = "<group>"; };
 		54FCBAFB1DD5DCEE0094BF58 /* Members.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Members.m; sourceTree = "<group>"; };
+		54FFF41C1EFCF9410065D80C /* ReplayLessonInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayLessonInfo.h; sourceTree = "<group>"; };
+		54FFF41D1EFCF9410065D80C /* ReplayLessonInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplayLessonInfo.m; sourceTree = "<group>"; };
 		8E753843DEA9CDD394DEEC1C /* Pods-Qatime_Student.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qatime_Student.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Qatime_Student/Pods-Qatime_Student.debug.xcconfig"; sourceTree = "<group>"; };
 		DCA0893E028DF6D78D3599A3 /* Pods-Qatime_Student.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Qatime_Student.release.xcconfig"; path = "Pods/Target Support Files/Pods-Qatime_Student/Pods-Qatime_Student.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -3159,6 +3162,7 @@
 		547210321EFBA22D00EA791C /* 精彩回放播放页面 */ = {
 			isa = PBXGroup;
 			children = (
+				54FFF41B1EFCF92A0065D80C /* Model */,
 				54D86ED91EFBAD760059932C /* View */,
 				54D86ED81EFBAD740059932C /* Controller */,
 			);
@@ -6406,6 +6410,15 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
+		54FFF41B1EFCF92A0065D80C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54FFF41C1EFCF9410065D80C /* ReplayLessonInfo.h */,
+				54FFF41D1EFCF9410065D80C /* ReplayLessonInfo.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		61F0B31770950FCD751F0794 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -7003,6 +7016,7 @@
 				544E0CE11DD090A700884F31 /* RecommandClassCollectionViewCell.m in Sources */,
 				54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */,
 				549AE7621E013DAC001DD2ED /* BindingMailInfoView.m in Sources */,
+				54FFF41E1EFCF9410065D80C /* ReplayLessonInfo.m in Sources */,
 				54AC03EE1E8938E100817767 /* NIMMessageCellMaker.m in Sources */,
 				54E00B151E5AEAD60056C74F /* TranslateViewController.m in Sources */,
 				54AB63D11EF29E1A0022E573 /* SearchingTeachersTableViewCell.m in Sources */,
@@ -7438,7 +7452,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Qatime_Student;
@@ -7483,7 +7497,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = Qatime_Student;
 				SDKROOT = iphoneos;

@@ -10,6 +10,8 @@
 #import "NELivePlayerController.h"
 #import "NELivePlayerControl.h"
 #import "ReplayLesson.h"
+#import "ReplayLessonsView.h"
+
 @interface ReplayLessonsViewController : UIViewController
 
 /**视频播放器*/
@@ -19,7 +21,7 @@
 @property (nonatomic, strong) NELivePlayerControl * _Nullable controlView ;
 
 /**主视图*/
-@property (nonatomic, strong) UIView * _Nonnull mainView ;
+@property (nonatomic, strong) ReplayLessonsView * _Nonnull mainView ;
 
 
 -(instancetype _Nullable)initWithLesson:(ReplayLesson *_Nullable)replayLesson;

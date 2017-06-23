@@ -144,6 +144,7 @@ typedef enum : NSUInteger {
             
             for (NSDictionary *dics in dic[@"data"]) {
                 ReplayLesson *mod = [ReplayLesson yy_modelWithJSON:dics];
+                mod.classID = dics[@"id"];
                 mod.live_studio_lesson = [Live_studio_lesson yy_modelWithJSON:dics[@"live_studio_lesson"]];
                 [_replaysArr addObject:mod];
             }

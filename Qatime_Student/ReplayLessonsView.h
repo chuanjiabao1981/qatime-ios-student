@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ReplayLessonInfo.h"
+
 
 @interface ReplayLessonsView : UIView
 
@@ -24,5 +26,7 @@
 @property (nonatomic, strong) UILabel *duration ;
 /**回放次数*/
 @property (nonatomic, strong) UILabel *replayTimes ;
+
+@property (nonatomic, strong) ReplayLessonInfo *model;
 
 @end

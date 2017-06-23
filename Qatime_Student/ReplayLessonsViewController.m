@@ -9,6 +9,9 @@
 #import "ReplayLessonsViewController.h"
 #import "UIViewController+HUD.h"
 #import "UIControl+RemoveTarget.h"
+#import "UIViewController+AFHTTP.h"
+#import "ReplayLessonInfo.h"
+#import "YYModel.h"
 
 //屏幕模式
 typedef enum : NSUInteger {
@@ -36,6 +39,9 @@ typedef enum : NSUInteger {
     
     /**一个对象*/
     ReplayLesson *_replayLesson;
+    
+    /** 课程详情对象 */
+    ReplayLessonInfo *_replayLessonInfo;
 }
 
 /**播放器相关的属性*/
@@ -90,7 +96,7 @@ typedef enum : NSUInteger {
     [super viewDidLoad];
     
     //加载播放器
-    [self setupVideoPlayerWithURL:[NSURL URLWithString:@"http://baobab.wdjcdn.com/1456117847747a_x264.mp4"]];
+    [self setupVideoPlayerWithURL:[NSURL URLWithString:_replayLesson.video_url]];
     
     //加载播放器的监听
     [self addNotifications];
@@ -108,7 +114,38 @@ typedef enum : NSUInteger {
 /**加载主视图*/
 - (void)setupMainView{
     
-    _mainView = [[UIView alloc]init];
+    _mainView = [[ReplayLessonsView alloc]init];
+    [self.view addSubview:_mainView];
+    _mainView.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .topSpaceToView(_playerView, 0)
+    .bottomSpaceToView(self.view, 0);
+    
+}
+
+/** 请求回放信息 */
+- (void)requestReplyInfo{
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/home/replays/%@/replay",Request_Header,_replayLesson.classID] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            //有数据
+            
+            ReplayLessonInfo *mod = [ReplayLessonInfo yy_modelWithJSON:dic[@"data"]];
+            mod.classID =dic[@"data"][@"id"];
+            if (!_mainView) {
+                [self setupMainView];
+            }
+            _mainView.model = mod;
+            
+        }else{
+            
+        }
+        
+    } failure:^(id  _Nullable erros) {
+        [self HUDStopWithTitle:@"服务器正忙,加载详情失败"];
+    }];
     
     
 }
@@ -127,14 +164,14 @@ typedef enum : NSUInteger {
         [_videoPlayer setBufferStrategy:NELPAntiJitter]; //本地视频和点播的速率解析
         [_videoPlayer setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
         [_videoPlayer setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
-        [_videoPlayer setHardwareDecoder:YES]; //设置解码模式，是否开启硬件解码
+        [_videoPlayer setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
         [_videoPlayer setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
         [_videoPlayer prepareToPlay]; //初始化视频文件
         
-        //if (!_playerView) {
+        if (!_playerView) {
             
             [self setupVideoPlayerView];
-        //}
+        }
     }
     
 }
@@ -182,7 +219,9 @@ typedef enum : NSUInteger {
     .bottomEqualToView(_playerView);
     
     [self setupControl];
-    
+    //请求回放信息
+    [self requestReplyInfo];
+    //加载主视图
     [self setupMainView];
     
     /**播放器初始化*/
@@ -198,7 +237,7 @@ typedef enum : NSUInteger {
             
         }else{
             //再次加载
-            [self setupVideoPlayerWithURL:[NSURL URLWithString:@"http://baobab.wdjcdn.com/1456117847747a_x264.mp4"]];
+            [self setupVideoPlayerWithURL:[NSURL URLWithString:_replayLesson.video_url]];
             
         }
         
