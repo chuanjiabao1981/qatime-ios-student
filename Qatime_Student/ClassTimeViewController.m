@@ -398,7 +398,7 @@ typedef enum : NSUInteger {
             
             cell.model =_unclosedArr[indexPath.row];
             [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-            /* 不能进入观看*/
+            /** 不能进入观看*/
             
             if (cell.canUse == NO){
                 cell.enterButton.hidden = YES;
