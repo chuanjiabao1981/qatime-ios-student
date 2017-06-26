@@ -3,3 +3,4 @@
 *.psd filter=lfs diff=lfs merge=lfs -text
 libNELivePlayer.a filter=lfs diff=lfs merge=lfs -text
 /Users/yzshin/Documents/帷幄通达/qatime-ios-student/Qatime_Student/LivePlayer_iOS_SDK/libs/libNELivePlayer.a filter=lfs diff=lfs merge=lfs -text
+Qatime_Student/LivePlayer_iOS_SDK/libs/libNELivePlayer.a filter=lfs diff=lfs merge=lfs -text
