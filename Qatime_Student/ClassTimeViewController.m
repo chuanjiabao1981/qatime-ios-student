@@ -406,7 +406,7 @@ typedef enum : NSUInteger {
                 cell.enterButton.hidden = NO;
             }
             
-//            cell showTasteState:cell.model.
+            [cell showTasteState:NO];
             
             cell.enterButton.tag = indexPath.row+10;
             [cell.enterButton addTarget:self action:@selector(enterLive:) forControlEvents:UIControlEventTouchUpInside];
@@ -426,7 +426,7 @@ typedef enum : NSUInteger {
             [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             cell.model =_closedArr[indexPath.row];
             cell.enterButton.hidden = YES;
-            
+            [cell showTasteState:NO];
         }
         
         tableCell = cell;

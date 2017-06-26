@@ -55,6 +55,7 @@
         /**试听状态*/
         _isTaste = [[UILabel alloc]init];
         _isTaste.backgroundColor = TITLECOLOR;
+        _isTaste.font = TEXT_FONTSIZE;
         _isTaste.text = @" 试听 ";
         _isTaste.textColor = [UIColor whiteColor];
         
@@ -123,7 +124,7 @@
         
         /* 课程名称布局*/
         _name.sd_layout
-        .leftSpaceToView(_isTaste,2*ScrenScale)
+        .leftSpaceToView(_classImage,2*ScrenScale)
         .topSpaceToView(_content,5*ScrenScale);
         [_name setSingleLineAutoResizeWithMaxWidth:100];
         
@@ -244,62 +245,38 @@
 - (void)showTasteState:(BOOL)show{
     
     if (show == YES) {
-        
         _isTaste.hidden = NO;
         
-        [_isTaste sd_clearAutoLayoutSettings];
-        _isTaste.sd_layout
-        .leftSpaceToView(_classImage, 10*ScrenScale)
-        .topSpaceToView(_content, 5*ScrenScale)
-        .autoHeightRatio(0);
-        [_isTaste setSingleLineAutoResizeWithMaxWidth:200];
-        
-        [_name sd_clearAutoLayoutSettings];
+       
         _name.sd_layout
-        .leftSpaceToView(_isTaste,2*ScrenScale)
-        .topSpaceToView(_content,5*ScrenScale);
-        [_name setSingleLineAutoResizeWithMaxWidth:100];
-        
-        [_isTaste updateLayout];
+        .leftSpaceToView(_isTaste, 2*ScrenScale);
         [_name updateLayout];
+        _grade.sd_layout
+        .leftEqualToView(_isTaste);
+        [_grade updateLayout];
+        _date.sd_layout
+        .leftEqualToView(_isTaste);
+        [_date updateLayout];
         
     }else{
         
         _isTaste.hidden = YES;
-        [_isTaste sd_clearAutoLayoutSettings];
-        
-        [_name sd_clearAutoLayoutSettings];
         _name.sd_layout
-        .leftSpaceToView(_classImage,10*ScrenScale)
-        .topSpaceToView(_content,5*ScrenScale);
-        [_name setSingleLineAutoResizeWithMaxWidth:100];
-        
+        .leftSpaceToView(_classImage, 10*ScrenScale);
         [_name updateLayout];
+        
+        _grade.sd_layout
+        .leftEqualToView(_name);
+        [_grade updateLayout];
+        _date.sd_layout
+        .leftEqualToView(_name);
+        [_date updateLayout];
         
         
     }
     
     
 }
-
-
-
-
-
-
-//-(void)setEnterButtonHidden:(BOOL)enterButtonHidden{
-//    
-//    _enterButtonHidden = enterButtonHidden;
-//
-//    if (_enterButtonHidden ==YES) {
-//        
-//        [self.enterButton setHidden:YES];
-//    }else{
-//        [self.enterButton setHidden:NO];
-//    }
-//    
-//}
-
 
 
 - (void)awakeFromNib {
