@@ -221,6 +221,8 @@
 		5471C7FF1E8F87ED0098E509 /* TeachersGroupTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5471C7FE1E8F87ED0098E509 /* TeachersGroupTableView.m */; };
 		5471C8021E8F87FD0098E509 /* ClassListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5471C8011E8F87FD0098E509 /* ClassListTableView.m */; };
 		547210351EFBA24B00EA791C /* ReplayLessonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547210341EFBA24B00EA791C /* ReplayLessonsViewController.m */; };
+		547610271F010B85007775B5 /* AmountExplainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547610261F010B85007775B5 /* AmountExplainViewController.swift */; };
+		547610291F0121DC007775B5 /* explain.html in Resources */ = {isa = PBXBuildFile; fileRef = 547610281F0121DC007775B5 /* explain.html */; };
 		547A7EF71DD411DB00F1282B /* TeachersPublic_Classes.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EF61DD411DB00F1282B /* TeachersPublic_Classes.m */; };
 		547A7EFD1DD416F100F1282B /* ListenAndBuyTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EFC1DD416F100F1282B /* ListenAndBuyTabBar.m */; };
 		547AD51E1E4D6A7000239907 /* UUAVAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 547AD51D1E4D6A7000239907 /* UUAVAudioPlayer.m */; };
@@ -1122,6 +1124,8 @@
 		547389FF1DD9A3FA00A50CCC /* libevent.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libevent.a; path = Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/Libs/libevent.a; sourceTree = "<group>"; };
 		54738A001DD9A3FA00A50CCC /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/Libs/libssl.a; sourceTree = "<group>"; };
 		54738A051DD9A40700A50CCC /* libNIMSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNIMSDK.a; path = Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/libNIMSDK.a; sourceTree = "<group>"; };
+		547610261F010B85007775B5 /* AmountExplainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmountExplainViewController.swift; sourceTree = "<group>"; };
+		547610281F0121DC007775B5 /* explain.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = explain.html; sourceTree = "<group>"; };
 		547A7EF51DD411DB00F1282B /* TeachersPublic_Classes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeachersPublic_Classes.h; sourceTree = "<group>"; };
 		547A7EF61DD411DB00F1282B /* TeachersPublic_Classes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeachersPublic_Classes.m; sourceTree = "<group>"; };
 		547A7EFB1DD416F100F1282B /* ListenAndBuyTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListenAndBuyTabBar.h; sourceTree = "<group>"; };
@@ -2213,6 +2217,7 @@
 		5413D24B1DF7B56700A8FDEC /* 我的钱包主页 */ = {
 			isa = PBXGroup;
 			children = (
+				547610201F010A56007775B5 /* 说明 */,
 				54F3BA281DFC7076003998D0 /* 提现页面 */,
 				54B4C1821DF8180A00E31794 /* 充值页面 */,
 				54AA307D1DF950A3009E0D04 /* 充值结果查询页面 */,
@@ -3180,6 +3185,15 @@
 			name = cell;
 			sourceTree = "<group>";
 		};
+		547610201F010A56007775B5 /* 说明 */ = {
+			isa = PBXGroup;
+			children = (
+				547610281F0121DC007775B5 /* explain.html */,
+				547610261F010B85007775B5 /* AmountExplainViewController.swift */,
+			);
+			name = "说明";
+			sourceTree = "<group>";
+		};
 		547A7EF81DD4128C00F1282B /* 教师公开页 */ = {
 			isa = PBXGroup;
 			children = (
@@ -3664,11 +3678,11 @@
 		54A153A81DC6F09D0070B508 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				54B45D171E5C34410027F958 /* Qatime_Student-Bridging-Header.h */,
 				545074691EE005EA0012A383 /* SAMKeyChain */,
 				54EBCFF11EB2E5930011344D /* AuthenCode */,
 				543BCAF21E78F3F600AD6721 /* SDAutoLayout */,
 				544B61EF1E9647DB00D7B160 /* LCActionSheet */,
-				54B45D171E5C34410027F958 /* Qatime_Student-Bridging-Header.h */,
 				543BCB121E794AE900AD6721 /* SnailQuickMaskPopups */,
 				54B45D081E5C30670027F958 /* JTSegmentControl */,
 				54F32F741E373142000F8926 /* Reachability */,
@@ -6654,6 +6668,7 @@
 				548328CE1DDC6F360053AB29 /* chat_animation2.png in Resources */,
 				54DBA4AD1DE4423300A67A90 /* emotionToText.plist in Resources */,
 				548328CD1DDC6F360053AB29 /* chat_animation1.png in Resources */,
+				547610291F0121DC007775B5 /* explain.html in Resources */,
 				548328D71DDC6F360053AB29 /* Chat_take_picture.png in Resources */,
 				548328D11DDC6F360053AB29 /* chat_animation_white2.png in Resources */,
 				5493D4C91E0BE1050085A39E /* CityData.plist in Resources */,
@@ -7063,6 +7078,7 @@
 				549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */,
 				54AA307C1DF9427D009E0D04 /* NSString+TimeStamp.m in Sources */,
 				54AC02B21E892FD100817767 /* UIViewController+Swizzling.m in Sources */,
+				547610271F010B85007775B5 /* AmountExplainViewController.swift in Sources */,
 				543BCB111E7932AF00AD6721 /* ClassFilterView.m in Sources */,
 				54AC02251E892C5300817767 /* NTESWhiteboardCommand.m in Sources */,
 				54AB63CA1EF25DE00022E573 /* SearchViewController.m in Sources */,

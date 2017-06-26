@@ -16,3 +16,5 @@
 #import "TutoriumList.h"
 #import "SDAutoLayout.h"
 #import "UIImageView+WebCache.h"
+#import "NavigationBar.h"
+

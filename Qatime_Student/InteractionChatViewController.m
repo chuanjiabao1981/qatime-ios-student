@@ -52,7 +52,7 @@
 #import "TutoriumList.h"
 
 
-@interface InteractionChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelgate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate>{
+@interface InteractionChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelgate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate>{
     
     NSString *_token;
     NSString *_idNumber;
@@ -98,8 +98,6 @@
     self = [super init];
     if (self) {
         
-//        _tutoriumInfo = tutorium;
-        
         _chat_teamID  = chatTeamID;
         
     }
@@ -129,13 +127,7 @@
     [self.chatModel populateRandomDataSource];
     
     
-    /* 强制自动登录一次*/
-    [[NIMSDK sharedSDK].loginManager addDelegate:self];
-    NIMAutoLoginData *loginData = [[NIMAutoLoginData alloc]init];
-    loginData.account = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"accid"];
-    loginData.token =[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"token"];
-    [[NIMSDK sharedSDK].loginManager autoLogin:loginData];
-    
+    //千万别登录云信
     [[NIMSDK sharedSDK].chatManager addDelegate:self];
     
     NSLog(@"聊天未读消息%ld条",[[[NIMSDK sharedSDK]conversationManager] allUnreadCount]);
@@ -388,17 +380,7 @@
     
 }
 
-/* 再次强制登录后的回调*/
--(void)onLogin:(NIMLoginStep)step{
-    
-    if (NIMLoginStepLoginOK) {
-        //登录成功...
-        //然后干点什么?
-        
-        
-    }
-    
-}
+
 
 
 /* 加载本地数据*/
@@ -770,7 +752,6 @@
         case NIMMessageDeliveryStateDeliveried:{
             
             
-            
         }
             break;
     }
@@ -988,7 +969,7 @@
                     reMessage.text = failMsg.message.strContent;
                     reMessage.messageObject = NIMMessageTypeText;
                     reMessage.apnsContent = @"发来了一条消息";
-                    [[NIMSDK sharedSDK].chatManager addDelegate:self];
+//                    [[NIMSDK sharedSDK].chatManager addDelegate:self];
                     
                 }
                     break;
@@ -1012,7 +993,7 @@
                     break;
             }
             
-            [[[NIMSDK sharedSDK]chatManager]addDelegate:self];
+//            [[[NIMSDK sharedSDK]chatManager]addDelegate:self];
             [[[NIMSDK sharedSDK]chatManager]resendMessage:reMessage error:nil];
             
             sender.hidden = YES;
@@ -1141,7 +1122,7 @@
         text_message.messageObject = NIMMessageTypeText;
         text_message.apnsContent = @"发来了一条消息";
         
-        [[NIMSDK sharedSDK].chatManager addDelegate:self];
+//        [[NIMSDK sharedSDK].chatManager addDelegate:self];
         [[NIMSDK sharedSDK].chatManager sendMessage:text_message toSession:_session error:nil];
         
         //发送完消息后,再在本地制作一条消息,用来保存这个消息的id
@@ -1185,7 +1166,7 @@
     
     
     //发送消息
-    [[NIMSDK sharedSDK].chatManager addDelegate:self];
+//    [[NIMSDK sharedSDK].chatManager addDelegate:self];
     [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
     
     
@@ -1213,7 +1194,7 @@
     [self dealTheFunctionData:dic andMessage:message];
     
     /* 发送一条语音消息*/
-    [[NIMSDK sharedSDK].chatManager addDelegate:self];
+//    [[NIMSDK sharedSDK].chatManager addDelegate:self];
     [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
     
     

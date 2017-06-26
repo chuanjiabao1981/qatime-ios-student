@@ -194,6 +194,26 @@ NTES_FORBID_INTERACTIVE_POP
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
+    
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
+    [[NTESMeetingNetCallManager defaultManager]leaveMeeting];
+    [[NTESMeetingRTSManager defaultManager]leaveCurrentConference];
+}
+
+
+- (void)viewDidDisappear:(BOOL)animated{
+    
+//    [[NIMAVChatSDK sharedSDK].netCallManager setBypassStreamingEnabled:NO];
+    
+    
+    
+}
+
+- (void)onLeft:(NSString *)name error:(NSError *)error{
+    
+}
+- (void)onUserLeft:(NSString *)uid conference:(NSString *)name{
+    
 }
 
 - (void)viewDidLoad {
@@ -677,7 +697,6 @@ NTES_FORBID_INTERACTIVE_POP
         
     }];
 
-    
 }
 
 
@@ -697,7 +716,6 @@ NTES_FORBID_INTERACTIVE_POP
         _currentCamera = BackCamera;
         
     }
-    
     
 }
 
@@ -825,11 +843,7 @@ NTES_FORBID_INTERACTIVE_POP
         [self performSelector:@selector(controlViewHide) withObject:nil afterDelay:0.5];
     }
     
-    
-    
 }
-
-
 
 
 /**隐藏状态栏*/
@@ -849,7 +863,6 @@ NTES_FORBID_INTERACTIVE_POP
         
     }];
     [self performSelector:@selector(controlViewHide) withObject:nil afterDelay:0.5];
-    
     
     
 }
@@ -907,28 +920,22 @@ NTES_FORBID_INTERACTIVE_POP
         }];
     }
     
-    
-    
 }
 
 - (void)returnLastPage{
     
-    [[NIMAVChatSDK sharedSDK].netCallManager setBypassStreamingEnabled:NO];
-    [[NTESMeetingRolesManager defaultManager] setMyAudio:NO];
-    [[NTESMeetingRolesManager defaultManager] setMyVideo:NO];
-    [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:NO];
-
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 
 - (void)dealloc{
+    
     [[NIMSDK sharedSDK].chatroomManager exitChatroom:_chatroom.roomId completion:nil];
     [[NIMSDK sharedSDK].chatroomManager removeDelegate:self];
     [UIApplication sharedApplication].idleTimerDisabled = NO;
-    [[NTESMeetingNetCallManager defaultManager] leaveMeeting];
-    
-    
+    [[NTESMeetingNetCallManager defaultManager]leaveMeeting];
+    [[NTESMeetingRTSManager defaultManager]leaveCurrentConference];
+   
 }
 
 - (void)didReceiveMemoryWarning {

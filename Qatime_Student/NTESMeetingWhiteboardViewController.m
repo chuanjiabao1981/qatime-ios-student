@@ -85,6 +85,9 @@
 - (void)dealloc{
     
     [[NTESMeetingRTSManager defaultManager] leaveCurrentConference];
+    
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(getRoomID) object:nil];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -108,11 +111,14 @@
             
             if ([dic[@"data"][@"live_info"][@"room_id"] isEqualToString:@""]) {
                 //没有roomID,3秒后再次获取
+                
+                NSLog(@"获取roomID失败");
                 [self performSelector:@selector(getRoomID) withObject:nil afterDelay:3];
+                
             }else{
                 
                 [NSObject cancelPreviousPerformRequestsWithTarget:self];
-                
+                NSLog(@"获取roomID成功!进入一对一");
                 //有roomID了 可以开始玩耍了
                 _roomID = [NSString stringWithFormat:@"%@",dic[@"data"][@"live_info"][@"room_id"]];
                 
@@ -676,6 +682,9 @@
 
 - (void)onUserJoined:(NSString *)uid conference:(NSString *)name
 {
+    
+    
+    
     
 }
 

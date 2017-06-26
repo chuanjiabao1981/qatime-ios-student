@@ -146,9 +146,9 @@
     }
     
     _workFlowArr = @[@{@"image":@"work1",@"title":@"1.购买课程",@"subTitle":@"支持退款,放心购买"},
-  @{@"image":@"work2",@"title":@"2.准时上课",@"subTitle":@"提前预习,按时上课"},
-  @{@"image":@"work3",@"title":@"3.在线授课",@"subTitle":@"多人交流,生动直播"},
-  @{@"image":@"work4",@"title":@"4.上课结束",@"subTitle":@"视频回放,想看就看"}];
+                     @{@"image":@"work2",@"title":@"2.准时上课",@"subTitle":@"提前预习,按时上课"},
+                     @{@"image":@"work3",@"title":@"3.在线授课",@"subTitle":@"多人交流,生动直播"},
+                     @{@"image":@"work4",@"title":@"4.上课结束",@"subTitle":@"视频回放,想看就看"}];
     
     
     _tutoriumInfoView.scrollView.delegate = self;
@@ -272,7 +272,7 @@
         
         [self loginStates:dic];
         
-//        NSLog(@"%@",dic);
+        //        NSLog(@"%@",dic);
         
         NSString *teacherID = [NSString stringWithFormat:@"%@",dic[@"data"][@"teacher"][@"id"]];
         
@@ -536,61 +536,85 @@
     
     /* 先判断is_tasting(正在试听) / is_bought(已购买) / tasted() 的状态*/
     if ([_dataDic[@"is_bought"]boolValue]==NO) {
-        
         /* 还没购买的情况下*/
-        if ([_dataDic[@"is_tasting"]boolValue]==YES) {
-            /* 如果已经加入试听,而且该课程可以试听*/
-            
-            /* 还没有试听*/
-            [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
-            [_buyBar.listenButton setBackgroundColor:NAVIGATIONRED];
-            [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            
-            if (![data[@"status"] isEqualToString:@"finished"]&&![data[@"status"] isEqualToString:@"competed"]){
-                
-                [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
-                
-            }else{
-                /* 课程已结束*/
-                [_buyBar.listenButton addTarget:self action:@selector(addClosedListen) forControlEvents:UIControlEventTouchUpInside];
-                
-            }
-            
-            
-        }else{
-            /* 还没有加入试听*/
-            
-            /* 如果课程还没结束*/
-            
-            if (![data[@"status"] isEqualToString:@"finished"]&&![data[@"status"] isEqualToString:@"competed"]){
-                
-                [_buyBar.listenButton addTarget:self action:@selector(addListen) forControlEvents:UIControlEventTouchUpInside];
-                
-            }else{
-                /* 课程已结束*/
-                [_buyBar.listenButton addTarget:self action:@selector(addClosedListen) forControlEvents:UIControlEventTouchUpInside];
-                
-            }
-        }
         
-        //不管有没有加入试听,只要是没有试听课,都隐藏试听按钮
-        if ([_dataDic[@"taste_count"]integerValue]!=0) {
+        if ([data[@"off_shelve"]boolValue]==YES) {
+            //判断课程是否下架 , 未购买的课程已下架就显示下架 没下架没事儿
             
-        }else{
-            
-            _buyBar.listenButton.hidden = YES;
-            _buyBar.applyButton.sd_resetLayout
+            [_buyBar.listenButton removeAllTargets];
+            _buyBar.applyButton.hidden = YES;
+            [_buyBar.listenButton setTitle:@"已下架" forState:UIControlStateNormal];
+            [_buyBar.listenButton setBackgroundColor:TITLECOLOR];
+            [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            _buyBar.listenButton.sd_resetLayout
             .leftSpaceToView(_buyBar, 10)
             .rightSpaceToView(_buyBar, 10)
             .topSpaceToView(_buyBar, 10)
             .bottomSpaceToView(_buyBar, 10);
-            [_buyBar.applyButton updateLayout];
+            [_buyBar.listenButton updateLayout];
+        }else{
+            
+            //可试听
+            if ([_dataDic[@"is_tasting"]boolValue]==YES) {
+                
+                
+                
+                
+                //前提是没下架
+                /* 如果已经加入试听,而且该课程可以试听*/
+                /* 还没有试听*/
+                [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
+                [_buyBar.listenButton setBackgroundColor:NAVIGATIONRED];
+                [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                
+                if (![data[@"status"] isEqualToString:@"finished"]&&![data[@"status"] isEqualToString:@"competed"]){
+                    
+                    [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
+                    
+                }else{
+                    /* 课程已结束*/
+                    [_buyBar.listenButton addTarget:self action:@selector(addClosedListen) forControlEvents:UIControlEventTouchUpInside];
+                    
+                }
+                
+                
+            }else{
+                /* 还没有加入试听*/
+                /* 如果课程还没结束*/
+                
+                if (![data[@"status"] isEqualToString:@"finished"]&&![data[@"status"] isEqualToString:@"competed"]){
+                    
+                    [_buyBar.listenButton addTarget:self action:@selector(addListen) forControlEvents:UIControlEventTouchUpInside];
+                    
+                }else{
+                    /* 课程已结束*/
+                    [_buyBar.listenButton addTarget:self action:@selector(addClosedListen) forControlEvents:UIControlEventTouchUpInside];
+                    
+                }
+            }
+            
+            //不管有没有加入试听,只要是没有试听课,都隐藏试听按钮
+            if ([_dataDic[@"taste_count"]integerValue]!=0) {
+                
+            }else{
+                
+                _buyBar.listenButton.hidden = YES;
+                _buyBar.applyButton.sd_resetLayout
+                .leftSpaceToView(_buyBar, 10)
+                .rightSpaceToView(_buyBar, 10)
+                .topSpaceToView(_buyBar, 10)
+                .bottomSpaceToView(_buyBar, 10);
+                [_buyBar.applyButton updateLayout];
+                
+            }
+            
+            
+            /* 购买按钮的点击事件*/
+            [_buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
             
         }
         
         
-        /* 购买按钮的点击事件*/
-        [_buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
         
         
     }else{
@@ -982,7 +1006,7 @@
                 }];
             }else{
                 
-               
+                
             }
             
             

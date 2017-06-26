@@ -165,9 +165,7 @@
     
 }
 
-- (void)onUserLeft:(NSString *)uid
-        conference:(NIMRTSConference *)conference
-            reason:(NIMRTSConferenceUserLeaveReason)reason
+- (void)onUserLeft:(NSString *)uid conference:(NIMRTSConference *)conference reason:(NIMRTSConferenceUserLeaveReason)reason
 {
 //    DDLogInfo(@"User %@ left conference %@ for %zd", uid, conference.name, reason);
     

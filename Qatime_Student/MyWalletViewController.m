@@ -21,6 +21,9 @@
 #import "UIAlertController+Blocks.h"
 
 #import "DCPaymentView.h"
+#import "Qatime_Student-Swift.h"
+
+
 
 @interface MyWalletViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIGestureRecognizerDelegate>{
     
@@ -61,6 +64,14 @@
     _navigationBar.titleLabel.text = @"我的钱包";
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+    [_navigationBar.rightButton setTitle:@"说明" forState:UIControlStateNormal];
+    [_navigationBar.rightButton addTarget:self action:@selector(explain) forControlEvents:UIControlEventTouchUpInside];
+    _navigationBar.rightButton.sd_resetLayout
+    .rightSpaceToView(_navigationBar.contentView, 10*ScrenScale)
+    .topEqualToView(_navigationBar.leftButton)
+    .bottomEqualToView(_navigationBar.leftButton);
+    [_navigationBar.rightButton setupAutoSizeWithHorizontalPadding:10 buttonHeight:_navigationBar.leftButton.height_sd];
+    [_navigationBar.rightButton updateLayout];
     
     _myWalletView = [[MyWalletView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
     [self.view addSubview:_myWalletView];
@@ -229,6 +240,16 @@
 //    WithDrawViewController *withVC = [WithDrawViewController new];
 //    [self.navigationController pushViewController:withVC animated:YES];
 //}
+
+
+/** 查看说明 */
+- (void)explain{
+    
+    AmountExplainViewController *controller = [[AmountExplainViewController alloc]init];
+    
+    [self.navigationController pushViewController:controller animated:YES];
+    
+}
 
 - (void) returnLastPage{
     
