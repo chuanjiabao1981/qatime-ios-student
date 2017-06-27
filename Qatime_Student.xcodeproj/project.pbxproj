@@ -213,8 +213,6 @@
 		5469786C1DC72A54001695F4 /* SignUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5469786B1DC72A54001695F4 /* SignUpView.m */; };
 		546A54741DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 546A54731DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m */; };
 		546A54771DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 546A54761DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.m */; };
-		546F5C561DFD75F400528F79 /* WithDrawInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 546F5C551DFD75F400528F79 /* WithDrawInfoView.m */; };
-		546F5C591DFD760000528F79 /* WithDrawInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546F5C581DFD760000528F79 /* WithDrawInfoViewController.m */; };
 		5471C7F01E8F43DA0098E509 /* OneOnOneLessonTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5471C7EF1E8F43DA0098E509 /* OneOnOneLessonTableViewCell.m */; };
 		5471C7F61E8F49350098E509 /* InteractionLesson.m in Sources */ = {isa = PBXBuildFile; fileRef = 5471C7F51E8F49350098E509 /* InteractionLesson.m */; };
 		5471C7FC1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5471C7FB1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.m */; };
@@ -1101,10 +1099,6 @@
 		546A54731DEEDD9800E70BA5 /* ClassNoticeSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassNoticeSettingTableViewCell.m; sourceTree = "<group>"; };
 		546A54751DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassNoticeTimeSettingTableViewCell.h; sourceTree = "<group>"; };
 		546A54761DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassNoticeTimeSettingTableViewCell.m; sourceTree = "<group>"; };
-		546F5C541DFD75F400528F79 /* WithDrawInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithDrawInfoView.h; sourceTree = "<group>"; };
-		546F5C551DFD75F400528F79 /* WithDrawInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithDrawInfoView.m; sourceTree = "<group>"; };
-		546F5C571DFD760000528F79 /* WithDrawInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithDrawInfoViewController.h; sourceTree = "<group>"; };
-		546F5C581DFD760000528F79 /* WithDrawInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithDrawInfoViewController.m; sourceTree = "<group>"; };
 		5471C7EE1E8F43DA0098E509 /* OneOnOneLessonTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneOnOneLessonTableViewCell.h; sourceTree = "<group>"; };
 		5471C7EF1E8F43DA0098E509 /* OneOnOneLessonTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneOnOneLessonTableViewCell.m; sourceTree = "<group>"; };
 		5471C7F41E8F49350098E509 /* InteractionLesson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionLesson.h; sourceTree = "<group>"; };
@@ -5901,8 +5895,6 @@
 			children = (
 				54F3BA2E1DFC7140003998D0 /* WithDrawViewController.h */,
 				54F3BA2F1DFC7140003998D0 /* WithDrawViewController.m */,
-				546F5C571DFD760000528F79 /* WithDrawInfoViewController.h */,
-				546F5C581DFD760000528F79 /* WithDrawInfoViewController.m */,
 				54B9CAFA1DFE4AAC003961FF /* WithdrawConfirmViewController.h */,
 				54B9CAFB1DFE4AAC003961FF /* WithdrawConfirmViewController.m */,
 			);
@@ -5914,8 +5906,6 @@
 			children = (
 				54F3BA2B1DFC7130003998D0 /* WithDrawView.h */,
 				54F3BA2C1DFC7130003998D0 /* WithDrawView.m */,
-				546F5C541DFD75F400528F79 /* WithDrawInfoView.h */,
-				546F5C551DFD75F400528F79 /* WithDrawInfoView.m */,
 				54B9CAF71DFE4A9D003961FF /* WithdrawConfirmView.h */,
 				54B9CAF81DFE4A9D003961FF /* WithdrawConfirmView.m */,
 			);
@@ -6789,7 +6779,6 @@
 				54AC03ED1E8938E100817767 /* NIMDefaultValueMaker.m in Sources */,
 				549A051A1DC86EBB00B3564D /* MXSCycleScrollView.m in Sources */,
 				54AC04231E8938E100817767 /* NIMWebImagePrefetcher.m in Sources */,
-				546F5C561DFD75F400528F79 /* WithDrawInfoView.m in Sources */,
 				54AC03DA1E8938E100817767 /* NIMInputMoreContainerView.m in Sources */,
 				548D1D7C1EA7420B00B120C8 /* CalendarView.m in Sources */,
 				548D1D731EA7418C00B120C8 /* AlreadyClassView.m in Sources */,
@@ -7302,7 +7291,6 @@
 				54AC04D91E89398E00817767 /* NTESChatroomSegmentedControl.m in Sources */,
 				54B4C1871DF8183800E31794 /* ChargeView.m in Sources */,
 				54FA71591E07B111009D81FE /* ChatViewController.m in Sources */,
-				546F5C591DFD760000528F79 /* WithDrawInfoViewController.m in Sources */,
 				54D661291DD04DC900C9A0FF /* YZSquareMenu.m in Sources */,
 				54B907661E9CCFF600034FDC /* VideoClassInfo.m in Sources */,
 				54AC025D1E892CEE00817767 /* NTESUserUtil.m in Sources */,

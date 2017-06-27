@@ -11,22 +11,14 @@
 @interface WithDrawView : UIView
 
 /**
- 转账金额
+ 提现金额
  */
 @property(nonatomic,strong) UITextField *moneyText ;
-
-
 
 /**
  选择支付宝
  */
-@property(nonatomic,strong) UIButton *alipayButton ;
-
-
-/**
- 转账
- */
-@property(nonatomic,strong) UIButton *transferButton ;
+@property(nonatomic,strong) UIButton *wechatButton ;
 
 /**
  下一步按钮

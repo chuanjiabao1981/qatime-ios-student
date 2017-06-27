@@ -40,6 +40,9 @@
     /**是否是游客*/
     BOOL is_Guest;
     
+    /** 余额 */
+    NSString *_balance;
+    
 }
 
 @end
@@ -86,11 +89,10 @@
     }
 
     
-    [self HUDStartWithTitle:@"正在获取数据"];
-    
+//    [self HUDStartWithTitle:@"正在获取数据"];
     
     //部分基础数据
-    _menuName = @[@"充值记录",@"消费记录",@"退款记录"];
+    _menuName = @[@"充值记录",@"提现记录",@"消费记录",@"退款记录"];
     
     //是否游客
     is_Guest = [[NSUserDefaults standardUserDefaults]valueForKey:@"is_Guest"]?[[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"]:NO;
@@ -105,6 +107,7 @@
     
     /* 我的订单  充值记录点击时间*/
     [_myWalletView.rechargeButton addTarget:self action:@selector(recharge) forControlEvents:UIControlEventTouchUpInside];
+    [_myWalletView.widthDrawButon addTarget:self action:@selector(withDraw) forControlEvents:UIControlEventTouchUpInside];
     
     /* 拨打帮助电话*/
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(callForHelp)];
@@ -157,10 +160,11 @@
             
             /* 余额数据存本地*/
             [[NSUserDefaults standardUserDefaults]setObject:dic[@"data"][@"balance"] forKey:@"balance"];
-                        
+            
+            _balance = [NSString stringWithFormat:@"%@",dic[@"data"][@"balance"]];
             [_myWalletView updateLayout];
             
-            [self HUDStopWithTitle:@"数据加载成功!"];
+//            [self HUDStopWithTitle:@"数据加载成功!"];
         }else{
             
             /* 登录超时*/
@@ -236,10 +240,10 @@
 }
 
 #pragma mark- 进入提现页面
-//- (void)widthDraw{
-//    WithDrawViewController *withVC = [WithDrawViewController new];
-//    [self.navigationController pushViewController:withVC animated:YES];
-//}
+- (void)withDraw{
+    WithDrawViewController *withVC = [[WithDrawViewController alloc]initWithEnableAmount:_balance];
+    [self.navigationController pushViewController:withVC animated:YES];
+}
 
 
 /** 查看说明 */

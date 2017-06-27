@@ -24,7 +24,7 @@
 @property(nonatomic,strong) UILabel *money ;
 
 /* 手续费*/
-@property(nonatomic,strong) UILabel *fee ;
+//@property(nonatomic,strong) UILabel *fee ;
 
 
 /* 确定按钮*/

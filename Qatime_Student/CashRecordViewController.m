@@ -29,7 +29,14 @@
 #import "UIViewController+AFHTTP.h"
 
 #import "DrawBackViewController.h"
+#import "MJRefresh.h"
+#import "CYLTableViewPlaceHolder.h"
 
+//刷新方式
+typedef NS_ENUM(NSUInteger, RefreshType) {
+    PullToRefresh,
+    PushToLoadMore,
+};
 
 @interface CashRecordViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>{
     
@@ -48,7 +55,13 @@
     NSMutableArray *_withDrawArr;
     NSMutableArray *_paymentArr;
     NSMutableArray *_refundArr;
-
+    
+    //4个页数
+    NSInteger _recahrgePage;
+    NSInteger _withdrawPage;
+    NSInteger _paymentPage;
+    NSInteger _refundPage;
+    
 }
 
 @property(nonatomic,strong) NSString *selectedItem ;
@@ -64,12 +77,9 @@
         
         _selectedItem = [NSString stringWithFormat:@"%ld",item];
         
-        
     }
     return self;
 }
-
-
 
 
 - (void)viewDidLoad {
@@ -77,18 +87,23 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
-    [self.view addSubview:_navigationBar];
+    //导航栏
+    [self setupNavigation];
+    //基础数据
+    [self makeData];
+    //主视图
+    [self setupMainView];
     
-    _navigationBar.titleLabel.text = @"资金记录";
     
-    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+    [_mainView.rechargeView.mj_header beginRefreshing];
+    [_mainView.withDrawView.mj_header beginRefreshing];
+    [_mainView.paymentView.mj_header beginRefreshing];
+    [_mainView.refundView.mj_header beginRefreshing];
     
-    [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-    
-    [_navigationBar.rightButton setImage:[UIImage imageNamed:@"phone"] forState:UIControlStateNormal];
-    [_navigationBar.rightButton addTarget:self action:@selector(callForServiece) forControlEvents:UIControlEventTouchUpInside];
-    
+}
+
+
+- (void)makeData{
     
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
@@ -99,81 +114,118 @@
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
-    /* view的初始化*/
-    _cashRecordView = ({
-        
-        CashRecordView *_ = [[CashRecordView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
-        [self.view addSubview:_];
-        
-        
-        _;
-    });
-    
-    _cashRecordView.rechargeView.delegate = self;
-    _cashRecordView.rechargeView.dataSource = self;
-    _cashRecordView.rechargeView.tag = 1;
-    
-//    _cashRecordView.withDrawView.delegate = self;
-//    _cashRecordView.withDrawView.dataSource = self;
-//    _cashRecordView.withDrawView.tag = 2;
-    
-    _cashRecordView.paymentView.delegate = self;
-    _cashRecordView.paymentView.dataSource = self;
-    _cashRecordView.paymentView.tag = 3;
-    
-    _cashRecordView.refundView.delegate = self;
-    _cashRecordView.refundView.dataSource = self;
-    _cashRecordView.refundView.tag = 4;
-    
-    _cashRecordView.scrollView.delegate = self;
-    
-    
-    /* 滑动效果*/
-    typeof(self) __weak weakSelf = self;
-    [ _cashRecordView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-        [weakSelf.cashRecordView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-40) animated:YES];
-    }];
-    
-    
-    
-    [_cashRecordView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd*(_selectedItem.integerValue-1), 0, self.view.width_sd, self.view.height_sd) animated:YES];
-    
-    _cashRecordView.segmentControl.selectedSegmentIndex = _selectedItem.integerValue;
-    
-    
-    
     /* 初始化数据*/
     _rechargeArr = @[].mutableCopy;
     _withDrawArr = @[].mutableCopy;
     _paymentArr = @[].mutableCopy;
     _refundArr = @[].mutableCopy;
     
-    
-    /* 请求充值记录数据*/
-    [self requestRecharge];
-    /* 请求提现记录*/
-    [self requestWithDraw];
-    
-    /* 请求提现记录*/
-    [self requestPayment];
-    
-    /* 请求退款记录*/
-    [self requestRefunds];
-    
-    /* 初始化无数据占位图*/
-    
-    
+    _refundPage = 1;
+    _withdrawPage = 1;
+    _paymentPage = 1;
+    _refundPage = 1;
+
     
 }
 
+- (void)setupNavigation{
+    
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
+    [self.view addSubview:_navigationBar];
+    _navigationBar.titleLabel.text = @"资金记录";
+    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+    [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+    [_navigationBar.rightButton setImage:[UIImage imageNamed:@"phone"] forState:UIControlStateNormal];
+    [_navigationBar.rightButton addTarget:self action:@selector(callForServiece) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)setupMainView{
+    
+    /* view的初始化*/
+    _mainView = ({
+        
+        CashRecordView *_ = [[CashRecordView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
+        [self.view addSubview:_];
+        _;
+    });
+    
+    _mainView.rechargeView.delegate = self;
+    _mainView.rechargeView.dataSource = self;
+    _mainView.rechargeView.tag = 1;
+    
+    _mainView.withDrawView.delegate = self;
+    _mainView.withDrawView.dataSource = self;
+    _mainView.withDrawView.tag = 2;
+    
+    _mainView.paymentView.delegate = self;
+    _mainView.paymentView.dataSource = self;
+    _mainView.paymentView.tag = 3;
+    
+    _mainView.refundView.delegate = self;
+    _mainView.refundView.dataSource = self;
+    _mainView.refundView.tag = 4;
+    
+    _mainView.scrollView.delegate = self;
+    
+    
+    //刷新方式
+    _mainView.rechargeView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+       
+        [self requestRechargeWithRefreshType:PullToRefresh];
+    }];
+    _mainView.rechargeView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+       
+        [self requestRechargeWithRefreshType:PushToLoadMore];
+    }];
+    
+    
+    _mainView.withDrawView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+        [self requestWithDrawWithRefreshType:PullToRefresh];
+    }];
+    _mainView.withDrawView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        
+        [self requestWithDrawWithRefreshType:PushToLoadMore];
+    }];
+    
+    
+    _mainView.paymentView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+        [self requestPaymentWithRefreshType:PullToRefresh];
+    }];
+    _mainView.paymentView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        
+        [self requestPaymentWithRefreshType:PushToLoadMore];
+    }];
+    
+    
+    _mainView.refundView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+        [self requestRefundWithRefreshType:PullToRefresh];
+    }];
+    _mainView.refundView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        
+        [self requestRefundWithRefreshType:PushToLoadMore];
+    }];
+    
+    
+    /* 滑动效果*/
+    typeof(self) __weak weakSelf = self;
+    [ _mainView.segmentControl setIndexChangeBlock:^(NSInteger index) {
+        [weakSelf.mainView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-40) animated:YES];
+    }];
+    
+    [_mainView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd*(_selectedItem.integerValue-1), 0, self.view.width_sd, self.view.height_sd) animated:YES];
+    
+    _mainView.segmentControl.selectedSegmentIndex = _selectedItem.integerValue;
+    
+}
+
+
+
+
 /* 拨打客服电话*/
 - (void)callForServiece{
-    
-//    [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否拨打客服电话0353-2135828?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-////       
-////        NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",@"0353-2135828"];
-//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel://0353-2135828"]];
-//    }];
     
     NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",@"0353-2135828"];
     UIWebView * callWebview = [[UIWebView alloc] init];
@@ -183,26 +235,20 @@
 }
 
 #pragma mark- 请求充值记录数据
-- (void)requestRecharge{
+- (void)requestRechargeWithRefreshType:(RefreshType)refreshType{
     
-    _rechargeArr = @[].mutableCopy;
-    
-    [self HUDStartWithTitle:@"正在加载数据"];
-    
-    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/recharges",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    if (refreshType == PullToRefresh) {
+        _rechargeArr = @[].mutableCopy;
+        _refundPage = 1;
+        [_mainView.rechargeView.mj_footer resetNoMoreData];
         
-        /* 无记录占位图*/
-        HaveNoClassView *_noDataView = [[HaveNoClassView alloc]init];
-        _noDataView.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd-64-_cashRecordView.segmentControl.height_sd);
-        _noDataView.titleLabel.text = @"暂时没有数据";
-        [_cashRecordView.rechargeView addSubview:_noDataView];
-        _noDataView.hidden = NO;
-      
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] ;
+    }else{
+        _refundPage++;
+    }
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/recharges",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"page":[NSString stringWithFormat:@"%ld",_refundPage]} completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil] ;
         
         [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
@@ -210,26 +256,15 @@
             NSMutableArray *dataArr = [NSMutableArray arrayWithArray:[dic valueForKey:@"data"]];
             
             if (dataArr.count !=0) {
-                
-                _noDataView.hidden = YES;
                 for (NSInteger i = 0; i<dataArr.count; i++) {
-                    
                     Recharge *mod = [Recharge yy_modelWithJSON:dataArr[i]];
-                    
                     mod.idNumber = [dataArr[i] valueForKey:@"id"];
-                    //                    mod.timeStamp
-                    
-                    
                     /* 目前暂不支持支付宝,预留支付宝的筛选接口*/
-                    
                     if ([[dataArr[i] valueForKey:@"pay_type"]isEqualToString:@"alipay"]) {
-                        
                         mod.timeStamp = @"无";
-                        
                     }else{
                         
                         NSString *timeStamp = [[dataArr[i] valueForKey:@"app_pay_params"]valueForKey:@"timestamp"];
-                        
                         if (![timeStamp isEqual:[NSNull null]]) {
                             
                             NSTimeInterval time=[timeStamp integerValue]+28800;//因为时差问题要加8小时 == 28800 sec
@@ -248,153 +283,157 @@
                     }
                     
                     [_rechargeArr addObject:mod];
-
+                    
                 }
                 
-                [_cashRecordView.rechargeView reloadData];
-                [_cashRecordView.rechargeView setNeedsDisplay];
+                [_mainView.rechargeView cyl_reloadData];
+                if (refreshType == PullToRefresh) {
+                    [_mainView.rechargeView.mj_header endRefreshing];
+                }else{
+                    [_mainView.rechargeView.mj_footer endRefreshing];
+                }
+                
                 
             }else{
                 
                 /* 没有充值记录*/
+                [_mainView.rechargeView cyl_reloadData];
                 
+                if (refreshType == PullToRefresh) {
+                    [_mainView.rechargeView.mj_header endRefreshing];
+                }else{
+                    [_mainView.rechargeView.mj_footer endRefreshingWithNoMoreData];
+                }
             }
             
         }else{
             
             /* 数据为0条*/
+            [_mainView.rechargeView cyl_reloadData];
             
-            [self HUDStopWithTitle:@"没有充值记录!"];
-            
+            if (refreshType == PullToRefresh) {
+                [_mainView.rechargeView.mj_header endRefreshing];
+            }else{
+                [_mainView.rechargeView.mj_footer endRefreshing];
+            }
             
         }
         
+
+    } failure:^(id  _Nullable erros) {
         
+        [_mainView.rechargeView cyl_reloadData];
         
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        
+        if (refreshType == PullToRefresh) {
+            [_mainView.rechargeView.mj_header endRefreshing];
+        }else{
+            [_mainView.rechargeView.mj_footer endRefreshing];
+        }
     }];
-    
 }
 
 
 
 
 #pragma mark- 请求提现数据
-- (void)requestWithDraw{
+- (void)requestWithDrawWithRefreshType:(RefreshType)refreshType{
     
-    //    _withDrawArr = @[].mutableCopy;
-    //    [self HUDStartWithTitle:@"正在加载数据"];
+    if (refreshType == PullToRefresh) {
+        _withDrawArr = @[].mutableCopy;
+        _withdrawPage = 1;
+        [_mainView.withDrawView.mj_footer resetNoMoreData];
+        
+    }else{
+        
+        _withdrawPage++;
+    }
     
-    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/withdraws",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-       
-        /* 无记录占位图*/
-        HaveNoClassView *_noDataView = [[HaveNoClassView alloc]init];
-        _noDataView.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd-64-_cashRecordView.segmentControl.height_sd);
-        _noDataView.titleLabel.text = @"暂时没有数据";
-//        [_cashRecordView.withDrawView addSubview:_noDataView];
-        _noDataView.hidden = NO;
-
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] ;
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/withdraws",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"page":[NSString stringWithFormat:@"%ld",_withdrawPage]} completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil] ;
         [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-            
             /* 获取数据成功  数据写到rechararr数组里*/
             NSMutableArray *withDraw = [NSMutableArray arrayWithArray:dic[@"data"]];
-            
             if (withDraw.count!=0) {
-                
-                _noDataView.hidden = YES;
-                
                 for (NSInteger i = 0; i<withDraw.count; i++) {
-                    
                     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:withDraw[i]];
                     for (NSString *key in withDraw[i]) {
-                        
                         if ([dic valueForKey:key]==nil||[[dic valueForKey:key]isEqual:[NSNull null]]) {
                             [dic setValue:@"" forKey:key];
-                            
                         }
                     }
-                    
                     WithDraw *wiMod = [WithDraw yy_modelWithJSON:dic];
-                    
                     [_withDrawArr addObject:wiMod];
-                    
                 }
                 
-                
-//                [_cashRecordView.withDrawView reloadData];
-                //                [_cashRecordView.withDrawView setNeedsDisplay];
-                [self HUDStopWithTitle:@"加载成功!"];
-                
-                
+                [_mainView.withDrawView cyl_reloadData];
+                if (refreshType == PullToRefresh) {
+                    [_mainView.withDrawView.mj_header endRefreshing];
+                }else{
+                    [_mainView.withDrawView.mj_footer endRefreshing];
+                }
+
             }else{
                 
-                /* 数据为0条*/
-                
-                [self HUDStopWithTitle:@"没有提现记录!"];
-                
-                
+                [_mainView.withDrawView cyl_reloadData];
+                if (refreshType == PullToRefresh) {
+                    [_mainView.withDrawView.mj_header endRefreshing];
+                }else{
+                    [_mainView.withDrawView.mj_footer endRefreshingWithNoMoreData];
+                }
+ 
             }
             
-            
+        }else{
+            [_mainView.withDrawView cyl_reloadData];
+            if (refreshType == PullToRefresh) {
+                [_mainView.withDrawView.mj_header endRefreshing];
+            }else{
+                [_mainView.withDrawView.mj_footer endRefreshing];
+            }
+
         }
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        
+
+    }failure:^(id  _Nullable erros) {
+        [_mainView.withDrawView cyl_reloadData];
+        if (refreshType == PullToRefresh) {
+            [_mainView.withDrawView.mj_header endRefreshing];
+        }else{
+            [_mainView.withDrawView.mj_footer endRefreshing];
+        }
+
     }];
-    
-    
-    
-    
+
 }
 
 
 #pragma mark- 请求消费记录
-- (void)requestPayment{
+- (void)requestPaymentWithRefreshType:(RefreshType)refreshType{
     
-    
-    //    _paymentArr = @[].mutableCopy;
-    //    [self HUDStartWithTitle:@"正在加载数据"];
-    
-    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/consumption_records",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    if (refreshType == PullToRefresh) {
         
-        /* 无记录占位图*/
-        HaveNoClassView *_noDataView = [[HaveNoClassView alloc]init];
-        _noDataView.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd-64-_cashRecordView.segmentControl.height_sd);
-        _noDataView.titleLabel.text = @"暂时没有数据";
-        [_cashRecordView.paymentView addSubview:_noDataView];
-        _noDataView.hidden = NO;
-
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil] ;
+        _paymentArr = @[].mutableCopy;
+        _paymentPage = 1;
+        [_mainView.paymentView.mj_footer resetNoMoreData];
+        
+    }else{
+        _paymentPage++;
+    }
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/consumption_records",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{} completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil] ;
         
         [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             
-            /* 获取数据成功  数据写到rechararr数组里*/
+            /* 获取数据成功  数据写到数组里*/
             NSMutableArray *payment = [NSMutableArray arrayWithArray:dic[@"data"]];
-            
             if (payment.count!=0) {
-                
-                _noDataView.hidden = YES;
-                
                 for (NSInteger i = 0; i<payment.count; i++) {
-                    
                     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:payment[i]];
                     for (NSString *key in payment[i]) {
-                        
                         if ([dic valueForKey:key]==nil||[[dic valueForKey:key]isEqual:[NSNull null]]) {
                             [dic setValue:@"" forKey:key];
                             
@@ -406,56 +445,71 @@
                     [_paymentArr addObject:payMod];
                     
                 }
-                
-                [self HUDStopWithTitle:@"加载成功!"];
+                [_mainView.paymentView cyl_reloadData];
+                if (refreshType == PullToRefresh) {
+                    [_mainView.paymentView.mj_header endRefreshing];
+                }else{
+                    [_mainView.paymentView.mj_footer endRefreshing];
+                }
                 
             }else{
                 
-                /* 数据为0条*/
-                
-                [self HUDStopWithTitle:@"没有消费记录!"];
+                [_mainView.paymentView cyl_reloadData];
+                if (refreshType == PullToRefresh) {
+                    [_mainView.paymentView.mj_header endRefreshing];
+                }else{
+                    [_mainView.paymentView.mj_footer endRefreshingWithNoMoreData];
+                }
+
                 
             }
             
-            [_cashRecordView.paymentView reloadData];
-            [_cashRecordView.paymentView setNeedsDisplay];
             
+        }else{
+            [_mainView.paymentView cyl_reloadData];
+            if (refreshType == PullToRefresh) {
+                [_mainView.paymentView.mj_header endRefreshing];
+            }else{
+                [_mainView.paymentView.mj_footer endRefreshing];
+            }
         }
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        
+    } failure:^(id  _Nullable erros) {
+        [_mainView.paymentView cyl_reloadData];
+        if (refreshType == PullToRefresh) {
+            [_mainView.paymentView.mj_header endRefreshing];
+        }else{
+            [_mainView.paymentView.mj_footer endRefreshing];
+        }
     }];
-    
     
 }
 
 
 #pragma mark- 请求退款记录
-- (void)requestRefunds{
+- (void)requestRefundWithRefreshType:(RefreshType)refreshType{
+    
+    if (refreshType==PullToRefresh) {
+        
+        _refundArr = @[].mutableCopy;
+        _refundPage = 1;
+        [_mainView.rechargeView.mj_footer resetNoMoreData];
+        
+    }else{
+        
+        _refundPage++;
+    }
+    
     
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/refunds",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
        
-        /* 无记录占位图*/
-        HaveNoClassView *_noDataView = [[HaveNoClassView alloc]init];
-        _noDataView.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd-64-_cashRecordView.segmentControl.height_sd);
-        _noDataView.titleLabel.text = @"暂时没有数据";
-        [_cashRecordView.paymentView addSubview:_noDataView];
-        _noDataView.hidden = NO;
-        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil] ;
         [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-            
             /* 获取数据成功  数据写到rechararr数组里*/
             NSMutableArray *refund = [NSMutableArray arrayWithArray:dic[@"data"]];
-            
             if (refund.count!=0) {
-                
-                _noDataView.hidden = YES;
-                
                 for (NSInteger i = 0; i<refund.count; i++) {
-                    
                     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:refund[i]];
                     for (NSString *key in refund[i]) {
                         
@@ -464,37 +518,61 @@
                             
                         }
                     }
-                    
                     Refund *refundMod = [Refund yy_modelWithJSON:dic];
-                    
                     refundMod.idNumber = refund[i][@"id"];
-                    
-                    
                     [_refundArr addObject:refundMod];
                     
                 }
                 
-                [self HUDStopWithTitle:@"加载成功!"];
+                [_mainView.refundView cyl_reloadData];
+                if (refreshType==PullToRefresh) {
+                    
+                    [_mainView.refundView.mj_header endRefreshing];
+                    
+                }else{
+                    [_mainView.refundView.mj_footer endRefreshing];
+                }
                 
             }else{
                 
-                /* 数据为0条*/
-                
-                [self HUDStopWithTitle:@"没有消费记录!"];
+                [_mainView.refundView cyl_reloadData];
+                if (refreshType==PullToRefresh) {
+                    
+                    [_mainView.refundView.mj_header endRefreshing];
+                    
+                }else{
+                    [_mainView.refundView.mj_footer endRefreshingWithNoMoreData];
+                }
                 
             }
             
-            [_cashRecordView.refundView reloadData];
-            
+        }else{
+            [_mainView.refundView cyl_reloadData];
+            if (refreshType==PullToRefresh) {
+                
+                [_mainView.refundView.mj_header endRefreshing];
+                
+            }else{
+                [_mainView.refundView.mj_footer endRefreshing];
+            }
+
             
         }
 
+    }failure:^(id  _Nullable erros) {
         
+        [_mainView.refundView cyl_reloadData];
+        if (refreshType==PullToRefresh) {
+            
+            [_mainView.refundView.mj_header endRefreshing];
+            
+        }else{
+            [_mainView.refundView.mj_footer endRefreshing];
+        }
+
         
     }];
-    
-    
-    
+
 }
 
 
@@ -766,14 +844,20 @@
         
         RefundTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         
-        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否取消退款申请" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-           
-            if (buttonIndex!=0) {
+        if ([cell.model.status isEqualToString:@"init"]) {
+            
+            [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否取消退款申请?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                 
-                [self cancelRefund:cell.model.idNumber withIndexPath:indexPath];
-             
-            }
-        }];
+                if (buttonIndex!=0) {
+                    
+                    [self cancelRefund:cell.model.transaction_no withIndexPath:indexPath];
+                    
+                }
+            }];
+        }else{
+
+            
+        }
     }
 }
 
@@ -787,11 +871,11 @@
        if ([dic[@"status"]isEqualToNumber:@1]) {
            /* 取消成功*/
            [self HUDStopWithTitle:@"取消成功"];
-           RefundTableViewCell *cell = [_cashRecordView.refundView cellForRowAtIndexPath:indePath];
+           RefundTableViewCell *cell = [_mainView.refundView cellForRowAtIndexPath:indePath];
            cell.status.text = @"已取消";
+           cell.model.status = @"canceled";
            
        }
-       
        
    }];
     
@@ -816,8 +900,8 @@
                 /* 删除成功*/
                 [self HUDStopWithTitle:@"取消成功!"];
                 
-//                WithDrawTableViewCell *cell = [_cashRecordView.withDrawView cellForRowAtIndexPath:indexPath];
-//                cell.status.text = @"已取消";
+                WithDrawTableViewCell *cell = [_mainView.withDrawView cellForRowAtIndexPath:indexPath];
+                cell.status.text = @"已取消";
                 
 //                [self requestWithDraw];
                 
@@ -851,14 +935,26 @@
 // segment的滑动代理
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     
-    if (scrollView == _cashRecordView.scrollView) {
+    if (scrollView == _mainView.scrollView) {
         
         CGFloat pageWidth = scrollView.frame.size.width;
         NSInteger page = scrollView.contentOffset.x / pageWidth;
         
-        [_cashRecordView.segmentControl setSelectedSegmentIndex:page animated:YES];
+        [_mainView.segmentControl setSelectedSegmentIndex:page animated:YES];
     }
     
+}
+
+- (UIView *)makePlaceHolderView{
+    
+    HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"暂无数据"];
+    return view;
+}
+
+
+- (BOOL)enableScrollWhenPlaceHolderViewShowing{
+    
+    return YES;
 }
 
 

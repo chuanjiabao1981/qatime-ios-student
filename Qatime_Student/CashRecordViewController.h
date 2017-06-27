@@ -13,7 +13,7 @@
 @interface CashRecordViewController : UIViewController
 
 
-@property(nonatomic,strong) CashRecordView *cashRecordView ;
+@property(nonatomic,strong) CashRecordView *mainView ;
 
 - (instancetype)initWithSelectedItem:(NSInteger)item ;
 
