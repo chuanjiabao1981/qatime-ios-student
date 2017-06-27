@@ -13,5 +13,6 @@
 
 @property(nonatomic,strong) WithDrawView *withDrawView ;
 
+-(instancetype)initWithEnableAmount:(NSString *)amount;
 
 @end

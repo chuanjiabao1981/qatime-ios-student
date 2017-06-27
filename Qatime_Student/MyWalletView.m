@@ -46,6 +46,22 @@
         .autoHeightRatio(0);
         [_total setSingleLineAutoResizeWithMaxWidth:1000];
         
+        
+        //提现按钮
+        _widthDrawButon = [[UIButton alloc]init];
+        [_widthDrawButon setTitle:@"提现" forState:UIControlStateNormal];
+        [_widthDrawButon setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+        [_widthDrawButon setBackgroundColor:[UIColor whiteColor]];
+        _widthDrawButon.layer.borderColor = NAVIGATIONRED.CGColor;
+        _widthDrawButon.layer.borderWidth = 1;
+        [self addSubview:_widthDrawButon];
+        
+        _widthDrawButon.sd_layout
+        .topSpaceToView(_total,20)
+        .rightSpaceToView(self, 10);
+        [_widthDrawButon setupAutoSizeWithHorizontalPadding:30*ScrenScale buttonHeight:40*ScrenScale];
+        _widthDrawButon.sd_cornerRadius = @1;
+
         /* 充值按钮*/
         _rechargeButton = [[UIButton alloc]init];
         [_rechargeButton setTitle:@"充值" forState:UIControlStateNormal];
@@ -56,8 +72,8 @@
         [self addSubview:_rechargeButton];
         
         _rechargeButton.sd_layout
-        .topSpaceToView(_total,20)
-        .rightSpaceToView(self, 10);
+        .topEqualToView(_widthDrawButon)
+        .rightSpaceToView(_widthDrawButon,10*ScrenScale);
         [_rechargeButton setupAutoSizeWithHorizontalPadding:30*ScrenScale buttonHeight:40*ScrenScale];
         _rechargeButton.sd_cornerRadius = @1;
 
@@ -73,14 +89,16 @@
         .heightIs(0.5);
         
         /* 菜单*/
-        _menuTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, line.bottom_sd, self.width_sd, 200) style:UITableViewStyleGrouped];
+        _menuTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, line.bottom_sd, self.width_sd, 240) style:UITableViewStyleGrouped];
+        _menuTableView.backgroundColor = [UIColor whiteColor];
+        [_menuTableView setOpaque:NO];
         _menuTableView.bounces = NO;
         [self addSubview:_menuTableView];
         _menuTableView.sd_layout
         .leftSpaceToView(self, 0)
         .rightSpaceToView(self, 0)
         .topSpaceToView(line, 0)
-        .heightIs(170*ScrenScale);
+        .heightIs(240*ScrenScale);
 
         /* 电话提示*/
         _tips = [[UILabel alloc]init];

@@ -181,9 +181,7 @@
     }];
     
     
-    
 }
-
 
 
 /* 设置成功后 ,返回到安全管理页面*/
@@ -192,6 +190,7 @@
     for (UIViewController *controller in self.navigationController.viewControllers) {
         
         if ([controller isMemberOfClass:[SafeViewController class]]) {
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"PopToRoot" object:nil];
             [self.navigationController popToViewController:controller animated:YES];
             
         }

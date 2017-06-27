@@ -19,43 +19,43 @@
         
         /* 充值单号*/
         _number = [[UILabel alloc]init];
-        _number.font = [UIFont systemFontOfSize:16*ScrenScale];
+        _number.font = TEXT_FONTSIZE;
+        _number.textColor = TITLECOLOR;
         
         
         UILabel *number = [[UILabel alloc]init];
         number .text  = @"消费类型";
         number.textColor = TITLECOLOR;
-        number.font = [UIFont systemFontOfSize:16*ScrenScale];
+        number.font = TEXT_FONTSIZE;
         
         /* 支付方式*/
         _mode = [[UILabel alloc]init];
-        _mode.font = [UIFont systemFontOfSize:16*ScrenScale];
+        _mode.font = TEXT_FONTSIZE;
+        _mode.textColor = TITLECOLOR;
         
         UILabel *mod = [[UILabel alloc]init];
         mod .text  = @"支付方式";
         mod.textColor = TITLECOLOR;
-        mod.font = [UIFont systemFontOfSize:16*ScrenScale];
+        mod.font = TEXT_FONTSIZE;
         
         /* 时间 */
         
         _time = [[UILabel alloc]init];
-        _time.font = [UIFont systemFontOfSize:16*ScrenScale];
+        _time.font = TEXT_FONTSIZE;
+        _time.textColor = TITLECOLOR;
         
         UILabel *time = [[UILabel alloc]init];
-        time.text  = @"时  间";
+        time.text  = @"时      间";
         time.textColor = TITLECOLOR;
-        time.font = [UIFont systemFontOfSize:16*ScrenScale];
-        
+        time.font = TEXT_FONTSIZE;
         
         
         /* 金额*/
         _money = [[UILabel alloc]init];
-        _money.font = [UIFont systemFontOfSize:16*ScrenScale];
+        _money.font = TEXT_FONTSIZE;
         _money.textColor = [UIColor redColor];
         
         /* 状态*/
-        
-        
         
         [self.contentView sd_addSubviews:@[number,_number,mod,_mode,time,_time,_money]];
         
@@ -74,11 +74,10 @@
         .bottomEqualToView(number)
         .rightSpaceToView(self.contentView,10);
         
-        
-        
+          
         /* 支付方式*/
         mod.sd_layout
-        .topSpaceToView(number,10)
+        .topSpaceToView(number,5*ScrenScale)
         .leftSpaceToView(self.contentView,10)
         .autoHeightRatio(0);
         [mod setSingleLineAutoResizeWithMaxWidth:200];
@@ -91,7 +90,7 @@
         
         /* 时间*/
         time.sd_layout
-        .topSpaceToView(mod,10)
+        .topSpaceToView(mod,5*ScrenScale)
         .leftSpaceToView(self.contentView,10)
         .autoHeightRatio(0);
         [time setSingleLineAutoResizeWithMaxWidth:200];
@@ -113,8 +112,6 @@
         [self setupAutoHeightWithBottomView:time bottomMargin:10];
         
         
-        
-        
     }
     return self;
     
@@ -132,7 +129,7 @@
     _time.text = model.created_at;
     
     /* 金额*/
-    _money.text = [NSString stringWithFormat:@"%@",model.amount];
+    _money.text = [NSString stringWithFormat:@"-¥%@",model.amount];
     
 }
 

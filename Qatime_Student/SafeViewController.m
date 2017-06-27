@@ -114,6 +114,17 @@
         cell.balance.text = [[NSUserDefaults standardUserDefaults] valueForKey:[note object]];
     }];
     
+    //增加/修改支付密码后的回调
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"SetPayPasswordSuccess" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+       
+        for (SettingTableViewCell *cell in _menuTableView.visibleCells) {
+            if ([cell.settingName.text containsString:@"支付密码"]) {
+                cell.settingName.text = @"重置支付密码";
+                cell.balance.text = @"";
+            }
+        }
+    }];
+    
 }
 
 /* 如果家长手机修改成功,则在此页面进行修改家长手机*/

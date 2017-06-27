@@ -20,7 +20,7 @@
 @property(nonatomic,strong) UIButton *rechargeButton ;
 
 /* 提现按钮*/
-//@property(nonatomic,strong) UIButton *widthDrawButon ;
+@property(nonatomic,strong) UIButton *widthDrawButon ;
 
 /* 菜单*/
 @property(nonatomic,strong) UITableView *menuTableView ;

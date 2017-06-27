@@ -8,21 +8,24 @@
 
 #import "WithDrawViewController.h"
 #import "NavigationBar.h"
-#import "WithDrawInfoViewController.h"
+
 
 #import "UIViewController+HUD.h"
 #import "DCPaymentView.h"
 #import "UIViewController+AFHTTP.h"
 #import "UIAlertController+Blocks.h"
 #import "AuthenticationViewController.h"
+#import "WXApi.h"
+#import "WithdrawConfirmViewController.h"
 
-@interface WithDrawViewController ()<UITextFieldDelegate>{
+
+@interface WithDrawViewController ()<UITextFieldDelegate,WXApiDelegate>{
     
     NavigationBar *_navigationBar;
     
     /* 选择支付方式*/
-//    BOOL choseAlipay;
-//    BOOL choseTransfer;
+    //    BOOL choseAlipay;
+    //    BOOL choseTransfer;
     
     NSString *_payType;
     NSString *_token;
@@ -31,7 +34,8 @@
     /*余额*/
     NSString *_balance;
     
-
+    //tickettoken
+    NSString *_ticketToken;
     
 }
 
@@ -39,43 +43,53 @@
 
 @implementation WithDrawViewController
 
+
+-(instancetype)initWithEnableAmount:(NSString *)amount{
+    
+    self = [super init];
+    if (self) {
+        
+        _balance = [NSString stringWithFormat:@"%@",amount];
+        
+    }
+    return self;
+}
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
     
     _navigationBar = ({
-    
+        
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         _.titleLabel.text= @"提现申请";
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_];
         _;
-    
+        
     });
     
     
     _withDrawView = ({
-    
-        WithDrawView *_=[[WithDrawView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
         
-        [_.alipayButton addTarget:self action:@selector(selectedAlipay:) forControlEvents:UIControlEventTouchUpInside];
-        [_.transferButton addTarget:self action:@selector(selectedTransfer:) forControlEvents:UIControlEventTouchUpInside];
+        WithDrawView *_=[[WithDrawView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
+        _.moneyText.placeholder = [NSString stringWithFormat:@"请输入提现金额(¥%.2f可用)",_balance.floatValue];
         
         [_.nextStepButton addTarget:self action:@selector(nextStep) forControlEvents:UIControlEventTouchUpInside];
         _.moneyText.delegate = self;
         
         [self.view addSubview:_];
         _;
-    
+        
     });
     
     
     /* 初始化*/
-    _payType = [NSString string];
-    _balance = [NSString string];
-    
+    _payType = @"weixin";
     
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
@@ -85,7 +99,18 @@
         
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
-
+    
+    
+    //微信验证回调
+    
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"WechatLoginSucess" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+       
+        NSString *code = [note object];
+        //发送提现请求
+        [self requestWithDraw:code];
+        
+    }];
+    
     
 }
 
@@ -93,82 +118,24 @@
 /* 下一步*/
 - (void)nextStep{
     
-    __block NSString *ticket_token;
-    
-    
     if ([_withDrawView.moneyText.text isEqualToString:@""]) {
-      
+        
         [self HUDStopWithTitle:@"请输入提现金额!"];
-      
-
+        
+        
     }else{
         
-        if (_withDrawView.alipayButton.selected ==NO&&_withDrawView.transferButton.selected == NO) {
+        /* 输入金额正确,而且选择提现方式的前提下,发起提现申请,先查余额*/
+        if (![_withDrawView.moneyText.text isEqualToString:@""]) {
             
-            [self HUDStopWithTitle:@"请选择提现方式!"];
             
-        }else{
+            [self compareWithBalance:_balance];
             
-            /* 输入金额正确,而且选择提现方式的前提下,发起提现申请,先查余额*/
-            if (![_withDrawView.moneyText.text isEqualToString:@""]&&(_withDrawView.transferButton.selected==YES||_withDrawView.alipayButton.selected ==YES)) {
-                
-                
-                if ([[NSUserDefaults standardUserDefaults]objectForKey:@"balance"]) {
-                    
-                    _balance = [[NSUserDefaults standardUserDefaults]objectForKey:@"balance"];
-                    
-                    [self compareWithBalance:_balance];
-                    
-                    
-                }else{
-                    /* 如果本地没有保存余额数据,向服务器请求余额数据*/
-                    
-                    
-                }
-                
-            }
         }
         
     }
 }
 
-
-
-#pragma mark- 请求余额数据
-
-- (void)requestBalance{
-    
-    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
-        [self loginStates:dic];
-        
-        if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
-            _balance = dic[@"data"][@"balance"];
-            
-            [self compareWithBalance:_balance];
-            
-        }else{
-            
-            [self HUDStopWithTitle:@"获取余额数据错误!"];
-            
-            
-        }
-        
-        
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-    }];
-    
-    
-    
-}
 
 
 /* 比较余额*/
@@ -177,23 +144,16 @@
     /* 提现金额大于等于余额 可以提现*/
     if ([_withDrawView.moneyText.text floatValue]<=[balance floatValue] ) {
         
-        if (_withDrawView.transferButton.selected==YES) {
-            
-            _payType = @"bank";
-        }else if (_withDrawView.alipayButton.selected ==YES){
-            
-            _payType = @"alipay";
-        }
-        
         if ([[NSUserDefaults standardUserDefaults]valueForKey:@"have_paypassword"]) {
             if([[NSUserDefaults standardUserDefaults]boolForKey:@"have_paypassword"]==NO) {
                 /* 没有支付密码,需要用户设置支付密码*/
                 [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"您尚未设置支付密码!\n请先设置支付密码" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                   
+                    
                     [self.navigationController popViewControllerAnimated:YES];
                 }];
                 
             }else{
+                
                 [DCPaymentView showPayAlertWithTitle:@"请输入支付密码" andDetail:@"提现申请" andAmount:_withDrawView.moneyText.text.floatValue completeHandle:^(NSString *inputPwd) {
                     
                     /* 验证ticket_token*/
@@ -202,10 +162,11 @@
                         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
                         [self loginStates:dic];
                         if ([dic[@"status"]isEqualToNumber:@1]) {
-                            /* 支付密码验证成功,进入下一页*/
-                            WithDrawInfoViewController *infoVC = [[WithDrawInfoViewController alloc]initWithAmount:_withDrawView.moneyText.text andPayType:_payType andTicketToken:dic[@"data"]];
-                            [self.navigationController pushViewController:infoVC animated:YES];
                             
+                            _ticketToken = [NSString stringWithFormat:@"%@",dic[@"data"]];
+                            
+                            //验证完支付密码之后,直接拉起微信请求
+                            [self requestWechat];
                             
                         }else{
                             
@@ -242,7 +203,7 @@
                                     
                                 }else if([dic[@"error"][@"code"]integerValue]==2006){
                                     [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"您尚未设置支付密码!\n请先设置支密码" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                                       
+                                        
                                         [self.navigationController popViewControllerAnimated:YES];
                                         
                                     }];
@@ -269,48 +230,9 @@
         
     }
     
-    
 }
 
 
-
-/* 选择支付宝*/
-- (void)selectedAlipay:(UIButton *)sender{
-    
-    if (sender.selected == YES) {
-        sender.selected = NO;
-        [sender setImage:nil forState:UIControlStateNormal];
-        
-        
-    }else{
-        sender.selected = YES;
-        [sender setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
-        _withDrawView.transferButton.selected = NO;
-        [_withDrawView.transferButton setImage:nil forState:UIControlStateNormal];
-        
-    }
-    
-    
-    
-}
-/* 选择转账*/
-- (void)selectedTransfer:(UIButton *)sender{
-    
-    if (sender.selected == YES) {
-        sender.selected = NO;
-        [sender setImage:nil forState:UIControlStateNormal];
-        
-        
-    }else{
-        sender.selected = YES;
-        [sender setImage:[UIImage imageNamed:@"redDot"] forState:UIControlStateNormal];
-        _withDrawView.alipayButton.selected = NO;
-        [_withDrawView.alipayButton setImage:nil forState:UIControlStateNormal];
-        
-    }
-    
-    
-}
 
 /* 判断输入的金额数字是否正确*/
 
@@ -343,6 +265,44 @@
     return  YES;
 }
 
+/** 拉起微信请求 */
+- (void)requestWechat{
+    
+    //构造SendAuthReq结构体
+    SendAuthReq* req =[[SendAuthReq alloc ] init ]  ;
+    req.scope = @"snsapi_userinfo" ;
+    req.state = @"123" ;
+    //第三方向微信终端发送一个SendAuthReq消息结构
+    
+    [WXApi sendAuthReq:req viewController:self delegate:self];
+    
+}
+
+/** 发起提现请求 传code进去 */
+- (void)requestWithDraw:(NSString *)code{
+    
+    [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/withdraws",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"amount":_withDrawView.moneyText.text,@"pay_type":@"weixin",@"ticket_token":_ticketToken,@"app_type":@"student_app",@"access_code":code} completeSuccess:^(id  _Nullable responds) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+        //申请提现成功.
+            
+            WithdrawConfirmViewController *contorller = [[WithdrawConfirmViewController alloc]initWithData:dic[@"data"]];
+            [self.navigationController pushViewController:contorller animated:YES];
+            
+        }else{
+            
+            [self HUDStopWithTitle:@"申请提现失败,请稍后重试"];
+        }
+        
+        
+    } failure:^(id  _Nullable erros) {
+        
+        [self HUDStopWithTitle:@"网络正忙,请稍后重试"];
+        
+    }];
+}
+
 
 
 - (void)returnLastPage{
@@ -357,13 +317,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

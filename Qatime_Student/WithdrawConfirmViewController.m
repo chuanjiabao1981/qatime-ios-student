@@ -17,10 +17,7 @@
     
     NSDictionary *_dataDic;
     
-    
     NavigationBar *_navigationBar;
-    
-    
 }
 
 
@@ -53,7 +50,7 @@
     
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
         
-        _.titleLabel.text = @"提现详情";
+        _.titleLabel.text = @"交易确认";
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_];
@@ -75,7 +72,7 @@
                 _.method.text = @"支付宝";
             }
             _.money.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"amount"]];
-            _.fee.text = @"¥0.0" ;
+//            _.fee.text = @"¥0.0" ;
             
             [_.finishButton addTarget:self action:@selector(requestWithDrawSucess) forControlEvents:UIControlEventTouchUpInside];
             
@@ -130,15 +127,9 @@
         }
     }
     
-    
-        
-        
-        [self.navigationController popToViewController:controller animated:YES];
-        
-        
-    
-
-    
+    [self.navigationController popToViewController:controller animated:YES];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"PopToRoot" object:nil];
+ 
 }
 
 
