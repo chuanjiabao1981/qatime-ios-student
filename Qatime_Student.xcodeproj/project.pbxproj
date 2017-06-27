@@ -138,6 +138,7 @@
 		54443E2A1E0D284E000D8E8B /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = 54443E291E0D284E000D8E8B /* point.png */; };
 		5444BD2B1E67BFAE00A75AD1 /* TeacherPublicClassCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5444BD2A1E67BFAE00A75AD1 /* TeacherPublicClassCollectionViewCell.swift */; };
 		5444BD2F1E68206D00A75AD1 /* UINavigationController+StatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5444BD2E1E68206D00A75AD1 /* UINavigationController+StatusBar.m */; };
+		54483D691F02659A008F4BA9 /* DevieceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 54483D681F02659A008F4BA9 /* DevieceManager.m */; };
 		5448AEA11E042BC8007B1DF9 /* NoticeIndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA01E042BC8007B1DF9 /* NoticeIndexViewController.m */; };
 		5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA31E042D45007B1DF9 /* NoticeIndexView.m */; };
 		5448AEA81E054C7A007B1DF9 /* ChatListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA71E054C7A007B1DF9 /* ChatListTableViewCell.m */; };
@@ -949,6 +950,8 @@
 		5444BD2A1E67BFAE00A75AD1 /* TeacherPublicClassCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeacherPublicClassCollectionViewCell.swift; sourceTree = "<group>"; };
 		5444BD2D1E68206D00A75AD1 /* UINavigationController+StatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+StatusBar.h"; sourceTree = "<group>"; };
 		5444BD2E1E68206D00A75AD1 /* UINavigationController+StatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+StatusBar.m"; sourceTree = "<group>"; };
+		54483D671F02659A008F4BA9 /* DevieceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevieceManager.h; sourceTree = "<group>"; };
+		54483D681F02659A008F4BA9 /* DevieceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevieceManager.m; sourceTree = "<group>"; };
 		5448AE9F1E042BC8007B1DF9 /* NoticeIndexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeIndexViewController.h; sourceTree = "<group>"; };
 		5448AEA01E042BC8007B1DF9 /* NoticeIndexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeIndexViewController.m; sourceTree = "<group>"; };
 		5448AEA21E042D45007B1DF9 /* NoticeIndexView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeIndexView.h; sourceTree = "<group>"; };
@@ -2586,6 +2589,7 @@
 				5457317D1E022E4700F45C03 /* 该月无课程覆盖图 */,
 				54B9CAFD1DFE4E6C003961FF /* 试听购买栏 */,
 				541F91D91DC9BB8D00180BE8 /* 导航栏 */,
+				54483D661F02655D008F4BA9 /* 获取设备型号 */,
 				543E51261E5D76F80001551D /* 自定义Badge */,
 			);
 			name = Util;
@@ -2754,6 +2758,15 @@
 			);
 			name = CYLTableViewPlaceHolder;
 			path = HMSegmentedControl/CYLTableViewPlaceHolder;
+			sourceTree = "<group>";
+		};
+		54483D661F02655D008F4BA9 /* 获取设备型号 */ = {
+			isa = PBXGroup;
+			children = (
+				54483D671F02659A008F4BA9 /* DevieceManager.h */,
+				54483D681F02659A008F4BA9 /* DevieceManager.m */,
+			);
+			name = "获取设备型号";
 			sourceTree = "<group>";
 		};
 		5448AEA51E054C63007B1DF9 /* Cell */ = {
@@ -7178,6 +7191,7 @@
 				54504AD01E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.m in Sources */,
 				5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */,
 				54AC04AD1E89398E00817767 /* NTESChatroomUnknowMessageConfig.m in Sources */,
+				54483D691F02659A008F4BA9 /* DevieceManager.m in Sources */,
 				54AC03DE1E8938E100817767 /* NIMKitEvent.m in Sources */,
 				549C8D4E1EB1992C00CCD2FB /* ItunesProduct.m in Sources */,
 				54443E281E0D252F000D8E8B /* LocalChoseView.m in Sources */,
