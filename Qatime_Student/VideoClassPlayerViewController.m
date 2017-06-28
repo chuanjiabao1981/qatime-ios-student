@@ -1238,7 +1238,9 @@ typedef enum : NSUInteger {
 
 -(void)dealloc{
     
-    //    [self.videoPlayer removeObserver:self forKeyPath:@"isFullScreen"];
+    [_videoPlayer shutdown];
+    [_videoPlayer.view removeFromSuperview];
+    _videoPlayer = nil;
 }
 
 

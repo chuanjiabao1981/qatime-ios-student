@@ -78,6 +78,10 @@ bool videoIsmute     = NO;
 
 - (void)dealloc{
     
+    [_liveplayer shutdown];
+    [_liveplayer.view removeFromSuperview];
+    _liveplayer = nil;
+    
 }
 
 - (void)loadView {

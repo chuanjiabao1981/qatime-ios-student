@@ -59,6 +59,7 @@
 #import "UIViewController+Token.h"
 
 #import "InteractionLesson.h"
+#import "UIView+PlaceholderImage.h"
 
 //子控制器
 #import "InteractionChatViewController.h"
@@ -249,7 +250,7 @@ NTES_FORBID_INTERACTIVE_POP
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onDeviceOrientationChange) name:UIDeviceOrientationDidChangeNotification object:nil];
     
-    /* 支持全屏*/
+    /* 不支持屏幕中立旋转*/
     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"SupportedLandscape"];
     
     
@@ -289,7 +290,7 @@ NTES_FORBID_INTERACTIVE_POP
     [[NTESMeetingRolesManager defaultManager] setDelegate:self];
     
     _floatingView = [[IJKFloatingView alloc]initWithFrame:CGRectMake(20, 20, _cameraWidth,_cameraWidth/9*16.0)];
-    
+    [_floatingView makePlaceHolderImage:[UIImage imageNamed:@"PlayerHolder"]];
     _floatingView.backgroundColor = [UIColor whiteColor];
     _floatingView.canMove = YES;
     [self.view addSubview:_floatingView];
@@ -502,15 +503,15 @@ NTES_FORBID_INTERACTIVE_POP
         
         
     }else {
-        [self.view.window makeToast:@"音视频服务连接异常" duration:2.0 position:CSToastPositionCenter];
+//        [self.view.window makeToast:@"音视频服务连接异常" duration:2.0 position:CSToastPositionCenter];
         [self.actorsView stopLocalPreview];
     }
 }
 
 - (void)onSetBypassStreamingEnabled:(BOOL)enabled error:(NSUInteger)code{
     
-    NSString *toast = [NSString stringWithFormat:@"%@互动直播失败 (%zd)", enabled ? @"开启" : @"关闭", code];
-    [self.view.window makeToast:toast duration:3.0 position:CSToastPositionCenter];
+//    NSString *toast = [NSString stringWithFormat:@"%@互动直播失败 (%zd)", enabled ? @"开启" : @"关闭", code];
+//    [self.view.window makeToast:toast duration:3.0 position:CSToastPositionCenter];
 }
 
 #pragma mark - NTESMeetingRolesManagerDelegate
@@ -560,7 +561,7 @@ NTES_FORBID_INTERACTIVE_POP
     BOOL accepted = [[NTESMeetingNetCallManager defaultManager] setBypassLiveStreaming:NO];
     
     if (!accepted) {
-        [self.view.window makeToast:@"关闭互动直播被拒绝" duration:3.0 position:CSToastPositionTop];
+//        [self.view.window makeToast:@"关闭互动直播被拒绝" duration:3.0 position:CSToastPositionTop];
     }
     
     [self.view.window makeToast:@"你已被老师取消互动" duration:2.0 position:CSToastPositionCenter];
@@ -595,7 +596,7 @@ NTES_FORBID_INTERACTIVE_POP
     BOOL accepted = [[NTESMeetingNetCallManager defaultManager] setBypassLiveStreaming:YES];
     
     if (!accepted) {
-        [self.view.window makeToast:@"开启互动直播被拒绝" duration:3.0 position:CSToastPositionTop];
+//        [self.view.window makeToast:@"开启互动直播被拒绝" duration:3.0 position:CSToastPositionTop];
     }
 }
 
@@ -698,6 +699,9 @@ NTES_FORBID_INTERACTIVE_POP
         [_floatingView updateLayout];
         [cameraView updateLayout];
         cameraView.hidden = NO;
+        
+        //为了让摄像头的尺寸正常 ,只能这么做了
+        
         [self videoSwitchAction:_videoSwitchBtn];
         [self videoSwitchAction:_videoSwitchBtn];
 
@@ -736,11 +740,7 @@ NTES_FORBID_INTERACTIVE_POP
         [self.actorsView updateLayout];
         
     }];
-    
-    
-
 }
-
 
 
 /**前后摄像头切换功能*/
@@ -968,6 +968,13 @@ NTES_FORBID_INTERACTIVE_POP
 
 - (void)returnLastPage{
     
+    _actorsView = nil;
+    [[NIMSDK sharedSDK].chatroomManager exitChatroom:_chatroom.roomId completion:nil];
+    [[NIMSDK sharedSDK].chatroomManager removeDelegate:self];
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
+    [[NTESMeetingNetCallManager defaultManager]leaveMeeting];
+    [[NTESMeetingRTSManager defaultManager]leaveCurrentConference];
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -979,6 +986,8 @@ NTES_FORBID_INTERACTIVE_POP
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [[NTESMeetingNetCallManager defaultManager]leaveMeeting];
     [[NTESMeetingRTSManager defaultManager]leaveCurrentConference];
+    
+    
    
 }
 

@@ -209,17 +209,17 @@
     
     for (int i = 0; i < NTESMeetingMaxActors; i ++) {
         UIView *view = _actorViews[i];
-        view.width = self.width;
-        view.height = self.width/16*9;
+        view.width = [UIScreen mainScreen].bounds.size.width;
+        view.height = [UIScreen mainScreen].bounds.size.width/16*9.f;
         view.top = i < 2 ? 0 : self.height / 2;
-        view.left = (i + 1) % 2 ? 0 : self.width / 2;
-        if(i==0){
-            
-            _fullScreenBtn.frame = CGRectMake(view.frame.size.width-7-30, view.frame.size.height-7-30, 30, 30);
-            [_fullScreenBtn setImage: [UIImage imageNamed:@"chatroom_video_fullscreen"] forState:UIControlStateNormal];
-            [_fullScreenBtn addTarget:self action:@selector(goFullScreen) forControlEvents:UIControlEventTouchUpInside];
-            [view addSubview:_fullScreenBtn];
-        }
+        view.left = (i + 1) % 2 ? 0 : [UIScreen mainScreen].bounds.size.width;
+//        if(i==0){
+//            
+//            _fullScreenBtn.frame = CGRectMake(view.frame.size.width-7-30, view.frame.size.height-7-30, 30, 30);
+//            [_fullScreenBtn setImage: [UIImage imageNamed:@"chatroom_video_fullscreen"] forState:UIControlStateNormal];
+//            [_fullScreenBtn addTarget:self action:@selector(goFullScreen) forControlEvents:UIControlEventTouchUpInside];
+//            [view addSubview:_fullScreenBtn];
+//        }
         UIImageView *backgound = _backgroundViews[i];
         backgound.frame = view.frame;
     }

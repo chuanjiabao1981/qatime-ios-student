@@ -2086,6 +2086,8 @@ bool ismute     = NO;
     /* 非屏状态下的点击事件*/
     if (isFullScreen == NO) {
         
+        [_liveplayerBoard shutdown];
+        [_liveplayerTeacher shutdown];
         [self.navigationController popViewControllerAnimated:YES];
         //
         
@@ -4905,6 +4907,13 @@ bool ismute     = NO;
     [self removeObserver:self forKeyPath:@"headerHeight"];
     _aBarrage = nil;
     NSLog(@"干掉弹幕");
+    
+    [_liveplayerTeacher shutdown];
+    [_liveplayerTeacher.view removeFromSuperview];
+    _liveplayerTeacher = nil;
+    [_liveplayerBoard shutdown];
+    [_liveplayerBoard.view removeFromSuperview];
+    _liveplayerBoard = nil;
     
 }
 

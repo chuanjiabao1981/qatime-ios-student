@@ -797,7 +797,13 @@
             /* 如果收到的是音频消息*/
             
             
+        }else if (message.messageType == NIMMessageTypeNotification){
+            /** 收到公告消息a */
+            [self.chatModel addSpecifiedNotificationItem:message.text];
+            [self.chatTableView reloadData];
+            [self tableViewScrollToBottom];
         }
+        
         
     }
     
