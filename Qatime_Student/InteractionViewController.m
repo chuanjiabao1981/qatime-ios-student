@@ -68,6 +68,8 @@
 #import "IJKFloatingView.h"
 #import "UIView+PlaceholderImage.h"
 
+#define CameraWidth [UIScreen mainScreen].bounds.size.width/4.0
+
 typedef enum : NSUInteger {
     /**
      *  前置摄像头
@@ -98,6 +100,10 @@ typedef enum : NSUInteger {
     __block IJKFloatingView *_teacherView;
     
     __block IJKFloatingView *_teacherCamera;
+    
+    CGFloat _cameraWidth;
+    
+    
     
     //本地摄像头状态,默认开启
     CurrentCamera _currentCamera;
@@ -176,6 +182,8 @@ NTES_FORBID_INTERACTIVE_POP
     self = [super init];
     if (self) {
         
+        
+        _cameraWidth = CameraWidth;
         _chatroom = chatroom;
         
         _classID = [NSString stringWithFormat:@"%@",classID];
@@ -198,13 +206,15 @@ NTES_FORBID_INTERACTIVE_POP
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [[NTESMeetingNetCallManager defaultManager]leaveMeeting];
     [[NTESMeetingRTSManager defaultManager]leaveCurrentConference];
+    [[UIApplication sharedApplication]setStatusBarHidden:NO];
+     
 }
 
 
 - (void)viewDidDisappear:(BOOL)animated{
     
-//    [[NIMAVChatSDK sharedSDK].netCallManager setBypassStreamingEnabled:NO];
-    
+    //可以发送语音
+    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"CanSendVoice"];
     
     
 }
@@ -224,62 +234,16 @@ NTES_FORBID_INTERACTIVE_POP
     //初始化数据
     [self makeData];
     
-    /**
-     修改视图结构.重写所有视图.
-     */
+     //修改视图结构.重写所有视图.
+     
     [self setupViews];
     
     //状态栏隐藏/显示
     [self performSelector:@selector(hideControlView) withObject:nil afterDelay:8];
     
-    //接受子控制器传来的roomID
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"RoomID" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-        
-        _roomID = [note object];
-        
-        [[NTESMeetingNetCallManager defaultManager] joinMeeting:_roomID delegate:self];
-    }];
     
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"SelfCameraReady" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-        
-        cameraView = self.actorsView.selfCamera.copy;
-        
-        [_floatingView addSubview:cameraView];
-        cameraView.sd_layout
-        .leftSpaceToView(_floatingView, 0)
-        .rightSpaceToView(_floatingView, 0)
-        .topSpaceToView(_floatingView, 0)
-        .bottomSpaceToView(_floatingView, 0);
-        
-    }];
-    
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"DesktopSharedOn" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-        //教师端开启屏幕共享
-        
-        //直接全屏
-        if (is_fullScreen == YES) {
-        }else{
-            [self scaleAction:_fullScreenBtn];
-        }
-        //关掉白板
-        [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:NO];
-        
-    }];
-    
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"DesktopSharedOff" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-        //教师端关闭屏幕共享
-        //直接全屏
-        if (is_fullScreen == YES) {
-            [self scaleAction:_fullScreenBtn];
-        }else{
-            
-        }
-        //开启白板
-        [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:YES];
-        
-    }];
-    
-    
+    //所有的监听
+    [self addNotifications];
     
     /* 全屏模式的监听-->在runtime机制下不可进行屏幕旋转的时候,强制进行屏幕旋转*/
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -324,11 +288,11 @@ NTES_FORBID_INTERACTIVE_POP
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
     [[NTESMeetingRolesManager defaultManager] setDelegate:self];
     
-    _floatingView = [[IJKFloatingView alloc]initWithFrame:CGRectMake(20, 20, self.view.width_sd/4, self.view.width_sd/4/9*16)];
+    _floatingView = [[IJKFloatingView alloc]initWithFrame:CGRectMake(20, 20, _cameraWidth,_cameraWidth/9*16.0)];
+    
     _floatingView.backgroundColor = [UIColor whiteColor];
     _floatingView.canMove = YES;
     [self.view addSubview:_floatingView];
-    
     
     _teacherView = [[IJKFloatingView alloc]init];
     _teacherView.canMove = NO;
@@ -339,10 +303,7 @@ NTES_FORBID_INTERACTIVE_POP
     .topSpaceToView(self.actorsView, 0)
     .bottomSpaceToView(self.actorsView, 0);
     
-    
 }
-
-
 
 
 /**加载控制栏*/
@@ -422,6 +383,60 @@ NTES_FORBID_INTERACTIVE_POP
     .heightEqualToWidth();
     [_backBtn setEnlargeEdge:20];
     
+}
+
+
+/** 所有的监听 */
+- (void)addNotifications{
+    
+    //接受子控制器传来的roomID
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"RoomID" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        
+        _roomID = [note object];
+        
+        [[NTESMeetingNetCallManager defaultManager] joinMeeting:_roomID delegate:self];
+    }];
+    
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"SelfCameraReady" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        
+        cameraView = self.actorsView.selfCamera.copy;
+        
+        [_floatingView addSubview:cameraView];
+        cameraView.sd_layout
+        .leftSpaceToView(_floatingView, 0)
+        .rightSpaceToView(_floatingView, 0)
+        .topSpaceToView(_floatingView, 0)
+        .bottomSpaceToView(_floatingView, 0);
+        [cameraView updateLayout];
+
+    }];
+    
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"DesktopSharedOn" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        //教师端开启屏幕共享
+        //直接全屏
+        if (is_fullScreen == YES) {
+            
+        }else{
+            
+            [self performSelector:@selector(scaleAction:) withObject:_fullScreenBtn afterDelay:0.5];
+            
+//            [self scaleAction:_fullScreenBtn];
+        }
+    
+        
+    }];
+    
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"DesktopSharedOff" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        //教师端关闭屏幕共享
+        //自动恢复竖屏
+        if (is_fullScreen == YES) {
+            
+             [self performSelector:@selector(scaleAction:) withObject:_fullScreenBtn afterDelay:0.5];
+        }else{
+            
+        }
+        
+    }];
 }
 
 
@@ -618,7 +633,6 @@ NTES_FORBID_INTERACTIVE_POP
 }
 
 
-
 //在点击全屏按钮的情况下，强制改变屏幕方向
 - (void)interfaceOrientation:(UIInterfaceOrientation)orientation{
     
@@ -651,17 +665,44 @@ NTES_FORBID_INTERACTIVE_POP
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
        //教师摄像头变小
         [self teacherCameraTurnsPortrait];
-        
         is_fullScreen = NO;
+       
+        //在这儿开启白板 相对安全
+        [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:YES];
         
     }
+    
     /* 切换到横屏*/
     else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
         //教师摄像头变大
         [self teacherCameraTurnsFullScreen];
         is_fullScreen = YES;
+        _floatingView.hidden = YES;
+        //自己的摄像头变小 变小
+        [_floatingView updateLayout];
+        [cameraView updateLayout];
+        cameraView.hidden = YES;
+        //在这儿关闭白班可能也安全
+        [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:NO];
         
     }
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    
+    
+    if (fromInterfaceOrientation==UIInterfaceOrientationLandscapeRight) {
+        
+        //切回了竖屏之后,在显示摄像头
+        _floatingView.hidden = NO;
+        [_floatingView updateLayout];
+        [cameraView updateLayout];
+        cameraView.hidden = NO;
+        [self videoSwitchAction:_videoSwitchBtn];
+        [self videoSwitchAction:_videoSwitchBtn];
+
+    }
+    
 }
 
 /**教师摄像头变全屏*/
@@ -693,9 +734,10 @@ NTES_FORBID_INTERACTIVE_POP
         .autoHeightRatio(9/16.0);
         
         [self.actorsView updateLayout];
-//        [self.actionView layoutSubviews];
         
     }];
+    
+    
 
 }
 
@@ -726,10 +768,12 @@ NTES_FORBID_INTERACTIVE_POP
     if (_videoON == YES) {
         [sender setImage:[UIImage imageNamed:@"camera_off"] forState:UIControlStateNormal];
         _floatingView.hidden = YES;
+        cameraView.hidden = YES;
         _videoON = NO;
     }else{
         [sender setImage:[UIImage imageNamed:@"camera_on"] forState:UIControlStateNormal];
         _floatingView.hidden = NO;
+        cameraView.hidden = NO;
         _videoON = YES;
     }
     

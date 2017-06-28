@@ -13,6 +13,8 @@
 #import <NIMAVChat/NIMAVChat.h>
 #import "UIView+Toast.h"
 
+#define VideoWidth [UIScreen mainScreen].bouns.size.width/4.0
+
 
 @interface NTESMeetingWhiteboardViewController ()<NTESColorSelectViewDelegate, NTESMeetingRTSManagerDelegate, NTESWhiteboardCmdHandlerDelegate, NIMLoginManagerDelegate,NTESDocumentHandlerDelegate>{
     
@@ -82,15 +84,22 @@
     return self;
 }
 
-- (void)dealloc{
+- (void)viewDidDisappear:(BOOL)animated{
     
     [[NTESMeetingRTSManager defaultManager] leaveCurrentConference];
     
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(getRoomID) object:nil];
+}
+
+- (void)dealloc{
+    
+    [[NTESMeetingRTSManager defaultManager] leaveCurrentConference];
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(getRoomID) object:nil];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
     
     //白板进来什么都不做,先找服务器刷roomID
@@ -657,15 +666,15 @@
         }else{
             _isJoined = YES;
             [self checkPermission];
-            [self.view makeToast:@"进入互动成功了"];
+            [self.view makeToast:@"进入互动"];
             [_lines clear];
+            //聊天不可以发送语音
+            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"CanSendVoice"];
             [_cmdHander sendPureCmd:NTESWhiteBoardCmdTypeSyncRequest to:nil];
             
         }
         
     }else{
-        
-//        [self.view makeToast:@"进入互动失败"];
         
     }
 }
@@ -691,6 +700,11 @@
 - (void)onUserLeft:(NSString *)uid conference:(NSString *)name
 {
     
+    if ([uid isEqualToString:_myUid]) {
+        
+        //自己再加入一次
+        [[NTESMeetingRTSManager defaultManager] joinConference:_roomID];
+    }
 }
 
 #pragma mark - NTESWhiteboardCmdHandlerDelegate
@@ -867,6 +881,31 @@
         return image;
     }
     return nil;
+}
+
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    
+    if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
+        //转回竖屏的时候,白板重新加载一下子
+//        [[NTESMeetingRTSManager defaultManager].dataHandler handleReceivedData:nil sender:nil];
+        [_drawView updateLayout];
+        
+        
+    }else if(toInterfaceOrientation == UIInterfaceOrientationLandscapeRight){
+        //白板转到全屏的时候 ,直接关闭
+        
+        
+        
+    }
+    
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    
+    
+    
+    
 }
 
 

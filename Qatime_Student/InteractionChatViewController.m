@@ -172,9 +172,6 @@
     /* 添加录音是否取消的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordCancel) name:@"RecordCancel" object:nil];
     
-    /* 翻译完成的通知*/
-    //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(translateFinish:) name:@"TranslateFinish" object:nil];
-    
 }
 
 /**加载主视图*/
@@ -301,7 +298,6 @@
 //开始录制的方法
 - (void)recordStart{
     
-    //    [_iFlySpeechRecognizer startListening];
     [self checkMic];
     
 }
@@ -310,14 +306,13 @@
     
     [levelTimer invalidate];
     levelTimer = nil;
-    //    [_iFlySpeechRecognizer stopListening];
+    
 }
 //语音录制取消的方法
 - (void)recordCancel{
     
     [levelTimer invalidate];
     levelTimer = nil;
-    //    [_iFlySpeechRecognizer cancel];
     
 }
 
@@ -622,7 +617,6 @@
                 /* 如果消息是自己发的*/
                 if ([message.from isEqualToString:_chat_Account.accid]){
                     
-                    // NSLog(@"收到对方发来的语音");
                     
                     NIMAudioObject *audioObject = message.messageObject;
                     
@@ -772,13 +766,15 @@
         NIMMessage *message =messages[i];
         
         /* 筛选用户信息,拿到用户名*/
-        
         NSString *iconURL = @"".mutableCopy;
         NSString *senderName = @"".mutableCopy;
         for (Chat_Account *mod in _userList) {
             if ([message.from isEqualToString:mod.accid]) {
                 iconURL = mod.icon;
                 senderName = mod.name;
+            }else{
+                //没有踢出去
+                return;
             }
         }
         /* 如果收到的是文本消息*/

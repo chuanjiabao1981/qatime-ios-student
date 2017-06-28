@@ -1028,11 +1028,10 @@
     
 }
 
-
+//直接读取设备
 - (NSString *)iphoneType {
-
-    return [[DevieceManager defaultManager]devieceInfo];
     
+    return [[DevieceManager defaultManager]devieceInfo];
 }
 
 

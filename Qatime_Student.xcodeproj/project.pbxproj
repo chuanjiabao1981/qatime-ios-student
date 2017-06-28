@@ -2589,7 +2589,7 @@
 				5457317D1E022E4700F45C03 /* 该月无课程覆盖图 */,
 				54B9CAFD1DFE4E6C003961FF /* 试听购买栏 */,
 				541F91D91DC9BB8D00180BE8 /* 导航栏 */,
-				54483D661F02655D008F4BA9 /* 获取设备型号 */,
+				54483D661F02655D008F4BA9 /* 设备管理器 */,
 				543E51261E5D76F80001551D /* 自定义Badge */,
 			);
 			name = Util;
@@ -2760,13 +2760,13 @@
 			path = HMSegmentedControl/CYLTableViewPlaceHolder;
 			sourceTree = "<group>";
 		};
-		54483D661F02655D008F4BA9 /* 获取设备型号 */ = {
+		54483D661F02655D008F4BA9 /* 设备管理器 */ = {
 			isa = PBXGroup;
 			children = (
 				54483D671F02659A008F4BA9 /* DevieceManager.h */,
 				54483D681F02659A008F4BA9 /* DevieceManager.m */,
 			);
-			name = "获取设备型号";
+			name = "设备管理器";
 			sourceTree = "<group>";
 		};
 		5448AEA51E054C63007B1DF9 /* Cell */ = {

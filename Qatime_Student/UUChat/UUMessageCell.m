@@ -240,7 +240,13 @@
     switch (longPress.state) {
         case UIGestureRecognizerStateBegan:{
             
-            [_delegate cellContentLongPress:self voice:self.messageFrame.message.voice];
+            //只有语音消息才可以有长按功能
+            
+            if (self.messageFrame.message.type == UUMessageTypeVoice) {
+                
+                [_delegate cellContentLongPress:self voice:self.messageFrame.message.voice];
+            }
+            
         }
             break;
             

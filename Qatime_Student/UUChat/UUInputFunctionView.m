@@ -12,6 +12,7 @@
 #import "ACMacros.h"
 
 #import "NSString+YYAdd.h"
+#import "UIView+NIMKitToast.h"
 
 
 
@@ -145,23 +146,49 @@
 }
 
 
-
 //语音/文字输入切换
 - (void)voiceRecord:(UIButton *)sender{
     
-    self.btnVoiceRecord.hidden = !self.btnVoiceRecord.hidden;
-    self.TextViewInput.hidden  = !self.TextViewInput.hidden;
-    isbeginVoiceRecord = !isbeginVoiceRecord;
-    if (isbeginVoiceRecord) {
-        [self.voiceSwitchTextButton setImage:[UIImage imageNamed:@"chat_ipunt_message"] forState:UIControlStateNormal];
-        [self.TextViewInput resignFirstResponder];
-        [self changeSendBtnWithPhoto:YES];
+    BOOL _canSendVoice ;
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"CanSendVoice"]) {
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"CanSendVoice"]==NO) {
+            //不能发送语音
+            [self nimkit_makeToast:@"该课程不能发送语音消息" duration:2 position:NIMKitToastPositionBottom];
+        }else{
+            //可以发送语音
+            self.btnVoiceRecord.hidden = !self.btnVoiceRecord.hidden;
+            self.TextViewInput.hidden  = !self.TextViewInput.hidden;
+            isbeginVoiceRecord = !isbeginVoiceRecord;
+            if (isbeginVoiceRecord) {
+                [self.voiceSwitchTextButton setImage:[UIImage imageNamed:@"chat_ipunt_message"] forState:UIControlStateNormal];
+                [self.TextViewInput resignFirstResponder];
+                [self changeSendBtnWithPhoto:YES];
+            }else{
+                [self.voiceSwitchTextButton setImage:[UIImage imageNamed:@"chat_voice_record"] forState:UIControlStateNormal];
+                [self.TextViewInput becomeFirstResponder];
+                [self changeSendBtnWithPhoto:NO];
+            }
+
+            
+        }
     }else{
-        [self.voiceSwitchTextButton setImage:[UIImage imageNamed:@"chat_voice_record"] forState:UIControlStateNormal];
-        [self.TextViewInput becomeFirstResponder];
-        [self changeSendBtnWithPhoto:NO];
+        
+        //可以发送语音
+        self.btnVoiceRecord.hidden = !self.btnVoiceRecord.hidden;
+        self.TextViewInput.hidden  = !self.TextViewInput.hidden;
+        isbeginVoiceRecord = !isbeginVoiceRecord;
+        if (isbeginVoiceRecord) {
+            [self.voiceSwitchTextButton setImage:[UIImage imageNamed:@"chat_ipunt_message"] forState:UIControlStateNormal];
+            [self.TextViewInput resignFirstResponder];
+            [self changeSendBtnWithPhoto:YES];
+        }else{
+            [self.voiceSwitchTextButton setImage:[UIImage imageNamed:@"chat_voice_record"] forState:UIControlStateNormal];
+            [self.TextViewInput becomeFirstResponder];
+            [self changeSendBtnWithPhoto:NO];
+        }
+
+        
     }
-    
     
 }
 
