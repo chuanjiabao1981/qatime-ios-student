@@ -37,10 +37,10 @@
     return [NSString stringWithFormat:NTESWhiteboardCmdFormatPacketID, NTESWhiteBoardCmdTypePacketID, packetId];
 }
 
-+ (NSString *)docShareCommand:(NTESDocumentShareInfo *)shareInfo
-{
-    return [NSString stringWithFormat:NTESWhiteboardCmdFormatDocShareCmd, NTESWhiteBoardCmdTypeDocShare, shareInfo.docId, shareInfo.currentPage, shareInfo.pageCount,shareInfo.type];
-}
+//+ (NSString *)docShareCommand:(NTESDocumentShareInfo *)shareInfo
+//{
+//    return [NSString stringWithFormat:NTESWhiteboardCmdFormatDocShareCmd, NTESWhiteBoardCmdTypeDocShare, shareInfo.docId, shareInfo.currentPage, shareInfo.pageCount,shareInfo.type];
+//}
 
 
 

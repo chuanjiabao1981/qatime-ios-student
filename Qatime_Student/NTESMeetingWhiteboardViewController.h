@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "NTESDocumentViewController.h"
+
 #import "UIView+NTES.h"
 #import "NTESMeetingRolesManager.h"
 #import "NTESColorSelectView.h"
@@ -17,14 +17,14 @@
 #import "NTESWhiteboardCmdHandler.h"
 #import "NTESWhiteboardLines.h"
 #import "NTESWhiteboardDrawView.h"
-#import "NTESDocumentViewController.h"
-#import "UIAlertView+NTESBlock.h"
-#import "NTESDocumentShareInfo.h"
-#import "NTESDocumentHandler.h"
-#import "UIImageView+WebCache.h"
-#import "NTESDocDownloadManager.h"
 
-@interface NTESMeetingWhiteboardViewController : UIViewController<NTESDocumentViewControllerDelegate>
+#import "UIAlertView+NTESBlock.h"
+
+
+#import "UIImageView+WebCache.h"
+
+
+@interface NTESMeetingWhiteboardViewController : UIViewController
 
 @property (nonatomic, strong) NTESWhiteboardDrawView *drawView;
 
@@ -44,7 +44,7 @@
 
 @property (nonatomic, strong) NTESWhiteboardCmdHandler *cmdHander;
 
-@property (nonatomic, strong) NTESDocumentHandler *docHander;
+
 
 @property (nonatomic, strong) NTESWhiteboardLines *lines;
 

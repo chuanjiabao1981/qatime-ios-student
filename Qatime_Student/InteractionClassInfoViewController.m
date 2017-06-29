@@ -22,7 +22,7 @@
 #import "InteractionTeacherListTableViewCell.h"
 #import "TeachersPublicViewController.h"
 
-@interface InteractionClassInfoViewController ()<UITableViewDelegate,UITableViewDataSource>{
+@interface InteractionClassInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate,InteractionTeacherListProtocal>{
     
     NSString *_classID;
     
@@ -69,6 +69,7 @@
     [_headView updateLayout];
     
     _mainView = [[UITableView alloc]initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    
     [self.view addSubview:_mainView];
     _mainView.sd_layout
     .leftSpaceToView(self.view, 0)
@@ -90,9 +91,14 @@
     _mainView.tableHeaderView = _headView;
     _mainView.tableHeaderView.size = CGSizeMake(self.view.width_sd, _headView.autoHeight);
     
+    [_mainView updateLayout];
+    self.view.bounds = _mainView.bounds;
+    self.view.userInteractionEnabled = YES;
+    
     showAllTeachers = NO;
     
 }
+
 
 /**请求数据*/
 - (void)requestData{
@@ -195,7 +201,8 @@
             if (_teachersArr.count>indexPath.row) {
                 
                 cell.model = _teachersArr[indexPath.row];
-                
+                cell.indexPath = indexPath;
+                cell.delegate = self;
             }
             
             tableCell = cell;
@@ -326,12 +333,20 @@
     
     if (indexPath.section==0) {
         InteractionTeacherListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        
         TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:cell.model.teacherID];
         [self.navigationController pushViewController:controller animated:YES];
         
     }
 
+}
+
+/** 点击选择教师的 替代方法 */
+- (void)didSelectedCellAtIndexPath:(NSIndexPath *)indexPath{
+    
+    InteractionTeacherListTableViewCell *cell = [_mainView cellForRowAtIndexPath:indexPath];
+    TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:cell.model.teacherID];
+    [self.navigationController pushViewController:controller animated:YES];
+    
 }
 
 
@@ -342,6 +357,13 @@
     
     [_mainView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     
+}
+
+/** 旋转完了刷新页面 */
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    
+    [_mainView updateLayout];
+    [_mainView reloadData];
 }
 
 
@@ -358,6 +380,7 @@
     
     return YES;
 }
+
 
 
 

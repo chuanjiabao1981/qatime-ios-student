@@ -8,7 +8,7 @@
 
 #import "NTESMeetingManager.h"
 #import "NSDictionary+NTESJson.h"
-#import "NTESChatroomMaker.h"
+
 #import "NTESMeetingRolesManager.h"
 #import <NIMSDK/NIMSDK.h>
 

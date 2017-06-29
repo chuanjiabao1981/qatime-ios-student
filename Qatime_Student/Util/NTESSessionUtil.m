@@ -7,10 +7,8 @@
 //
 
 #import "NTESSessionUtil.h"
-#import "NTESLoginManager.h"
-#import "NTESSnapchatAttachment.h"
-#import "NTESJanKenPonAttachment.h"
-#import "NTESChartletAttachment.h"
+
+
 #import "UIImage+NTES.h"
 #import "NIMKit.h"
 
@@ -192,16 +190,16 @@ double OnedayTimeIntervalValue = 24*60*60;  //一天的秒数
 }
 
 
-+ (NSString *)formatedMessage:(NIMMessage *)message{
-    NSAssert(message.messageType == NIMMessageTypeCustom, @"message type custom");
-    NIMCustomObject *object = (NIMCustomObject *)message.messageObject;
-    id<NTESCustomAttachmentInfo> attachment = (id<NTESCustomAttachmentInfo>)object.attachment;
-    if ([attachment respondsToSelector:@selector(formatedMessage)]) {
-        return [attachment formatedMessage];
-    }else{
-        return @"";
-    }
-}
+//+ (NSString *)formatedMessage:(NIMMessage *)message{
+//    NSAssert(message.messageType == NIMMessageTypeCustom, @"message type custom");
+//    NIMCustomObject *object = (NIMCustomObject *)message.messageObject;
+//    iNIMCustomAttachmentfo> attachment = (id<NTESCustomAttachmentInfo>)object.attachment;
+//    if ([attachment respondsToSelector:@selector(formatedMessage)]) {
+//        return [attachment formatedMessage];
+//    }else{
+//        return @"";
+//    }
+//}
 
 
 + (NSDictionary *)dictByJsonData:(NSData *)data

@@ -81,8 +81,17 @@
         
         [self setupAutoHeightWithBottomView:_workYears bottomMargin:20];
         
+        
+        _tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap:)];
+        [self.contentView addGestureRecognizer:_tap];
+        
     }
     return self;
+}
+- (void)tap:(UITapGestureRecognizer *)taps{
+    
+    [_delegate didSelectedCellAtIndexPath:_indexPath];
+    
 }
 
 
@@ -102,6 +111,7 @@
     _workYears.text = [model.teaching_years changeEnglishYearsToChinese];
     
 }
+
 
 
 

@@ -404,6 +404,9 @@
          contextName = "-[ChatModel addSpecifiedImageItem:andIconURL:andName:]:ChatModel.m">
       </ContextState>
       <ContextState
+         contextName = "-[InteractionChatViewController makeMessages:]:InteractionChatViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[MyOrderViewController requestUnpaid]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -491,10 +494,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -684,6 +687,9 @@
                value = "_cmdsSendBuffer">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[InteractionChatViewController onRecvMessages:]:InteractionChatViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[VideoInfoView initWithFrame:]:VideoInfoView.m">
@@ -1286,6 +1292,9 @@
          contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
       </ContextState>
       <ContextState
+         contextName = "__52-[InteractionChatViewController requestChatTeamUser]_block_invoke:InteractionChatViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[ChooseGradeAndSubjectViewController userSelectedGrade:]:ChooseGradeAndSubjectViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1506,10 +1515,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1532,6 +1541,14 @@
             </PersistentString>
             <PersistentString
                value = "_closedArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[InteractionChatViewController viewDidLoad]:InteractionChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_session">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

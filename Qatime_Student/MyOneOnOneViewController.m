@@ -23,7 +23,7 @@
 
 #import "Interactive.h"
 #import "OneOnOneTutoriumInfoViewController.h"
-#import "NTESMeetingViewController.h"
+
 #import "UIViewController+Token.h"
 #import "UIViewController+HUD.h"
 
@@ -65,6 +65,13 @@ typedef enum : NSUInteger {
 @end
 
 @implementation MyOneOnOneViewController
+
+-(void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear:animated];
+    [[UIApplication sharedApplication]setStatusBarHidden:NO];
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

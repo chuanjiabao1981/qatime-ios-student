@@ -10,8 +10,6 @@
 #import "NTESChatroomSegmentedControl.h"
 #import "UIView+NTES.h"
 #import "NTESPageView.h"
-#import "NTESChatroomViewController.h"
-#import "NTESChatroomMemberListViewController.h"
 #import "UIImageView+WebCache.h"
 #import "UIViewController+NTES.h"
 #import "SVProgressHUD.h"
@@ -23,7 +21,7 @@
 #import "NSDictionary+NTESJson.h"
 #import "UIAlertView+NTESBlock.h"
 #import "NTESMeetingRolesManager.h"
-#import "NTESDemoService.h"
+
 #import "NTESMeetingNetCallManager.h"
 #import "NTESActorSelectView.h"
 #import "NIMGlobalMacro.h"

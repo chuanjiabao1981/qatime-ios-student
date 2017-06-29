@@ -16,7 +16,7 @@
 #define VideoWidth [UIScreen mainScreen].bouns.size.width/4.0
 
 
-@interface NTESMeetingWhiteboardViewController ()<NTESColorSelectViewDelegate, NTESMeetingRTSManagerDelegate, NTESWhiteboardCmdHandlerDelegate, NIMLoginManagerDelegate,NTESDocumentHandlerDelegate>{
+@interface NTESMeetingWhiteboardViewController ()<NTESColorSelectViewDelegate, NTESMeetingRTSManagerDelegate, NTESWhiteboardCmdHandlerDelegate, NIMLoginManagerDelegate>{
     
     NSString *_classID;
     
@@ -41,7 +41,7 @@
         _classID = [NSString stringWithFormat:@"%@",classID];
         _name = _classID;
         _cmdHander = [[NTESWhiteboardCmdHandler alloc] initWithDelegate:self];
-        _docHander = [[NTESDocumentHandler alloc]initWithDelegate:self];
+//        _docHander = [[NTESDocumentHandler alloc]initWithDelegate:self];
         //加载白板服务
         [[NTESMeetingRTSManager defaultManager] setDataHandler:_cmdHander];
         _colors = @[@(0x000000), @(0xd1021c), @(0xfddc01), @(0x7dd21f), @(0x228bf7), @(0x9b0df5)];
@@ -64,7 +64,7 @@
         _name = room.roomId;
         //        _managerUid = room.creator;
         _cmdHander = [[NTESWhiteboardCmdHandler alloc] initWithDelegate:self];
-        _docHander = [[NTESDocumentHandler alloc]initWithDelegate:self];
+//        _docHander = [[NTESDocumentHandler alloc]initWithDelegate:self];
         [[NTESMeetingRTSManager defaultManager] setDataHandler:_cmdHander];
         _colors = @[@(0x000000), @(0xd1021c), @(0xfddc01), @(0x7dd21f), @(0x228bf7), @(0x9b0df5)];
         if([NTESMeetingRolesManager defaultManager].myRole.isManager){
@@ -135,6 +135,9 @@
                 [[NTESMeetingRTSManager defaultManager] setDelegate:self];
                 [[NTESMeetingRTSManager defaultManager] joinConference:_roomID];
                 
+                NSError *error =[[NTESMeetingRTSManager defaultManager] joinConference:_roomID];
+                
+                
                 //给上级controller(本页面的控制器)发送roomid消息
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"RoomID" object:_roomID];
                 
@@ -163,9 +166,6 @@
     [self.view addSubview:self.docView];
     
     //在这儿新建一个图,贴到白板上方(奇葩需求)
-    
-    
-    
     
     [self.view addSubview:self.drawView];
     
@@ -571,9 +571,9 @@
 
 - (void)onOpenDocumentPressed:(id)sender
 {
-    NTESDocumentViewController *docVc = [[NTESDocumentViewController alloc]init];
-    docVc.delegate = self;
-    [self.navigationController pushViewController:docVc animated:YES];
+//    NTESDocumentViewController *docVc = [[NTESDocumentViewController alloc]init];
+//    docVc.delegate = self;
+//    [self.navigationController pushViewController:docVc animated:YES];
 }
 
 - (void)onNextPagePressed:(id)sender
@@ -601,7 +601,7 @@
                 self.closeDocButton.hidden = YES;
                 self.drawView.backgroundColor = [UIColor whiteColor];
                 self.currentPage = 0;
-                [self onSendDocShareInfoToUser:nil];
+//                [self onSendDocShareInfoToUser:nil];
                 break;
             }
                 
@@ -667,6 +667,8 @@
             _isJoined = YES;
             [self checkPermission];
             [self.view makeToast:@"进入互动"];
+            //白板可用的通知
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"WhiteBoardEnable" object:nil];
             [_lines clear];
             //聊天不可以发送语音
             [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"CanSendVoice"];
@@ -692,7 +694,7 @@
 - (void)onUserJoined:(NSString *)uid conference:(NSString *)name
 {
     
-    
+    //加入音视频互动了
     
     
 }
@@ -759,69 +761,11 @@
     [self.laserView setHidden:YES];
 }
 
--(void)onReceiveDocShareInfo:(NTESDocumentShareInfo *)shareInfo from:(NSString *)sender{
-    
-    self.currentPage = shareInfo.currentPage;
-    if (shareInfo.currentPage == 0) {
-        self.drawView.backgroundColor = [UIColor whiteColor];
-        [self.pageNumLabel setHidden:YES];
-        return;
-    }
-    if (![self.docInfoDic objectForKey:shareInfo.docId])
-    {
-        [_docHander inquireDocInfo:shareInfo.docId];
-    }
-    else
-    {
-        self.docInfo = [self.docInfoDic objectForKey:shareInfo.docId];
-        [self showDocOnStdWhiteboard];
-    }
-}
 
-#pragma mark - NTESDocumentHandlerDelegate
--(void)notifyGetDocInfo:(NIMDocTranscodingInfo *)docInfo
-{
-    self.docInfo = docInfo;
-    self.pageNumLabel.text = [NSString stringWithFormat:@"%d/%lu",_currentPage,(unsigned long)_docInfo.numberOfPages];
-    [self.pageNumLabel sizeToFit];
-    [self.docInfoDic setObject:docInfo forKey:docInfo.docId];
-    [self showDocOnStdWhiteboard];
-}
 
-#pragma mark - NTESDocumentViewControllerDelegate
--(void)showDocOnWhiteboard:(NIMDocTranscodingInfo *)info
-{
-    self.docInfo = info;
-    self.docView.hidden = NO;
-    self.currentPage = 1;
-    [self loadImageOnWhiteboard];
-    
-    self.pageNumLabel.hidden = NO;
-    self.nextButton.hidden = NO;
-    self.previousButton.hidden = NO;
-    self.closeDocButton.hidden = NO;
-    self.drawView.backgroundColor = [UIColor clearColor];
-}
 
-- (void)showDocOnStdWhiteboard
-{
-    NSString * url= [self.docInfo transcodedUrl:_currentPage ofQuality:NIMDocTranscodingQualityMedium];
-    [self.docView sd_setImageWithURL:[NSURL URLWithString:url]];
-    [self.docView setHidden:NO];
-    [self.pageNumLabel setHidden:NO];
-    self.drawView.backgroundColor = [UIColor clearColor];
-}
 
-- (void)onSendDocShareInfoToUser:(NSString*)sender{
-    
-    NTESDocumentShareInfo *shareInfo = [[NTESDocumentShareInfo alloc]init];
-    shareInfo.docId = self.docInfo.docId;
-    shareInfo.currentPage = _currentPage;
-    shareInfo.pageCount = (int)self.docInfo.numberOfPages;
-    shareInfo.type = NTESDocShareTypeTurnThePage;
-    
-    [_cmdHander sendDocShareInfo:shareInfo toUser:sender];
-}
+
 
 #pragma mark - NIMLoginManagerDelegate
 - (void)onLogin:(NIMLoginStep)step
@@ -837,40 +781,40 @@
 #pragma mark - private method
 -(void)loadImageOnWhiteboard
 {
-    NSString *filePath = [self getFilePathWithPage:_currentPage];
-    UIImage* image = [self loadImage:filePath];
-    //重新下载
-    if (!image) {
-        [self.imgloadLabel setHidden:NO];
-        __weak typeof(self) weakself = self;
-        [[NTESDocDownloadManager sharedManager]downLoadDoc:self.docInfo page:_currentPage completeBlock:^(NSError *error) {
-            if (!error) {
-                UIImage *image = [weakself loadImage:filePath];
-                [weakself.imgloadLabel setHidden:YES];
-                [weakself.docView setImage:image];
-            }
-            else
-            {
-                //加载失败
-                [weakself.imgloadLabel setText:@"加载失败"];
-                [weakself.imgloadLabel setHidden:NO];
-            }
-        }];
-    }
-    else
-    {
-        [self.imgloadLabel setHidden:YES];
-        [self.docView setImage:image];
-    }
-    [self onSendDocShareInfoToUser:nil];
+//    NSString *filePath = [self getFilePathWithPage:_currentPage];
+//    UIImage* image = [self loadImage:filePath];
+//    //重新下载
+//    if (!image) {
+//        [self.imgloadLabel setHidden:NO];
+//        __weak typeof(self) weakself = self;
+//        [[NTESDocDownloadManager sharedManager]downLoadDoc:self.docInfo page:_currentPage completeBlock:^(NSError *error) {
+//            if (!error) {
+//                UIImage *image = [weakself loadImage:filePath];
+//                [weakself.imgloadLabel setHidden:YES];
+//                [weakself.docView setImage:image];
+//            }
+//            else
+//            {
+//                //加载失败
+//                [weakself.imgloadLabel setText:@"加载失败"];
+//                [weakself.imgloadLabel setHidden:NO];
+//            }
+//        }];
+//    }
+//    else
+//    {
+//        [self.imgloadLabel setHidden:YES];
+//        [self.docView setImage:image];
+//    }
+//    [self onSendDocShareInfoToUser:nil];
 }
 
--(NSString *)getFilePathWithPage:(NSInteger)pageNum
-{
-    NSString *filePath = [[NTESDocumentHandler getFilePathPrefix:self.docInfo.docId]stringByAppendingString:[NSString stringWithFormat:@"%@_%zd.png",self.docInfo.docName,pageNum]];
-    
-    return filePath;
-}
+//-(NSString *)getFilePathWithPage:(NSInteger)pageNum
+//{
+//    NSString *filePath = [[NTESDocumentHandler getFilePathPrefix:self.docInfo.docId]stringByAppendingString:[NSString stringWithFormat:@"%@_%zd.png",self.docInfo.docName,pageNum]];
+//    
+//    return filePath;
+//}
 
 -(UIImage *)loadImage:(NSString*)filePath{
     

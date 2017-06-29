@@ -21,7 +21,7 @@
 #import <UserNotifications/UserNotifications.h>
 #endif
 
-
+#import <KSCrash/KSCrashInstallationStandard.h>
 #import "RealReachability.h"
 #import "SAMKeychain.h"
 
@@ -218,6 +218,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkChanged:) name:kRealReachabilityChangedNotification object:nil];
 
 
+    /** 置入KSCrash */
+    KSCrashInstallationStandard* installation = [KSCrashInstallationStandard sharedInstance];
+    installation.url = [NSURL URLWithString:@"https://collector.bughd.com/kscrash?key=ee0afdebf41d63c77c6ff5c3f5c705bf"];
+    [installation install];
+    [installation sendAllReportsWithCompletion:nil];
+    
     
     /* 推送是否需要关闭*/
     if (notificatoin_ON == NO) {

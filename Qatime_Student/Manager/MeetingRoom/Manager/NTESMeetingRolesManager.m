@@ -8,21 +8,21 @@
 
 #import "NTESMeetingRolesManager.h"
 #import "NTESMeetingRole.h"
-#import "NTESMeetingMessageHandler.h"
-#import "NTESSessionMsgConverter.h"
-#import "NTESMeetingControlAttachment.h"
+
+
+
 #import "NTESTimerHolder.h"
 #import <NIMAVChat/NIMAVChat.h>
 #import "NSDictionary+NTESJson.h"
 
 
-@interface NTESMeetingRolesManager()<NTESMeetingMessageHandlerDelegate, NTESTimerHolderDelegate>
+@interface NTESMeetingRolesManager()< NTESTimerHolderDelegate>
 
 @property(nonatomic, strong) NIMChatroom *chatroom;
 
 @property(nonatomic, strong) NSMutableDictionary *meetingRoles;
 
-@property(nonatomic, strong) NTESMeetingMessageHandler *messageHandler;
+//@property(nonatomic, strong) NTESMeetingMessageHandler *messageHandler;
 
 @property(nonatomic, assign) BOOL receivedRolesFromManager;
 
@@ -56,14 +56,14 @@
     
     [self addNewRole:me.userId asActor:(me.type == NIMChatroomMemberTypeCreator)];
     
-    _messageHandler = [[NTESMeetingMessageHandler alloc] initWithChatroom:chatroom delegate:self];
+//    _messageHandler = [[NTESMeetingMessageHandler alloc] initWithChatroom:chatroom delegate:self];
     
     _receivedRolesFromManager = NO;
     
     _pendingJoinUsers = [NSMutableArray array];
     
     if ([self myRole].isManager && (!newCreated)) {
-        [self sendAskForActors];
+//        [self sendAskForActors];
     }
     
     if (!newCreated) {
@@ -175,7 +175,7 @@
 {
     NTESMeetingRole *myRole = [self myRole];
     myRole.isRaisingHand = !myRole.isRaisingHand;
-    [self sendRaiseHand:myRole.isRaisingHand];
+//    [self sendRaiseHand:myRole.isRaisingHand];
     [self notifyMeetingRolesUpdate];
 }
 
@@ -197,8 +197,8 @@
     role.isActor = !role.isActor;
     role.isRaisingHand = NO;
     [self notifyMeetingRolesUpdate];
-    [self sendControlActor:role.isActor to:user];
-    [self sendActorsListBroadcast];
+//    [self sendControlActor:role.isActor to:user];
+//    [self sendActorsListBroadcast];
     
 }
 
@@ -243,7 +243,7 @@
     for (NIMChatroomNotificationMember *member in members) {
         if ([self myRole].isManager) {
             if (![member.userId isEqualToString:[self myRole].uid]) {
-                [_messageHandler sendMeetingP2PCommand:[self actorsListAttachment] to:member.userId];
+//                [_messageHandler sendMeetingP2PCommand:[self actorsListAttachment] to:member.userId];
                 sendNotify = YES;
             }
         }
@@ -257,7 +257,7 @@
         [self notifyMeetingRolesUpdate];
     }
     if (managerEnterRoom && [self myRole].isRaisingHand) {
-        [self sendRaiseHand:YES];
+//        [self sendRaiseHand:YES];
     }
 }
 
@@ -275,7 +275,7 @@
             }
         }
         if (needNotify) {
-            [self sendActorsListBroadcast];
+//            [self sendActorsListBroadcast];
         }
     }
     else {
@@ -288,50 +288,50 @@
     [self notifyMeetingRolesUpdate];
 }
 
-- (void)onReceiveMeetingCommand:(NTESMeetingControlAttachment *)attachment from:(NSString *)userId
-{
-    switch (attachment.command) {
-        case CustomMeetingCommandNotifyActorsList:
-            if (![self myRole].isManager) {
-                [self updateRolesFromManager:attachment.uids];
-            }
-            break;
-        case CustomMeetingCommandAskForActors:
-            [self reportActor:userId];
-            break;
-        case CustomMeetingCommandActorReply:
-            if ([self myRole].isManager) {
-                [self recoverActor:userId];
-            }
-            else if (!_receivedRolesFromManager) {
-                [self recoverActor:userId];
-            }
-            break;
-    
-        case CustomMeetingCommandRaiseHand:
-            if ([self myRole].isManager) {
-                [self dealRaiseHandRequest:YES from:userId];
-            }
-            break;
-            
-        case CustomMeetingCommandCancelRaiseHand:
-            if ([self myRole].isManager) {
-                [self dealRaiseHandRequest:NO from:userId];
-            }
-            break;
-            
-        case CustomMeetingCommandEnableActor:
-            [self changeToActor];
-            break;
-            
-        case CustomMeetingCommandDisableActor:
-            [self changeToViewer:YES];
-            break;
-            
-        default:
-            break;
-    }
-}
+//- (void)onReceiveMeetingCommand:(NTESMeetingControlAttachment *)attachment from:(NSString *)userId
+//{
+//    switch (attachment.command) {
+//        case CustomMeetingCommandNotifyActorsList:
+//            if (![self myRole].isManager) {
+//                [self updateRolesFromManager:attachment.uids];
+//            }
+//            break;
+//        case CustomMeetingCommandAskForActors:
+//            [self reportActor:userId];
+//            break;
+//        case CustomMeetingCommandActorReply:
+//            if ([self myRole].isManager) {
+//                [self recoverActor:userId];
+//            }
+//            else if (!_receivedRolesFromManager) {
+//                [self recoverActor:userId];
+//            }
+//            break;
+//    
+//        case CustomMeetingCommandRaiseHand:
+//            if ([self myRole].isManager) {
+//                [self dealRaiseHandRequest:YES from:userId];
+//            }
+//            break;
+//            
+//        case CustomMeetingCommandCancelRaiseHand:
+//            if ([self myRole].isManager) {
+//                [self dealRaiseHandRequest:NO from:userId];
+//            }
+//            break;
+//            
+//        case CustomMeetingCommandEnableActor:
+//            [self changeToActor];
+//            break;
+//            
+//        case CustomMeetingCommandDisableActor:
+//            [self changeToViewer:YES];
+//            break;
+//            
+//        default:
+//            break;
+//    }
+//}
 
 -(void)onMembersShowFullScreen:(NSString*)notifyExt
 {
@@ -342,10 +342,10 @@
 - (void)onNTESTimerFired:(NTESTimerHolder *)holder
 {
     if ([self myRole].isManager) {
-        [self sendActorsListBroadcast];
+//        [self sendActorsListBroadcast];
     }
     else if (!_receivedRolesFromManager) {
-        [self sendAskForActors];
+//        [self sendAskForActors];
     }
 }
 
@@ -417,7 +417,7 @@
 - (void)reportActor:(NSString *)user
 {
     if ([self myRole].isActor) {
-        [self sendReportActor:user];
+//        [self sendReportActor:user];
     }
 }
 
@@ -469,13 +469,13 @@
     return NO;
 }
 
-- (NTESMeetingControlAttachment *)actorsListAttachment
-{
-    NTESMeetingControlAttachment *attachment = [[NTESMeetingControlAttachment alloc] init];
-    attachment.command = CustomMeetingCommandNotifyActorsList;
-    attachment.uids = [self allActors];
-    return attachment;
-}
+//- (NTESMeetingControlAttachment *)actorsListAttachment
+//{
+//    NTESMeetingControlAttachment *attachment = [[NTESMeetingControlAttachment alloc] init];
+//    attachment.command = CustomMeetingCommandNotifyActorsList;
+//    attachment.uids = [self allActors];
+//    return attachment;
+//}
 
 - (void)dealRaiseHandRequest:(BOOL)raise from:(NSString *)user
 {
@@ -563,42 +563,42 @@
 }
 
 #pragma mark - send message
-- (void)sendRaiseHand:(BOOL)raiseOrCancel
-{
-    NTESMeetingControlAttachment *attachment = [[NTESMeetingControlAttachment alloc] init];
-    attachment.command = raiseOrCancel ? CustomMeetingCommandRaiseHand : CustomMeetingCommandCancelRaiseHand;
-    
-    [_messageHandler sendMeetingP2PCommand:attachment to:_chatroom.creator];
-}
+//- (void)sendRaiseHand:(BOOL)raiseOrCancel
+//{
+//    NTESMeetingControlAttachment *attachment = [[NTESMeetingControlAttachment alloc] init];
+//    attachment.command = raiseOrCancel ? CustomMeetingCommandRaiseHand : CustomMeetingCommandCancelRaiseHand;
+//    
+//    [_messageHandler sendMeetingP2PCommand:attachment to:_chatroom.creator];
+//}
+//
+//- (void)sendControlActor:(BOOL)enable to:(NSString *)uid
+//{
+//    NTESMeetingControlAttachment *attachment = [[NTESMeetingControlAttachment alloc] init];
+//    attachment.command = enable ? CustomMeetingCommandEnableActor : CustomMeetingCommandDisableActor;
+//    
+//    [_messageHandler sendMeetingP2PCommand:attachment to:uid];
+//}
 
-- (void)sendControlActor:(BOOL)enable to:(NSString *)uid
-{
-    NTESMeetingControlAttachment *attachment = [[NTESMeetingControlAttachment alloc] init];
-    attachment.command = enable ? CustomMeetingCommandEnableActor : CustomMeetingCommandDisableActor;
-    
-    [_messageHandler sendMeetingP2PCommand:attachment to:uid];
-}
+//- (void)sendActorsListBroadcast
+//{
+//    [_messageHandler sendMeetingBroadcastCommand:[self actorsListAttachment]];
+//}
+//
+//- (void)sendAskForActors
+//{
+//    NTESMeetingControlAttachment *attachment = [[NTESMeetingControlAttachment alloc] init];
+//    attachment.command = CustomMeetingCommandAskForActors;
+//    
+//        [_messageHandler sendMeetingBroadcastCommand:attachment];
+//    }
 
-- (void)sendActorsListBroadcast
-{
-    [_messageHandler sendMeetingBroadcastCommand:[self actorsListAttachment]];
-}
-
-- (void)sendAskForActors
-{
-    NTESMeetingControlAttachment *attachment = [[NTESMeetingControlAttachment alloc] init];
-    attachment.command = CustomMeetingCommandAskForActors;
-    
-        [_messageHandler sendMeetingBroadcastCommand:attachment];
-    }
-
-- (void)sendReportActor:(NSString *)user
-{
-    NTESMeetingControlAttachment *attachment = [[NTESMeetingControlAttachment alloc] init];
-    attachment.command = CustomMeetingCommandActorReply;
-    attachment.uids = [NSArray arrayWithObjects:[[NIMSDK sharedSDK].loginManager currentAccount], nil];
-    [_messageHandler sendMeetingP2PCommand:attachment to:user];
-}
+//- (void)sendReportActor:(NSString *)user
+//{
+//    NTESMeetingControlAttachment *attachment = [[NTESMeetingControlAttachment alloc] init];
+//    attachment.command = CustomMeetingCommandActorReply;
+//    attachment.uids = [NSArray arrayWithObjects:[[NIMSDK sharedSDK].loginManager currentAccount], nil];
+//    [_messageHandler sendMeetingP2PCommand:attachment to:user];
+//}
 
 
 - (void)parseLiveSteamingUrls

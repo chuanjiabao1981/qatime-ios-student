@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NTESWhiteboardPoint.h"
-#import "NTESDocumentShareInfo.h"
+
 
 
 typedef NS_ENUM(NSUInteger, NTESWhiteBoardCmdType){
@@ -47,6 +47,6 @@ typedef NS_ENUM(NSUInteger, NTESWhiteBoardCmdType){
 
 + (NSString *)packetIdCommand:(UInt64)packetId;
 
-+ (NSString *)docShareCommand:(NTESDocumentShareInfo *)shareInfo;
+//+ (NSString *)docShareCommand:(NTESDocumentShareInfo *)shareInfo;
 
 @end

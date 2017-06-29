@@ -42,19 +42,19 @@
     return self;
 }
 
-- (void)sendDocShareInfo:(NTESDocumentShareInfo *)shareInfo toUser:(NSString*)targetUid
-{
-    NSString *cmd = [NTESWhiteboardCommand docShareCommand:shareInfo];
-    [_cmdsSendBuffer appendString:cmd];
-    if (targetUid) {
-        [[NTESMeetingRTSManager sharedInstance] sendRTSData:[cmd dataUsingEncoding:NSUTF8StringEncoding]
-                                                     toUser:targetUid];
-    }
-    else{
-        [self doSendCmds];
-    }
-    
-}
+//- (void)sendDocShareInfo:(NTESDocumentShareInfo *)shareInfo toUser:(NSString*)targetUid
+//{
+//    NSString *cmd = [NTESWhiteboardCommand docShareCommand:shareInfo];
+//    [_cmdsSendBuffer appendString:cmd];
+//    if (targetUid) {
+//        [[NTESMeetingRTSManager sharedInstance] sendRTSData:[cmd dataUsingEncoding:NSUTF8StringEncoding]
+//                                                     toUser:targetUid];
+//    }
+//    else{
+//        [self doSendCmds];
+//    }
+//    
+//}
 - (void)sendMyPoint:(NTESWhiteboardPoint *)point
 {
     NSString *cmd = [NTESWhiteboardCommand pointCommand:point];
@@ -211,7 +211,7 @@
             }
             case NTESWhiteBoardCmdTypeDocShare:
             {
-                [self handleReceivedDocShareData:cmd sender:sender];
+//                [self handleReceivedDocShareData:cmd sender:sender];
                 break;
             }
             
@@ -276,7 +276,7 @@
                 
             case NTESWhiteBoardCmdTypeDocShare:
             {
-                [self handleReceivedDocShareData:cmd sender:sender];
+//                [self handleReceivedDocShareData:cmd sender:sender];
                 break;
             }
 
@@ -306,16 +306,16 @@
     }
 }
 
--(void)handleReceivedDocShareData:(NSArray *)cmd sender:(NSString *)sender
-{
-    NTESDocumentShareInfo *shareInfo = [[NTESDocumentShareInfo alloc]init];
-    shareInfo.docId = cmd[1];
-    shareInfo.currentPage = [cmd[2]intValue];
-    shareInfo.pageCount = [cmd[3]intValue];
-    shareInfo.type = [cmd[4]intValue];
-    if (_delegate) {
-        [_delegate onReceiveDocShareInfo:shareInfo from:sender];
-    }
-}
+//-(void)handleReceivedDocShareData:(NSArray *)cmd sender:(NSString *)sender
+//{
+//    NTESDocumentShareInfo *shareInfo = [[NTESDocumentShareInfo alloc]init];
+//    shareInfo.docId = cmd[1];
+//    shareInfo.currentPage = [cmd[2]intValue];
+//    shareInfo.pageCount = [cmd[3]intValue];
+//    shareInfo.type = [cmd[4]intValue];
+//    if (_delegate) {
+//        [_delegate onReceiveDocShareInfo:shareInfo from:sender];
+//    }
+//}
 
 @end

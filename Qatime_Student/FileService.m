@@ -28,7 +28,7 @@
 +(float)folderSizeAtPath:(NSString *)path{
     
     NSFileManager *fileManager=[NSFileManager defaultManager];
-    float folderSize;
+    float folderSize = 0.0;
     if ([fileManager fileExistsAtPath:path]) {
         NSArray *childerFiles=[fileManager subpathsAtPath:path];
         for (NSString *fileName in childerFiles) {

@@ -43,6 +43,7 @@
 @property (nonatomic, retain)UUMessageContentButton *btnContent;
 
 //系统公告内容
+@property (nonatomic, strong) UIView *noticeContentView ;
 @property (nonatomic, strong) UILabel *noticeLabel ;
 
 @property (nonatomic, retain)UUMessageFrame *messageFrame;

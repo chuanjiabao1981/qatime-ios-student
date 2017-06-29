@@ -25,7 +25,7 @@
 
 - (void)onReceiveHiddenLaserfrom:(NSString *)sender;
 
-- (void)onReceiveDocShareInfo:(NTESDocumentShareInfo *)shareInfo from:(NSString *)sender;
+//- (void)onReceiveDocShareInfo:(NTESDocumentShareInfo *)shareInfo from:(NSString *)sender;
 
 
 
@@ -41,6 +41,6 @@
 
 - (void)sync:(NSDictionary *)allLines toUser:(NSString *)targetUid;
 
-- (void)sendDocShareInfo:(NTESDocumentShareInfo *)shareInfo toUser:(NSString*)targetUid;
+//- (void)sendDocShareInfo:(NTESDocumentShareInfo *)shareInfo toUser:(NSString*)targetUid;
 
 @end

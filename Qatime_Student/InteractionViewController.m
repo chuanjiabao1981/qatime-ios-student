@@ -49,7 +49,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "UIAlertController+Blocks.h"
 #import "UUMessageFrame.h"
-#import "TranslateViewController.h"
+
 
 #import "NSString+YYAdd.h"
 #import "UIViewController+TimeInterval.h"
@@ -83,7 +83,7 @@ typedef enum : NSUInteger {
 } CurrentCamera;
 
 
-@interface InteractionViewController ()<NTESMeetingActionViewDataSource,NTESMeetingActionViewDelegate,NIMInputDelegate,NIMChatroomManagerDelegate,NTESMeetingNetCallManagerDelegate,NTESActorSelectViewDelegate,NTESMeetingRolesManagerDelegate,NIMLoginManagerDelegate,NIMNetCallManager>{
+@interface InteractionViewController ()<NTESMeetingActionViewDataSource,NTESMeetingActionViewDelegate,NIMChatroomManagerDelegate,NTESMeetingNetCallManagerDelegate,NTESActorSelectViewDelegate,NTESMeetingRolesManagerDelegate,NIMLoginManagerDelegate,NIMNetCallManager>{
     
     //课程id
     NSString *_classID;
@@ -118,6 +118,9 @@ typedef enum : NSUInteger {
     
     //全屏状态
     BOOL is_fullScreen;
+    
+    //刚进房间的时候白板是不可用的
+    BOOL _whiteBoardEnable;
     
     
 }
@@ -183,7 +186,6 @@ NTES_FORBID_INTERACTIVE_POP
     self = [super init];
     if (self) {
         
-        
         _cameraWidth = CameraWidth;
         _chatroom = chatroom;
         
@@ -197,26 +199,32 @@ NTES_FORBID_INTERACTIVE_POP
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [[UIApplication sharedApplication]setStatusBarHidden:YES];
-    [self.currentChildViewController beginAppearanceTransition:YES animated:animated];
+
+    [_currentChildViewController beginAppearanceTransition:YES animated:animated];
     self.actorsView.isFullScreen = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
     
+    [super viewWillDisappear:animated];
     [UIApplication sharedApplication].idleTimerDisabled = NO;
-    [[NTESMeetingNetCallManager defaultManager]leaveMeeting];
-    [[NTESMeetingRTSManager defaultManager]leaveCurrentConference];
     [[UIApplication sharedApplication]setStatusBarHidden:NO];
-     
+    
+}
+- (void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear:animated];
+    [[UIApplication sharedApplication]setStatusBarHidden:YES];
+    [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"CanSendVoice"];
+    
 }
 
 
 - (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
     
     //可以发送语音
     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"CanSendVoice"];
-    
     
 }
 
@@ -252,10 +260,25 @@ NTES_FORBID_INTERACTIVE_POP
     
     /* 不支持屏幕中立旋转*/
     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"SupportedLandscape"];
+    //状态栏监听
+    [[UIApplication sharedApplication] addObserver:self forKeyPath:@"statusBarHidden" options:NSKeyValueObservingOptionNew context:nil];
+
+}
+
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    
+    if ([change[@"new"]isEqualToNumber:@1]) {
+        //隐藏了 没事
+    }else{
+        //没隐藏让他隐藏
+        
+        [[UIApplication sharedApplication]setStatusBarHidden:YES];
+        
+    }
     
     
 }
-
 
 /**初始化数据*/
 - (void)makeData{
@@ -269,6 +292,8 @@ NTES_FORBID_INTERACTIVE_POP
     _videoON = YES;
     
     _audioON = YES;
+    
+    _whiteBoardEnable = NO;
     
 }
 
@@ -386,19 +411,39 @@ NTES_FORBID_INTERACTIVE_POP
     
 }
 
+#pragma mark- Notifications
 
 /** 所有的监听 */
 - (void)addNotifications{
     
     //接受子控制器传来的roomID
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"RoomID" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-        
-        _roomID = [note object];
-        
-        [[NTESMeetingNetCallManager defaultManager] joinMeeting:_roomID delegate:self];
-    }];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(joinMeeting:) name:@"RoomID" object:nil];
     
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"SelfCameraReady" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(madeCameraView:) name:@"SelfCameraReady" object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(desktopSharedOn:) name:@"DesktopSharedOn" object:nil];
+    
+     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(desktopSharedOff:) name:@"DesktopSharedOff" object:nil];
+    
+    
+}
+
+/** 拿到roomid后加入会话的方法 */
+- (void)joinMeeting:(NSNotification *)note{
+    
+    _roomID = [note object];
+    
+    [[NTESMeetingNetCallManager defaultManager] joinMeeting:_roomID delegate:self];
+
+}
+
+/** 本地摄像头预览 */
+- (void)madeCameraView:(NSNotification *)note{
+    
+    //加个互斥锁
+    @synchronized (self) {
         
         cameraView = self.actorsView.selfCamera.copy;
         
@@ -409,36 +454,40 @@ NTES_FORBID_INTERACTIVE_POP
         .topSpaceToView(_floatingView, 0)
         .bottomSpaceToView(_floatingView, 0);
         [cameraView updateLayout];
+    }
 
-    }];
-    
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"DesktopSharedOn" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-        //教师端开启屏幕共享
-        //直接全屏
-        if (is_fullScreen == YES) {
-            
-        }else{
-            
-            [self performSelector:@selector(scaleAction:) withObject:_fullScreenBtn afterDelay:0.5];
-            
-//            [self scaleAction:_fullScreenBtn];
-        }
-    
-        
-    }];
-    
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"DesktopSharedOff" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-        //教师端关闭屏幕共享
-        //自动恢复竖屏
-        if (is_fullScreen == YES) {
-            
-             [self performSelector:@selector(scaleAction:) withObject:_fullScreenBtn afterDelay:0.5];
-        }else{
-            
-        }
-        
-    }];
 }
+- (void)whiteBoardEnabled{
+    
+    [[NTESMeetingRolesManager defaultManager]setMyWhiteBoard:YES];
+    
+}
+
+- (void)desktopSharedOn:(NSNotification *)note{
+    //教师端开启屏幕共享
+    //直接全屏
+    if (is_fullScreen == YES) {
+        
+    }else{
+        
+        [self performSelector:@selector(scaleAction:) withObject:_fullScreenBtn afterDelay:0.5];
+        
+    }
+
+}
+
+- (void)desktopSharedOff:(NSNotification *)note{
+    //教师端关闭屏幕共享
+    //自动恢复竖屏
+    if (is_fullScreen == YES) {
+        
+        [self performSelector:@selector(scaleAction:) withObject:_fullScreenBtn afterDelay:0.5];
+    }else{
+        
+    }
+
+}
+
 
 
 #pragma mark - NTESMeetingActionViewDataSource
@@ -462,15 +511,17 @@ NTES_FORBID_INTERACTIVE_POP
     UIViewController *lastChild = self.currentChildViewController;
     UIViewController *child = self.childViewControllers[self.actionView.segmentedControl.selectedSegmentIndex];
     
-    if ([child isKindOfClass:[NTESChatroomMemberListViewController class]]) {
-        self.actionView.unreadRedTip.hidden = YES;
-    }
+//    if ([child isKindOfClass:[NTESChatroomMemberListViewController class]]) {
+//        _actionView.unreadRedTip.hidden = YES;
+//    }
     
     [lastChild beginAppearanceTransition:NO animated:YES];
     [child beginAppearanceTransition:YES animated:YES];
-    [self.actionView.pageView scrollToPage:self.actionView.segmentedControl.selectedSegmentIndex];
+    [_actionView.pageView scrollToPage:self.actionView.segmentedControl.selectedSegmentIndex];
+    
+    typeof(self) __weak weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.currentChildViewController = child;
+        weakSelf.currentChildViewController = child;
         [lastChild endAppearanceTransition];
         [child endAppearanceTransition];
     });
@@ -590,7 +641,7 @@ NTES_FORBID_INTERACTIVE_POP
     }
     
     if (whiteboardOn) {
-        [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:YES];
+        [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:NO];
     }
     
     BOOL accepted = [[NTESMeetingNetCallManager defaultManager] setBypassLiveStreaming:YES];
@@ -806,16 +857,20 @@ NTES_FORBID_INTERACTIVE_POP
 }
 
 - (NTESMeetingActorsView *)actorsView{
-    if (!self.isViewLoaded) {
-        return nil;
-    }
-    if (!_actorsView) {
-        _actorsView = [[NTESMeetingActorsView alloc] initWithFrame:CGRectMake(0, 0, self.view.width_sd,self.view.width_sd/16*9)];
-        _actorsView.teacherCamera.frame = _actorsView.frame;
-        //点击手势 ,显示控制栏
-        UITapGestureRecognizer *tapControl = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(controlControlView)];
-        [_actorsView addGestureRecognizer:tapControl];
+    
+    @synchronized (self) {
         
+        if (!self.isViewLoaded) {
+            return nil;
+        }
+        if (!_actorsView) {
+            _actorsView = [[NTESMeetingActorsView alloc] initWithFrame:CGRectMake(0, 0, self.view.width_sd,self.view.width_sd/16*9)];
+            _actorsView.teacherCamera.frame = _actorsView.frame;
+            //点击手势 ,显示控制栏
+            UITapGestureRecognizer *tapControl = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(controlControlView)];
+            [_actorsView addGestureRecognizer:tapControl];
+            
+        }
     }
     return _actorsView;
 }
@@ -967,14 +1022,18 @@ NTES_FORBID_INTERACTIVE_POP
 }
 
 - (void)returnLastPage{
-    
+
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     _actorsView = nil;
-    [[NIMSDK sharedSDK].chatroomManager exitChatroom:_chatroom.roomId completion:nil];
-    [[NIMSDK sharedSDK].chatroomManager removeDelegate:self];
+    [cameraView removeFromSuperview];
+    cameraView = nil;
+    _floatingView = nil;
+
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [[NTESMeetingNetCallManager defaultManager]leaveMeeting];
     [[NTESMeetingRTSManager defaultManager]leaveCurrentConference];
     
+    [[UIApplication sharedApplication] removeObserver:self forKeyPath:@"statusBarHidden"];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -986,9 +1045,6 @@ NTES_FORBID_INTERACTIVE_POP
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [[NTESMeetingNetCallManager defaultManager]leaveMeeting];
     [[NTESMeetingRTSManager defaultManager]leaveCurrentConference];
-    
-    
-   
 }
 
 - (void)didReceiveMemoryWarning {

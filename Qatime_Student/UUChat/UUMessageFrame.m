@@ -57,6 +57,7 @@
     
     //根据种类分
     //文字/图片内容的contentsize
+    //气泡尺寸
     CGSize contentSize;
     switch (_message.type) {
         case UUMessageTypeText:{
@@ -147,13 +148,18 @@
         _cellHeight = CGRectGetMaxY(_contentF) + 40;
         
     }else if (message.from == UUMessageFromeSystem){
-        _contentF = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width ,30 );
         
-        _cellHeight = 40;
+        CGSize size = CGSizeMake(UIScreenWidth/2.f, MAXFLOAT);
+        NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
+//        NSDictionary *attr = @{NSFontAttributeName:[UIFont systemFontOfSize:12]};
+        
+        CGRect tmpRect = [message.strContent boundingRectWithSize:size options:options attributes:nil context:nil];
+        
+        _contentF = CGRectMake(0, 0, tmpRect.size.width+20 ,tmpRect.size.height+20);
+        
+        _cellHeight = _contentF.size.height+20;
         
     }
-    
-    
     
     
 }

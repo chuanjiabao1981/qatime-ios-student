@@ -160,11 +160,17 @@
         _sendfaild.hidden = YES;
         
         
+        //系统消息背景图
+        _noticeContentView = [[UIView alloc]init];
+        _noticeContentView.backgroundColor =SEPERATELINECOLOR;
+        [self.contentView addSubview:_noticeContentView];
+        
+        
         //系统消息label
         _noticeLabel = [[UILabel alloc]init];
-        _noticeLabel.textColor = [UIColor lightGrayColor];
+        _noticeLabel.textColor = [UIColor grayColor];
         _noticeLabel.font =ChatTimeFont;
-        [self.contentView addSubview:_noticeLabel];
+        [_noticeContentView addSubview:_noticeLabel];
         
     }
     return self;
@@ -321,6 +327,7 @@
         self.labelNum.hidden = NO;
         self.btnHeadImage.hidden = NO;
         self.btnContent.hidden = NO;
+        self.noticeContentView.hidden = YES;
         self.noticeLabel.hidden = YES;
         self.timeLabel.hidden = NO;
         self.title.hidden = NO;
@@ -853,27 +860,41 @@
         self.labelNum.hidden = YES;
         self.btnHeadImage.hidden = YES;
         self.btnContent.hidden = YES;
+        self.noticeContentView.hidden = NO;
         self.noticeLabel.hidden = NO;
         headImageBackView.hidden = YES;
         self.timeLabel.hidden = YES;
         self.title.hidden = YES;
         self.sendfaild.hidden = YES;
         
-        self.noticeLabel.textAlignment = NSTextAlignmentCenter;
-        self.noticeLabel.backgroundColor = SEPERATELINECOLOR;
+        self.noticeLabel.textAlignment = NSTextAlignmentLeft;
         
         if (messageFrame.message.strContent==nil) {
-            self.noticeLabel.text = @"收到新系统消息";
-        }else{
             self.noticeLabel.text = messageFrame.message.strContent;
+        }else{
+             self.noticeLabel.text = messageFrame.message.strContent;
         }
-        self.noticeLabel.sd_layout
-        .centerXEqualToView(self.contentView)
+        self.noticeContentView.sd_layout
         .centerYEqualToView(self.contentView)
+        .centerXEqualToView(self.contentView);
+        self.noticeContentView.sd_cornerRadius =@6;
+        
+        self.noticeLabel.sd_layout
+        .centerXEqualToView(_noticeContentView)
+        .centerYEqualToView(_noticeContentView)
         .autoHeightRatio(0);
-        [self.noticeLabel setSd_maxWidth:@300];
-        self.noticeLabel.sd_cornerRadius = @1;
+        [self.noticeLabel setSd_maxWidth:@([UIScreen mainScreen].bounds.size.width/2.f)];
+        [self.noticeLabel setMaxNumberOfLinesToShow:0];
+        self.noticeLabel.sd_cornerRadius = @6;
         [self.noticeLabel updateLayout];
+        
+        self.noticeContentView.sd_layout
+        .heightIs(self.noticeLabel.height_sd+20)
+        .widthIs(self.noticeLabel.width_sd+20);
+        [self.noticeContentView updateLayout];
+        
+        
+        
         
     }
 }

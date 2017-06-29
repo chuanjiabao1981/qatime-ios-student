@@ -77,6 +77,7 @@
 #import "HaveNoClassView.h"
 #import "KSPhotoBrowser.h"
 #import "NSNull+Json.h"
+#import "UITextView+Placeholder.h"
 
 
 #define APP_WIDTH self.view.frame.size.width
@@ -205,6 +206,9 @@ typedef enum : NSUInteger {
     
     /* 按钮点击间隔时间*/
     NSTimeInterval timeInterval;
+    
+    //是否被禁言
+    BOOL _shutUp;
     
     
     
@@ -2774,8 +2778,9 @@ bool ismute     = NO;
             //加载云信
             if (_session) {
                 
+                //加载云信
                 [self initNIMSDK];
-                
+                //加载历史聊天记录
                 [self requestHistoryChatList];
             }
             
@@ -3104,6 +3109,7 @@ bool ismute     = NO;
         
         [[NIMSDK sharedSDK].chatManager addDelegate:self];
         
+        
     }else{
         
         /* 强制自动登录一次*/
@@ -3113,11 +3119,47 @@ bool ismute     = NO;
         loginData.token =[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"token"];
         [[NIMSDK sharedSDK].loginManager autoLogin:loginData];
         
-        
     }
     
     [[NIMSDK sharedSDK].chatManager addDelegate:self];
     [[NIMSDK sharedSDK].chatroomManager addDelegate:self];
+    
+    //查一下禁言状态
+    [[NIMSDK sharedSDK].teamManager fetchTeamMutedMembers:_session.sessionId completion:^(NSError * _Nullable error, NSArray<NIMTeamMember *> * _Nullable members) {
+        
+        for (NIMTeamMember *member in members) {
+            
+            if ([member.userId isEqualToString:_chat_Account.user_id]) {
+                //这是被禁言了
+                _shutUp = YES;
+                [self shutUpTalking];
+            }else{
+                _shutUp = NO;
+                [self keepOnTalking];
+            }
+        }
+        
+    }];
+    //
+    
+
+    
+}
+
+/** 禁言 */
+- (void)shutUpTalking{
+    
+    _shutUp = YES;
+    IFView.TextViewInput.placeholder = @"您已被禁言";
+    
+}
+
+
+/** 可以继续发送消息 */
+- (void) keepOnTalking{
+    
+    _shutUp = NO;
+    IFView.TextViewInput.placeholder = @"请输入要发送的信息";
     
 }
 
@@ -3158,14 +3200,12 @@ bool ismute     = NO;
 - (void)makeMessages:(NSArray<NIMMessage *> * ) messages{
     
     for (NIMMessage *message in messages) {
-        if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio) {
+        if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio||message.messageType == NIMMessageTypeNotification) {
             
             /* 如果是文本消息*/
             
             if (message.messageType ==NIMMessageTypeText) {
-                
-                //                            NSLog(@"\n\n获取到的消息文本是:::%@\n\n",message.text);
-                
+
                 /* 如果消息是自己发的*/
                 if ([message.from isEqualToString:_chat_Account.accid]) {
                     /* 在本地创建自己的消息*/
@@ -3381,7 +3421,45 @@ bool ismute     = NO;
                     [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                     
                 }
+            }else if (message.messageType==NIMMessageTypeNotification){
+                
+                /** 收到公告消息a */
+                
+                /**
+                 解析收到的message字段
+                 1.有mute字段 则为设置禁言1/非禁言0
+                 2.没有mute字段就是普通公告
+                 */
+                
+                id object = [[message valueForKeyPath:@"messageObject"]valueForKeyPath:@"attachContent"];
+                
+                NSData *data = [object dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *msgContent = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+                
+                __block NSString *messageText = @"";
+                
+                if (msgContent) {
+                    if (msgContent[@"data"][@"mute"]) {
+                        if ([msgContent[@"data"][@"mute"]isEqualToNumber:@1]) {
+                            //禁言了
+                            [self shutUpTalking];
+                            messageText = @"您已被禁言";
+                        }else{
+                            //解除禁言
+                            [self keepOnTalking];
+                            messageText = @"您已解除禁言";
+                        }
+                    }else{
+                        
+                        messageText = msgContent[@"data"][@"tinfo"][@"15"];
+                    }
+                }else{
+                    
+                }
+                
+                [self.chatModel addSpecifiedNotificationItem:[@"系统消息:" stringByAppendingString:messageText==nil?@"":messageText]];
             }
+
             
         }
         
@@ -3396,7 +3474,7 @@ bool ismute     = NO;
     
     if (chatTime == 0) {
         
-        [self HUDStartWithTitle:@"正在加载数据"];
+//        [self HUDStartWithTitle:@"正在加载数据"];
         NIMHistoryMessageSearchOption *historyOption = [[NIMHistoryMessageSearchOption  alloc]init];
         historyOption.limit = 100;
         historyOption.order = NIMMessageSearchOrderDesc;
@@ -3406,7 +3484,6 @@ bool ismute     = NO;
         /* 获取聊天的历史消息*/
         
         if (_session.sessionId) {
-            
             [[NIMSDK sharedSDK].conversationManager fetchMessageHistory:_session option:historyOption result:^(NSError * _Nullable error, NSArray<NIMMessage *> * _Nullable messages) {
                 /* 取出云信的accid和token进行字段比较 ，判断是谁发的消息*/
                 [self makeMessages:messages];
@@ -3418,11 +3495,10 @@ bool ismute     = NO;
         
         [self.chatTableView reloadData];
         
-        //        [self tableViewScrollToBottom];
         
         [_chatTableView.mj_header endRefreshing];
         
-        [self HUDStopWithTitle:@"加载完成"];
+//        [self HUDStopWithTitle:@"加载完成"];
     }else{
         
         [self.chatTableView reloadData];
@@ -3600,159 +3676,172 @@ bool ismute     = NO;
 #pragma mark - 聊天页面 发送文字聊天信息的回调
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message{
     
-    if ([funcView.TextViewInput.text isEqualToString:@""]||funcView.TextViewInput.text==nil) {
+    if (_shutUp==YES) {
         
-        [self HUDStopWithTitle:@"请输入聊天内容!"];
+        [self HUDStopWithTitle:@"您已被禁言"];
         
     }else{
-        
-        NIMMessage * text_message = [[NIMMessage alloc] init];
-        text_message.messageObject = NIMMessageTypeText;
-        text_message.apnsContent = @"发来了一条消息";
-        
-        NSDictionary *dic ;
-        
-        /* 解析发送的字符串*/
-        
-        NSString *title = [funcView.TextViewInput.attributedText getPlainString];
-        
-        if (title == nil) {
-            title = @"";
-        }
-        
-        NSString *barragTitle = title.mutableCopy;
-        
-        //创建一个可变的属性字符串
-        NSMutableAttributedString *text = [NSMutableAttributedString new];
-        [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
-        
-        /* 正则匹配*/
-        NSString * pattern = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
-        NSError *error = nil;
-        NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
-        
-        if (!re) {
-            NSLog(@"%@", [error localizedDescription]);
-        }
-        
-        //通过正则表达式来匹配字符串
-        NSArray *resultArray = [re matchesInString:title options:0 range:NSMakeRange(0, title.length)];
-        NSLog(@"%@",resultArray);
-        
-        //是否包含富文本
-        if (resultArray.count!=0) {
-            //包含富文本
+        if ([funcView.TextViewInput.text isEqualToString:@""]||funcView.TextViewInput.text==nil) {
             
-            NSMutableArray *names = @[].mutableCopy;
+            [self HUDStopWithTitle:@"请输入聊天内容!"];
             
-            //根据匹配范围来用图片进行相应的替换
-            for(NSTextCheckingResult *match in resultArray){
-                //获取数组元素中得到range
-                NSRange range = [match range];
-                
-                //获取原字符串中对应的值
-                NSString *subStr = [title substringWithRange:range];
-                NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
-                NSMutableString *faceName = @"".mutableCopy;
-                NSMutableString *barrageFaceName = @"".mutableCopy;
-                
-                faceName = [NSMutableString stringWithFormat:@"[em_%ld]",subName.integerValue+1];
-                barrageFaceName =[NSMutableString stringWithFormat:@"em_%ld",subName.integerValue+1];
-                
-                
-                NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range],@"barrageName":barrageFaceName};
-                [names addObject:dicc];
-                
+        }else{
+            
+            NIMMessage * text_message = [[NIMMessage alloc] init];
+            text_message.messageObject = NIMMessageTypeText;
+            text_message.apnsContent = @"发来了一条消息";
+            
+            NSDictionary *dic ;
+            
+            /* 解析发送的字符串*/
+            
+            NSString *title = [funcView.TextViewInput.attributedText getPlainString];
+            
+            if (title == nil) {
+                title = @"";
             }
             
+            NSString *barragTitle = title.mutableCopy;
             
-            for (NSInteger i = names.count-1; i>=0; i--) {
+            //创建一个可变的属性字符串
+            NSMutableAttributedString *text = [NSMutableAttributedString new];
+            [text appendAttributedString:[[NSAttributedString alloc] initWithString:title attributes:nil]];
+            
+            /* 正则匹配*/
+            NSString * pattern = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
+            NSError *error = nil;
+            NSRegularExpression * re = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
+            
+            if (!re) {
+                NSLog(@"%@", [error localizedDescription]);
+            }
+            
+            //通过正则表达式来匹配字符串
+            NSArray *resultArray = [re matchesInString:title options:0 range:NSMakeRange(0, title.length)];
+            NSLog(@"%@",resultArray);
+            
+            //是否包含富文本
+            if (resultArray.count!=0) {
+                //包含富文本
                 
-                NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
-                NSData *data = [NSData dataWithContentsOfFile:path];
-                YYImage *image = [YYImage imageWithData:data scale:2.5];
-                image.preloadAllAnimatedImageFrames = YES;
-                YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
+                NSMutableArray *names = @[].mutableCopy;
                 
-                NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
+                //根据匹配范围来用图片进行相应的替换
+                for(NSTextCheckingResult *match in resultArray){
+                    //获取数组元素中得到range
+                    NSRange range = [match range];
+                    
+                    //获取原字符串中对应的值
+                    NSString *subStr = [title substringWithRange:range];
+                    NSMutableString *subName = [NSMutableString stringWithFormat:@"%@",[subStr substringWithRange:NSMakeRange(1, subStr.length-2)]];
+                    NSMutableString *faceName = @"".mutableCopy;
+                    NSMutableString *barrageFaceName = @"".mutableCopy;
+                    
+                    faceName = [NSMutableString stringWithFormat:@"[em_%ld]",subName.integerValue+1];
+                    barrageFaceName =[NSMutableString stringWithFormat:@"em_%ld",subName.integerValue+1];
+                    
+                    
+                    NSDictionary *dicc= @{@"name":faceName,@"range":[NSValue valueWithRange:range],@"barrageName":barrageFaceName};
+                    [names addObject:dicc];
+                    
+                }
+                
+                
+                for (NSInteger i = names.count-1; i>=0; i--) {
+                    
+                    NSString *path = [[NSBundle mainBundle] pathForScaledResource:names[i][@"name"] ofType:@"gif" inDirectory:@"Emotions.bundle"];
+                    NSData *data = [NSData dataWithContentsOfFile:path];
+                    YYImage *image = [YYImage imageWithData:data scale:2.5];
+                    image.preloadAllAnimatedImageFrames = YES;
+                    YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
+                    
+                    NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
+                    
+                    
+                    
+                    [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
+                    
+                    
+                    title  = [title stringByReplacingCharactersInRange:[names [i][@"range"] rangeValue] withString:[names[i] valueForKey:@"name"]];
+                    
+                    dic = @{@"strContent": [funcView.TextViewInput.attributedText getPlainString],
+                            @"type": @(UUMessageTypeText),
+                            @"frome":@(UUMessageFromMe),
+                            @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
+                            @"isRichText":@YES,
+                            @"richNum":[NSString stringWithFormat:@"%ld",resultArray.count]};
+                    
+                }
                 
                 
                 
-                [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
-                
-                
-                title  = [title stringByReplacingCharactersInRange:[names [i][@"range"] rangeValue] withString:[names[i] valueForKey:@"name"]];
-                
+            }else{
+                //不包含富文本
                 dic = @{@"strContent": [funcView.TextViewInput.attributedText getPlainString],
                         @"type": @(UUMessageTypeText),
                         @"frome":@(UUMessageFromMe),
                         @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
-                        @"isRichText":@YES,
-                        @"richNum":[NSString stringWithFormat:@"%ld",resultArray.count]};
+                        @"isRichText":@NO,
+                        @"richNum":@"0"};
                 
             }
             
             
+            text_message.text = title;
             
-        }else{
-            //不包含富文本
-            dic = @{@"strContent": [funcView.TextViewInput.attributedText getPlainString],
-                    @"type": @(UUMessageTypeText),
-                    @"frome":@(UUMessageFromMe),
-                    @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
-                    @"isRichText":@NO,
-                    @"richNum":@"0"};
+            [self dealTheFunctionData:dic andMessage:text_message];
+            
+            
+            //发送消息
+            [[NIMSDK sharedSDK].chatManager addDelegate:self];
+            [[NIMSDK sharedSDK].chatManager sendMessage:text_message toSession:_session error:nil];
+            
+#pragma mark- 发消息的同时发弹幕
+            
+            /* 发弹幕*/
+            [self sendBarrage:barragTitle withAttibute:text];
+            
+            [IFView.TextViewInput setText:@""];
+            [IFView.TextViewInput resignFirstResponder];
+            [IFView changeSendBtnWithPhoto:YES];
             
         }
-        
-        
-        text_message.text = title;
-        
-        [self dealTheFunctionData:dic andMessage:text_message];
-        
-        
-        //发送消息
-        [[NIMSDK sharedSDK].chatManager addDelegate:self];
-        [[NIMSDK sharedSDK].chatManager sendMessage:text_message toSession:_session error:nil];
-        
-#pragma mark- 发消息的同时发弹幕
-        
-        /* 发弹幕*/
-        [self sendBarrage:barragTitle withAttibute:text];
-        
-        [IFView.TextViewInput setText:@""];
-        [IFView.TextViewInput resignFirstResponder];
-        [IFView changeSendBtnWithPhoto:YES];
-        
+        [self.chatTableView reloadData];
+        [self tableViewScrollToBottom];
     }
-    [self.chatTableView reloadData];
-    [self tableViewScrollToBottom];
+    
     
 }
 
 #pragma mark- 发送图片聊天信息的回调
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendPicture:(UIImage *)image{
     
-    NIMImageObject * imageObject = [[NIMImageObject alloc] initWithImage:image];
-    NIMMessage *message = [[NIMMessage alloc] init];
-    message.messageObject= imageObject;
-    
-    NSDictionary *dic = @{@"picture": image,
-                          @"type": @(UUMessageTypePicture),
-                          @"frome":@(UUMessageFromMe)};
-    
-    //    [funcView changeSendBtnWithPhoto:YES];
-    [self dealTheFunctionData:dic andMessage:message];
-    
-    
-    
-    //发送消息
-    [[NIMSDK sharedSDK].chatManager addDelegate:self];
-    [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
-    
-    
-    [self.chatTableView reloadData];
-    [self tableViewScrollToBottom];
+    if (_shutUp==YES) {
+        
+        [self HUDStopWithTitle:@"您已被禁言"];
+        
+    }else{
+        NIMImageObject * imageObject = [[NIMImageObject alloc] initWithImage:image];
+        NIMMessage *message = [[NIMMessage alloc] init];
+        message.messageObject= imageObject;
+        
+        NSDictionary *dic = @{@"picture": image,
+                              @"type": @(UUMessageTypePicture),
+                              @"frome":@(UUMessageFromMe)};
+        
+        //    [funcView changeSendBtnWithPhoto:YES];
+        [self dealTheFunctionData:dic andMessage:message];
+        
+        
+        
+        //发送消息
+        [[NIMSDK sharedSDK].chatManager addDelegate:self];
+        [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
+        
+        
+        [self.chatTableView reloadData];
+        [self tableViewScrollToBottom];
+    }
     
 }
 
@@ -3760,28 +3849,34 @@ bool ismute     = NO;
 #pragma mark- 发送语音消息的回调
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendVoice:(NSData *)voice time:(NSInteger)second{
     
-    /* 云信发送语音消息*/
-    
-    
-    //    声音文件只支持 aac 和 amr 类型
-    NSMutableString *tmpDir = [NSMutableString stringWithString:NSTemporaryDirectory()];
-    [tmpDir appendString:@"mp3.amr"];
-    
-    //构造消息
-    NIMAudioObject *audioObject = [[NIMAudioObject alloc] initWithSourcePath:tmpDir];
-    NIMMessage *message        = [[NIMMessage alloc] init];
-    message.messageObject      = audioObject;
-    
-    NSDictionary *dic = @{@"voice": voice,
-                          @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)second],
-                          @"type": @(UUMessageTypeVoice)};
-    
-    [self dealTheFunctionData:dic andMessage:message];
-    
-    
-    //发送消息
-    [[NIMSDK sharedSDK].chatManager addDelegate:self];
-    [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
+    if (_shutUp==YES) {
+        
+        [self HUDStopWithTitle:@"您已被禁言"];
+        
+    }else{
+        /* 云信发送语音消息*/
+        
+        
+        //    声音文件只支持 aac 和 amr 类型
+        NSMutableString *tmpDir = [NSMutableString stringWithString:NSTemporaryDirectory()];
+        [tmpDir appendString:@"mp3.amr"];
+        
+        //构造消息
+        NIMAudioObject *audioObject = [[NIMAudioObject alloc] initWithSourcePath:tmpDir];
+        NIMMessage *message        = [[NIMMessage alloc] init];
+        message.messageObject      = audioObject;
+        
+        NSDictionary *dic = @{@"voice": voice,
+                              @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)second],
+                              @"type": @(UUMessageTypeVoice)};
+        
+        [self dealTheFunctionData:dic andMessage:message];
+        
+        
+        //发送消息
+        [[NIMSDK sharedSDK].chatManager addDelegate:self];
+        [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
+    }
     
 }
 
@@ -4048,8 +4143,45 @@ bool ismute     = NO;
         /* 如果收到的是图片消息*/
         else if (message.messageType == NIMMessageTypeImage){
             
+        }else if (message.messageType == NIMMessageTypeNotification){
+            /** 收到公告消息a */
+            
+            /**
+             解析收到的message字段
+             1.有mute字段 则为设置禁言1/非禁言0
+             2.没有mute字段就是普通公告
+             */
+            
+            id object = [[message valueForKeyPath:@"messageObject"]valueForKeyPath:@"attachContent"];
+            
+            NSData *data = [object dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *msgContent = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+            
+            __block NSString *messageText = @"";
+            
+            if (msgContent) {
+                if (msgContent[@"data"][@"mute"]) {
+                    if ([msgContent[@"data"][@"mute"] isEqualToNumber:@1]) {
+                        //禁言了
+                        [self shutUpTalking];
+                        messageText = @"您已被禁言";
+                    }else{
+                        //解除禁言
+                        [self keepOnTalking];
+                        messageText = @"您已解除禁言";
+                    }
+                }else{
+                    
+                    messageText = msgContent[@"data"][@"tinfo"][@"15"];
+                }
+            }else{
+                
+            }
+            
+            [self.chatModel addSpecifiedNotificationItem:[@"系统消息:" stringByAppendingString:messageText==nil?@"":messageText]];
+            [self.chatTableView reloadData];
+            [self tableViewScrollToBottom];
         }
-        
     }
     
 }
@@ -4069,7 +4201,6 @@ bool ismute     = NO;
 
 /* 接收回调*/
 - (BOOL)fetchMessageAttachment:(NIMMessage *)message error:(NSError **)error{
-    
     
     return YES;
 }
