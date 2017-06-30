@@ -712,6 +712,7 @@ NTES_FORBID_INTERACTIVE_POP
         
         return;
     }
+    
     [self.view layoutIfNeeded];
 }
 
@@ -726,11 +727,15 @@ NTES_FORBID_INTERACTIVE_POP
        
         //在这儿开启白板 相对安全
         [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:YES];
+        //切换成全屏
+        [_fullScreenBtn setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
+        
+    }else if(toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
         
     }
     
     /* 切换到横屏*/
-    else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+    else {
         //教师摄像头变大
         [self teacherCameraTurnsFullScreen];
         is_fullScreen = YES;
@@ -742,14 +747,21 @@ NTES_FORBID_INTERACTIVE_POP
         //在这儿关闭白班可能也安全
         [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:NO];
         
+        //切换成全屏
+        [_fullScreenBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
+
     }
 }
 
+
+//为了避免摄像头尺寸变化,只能这么做,这个方法,最好只进行这一项操作.
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
     
+    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
     
-    if (fromInterfaceOrientation!=UIInterfaceOrientationPortrait) {
+    if (orientation!=UIDeviceOrientationPortrait) {
         
+    }else{
         //切回了竖屏之后,在显示摄像头
         _floatingView.hidden = NO;
         [_floatingView updateLayout];
@@ -757,10 +769,9 @@ NTES_FORBID_INTERACTIVE_POP
         cameraView.hidden = NO;
         
         //为了让摄像头的尺寸正常 ,只能这么做了
-        
         [self videoSwitchAction:_videoSwitchBtn];
         [self videoSwitchAction:_videoSwitchBtn];
-        
+
     }
     
 }

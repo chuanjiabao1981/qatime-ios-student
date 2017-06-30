@@ -47,8 +47,6 @@
 }
 
 
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -82,6 +80,7 @@
     .topSpaceToView(self.view, 0)
     .bottomSpaceToView(self.view, 0)
     .rightSpaceToView(self.view, 0);
+    
     _noticeTableView.delegate = self;
     _noticeTableView.dataSource = self;
     _noticeTableView.tableFooterView = [UIView new];
@@ -176,28 +175,50 @@
 }
 
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    
+    if (toInterfaceOrientation!=UIInterfaceOrientationPortrait) {
+        [_noticeTableView sd_clearViewFrameCache];
+        [_noticeTableView sd_clearAutoLayoutSettings];
+        [_noticeTableView removeFromSuperview];
+        
+    }else{
+        
+        [self.view addSubview:_noticeTableView];
+        _noticeTableView.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .topSpaceToView(self.view, 0)
+        .bottomSpaceToView(self.view, 0);
+        [_noticeTableView updateLayout];
+        [_noticeTableView cyl_reloadData];
+        
+    }
+    
+    
+}
+
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
     
     if (fromInterfaceOrientation!=UIInterfaceOrientationPortrait) {
-        
-//        [self.view updateLayout];
-//        [_noticeTableView updateLayout];
-//        [_noticeTableView reloadData];
 
-        if ([[UIDevice currentDevice]orientation] == UIDeviceOrientationPortrait) {
-            
-            for (NoticeTableViewCell *cell in _noticeTableView.visibleCells ) {
-                
-                
-                [cell updateLayout];
-               
-            }
-            
-        } ;
+//        [_noticeTableView setNeedsDisplay];
+//        [_noticeTableView setNeedsLayout];
+//        if ([[UIDevice currentDevice]orientation] == UIDeviceOrientationPortrait) {
+//            
+//            for (NoticeTableViewCell *cell in _noticeTableView.visibleCells ) {
+//                
+//                [cell.contentView layoutIfNeeded ];
+//                
+//                [cell.contentView setNeedsDisplay];
+//                [cell.contentView setNeedsLayout];
+//                [cell.contentView updateLayout];
+//            }
+//            
+//        } ;
     }
 }
-
 
 
 
@@ -214,10 +235,12 @@
     
 }
 
-- (BOOL)shouldAutorotate
-{
-    return NO;
+-(BOOL)shouldAutorotate{
+    
+    return YES;
 }
+
+
 
 
 

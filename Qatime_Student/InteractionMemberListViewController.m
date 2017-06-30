@@ -180,6 +180,53 @@
     
 }
 
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    
+    if (toInterfaceOrientation!=UIInterfaceOrientationPortrait) {
+        [_membersTableView sd_clearViewFrameCache];
+        [_membersTableView sd_clearAutoLayoutSettings];
+        [_membersTableView removeFromSuperview];
+        
+    }else{
+        
+        [self.view addSubview:_membersTableView];
+        _membersTableView.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .topSpaceToView(self.view, 0)
+        .bottomSpaceToView(self.view, 0);
+        [_membersTableView updateLayout];
+        
+    }
+    
+    
+}
+
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    
+    if (fromInterfaceOrientation!=UIInterfaceOrientationPortrait) {
+        
+        //        [_noticeTableView setNeedsDisplay];
+        //        [_noticeTableView setNeedsLayout];
+        //        if ([[UIDevice currentDevice]orientation] == UIDeviceOrientationPortrait) {
+        //
+        //            for (NoticeTableViewCell *cell in _noticeTableView.visibleCells ) {
+        //
+        //                [cell.contentView layoutIfNeeded ];
+        //
+        //                [cell.contentView setNeedsDisplay];
+        //                [cell.contentView setNeedsLayout];
+        //                [cell.contentView updateLayout];
+        //            }
+        //            
+        //        } ;
+    }
+}
+
+
+
 - (UIView *)makePlaceHolderView{
     
     HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"暂时没有成员加入"];

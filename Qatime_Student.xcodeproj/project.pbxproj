@@ -99,8 +99,8 @@
 		5435D9521DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9511DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m */; };
 		54366EA01EE102460071A5F9 /* GuestBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54366E9F1EE102460071A5F9 /* GuestBindingViewController.m */; };
 		54366EA71EE114AC0071A5F9 /* GuestBindingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54366EA61EE114AC0071A5F9 /* GuestBindingView.m */; };
-		543BCAF81E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCAF51E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.m */; };
-		543BCAF91E78F3F700AD6721 /* UIView+SDAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCAF71E78F3F700AD6721 /* UIView+SDAutoLayout.m */; };
+		543890FF1F0656340017DF88 /* UITableView+SDAutoTableViewCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 543890FB1F0656340017DF88 /* UITableView+SDAutoTableViewCellHeight.m */; };
+		543891001F0656340017DF88 /* UIView+SDAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 543890FD1F0656340017DF88 /* UIView+SDAutoLayout.m */; };
 		543BCB001E79156300AD6721 /* ChooseGradeAndSubjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCAFF1E79156300AD6721 /* ChooseGradeAndSubjectView.m */; };
 		543BCB031E79157400AD6721 /* ChooseGradeAndSubjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB021E79157400AD6721 /* ChooseGradeAndSubjectViewController.m */; };
 		543BCB061E79158400AD6721 /* ChooseClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB051E79158400AD6721 /* ChooseClassView.m */; };
@@ -814,11 +814,11 @@
 		54366E9F1EE102460071A5F9 /* GuestBindingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestBindingViewController.m; sourceTree = "<group>"; };
 		54366EA51EE114AC0071A5F9 /* GuestBindingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestBindingView.h; sourceTree = "<group>"; };
 		54366EA61EE114AC0071A5F9 /* GuestBindingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestBindingView.m; sourceTree = "<group>"; };
-		543BCAF31E78F3F700AD6721 /* SDAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDAutoLayout.h; sourceTree = "<group>"; };
-		543BCAF41E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+SDAutoTableViewCellHeight.h"; sourceTree = "<group>"; };
-		543BCAF51E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+SDAutoTableViewCellHeight.m"; sourceTree = "<group>"; };
-		543BCAF61E78F3F700AD6721 /* UIView+SDAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SDAutoLayout.h"; sourceTree = "<group>"; };
-		543BCAF71E78F3F700AD6721 /* UIView+SDAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SDAutoLayout.m"; sourceTree = "<group>"; };
+		543890FA1F0656340017DF88 /* UITableView+SDAutoTableViewCellHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+SDAutoTableViewCellHeight.h"; sourceTree = "<group>"; };
+		543890FB1F0656340017DF88 /* UITableView+SDAutoTableViewCellHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+SDAutoTableViewCellHeight.m"; sourceTree = "<group>"; };
+		543890FC1F0656340017DF88 /* UIView+SDAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SDAutoLayout.h"; sourceTree = "<group>"; };
+		543890FD1F0656340017DF88 /* UIView+SDAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SDAutoLayout.m"; sourceTree = "<group>"; };
+		543890FE1F0656340017DF88 /* SDAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDAutoLayout.h; sourceTree = "<group>"; };
 		543BCAFE1E79156300AD6721 /* ChooseGradeAndSubjectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseGradeAndSubjectView.h; sourceTree = "<group>"; };
 		543BCAFF1E79156300AD6721 /* ChooseGradeAndSubjectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseGradeAndSubjectView.m; sourceTree = "<group>"; };
 		543BCB011E79157400AD6721 /* ChooseGradeAndSubjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseGradeAndSubjectViewController.h; sourceTree = "<group>"; };
@@ -2301,11 +2301,11 @@
 		543BCAF21E78F3F600AD6721 /* SDAutoLayout */ = {
 			isa = PBXGroup;
 			children = (
-				543BCAF31E78F3F700AD6721 /* SDAutoLayout.h */,
-				543BCAF41E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.h */,
-				543BCAF51E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.m */,
-				543BCAF61E78F3F700AD6721 /* UIView+SDAutoLayout.h */,
-				543BCAF71E78F3F700AD6721 /* UIView+SDAutoLayout.m */,
+				543890FA1F0656340017DF88 /* UITableView+SDAutoTableViewCellHeight.h */,
+				543890FB1F0656340017DF88 /* UITableView+SDAutoTableViewCellHeight.m */,
+				543890FC1F0656340017DF88 /* UIView+SDAutoLayout.h */,
+				543890FD1F0656340017DF88 /* UIView+SDAutoLayout.m */,
+				543890FE1F0656340017DF88 /* SDAutoLayout.h */,
 			);
 			path = SDAutoLayout;
 			sourceTree = "<group>";
@@ -6664,7 +6664,6 @@
 				543E0CC81DFFEDBD004B24FD /* CheckOrderView.m in Sources */,
 				5413D25B1DF7BC7900A8FDEC /* RechargeTableView.m in Sources */,
 				5444BD2F1E68206D00A75AD1 /* UINavigationController+StatusBar.m in Sources */,
-				543BCAF91E78F3F700AD6721 /* UIView+SDAutoLayout.m in Sources */,
 				54F3BA181DFC3013003998D0 /* UIViewController+Login.m in Sources */,
 				54AC027B1E892D3C00817767 /* UIActionSheet+NTESBlock.m in Sources */,
 				54AB63D81EF2AA5B0022E573 /* TeachersSearch.m in Sources */,
@@ -6679,11 +6678,11 @@
 				54A153AD1DC6F09D0070B508 /* AppDelegate.m in Sources */,
 				544AD3D41EC0993E002F567D /* WorkFlowTableViewCell.m in Sources */,
 				54AC03DF1E8938E100817767 /* NIMMediaItem.m in Sources */,
+				543890FF1F0656340017DF88 /* UITableView+SDAutoTableViewCellHeight.m in Sources */,
 				54AC04021E8938E100817767 /* NIMSessionListCell.m in Sources */,
 				543E0CD41E00297E004B24FD /* BindingMailViewController.m in Sources */,
 				54AC04101E8938E100817767 /* NIMTeamAnnouncementListCell.m in Sources */,
 				544E0CE41DD09FAE00884F31 /* IndexHeaderPageView.m in Sources */,
-				543BCAF81E78F3F700AD6721 /* UITableView+SDAutoTableViewCellHeight.m in Sources */,
 				54F7E1B91EC40F1600337594 /* MyVideoClassList.m in Sources */,
 				54294C7C1DDB373400677333 /* NELivePlayerControl.m in Sources */,
 				5413D2651DF7C74F00A8FDEC /* RechargeTableViewCell.m in Sources */,
@@ -6880,6 +6879,7 @@
 				54B4C1871DF8183800E31794 /* ChargeView.m in Sources */,
 				54FA71591E07B111009D81FE /* ChatViewController.m in Sources */,
 				54D661291DD04DC900C9A0FF /* YZSquareMenu.m in Sources */,
+				543891001F0656340017DF88 /* UIView+SDAutoLayout.m in Sources */,
 				54B907661E9CCFF600034FDC /* VideoClassInfo.m in Sources */,
 				54AC025D1E892CEE00817767 /* NTESUserUtil.m in Sources */,
 				54FCBAF61DD5D4500094BF58 /* LiveClassInfo.m in Sources */,

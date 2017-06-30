@@ -359,14 +359,35 @@
     
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    
+    if (toInterfaceOrientation!=UIInterfaceOrientationPortrait) {
+        [_mainView sd_clearViewFrameCache];
+        [_mainView sd_clearAutoLayoutSettings];
+        [_mainView removeFromSuperview];
+        
+    }else{
+        
+        [self.view addSubview:_mainView];
+        _mainView.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .topSpaceToView(self.view, 0)
+        .bottomSpaceToView(self.view, 0);
+        [_mainView updateLayout];
+        
+    }
+
+    
+}
 
 /** 旋转完了刷新页面 */
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
     
     if (fromInterfaceOrientation!=UIInterfaceOrientationPortrait) {
-        [self.view updateLayout];
-        [_mainView updateLayout];
-        [_mainView reloadData];
+//        [self.view updateLayout];
+//        [_mainView updateLayout];
+//        [_mainView reloadData];
         
     }
     
