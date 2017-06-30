@@ -52,8 +52,7 @@
 #import "InteractionViewController.h"
 
 
-
-@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelgate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate>{
+@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate>{
     
     NSString *_token;
     NSString *_idNumber;

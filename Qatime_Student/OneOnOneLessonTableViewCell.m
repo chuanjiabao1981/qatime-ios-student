@@ -25,6 +25,9 @@
     if (self) {
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        [self.contentView  sizeToFit];
+        self.contentView .autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
         //日期
         [self.contentView addSubview:self.date];
         self.date.sd_layout

@@ -11,7 +11,7 @@
 #import "NIMMessageModel.h"
 #import "UIImage+NIM.h"
 
-@interface NIMSessionAudioContentView()<NIMMediaManagerDelgate>
+@interface NIMSessionAudioContentView()<NIMMediaManagerDelegate>
 
 @property (nonatomic,strong) UIImageView *voiceImageView;
 

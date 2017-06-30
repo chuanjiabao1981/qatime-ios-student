@@ -30,6 +30,7 @@
 //"teacher_name": "王志成",
 //"course_id": "55"
 
+@property (nonatomic, assign) BOOL taste ;
 @property(nonatomic,strong) NSString *classID;
 @property(nonatomic,strong) NSString *name;
 @property(nonatomic,strong) NSString *status ;
@@ -51,10 +52,12 @@
 @property (nonatomic, assign) BOOL replayable;
 @property (nonatomic, assign) NSInteger left_replay_times ;
 
-
-
 @property (nonatomic, strong) NSString  *modal_type;
 @property (nonatomic, strong) NSString *lesson_name ;
+
+@property (nonatomic, strong) NSString *buy_tickets_count ;
+@property (nonatomic, strong) NSString *product_id ;
+@property (nonatomic, strong) NSString *product_type ;
 
 
 

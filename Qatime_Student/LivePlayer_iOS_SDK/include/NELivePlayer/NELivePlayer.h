@@ -18,7 +18,7 @@
  * @brief 视频流类型
  */
 typedef enum NELPBufferStrategy{
-    NELPTopSpeed,    //!< 极速模式
+    NELPTopSpeed,    //!< 极速模式，适用于视频直播，延时最小，网络抖动时容易发生卡顿
     NELPLowDelay,    //!< 网络直播低延时，适用于视频直播，延时低，网络抖动时偶尔有卡顿
     NELPFluent,      //!< 网络直播流畅，适用于视频直播，流畅性好，延时比低延时模式稍大
     NELPAntiJitter,  //!< 网络点播抗抖动，适用于视频点播和本地视频，抗抖动性强
@@ -84,6 +84,23 @@ typedef struct NELPAudioInfo {
 }NELPAudioInfo;
 
 /**
+ * @brief 回调的视频数据格式
+ */
+typedef enum NELPVideoFormat {
+    NELP_YUV420
+} NELPVideoFormat;
+
+/**
+ * @brief 回调的视频数据结构
+ */
+typedef struct NELPVideoFrame {
+    int             width;    //!< 视频宽度
+    int             height;   //!< 视频高度
+    unsigned char   *UsrData; //!< 视频数据
+    NELPVideoFormat vFormat;  //!< 视频格式
+} NELPVideoFrame;
+
+/**
  * @brief 密钥校验结果
  */
 typedef enum NELPKeyCheckResult {
@@ -95,12 +112,6 @@ typedef enum NELPKeyCheckResult {
     NELP_ENCRYPTION_GET_KEY_TIMEOUT     = 5, //!< 获取密钥超时
     NELP_ENCRYPTION_UNKNOWN_ERROR       = 6, //!< 未知错误
 } NELPKeyCheckResult;
-
-//typedef struct NELPAudioQueue {
-//    float first_pts;
-//    float last_pts;
-//    int nb_packets;
-//}NELPAudioQueue;
 
 
 // ----------------------------------------------------------------------------
@@ -229,6 +240,9 @@ typedef enum NELPKeyCheckResult {
 /**
  *	@brief	截图
  *
+ *  @discussion
+ *  调用prepareToPlay方法，播放器发出NELivePlayerDidPreparedToPlayNotification通知后，才能调用该方法。
+ *
  *	@return	截图结果，以UIImage格式保存
  */
 - (UIImage *)getSnapshot;
@@ -240,6 +254,7 @@ typedef enum NELPKeyCheckResult {
  *
  *  @discussion
  *  调用prepareToPlay方法，播放器发出NELivePlayerDidPreparedToPlayNotification通知后，调用该方法才能获取到有效的视频信息。
+ *  注意：其中帧率和码率都是从视频头中读取，若头中没有该信息，则返回0.
  *
  *	@return	无
  */
@@ -290,7 +305,7 @@ typedef enum NELPKeyCheckResult {
 - (void)setVolume:(float)volume;
 
 /**
- * @brief 设置拉流超时时间
+ * @brief 设置拉流超时时间，在prepareToPlay之前调用
  *
  * @param timeout 超时时间 (单位: 毫秒 ms 范围:0 ~ 30000ms)
  *
@@ -310,7 +325,14 @@ typedef enum NELPKeyCheckResult {
  */
 - (void)initDecryption:(NSString *)transferToken :(NSString *)accid :(NSString *)appKey :(NSString *)token :(void(^)(NELPKeyCheckResult ret))completionBlock;
 
-//- (void)getAudioQueue:(NELPAudioQueue *)audioQueue;
+/**
+ * @brief 播放过程中切换播放地址，第一次播放不能调用该接口，仅限于播放过程中或播放结束后切换播放地址
+ *
+ * @param aUrl 待切换的播放地址
+ *
+ * @return >= 0 切换成功， < 0 切换失败
+ */
+- (int)switchContentUrl:(NSURL *)aUrl;
 
 
 /**
@@ -447,8 +469,6 @@ NELP_EXTERN NSString *const NELivePlayerFirstAudioDisplayedNotification;
 NELP_EXTERN NSString *const NELivePlayerReleaseSueecssNotification;
 ///播放器播放结束原因的key
 NELP_EXTERN NSString *const NELivePlayerPlaybackDidFinishReasonUserInfoKey;
-/////视频分辨率发生变化时的消息通知
-//NELP_EXTERN NSString* const NELivePlayerVideoSizeChangedNotification;
 ///seek完成时的消息通知，仅适用于点播，直播不支持
 NELP_EXTERN NSString *const NELivePlayerMoviePlayerSeekCompletedNotification;
 ///视频码流包解析异常时的消息通知

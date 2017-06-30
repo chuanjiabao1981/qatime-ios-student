@@ -48,7 +48,7 @@
 #import "TutoriumList.h"
 
 
-@interface InteractionChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelgate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate>{
+@interface InteractionChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate,PhotoBrowserDelegate>{
     
     NSString *_token;
     NSString *_idNumber;

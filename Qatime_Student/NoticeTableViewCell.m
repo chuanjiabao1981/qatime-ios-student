@@ -16,6 +16,9 @@
 
     if (self) {
         
+        
+        [self.contentView  sizeToFit];
+        self.contentView .autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         /* 喇叭*/
         _noticeImage = [[UIImageView alloc]init];
         [_noticeImage setImage:[UIImage imageNamed:@"喇叭"]];

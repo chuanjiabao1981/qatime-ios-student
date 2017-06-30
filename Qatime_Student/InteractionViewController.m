@@ -210,12 +210,17 @@ NTES_FORBID_INTERACTIVE_POP
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [[UIApplication sharedApplication]setStatusBarHidden:NO];
     
+    _floatingView.hidden = YES;
+    cameraView.hidden = YES;
+    
 }
 - (void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
     [[UIApplication sharedApplication]setStatusBarHidden:YES];
     [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"CanSendVoice"];
+    _floatingView.hidden = NO;
+    cameraView.hidden = NO;
     
 }
 
@@ -743,7 +748,7 @@ NTES_FORBID_INTERACTIVE_POP
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
     
     
-    if (fromInterfaceOrientation==UIInterfaceOrientationLandscapeRight) {
+    if (fromInterfaceOrientation!=UIInterfaceOrientationPortrait) {
         
         //切回了竖屏之后,在显示摄像头
         _floatingView.hidden = NO;
@@ -755,7 +760,7 @@ NTES_FORBID_INTERACTIVE_POP
         
         [self videoSwitchAction:_videoSwitchBtn];
         [self videoSwitchAction:_videoSwitchBtn];
-
+        
     }
     
 }

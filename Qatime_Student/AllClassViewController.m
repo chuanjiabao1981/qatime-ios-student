@@ -509,6 +509,7 @@
         
         cell.model = _dataArr[indexPath.row];
         
+        [cell showTasteState:NO];
         
     }
     

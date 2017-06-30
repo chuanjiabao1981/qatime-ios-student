@@ -17,6 +17,7 @@
 #import "CYLTableViewPlaceHolder.h"
 #import "HaveNoClassView.h"
 #import "MJRefresh.h"
+#import "AppDelegate.h"
 
 @interface InteractionNoticeViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
@@ -44,6 +45,7 @@
     }
     return self;
 }
+
 
 
 
@@ -157,6 +159,8 @@
         cell.interactionNoticeModel = _noticeArr[indexPath.row];
         
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+        
+        [cell.contentView updateLayout];
     }
     
     return  cell;
@@ -172,6 +176,31 @@
 }
 
 
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    
+    if (fromInterfaceOrientation!=UIInterfaceOrientationPortrait) {
+        
+//        [self.view updateLayout];
+//        [_noticeTableView updateLayout];
+//        [_noticeTableView reloadData];
+
+        if ([[UIDevice currentDevice]orientation] == UIDeviceOrientationPortrait) {
+            
+            for (NoticeTableViewCell *cell in _noticeTableView.visibleCells ) {
+                
+                
+                [cell updateLayout];
+               
+            }
+            
+        } ;
+    }
+}
+
+
+
+
 - (UIView *)makePlaceHolderView{
     
     HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"当前暂无公告"];
@@ -185,6 +214,10 @@
     
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
 
 
 

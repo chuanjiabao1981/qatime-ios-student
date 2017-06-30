@@ -359,11 +359,17 @@
     
 }
 
+
 /** 旋转完了刷新页面 */
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
     
-    [_mainView updateLayout];
-    [_mainView reloadData];
+    if (fromInterfaceOrientation!=UIInterfaceOrientationPortrait) {
+        [self.view updateLayout];
+        [_mainView updateLayout];
+        [_mainView reloadData];
+        
+    }
+    
 }
 
 

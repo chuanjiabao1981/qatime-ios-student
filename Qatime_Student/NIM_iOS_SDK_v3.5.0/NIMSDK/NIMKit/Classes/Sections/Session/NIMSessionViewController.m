@@ -30,7 +30,7 @@
 UITableViewDelegate,
 NIMConversationManagerDelegate,
 NIMTeamManagerDelegate,
-NIMMediaManagerDelgate,
+NIMMediaManagerDelegate,
 NIMMessageCellDelegate,
 NIMUserManagerDelegate>
 

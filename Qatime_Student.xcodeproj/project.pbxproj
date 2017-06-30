@@ -362,7 +362,6 @@
 		54AC02261E892C5300817767 /* NTESWhiteboardLines.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AC02211E892C5300817767 /* NTESWhiteboardLines.m */; };
 		54AC02271E892C5300817767 /* NTESWhiteboardPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AC02231E892C5300817767 /* NTESWhiteboardPoint.m */; };
 		54AC022E1E892C6200817767 /* NTESWhiteboardDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AC022C1E892C6200817767 /* NTESWhiteboardDrawView.m */; };
-		54AC02501E892CEE00817767 /* NTESBundleSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AC02311E892CEE00817767 /* NTESBundleSetting.m */; };
 		54AC02511E892CEE00817767 /* NTESCADisplayLinkHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AC02331E892CEE00817767 /* NTESCADisplayLinkHolder.m */; };
 		54AC02521E892CEE00817767 /* NTESClientUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AC02351E892CEE00817767 /* NTESClientUtil.m */; };
 		54AC02531E892CEE00817767 /* NTESDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AC02371E892CEE00817767 /* NTESDataManager.m */; };
@@ -609,6 +608,7 @@
 		54EBCFF41EB2E6190011344D /* AuthenCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EBCFF31EB2E6190011344D /* AuthenCode.m */; };
 		54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC41DFE8D67001A98CE /* OrderView.m */; };
 		54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC71DFE8D75001A98CE /* OrderViewController.m */; };
+		54F1D0C91F062B47003CA80C /* NTESBundleSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F1D0C81F062B47003CA80C /* NTESBundleSetting.m */; };
 		54F292281E8287170076D499 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F292271E8287170076D499 /* Assets.xcassets */; };
 		54F32F721E372E57000F8926 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F32F711E372E57000F8926 /* Reachability.m */; };
 		54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F34D7C1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m */; };
@@ -1358,8 +1358,6 @@
 		54AC02231E892C5300817767 /* NTESWhiteboardPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESWhiteboardPoint.m; sourceTree = "<group>"; };
 		54AC022B1E892C6200817767 /* NTESWhiteboardDrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESWhiteboardDrawView.h; sourceTree = "<group>"; };
 		54AC022C1E892C6200817767 /* NTESWhiteboardDrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESWhiteboardDrawView.m; sourceTree = "<group>"; };
-		54AC02301E892CEE00817767 /* NTESBundleSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESBundleSetting.h; sourceTree = "<group>"; };
-		54AC02311E892CEE00817767 /* NTESBundleSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESBundleSetting.m; sourceTree = "<group>"; };
 		54AC02321E892CEE00817767 /* NTESCADisplayLinkHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESCADisplayLinkHolder.h; sourceTree = "<group>"; };
 		54AC02331E892CEE00817767 /* NTESCADisplayLinkHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESCADisplayLinkHolder.m; sourceTree = "<group>"; };
 		54AC02341E892CEE00817767 /* NTESClientUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESClientUtil.h; sourceTree = "<group>"; };
@@ -1878,6 +1876,8 @@
 		54ECFEC41DFE8D67001A98CE /* OrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderView.m; sourceTree = "<group>"; };
 		54ECFEC61DFE8D75001A98CE /* OrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
 		54ECFEC71DFE8D75001A98CE /* OrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
+		54F1D0C71F062B47003CA80C /* NTESBundleSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESBundleSetting.h; sourceTree = "<group>"; };
+		54F1D0C81F062B47003CA80C /* NTESBundleSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESBundleSetting.m; sourceTree = "<group>"; };
 		54F292271E8287170076D499 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		54F32F701E372E57000F8926 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		54F32F711E372E57000F8926 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
@@ -4010,8 +4010,8 @@
 		54AC022F1E892CEE00817767 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				54AC02301E892CEE00817767 /* NTESBundleSetting.h */,
-				54AC02311E892CEE00817767 /* NTESBundleSetting.m */,
+				54F1D0C71F062B47003CA80C /* NTESBundleSetting.h */,
+				54F1D0C81F062B47003CA80C /* NTESBundleSetting.m */,
 				54AC02321E892CEE00817767 /* NTESCADisplayLinkHolder.h */,
 				54AC02331E892CEE00817767 /* NTESCADisplayLinkHolder.m */,
 				54AC02341E892CEE00817767 /* NTESClientUtil.h */,
@@ -6533,6 +6533,7 @@
 				5435D9341DD2B42100DD4FCC /* RecommandClasses.m in Sources */,
 				545162BE1DF50D99000BD17A /* ChangePasswordViewController.m in Sources */,
 				54C9A8D11E12159700B81EBF /* PlayerView.m in Sources */,
+				54F1D0C91F062B47003CA80C /* NTESBundleSetting.m in Sources */,
 				54AC04D71E89398E00817767 /* IJKSDLGLView.m in Sources */,
 				5469786C1DC72A54001695F4 /* SignUpView.m in Sources */,
 				54AC03F11E8938E100817767 /* NIMSessionViewController.m in Sources */,
@@ -6886,7 +6887,6 @@
 				541390BB1EFA6E0300EF51AA /* ReplayTableViewCell.m in Sources */,
 				54AC041F1E8938E100817767 /* NIMWebImageDecoder.m in Sources */,
 				541E20041E139967007CF5D1 /* UncaughtExceptionHandler.m in Sources */,
-				54AC02501E892CEE00817767 /* NTESBundleSetting.m in Sources */,
 				54AC03E31E8938E100817767 /* NIMBaseSessionContentConfig.m in Sources */,
 				5435D9461DD315CD00DD4FCC /* TeachersPublicCollectionView.m in Sources */,
 				542F09281EA8A63B0062090D /* VerifyPasswordView.m in Sources */,

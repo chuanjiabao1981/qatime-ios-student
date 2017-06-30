@@ -18,6 +18,8 @@
     if (self) {
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        [self.contentView  sizeToFit];
+        self.contentView .autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
         //头像
         _headImage = [[UIImageView alloc]init];
