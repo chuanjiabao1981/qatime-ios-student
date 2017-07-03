@@ -393,18 +393,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[InteractionChatViewController makeMessages:]:InteractionChatViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ChatModel addSpecifiedImageItem:andIconURL:andName:]:ChatModel.m">
+      </ContextState>
+      <ContextState
          contextName = "__43-[VideoClassInfoViewController requestData]_block_invoke:VideoClassInfoViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_classInfo">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ChatModel addSpecifiedImageItem:andIconURL:andName:]:ChatModel.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[InteractionChatViewController makeMessages:]:InteractionChatViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[MyOrderViewController requestUnpaid]:MyOrderViewController.m">
@@ -494,10 +494,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -653,12 +653,7 @@
          contextName = "-[OrderViewController touchesBegan:withEvent:]:OrderViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__copy_helper_block_:PersonalInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[InteractionChatViewController onRecvMessages:]:InteractionChatViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController UUInputFunctionView:sendMessage:]:NELivePlayerViewController.m">
@@ -675,10 +670,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__38-[ChangePasswordViewController finish]_block_invoke_4:ChangePasswordViewController.m">
+         contextName = "__copy_helper_block_:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
+         contextName = "__38-[ChangePasswordViewController finish]_block_invoke_4:ChangePasswordViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NTESWhiteboardCmdHandler doSendCmds]:NTESWhiteboardCmdHandler.m">
@@ -689,7 +689,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[InteractionChatViewController onRecvMessages:]:InteractionChatViewController.m">
+         contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[VideoInfoView initWithFrame:]:VideoInfoView.m">
@@ -768,6 +768,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[NTESPageView reloadPage]:NTESPageView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_pages">
+            </PersistentString>
+            <PersistentString
+               value = "_currentPage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[ChooseGradeAndSubjectViewController chooseGrade:]:ChooseGradeAndSubjectViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -796,6 +807,14 @@
       </ContextState>
       <ContextState
          contextName = "-[VideoClassFilterViewController tableView:didSelectRowAtIndexPath:]:VideoClassFilterViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[LivePlayerViewController switchStatuseWithDictionary:]:LivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "statusDic">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController changePlayersMode]:NELivePlayerViewController.m">
@@ -1070,6 +1089,14 @@
       </ContextState>
       <ContextState
          contextName = "-[CityChosenViewController viewDidLoad]:CityChosenViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[NTESPageView willRotate]:NTESPageView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_currentPage">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[ClassTimeViewController requestClassList]:ClassTimeViewController.m">
@@ -1515,10 +1542,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

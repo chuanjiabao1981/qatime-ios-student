@@ -277,7 +277,6 @@
 		548D1D7F1EA7421400B120C8 /* AllClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D7E1EA7421400B120C8 /* AllClassViewController.m */; };
 		548D1D8E1EA7551F00B120C8 /* Features.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D8D1EA7551F00B120C8 /* Features.m */; };
 		548D1D911EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D901EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.m */; };
-		548F0E7E1E8A51A400A12C6D /* InteractionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E7D1E8A51A400A12C6D /* InteractionView.m */; };
 		548F0E811E8A51B000A12C6D /* InteractionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E801E8A51B000A12C6D /* InteractionViewController.m */; };
 		548F0E9A1E8A826400A12C6D /* InteractionInfoHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E991E8A826400A12C6D /* InteractionInfoHeadView.m */; };
 		548F70AD1E8B5FE50062C71E /* InteractionControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F70AC1E8B5FE50062C71E /* InteractionControl.m */; };
@@ -1198,8 +1197,6 @@
 		548D1D8D1EA7551F00B120C8 /* Features.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Features.m; sourceTree = "<group>"; };
 		548D1D8F1EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICollectionViewLeftAlignedLayout.h; sourceTree = "<group>"; };
 		548D1D901EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICollectionViewLeftAlignedLayout.m; sourceTree = "<group>"; };
-		548F0E7C1E8A51A400A12C6D /* InteractionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionView.h; sourceTree = "<group>"; };
-		548F0E7D1E8A51A400A12C6D /* InteractionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionView.m; sourceTree = "<group>"; };
 		548F0E7F1E8A51B000A12C6D /* InteractionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionViewController.h; sourceTree = "<group>"; };
 		548F0E801E8A51B000A12C6D /* InteractionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionViewController.m; sourceTree = "<group>"; };
 		548F0E981E8A826400A12C6D /* InteractionInfoHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InteractionInfoHeadView.h; path = View/InteractionInfoHeadView.h; sourceTree = "<group>"; };
@@ -4001,8 +3998,6 @@
 				54AC022C1E892C6200817767 /* NTESWhiteboardDrawView.m */,
 				548F70AB1E8B5FE50062C71E /* InteractionControl.h */,
 				548F70AC1E8B5FE50062C71E /* InteractionControl.m */,
-				548F0E7C1E8A51A400A12C6D /* InteractionView.h */,
-				548F0E7D1E8A51A400A12C6D /* InteractionView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4581,20 +4576,12 @@
 		54AC042B1E89398E00817767 /* MeetingRoom */ = {
 			isa = PBXGroup;
 			children = (
-				54AC042C1E89398E00817767 /* Config */,
 				54AC04371E89398E00817767 /* Manager */,
 				54AC04501E89398E00817767 /* Object */,
 				54AC04631E89398E00817767 /* View */,
 			);
 			name = MeetingRoom;
 			path = Manager/MeetingRoom;
-			sourceTree = "<group>";
-		};
-		54AC042C1E89398E00817767 /* Config */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Config;
 			sourceTree = "<group>";
 		};
 		54AC04371E89398E00817767 /* Manager */ = {
@@ -6363,7 +6350,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		D80A0418E1DD517D1BF5677C /* [CP] Copy Pods Resources */ = {
@@ -6470,7 +6457,6 @@
 				543E23401E2C78D700381F10 /* SetPayPasswordViewController.m in Sources */,
 				54AC040E1E8938E100817767 /* NIMAdvancedTeamMemberCell.m in Sources */,
 				545162D81DF55DD0000BD17A /* PersonalTableViewCell.m in Sources */,
-				548F0E7E1E8A51A400A12C6D /* InteractionView.m in Sources */,
 				548D1D7F1EA7421400B120C8 /* AllClassViewController.m in Sources */,
 				54DBA4B01DE4423300A67A90 /* YZEmotionCell.m in Sources */,
 				548F70AD1E8B5FE50062C71E /* InteractionControl.m in Sources */,

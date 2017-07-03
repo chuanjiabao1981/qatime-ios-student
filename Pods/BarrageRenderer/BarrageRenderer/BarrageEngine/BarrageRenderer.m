@@ -68,6 +68,7 @@ NSString * const kBarrageRendererContextTimestamp = @"kBarrageRendererContextTim
         _startTime = nil; // 尚未开始
         _pausedTime = nil;
         _redisplay = NO;
+        _smoothness = 0.0f;
         self.pausedDuration = 0;
         [self initClock];
     }
@@ -106,11 +107,12 @@ NSString * const kBarrageRendererContextTimestamp = @"kBarrageRendererContextTim
 {
     // 如果之前调整过frame,_canvas的layoutSubviews不会及时调用，于是显示时会出问题
     // 解决bug: https://github.com/unash/BarrageRenderer/issues/16
-    [_canvas layoutSubviews];
+    [_canvas setNeedsLayout];
     if (!_startTime) { // 尚未启动,则初始化时间系统
         _startTime = [NSDate date];
         _records = [[NSMutableArray alloc]init];
         _dispatcher = [[BarrageDispatcher alloc]init];
+        _dispatcher.smoothness = self.smoothness;
         _dispatcher.cacheDeadSprites = self.redisplay;
         _dispatcher.delegate = self;
     }
@@ -172,6 +174,14 @@ NSString * const kBarrageRendererContextTimestamp = @"kBarrageRendererContextTim
     }
 }
 
+- (void)setSmoothness:(CGFloat)smoothness
+{
+    _smoothness = smoothness;
+    if (_dispatcher) {
+        _dispatcher.smoothness = smoothness;
+    }
+}
+
 - (NSTimeInterval)pausedDuration
 {
     return _pausedDuration + (_pausedTime?[[NSDate date]timeIntervalSinceDate:_pausedTime]:0); // 当前处于暂停当中
@@ -218,6 +228,16 @@ NSString * const kBarrageRendererContextTimestamp = @"kBarrageRendererContextTim
         number = _dispatcher.activeSprites.count;
     }
     return number;
+}
+
+- (void)removePresentSpritesWithName:(NSString *)spriteName
+{
+    Class class = NSClassFromString(spriteName);
+    for (BarrageSprite * sprite in _dispatcher.activeSprites) {
+        if (!class || [sprite class] == class) {
+            [sprite forceInvalid];
+        }
+    }
 }
 
 #pragma mark - record
@@ -316,6 +336,7 @@ NSString * const kBarrageRendererContextTimestamp = @"kBarrageRendererContextTim
 {
     [self indexRemoveSprite:sprite];
     [sprite.view removeFromSuperview];
+    [sprite deactive];
 }
 
 - (NSTimeInterval)timeForBarrageDispatcher:(BarrageDispatcher *)dispatcher

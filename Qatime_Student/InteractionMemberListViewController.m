@@ -208,20 +208,7 @@
     
     if (fromInterfaceOrientation!=UIInterfaceOrientationPortrait) {
         
-        //        [_noticeTableView setNeedsDisplay];
-        //        [_noticeTableView setNeedsLayout];
-        //        if ([[UIDevice currentDevice]orientation] == UIDeviceOrientationPortrait) {
-        //
-        //            for (NoticeTableViewCell *cell in _noticeTableView.visibleCells ) {
-        //
-        //                [cell.contentView layoutIfNeeded ];
-        //
-        //                [cell.contentView setNeedsDisplay];
-        //                [cell.contentView setNeedsLayout];
-        //                [cell.contentView updateLayout];
-        //            }
-        //            
-        //        } ;
+    
     }
 }
 

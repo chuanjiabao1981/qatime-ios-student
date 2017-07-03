@@ -153,7 +153,7 @@ typedef enum : NSUInteger {
     //加载导航栏
     [self setupNavigation];
     
-    [self HUDStopWithTitle:nil];
+    [self HUDStartWithTitle:nil];
     
     //请求数据
     [self requestData];
@@ -304,8 +304,9 @@ typedef enum : NSUInteger {
                 
             }
             
+            [self HUDStopWithTitle:nil];
         }else{
-            
+            [self HUDStopWithTitle:nil];
         }
         
     }];
@@ -320,6 +321,7 @@ typedef enum : NSUInteger {
  */
 - (void)enterTaste:(UIButton *)sender{
     
+    [self HUDStartWithTitle:nil];
     if ([_classInfo.sell_type isEqualToString:@"charge"]) {
         
         if (_classInfo.taste_count>0) {
@@ -334,6 +336,7 @@ typedef enum : NSUInteger {
             //进入试听
             VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:classesArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:classesArray[0].video.name_url andIndexPath:nil];
             [self.navigationController pushViewController:controller animated:YES];
+            [self HUDStopWithTitle:nil];
         }else{
             //没反应
             [self HUDStopWithTitle:@"暂时不能试听"];
@@ -344,6 +347,7 @@ typedef enum : NSUInteger {
         //进入试听
         VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:_classArray[0].video.name_url andIndexPath:nil];
         [self.navigationController pushViewController:controller animated:YES];
+        [self HUDStopWithTitle:nil];
 
     }
     
@@ -356,6 +360,8 @@ typedef enum : NSUInteger {
  */
 - (void)enterStudy:(UIButton *)sender{
     
+    [self HUDStartWithTitle:@"加载中"];
+    
     if ([_classInfo.sell_type isEqualToString:@"charge"]) {
         
         if (_classInfo.is_bought == YES) {
@@ -363,12 +369,12 @@ typedef enum : NSUInteger {
             
             VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:nil andIndexPath:nil];
             [self.navigationController pushViewController:controller animated:YES];
-            
+            [self HUDStopWithTitle:nil];
         }else{
             //购买下单
             OrderViewController *controller = [[OrderViewController alloc]initWithClassID:_classID andClassType:VideoClassType andProductName:_classInfo.name];
             [self.navigationController pushViewController:controller animated:YES];
-            
+            [self HUDStopWithTitle:nil];
         }
     }else if ([_classInfo.sell_type isEqualToString:@"free"]){
         
@@ -377,7 +383,7 @@ typedef enum : NSUInteger {
             //进入学习
             VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:nil andIndexPath:nil];
             [self.navigationController pushViewController:controller animated:YES];
-            
+            [self HUDStopWithTitle:nil];
         }else{
             
             [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@/deliver_free",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
@@ -391,20 +397,21 @@ typedef enum : NSUInteger {
                 }else{
                     
                     [self performSelector:@selector(enterStudy) withObject:nil afterDelay:2];
+                    
                 }
                 
             }];
         }
-        
         
     }
     
 }
 
 - (void)enterStudy{
-    VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:nil andIndexPath:nil];
-    [self.navigationController pushViewController:controller animated:YES];
     
+    VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:nil andIndexPath:nil];
+    [self HUDStopWithTitle:nil];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 

@@ -32,8 +32,6 @@
 
 #import "NTESGLView.h"
 
-#import "InteractionView.h"
-
 #import "Notice.h"
 #import "Classes.h"
 #import "Teacher.h"
@@ -51,11 +49,6 @@
  聊天房间
  */
 @property (nonatomic, copy)   NIMChatroom *chatroom;
-
-/**
- 主视图
- */
-@property (nonatomic, strong) InteractionView *interactionView ;
 
 
 

@@ -76,6 +76,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
     self.segmentedControl.height = self.segmentedControlHeight;
     CGFloat actorsViewHeight     = [self.datasource actorsViewHeight];
     self.segmentedControl.top    = actorsViewHeight;
@@ -85,6 +86,7 @@
     
     self.unreadRedTip.centerY    = self.segmentedControl.top + self.segmentedControl.height * .5f;
     self.unreadRedTip.right      = self.width - 30.f;
+
 }
 
 
@@ -180,6 +182,7 @@
     }
     return _segmentedItems;
 }
+
 
 - (UIImageView *)unreadRedTip
 {

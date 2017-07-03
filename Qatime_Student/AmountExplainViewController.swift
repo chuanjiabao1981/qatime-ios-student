@@ -8,11 +8,12 @@
 
 import UIKit
 
+
 let ScrenScale = UIScreen.main.bounds.size.width/414.0
 
 
 
-class AmountExplainViewController: UIViewController {
+class AmountExplainViewController: UIViewController ,UIWebViewDelegate{
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,9 +48,28 @@ class AmountExplainViewController: UIViewController {
         //读取本地html
         let path = Bundle.main.path(forResource: "explain", ofType: "html")!
         let data = NSData.init(contentsOfFile: path)
-        _mainView.load(data! as Data, mimeType: "text/html", textEncodingName: "UTF-8", baseURL: NSURL.fileURL(withPath: Bundle.main.bundlePath) )
+        _mainView.load(data! as Data, mimeType: "text/html", textEncodingName: "UTF-8", baseURL: NSURL.fileURL(withPath: Bundle.main.bundlePath))
+        
+        _mainView.delegate = self
         
     }
+    
+    //delegate
+    
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        
+        self.hudStart(withTitle: nil)
+        return true
+    }
+    
+    func webViewDidStartLoad(_ webView: UIWebView) {
+        
+    }
+    
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        self.hudStop(withTitle: nil)
+    }
+    
     
     func returnLastPage() {
         self.navigationController?.popViewController(animated: true)

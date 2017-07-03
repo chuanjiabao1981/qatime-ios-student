@@ -14,19 +14,27 @@ static const void *placeholderImagekey = &placeholderImagekey;
 
 -(void)makePlaceHolderImage:(UIImage * _Nullable)image{
     
-    if (image!=nil) {
-        
-        self.placeholderImage = [[UIImageView alloc]initWithImage:image];
-        self.placeholderImage.frame = self.bounds;
-        [self addSubview:self.placeholderImage];
-        
-    }else{
-        for (UIImageView *view in self.subviews) {
-            if ([view isEqual:self.placeholderImage ]) {
-                [self.placeholderImage removeFromSuperview];
-            }
+    if ([self.subviews containsObject:self.placeholderImage]) {
+        if (image!=nil) {
+            [self.placeholderImage setImage:image];
+        }else{
+            [self.placeholderImage removeFromSuperview];
         }
+    }else{
         
+        if (image == nil) {
+            
+        }else{
+            self.placeholderImage = [[UIImageView alloc]initWithImage:image];
+            
+            [self addSubview:self.placeholderImage];
+            self.placeholderImage.sd_layout
+            .leftSpaceToView(self, 0)
+            .rightSpaceToView(self, 0)
+            .topSpaceToView(self, 0)
+            .bottomSpaceToView(self, 0);
+            [self.placeholderImage updateLayout];
+        }
     }
     
 }

@@ -43,7 +43,7 @@
         _backgroundViews = [NSMutableArray array];
         _videoVc = [[NTESVideoFSViewController alloc]init];
         _fullScreenBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        UIImage *backgroundImage = [UIImage imageNamed:@"PlayerHolder"];
+        UIImage *backgroundImage = [UIImage imageNamed:@"video_Playerholder"];
         _fullScreenBtn.hidden = YES;
         
         UIImageView *background = [[UIImageView alloc] initWithImage:backgroundImage];

@@ -249,7 +249,6 @@ NTES_FORBID_INTERACTIVE_POP
     [self makeData];
     
      //修改视图结构.重写所有视图.
-     
     [self setupViews];
     
     //状态栏隐藏/显示
@@ -320,12 +319,13 @@ NTES_FORBID_INTERACTIVE_POP
     [[NTESMeetingRolesManager defaultManager] setDelegate:self];
     
     _floatingView = [[IJKFloatingView alloc]initWithFrame:CGRectMake(20, 20, _cameraWidth,_cameraWidth/9*16.0)];
-    [_floatingView makePlaceHolderImage:[UIImage imageNamed:@"PlayerHolder"]];
+    [_floatingView makePlaceHolderImage:[UIImage imageNamed:@"video_ClosedCamera"]];
     _floatingView.backgroundColor = [UIColor whiteColor];
     _floatingView.canMove = YES;
     [self.view addSubview:_floatingView];
     
     _teacherView = [[IJKFloatingView alloc]init];
+    [_teacherView makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
     _teacherView.canMove = NO;
     [self.actorsView addSubview:_teacherView];
     _teacherView.sd_layout
@@ -435,10 +435,12 @@ NTES_FORBID_INTERACTIVE_POP
     
 }
 
-/** 拿到roomid后加入会话的方法 */
+/** 拿到roomid后加入会话的方法  同时,视频播放器和摄像头播放器都变成加载中的提示图片*/
 - (void)joinMeeting:(NSNotification *)note{
     
     _roomID = [note object];
+    [_floatingView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadingHolder_Portrait"]];
+    [_teacherView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadingHolder_Landscape"]];
     
     [[NTESMeetingNetCallManager defaultManager] joinMeeting:_roomID delegate:self];
 
@@ -537,6 +539,10 @@ NTES_FORBID_INTERACTIVE_POP
 {
     [self.view.window makeToast:@"无法加入视频，退出房间" duration:3.0 position:CSToastPositionCenter];
     
+    //直接加入房间错误了
+    [_floatingView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadFaild_Portrait"]];
+    [_teacherView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadFaild_Landscape"]];
+    
     if ([[[NTESMeetingRolesManager defaultManager] myRole] isManager]) {
     }
     
@@ -559,7 +565,10 @@ NTES_FORBID_INTERACTIVE_POP
         
         
     }else {
-//        [self.view.window makeToast:@"音视频服务连接异常" duration:2.0 position:CSToastPositionCenter];
+        //链接失败的情况
+        [_floatingView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadFaild_Portrait"]];
+        [_teacherView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadFaild_Landscape"]];
+        
         [self.actorsView stopLocalPreview];
     }
 }
@@ -751,6 +760,16 @@ NTES_FORBID_INTERACTIVE_POP
         [_fullScreenBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
 
     }
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"RotatePageView" object:nil];
+    
+    
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"RotateAnimatePageView" object:nil];
 }
 
 

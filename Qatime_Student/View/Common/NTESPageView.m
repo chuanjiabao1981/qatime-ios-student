@@ -14,10 +14,12 @@
 
 @interface NTESPageView ()
 {
-    NSInteger   _currentPage;
-    NSInteger   _currentPageForRotation;
+//    NSInteger   _currentPage;
+//    NSInteger   _currentPageForRotation;
 }
 
+@property (nonatomic, assign) NSInteger currentPage ;
+@property (nonatomic, assign) NSInteger currentPageForRotation ;
 @property (nonatomic,strong)    NSMutableArray  *pages;
 
 - (void)setupControls;
@@ -36,9 +38,15 @@
     if (self)
     {
         [self setupControls];
+        
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(willRotate) name:@"RotatePageView" object:nil];
+        
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(willAnimatedRotate) name:@"RotateAnimatePageView" object:nil];
     }
     return self;
 }
+
+
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -283,16 +291,21 @@
     }
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                duration:(NSTimeInterval)duration
-{
+
+/**
+    因为上层已经执行过willRotate...和didRotate方法,所以这两个方法在这儿不会执行.
+    所以在上层controller里发消息,过来执行避免发生segment出问题的代码.
+    控制currentpage和scrollview的delegate,不会造成相应的影响.
+ */
+
+- (void)willRotate{
+    
     _scrollView.delegate = nil;
     _currentPageForRotation = _currentPage;
+
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                         duration:(NSTimeInterval)duration
-{
+- (void)willAnimatedRotate{
     CGSize size = self.bounds.size;
     _scrollView.contentSize = CGSizeMake(size.width * [_pages count], size.height);
     for (NSUInteger i = 0; i < [_pages count]; i++)
@@ -302,18 +315,18 @@
         {
             [(UIView *)obj setFrame:CGRectMake(size.width * i, 0, size.width, size.height)];
             
-            /*
-             //这里有点ugly,先这样吧...
-             if ([obj respondsToSelector:@selector(reset)])
-             {
-             [obj performSelector:@selector(reset)];
-             }*/
+            //这里有点ugly,先这样吧...
+            if ([obj respondsToSelector:@selector(reset)])
+            {
+                [obj performSelector:@selector(reset)];
+            }
         }
     }
     _scrollView.contentOffset = CGPointMake(_currentPageForRotation * self.bounds.size.width, 0);
     _scrollView.delegate = self;
-    
+
 }
+
 
 @end
 

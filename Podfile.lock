@@ -14,7 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - BarrageRenderer (1.9.1)
+  - BarrageRenderer (2.0.1)
   - BEMCheckBox (1.4.1)
   - CocoaLumberjack (3.2.0):
     - CocoaLumberjack/Default (= 3.2.0)
@@ -22,7 +22,7 @@ PODS:
   - CocoaLumberjack/Default (3.2.0)
   - CocoaLumberjack/Extensions (3.2.0):
     - CocoaLumberjack/Default
-  - FSCalendar (2.7.8)
+  - FSCalendar (2.7.9)
   - KSPhotoBrowser (0.1.3):
     - YYWebImage (~> 1.0.5)
   - LCTabBarController (1.3.6)
@@ -81,10 +81,10 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  BarrageRenderer: 55bbe4557d48adbdca6c1ebdfef96946fdb5e5b2
+  BarrageRenderer: 976447f2ad499281f189f7d5d261f7f3f184d0f6
   BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   CocoaLumberjack: 9b4aed7073d242f29cc2f62068d995faf67f703a
-  FSCalendar: 09369a2bf554ba71cd8e8cfb627e2df22a2c2af4
+  FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   KSPhotoBrowser: 2c7a58cce183556e86dce863748e41133310345b
   LCTabBarController: 9175d6073b60f4c40e948a0245be8b7e3afe566e
   M13BadgeView: 700dd0714fdc837c0cf1c8c004454963ec22441f
@@ -107,4 +107,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: e6c1d43e7f33a4405d6eed2881311192da172e20
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.2.1
