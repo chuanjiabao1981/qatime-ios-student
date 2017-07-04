@@ -494,10 +494,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -714,6 +714,20 @@
          contextName = "__42-[PayConfirmViewController payWithBalance]_block_invoke_3:PayConfirmViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[TeachersPublicViewController numberOfSectionsInCollectionView:]:TeachersPublicViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_oneOnOneCount">
+            </PersistentString>
+            <PersistentString
+               value = "_videoCount">
+            </PersistentString>
+            <PersistentString
+               value = "_publicCount">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[QRCodeController captureOutput:didOutputMetadataObjects:fromConnection:]:QRCodeController.m">
          <PersistentStrings>
             <PersistentString
@@ -757,7 +771,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.450:PersonalInfoViewController.m">
+         contextName = "-[NTESPageView reloadPage]:NTESPageView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_currentPage">
+            </PersistentString>
+            <PersistentString
+               value = "_pages">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[ChatViewController dealTheFunctionData:]:ChatViewController.m">
@@ -768,15 +790,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NTESPageView reloadPage]:NTESPageView.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_pages">
-            </PersistentString>
-            <PersistentString
-               value = "_currentPage">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.450:PersonalInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[ChooseGradeAndSubjectViewController chooseGrade:]:ChooseGradeAndSubjectViewController.m">
@@ -806,15 +820,15 @@
          contextName = "__49-[OneOnOneTutoriumInfoViewController requestData]_block_invoke:OneOnOneTutoriumInfoViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[VideoClassFilterViewController tableView:didSelectRowAtIndexPath:]:VideoClassFilterViewController.m">
-      </ContextState>
-      <ContextState
          contextName = "-[LivePlayerViewController switchStatuseWithDictionary:]:LivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "statusDic">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[VideoClassFilterViewController tableView:didSelectRowAtIndexPath:]:VideoClassFilterViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController changePlayersMode]:NELivePlayerViewController.m">
@@ -1542,10 +1556,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

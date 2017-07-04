@@ -14,4 +14,6 @@
           width:(NSUInteger)width
          height:(NSUInteger)height;
 
+
+@property (nonatomic, assign) BOOL cameraStart ;
 @end

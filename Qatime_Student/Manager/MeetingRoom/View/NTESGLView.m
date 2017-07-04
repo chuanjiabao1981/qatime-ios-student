@@ -29,10 +29,19 @@
         _overlay.is_private = 0;
         _overlay.sar_num = 0;
         _overlay.sar_den = 0;
+        
+        self.cameraStart = NO;
     }
     return self;
 }
+
+//摄像头正在推流
 - (void) render: (NSData *)yuvData  width:(NSUInteger)width height:(NSUInteger)height{
+    
+    if (self.cameraStart == NO) {
+        
+        self.cameraStart = YES;
+    }
     
     if (yuvData) {
         _overlay.w = (int)width;

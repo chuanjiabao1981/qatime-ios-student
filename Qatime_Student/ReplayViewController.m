@@ -136,28 +136,26 @@ typedef enum : NSUInteger {
     }
     [_filterDic setObject:[NSString stringWithFormat:@"%ld",page] forKey:@"page"];
     
-    
-    
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/home/replays",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:_filterDic completeSuccess:^(id  _Nullable responds) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             
-            for (NSDictionary *dics in dic[@"data"]) {
-                ReplayLesson *mod = [ReplayLesson yy_modelWithJSON:dics];
-                mod.classID = dics[@"id"];
-                mod.live_studio_lesson = [Live_studio_lesson yy_modelWithJSON:dics[@"live_studio_lesson"]];
-                [_replaysArr addObject:mod];
-            }
-            
             if ([dic[@"data"]count]==0) {
                 [_mainView.mj_footer endRefreshingWithNoMoreData];
-            }
-            
-            
-            if (refreshType == PullToReload) {
-                [_mainView.mj_header endRefreshing];
             }else{
-                [_mainView.mj_footer endRefreshing];
+                
+                for (NSDictionary *dics in dic[@"data"]) {
+                    ReplayLesson *mod = [ReplayLesson yy_modelWithJSON:dics];
+                    mod.classID = dics[@"id"];
+                    mod.live_studio_lesson = [Live_studio_lesson yy_modelWithJSON:dics[@"live_studio_lesson"]];
+                    [_replaysArr addObject:mod];
+                }
+                
+                if (refreshType == PullToReload) {
+                    [_mainView.mj_header endRefreshing];
+                }else{
+                    [_mainView.mj_footer endRefreshing];
+                }
             }
             
             [_mainView cyl_reloadData];

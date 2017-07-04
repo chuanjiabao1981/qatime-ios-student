@@ -356,6 +356,7 @@ bool videoIsmute     = NO;
 - (void)onClickBack:(id)sender
 {
     NSLog(@"click back!");
+    
    // [self syncUIStatus:YES];
     if (self.presentingViewController) {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];

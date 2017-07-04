@@ -139,8 +139,6 @@
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeSenderButton) name:@"ChatNone" object:nil] ;
         
-        
-                
     }
     return self;
 }
@@ -148,12 +146,11 @@
 
 //语音/文字输入切换
 - (void)voiceRecord:(UIButton *)sender{
-    
-    BOOL _canSendVoice ;
+
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"CanSendVoice"]) {
         if ([[NSUserDefaults standardUserDefaults]boolForKey:@"CanSendVoice"]==NO) {
             //不能发送语音
-            [self nimkit_makeToast:@"该课程不能发送语音消息" duration:2 position:NIMKitToastPositionBottom];
+            [self nimkit_makeToast:@"互动中不能发送语音消息" duration:2 position:NIMKitToastPositionBottom];
         }else{
             //可以发送语音
             self.btnVoiceRecord.hidden = !self.btnVoiceRecord.hidden;

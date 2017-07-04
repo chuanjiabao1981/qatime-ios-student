@@ -15,8 +15,6 @@
  */
 @property (nonatomic, strong) UIImageView * _Nullable placeholderImage ;
 
-
-
 /**
  给UIView增加一个占位图的方法
 

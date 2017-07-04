@@ -146,22 +146,7 @@ typedef enum : NSUInteger {
     
     [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     
-    [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"SupportedLandscape"];
-    
-    [self.videoPlayer shutdown]; //退出播放并释放相关资源
-    [self.videoPlayer.view removeFromSuperview];
-    self.videoPlayer = nil;
-    
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerDidPreparedToPlayNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerLoadStateChangedNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerPlaybackFinishedNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstVideoDisplayedNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstAudioDisplayedNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerVideoParseErrorNotification object:_videoPlayer];
-    
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIDeviceOrientationDidChangeNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"TurnDownFullScreen" object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"FullScreen" object:_videoPlayer];
+    [self.videoPlayer pause]; //退出播放并释放相关资源
     
 }
 
@@ -524,15 +509,30 @@ typedef enum : NSUInteger {
 
 //退出播放
 - (void)onClickBack:(id)sender{
-    /* 非屏状态下的点击事件*/
+    /* 非全屏状态下的点击事件*/
     if (isFullScreen == NO) {
+        
+        [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"SupportedLandscape"];
+        
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerDidPreparedToPlayNotification object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerLoadStateChangedNotification object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerPlaybackFinishedNotification object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstVideoDisplayedNotification object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstAudioDisplayedNotification object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerVideoParseErrorNotification object:_videoPlayer];
+        
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:UIDeviceOrientationDidChangeNotification object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:@"TurnDownFullScreen" object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:@"FullScreen" object:_videoPlayer];
+        
+        [_videoPlayer shutdown];
+        [_videoPlayer.view removeFromSuperview];
+        _videoPlayer = nil;
+    
         [self.navigationController popViewControllerAnimated:YES];
         //
         
         NSLog(@"click back!");
-//        if (self.presentingViewController) {
-//            [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-//        }
         /* 全屏状态下的点击事件*/
     }else if (isFullScreen == YES){
         
@@ -1212,29 +1212,6 @@ typedef enum : NSUInteger {
     }
 }
 
-
-
-//返回按钮的回调
-- (void)zf_playerBackAction{
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    
-}
-
-//切换清晰度的回调
-- (void)zf_playerChooseSharpness:(UIButton *)sender{
-    
-    if ([sender.titleLabel.text isEqualToString:@"标清"]) {
-        //切换至标清播放源
-    }else if ([sender.titleLabel.text isEqualToString:@"高清"]){
-        //切换至高清播放源
-    }
-}
-
-//点击课程列表
-- (void)zf_playerDownload:(NSString *)url{
-    
-}
 
 -(void)dealloc{
     

@@ -307,6 +307,7 @@
 		549AE7651E013DBD001DD2ED /* BindingMailInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AE7641E013DBD001DD2ED /* BindingMailInfoViewController.m */; };
 		549C8D4E1EB1992C00CCD2FB /* ItunesProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 549C8D4D1EB1992C00CCD2FB /* ItunesProduct.m */; };
 		549C8D521EB1C65600CCD2FB /* JBWatchActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 549C8D511EB1C65600CCD2FB /* JBWatchActivityIndicator.m */; };
+		549CAE071F0B7D80009C6BAC /* UIControl+EnloargeTouchArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 549CAE061F0B7D80009C6BAC /* UIControl+EnloargeTouchArea.m */; };
 		54A153AA1DC6F09D0070B508 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153A91DC6F09D0070B508 /* main.m */; };
 		54A153AD1DC6F09D0070B508 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153AC1DC6F09D0070B508 /* AppDelegate.m */; };
 		54A153B01DC6F09D0070B508 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153AF1DC6F09D0070B508 /* ViewController.m */; };
@@ -1256,6 +1257,8 @@
 		549C8D4D1EB1992C00CCD2FB /* ItunesProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItunesProduct.m; sourceTree = "<group>"; };
 		549C8D501EB1C65600CCD2FB /* JBWatchActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBWatchActivityIndicator.h; sourceTree = "<group>"; };
 		549C8D511EB1C65600CCD2FB /* JBWatchActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBWatchActivityIndicator.m; sourceTree = "<group>"; };
+		549CAE051F0B7D80009C6BAC /* UIControl+EnloargeTouchArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIControl+EnloargeTouchArea.h"; sourceTree = "<group>"; };
+		549CAE061F0B7D80009C6BAC /* UIControl+EnloargeTouchArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIControl+EnloargeTouchArea.m"; sourceTree = "<group>"; };
 		54A153A51DC6F09D0070B508 /* Qatime_Student.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Qatime_Student.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54A153A91DC6F09D0070B508 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		54A153AB1DC6F09D0070B508 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -5878,6 +5881,8 @@
 				54FB1DB41DF10B9B00BA9A3C /* UIViewController+VideoStatus.m */,
 				545162AF1DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.h */,
 				545162B01DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m */,
+				549CAE051F0B7D80009C6BAC /* UIControl+EnloargeTouchArea.h */,
+				549CAE061F0B7D80009C6BAC /* UIControl+EnloargeTouchArea.m */,
 				5413D2751DF7D0AE00A8FDEC /* UIViewController_Token.h */,
 				545074561EDFB2970012A383 /* UIViewController+Token.h */,
 				545074571EDFB2970012A383 /* UIViewController+Token.m */,
@@ -6911,6 +6916,7 @@
 				54AB63C41EF25DC50022E573 /* SearchTipsViewController.m in Sources */,
 				547A7EFD1DD416F100F1282B /* ListenAndBuyTabBar.m in Sources */,
 				54652E081DEE9D1900F4607C /* AboutUsView.m in Sources */,
+				549CAE071F0B7D80009C6BAC /* UIControl+EnloargeTouchArea.m in Sources */,
 				54504ACC1E9E0E7F00EFCF8E /* VideoClassPlayerView.m in Sources */,
 				54AC042A1E8938E100817767 /* UIView+NIMKitToast.m in Sources */,
 				5407B0781EB032EA005CD82B /* ConfirmRechargeViewController.m in Sources */,

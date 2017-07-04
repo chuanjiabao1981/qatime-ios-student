@@ -14,7 +14,6 @@
 #import "NTESVideoFSViewController.h"
 
 
-
 #define NTESMeetingMaxActors 2
 
 @interface NTESMeetingActorsView()<NIMNetCallManagerDelegate>
@@ -27,7 +26,6 @@
 @property (nonatomic, weak) CALayer *localVideoLayer;
 @property (nonatomic, strong) NTESVideoFSViewController *videoVc;
 @property (nonatomic, strong) UIButton *fullScreenBtn;
-
 
 
 @end
@@ -75,6 +73,8 @@
         
         [self updateActors];
         [[NIMAVChatSDK sharedSDK].netCallManager addDelegate:self];
+        
+        self.videoStart  = NO;
     }
     return self;
 }
@@ -92,8 +92,14 @@
     _localVideoLayer = layer;
 
 }
-
+//这是拉流播放器正在拉流
 - (void)onRemoteYUVReady:(NSData *)yuvData width:(NSUInteger)width height:(NSUInteger)height from:(NSString *)user{
+    
+    if (self.videoStart == NO) {
+        self.videoStart= YES;
+    }else{
+        
+    }
     
     NSUInteger viewIndex = [_actors indexOfObject:user];
     

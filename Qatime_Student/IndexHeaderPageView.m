@@ -9,6 +9,7 @@
 #import "IndexHeaderPageView.h"
 #import "YZSquareMenuCell.h"
 #import "TodayLiveCollectionViewCell.h"
+#import "UIControl+EnloargeTouchArea.h"
 
 
 
@@ -256,6 +257,7 @@
         //@"精选内容  更多按钮"
         _moreFancyButton = [[UIControl alloc]init];
         [_fancyView addSubview:_moreFancyButton];
+        [_moreFancyButton setEnlargeEdge:20];
         
         UIImageView  *arrow  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"rightArrow"]];
         [_moreFancyButton addSubview:arrow];

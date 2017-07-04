@@ -202,6 +202,8 @@ NTES_FORBID_INTERACTIVE_POP
 
     [_currentChildViewController beginAppearanceTransition:YES animated:animated];
     self.actorsView.isFullScreen = NO;
+    
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -212,6 +214,7 @@ NTES_FORBID_INTERACTIVE_POP
     
     _floatingView.hidden = YES;
     cameraView.hidden = YES;
+    
     
 }
 - (void)viewDidAppear:(BOOL)animated{
@@ -272,16 +275,35 @@ NTES_FORBID_INTERACTIVE_POP
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
     
-    if ([change[@"new"]isEqualToNumber:@1]) {
-        //隐藏了 没事
-    }else{
-        //没隐藏让他隐藏
+    if ([keyPath isEqualToString:@"statusBarHidden"]) {
         
-        [[UIApplication sharedApplication]setStatusBarHidden:YES];
+        if ([change[@"new"]isEqualToNumber:@1]) {
+            //隐藏了 没事
+        }else{
+            //没隐藏让他隐藏
+            
+            [[UIApplication sharedApplication]setStatusBarHidden:YES];
+            
+        }
+    }
+   else if ([keyPath isEqualToString:@"videoStart"]) {
         
+        if ([change[@"new"]isEqualToNumber:@1]) {
+            
+            //视频开始了 ,直接隐藏placeholderimage
+            [_teacherView makePlaceHolderImage:nil];
+        }
     }
     
-    
+   else if ([keyPath isEqualToString:@"selfCamera.cameraStart"]) {
+        
+        if ([change[@"new"]isEqualToNumber:@1]) {
+            
+            //视频开始了 ,直接隐藏placeholderimage
+            [_floatingView makePlaceHolderImage:nil];
+        }
+
+    }
 }
 
 /**初始化数据*/
@@ -432,8 +454,13 @@ NTES_FORBID_INTERACTIVE_POP
     
      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(desktopSharedOff:) name:@"DesktopSharedOff" object:nil];
     
+    //增加视频开始播放的监听(移除placeholder)
+    [self.actorsView addObserver:self forKeyPath:@"videoStart" options:NSKeyValueObservingOptionNew context:nil];
+    [self.actorsView.selfCamera addObserver:self forKeyPath:@"cameraStart" options:NSKeyValueObservingOptionNew context:nil];
     
 }
+
+
 
 /** 拿到roomid后加入会话的方法  同时,视频播放器和摄像头播放器都变成加载中的提示图片*/
 - (void)joinMeeting:(NSNotification *)note{
@@ -1059,6 +1086,10 @@ NTES_FORBID_INTERACTIVE_POP
 - (void)returnLastPage{
 
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
+    [self.actorsView removeObserver:self forKeyPath:@"videoStart"];
+    [self.actorsView.selfCamera removeObserver:self forKeyPath:@"cameraStart"];
+    
     _actorsView = nil;
     [cameraView removeFromSuperview];
     cameraView = nil;
@@ -1069,7 +1100,9 @@ NTES_FORBID_INTERACTIVE_POP
     [[NTESMeetingRTSManager defaultManager]leaveCurrentConference];
     
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:@"statusBarHidden"];
+   
     [self.navigationController popViewControllerAnimated:YES];
+    
 }
 
 
@@ -1080,6 +1113,8 @@ NTES_FORBID_INTERACTIVE_POP
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [[NTESMeetingNetCallManager defaultManager]leaveMeeting];
     [[NTESMeetingRTSManager defaultManager]leaveCurrentConference];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {

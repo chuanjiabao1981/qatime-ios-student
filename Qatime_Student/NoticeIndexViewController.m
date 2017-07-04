@@ -491,12 +491,8 @@ typedef enum : NSUInteger {
     
     unreadArr = @[].mutableCopy;
     
-    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications?page=%ld",Request_Header,_idNumber,noticePage] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"page":[NSString stringWithFormat:@"%ld",noticePage]} completeSuccess:^(id  _Nullable responds) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         
         [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
@@ -507,6 +503,7 @@ typedef enum : NSUInteger {
                 if (state!=RefreshStatePushLoadMore) {
                     
                     [_noticeIndexView.noticeTableView cyl_reloadData];
+                    [_noticeIndexView.noticeTableView.mj_header endRefreshing];
                 }else{
                     
                     [_noticeIndexView.noticeTableView.mj_footer endRefreshingWithNoMoreData];
@@ -528,10 +525,10 @@ typedef enum : NSUInteger {
                         //其他类型的信息进行加载处理
                         if ([notice.notificationable_type isEqualToString:@"action_record"]) {
                             
-//                            [notice.notice_content insertString:@"                " atIndex:0];
+                            //                            [notice.notice_content insertString:@"                " atIndex:0];
                         }else{
                             
-//                            [notice.notice_content insertString:@"          " atIndex:0];
+                            //                            [notice.notice_content insertString:@"          " atIndex:0];
                         }
                         
                         notice.noticeID = dics[@"id"];
@@ -572,20 +569,32 @@ typedef enum : NSUInteger {
             
         }else{
             /* 请求失败*/
-            
-            [self HUDStopWithTitle:@"数据加载失败,请稍后重试"];
-            [_noticeIndexView.noticeTableView.mj_header endRefreshing];
+            if (state == RefreshStatePushLoadMore) {
+                
+                [_noticeIndexView.noticeTableView.mj_header endRefreshing];
+            }else{
+              
+                [_noticeIndexView.noticeTableView.mj_header endRefreshing];
+            }
             [_noticeIndexView.noticeTableView cyl_reloadData];
+
+            
+            [self HUDStopWithTitle:@"公告刷新失败,请稍后重试"];
             
         }
         
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [_noticeIndexView.noticeTableView.mj_header endRefreshing];
+
+    } failure:^(id  _Nullable erros) {
+        if (state == RefreshStatePushLoadMore) {
+            
+            [_noticeIndexView.noticeTableView.mj_header endRefreshing];
+        }else{
+            
+            [_noticeIndexView.noticeTableView.mj_header endRefreshing];
+        }
+        [self HUDStopWithTitle:@"请检查您的网络"];
         [_noticeIndexView.noticeTableView cyl_reloadData];
     }];
-    
-    noticePage++;
     
 }
 

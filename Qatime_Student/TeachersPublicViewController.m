@@ -235,8 +235,8 @@
         TeacherPublicClassCollectionViewCell * collectionCell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         
         if (_publicCount!=0) {
+            
             if (indexPath.section == 0) {
-                
                 if (_publicClasses.count>indexPath.row) {
                     collectionCell.model = _publicClasses[indexPath.row];
                     collectionCell.classType = LiveClassType;
@@ -251,23 +251,21 @@
                         collectionCell.classType = InteractiveClassType;
                     }
                 }else if (indexPath.section == 2){
-                    
                     if (_videoClasses.count>indexPath.row) {
                         collectionCell.model = _videoClasses[indexPath.row];
                         collectionCell.classType = VideoClassType;
                     }
                 }
-            }else if (_oneOnOneCount!=0&&_videoCount==0){
+            }else if (_oneOnOneCount==0&&_videoCount!=0){
                 //2个section
                 if (indexPath.section == 1) {
-                    
                     if (_videoClasses.count>indexPath.row) {
                         collectionCell.model = _videoClasses[indexPath.row];
                         collectionCell.classType = VideoClassType;
                     }
                 }
                 
-            }else if (_oneOnOneCount==0&&_videoCount!=0){
+            }else if (_oneOnOneCount!=0&&_videoCount==0){
                 //2个section
                 if (indexPath.section == 1) {
                     
@@ -281,7 +279,6 @@
             }
         }else{
             if (_oneOnOneCount==0&&_videoCount==0) {
-                
                 //2个section
                 if (indexPath.section == 0) {
                     
@@ -296,7 +293,7 @@
                         collectionCell.classType = VideoClassType;
                     }
                 }
-            }else if (_oneOnOneCount!=0&&_videoCount==0){
+            }else if (_oneOnOneCount==0&&_videoCount!=0){
                 //1个section
                 if (indexPath.section == 0) {
                     
@@ -306,7 +303,7 @@
                     }
                 }
                 
-            }else if (_oneOnOneCount==0&&_videoCount!=0){
+            }else if (_oneOnOneCount!=0&&_videoCount==0){
                 //1个section
                 if (indexPath.section == 0) {
                     if (_oneOnOneClasses.count>indexPath.row) {
@@ -354,6 +351,7 @@
         if (_videoCount!=0) {
             num++;
         }
+        
     }else if (collectionView.tag == 2){
         
         num = 1;
@@ -554,7 +552,6 @@
     }else{
         
     }
-        
     
     return  size;
 
@@ -608,7 +605,7 @@
                         [header addSubview:self.thirdTitle];
                     }
                 }
-            }else if (_oneOnOneCount==0 &&_videoCount!=0){
+            }else if (_oneOnOneCount!=0 &&_videoCount==0){
                 //两个section的情况
                 if (indexPath.section == 0) {
                     //section的header
@@ -636,7 +633,7 @@
                         [header addSubview:self.secTitle];
                     }
                 }
-            }else if (_oneOnOneCount!=0 &&_videoCount==0){
+            }else if (_oneOnOneCount==0 &&_videoCount!=0){
                 //两个section的情况
                 if (indexPath.section == 0) {
                     //section的header

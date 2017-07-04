@@ -49,6 +49,8 @@
 #import "AllTeachersViewController.h"
 
 #import "ReplayViewController.h"
+#import "NSNull+Json.h"
+#import "UIControl+EnloargeTouchArea.h"
 
 
 
@@ -1360,6 +1362,7 @@
         label.text = @"免费课程";
         
         _moreCurrentClassButton = [[UIControl alloc]init];
+        [_moreCurrentClassButton setEnlargeEdge:20];
         [view addSubview:_moreCurrentClassButton];
         _moreCurrentClassButton.sd_layout
         .rightSpaceToView(view,12)
@@ -1387,6 +1390,7 @@
         label.text = @"新课发布";
         
         _moreNewClassButton = [[UIControl alloc]init];
+        [_moreNewClassButton setEnlargeEdge:20];
         [view addSubview:_moreNewClassButton];
         _moreNewClassButton.sd_layout
         .rightSpaceToView(view,12)
@@ -1450,13 +1454,12 @@
             [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"BasicInformation"];
             
             NSDictionary *dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
-            [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"grades"] forKey:@"grade"];
-            [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"cities"] forKey:@"city"];
-            [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"provinces"] forKey:@"province"];
-            [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"schools"] forKey:@"school"];
+            [[NSUserDefaults standardUserDefaults]setObject:[dataDic[@"grades"]description] forKey:@"grade"];
+            [[NSUserDefaults standardUserDefaults]setObject:[dataDic[@"cities"]description]  forKey:@"city"];
+            [[NSUserDefaults standardUserDefaults]setObject:[dataDic[@"provinces"]description] forKey:@"province"];
+            [[NSUserDefaults standardUserDefaults]setObject:[dataDic[@"schools"]description] forKey:@"school"];
             
             /* 把所有的城市信息提出来*/
-            
             _cities = [NSMutableArray arrayWithArray:dataDic[@"cities"]];
             
             dispatch_queue_t city = dispatch_queue_create("city", DISPATCH_QUEUE_SERIAL);

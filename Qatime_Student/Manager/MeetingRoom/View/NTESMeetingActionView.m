@@ -135,7 +135,7 @@
             [_segmentedControl setBackgroundImage:imageNormal forState:UIControlStateHighlighted atIndex:index];
             [_segmentedControl setBackgroundImage:imageSelected forState:UIControlStateSelected atIndex:index];
             [_segmentedControl setTitleColor:UIColorFromRGB(0x333333) forState:UIControlStateNormal atIndex:index];
-            [_segmentedControl setTitleColor:UIColorFromRGB(0x238efa) forState:UIControlStateSelected atIndex:index];
+            [_segmentedControl setTitleColor:UIColorFromRGB(0xff5842) forState:UIControlStateSelected atIndex:index];
             [_segmentedControl setFont:[UIFont systemFontOfSize:17.f] atIndex:index];
             _segmentedControl.layer.borderWidth = 1;
             _segmentedControl.layer.borderColor = UIColorFromRGB(0xd7dade).CGColor;
