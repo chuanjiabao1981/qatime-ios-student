@@ -7,9 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TLCity.h"
 
 @interface CityListTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) UILabel *cityName ;
+
+//特别添加一个city属性
+@property (nonatomic, strong) TLCity *model ;
+
 
 @end

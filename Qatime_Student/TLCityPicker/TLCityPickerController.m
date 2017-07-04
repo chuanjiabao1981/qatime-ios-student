@@ -175,8 +175,9 @@
         cell=[[CityListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
     }
     
-
+    cell.model = city;
     cell.cityName.text = city.cityName;
+    
     
     return cell;
 }
@@ -219,9 +220,27 @@
     if (indexPath.section < 3) {
         return;
     }
-    TLCityGroup *group = [self.data objectAtIndex:indexPath.section - 3];
-    TLCity *city = [group.arrayCitys objectAtIndex:indexPath.row];
-    [self didSelctedCity:city];
+    
+    CityListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if ([cell.cityName.text isEqualToString:@"全国"]) {
+        TLCityGroup *group = [self.data objectAtIndex:indexPath.section - 3];
+        TLCity *city = [group.arrayCitys objectAtIndex:indexPath.row];
+        [self didSelctedCity:city];
+    }else{
+        
+        if ([cell.model.workstationID isEqualToString:@"0(NSNull)"]) {
+            
+            [self HUDStopWithTitle:@"该城市暂无工作站"];
+            
+        }else{
+            TLCityGroup *group = [self.data objectAtIndex:indexPath.section - 3];
+            TLCity *city = [group.arrayCitys objectAtIndex:indexPath.row];
+            [self didSelctedCity:city];
+            
+        }
+    }
+    
 }
 
 - (NSArray *) sectionIndexTitlesForTableView:(UITableView *)tableView
@@ -329,21 +348,28 @@
           _cityFilePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"City.plist"];
         }
         
-//        NSArray *array = [NSArray arrayWithContentsOfFile:_cityFilePath];
+
+        /** 
+         注意,这部分代码是筛选城市列表用的.
+         最初版本是显示所有地区.
+         后来改成了显示只有工作站加盟了的地区,用workstations_count字段判断.
+         现在又改成显示所有的地区,但是没有工作站就不能选择,只提示
+         */
         
         NSMutableArray *array = @[].mutableCopy;
         NSMutableArray *cityarr =[NSMutableArray arrayWithContentsOfFile:_cityFilePath];
         for (NSDictionary *citys in cityarr) {
             NSMutableArray *citysArr =[citys[@"citys"]mutableCopy];
             for (NSDictionary *cityInfo in citys[@"citys"]) {
-                if (cityInfo[@"workstations_count"]) {
-                    if ([cityInfo[@"workstations_count"]integerValue]==0) {
-                        
-                        [citysArr removeObject:cityInfo];
-                    }else{
-                        
-                    }
-                }
+                //这部分是筛选工作站用的
+//                if (cityInfo[@"workstations_count"]) {
+//                    if ([cityInfo[@"workstations_count"]integerValue]==0) {
+//                        
+//                        [citysArr removeObject:cityInfo];
+//                    }else{
+//                        
+//                    }
+//                }
             }
             [citys setValue:citysArr forKey:@"citys"];
         }
@@ -366,6 +392,7 @@
                 city.cityID = [dic objectForKey:@"city_key"];
                 city.cityName = [dic objectForKey:@"city_name"];
                 city.shortName = [dic objectForKey:@"short_name"];
+                city.workstationID = [dic objectForKey:@"workstation_id"];
                 [group.arrayCitys addObject:city];
                 [self.cityData addObject:city];
             }

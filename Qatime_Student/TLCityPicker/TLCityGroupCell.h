@@ -18,6 +18,8 @@
 
 @property (nonatomic, strong) NSArray *cityArray;
 
+
+
 + (CGFloat) getCellHeightOfCityArray:(NSArray *)cityArray;
 
 @end

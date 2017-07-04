@@ -1452,12 +1452,25 @@
         
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
             [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"BasicInformation"];
-            
             NSDictionary *dataDic = [NSDictionary dictionaryWithDictionary:dic[@"data"]];
-            [[NSUserDefaults standardUserDefaults]setObject:[dataDic[@"grades"]description] forKey:@"grade"];
-            [[NSUserDefaults standardUserDefaults]setObject:[dataDic[@"cities"]description]  forKey:@"city"];
-            [[NSUserDefaults standardUserDefaults]setObject:[dataDic[@"provinces"]description] forKey:@"province"];
-            [[NSUserDefaults standardUserDefaults]setObject:[dataDic[@"schools"]description] forKey:@"school"];
+            [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"grades"] forKey:@"grade"];
+            
+            NSMutableArray *datasArr = @[].mutableCopy;
+            NSMutableArray *cityArr = [dataDic[@"cities"]mutableCopy];
+            
+            for (NSDictionary *citys in cityArr) {
+                NSDictionary *dic = @{}.mutableCopy;
+                
+                for (NSString *key in citys) {
+                    [dic setValue:[citys[key]description] forKey:key];
+                }
+                
+                [datasArr addObject:dic];
+            }
+            
+            [[NSUserDefaults standardUserDefaults]setObject:datasArr forKey:@"city"];
+            [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"provinces"] forKey:@"province"];
+            [[NSUserDefaults standardUserDefaults]setObject:dataDic[@"schools"] forKey:@"school"];
             
             /* 把所有的城市信息提出来*/
             _cities = [NSMutableArray arrayWithArray:dataDic[@"cities"]];
@@ -1871,8 +1884,8 @@
                                                                                @"city_name":city,
                                                                                @"short_name":city,
                                                                                @"province_id":[NSString stringWithFormat:@"%@",cityItem[@"province_id"]],
-                                                                               @"workstations_count":[NSString stringWithFormat:@"%@",cityItem[@"workstations_count"]]
-                                                                               }];
+                                                                               @"workstations_count":[NSString stringWithFormat:@"%@",cityItem[@"workstations_count"]],
+                                                                               @"workstation_id":[NSString stringWithFormat:@"%@",[cityItem[@"workstation_id"] description]]}];
                     
                 }
                 
@@ -1889,7 +1902,7 @@
     
     
     /* 最后,把"全国"这一条数据做进去*/
-    NSDictionary *contr = @{@"citys":@[@{@"city_key":@"000",@"city_name":@"全国",@"province_id":@"00",@"short_name":@"全国"}],@"initial":@"全国",@"workstations_count":@"99"};
+    NSDictionary *contr = @{@"citys":@[@{@"city_key":@"000",@"city_name":@"全国",@"province_id":@"00",@"short_name":@"全国"}],@"initial":@"全国",@"workstations_count":@"99",@"workstation_id":@"-1"};
     
     [cityData insertObject:contr atIndex:0];
     

@@ -39,6 +39,11 @@
     return _cityName;
 }
 
+-(void)setModel:(TLCity *)model{
+    
+    _model = model;
+    
+}
 
 
 - (void)awakeFromNib {

@@ -36,6 +36,8 @@
  */
 @property (nonatomic, strong) NSString *initials;
 
+@property (nonatomic, strong) NSString *workstationID ;
+
 @end
 
 

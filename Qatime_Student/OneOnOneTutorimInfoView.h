@@ -16,7 +16,7 @@
 #import "ClassListTableView.h"
 #import "UICollectionViewLeftAlignedLayout.h"
 #import "WorkFlowView.h"
-@interface OneOnOneTutorimInfoView : UIScrollView
+@interface OneOnOneTutorimInfoView : UIView
 
 /** 课程名*/
 @property(nonatomic,strong) UILabel  *className ;

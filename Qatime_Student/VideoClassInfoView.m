@@ -20,10 +20,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.contentSize = CGSizeMake(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
-        self.bounces = NO;
-        self.showsVerticalScrollIndicator = NO;
-        
+        self.backgroundColor = [UIColor whiteColor];
+        self.opaque = NO;
         /* 课程名称*/
         _className = [[UILabel alloc]init];
         [self addSubview:_className];

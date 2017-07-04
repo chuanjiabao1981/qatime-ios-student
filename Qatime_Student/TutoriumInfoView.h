@@ -15,7 +15,7 @@
 
 
 
-@interface TutoriumInfoView : UIScrollView
+@interface TutoriumInfoView : UIView
 
 /* 课程名*/
 @property(nonatomic,strong) UILabel  *className ;

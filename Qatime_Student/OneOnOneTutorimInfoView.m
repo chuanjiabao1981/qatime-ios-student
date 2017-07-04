@@ -20,9 +20,9 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.contentSize = CGSizeMake(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
-        self.bounces = NO;
-        self.showsVerticalScrollIndicator = NO;
+//        self.contentSize = CGSizeMake(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
+//        self.bounces = NO;
+//        self.showsVerticalScrollIndicator = NO;
         self.backgroundColor = [UIColor whiteColor];
         
         /* 课程名称*/
@@ -448,6 +448,8 @@
         .topEqualToView(_teachersGroupTableView)
         .bottomEqualToView(_teachersGroupTableView)
         .widthRatioToView(_teachersGroupTableView, 1.0);
+        
+        [_scrollView setupAutoContentSizeWithRightView:_classListTableView rightMargin:0];
 
         
     }

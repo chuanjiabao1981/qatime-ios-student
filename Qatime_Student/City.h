@@ -14,5 +14,6 @@
 @property(nonatomic,strong) NSString *cityID ;
 @property(nonatomic,strong) NSString *name ;
 @property(nonatomic,strong) NSString *province_id ;
+@property (nonatomic, strong) NSString *workstation_id ;
 
 @end

@@ -33,10 +33,11 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.contentSize = CGSizeMake(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
-        self.bounces = NO;
-        self.showsVerticalScrollIndicator = NO;
-        
+//        self.contentSize = CGSizeMake(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
+//        self.bounces = NO;
+//        self.showsVerticalScrollIndicator = NO;
+        self.backgroundColor = [UIColor whiteColor];
+        self.opaque = NO;
         /* 课程名称*/
         _className = [[UILabel alloc]init];
         [self addSubview:_className];
@@ -647,7 +648,7 @@
         
         
         //scrollview横向自适应
-//        [_scrollView setupAutoContentSizeWithRightView:_view3 rightMargin:0];
+        [_scrollView setupAutoContentSizeWithRightView:_view3 rightMargin:0];
 //        [_scrollView setupAutoContentSizeWithBottomView:_view3 bottomMargin:10];
         
         //视图自适应

@@ -152,7 +152,7 @@
     
     
     _tutoriumInfoView.scrollView.delegate = self;
-    _tutoriumInfoView.delegate = self;
+//    _tutoriumInfoView.delegate = self;
     _tutoriumInfoView.view1.delegate = self;
     _tutoriumInfoView.view2.delegate= self;
     _tutoriumInfoView.segmentControl.selectionIndicatorHeight=2;

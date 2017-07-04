@@ -13,7 +13,7 @@
 #import "WorkFlowView.h"
 
 
-@interface VideoClassInfoView : UIScrollView
+@interface VideoClassInfoView : UIView
 /* 课程名*/
 @property(nonatomic,strong) UILabel  *className ;
 
