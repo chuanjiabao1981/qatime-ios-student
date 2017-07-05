@@ -915,8 +915,7 @@
     MyTutoriumModel *mod = _unStartArr[sender.tag];
     TutoriumListInfo *info = [TutoriumListInfo yy_modelWithJSON:[self returnToDictionaryWithModel:mod]];
     
-    
-    ChatViewController *controller = [[ChatViewController alloc]initWithClass:info ];
+    ChatViewController *controller = [[ChatViewController alloc]initWithClass:info andClassType:LiveCourseType];
     [self.navigationController pushViewController:controller animated:YES];
     
 }

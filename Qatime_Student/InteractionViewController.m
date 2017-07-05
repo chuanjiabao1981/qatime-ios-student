@@ -456,7 +456,7 @@ NTES_FORBID_INTERACTIVE_POP
     
     //增加视频开始播放的监听(移除placeholder)
     [self.actorsView addObserver:self forKeyPath:@"videoStart" options:NSKeyValueObservingOptionNew context:nil];
-    [self.actorsView.selfCamera addObserver:self forKeyPath:@"cameraStart" options:NSKeyValueObservingOptionNew context:nil];
+//    [self.actorsView.selfCamera addObserver:self forKeyPath:@"cameraStart" options:NSKeyValueObservingOptionNew context:nil];
     
 }
 
@@ -1087,33 +1087,61 @@ NTES_FORBID_INTERACTIVE_POP
 
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
-    [self.actorsView removeObserver:self forKeyPath:@"videoStart"];
-    [self.actorsView.selfCamera removeObserver:self forKeyPath:@"cameraStart"];
+    @try{
+        [self.actorsView removeObserver:self forKeyPath:@"videoStart"];
+    } @catch (NSException *exception) {
+        
+        NSLog(@"%s\n%@",__FUNCTION__,exception);
+        
+    } @finally {
+        
+    }
     
-    _actorsView = nil;
-    [cameraView removeFromSuperview];
+    @try {
+        [[UIApplication sharedApplication] removeObserver:self forKeyPath:@"statusBarHidden"];
+    } @catch (NSException *exception) {
+        
+        NSLog(@"%s\n%@",__FUNCTION__,exception);
+        
+    } @finally {
+        
+    }
+
     cameraView = nil;
     _floatingView = nil;
-
+    [_actorsView removeFromSuperview];
+    //    _actorsView = nil;
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [[NTESMeetingNetCallManager defaultManager]leaveMeeting];
     [[NTESMeetingRTSManager defaultManager]leaveCurrentConference];
     
-    [[UIApplication sharedApplication] removeObserver:self forKeyPath:@"statusBarHidden"];
-   
+    
     [self.navigationController popViewControllerAnimated:YES];
     
 }
 
 
 - (void)dealloc{
-    
+    @try{
+        [self.actorsView removeObserver:self forKeyPath:@"videoStart"];
+    } @catch(NSException *exception) {
+        NSLog(@"%s\n%@",__FUNCTION__,exception);
+    } @finally {
+        
+    }
+
+    @try {
+        [[UIApplication sharedApplication] removeObserver:self forKeyPath:@"statusBarHidden"];
+    } @catch (NSException *exception) {
+        NSLog(@"%s\n%@",__FUNCTION__,exception);
+    } @finally {
+        
+    }
     [[NIMSDK sharedSDK].chatroomManager exitChatroom:_chatroom.roomId completion:nil];
     [[NIMSDK sharedSDK].chatroomManager removeDelegate:self];
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [[NTESMeetingNetCallManager defaultManager]leaveMeeting];
     [[NTESMeetingRTSManager defaultManager]leaveCurrentConference];
-    
     
 }
 

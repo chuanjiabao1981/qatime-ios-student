@@ -97,7 +97,7 @@
 -(void)setModel:(ChatList *)model{
     
     _model = model;
-    [_image sd_setImageWithURL:[NSURL URLWithString:model.tutorium.publicize]];
+    [_image sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",model.tutorium.name==nil?model.interaction.publicize:model.tutorium.publicize]]];
     _className.text = model.name;
     _lastTime.text = [self timeStampSwitcher:model.lastTime];
     self.badgeNumber = model.badge;
@@ -159,14 +159,25 @@
         
     }
 
-    if (model.tutorium.notify==YES) {
-        _noticeOn = YES;
-    }else if (model.tutorium.notify==NO){
-        _noticeOn = NO;
+    if (model.tutorium.name!=nil) {
+        if (model.tutorium.notify==YES) {
+            _noticeOn = YES;
+        }else if (model.tutorium.notify==NO){
+            _noticeOn = NO;
+        }
+    }else{
+        
+        if (model.interaction.notify==YES) {
+            _noticeOn = YES;
+        }else if (model.interaction.notify==NO){
+            _noticeOn = NO;
+        }
+        
     }
-    
-    
+ 
 }
+
+
 
 - (NSString *)timeStampSwitcher:(NSTimeInterval)timeStamps{
     

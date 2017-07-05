@@ -10,12 +10,10 @@
 #import "OrderView.h"
 
 typedef enum : NSUInteger {
-
     LiveClassType,
     InteractionType,
     VideoClassType
 } ClassOrderType;
-
 
 
 @interface OrderViewController : UIViewController

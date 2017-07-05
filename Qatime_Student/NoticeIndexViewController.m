@@ -329,12 +329,7 @@ typedef enum : NSUInteger {
                 if ([dataDic[@"status"]isEqualToNumber:@1]) {
                     
                     if ([dic[@"data"] count ] ==0 && [dataDic[@"data"]count]==0) {
-//                        /* 没有加入聊天的情况*/
-//                        HaveNoClassView *noChat = [[HaveNoClassView  alloc]init];
-//                        noChat.titleLabel.text = @"当前无课程";
-//                        
-//                        noChat.frame = CGRectMake(0, 0, self.view.width_sd,_noticeIndexView.scrollView.height_sd);
-//                        [_noticeIndexView.chatListTableView addSubview:noChat];
+
                         [_noticeIndexView.chatListTableView cyl_reloadData];
                         
                     }else{
@@ -346,8 +341,9 @@ typedef enum : NSUInteger {
                             
                             [dicArr addObjectsFromArray:[NSMutableArray arrayWithArray:dataDic[@"data"]]];
                             
-                            for (NSDictionary *tutorium in dicArr) {
                             
+                            //制作chatlist数组
+                            for (NSDictionary *tutorium in dicArr) {
                                 /**
                                  用teachers字段进行区分课程类型
                                  */
@@ -375,30 +371,42 @@ typedef enum : NSUInteger {
                             if (_myClassArray&&_recentArr) {
                                 
                                 /* 把badge结果遍历给chatlist的cell*/
-                                for (TutoriumListInfo *info in _myClassArray) {
+                                
+                                //同时也是制作chatlist的方法. 2017.7.5重写
+                                for (id obj in _myClassArray) {
                                     
-                                    ChatList *mod = [[ChatList alloc]init];
-                                    mod.tutorium = info;
-                                    mod.name = info.name;
-                                    for (NIMRecentSession *session in _recentArr) {
+                                    if ([obj isMemberOfClass:[TutoriumListInfo class]]) {
                                         
-                                        NSLog(@"%@........%@",session.session.sessionId,info.chat_team_id);
-                                        
-                                        if ([session.session.sessionId isEqualToString:info.chat_team_id]) {
-                                            
-                                            mod.badge = session.unreadCount;
-                                            
-                                            unreadCont +=session.unreadCount;
-                                            
-                                            mod.lastTime = session.lastMessage.timestamp;
-                                            
+                                        ChatList *mod = [[ChatList alloc]init];
+                                        mod.tutorium = (TutoriumListInfo *)obj;
+                                        mod.name = [(TutoriumListInfo *)obj valueForKeyPath:@"name"];
+                                        mod.classType = LiveCourseType;
+                                        for (NIMRecentSession *session in _recentArr) {
+                                            if ([session.session.sessionId isEqualToString:[(TutoriumListInfo *)obj valueForKeyPath:@"chat_team_id"]]) {
+                                                mod.badge = session.unreadCount;
+                                                unreadCont +=session.unreadCount;
+                                                mod.lastTime = session.lastMessage.timestamp;
+                                            }
+                                            unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
                                         }
-                                        
-                                        unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
-                                        
-                                        
+                                        [_chatListArr addObject:mod];
+
+                                    }else if ([obj isMemberOfClass:[InteractiveCourse class]]){
+                                        ChatList *mod = [[ChatList alloc]init];
+                                        mod.interaction = (InteractiveCourse *)obj;
+                                        mod.name = [(InteractiveCourse *)obj valueForKeyPath:@"name"];
+                                        mod.classType = InteractionCourseType;
+                                        for (NIMRecentSession *session in _recentArr) {
+                                            if ([session.session.sessionId isEqualToString:[(InteractiveCourse *)obj valueForKeyPath:@"chat_team_id"]]) {
+                                                mod.badge = session.unreadCount;
+                                                unreadCont +=session.unreadCount;
+                                                mod.lastTime = session.lastMessage.timestamp;
+                                            }
+                                            unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
+                                        }
+                                        [_chatListArr addObject:mod];
+
                                     }
-                                    [_chatListArr addObject:mod];
                                     
                                 }
                             }
@@ -734,10 +742,20 @@ typedef enum : NSUInteger {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (tableView.tag == 2) {
-        
+        ChatViewController *chatVC;
         ChatListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         
-        ChatViewController *chatVC = [[ChatViewController alloc]initWithClass:cell.model.tutorium ];
+        if (cell.model.tutorium.name==nil) {
+            if (cell.model.interaction.name!=nil) {
+                chatVC = [[ChatViewController alloc]initWithClass:cell.model.interaction andClassType:cell.model.classType];
+            }
+        }else{
+            if (cell.model.tutorium.name!=nil) {
+                
+                chatVC = [[ChatViewController alloc]initWithClass:cell.model.tutorium andClassType:cell.model.classType];
+            }
+        }
+        
         chatVC.hidesBottomBarWhenPushed = YES;
         [self .navigationController pushViewController:chatVC animated:YES];
         
@@ -812,16 +830,23 @@ typedef enum : NSUInteger {
         }
         
         UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:title handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+
+            NSString *sendID;
+            if (cell.model.tutorium.name == nil) {
+                sendID = cell.model.interaction.chat_team_id;
+            }else{
+                sendID = cell.model.tutorium.chat_team_id;
+            }
             
             if (cell.noticeOn == YES) {
                 
-                [[[NIMSDK sharedSDK]teamManager]updateNotifyState:NO inTeam:cell.model.tutorium.chat_team_id completion:^(NSError * _Nullable error) {
+                [[[NIMSDK sharedSDK]teamManager]updateNotifyState:NO inTeam:sendID completion:^(NSError * _Nullable error) {
                     
                     if (error == nil) {
                         cell.closeNotice.hidden = NO;
                         cell.noticeOn = NO;
-                        cell.model.tutorium.notify = NO;
-                        _chatListArr[indexPath.row].tutorium.notify = NO;
+                        cell.model.tutorium.name==nil?[cell.model.interaction setNotify:NO]:[cell.model.tutorium setNotify:NO];
+                        _chatListArr[indexPath.row].tutorium.name==nil?[_chatListArr[indexPath.row].interaction setNotify:NO]:[_chatListArr[indexPath.row].tutorium setNotify:NO];
                         [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                     }else{
                         
@@ -834,13 +859,15 @@ typedef enum : NSUInteger {
                 
             }else{
                 
-                [[[NIMSDK sharedSDK]teamManager]updateNotifyState:YES inTeam:cell.model.tutorium.chat_team_id completion:^(NSError * _Nullable error) {
+                [[[NIMSDK sharedSDK]teamManager]updateNotifyState:YES inTeam:sendID completion:^(NSError * _Nullable error) {
                     
                     if (error == nil) {
                         cell.closeNotice.hidden = YES;
                         cell.noticeOn = YES;
-                        cell.model.tutorium.notify = YES;
-                        _chatListArr[indexPath.row].tutorium.notify = YES;
+                        
+                        cell.model.tutorium.name==nil?[cell.model.interaction setNotify:YES]:[cell.model.tutorium setNotify:YES];
+                        _chatListArr[indexPath.row].tutorium.name==nil?[_chatListArr[indexPath.row].interaction setNotify:YES]:[_chatListArr[indexPath.row].tutorium setNotify:YES];
+                        
                         [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                     }else{
                         

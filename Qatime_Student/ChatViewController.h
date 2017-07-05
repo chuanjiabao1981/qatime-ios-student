@@ -26,6 +26,8 @@
 
 @property(nonatomic,strong) UUInputFunctionView *inputView ;
 
--(instancetype)initWithClass:(id)tutorium ;
+@property (nonatomic, assign) CourseType classType ;
+
+-(instancetype)initWithClass:(id)tutorium andClassType:(CourseType)type;
 
 @end

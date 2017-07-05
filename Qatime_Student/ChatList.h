@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TutoriumList.h"
+#import "InteractiveCourse.h"
 
 @interface ChatList : NSObject
 /**辅导班名称*/
@@ -16,7 +17,13 @@
 @property(nonatomic,assign) NSInteger badge ;
 /**辅导班*/
 @property(nonatomic,strong) TutoriumListInfo *tutorium ;
+
+/**一对一 */
+@property (nonatomic, strong) InteractiveCourse *interaction ;
+
 /**收到最后一条消息的时间*/
 @property (nonatomic, assign) NSTimeInterval lastTime ;
+
+@property (nonatomic, assign) CourseType classType;
 
 @end
