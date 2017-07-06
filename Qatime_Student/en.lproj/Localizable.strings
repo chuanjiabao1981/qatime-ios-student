@@ -64,10 +64,6 @@
 //
 //
 //
-//
-//
-//
-//
 ////登录页
 //"请输入手机号码或邮箱" = "Please enter phone number or E-mail" ;
 //"请输入密码" = "Please enter password";
@@ -77,10 +73,11 @@
 //"跳过登录" = "Skip Login";
 //"其他方式登录" = "Other Way Login" ;
 //
-////四个选项卡
+////五个选项卡
 //"首页" = "Home" ;
-//"辅导班" = "Tutorial" ;
+//"选课" = "Course" ;
 //"课程表" = "ClassTime";
+//"消息" = "Message";
 //"个人" = "Personal";
 //
 ////首页
@@ -124,6 +121,13 @@
 //"该地区没有推荐教师" = "Sorry,there's no teachers in your area.";
 //"该地区没有推荐课程" = "Sorry,there's no classes in your area.";
 //
+//"精彩回放" = "Replay";
+//"全部老师" = "All Teachers";
+//"今日直播"="Today's Live";
+//"推荐教师"= "Teachers";
+//"精选内容"= "Collections";
+//"更多"="More";
+//
 ////辅导班页
 //"按时间∨"="Time∨";
 //"按科目∨"="Subject∨";
@@ -152,7 +156,7 @@
 //"按购买人数" = "Sales";
 //
 //
-//
+////扫描
 //"将二维码置于框内即可扫描" = "Place QRCode in the box";
 //
 //

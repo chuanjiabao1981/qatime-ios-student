@@ -29,7 +29,8 @@
 - (NSString *)changeTimeStampToDateString;
 
 
-
+/** 获取当前时间戳 */
+-(NSString*)getCurrentTimestamp;
 
 
 @end

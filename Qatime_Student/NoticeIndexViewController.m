@@ -154,13 +154,10 @@ typedef enum : NSUInteger {
     unreadCont = 0;
     unreadCountStr = @"";
     
-    
     NSLog(@"%@",[[[NIMSDK sharedSDK]teamManager]allMyTeams]);
     
     /* 如果用户加入新的试听课程,或者是用户是第一次进入程序,向远程服务器拉取聊天历史记录*/
     /* 判断是不是第一次登陆*/
-    
-    
     
     [[[NIMSDK sharedSDK]loginManager]addDelegate:self];
     
@@ -240,6 +237,16 @@ typedef enum : NSUInteger {
 /* 再次登录成功后获取消息*/
 - (void)refreshAgain{
     
+    
+    [[[NIMSDK sharedSDK]loginManager]addDelegate:self];
+    
+    NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]valueForKey:@"chat_account"];
+    
+    [[NIMSDK sharedSDK].loginManager autoLogin:chatDic[@"accid"] token:chatDic[@"token"]];
+    
+    [[[NIMSDK sharedSDK]conversationManager]addDelegate:self];
+    [[[NIMSDK sharedSDK]chatManager]addDelegate:self];
+    
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
         _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
@@ -269,15 +276,6 @@ typedef enum : NSUInteger {
     
     /* 请求通知消息*/
     [self requestNotices:RefreshStateNone];
-    
-    [[[NIMSDK sharedSDK]loginManager]addDelegate:self];
-    
-    NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]valueForKey:@"chat_account"];
-    
-    [[NIMSDK sharedSDK].loginManager autoLogin:chatDic[@"accid"] token:chatDic[@"token"]];
-    
-    [[[NIMSDK sharedSDK]conversationManager]addDelegate:self];
-    [[[NIMSDK sharedSDK]chatManager]addDelegate:self];
     
 }
 
@@ -327,15 +325,10 @@ typedef enum : NSUInteger {
                 
                 NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
                 if ([dataDic[@"status"]isEqualToNumber:@1]) {
-                    
                     if ([dic[@"data"] count ] ==0 && [dataDic[@"data"]count]==0) {
-
                         [_noticeIndexView.chatListTableView cyl_reloadData];
-                        
                     }else{
-                        
                         if (_myClassArray) {
-                            
                             /* 获取近期会话的未读消息等数据*/
                             NSMutableArray *dicArr =[NSMutableArray arrayWithArray: dic[@"data"]];
                             

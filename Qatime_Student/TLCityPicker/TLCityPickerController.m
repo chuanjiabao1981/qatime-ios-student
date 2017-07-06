@@ -155,7 +155,7 @@
 //            [cell setCityArray:self.localCityData];
         }
         else if (indexPath.section == 1) {
-            [cell setTitle:@"最近访问城市"];
+            [cell setTitle:@"最近选择"];
             [cell setCityArray:self.commonCityData];
         }
         else {
@@ -190,7 +190,11 @@
     }
     TLCityHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"TLCityHeaderView"];
     NSString *title = [_arraySection objectAtIndex:section + 1];
-    [headerView setTitle:title];
+    if ([title isEqualToString:@"全国"]) {
+        [headerView setTitle:@"全部城市"];
+    }else{
+        [headerView setTitle:title];
+    }
     return headerView;
 }
 
@@ -231,7 +235,7 @@
         
         if ([cell.model.workstationID isEqualToString:@"0(NSNull)"]) {
             
-            [self HUDStopWithTitle:@"该城市暂无工作站"];
+            [self HUDStopWithTitle:@"该城市暂未开通"];
             
         }else{
             TLCityGroup *group = [self.data objectAtIndex:indexPath.section - 3];
@@ -310,6 +314,8 @@
     if (commonCitys != nil && commonCitys.count > 0) {
         [[NSUserDefaults standardUserDefaults] setValue:commonCitys forKey:COMMON_CITY_DATA_KEY];
         [[NSUserDefaults standardUserDefaults] synchronize];
+    }else{
+        
     }
 }
 
@@ -493,6 +499,17 @@
     if (_commonCitys == nil) {
         NSArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:COMMON_CITY_DATA_KEY];
         _commonCitys = (array == nil ? [[NSMutableArray alloc] init] : [[NSMutableArray alloc] initWithArray:array copyItems:YES]);
+        
+        if (_commonCitys.count==0) {
+            //在这儿添加个"全国"
+            [_commonCitys addObject:@"000"];
+        }
+        
+    }else{
+        _commonCitys = @[].mutableCopy;
+        //在这儿添加个"全国"
+        [_commonCitys addObject:@"000"];
+        
     }
     return _commonCitys;
 }

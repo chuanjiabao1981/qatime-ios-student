@@ -51,6 +51,14 @@
     return currentDateStr;
 }
 
+//获取当前时间的时间戳
+-(NSString*)getCurrentTimestamp{
+    NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+    NSTimeInterval a=[dat timeIntervalSince1970];
+    NSString*timeString = [NSString stringWithFormat:@"%0.f", a];//转为字符型
+    return timeString;
+}
+
 
 
 

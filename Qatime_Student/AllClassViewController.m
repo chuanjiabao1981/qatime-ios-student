@@ -103,6 +103,8 @@
     _calendar.appearance.headerDateFormat = @"yyyy年MM月";
     _calendar.firstWeekday = 2;
     
+
+    
     //创建点击跳转显示上一月和下一月button
     UIButton *previousButton = [UIButton buttonWithType:UIButtonTypeCustom];
     previousButton.frame = CGRectMake(self.view.centerX -100, 13*ScrenScale, 20, 20);
@@ -408,37 +410,25 @@
 
 
 
-#pragma mark- Calendar 的代理
+#pragma mark- Calendar delegate
 
 - (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date{
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init] ;
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    
-    
     NSMutableArray *dateArr = [NSMutableArray arrayWithArray:_unclosedDateArr];
     [dateArr addObjectsFromArray:_closedDateArr];
-    
     if (dateArr.count!=0) {
-        
         for (int i = 0; i<dateArr.count; i++) {
-            
             if (date == [dateFormatter dateFromString:dateArr[i]]) {
-                
                 return 1;
             }
-            
         }
-        
-        
     }else{
-        
         /* 数据错误*/
     }
     
-    
     return 0;
-    
 }
 
 
@@ -446,24 +436,15 @@
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date{
     
     [_dataArr removeAllObjects];
-    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init] ;
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    
     NSString *dateStr = [dateFormatter stringFromDate:date];
-    
     if (_allClassArr.count!=0) {
-        
         for (ClassTimeModel *mod in _allClassArr) {
-            
             if ([dateStr isEqualToString:mod.class_date]) {
-                
                 [_dataArr addObject:mod];
                 
-                
             }else{
-                
-                
                 
             }
         }
@@ -474,7 +455,17 @@
     
     [_classTableView cyl_reloadData];
     
+}
 
+#pragma mark- calendar datasource
+-(void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition{
+    
+    if (monthPosition!=FSCalendarMonthPositionCurrent) {
+        cell.hidden = YES;
+    }else{
+        
+        cell.hidden = NO;
+    }
 }
 
 

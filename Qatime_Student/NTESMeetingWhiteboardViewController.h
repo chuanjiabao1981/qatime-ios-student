@@ -82,7 +82,8 @@
 
 @property (nonatomic, assign) BOOL isJoined ;
 
-
+/** 彻底遮挡整块白板  */
+@property (nonatomic, strong) UIView *maskView ;
 
 - (instancetype)initWithChatroom:(NIMChatroom *)room;
 

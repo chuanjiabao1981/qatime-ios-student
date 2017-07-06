@@ -104,10 +104,11 @@
     [_titleLabel setText:title];
 }
 
-- (void) setCityArray:(NSArray *)cityArray
+- (void) setCityArray:(NSMutableArray *)cityArray
 {
     _cityArray = cityArray;
-    [self.noDataLabel setHidden:(cityArray != nil && cityArray.count > 0)];
+//    [self.noDataLabel setHidden:(cityArray != nil && cityArray.count > 0)];
+    self.noDataLabel.hidden = YES;
  
     for (int i = 0; i < cityArray.count; i ++) {
         TLCity *city = [cityArray objectAtIndex:i];

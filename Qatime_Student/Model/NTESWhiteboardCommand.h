@@ -32,7 +32,10 @@ typedef NS_ENUM(NSUInteger, NTESWhiteBoardCmdType){
     
     NTESWhiteBoardCmdTypeDocShare      = 14,
     
-    NTESDesktopShared                  = 15,
+    NTESDesktopShared                  = 16,
+    NTESDesktopSharedReply             = 17,
+    
+    
 
 };
 

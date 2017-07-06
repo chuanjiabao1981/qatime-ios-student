@@ -12,6 +12,7 @@
 #import "UIView+NIMKitToast.h"
 #import <NIMAVChat/NIMAVChat.h>
 #import "UIView+Toast.h"
+#import "NSString+TimeStamp.h"
 
 #define VideoWidth [UIScreen mainScreen].bouns.size.width/4.0
 
@@ -54,6 +55,20 @@
         _lines = [[NTESWhiteboardLines alloc] init];
         _myUid = [[NIMSDK sharedSDK].loginManager currentAccount];
         _docInfoDic = [NSMutableDictionary dictionary];
+        
+        //上来就遮挡白板,不允许使用
+        [self.view addSubview:self.maskView];
+        self.maskView.hidden = NO;
+        
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recivedDesktopShared:) name:@"RecivedDestopShared" object:nil];
+        
+        //开启白板
+         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(whiteBoardOn) name:@"DesktopSharedOff" object:nil];
+        //关闭白板
+         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(whiteBoardOff) name:@"DesktopSharedOn" object:nil];
+        
+     
+        
     }
     return self;
 }
@@ -62,9 +77,9 @@
 - (instancetype)initWithChatroom:(NIMChatroom *)room{
     if (self = [super init]) {
         _name = room.roomId;
-        //        _managerUid = room.creator;
+        
         _cmdHander = [[NTESWhiteboardCmdHandler alloc] initWithDelegate:self];
-//        _docHander = [[NTESDocumentHandler alloc]initWithDelegate:self];
+
         [[NTESMeetingRTSManager defaultManager] setDataHandler:_cmdHander];
         _colors = @[@(0x000000), @(0xd1021c), @(0xfddc01), @(0x7dd21f), @(0x228bf7), @(0x9b0df5)];
         if([NTESMeetingRolesManager defaultManager].myRole.isManager){
@@ -182,22 +197,9 @@
     [self.controlPannel addSubview:self.colorSelectButton];
     [self.controlPannel addSubview:self.pageNumLabel];
     [self.pageNumLabel setHidden:YES];
-    
-    //    if (_isManager) {
-    //        [self.controlPannel addSubview:self.clearAllButton];
-    //        [self.controlPannel addSubview:self.openDocumentButton];
-    //        [self.controlPannel addSubview:self.previousButton];
-    //        [self.controlPannel addSubview:self.nextButton];
-    //        [self.drawView addSubview:self.closeDocButton];
-    //        [self.drawView addSubview:self.imgloadLabel];
-    //        [self.nextButton setHidden:YES];
-    //        [self.previousButton setHidden:YES];
-    //        [self.closeDocButton setHidden:YES];
-    //        [self.imgloadLabel setHidden:YES];
-    //    }
-    //    else {
+
     [self.controlPannel addSubview:self.hintLabel];
-    //    }
+    
     
 }
 
@@ -222,7 +224,6 @@
     self.colorSelectButton.left = spacing;
     self.colorSelectButton.bottom = self.controlPannel.height - 7.f;
     
-    
     self.cancelLineButton.left = self.colorSelectButton.right + spacing;
     self.cancelLineButton.bottom = self.colorSelectButton.bottom;
     
@@ -231,7 +232,6 @@
     
     self.openDocumentButton.left = self.clearAllButton.right + spacing;
     self.openDocumentButton.bottom = self.clearAllButton.bottom;
-    
     
     self.colorSelectView.width = 34.f;
     self.colorSelectView.height = self.colorSelectView.width * _colors.count;
@@ -242,7 +242,6 @@
         self.colorSelectView.height = self.view.height - self.controlPannel.height;
         self.colorSelectView.bottom = self.controlPannel.top;
     }
-    
     
     self.hintLabel.left = self.cancelLineButton.right + spacing / 2.f;
     self.hintLabel.centerY = self.controlPannel.height / 2.f;
@@ -290,29 +289,35 @@
     
 }
 
+//加入前和加入后的白板使用权限
 - (void)checkPermission{
-    //    if ([NTESMeetingRolesManager defaultManager].myRole.whiteboardOn && _isJoined) {
-    //        self.hintLabel.hidden = YES;
-    //        [self.colorSelectButton setBackgroundColor:UIColorFromRGB(_myDrawColorRGB)];
-    //        self.colorSelectButton.enabled = YES;
-    //        self.cancelLineButton.enabled = YES;
-    //        self.clearAllButton.enabled = YES;
-    //    }
-    //    else {
-    //        self.hintLabel.hidden = NO;
-    //        [self.colorSelectButton setBackgroundColor:[UIColor clearColor]];
-    //        self.colorSelectButton.enabled = YES;
-    //        self.cancelLineButton.enabled = YES;
-    //        self.clearAllButton.enabled = YES;
-    //        self.colorSelectView.hidden = YES;
-    //
-    //    }
     
-    self.hintLabel.hidden = YES;
-    [self.colorSelectButton setBackgroundColor:UIColorFromRGB(_myDrawColorRGB)];
-    self.colorSelectButton.enabled = YES;
-    self.cancelLineButton.enabled = YES;
-    self.clearAllButton.enabled = YES;
+        if (_isJoined) {
+            
+            self.hintLabel.hidden = YES;
+            [self.colorSelectButton setBackgroundColor:UIColorFromRGB(_myDrawColorRGB)];
+            self.colorSelectButton.enabled = YES;
+            self.cancelLineButton.enabled = YES;
+            self.clearAllButton.enabled = YES;
+            self.maskView.hidden = YES;
+        }
+        else {
+            
+            self.hintLabel.hidden = NO;
+            [self.colorSelectButton setBackgroundColor:[UIColor lightGrayColor]];
+            self.colorSelectButton.enabled = YES;
+            self.cancelLineButton.enabled = YES;
+            self.clearAllButton.enabled = YES;
+            self.colorSelectView.hidden = YES;
+            self.maskView.hidden = NO;
+        }
+    
+    //测试阶段代码
+//    self.hintLabel.hidden = NO;
+//    [self.colorSelectButton setBackgroundColor:UIColorFromRGB(_myDrawColorRGB)];
+//    self.colorSelectButton.enabled = YES;
+//    self.cancelLineButton.enabled = YES;
+//    self.clearAllButton.enabled = YES;
 }
 
 - (UIView *)drawView
@@ -320,8 +325,8 @@
     if (!_drawView) {
         _drawView = [[NTESWhiteboardDrawView alloc] initWithFrame:CGRectZero];
         _drawView.backgroundColor = [UIColor whiteColor];
-        _drawView.layer.borderWidth = 1;
-        _drawView.layer.borderColor = UIColorFromRGB(0xd7dade).CGColor;
+//        _drawView.layer.borderWidth = 1;
+//        _drawView.layer.borderColor = UIColorFromRGB(0xd7dade).CGColor;
         
         _drawView.dataSource = _lines;
     }
@@ -478,7 +483,7 @@
 {
     if (!_hintLabel) {
         _hintLabel = [[UILabel alloc] init];
-        _hintLabel.text = @"加入互动后可在上方涂鸦";
+        _hintLabel.text = @"直播开始后可使用白板工具";
         _hintLabel.textColor = UIColorFromRGB(0x999999);
         _hintLabel.font = [UIFont systemFontOfSize:12.f];
         _hintLabel.textAlignment = NSTextAlignmentCenter;
@@ -511,6 +516,18 @@
         _imgloadLabel.backgroundColor = [UIColor whiteColor];
     }
     return _imgloadLabel;
+}
+
+
+-(UIView *)maskView{
+    
+    if (!_maskView) {
+        _maskView = [[UIView alloc]init];
+        _maskView.frame = self.view.bounds;
+        _maskView.backgroundColor = [UIColor clearColor];
+        
+    }
+    return _maskView;
 }
 
 
@@ -762,6 +779,30 @@
 }
 
 
+#pragma mark- 监听回调
+/** 给白板发送收到屏幕共享消息了的回调方法 */
+- (void)recivedDesktopShared:(NSNotification *)note{
+    
+    /** 
+     id: '1498890637474', # 使用时间戳
+     parentID: '1498888033381' # 父消息ID
+     type: 'InteractiveSwitchResponse', # 消息类型
+     status: 'read' # 消息已读
+     
+     格式:
+     "当前时间戳,收到的消息的时间戳,InteractiveSwitchResponse,read"
+     */
+    
+    NSString *parentID = [note object];
+    NSString *timeStamp = [@"" getCurrentTimestamp];
+    NSString *receved = [NSString stringWithFormat:@"17:%@,%@,InteractiveSwitchResponse,read;",timeStamp,parentID];
+    NSLog(@"%@",receved);
+//    [_cmdHander sendRecieved:receved];
+    
+     [[NTESMeetingRTSManager defaultManager] sendRTSData:[receved dataUsingEncoding:NSUTF8StringEncoding] toUser:nil];
+    NSLog(@"给白板回复了收到屏幕共享开关的消息");
+    
+}
 
 
 
@@ -781,40 +822,10 @@
 #pragma mark - private method
 -(void)loadImageOnWhiteboard
 {
-//    NSString *filePath = [self getFilePathWithPage:_currentPage];
-//    UIImage* image = [self loadImage:filePath];
-//    //重新下载
-//    if (!image) {
-//        [self.imgloadLabel setHidden:NO];
-//        __weak typeof(self) weakself = self;
-//        [[NTESDocDownloadManager sharedManager]downLoadDoc:self.docInfo page:_currentPage completeBlock:^(NSError *error) {
-//            if (!error) {
-//                UIImage *image = [weakself loadImage:filePath];
-//                [weakself.imgloadLabel setHidden:YES];
-//                [weakself.docView setImage:image];
-//            }
-//            else
-//            {
-//                //加载失败
-//                [weakself.imgloadLabel setText:@"加载失败"];
-//                [weakself.imgloadLabel setHidden:NO];
-//            }
-//        }];
-//    }
-//    else
-//    {
-//        [self.imgloadLabel setHidden:YES];
-//        [self.docView setImage:image];
-//    }
-//    [self onSendDocShareInfoToUser:nil];
+
 }
 
-//-(NSString *)getFilePathWithPage:(NSInteger)pageNum
-//{
-//    NSString *filePath = [[NTESDocumentHandler getFilePathPrefix:self.docInfo.docId]stringByAppendingString:[NSString stringWithFormat:@"%@_%zd.png",self.docInfo.docName,pageNum]];
-//    
-//    return filePath;
-//}
+
 
 -(UIImage *)loadImage:(NSString*)filePath{
     
@@ -828,6 +839,17 @@
 }
 
 
+- (void)whiteBoardOff{
+    
+    self.maskView.hidden = NO;
+    
+}
+
+- (void)whiteBoardOn{
+    
+    self.maskView.hidden = YES;
+}
+
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
@@ -838,8 +860,7 @@
         
     }else if(toInterfaceOrientation == UIInterfaceOrientationLandscapeRight){
         //白板转到全屏的时候 ,直接关闭
-        
-        
+         
         
     }
     
@@ -847,8 +868,7 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
     
-    
-    
+
     
 }
 

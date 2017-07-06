@@ -29,65 +29,67 @@
 //"objective": null,
 //"suit_crowd": null,
 
-@property(nonatomic,strong) NSString *title ;
+@property(nonatomic,copy) NSString *title ;
 @property(nonatomic,assign) NSInteger index ;
 
-@property(nonatomic,strong) NSString *classID ;
-@property(nonatomic,strong) NSString *name ;
-@property(nonatomic,strong) NSString *subject ;
-@property(nonatomic,strong) NSString *grade ;
-@property(nonatomic,strong) NSString *teacher_name ;
-@property(nonatomic,strong) NSString *price ;
-@property(nonatomic,strong) NSString *current_price ;
-@property(nonatomic,strong) NSString *chat_team_id ;
-@property(nonatomic,strong) NSString *chat_team_owner ;
-@property(nonatomic,strong) NSString *buy_tickets_count ;
-@property(nonatomic,strong) NSString *status;
-@property(nonatomic,strong) NSString *preset_lesson_count ;
-@property(nonatomic,strong) NSString *completed_lesson_count ;
-@property(nonatomic,strong) NSString *completed_lessons_count ;
-@property(nonatomic,strong) NSString *live_start_time ;
-@property(nonatomic,strong) NSString *live_end_time ;
-@property(nonatomic,strong) NSString *publicize ;
+@property(nonatomic,copy) NSString *classID ;
+@property(nonatomic,copy) NSString *name ;
+@property(nonatomic,copy) NSString *subject ;
+@property(nonatomic,copy) NSString *grade ;
+@property(nonatomic,copy) NSString *teacher_name ;
+@property(nonatomic,copy) NSString *price ;
+@property(nonatomic,copy) NSString *current_price ;
+@property(nonatomic,copy) NSString *chat_team_id ;
+@property(nonatomic,copy) NSString *chat_team_owner ;
+@property(nonatomic,copy) NSString *buy_tickets_count ;
+@property(nonatomic,copy) NSString *status;
+@property(nonatomic,copy) NSString *preset_lesson_count ;
+@property(nonatomic,copy) NSString *completed_lesson_count ;
+@property(nonatomic,copy) NSString *completed_lessons_count ;
+@property(nonatomic,copy) NSString *live_start_time ;
+@property(nonatomic,copy) NSString *live_end_time ;
+@property(nonatomic,copy) NSString *publicize ;
 
-@property(nonatomic,strong) NSString *reason ;
-@property(nonatomic,strong) NSString *logo_url ;
+@property(nonatomic,copy) NSString *reason ;
+@property(nonatomic,copy) NSString *logo_url ;
 
-@property(nonatomic,strong) NSString *describe ;
+@property(nonatomic,copy) NSString *describe ;
 
 /* 课程信息的富文本描述*/
 @property(nonatomic,strong) NSMutableAttributedString *attributedDescribe ;
 
-@property(nonatomic,strong) NSString *lesson_count ;
+@property(nonatomic,copy) NSString *lesson_count ;
 
 /* 观看回放的相关属性*/
-@property(nonatomic,strong) NSString *replayable ;
+@property(nonatomic,copy) NSString *replayable ;
 @property(nonatomic,assign) NSInteger left_replay_times ;
 
 //所有的标签
 @property (nonatomic, strong) NSArray *tag_list ;
 
 //两个推荐标签
-@property (nonatomic, strong) NSString *tag_one ;
-@property (nonatomic, strong) NSString *tag_two ;
+@property (nonatomic, copy) NSString *tag_one ;
+@property (nonatomic, copy) NSString *tag_two ;
 
 //直播时间
-@property (nonatomic, strong) NSString *class_date ;
-@property (nonatomic, strong) NSString *live_time ;
+@property (nonatomic, copy) NSString *class_date ;
+@property (nonatomic, copy) NSString *live_time ;
 
 //课程目标
-@property (nonatomic, strong) NSString *objective ;
+@property (nonatomic, copy) NSString *objective ;
 
 //适宜人群
-@property (nonatomic, strong) NSString *suit_crowd ;
+@property (nonatomic, copy) NSString *suit_crowd ;
 
 
 /**
  首页精品课程属性
  */
-@property (nonatomic, strong) NSString *target_type ;
+@property (nonatomic, copy) NSString *target_type ;
 
 
+/** 课程名 */
+@property (nonatomic, copy) NSString *className ;
 
 
 @end

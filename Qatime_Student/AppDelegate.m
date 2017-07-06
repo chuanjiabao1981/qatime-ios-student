@@ -154,7 +154,6 @@
                 [self sendDeviceInfo];
                 
             });
-            
         }
     }
     
@@ -164,10 +163,6 @@
 //    
     /* 键盘管理器*/
 //    [[IQKeyboardManager sharedManager]setEnable:YES];
-    
-    
-    
-    NSLog(@"本地沙盒存储路径：%@", NSHomeDirectory());
     
     /* 注册微信API*/
     [WXApi registerApp:@"wxf2dfbeb5f641ce40"];

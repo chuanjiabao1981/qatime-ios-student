@@ -143,7 +143,7 @@
                 
             }
             [self.view addSubview:self.myView];
-            
+            [self setupBuyBar];
             //赋值
             self.myView.model = classMod;
             
@@ -277,7 +277,7 @@
         
         [_myView.classFeature registerClass:[TeacherFeatureTagCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
         
-        [self setupBuyBar];
+        
     }
     return _myView;
 }
@@ -309,9 +309,17 @@
 - (void)setupBuyBar{
     
     /* 购买bar*/
-    UIView *buyView = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.height_sd-TabBar_Height, self.view.width_sd, TabBar_Height)];
+    UIView *buyView = [[UIView alloc]init];
     buyView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:buyView];
+    buyView.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .bottomSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .heightIs(TabBar_Height);
+    
+    [self.view bringSubviewToFront:buyView];
+    
     UIView *lines = [[UIView alloc]init];
     lines.backgroundColor = SEPERATELINECOLOR_2;
     [buyView addSubview:lines];

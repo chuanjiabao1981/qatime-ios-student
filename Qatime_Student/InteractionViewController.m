@@ -153,6 +153,7 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, assign) BOOL isRemainStdNav;
 
+
 @property (nonatomic, assign) BOOL readyForFullScreen;
 
 
@@ -199,6 +200,14 @@ NTES_FORBID_INTERACTIVE_POP
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    @try {
+        [[UIApplication sharedApplication] addObserver:self forKeyPath:@"statusBarHidden" options:NSKeyValueObservingOptionNew context:nil];
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
 
     [_currentChildViewController beginAppearanceTransition:YES animated:animated];
     self.actorsView.isFullScreen = NO;
@@ -210,11 +219,27 @@ NTES_FORBID_INTERACTIVE_POP
     
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].idleTimerDisabled = NO;
+    
+    @try {
+        [[UIApplication sharedApplication] removeObserver:self forKeyPath:@"statusBarHidden"];
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+    
     [[UIApplication sharedApplication]setStatusBarHidden:NO];
     
+    
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    
+    //可以发送语音
+    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"CanSendVoice"];
     _floatingView.hidden = YES;
     cameraView.hidden = YES;
-    
     
 }
 - (void)viewDidAppear:(BOOL)animated{
@@ -228,13 +253,7 @@ NTES_FORBID_INTERACTIVE_POP
 }
 
 
-- (void)viewDidDisappear:(BOOL)animated{
-    [super viewDidDisappear:animated];
-    
-    //可以发送语音
-    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"CanSendVoice"];
-    
-}
+
 
 - (void)onLeft:(NSString *)name error:(NSError *)error{
     

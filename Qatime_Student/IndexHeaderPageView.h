@@ -31,8 +31,8 @@
  查看全部老师和直播回放
  */
 @property (nonatomic, strong) UIView *checkAndReview;
-@property (nonatomic, strong) UIButton *allTeachersBtn ;
-@property (nonatomic, strong) UIButton *reviewBtn ;
+@property (nonatomic, strong) UIControl *allTeachersBtn ;
+@property (nonatomic, strong) UIControl *reviewBtn ;
 
 
 /**

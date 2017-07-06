@@ -423,6 +423,7 @@
             for (NSDictionary *dics in dic[@"data"]) {
                 RecommandClasses *mod = [RecommandClasses yy_modelWithJSON:dics];
                 mod = [RecommandClasses yy_modelWithJSON:dics[@"course"]];
+                mod.className = dics[@"name"];
                 mod.classID = dics[@"course"][@"id"];
                 mod.live_time = dics[@"live_time"];
                 [_todayLives addObject:mod];
@@ -1093,7 +1094,7 @@
     
     if (collectionView .tag ==1){
         
-        layoutSize = CGSizeMake((self.view.width_sd-36)/2, (self.view.width_sd-36)/2);
+        layoutSize = CGSizeMake((self.view.width_sd-36)/2.5, (self.view.width_sd-36)/2.5);
         
     }
     
@@ -1951,6 +1952,11 @@
     [self requestDataWithLocation:city.cityName];
     
     [self HUDStopWithTitle:[NSString stringWithFormat:@"%@%@",NSLocalizedString(@"已切换到", nil),city.cityName]];
+    [_location updateLayout];
+    [_navigationBar.leftButton updateLayout];
+    [_searchBar updateLayout];
+    [_navigationBar.contentView updateLayout];
+    
     
 }
 

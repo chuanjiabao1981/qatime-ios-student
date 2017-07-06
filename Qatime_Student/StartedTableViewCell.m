@@ -109,14 +109,13 @@
         
         
         /* 进入按钮*/
-        
         _enterButton  = [[UIButton alloc]init];
         [_enterButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _enterButton.layer.borderColor = [UIColor blackColor].CGColor;
         _enterButton.layer.borderWidth = 0.8f;
         _enterButton.titleLabel.font = [UIFont systemFontOfSize:16*ScrenScale];
         [_enterButton setTitle:@"进入" forState:UIControlStateNormal];
-        
+        [_enterButton setEnlargeEdge:20];
         
         /* 所有控件的布局*/
         [_content sd_addSubviews:@[_classImage,/*_status,*/_className,_grade,_subject,line,_teacherName,progress,_presentCount,line2,_totalCount,_enterButton]];

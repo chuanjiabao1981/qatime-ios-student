@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong) NSString *title;
 
-@property (nonatomic, strong) NSArray *cityArray;
+@property (nonatomic, strong) NSMutableArray *cityArray;
 
 
 

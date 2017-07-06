@@ -75,7 +75,7 @@ typedef enum : NSUInteger {
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
-    _navigationBar.titleLabel.text = @"全部精彩回放";
+    _navigationBar.titleLabel.text = @"精彩回放";
     
 }
 

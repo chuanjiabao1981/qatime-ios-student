@@ -84,7 +84,18 @@
     return self;
 }
 
-
+-(void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    [[UIApplication sharedApplication]setStatusBarHidden:NO];
+    
+}
+- (void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear:animated];
+    [[UIApplication sharedApplication]setStatusBarHidden:NO];
+    [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

@@ -40,6 +40,8 @@
 - (void)sendPureCmd:(NTESWhiteBoardCmdType)type to:(NSString *)uid;
 
 - (void)sync:(NSDictionary *)allLines toUser:(NSString *)targetUid;
+/** 这是专门给白板发送收到屏幕共享请求的方法 */
+- (void)sendRecieved:(NSString *)cmdString;
 
 //- (void)sendDocShareInfo:(NTESDocumentShareInfo *)shareInfo toUser:(NSString*)targetUid;
 

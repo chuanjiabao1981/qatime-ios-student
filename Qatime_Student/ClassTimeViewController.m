@@ -573,7 +573,7 @@ typedef enum : NSUInteger {
 
 - (UIView *)makePlaceHolderView{
     
-    HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"本月暂时没有课程"];
+    HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"本周暂无课程"];
     return view;
 }
 

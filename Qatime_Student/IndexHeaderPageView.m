@@ -33,7 +33,7 @@
         self.backgroundColor = [UIColor whiteColor];
         
         /* banner页布局*/
-        _cycleScrollView =[SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetWidth(self.frame)*316/1190) imageURLStringsGroup:@[]];
+        _cycleScrollView =[SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetWidth(self.frame)*1/3.7) imageURLStringsGroup:@[]];
         [self addSubview:_cycleScrollView];
         [_cycleScrollView updateLayout];
         
@@ -42,7 +42,8 @@
         
         _gradeMenu.showsHorizontalScrollIndicator = NO;
         
-        NSArray *gradeArr= @[@"高三",@"高二",@"高一",@"初三",@"初二",@"初一",@"六年级",@"五年级",@"四年级",@"三年级",@"二年级",@"一年级"];
+        NSArray *gradeArr= @[NSLocalizedString(@"高三", nil),NSLocalizedString(@"高二", nil),NSLocalizedString(@"高一", nil),NSLocalizedString(@"初三", nil),NSLocalizedString(@"初二", nil),NSLocalizedString(@"初一", nil),NSLocalizedString(@"六年级", nil),NSLocalizedString(@"五年级", nil),NSLocalizedString(@"四年级", nil),NSLocalizedString(@"三年级", nil),NSLocalizedString(@"二年级", nil),NSLocalizedString(@"一年级", nil)];
+        
         _buttons = @[].mutableCopy;
         
         //遍历按钮.
@@ -82,6 +83,7 @@
         .topSpaceToView(_gradeMenu, 0)
         .rightSpaceToView(self, 0)
         .heightIs(40);
+        [allTeachersAndReplyView updateLayout];
         
         UIView *lineTop = [[UIView alloc]init];
         [allTeachersAndReplyView addSubview:lineTop];
@@ -111,28 +113,85 @@
         .widthIs(0.5);
         
         
-            //两个按钮
-        _allTeachersBtn = [[UIButton alloc]init];
+        //两个按钮
+        _allTeachersBtn = [[UIControl alloc]init];
         [allTeachersAndReplyView addSubview:_allTeachersBtn];
-        [_allTeachersBtn setTitle:@"全部老师" forState:UIControlStateNormal];
-        [_allTeachersBtn setTitleColor:BUTTONRED forState:UIControlStateNormal];
-        _allTeachersBtn.titleLabel.font = TEXT_FONTSIZE;
         _allTeachersBtn.sd_layout
         .leftSpaceToView(allTeachersAndReplyView, 0)
         .topSpaceToView(lineTop, 0)
         .bottomSpaceToView(lineBottom, 0)
         .rightSpaceToView(lineMiddle, 0);
+        [_allTeachersBtn updateLayout];
+        UILabel *title1 = [[UILabel alloc]init];
+        [_allTeachersBtn addSubview:title1];
+        title1.text = @"全部老师";
+        title1.font = TEXT_FONTSIZE;
+        title1.textColor = BUTTONRED;
+        title1.sd_layout
+        .centerYEqualToView(_allTeachersBtn)
+        .autoHeightRatio(0);
+        [title1 setSingleLineAutoResizeWithMaxWidth:200];
+        [title1 updateLayout];
+        UIImageView *icon1 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"allteacher"]];
+        [_allTeachersBtn addSubview:icon1];
+        icon1.sd_layout
+        .rightSpaceToView(title1, 10*ScrenScale)
+        .centerYEqualToView(title1)
+        .heightRatioToView(title1, 0.8)
+        .widthEqualToHeight();
+        [icon1 updateLayout];
+        icon1.sd_resetLayout
+        .leftSpaceToView(_allTeachersBtn, (_allTeachersBtn.width_sd-title1.width_sd-10*ScrenScale-icon1.width_sd)/2.f)
+        .centerYEqualToView(title1)
+        .heightRatioToView(title1, 0.7)
+        .widthEqualToHeight();
+        [icon1 updateLayout];
+        title1.sd_resetLayout
+        .leftSpaceToView(icon1, 10*ScrenScale)
+        .centerYEqualToView(icon1)
+        .autoHeightRatio(0);
+        [title1 setSingleLineAutoResizeWithMaxWidth:200];
+        [title1 updateLayout];
         
-        _reviewBtn = [[UIButton alloc]init];
+        
+        _reviewBtn = [[UIControl alloc]init];
         [allTeachersAndReplyView addSubview:_reviewBtn];
-        [_reviewBtn setTitle:@"精彩回放" forState:UIControlStateNormal];
-        [_reviewBtn setTitleColor:BUTTONRED forState:UIControlStateNormal];
-        _reviewBtn.titleLabel.font = TEXT_FONTSIZE;
         _reviewBtn.sd_layout
         .leftSpaceToView(lineMiddle, 0)
         .topSpaceToView(lineTop, 0)
         .bottomSpaceToView(lineBottom, 0)
         .rightSpaceToView(allTeachersAndReplyView, 0);
+        [_reviewBtn updateLayout];
+        UILabel *title2 = [[UILabel alloc]init];
+        [_reviewBtn addSubview:title2];
+        title2.text = @"精彩回放";
+        title2.font = TEXT_FONTSIZE;
+        title2.textColor = BUTTONRED;
+        title2.sd_layout
+        .centerYEqualToView(_allTeachersBtn)
+        .autoHeightRatio(0);
+        [title2 setSingleLineAutoResizeWithMaxWidth:200];
+        [title2 updateLayout];
+        UIImageView *icon2 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"replay"]];
+        [_reviewBtn addSubview:icon2];
+        icon2.sd_layout
+        .rightSpaceToView(title1, 10*ScrenScale)
+        .centerYEqualToView(title1)
+        .heightRatioToView(title1, 0.8)
+        .widthEqualToHeight();
+        [icon2 updateLayout];
+        icon2.sd_resetLayout
+        .leftSpaceToView(_reviewBtn, (_reviewBtn.width_sd-title1.width_sd-10*ScrenScale-icon2.width_sd)/2.f)
+        .centerYEqualToView(title2)
+        .heightRatioToView(title2, 0.7)
+        .widthEqualToHeight();
+        [icon2 updateLayout];
+        title2.sd_resetLayout
+        .leftSpaceToView(icon2, 10*ScrenScale)
+        .centerYEqualToView(icon2)
+        .autoHeightRatio(0);
+        [title2 setSingleLineAutoResizeWithMaxWidth:200];
+        [title2 updateLayout];
 
         
         //今日直播的 栏
@@ -147,7 +206,7 @@
         
         //@"今日直播"
         UILabel *todayLiveLabel = [[UILabel alloc]init];
-        todayLiveLabel.text = @"今日直播";
+        todayLiveLabel.text = NSLocalizedString(@"今日直播", nil);
         todayLiveLabel.font = [UIFont systemFontOfSize:17*ScrenScale];
         todayLiveLabel.textColor = [UIColor blackColor];
         [todayLiveView addSubview:todayLiveLabel];
@@ -169,7 +228,7 @@
         .leftSpaceToView(self, 0)
         .topSpaceToView(todayLiveView, 0)
         .rightSpaceToView(self, 0)
-        .heightIs(_cycleScrollView.height_sd*1.2);
+        .heightIs(_cycleScrollView.height_sd*1);
         
         
         //分割线2
@@ -196,7 +255,7 @@
         
         //@"今日直播"
         UILabel *recommandLabel = [[UILabel alloc]init];
-        recommandLabel.text = @"推荐教师";
+        recommandLabel.text = NSLocalizedString(@"推荐教师", nil);
         recommandLabel.font = [UIFont systemFontOfSize:17*ScrenScale];
         recommandLabel.textColor = [UIColor blackColor];
         [recommandView addSubview:recommandLabel];
@@ -244,7 +303,7 @@
         
         //@"精选内容"
         UILabel *fancyLabel = [[UILabel alloc]init];
-        fancyLabel.text = @"精选内容";
+        fancyLabel.text = NSLocalizedString(@"精选内容", nil);
         fancyLabel.font = [UIFont systemFontOfSize:17*ScrenScale];
         fancyLabel.textColor = [UIColor blackColor];
         [_fancyView addSubview:fancyLabel];
@@ -272,7 +331,7 @@
         fancys.userInteractionEnabled = YES;
         [_moreFancyButton addSubview:fancys];
         fancys.textColor = TITLECOLOR;
-        fancys.text = @"更多";
+        fancys.text = NSLocalizedString(@"更多", nil);
         fancys.font = [UIFont systemFontOfSize:12*ScrenScale];
         fancys.sd_layout
         .rightSpaceToView(arrow,0)

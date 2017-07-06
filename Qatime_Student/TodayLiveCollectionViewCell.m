@@ -117,7 +117,7 @@
         
     }];
 
-    _classNameLabel.text = model.name;
+    _classNameLabel.text = model.className;
     
     _liveTimeLabel .text = model.live_time;
     _stateLabel.text = [self statusChange:model.status];
