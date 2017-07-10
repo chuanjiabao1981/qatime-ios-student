@@ -707,8 +707,19 @@
                     }else{
                         
                     }
+                    //解析userlist,把发送者给揪出来
+                    NSString *sender = @"";
+                    for (Chat_Account *user in _userList) {
+                        if ([message.from isEqualToString:[user valueForKeyPath:@"accid"]]) {
+                            sender = [user valueForKeyPath: @"name"];
+                        }
+                    }
                     
-                    [self.chatModel addSpecifiedNotificationItem:[@"系统消息:" stringByAppendingString:messageText==nil?@"":messageText]];
+                    //在这儿弄一下子 这个 富文本
+                    NSString *notice =[NSString stringWithFormat:@"%@更新了公告\n公告:%@",sender,messageText==nil?@"":messageText];
+                    
+                    [self.chatModel addSpecifiedNotificationItem:notice];
+
                 }
                 
             }
@@ -897,8 +908,19 @@
             }else{
                 
             }
+            //解析userlist,把发送者给揪出来
+            NSString *sender = @"";
+            for (Chat_Account *user in _userList) {
+                if ([message.from isEqualToString:[user valueForKeyPath:@"accid"]]) {
+                    sender = [user valueForKeyPath: @"name"];
+                }
+            }
             
-            [self.chatModel addSpecifiedNotificationItem:[@"系统消息:" stringByAppendingString:messageText==nil?@"":messageText]];
+            //在这儿弄一下子 这个 富文本
+            NSString *notice =[NSString stringWithFormat:@"%@更新了公告\n公告:%@",sender,messageText==nil?@"":messageText];
+            
+            [self.chatModel addSpecifiedNotificationItem:notice];
+
             [self.chatTableView reloadData];
             [self tableViewScrollToBottom];
         }

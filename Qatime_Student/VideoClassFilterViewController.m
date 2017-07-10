@@ -262,9 +262,9 @@ typedef enum : NSUInteger {
             }
         }else{
             //获取数据失败
-            [self HUDStopWithTitle:@"加载失败,请重试"];
             if (mode == PullToRefresh) {
                 [_classTableView.mj_header endRefreshing];
+                [_classTableView cyl_reloadData];
                 
             }else{
                 [_classTableView.mj_footer endRefreshing];
@@ -273,6 +273,19 @@ typedef enum : NSUInteger {
             }
         }
         
+    }failure:^(id  _Nullable erros) {
+        //获取数据失败
+        [self HUDStopWithTitle:@"请检查网络"];
+        if (mode == PullToRefresh) {
+            [_classTableView.mj_header endRefreshing];
+            [_classTableView cyl_reloadData];
+            
+        }else{
+            [_classTableView.mj_footer endRefreshing];
+            _page--;
+            [_filterDic setObject:[NSString stringWithFormat:@"%ld",_page] forKey:@"page"];
+        }
+
     }];
 }
 

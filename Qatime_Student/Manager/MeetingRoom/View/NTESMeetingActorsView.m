@@ -63,12 +63,13 @@
         [_actorViews addObject:_teacherCamera];
         
         //个人摄像头
-        _selfCamera = [[IJKFloatingView alloc] initWithFrame:CGRectMake(0, 0, UIScreenWidth/4, UIScreenWidth/4/9*16)];
+        _selfCamera = [[IJKFloatingView alloc] initWithFrame:CGRectMake(UIScreenWidth, 0, 0, 0)];
         _selfCamera.canMove = YES;
         _selfCamera.contentMode = UIViewContentModeScaleAspectFill;
         _selfCamera.backgroundColor = [UIColor clearColor];
         [_selfCamera render:nil width:0 height:0];
         [self addSubview:_selfCamera];
+        
         [_actorViews addObject:_selfCamera];
         
         [self updateActors];
@@ -83,6 +84,9 @@
 - (void)dealloc{
     
     [[NIMAVChatSDK sharedSDK].netCallManager removeDelegate:self];
+    
+    _teacherCamera = nil;
+    _teacherCamera = nil;
 }
 
 //本地摄像头准备就绪
@@ -261,5 +265,7 @@
         return NSNotFound;
     }
 }
+
+
 
 @end

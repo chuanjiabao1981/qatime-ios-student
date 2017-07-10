@@ -814,6 +814,8 @@
 		54366E9F1EE102460071A5F9 /* GuestBindingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestBindingViewController.m; sourceTree = "<group>"; };
 		54366EA51EE114AC0071A5F9 /* GuestBindingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestBindingView.h; sourceTree = "<group>"; };
 		54366EA61EE114AC0071A5F9 /* GuestBindingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestBindingView.m; sourceTree = "<group>"; };
+		54386EDA1F0F5F1900828647 /* 阳泉.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "阳泉.gpx"; sourceTree = "<group>"; };
+		54386EDC1F0F5FAC00828647 /* 太原.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "太原.gpx"; sourceTree = "<group>"; };
 		543890FA1F0656340017DF88 /* UITableView+SDAutoTableViewCellHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+SDAutoTableViewCellHeight.h"; sourceTree = "<group>"; };
 		543890FB1F0656340017DF88 /* UITableView+SDAutoTableViewCellHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+SDAutoTableViewCellHeight.m"; sourceTree = "<group>"; };
 		543890FC1F0656340017DF88 /* UIView+SDAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SDAutoLayout.h"; sourceTree = "<group>"; };
@@ -2298,6 +2300,15 @@
 			name = View;
 			sourceTree = "<group>";
 		};
+		54386EDB1F0F5F9C00828647 /* 测试地址 */ = {
+			isa = PBXGroup;
+			children = (
+				54386EDA1F0F5F1900828647 /* 阳泉.gpx */,
+				54386EDC1F0F5FAC00828647 /* 太原.gpx */,
+			);
+			name = "测试地址";
+			sourceTree = "<group>";
+		};
 		543BCAF21E78F3F600AD6721 /* SDAutoLayout */ = {
 			isa = PBXGroup;
 			children = (
@@ -3492,6 +3503,7 @@
 				54F292271E8287170076D499 /* Assets.xcassets */,
 				546978651DC726B3001695F4 /* UserPCH.pch */,
 				54A153A91DC6F09D0070B508 /* main.m */,
+				54386EDB1F0F5F9C00828647 /* 测试地址 */,
 			);
 			path = Qatime_Student;
 			sourceTree = "<group>";

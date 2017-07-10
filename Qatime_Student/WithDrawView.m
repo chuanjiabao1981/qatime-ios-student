@@ -113,7 +113,7 @@
         .heightIs(0.5);
         
         UILabel *tips = [[UILabel alloc]init];
-        NSMutableAttributedString *contentStr = [[NSMutableAttributedString alloc]initWithString:@"体现说明:\n1.目前仅支持提现到微信钱包；\n2.申请提现需要进行微信授权；\n3.请仔细核对提现信息，仅限账号本人操作。"];
+        NSMutableAttributedString *contentStr = [[NSMutableAttributedString alloc]initWithString:@"提现说明:\n1.目前仅支持提现到微信钱包；\n2.申请提现需要进行微信授权；\n3.请仔细核对提现信息，仅限账号本人操作。"];
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc]init];
         style.lineSpacing = 5;
         [contentStr addAttributes:@{NSForegroundColorAttributeName:BUTTONRED,NSFontAttributeName:TEXT_FONTSIZE_MIN} range:NSMakeRange(0, 5)];

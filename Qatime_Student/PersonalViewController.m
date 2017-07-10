@@ -139,7 +139,7 @@
     if (is_Guest == YES) {
         
         _name = [NSString stringWithFormat:@"%@",[SAMKeychain passwordForService:Qatime_Service account:@"id"]];
-        
+                
     }else{
         
         if ([[NSUserDefaults standardUserDefaults]objectForKey:@"name"]) {
@@ -455,10 +455,7 @@
                                 [self.navigationController pushViewController:controller animated:YES];
                                 
                             }else{
-                                //不绑定直接进入安全管理
-                                controller = [SafeViewController new];
-                                controller.hidesBottomBarWhenPushed = YES;
-                                [self.navigationController pushViewController:controller animated:YES];
+                                
                             }
                             
                         }];

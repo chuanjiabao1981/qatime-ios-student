@@ -17,7 +17,7 @@
 // 十六进制RGB颜色 格式为（0xffffff）
 #define FJColorFromRGBA(rgbValue, a) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
 
-@interface IJKFloatingView ()
+@interface IJKFloatingView ()<NSCopying,NSMutableCopying,NSCoding>
 {
     CGPoint beganPoint; //开始的坐标
     CGPoint _curPoint;
@@ -62,28 +62,6 @@
     .bottomEqualToView(self);
     [self.tmpView updateLayout];
 }
-
-////初始化图片
-//- (void)initImageView{
-//    self.userInteractionEnabled = YES;
-//    self.backgroundColor = [UIColor clearColor];
-//    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-//    imageView.image = [UIImage imageNamed:@"zb_bg"];
-//    [self addSubview:imageView];
-//    UIImageView *imageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(23, 15, 22, 22)];
-//    imageView1.image = [UIImage imageNamed:@"icon_zb"];
-//    [self addSubview:imageView1];
-//}
-
-////初始化tipLabel
-//- (void)initTipLabel{
-//    self.tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 36, self.frame.size.width, 32)];
-//    self.tipLabel.text = @"呼叫中";
-//    self.tipLabel.font = [UIFont systemFontOfSize:10.0f];
-//    self.tipLabel.textAlignment = NSTextAlignmentCenter;
-//    self.tipLabel.textColor = [UIColor whiteColor];
-//    [self addSubview:self.tipLabel];
-//}
 
 
 #pragma mark --- 手势事件
@@ -180,17 +158,46 @@
 - (id)copyWithZone:(NSZone *)zone {
     id copyInstance = [[[self class] allocWithZone:zone] init];
     size_t instanceSize = class_getInstanceSize([self class]);
-    memcpy((__bridge void *)(copyInstance), (__bridge const  void *)(self), instanceSize);
+    memcpy((__bridge void *)(copyInstance), (__bridge const void *)(self), instanceSize);
     return copyInstance;
+    
 }
 
 -(id)mutableCopyWithZone:(NSZone *)zone{
     return [self copyWithZone:zone];
 }
 
+- (void)encodeWithCoder:(NSCoder *)aCoder{
+    unsigned  int  count;
+    Ivar * vars =   class_copyIvarList([self class], &count);
+    for (int i = 0 ; i < count; i ++) {
+        Ivar var = vars[i];
+        char * s  =  (char*)ivar_getName(var);
+        NSString * key =[NSString stringWithUTF8String:s];
+        [aCoder encodeObject:[self valueForKey:key] forKey:key];
+    }
+    free(vars);
+    
+}
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder{
+    unsigned int count = 0;
+    Ivar * vars = class_copyIvarList([self class], &count);
+    for (int i = 0 ; i < count;  i ++) {
+        Ivar var = vars [i];
+        const char * name = ivar_getName(var);
+        NSString * key = [NSString stringWithUTF8String:name];
+        id object = [aDecoder decodeObjectForKey:key];
+        [self setValue:object forKey:key];
+    }
+    free(vars);
+    return self;
+}
+
 
 
 - (void)dealloc{
+    
+    
     
 }
 

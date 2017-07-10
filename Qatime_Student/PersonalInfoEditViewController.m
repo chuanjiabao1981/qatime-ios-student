@@ -16,7 +16,6 @@
 #import "EditDescriptionTableViewCell.h"
 #import "UITextView+Placeholder.h"
 
-
 @interface PersonalInfoEditViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextViewDelegate>{
     
     NavigationBar *_navigationBar;
@@ -60,6 +59,8 @@
     NSInteger number;
 
     UIView *footer;
+    
+    NSString *_selectedSchoolID;
     
 }
 
@@ -208,7 +209,7 @@
 #pragma mark- tableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 7;
+    return 8;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -356,8 +357,25 @@
             
         }
             break;
-            
         case 6:{
+            /* cell的重用队列*/
+            static NSString *cellIdenfier = @"cell";
+            EditBirthdayTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+            if (cell==nil) {
+                cell=[[EditBirthdayTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+                
+                cell.name.text = @"学校";
+                if (_infoDic) {
+                    cell.content.text = _infoDic[@"school"];
+                }
+                
+            }
+            
+            return  cell;
+        }
+            break;
+            
+        case 7:{
             /* cell的重用队列*/
             static NSString *cellIdenfier = @"cell";
             EditDescriptionTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
@@ -396,7 +414,7 @@
     if (indexPath.row == 0) {
         height =  self.view.height_sd*0.15;
     }else{
-        if (indexPath.row!=6) {
+        if (indexPath.row!=7) {
             
             height = self.view.height_sd*0.07;
         }else{
@@ -456,10 +474,35 @@
             ProvinceChosenViewController *controller = [[ProvinceChosenViewController alloc]init];
             [self.navigationController pushViewController:controller animated:YES];
             
-            //用block调结果 赋值到head视图上
-            EditLocationTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            
         }
+            break;
+        case 6:{
+            
+            NSArray *schoolArr = [NSArray arrayWithArray:[[NSUserDefaults standardUserDefaults]valueForKey:@"school"]];
+            __block EditBirthdayTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            NSMutableArray *schools = @[].mutableCopy;
+            for (NSDictionary *dic in schoolArr) {
+                [schools addObject:dic[@"name"]];
+            }
+            //把学校弹出来
+            //弹出来的时候默认选第一个
+            cell.content.text = schools[0];
+            _selectedSchoolID = [NSString stringWithFormat:@"%@",schoolArr[0][@"id"]];
+            [MMPickerView showPickerViewInView:self.view withStrings:schools withOptions:nil completion:^(NSString *selectedString) {
+                cell.content.text = selectedString;
+                
+                for (NSDictionary *dic in schoolArr) {
+                    if ([selectedString isEqualToString:dic[@"name"]]) {
+                        
+                        _selectedSchoolID = [NSString stringWithFormat:@"%@",dic[@"id"]];
+                        
+                        [_infoDic setValue:_selectedSchoolID forKey:@"school_id"];
+                    }
+                }
+                
+            }];
+        }
+            break;
     }
     
 }
@@ -467,7 +510,7 @@
 - (void)textFieldDidChange:(UITextField *)textField{
     
     EditNameTableViewCell *nameCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-    EditNameTableViewCell *descCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    EditNameTableViewCell *descCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
     
     if (textField == nameCell.nameText) {
         
@@ -507,7 +550,7 @@
     [UIView animateWithDuration:animationDuration animations:^{
         
         EditNameTableViewCell *namecell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-        EditDescriptionTableViewCell *desccell=[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+        EditDescriptionTableViewCell *desccell=[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
         if ([namecell.nameText isFirstResponder]==YES) {
             
             [ self.view setFrame:CGRectMake(0, -keyboardRect.size.height/2, self.view.width_sd, self.view.height_sd)];
@@ -558,7 +601,7 @@
     }
     
     /**取出简介*/
-    EditDescriptionTableViewCell *descell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    EditDescriptionTableViewCell *descell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
     [_dataDic setValue:descell.nameText.text forKey:@"desc"];
     
     /* 取出头像*/
@@ -587,6 +630,10 @@
     EditBirthdayTableViewCell *birthcell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
     if ([birthcell.content.text isEqualToString:@""]||[birthcell.content.text isEqualToString:@"未设置"]) {
          [_dataDic setObject:_infoDic[@"birthday"]?_infoDic[@"birthday"]:@"" forKey:@"birthday"];
+    }
+    //取出学校id
+    if (_selectedSchoolID) {
+        [_dataDic setValue:_selectedSchoolID forKey:@"school_id"];
     }
     
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"PUT" URLString:[NSString stringWithFormat:@"%@/api/v1/students/%@",Request_Header,_idNumber] parameters:_dataDic constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
@@ -681,7 +728,7 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
     
-    EditDescriptionTableViewCell * cell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    EditDescriptionTableViewCell * cell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
     
     if (cell.letterNumber.hidden  == YES) {
         cell.letterNumber.hidden = NO;
@@ -694,7 +741,7 @@
 }
 -(void)textViewDidEndEditing:(UITextView *)textView{
     
-    EditDescriptionTableViewCell * cell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    EditDescriptionTableViewCell * cell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
     
     if (cell.letterNumber.hidden  == NO) {
         cell.letterNumber.hidden = YES;
@@ -705,7 +752,7 @@
     
     [_infoDic setValue:textView.text forKey:@"desc"];
     
-    EditDescriptionTableViewCell * cell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    EditDescriptionTableViewCell * cell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
     
     if (cell.nameText.text.length<30) {
         cell.letterNumber.text  = [NSString stringWithFormat:@"%ld",30-cell.nameText.text.length];
@@ -722,7 +769,7 @@
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
     EditNameTableViewCell *nameCell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-    EditDescriptionTableViewCell *descCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    EditDescriptionTableViewCell *descCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
     
     if ([nameCell.nameText isFirstResponder]) {
         
@@ -739,7 +786,7 @@
 - (void)resign{
   
     EditNameTableViewCell *nameCell = [_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-    EditDescriptionTableViewCell *descCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    EditDescriptionTableViewCell *descCell =[_editTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
     
     if ([nameCell.nameText isFirstResponder]) {
         

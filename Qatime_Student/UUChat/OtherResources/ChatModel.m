@@ -314,7 +314,8 @@ static NSString *previousTime = nil;
     UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
     UUMessage *message = [[UUMessage alloc] init];
     message.isRichText = NO;
-    message.strContent = notification;
+//    message.strContent = notification;
+    message.attributedStrContent = notification;
     message.type = UUMessagetypeNotice;
     message.from = UUMessageFromeSystem;
     

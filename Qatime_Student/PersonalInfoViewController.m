@@ -23,6 +23,7 @@
 #import "UIAlertController+Blocks.h"
 #import "EditLocationTableViewCell.h"
 #import "ProvinceChosenViewController.h"
+#import "GuestBindingViewController.h"
 
 
 
@@ -177,7 +178,7 @@
         is_Guest = [[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"];
     }
     
-    _nameArr = @[@"头像",@"姓名",@"性别",@"生日",@"年级",@"地区",@"简介"];
+    _nameArr = @[@"头像",@"姓名",@"性别",@"生日",@"年级",@"地区",@"学校",@"简介"];
     
     /* 如果是从注册页面传值过来的*/
     if (WriteMore == YES) {
@@ -247,7 +248,7 @@
 #pragma mark- tableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 7;
+    return _nameArr.count;
     
 }
 
@@ -344,6 +345,9 @@
                 case 6:
                     cell.content.text = @"未设置";
                     break;
+                case 7:
+                    cell.content.text = @"未设置";
+                    break;
                     
             }
             
@@ -392,7 +396,18 @@
                     cell.content.text = [_dataDic valueForKey:@"grade"];
                 }
                     break;
+                    
                 case 6:{
+                    
+                    if ([[_dataDic valueForKey:@"school_name"]isEqualToString:@""]) {
+                       cell.content.text = @"未设置";
+                    }else{
+                       cell.content.text = [_dataDic valueForKey:@"school_name"];
+                    }
+                    
+                }
+                    break;
+                case 7:{
                     
                     if ([[_dataDic valueForKey:@"desc"]isEqualToString:@""]) {
                         
@@ -691,36 +706,58 @@
 /* 进入编辑页面*/
 - (void)editInfo{
     
+    BOOL isGuest;
+    //判断是不是游客,是游客就直接让丫先绑定.
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"is_Guest"]) {
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"]==YES) {
+            isGuest = YES;
+        }else{
+            isGuest = NO;
+        }
+    }else{
+        isGuest = NO;
+    }
     
-    NSArray *contentArr = @[@"head",@"name",@"gender",@"birthday",@"grade",@"location",@"desc"];
-    
-    
-    /* 需要传入下一页面的值*/
-    NSMutableDictionary *info = @{}.mutableCopy;
-    
-    /* 遍历出所有cell中的value*/
-    for (NSInteger i=0; i<contentArr.count; i++) {
-        if (i==0) {
-            Personal_HeadTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-            [info setValue:cell.image.image==nil?[UIImage imageNamed:@"人"]:cell.image.image forKey:contentArr[i]];
-        }else if (i!=0&&i!=5){
-            PersonalTableViewCell *cell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-            [info setValue:cell.content.text==nil?@"":cell.content.text forKey:contentArr[i]];
-        }else if (i==5){
+    if (isGuest == YES) {
+        //提示用户去绑定
+        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"游客账号不能进行此操作!\n请先绑定账号!" cancelButtonTitle:@"前往绑定" destructiveButtonTitle:nil otherButtonTitles:@[@"暂不绑定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+           
+            if (buttonIndex == 0) {
+                GuestBindingViewController *controller = [[GuestBindingViewController alloc]init];
+                [self.navigationController pushViewController:controller animated:YES];
+            }else{
+                
+            }
             
-            EditLocationTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-            [info setValue:cell.content.text==nil?@"":cell.content.text forKey:@"city"];
-            [info setValue:cell.subContent.text==nil?@"":cell.subContent.text forKey:@"province"];
+        }];
+        
+    }else{
+        
+        NSArray *contentArr = @[@"head",@"name",@"gender",@"birthday",@"grade",@"location",@"school",@"desc"];
+        /* 需要传入下一页面的值*/
+        NSMutableDictionary *info = @{}.mutableCopy;
+        /* 遍历出所有cell中的value*/
+        for (NSInteger i=0; i<contentArr.count; i++) {
+            if (i==0) {
+                Personal_HeadTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+                [info setValue:cell.image.image==nil?[UIImage imageNamed:@"人"]:cell.image.image forKey:contentArr[i]];
+            }else if (i!=0&&i!=5){
+                PersonalTableViewCell *cell =[_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+                [info setValue:cell.content.text==nil?@"":cell.content.text forKey:contentArr[i]];
+            }else if (i==5){
+                EditLocationTableViewCell *cell = [_personalInfoView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+                [info setValue:cell.content.text==nil?@"":cell.content.text forKey:@"city"];
+                [info setValue:cell.subContent.text==nil?@"":cell.subContent.text forKey:@"province"];
+                
+            }
             
         }
         
+        PersonalInfoEditViewController *edit = [[PersonalInfoEditViewController alloc]initWithInfo:info];
+        [self.navigationController pushViewController:edit animated:YES];
+        
     }
     
-    
- 
-    
-    PersonalInfoEditViewController *edit = [[PersonalInfoEditViewController alloc]initWithInfo:info];
-    [self.navigationController pushViewController:edit animated:YES];
     
     
     

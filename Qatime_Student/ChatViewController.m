@@ -81,6 +81,8 @@
     
     BOOL _shutUp;
     
+    NSString *_lesson;
+    
 }
 
 /* 刷新聊天记录*/
@@ -449,6 +451,12 @@
                     [_userList addObject:mod];
                 }
                 [self requestChatHitstory];
+                
+                for (NSDictionary *lesson in dic[@"data"][@"interactive_lessons"]) {
+                    if ([lesson[@"status"]isEqualToString:@"teaching"]) {
+                        _lesson = lesson[@"name"];
+                    }
+                }
 
             }else{
                 
@@ -801,7 +809,20 @@
                         
                     }
                     
-                    [self.chatModel addSpecifiedNotificationItem:[@"系统消息:" stringByAppendingString:messageText==nil?@"":messageText]];
+                    //解析userlist,把发送者给揪出来
+                    NSString *sender = @"";
+                    for (Chat_Account *user in _userList) {
+                        if ([message.from isEqualToString:[user valueForKeyPath:@"accid"]]) {
+                            sender = [user valueForKeyPath: @"name"];
+                        }
+                    }
+                    
+                    //在这儿弄一下子 这个 富文本
+                    NSString *notice =[NSString stringWithFormat:@"%@更新了公告\n公告:%@",sender,messageText==nil?@"":messageText];
+
+                    
+                    [self.chatModel addSpecifiedNotificationItem:notice];
+                    
                 }
                 //
             }else{
@@ -1009,7 +1030,7 @@
                     
                 }
                 
-                [self.chatModel addSpecifiedNotificationItem:[@"系统消息:" stringByAppendingString:messageText==nil?@"":messageText]];
+                [self.chatModel addSpecifiedNotificationItem:[@"公告:" stringByAppendingString:messageText==nil?@"":messageText]];
                 [self.chatTableView reloadData];
                 [self tableViewScrollToBottom];
             }
@@ -1539,9 +1560,12 @@
         controller =[[LivePlayerViewController alloc]initWithClassID:[_tutoriumInfo valueForKey:@"classID"]];
 
     }else if ([_tutoriumInfo isKindOfClass:[InteractiveCourse class]]){
+        
+        
+        
         NIMChatroom *room = [[NIMChatroom alloc]init];
         
-        controller =[[InteractionViewController alloc]initWithChatroom:room andClassID:[_tutoriumInfo valueForKey:@"classID"] andChatTeamID:[_tutoriumInfo valueForKey:@"chat_team_id"]];
+        controller =[[InteractionViewController alloc]initWithChatroom:room andClassID:[_tutoriumInfo valueForKey:@"classID"] andChatTeamID:[_tutoriumInfo valueForKey:@"chat_team_id"] andLessonName:_lesson == nil?@"暂无直播":_lesson];
         
     }
     

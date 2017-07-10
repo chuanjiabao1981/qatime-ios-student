@@ -12,7 +12,6 @@
 #import "IndexHeaderPageView.h"
 
 
-
 @interface IndexHeaderPageView : UIView
 
 /**z

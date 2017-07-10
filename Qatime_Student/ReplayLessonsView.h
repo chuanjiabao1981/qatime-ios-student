@@ -27,6 +27,9 @@
 /**回放次数*/
 @property (nonatomic, strong) UILabel *replayTimes ;
 
+//点击进教师信息的手势
+@property (nonatomic, strong) UIView *teachersInfo ;
+
 @property (nonatomic, strong) ReplayLessonInfo *model;
 
 @end

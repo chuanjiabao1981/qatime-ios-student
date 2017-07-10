@@ -21,12 +21,10 @@ static const void *placeholderImagekey = &placeholderImagekey;
             [self.placeholderImage removeFromSuperview];
         }
     }else{
-        
         if (image == nil) {
-            
+            self.placeholderImage = nil;
         }else{
             self.placeholderImage = [[UIImageView alloc]initWithImage:image];
-            
             [self addSubview:self.placeholderImage];
             self.placeholderImage.sd_layout
             .leftSpaceToView(self, 0)

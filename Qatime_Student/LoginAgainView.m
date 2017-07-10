@@ -94,11 +94,11 @@
         
         /* 登录按钮*/
         _loginButton =[[UIButton alloc]init];
-        _loginButton.layer.borderColor =[UIColor colorWithRed:0.79 green:0.0 blue:0.0 alpha:1.00].CGColor;
+        _loginButton.layer.borderColor =BUTTONRED.CGColor;
         _loginButton.layer.borderWidth = 1.0f;
         
         [_loginButton setTitle:@"登录" forState:UIControlStateNormal];
-        [_loginButton setTitleColor:[UIColor colorWithRed:0.79 green:0.0 blue:0.0 alpha:1.00] forState:UIControlStateNormal];
+        [_loginButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
         [self addSubview:_loginButton];
         
         

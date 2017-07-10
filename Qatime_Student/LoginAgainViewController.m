@@ -173,7 +173,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                 
             }else{
                 
-                [UIAlertController showAlertInViewController:self withTitle:@"警告!" message:@"系统检测到您之前使用游客身份登录,如您使用其他账号登录则无法找回之前登录的所有信息(包括账户资金和一切消费记录)!\n是否确定使用新的账户登录?" cancelButtonTitle:@"我要完善当前账号信息" destructiveButtonTitle:nil otherButtonTitles:@[@"确定使用新账号登录"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                [UIAlertController showAlertInViewController:self withTitle:@"警告!" message:@"系统检测到您之前使用游客身份登录,使用新账户登陆后原游客账户所有信息将丢失且无法找回!" cancelButtonTitle:@"完善当前账号" destructiveButtonTitle:nil otherButtonTitles:@[@"确定使用新账号"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
                     
                     if (buttonIndex == 0) {
                         //绑定和完善当前账号信息 前往绑定

@@ -122,6 +122,7 @@
         .bottomSpaceToView(lineBottom, 0)
         .rightSpaceToView(lineMiddle, 0);
         [_allTeachersBtn updateLayout];
+        
         UILabel *title1 = [[UILabel alloc]init];
         [_allTeachersBtn addSubview:title1];
         title1.text = @"全部老师";
@@ -132,6 +133,7 @@
         .autoHeightRatio(0);
         [title1 setSingleLineAutoResizeWithMaxWidth:200];
         [title1 updateLayout];
+        
         UIImageView *icon1 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"allteacher"]];
         [_allTeachersBtn addSubview:icon1];
         icon1.sd_layout
@@ -141,7 +143,7 @@
         .widthEqualToHeight();
         [icon1 updateLayout];
         icon1.sd_resetLayout
-        .leftSpaceToView(_allTeachersBtn, (_allTeachersBtn.width_sd-title1.width_sd-10*ScrenScale-icon1.width_sd)/2.f)
+        .leftSpaceToView(_allTeachersBtn, (_allTeachersBtn.width_sd-title1.width_sd-10*ScrenScale-title1.height_sd*0.8f)/2.f)
         .centerYEqualToView(title1)
         .heightRatioToView(title1, 0.7)
         .widthEqualToHeight();
@@ -181,7 +183,7 @@
         .widthEqualToHeight();
         [icon2 updateLayout];
         icon2.sd_resetLayout
-        .leftSpaceToView(_reviewBtn, (_reviewBtn.width_sd-title1.width_sd-10*ScrenScale-icon2.width_sd)/2.f)
+        .leftSpaceToView(_reviewBtn, (_reviewBtn.width_sd-title1.width_sd-10*ScrenScale-title2.height_sd*0.8f)/2.f)
         .centerYEqualToView(title2)
         .heightRatioToView(title2, 0.7)
         .widthEqualToHeight();

@@ -12,6 +12,7 @@
 #import "UIViewController+AFHTTP.h"
 #import "ReplayLessonInfo.h"
 #import "YYModel.h"
+#import "TeachersPublicViewController.h"
 
 //屏幕模式
 typedef enum : NSUInteger {
@@ -52,7 +53,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) UIButton *playQuitBtn;
 @property (nonatomic, strong) UILabel *fileName;
 
-@property (nonatomic, strong) UILabel *currentTime;
+//@property (nonatomic, strong) UILabel *currentTime;
 @property (nonatomic, strong) UILabel *totalDuration;
 @property (nonatomic, strong) UISlider *videoProgress;
 
@@ -122,6 +123,9 @@ typedef enum : NSUInteger {
     .topSpaceToView(_playerView, 0)
     .bottomSpaceToView(self.view, 0);
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(teacherInfo)];
+    [_mainView.teachersInfo addGestureRecognizer:tap];
+    
 }
 
 /** 请求回放信息 */
@@ -132,12 +136,14 @@ typedef enum : NSUInteger {
         if ([dic[@"status"]isEqualToNumber:@1]) {
             //有数据
             
-            ReplayLessonInfo *mod = [ReplayLessonInfo yy_modelWithJSON:dic[@"data"]];
-            mod.classID =dic[@"data"][@"id"];
+            _replayLessonInfo = [ReplayLessonInfo yy_modelWithJSON:dic[@"data"]];
+            _replayLessonInfo.classID =dic[@"data"][@"id"];
+            _replayLessonInfo.teacher = [Teacher yy_modelWithJSON:dic[@"data"][@"teacher"]];
+            _replayLessonInfo.teacher.teacherID = dic[@"data"][@"teacher"][@"id"];
             if (!_mainView) {
                 [self setupMainView];
             }
-            _mainView.model = mod;
+            _mainView.model = _replayLessonInfo;
             
         }else{
             
@@ -146,7 +152,6 @@ typedef enum : NSUInteger {
     } failure:^(id  _Nullable erros) {
         [self HUDStopWithTitle:@"服务器正忙,加载详情失败"];
     }];
-    
     
 }
 
@@ -210,7 +215,7 @@ typedef enum : NSUInteger {
     .topSpaceToView(self.view, 0)
     .heightIs(self.view.width_sd/16.0*9.0);
     
-    UIImageView *place = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"PlayerHolder"]];
+    UIImageView *place = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"video_Playerholder"]];
     [_playerView addSubview:place];
     place.sd_layout
     .leftEqualToView(_playerView)
@@ -405,18 +410,18 @@ typedef enum : NSUInteger {
     });
     
     
-    //当前播放的时间点
-    self.currentTime = [[UILabel alloc] init];
-    [self.bottomControlView addSubview:self.currentTime];
-    self.currentTime.sd_layout
-    .centerYEqualToView(_playBtn)
-    .leftSpaceToView(_playBtn, 5)
-    .autoHeightRatio(0);
-    [self.currentTime setSingleLineAutoResizeWithMaxWidth:200];
-    self.currentTime.text = @"00:00:00"; //for test
-    self.currentTime.textAlignment = NSTextAlignmentCenter;
-    self.currentTime.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
-    self.currentTime.font = [UIFont fontWithName:self.currentTime.font.fontName size:10.0];
+//    //当前播放的时间点
+//    self.currentTime = [[UILabel alloc] init];
+//    [self.bottomControlView addSubview:self.currentTime];
+//    self.currentTime.sd_layout
+//    .centerYEqualToView(_playBtn)
+//    .leftSpaceToView(_playBtn, 5)
+//    .autoHeightRatio(0);
+//    [self.currentTime setSingleLineAutoResizeWithMaxWidth:200];
+//    self.currentTime.text = @"00:00:00"; //for test
+//    self.currentTime.textAlignment = NSTextAlignmentCenter;
+//    self.currentTime.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
+//    self.currentTime.font = [UIFont fontWithName:self.currentTime.font.fontName size:10.0];
     
     
     //文件总时长
@@ -436,7 +441,7 @@ typedef enum : NSUInteger {
     self.videoProgress = [[UISlider alloc] init];
     [self.bottomControlView addSubview:self.videoProgress];
     self.videoProgress.sd_layout
-    .leftSpaceToView(self.currentTime, 10)
+    .leftSpaceToView(self.playBtn, 10)
     .topSpaceToView(self.bottomControlView, 10)
     .bottomSpaceToView(self.bottomControlView, 10)
     .rightSpaceToView(self.totalDuration, 10);
@@ -498,6 +503,14 @@ typedef enum : NSUInteger {
     
 }
 
+/** 加载教师信息 */
+- (void)teacherInfo{
+    
+    TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:_replayLessonInfo.teacher.teacherID];
+    [self.navigationController pushViewController:controller animated:YES];
+    
+}
+
 
 #pragma mark - 播放器的播放/停止/退出等方法
 
@@ -509,7 +522,7 @@ typedef enum : NSUInteger {
     mCurrPos  = [self.videoPlayer currentPlaybackTime];
     NSInteger currPos  = round(mCurrPos);
     
-    self.currentTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(currPos / 3600), (int)(currPos > 3600 ? (currPos - (currPos / 3600)*3600) / 60 : currPos/60), (int)(currPos % 60)];
+//    self.currentTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(currPos / 3600), (int)(currPos > 3600 ? (currPos - (currPos / 3600)*3600) / 60 : currPos/60), (int)(currPos % 60)];
     
     if (duration > 0) {
         self.totalDuration.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(duration / 3600), (int)(duration > 3600 ? (duration - 3600 * (duration / 3600)) / 60 : duration/60), (int)(duration > 3600 ? ((duration - 3600 * (duration / 3600)) % 60) :(duration % 60))];
@@ -821,7 +834,7 @@ typedef enum : NSUInteger {
     isFullScreen = YES;
     
     /* 全屏页面布局的变化*/
-    _scaleModeBtn.hidden = YES;
+    _scaleModeBtn.hidden = NO;
     [self playerViewTurnFullScreenLayout];
     
     [self mediaControlTurnToFullScreenModeWithMainView:_playerView];

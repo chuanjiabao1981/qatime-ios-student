@@ -19,6 +19,7 @@
 
 #import "LivePlayerViewController.h"
 #import "UIAlertController+Blocks.h"
+#import "MessageSettingViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -66,7 +67,7 @@
     
     });
     
-    menus = @[@"提醒设置",/*@"检查更新",*/@"清理缓存"/*,@"关于我们",@"学习流程"*/];
+    menus = @[@"通知设置",/*@"检查更新",*/@"清理缓存"/*,@"关于我们",@"学习流程"*/];
     
     _settingView = [[SettingView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT)];
     [self.view addSubview:_settingView];
@@ -101,21 +102,10 @@
    
     [but addTarget:self action:@selector(play) forControlEvents:UIControlEventTouchUpInside];
     
-    
+    //用户切换账号的时候,直接pop一页
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(returnLastPage) name:@"LogoutToRoot" object:nil];
     
 }
-
-
-/**
- 播放视频.测试用
- */
-- (void)play{
-    
-    LivePlayerViewController *vc = [[LivePlayerViewController alloc]initWithClassID:@"32"];
-    
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 
 
 /* 获取缓存大小*/
@@ -262,7 +252,8 @@
     switch (indexPath.row) {
        
         case 0:{
-            NoticeSettingViewController *noVC = [NoticeSettingViewController new];
+//            NoticeSettingViewController *noVC = [NoticeSettingViewController new];
+            MessageSettingViewController *noVC = [[MessageSettingViewController alloc]init];
             [self.navigationController pushViewController:noVC animated:YES];
             
         }
@@ -350,13 +341,14 @@
         
     }];
     
-    }
+}
+
 
 
 /* 返回上一页*/
 - (void)returnLastPage{
     
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
     
 }
 

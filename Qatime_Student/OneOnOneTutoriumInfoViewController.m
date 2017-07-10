@@ -52,6 +52,8 @@
     
     /**学习流程所需的数据*/
     NSArray *_workFlowArr;
+    
+    NSString *_lesson;
 
 }
 
@@ -142,6 +144,15 @@
                 }
                 
             }
+            
+            //课时名称
+            for (NSDictionary *lesson in dic[@"data"][@"interactive_lesson"]) {
+                if ([lesson[@"status"]isEqualToString:@"teaching"]) {
+                    _lesson = lesson[@"name"];
+                }
+            }
+            
+            
             [self.view addSubview:self.myView];
             [self setupBuyBar];
             //赋值
@@ -211,8 +222,8 @@
      */
     NIMChatroom *chatRoom = [[NIMChatroom alloc]init];
     chatRoom.roomId = _dataDic[@"chat_team_id"] ;
-    InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatRoom andClassID:_classID andChatTeamID:_dataDic[@"chat_team_id"]];
     
+    InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatRoom andClassID:_classID andChatTeamID:_dataDic[@"chat_team_id"] andLessonName:_lesson==nil?@"暂无直播":_lesson];
     
 //    OneOnOneTutoriumInfoViewController *controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:_classID];
     [self.navigationController pushViewController:controller animated:YES];

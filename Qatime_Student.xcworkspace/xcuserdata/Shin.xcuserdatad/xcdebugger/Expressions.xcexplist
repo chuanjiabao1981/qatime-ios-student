@@ -333,6 +333,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[IndexPageViewController locationManager:didUpdateLocations:]:IndexPageViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[OrderInfoViewController initWithPaid:]:OrderInfoViewController.m">
       </ContextState>
       <ContextState
@@ -404,24 +407,32 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[InteractionChatViewController makeMessages:]:InteractionChatViewController.m">
+         contextName = "-[NTESMeetingWhiteboardViewController willRotateToInterfaceOrientation:duration:]:NTESMeetingWhiteboardViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_whiteBoardON">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[ChatModel addSpecifiedImageItem:andIconURL:andName:]:ChatModel.m">
       </ContextState>
       <ContextState
-         contextName = "__43-[VideoClassInfoViewController requestData]_block_invoke:VideoClassInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_classInfo">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[InteractionChatViewController makeMessages:]:InteractionChatViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[MyOrderViewController requestUnpaid]:MyOrderViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "unpaidPage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__43-[VideoClassInfoViewController requestData]_block_invoke:VideoClassInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -434,10 +445,21 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[LivePlayerViewController setupBoardPlayer]:LivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_liveplayerBoard">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__39-[BindingMailInfoViewController finish]_block_invoke_2:BindingMailInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "__41-[OrderViewController checkPromotionCode]_block_invoke:OrderViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__68-[PersonalInfoEditViewController tableView:didSelectRowAtIndexPath:]_block_invoke.319:PersonalInfoEditViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NTESWhiteboardCmdHandler sendMyPoint:]:NTESWhiteboardCmdHandler.m">
@@ -505,10 +527,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -549,10 +571,24 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__44-[LivePlayerViewController checkVideoStatus]_block_invoke:LivePlayerViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[TLCityPickerController tableView:numberOfRowsInSection:]:TLCityPickerController.m">
          <PersistentStrings>
             <PersistentString
                value = "self.data">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChargeViewController paymentQueue:updatedTransactions:]:ChargeViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[NIMSessionViewController makeUI]:NIMSessionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.tableView">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -571,25 +607,6 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[ChargeViewController paymentQueue:updatedTransactions:]:ChargeViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[NIMSessionViewController makeUI]:NIMSessionViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.tableView">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ProvinceChosenViewController tableView:didSelectRowAtIndexPath:]:ProvinceChosenViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_cityArray">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "-[NoticeIndexViewController tableView:didSelectRowAtIndexPath:]:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
@@ -601,15 +618,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NELivePlayerViewController setupBoardPlayer]:NELivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_boardPullAddress">
-            </PersistentString>
-            <PersistentString
-               value = "_teacherPullAddress">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[TLCityGroupCell cityButtonDown:]:TLCityGroupCell.m">
       </ContextState>
       <ContextState
          contextName = "-[MultifiltersViewController initWithFilters:]:MultifiltersViewController.m">
@@ -642,10 +651,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NTESMeetingRTSManager onJoinConference:result:]:NTESMeetingRTSManager.m">
+         contextName = "-[NELivePlayerViewController setupBoardPlayer]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_currentConference">
+               value = "_boardPullAddress">
+            </PersistentString>
+            <PersistentString
+               value = "_teacherPullAddress">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -661,7 +673,12 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__42-[ClassSettingViewController saveSettings]_block_invoke:ClassSettingViewController.m">
+         contextName = "-[NTESMeetingRTSManager onJoinConference:result:]:NTESMeetingRTSManager.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_currentConference">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[TutoriumInfoViewController switchClassData:]:TutoriumInfoViewController.m">
@@ -695,12 +712,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__copy_helper_block_:PersonalInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_dataDic">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "__42-[ClassSettingViewController saveSettings]_block_invoke:ClassSettingViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NTESWhiteboardCmdHandler doSendCmds]:NTESWhiteboardCmdHandler.m">
@@ -711,7 +723,12 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__38-[ChangePasswordViewController finish]_block_invoke_4:ChangePasswordViewController.m">
+         contextName = "__copy_helper_block_:PersonalInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[VideoInfoView initWithFrame:]:VideoInfoView.m">
@@ -733,7 +750,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__38-[ChangePasswordViewController finish]_block_invoke_4:ChangePasswordViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__42-[PayConfirmViewController payWithBalance]_block_invoke_3:PayConfirmViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ProvinceChosenViewController tableView:didSelectRowAtIndexPath:]:ProvinceChosenViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_cityArray">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[NTESMeetingActorsView updateActors]:NTESMeetingActorsView.m">
@@ -745,9 +773,6 @@
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[TLCityGroupCell cityButtonDown:]:TLCityGroupCell.m">
       </ContextState>
       <ContextState
          contextName = "-[QRCodeController captureOutput:didOutputMetadataObjects:fromConnection:]:QRCodeController.m">
@@ -796,10 +821,10 @@
          contextName = "-[NTESPageView reloadPage]:NTESPageView.m">
          <PersistentStrings>
             <PersistentString
-               value = "_currentPage">
+               value = "_pages">
             </PersistentString>
             <PersistentString
-               value = "_pages">
+               value = "_currentPage">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -846,6 +871,9 @@
          <PersistentStrings>
             <PersistentString
                value = "statusDic">
+            </PersistentString>
+            <PersistentString
+               value = "_liveplayerBoard">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1270,6 +1298,9 @@
          contextName = "-[ConfirmChargeViewController initWithInfo:]:ConfirmChargeViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[LivePlayerViewController makeMessages:]:LivePlayerViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[SafeViewController tableView:didSelectRowAtIndexPath:]:SafeViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1562,6 +1593,9 @@
          contextName = "-[IndexPageViewController makeCityList:]:IndexPageViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[PersonalInfoEditViewController initWithInfo:]:PersonalInfoEditViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[TutoriumInfoViewController textTagCollectionView:updateContentSize:]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1581,10 +1615,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1747,12 +1781,23 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__62-[IndexPageViewController locationManager:didUpdateLocations:]_block_invoke:IndexPageViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_localCity">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[TutoriumInfoViewController requestOrder]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__47-[ReplayLessonsViewController requestReplyInfo]_block_invoke:ReplayLessonsViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NTESMeetingActorsView initWithFrame:]:NTESMeetingActorsView.m">
@@ -1952,6 +1997,9 @@
          contextName = "__41-[LoginViewController wechatLoginSucess:]_block_invoke:LoginViewController.m">
       </ContextState>
       <ContextState
+         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.895:LivePlayerViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.438:PersonalInfoViewController.m">
       </ContextState>
       <ContextState
@@ -2071,6 +2119,9 @@
                value = "_tutoriumInfo">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__41-[ChatViewController requestChatTeamUser]_block_invoke.331:ChatViewController.m">
       </ContextState>
       <ContextState
          contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.448:PersonalInfoViewController.m">

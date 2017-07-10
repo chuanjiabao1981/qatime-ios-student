@@ -68,6 +68,7 @@
 #import "InteractionNoticeViewController.h"
 #import "IJKFloatingView.h"
 #import "UIView+PlaceholderImage.h"
+#import "FJFloatingView.h"
 
 #define CameraWidth [UIScreen mainScreen].bounds.size.width/4.0
 
@@ -94,16 +95,15 @@ typedef enum : NSUInteger {
     //群组聊天用的chatTeamID
     NSString *_chatTeamID;
     
-    __block IJKFloatingView *_floatingView ;
+    __block FJFloatingView *_floatingView ;
     
     __block IJKFloatingView *cameraView;
     
-    __block IJKFloatingView *_teacherView;
+    __block FJFloatingView *_teacherView;
     
-    __block IJKFloatingView *_teacherCamera;
+    
     
     CGFloat _cameraWidth;
-    
     
     
     //本地摄像头状态,默认开启
@@ -121,6 +121,8 @@ typedef enum : NSUInteger {
     
     //刚进房间的时候白板是不可用的
     BOOL _whiteBoardEnable;
+    
+    NSString *_lessonName;
     
     
 }
@@ -173,6 +175,9 @@ typedef enum : NSUInteger {
 /**返回按钮*/
 @property (nonatomic, strong) UIButton *backBtn ;
 
+/** 课时名称 */
+@property (nonatomic, strong) UILabel *fileName ;
+
 
 
 @end
@@ -183,7 +188,7 @@ NTES_USE_CLEAR_BAR
 NTES_FORBID_INTERACTIVE_POP
 
 /**测试阶段使用这个方法 ,减少前一页的冗余 */
--(instancetype)initWithChatroom:(NIMChatroom *)chatroom andClassID:(NSString *)classID andChatTeamID:(NSString *)chatTeamID {
+-(instancetype)initWithChatroom:(NIMChatroom *)chatroom andClassID:(NSString *)classID andChatTeamID:(NSString *)chatTeamID andLessonName:(NSString *)lessonName{
     self = [super init];
     if (self) {
         
@@ -193,6 +198,8 @@ NTES_FORBID_INTERACTIVE_POP
         _classID = [NSString stringWithFormat:@"%@",classID];
         
         _chatTeamID = [NSString stringWithFormat:@"%@",chatTeamID];
+        
+        _lessonName = [NSString stringWithFormat:@"%@",lessonName];
         
     }
     return self;
@@ -359,13 +366,13 @@ NTES_FORBID_INTERACTIVE_POP
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
     [[NTESMeetingRolesManager defaultManager] setDelegate:self];
     
-    _floatingView = [[IJKFloatingView alloc]initWithFrame:CGRectMake(20, 20, _cameraWidth,_cameraWidth/9*16.0)];
+    _floatingView = [[FJFloatingView alloc]initWithFrame:CGRectMake(20, 20, _cameraWidth,_cameraWidth/9*16.0)];
     [_floatingView makePlaceHolderImage:[UIImage imageNamed:@"video_ClosedCamera"]];
     _floatingView.backgroundColor = [UIColor whiteColor];
     _floatingView.canMove = YES;
     [self.view addSubview:_floatingView];
     
-    _teacherView = [[IJKFloatingView alloc]init];
+    _teacherView = [[FJFloatingView alloc]init];
     [_teacherView makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
     _teacherView.canMove = NO;
     [self.actorsView addSubview:_teacherView];
@@ -455,6 +462,19 @@ NTES_FORBID_INTERACTIVE_POP
     .heightEqualToWidth();
     [_backBtn setEnlargeEdge:20];
     
+    //课时名称
+    _fileName = [[UILabel alloc]init];
+    [_controlView addSubview:_fileName];
+    _fileName.text = _lessonName;
+    _fileName.textColor = [UIColor whiteColor];
+    _fileName.sd_layout
+    .leftSpaceToView(_backBtn, 10*ScrenScale)
+    .centerYEqualToView(_backBtn)
+    .rightSpaceToView(_audioSwitchBtn, 10*ScrenScale)
+    .autoHeightRatio(0);
+    _fileName.textAlignment = NSTextAlignmentLeft;
+    _fileName.hidden = YES;
+    
 }
 
 #pragma mark- Notifications
@@ -479,15 +499,12 @@ NTES_FORBID_INTERACTIVE_POP
     
 }
 
-
-
 /** 拿到roomid后加入会话的方法  同时,视频播放器和摄像头播放器都变成加载中的提示图片*/
 - (void)joinMeeting:(NSNotification *)note{
     
     _roomID = [note object];
     [_floatingView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadingHolder_Portrait"]];
     [_teacherView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadingHolder_Landscape"]];
-    
     [[NTESMeetingNetCallManager defaultManager] joinMeeting:_roomID delegate:self];
 
 }
@@ -495,21 +512,21 @@ NTES_FORBID_INTERACTIVE_POP
 /** 本地摄像头预览 */
 - (void)madeCameraView:(NSNotification *)note{
     
-    //加个互斥锁
-    @synchronized (self) {
-        
-        cameraView = self.actorsView.selfCamera.copy;
-        
-        [_floatingView addSubview:cameraView];
-        cameraView.sd_layout
-        .leftSpaceToView(_floatingView, 0)
-        .rightSpaceToView(_floatingView, 0)
-        .topSpaceToView(_floatingView, 0)
-        .bottomSpaceToView(_floatingView, 0);
-        [cameraView updateLayout];
-    }
-
+//    self.actorsView.selfCamera.canMove = NO;
+    cameraView = self.actorsView.selfCamera;
+    cameraView.userInteractionEnabled = NO;
+    _floatingView.canMove = YES;
+    [_floatingView addSubview:cameraView];
+    [_floatingView updateLayout];
+    cameraView.sd_layout
+    .leftSpaceToView(_floatingView, 0)
+    .rightSpaceToView(_floatingView, 0)
+    .topSpaceToView(_floatingView, 0)
+    .bottomSpaceToView(_floatingView, 0);
+    [cameraView updateLayout];
+    
 }
+
 - (void)whiteBoardEnabled{
     
     [[NTESMeetingRolesManager defaultManager]setMyWhiteBoard:YES];
@@ -522,9 +539,7 @@ NTES_FORBID_INTERACTIVE_POP
     if (is_fullScreen == YES) {
         
     }else{
-        
         [self performSelector:@selector(scaleAction:) withObject:_fullScreenBtn afterDelay:0.5];
-        
     }
 
 }
@@ -779,9 +794,9 @@ NTES_FORBID_INTERACTIVE_POP
        //教师摄像头变小
         [self teacherCameraTurnsPortrait];
         is_fullScreen = NO;
-       
+        _fileName.hidden = YES;
         //在这儿开启白板 相对安全
-        [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:YES];
+//        [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:YES];
         //切换成全屏
         [_fullScreenBtn setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
         
@@ -794,13 +809,14 @@ NTES_FORBID_INTERACTIVE_POP
         //教师摄像头变大
         [self teacherCameraTurnsFullScreen];
         is_fullScreen = YES;
+        _fileName.hidden = NO;
         _floatingView.hidden = YES;
         //自己的摄像头变小 变小
         [_floatingView updateLayout];
         [cameraView updateLayout];
         cameraView.hidden = YES;
         //在这儿关闭白班可能也安全
-        [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:NO];
+//        [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:NO];
         
         //切换成全屏
         [_fullScreenBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
@@ -813,7 +829,6 @@ NTES_FORBID_INTERACTIVE_POP
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"RotateAnimatePageView" object:nil];
 }
@@ -897,16 +912,38 @@ NTES_FORBID_INTERACTIVE_POP
 /**摄像头开关*/
 - (void)videoSwitchAction:(UIButton *)sender{
 
-    if (_videoON == YES) {
-        [sender setImage:[UIImage imageNamed:@"camera_off"] forState:UIControlStateNormal];
-        _floatingView.hidden = YES;
-        cameraView.hidden = YES;
-        _videoON = NO;
+    /** 
+     竖屏:开关视频是开关预览和推流.
+     横屏:开关视频只负责开关推流.
+     
+     无论什么情况,开关都得控制推流.
+     */
+    
+    if (is_fullScreen==YES) {
+        if (_videoON == YES) {
+            [sender setImage:[UIImage imageNamed:@"camera_off"] forState:UIControlStateNormal];
+            _floatingView.hidden = YES;
+            cameraView.hidden = YES;
+            _videoON = NO;
+        }else{
+            [sender setImage:[UIImage imageNamed:@"camera_on"] forState:UIControlStateNormal];
+            _floatingView.hidden = YES;
+            cameraView.hidden = YES;
+            _videoON = YES;
+        }
     }else{
-        [sender setImage:[UIImage imageNamed:@"camera_on"] forState:UIControlStateNormal];
-        _floatingView.hidden = NO;
-        cameraView.hidden = NO;
-        _videoON = YES;
+        
+        if (_videoON == YES) {
+            [sender setImage:[UIImage imageNamed:@"camera_off"] forState:UIControlStateNormal];
+            _floatingView.hidden = YES;
+            cameraView.hidden = YES;
+            _videoON = NO;
+        }else{
+            [sender setImage:[UIImage imageNamed:@"camera_on"] forState:UIControlStateNormal];
+            _floatingView.hidden = NO;
+            cameraView.hidden = NO;
+            _videoON = YES;
+        }
     }
     
     [[NTESMeetingRolesManager defaultManager] setMyVideo:_videoON];
@@ -1076,7 +1113,6 @@ NTES_FORBID_INTERACTIVE_POP
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
     
-    
 }
 
 //用户可能不小心按了一下返回键 o(╯□╰)o
@@ -1088,16 +1124,8 @@ NTES_FORBID_INTERACTIVE_POP
         
     }else{
         
-        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"确定要退出互动直播吗?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-            
-            if (buttonIndex == 0) {
-                //手滑了
-            }else{
-                
-                [self returnLastPage];
-            }
-            
-        }];
+        [self returnLastPage];
+        
     }
     
 }
@@ -1125,15 +1153,15 @@ NTES_FORBID_INTERACTIVE_POP
     } @finally {
         
     }
-
+    
+    [cameraView removeFromSuperview];
+    [_floatingView removeFromSuperview];
     cameraView = nil;
     _floatingView = nil;
     [_actorsView removeFromSuperview];
-    //    _actorsView = nil;
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [[NTESMeetingNetCallManager defaultManager]leaveMeeting];
     [[NTESMeetingRTSManager defaultManager]leaveCurrentConference];
-    
     
     [self.navigationController popViewControllerAnimated:YES];
     

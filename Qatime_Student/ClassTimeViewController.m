@@ -298,6 +298,30 @@ typedef enum : NSUInteger {
             }
         }
         
+    }failure:^(id  _Nullable erros) {
+        
+        [self HUDStopWithTitle:@"请检查网络"];
+        if (classtype == UnstartClass) {
+            if (refreshType == PullToRefresh) {
+                
+                [_classTimeView.notClassView.notClassTableView.mj_header endRefreshing];
+                [_classTimeView.notClassView.notClassTableView cyl_reloadData];
+                
+            }else{
+                [_classTimeView.notClassView.notClassTableView.mj_footer endRefreshing];
+            }
+        }else{
+            if (refreshType == PullToRefresh) {
+                
+                [_classTimeView.alreadyClassView.alreadyClassTableView.mj_header endRefreshing];
+                [_classTimeView.alreadyClassView.alreadyClassTableView cyl_reloadData];
+                
+            }else{
+                
+                [_classTimeView.alreadyClassView.alreadyClassTableView.mj_footer endRefreshing];
+            }
+        }
+
     }];
     
 }

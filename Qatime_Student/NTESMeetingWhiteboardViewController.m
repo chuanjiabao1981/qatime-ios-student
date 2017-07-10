@@ -26,6 +26,9 @@
     UILabel *whiteBoardStatusLabel;
     UILabel *whiteBoardTipsLabel;
     
+    /** 白板是否开启 */
+    BOOL _whiteBoardON;
+    
 }
 
 
@@ -58,6 +61,7 @@
         
         //上来就遮挡白板,不允许使用
         [self.view addSubview:self.maskView];
+        _whiteBoardON = NO;
         self.maskView.hidden = NO;
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recivedDesktopShared:) name:@"RecivedDestopShared" object:nil];
@@ -66,8 +70,6 @@
          [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(whiteBoardOn) name:@"DesktopSharedOff" object:nil];
         //关闭白板
          [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(whiteBoardOff) name:@"DesktopSharedOn" object:nil];
-        
-     
         
     }
     return self;
@@ -294,22 +296,24 @@
     
         if (_isJoined) {
             
-            self.hintLabel.hidden = YES;
+//            self.hintLabel.hidden = YES;
             [self.colorSelectButton setBackgroundColor:UIColorFromRGB(_myDrawColorRGB)];
             self.colorSelectButton.enabled = YES;
             self.cancelLineButton.enabled = YES;
             self.clearAllButton.enabled = YES;
             self.maskView.hidden = YES;
+            
         }
         else {
             
-            self.hintLabel.hidden = NO;
+            self.hintLabel.text = @"直播开始后可使用白板工具";
             [self.colorSelectButton setBackgroundColor:[UIColor lightGrayColor]];
             self.colorSelectButton.enabled = YES;
             self.cancelLineButton.enabled = YES;
             self.clearAllButton.enabled = YES;
             self.colorSelectView.hidden = YES;
             self.maskView.hidden = NO;
+            
         }
     
     //测试阶段代码
@@ -325,9 +329,8 @@
     if (!_drawView) {
         _drawView = [[NTESWhiteboardDrawView alloc] initWithFrame:CGRectZero];
         _drawView.backgroundColor = [UIColor whiteColor];
-//        _drawView.layer.borderWidth = 1;
-//        _drawView.layer.borderColor = UIColorFromRGB(0xd7dade).CGColor;
-        
+        _drawView.layer.borderColor = [UIColor whiteColor].CGColor;
+        _drawView.layer.borderWidth = 2;
         _drawView.dataSource = _lines;
     }
     return _drawView;
@@ -413,8 +416,6 @@
         
         [_openDocumentButton setBackgroundImage:[UIImage imageNamed:@"btn_whiteboard_file_normal"] forState:UIControlStateNormal];
         [_openDocumentButton setBackgroundImage:[UIImage imageNamed:@"btn_whiteboard_file_pressed"] forState:UIControlStateHighlighted];
-        
-        
         
     }
     return _openDocumentButton;
@@ -525,9 +526,14 @@
         _maskView = [[UIView alloc]init];
         _maskView.frame = self.view.bounds;
         _maskView.backgroundColor = [UIColor clearColor];
-        
+        _maskView.userInteractionEnabled = YES;
     }
     return _maskView;
+}
+
+- (void)nothing{
+    
+    
 }
 
 
@@ -630,21 +636,36 @@
 #pragma mark  - UIResponder
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    self.colorSelectView.hidden = YES;
-    CGPoint p = [[touches anyObject] locationInView:_drawView];
-    [self onPointCollected:p type:NTESWhiteboardPointTypeStart];
+    
+    if (_whiteBoardON == YES) {
+        self.colorSelectView.hidden = YES;
+        CGPoint p = [[touches anyObject] locationInView:_drawView];
+        [self onPointCollected:p type:NTESWhiteboardPointTypeStart];
+    }else{
+        
+    }
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    CGPoint p = [[touches anyObject] locationInView:_drawView];
-    [self onPointCollected:p type:NTESWhiteboardPointTypeMove];
+    if (_whiteBoardON == YES) {
+        
+        CGPoint p = [[touches anyObject] locationInView:_drawView];
+        [self onPointCollected:p type:NTESWhiteboardPointTypeMove];
+    }else{
+        
+    }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    CGPoint p = [[touches anyObject] locationInView:_drawView];
-    [self onPointCollected:p type:NTESWhiteboardPointTypeEnd];
+    if (_whiteBoardON == YES) {
+        
+        CGPoint p = [[touches anyObject] locationInView:_drawView];
+        [self onPointCollected:p type:NTESWhiteboardPointTypeEnd];
+    }else{
+        
+    }
 }
 
 - (void)onPointCollected:(CGPoint)p type:(NTESWhiteboardPointType)type{
@@ -678,6 +699,7 @@
 {
     if (result == nil) {
         
+        _whiteBoardON = YES;
         if (_isJoined == YES) {
             
         }else{
@@ -691,6 +713,7 @@
             [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"CanSendVoice"];
             [_cmdHander sendPureCmd:NTESWhiteBoardCmdTypeSyncRequest to:nil];
             
+            _hintLabel.text = @"正在进行白板互动";
         }
         
     }else{
@@ -712,7 +735,6 @@
 {
     
     //加入音视频互动了
-    
     
 }
 
@@ -841,13 +863,21 @@
 
 - (void)whiteBoardOff{
     
+    _whiteBoardON = NO;
+    [[NTESMeetingRolesManager defaultManager]setMyWhiteBoard:NO];
     self.maskView.hidden = NO;
+    [self.maskView updateLayout];
+    _hintLabel.text = @"正在进行屏幕共享";
     
 }
 
 - (void)whiteBoardOn{
     
+    _whiteBoardON = YES;
+    [[NTESMeetingRolesManager defaultManager]setMyWhiteBoard:YES];
     self.maskView.hidden = YES;
+    [self.maskView updateLayout];
+    _hintLabel.text = @"正在进行白板互动";
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
@@ -856,6 +886,12 @@
         //转回竖屏的时候,白板重新加载一下子
 //        [[NTESMeetingRTSManager defaultManager].dataHandler handleReceivedData:nil sender:nil];
         [_drawView updateLayout];
+        if (_whiteBoardON == YES) {
+            self.maskView.hidden = YES;
+        }else{
+            
+            self.maskView.hidden = NO;
+        }
         
         
     }else if(toInterfaceOrientation == UIInterfaceOrientationLandscapeRight){

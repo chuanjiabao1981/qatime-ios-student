@@ -62,6 +62,8 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
  */
 @property (nonatomic, copy) NSString *strContent;
 
+@property (nonatomic, strong) NSMutableAttributedString *attributedStrContent ;
+
 
 /**
  图片消息内容

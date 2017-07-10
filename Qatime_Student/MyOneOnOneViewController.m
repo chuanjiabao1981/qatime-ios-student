@@ -414,8 +414,16 @@ typedef enum : NSUInteger {
             
             [self stopHUD];
             
+            NSString *lesson;
+            //遍历一下当前正在互动的课程
+            for (NSDictionary *dicss in dic[@"data"][@"interactive_lessons"]) {
+                if ([dicss[@"status"]isEqualToString:@"teaching"]) {
+                    lesson = dicss[@"name"];
+                }
+            }
+            
             NIMChatroom *chatroom = [[NIMChatroom alloc]init];
-            InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:mod.interactive_course.classID andChatTeamID:dic[@"data"][@"chat_team_id"]];
+            InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:mod.interactive_course.classID andChatTeamID:dic[@"data"][@"chat_team_id"] andLessonName:lesson==nil?@"暂无直播":lesson];
             [self.navigationController pushViewController:controller animated:YES];
             
         }else{

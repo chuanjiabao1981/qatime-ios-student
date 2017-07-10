@@ -92,6 +92,8 @@
     /* 设置TabBarController*/
     [self setTabBarController];
     
+    NSLog(@"沙盒路径:%@",NSHomeDirectory());
+    
     /* 判断是否是第一次进入程序,加载引导图页面*/
     NSUserDefaults *useDef = [NSUserDefaults standardUserDefaults];
     // 使用 NSUserDefaults 读取用户数据
@@ -779,6 +781,15 @@
     /* 退出云信*/
     [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error){}];
     
+    /*这里,发个用户退出登录的通知.作用有2
+     1.堆栈里的个人页面pop一页
+     2.tab切换到主页
+     */
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"LogoutToRoot" object:nil];
+    
+    //强干成第一个tab
+    [_viewController setSelectedIndex:0];
+    
     _loginViewController = [[LoginViewController alloc]init];
     
     naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
@@ -787,6 +798,7 @@
     [UIView transitionFromView:_window.rootViewController.view toView:naviVC.view duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
         
         [_window setRootViewController:naviVC];
+        
     }];
     
 }

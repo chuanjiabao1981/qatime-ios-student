@@ -58,7 +58,7 @@
  @param chatroom 聊天室对象
  @return 对象
  */
-- (instancetype)initWithChatroom:(NIMChatroom *)chatroom andClassID:(NSString *)classID andChatTeamID:(NSString *)chatTeamID;
+- (instancetype)initWithChatroom:(NIMChatroom *)chatroom andClassID:(NSString *)classID andChatTeamID:(NSString *)chatTeamID andLessonName:(NSString *)lessonName;
 
 
 @end

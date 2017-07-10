@@ -373,6 +373,16 @@
     /**接收支付密码设置成功的消息*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(payPasswordSuccess) name:@"SetPayPasswordSuccess" object:nil];
     
+    [self checkPayPassword];
+    
+    //切换账号成功后,要再次查询用户是否设置了支付密码
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(checkPayPassword) name:@"UserLogin" object:nil];
+    
+}
+
+
+- (void)checkPayPassword{
+    
     /**异步线程请求账户信息,是否设置了支付密码*/
     if (_token&&_idNumber) {
         
@@ -383,7 +393,7 @@
         });
         
     }
-    
+
 }
 
 #pragma mark- 查看所有教师和回放课程部分
@@ -1501,15 +1511,17 @@
                 }
             }
             
-            [self HUDStopWithTitle:NSLocalizedString(@"基础信息获取成功", nil)];
+//            [self HUDStopWithTitle:NSLocalizedString(@"基础信息获取成功", nil)];
             
         }else{
             
             [self HUDStopWithTitle:NSLocalizedString(@"基础信息获取失败", nil)];
+            [self requestBasicInformation];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [self HUDStopWithTitle:nil];
+        
     }];
     
     
@@ -1714,7 +1726,6 @@
                  
                  [self checkCityListWithInformationChange:placemark];
              }
-             
              
              if (!_localCity) {
                  //四大直辖市的城市信息无法通过locality获得，只能通过获取省份的方法来获得（如果city为空，则可知为直辖市）
@@ -1934,8 +1945,6 @@
             
         }
     }
-    
-//    locationController.hotCitys = @[@"1",@"266"];
     
     locationController.hidesBottomBarWhenPushed = YES;
     [self .navigationController pushViewController:locationController animated:YES];

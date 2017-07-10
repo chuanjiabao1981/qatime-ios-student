@@ -14,7 +14,6 @@
 
 @property (nonatomic) BOOL showFullScreenBtn;
 
-
 @property (nonatomic, strong) IJKFloatingView *teacherCamera ;
 @property (nonatomic, strong) IJKFloatingView *selfCamera ;
 @property (nonatomic, assign) BOOL videoStart ;

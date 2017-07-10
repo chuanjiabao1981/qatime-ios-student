@@ -39,6 +39,67 @@
         .rightSpaceToView(self, 10*ScrenScale)
         .heightIs(0.5);
         
+        //教师头像
+        _teacherHeaderImage = [[UIImageView alloc]init];
+        [self addSubview:_teacherHeaderImage];
+        _teacherHeaderImage.sd_layout
+        .leftEqualToView(_gradeAndSubject)
+        .topSpaceToView(line, 10*ScrenScale)
+        .leftEqualToView(line)
+        .heightIs(60*ScrenScale)
+        .widthEqualToHeight();
+        _teacherHeaderImage.sd_cornerRadiusFromHeightRatio = @0.5;
+        
+        //教师名
+        _teacherName = [[UILabel alloc]init];
+        [self addSubview:_teacherName];
+        _teacherName.font = TEXT_FONTSIZE;
+        _teacherName.textColor = TITLECOLOR;
+        _teacherName.sd_layout
+        .centerYEqualToView(_teacherHeaderImage)
+        .leftSpaceToView(_teacherName, 10)
+        .autoHeightRatio(0);
+        [_teacherName setSingleLineAutoResizeWithMaxWidth:200];
+        
+        //性别
+        _teacherGenderImage = [[UIImageView alloc]init];
+        [self addSubview:_teacherGenderImage];
+        _teacherGenderImage.sd_layout
+        .centerYEqualToView(_teacherName)
+        .leftSpaceToView(_teacherName, 5*ScrenScale)
+        .heightRatioToView(_teacherName, 0.6)
+        .widthEqualToHeight();
+        
+        //箭头子
+        UIImageView *arrow = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"rightArrow"]];
+        [self addSubview:arrow];
+        arrow.sd_layout
+        .rightSpaceToView(self, 10)
+        .centerYEqualToView(_teacherGenderImage)
+        .heightRatioToView(_teacherGenderImage, 0.8)
+        .widthEqualToHeight();
+        
+        //分割线
+        UIView *line2 = [[UIView alloc]init];
+        [self addSubview:line2];
+        line2.backgroundColor = SEPERATELINECOLOR_2;
+        line2.sd_layout
+        .leftSpaceToView(self, 10*ScrenScale)
+        .topSpaceToView(_teacherHeaderImage, 10*ScrenScale)
+        .rightSpaceToView(self, 10*ScrenScale)
+        .heightIs(0.5);
+        
+        
+        //俩分割线中间贴个图,加个手势
+        _teachersInfo = [[UIView alloc]init];
+        [self addSubview:_teachersInfo];
+        _teachersInfo.sd_layout
+        .leftSpaceToView(self, 0)
+        .rightSpaceToView(self, 0)
+        .topEqualToView(line)
+        .bottomEqualToView(line2);
+        _teachersInfo.userInteractionEnabled = YES ;
+        
         //年级科目
         UILabel *gradeAndSubject = [[UILabel alloc]init];
         [self addSubview:gradeAndSubject];
@@ -47,7 +108,7 @@
         gradeAndSubject.textColor = TITLECOLOR;
         gradeAndSubject.sd_layout
         .leftEqualToView(_name)
-        .topSpaceToView(line, 10*ScrenScale)
+        .topSpaceToView(line2, 10*ScrenScale)
         .autoHeightRatio(0);
         [gradeAndSubject setSingleLineAutoResizeWithMaxWidth:200];
         
@@ -60,51 +121,7 @@
         .topEqualToView(gradeAndSubject)
         .autoHeightRatio(0);
         [_gradeAndSubject setSingleLineAutoResizeWithMaxWidth:200];
-        
-        
-        //授课老师
-        UILabel *teacher = [[UILabel alloc]init];
-        [self addSubview:teacher];
-        teacher.text = @"授课教师:";
-        teacher.font = TEXT_FONTSIZE;
-        teacher.textColor = TITLECOLOR;
-        teacher.sd_layout
-        .leftEqualToView(_name)
-        .topSpaceToView(gradeAndSubject, 10*ScrenScale)
-        .autoHeightRatio(0);
-        [teacher setSingleLineAutoResizeWithMaxWidth:200];
-        
-        //教师头像
-        _teacherHeaderImage = [[UIImageView alloc]init];
-        [self addSubview:_teacherHeaderImage];
-        _teacherHeaderImage.sd_layout
-        .leftEqualToView(_gradeAndSubject)
-        .topEqualToView(teacher)
-        .heightRatioToView(teacher, 1.0)
-        .widthEqualToHeight();
-        _teacherHeaderImage.sd_cornerRadiusFromHeightRatio = @0.5;
-        
-        //教师名
-        _teacherName = [[UILabel alloc]init];
-        [self addSubview:_teacherName];
-        _teacherName.font = TEXT_FONTSIZE;
-        _teacherName.textColor = TITLECOLOR;
-        _teacherName.sd_layout
-        .leftSpaceToView(_teacherHeaderImage, 5*ScrenScale)
-        .topEqualToView(teacher)
-        .autoHeightRatio(0);
-        [_teacherName setSingleLineAutoResizeWithMaxWidth:200];
-        
-        //性别
-        _teacherGenderImage = [[UIImageView alloc]init];
-        [self addSubview:_teacherGenderImage];
-        _teacherGenderImage.sd_layout
-        .centerYEqualToView(_teacherName)
-        .leftSpaceToView(_teacherName, 5*ScrenScale)
-        .heightRatioToView(_teacherName, 0.6)
-        .widthEqualToHeight();
-    
-        
+
         //视频时长
         UILabel *duaring = [[UILabel alloc]init];
         [self addSubview:duaring];
@@ -113,7 +130,7 @@
         duaring.textColor = TITLECOLOR;
         duaring.sd_layout
         .leftEqualToView(_name)
-        .topSpaceToView(teacher, 10*ScrenScale)
+        .topSpaceToView(gradeAndSubject, 10*ScrenScale)
         .autoHeightRatio(0);
         [duaring setSingleLineAutoResizeWithMaxWidth:200];
         

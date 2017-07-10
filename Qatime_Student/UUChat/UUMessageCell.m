@@ -54,7 +54,6 @@
         self.backgroundColor = [UIColor clearColor];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        
         // 1、创建时间
         self.labelTime = [[UILabel alloc] init];
         self.labelTime.textAlignment = NSTextAlignmentCenter;
@@ -331,7 +330,7 @@
         self.noticeLabel.hidden = YES;
         self.timeLabel.hidden = NO;
         self.title.hidden = NO;
-        self.sendfaild.hidden = NO;
+        self.sendfaild.hidden = YES;
         headImageBackView.hidden = NO;
         
         // 1、设置时间
@@ -483,6 +482,7 @@
             if (messageFrame.message.type == UUMessageTypeText) {
                 
                 [_sendfaild sd_clearAutoLayoutSettings];
+                
                 _sendfaild.sd_layout
                 .centerYEqualToView(self.title)
                 .rightSpaceToView(self.title,10)
@@ -493,8 +493,8 @@
                 
                 [_sendfaild sd_clearAutoLayoutSettings];
                 _sendfaild.sd_layout
-                .centerYEqualToView(self.title)
-                .rightSpaceToView(self->headImageBackView,10)
+                .centerYEqualToView(self.btnContent)
+                .rightSpaceToView(self.btnContent,10)
                 .widthIs(20)
                 .heightEqualToWidth();
                 [_sendfaild updateLayout];
@@ -504,8 +504,8 @@
                 
                 [_sendfaild sd_clearAutoLayoutSettings];
                 _sendfaild.sd_layout
-                .centerYEqualToView(self.title)
-                .rightSpaceToView(self->headImageBackView,10)
+                .centerYEqualToView(self.btnContent)
+                .rightSpaceToView(self.btnContent,10)
                 .widthIs(20)
                 .heightEqualToWidth();
                 [_sendfaild updateLayout];
@@ -515,23 +515,23 @@
                 [_sendfaild sd_clearAutoLayoutSettings];
                 _sendfaild.sd_layout
                 .centerYEqualToView(self.title)
-                .leftSpaceToView(self->headImageBackView,10)
+                .leftSpaceToView(self.btnContent,10)
                 .widthIs(20)
                 .heightEqualToWidth();
                 [_sendfaild updateLayout];
             }else if(messageFrame.message.type == UUMessageTypePicture){
                 [_sendfaild sd_clearAutoLayoutSettings];
                 _sendfaild.sd_layout
-                .centerYEqualToView(self.title)
-                .leftSpaceToView(self->headImageBackView,10)
+                .centerYEqualToView(self.btnContent)
+                .leftSpaceToView(self.btnContent,10)
                 .widthIs(20)
                 .heightEqualToWidth();
                 [_sendfaild updateLayout];
             }else if(messageFrame.message.type == UUMessageTypeVoice){
                 [_sendfaild sd_clearAutoLayoutSettings];
                 _sendfaild.sd_layout
-                .centerYEqualToView(self.title)
-                .leftSpaceToView(self->headImageBackView,10)
+                .centerYEqualToView(self.btnContent)
+                .leftSpaceToView(self.btnContent,10)
                 .widthIs(20)
                 .heightEqualToWidth();
                 [_sendfaild updateLayout];
@@ -871,8 +871,12 @@
         
         if (messageFrame.message.strContent==nil) {
             self.noticeLabel.text = messageFrame.message.strContent;
+            self.noticeLabel.textAlignment = NSTextAlignmentCenter;
+            
         }else{
-             self.noticeLabel.text = messageFrame.message.strContent;
+            self.noticeLabel.text = messageFrame.message.strContent;
+            self.noticeLabel.textAlignment = NSTextAlignmentCenter;
+            
         }
         self.noticeContentView.sd_layout
         .centerYEqualToView(self.contentView)
@@ -892,9 +896,6 @@
         .heightIs(self.noticeLabel.height_sd+20)
         .widthIs(self.noticeLabel.width_sd+20);
         [self.noticeContentView updateLayout];
-        
-        
-        
         
     }
 }
