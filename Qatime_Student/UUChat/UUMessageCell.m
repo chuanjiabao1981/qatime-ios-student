@@ -228,7 +228,7 @@
             contentVoiceIsPlaying = YES;
             audio = [UUAVAudioPlayer sharedInstance];
             audio.delegate = self;
-            //        [audio playSongWithUrl:voiceURL];
+//                    [audio playSongWithUrl:voiceURL];
             [audio playSongWithData:songData];
             
         }else{

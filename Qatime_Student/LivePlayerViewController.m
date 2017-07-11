@@ -471,7 +471,7 @@ bool ismute     = NO;
         _boardPlayerView.tag = 0;
         
         [_ makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
-        [_ sendSubviewToBack:_.placeholderImage];
+//        [_ sendSubviewToBack:_.placeholderImage];
         /* 当前不可移动*/
         _.canMove = NO;
         /* 不可移动的情况下,移除移动手势*/
@@ -497,7 +497,7 @@ bool ismute     = NO;
         .autoHeightRatio(9/16.0);
         _teacherPlayerView.tag = 1;
         [_ makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
-        [_ sendSubviewToBack:_.placeholderImage];
+//        [_ sendSubviewToBack:_.placeholderImage];
         
         /* 老师播放器不可移动*/
         _.canMove = NO;
@@ -561,7 +561,7 @@ bool ismute     = NO;
             .bottomEqualToView(_boardPlayerView);
             
             [_boardPlayerView bringSubviewToFront:_liveplayerBoard.view];
-            [_boardPlayerView makePlaceHolderImage:nil];
+//            [_boardPlayerView makePlaceHolderImage:nil];
         }
         
         
@@ -619,7 +619,7 @@ bool ismute     = NO;
             .bottomEqualToView(_teacherPlayerView);
             
             [_teacherPlayerView bringSubviewToFront:_liveplayerTeacher.view];
-            [_teacherPlayerView makePlaceHolderImage:nil];
+//            [_teacherPlayerView makePlaceHolderImage:nil];
         }
     }
     
@@ -2446,6 +2446,12 @@ bool ismute     = NO;
     /**课程通知图*/
     _classNotice = [[ClassNotice alloc]init];
     [_liveClassInfoView.view1 addSubview:_classNotice];
+    _classNotice.classNotice.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        //请求公告
+        [self requestNotice];
+    }];
+    [_classNotice.classNotice.mj_header beginRefreshing];
+    _classNotice.classNotice.tableFooterView = [[UIView alloc]init];
     
     _classNotice.sd_layout
     .topEqualToView(_liveClassInfoView.view1)
@@ -2622,6 +2628,35 @@ bool ismute     = NO;
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordEnd) name:@"RecordEnd" object:nil];
     
     
+}
+
+- (void)requestNotice{
+    
+    _noticesArr = @[].mutableCopy;
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/realtime",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+            for (NSDictionary *notice in dic[@"data"][@"announcements"]) {
+                
+                if ([notice[@"lastest"] boolValue] == YES) {
+                    Notice *mod = [Notice yy_modelWithJSON:notice];
+                    [_noticesArr addObject:mod];
+                }
+            }
+            
+            [_classNotice.classNotice cyl_reloadData];
+            [_classNotice.classNotice.mj_header endRefreshing];
+        }else{
+            [_classNotice.classNotice cyl_reloadData];
+            [_classNotice.classNotice.mj_header endRefreshing];
+        }
+        
+    } failure:^(id  _Nullable erros) {
+        [_classNotice.classNotice cyl_reloadData];
+        [_classNotice.classNotice.mj_header endRefreshing];
+    }];
 }
 
 
@@ -4165,6 +4200,9 @@ bool ismute     = NO;
             [self.chatModel addSpecifiedNotificationItem:notice];
             [self.chatTableView reloadData];
             [self tableViewScrollToBottom];
+            
+            //收到公告了就发个消息,自动刷新公告
+            [self requestNotice];
         }
     }
     
@@ -4319,7 +4357,7 @@ bool ismute     = NO;
 
 - (void)updateViewsNotice{
     
-    [_classNotice.classNotice reloadData];
+    [_classNotice.classNotice cyl_reloadData];
     //    [_liveClassInfoView.noticeTabelView setNeedsDisplay];
     
     
@@ -4328,8 +4366,6 @@ bool ismute     = NO;
 - (void)updateViewsInfos{
     
     [_classList.classListTableView reloadData];
-    [_classList.classListTableView  setNeedsDisplay];
-    [_classList.classListTableView  setNeedsLayout];
     
     
 }
@@ -4347,37 +4383,35 @@ bool ismute     = NO;
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {
     
-    if (tableView.tag==1) {
-        Notice *model =[Notice yy_modelWithJSON:_noticesArr[indexPath.row]];
+    
+    CGFloat height = 0.0;
+    if (tableView.tag==20) {
+        
         // 获取cell高度
-        return  [tableView cellHeightForIndexPath:indexPath model:model keyPath:@"model" cellClass:[NoticeTableViewCell class] contentViewWidth: [UIScreen mainScreen].bounds.size.width];
+        height= [tableView cellHeightForIndexPath:indexPath model:_noticesArr[indexPath.row] keyPath:@"model" cellClass:[NoticeTableViewCell class] contentViewWidth: self.view.width_sd];
         
     }
     
     
     if (tableView.tag ==2) {
-        if (_classesArr.count ==0) {
-            
-        }else{
             
             Classes *mod =[Classes yy_modelWithJSON: _classesArr[indexPath.row]];
             // 获取cell高度
-            return  [tableView cellHeightForIndexPath:indexPath model:mod keyPath:@"classModel" cellClass:[ClassesListTableViewCell class] contentViewWidth: [UIScreen mainScreen].bounds.size.width];
+            height =  [tableView cellHeightForIndexPath:indexPath model:mod keyPath:@"classModel" cellClass:[ClassesListTableViewCell class] contentViewWidth: [UIScreen mainScreen].bounds.size.width];
             
-        }
+        
         
     }
     if (tableView.tag ==3) {
-        return [self.chatModel.dataSource[indexPath.row] cellHeight];
+        height =  [self.chatModel.dataSource[indexPath.row] cellHeight];
     }
     
     if (tableView.tag==10) {
-        return  50;
+        height =   50;
     }
     
     
-    
-    return 0;
+    return height;
     
 }
 
@@ -4448,19 +4482,6 @@ bool ismute     = NO;
     
     
 }
-//列表占位图
-- (UIView *)makePlaceHolderView{
-    
-    HaveNoClassView *view = [[HaveNoClassView alloc]init];
-    view.titleLabel.text = @"暂时没有公告";
-    [view updateLayout];
-    return view;
-}
-
-- (BOOL)enableScrollWhenPlaceHolderViewShowing{
-    
-    return YES;
-}
 
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
@@ -4491,44 +4512,27 @@ bool ismute     = NO;
     
     NSInteger rows=0;
     
-    if (tableView.tag==1) {
+    if (tableView.tag==20) {
         
-        if (_noticesArr.count==0) {
-            rows = 0;
-        }else{
-            
-            rows=_noticesArr.count;
-        }
+        rows=_noticesArr.count;
+        
     }
     
     if (tableView.tag ==2) {
-        if (_classesArr.count==0) {
-            rows = 0;
-        }else{
-            
-            rows=_classesArr.count;
-        }
         
+        rows=_classesArr.count;
         
     }
     
     if (tableView.tag ==3) {
         
-        if (self.chatModel.dataSource.count == 0) {
-            rows = 0;
-        }else{
-            
-            rows = self.chatModel.dataSource.count;
-        }
+        rows = self.chatModel.dataSource.count;
         
     }
     if (tableView.tag ==10) {
-        if (_membersArr.count==0) {
-            
-            rows = 0;
-        }else{
-            rows = _membersArr.count;
-        }
+      
+        rows = _membersArr.count;
+        
     }
     
     return rows;
@@ -4547,18 +4551,12 @@ bool ismute     = NO;
             if (cell==nil) {
                 cell=[[NoticeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
-                if (_noticesArr.count==0) {
-                    
-                    [_classNotice.classNotice cyl_reloadData];
-                    
-                }else if (_noticesArr.count>indexPath.row){
-                    
-                    Notice *mod =[Notice yy_modelWithJSON: _noticesArr[indexPath.row]];
-                    
-                    cell.model = mod;
-                    [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-                    
-                }
+            }
+            if (_noticesArr.count>indexPath.row){
+                
+                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+                cell.model = _noticesArr[indexPath.row];
+                
             }
             return cell;
             
@@ -4575,36 +4573,34 @@ bool ismute     = NO;
             if (idcell==nil) {
                 idcell=[[ClassesListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
-                if (_classesArr.count>indexPath.row) {
-                    
-                    Classes *mod =[Classes yy_modelWithJSON: _classesArr[indexPath.row]];
-                    
-                    mod.classID =_classesArr[indexPath.row][@"id"];
-                    
-                    idcell.classModel = mod;
-                    [idcell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-                    
-                    /* 用总的信息来判断,是否显示可以试听的按钮*/
-                    if (_classInfoDic) {
-                        if (_classInfoDic[@"is_bought"]) {
-                            if ([_classInfoDic[@"is_bought"]boolValue]==YES) {
+            }
+            if (_classesArr.count>indexPath.row) {
+                Classes *mod =[Classes yy_modelWithJSON: _classesArr[indexPath.row]];
+                mod.classID =_classesArr[indexPath.row][@"id"];
+                
+                idcell.classModel = mod;
+                [idcell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+                
+                /* 用总的信息来判断,是否显示可以试听的按钮*/
+                if (_classInfoDic) {
+                    if (_classInfoDic[@"is_bought"]) {
+                        if ([_classInfoDic[@"is_bought"]boolValue]==YES) {
+                            
+                            if (idcell.model.replayable == YES) {
                                 
-                                if (idcell.model.replayable == YES) {
-                                    
-                                    idcell.replay.hidden = NO;
-                                }else{
-                                    idcell.replay.hidden = YES;
-                                }
+                                idcell.replay.hidden = NO;
                             }else{
                                 idcell.replay.hidden = YES;
                             }
                         }else{
                             idcell.replay.hidden = YES;
                         }
-                        
+                    }else{
+                        idcell.replay.hidden = YES;
                     }
                     
                 }
+                
             }
             return idcell;
             
@@ -4643,12 +4639,7 @@ bool ismute     = NO;
                 cell =[[MemberListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
             }
             
-            if (_membersArr.count==0) {
-                
-                [_memberListView.memberListTableView cyl_reloadData];
-                
-                
-            }else if (_membersArr.count>indexPath.row) {
+            if (_membersArr.count>indexPath.row) {
                 
                 cell.model = [Members yy_modelWithJSON:_membersArr[indexPath.row]];
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
@@ -4670,6 +4661,7 @@ bool ismute     = NO;
     return  tableCell;
     
 }
+
 
 
 #pragma mark - UITableViewDelegate
@@ -5149,6 +5141,18 @@ bool ismute     = NO;
     [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"SupportedLandscape"];
     
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+
+- (UIView *)makePlaceHolderView{
+    
+    HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"暂无数据"];
+    return view;
+}
+
+- (BOOL)enableScrollWhenPlaceHolderViewShowing{
+    
+    return YES;
 }
 
 /* 把弹幕给释放掉*/

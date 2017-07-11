@@ -208,17 +208,26 @@
     if (_dataDic[@"product_type"]) {
         if ([_dataDic[@"product_type"] isEqualToString:@"LiveStudio::Course"]) {
             type = [NSString stringWithFormat:@"直播课"];
+            infos =[NSString stringWithFormat:@"%@/%@%@/共%@课/%@",type,_product[@"subject"],_product[@"grade"],_product[@"preset_lesson_count"],_product[@"teacher_name"]];
 
         }else if ([_dataDic[@"product_type"]isEqualToString:@"LiveStudio::InteractiveCourse"]){
             type = [NSString stringWithFormat:@"一对一"];
             
+            NSMutableString *name = @"".mutableCopy;
+            for (NSDictionary *teachers in _product[@"teachers"]) {
+                [name appendString:@"/"];
+                [name appendString:teachers[@"name"]];
+            }
+            
+            infos =[NSString stringWithFormat:@"%@/%@%@/共%@课/%@",type,_product[@"subject"],_product[@"grade"],_product[@"lessons_count"],[name substringFromIndex:1]];
+            
         }else if ([_dataDic[@"product_type"]isEqualToString:@"LiveStudio::VideoCourse"]){
             type = [NSString stringWithFormat:@"视频课"];
+            infos =[NSString stringWithFormat:@"%@/%@%@/共%@课/%@",type,_product[@"subject"],_product[@"grade"],_product[@"preset_lesson_count"],_product[@"teacher_name"]];
          
         }
         
         
-        infos =[NSString stringWithFormat:@"%@/%@%@/共%@课/%@",type,_product[@"subject"],_product[@"grade"],_product[@"preset_lesson_count"],_product[@"teacher_name"]];
 
     }else{
         

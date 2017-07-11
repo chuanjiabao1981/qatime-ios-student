@@ -596,13 +596,13 @@
          contextName = "-[TeachersPublicViewController numberOfSectionsInCollectionView:]:TeachersPublicViewController.m">
          <PersistentStrings>
             <PersistentString
+               value = "_videoCount">
+            </PersistentString>
+            <PersistentString
                value = "_publicCount">
             </PersistentString>
             <PersistentString
                value = "_oneOnOneCount">
-            </PersistentString>
-            <PersistentString
-               value = "_videoCount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -914,6 +914,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__41-[LivePlayerViewController requestNotice]_block_invoke:LivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_noticesArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__45-[OrderInfoViewController requestForBuyAgain]_block_invoke_2:OrderInfoViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -928,6 +936,9 @@
                value = "teacherInfo.teaching_years">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[PaidOrderTableViewCell setPaidModel:]:PaidOrderTableViewCell.m">
       </ContextState>
       <ContextState
          contextName = "-[NTESIJKSDLGLView displayInternal:clear:]:IJKSDLGLView.m">
@@ -1320,6 +1331,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[ChatViewController fetchMessageAttachment:didCompleteWithError:]:ChatViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__33-[ChatViewController viewDidLoad]_block_invoke:ChatViewController.m">
       </ContextState>
       <ContextState
@@ -1708,7 +1722,16 @@
          contextName = "-[UUMessageCell btnContentClick]:UUMessageCell.m">
          <PersistentStrings>
             <PersistentString
+               value = "voiceURL">
+            </PersistentString>
+            <PersistentString
                value = "self.messageFrame.message">
+            </PersistentString>
+            <PersistentString
+               value = "songData">
+            </PersistentString>
+            <PersistentString
+               value = "messageFrame.message.voice">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1853,6 +1876,9 @@
          contextName = "__75-[MyOneOnOneViewController requestOneOnOneWithRefreshStyle:andClassStatus:]_block_invoke:MyOneOnOneViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[AllClassViewController enterStudy:]:AllClassViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__38-[InteractionViewController getRoomID]_block_invoke_2:InteractionViewController.m">
       </ContextState>
       <ContextState
@@ -1942,6 +1968,14 @@
       </ContextState>
       <ContextState
          contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.735:LivePlayerViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[VideoClassInfoViewController enterStudy:]:VideoClassInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classInfo">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[TutoriumViewController textDidChange:]:TutoriumViewController.m">

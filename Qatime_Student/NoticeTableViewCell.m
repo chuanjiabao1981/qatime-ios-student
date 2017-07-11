@@ -88,6 +88,7 @@
 
         [self setupAutoHeightWithBottomView:_announcement bottomMargin:10];
         
+        
     }
     
     return self;
@@ -101,7 +102,7 @@
     
     _edit_at.text = model.edit_at;
     
-    _announcement.text = model.announcement;
+    _announcement.text = model.content;
     
 }
 

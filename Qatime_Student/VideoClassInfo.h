@@ -46,5 +46,7 @@
 
 @property (nonatomic, strong) NSString *product_type ;
 
+@property (nonatomic, strong) NSDictionary *ticket ;
+
 
 @end

@@ -11,7 +11,6 @@
 
 @interface ClassTimeTableViewCell : UITableViewCell
 
-
 /**
  课程图片
  */

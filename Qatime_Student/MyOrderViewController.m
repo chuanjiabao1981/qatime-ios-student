@@ -383,6 +383,34 @@ typedef enum : NSUInteger {
                     for (NSDictionary *paid in dic[@"data"]) {
                         Paid *mod = [Paid yy_modelWithJSON:paid];
                         mod.orderID = paid[@"id"];
+                        if (mod.teacher_name == nil) {
+                            
+                            if (![paid[@"product"]isEqual:[NSNull null]]) {
+                                if (paid[@"product"][@"teacher_name"]) {
+                                    
+                                    mod.teacher_name = paid[@"product"][@"teacher_name"];
+                                }
+                            }else if (![paid[@"product_video_course"]isEqual:[NSNull null]]){
+                                if (paid[@"product_video_course"][@"teacher_name"]) {
+                                    
+                                    mod.teacher_name = paid[@"product_video_course"][@"teacher_name"];
+                                }
+
+                            }else if (![paid[@"product_interactive_course"]isEqual:[NSNull null]]){
+                                if (paid[@"product_interactive_course"][@"teachers"]) {
+                                    
+                                    NSMutableString *name = @"".mutableCopy;
+                                    for (NSDictionary *dics in paid[@"product_interactive_course"][@"teachers"]) {
+                                        [name appendString:@"/"];
+                                        [name appendString:dics[@"name"]];
+                                    }
+                                    
+                                    mod.teacher_name = [name substringFromIndex:1];
+                                }
+
+                            }
+                            
+                        }
                         [_paidArr addObject:mod];
                     }
                     [_myOrderView.paidView.mj_header endRefreshing];

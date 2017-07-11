@@ -22,6 +22,11 @@
 #import "OneOnOneTutoriumInfoViewController.h"
 #import "VideoClassInfoViewController.h"
 
+#import "LivePlayerViewController.h"
+#import "VideoClassPlayerViewController.h"
+#import "InteractionViewController.h"
+#import "UIViewController+AFHTTP.h"
+
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
 
@@ -493,13 +498,15 @@
     if (cell==nil) {
         cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
         
-        cell.sd_tableView = tableView;
+        
         
     }
     if (_dataArr.count!=0) {
         
         cell.model = _dataArr[indexPath.row];
-        
+        [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+        cell.enterButton.tag = indexPath.row;
+        [cell.enterButton addTarget:self action:@selector(enterStudy:) forControlEvents:UIControlEventTouchUpInside];
         [cell showTasteState:NO];
         
     }
@@ -534,6 +541,56 @@
     
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
+    
+}
+
+/** 进入学习 */
+- (void)enterStudy:(UIButton *)sender{
+    
+    ClassTimeTableViewCell *cell = [_classTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag inSection:0]];
+    __block UIViewController *controller;
+    if ([cell.model.modal_type isEqualToString:@"LiveStudio::Lesson"]) {
+        //直播课
+        controller= [[LivePlayerViewController alloc]initWithClassID:cell.model.course_id];
+         [self.navigationController pushViewController:controller animated:YES];
+    }else if ([cell.model.modal_type isEqualToString:@"LiveStudio::VideoLesson"]){
+        //视频课
+        //先获取视频课程的详情吧
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@",Request_Header,cell.model.classID] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
+           
+        } failure:^(id  _Nullable erros) {
+            
+        }];
+     
+    }else if ([cell.model.modal_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
+        //一对一
+        //加工数据
+        //1.聊天室
+        NIMChatroom *chatroom = [[NIMChatroom alloc]init];
+        chatroom.roomId = cell.model.classID;
+        //2.lessonname
+        __block NSString *lessonName ;
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/detail",Request_Header,cell.model.classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                
+                for (NSDictionary *lesson in dic[@"data"][@"interactive_course"][@"interactive_lessons"]) {
+                    if ([lesson[@"status"]isEqualToString:@"teaching"]) {
+                        lessonName = lesson[@"name"];
+                    }
+                }
+                
+                controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:cell.model.classID andChatTeamID:cell.model.classID andLessonName:lessonName==nil?@"暂无直播":lessonName];
+                 [self.navigationController pushViewController:controller animated:YES];
+            }else{
+                [self HUDStopWithTitle:@"网络繁忙,请稍后重试"];
+            }
+            
+        } failure:^(id  _Nullable erros) {
+            [self HUDStopWithTitle:@"请检查网络"];
+        }];
+        
+    }
     
 }
 

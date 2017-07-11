@@ -578,12 +578,20 @@ typedef enum : NSUInteger {
                 if ([dic[@"error"][@"msg"] rangeOfString:@"目前不对外招生"].location != NSNotFound ) {
                     
                     [self HUDStopWithTitle:@"该课程目前不对外招生"];
+                }else if ([dic[@"error"][@"msg"] rangeOfString:@"您已经购买过该课程"].location != NSNotFound ){
+                    [self HUDStopWithTitle:@"您已经购买过该课程"];
+                }else{
+                    
+                    [self HUDStopWithTitle:@"购买失败"];
                 }
+            }
+            else{
+                [self HUDStopWithTitle:@"购买失败"];
             }
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+        [self HUDStopWithTitle:@"请检查网络"];
     }];
     
 }

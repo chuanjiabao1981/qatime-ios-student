@@ -12,5 +12,8 @@
 
 @property(nonatomic,strong) NSString *announcement ;
 @property(nonatomic,strong) NSString *edit_at ;
+@property (nonatomic, strong) NSString *content ;
+@property (nonatomic, assign) BOOL lastest ;
+@property (nonatomic, strong) NSString *created_at ;
 
 @end

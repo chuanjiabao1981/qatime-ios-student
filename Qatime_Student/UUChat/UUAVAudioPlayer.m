@@ -56,8 +56,9 @@
     _player = [[AVAudioPlayer alloc]initWithData:soundData error:&playerError];
     _player.volume = 1.0f;
     if (_player == nil){
-        NSLog(@"ERror creating player: %@", [playerError description]);
+        NSLog(@"音频播放器添加错误: %@", [playerError description]);
     }
+    NSLog(@"音频播放器添加: %@", [playerError description]);
     _player.delegate = self;
     [_player play];
     [self.delegate UUAVAudioPlayerBeiginPlay];

@@ -54,6 +54,8 @@ typedef enum : NSUInteger {
     /**课程特色 数组*/
     NSMutableArray *_classFeaturesArray;
     
+    BOOL _isBought;
+    
 }
 /**主视图*/
 @property (nonatomic, strong) VideoClassInfoView *videoClassInfoView ;
@@ -183,13 +185,24 @@ typedef enum : NSUInteger {
         if ([dic[@"status"]isEqualToNumber:@1]) {
             _classInfo = [VideoClassInfo yy_modelWithJSON:dic[@"data"][@"video_course"]];
             _classInfo.classID = dic[@"data"][@"video_course"][@"id"];
-           
+            _classInfo.ticket = dic[@"data"][@"ticket"];
+            
+            if (![_classInfo.ticket isEqual:[NSNull null]]&&[_classInfo.ticket[@"status"]isEqualToString:@"active"]) {
+                
+                _isBought = YES;
+                
+            }else{
+                
+                _isBought = NO;
+                
+            }
+            
             //特色
-            for (NSString *key in dic[@"data"][@"icons"]) {
+            for (NSString *key in dic[@"data"][@"video_course"][@"icons"]) {
                 if (![key isEqualToString:@"cheap_moment"]) {
-                    if ([dic[@"data"][@"icons"][key]boolValue]==YES) {
+                    if ([dic[@"data"][@"video_course"][@"icons"][key]boolValue]==YES) {
                         Features *mod = [[Features alloc]init];
-                        mod.include = [dic[@"data"][@"icons"][key] boolValue];
+                        mod.include = [dic[@"data"][@"video_course"][@"icons"][key] boolValue];
                         mod.content = key;
                         [_classFeaturesArray addObject:mod];
                     }
@@ -222,7 +235,7 @@ typedef enum : NSUInteger {
             if ([_classInfo.sell_type isEqualToString:@"charge"]) {
                 
                 //如果已经购买,直接进入学习
-                if (_classInfo.is_bought == YES) {
+                if (_isBought == YES) {
                     _buyBar.leftButton.hidden = YES;
                     _buyBar.rightButton.layer.borderColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0].CGColor;
                     _buyBar.rightButton.backgroundColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0];
@@ -275,7 +288,7 @@ typedef enum : NSUInteger {
                 //如果是免费课
                 _buyBar.leftButton.hidden = YES;
                 
-                if (_classInfo.is_bought == YES) {
+                if (_isBought == YES) {
                     
                     _buyBar.rightButton.layer.borderColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0].CGColor;
                     _buyBar.rightButton.backgroundColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0];
@@ -364,9 +377,9 @@ typedef enum : NSUInteger {
     
     if ([_classInfo.sell_type isEqualToString:@"charge"]) {
         
-        if (_classInfo.is_bought == YES) {
+        //已购买的判断逻辑改了,有ticket并且是active才算购买了
+        if (_isBought == YES) {
             //进入学习
-            
             VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:nil andIndexPath:nil];
             [self.navigationController pushViewController:controller animated:YES];
             [self HUDStopWithTitle:nil];
@@ -378,7 +391,7 @@ typedef enum : NSUInteger {
         }
     }else if ([_classInfo.sell_type isEqualToString:@"free"]){
         
-        if (_classInfo.is_bought == YES) {
+        if (_isBought == YES) {
             
             //进入学习
             VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:nil andIndexPath:nil];
@@ -433,7 +446,7 @@ typedef enum : NSUInteger {
     if (_classArray.count>indexPath.row) {
         
         cell.model = _classArray[indexPath.row];
-        if (_classInfo.is_bought == YES) {
+        if (_isBought == YES) {
             
             cell.status.hidden = YES;
         }else{
@@ -463,7 +476,7 @@ typedef enum : NSUInteger {
     
     VideoClassListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    if (_classInfo.is_bought == YES) {
+    if (_isBought == YES) {
         //进入观看
         VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
         [self.navigationController pushViewController:controller animated:YES];

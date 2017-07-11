@@ -42,7 +42,7 @@
     //通道数
     [settings setValue :[NSNumber numberWithInt:2] forKey: AVNumberOfChannelsKey];
     //音频质量,采样质量
-    [settings setValue:[NSNumber numberWithInt:AVAudioQualityMin] forKey:AVEncoderAudioQualityKey];
+    [settings setValue:[NSNumber numberWithInt:AVAudioQualityHigh] forKey:AVEncoderAudioQualityKey];
     //设置音频比特率
     [settings setValue:[NSNumber numberWithInt:16] forKey:AVEncoderBitRateKey];
     
@@ -203,7 +203,7 @@
 
 - (NSString *)mp3Path
 {
-    NSString *mp3Path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"mp3.amr"];
+    NSString *mp3Path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"mp3.aac"];
     return mp3Path;
 }
 

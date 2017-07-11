@@ -148,7 +148,7 @@
         
     }else if ([paidModel.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
         _name.text = paidModel.product_interactive_course[@"name"];
-        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:paidModel.product_type],paidModel.product_interactive_course[@"grade"],paidModel.product_interactive_course[@"subject"],paidModel.product_interactive_course[@"preset_lesson_count"],paidModel.product_interactive_course[@"teacher_name"]];
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:paidModel.product_type],paidModel.product_interactive_course[@"grade"],paidModel.product_interactive_course[@"subject"],paidModel.product_interactive_course[@"lessons_count"],paidModel.teacher_name];
     }
     
     _price.text = [NSString stringWithFormat:@"¥%@",paidModel.amount];
@@ -173,7 +173,7 @@
         _unTipsImage.hidden = YES;
         _rightButton.hidden = NO;
         
-    }else if ([paidModel.product_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
+    }else if ([paidModel.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
         //一对一课类型
         _unTips.hidden = YES;
         _unTipsImage.hidden = YES;
