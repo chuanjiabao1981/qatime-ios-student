@@ -220,8 +220,22 @@
             [self failRecord];
              [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordCancel" object:nil];
         }else{
-            [[NIMSDK sharedSDK].mediaManager stopRecord];
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordEnd" object:nil];
+            
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                // 处理耗时操作的代码块...
+                [[NIMSDK sharedSDK].mediaManager stopRecord];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordEnd" object:nil];
+                //通知主线程刷新
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //回调或者说是通知主线程刷新，
+                    
+                    [self layoutSubviews];
+                });
+                
+            });
+
+            
+            
         }
         [playTimer invalidate];
         playTimer = nil;
@@ -277,12 +291,11 @@
 /**  录制音频完成后的回调 **/
 - (void)recordAudio:(NSString *)filePath didCompletedWithError:(NSError *)error{
     
-//    NSData *data = [NSData dataWithContentsOfFile:filePath];
+    [self.delegate UUInputFunctionView:self voicePath:filePath  time:playTime];
+    [UUProgressHUD dismissWithSuccess:@"发送成功"];
     //音频消息发送方法
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [UUProgressHUD dismissWithSuccess:@"发送成功"];
         NSLog(@"%@",filePath);
-        [self.delegate UUInputFunctionView:self voicePath:filePath  time:playTime];
         //缓冲消失时间 (最好有block回调消失完成)
         self.voiceSwitchTextButton.enabled = NO;
         self.voiceSwitchTextButton.enabled = YES;
