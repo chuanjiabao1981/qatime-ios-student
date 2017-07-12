@@ -1450,7 +1450,7 @@
 #pragma mark- 获取程序所有的基础信息
 - (void)requestBasicInformation{
     
-    [self HUDStartWithTitle:NSLocalizedString(@"正在获取基础信息", nil)];
+//    [self HUDStartWithTitle:NSLocalizedString(@"正在获取基础信息", nil)];
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];

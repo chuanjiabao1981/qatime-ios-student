@@ -144,7 +144,6 @@ typedef enum : NSUInteger {
     
     ClassList *_classList;
     
-    
     /**课程通知图*/
     ClassNotice *_classNotice;
     
@@ -177,9 +176,10 @@ typedef enum : NSUInteger {
     /* 全屏模式下,双击小窗口切换视频的手势*/
     UITapGestureRecognizer *_doubelTap;
     
-    
     /* 切换横竖屏 使用的scrollview的contentsize*/
     CGSize scrollContentSize;
+    
+    
     
     
 #pragma mark- 聊天视图
@@ -241,6 +241,10 @@ typedef enum : NSUInteger {
     AVAudioRecorder *recorder;
     NSTimer *levelTimer;
     
+    
+    //横屏文件名
+    NSString *_fileNameString;
+
 }
 
 
@@ -2807,7 +2811,6 @@ bool ismute     = NO;
                 //                [self HUDStopWithTitle:@"暂时没有成员加入!"];
             }
             
-            
             [_membersArr insertObject:@{@"accid":teacher.accid==nil?@"":teacher.accid,@"name":teacher.name==nil?@"":teacher.name,@"icon":teacher.icon==nil?@"":teacher.icon} atIndex:0];
             
             
@@ -2819,6 +2822,10 @@ bool ismute     = NO;
             
             /* 解析 课程 数据*/
             _videoClassInfo = [LiveClassInfo yy_modelWithDictionary:dataDic];
+            
+            
+            //解析
+            
             
             /* 解析 聊天成员 数据*/
             
@@ -2863,8 +2870,12 @@ bool ismute     = NO;
                 _infoHeaderView.liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",_videoClassInfo.live_start_time ,_videoClassInfo.live_end_time];
             }
             
+            //解析出来当前课程名
+            
+            
             /* 课程名->播放文件名*/
-            _fileName.text = _videoClassInfo.name;
+//            _fileName.text = _fileNameString==nil?@"暂无直播":_fileNameString;
+            
             /* 课程简介,富文本赋值*/
             _infoHeaderView.classDescriptionLabel.attributedText = _videoClassInfo.attributedDescription;
             _infoHeaderView.classDescriptionLabel.isAttributedContent = YES;
@@ -4411,6 +4422,8 @@ bool ismute     = NO;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     if (tableView.tag == 2) {
         
         ClassesListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -4899,6 +4912,13 @@ bool ismute     = NO;
             [self playVideo:_liveplayerTeacher];
         }
         
+        _fileNameString = statusDic[@"name"];
+        if ([_fileName.text isEqualToString:_fileNameString]) {
+            
+        }else{
+            _fileName.text = _fileNameString==nil?@"暂无直播":_fileNameString;
+        }
+        
         
     }else if ([statusDic[@"board"]isEqualToString:@"0"]&&[statusDic[@"camera"]isEqualToString:@"0"]){
         //都成了初始状态了
@@ -4912,6 +4932,13 @@ bool ismute     = NO;
         }
         [_teacherPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
         
+        
+        _fileNameString = @"暂无直播";
+        if ([_fileName.text isEqualToString:_fileNameString]) {
+            
+        }else{
+            _fileName.text = @"暂无直播";
+        }
         
     }else if ([statusDic[@"board"]isEqualToString:@"2"]&&[statusDic[@"camera"]isEqualToString:@"2"]){
         
@@ -4938,9 +4965,14 @@ bool ismute     = NO;
         }
         [_teacherPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_ClosedVideo"]];
         
+        _fileNameString = @"暂无直播";
+        if ([_fileName.text isEqualToString:_fileNameString]) {
+            
+        }else{
+            _fileName.text = @"暂无直播";
+        }
         
     }
-    
     else{
         
         //其他的状态吧
@@ -5003,6 +5035,13 @@ bool ismute     = NO;
             
         }
         
+        _fileNameString = statusDic[@"name"];
+        if ([_fileName.text isEqualToString:_fileNameString]) {
+            
+        }else{
+            _fileName.text = _fileNameString==nil?@"暂无直播":_fileNameString;
+        }
+    
     }
     
 }

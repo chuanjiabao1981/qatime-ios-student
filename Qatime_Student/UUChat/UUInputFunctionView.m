@@ -202,14 +202,12 @@
     
 //    [MP3 startRecord];
     
-    [[NIMSDK sharedSDK].mediaManager record:NIMAudioTypeAMR duration:60];
     
-    playTime = 0;
-    playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
-    [UUProgressHUD show];
-    
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordStart" object:nil];
-    
+        [[NIMSDK sharedSDK].mediaManager record:NIMAudioTypeAMR duration:60];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordStart" object:nil];
+        playTime = 0;
+        playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
+        [UUProgressHUD show];
 }
 
 - (void)endRecordVoice:(UIButton *)button
