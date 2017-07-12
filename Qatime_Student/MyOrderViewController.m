@@ -395,7 +395,7 @@ typedef enum : NSUInteger {
                                     
                                     mod.teacher_name = paid[@"product_video_course"][@"teacher_name"];
                                 }
-
+                                
                             }else if (![paid[@"product_interactive_course"]isEqual:[NSNull null]]){
                                 if (paid[@"product_interactive_course"][@"teachers"]) {
                                     
