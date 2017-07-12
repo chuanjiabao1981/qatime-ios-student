@@ -307,6 +307,7 @@
 		549AE7651E013DBD001DD2ED /* BindingMailInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AE7641E013DBD001DD2ED /* BindingMailInfoViewController.m */; };
 		549C8D4E1EB1992C00CCD2FB /* ItunesProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 549C8D4D1EB1992C00CCD2FB /* ItunesProduct.m */; };
 		549C8D521EB1C65600CCD2FB /* JBWatchActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 549C8D511EB1C65600CCD2FB /* JBWatchActivityIndicator.m */; };
+		549C97131F161423005DF038 /* NSString+Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 549C97121F161423005DF038 /* NSString+Date.m */; };
 		549CAE071F0B7D80009C6BAC /* UIControl+EnloargeTouchArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 549CAE061F0B7D80009C6BAC /* UIControl+EnloargeTouchArea.m */; };
 		54A153AA1DC6F09D0070B508 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153A91DC6F09D0070B508 /* main.m */; };
 		54A153AD1DC6F09D0070B508 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153AC1DC6F09D0070B508 /* AppDelegate.m */; };
@@ -1259,6 +1260,8 @@
 		549C8D4D1EB1992C00CCD2FB /* ItunesProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItunesProduct.m; sourceTree = "<group>"; };
 		549C8D501EB1C65600CCD2FB /* JBWatchActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBWatchActivityIndicator.h; sourceTree = "<group>"; };
 		549C8D511EB1C65600CCD2FB /* JBWatchActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBWatchActivityIndicator.m; sourceTree = "<group>"; };
+		549C97111F161423005DF038 /* NSString+Date.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Date.h"; sourceTree = "<group>"; };
+		549C97121F161423005DF038 /* NSString+Date.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Date.m"; sourceTree = "<group>"; };
 		549CAE051F0B7D80009C6BAC /* UIControl+EnloargeTouchArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIControl+EnloargeTouchArea.h"; sourceTree = "<group>"; };
 		549CAE061F0B7D80009C6BAC /* UIControl+EnloargeTouchArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIControl+EnloargeTouchArea.m"; sourceTree = "<group>"; };
 		54A153A51DC6F09D0070B508 /* Qatime_Student.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Qatime_Student.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -5900,6 +5903,8 @@
 				545074571EDFB2970012A383 /* UIViewController+Token.m */,
 				54AA307A1DF9427D009E0D04 /* NSString+TimeStamp.h */,
 				54AA307B1DF9427D009E0D04 /* NSString+TimeStamp.m */,
+				549C97111F161423005DF038 /* NSString+Date.h */,
+				549C97121F161423005DF038 /* NSString+Date.m */,
 				541E20051E13B9AF007CF5D1 /* NSDate+ChangeUTC.h */,
 				541E20061E13B9AF007CF5D1 /* NSDate+ChangeUTC.m */,
 				54F3BA161DFC3013003998D0 /* UIViewController+Login.h */,
@@ -6527,6 +6532,7 @@
 				54FB1DCA1DF172E600BA9A3C /* BindingView.m in Sources */,
 				54AC03CB1E8938E100817767 /* NIMPageView.m in Sources */,
 				548D1D911EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.m in Sources */,
+				549C97131F161423005DF038 /* NSString+Date.m in Sources */,
 				54AC03FD1E8938E100817767 /* NIMSessionTextContentView.m in Sources */,
 				54AC04071E8938E100817767 /* NIMUsrInfoData.m in Sources */,
 				54AC04CD1E89398E00817767 /* renderer_yuv420p.c in Sources */,

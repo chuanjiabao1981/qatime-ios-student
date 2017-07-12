@@ -82,6 +82,9 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
  */
 @property (nonatomic, copy) NSString *strVoiceTime;
 
+/** 语音保存地址 */
+@property (nonatomic, strong) NSString *voicePath ;
+
 
 /**
  增加一个 是否是富文本的bool值,用来加载数据(和计算尺寸)

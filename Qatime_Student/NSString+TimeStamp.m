@@ -40,6 +40,8 @@
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
+    //这句话比较吊
+     [dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];
     //设定时间格式,这里可以设置成自己需要的格式
     
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];

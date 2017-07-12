@@ -267,7 +267,7 @@ static NSString *previousTime = nil;
 
 
 //别人发送语音消息
-- (NSDictionary *)getDicWithVoice:(NSData *)voiceData andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andVoicePath:(NSString *)voicePath andTime:(NSString *)time andMessage:(NIMMessage *)message{
+- (NSDictionary *)getDicWithName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andVoicePath:(NSString *)voicePath andTime:(NSString *)time andMessage:(NIMMessage *)message{
     
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     
@@ -286,12 +286,7 @@ static NSString *previousTime = nil;
         [dictionary setObject:time forKey:@"strVoiceTime"];
         
         
-        if (voiceData==nil) {
-            
-        }else{
-            [dictionary setObject:voiceData forKey:@"voice"];
-        }
-        if (name == nil) {
+                if (name == nil) {
             name = @"";
         }
         [dictionary setObject:name forKey:@"strName"];
@@ -301,6 +296,7 @@ static NSString *previousTime = nil;
         
         [dictionary setObject:[NSString  stringWithFormat:@"%@",date] forKey:@"strTime"];
         [dictionary setObject:message forKey:@"message"];
+        [dictionary setObject:voicePath forKey:@"voicePath"];
         
     }
     
