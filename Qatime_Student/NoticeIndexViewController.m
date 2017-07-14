@@ -134,17 +134,7 @@ typedef enum : NSUInteger {
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     [self.navigationController setNavigationBarHidden:YES];
-    
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-    
-    
+    [self getToken];
     /* 初始化*/
     _myClassArray = @[].mutableCopy;
     _noticeArray = @[].mutableCopy;
@@ -211,9 +201,18 @@ typedef enum : NSUInteger {
     //监听未读消息数量
     
     [self addObserver:self forKeyPath:@"unreadCountStr" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)getToken{
     
-    
-    
+    /* 提出token和学生id*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
+        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
+    }
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
+        
+        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
+    }
     
 }
 
@@ -283,6 +282,7 @@ typedef enum : NSUInteger {
 /* 获取辅导班聊天列表*/
 - (void)requestMyClass:(RefreshState)state{
     
+    [self getToken];
     switch (state) {
         case RefreshStatePullRefresh:{
             

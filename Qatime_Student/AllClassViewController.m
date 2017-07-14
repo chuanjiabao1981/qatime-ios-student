@@ -241,10 +241,6 @@
             
             if ([model.class_date isEqualToString:[dateFormatter stringFromDate:currentDate]]) {
                 
-                NSLog(@"%@",model.live_time);
-                NSLog(@"%@",[dateFormatter stringFromDate:currentDate]);
-                
-                
                 [_dataArr addObject:model];
                 
             }
@@ -277,7 +273,7 @@
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule?state=unclosed%@",Request_Header,_idNumber,dateString] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule_data?state=unclosed%@",Request_Header,_idNumber,dateString] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             _unclosedArr = @[].mutableCopy;
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -381,15 +377,11 @@
                     }
                     
                 }
-                
-                
-                
             }else{
                 
                 /* 回复数据不正确*/
                 
             }
-            
             
             /* 在所有数据的数组中，添加该数组*/
             [_allClassArr addObjectsFromArray:_closedArr];
@@ -498,8 +490,6 @@
     if (cell==nil) {
         cell=[[ClassTimeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
         
-        
-        
     }
     if (_dataArr.count!=0) {
         
@@ -507,7 +497,7 @@
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
         cell.enterButton.tag = indexPath.row;
         [cell.enterButton addTarget:self action:@selector(enterStudy:) forControlEvents:UIControlEventTouchUpInside];
-        [cell showTasteState:NO];
+        [cell showTasteState:cell.model.taste];
         
     }
     
@@ -527,16 +517,16 @@
     
     ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    if ([cell.type.text containsString:@"直播"]) {
+    if ([cell.model.product_type isEqualToString:@"LiveStudio::Course"]) {
         //直播课
-        controller= [[TutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
-    }else if ([cell.type.text containsString:@"视频"]){
+        controller= [[TutoriumInfoViewController alloc]initWithClassID:cell.model.product_id];
+    }else if ([cell.model.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
         //视频课
-        controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.course_id];
-    }else if ([cell.type.text containsString:@"一对一"]){
+        controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.product_id];
+    }else if ([cell.model.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
         //一对一
-        controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
-//        [self HUDStopWithTitle:@"正在开发中,敬请期待"];
+        //                [self HUDStopWithTitle:@"正在开发中,敬请期待"];
+        controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.model.product_id];
     }
     
     controller.hidesBottomBarWhenPushed = YES;
@@ -551,7 +541,7 @@
     __block UIViewController *controller;
     if ([cell.model.modal_type isEqualToString:@"LiveStudio::Lesson"]) {
         //直播课
-        controller= [[LivePlayerViewController alloc]initWithClassID:cell.model.course_id];
+        controller= [[LivePlayerViewController alloc]initWithClassID:cell.model.product_id];
          [self.navigationController pushViewController:controller animated:YES];
     }else if ([cell.model.modal_type isEqualToString:@"LiveStudio::VideoLesson"]){
         //视频课
@@ -570,7 +560,7 @@
         chatroom.roomId = cell.model.classID;
         //2.lessonname
         __block NSString *lessonName ;
-        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/detail",Request_Header,cell.model.classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/detail",Request_Header,cell.model.product_id] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqualToNumber:@1]) {
                 
@@ -580,7 +570,7 @@
                     }
                 }
                 
-                controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:cell.model.classID andChatTeamID:cell.model.classID andLessonName:lessonName==nil?@"暂无直播":lessonName];
+                controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:cell.model.classID andChatTeamID:cell.model.product_id andLessonName:lessonName==nil?@"暂无直播":lessonName];
                  [self.navigationController pushViewController:controller animated:YES];
             }else{
                 [self HUDStopWithTitle:@"网络繁忙,请稍后重试"];

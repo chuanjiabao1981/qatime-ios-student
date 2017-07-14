@@ -84,6 +84,7 @@
             self.type = UUMessageTypeVoice;
             self.voice = [dict[@"voice"] mutableCopy];
             self.strVoiceTime = [dict[@"strVoiceTime"] mutableCopy];
+            self.voicePath = [dict[@"voicePath"]mutableCopy];
             break;
             
         case 5:

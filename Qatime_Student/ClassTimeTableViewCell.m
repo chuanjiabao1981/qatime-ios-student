@@ -228,15 +228,15 @@
     }
     
     //课程类型
-    if ([model.modal_type isEqualToString:@"LiveStudio::Lesson"]) {
+    if ([model.product_type isEqualToString:@"LiveStudio::Course"]) {
         _type.text = @"直播课";
         _type.backgroundColor = NAVIGATIONRED;
-    }else if ([model.modal_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
-        
+    }else if ([model.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
         _type.text = @"一对一";
         _type.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:1.0 alpha:1.0];
     }else{
         _type.text = @"视频课";
+        _type.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:1.0 alpha:1.0];
     }
 
 }

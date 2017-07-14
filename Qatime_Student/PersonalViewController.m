@@ -445,7 +445,8 @@
                                 
                                 if ([[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]) {
                                     
-                                controller  = [[GuestBindingViewController alloc]initWithPhoneNumber:[[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]];
+//                                controller  = [[GuestBindingViewController alloc]initWithPhoneNumber:[[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]];
+                                    controller = [[GuestBindingViewController alloc]init];
                                 }else{
                                     
                                     controller = [[GuestBindingViewController alloc]init];

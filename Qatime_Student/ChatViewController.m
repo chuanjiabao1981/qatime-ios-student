@@ -53,7 +53,7 @@
 
 
 
-@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate>{
+@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate,NIMMediaManagerDelgate>{
     
     NSString *_token;
     NSString *_idNumber;
@@ -203,7 +203,6 @@
         loginData.token =[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"token"];
         [[NIMSDK sharedSDK].loginManager autoLogin:loginData];
         
-        
     }
     
     //看看自己是不是被禁言了
@@ -266,7 +265,11 @@
     /* 添加录音是否取消的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordCancel) name:@"RecordCancel" object:nil];
     
+//    [[NIMSDK sharedSDK].mediaManager addDelegate:self];
+    
 }
+
+
 
 /** 禁言 */
 - (void)shutUpTalking{
@@ -421,6 +424,7 @@
                     /* 获取到的用户信息存到userlist里*/
                     [_userList addObject:mod];
                 }
+                //获取完事儿之后,加载历史消息
                 [self requestChatHitstory];
             }else{
                 /* 获取成员信息失败*/
@@ -743,7 +747,7 @@
                         
                         NIMAudioObject *audioObject = message.messageObject;
                         
-                        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message]];
+                        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message]];
                         
                         [dic setObject:@(UUMessageFromMe) forKey:@"from"];
                         
@@ -766,7 +770,7 @@
                         
                         NIMAudioObject *audioObject = message.messageObject;
                         
-                        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message]];
+                        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message]];
                         
                         [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                     }
@@ -1085,7 +1089,6 @@
     }else if (message.messageType == NIMMessageTypeAudio){
         /* 收到语音消息*/
         NSLog(@"收到语音");
-        
         /* 在本地创建对方的消息消息*/
         NSString *iconURL = @"".mutableCopy;
         NSString *senderName = @"".mutableCopy;
@@ -1101,7 +1104,7 @@
         NSLog(@"%@",audioObject.path);
         
         //创建消息字典
-        NSDictionary *dic = [self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:senderName andIcon:iconURL type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message];
+        NSDictionary *dic = [self.chatModel getDicWithName:senderName andIcon:iconURL type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message];
         
         [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
         
@@ -1111,13 +1114,10 @@
         NSLog(@"%@",message.text);
     }
     
-    
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
     
-    
 }
-
 
 
 
@@ -1420,7 +1420,7 @@
     
 }
 #pragma mark- 发送语音消息的回调
-- (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendVoice:(NSData *)voice time:(NSInteger)second{
+- (void)UUInputFunctionView:(UUInputFunctionView *)funcView voicePath:(NSString *)path time:(NSInteger)second{
     
     if (_shutUp==YES) {
         
@@ -1428,18 +1428,15 @@
         
     }else{
         //创建一条云信消息
-        //    声音文件只支持 aac 和 amr 类型
-        NSMutableString *tmpDir = [NSMutableString stringWithString:NSTemporaryDirectory()];
-        [tmpDir appendString:@"mp3.amr"];
+        // 声音文件只支持 aac 和 amr 类型
         
         //构造消息
-        NIMAudioObject *audioObject = [[NIMAudioObject alloc] initWithSourcePath:tmpDir];
+        NIMAudioObject *audioObject = [[NIMAudioObject alloc] initWithSourcePath:path];
         NIMMessage *message = [[NIMMessage alloc] init];
-        message.messageObject     = audioObject;
-        
+        message.messageObject = audioObject;
         
         //创建一条本地消息
-        NSDictionary *dic = @{@"voice": voice,
+        NSDictionary *dic = @{@"voicePath" :path,
                               @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)second],
                               @"type": @(UUMessageTypeVoice),
                               @"messageID":message.messageId};
@@ -1660,12 +1657,6 @@
 #pragma mark- 语音转换/切换扬声器和听筒
 -(void)cellContentLongPress:(UUMessageCell *)cell voice:(NSData *)voice{
     
-    //    [cell becomeFirstResponder];
-    //    UIMenuController *controller = [UIMenuController sharedMenuController];
-    //    [controller setTargetRect:cell.btnContent.bounds inView:cell.btnContent];
-    //    [controller setMenuVisible:YES animated:YES];
-    
-    
     NSString *voiceSwitch ;
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]) {
         
@@ -1678,8 +1669,6 @@
     }else{
         voiceSwitch = @"使用听筒播放";
     }
-    
-    
     
     [UIAlertController showActionSheetInViewController:self withTitle:nil message:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[voiceSwitch] popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
         

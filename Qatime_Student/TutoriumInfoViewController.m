@@ -76,6 +76,9 @@
     /**学习流程所需的数据*/
     NSArray *_workFlowArr;
     
+    //是否已经购买该课程
+    BOOL _isBought;
+    
 }
 
 @end
@@ -152,7 +155,6 @@
     
     
     _tutoriumInfoView.scrollView.delegate = self;
-//    _tutoriumInfoView.delegate = self;
     _tutoriumInfoView.view1.delegate = self;
     _tutoriumInfoView.view2.delegate= self;
     _tutoriumInfoView.segmentControl.selectionIndicatorHeight=2;
@@ -164,11 +166,9 @@
     _tutoriumInfoView.classFeature.delegate = self;
     _tutoriumInfoView.classFeature.dataSource = self;
     
-    
     _tutoriumInfoView.workFlowView.delegate = self;
     _tutoriumInfoView.workFlowView.dataSource = self;
     _tutoriumInfoView.workFlowView.tag = 2;
-    
     
     //注册cell
     [_tutoriumInfoView.classFeature registerClass:[TeacherFeatureTagCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
@@ -214,8 +214,9 @@
     _teacherModel = [[RecommandTeacher alloc]init];
     _classInfoTimeModel = [[ClassesInfo_Time alloc]init];
     _classListArray = @[].mutableCopy;
-    
     _classFeaturesArray = @[].mutableCopy;
+    
+    _isBought = NO;
     
     /* 请求教师数据*/
     
@@ -265,16 +266,14 @@
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
     
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@",Request_Header,classid] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/detail",Request_Header,classid] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         /* 拿到数据字典*/
         NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         [self loginStates:dic];
         
-        //        NSLog(@"%@",dic);
-        
-        NSString *teacherID = [NSString stringWithFormat:@"%@",dic[@"data"][@"teacher"][@"id"]];
+        NSString *teacherID = [NSString stringWithFormat:@"%@",dic[@"data"][@"course"][@"teacher"][@"id"]];
         
         if ([dic[@"status"]isEqualToNumber:@1]) {
             
@@ -290,7 +289,7 @@
                     
                     NSString *status = [NSString stringWithFormat:@"%@",dic[@"status"]];
                     
-                    _dataDic=[NSMutableDictionary dictionaryWithDictionary:dic[@"data"]];
+                    _dataDic=[NSMutableDictionary dictionaryWithDictionary:dic[@"data"][@"course"]];
                     
                     /* 课程页面信息赋值*/
                     _tutoriumInfoView.className.text = _dataDic[@"name"];
@@ -310,8 +309,6 @@
                         
                     }
                     
-                    
-                    
                     /* 已经开课->插班价*/
                     if ([_dataDic[@"status"]isEqualToString:@"teaching"]||[_dataDic[@"status"]isEqualToString:@"pause"]||[_dataDic[@"status"]isEqualToString:@"closed"]) {
                         
@@ -323,7 +320,7 @@
                     
                     /* 已开课的状态*/
                     if ([_dataDic[@"status"]isEqualToString:@"teaching"]||[_dataDic[@"status"]isEqualToString:@"pause"]||[_dataDic[@"status"]isEqualToString:@"closed"]) {
-                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ [进度%@/%@] ",@"开课中",_dataDic[@"completed_lesson_count"],_dataDic[@"lesson_count"]];
+                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ [进度%@/%@] ",@"开课中",_dataDic[@"completed_lessons_count"],_dataDic[@"lessons_count"]];
                         _tutoriumInfoView.status.backgroundColor = [UIColor colorWithRed:0.14 green:0.80 blue:0.99 alpha:1.00];
                         
                     }else if ([_dataDic[@"status"]isEqualToString:@"missed"]||[_dataDic[@"status"]isEqualToString:@"init"]||[_dataDic[@"status"]isEqualToString:@"ready"]){
@@ -332,7 +329,7 @@
                         _tutoriumInfoView.status.backgroundColor = [UIColor colorWithRed:0.08 green:0.59 blue:0.09 alpha:1.00];
                         
                     }else if ([_dataDic[@"status"]isEqualToString:@"finished"]||[_dataDic[@"status"]isEqualToString:@"billing"]||[_dataDic[@"status"]isEqualToString:@"completed"]){
-                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ [进度%@/%@]",@"已结束",_dataDic[@"lesson_count"],_dataDic[@"lesson_count"]];
+                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ [进度%@/%@]",@"已结束",_dataDic[@"lessons_count"],_dataDic[@"lessons_count"]];
                         _tutoriumInfoView.status.backgroundColor = SEPERATELINECOLOR_2;
                         
                         //如果课程已结束,buybar不显示.什么都不显示了
@@ -378,17 +375,22 @@
                     _tutoriumInfoView.suitable.text = _dataDic[@"suit_crowd"]==[NSNull null]?@"无":_dataDic[@"suit_crowd"];
                     
                     
+                    
+#warning ////////在这儿判断是否购买,是否免费,是否.........
+                    
+                    
+#warning 这部分代码结束.......
+                    
+                    
                     if ([status isEqualToString:@"0"]) {
                         /* 获取token错误  需要重新登录*/
                         
                     }else{
                         
                         /* 判断课程状态*/
-                        
-                        [self switchClassData:_dataDic];
+                        [self switchClassData:dic];
                         
                         /* 手动解析teacherModel*/
-                        
                         NSLog(@"%@",teacherDic);
                         
                         /* teacherModel赋值与界面数据更新*/
@@ -448,12 +450,11 @@
                         /* 课程页面的label赋值*/
                         [_tutoriumInfoView.subjectLabel setText:_classModel.subject];
                         [_tutoriumInfoView.gradeLabel setText:_classModel.grade];
-                        [_tutoriumInfoView.classCount setText:[NSString stringWithFormat:@"共%@课",  _classModel.lesson_count]];
+                        [_tutoriumInfoView.classCount setText:[NSString stringWithFormat:@"共%@课",  _classModel.lessons_count]];
                         //                        [_tutoriumInfoView.classDescriptionLabel setText:_classModel.describe];
                         //
                         _tutoriumInfoView.classDescriptionLabel.attributedText = _classModel.attributedDescribe;
                         //                         _tutoriumInfoView.classDescriptionLabel.attributedString = [[NSAttributedString alloc]initWithHTMLData:[_classModel.describe dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:nil];
-                        
                         
                         //给视图赋值tag的内容
                         
@@ -532,15 +533,88 @@
 }
 
 #pragma mark- 判断课程状态
-- (void)switchClassData:(NSDictionary *)data{
+- (void)switchClassData:(NSDictionary *)dic{
     
-    /* 先判断is_tasting(正在试听) / is_bought(已购买) / tasted() 的状态*/
-    if ([_dataDic[@"is_bought"]boolValue]==NO) {
-        /* 还没购买的情况下*/
-        
-        if ([data[@"off_shelve"]boolValue]==YES) {
-            //判断课程是否下架 , 未购买的课程已下架就显示下架 没下架没事儿
+    if ([dic[@"data"][@"course"][@"sell_type"]isEqualToString:@"charge"]) {//非免费课
+        if (![dic[@"data"][@"ticket"]isEqual:[NSNull null]]) {//已试听过或已购买过
+            //如果课程未结束
+            if (![dic[@"data"][@"course"][@"status"]isEqualToString:@"completed"]) {
+                if (dic[@"data"][@"ticket"][@"type"]) {
+                    if ([dic[@"data"][@"ticket"][@"type"]isEqualToString:@"LiveStudio::BuyTicket"]) {//已购买,显示开始学习按钮
+                        _isBought = YES;
+                        /* 已经购买的情况下*/
+                        _buyBar.applyButton.hidden = YES;
+                        _buyBar.listenButton.hidden = NO;
+                        [_buyBar.listenButton sd_clearAutoLayoutSettings];
+                        _buyBar.listenButton.sd_resetLayout
+                        .leftSpaceToView(_buyBar,10)
+                        .topSpaceToView(_buyBar,10)
+                        .bottomSpaceToView(_buyBar,10)
+                        .rightSpaceToView(_buyBar,10);
+                        [_buyBar.listenButton updateLayout];
+                        [_buyBar.listenButton setTitle:@"开始学习" forState:UIControlStateNormal];
+                        _buyBar.listenButton.backgroundColor = NAVIGATIONRED;
+                        [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                        [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
+                        
+                    }else{//未购买,显示进入试听按钮 购买按钮照常使用
+                        
+                        _isBought = NO;
+                        
+                        [_buyBar.applyButton removeAllTargets];
+                        [_buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
+                        if ([dic[@"data"][@"ticket"][@"used_count"] integerValue] >= [dic[@"data"][@"ticket"][@"buy_count"]integerValue] ) {
+                            //试听结束,显示试听结束按钮
+                            /* 不可以试听*/
+                            [_buyBar.listenButton setTitle:@"试听结束" forState:UIControlStateNormal];
+                            [_buyBar.listenButton setBackgroundColor:[UIColor colorWithRed:0.84 green:0.47 blue:0.44 alpha:1.0]];
+                            [_buyBar.listenButton removeTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
+                            _buyBar.listenButton.enabled = NO;
+                        }else{
+                            [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
+                            [_buyBar.listenButton setBackgroundColor:NAVIGATIONRED];
+                            [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                            [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
+                        }
+                    }
+                }
+            }else{//课程已经结束了
+                //整个购买栏直接隐藏吧
+                _buyBar.hidden = YES;
+            }
             
+        }else{//需要加入试听或购买
+            if ([dic[@"data"][@"course"][@"tastable"]boolValue]==YES) {//可以加入试听
+                //显示加入试听,和立即购买两个按钮
+                _buyBar.hidden = NO;
+                _buyBar.listenButton.hidden = NO;
+                [_buyBar.listenButton removeAllTargets];
+                [_buyBar.listenButton setTitle:@"加入试听" forState:UIControlStateNormal];
+                [_buyBar.listenButton setBackgroundColor:[UIColor whiteColor]];
+                [_buyBar.listenButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+                [_buyBar.listenButton addTarget:self action:@selector(addListen) forControlEvents:UIControlEventTouchUpInside];
+                _buyBar.applyButton.hidden = NO;
+                [_buyBar.applyButton removeAllTargets];
+                [_buyBar.applyButton setTitle:@"立即报名" forState:UIControlStateNormal];
+                [_buyBar.applyButton setBackgroundColor:[UIColor whiteColor]];
+                [_buyBar.applyButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+                [_buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
+            }else{
+                //不能试听,只能购买
+                _buyBar.listenButton.hidden = YES;
+                [_buyBar.applyButton removeAllTargets];
+                _buyBar.applyButton.sd_resetLayout
+                .leftSpaceToView(_buyBar, 10)
+                .rightSpaceToView(_buyBar, 10)
+                .topSpaceToView(_buyBar, 10)
+                .bottomSpaceToView(_buyBar, 10);
+                [_buyBar.applyButton updateLayout];
+                [_buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
+            }
+            
+        }
+        if ([dic[@"data"][@"course"][@"off_shelve"]boolValue]==YES) {//已下架
+            //已经下架
             [_buyBar.listenButton removeAllTargets];
             _buyBar.applyButton.hidden = YES;
             [_buyBar.listenButton setTitle:@"已下架" forState:UIControlStateNormal];
@@ -552,103 +626,95 @@
             .topSpaceToView(_buyBar, 10)
             .bottomSpaceToView(_buyBar, 10);
             [_buyBar.listenButton updateLayout];
-        }else{
-            
-            //可试听
-            if ([_dataDic[@"is_tasting"]boolValue]==YES) {
-                
-                
-                
-                
-                //前提是没下架
-                /* 如果已经加入试听,而且该课程可以试听*/
-                /* 还没有试听*/
-                [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
-                [_buyBar.listenButton setBackgroundColor:NAVIGATIONRED];
-                [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                
-                if (![data[@"status"] isEqualToString:@"finished"]&&![data[@"status"] isEqualToString:@"competed"]){
-                    
-                    [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
-                    
-                }else{
-                    /* 课程已结束*/
-                    [_buyBar.listenButton addTarget:self action:@selector(addClosedListen) forControlEvents:UIControlEventTouchUpInside];
-                    
-                }
-                
-                
-            }else{
-                /* 还没有加入试听*/
-                /* 如果课程还没结束*/
-                
-                if (![data[@"status"] isEqualToString:@"finished"]&&![data[@"status"] isEqualToString:@"competed"]){
-                    
-                    [_buyBar.listenButton addTarget:self action:@selector(addListen) forControlEvents:UIControlEventTouchUpInside];
-                    
-                }else{
-                    /* 课程已结束*/
-                    [_buyBar.listenButton addTarget:self action:@selector(addClosedListen) forControlEvents:UIControlEventTouchUpInside];
-                    
-                }
-            }
-            
-            //不管有没有加入试听,只要是没有试听课,都隐藏试听按钮
-            if ([_dataDic[@"taste_count"]integerValue]!=0) {
-                
-            }else{
-                
-                _buyBar.listenButton.hidden = YES;
-                _buyBar.applyButton.sd_resetLayout
-                .leftSpaceToView(_buyBar, 10)
-                .rightSpaceToView(_buyBar, 10)
-                .topSpaceToView(_buyBar, 10)
-                .bottomSpaceToView(_buyBar, 10);
-                [_buyBar.applyButton updateLayout];
-                
-            }
-            
-            
-            /* 购买按钮的点击事件*/
-            [_buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
             
         }
         
+    }else if ([dic[@"data"][@"course"][@"sell_type"]isEqualToString:@"free"]){//免费课
+        //免费呀
+        _tutoriumInfoView.priceLabel.text = @"免费";
         
-        
-        
-    }else{
-        /* 已经购买的情况下*/
-        _buyBar.applyButton.hidden = YES;
-        _buyBar.listenButton.hidden = NO;
-        [_buyBar.listenButton sd_clearAutoLayoutSettings];
-        _buyBar.listenButton.sd_resetLayout
-        .leftSpaceToView(_buyBar,10)
-        .topSpaceToView(_buyBar,10)
-        .bottomSpaceToView(_buyBar,10)
-        .rightSpaceToView(_buyBar,10);
-        [_buyBar.listenButton updateLayout];
-        
-        [_buyBar.listenButton setTitle:@"开始学习" forState:UIControlStateNormal];
-        _buyBar.listenButton.backgroundColor = NAVIGATIONRED;
-        [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        
-        
-        [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
-        
+        if (dic[@"data"][@"ticket"]) {
+            if (![dic[@"data"][@"ticket"]isEqual:[NSNull null]]) {//已购买(已加入到我的视频课列表里了)
+                _isBought = YES;
+                if (![dic[@"data"][@"course"][@"status"]isEqualToString:@"completed"]) {
+                    //课程没结束又购买了
+                    //可以直接进入学习
+                    _buyBar.applyButton.hidden = YES;
+                    _buyBar.listenButton.hidden = NO;
+                    [_buyBar.listenButton removeAllTargets];
+                    _buyBar.listenButton.sd_resetLayout
+                    .leftSpaceToView(_buyBar,10)
+                    .topSpaceToView(_buyBar,10)
+                    .bottomSpaceToView(_buyBar,10)
+                    .rightSpaceToView(_buyBar,10);
+                    [_buyBar.listenButton updateLayout];
+                    [_buyBar.listenButton setTitle:@"开始学习" forState:UIControlStateNormal];
+                    _buyBar.listenButton.backgroundColor = NAVIGATIONRED;
+                    [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                    [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
+                    
+                }else{
+                    //课程已经结束了,干掉购买蓝
+                    _buyBar.hidden = YES;
+                }
+                
+            }else{
+                _isBought  = NO;
+                //未购买,立即报名 报完名变成进入学习 未曾拥有过不隐藏购买栏,只是提示下架而已
+                if ([dic[@"data"][@"course"][@"off_shelve"]boolValue]==YES) {
+                    //已经下架
+                    [_buyBar.listenButton removeAllTargets];
+                    _buyBar.applyButton.hidden = YES;
+                    [_buyBar.listenButton setTitle:@"已下架" forState:UIControlStateNormal];
+                    [_buyBar.listenButton setBackgroundColor:TITLECOLOR];
+                    [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                    _buyBar.listenButton.sd_resetLayout
+                    .leftSpaceToView(_buyBar, 10)
+                    .rightSpaceToView(_buyBar, 10)
+                    .topSpaceToView(_buyBar, 10)
+                    .bottomSpaceToView(_buyBar, 10);
+                    [_buyBar.listenButton updateLayout];
+                }else{
+                    
+                    _buyBar.listenButton.hidden = YES;
+                    _buyBar.applyButton.sd_resetLayout
+                    .leftSpaceToView(_buyBar, 10)
+                    .rightSpaceToView(_buyBar, 10)
+                    .topSpaceToView(_buyBar, 10)
+                    .bottomSpaceToView(_buyBar, 10);
+                    [_buyBar.applyButton removeAllTargets];
+                    [_buyBar.applyButton addTarget:self action:@selector(addFreeClass) forControlEvents:UIControlEventTouchUpInside];
+                }
+                
+            }
+        }
         
     }
     
-    //试听课已经结束了的情况
-    if ([_dataDic[@"preset_lesson_count"]integerValue]==[_dataDic[@"completed_lesson_count"]integerValue]) {
-        
-        /* 不可以试听*/
-        [_buyBar.listenButton setTitle:@"试听结束" forState:UIControlStateNormal];
-        [_buyBar.listenButton setBackgroundColor:[UIColor colorWithRed:0.84 green:0.47 blue:0.44 alpha:1.0]];
-        [_buyBar.listenButton removeTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
-        _buyBar.listenButton.enabled = NO;
-    }
+}
+
+/** 加入免费课程 */
+- (void)addFreeClass{
     
+    [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/deliver_free",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            //加入成功
+            [_buyBar.applyButton removeAllTargets];
+            [_buyBar.applyButton setTitle:@"开始学习" forState:UIControlStateNormal];
+            [_buyBar.applyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [_buyBar.applyButton setBackgroundColor:BUTTONRED];
+            [_buyBar.applyButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
+            _isBought = YES;
+            [self HUDStopWithTitle:@"已添加至\"我的直播课\""];
+        }
+        
+    } failure:^(id  _Nullable erros) {
+       
+        [self HUDStopWithTitle:@"请检查网络"];
+        
+    }];
 }
 
 #pragma mark- 加入到已关闭的试听
@@ -676,6 +742,7 @@
 
 
 #pragma mark- 加入试听
+/** 加入试听 */
 - (void)addListen{
     
     if (_dataDic) {
@@ -735,7 +802,7 @@
 #pragma mark- 立即进入试听
 - (void)listen{
     
-    if ([_dataDic[@"is_bought"]boolValue]==YES) {
+    if (_isBought==YES) {
         
         LivePlayerViewController *neVC = [[LivePlayerViewController alloc]initWithClassID:_dataDic[@"id"]];
         
@@ -758,6 +825,8 @@
 
 
 #pragma mark- 立即报名的 购买课程方法
+
+/** 立即报名 购买课程 */
 - (void)buyClass{
     
     if (_dataDic) {
@@ -887,7 +956,7 @@
             ClassesInfo_Time *mod = _classListArray[indexPath.row];
             cell.model = mod;
             
-            if ([_dataDic[@"is_bought"]boolValue]==YES) {
+            if (_isBought==YES) {
                 
                 if (cell.model.replayable == NO) {
                     
@@ -963,7 +1032,7 @@
     
     if (tableView.tag == 1) {
         ClassesListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        if ([_dataDic[@"is_bought"]boolValue]==YES) {
+        if (_isBought ==YES) {
             
             if (cell.model.replayable == YES) {
                 

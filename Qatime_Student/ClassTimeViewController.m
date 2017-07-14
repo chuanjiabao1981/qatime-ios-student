@@ -28,8 +28,9 @@
 #import "HaveNoClassView.h"
 #import "UIViewController+AFHTTP.h"
 #import "OneOnOneTutoriumInfoViewController.h"
-
+#import <NIMSDK/NIMSDK.h>
 #import "VideoClassInfoViewController.h"
+#import "InteractionViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -135,13 +136,7 @@ typedef enum : NSUInteger {
     [_navigationBar.rightButton setImage:[UIImage imageNamed:@"日历"] forState:UIControlStateNormal];
     [_navigationBar.rightButton addTarget:self action:@selector(calenderViews) forControlEvents:UIControlEventTouchUpInside];
     
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
+    [self getToken];
     
     /* 判断是否登录*/
     isLogin = [[NSUserDefaults standardUserDefaults]boolForKey:@"Login"];
@@ -172,21 +167,22 @@ typedef enum : NSUInteger {
     
 }
 
-/* 登录成功后加载数据*/
-- (void)refreshPage{
-    
-    _notLoginView.hidden = YES;
+- (void)getToken{
     /* 提出token和学生id*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
         _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
     }
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
+}
+
+/* 登录成功后加载数据*/
+- (void)refreshPage{
+    [self getToken];
+    _notLoginView.hidden = YES;
     _unclosedArr = @[].mutableCopy;
     _closedArr = @[].mutableCopy;
-    
 }
 
 #pragma mark- 请求数据方法
@@ -199,6 +195,7 @@ typedef enum : NSUInteger {
  */
 - (void)requestClassListWithRefreshType:(RefreshType)refreshType andClassType:(ClassType)classtype{
     
+    [self getToken];
     NSString *classTypes;
     
     //暂时预留上滑操作 只做下拉刷新
@@ -215,7 +212,7 @@ typedef enum : NSUInteger {
         
     }
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"state":classTypes} completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule_data",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"state":classTypes} completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         
@@ -429,7 +426,7 @@ typedef enum : NSUInteger {
                 cell.enterButton.hidden = NO;
             }
             
-            [cell showTasteState:NO];
+            [cell showTasteState:cell.model.taste];
             
             cell.enterButton.tag = indexPath.row+10;
             [cell.enterButton addTarget:self action:@selector(enterLive:) forControlEvents:UIControlEventTouchUpInside];
@@ -449,7 +446,7 @@ typedef enum : NSUInteger {
             [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             cell.model =_closedArr[indexPath.row];
             cell.enterButton.hidden = YES;
-            [cell showTasteState:NO];
+            [cell showTasteState:cell.model.taste];
         }
         
         tableCell = cell;
@@ -502,16 +499,16 @@ typedef enum : NSUInteger {
             ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             classID = cell.model.course_id;
             
-            if ([cell.type.text containsString:@"直播"]) {
+            if ([cell.model.product_type isEqualToString:@"LiveStudio::Course"]) {
                 //直播课
-                controller= [[TutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
-            }else if ([cell.type.text containsString:@"视频"]){
+                controller= [[TutoriumInfoViewController alloc]initWithClassID:cell.model.product_id];
+            }else if ([cell.model.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
                 //视频课
-                controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.course_id];
-            }else if ([cell.type.text containsString:@"一对一"]){
+                controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.product_id];
+            }else if ([cell.model.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
                 //一对一
 //                [self HUDStopWithTitle:@"正在开发中,敬请期待"];
-                controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
+                controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.model.product_id];
             }
             
         }
@@ -540,14 +537,51 @@ typedef enum : NSUInteger {
 /* 进入直播*/
 - (void)enterLive:(UIButton *)sender{
     
-    NSIndexPath *indePath=[NSIndexPath indexPathForRow:sender.tag-20 inSection:0];
-    
-    ClassTimeTableViewCell *cell = [_classTimeView.notClassView.notClassTableView cellForRowAtIndexPath:indePath];
-    
-    LivePlayerViewController *controller = [[LivePlayerViewController alloc]initWithClassID:cell.model.course_id];
-    controller.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:controller animated:YES];
-    
+    ClassTimeTableViewCell *cell = [_classTimeView.notClassView.notClassTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag inSection:0]];
+    __block UIViewController *controller;
+    if ([cell.model.modal_type isEqualToString:@"LiveStudio::Lesson"]) {
+        //直播课
+        controller= [[LivePlayerViewController alloc]initWithClassID:cell.model.product_id];
+        [self.navigationController pushViewController:controller animated:YES];
+    }else if ([cell.model.modal_type isEqualToString:@"LiveStudio::VideoLesson"]){
+        //视频课
+        //先获取视频课程的详情吧
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@",Request_Header,cell.model.classID] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
+            
+        } failure:^(id  _Nullable erros) {
+            
+        }];
+        
+    }else if ([cell.model.modal_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
+        //一对一
+        //加工数据
+        //1.聊天室
+        NIMChatroom *chatroom = [[NIMChatroom alloc]init];
+        chatroom.roomId = cell.model.classID;
+        //2.lessonname
+        __block NSString *lessonName ;
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/detail",Request_Header,cell.model.product_id] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                
+                for (NSDictionary *lesson in dic[@"data"][@"interactive_course"][@"interactive_lessons"]) {
+                    if ([lesson[@"status"]isEqualToString:@"teaching"]) {
+                        lessonName = lesson[@"name"];
+                    }
+                }
+                
+                controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:cell.model.classID andChatTeamID:cell.model.product_id andLessonName:lessonName==nil?@"暂无直播":lessonName];
+                [self.navigationController pushViewController:controller animated:YES];
+            }else{
+                [self HUDStopWithTitle:@"网络繁忙,请稍后重试"];
+            }
+            
+        } failure:^(id  _Nullable erros) {
+            [self HUDStopWithTitle:@"请检查网络"];
+        }];
+        
+    }
+
 }
 
 

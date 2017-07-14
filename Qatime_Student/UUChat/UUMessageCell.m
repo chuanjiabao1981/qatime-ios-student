@@ -26,6 +26,10 @@
 //#import "XHImageViewer.h"
 //#import "UIImageView+XHURLDownload.h"
 #import "UUAVAudioPlayer.h"
+#import "NSString+TimeStamp.h"
+#import "NSDate+ChangeUTC.h"
+#import "NSString+Date.h"
+#import "NSDate+Utils.h"
 
 
 
@@ -136,7 +140,6 @@
         self.title.editable = NO;
         self.title.scrollEnabled = NO;
         
-        
         [self.contentView addSubview:self.title];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(btnContentClick)];
@@ -170,6 +173,8 @@
         _noticeLabel.textColor = [UIColor grayColor];
         _noticeLabel.font =ChatTimeFont;
         [_noticeContentView addSubview:_noticeLabel];
+        
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(UUAVAudioPlayerDidFinishPlay) name:@"StopPlayVoice" object:nil];
         
     }
     return self;
@@ -223,21 +228,27 @@
 
         
     }else if (self.messageFrame.message.type == UUMessageTypeVoice){
+        
         if(!contentVoiceIsPlaying){
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:@"VoicePlayHasInterrupt" object:nil];
             contentVoiceIsPlaying = YES;
-            audio = [UUAVAudioPlayer sharedInstance];
-            audio.delegate = self;
+//            audio = [UUAVAudioPlayer sharedInstance];
+//            audio.delegate = self;
 //                    [audio playSongWithUrl:voiceURL];
-            [audio playSongWithData:songData];
+//            [audio playSongWithData:songData];
+            [self UUAVAudioPlayerBeiginPlay];
+            [[NIMSDK sharedSDK].mediaManager play:self.messageFrame.message.voicePath];
             
         }else{
+            
             [self UUAVAudioPlayerDidFinishPlay];
         }
         
     }
     
 }
+
 
 /* 气泡长按点击事件*/
 - (void)longPress:(UILongPressGestureRecognizer *)longPress{
@@ -300,17 +311,19 @@
 - (void)UUAVAudioPlayerBeiginPlay
 {
     //开启红外线感应
-   
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+//    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+    [[NIMSDK sharedSDK].mediaManager setNeedProximityMonitor:YES];
     [self.btnContent didLoadVoice];
 }
 - (void)UUAVAudioPlayerDidFinishPlay
 {
+    [[NIMSDK sharedSDK].mediaManager stopPlay];
     //关闭红外线感应
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+//    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+    [[NIMSDK sharedSDK].mediaManager setNeedProximityMonitor:YES];
     contentVoiceIsPlaying = NO;
     [self.btnContent stopPlay];
-    [[UUAVAudioPlayer sharedInstance]stopSound];
+    
 }
 
 
@@ -334,7 +347,17 @@
         headImageBackView.hidden = NO;
         
         // 1、设置时间
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+        [formatter setDateFormat:@"MM-dd HH:mm:ss Z"];
+        NSDate *date = [formatter dateFromString:messageFrame.message.strTime];
+        NSString *times = [date changeUTC];
+        NSLog(@"%@",times);
+        
         self.labelTime.text = messageFrame.message.strTime;
+//        self.labelTime.text = [times substringFromIndex:5];
+
         self.labelTime.frame = messageFrame.timeF;
         
         // 2、设置头像
@@ -452,9 +475,8 @@
             }
         }
         
-        /* 5.设置时间戳*/
+        /* 5.发送设置时间戳(头像旁边)*/
         
-        _timeLabel.text = messageFrame.message.strTime;
         if (messageFrame.message.from == UUMessageFromMe) {
             [_timeLabel sd_clearAutoLayoutSettings];
             _timeLabel.sd_layout
@@ -465,6 +487,23 @@
             
             [_timeLabel updateLayout];
             
+            if (messageFrame.message.type != UUMessageTypeVoice) {
+                
+                NSLog(@"文本%@",messageFrame.message.strTime);
+                _timeLabel.text = messageFrame.message.strTime ;
+                
+            }else {
+                NSLog(@"非文本消息时间:%@",messageFrame.message.strTime);
+                NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+                [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+                [formatter setDateFormat:@"MM-dd HH:mm:ss Z"];
+                NSDate *date = [formatter dateFromString:messageFrame.message.strTime];
+                NSString *times = [date changeUTC];
+                NSLog(@"%@",times);
+                _timeLabel.text = [times substringFromIndex:5];
+            }
+            
+            
         }else if(messageFrame.message.from == UUMessageFromOther){
             [_timeLabel sd_clearAutoLayoutSettings];
             _timeLabel.sd_layout
@@ -472,9 +511,22 @@
             .topEqualToView(_labelNum)
             .bottomEqualToView(_labelNum);
             [_timeLabel setSingleLineAutoResizeWithMaxWidth:200];
-            
             [_timeLabel updateLayout];
             
+            if (messageFrame.message.type != UUMessageTypeVoice) {
+                NSLog(@"文本%@",messageFrame.message.strTime);
+                _timeLabel.text = messageFrame.message.strTime ;
+                
+            }else {
+                NSLog(@"非文本消息时间:%@",messageFrame.message.strTime);
+                NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+                [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+                [formatter setDateFormat:@"MM-dd HH:mm:ss Z"];
+                NSDate *date = [formatter dateFromString:messageFrame.message.strTime];
+                NSString *times = [date changeUTC];
+                NSLog(@"%@",times);
+                _timeLabel.text = [times substringFromIndex:5];
+            }
         }
         
         /* 发送失败提示*///单独写出来这部分
@@ -901,7 +953,6 @@
 }
 
 
-
 - (void)makeMaskView:(UIView *)view withImage:(UIImage *)image
 {
     UIImageView *imageViewMask = [[UIImageView alloc] initWithImage:image];
@@ -914,11 +965,14 @@
 {
     if ([[UIDevice currentDevice] proximityState] == YES){
         NSLog(@"靠近耳朵,使用听筒播放");
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+//        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+        [[NIMSDK sharedSDK].mediaManager switchAudioOutputDevice:NIMAudioOutputDeviceReceiver];
+        
     }
     else{
         NSLog(@"远离耳朵,使用扬声器播放");
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+//        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+        [[NIMSDK sharedSDK].mediaManager switchAudioOutputDevice:NIMAudioOutputDeviceSpeaker];
     }
 }
 

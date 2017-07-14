@@ -22,12 +22,7 @@
         .leftEqualToView(self)
         .rightEqualToView(self)
         .bottomEqualToView(self);
-        
-       
-        
-        
-        
-        
+                
     }
     return self;
 }

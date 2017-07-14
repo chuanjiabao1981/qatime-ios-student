@@ -7,20 +7,20 @@
 //
 
 #import "UUInputFunctionView.h"
-#import "Mp3Recorder.h"
+//#import "Mp3Recorder.h"
 #import "UUProgressHUD.h"
 #import "ACMacros.h"
 
 #import "NSString+YYAdd.h"
 #import "UIView+NIMKitToast.h"
+#import <NIMSDK/NIMSDK.h>
 
 
-
-@interface UUInputFunctionView ()<YYTextViewDelegate,Mp3RecorderDelegate,UITextViewDelegate>
+@interface UUInputFunctionView ()<YYTextViewDelegate,UITextViewDelegate,NIMMediaManagerDelegate>
 
 {
     BOOL isbeginVoiceRecord;
-    Mp3Recorder *MP3;
+//    Mp3Recorder *MP3;
     NSInteger playTime;
     NSTimer *playTimer;
     
@@ -37,24 +37,9 @@
     
     self = [super initWithFrame:frame];
     if (self) {
-        MP3 = [[Mp3Recorder alloc]initWithDelegate:self];
+//        MP3 = [[Mp3Recorder alloc]initWithDelegate:self];
         self.backgroundColor = [UIColor whiteColor];
-        //发送消息
-        //        self.btnSendMessage = [UIButton buttonWithType:UIButtonTypeCustom];
-        //        self.btnSendMessage.frame = CGRectMake(Main_Screen_Width-40, 5, 30, 30);
-        //        self.isAbleToSendTextMessage = NO;
-        //        [self.btnSendMessage setTitle:@"发送" forState:UIControlStateNormal];
-        //        [self.btnSendMessage setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        //        self.btnSendMessage.enabled = NO;
-        //        self.btnSendMessage.frame = RECT_CHANGE_width(self.btnSendMessage,35);
-        //        UIImage *image = [UIImage imageNamed:@"chat_send_message"];
-        //        [self.btnSendMessage setBackgroundImage:image forState:UIControlStateNormal];
-        //        self.btnSendMessage.titleLabel.font = [UIFont systemFontOfSize:12];
-        //        [self.btnSendMessage addTarget:self action:@selector(sendMessage:) forControlEvents:UIControlEventTouchUpInside];
-        //        [self addSubview:self.btnSendMessage];
-        
         self.btnSendMessage = [UIButton buttonWithType:UIButtonTypeCustom];
-        //        self.btnSendMessage.frame = CGRectMake(Main_Screen_Width-40, 5, 30, 30);
         
         self.isAbleToSendTextMessage = NO;
         [self.btnSendMessage setTitle:@"" forState:UIControlStateNormal];
@@ -139,6 +124,9 @@
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeSenderButton) name:@"ChatNone" object:nil] ;
         
+        
+        [[NIMSDK sharedSDK].mediaManager addDelegate:self];
+        
     }
     return self;
 }
@@ -210,43 +198,61 @@
 
 #pragma mark- 所有的有关录音的方法
 
-- (void)beginRecordVoice:(UIButton *)button
-{
+- (void)beginRecordVoice:(UIButton *)button{
     
-    [MP3 startRecord];
-   
-    playTime = 0;
-    playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
-    [UUProgressHUD show];
+//    [MP3 startRecord];
     
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordStart" object:nil];
     
+        [[NIMSDK sharedSDK].mediaManager record:NIMAudioTypeAMR duration:60];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordStart" object:nil];
+        playTime = 0;
+        playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
+        [UUProgressHUD show];
 }
 
 - (void)endRecordVoice:(UIButton *)button
 {
     if (playTimer) {
-        [MP3 stopRecord];
         
+        if (playTime <1) {
+            [self failRecord];
+             [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordCancel" object:nil];
+        }else{
+            
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                // 处理耗时操作的代码块...
+                [[NIMSDK sharedSDK].mediaManager stopRecord];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordEnd" object:nil];
+                //通知主线程刷新
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //回调或者说是通知主线程刷新，
+                    
+                    [self layoutSubviews];
+                });
+                
+            });
+
+            
+            
+        }
         [playTimer invalidate];
         playTimer = nil;
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordEnd" object:nil];
     }
     
 }
 
 - (void)cancelRecordVoice:(UIButton *)button
 {
+    [UUProgressHUD dismissWithError:@"取消发送"];
     if (playTimer) {
-        [MP3 cancelRecord];
-        
+//        [MP3 cancelRecord];
+        [[NIMSDK sharedSDK].mediaManager cancelRecord];
         [playTimer invalidate];
         playTimer = nil;
         
         [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordCancel" object:nil];
     }
     
-    [UUProgressHUD dismissWithError:@"取消发送"];
 }
 
 - (void)RemindDragExit:(UIButton *)button{
@@ -266,30 +272,59 @@
     if (playTime>=60) {
         [self endRecordVoice:nil];
     }
+    if (playTime<1) {
+        [self failRecord];
+    }
     
 }
 
-#pragma mark - Mp3RecorderDelegate
 
-//回调录音资料
-- (void)endConvertWithData:(NSData *)voiceData{
+#pragma mark- 云信录音回调
+/** 初始化工作完成，准备开始录制的时候会触发 **/
+- (void)recordAudio:(NSString *)filePath didBeganWithError:(NSError *)error{
     
-    //音频消息发送方法
-    [self.delegate UUInputFunctionView:self sendVoice:voiceData time:playTime+1];
     
+}
+
+/**  录制音频完成后的回调 **/
+- (void)recordAudio:(NSString *)filePath didCompletedWithError:(NSError *)error{
+    
+    [self.delegate UUInputFunctionView:self voicePath:filePath  time:playTime];
     [UUProgressHUD dismissWithSuccess:@"发送成功"];
-    
-    //缓冲消失时间 (最好有block回调消失完成)
-    self.voiceSwitchTextButton.enabled = NO;
+    //音频消息发送方法
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSLog(@"%@",filePath);
+        //缓冲消失时间 (最好有block回调消失完成)
+        self.voiceSwitchTextButton.enabled = NO;
         self.voiceSwitchTextButton.enabled = YES;
     });
 }
 
+/** 音频录制进度更新回调 **/
+- (void)recordAudioProgress:(NSTimeInterval)currentTime{
+    
+    //录音触发间隔
+    NSLog(@"%f",currentTime);
+    
+}
+
+
+-(void)playAudio:(NSString *)filePath didBeganWithError:(NSError *)error{
+    
+    
+}
+
+-(void)playAudio:(NSString *)filePath didCompletedWithError:(NSError *)error{
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"StopPlayVoice" object:nil];
+}
+
+#pragma mark - Mp3RecorderDelegate
+
 - (void)failRecord{
     
     [UUProgressHUD dismissWithSuccess:@"录音时间太短"];
-    
+    [[NIMSDK sharedSDK].mediaManager cancelRecord];
     //缓冲消失时间 (最好有block回调消失完成)
     self.voiceSwitchTextButton.enabled = NO;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

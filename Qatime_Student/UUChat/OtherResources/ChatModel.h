@@ -45,7 +45,7 @@
 
 
 /* 组成别人发送的语音消息*/
-- (NSDictionary *)getDicWithVoice:(NSData *)voiceData andName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andVoicePath:(NSString *)voicePath andTime:(NSString *)time andMessage:(NIMMessage *)message;
+- (NSDictionary *)getDicWithName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andVoicePath:(NSString *)voicePath andTime:(NSString *)time andMessage:(NIMMessage *)message;
 
 
 

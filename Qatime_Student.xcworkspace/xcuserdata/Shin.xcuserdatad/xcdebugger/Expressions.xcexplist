@@ -527,10 +527,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -596,13 +596,13 @@
          contextName = "-[TeachersPublicViewController numberOfSectionsInCollectionView:]:TeachersPublicViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_videoCount">
-            </PersistentString>
-            <PersistentString
                value = "_publicCount">
             </PersistentString>
             <PersistentString
                value = "_oneOnOneCount">
+            </PersistentString>
+            <PersistentString
+               value = "_videoCount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -821,10 +821,10 @@
          contextName = "-[NTESPageView reloadPage]:NTESPageView.m">
          <PersistentStrings>
             <PersistentString
-               value = "_pages">
+               value = "_currentPage">
             </PersistentString>
             <PersistentString
-               value = "_currentPage">
+               value = "_pages">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1303,6 +1303,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[UUInputFunctionView endRecordVoice:]:UUInputFunctionView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "playTimer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__86-[TutoriumViewController requestDataWithGrade:andSubject:andPage:andPerPage:withPull:]_block_invoke:TutoriumViewController.m">
       </ContextState>
       <ContextState
@@ -1629,10 +1637,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

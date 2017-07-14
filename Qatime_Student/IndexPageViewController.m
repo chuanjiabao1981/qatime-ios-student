@@ -502,8 +502,9 @@
             
             for (NSDictionary *dics in dic[@"data"]) {
                 
-                TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dics[@"product"]];
+                FreeCourse *mod = [FreeCourse yy_modelWithJSON:dics[@"product"]];
                 mod.classID = dics[@"product"][@"id"];
+                mod.product_type = dics[@"product_type"];
                 [_freeCourses addObject:mod];
                 
             }
@@ -1248,7 +1249,7 @@
             if (_freeCourses.count == 0) {
                 
             }else if (_freeCourses.count>indexPath.row) {
-                cell.classModel = _freeCourses[indexPath.row];
+                cell.freeModel = _freeCourses[indexPath.row];
                 cell.left_StateLabel.hidden = YES;
                 cell.right_StateLabel.hidden = YES;
                 
@@ -1319,7 +1320,16 @@
             
         case 1:{
             
-            controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.classModel.classID];
+            if ([cell.freeModel.product_type isEqualToString:@"LiveStudio::Course"]) {
+                
+                controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.freeModel.classID];
+            }else if ([cell.freeModel.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
+                
+                controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.freeModel.classID];
+            }else if ([cell.freeModel.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+                
+            }
+            
         }
             
             break;
@@ -1450,7 +1460,7 @@
 #pragma mark- 获取程序所有的基础信息
 - (void)requestBasicInformation{
     
-    [self HUDStartWithTitle:NSLocalizedString(@"正在获取基础信息", nil)];
+//    [self HUDStartWithTitle:NSLocalizedString(@"正在获取基础信息", nil)];
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];

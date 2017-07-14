@@ -644,7 +644,7 @@
                     /* 如果消息是自己发的*/
                     if ([message.from isEqualToString:_chat_Account.accid]){
                         NIMAudioObject *audioObject = message.messageObject;
-                        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message]];
+                        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message]];
                         
                         [dic setObject:@(UUMessageFromMe) forKey:@"from"];
                         
@@ -667,7 +667,7 @@
                         
                         NIMAudioObject *audioObject = message.messageObject;
                         
-                        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message]];
+                        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message]];
                         
                         [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                     }
@@ -1014,7 +1014,7 @@
         NSLog(@"%@",audioObject.path);
         
         //创建消息字典
-        NSDictionary *dic = [self.chatModel getDicWithVoice:[NSData dataWithContentsOfFile:audioObject.path] andName:senderName andIcon:iconURL type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message];
+        NSDictionary *dic = [self.chatModel getDicWithName:senderName andIcon:iconURL type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message];
         
         [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
         
@@ -1325,6 +1325,40 @@
     }
     
 }
+
+#pragma mark- 发送语音消息的回调
+- (void)UUInputFunctionView:(UUInputFunctionView *)funcView voicePath:(NSString *)path time:(NSInteger)second{
+    
+    if (_shutUp==YES) {
+        
+        [self HUDStopWithTitle:@"您已被禁言"];
+        
+    }else{
+        //创建一条云信消息
+        // 声音文件只支持 aac 和 amr 类型
+        //构造消息
+        NIMAudioObject *audioObject = [[NIMAudioObject alloc] initWithSourcePath:path];
+        NIMMessage *message = [[NIMMessage alloc] init];
+        message.messageObject = audioObject;
+        
+        //创建一条本地消息
+        NSDictionary *dic = @{@"voicePath" :path,
+                              @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)second],
+                              @"type": @(UUMessageTypeVoice),
+                              @"messageID":message.messageId};
+        
+        [self dealTheFunctionData:dic andMessage:message];
+        
+        /* 发送一条语音消息*/
+        [[NIMSDK sharedSDK].chatManager addDelegate:self];
+        [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
+        
+    }
+    
+}
+
+
+
 
 
 // 获取表情字符串
