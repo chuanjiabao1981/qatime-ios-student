@@ -8,10 +8,7 @@
 
 import UIKit
 
-
 let ScrenScale = UIScreen.main.bounds.size.width/414.0
-
-
 
 class AmountExplainViewController: UIViewController ,UIWebViewDelegate{
 
@@ -70,11 +67,9 @@ class AmountExplainViewController: UIViewController ,UIWebViewDelegate{
         self.hudStop(withTitle: nil)
     }
     
-    
     func returnLastPage() {
         self.navigationController?.popViewController(animated: true)
     }
-    
     
 
     override func didReceiveMemoryWarning() {

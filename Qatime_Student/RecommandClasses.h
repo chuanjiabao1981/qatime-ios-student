@@ -50,6 +50,7 @@
 @property(nonatomic,copy) NSString *live_end_time ;
 @property(nonatomic,copy) NSString *publicize ;
 
+
 @property(nonatomic,copy) NSString *reason ;
 @property(nonatomic,copy) NSString *logo_url ;
 
@@ -58,7 +59,7 @@
 /* 课程信息的富文本描述*/
 @property(nonatomic,strong) NSMutableAttributedString *attributedDescribe ;
 
-@property(nonatomic,copy) NSString *lesson_count ;
+@property(nonatomic,copy) NSString *lessons_count ;
 
 /* 观看回放的相关属性*/
 @property(nonatomic,copy) NSString *replayable ;

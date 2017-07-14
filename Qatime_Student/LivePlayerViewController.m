@@ -3914,9 +3914,8 @@ bool ismute     = NO;
         if (_viewsArrangementMode != DifferentLevel) {
             
             [_aBarrage.view removeFromSuperview];
-            
             [_teacherPlayerView addSubview:_aBarrage.view];
-            
+            [_aBarrage.view sd_clearAutoLayoutSettings];
             _aBarrage.view.sd_layout
             .leftEqualToView(_teacherPlayerView)
             .rightEqualToView(_teacherPlayerView)
@@ -3928,10 +3927,6 @@ bool ismute     = NO;
             
         }else{
             
-            //            if (_aBarrage.view.hidden == NO) {
-            //
-            //                _aBarrage.view.hidden = YES;
-            //            }
             
         }
         

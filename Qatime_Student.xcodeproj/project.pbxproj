@@ -314,6 +314,7 @@
 		54A153B01DC6F09D0070B508 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153AF1DC6F09D0070B508 /* ViewController.m */; };
 		54A153C31DC6F09E0070B508 /* Qatime_StudentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153C21DC6F09E0070B508 /* Qatime_StudentTests.m */; };
 		54A153CE1DC6F09E0070B508 /* Qatime_StudentUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153CD1DC6F09E0070B508 /* Qatime_StudentUITests.m */; };
+		54A4D9351F18641700938B4F /* FreeCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A4D9341F18641700938B4F /* FreeCourse.m */; };
 		54A6C4A11E97393700B56135 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54A6C4A01E97393700B56135 /* StoreKit.framework */; };
 		54A991851E34BCB20001D3D9 /* NoticeWaysTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A991841E34BCB20001D3D9 /* NoticeWaysTableViewCell.m */; };
 		54AA307C1DF9427D009E0D04 /* NSString+TimeStamp.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA307B1DF9427D009E0D04 /* NSString+TimeStamp.m */; };
@@ -1277,6 +1278,8 @@
 		54A153C91DC6F09E0070B508 /* Qatime_StudentUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Qatime_StudentUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		54A153CD1DC6F09E0070B508 /* Qatime_StudentUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Qatime_StudentUITests.m; sourceTree = "<group>"; };
 		54A153CF1DC6F09E0070B508 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		54A4D9331F18641700938B4F /* FreeCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FreeCourse.h; sourceTree = "<group>"; };
+		54A4D9341F18641700938B4F /* FreeCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FreeCourse.m; sourceTree = "<group>"; };
 		54A6C4A01E97393700B56135 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		54A991831E34BCB20001D3D9 /* NoticeWaysTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeWaysTableViewCell.h; sourceTree = "<group>"; };
 		54A991841E34BCB20001D3D9 /* NoticeWaysTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeWaysTableViewCell.m; sourceTree = "<group>"; };
@@ -5756,6 +5759,8 @@
 				5442009D1E7793E900797E6C /* TodayLive.m */,
 				544200A51E77FB6300797E6C /* QualityClass.h */,
 				544200A61E77FB6300797E6C /* QualityClass.m */,
+				54A4D9331F18641700938B4F /* FreeCourse.h */,
+				54A4D9341F18641700938B4F /* FreeCourse.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -6568,6 +6573,7 @@
 				54F3BA301DFC7140003998D0 /* WithDrawViewController.m in Sources */,
 				54D86EDC1EFBAD8B0059932C /* ReplayLessonsView.m in Sources */,
 				54AC04C91E89398E00817767 /* yuv420sp.fsh.c in Sources */,
+				54A4D9351F18641700938B4F /* FreeCourse.m in Sources */,
 				54AC03E81E8938E100817767 /* NIMNotificationContentConfig.m in Sources */,
 				54DD7E7A1EF3B3D400EAE234 /* AllTeachersViewController.m in Sources */,
 				5493D4A81E0BAAE00085A39E /* City.m in Sources */,

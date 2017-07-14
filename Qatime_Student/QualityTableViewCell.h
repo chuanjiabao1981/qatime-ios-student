@@ -12,6 +12,7 @@
 #import "QualityClass.h"
 #import "TutoriumList.h"
 #import "RecommandClasses.h"
+#import "FreeCourse.h"
 
 
 @interface QualityTableViewCell : UITableViewCell
@@ -58,5 +59,10 @@
  推荐/精选课程的model
  */
 @property (nonatomic, strong) RecommandClasses *recommandModel ;
+
+/** 免费课 */
+@property (nonatomic, strong) FreeCourse *freeModel ;
+
+
 
 @end
