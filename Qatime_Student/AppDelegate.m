@@ -110,7 +110,6 @@
         NSString *userFilePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"User.data"];
         if (![[NSFileManager defaultManager]fileExistsAtPath:userFilePath]) {
             /**如果没有登录信息,查询keychain是否有保存游客信息*/
-            
             NSArray *accounts = [SAMKeychain allAccounts];
             if (accounts ==nil) {
                 /* 如果没有登录信息,登录页作为root*/
@@ -593,9 +592,6 @@
     /* 主页消息badge通知*/
     [[NSNotificationCenter defaultCenter]postNotificationName:@"ReceiveNewNotice" object:nil];
     
- 
-    
-    
 //    completionHandler(UNNotificationPresentationOptionAlert);
     
     if (notificatoin_ON == YES) {
@@ -789,6 +785,8 @@
     
     //强干成第一个tab
     [_viewController setSelectedIndex:0];
+    
+    _noticeIndexViewController.tabBarItem.badgeValue = nil;
     
     _loginViewController = [[LoginViewController alloc]init];
     

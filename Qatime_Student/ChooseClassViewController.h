@@ -15,6 +15,7 @@
 #import "LiveClassFilterViewController.h"
 #import "InteractionClassFilterViewController.h"
 #import "VideoClassFilterViewController.h"
+#import "ExclusiveClassFilterViewController.h"
 
 typedef enum : NSUInteger {
     TutoriumSearchType,
@@ -54,6 +55,9 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) InteractionClassFilterViewController  *interactionClassFilterController;
 /**视频课筛选controller*/
 @property (nonatomic, strong) VideoClassFilterViewController *videoClassFilterController ;
+
+/** 专属课筛选controller */
+@property (nonatomic, strong) ExclusiveClassFilterViewController *exclusiveClassFilterController ;
 
 
 /**

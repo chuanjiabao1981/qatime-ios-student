@@ -15,7 +15,7 @@
 #import "UIImageView+WebCache.h"
 #import "HcdDateTimePickerView.h"
 #import "MMPickerView.h"
-#import "PersonalDescViewController.h"
+
 #import "UIViewController+HUD.h"
  
 #import "UIAlertController+Blocks.h"
@@ -26,8 +26,7 @@
 #import "GuestBindingViewController.h"
 
 
-
-@interface PersonalInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,ChangeDescDelegate,NSURLSessionDelegate>
+@interface PersonalInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,NSURLSessionDelegate>
 {
     
     NavigationBar *_navigationBar;
@@ -60,7 +59,6 @@
     HcdDateTimePickerView *_birthdayPicker;
     
     /* 是否修改头像了*/
-    
     BOOL changeImage;
     
     /* 年级必填*/
@@ -134,7 +132,6 @@
         if (city!=nil) {
             _userCity = [NSString stringWithFormat:@"%@",city];
         }
-        
         
         /* 是"完善更多场景"*/
         

@@ -216,13 +216,6 @@ typedef enum : NSUInteger {
     
 }
 
-//小监听回调
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
-    
-    
-    
-    
-}
 
 
 /* 读取消息后,该页面接受通知消息,tablecell的badge数量变化*/
@@ -379,6 +372,9 @@ typedef enum : NSUInteger {
                                                 mod.badge = session.unreadCount;
                                                 unreadCont +=session.unreadCount;
                                                 mod.lastTime = session.lastMessage.timestamp;
+                                                if (unreadCont>0) {
+                                                    self.tabBarItem.badgeValue = @"";
+                                                }
                                             }
                                             unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
                                         }
@@ -394,6 +390,9 @@ typedef enum : NSUInteger {
                                                 mod.badge = session.unreadCount;
                                                 unreadCont +=session.unreadCount;
                                                 mod.lastTime = session.lastMessage.timestamp;
+                                                if (unreadCont>0) {
+                                                    self.tabBarItem.badgeValue = @"";
+                                                }
                                             }
                                             unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
                                         }
@@ -548,7 +547,9 @@ typedef enum : NSUInteger {
                             unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
                             /* 未读消息添加到这个数组*/
                             [unreadArr addObject:notice.noticeID];
-                            
+                            if (unreadCont>0) {
+                                self.tabBarItem.badgeValue = @"";
+                            }
                         }
                         
                     }
@@ -1015,6 +1016,7 @@ typedef enum : NSUInteger {
                                 if ( [[NIMSDK sharedSDK].conversationManager allUnreadCount]==0) {
                                     
                                     [[NSNotificationCenter defaultCenter]postNotificationName:@"AllMessageRead" object:nil];
+                                    self.tabBarItem.badgeValue = nil;
                                 }
                                
                             }else{
@@ -1043,7 +1045,7 @@ typedef enum : NSUInteger {
             [_noticeIndexView.segmentControl showBridgeWithShow:NO index:0];
             
             [[NSNotificationCenter defaultCenter]postNotificationName:@"AllMessageRead" object:nil];
-            
+            self.tabBarItem.badgeValue = nil;
         }
         
     }
@@ -1054,6 +1056,7 @@ typedef enum : NSUInteger {
 - (void)badgeHide{
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"AllMessageRead" object:nil];
+    self.tabBarItem.badgeValue = nil;
     
 }
 

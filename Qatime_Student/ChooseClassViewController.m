@@ -137,11 +137,6 @@
             
         case 1:{
             
-//            [self HUDStopWithTitle:@"正在开发中,敬请期待"];
-            
-            /**
-             该版本暂时去掉该功能
-             */
             [self.view addSubview:self.interactionClassFilterController.view];
             [self.interactionClassFilterController didMoveToParentViewController:self];
             _filterView.mode = InteractionMode;
@@ -156,6 +151,11 @@
             _filterView.mode = VideoMode;
         }
             break;
+        case 3:{
+            [self.view addSubview: self.exclusiveClassFilterController.view];
+            [self.exclusiveClassFilterController didMoveToParentViewController:self];
+            _filterView.mode = ExclusiveMode;
+        }
     }
     
     
@@ -301,7 +301,7 @@
     });
     
     //分段控制器
-    _segmentControl = [[UISegmentedControl alloc]initWithItems:@[@"直播课",@"一对一",@"视频课"]];
+    _segmentControl = [[UISegmentedControl alloc]initWithItems:@[@"直播课",@"一对一",@"视频课",@"专属课"]];
     [_navigationBar addSubview:_segmentControl];
     _segmentControl.apportionsSegmentWidthsByContent = YES;
     _segmentControl.selectedSegmentIndex = 0;
@@ -478,6 +478,12 @@
             [_videoClassFilterController filterdByFilterDic:_filterDic];
         }
             break;
+            
+        case 3:{
+            
+            [_exclusiveClassFilterController filterdByFilterDic:_filterDic];
+        }
+            break;
     }
     
     
@@ -511,6 +517,11 @@
         case 2:
             sort_by = @"price";
             sort_by_asc = @"price.asc";
+            break;
+        case 3:
+            //暂时先这么写
+            sort_by = @"left_price";
+            sort_by_asc = @"left_price.asc";
             break;
     }
     
@@ -570,6 +581,11 @@
             [_videoClassFilterController filterdByFilterDic:_filterDic];
         }
             break;
+            
+        case 3:{
+            
+            [_exclusiveClassFilterController filterdByFilterDic:_filterDic];
+        }
     }
 }
 
@@ -639,6 +655,11 @@
             break;
         case 2:{
             [_videoClassFilterController filterdByFilterDic:_filterDic];
+        }
+            break;
+            
+        case 3:{
+            [_exclusiveClassFilterController filterdByFilterDic:_filterDic];
         }
             break;
     }
@@ -776,6 +797,22 @@
     }
     
     return _videoClassFilterController;
+}
+
+-(ExclusiveClassFilterViewController *)exclusiveClassFilterController{
+    
+    if (!_exclusiveClassFilterController) {
+        //cuorse暂时未知
+        _exclusiveClassFilterController = [[ExclusiveClassFilterViewController alloc]initWithGrade:_grade andSubject:_subject andCourse:@"courses"];
+        [self addChildViewController:_exclusiveClassFilterController];
+        [self.view addSubview:_exclusiveClassFilterController.view];
+        _exclusiveClassFilterController.view.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .topSpaceToView(_filterView, 0)
+        .bottomSpaceToView(self.view, 0);
+    }
+    return _exclusiveClassFilterController;
 }
 
 

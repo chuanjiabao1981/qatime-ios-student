@@ -151,6 +151,9 @@
 		544B61FC1E9647F100D7B160 /* LCActionSheetConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B61F51E9647F100D7B160 /* LCActionSheetConfig.m */; };
 		544B61FD1E9647F100D7B160 /* NSSet+LCActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B61F71E9647F100D7B160 /* NSSet+LCActionSheet.m */; };
 		544B61FE1E9647F100D7B160 /* UIImage+LCActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B61F91E9647F100D7B160 /* UIImage+LCActionSheet.m */; };
+		544DAB121F258CB200E43E23 /* ExclusiveClassFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544DAB111F258CB200E43E23 /* ExclusiveClassFilterViewController.m */; };
+		544DAB151F259E9A00E43E23 /* ExclusiveOfflineClassTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544DAB141F259E9A00E43E23 /* ExclusiveOfflineClassTableViewCell.m */; };
+		544DAB1C1F259EFF00E43E23 /* ExclusiveInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544DAB1B1F259EFF00E43E23 /* ExclusiveInfoViewController.m */; };
 		544E0CDB1DD0806900884F31 /* YZSquareMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CDA1DD0806900884F31 /* YZSquareMenuCell.m */; };
 		544E0CE11DD090A700884F31 /* RecommandClassCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CE01DD090A700884F31 /* RecommandClassCollectionViewCell.m */; };
 		544E0CE41DD09FAE00884F31 /* IndexHeaderPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 544E0CE31DD09FAE00884F31 /* IndexHeaderPageView.m */; };
@@ -233,7 +236,6 @@
 		547E92D41E8E813B00160C6D /* OneOnOneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E92D31E8E813B00160C6D /* OneOnOneClass.m */; };
 		547FBF1E1DF658C000955A9E /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547FBF1D1DF658C000955A9E /* UserNotifications.framework */; };
 		547FBF2A1DF681B300955A9E /* libUMessage_Sdk_1.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 547FBF291DF681B300955A9E /* libUMessage_Sdk_1.4.0.a */; };
-		547FBF311DF6B99600955A9E /* PersonalDescViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF301DF6B99600955A9E /* PersonalDescViewController.m */; };
 		547FBF351DF6CEC800955A9E /* PersonalDescTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF341DF6CEC800955A9E /* PersonalDescTableViewCell.m */; };
 		547FBF381DF6CFD700955A9E /* MyWalletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF371DF6CFD700955A9E /* MyWalletView.m */; };
 		54813C4F1E14F30000D6F739 /* NoticeSwitchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54813C4E1E14F30000D6F739 /* NoticeSwitchTableViewCell.m */; };
@@ -922,6 +924,12 @@
 		544B61F71E9647F100D7B160 /* NSSet+LCActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSSet+LCActionSheet.m"; sourceTree = "<group>"; };
 		544B61F81E9647F100D7B160 /* UIImage+LCActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+LCActionSheet.h"; sourceTree = "<group>"; };
 		544B61F91E9647F100D7B160 /* UIImage+LCActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+LCActionSheet.m"; sourceTree = "<group>"; };
+		544DAB101F258CB200E43E23 /* ExclusiveClassFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusiveClassFilterViewController.h; sourceTree = "<group>"; };
+		544DAB111F258CB200E43E23 /* ExclusiveClassFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveClassFilterViewController.m; sourceTree = "<group>"; };
+		544DAB131F259E9A00E43E23 /* ExclusiveOfflineClassTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusiveOfflineClassTableViewCell.h; sourceTree = "<group>"; };
+		544DAB141F259E9A00E43E23 /* ExclusiveOfflineClassTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveOfflineClassTableViewCell.m; sourceTree = "<group>"; };
+		544DAB1A1F259EFF00E43E23 /* ExclusiveInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusiveInfoViewController.h; sourceTree = "<group>"; };
+		544DAB1B1F259EFF00E43E23 /* ExclusiveInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveInfoViewController.m; sourceTree = "<group>"; };
 		544E0CD91DD0806900884F31 /* YZSquareMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZSquareMenuCell.h; sourceTree = "<group>"; };
 		544E0CDA1DD0806900884F31 /* YZSquareMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZSquareMenuCell.m; sourceTree = "<group>"; };
 		544E0CDF1DD090A700884F31 /* RecommandClassCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommandClassCollectionViewCell.h; sourceTree = "<group>"; };
@@ -1124,9 +1132,6 @@
 		547FBF1F1DF658C800955A9E /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		547FBF271DF6817300955A9E /* UMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMessage.h; sourceTree = "<group>"; };
 		547FBF291DF681B300955A9E /* libUMessage_Sdk_1.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libUMessage_Sdk_1.4.0.a; path = Qatime_Student/UMessage_Sdk_1.4.0/libUMessage_Sdk_1.4.0.a; sourceTree = "<group>"; };
-		547FBF2F1DF6B99600955A9E /* PersonalDescViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDescViewController.h; sourceTree = "<group>"; };
-		547FBF301DF6B99600955A9E /* PersonalDescViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDescViewController.m; sourceTree = "<group>"; };
-		547FBF321DF6C3B800955A9E /* ChangeDescDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeDescDelegate.h; sourceTree = "<group>"; };
 		547FBF331DF6CEC800955A9E /* PersonalDescTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDescTableViewCell.h; sourceTree = "<group>"; };
 		547FBF341DF6CEC800955A9E /* PersonalDescTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDescTableViewCell.m; sourceTree = "<group>"; };
 		547FBF361DF6CFD700955A9E /* MyWalletView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWalletView.h; sourceTree = "<group>"; };
@@ -2336,6 +2341,7 @@
 				54FCBAC21DD5909F0094BF58 /* 直播课辅导班详情页 */,
 				547E92C41E8E513F00160C6D /* 一对一辅导班详情页 */,
 				54C4520C1E9CB6DF002108F4 /* 视频课辅导班详情 */,
+				544DAB161F259EB800E43E23 /* 专属课详情页 */,
 				54ECFEBE1DFE8D34001A98CE /* 课程购买页 */,
 			);
 			name = "选课页面";
@@ -2666,6 +2672,49 @@
 			name = LCActionSheet;
 			sourceTree = "<group>";
 		};
+		544DAB161F259EB800E43E23 /* 专属课详情页 */ = {
+			isa = PBXGroup;
+			children = (
+				544DAB191F259EE800E43E23 /* Model */,
+				544DAB181F259EE700E43E23 /* View */,
+				544DAB171F259EE600E43E23 /* Controller */,
+			);
+			name = "专属课详情页";
+			sourceTree = "<group>";
+		};
+		544DAB171F259EE600E43E23 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				544DAB1A1F259EFF00E43E23 /* ExclusiveInfoViewController.h */,
+				544DAB1B1F259EFF00E43E23 /* ExclusiveInfoViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		544DAB181F259EE700E43E23 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				544DAB1D1F259F0800E43E23 /* Cell */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		544DAB191F259EE800E43E23 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		544DAB1D1F259F0800E43E23 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				544DAB131F259E9A00E43E23 /* ExclusiveOfflineClassTableViewCell.h */,
+				544DAB141F259E9A00E43E23 /* ExclusiveOfflineClassTableViewCell.m */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
 		54504ACD1E9E0EA500EFCF8E /* cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -2742,9 +2791,6 @@
 			children = (
 				545162CC1DF5598E000BD17A /* PersonalInfoViewController.h */,
 				545162CD1DF5598E000BD17A /* PersonalInfoViewController.m */,
-				547FBF2F1DF6B99600955A9E /* PersonalDescViewController.h */,
-				547FBF301DF6B99600955A9E /* PersonalDescViewController.m */,
-				547FBF321DF6C3B800955A9E /* ChangeDescDelegate.h */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -5303,6 +5349,8 @@
 				54DBEB041E9B55DB000EEB00 /* InteractionClassFilterViewController.m */,
 				54DBEB081E9B55DB000EEB00 /* VideoClassFilterViewController.h */,
 				54DBEB051E9B55DB000EEB00 /* VideoClassFilterViewController.m */,
+				544DAB101F258CB200E43E23 /* ExclusiveClassFilterViewController.h */,
+				544DAB111F258CB200E43E23 /* ExclusiveClassFilterViewController.m */,
 			);
 			name = "筛选页 子控制器类页面";
 			sourceTree = "<group>";
@@ -6438,6 +6486,7 @@
 				545162D51DF55DC7000BD17A /* Personal_HeadTableViewCell.m in Sources */,
 				543BCB091E79159200AD6721 /* ChooseClassViewController.m in Sources */,
 				54DBEB111E9B55DB000EEB00 /* VideoClassFilterViewController.m in Sources */,
+				544DAB121F258CB200E43E23 /* ExclusiveClassFilterViewController.m in Sources */,
 				548328CC1DDC6F360053AB29 /* NSDate+Utils.m in Sources */,
 				54AC027C1E892D3C00817767 /* UIAlertView+NTESBlock.m in Sources */,
 				542F94EF1EDE8C29008279E0 /* Interactive.m in Sources */,
@@ -6661,6 +6710,7 @@
 				542C17441DFA508A0088DB3F /* Canceld.m in Sources */,
 				54B914A01E6D71A100F377ED /* Province.m in Sources */,
 				545226181E24CDE100F36280 /* OrderInfoViewController.m in Sources */,
+				544DAB1C1F259EFF00E43E23 /* ExclusiveInfoViewController.m in Sources */,
 				54AC03C01E8938E100817767 /* NIMAttributedLabel+NIMKit.m in Sources */,
 				54B73D0F1DE40E1800B7A7EB /* NSString+ContainEmoji.m in Sources */,
 				54AC03FE1E8938E100817767 /* NIMSessionUnknowContentView.m in Sources */,
@@ -6676,6 +6726,7 @@
 				54E428B41DE2DC6100AF5980 /* UIControl+RemoveTarget.m in Sources */,
 				54652E421DEEC25200F4607C /* MessageSettingViewController.m in Sources */,
 				545B3BAA1E0A5F4900751D08 /* MMPickerView.m in Sources */,
+				544DAB151F259E9A00E43E23 /* ExclusiveOfflineClassTableViewCell.m in Sources */,
 				543E0CC81DFFEDBD004B24FD /* CheckOrderView.m in Sources */,
 				5413D25B1DF7BC7900A8FDEC /* RechargeTableView.m in Sources */,
 				5444BD2F1E68206D00A75AD1 /* UINavigationController+StatusBar.m in Sources */,
@@ -6723,7 +6774,6 @@
 				54AC040A1E8938E100817767 /* NIMNormalTeamCardViewController.m in Sources */,
 				54AC04D61E89398E00817767 /* ijksdl_vout_overlay_videotoolbox.m in Sources */,
 				54C5251A1E7BAC000005B5A0 /* TTGTextTagCollectionView.m in Sources */,
-				547FBF311DF6B99600955A9E /* PersonalDescViewController.m in Sources */,
 				542020FF1E2DBE5100517A47 /* UIViewController+AFHTTP.m in Sources */,
 				544200A41E77FA7400797E6C /* QualityTableViewCell.m in Sources */,
 				54294C6A1DDAFCF600677333 /* ClassList.m in Sources */,

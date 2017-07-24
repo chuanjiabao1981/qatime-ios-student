@@ -1521,8 +1521,6 @@
                 }
             }
             
-//            [self HUDStopWithTitle:NSLocalizedString(@"基础信息获取成功", nil)];
-            
         }else{
             
             [self HUDStopWithTitle:NSLocalizedString(@"基础信息获取失败", nil)];

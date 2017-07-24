@@ -13,6 +13,7 @@
 #import "RecommandClasses.h"
 #import "ClassesInfo_Time.h"
 
+#import "BuyBar.h"
 
 @interface TutoriumInfoViewController : UIViewController
 
@@ -28,6 +29,19 @@
 @property(nonatomic,strong) RecommandClasses *classModel  ;
 
 @property(nonatomic,strong) ClassesInfo_Time *classInfoTimeModel ;
+
+//子类用的属性
+/**课程特色数组*/
+@property (nonatomic, strong) NSMutableArray *classFeaturesArray;
+
+/* 保存课程列表的array*/
+@property (nonatomic, strong) NSMutableArray *classListArray;
+
+ /* 购买bar*/
+@property (nonatomic, strong) BuyBar *buyBar;
+
+/** 是否购买该课程 */
+@property (nonatomic, assign) BOOL isBought;
 
 
 /**
@@ -51,5 +65,12 @@
 
 
 
+
+/**
+ 判断课程状态是否购买 公开方法,给子类重写
+
+ @param dic 数据
+ */
+- (void)switchClassData:(NSDictionary *)dic;
 
 @end

@@ -233,7 +233,6 @@
     }
     
     
-    
 //    if ([classModel.status isEqualToString:@"teaching"]||[classModel.status isEqualToString:@"pause"]) {
 //        _status.text =@"已开课";
 //        _class_status = [NSString stringWithFormat:@"已开课"];

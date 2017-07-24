@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "PersonalInfoView.h"
-#import "ChangeDescDelegate.h"
 
 
 @interface PersonalInfoViewController : UIViewController

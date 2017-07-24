@@ -12,6 +12,7 @@ typedef NS_ENUM(NSUInteger, CourseType) {
     LiveCourseType,
     InteractionCourseType,
     VideoCourseType,
+    ExclusiveCourseType,
 };
 
 @interface TutoriumListInfo : NSObject

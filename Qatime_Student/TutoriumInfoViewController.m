@@ -11,8 +11,6 @@
 #import "ClassesListTableViewCell.h"
 #import "YYModel.h"
 
-#import "BuyBar.h"
-
 #import "UIImageView+WebCache.h"
 #import "UIViewController+HUD.h"
 #import "UIViewController+HUD.h"
@@ -47,19 +45,6 @@
     NSString  *_token;
     NSString *_idNumber;
     
-    
-    /* 保存课程列表的array*/
-    NSMutableArray *_classListArray;
-    
-    
-    /* token*/
-    //    NSString *_remember_token;
-    
-    
-    /* 购买bar*/
-    BuyBar *_buyBar;
-    
-    
     /* 保存本页面数据*/
     NSMutableDictionary *_dataDic;
     
@@ -70,14 +55,8 @@
     /* 标签图的config*/
     TTGTextTagConfig *_config;
     
-    /**课程特色数组*/
-    NSMutableArray *_classFeaturesArray;
-    
     /**学习流程所需的数据*/
     NSArray *_workFlowArr;
-    
-    //是否已经购买该课程
-    BOOL _isBought;
     
 }
 

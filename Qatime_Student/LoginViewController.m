@@ -56,10 +56,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     /* 需要对比验证码*/
     BOOL needCheckCaptcha;
     
-    
-    /* 是否有返回键*/
-    BOOL haveReturnButton;
-    
     //是否需要检查用户信息
     BOOL needCheckGuest;
     
@@ -173,7 +169,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         [_loginView setFrame:CGRectMake(0, -keyboardRect.size.height , self.view.width_sd, self.view.height_sd)];
         
     }];
-    
     
 }
 
@@ -637,10 +632,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                     [[NSNotificationCenter defaultCenter]postNotificationName:@"FivethWrongTime" object:nil];
                     
                 }
-                
-                
             }
-            //                    [self HUDStopWithTitle:NSLocalizedString(@"登录成功", nil)];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

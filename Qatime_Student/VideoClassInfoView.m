@@ -588,7 +588,6 @@
     
     
     return format_time;
-    
 }
 
 

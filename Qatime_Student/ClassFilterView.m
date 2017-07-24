@@ -365,6 +365,21 @@
             
         }
             break;
+        case ExclusiveMode:{
+            
+            _popularityArrow.hidden = NO;
+            _popularityButton.hidden = NO;
+            _filterButton.hidden =NO;
+            _verline.hidden = NO;
+            
+            _tagImage.hidden = YES;
+            _tagsButton.hidden = YES;
+            _freeLabel.hidden = YES;
+            _freeButton.hidden = YES;
+            _varLine.hidden = YES;
+            
+        }
+            break;
     }
     
     

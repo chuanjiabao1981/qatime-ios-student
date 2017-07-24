@@ -21,6 +21,7 @@ typedef enum : NSUInteger {
     LiveClassMode,
     InteractionMode,
     VideoMode,
+    ExclusiveMode,  //专属课模式
 } FilterViewShowsMode;
 
 

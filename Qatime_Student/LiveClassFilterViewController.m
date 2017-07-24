@@ -12,41 +12,12 @@
 #import "TutoriumInfoViewController.h"
 #import "CYLTableViewPlaceHolder.h"
 
-//上滑 或 下拉
-typedef enum : NSUInteger {
-    PullToRefresh,      //下拉刷新
-    PushToReadMore      //上滑加载更多
-} RefreshMode;
+
 
 @interface LiveClassFilterViewController ()<UITableViewDataSource,UITableViewDelegate,CYLTableViewPlaceHolderDelegate>{
     
 }
 
-/**年级*/
-@property (nonatomic, strong) NSString *grade ;
-/**科目*/
-@property (nonatomic, strong) NSString *subject ;
-
-/**token*/
-@property (nonatomic, strong) NSString *token;
-@property (nonatomic, strong) NSString *idNumber;
-
-//加载课程页数
-@property (nonatomic, assign) NSInteger page;
-//每页条数
-@property (nonatomic, assign) NSInteger perPage;
-
-//存课程数据的数组
-@property (nonatomic, strong) NSMutableArray *classesArray;
-
-//筛选用的字典
-@property (nonatomic, strong) NSMutableDictionary *filterDic;
-
-//是否为初始化下拉
-@property (nonatomic, assign) BOOL isInitPull;
-
-//接口字段
-@property (nonatomic, strong) NSString *course;
 
 @end
 
