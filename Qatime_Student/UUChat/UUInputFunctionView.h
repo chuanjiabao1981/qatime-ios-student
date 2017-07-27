@@ -47,7 +47,6 @@
 
 @property (nonatomic, assign) id<UUInputFunctionViewDelegate>delegate;
 
-
 - (id)initWithSuperVC:(UIViewController *)superVC;
 
 - (void)changeSendBtnWithPhoto:(BOOL)isPhoto;

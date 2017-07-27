@@ -11,6 +11,7 @@
 #import "TutoriumList.h"
 #import "CYLTableViewPlaceHolder.h"
 #import "ExclusiveInfoViewController.h"
+#import "ExclusiveList.h"
 
 @interface ExclusiveClassFilterViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -126,7 +127,7 @@
                 
                 for (NSDictionary *dics in dic[@"data"]) {
                     
-                    TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dics];
+                    ExclusiveList *mod = [ExclusiveList yy_modelWithJSON:dics];
                     mod.classID = dics[@"id"];
                     
                     [self.classesArray addObject:mod];
@@ -209,7 +210,7 @@
     }
     
     if (self.classesArray.count>indexPath.row) {
-        cell.model = self.classesArray[indexPath.row];
+        cell.exclusiveModel = self.classesArray[indexPath.row];
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     }
     
@@ -229,7 +230,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     ChooseClassTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    ExclusiveInfoViewController *controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.model.classID];
+    ExclusiveInfoViewController *controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.exclusiveModel.classID];
     [self.navigationController pushViewController:controller animated:YES];
     
 }

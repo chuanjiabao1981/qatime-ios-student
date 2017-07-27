@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Teacher.h"
 
 typedef NS_ENUM(NSUInteger, CourseType) {
     LiveCourseType,
@@ -41,6 +42,7 @@ typedef NS_ENUM(NSUInteger, CourseType) {
 @property(nonatomic,assign) BOOL is_bought ;
 @property(nonatomic,strong) NSString *status;
 @property (nonatomic, strong) NSString *describe ;
+@property (nonatomic, strong) Teacher *teacher ;
 
 @property (nonatomic, strong) NSString *board_pull_stream ;
 @property (nonatomic, strong) NSString *chat_team_owner ;

@@ -1,14 +1,14 @@
 //
-//  InteractionNoticeViewController.h
+//  ExclusivenNoticeViewController.h
 //  Qatime_Student
 //
-//  Created by Shin on 2017/6/1.
+//  Created by Shin on 2017/7/25.
 //  Copyright © 2017年 WWTD. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface InteractionNoticeViewController : UIViewController
+@interface ExclusivenNoticeViewController : UIViewController
 
 @property (nonatomic, strong) UITableView *noticeTableView ;
 

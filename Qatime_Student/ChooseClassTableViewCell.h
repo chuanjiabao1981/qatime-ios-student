@@ -9,14 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "TutoriumList.h"
 #import "OneOnOneClass.h"
+#import "ExclusiveList.h"
 
 typedef enum : NSUInteger {
     SingleTeacher,
     MultiTeachers,
-    
 } TeacherNameShowType;
-
-
 
 @interface ChooseClassTableViewCell : UITableViewCell
 
@@ -46,5 +44,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) TutoriumListInfo *model ;
 
 @property (nonatomic, strong) OneOnOneClass *interactionModel ;
+
+@property (nonatomic, strong) ExclusiveList *exclusiveModel ;
 
 @end

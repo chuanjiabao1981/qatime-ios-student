@@ -12,7 +12,7 @@
 #import "TTGTextTagCollectionView.h"
 #import "OneOnOneWorkFlowView.h"
 #import "WorkFlowView.h"
-
+#import "ExclusiveInfo.h"
 
 
 @interface TutoriumInfoView : UIView
@@ -115,6 +115,8 @@
 
 /* 课程列表*/
 @property(nonatomic,strong) UITableView *classesListTableView ;
+
+@property (nonatomic, strong) ExclusiveInfo *exclusiveModel ;
 
 
 

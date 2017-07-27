@@ -217,6 +217,48 @@
 
 }
 
+-(void)setExclusiveModel:(ExclusiveList *)exclusiveModel{
+    
+    _exclusiveModel = exclusiveModel;
+    
+    /* 如果本地已经保留了图片缓存*/
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:exclusiveModel.publicizes_url[@"list"]] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        
+        [manager diskImageExistsForURL:[NSURL URLWithString:exclusiveModel.publicizes_url[@"list"]] completion:^(BOOL isInCache) {
+            if (isInCache == YES) {
+                
+            }else{
+                _classImage.alpha = 0.0;
+                [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                    if (image) {
+                        
+                        [_classImage setImage:image];
+                    }else{
+                        [_classImage setImage:[UIImage imageNamed:@"school"]];
+                    }
+                    _classImage.alpha = 1.0;
+                } completion:NULL];
+                
+            }
+            
+        }];
+        
+    }];
+    
+    
+    //课程名
+    _className.text = exclusiveModel.name;
+    
+    //价格
+    _price.text = [NSString stringWithFormat:@"¥%@",exclusiveModel.price];
+    
+    //老师名字
+    _teacherName.text = exclusiveModel.teacher_name;
+    
+    //购买人数
+    _buyCount.text = exclusiveModel.view_tickets_count;
+}
+
 
 
 - (void)awakeFromNib {

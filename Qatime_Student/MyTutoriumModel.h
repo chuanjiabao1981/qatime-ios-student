@@ -24,6 +24,9 @@
 @property(nonatomic,strong) NSString *status ;
 @property(nonatomic,strong) NSString * preset_lesson_count ;
 @property(nonatomic,strong) NSString * completed_lesson_count ;
+@property (nonatomic, strong) NSString *completed_lessons_count ;
+@property (nonatomic, strong) NSString *closed_lessons_count ;
+@property (nonatomic, strong) NSString *started_lessons_count ;
 @property(nonatomic,strong) NSString * live_start_time ;
 @property(nonatomic,strong) NSString * live_end_time ;
 @property(nonatomic,strong) NSString * publicize ;

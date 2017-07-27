@@ -803,7 +803,7 @@
     
     if (!_exclusiveClassFilterController) {
         //cuorse暂时未知
-        _exclusiveClassFilterController = [[ExclusiveClassFilterViewController alloc]initWithGrade:_grade andSubject:_subject andCourse:@"courses"];
+        _exclusiveClassFilterController = [[ExclusiveClassFilterViewController alloc]initWithGrade:_grade andSubject:_subject andCourse:@"customized_groups"];
         [self addChildViewController:_exclusiveClassFilterController];
         [self.view addSubview:_exclusiveClassFilterController.view];
         _exclusiveClassFilterController.view.sd_layout

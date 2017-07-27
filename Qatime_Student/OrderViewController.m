@@ -255,13 +255,15 @@ typedef enum : NSUInteger {
                 course = [NSString stringWithFormat:@"interactive_courses"];
             }else if (_orderType == VideoClassType){
                 course = [NSString stringWithFormat:@"video_courses"];
+            }else if (_orderType == ExclusiveType){
+                course = [NSString stringWithFormat:@"customized_groups"];
             }
             
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
             [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-            [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/%@/%@",Request_Header,course,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/%@/%@/detail",Request_Header,course,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                 [self loginStates:dic];
@@ -271,8 +273,8 @@ typedef enum : NSUInteger {
                     
                     if (_orderType == LiveClassType) {
                         /* 数据请求成功*/
-                        mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"]];
-                        [(TutoriumListInfo *)mod setClassID:dic[@"data"][@"id"]];
+                        mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"live_course"]];
+                        [(TutoriumListInfo *)mod setClassID:dic[@"data"][@"live_course"][@"id"]];
                         _orderView.classType.text = @"直播课";
                         //页面赋值
                         [_orderView setupLiveClassData:mod];
@@ -282,8 +284,8 @@ typedef enum : NSUInteger {
                         
                     }else if (_orderType == InteractionType){
                         
-                        mod = (OneOnOneClass *)[OneOnOneClass yy_modelWithJSON:dic[@"data"]];
-                        [(OneOnOneClass *)mod setClassID:dic[@"data"][@"id"]];
+                        mod = (OneOnOneClass *)[OneOnOneClass yy_modelWithJSON:dic[@"data"][@"interactive_course"]];
+                        [(OneOnOneClass *)mod setClassID:dic[@"data"][@"interactive_course"][@"id"]];
                         
                         _orderView.classType.text = @"一对一课";
                         //页面赋值
@@ -294,15 +296,24 @@ typedef enum : NSUInteger {
                     }else if (_orderType == VideoClassType){
                         
                         /* 数据请求成功*/
-                        mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"]];
-                        [(VideoClassInfo *)mod setClassID:dic[@"data"][@"id"]];
+                        mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"video_course"]];
+                        [(VideoClassInfo *)mod setClassID:dic[@"data"][@"video_course"][@"id"]];
                         _orderView.classType.text = @"视频课";
+                        //页面赋值
+                        [_orderView setupLiveClassData:mod];
+                        //价格
+                        price = [[(TutoriumListInfo *)mod current_price]floatValue];
+                        
+                    }else if (_orderType == ExclusiveType){
+                        /* 数据请求成功*/
+                        mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"customized_group"]];
+                        [(VideoClassInfo *)mod setClassID:dic[@"data"][@"customized_group"][@"id"]];
+                        _orderView.classType.text = @"专属课";
                         //页面赋值
                         [_orderView setupLiveClassData:mod];
                         
                         //价格
                         price = [[(TutoriumListInfo *)mod current_price]floatValue];
-                        
                     }
                     
                     /* 请求一次余额 ,判断是否可以用余额支付*/

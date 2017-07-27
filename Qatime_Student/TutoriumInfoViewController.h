@@ -20,6 +20,8 @@
 /* 课程id 用来传参数*/
 @property(nonatomic,strong) NSString *classID ;
 
+@property (nonatomic, strong) NSString *chatTeamID ;
+
 @property(nonatomic,strong) TutoriumInfoView  *tutoriumInfoView ;
 
 
@@ -37,11 +39,17 @@
 /* 保存课程列表的array*/
 @property (nonatomic, strong) NSMutableArray *classListArray;
 
+/* 标签图的config*/
+@property (nonatomic, strong) TTGTextTagConfig *config;
+
  /* 购买bar*/
 @property (nonatomic, strong) BuyBar *buyBar;
 
 /** 是否购买该课程 */
 @property (nonatomic, assign) BOOL isBought;
+
+/** 优惠吗 */
+@property (nonatomic, strong) NSString *promotionCode ;
 
 
 /**

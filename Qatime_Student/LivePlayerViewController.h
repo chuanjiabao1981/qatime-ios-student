@@ -11,10 +11,6 @@
 
 #import "NELivePlayer.h"
 #import "NELivePlayerController.h"
-
- 
-
-
 #import "LiveClassInfoView.h"
 #import "InfoHeaderView.h"
 #import "MembersListView.h"

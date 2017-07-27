@@ -52,6 +52,7 @@
 @property(nonatomic,strong) NSString *province ;
 @property(nonatomic,strong) NSString *city ;
 @property(nonatomic,strong) NSString *school ;
+@property (nonatomic, strong) NSString *school_name ;
 @property(nonatomic,strong) NSString *desc ;
 
 @property(nonatomic,strong) NSString *accid ;

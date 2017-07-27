@@ -19,6 +19,7 @@
 #import "SettingViewController.h"
 #import "MyOrderViewController.h"
 #import "MyOneOnOneViewController.h"
+#import "MyExclusiveClassViewController.h"
 
 #import "UIViewController+HUD.h"
 #import "UIViewController+HUD.h"
@@ -76,10 +77,10 @@
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     
     /* 菜单名*/
-    _settingName = @[@"我的钱包",@"我的订单",@"我的直播课",@"我的一对一",@"我的视频课",@"我的试听",@"安全管理",@"系统设置",@"关于我们"];
+    _settingName = @[@"我的钱包",@"我的订单",@"我的直播课",@"我的一对一",@"我的视频课",@"我的专属课",@"我的试听",@"安全管理",@"系统设置",@"关于我们"];
     
     /* cell的图片*/
-    _cellImage = @[[UIImage imageNamed:@"我的钱包"],[UIImage imageNamed:@"我的订单"],[UIImage imageNamed:@"我的直播课"],[UIImage imageNamed:@"我的一对一"],[UIImage imageNamed:@"我的视频课"],[UIImage imageNamed:@"我的试听课"],[UIImage imageNamed:@"安全管理"],[UIImage imageNamed:@"系统设置"],[UIImage imageNamed:@"关于我们"]];
+    _cellImage = @[[UIImage imageNamed:@"我的钱包"],[UIImage imageNamed:@"我的订单"],[UIImage imageNamed:@"我的直播课"],[UIImage imageNamed:@"我的一对一"],[UIImage imageNamed:@"我的视频课"],[UIImage imageNamed:@"我的专属课"],[UIImage imageNamed:@"我的试听课"],[UIImage imageNamed:@"安全管理"],[UIImage imageNamed:@"系统设置"],[UIImage imageNamed:@"关于我们"]];
     
     _headView = [[HeadBackView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT*2/5)];
     [self.view addSubview:_headView];
@@ -429,13 +430,18 @@
                     
                 }
                     break;
+                    
                 case 5:{
+                    controller = [[MyExclusiveClassViewController alloc]init];
+                }
+                    break;
+                case 6:{
                     
                     controller = [[MyAuditionViewController alloc]init];
                     
                 }
                     break;
-                case 6:{
+                case 7:{
                     if (is_Guest == YES) {
                         //是游客就让游客去绑定
                         [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"游客账号不能进行此操作!\n请先绑定账号!" cancelButtonTitle:@"前往绑定" destructiveButtonTitle:nil otherButtonTitles:@[@"暂不绑定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
@@ -469,11 +475,11 @@
                     
                 }
                     break;
-                case 7:{
+                case 8:{
                     controller = [SettingViewController new];
                 }
                     break;
-                case 8:{
+                case 9:{
                     controller = [AboutUsViewController new];
                 }
                     break;

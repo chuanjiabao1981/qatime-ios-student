@@ -348,6 +348,44 @@
     
 }
 
+-(void)setExclusiveModel:(ExclusiveLessons *)exclusiveModel{
+    
+    _exclusiveModel = exclusiveModel;
+    _className.text = exclusiveModel.name;
+    _classDate .text = exclusiveModel.class_date;
+    _classTime .text = [NSString stringWithFormat:@"%@",exclusiveModel.live_time];
+    /* 已开课的状态*/
+    if ([exclusiveModel.status isEqualToString:@"init"]) {
+        _status.text =@"未开始";
+        _class_status = [NSString stringWithFormat:@"未开始"];
+    }else if([exclusiveModel.status isEqualToString:@"ready"]){
+        _status.text =@"待上课";
+        _class_status = [NSString stringWithFormat:@"待上课"];
+    }else if([exclusiveModel.status isEqualToString:@"teaching"]){
+        _status.text =@"直播中";
+        _class_status = [NSString stringWithFormat:@"直播中"];
+    }else if([exclusiveModel.status isEqualToString:@"closed"]){
+        _status.text =@"已直播";
+        _class_status = [NSString stringWithFormat:@"已直播"];
+    }else if([exclusiveModel.status isEqualToString:@"finished"]){
+        _status.text =@"已结束";
+        _class_status = [NSString stringWithFormat:@"已结束"];
+    }else if([exclusiveModel.status isEqualToString:@"pause"]){
+        _status.text =@"暂停中";
+        _class_status = [NSString stringWithFormat:@"暂停中"];
+    }else if([exclusiveModel.status isEqualToString:@"missed"]){
+        _status.text =@"待补课";
+        _class_status = [NSString stringWithFormat:@"待补课"];
+    }else if([exclusiveModel.status isEqualToString:@"billing"]){
+        _status.text =@"已结束";
+        _class_status = [NSString stringWithFormat:@"已结束"];
+    }else if([exclusiveModel.status isEqualToString:@"completed"]){
+        _status.text =@"已结束";
+        _class_status = [NSString stringWithFormat:@"已结束"];
+    }
+
+}
+
 
 
 

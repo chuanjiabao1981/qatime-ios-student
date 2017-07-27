@@ -14,6 +14,7 @@
 		5407C9931DE7DE7500DB04C8 /* NSData+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C9921DE7DE7500DB04C8 /* NSData+YYAdd.m */; };
 		5407C9961DE7DE8400DB04C8 /* NSNumber+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C9951DE7DE8400DB04C8 /* NSNumber+YYAdd.m */; };
 		5407C9991DE7DE9200DB04C8 /* UIDevice+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C9981DE7DE9200DB04C8 /* UIDevice+YYAdd.m */; };
+		54081A711F28821C0063C391 /* ExclusiveLessons.m in Sources */ = {isa = PBXBuildFile; fileRef = 54081A701F28821C0063C391 /* ExclusiveLessons.m */; };
 		540CC97F1EB96FA700387E8F /* NSNull+Json.m in Sources */ = {isa = PBXBuildFile; fileRef = 540CC97E1EB96FA700387E8F /* NSNull+Json.m */; };
 		540F85BC1EB03789007AE08A /* ConfirmRechargeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 540F85BB1EB03789007AE08A /* ConfirmRechargeView.m */; };
 		541390AD1EFA57B000EF51AA /* ReplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 541390AC1EFA57B000EF51AA /* ReplayView.m */; };
@@ -86,6 +87,9 @@
 		542C17441DFA508A0088DB3F /* Canceld.m in Sources */ = {isa = PBXBuildFile; fileRef = 542C17431DFA508A0088DB3F /* Canceld.m */; };
 		542F09221EA8A6170062090D /* VerifyPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F09211EA8A6170062090D /* VerifyPasswordViewController.m */; };
 		542F09281EA8A63B0062090D /* VerifyPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F09271EA8A63B0062090D /* VerifyPasswordView.m */; };
+		542F4DA61F29C0F80070E321 /* ExclusiveList.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F4DA51F29C0F80070E321 /* ExclusiveList.m */; };
+		542F4DA91F29C7420070E321 /* ExclusiveInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F4DA81F29C7420070E321 /* ExclusiveInfo.m */; };
+		542F4DAD1F29C84D0070E321 /* ExclusiveLesson.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F4DAC1F29C84D0070E321 /* ExclusiveLesson.m */; };
 		542F94EC1EDE73D3008279E0 /* InteractiveCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F94EB1EDE73D3008279E0 /* InteractiveCourse.m */; };
 		542F94EF1EDE8C29008279E0 /* Interactive.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F94EE1EDE8C29008279E0 /* Interactive.m */; };
 		543278661E8CE50200F7A2D9 /* IJKFloatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543278651E8CE50200F7A2D9 /* IJKFloatingView.m */; };
@@ -194,6 +198,17 @@
 		545B86FB1E650F2000A157F0 /* QRCodeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B86FA1E650F2000A157F0 /* QRCodeController.m */; };
 		54634D981DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 54634D871DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m */; };
 		54634D991DDEAC1F0070C0FF /* FJFloatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54634D8A1DDEAC1F0070C0FF /* FJFloatingView.m */; };
+		546448981F26E8E8001C52FF /* MyExclusiveClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546448971F26E8E8001C52FF /* MyExclusiveClassViewController.m */; };
+		5464489B1F26E8F6001C52FF /* MyExclusiveClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5464489A1F26E8F6001C52FF /* MyExclusiveClassView.m */; };
+		5464489E1F27224F001C52FF /* HMSegmentedControl+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 5464489D1F27224F001C52FF /* HMSegmentedControl+Category.m */; };
+		546448A21F272A8A001C52FF /* MyExclusiveClassCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 546448A11F272A8A001C52FF /* MyExclusiveClassCell.m */; };
+		546448AA1F2749F7001C52FF /* ExclusivePlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 546448A91F2749F7001C52FF /* ExclusivePlayerView.m */; };
+		546448AD1F274A08001C52FF /* ExclusivePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546448AC1F274A08001C52FF /* ExclusivePlayerViewController.m */; };
+		546448B01F274B35001C52FF /* ExclusiveChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546448AF1F274B35001C52FF /* ExclusiveChatViewController.m */; };
+		546448B31F274B47001C52FF /* ExclusivenNoticeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546448B21F274B47001C52FF /* ExclusivenNoticeViewController.m */; };
+		546448B61F274B5B001C52FF /* ExclusivePlayerInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546448B51F274B5B001C52FF /* ExclusivePlayerInfoViewController.m */; };
+		546448B91F274B68001C52FF /* ExclusiveMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546448B81F274B68001C52FF /* ExclusiveMembersViewController.m */; };
+		546448C31F274F5A001C52FF /* ExclusivePlayerInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 546448C21F274F5A001C52FF /* ExclusivePlayerInfoView.m */; };
 		54652E051DEE823100F4607C /* FileService.m in Sources */ = {isa = PBXBuildFile; fileRef = 54652E041DEE823100F4607C /* FileService.m */; };
 		54652E081DEE9D1900F4607C /* AboutUsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54652E071DEE9D1900F4607C /* AboutUsView.m */; };
 		54652E0F1DEE9D4B00F4607C /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54652E0D1DEE9D4B00F4607C /* AboutUsViewController.m */; };
@@ -691,6 +706,8 @@
 		5407C9951DE7DE8400DB04C8 /* NSNumber+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+YYAdd.m"; sourceTree = "<group>"; };
 		5407C9971DE7DE9200DB04C8 /* UIDevice+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+YYAdd.h"; sourceTree = "<group>"; };
 		5407C9981DE7DE9200DB04C8 /* UIDevice+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+YYAdd.m"; sourceTree = "<group>"; };
+		54081A6F1F28821C0063C391 /* ExclusiveLessons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusiveLessons.h; sourceTree = "<group>"; };
+		54081A701F28821C0063C391 /* ExclusiveLessons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveLessons.m; sourceTree = "<group>"; };
 		540CC97D1EB96FA700387E8F /* NSNull+Json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNull+Json.h"; sourceTree = "<group>"; };
 		540CC97E1EB96FA700387E8F /* NSNull+Json.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNull+Json.m"; sourceTree = "<group>"; };
 		540F85BA1EB03789007AE08A /* ConfirmRechargeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmRechargeView.h; sourceTree = "<group>"; };
@@ -792,6 +809,12 @@
 		542F09211EA8A6170062090D /* VerifyPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyPasswordViewController.m; sourceTree = "<group>"; };
 		542F09261EA8A63B0062090D /* VerifyPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyPasswordView.h; sourceTree = "<group>"; };
 		542F09271EA8A63B0062090D /* VerifyPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyPasswordView.m; sourceTree = "<group>"; };
+		542F4DA41F29C0F80070E321 /* ExclusiveList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusiveList.h; sourceTree = "<group>"; };
+		542F4DA51F29C0F80070E321 /* ExclusiveList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveList.m; sourceTree = "<group>"; };
+		542F4DA71F29C7420070E321 /* ExclusiveInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusiveInfo.h; sourceTree = "<group>"; };
+		542F4DA81F29C7420070E321 /* ExclusiveInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveInfo.m; sourceTree = "<group>"; };
+		542F4DAB1F29C84D0070E321 /* ExclusiveLesson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusiveLesson.h; sourceTree = "<group>"; };
+		542F4DAC1F29C84D0070E321 /* ExclusiveLesson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveLesson.m; sourceTree = "<group>"; };
 		542F94EA1EDE73D3008279E0 /* InteractiveCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveCourse.h; sourceTree = "<group>"; };
 		542F94EB1EDE73D3008279E0 /* InteractiveCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractiveCourse.m; sourceTree = "<group>"; };
 		542F94ED1EDE8C29008279E0 /* Interactive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Interactive.h; sourceTree = "<group>"; };
@@ -1011,6 +1034,28 @@
 		54634D871DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+Block.m"; sourceTree = "<group>"; };
 		54634D891DDEAC1F0070C0FF /* FJFloatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FJFloatingView.h; sourceTree = "<group>"; };
 		54634D8A1DDEAC1F0070C0FF /* FJFloatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FJFloatingView.m; sourceTree = "<group>"; };
+		546448961F26E8E8001C52FF /* MyExclusiveClassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyExclusiveClassViewController.h; sourceTree = "<group>"; };
+		546448971F26E8E8001C52FF /* MyExclusiveClassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyExclusiveClassViewController.m; sourceTree = "<group>"; };
+		546448991F26E8F6001C52FF /* MyExclusiveClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyExclusiveClassView.h; sourceTree = "<group>"; };
+		5464489A1F26E8F6001C52FF /* MyExclusiveClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyExclusiveClassView.m; sourceTree = "<group>"; };
+		5464489C1F27224F001C52FF /* HMSegmentedControl+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HMSegmentedControl+Category.h"; sourceTree = "<group>"; };
+		5464489D1F27224F001C52FF /* HMSegmentedControl+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "HMSegmentedControl+Category.m"; sourceTree = "<group>"; };
+		546448A01F272A8A001C52FF /* MyExclusiveClassCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyExclusiveClassCell.h; sourceTree = "<group>"; };
+		546448A11F272A8A001C52FF /* MyExclusiveClassCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyExclusiveClassCell.m; sourceTree = "<group>"; };
+		546448A81F2749F7001C52FF /* ExclusivePlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusivePlayerView.h; sourceTree = "<group>"; };
+		546448A91F2749F7001C52FF /* ExclusivePlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusivePlayerView.m; sourceTree = "<group>"; };
+		546448AB1F274A08001C52FF /* ExclusivePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusivePlayerViewController.h; sourceTree = "<group>"; };
+		546448AC1F274A08001C52FF /* ExclusivePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusivePlayerViewController.m; sourceTree = "<group>"; };
+		546448AE1F274B35001C52FF /* ExclusiveChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusiveChatViewController.h; sourceTree = "<group>"; };
+		546448AF1F274B35001C52FF /* ExclusiveChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveChatViewController.m; sourceTree = "<group>"; };
+		546448B11F274B47001C52FF /* ExclusivenNoticeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusivenNoticeViewController.h; sourceTree = "<group>"; };
+		546448B21F274B47001C52FF /* ExclusivenNoticeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusivenNoticeViewController.m; sourceTree = "<group>"; };
+		546448B41F274B5B001C52FF /* ExclusivePlayerInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusivePlayerInfoViewController.h; sourceTree = "<group>"; };
+		546448B51F274B5B001C52FF /* ExclusivePlayerInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusivePlayerInfoViewController.m; sourceTree = "<group>"; };
+		546448B71F274B68001C52FF /* ExclusiveMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusiveMembersViewController.h; sourceTree = "<group>"; };
+		546448B81F274B68001C52FF /* ExclusiveMembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveMembersViewController.m; sourceTree = "<group>"; };
+		546448C11F274F5A001C52FF /* ExclusivePlayerInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusivePlayerInfoView.h; sourceTree = "<group>"; };
+		546448C21F274F5A001C52FF /* ExclusivePlayerInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusivePlayerInfoView.m; sourceTree = "<group>"; };
 		54652E031DEE823100F4607C /* FileService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileService.h; sourceTree = "<group>"; };
 		54652E041DEE823100F4607C /* FileService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileService.m; sourceTree = "<group>"; };
 		54652E061DEE9D1900F4607C /* AboutUsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutUsView.h; sourceTree = "<group>"; };
@@ -2028,6 +2073,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		54081A6E1F28820D0063C391 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54081A6F1F28821C0063C391 /* ExclusiveLessons.h */,
+				54081A701F28821C0063C391 /* ExclusiveLessons.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		541390B41EFA641100EF51AA /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -2153,6 +2207,7 @@
 				54AB48B31DED2CF3008E3BC5 /* 我的订单 */,
 				54AB48B21DED2CF2008E3BC5 /* 我的直播课 */,
 				547E92BA1E8E2DA700160C6D /* 我的一对一 */,
+				546448921F26E0A0001C52FF /* 我的专属课 */,
 				54C451FE1E9C94B8002108F4 /* 我的视频课 */,
 				54D82AEC1EAEFA240034015F /* 我的试听 */,
 				54AB48B11DED2CF1008E3BC5 /* 安全管理 */,
@@ -2385,6 +2440,8 @@
 			children = (
 				541F91EB1DCA09CC00180BE8 /* TutoriumList.h */,
 				541F91EC1DCA09CC00180BE8 /* TutoriumList.m */,
+				542F4DA41F29C0F80070E321 /* ExclusiveList.h */,
+				542F4DA51F29C0F80070E321 /* ExclusiveList.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2702,6 +2759,10 @@
 		544DAB191F259EE800E43E23 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				542F4DA71F29C7420070E321 /* ExclusiveInfo.h */,
+				542F4DA81F29C7420070E321 /* ExclusiveInfo.m */,
+				542F4DAB1F29C84D0070E321 /* ExclusiveLesson.h */,
+				542F4DAC1F29C84D0070E321 /* ExclusiveLesson.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2909,6 +2970,153 @@
 				54634D8A1DDEAC1F0070C0FF /* FJFloatingView.m */,
 			);
 			path = FJFloatingView;
+			sourceTree = "<group>";
+		};
+		546448921F26E0A0001C52FF /* 我的专属课 */ = {
+			isa = PBXGroup;
+			children = (
+				546448951F26E0B4001C52FF /* Model */,
+				546448941F26E0B3001C52FF /* View */,
+				546448931F26E0B2001C52FF /* Controller */,
+			);
+			name = "我的专属课";
+			sourceTree = "<group>";
+		};
+		546448931F26E0B2001C52FF /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				546448961F26E8E8001C52FF /* MyExclusiveClassViewController.h */,
+				546448971F26E8E8001C52FF /* MyExclusiveClassViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		546448941F26E0B3001C52FF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5464489F1F272A67001C52FF /* Cell */,
+				546448991F26E8F6001C52FF /* MyExclusiveClassView.h */,
+				5464489A1F26E8F6001C52FF /* MyExclusiveClassView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		546448951F26E0B4001C52FF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		5464489F1F272A67001C52FF /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				546448A01F272A8A001C52FF /* MyExclusiveClassCell.h */,
+				546448A11F272A8A001C52FF /* MyExclusiveClassCell.m */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
+		546448A31F2747AF001C52FF /* ExclusivePlayer */ = {
+			isa = PBXGroup;
+			children = (
+				546448A71F2749C5001C52FF /* 子控制器们 */,
+				546448A61F274972001C52FF /* Model */,
+				546448A51F274971001C52FF /* View */,
+				546448A41F274970001C52FF /* Controller */,
+			);
+			name = ExclusivePlayer;
+			sourceTree = "<group>";
+		};
+		546448A41F274970001C52FF /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				546448AB1F274A08001C52FF /* ExclusivePlayerViewController.h */,
+				546448AC1F274A08001C52FF /* ExclusivePlayerViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		546448A51F274971001C52FF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				546448A81F2749F7001C52FF /* ExclusivePlayerView.h */,
+				546448A91F2749F7001C52FF /* ExclusivePlayerView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		546448A61F274972001C52FF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		546448A71F2749C5001C52FF /* 子控制器们 */ = {
+			isa = PBXGroup;
+			children = (
+				546448BE1F274EF1001C52FF /* 聊天 */,
+				546448BD1F274EEF001C52FF /* 公告 */,
+				546448BC1F274EEF001C52FF /* 详情 */,
+				546448BB1F274EEE001C52FF /* 成员 */,
+			);
+			name = "子控制器们";
+			sourceTree = "<group>";
+		};
+		546448BB1F274EEE001C52FF /* 成员 */ = {
+			isa = PBXGroup;
+			children = (
+				546448B71F274B68001C52FF /* ExclusiveMembersViewController.h */,
+				546448B81F274B68001C52FF /* ExclusiveMembersViewController.m */,
+			);
+			name = "成员";
+			sourceTree = "<group>";
+		};
+		546448BC1F274EEF001C52FF /* 详情 */ = {
+			isa = PBXGroup;
+			children = (
+				54081A6E1F28820D0063C391 /* Model */,
+				546448BF1F274F1C001C52FF /* View */,
+				546448C01F274F21001C52FF /* Controller */,
+			);
+			name = "详情";
+			sourceTree = "<group>";
+		};
+		546448BD1F274EEF001C52FF /* 公告 */ = {
+			isa = PBXGroup;
+			children = (
+				546448B11F274B47001C52FF /* ExclusivenNoticeViewController.h */,
+				546448B21F274B47001C52FF /* ExclusivenNoticeViewController.m */,
+			);
+			name = "公告";
+			sourceTree = "<group>";
+		};
+		546448BE1F274EF1001C52FF /* 聊天 */ = {
+			isa = PBXGroup;
+			children = (
+				546448AE1F274B35001C52FF /* ExclusiveChatViewController.h */,
+				546448AF1F274B35001C52FF /* ExclusiveChatViewController.m */,
+			);
+			name = "聊天";
+			sourceTree = "<group>";
+		};
+		546448BF1F274F1C001C52FF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				546448C11F274F5A001C52FF /* ExclusivePlayerInfoView.h */,
+				546448C21F274F5A001C52FF /* ExclusivePlayerInfoView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		546448C01F274F21001C52FF /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				546448B41F274B5B001C52FF /* ExclusivePlayerInfoViewController.h */,
+				546448B51F274B5B001C52FF /* ExclusivePlayerInfoViewController.m */,
+			);
+			name = Controller;
 			sourceTree = "<group>";
 		};
 		54652E171DEEB06200F4607C /* Cell */ = {
@@ -5984,6 +6192,8 @@
 				540CC97E1EB96FA700387E8F /* NSNull+Json.m */,
 				54990FE71ED47112005B5BC2 /* UIImage+Color.h */,
 				54990FE81ED47112005B5BC2 /* UIImage+Color.m */,
+				5464489C1F27224F001C52FF /* HMSegmentedControl+Category.h */,
+				5464489D1F27224F001C52FF /* HMSegmentedControl+Category.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -6035,6 +6245,7 @@
 		54FCBAC61DD591AA0094BF58 /* 视频播放页 */ = {
 			isa = PBXGroup;
 			children = (
+				546448A31F2747AF001C52FF /* ExclusivePlayer */,
 				54294C741DDB354400677333 /* LivePlayer */,
 				547B6C3C1E2E14ED00C52F1B /* ReplayVideoPlayer */,
 				54B907601E9CCFBE00034FDC /* VideoPlayer */,
@@ -6456,6 +6667,7 @@
 				54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */,
 				548328E81DDC6F360053AB29 /* Mp3Recorder.m in Sources */,
 				54AB48E41DED5415008E3BC5 /* MyClassView.m in Sources */,
+				546448981F26E8E8001C52FF /* MyExclusiveClassViewController.m in Sources */,
 				543E0CCB1DFFEDC8004B24FD /* CheckOrderViewController.m in Sources */,
 				5413D2521DF7B5CD00A8FDEC /* CashRecordView.m in Sources */,
 				548D1D6D1EA7415400B120C8 /* ClassTimeView.m in Sources */,
@@ -6532,6 +6744,7 @@
 				54B9075C1E9CCE9600034FDC /* VideoClassInfoView.m in Sources */,
 				543E23401E2C78D700381F10 /* SetPayPasswordViewController.m in Sources */,
 				54AC040E1E8938E100817767 /* NIMAdvancedTeamMemberCell.m in Sources */,
+				546448AD1F274A08001C52FF /* ExclusivePlayerViewController.m in Sources */,
 				545162D81DF55DD0000BD17A /* PersonalTableViewCell.m in Sources */,
 				548D1D7F1EA7421400B120C8 /* AllClassViewController.m in Sources */,
 				54DBA4B01DE4423300A67A90 /* YZEmotionCell.m in Sources */,
@@ -6608,6 +6821,8 @@
 				54AC02531E892CEE00817767 /* NTESDataManager.m in Sources */,
 				547E92C31E8E313200160C6D /* MyOneOnOneViewController.m in Sources */,
 				542F94EC1EDE73D3008279E0 /* InteractiveCourse.m in Sources */,
+				546448B61F274B5B001C52FF /* ExclusivePlayerInfoViewController.m in Sources */,
+				5464489E1F27224F001C52FF /* HMSegmentedControl+Category.m in Sources */,
 				545162CB1DF5597E000BD17A /* PersonalInfoView.m in Sources */,
 				54DBA4B61DE4423300A67A90 /* YZTextAttachment.m in Sources */,
 				54AC03D21E8938E100817767 /* NIMContactSelectTabView.m in Sources */,
@@ -6631,6 +6846,7 @@
 				547E92CE1E8E520400160C6D /* OneOnOneTutoriumInfoViewController.m in Sources */,
 				54AC041C1E8938E100817767 /* NSMutableAttributedString+NIM.m in Sources */,
 				54B4C18A1DF8184500E31794 /* ChargeViewController.m in Sources */,
+				546448B31F274B47001C52FF /* ExclusivenNoticeViewController.m in Sources */,
 				549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */,
 				5493D4CE1E0BE1050085A39E /* TLCityPickerSearchResultController.m in Sources */,
 				54C9A8CE1E11FD1F00B81EBF /* LMJKeyboardShowHiddenNotificationCenter.m in Sources */,
@@ -6641,6 +6857,7 @@
 				54D75FDD1E2F9F87003744FE /* Replay.m in Sources */,
 				54AC03C71E8938E100817767 /* NIMBadgeView.m in Sources */,
 				54AB49031DEDB1BA008E3BC5 /* ListenTableViewCell.m in Sources */,
+				546448C31F274F5A001C52FF /* ExclusivePlayerInfoView.m in Sources */,
 				541390B01EFA57BC00EF51AA /* ReplayViewController.m in Sources */,
 				548328F31DDC75050053AB29 /* ChatModel.m in Sources */,
 				54AC03E21E8938E100817767 /* NIMAudioContentConfig.m in Sources */,
@@ -6652,6 +6869,7 @@
 				548D1D7B1EA7420B00B120C8 /* AllClassView.m in Sources */,
 				5435D9371DD2C12300DD4FCC /* ClassesListTableViewCell.m in Sources */,
 				5471C8021E8F87FD0098E509 /* ClassListTableView.m in Sources */,
+				542F4DAD1F29C84D0070E321 /* ExclusiveLesson.m in Sources */,
 				54AB63D51EF2AA500022E573 /* ClassSearch.m in Sources */,
 				5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */,
 				54AC041E1E8938E100817767 /* NIMWebImageCompat.m in Sources */,
@@ -6668,7 +6886,9 @@
 				54DBA4B41DE4423300A67A90 /* YZEmotionManager.m in Sources */,
 				54AC04CA1E89398E00817767 /* yuv444p10le.fsh.c in Sources */,
 				54AC03C61E8938E100817767 /* NIMAvatarImageView.m in Sources */,
+				546448AA1F2749F7001C52FF /* ExclusivePlayerView.m in Sources */,
 				54AC02821E892D3C00817767 /* UIView+NTES.m in Sources */,
+				546448B01F274B35001C52FF /* ExclusiveChatViewController.m in Sources */,
 				54DBA4AE1DE4423300A67A90 /* UITextField+YZEmotion.m in Sources */,
 				547E92CB1E8E51F300160C6D /* OneOnOneTutorimInfoView.m in Sources */,
 				5454D2B11EC1824F0045F4C9 /* UITabBarController+Rotation.m in Sources */,
@@ -6769,6 +6989,7 @@
 				54B9075F1E9CCEA400034FDC /* VideoClassInfoViewController.m in Sources */,
 				54AC04171E8938E100817767 /* NIMSpellingCenter.m in Sources */,
 				5419C2A01EA9E4A000AF5763 /* MyVideoClassTableViewCell.m in Sources */,
+				546448B91F274B68001C52FF /* ExclusiveMembersViewController.m in Sources */,
 				54D66F791DEC087D00ED2EBC /* NSString+StatusSwitch.m in Sources */,
 				54AC04261E8938E100817767 /* UIImage+NIMMultiFormat.m in Sources */,
 				54AC040A1E8938E100817767 /* NIMNormalTeamCardViewController.m in Sources */,
@@ -6860,6 +7081,7 @@
 				54A991851E34BCB20001D3D9 /* NoticeWaysTableViewCell.m in Sources */,
 				54660F601E2642E6009DFB7C /* NSString+ChangeYearsToChinese.m in Sources */,
 				5413D2711DF7CF2900A8FDEC /* WithDraw.m in Sources */,
+				542F4DA91F29C7420070E321 /* ExclusiveInfo.m in Sources */,
 				54AC02791E892D3C00817767 /* NSDictionary+NTESJson.m in Sources */,
 				546978691DC72A42001695F4 /* SignUpViewController.m in Sources */,
 				54AC04051E8938E100817767 /* NIMTeamCardRowItem.m in Sources */,
@@ -6943,6 +7165,7 @@
 				54AC04D91E89398E00817767 /* NTESChatroomSegmentedControl.m in Sources */,
 				54B4C1871DF8183800E31794 /* ChargeView.m in Sources */,
 				54FA71591E07B111009D81FE /* ChatViewController.m in Sources */,
+				54081A711F28821C0063C391 /* ExclusiveLessons.m in Sources */,
 				54D661291DD04DC900C9A0FF /* YZSquareMenu.m in Sources */,
 				543891001F0656340017DF88 /* UIView+SDAutoLayout.m in Sources */,
 				54B907661E9CCFF600034FDC /* VideoClassInfo.m in Sources */,
@@ -6961,6 +7184,7 @@
 				5414AD671E9F1BE0002818FB /* VideoClass_Player_InfoView.m in Sources */,
 				54366EA71EE114AC0071A5F9 /* GuestBindingView.m in Sources */,
 				54634D981DDEAC1F0070C0FF /* UIGestureRecognizer+Block.m in Sources */,
+				546448A21F272A8A001C52FF /* MyExclusiveClassCell.m in Sources */,
 				5493D4CB1E0BE1050085A39E /* TLCityGroupCell.m in Sources */,
 				545074681EDFB4CC0012A383 /* InteractionClassInfoViewController.m in Sources */,
 				545226051E2482C800F36280 /* EditHeadTableViewCell.m in Sources */,
@@ -6977,6 +7201,7 @@
 				54AC03E71E8938E100817767 /* NIMLocationContentConfig.m in Sources */,
 				54AC04C01E89398E00817767 /* NTESMeetingRole.m in Sources */,
 				54AC02541E892CEE00817767 /* NTESDemoConfig.m in Sources */,
+				542F4DA61F29C0F80070E321 /* ExclusiveList.m in Sources */,
 				543BCB001E79156300AD6721 /* ChooseGradeAndSubjectView.m in Sources */,
 				54197A901EA0CAB500770B7C /* Video.m in Sources */,
 				54428DCC1E7C03F80004F27B /* UITableView+CYLTableViewPlaceHolder.m in Sources */,
@@ -6984,6 +7209,7 @@
 				54E402291E65831B004935C2 /* QRMaskView.m in Sources */,
 				547FBF351DF6CEC800955A9E /* PersonalDescTableViewCell.m in Sources */,
 				54AB48E71DED606F008E3BC5 /* UnStartClassView.m in Sources */,
+				5464489B1F26E8F6001C52FF /* MyExclusiveClassView.m in Sources */,
 				54AB48FD1DEDA563008E3BC5 /* StartedTableViewCell.m in Sources */,
 				5493D4CC1E0BE1050085A39E /* TLCityHeaderView.m in Sources */,
 				54AB48FA1DED7C09008E3BC5 /* MyTutoriumModel.m in Sources */,

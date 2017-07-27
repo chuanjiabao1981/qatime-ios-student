@@ -47,13 +47,7 @@
     
     /* 保存本页面数据*/
     NSMutableDictionary *_dataDic;
-    
-    
-    /* 优惠码*/
-    NSString *_promotionCode;
-    
-    /* 标签图的config*/
-    TTGTextTagConfig *_config;
+
     
     /**学习流程所需的数据*/
     NSArray *_workFlowArr;
@@ -254,6 +248,7 @@
         
         NSString *teacherID = [NSString stringWithFormat:@"%@",dic[@"data"][@"course"][@"teacher"][@"id"]];
         
+        _chatTeamID = [NSString stringWithFormat:@"%@",dic[@"data"][@"course"][@"chat_team_id"]];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             
             /* 成功后访问教师数据*/
@@ -352,13 +347,6 @@
                     
                     //适合人群
                     _tutoriumInfoView.suitable.text = _dataDic[@"suit_crowd"]==[NSNull null]?@"无":_dataDic[@"suit_crowd"];
-                    
-                    
-                    
-#warning ////////在这儿判断是否购买,是否免费,是否.........
-                    
-                    
-#warning 这部分代码结束.......
                     
                     
                     if ([status isEqualToString:@"0"]) {
@@ -1191,8 +1179,8 @@
 #pragma mark- 根据课程详细内容 ,scrollview 的content 自适应高度
 - (void)autoScrollHeight{
     //    //富文本尺寸适配
-    [_tutoriumInfoView.classDescriptionLabel updateLayout];
-    [_tutoriumInfoView.teacherInterviewLabel updateLayout];
+//    [_tutoriumInfoView.classDescriptionLabel updateLayout];
+//    [_tutoriumInfoView.teacherInterviewLabel updateLayout];
     //
     //    /* 使用YYText的YYTextLayout来计算富文本的size*/
     //    /* 课程信息的 高度自适应*/
