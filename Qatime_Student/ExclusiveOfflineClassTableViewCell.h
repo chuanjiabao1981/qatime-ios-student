@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ExclusiveLessons.h"
+#import "ExclusiveLesson.h"
 
 @interface ExclusiveOfflineClassTableViewCell : UITableViewCell
 /* 状态原点图*/
@@ -33,6 +33,6 @@
 @property(nonatomic,strong) UIButton *replay ;
 
 /* 数据model */
-@property (nonatomic, strong) ExclusiveLessons *model ;
+@property (nonatomic, strong) ExclusiveLesson *model ;
 
 @end

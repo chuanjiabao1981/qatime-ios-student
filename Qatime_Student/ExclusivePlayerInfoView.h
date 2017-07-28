@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TutoriumList.h"
+#import "ExclusiveInfo.h"
 
 @interface ExclusivePlayerInfoView : UIView
 /*课程名*/
@@ -56,6 +57,6 @@
 /* 自动布局参考线*/
 @property(nonatomic,strong) UIView *layoutLine;
 
-@property (nonatomic, strong) TutoriumListInfo *model ;
+@property (nonatomic, strong) ExclusiveInfo *model ;
 
 @end

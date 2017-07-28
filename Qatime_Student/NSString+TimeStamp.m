@@ -46,8 +46,6 @@
     
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     
-    
-    
     NSString *currentDateStr = [dateFormatter stringFromDate: detaildate];
     
     return currentDateStr;

@@ -455,6 +455,7 @@ typedef NS_ENUM(NSUInteger, ClassType) {
             if (cell==nil) {
                 cell=[[StartedTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
             }
+            cell.enterButton.hidden = YES;
             if (_startedArr.count>indexPath.row) {
                 cell.model = _startedArr[indexPath.row];
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];

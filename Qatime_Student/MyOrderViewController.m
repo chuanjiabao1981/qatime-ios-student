@@ -408,6 +408,9 @@ typedef enum : NSUInteger {
                                     mod.teacher_name = [name substringFromIndex:1];
                                 }
 
+                            }else{
+                                
+                                
                             }
                             
                         }

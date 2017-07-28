@@ -527,10 +527,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -596,13 +596,13 @@
          contextName = "-[TeachersPublicViewController numberOfSectionsInCollectionView:]:TeachersPublicViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_publicCount">
-            </PersistentString>
-            <PersistentString
                value = "_oneOnOneCount">
             </PersistentString>
             <PersistentString
                value = "_videoCount">
+            </PersistentString>
+            <PersistentString
+               value = "_publicCount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -821,10 +821,10 @@
          contextName = "-[NTESPageView reloadPage]:NTESPageView.m">
          <PersistentStrings>
             <PersistentString
-               value = "_currentPage">
+               value = "_pages">
             </PersistentString>
             <PersistentString
-               value = "_pages">
+               value = "_currentPage">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1637,10 +1637,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -2087,6 +2087,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_currentConference">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__54-[ExclusiveInfoViewController requestClassesInfoWith:]_block_invoke:ExclusiveInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

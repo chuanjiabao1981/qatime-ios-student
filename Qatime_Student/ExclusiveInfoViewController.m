@@ -16,10 +16,24 @@
 #import "YYModel.h"
 #import "UIAlertController+Blocks.h"
 #import "OrderViewController.h"
+#import "Features.h"
+#import "TeacherFeatureTagCollectionViewCell.h"
+#import "ClassesListTableViewCell.h"
+#import "CYLTableViewPlaceHolder.h"
+#import "ExclusiveLesson.h"
+#import "ExclusiveOfflineClassTableViewCell.h"
+#import "HaveNoClassView.h"
+#import "VideoPlayerViewController.h"
+#import "WorkFlowTableViewCell.h"
+#import "NSNull+Json.h"
 
-@interface ExclusiveInfoViewController (){
+@interface ExclusiveInfoViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDataSource,UITableViewDelegate>{
     
     NSDictionary *_dataDic;
+    
+    NSMutableArray *_onlineClassArray;
+    NSMutableArray *_offlineClassArray;
+    
 }
 
 @end
@@ -29,6 +43,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _onlineClassArray = @[].mutableCopy;
+    _offlineClassArray = @[].mutableCopy;
+    
+    self.tutoriumInfoView.classFeature.delegate = self;
+    self.tutoriumInfoView.classFeature.dataSource = self;
+    
+    //注册cell
+    [self.tutoriumInfoView.classFeature registerClass:[TeacherFeatureTagCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
+
+    self.tutoriumInfoView.classesListTableView.delegate = self;
+    self.tutoriumInfoView.classesListTableView.dataSource = self;
+    self.tutoriumInfoView.classesListTableView.tag = 1;
+    
+    self.tutoriumInfoView.workFlowView.delegate = self;
+    self.tutoriumInfoView.workFlowView.dataSource = self;
+    self.tutoriumInfoView.workFlowView.tag = 2;
+
 }
 
 //重写父类方法
@@ -56,7 +87,7 @@
             model.descriptions = dic[@"data"][@"customized_group"][@"description"];
             
             self.tutoriumInfoView.exclusiveModel = model;
-            
+            self.navigationBar.titleLabel.text = model.name;
             if ([model.status isEqualToString:@"finished"]||[model.status isEqualToString:@"billing"]||[model.status isEqualToString:@"completed"]){
                 //如果课程已结束,buybar不显示.什么都不显示了
                 if (self.buyBar) {
@@ -65,6 +96,22 @@
                 }
                 
             }
+            
+            //课程
+            for (NSDictionary *lesson in dic[@"data"][@"customized_group"][@"scheduled_lessons"]) {
+                ExclusiveLesson *mod = [ExclusiveLesson yy_modelWithJSON:lesson];
+                mod.lessonId = lesson[@"id"];
+                [_onlineClassArray addObject:mod];
+            }
+            
+            for (NSDictionary *lesson in dic[@"data"][@"customized_group"][@"offline_lessons"]) {
+                ExclusiveLesson *mod = [ExclusiveLesson yy_modelWithJSON:lesson];
+                mod.lessonId = lesson[@"id"];
+                [_offlineClassArray addObject:mod];
+            }
+            
+            [self.tutoriumInfoView.classesListTableView cyl_reloadData];
+            
             [self switchClassData:dic];
             
             //给视图赋值tag的内容
@@ -76,7 +123,29 @@
                 [self.tutoriumInfoView.classTagsView addTag:@"无" withConfig:self.config];
             }
             
+            //课程特色
+            for (NSString *key in _dataDic[@"icons"]) {
+                if (![key isEqualToString:@"cheap_moment"]) {
+                    if ([_dataDic[@"icons"][key]boolValue]==YES) {
+                        Features *mod = [[Features alloc]init];
+                        mod.include = [_dataDic[@"icons"][key] boolValue];
+                        mod.content = key;
+                        [self.classFeaturesArray addObject:mod];
+                    }
+                }
+            }
+            
+            [self.tutoriumInfoView.classFeature reloadData];
+            
             if (self.classFeaturesArray.count>3) {
+                self.tutoriumInfoView.classFeature.sd_resetLayout
+                .leftSpaceToView(self.tutoriumInfoView, 0)
+                .rightSpaceToView(self.tutoriumInfoView, 0)
+                .topSpaceToView(self.tutoriumInfoView.status, 10)
+                .heightIs(40);
+                [self.tutoriumInfoView.classFeature updateLayout];
+                [self.tutoriumInfoView.classFeature layoutIfNeeded];
+            }else{
                 self.tutoriumInfoView.classFeature.sd_resetLayout
                 .leftSpaceToView(self.tutoriumInfoView, 0)
                 .rightSpaceToView(self.tutoriumInfoView, 0)
@@ -89,16 +158,14 @@
             self.tutoriumInfoView.classFeature.sd_layout
             .heightIs(self.tutoriumInfoView.classFeature.contentSize.height);
             [self.tutoriumInfoView.classFeature updateLayout];
-            
-            
             [self HUDStopWithTitle:nil];
+            
             
         }
         
     } failure:^(id  _Nullable erros) {
         
     }];
-    
 }
 
 
@@ -259,13 +326,34 @@
         }
         
     }
-    
 }
 
 - (void)listen{
     
-    ExclusivePlayerViewController *controller = [[ExclusivePlayerViewController alloc]initWithClassID:self.classID andChatTeamID:self.chatTeamID];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self HUDStartWithTitle:nil];
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/play",Request_Header,self.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        
+        [self HUDStopWithTitle:nil];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            if (![[dic[@"data"][@"chat_team"]description]isEqualToString:@"0(NSNull)"]) {
+                if (dic[@"data"][@"chat_team"][@"team_id"]) {
+                    self.chatTeamID = dic[@"data"][@"chat_team"][@"team_id"];
+                }
+            }
+            ExclusivePlayerViewController *controller = [[ExclusivePlayerViewController alloc]initWithClassID:self.classID andChatTeamID:self.chatTeamID andBoardAddress:dic[@"data"][@"board_pull_stream"] andTeacherAddress:dic[@"data"][@"camera_pull_stream"]];
+            [self.navigationController pushViewController:controller animated:YES];
+
+        }else{
+            [self HUDStopWithTitle:@"请稍后重试"];
+        }
+        
+    } failure:^(id  _Nullable erros) {
+        [self HUDStopWithTitle:nil];
+        [self HUDStopWithTitle:@"请稍后重试"];
+    }];
+    
 }
 
 - (void)buyClass{
@@ -306,6 +394,281 @@
         }
         
     }
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+ 
+    NSInteger row;
+    
+    if (tableView.tag == 1) {
+        if (section == 0 ) {
+            row = _onlineClassArray.count;
+        }else{
+            row = _offlineClassArray.count;
+        }
+    }else {
+        
+        row = self.workFlowArr.count;
+    }
+    
+    return row;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UITableViewCell *tableCell;
+    
+    if (tableView.tag == 1) {
+        if (indexPath.section == 0) {
+            /* cell的重用队列*/
+            static NSString *cellIdenfier = @"cells";
+            ClassesListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+            if (cell==nil) {
+                cell=[[ClassesListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cells"];
+            }
+            if (_onlineClassArray.count>indexPath.row) {
+                cell.exclusiveModel = _onlineClassArray[indexPath.row];
+            }
+            
+            tableCell = cell;
+        }else{
+            /* cell的重用队列*/
+            static NSString *cellIdenfier = @"cell";
+            ExclusiveOfflineClassTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+            if (cell==nil) {
+                cell=[[ExclusiveOfflineClassTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+            }
+            if (_offlineClassArray.count>indexPath.row) {
+                cell.model = _offlineClassArray[indexPath.row];
+            }
+            
+            tableCell = cell;
+        }
+    }else{
+        
+        
+        /* cell的重用队列*/
+        static NSString *cellIdenfier = @"tablecell";
+        WorkFlowTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+        if (cell==nil) {
+            cell=[[WorkFlowTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"tablecell"];
+        }
+        
+        if (self.workFlowArr.count>indexPath.row) {
+            [cell.image setImage:[UIImage imageNamed:self.workFlowArr[indexPath.row][@"image"]]];
+            cell.title.text = self.workFlowArr[indexPath.row][@"title"];
+            cell.subTitle.text = self.workFlowArr[indexPath.row][@"subTitle"];
+        }
+        
+        return  cell;
+
+    }
+    
+    return  tableCell;
+    
+}
+
+#pragma mark- tableview delegate
+
+/* 点击课程表,进入回放的点击事件*/
+
+//暂时没有接口吧
+//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    
+//    if (tableView.tag == 1) {
+//        if (indexPath.section == 0) {
+//          ClassesListTableViewCell *cell = (ClassesListTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+//            if (self.isBought ==YES) {
+//                if (cell.model.replayable == YES) {
+//                    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+//                        
+//                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+//                        
+//                        if ([dic[@"status"]isEqualToNumber:@1]) {
+//                            
+//                            if ([dic[@"data"][@"replayable"]boolValue]== YES) {
+//                                
+//                                if ([dic[@"data"][@"left_replay_times"]integerValue]>0) {
+//                                    
+//                                    if (dic[@"data"][@"replay"]==nil) {
+//                                        
+//                                    }else{
+//                                        NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+//                                        [decodeParm addObject:@"software"];
+//                                        [decodeParm addObject:@"videoOnDemand"];
+//                                        
+//                                        VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+//                                        [self presentViewController:video animated:YES completion:^{
+//                                            
+//                                        }];
+//                                    }
+//                                    
+//                                }else{
+//                                    
+//                                    [self HUDStopWithTitle:@"回放次数已耗尽"];
+//                                    
+//                                }
+//                                
+//                            }else{
+//                                [self HUDStopWithTitle:@"暂无回放视频"];
+//                            }
+//                        }else{
+//                            [self HUDStopWithTitle:@"服务器繁忙,请稍后重试"];
+//                        }
+//                        
+//                    }];
+//                }else{
+//                    
+//                    
+//                }
+//                
+//                
+//            }else{
+//                
+//            }
+//        }else{
+//            ExclusiveOfflineClassTableViewCell *cell = (ExclusiveOfflineClassTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+//            if (self.isBought ==YES) {
+//                if (cell.model.replayable == YES) {
+//                    
+//                    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+//                        
+//                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+//                        
+//                        if ([dic[@"status"]isEqualToNumber:@1]) {
+//                            
+//                            if ([dic[@"data"][@"replayable"]boolValue]== YES) {
+//                                
+//                                if ([dic[@"data"][@"left_replay_times"]integerValue]>0) {
+//                                    
+//                                    if (dic[@"data"][@"replay"]==nil) {
+//                                        
+//                                    }else{
+//                                        NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+//                                        [decodeParm addObject:@"software"];
+//                                        [decodeParm addObject:@"videoOnDemand"];
+//                                        
+//                                        VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+//                                        [self presentViewController:video animated:YES completion:^{
+//                                            
+//                                        }];
+//                                    }
+//                                    
+//                                }else{
+//                                    
+//                                    [self HUDStopWithTitle:@"回放次数已耗尽"];
+//                                    
+//                                }
+//                                
+//                            }else{
+//                                [self HUDStopWithTitle:@"暂无回放视频"];
+//                            }
+//                        }else{
+//                            [self HUDStopWithTitle:@"服务器繁忙,请稍后重试"];
+//                        }
+//                        
+//                    }];
+//                }else{
+//                    
+//                    
+//                }
+//                
+//                
+//            }else{
+//                
+//            }
+//        }
+//        
+//       
+//        
+//    }
+//}
+
+#pragma mark- UITableView delegate
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    if (tableView.tag == 1) {
+        
+        return 2;
+    }else{
+        return 1;
+    }
+}
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    if (tableView.tag == 1) {
+        
+        if (section == 0){
+            return @"线上直播";
+        }else{
+            return @"线下讲课";
+        }
+    }
+    return nil;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    CGFloat height = 0;
+    if (tableView.tag == 1) {
+        
+        if (indexPath.section == 0) {
+            if (_onlineClassArray.count>indexPath.row) {
+                
+                height = [tableView cellHeightForIndexPath:indexPath model:_onlineClassArray[indexPath.row] keyPath:@"exclusiveModel" cellClass:[ClassesListTableViewCell class] contentViewWidth:self.view.width_sd];
+            }
+        }else{
+            if (_offlineClassArray.count>indexPath.row) {
+                height = [tableView cellHeightForIndexPath:indexPath model:_offlineClassArray[indexPath.row] keyPath:@"model" cellClass:[ExclusiveOfflineClassTableViewCell class] contentViewWidth:self.view.width_sd];
+            }
+        }
+    }else{
+        height = (self.view.width_sd-100*ScrenScale)/4.0;
+    }
+    return height;
+    
+}
+
+- (UIView *)makePlaceHolderView{
+    HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"暂无数据"];
+    return view;
+}
+
+- (BOOL)enableScrollWhenPlaceHolderViewShowing{
+    return YES;
+}
+
+
+
+
+
+#pragma mark- UICollectionView datasource
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+  
+    return self.classFeaturesArray.count;
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    static NSString * CellIdentifier = @"CollectionCell";
+    TeacherFeatureTagCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    if (self.classFeaturesArray.count>indexPath.row) {
+        
+        cell.model = self.classFeaturesArray[indexPath.row];
+        [cell updateLayoutSubviews];
+    }
+    
+    return cell;
+}
+
+#pragma mark- UICollectionView delegate
+
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    return 1;
+}
+
+/* item尺寸*/
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return  CGSizeMake(self.view.width_sd/3.0,20);
 }
 
 #pragma mark- 收集订单信息,并传入下一页,开始提交订单

@@ -185,11 +185,14 @@ typedef enum : NSUInteger {
 
 @implementation ExclusivePlayerViewController
 
--(instancetype)initWithClassID:(NSString *)classID andChatTeamID:(NSString *)chatTeamID{
+-(instancetype)initWithClassID:(NSString *)classID andChatTeamID:(NSString *)chatTeamID andBoardAddress:(NSString *)boardAddress andTeacherAddress:(NSString *)teacherAddress{
     self = [super init];
     if (self) {
         _chatTimeID = [NSString stringWithFormat:@"%@",chatTeamID];
         _classID = [NSString stringWithFormat:@"%@",classID];
+
+        _teacherPullAddress = [NSURL URLWithString:teacherAddress];
+        _boardPullAddress = [NSURL URLWithString:boardAddress];
     }
     return self;
 }

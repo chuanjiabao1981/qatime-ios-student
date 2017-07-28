@@ -11,7 +11,7 @@
 #import "Classes.h"
 #import "OneOnOneClass.h"
 #import "InteractionLesson.h"
-#import "ExclusiveLessons.h"
+#import "ExclusiveLesson.h"
 
 @interface ClassesListTableViewCell : UITableViewCell
 
@@ -48,7 +48,7 @@
 @property (nonatomic, strong) InteractionLesson *interactiveModel ;
 
 /** 专属课model */
-@property (nonatomic, strong) ExclusiveLessons *exclusiveModel ;
+@property (nonatomic, strong) ExclusiveLesson *exclusiveModel ;
 
 
 @end

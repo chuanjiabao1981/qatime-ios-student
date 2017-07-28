@@ -81,6 +81,6 @@
  @param chatTeamID chateamid
  @return 1
  */
--(instancetype)initWithClassID:(NSString *)classID andChatTeamID:(NSString *)chatTeamID;
+-(instancetype)initWithClassID:(NSString *)classID andChatTeamID:(NSString *)chatTeamID andBoardAddress:(NSString *)boardAddress andTeacherAddress:(NSString *)teacherAddress;
 
 @end

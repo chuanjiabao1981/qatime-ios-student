@@ -81,7 +81,7 @@
         NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
         /* 视频开始时间*/
-        NSDate *startDate=[dateFormatter dateFromString:_model.live_start_time];
+        NSDate *startDate=[dateFormatter dateFromString:_model.customized_group.start_at];
         /* 当前时间*/
         NSDate *nowDate=[NSDate date];
         //取两个日期对象的时间间隔：
@@ -96,7 +96,9 @@
         }
         
     }else if (classType == TeachingClass){
-        _status.text = [[@"进度" stringByAppendingString:_model.completed_lessons_count]stringByAppendingString:_model.preset_lesson_count];
+       
+        _status.text = [[@"进度" stringByAppendingString:_model.customized_group.closed_events_count]stringByAppendingString:_model.customized_group.events_count];
+        
     }else{
         _status.text = @"全部课程已完成";
         
@@ -104,13 +106,15 @@
     
 }
 
--(void)setModel:(MyTutoriumModel *)model{
-    _model = model;
+
+-(void)setModel:(MyExclusiveClass *)model{
     
-    /* model数据对应的空间赋值*/
-    [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
-    _className.text = model.name;
-    _classInfo.text = [[[model.grade stringByAppendingString:model.subject]stringByAppendingString:@"/"]stringByAppendingString:model.teacher_name];
+    _model = model;
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:model.customized_group.publicizes_url[@"list"]]];
+    _className.text = model.customized_group.name;
+    _classInfo.text = [[[model.customized_group.grade stringByAppendingString:model.customized_group.subject]stringByAppendingString:@"/"]stringByAppendingString:model.customized_group.teacher_name];
+    
+    
 }
 
 

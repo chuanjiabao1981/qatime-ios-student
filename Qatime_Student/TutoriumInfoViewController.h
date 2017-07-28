@@ -14,6 +14,7 @@
 #import "ClassesInfo_Time.h"
 
 #import "BuyBar.h"
+#import "NavigationBar.h"
 
 @interface TutoriumInfoViewController : UIViewController
 
@@ -23,6 +24,8 @@
 @property (nonatomic, strong) NSString *chatTeamID ;
 
 @property(nonatomic,strong) TutoriumInfoView  *tutoriumInfoView ;
+
+@property (nonatomic, strong) NavigationBar *navigationBar;
 
 
 /* 三个页面的不同Model*/
@@ -50,6 +53,9 @@
 
 /** 优惠吗 */
 @property (nonatomic, strong) NSString *promotionCode ;
+
+/**学习流程所需的数据*/
+@property (nonatomic, strong) NSArray *workFlowArr; ;
 
 
 /**

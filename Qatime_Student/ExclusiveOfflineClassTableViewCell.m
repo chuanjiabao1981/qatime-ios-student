@@ -120,14 +120,14 @@
     
 }
 
--(void)setModel:(ExclusiveLessons *)model{
+-(void)setModel:(ExclusiveLesson *)model{
     
     _model = model;
 
     _className.text = model.name;
     _classDate .text = model.class_date;
-//    _address.text = model.address;
-    _classTime .text = [NSString stringWithFormat:@"%@",model.live_time];
+    _address.text = model.class_address;
+    _classTime .text = [NSString stringWithFormat:@"%@",model.start_time];
     /* 已开课的状态*/
     if ([model.status isEqualToString:@"init"]) {
         _status.text =@"未开始";

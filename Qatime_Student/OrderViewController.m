@@ -561,6 +561,8 @@ typedef enum : NSUInteger {
         course = [NSString stringWithFormat:@"interactive_courses"];
     }else if (_orderType == VideoClassType){
         course = [NSString stringWithFormat:@"video_courses"];
+    }else if (_orderType == ExclusiveType){
+        course = [NSString stringWithFormat:@"customized_groups"];
     }
     
     
@@ -578,8 +580,6 @@ typedef enum : NSUInteger {
             
             dataDic = [NSMutableDictionary dictionaryWithDictionary:dic[@"data"]];
             [dataDic setValue:_productName forKey:@"productName"];
-            
-            
             PayConfirmViewController *controller = [[PayConfirmViewController alloc]initWithData:dataDic];
             [self.navigationController pushViewController:controller animated:YES];
             
@@ -587,7 +587,6 @@ typedef enum : NSUInteger {
             
             if ([dic[@"error"][@"code"]isEqualToNumber:@3002]) {
                 if ([dic[@"error"][@"msg"] rangeOfString:@"目前不对外招生"].location != NSNotFound ) {
-                    
                     [self HUDStopWithTitle:@"该课程目前不对外招生"];
                 }else if ([dic[@"error"][@"msg"] rangeOfString:@"您已经购买过该课程"].location != NSNotFound ){
                     [self HUDStopWithTitle:@"您已经购买过该课程"];

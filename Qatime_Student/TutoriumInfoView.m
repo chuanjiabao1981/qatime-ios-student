@@ -11,6 +11,7 @@
 #import "UICollectionViewLeftAlignedLayout.h"
 #import "NSString+ChangeYearsToChinese.h"
 #import "NSNull+Json.h"
+#import "NSString+TimeStamp.h"
 #define SCREENWIDTH CGRectGetWidth([UIScreen mainScreen].bounds)
 #define SCREENHEIGHT CGRectGetHeight(self.frame)
 
@@ -668,7 +669,7 @@
     _gradeLabel.text = exclusiveModel.grade;
     _subjectLabel.text = exclusiveModel.subject;
     _classCount.text = [NSString stringWithFormat:@"共%@课",exclusiveModel.events_count];
-    _liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[exclusiveModel.start_at substringToIndex:10],[exclusiveModel.end_at substringToIndex:10]];
+    _liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[exclusiveModel.start_at changeTimeStampToDateString].length>=10?[[exclusiveModel.start_at changeTimeStampToDateString]substringToIndex:10]:[exclusiveModel.start_at changeTimeStampToDateString],[exclusiveModel.end_at changeTimeStampToDateString].length>=10?[[exclusiveModel.end_at changeTimeStampToDateString]substringToIndex:10]:[exclusiveModel.end_at changeTimeStampToDateString]];
     /* 已经开课->插班价*/
     if ([exclusiveModel.status isEqualToString:@"teaching"]||[exclusiveModel.status isEqualToString:@"pause"]||[exclusiveModel.status isEqualToString:@"closed"]) {
         _priceLabel.text = [NSString stringWithFormat:@"¥%@(插班价)",exclusiveModel.current_price];
@@ -696,7 +697,7 @@
                 NSInteger leftDay = [[self intervalSinceNow: exclusiveModel.start_at]integerValue];
                 NSString *leftDays;
                 if (leftDay>=1) {
-                    leftDays = [NSString stringWithFormat:@" 招生中距 [开课%ld天]",leftDay];
+                    leftDays = [NSString stringWithFormat:@" 招生中 [距开课%ld天] ",leftDay];
                 }else {
                     leftDays = @" 即将开课 ";
                 }
@@ -708,8 +709,6 @@
             _status.backgroundColor = [UIColor colorWithRed:0.08 green:0.59 blue:0.09 alpha:1.00];
         }
     }
-    
-    _liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",exclusiveModel.start_at.length>=10?[exclusiveModel.start_at substringToIndex:10]:exclusiveModel.start_at,[exclusiveModel.end_at length]>=10?[exclusiveModel.end_at substringToIndex:10]:exclusiveModel.end_at];
     
     _classTarget.text = [exclusiveModel.objective isEqual:[NSNull null]]?@"无":exclusiveModel.objective;
     

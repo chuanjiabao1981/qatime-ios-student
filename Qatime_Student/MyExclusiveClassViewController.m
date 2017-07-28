@@ -18,6 +18,7 @@
 #import "MyExclusiveClassCell.h"
 #import "MyTutoriumModel.h"
 #import "ExclusiveInfoViewController.h"
+#import "MyExclusiveClass.h"
 
 typedef NS_ENUM(NSUInteger, RefreshType) {
     PullToReload,
@@ -155,15 +156,17 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
  */
 - (void)requestDataWithRefreshType:(RefreshType)refreshType andClassType:(ClassType)classType{
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses",Request_Header,[self getStudentID]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:@{@"page":[NSString stringWithFormat:@"%ld",_page],@"per_page":@"10",@"status":_course} completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/customized_groups",Request_Header,[self getStudentID]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:@{@"page":[NSString stringWithFormat:@"%ld",_page],@"per_page":@"10",@"status":_course} completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             if (classType == PublisedClass) {
                 if ([dic[@"data"]count]!=0) {
                     for (NSDictionary *classes in dic[@"data"]) {
-                        MyTutoriumModel *mod = [MyTutoriumModel yy_modelWithJSON:classes];
+                        MyExclusiveClass *mod = [MyExclusiveClass yy_modelWithJSON:classes];
                         mod.classID = classes[@"id"];
+                        mod.customized_group = [ExclusiveInfo yy_modelWithJSON:classes[@"customized_group"]];
+                        mod.customized_group.classID = classes[@"customized_group"][@"id"];
                         [_publishedArray addObject:mod];
                     }
                     if (refreshType == PullToReload) {
@@ -183,8 +186,10 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
             }else if (classType == TeachingClass){
                 if ([dic[@"data"]count]!=0) {
                     for (NSDictionary *classes in dic[@"data"]) {
-                        MyTutoriumModel *mod = [MyTutoriumModel yy_modelWithJSON:classes];
+                        MyExclusiveClass *mod = [MyExclusiveClass yy_modelWithJSON:classes];
                         mod.classID = classes[@"id"];
+                        mod.customized_group = [ExclusiveInfo yy_modelWithJSON:classes[@"customized_group"]];
+                        mod.customized_group.classID = classes[@"customized_group"][@"id"];
                         [_teachingArray addObject:mod];
                     }
                     if (refreshType == PullToReload) {
@@ -204,8 +209,10 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
             }else{
                 if ([dic[@"data"]count]!=0) {
                     for (NSDictionary *classes in dic[@"data"]) {
-                        MyTutoriumModel *mod = [MyTutoriumModel yy_modelWithJSON:classes];
+                        MyExclusiveClass *mod = [MyExclusiveClass yy_modelWithJSON:classes];
                         mod.classID = classes[@"id"];
+                        mod.customized_group = [ExclusiveInfo yy_modelWithJSON:classes[@"customized_group"]];
+                        mod.customized_group.classID = classes[@"customized_group"][@"id"];
                         [_completedArray addObject:mod];
                     }
                     if (refreshType == PullToReload) {
@@ -338,7 +345,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     MyExclusiveClassCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    ExclusiveInfoViewController *controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.model.classID];
+    ExclusiveInfoViewController *controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.model.customized_group.classID];
     [self.navigationController pushViewController:controller animated:YES];
     
 }

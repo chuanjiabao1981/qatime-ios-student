@@ -348,12 +348,15 @@
     
 }
 
--(void)setExclusiveModel:(ExclusiveLessons *)exclusiveModel{
+
+-(void)setExclusiveModel:(ExclusiveLesson *)exclusiveModel{
     
     _exclusiveModel = exclusiveModel;
+    
     _className.text = exclusiveModel.name;
     _classDate .text = exclusiveModel.class_date;
-    _classTime .text = [NSString stringWithFormat:@"%@",exclusiveModel.live_time];
+    _classTime .text = [NSString stringWithFormat:@"%@",exclusiveModel.start_time];
+    
     /* 已开课的状态*/
     if ([exclusiveModel.status isEqualToString:@"init"]) {
         _status.text =@"未开始";
@@ -383,7 +386,6 @@
         _status.text =@"已结束";
         _class_status = [NSString stringWithFormat:@"已结束"];
     }
-
 }
 
 

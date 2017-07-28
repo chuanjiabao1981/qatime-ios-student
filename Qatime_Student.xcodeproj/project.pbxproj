@@ -90,6 +90,7 @@
 		542F4DA61F29C0F80070E321 /* ExclusiveList.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F4DA51F29C0F80070E321 /* ExclusiveList.m */; };
 		542F4DA91F29C7420070E321 /* ExclusiveInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F4DA81F29C7420070E321 /* ExclusiveInfo.m */; };
 		542F4DAD1F29C84D0070E321 /* ExclusiveLesson.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F4DAC1F29C84D0070E321 /* ExclusiveLesson.m */; };
+		542F4DB01F2AD7CE0070E321 /* MyExclusiveClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F4DAF1F2AD7CE0070E321 /* MyExclusiveClass.m */; };
 		542F94EC1EDE73D3008279E0 /* InteractiveCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F94EB1EDE73D3008279E0 /* InteractiveCourse.m */; };
 		542F94EF1EDE8C29008279E0 /* Interactive.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F94EE1EDE8C29008279E0 /* Interactive.m */; };
 		543278661E8CE50200F7A2D9 /* IJKFloatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543278651E8CE50200F7A2D9 /* IJKFloatingView.m */; };
@@ -815,6 +816,8 @@
 		542F4DA81F29C7420070E321 /* ExclusiveInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveInfo.m; sourceTree = "<group>"; };
 		542F4DAB1F29C84D0070E321 /* ExclusiveLesson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusiveLesson.h; sourceTree = "<group>"; };
 		542F4DAC1F29C84D0070E321 /* ExclusiveLesson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveLesson.m; sourceTree = "<group>"; };
+		542F4DAE1F2AD7CE0070E321 /* MyExclusiveClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyExclusiveClass.h; sourceTree = "<group>"; };
+		542F4DAF1F2AD7CE0070E321 /* MyExclusiveClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyExclusiveClass.m; sourceTree = "<group>"; };
 		542F94EA1EDE73D3008279E0 /* InteractiveCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveCourse.h; sourceTree = "<group>"; };
 		542F94EB1EDE73D3008279E0 /* InteractiveCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractiveCourse.m; sourceTree = "<group>"; };
 		542F94ED1EDE8C29008279E0 /* Interactive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Interactive.h; sourceTree = "<group>"; };
@@ -3004,6 +3007,8 @@
 		546448951F26E0B4001C52FF /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				542F4DAE1F2AD7CE0070E321 /* MyExclusiveClass.h */,
+				542F4DAF1F2AD7CE0070E321 /* MyExclusiveClass.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -7128,6 +7133,7 @@
 				544B61FE1E9647F100D7B160 /* UIImage+LCActionSheet.m in Sources */,
 				54AC03EC1E8938E100817767 /* NIMVideoContentConfig.m in Sources */,
 				54AC040D1E8938E100817767 /* NIMTeamMemberListViewController.m in Sources */,
+				542F4DB01F2AD7CE0070E321 /* MyExclusiveClass.m in Sources */,
 				54B914921E6D5B7F00F377ED /* CityChosenViewController.m in Sources */,
 				5420210E1E2DF7C100517A47 /* RefundTableViewCell.m in Sources */,
 				5492FC891E7A6DC600F89593 /* ChooseClassTableViewCell.m in Sources */,

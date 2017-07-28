@@ -350,7 +350,7 @@ typedef enum : NSUInteger {
             cell=[[MyVideoClassTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
         }
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-        
+        cell.enterButton.hidden = YES;
         if (_boughtClassArray.count >indexPath.row) {
             cell.myVideoClassListModel = _boughtClassArray[indexPath.row];
             cell.enterButton.tag = indexPath.row+100;
@@ -367,6 +367,7 @@ typedef enum : NSUInteger {
         if (cell==nil) {
             cell=[[MyVideoClassTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"tablecell"];
         }
+        cell.enterButton.hidden = YES;
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
         if (_freeClassArray.count>indexPath.row) {
             cell.myVideoClassListModel = _freeClassArray[indexPath.row];

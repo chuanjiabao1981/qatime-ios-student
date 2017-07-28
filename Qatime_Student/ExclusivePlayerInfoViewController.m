@@ -19,6 +19,7 @@
 #import "TutoriumList.h"
 #import "ExclusiveLessons.h"
 #import "TeachersPublicViewController.h"
+#import "ExclusiveInfo.h"
 
 @interface ExclusivePlayerInfoViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
@@ -105,23 +106,27 @@
 
 - (void)requestData{
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/detail",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/detail",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             
-            TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"course"]];
-            mod.describe = dic[@"data"][@"course"][@"description"];
-            mod.teacher = [Teacher yy_modelWithJSON:dic[@"data"][@"course"][@"teacher"]];
-            _teacherID = [NSString stringWithFormat:@"%@",dic[@"data"][@"course"][@"teacher"][@"id"]];
+            ExclusiveInfo *mod = [ExclusiveInfo yy_modelWithJSON:dic[@"data"][@"customized_group"]];
+            mod.descriptions = dic[@"data"][@"customized_group"][@"description"];
+            mod.teacher = [Teacher yy_modelWithJSON:dic[@"data"][@"customized_group"][@"teacher"]];
+            _teacherID = [NSString stringWithFormat:@"%@",dic[@"data"][@"customized_group"][@"teacher"][@"id"]];
             _headView.model = mod;
             [_headView updateLayout];
             
             //lessons
-            for (NSDictionary *lesson in dic[@"data"][@"course"][@"lessons"]) {
-                ExclusiveLessons *mod = [ExclusiveLessons yy_modelWithJSON:lesson];
-                mod.lessonID = lesson[@"id"];
+            for (NSDictionary *lesson in dic[@"data"][@"customized_group"][@"scheduled_lessons"]) {
+                ExclusiveLesson *mod = [ExclusiveLesson yy_modelWithJSON:lesson];
+                mod.lessonId = lesson[@"id"];
                 [_onlineLessonsArray addObject:mod];
+            }
+            for (NSDictionary *lesson in dic[@"data"][@"customized_group"][@"offline_lessons"]) {
+                ExclusiveLesson *mod = [ExclusiveLesson yy_modelWithJSON:lesson];
+                mod.lessonId = lesson[@"id"];
                 [_offlineLessonArray addObject:mod];
             }
             
@@ -130,7 +135,6 @@
             
         }else{
             //数据不行啊
-            
             [_mainView cyl_reloadData];
             [_mainView.mj_header endRefreshing];
             

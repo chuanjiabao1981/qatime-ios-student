@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MyTutoriumModel.h"
+#import "MyExclusiveClass.h"
 
 typedef NS_ENUM(NSUInteger, ClassType) {
     PublisedClass,
@@ -37,7 +38,7 @@ typedef NS_ENUM(NSUInteger, ClassType) {
 @property (nonatomic, assign) ClassType classType ;
 
 /* 数据model*/
-@property(nonatomic,strong) MyTutoriumModel *model ;
+@property (nonatomic, strong) MyExclusiveClass *model ;
 
 
 

@@ -8,6 +8,7 @@
 
 #import "ExclusivePlayerInfoView.h"
 #import "NSString+ChangeYearsToChinese.h"
+#import "NSString+TimeStamp.h"
 
 @implementation ExclusivePlayerInfoView
 
@@ -317,19 +318,20 @@
     return self;
 }
 
--(void)setModel:(TutoriumListInfo *)model{
+-(void)setModel:(ExclusiveInfo *)model{
     
     _model = model;
     
     _classNameLabel.text = model.name;
     _gradeLabel.text = model.grade;
     _subjectLabel.text = model.subject;
-    _classCount.text = [NSString stringWithFormat:@"共%@课",model.preset_lesson_count];
-    _liveTimeLabel.text = [NSString stringWithFormat:@"%@ - %@",[model.live_start_time substringToIndex:10],[model.live_end_time substringToIndex:10]];
+    _classCount.text = [NSString stringWithFormat:@"共%@课",model.events_count];
+    
+    _liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[[model.start_at changeTimeStampToDateString] substringToIndex:10],[[model.end_at changeTimeStampToDateString] substringToIndex:10]];
     _classTarget.text = model.objective;
     _suitable.text = model.suit_crowd;
     
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithData:[model.describe dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithData:[model.descriptions dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
     _classDescriptionLabel.attributedText = str;
     
     [_teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:model.teacher.avatar_url] placeholderImage:[UIImage imageNamed:@"人"]];

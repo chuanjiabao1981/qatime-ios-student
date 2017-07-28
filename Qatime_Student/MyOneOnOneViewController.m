@@ -353,6 +353,7 @@ typedef enum : NSUInteger {
             if (cell==nil) {
                 cell=[[StartedTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
             }
+            cell.enterButton.hidden = YES;
             if (_onStudyArray.count>indexPath.row) {
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 cell.interactiveModel = _onStudyArray[indexPath.row];
@@ -374,6 +375,7 @@ typedef enum : NSUInteger {
             if (cell==nil) {
                 cell=[[EndedTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
             }
+            
             if (_finishedArray.count>indexPath.row) {
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 cell.interactiveModel = _finishedArray[indexPath.row];

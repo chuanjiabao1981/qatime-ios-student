@@ -39,19 +39,12 @@
 
 @interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,TTGTextTagCollectionViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>{
     
-    NavigationBar *_navigationBar;
-    
-    
     NSString  *_token;
     NSString *_idNumber;
     
     /* 保存本页面数据*/
     NSMutableDictionary *_dataDic;
 
-    
-    /**学习流程所需的数据*/
-    NSArray *_workFlowArr;
-    
 }
 
 @end
@@ -271,7 +264,6 @@
                     
                     //课程特色
                     for (NSString *key in _dataDic[@"icons"]) {
-                        
                         if (![key isEqualToString:@"cheap_moment"]) {
                             if ([_dataDic[@"icons"][key]boolValue]==YES) {
                                 Features *mod = [[Features alloc]init];
@@ -884,7 +876,6 @@
 #pragma mark- tabelView datasource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
     
     NSInteger rows=0;
     
