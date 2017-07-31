@@ -468,7 +468,6 @@
     
 }
 
-#pragma mark- tableview delegate
 
 /* 点击课程表,进入回放的点击事件*/
 

@@ -694,7 +694,7 @@
                 _status.text = @" 招生中 ";
                 _status.backgroundColor = [UIColor colorWithRed:0.08 green:0.59 blue:0.09 alpha:1.00];
             }else{
-                NSInteger leftDay = [[self intervalSinceNow: exclusiveModel.start_at]integerValue];
+                NSInteger leftDay = [[self intervalSinceNow: [exclusiveModel.start_at changeTimeStampToDateString]]integerValue];
                 NSString *leftDays;
                 if (leftDay>=1) {
                     leftDays = [NSString stringWithFormat:@" 招生中 [距开课%ld天] ",leftDay];
@@ -733,7 +733,7 @@
 {
     NSString *timeString=@"";
     NSDateFormatter *format=[[NSDateFormatter alloc] init];
-    [format setDateFormat:@"yyyy-MM-dd HH:mm"];
+    [format setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSDate *fromdate=[format dateFromString:theDate];
     NSTimeZone *fromzone = [NSTimeZone systemTimeZone];
     NSInteger frominterval = [fromzone secondsFromGMTForDate: fromdate];

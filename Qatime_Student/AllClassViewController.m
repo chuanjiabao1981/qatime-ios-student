@@ -16,6 +16,7 @@
 #import "UIViewController+HUD.h"
 
 #import "HaveNoClassView.h"
+#import "UIViewController+Token.h"
 
 #import "TutoriumInfoViewController.h"
 #import "UITableView+CYLTableViewPlaceHolder.h"
@@ -46,6 +47,8 @@
     /* 保存已上课数据的数组*/
     NSMutableArray *_closedArr;
     NSMutableArray  *_closedDateArr;
+    
+    
     
     /* 保存所有课程数据*/
     NSMutableArray  *_allClassArr;
@@ -247,15 +250,10 @@
             
         }
     }
-    
-    NSLog(@"%@",_dataArr);
-    
     /* 在刷新日历table的视图*/
     [_classTableView cyl_reloadData];
     
-    
 }
-
 
 #pragma mark- 请求未上课课程表数据
 - (void)requestUnclosedClassListWithMonth:(NSString * _Nullable)date{
@@ -265,7 +263,7 @@
     if (date == nil) {
         dateString = @"";
     }else{
-        dateString = [NSString stringWithFormat:@"&month=%@",date];
+        
     }
     
     if (_token&&_idNumber) {
@@ -273,7 +271,7 @@
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule_data?state=unclosed%@",Request_Header,_idNumber,dateString] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule_data",Request_Header,_idNumber] parameters:@{@"date":dateString,@"state":@"unclosed"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             _unclosedArr = @[].mutableCopy;
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -294,15 +292,10 @@
                         
                         /* 多加了一个保存课程时间的数组*/
                         [_unclosedDateArr addObject:mod.class_date];
-                        
                     }
-                    
                 }
                 
-                NSLog(@"%@",_unclosedArr);
-                
                 /* 在所有课程中添加该数组*/
-                
                 [_allClassArr addObjectsFromArray:_unclosedArr];
                 /* 加载一次日历Table的数据*/
                 [self loadCurrentDay];
@@ -313,9 +306,6 @@
                 
                 /* 回复数据不正确*/
             }
-            
-            //            [self updateTablesData];
-            //            [self endRefresh];
             
             /* 日历刷新*/
             
@@ -329,10 +319,6 @@
         
     }
     
-    //     NSLog(@"%@",_unclosedArr);
-    
-    
-    
 }
 
 - (void)requestClosedClassListWithMonth:(NSString * _Nullable)date{
@@ -342,16 +328,15 @@
     if (date == nil) {
         dateString = @"";
     }else{
-        dateString = [NSString stringWithFormat:@"&month=%@",date];
+        
     }
-    
     if (_token&&_idNumber) {
         
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule?state=closed%@",Request_Header,_idNumber,dateString] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule_data",Request_Header,_idNumber] parameters:@{@"date":dateString,@"state":@"closed"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             _closedArr = @[].mutableCopy;
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
@@ -360,16 +345,12 @@
             /* 回复数据正确的情况下*/
             if ([dic[@"status"] isEqual:[NSNumber numberWithInt:1]]) {
                 
-                
-                
                 for (NSDictionary *classDic in dic[@"data"]) {
                     
                     for (NSDictionary *lessons in classDic[@"lessons"]) {
                         
-                        
                         ClassTimeModel *mod = [ClassTimeModel yy_modelWithJSON:lessons];
                         mod.classID = lessons[@"id"];
-                        
                         
                         [_closedArr addObject:mod];
                         
@@ -380,7 +361,6 @@
             }else{
                 
                 /* 回复数据不正确*/
-                
             }
             
             /* 在所有数据的数组中，添加该数组*/
@@ -539,11 +519,11 @@
     
     ClassTimeTableViewCell *cell = [_classTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag inSection:0]];
     __block UIViewController *controller;
-    if ([cell.model.modal_type isEqualToString:@"LiveStudio::Lesson"]) {
+    if ([cell.model.model_type isEqualToString:@"LiveStudio::Lesson"]) {
         //直播课
         controller= [[LivePlayerViewController alloc]initWithClassID:cell.model.product_id];
          [self.navigationController pushViewController:controller animated:YES];
-    }else if ([cell.model.modal_type isEqualToString:@"LiveStudio::VideoLesson"]){
+    }else if ([cell.model.model_type isEqualToString:@"LiveStudio::VideoLesson"]){
         //视频课
         //先获取视频课程的详情吧
         [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@",Request_Header,cell.model.classID] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
@@ -552,7 +532,7 @@
             
         }];
      
-    }else if ([cell.model.modal_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
+    }else if ([cell.model.model_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
         //一对一
         //加工数据
         //1.聊天室

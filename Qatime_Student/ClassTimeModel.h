@@ -52,7 +52,7 @@
 @property (nonatomic, assign) BOOL replayable;
 @property (nonatomic, assign) NSInteger left_replay_times ;
 
-@property (nonatomic, strong) NSString  *modal_type;
+@property (nonatomic, strong) NSString  *model_type;
 @property (nonatomic, strong) NSString *lesson_name ;
 
 @property (nonatomic, strong) NSString *buy_tickets_count ;

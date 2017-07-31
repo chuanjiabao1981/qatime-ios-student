@@ -31,6 +31,7 @@
 #import <NIMSDK/NIMSDK.h>
 #import "VideoClassInfoViewController.h"
 #import "InteractionViewController.h"
+#import "ExclusiveInfoViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -507,16 +508,15 @@ typedef enum : NSUInteger {
                 controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.product_id];
             }else if ([cell.model.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
                 //一对一
-//                [self HUDStopWithTitle:@"正在开发中,敬请期待"];
                 controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.model.product_id];
+            }else{
+                //专属课
+                controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.model.product_id];
             }
-            
         }
     }
     if (tableView.tag ==2) {
-        
         if (_closedArr.count!=0) {
-            
             ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             classID = cell.model.course_id;
             
@@ -539,11 +539,11 @@ typedef enum : NSUInteger {
     
     ClassTimeTableViewCell *cell = [_classTimeView.notClassView.notClassTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag inSection:0]];
     __block UIViewController *controller;
-    if ([cell.model.modal_type isEqualToString:@"LiveStudio::Lesson"]) {
+    if ([cell.model.model_type isEqualToString:@"LiveStudio::Lesson"]) {
         //直播课
         controller= [[LivePlayerViewController alloc]initWithClassID:cell.model.product_id];
         [self.navigationController pushViewController:controller animated:YES];
-    }else if ([cell.model.modal_type isEqualToString:@"LiveStudio::VideoLesson"]){
+    }else if ([cell.model.model_type isEqualToString:@"LiveStudio::VideoLesson"]){
         //视频课
         //先获取视频课程的详情吧
         [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@",Request_Header,cell.model.classID] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
@@ -552,7 +552,7 @@ typedef enum : NSUInteger {
             
         }];
         
-    }else if ([cell.model.modal_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
+    }else if ([cell.model.model_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
         //一对一
         //加工数据
         //1.聊天室

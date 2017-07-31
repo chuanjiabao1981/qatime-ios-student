@@ -2304,7 +2304,7 @@ typedef enum : NSUInteger {
 #pragma mark- 视频播放状态查询功能
     
     /* 两个播放器和控制层和覆盖层都加载完成后,每隔30秒请求一次数据*/
-    //    [self checkVideoStatus];
+        [self checkVideoStatus];
     
     /**两个播放器和控制层加载完成后,加载在线人数*/
     //    [self checkOnlineNumber];
@@ -2796,17 +2796,15 @@ typedef enum : NSUInteger {
 }
 
 
-#pragma mark- emoji表情键盘部分的方法
-
-
 #pragma mark- 查询播放状态功能的方法实现 --播放器初始化状态
 - (void)checkVideoStatus{
+    
     /* 向后台发送请求,请求视频直播状态*/
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/status",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/realtime",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
@@ -2849,8 +2847,6 @@ typedef enum : NSUInteger {
         //                "timestamp": 1490595407
         //            }
         //        }
-        
-        
         
         if ([dic[@"status"] isEqualToNumber:@1]) {
             

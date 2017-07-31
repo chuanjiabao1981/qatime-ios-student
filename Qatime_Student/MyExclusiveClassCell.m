@@ -7,6 +7,7 @@
 //
 
 #import "MyExclusiveClassCell.h"
+#import "NSString+TimeStamp.h"
 
 @implementation MyExclusiveClassCell
 
@@ -79,9 +80,9 @@
         /* 计算距开课时间*/
         //创建日期格式化对象
         NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
         /* 视频开始时间*/
-        NSDate *startDate=[dateFormatter dateFromString:_model.customized_group.start_at];
+        NSDate *startDate=[dateFormatter dateFromString:[self changeTimeStampToDateString:_model.customized_group.start_at]];
         /* 当前时间*/
         NSDate *nowDate=[NSDate date];
         //取两个日期对象的时间间隔：
@@ -97,13 +98,36 @@
         
     }else if (classType == TeachingClass){
        
-        _status.text = [[@"进度" stringByAppendingString:_model.customized_group.closed_events_count]stringByAppendingString:_model.customized_group.events_count];
+        _status.text = [[[@"进度" stringByAppendingString:_model.customized_group.closed_events_count] stringByAppendingString:@"/"] stringByAppendingString:_model.customized_group.events_count];
         
     }else{
         _status.text = @"全部课程已完成";
         
     }
     
+}
+
+- (NSString *)changeTimeStampToDateString:(NSString *)timeString{
+    
+    NSTimeInterval time=[timeString doubleValue];//因为时差问题要加8小时 == 28800 sec
+    
+    NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
+    
+    NSLog(@"date:%@",[detaildate description]);
+    
+    //实例化一个NSDateFormatter对象
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    //这句话比较吊
+    [dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];
+    //设定时间格式,这里可以设置成自己需要的格式
+    
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    
+    NSString *currentDateStr = [dateFormatter stringFromDate: detaildate];
+    
+    return currentDateStr;
 }
 
 

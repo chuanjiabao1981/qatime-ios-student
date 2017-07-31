@@ -193,10 +193,7 @@
         .bottomSpaceToView(_content,5*ScrenScale)
         .autoHeightRatio(0);
         
-        
-  
-        
-        
+
 //        [self setupAutoHeightWithBottomView:_content bottomMargin:5];
     }
     
@@ -228,15 +225,19 @@
     }
     
     //课程类型
-    if ([model.product_type isEqualToString:@"LiveStudio::Course"]) {
+    if ([model.model_type isEqualToString:@"LiveStudio::Lesson"]) {
         _type.text = @"直播课";
         _type.backgroundColor = NAVIGATIONRED;
-    }else if ([model.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+    }else if ([model.model_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
         _type.text = @"一对一";
         _type.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:1.0 alpha:1.0];
-    }else{
+    }else if ([model.model_type isEqualToString:@"LiveStudio::VideoLesson"]){
         _type.text = @"视频课";
         _type.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:1.0 alpha:1.0];
+    }else {
+        _type.text = @"专属课";
+        _type.backgroundColor = [UIColor brownColor];
+        
     }
 
 }
