@@ -467,10 +467,8 @@
                     
                 }else{
                     /* 返回的教师数据是错误的*/
-                    
-                    
+                    [self HUDStopWithTitle:@"请稍后重试"];
                 }
-                
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
@@ -478,6 +476,8 @@
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        [self HUDStopWithTitle:@"请检查网络"];
         
     }];
     
@@ -646,6 +646,34 @@
                 }
                 
             }
+        }else{
+            _isBought  = NO;
+            //未购买,立即报名 报完名变成进入学习 未曾拥有过不隐藏购买栏,只是提示下架而已
+            if ([dic[@"data"][@"course"][@"off_shelve"]boolValue]==YES) {
+                //已经下架
+                [_buyBar.listenButton removeAllTargets];
+                _buyBar.applyButton.hidden = YES;
+                [_buyBar.listenButton setTitle:@"已下架" forState:UIControlStateNormal];
+                [_buyBar.listenButton setBackgroundColor:TITLECOLOR];
+                [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                _buyBar.listenButton.sd_resetLayout
+                .leftSpaceToView(_buyBar, 10)
+                .rightSpaceToView(_buyBar, 10)
+                .topSpaceToView(_buyBar, 10)
+                .bottomSpaceToView(_buyBar, 10);
+                [_buyBar.listenButton updateLayout];
+            }else{
+                
+                _buyBar.listenButton.hidden = YES;
+                _buyBar.applyButton.sd_resetLayout
+                .leftSpaceToView(_buyBar, 10)
+                .rightSpaceToView(_buyBar, 10)
+                .topSpaceToView(_buyBar, 10)
+                .bottomSpaceToView(_buyBar, 10);
+                [_buyBar.applyButton removeAllTargets];
+                [_buyBar.applyButton addTarget:self action:@selector(addFreeClass) forControlEvents:UIControlEventTouchUpInside];
+            }
+
         }
         
     }

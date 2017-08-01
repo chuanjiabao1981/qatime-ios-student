@@ -52,9 +52,6 @@
     //加载视图
     [self setupMainView];
     
-    //请求一下课程公告信息
-    //    [self requestData];
-    
 }
 
 /**初始化基础数据*/
@@ -131,6 +128,7 @@
     }];
     
 }
+
 
 #pragma mark- UITableView datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

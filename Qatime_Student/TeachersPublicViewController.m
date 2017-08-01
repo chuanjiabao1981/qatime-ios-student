@@ -24,6 +24,7 @@
 #import "OneOnOneClass.h"
 #import "VideoClassInfo.h"
 #import "OneOnOneTutoriumInfoViewController.h"
+#import "ExclusiveInfoViewController.h"
 
 #import "VideoClassInfoViewController.h"
 
@@ -1345,6 +1346,9 @@
         }else if (cell.classType == VideoClassType){
             
             controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
+        }else{
+            
+            controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.model.classID];
         }
         
         [self.navigationController pushViewController:controller animated:YES];
@@ -1406,7 +1410,7 @@
             _videoCount = _videoClasses.count;
             
             //这部分是暂时留给专属课程的,调试阶段暂时使用直播课的数据
-            for (NSDictionary *classDic in publichArr) {
+            for (NSDictionary *classDic in dic[@"data"][@"customized_groups"]) {
                 TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:classDic];
                 mod.classID = classDic[@"id"];
                 [_exclusiveClasses addObject:mod];

@@ -13,6 +13,7 @@
 #import "TutoriumList.h"
 #import "RecommandClasses.h"
 #import "FreeCourse.h"
+#import "NewestClass.h"
 
 
 @interface QualityTableViewCell : UITableViewCell
@@ -62,6 +63,8 @@
 
 /** 免费课 */
 @property (nonatomic, strong) FreeCourse *freeModel ;
+
+@property (nonatomic, strong) NewestClass *newestModel ;
 
 
 

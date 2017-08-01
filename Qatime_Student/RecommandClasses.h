@@ -49,6 +49,14 @@
 @property(nonatomic,copy) NSString *live_start_time ;
 @property(nonatomic,copy) NSString *live_end_time ;
 @property(nonatomic,copy) NSString *publicize ;
+@property (nonatomic, strong) NSDictionary *publicizes_url ;
+
+@property (nonatomic, strong) NSString *start_time ;
+@property (nonatomic, strong) NSString *end_time;
+@property (nonatomic, strong) NSString *start_at ;
+@property (nonatomic, strong) NSString *end_at;
+@property (nonatomic, strong) NSString *lesson_type ;
+@property (nonatomic, strong) NSString *product_type ;
 
 
 @property(nonatomic,copy) NSString *reason ;

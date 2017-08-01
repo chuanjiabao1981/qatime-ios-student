@@ -147,9 +147,9 @@
     _freeModel = freeModel;
     
     /**加载缓存图片*/
-    [_classImage sd_setImageWithURL:[NSURL URLWithString:freeModel.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:freeModel.publicizes_url[@"list"]] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         
-        [manager diskImageExistsForURL:[NSURL URLWithString:freeModel.publicize] completion:^(BOOL isInCache) {
+        [manager diskImageExistsForURL:[NSURL URLWithString:freeModel.publicizes_url[@"list"]] completion:^(BOOL isInCache) {
             if (isInCache == YES) {
                 
             }else{
@@ -260,6 +260,51 @@
     _left_StateLabel.text = [self transStateTag:recommandModel.tag_one];
     _right_StateLabel.text =[self transStateTag:recommandModel.tag_two];
     
+    
+}
+
+
+-(void)setNewestModel:(NewestClass *)newestModel{
+    
+    _newestModel = newestModel;
+    
+    /**加载缓存图片*/
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:newestModel.publicizes_url[@"list"]] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        
+        [manager diskImageExistsForURL:[NSURL URLWithString:newestModel.publicizes_url[@"list"]] completion:^(BOOL isInCache) {
+            if (isInCache == YES) {
+                
+            }else{
+                _classImage.alpha = 0.0;
+                [UIView transitionWithView:_classImage duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                    if (image) {
+                        
+                        [_classImage setImage:image];
+                    }else{
+                        [_classImage setImage:[UIImage imageNamed:@"school"]];
+                    }
+                    _classImage.alpha = 1.0;
+                } completion:NULL];
+                
+            }
+            
+        }];
+        
+    }];
+    
+    
+    //课程名
+    _className.text = newestModel.name;
+    
+    //年级和科目
+    _gradeAndSubject.text = [NSString stringWithFormat:@"%@%@",newestModel.grade,newestModel.subject];
+    //教师名
+    _teacherName.text = newestModel.teacher_name;
+    
+    
+    //标签
+    _left_StateLabel.text = [self transStateTag:newestModel.tag_one];
+    _right_StateLabel.text =[self transStateTag:newestModel.tag_two];
     
 }
 

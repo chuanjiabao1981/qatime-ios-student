@@ -619,6 +619,7 @@
 		54DBEB121E9B55DB000EEB00 /* LiveClassFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBEB061E9B55DB000EEB00 /* LiveClassFilterViewController.m */; };
 		54DD7E7A1EF3B3D400EAE234 /* AllTeachersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DD7E791EF3B3D400EAE234 /* AllTeachersViewController.m */; };
 		54DD7E801EF3B45900EAE234 /* AllteachersFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DD7E7F1EF3B45900EAE234 /* AllteachersFilterView.m */; };
+		54DF02DC1F3078D200F6C1D1 /* NewestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DF02DB1F3078D200F6C1D1 /* NewestClass.m */; };
 		54E120CE1DDC2CA5004F8012 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E120CD1DDC2CA5004F8012 /* CoreText.framework */; };
 		54E402291E65831B004935C2 /* QRMaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E402281E65831B004935C2 /* QRMaskView.m */; };
 		54E428B41DE2DC6100AF5980 /* UIControl+RemoveTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E428B31DE2DC6100AF5980 /* UIControl+RemoveTarget.m */; };
@@ -1900,6 +1901,8 @@
 		54DD7E791EF3B3D400EAE234 /* AllTeachersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllTeachersViewController.m; sourceTree = "<group>"; };
 		54DD7E7E1EF3B45900EAE234 /* AllteachersFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllteachersFilterView.h; sourceTree = "<group>"; };
 		54DD7E7F1EF3B45900EAE234 /* AllteachersFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllteachersFilterView.m; sourceTree = "<group>"; };
+		54DF02DA1F3078D200F6C1D1 /* NewestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewestClass.h; sourceTree = "<group>"; };
+		54DF02DB1F3078D200F6C1D1 /* NewestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewestClass.m; sourceTree = "<group>"; };
 		54E120CD1DDC2CA5004F8012 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		54E120CF1DDC2D69004F8012 /* NIMKitResouce.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = NIMKitResouce.bundle; path = Qatime_Student/NIM_iOS_UIKit/NIMKitResouce.bundle; sourceTree = "<group>"; };
 		54E402271E65831B004935C2 /* QRMaskView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRMaskView.h; sourceTree = "<group>"; };
@@ -6022,6 +6025,8 @@
 				544200A61E77FB6300797E6C /* QualityClass.m */,
 				54A4D9331F18641700938B4F /* FreeCourse.h */,
 				54A4D9341F18641700938B4F /* FreeCourse.m */,
+				54DF02DA1F3078D200F6C1D1 /* NewestClass.h */,
+				54DF02DB1F3078D200F6C1D1 /* NewestClass.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -6750,6 +6755,7 @@
 				543E23401E2C78D700381F10 /* SetPayPasswordViewController.m in Sources */,
 				54AC040E1E8938E100817767 /* NIMAdvancedTeamMemberCell.m in Sources */,
 				546448AD1F274A08001C52FF /* ExclusivePlayerViewController.m in Sources */,
+				54DF02DC1F3078D200F6C1D1 /* NewestClass.m in Sources */,
 				545162D81DF55DD0000BD17A /* PersonalTableViewCell.m in Sources */,
 				548D1D7F1EA7421400B120C8 /* AllClassViewController.m in Sources */,
 				54DBA4B01DE4423300A67A90 /* YZEmotionCell.m in Sources */,

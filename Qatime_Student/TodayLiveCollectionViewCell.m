@@ -92,11 +92,22 @@
 -(void)setModel:(RecommandClasses *)model{
     
     _model = model;
+    NSString *url;
+    if (model.publicizes_url) {
+        if (model.publicizes_url[@"list"]) {
+            url = model.publicizes_url[@"list"];
+        }else{
+            url = model.publicize;
+        }
+    }else{
+        url = model.publicize;
+    }
+    
     
     /* 如果本地已经保留了图片缓存*/
-    [_classImageView sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+    [_classImageView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         
-        [manager diskImageExistsForURL:[NSURL URLWithString:model.publicize] completion:^(BOOL isInCache) {
+        [manager diskImageExistsForURL:[NSURL URLWithString:url] completion:^(BOOL isInCache) {
             if (isInCache == YES) {
                 
             }else{
@@ -119,7 +130,14 @@
 
     _classNameLabel.text = model.className;
     
-    _liveTimeLabel .text = model.live_time;
+    if ([model.lesson_type isEqualToString:@"Lesson"]) {
+        
+        _liveTimeLabel .text = model.live_time;
+        
+    }else{
+        
+        _liveTimeLabel.text = [[model.start_time stringByAppendingString:@"-"]stringByAppendingString:model.end_time];
+    }
     _stateLabel.text = [self statusChange:model.status];
     
     _liveTimeLabel.sd_layout

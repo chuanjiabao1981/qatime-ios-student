@@ -269,7 +269,7 @@
         //免费呀
         self.tutoriumInfoView.priceLabel.text = @"免费";
         
-        if (dic[@"data"][@"ticket"]) {
+        if (dic[@"data"][@"ticket"]) {//买过
             if (![dic[@"data"][@"ticket"]isEqual:[NSNull null]]) {//已购买(已加入到我的视频课列表里了)
                 self.isBought = YES;
                 if (![dic[@"data"][@"customized_group"][@"status"]isEqualToString:@"completed"]) {
@@ -322,6 +322,33 @@
                     [self.buyBar.applyButton addTarget:self action:@selector(addFreeClass) forControlEvents:UIControlEventTouchUpInside];
                 }
                 
+            }
+        }else{
+            self.isBought  = NO;
+            //未购买,立即报名 报完名变成进入学习 未曾拥有过不隐藏购买栏,只是提示下架而已
+            if ([dic[@"data"][@"customized_group"][@"off_shelve"]boolValue]==YES) {
+                //已经下架
+                [self.buyBar.listenButton removeAllTargets];
+                self.buyBar.applyButton.hidden = YES;
+                [self.buyBar.listenButton setTitle:@"已下架" forState:UIControlStateNormal];
+                [self.buyBar.listenButton setBackgroundColor:TITLECOLOR];
+                [self.buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                self.buyBar.listenButton.sd_resetLayout
+                .leftSpaceToView(self.buyBar, 10)
+                .rightSpaceToView(self.buyBar, 10)
+                .topSpaceToView(self.buyBar, 10)
+                .bottomSpaceToView(self.buyBar, 10);
+                [self.buyBar.listenButton updateLayout];
+            }else{
+                
+                self.buyBar.listenButton.hidden = YES;
+                self.buyBar.applyButton.sd_resetLayout
+                .leftSpaceToView(self.buyBar, 10)
+                .rightSpaceToView(self.buyBar, 10)
+                .topSpaceToView(self.buyBar, 10)
+                .bottomSpaceToView(self.buyBar, 10);
+                [self.buyBar.applyButton removeAllTargets];
+                [self.buyBar.applyButton addTarget:self action:@selector(addFreeClass) forControlEvents:UIControlEventTouchUpInside];
             }
         }
         

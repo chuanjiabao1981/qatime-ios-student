@@ -39,5 +39,7 @@
 @property (nonatomic, assign) BOOL taste_overflow ;
 @property (nonatomic, assign) BOOL sell_type ;
 
+@property (nonatomic, strong) NSDictionary *publicizes_url ;
+
 
 @end

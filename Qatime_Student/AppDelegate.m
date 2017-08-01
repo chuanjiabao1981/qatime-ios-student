@@ -114,7 +114,6 @@
             if (accounts ==nil) {
                 /* 如果没有登录信息,登录页作为root*/
                 _loginViewController = [[LoginViewController alloc]init];
-                
                 naviVC=[[UINavigationController alloc]initWithRootViewController:_loginViewController];
                 [naviVC setNavigationBarHidden:YES];
                 

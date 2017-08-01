@@ -2749,7 +2749,6 @@ typedef enum : NSUInteger {
 //    [_classNotice.classNotice cyl_reloadData];
     //    [_liveClassInfoView.noticeTabelView setNeedsDisplay];
     
-    
 }
 
 - (void)updateViewsInfos{

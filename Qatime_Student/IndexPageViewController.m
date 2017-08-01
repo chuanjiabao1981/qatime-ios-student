@@ -52,6 +52,11 @@
 #import "NSNull+Json.h"
 #import "UIControl+EnloargeTouchArea.h"
 
+#import "InteractionClassInfoViewController.h"
+#import "ExclusiveInfoViewController.h"
+
+#import "NewestClass.h"
+
 
 
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate,LCTabBarDelegate,UITableViewDelegate,UITableViewDataSource>{
@@ -409,15 +414,12 @@
 
 /**精彩回放列表*/
 - (void)review{
-    
-//    [self HUDStopWithTitle:@"正在开发中,敬请期待"];
-    
+
     ReplayViewController *controller = [[ReplayViewController alloc]init];
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
     
 }
-
 
 
 #pragma mark- 请求今日直播数据
@@ -431,19 +433,28 @@
         if ([dic[@"status"]isEqualToNumber:@1]) {
             
             for (NSDictionary *dics in dic[@"data"]) {
-                RecommandClasses *mod = [RecommandClasses yy_modelWithJSON:dics];
-                mod = [RecommandClasses yy_modelWithJSON:dics[@"course"]];
-                mod.className = dics[@"name"];
-                mod.classID = dics[@"course"][@"id"];
-                mod.live_time = dics[@"live_time"];
-                [_todayLives addObject:mod];
+                RecommandClasses *mod;
+                if (dics[@"course"]) {
+                    mod = [RecommandClasses yy_modelWithJSON:dics];
+                    mod.live_time = dics[@"course"][@"live_time"];
+                    mod.className = dics[@"course"][@"name"];
+                    mod.classID = dics[@"course"][@"id"];
+                }
+                if (dics[@"customized_group"]){
+                    mod = [RecommandClasses yy_modelWithJSON:dics];
+                    mod.className = dics[@"customized_group"][@"name"];
+                    mod.classID = dics[@"customized_group"][@"id"];
+                    mod.publicizes_url = dics[@"customized_group"][@"publicizes_url"];
+                }
+                if (mod) {
+                    [_todayLives addObject:mod];
+                }
             }
             
             [_headerView.todayLiveScrollView reloadData];
         }
         
     }];
-    
     
 }
 
@@ -453,34 +464,30 @@
 - (void)requestNewest{
     
     _newestRelease = @[].mutableCopy;
+    NSString *cityID;
+    NSArray *citys = [[NSUserDefaults standardUserDefaults]valueForKey:@"city"];
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/rank/published_rank?count=2",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
+    for (NSDictionary *city in citys) {
+        if ([_location.titleLabel.text isEqualToString:city[@"name"]]) {
+            cityID = [NSString stringWithFormat:@"%@",city[@"id"]];
+        }
+    }
+    
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/rank_all/all_published_rank",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"count":@"2",@"city_id":cityID==nil?@"":cityID} completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         
         if ([dic[@"status"]isEqualToNumber:@1]) {
             //返回的data字段里是两个数组,key对应的是返回的数组
-            NSArray *published_rank = dic[@"data"][@"published_rank"];  //最新发布
-//            NSArray *start_rank = dic[@"data"][@"start_rank"];          //最近开课
-            
-            for (NSDictionary *dics in published_rank) {
-                
-                TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dics];
-                mod.classID = dics[@"id"];
+            for (NSDictionary *dics in dic[@"data"][@"all_published_rank"]) {
+                NewestClass *mod = [NewestClass yy_modelWithJSON:dics[@"product"]];
+                mod.classID = dics[@"product"][@"id"];
+                mod.product_type = dics[@"product_type"];
                 [_newestRelease addObject:mod];
-                
             }
-//            [_indexPageView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
-            
-//            for (NSDictionary *dics in start_rank) {
-//                
-//                TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dics];
-//                mod.classID = dics[@"id"];
-//                [_newestStart addObject:mod];
-//                
-//            }
-            
             [_indexPageView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationFade];
+            
             
         }else{
             
@@ -1142,17 +1149,21 @@
     
     //今日直播
     if (collectionView.tag==1) {
+        
         if (_todayLives.count==0) {
             [self HUDStopWithTitle:@"今日无直播课程"];
         }else{
             
             TodayLiveCollectionViewCell *cell = (TodayLiveCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+            UIViewController *controller;
+            if ([cell.model.lesson_type isEqualToString:@"Lesson"]) {
+                
+                controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+            }else{
+                
+                controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.model.classID];
+            }
             
-            TutoriumInfoViewController *controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
-            
-            //        OneOnOneTutoriumInfoViewController *controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:@"1"];
-            
-            //        VideoClassInfoViewController *controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
             controller.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:controller animated:YES];
         }
@@ -1198,7 +1209,6 @@
     switch (section) {
         case 0:
             rows = 4;
-            
             break;
             
         case 1:
@@ -1261,7 +1271,7 @@
             if (_newestRelease.count == 0) {
                 
             }else if (_newestRelease.count>indexPath.row) {
-                cell.classModel = _newestRelease[indexPath.row];
+                cell.newestModel = _newestRelease[indexPath.row];
                 cell.left_StateLabel.hidden = YES;
                 cell.right_StateLabel.hidden = YES;
                 
@@ -1311,6 +1321,8 @@
                     controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.recommandModel.classID];
                 }else if ([cell.recommandModel.target_type isEqualToString:@"LiveStudio::VideoCourse"]){
                     controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.recommandModel.classID];
+                }else{
+                    controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.recommandModel.classID];
                 }
                 
             }
@@ -1327,7 +1339,10 @@
                 
                 controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.freeModel.classID];
             }else if ([cell.freeModel.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+                controller = [[InteractionClassInfoViewController alloc]initWithClassID:cell.freeModel.classID];
+            }else{
                 
+                controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.freeModel.classID];
             }
             
         }
@@ -1335,7 +1350,19 @@
             break;
             
         case 2:{
-            controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.classModel.classID];
+            
+            if ([cell.newestModel.product_type isEqualToString:@"LiveStudio::Course"]) {
+                
+                controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.newestModel.classID];
+            }else if ([cell.newestModel.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
+                
+                controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.newestModel.classID];
+            }else if ([cell.newestModel.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+                controller = [[InteractionClassInfoViewController alloc]initWithClassID:cell.newestModel.classID];
+            }else{
+                
+                controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.newestModel.classID];
+            }
         }
             
             break;
