@@ -2442,11 +2442,11 @@ bool ismute     = NO;
     /**课程通知图*/
     _classNotice = [[ClassNotice alloc]init];
     [_liveClassInfoView.view1 addSubview:_classNotice];
-    _classNotice.classNotice.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        //请求公告
-        [self requestNotice];
-    }];
-    [_classNotice.classNotice.mj_header beginRefreshing];
+//    _classNotice.classNotice.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+//        //请求公告
+//        [self requestNotice];
+//    }];
+//    [_classNotice.classNotice.mj_header beginRefreshing];
     _classNotice.classNotice.tableFooterView = [[UIView alloc]init];
     
     _classNotice.sd_layout
@@ -2624,7 +2624,27 @@ bool ismute     = NO;
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordEnd) name:@"RecordEnd" object:nil];
     
     
+    //更新公告的监听
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(newNotice:) name:@"NewNotice" object:nil];
+    
 }
+
+- (void)newNotice:(NSNotification *)note{
+    
+    NSDictionary *notice = [note object];
+    Notice *newNotice = [[Notice alloc]init];
+    newNotice.edit_at = [notice[@"time"] changeTimeStampToDateString];
+    newNotice.announcement = notice[@"notice"];
+    
+    if (_noticesArr) {
+        [_noticesArr removeAllObjects];
+    }else{
+        _noticesArr = @[].mutableCopy;
+    }
+    [_noticesArr addObject:newNotice];
+    [_classNotice.classNotice cyl_reloadData];
+}
+
 
 - (void)requestNotice{
     
@@ -3436,6 +3456,9 @@ bool ismute     = NO;
                 
                 //在这儿弄一下子 这个 富文本
                 NSString *notice =[NSString stringWithFormat:@"%@更新了公告\n公告:%@",sender,messageText==nil?@"":messageText];
+                
+                //公告就直接从聊天获取
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"NewNotice" object:@{@"notice":notice,@"time":[NSString stringWithFormat:@"%f",message.timestamp]}];
                 
                 [self.chatModel addSpecifiedNotificationItem:notice];
                 
@@ -4381,6 +4404,8 @@ bool ismute     = NO;
         
         // 获取cell高度
         height= [tableView cellHeightForIndexPath:indexPath model:_noticesArr[indexPath.row] keyPath:@"model" cellClass:[NoticeTableViewCell class] contentViewWidth: self.view.width_sd];
+        
+        height = 100;
         
     }
     

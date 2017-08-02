@@ -44,6 +44,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__37-[ExclusiveInfoViewController listen]_block_invoke:ExclusiveInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.chatTeamID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[ClassTimeViewController requestClosedClassList]:ClassTimeViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -527,10 +535,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -596,13 +604,13 @@
          contextName = "-[TeachersPublicViewController numberOfSectionsInCollectionView:]:TeachersPublicViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_videoCount">
-            </PersistentString>
-            <PersistentString
                value = "_publicCount">
             </PersistentString>
             <PersistentString
                value = "_oneOnOneCount">
+            </PersistentString>
+            <PersistentString
+               value = "_videoCount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -824,12 +832,15 @@
          contextName = "-[NTESPageView reloadPage]:NTESPageView.m">
          <PersistentStrings>
             <PersistentString
-               value = "_currentPage">
-            </PersistentString>
-            <PersistentString
                value = "_pages">
             </PersistentString>
+            <PersistentString
+               value = "_currentPage">
+            </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[IndexPageViewController tableView:didSelectRowAtIndexPath:]:IndexPageViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[ChatViewController dealTheFunctionData:]:ChatViewController.m">
@@ -838,9 +849,6 @@
                value = "_chatModel">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.450:PersonalInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[ChooseGradeAndSubjectViewController chooseGrade:]:ChooseGradeAndSubjectViewController.m">
@@ -870,7 +878,7 @@
          contextName = "__49-[OneOnOneTutoriumInfoViewController requestData]_block_invoke:OneOnOneTutoriumInfoViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[IndexPageViewController tableView:didSelectRowAtIndexPath:]:IndexPageViewController.m">
+         contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.450:PersonalInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[LivePlayerViewController switchStatuseWithDictionary:]:LivePlayerViewController.m">
@@ -973,6 +981,14 @@
             </PersistentString>
             <PersistentString
                value = "imageObject.thumbPath">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ExclusivePlayerViewController initWithClassID:andChatTeamID:andBoardAddress:andTeacherAddress:]:ExclusivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatTimeID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1659,10 +1675,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

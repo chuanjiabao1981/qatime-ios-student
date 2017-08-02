@@ -56,6 +56,7 @@
 #import "ExclusiveInfoViewController.h"
 
 #import "NewestClass.h"
+#import "UIControl+EnloargeTouchArea.h"
 
 
 
@@ -321,7 +322,7 @@
     headerSize = CGSizeMake(self.view.width_sd, _headerView.fancyView.bottom_sd);
     _indexPageView.tableHeaderView.size = headerSize;
     _indexPageView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-       
+        
         [self requestDataWithLocation:_location.titleLabel.text];
         
     }];
@@ -335,14 +336,14 @@
     
     
     //推荐教师视图  0.1.5首页修改的时候干掉
-//    UICollectionViewFlowLayout *teacherLayout = [[UICollectionViewFlowLayout alloc]init];
-//    teacherLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-//    _recommandTeacherScrollView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 100) collectionViewLayout:teacherLayout];
-//    
-//    _recommandTeacherScrollView.showsHorizontalScrollIndicator = NO;
-//    _recommandTeacherScrollView.tag = 2;        //推荐教师 tag = 2
-//    _recommandTeacherScrollView.delegate = self;
-//    _recommandTeacherScrollView.dataSource = self;
+    //    UICollectionViewFlowLayout *teacherLayout = [[UICollectionViewFlowLayout alloc]init];
+    //    teacherLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    //    _recommandTeacherScrollView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 100) collectionViewLayout:teacherLayout];
+    //
+    //    _recommandTeacherScrollView.showsHorizontalScrollIndicator = NO;
+    //    _recommandTeacherScrollView.tag = 2;        //推荐教师 tag = 2
+    //    _recommandTeacherScrollView.delegate = self;
+    //    _recommandTeacherScrollView.dataSource = self;
     
     /* 推荐教师视图 注册cell */
     [_headerView.recommandTeachersView registerClass:[YZSquareMenuCell class] forCellWithReuseIdentifier:@"RecommandCell"];
@@ -398,7 +399,7 @@
         });
         
     }
-
+    
 }
 
 #pragma mark- 查看所有教师和回放课程部分
@@ -414,7 +415,7 @@
 
 /**精彩回放列表*/
 - (void)review{
-
+    
     ReplayViewController *controller = [[ReplayViewController alloc]init];
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
@@ -516,7 +517,7 @@
                 
             }
             [_indexPageView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
-
+            
         }else{
             
             
@@ -555,7 +556,7 @@
         }else{
             
             
-//            [self getCashInfos];
+            //            [self getCashInfos];
         }
         
         
@@ -652,7 +653,7 @@
     [self requestNewest];       //最近课程不区分地区
     
     [_indexPageView.mj_header endRefreshingWithCompletionBlock:^{
-       
+        
         
         
     }];
@@ -828,7 +829,7 @@
                         
                     }else if ([dics[@"target_type"]isEqualToString:@"LiveStudio::InteractiveCourse"]){
                         courseType = @"live_studio_interactive_course";
-
+                        
                     }else if ([dics[@"target_type"]isEqualToString:@"LiveStudio::VideoCourse"]){
                         courseType = @"live_studio_video_course";
                     }
@@ -969,11 +970,11 @@
 - (void)chooseGrade:(UIButton *)sender{
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"ChooseGrade" object:sender.titleLabel.text];
-
+    
 }
 - (void)chooseGrade{
     
-     [[NSNotificationCenter defaultCenter]postNotificationName:@"ChooseGrade" object:nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"ChooseGrade" object:nil];
 }
 
 
@@ -1018,7 +1019,7 @@
         TodayLiveCollectionViewCell * liveCell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         
         if (_todayLives.count>indexPath.row) {
-           
+            
             liveCell.model = _todayLives[indexPath.row];
         }else{
             [liveCell.classImageView setImage:[UIImage imageNamed:@"school"]];
@@ -1185,7 +1186,7 @@
             
             RecommandTeacher *teach =_teachers[indexPath.row];
             
-             NSString *teacherId=  [NSString stringWithFormat:@"%@",teach.teacherID];
+            NSString *teacherId=  [NSString stringWithFormat:@"%@",teach.teacherID];
             
             TeachersPublicViewController *public =[[TeachersPublicViewController alloc]initWithTeacherID:teacherId];
             
@@ -1313,7 +1314,7 @@
                 [self HUDStopWithTitle:@"当前地区无精选内容"];
                 
             }else{
-            
+                
                 //判断精品课程类型
                 if ([cell.recommandModel.target_type isEqualToString:@"LiveStudio::Course"]) {
                     controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.recommandModel.classID];
@@ -1399,18 +1400,15 @@
     
     [more addGestureRecognizer:moreTap];
     
-    
     UIImageView *arrow = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"rightArrow"]];
     arrow.userInteractionEnabled = YES;
     [arrow addGestureRecognizer:moreTap];
-    
     
     if (section == 1) {
         
         label.text = @"免费课程";
         
         _moreCurrentClassButton = [[UIControl alloc]init];
-        [_moreCurrentClassButton setEnlargeEdge:20];
         [view addSubview:_moreCurrentClassButton];
         _moreCurrentClassButton.sd_layout
         .rightSpaceToView(view,12)
@@ -1432,13 +1430,13 @@
         .topEqualToView(arrow)
         .bottomEqualToView(arrow);
         [more setSingleLineAutoResizeWithMaxWidth:100];
-        
+        [_moreCurrentClassButton setEnlargeEdge:40];
     }else if(section == 2){
         
         label.text = @"新课发布";
         
         _moreNewClassButton = [[UIControl alloc]init];
-        [_moreNewClassButton setEnlargeEdge:20];
+        
         [view addSubview:_moreNewClassButton];
         _moreNewClassButton.sd_layout
         .rightSpaceToView(view,12)
@@ -1460,8 +1458,10 @@
         .topEqualToView(arrow)
         .bottomEqualToView(arrow);
         [more setSingleLineAutoResizeWithMaxWidth:100];
+        
+        [_moreCurrentClassButton setEnlargeEdge:40];
     }
-
+    
     return view;
     
 }
@@ -1487,7 +1487,7 @@
 #pragma mark- 获取程序所有的基础信息
 - (void)requestBasicInformation{
     
-//    [self HUDStartWithTitle:NSLocalizedString(@"正在获取基础信息", nil)];
+    //    [self HUDStartWithTitle:NSLocalizedString(@"正在获取基础信息", nil)];
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
@@ -1535,7 +1535,7 @@
             
             //加工城市信息 ->去掉当地没有工作站的数据
             
-
+            
 #pragma mark- 写完城市信息plist之后,开始定位
             
             if (YES) {
@@ -1584,7 +1584,7 @@
         warning.textColor = [UIColor whiteColor];
         [_warningView addSubview:warning];
         warning.frame = CGRectMake(war.right_sd+10*ScrenScale, 10*ScrenScale, 200*ScrenScale, war.height_sd);
-    
+        
         UIButton *closeWarningButton = [[UIButton alloc]init];
         [closeWarningButton setImage:[UIImage imageNamed:@"叉"] forState:UIControlStateNormal];
         [_warningView addSubview:closeWarningButton];
@@ -1602,13 +1602,13 @@
 /**关闭支付密码设置提示栏*/
 - (void)closeWarning{
     
-   [UIView animateWithDuration:0.5 animations:^{
-      
-       _warningView.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, 0);
-       
-       _indexPageView.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height-TabBar_Height);
-       
-   }];
+    [UIView animateWithDuration:0.5 animations:^{
+        
+        _warningView.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, 0);
+        
+        _indexPageView.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height-TabBar_Height);
+        
+    }];
     
 }
 

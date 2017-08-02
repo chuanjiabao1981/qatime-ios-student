@@ -715,6 +715,9 @@
                     //在这儿弄一下子 这个 富文本
                     NSString *notice =[NSString stringWithFormat:@"%@更新了公告\n公告:%@",sender,messageText==nil?@"":messageText];
                     
+                    //公告就直接从聊天获取
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"NewNotice" object:@{@"notice":notice,@"time":[NSString stringWithFormat:@"%f",message.timestamp]}];
+                    
                     [self.chatModel addSpecifiedNotificationItem:notice];
                     
                 }

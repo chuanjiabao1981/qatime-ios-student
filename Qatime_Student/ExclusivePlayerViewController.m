@@ -38,6 +38,7 @@
 #import "UIView+PlaceholderImage.h"
 #import <AVFoundation/AVFoundation.h>
 #import "UUInputFunctionView.h"
+#import "NSNull+Json.h"
 
 typedef enum : NSUInteger {
     /**平级视图*/
@@ -188,11 +189,11 @@ typedef enum : NSUInteger {
 -(instancetype)initWithClassID:(NSString *)classID andChatTeamID:(NSString *)chatTeamID andBoardAddress:(NSString *)boardAddress andTeacherAddress:(NSString *)teacherAddress{
     self = [super init];
     if (self) {
-        _chatTimeID = [NSString stringWithFormat:@"%@",chatTeamID];
+        _chatTimeID = [NSString stringWithFormat:@"%@",chatTeamID==nil?@"":chatTeamID];
         _classID = [NSString stringWithFormat:@"%@",classID];
 
-        _teacherPullAddress = [NSURL URLWithString:teacherAddress];
-        _boardPullAddress = [NSURL URLWithString:boardAddress];
+        _teacherPullAddress = [NSURL URLWithString:teacherAddress.description];
+        _boardPullAddress = [NSURL URLWithString:boardAddress.description];
     }
     return self;
 }

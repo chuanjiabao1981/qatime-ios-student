@@ -93,14 +93,14 @@
 /**请求数据*/
 - (void)requestData{
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/realtime",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/play",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             //获取数据正常 没问题
             
-            _owner = [NSString stringWithFormat:@"%@",dic[@"data"][@"owner"]];
-            NSArray *members = [NSArray arrayWithArray:dic[@"data"][@"members"]];
+//            _owner = [NSString stringWithFormat:@"%@",dic[@"data"][@"owner"]];
+            NSArray *members = [NSArray arrayWithArray:dic[@"data"][@"chat_team"][@"accounts"]];
             
             if (members.count!=0) {
                 //有成员
@@ -114,18 +114,15 @@
                 //整理一下成员列表数组,把老师给弄到第一个
                 NSMutableArray *sortArr = @[].mutableCopy;
                 for (Members *mod in _membersArr) {
-                    if (![mod.accid isEqualToString:_owner]) {
-                        //不是老师就往里加
-                        [sortArr addObject:mod];
-                    }
+                    [sortArr addObject:mod];
                 }
-                //加完了学生再加个老师
-                for (Members *mod in _membersArr) {
-                    if ([mod.accid isEqualToString:_owner]) {
-                        //把老师加到第一个里面去
-                        [sortArr insertObject:mod atIndex:0];
-                    }
-                }
+//                //加完了学生再加个老师
+//                for (Members *mod in _membersArr) {
+//                    if ([mod.accid isEqualToString:_owner]) {
+//                        //把老师加到第一个里面去
+//                        [sortArr insertObject:mod atIndex:0];
+//                    }
+//                }
                 
                 //然后再把成员数组重置一下子
                 _membersArr = sortArr.mutableCopy;
@@ -163,7 +160,6 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
     static NSString *cellIdenfier = @"cell";
     MemberListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
     if (cell==nil) {
@@ -176,8 +172,7 @@
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
         
         //判断老师
-        if ([cell.model.accid isEqualToString:_owner]) {
-            
+        if (indexPath.row == 0) {
             cell.name.textColor = BUTTONRED;
             cell.character.textColor = BUTTONRED;
             cell.character.text = @"老师";
