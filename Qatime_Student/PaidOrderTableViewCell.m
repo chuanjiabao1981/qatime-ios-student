@@ -143,12 +143,14 @@
         
     }else if ([paidModel.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
         _name.text = paidModel.product_video_course[@"name"];
-        
         _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:paidModel.product_type],paidModel.product_video_course[@"grade"],paidModel.product_video_course[@"subject"],paidModel.product_video_course[@"preset_lesson_count"],paidModel.product_video_course[@"teacher_name"]];
         
     }else if ([paidModel.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
         _name.text = paidModel.product_interactive_course[@"name"];
         _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:paidModel.product_type],paidModel.product_interactive_course[@"grade"],paidModel.product_interactive_course[@"subject"],paidModel.product_interactive_course[@"lessons_count"],paidModel.teacher_name];
+    }else{
+        _name.text = paidModel.product_customized_group[@"name"];
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:paidModel.product_type],paidModel.product_customized_group[@"grade"],paidModel.product_customized_group[@"subject"],paidModel.product_customized_group[@"events_count"],paidModel.teacher_name];
     }
     
     _price.text = [NSString stringWithFormat:@"¥%@",paidModel.amount];
@@ -179,13 +181,17 @@
         _unTipsImage.hidden = YES;
         _rightButton.hidden = NO;
         
-    }else{
+    }else if ([paidModel.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
         //暂定 视频课类型 不能退款的
-        
         _unTips.hidden = NO;
         _unTipsImage.hidden = NO;
         _rightButton.hidden = YES;
  
+    }else{
+        //专属课类型
+        _unTips.hidden = YES;
+        _unTipsImage.hidden = YES;
+        _rightButton.hidden = NO; 
     }
     
 }
@@ -199,6 +205,8 @@
         result = @"视频课";
     }else if ([type isEqualToString:@"LiveStudio::InteractiveCourse"]){
         result = @"一对一";
+    }else{
+        result = @"专属课";
     }
     return result;
 }

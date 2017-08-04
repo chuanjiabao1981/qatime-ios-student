@@ -27,6 +27,7 @@
 @property (nonatomic, strong) NSDictionary *product ;
 @property (nonatomic, strong) NSDictionary *product_interactive_course ;
 @property (nonatomic, strong) NSDictionary *product_video_course;
+@property (nonatomic, strong) NSDictionary *product_customized_group ;
 @property (nonatomic, strong) NSString *coupon_code ;
 
 
@@ -36,6 +37,9 @@
 @property(nonatomic,strong) NSString *preset_lesson_count ;
 @property(nonatomic,strong) NSString *teacher_name ;
 @property(nonatomic,strong) NSString *price ;
+
+
+
 
 ///* 支付*/
 @property(nonatomic,strong) NSString *appid ;

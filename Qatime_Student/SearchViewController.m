@@ -23,6 +23,7 @@
 #import "TutoriumInfoViewController.h"
 #import "VideoClassInfoViewController.h"
 #import "InteractionClassInfoViewController.h"
+#import "ExclusiveInfoViewController.h"
 
 #import "TeachersPublicViewController.h"
 
@@ -383,7 +384,6 @@ typedef enum : NSUInteger {
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
     UITableViewCell *cell;
     
     if (tableView.tag == 1) {
@@ -399,8 +399,6 @@ typedef enum : NSUInteger {
         }
         
         return  cell;
-        
-
         
     } else if(tableView.tag == 2) {
         
@@ -445,6 +443,9 @@ typedef enum : NSUInteger {
         }else if ([cell.model.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
             //视频课
             controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.classID];
+        }else{
+            
+            controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.model.classID];
         }
         
         

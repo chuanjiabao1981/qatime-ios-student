@@ -147,7 +147,11 @@
         _name.text = unpaidModel.product_interactive_course[@"name"];
         
         _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:unpaidModel.product_type],unpaidModel.product_interactive_course[@"grade"],unpaidModel.product_interactive_course[@"subject"],unpaidModel.product_interactive_course[@"preset_lesson_count"],unpaidModel.product_interactive_course[@"teacher_name"]];
+    }else{
+        _name.text = unpaidModel.product_customized_group[@"name"];
+        _orderInfos.text = [NSString stringWithFormat:@"%@/%@%@/共%@课/%@",[self switchClassType:unpaidModel.product_type],unpaidModel.product_customized_group[@"grade"],unpaidModel.product_customized_group[@"subject"],unpaidModel.product_customized_group[@"events_count"],unpaidModel.teacher_name];
     }
+
 
     _price.text = [NSString stringWithFormat:@"¥%@",unpaidModel.amount];
 
@@ -176,6 +180,8 @@
         result = @"视频课";
     }else if ([type isEqualToString:@"LiveStudio::InteractiveCourse"]){
         result = @"一对一";
+    }else{
+        result = @"专属课";
     }
     return result;
 }

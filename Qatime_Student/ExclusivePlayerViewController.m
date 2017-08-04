@@ -347,6 +347,8 @@ typedef enum : NSUInteger {
         
     });
     
+    [self setupBoardPlayer];
+    
 }
 
 /* 初始化播放器*/
@@ -383,7 +385,7 @@ typedef enum : NSUInteger {
     }else{
         
         NSLog(@"白板播放器初始化成功!!!!");
-        //            [self setupTeacherPlayer];
+        [self setupTeacherPlayer];
         boardPlayerInitSuccess = YES;
         [_boardPlayerView makePlaceHolderImage:nil];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"BoardPlayerInitSuccess" object:nil];
@@ -1452,7 +1454,6 @@ typedef enum : NSUInteger {
     if (_viewsArrangementMode == SameLevel) {
         /* 条件1-1：如果当前白板是主视图*/
         if (_boardPlayerView.becomeMainPlayer == YES) {
-            
             /* 白板变成副视图*/
             [self makeSecondPlayer:_boardPlayerView];
             /* 老师变成主视图*/
@@ -1463,7 +1464,6 @@ typedef enum : NSUInteger {
         }
         /* 条件1-2：如果当前老师是主视图*/
         else if (_teacherPlayerView.becomeMainPlayer == YES) {
-            
             /* 教师端变成副视图 布局改变*/
             [self makeSecondPlayer:_teacherPlayerView];
             /* 白板变成主视图*/
@@ -1566,19 +1566,9 @@ typedef enum : NSUInteger {
 /* 改变infoview的top和位置*/
 - (void)changInfoViewsWithTopView:(FJFloatingView *)playerView{
     
-    //    [_liveClassInfoView sd_clearAutoLayoutSettings];
-    //    dispatch_queue_t floatview = dispatch_queue_create("floatview", DISPATCH_QUEUE_SERIAL);
-    //    dispatch_sync(floatview, ^{
-    
-    //    _liveClassInfoView.sd_layout
-    //    .topSpaceToView(playerView,0)
-    //    .leftEqualToView(self.view)
-    //    .rightEqualToView(self.view)
-    //    .bottomEqualToView(self.view);
-    
-    //    [_liveClassInfoView updateLayout];
-    
-    //    });
+   _mainView.sd_layout
+    .topSpaceToView(playerView, 0);
+    [_mainView updateLayout];
     
     
 }
@@ -1848,6 +1838,21 @@ typedef enum : NSUInteger {
         [[NSNotificationCenter defaultCenter]postNotificationName:@"FullScreen" object:nil];
         
     }
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    
+    if (fromInterfaceOrientation!=UIInterfaceOrientationPortrait) {
+        
+        [_mainView updateLayout];
+        [_mainView.scrollView layoutIfNeeded];
+        [_chatController.view updateLayout];
+        [_chatController.view layoutIfNeeded];
+        [_noticeController.view updateLayout];
+        [_noticeController.view layoutIfNeeded];
+        
+    }
+    
 }
 
 #pragma mark - 播放器的播放/停止/退出等方法

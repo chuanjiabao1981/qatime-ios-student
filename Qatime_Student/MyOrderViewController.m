@@ -380,6 +380,7 @@ typedef enum : NSUInteger {
                     [_myOrderView.unpaidView cyl_reloadData];
                     
                 }else if(orderType == PaidType){
+                    
                     for (NSDictionary *paid in dic[@"data"]) {
                         Paid *mod = [Paid yy_modelWithJSON:paid];
                         mod.orderID = paid[@"id"];
@@ -407,10 +408,13 @@ typedef enum : NSUInteger {
                                     
                                     mod.teacher_name = [name substringFromIndex:1];
                                 }
+                                
+                            }else if (![paid[@"product_customized_group"]isEqual:[NSNull null]]){
+                                //专属课
+                                if (paid[@"product_customized_group"][@"teacher_name"]) {
+                                    mod.teacher_name = paid[@"product_customized_group"][@"teacher_name"];
+                                }
 
-                            }else{
-                                
-                                
                             }
                             
                         }

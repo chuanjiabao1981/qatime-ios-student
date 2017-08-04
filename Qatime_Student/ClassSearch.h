@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSString *grade ;
 @property (nonatomic, strong) NSString *teacher_name ;
 @property (nonatomic, strong) NSString *publicize;
+@property (nonatomic, strong) NSDictionary *publicizes_url ;
 
 
 @end

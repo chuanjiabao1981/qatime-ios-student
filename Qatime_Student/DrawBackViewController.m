@@ -185,10 +185,15 @@
         }else if ([_paidOrder.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
             
             product = [NSDictionary dictionaryWithDictionary:_paidOrder.product_interactive_course];
-            
+        }else{
+            product = [NSDictionary dictionaryWithDictionary:_paidOrder.product_customized_group];
         }
         _drawBackView.className.text = product[@"name"];
-        _drawBackView.progress.text =  [NSString stringWithFormat:@"%ld",[product[@"preset_lesson_count"]integerValue] -[product[@"completed_lesson_count"]integerValue]];
+        if ([_paidOrder.product_type isEqualToString:@"LiveStudio::Goup"]) {
+             _drawBackView.progress.text =  [NSString stringWithFormat:@"%ld",[product[@"events_count"]integerValue] -[product[@"closed_events_count"]integerValue]];
+        }else{
+            _drawBackView.progress.text =  [NSString stringWithFormat:@"%ld",[product[@"preset_lesson_count"]integerValue] -[product[@"completed_lesson_count"]integerValue]];
+        }
         _drawBackView.price.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"amount"]];
         _drawBackView.enableDrawbackPrice.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"refund_amount"]];
         _drawBackView.paidPrice.text = [NSString stringWithFormat:@"%ld",[_dataDic[@"amount"] integerValue]-[_dataDic[@"refund_amount"] integerValue]];
@@ -198,7 +203,6 @@
     }
     
     [_drawBackView.finishButton addTarget:self action:@selector(requestToRefund) forControlEvents:UIControlEventTouchUpInside];
-    
     
 }
 

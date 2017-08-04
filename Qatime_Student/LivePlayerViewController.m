@@ -240,7 +240,7 @@ typedef enum : NSUInteger {
     
     //横屏文件名
     NSString *_fileNameString;
-
+    
 }
 
 
@@ -471,7 +471,7 @@ bool ismute     = NO;
         _boardPlayerView.tag = 0;
         
         [_ makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
-//        [_ sendSubviewToBack:_.placeholderImage];
+        //        [_ sendSubviewToBack:_.placeholderImage];
         /* 当前不可移动*/
         _.canMove = NO;
         /* 不可移动的情况下,移除移动手势*/
@@ -497,7 +497,7 @@ bool ismute     = NO;
         .autoHeightRatio(9/16.0);
         _teacherPlayerView.tag = 1;
         [_ makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
-//        [_ sendSubviewToBack:_.placeholderImage];
+        //        [_ sendSubviewToBack:_.placeholderImage];
         
         /* 老师播放器不可移动*/
         _.canMove = NO;
@@ -561,7 +561,7 @@ bool ismute     = NO;
             .bottomEqualToView(_boardPlayerView);
             
             [_boardPlayerView bringSubviewToFront:_liveplayerBoard.view];
-//            [_boardPlayerView makePlaceHolderImage:nil];
+            //            [_boardPlayerView makePlaceHolderImage:nil];
         }
         
         
@@ -619,7 +619,7 @@ bool ismute     = NO;
             .bottomEqualToView(_teacherPlayerView);
             
             [_teacherPlayerView bringSubviewToFront:_liveplayerTeacher.view];
-//            [_teacherPlayerView makePlaceHolderImage:nil];
+            //            [_teacherPlayerView makePlaceHolderImage:nil];
         }
     }
     
@@ -2218,7 +2218,7 @@ bool ismute     = NO;
             }
             
             //播放结束后 继续轮询后台接口
-//            [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:10];
+            //            [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:10];
             
         }
             
@@ -2234,7 +2234,7 @@ bool ismute     = NO;
             }
             
             //只要结束,不管什么原因 ,照样轮询
-//            [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:10];
+            //            [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:10];
             
         }
             break;
@@ -2442,11 +2442,11 @@ bool ismute     = NO;
     /**课程通知图*/
     _classNotice = [[ClassNotice alloc]init];
     [_liveClassInfoView.view1 addSubview:_classNotice];
-//    _classNotice.classNotice.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-//        //请求公告
-//        [self requestNotice];
-//    }];
-//    [_classNotice.classNotice.mj_header beginRefreshing];
+    //    _classNotice.classNotice.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    //        //请求公告
+    //        [self requestNotice];
+    //    }];
+    //    [_classNotice.classNotice.mj_header beginRefreshing];
     _classNotice.classNotice.tableFooterView = [[UIView alloc]init];
     
     _classNotice.sd_layout
@@ -2730,7 +2730,7 @@ bool ismute     = NO;
 #pragma mark- 视频播放状态查询功能
     
     /* 两个播放器和控制层和覆盖层都加载完成后,每隔30秒请求一次数据*/
-//    [self checkVideoStatus];
+    //    [self checkVideoStatus];
     
     /**两个播放器和控制层加载完成后,加载在线人数*/
     //    [self checkOnlineNumber];
@@ -2886,7 +2886,7 @@ bool ismute     = NO;
             
             
             /* 课程名->播放文件名*/
-//            _fileName.text = _fileNameString==nil?@"暂无直播":_fileNameString;
+            //            _fileName.text = _fileNameString==nil?@"暂无直播":_fileNameString;
             
             /* 课程简介,富文本赋值*/
             _infoHeaderView.classDescriptionLabel.attributedText = _videoClassInfo.attributedDescription;
@@ -4411,12 +4411,10 @@ bool ismute     = NO;
     
     
     if (tableView.tag ==2) {
-            
-            Classes *mod =[Classes yy_modelWithJSON: _classesArr[indexPath.row]];
-            // 获取cell高度
-            height =  [tableView cellHeightForIndexPath:indexPath model:mod keyPath:@"classModel" cellClass:[ClassesListTableViewCell class] contentViewWidth: [UIScreen mainScreen].bounds.size.width];
-            
         
+        Classes *mod =[Classes yy_modelWithJSON: _classesArr[indexPath.row]];
+        // 获取cell高度
+        height =  [tableView cellHeightForIndexPath:indexPath model:mod keyPath:@"classModel" cellClass:[ClassesListTableViewCell class] contentViewWidth: [UIScreen mainScreen].bounds.size.width];
         
     }
     if (tableView.tag ==3) {
@@ -4549,7 +4547,7 @@ bool ismute     = NO;
         
     }
     if (tableView.tag ==10) {
-      
+        
         rows = _membersArr.count;
         
     }
@@ -4854,12 +4852,12 @@ bool ismute     = NO;
             //检查在线人数
             [self switchOnlineNumbersWithArrayrs:dic[@"data"][@"online_users"]];
             
-//            完事儿,每隔五秒轮询一次
+            //            完事儿,每隔五秒轮询一次
             [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
             
         }else{
             /* 获取数据失败*/
-          [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
+            [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
             
         }
         
@@ -4874,7 +4872,7 @@ bool ismute     = NO;
     
     UIAlertController *alertController = NULL;
     UIAlertAction *action = NULL;
-       ///新的状态加载
+    ///新的状态加载
     
     //同时直播的时候
     if ([statusDic[@"board"]isEqualToString:@"1"]&&[statusDic[@"camera"]isEqualToString:@"1"]) {
@@ -4892,7 +4890,7 @@ bool ismute     = NO;
                 [self setupBoardPlayer];
                 [_boardPlayerView makePlaceHolderImage:nil];
                 [_liveplayerBoard shouldAutoplay];
-
+                
             }
         }else{
             [self setupBoardPlayer];
@@ -4906,13 +4904,13 @@ bool ismute     = NO;
                 [self setupTeacherPlayer];
                 [_teacherPlayerView makePlaceHolderImage:nil];
                 [_liveplayerTeacher shouldAutoplay];
-
+                
             }
         }else{
             [self setupTeacherPlayer];
             [_teacherPlayerView makePlaceHolderImage:nil];
             [_liveplayerTeacher shouldAutoplay];
-
+            
         }
         
         
@@ -5053,7 +5051,7 @@ bool ismute     = NO;
         }else{
             _fileName.text = _fileNameString==nil?@"暂无直播":_fileNameString;
         }
-    
+        
     }
     
 }
