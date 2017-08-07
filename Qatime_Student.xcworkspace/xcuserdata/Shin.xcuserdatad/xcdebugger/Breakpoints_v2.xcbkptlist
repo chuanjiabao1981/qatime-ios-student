@@ -54,7 +54,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/AllClassViewController.m"
@@ -455,11 +455,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/ExclusivePlayerViewController.m"
-            timestampString = "523533630.173792"
+            timestampString = "523769704.643424"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1172"
-            endingLineNumber = "1172"
+            startingLineNumber = "1160"
+            endingLineNumber = "1160"
             landmarkName = "-changeLevels:"
             landmarkType = "7">
          </BreakpointContent>
@@ -471,11 +471,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/ExclusivePlayerViewController.m"
-            timestampString = "523534642.639882"
+            timestampString = "523769704.643424"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1756"
-            endingLineNumber = "1756"
+            startingLineNumber = "1751"
+            endingLineNumber = "1751"
             landmarkName = "-willRotateToInterfaceOrientation:duration:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1063,11 +1063,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/ExclusiveChatViewController.m"
-            timestampString = "523335493.606042"
+            timestampString = "523779631.81595"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "719"
-            endingLineNumber = "719"
+            startingLineNumber = "718"
+            endingLineNumber = "718"
             landmarkName = "-makeMessages:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1079,11 +1079,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/ExclusivenNoticeViewController.m"
-            timestampString = "523335499.302121"
+            timestampString = "523766812.875892"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
             landmarkName = "-newNotice:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1127,11 +1127,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/ExclusivenNoticeViewController.m"
-            timestampString = "523336484.383232"
+            timestampString = "523766812.875892"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
             landmarkName = "-newNotice:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1143,11 +1143,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/ExclusivePlayerViewController.m"
-            timestampString = "523535017.565689"
+            timestampString = "523769704.643424"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3081"
-            endingLineNumber = "3081"
+            startingLineNumber = "3089"
+            endingLineNumber = "3089"
             landmarkName = "-switchOnlineNumbersWithArrayrs:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1159,11 +1159,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/ExclusivePlayerViewController.m"
-            timestampString = "523535017.565689"
+            timestampString = "523769704.643424"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2887"
-            endingLineNumber = "2887"
+            startingLineNumber = "2895"
+            endingLineNumber = "2895"
             landmarkName = "-switchStatuseWithDictionary:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1175,11 +1175,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/ExclusivePlayerViewController.m"
-            timestampString = "523535017.565689"
+            timestampString = "523769704.643424"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2807"
-            endingLineNumber = "2807"
+            startingLineNumber = "2815"
+            endingLineNumber = "2815"
             landmarkName = "-checkVideoStatus"
             landmarkType = "7">
          </BreakpointContent>
@@ -1191,11 +1191,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/ExclusivePlayerViewController.m"
-            timestampString = "523535017.565689"
+            timestampString = "523769704.643424"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2311"
-            endingLineNumber = "2311"
+            startingLineNumber = "2319"
+            endingLineNumber = "2319"
             landmarkName = "-allPlayerInitSuccess"
             landmarkType = "7">
          </BreakpointContent>
@@ -1207,11 +1207,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/ExclusivePlayerViewController.m"
-            timestampString = "523534573.821251"
+            timestampString = "523769704.643424"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1454"
-            endingLineNumber = "1454"
+            startingLineNumber = "1442"
+            endingLineNumber = "1442"
             landmarkName = "-changeArrangement"
             landmarkType = "7">
          </BreakpointContent>
@@ -1251,16 +1251,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Qatime_Student/ExclusivePlayerViewController.m"
-            timestampString = "523535462.810369"
+            timestampString = "523765418.623766"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1846"
-            endingLineNumber = "1846"
-            landmarkName = "-didRotateFromInterfaceOrientation:"
+            startingLineNumber = "973"
+            endingLineNumber = "973"
+            landmarkName = "-turnDownFullScreen:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Qatime_Student/AppDelegate.m"
+            timestampString = "523791968.039936"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
+            landmarkName = "-application:didFinishLaunchingWithOptions:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

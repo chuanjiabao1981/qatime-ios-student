@@ -13,13 +13,15 @@
 
 @property (nonatomic, strong) UILabel *date ;
 
-@property (nonatomic, strong) UILabel *time ;
+//@property (nonatomic, strong) UILabel *time ;
 
 @property (nonatomic, strong) UILabel *lessonName ;
 
-@property (nonatomic, strong) UILabel *teacherName ;
+//@property (nonatomic, strong) UILabel *teacherName ;
 
 @property (nonatomic, strong) UILabel *status ;
+
+@property (nonatomic, strong) UILabel *replayable ;
 
 /**model*/
 @property (nonatomic, strong) InteractionLesson *model ;

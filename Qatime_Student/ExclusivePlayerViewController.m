@@ -990,44 +990,28 @@ typedef enum : NSUInteger {
             
             [self mediaControlTurnDownFullScreenModeWithMainView:_boardPlayerView];
             
-            
         }else if(_teacherPlayerView.becomeMainPlayer == YES){
             
             [self mediaControlTurnDownFullScreenModeWithMainView:_teacherPlayerView];
             
         }
-        
         
         /* 如果是非平级视图*/
     }else if (_viewsArrangementMode == DifferentLevel){
-        
         /* 判断主视图 */
         if (_boardPlayerView.becomeMainPlayer == YES) {
-            
             [self mediaControlTurnDownFullScreenModeWithMainView:_boardPlayerView];
             [self makeFloatingPlayer:_teacherPlayerView];
-            
         }else if(_teacherPlayerView.becomeMainPlayer == YES){
-            
             [self mediaControlTurnDownFullScreenModeWithMainView:_teacherPlayerView];
-            
             [self makeFloatingPlayer:_boardPlayerView];
         }
-        
     }
     
     [self.view updateLayout];
     [self.view layoutIfNeeded];
-    
-    //    if (isFullScreen == NO) {
-    //
-    //        typeof(self) __weak weakSelf = self;
-    //        [_liveClassInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-    //            NSLog(@"%ld", (long)index);
-    //
-    //            [weakSelf.LiveClassInfoView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, weakSelf.view.width_sd, weakSelf.view.height_sd-64-49) animated:YES];
-    //        }];
-    //    }
+    [_mainView updateLayout];
+    [_mainView.scrollView updateLayout];
     
     [_aBarrage start];
     
@@ -1071,6 +1055,8 @@ typedef enum : NSUInteger {
     //语音输入按钮隐藏
     _inputView.voiceSwitchTextButton.hidden = YES;
     [_aBarrage start];
+    
+    _inputView.hidden = NO;
     
 }
 
@@ -1128,6 +1114,8 @@ typedef enum : NSUInteger {
     .heightRatioToView(_tileScreen,1.0)
     .topSpaceToView(_bottomControlView,0)
     .widthRatioToView(_tileScreen,1.0);
+    
+    _inputView.hidden = YES;
     
 }
 
@@ -1576,21 +1564,28 @@ typedef enum : NSUInteger {
 #pragma mark- 隐藏segment和滑动视图
 - (void)hideSegementAndScrollViews{
     
-    //    _liveClassInfoView.segmentControl.hidden = YES;
-    //    _liveClassInfoView.scrollView.hidden = YES;
+    [_mainView removeFromSuperview];
     
 }
 
 #pragma mark- 显示segment和滑动视图
 - (void)showSegmentAndScrollViews{
     
-    //    _liveClassInfoView.segmentControl.hidden = NO;
-    //    _liveClassInfoView.scrollView.hidden = NO;
-    
-    //    [_liveClassInfoView.segmentControl updateLayout];
-    //    [_liveClassInfoView.scrollView updateLayout];
-    //    _liveClassInfoView.scrollView.contentSize = CGSizeMake(self.view.width_sd*4, _liveClassInfoView.scrollView.height_sd);
-    
+    [self.view addSubview: _mainView];
+    _mainView.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .bottomSpaceToView(self.view, 0);
+    if (_teacherPlayerView.becomeMainPlayer == YES) {
+        _mainView.sd_layout
+        .topSpaceToView(_teacherPlayerView, 0);
+        [_mainView updateLayout];
+    }else{
+        _mainView.sd_layout
+        .topSpaceToView(_boardPlayerView, 0);
+        [_mainView updateLayout];
+        
+    }
     
 }
 
@@ -1844,12 +1839,25 @@ typedef enum : NSUInteger {
     
     if (fromInterfaceOrientation!=UIInterfaceOrientationPortrait) {
         
-        [_mainView updateLayout];
-        [_mainView.scrollView layoutIfNeeded];
-        [_chatController.view updateLayout];
-        [_chatController.view layoutIfNeeded];
-        [_noticeController.view updateLayout];
-        [_noticeController.view layoutIfNeeded];
+//        [_mainView updateLayout];
+//        [_mainView.scrollView layoutIfNeeded];
+//        [_mainView.scrollView updateLayout];
+//        _chatController.view.sd_layout
+//        .leftSpaceToView(_mainView.scrollView, 0)
+//        .topSpaceToView(_mainView.scrollView, 0)
+//        .bottomSpaceToView(_mainView.scrollView, 0)
+//        .widthRatioToView(_mainView.scrollView, 1.0);
+//        [_chatController.view updateLayout];
+//        
+//        _noticeController.view.sd_layout
+//        .leftSpaceToView(_chatController.view, 0)
+//        .topEqualToView(_chatController.view)
+//        .bottomEqualToView(_chatController.view)
+//        .widthRatioToView(_chatController.view, 1.0);
+//        [_noticeController.view updateLayout];
+        
+//        _chatController.inputView.hidden = NO;
+//        [_chatController.inputView updateLayout];
         
     }
     

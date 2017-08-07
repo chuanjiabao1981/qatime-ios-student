@@ -25,38 +25,17 @@
     if (self) {
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        [self.contentView  sizeToFit];
         self.contentView .autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
-        //日期
-        [self.contentView addSubview:self.date];
-        self.date.sd_layout
-        .topSpaceToView(self.contentView, 20)
-        .leftSpaceToView(self.contentView, 30)
-        .autoHeightRatio(0);
-        [self.date setSingleLineAutoResizeWithMaxWidth:200];
-        //时间
-        [self.contentView addSubview:self.time];
-        self.time.sd_layout
-        .leftSpaceToView(self.date, 10)
-        .topEqualToView(self.date)
-        .bottomEqualToView(self.date);
-        [self.time setSingleLineAutoResizeWithMaxWidth:400];
-        
-        //状态
-        [self.contentView addSubview:self.status];
-        self.status.sd_layout
-        .rightSpaceToView(self.contentView, 20)
-        .centerYEqualToView(self.contentView)
-        .autoHeightRatio(0);
-        [self.status setSingleLineAutoResizeWithMaxWidth:100];
-        
         //课程名
-        [self.contentView addSubview:self.lessonName];
-        self.lessonName.sd_layout
-        .leftEqualToView(self.date)
-        .topSpaceToView(self.date, 10)
-        .rightSpaceToView(self.status, 10)
+        _lessonName = [[UILabel alloc]init];
+        _lessonName.font = TEXT_FONTSIZE;
+        _lessonName.textColor = [UIColor blackColor];
+        [self.contentView addSubview:_lessonName];
+        _lessonName.sd_layout
+        .leftSpaceToView(self.contentView, 30*ScrenScale)
+        .topSpaceToView(self.contentView, 10)
+        .rightSpaceToView(self.contentView, 10)
         .autoHeightRatio(0);
         
         //菱形图
@@ -68,16 +47,29 @@
         .centerYEqualToView(self.lessonName)
         .leftSpaceToView(self.contentView,10);
         
-        //教师名
-        [self.contentView addSubview:self.teacherName];
-        self.teacherName.sd_layout
-        .leftEqualToView(self.lessonName)
-        .topSpaceToView(self.lessonName, 10)
+        //日期
+        _date = [[UILabel alloc]init];
+        _date.font = [UIFont systemFontOfSize:14*ScrenScale];
+        _date.textColor = TITLECOLOR;
+        [self.contentView addSubview:_date];
+        _date.sd_layout
+        .topSpaceToView(_lessonName, 10)
+        .leftSpaceToView(self.contentView, 30)
         .autoHeightRatio(0);
-        [self.teacherName setSingleLineAutoResizeWithMaxWidth:300];
-    
+        [_date setSingleLineAutoResizeWithMaxWidth:2000];
         
-        [self setupAutoHeightWithBottomView:self.teacherName bottomMargin:20];
+        //状态
+        _status = [[UILabel alloc]init];
+        _status.textColor = [UIColor lightGrayColor];
+        _status.font = TEXT_FONTSIZE;
+        [self.contentView addSubview:_status];
+        _status.sd_layout
+        .topSpaceToView(_date, 10)
+        .leftEqualToView(_lessonName)
+        .autoHeightRatio(0);
+        [_status setSingleLineAutoResizeWithMaxWidth:100];
+        
+        [self setupAutoHeightWithBottomView:_status bottomMargin:10];
         
     }
     return self;
@@ -89,68 +81,22 @@
     
     _model = model;
     
-    self.date.text = model.class_date;
-    self.time.text = [NSString stringWithFormat:@"%@ - %@",model.start_time,model.end_time];
-    self.status.text = [NSString statusSwitchWithStatus:model.status];
+    _lessonName.text = model.name;
+    _date.text = [NSString stringWithFormat:@"%@ %@ - %@ | 老师:%@",model.class_date,model.start_time,model.end_time,model.teacher.name];
+    _status.text = [NSString statusSwitchWithStatus:model.status];
     if ([[NSString statusSwitchWithStatus:model.status] isEqualToString:@"已结束"]) {
-        self.status.textColor = TITLECOLOR;
+        if (@"replayable") {
+            _status.textColor = BUTTONRED;
+            _status.text = @"观看回放";
+        }else{
+            _status.textColor = TITLECOLOR;
+        }
+        
+        
     }else{
         self.status.textColor = [UIColor blackColor];
     }
-    self.lessonName.text = model.name;
-    self.teacherName.text = [NSString stringWithFormat:@"老师：%@",model.teacher.name];
     
-}
-
-
-
-#pragma mark- GET Method
-
--(UILabel *)date{
-    
-    if (!_date) {
-        _date = [[UILabel alloc]init];
-        _date.font = [UIFont systemFontOfSize:14*ScrenScale];
-        _date.textColor = TITLECOLOR;
-    }
-    return _date;
-}
-
--(UILabel *)time{
-    if (!_time) {
-        _time = [[UILabel alloc]init];
-        _time.font = [UIFont systemFontOfSize:14*ScrenScale];
-        _time.textColor = TITLECOLOR;
-    }
-    return _time;
-}
--(UILabel *)lessonName{
-    if (!_lessonName) {
-        _lessonName = [[UILabel alloc]init];
-        _lessonName.font = TEXT_FONTSIZE;
-        _lessonName.textColor = [UIColor blackColor];
-    }
-    return _lessonName;
-    
-}
-
--(UILabel *)teacherName{
-    if (!_teacherName) {
-        _teacherName = [[UILabel alloc]init];
-        _teacherName.font = [UIFont systemFontOfSize:14*ScrenScale];
-        _teacherName.textColor = TITLECOLOR;
-    }
-    return _teacherName;
-    
-}
-
--(UILabel *)status{
-    if (!_status) {
-        _status = [[UILabel alloc]init];
-        _status.textColor = [UIColor lightGrayColor];
-        _status.font = TEXT_FONTSIZE;
-    }
-    return _status;
 }
 
 

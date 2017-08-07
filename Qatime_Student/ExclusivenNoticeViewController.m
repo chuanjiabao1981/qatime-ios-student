@@ -24,6 +24,9 @@
     __block NSMutableArray *_noticeArr;
     
     NSString *_classID;
+    
+    
+    HaveNoClassView *_noView;
 
 }
 
@@ -79,14 +82,8 @@
     _noticeTableView.delegate = self;
     _noticeTableView.dataSource = self;
     _noticeTableView.tableFooterView = [UIView new];
-//    _noticeTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-//        
-//        _noticeArr = @[].mutableCopy;
-//        [self requestData];
-//        
-//    }];
-    
-//    [_noticeTableView.mj_header beginRefreshing];
+
+    _noView = [[HaveNoClassView alloc]initWithTitle:@"暂无公告"];
     
 }
 
@@ -212,20 +209,8 @@
     
     if (fromInterfaceOrientation!=UIInterfaceOrientationPortrait) {
         
-        //        [_noticeTableView setNeedsDisplay];
-        //        [_noticeTableView setNeedsLayout];
-        //        if ([[UIDevice currentDevice]orientation] == UIDeviceOrientationPortrait) {
-        //
-        //            for (NoticeTableViewCell *cell in _noticeTableView.visibleCells ) {
-        //
-        //                [cell.contentView layoutIfNeeded ];
-        //
-        //                [cell.contentView setNeedsDisplay];
-        //                [cell.contentView setNeedsLayout];
-        //                [cell.contentView updateLayout];
-        //            }
-        //
-        //        } ;
+        [_noView updateLayout];
+    
     }
 }
 
@@ -233,8 +218,7 @@
 
 - (UIView *)makePlaceHolderView{
     
-    HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"当前暂无公告"];
-    return view;
+    return _noView;
 }
 
 
@@ -244,10 +228,7 @@
     
 }
 
--(BOOL)shouldAutorotate{
-    
-    return YES;
-}
+
 
 
 - (void)didReceiveMemoryWarning {

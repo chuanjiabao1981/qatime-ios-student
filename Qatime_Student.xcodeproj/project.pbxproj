@@ -626,6 +626,7 @@
 		54E8B6A11E5EF1AF00A9703F /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E8B6A01E5EF1AF00A9703F /* Contacts.framework */; };
 		54E8B6A31E5EF1B600A9703F /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E8B6A21E5EF1B600A9703F /* AddressBook.framework */; };
 		54E8B6A71E601B0300A9703F /* UIViewController+TimeInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E8B6A61E601B0300A9703F /* UIViewController+TimeInterval.m */; };
+		54EA78AF1F386D6C00CB8E08 /* UMMobClick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54EA78AE1F386D6C00CB8E08 /* UMMobClick.framework */; };
 		54EBCFF41EB2E6190011344D /* AuthenCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EBCFF31EB2E6190011344D /* AuthenCode.m */; };
 		54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC41DFE8D67001A98CE /* OrderView.m */; };
 		54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC71DFE8D75001A98CE /* OrderViewController.m */; };
@@ -1924,6 +1925,7 @@
 		54E8B6A21E5EF1B600A9703F /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		54E8B6A51E601B0300A9703F /* UIViewController+TimeInterval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+TimeInterval.h"; sourceTree = "<group>"; };
 		54E8B6A61E601B0300A9703F /* UIViewController+TimeInterval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+TimeInterval.m"; sourceTree = "<group>"; };
+		54EA78AE1F386D6C00CB8E08 /* UMMobClick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMMobClick.framework; sourceTree = "<group>"; };
 		54EA9B201DD9A7DF004B8040 /* libNELivePlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNELivePlayer.a; path = Qatime_Student/LivePlayer_iOS_SDK_v1.2.1/libs/libNELivePlayer.a; sourceTree = "<group>"; };
 		54EA9B221DD9A7F1004B8040 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs/libcrypto.a"; sourceTree = "<group>"; };
 		54EA9B231DD9A7F1004B8040 /* libfdk-aac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libfdk-aac.a"; path = "Qatime_Student/LiveStreaming_iOS_SDK_V1.2.2/滤镜版本/libs/libfdk-aac.a"; sourceTree = "<group>"; };
@@ -2009,6 +2011,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54EA78AF1F386D6C00CB8E08 /* UMMobClick.framework in Frameworks */,
 				54CB26731DF0302900AE7414 /* Security.framework in Frameworks */,
 				54504AD21E9E220500EFCF8E /* libNELivePlayer.a in Frameworks */,
 				54A6C4A11E97393700B56135 /* StoreKit.framework in Frameworks */,
@@ -3779,6 +3782,7 @@
 		54A153A81DC6F09D0070B508 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				54EA78AD1F386D5900CB8E08 /* Umeng统计 */,
 				54689A961F04AC6900CD01ED /* KSCrash */,
 				54B45D171E5C34410027F958 /* Qatime_Student-Bridging-Header.h */,
 				545074691EE005EA0012A383 /* SAMKeyChain */,
@@ -5692,6 +5696,14 @@
 				54AC01F21E88FE5C00817767 /* NIMSDK */,
 			);
 			name = SDK;
+			sourceTree = "<group>";
+		};
+		54EA78AD1F386D5900CB8E08 /* Umeng统计 */ = {
+			isa = PBXGroup;
+			children = (
+				54EA78AE1F386D6C00CB8E08 /* UMMobClick.framework */,
+			);
+			name = "Umeng统计";
 			sourceTree = "<group>";
 		};
 		54EA9B361DD9A81A004B8040 /* 网易视频云 */ = {

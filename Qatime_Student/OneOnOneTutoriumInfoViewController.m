@@ -408,8 +408,9 @@
             if (cell==nil) {
                 cell=[[OneOnOneLessonTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cellID"];
             }
+            
+            [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             if (_classArray.count>indexPath.row) {
-                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 cell.model = _classArray[indexPath.row];
             }
             

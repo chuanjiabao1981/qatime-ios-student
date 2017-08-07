@@ -201,35 +201,34 @@
         _.separatorStyle = UITableViewCellSeparatorStyleNone;
         _.delegate = self;
         _.dataSource = self;
-        [self.view addSubview:_];
-        _.sd_layout
-        .leftSpaceToView(self.view, 0)
-        .topSpaceToView(self.view, 0)
-        .rightSpaceToView(self.view, 0)
-        .bottomSpaceToView(self.view, 50);
-        
         _;
     });
+    
+    [self.view addSubview:_chatTableView];
+    _chatTableView.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .topSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .bottomSpaceToView(self.view, 50);
     
     _inputView = ({
         
         UUInputFunctionView *_=[[UUInputFunctionView alloc]initWithSuperVC:self];
-        
-        //        _.frame = CGRectMake(0, self.view.height_sd-50, self.view.width_sd, 50);
-        
         [_.btnChangeVoiceState addTarget:self action:@selector(emojiKeyboardShow:) forControlEvents:UIControlEventTouchUpInside];
         _.TextViewInput.placeholder = @"请输入要发送的信息";
-        
         _.delegate= self;
-        
-        [self.view addSubview:_];
-        _.sd_layout
-        .leftSpaceToView(self.view, 0)
-        .rightSpaceToView(self.view, 0)
-        .bottomSpaceToView(self.view, 0)
-        .heightIs(50);
         _;
     });
+    
+    [self.view addSubview:_inputView];
+    _inputView.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .bottomSpaceToView(self.view, 0)
+    .heightIs(50);
+    
+    
+    
     
 }
 
@@ -1532,7 +1531,6 @@
     [_inputView.TextViewInput resignFirstResponder];
     [_inputView changeSendBtnWithPhoto:YES];
     
-    
 }
 
 /* 加载图片表情*/
@@ -1597,6 +1595,28 @@
     }];
     
 }
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    
+    [self.view updateLayout];
+    
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    
+    [self.view updateLayout];
+    
+    _inputView.hidden = NO;
+    [_inputView sd_clearAutoLayoutSettings];
+    _inputView.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .bottomSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .heightIs(50);
+    [_inputView updateLayout];
+    
+}
+
 
 /**浏览大图*/
 -(void)showImage:(UIImageView *)imageView andImage:(UIImage *)image{

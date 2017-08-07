@@ -348,7 +348,7 @@
 /* 返回上一页*/
 - (void)returnLastPage{
     
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
 

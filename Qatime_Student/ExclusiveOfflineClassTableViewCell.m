@@ -28,16 +28,13 @@
 
 - (void)setupViews{
     
-    
     /* 原点布局*/
     _tips = [[UIImageView alloc]init];
     [_tips setImage:[UIImage imageNamed:@"菱形"]];
     
     /* 课程名称label 布局*/
-    
     _className = [[UILabel alloc]init];
     _className.font = TEXT_FONTSIZE;
-    
     
     _address = [[UILabel alloc]init];
     [_address setFont:[UIFont systemFontOfSize:14*ScrenScale]];
@@ -58,8 +55,6 @@
     _status.font = [UIFont systemFontOfSize:15*ScrenScale];
     
     _class_status = @"".mutableCopy;
-    
-    
     
     /* 回放次数*/
     _replay = [[UIButton alloc]init];
@@ -128,6 +123,7 @@
     _classDate .text = model.class_date;
     _address.text = model.class_address;
     _classTime .text = [NSString stringWithFormat:@"%@",model.start_time];
+    
     /* 已开课的状态*/
     if ([model.status isEqualToString:@"init"]) {
         _status.text =@"未开始";
