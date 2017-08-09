@@ -946,9 +946,9 @@ typedef enum : NSUInteger {
     _scaleModeBtn.hidden = YES;
     _tileScreen.hidden =YES;
     
-    _inputView.btnChangeVoiceState.hidden = YES;
-    [_inputView changeSendBtnWithPhoto:NO];
-    _inputView.canNotSendImage = YES;
+//    _inputView.btnChangeVoiceState.hidden = YES;
+//    [_inputView changeSendBtnWithPhoto:NO];
+//    _inputView.canNotSendImage = YES;
     
     
     //    _barrageText.hidden = NO;
@@ -1047,7 +1047,7 @@ typedef enum : NSUInteger {
     
     _inputView.sd_layout
     .leftSpaceToView(refresh_FS,0)
-    .topSpaceToView(_bottomControlView,5)
+    .topSpaceToView(_bottomControlView,0)
     .bottomSpaceToView(_bottomControlView,-5)
     .rightSpaceToView(_barrage,0);
     [_inputView updateLayout];
@@ -1088,7 +1088,9 @@ typedef enum : NSUInteger {
     refresh_FS.hidden = NO;
     _scaleModeBtn.hidden = NO;
     _tileScreen.hidden =NO;
-    _inputView.btnChangeVoiceState.hidden = NO;
+//    _inputView.btnChangeVoiceState.hidden = NO;
+    
+    
     
     /* 恢复布局*/
     _scaleModeBtn.sd_layout
@@ -1115,7 +1117,15 @@ typedef enum : NSUInteger {
     .topSpaceToView(_bottomControlView,0)
     .widthRatioToView(_tileScreen,1.0);
     
-    _inputView.hidden = YES;
+    _inputView.voiceSwitchTextButton.hidden = NO;
+    [_chatController.inputView removeFromSuperview];
+    [_chatController.view addSubview:_chatController.inputView];
+    _chatController.inputView.sd_layout
+    .leftSpaceToView(_chatController.view, 0)
+    .rightSpaceToView(_chatController.view, 0)
+    .bottomSpaceToView(_chatController.view, 0)
+    .heightIs(50);
+    [_chatController.inputView updateLayout];
     
 }
 

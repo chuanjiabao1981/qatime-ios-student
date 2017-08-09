@@ -85,6 +85,12 @@
                     
                 }
                 
+                if (self.filterDic[@"q[sell_type_eq]"]) {
+                    [self.filterDic removeObjectForKey:@"q[sell_type_eq]"];
+                }else{
+                    
+                }
+
                 
             }else{
                 //有各种筛选条件的筛选
@@ -104,6 +110,15 @@
                         
                     }
                 }
+                
+                if (!contentDic[@"q[sell_type_eq]"]) {
+                    if (self.filterDic[@"q[sell_type_eq]"]) {
+                        [self.filterDic removeObjectForKey:@"q[sell_type_eq]"];
+                    }else{
+                        
+                    }
+                }
+
                 
                 [self.filterDic addEntriesFromDictionary:contentDic];
             }

@@ -3190,7 +3190,7 @@ bool ismute     = NO;
 - (void)makeMessages:(NSArray<NIMMessage *> * ) messages{
     
     for (NIMMessage *message in messages) {
-        if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio||message.messageType == NIMMessageTypeNotification) {
+        if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio||message.messageType == NIMMessageTypeNotification||message.messageType == NIMMessageTypeCustom) {
             
             /* 如果是文本消息*/
             
@@ -3462,8 +3462,33 @@ bool ismute     = NO;
                 
                 [self.chatModel addSpecifiedNotificationItem:notice];
                 
+            }else if (message.messageType == NIMMessageTypeCustom){
+                //自定义消息 改为 课程的开启关闭
+                if ([message valueForKeyPath:@"rawAttachContent"]!=nil) {
+                    NSLog(@"%@",[message valueForKeyPath:@"rawAttachContent"]);
+                    NSData *data = [[message valueForKeyPath:@"rawAttachContent"] dataUsingEncoding:NSUTF8StringEncoding];
+                    NSError *err;
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
+                    NSString *result;
+                    if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                        result = @"直播关闭";
+                    }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                        result = @"直播开启";
+                    }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                        result = @"老师关闭了互动答疑";
+                    }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                        result = @"老师开启了互动答疑";
+                    }
+                    [self.chatModel addSpecifiedNotificationItem:result];
+                    [self.chatTableView reloadData];
+                    [self tableViewScrollToBottom];
+                }else{
+                    
+                }
+                
+            }else{
+                
             }
-            
             
         }
         
@@ -4144,7 +4169,6 @@ bool ismute     = NO;
             }
         }
         
-        
         /* 如果收到的是文本消息*/
         if (message.messageType == NIMMessageTypeText) {
             
@@ -4218,7 +4242,33 @@ bool ismute     = NO;
             
             //收到公告了就发个消息,自动刷新公告
             [self requestNotice];
+        }else if (message.messageType == NIMMessageTypeCustom){
+            //自定义消息 改为 课程的开启关闭
+            if ([message valueForKeyPath:@"rawAttachContent"]!=nil) {
+                NSLog(@"%@",[message valueForKeyPath:@"rawAttachContent"]);
+                NSData *data = [[message valueForKeyPath:@"rawAttachContent"] dataUsingEncoding:NSUTF8StringEncoding];
+                NSError *err;
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
+                NSString *result;
+                if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                    result = @"直播关闭";
+                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                    result = @"直播开启";
+                }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                    result = @"老师关闭了互动答疑";
+                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                    result = @"老师开启了互动答疑";
+                }
+                [self.chatModel addSpecifiedNotificationItem:result];
+                [self.chatTableView reloadData];
+                [self tableViewScrollToBottom];
+            }else{
+                
+            }
+        }else{
+            
         }
+
     }
     
 }

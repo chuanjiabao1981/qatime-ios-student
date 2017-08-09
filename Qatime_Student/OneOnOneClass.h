@@ -100,6 +100,7 @@
 @property (nonatomic, strong) NSString *current_lesson_name ;
 @property (nonatomic, strong) NSString *preview_time ;
 @property (nonatomic, assign) BOOL is_bought ;
+@property (nonatomic, assign) BOOL off_shelve ;
 
 @property (nonatomic, strong) NSString *class_date ;
 @property (nonatomic, strong) NSString *start_time ;

@@ -548,7 +548,7 @@
             
         }else{
             
-            if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio||message.messageType == NIMMessageTypeNotification) {
+            if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio||message.messageType == NIMMessageTypeNotification||message.messageType == NIMMessageTypeCustom) {
                 
                 _chatTableView.hidden = NO;
                 /* 如果是文本消息*/
@@ -823,11 +823,34 @@
                     //在这儿弄一下子 这个 富文本
                     NSString *notice =[NSString stringWithFormat:@"%@更新了公告\n公告:%@",sender,messageText==nil?@"":messageText];
 
-                    
                     [self.chatModel addSpecifiedNotificationItem:notice];
                     
+                }else if (message.messageType == NIMMessageTypeCustom){
+                    //自定义消息 改为 课程的开启关闭
+                    if ([message valueForKeyPath:@"rawAttachContent"]!=nil) {
+                        NSLog(@"%@",[message valueForKeyPath:@"rawAttachContent"]);
+                        NSData *data = [[message valueForKeyPath:@"rawAttachContent"] dataUsingEncoding:NSUTF8StringEncoding];
+                        NSError *err;
+                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
+                        NSString *result;
+                        if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                            result = @"直播关闭";
+                        }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                            result = @"直播开启";
+                        }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                            result = @"老师关闭了互动答疑";
+                        }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                            result = @"老师开启了互动答疑";
+                        }
+                        [self.chatModel addSpecifiedNotificationItem:result];
+                        [self.chatTableView reloadData];
+                        [self tableViewScrollToBottom];
+                    }else{
+                        
+                    }
+                }else{
+                    
                 }
-                //
             }else{
                 
                 NSLog(@"其他消息类型:类型:%ld,内容:%@",(long)message.messageType,message.text);
@@ -1036,7 +1059,35 @@
                 [self.chatModel addSpecifiedNotificationItem:[@"公告:" stringByAppendingString:messageText==nil?@"":messageText]];
                 [self.chatTableView reloadData];
                 [self tableViewScrollToBottom];
+            }else if (message.messageType == NIMMessageTypeCustom){
+                //自定义消息 改为 课程的开启关闭
+                if ([message valueForKeyPath:@"rawAttachContent"]!=nil) {
+                    NSLog(@"%@",[message valueForKeyPath:@"rawAttachContent"]);
+                    NSData *data = [[message valueForKeyPath:@"rawAttachContent"] dataUsingEncoding:NSUTF8StringEncoding];
+                    NSError *err;
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
+                    NSString *result;
+                    if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                        result = @"直播关闭";
+                    }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                        result = @"直播开启";
+                    }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                        result = @"老师关闭了互动答疑";
+                    }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                        result = @"老师开启了互动答疑";
+                    }
+                    [self.chatModel addSpecifiedNotificationItem:result];
+                    [self.chatTableView reloadData];
+                    [self tableViewScrollToBottom];
+                }else{
+                    
+                }
+                
+            }else{
+                
+               
             }
+            
         }
         
         

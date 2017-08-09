@@ -26,7 +26,7 @@
     NSString *_classID;
     
     
-    HaveNoClassView *_noView;
+    UIView *_noView;
 
 }
 
@@ -83,7 +83,19 @@
     _noticeTableView.dataSource = self;
     _noticeTableView.tableFooterView = [UIView new];
 
-    _noView = [[HaveNoClassView alloc]initWithTitle:@"暂无公告"];
+    _noView = [[UIView alloc]initWithFrame:self.view.bounds];
+    UILabel *tipsLabel = [[UILabel alloc]init];
+    tipsLabel.textColor = TITLECOLOR;
+    tipsLabel.font = TEXT_FONTSIZE;
+    tipsLabel.text = @"暂无公告";
+    [_noView addSubview:tipsLabel];
+    tipsLabel.sd_layout
+    .centerXEqualToView(_noView)
+    .topSpaceToView(_noView, 200*ScrenScale)
+    .autoHeightRatio(0);
+    [tipsLabel setSingleLineAutoResizeWithMaxWidth:1000];
+    
+    [_noticeTableView cyl_reloadData];
     
 }
 

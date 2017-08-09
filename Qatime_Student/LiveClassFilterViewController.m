@@ -67,7 +67,7 @@
     
     
     [[NSNotificationCenter defaultCenter]addObserverForName:@"Filters" object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-       
+        
         NSDictionary *filter = [note object];
         
         [self requestClass:PullToRefresh withContentDictionary:filter];
@@ -75,8 +75,6 @@
         
     }];
     
-    
-
 }
 
 /**加载视图*/
@@ -219,13 +217,13 @@
                 
                 /**直播课类型*/
                 
-                    for (NSDictionary *dics in dic[@"data"]) {
-                        
-                        TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dics];
-                        mod.classID = dics[@"id"];
-                        
-                        [_classesArray addObject:mod];
-                    }
+                for (NSDictionary *dics in dic[@"data"]) {
+                    
+                    TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dics];
+                    mod.classID = dics[@"id"];
+                    
+                    [_classesArray addObject:mod];
+                }
                 
                 
                 if (mode == PullToRefresh) {
@@ -244,9 +242,9 @@
                 if (mode == PullToRefresh) {
                     //下拉刷新的时候
                     [_classTableView.mj_header endRefreshing];
-                     //刷新数据
+                    //刷新数据
                     [_classTableView cyl_reloadData];
-                   
+                    
                     
                 }else{
                     //上滑的时候
@@ -257,7 +255,7 @@
             }
         }else{
             //获取数据失败
-//            [self HUDStopWithTitle:@"加载失败,请重试"];
+            //            [self HUDStopWithTitle:@"加载失败,请重试"];
             if (mode == PullToRefresh) {
                 [_classTableView.mj_header endRefreshing];
                 [_classTableView cyl_reloadData];
@@ -281,7 +279,7 @@
             _page--;
             [_filterDic setObject:[NSString stringWithFormat:@"%ld",_page] forKey:@"page"];
         }
-
+        
     }];
 }
 
@@ -289,7 +287,7 @@
 #pragma mark- UITableView datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-        return _classesArray.count;
+    return _classesArray.count;
     
     
     return 0;
@@ -333,8 +331,6 @@
 
 #pragma mark- 筛选方法
 - (void)filterdByFilterDic:( __kindof NSMutableDictionary *)filterdDic{
-    
-    //_filterDic = filterdDic;
     
     NSDictionary *dic = _filterDic.mutableCopy;
     

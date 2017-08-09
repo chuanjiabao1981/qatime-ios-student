@@ -43,6 +43,7 @@ typedef NS_ENUM(NSUInteger, CourseType) {
 @property(nonatomic,strong) NSString *status;
 @property (nonatomic, strong) NSString *describe ;
 @property (nonatomic, strong) Teacher *teacher ;
+@property (nonatomic, assign) BOOL off_shelve ;
 
 @property (nonatomic, strong) NSString *board_pull_stream ;
 @property (nonatomic, strong) NSString *chat_team_owner ;

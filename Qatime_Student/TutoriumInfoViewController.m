@@ -574,17 +574,9 @@
         }
         if ([dic[@"data"][@"course"][@"off_shelve"]boolValue]==YES) {//已下架
             //已经下架
-            [_buyBar.listenButton removeAllTargets];
-            _buyBar.applyButton.hidden = YES;
-            [_buyBar.listenButton setTitle:@"已下架" forState:UIControlStateNormal];
-            [_buyBar.listenButton setBackgroundColor:TITLECOLOR];
-            [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            _buyBar.listenButton.sd_resetLayout
-            .leftSpaceToView(_buyBar, 10)
-            .rightSpaceToView(_buyBar, 10)
-            .topSpaceToView(_buyBar, 10)
-            .bottomSpaceToView(_buyBar, 10);
-            [_buyBar.listenButton updateLayout];
+            _buyBar.hidden = YES;
+            _tutoriumInfoView.priceLabel.text = @"已下架";
+        }else{
             
         }
         
@@ -622,19 +614,10 @@
                 //未购买,立即报名 报完名变成进入学习 未曾拥有过不隐藏购买栏,只是提示下架而已
                 if ([dic[@"data"][@"course"][@"off_shelve"]boolValue]==YES) {
                     //已经下架
-                    [_buyBar.listenButton removeAllTargets];
-                    _buyBar.applyButton.hidden = YES;
-                    [_buyBar.listenButton setTitle:@"已下架" forState:UIControlStateNormal];
-                    [_buyBar.listenButton setBackgroundColor:TITLECOLOR];
-                    [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                    _buyBar.listenButton.sd_resetLayout
-                    .leftSpaceToView(_buyBar, 10)
-                    .rightSpaceToView(_buyBar, 10)
-                    .topSpaceToView(_buyBar, 10)
-                    .bottomSpaceToView(_buyBar, 10);
-                    [_buyBar.listenButton updateLayout];
+                    _buyBar.hidden = YES;
+                    _tutoriumInfoView.priceLabel.text = @"已下架";
                 }else{
-                    
+                    _buyBar.hidden = NO;
                     _buyBar.listenButton.hidden = YES;
                     _buyBar.applyButton.sd_resetLayout
                     .leftSpaceToView(_buyBar, 10)

@@ -16,7 +16,7 @@
 #import <NIMSDK/NIMSDK.h>
 
 
-@interface UUInputFunctionView ()<YYTextViewDelegate,UITextViewDelegate,NIMMediaManagerDelegate>
+@interface UUInputFunctionView ()<YYTextViewDelegate,UITextViewDelegate,NIMMediaManagerDelegate,NSCopying,NSMutableCopying>
 
 {
     BOOL isbeginVoiceRecord;
@@ -35,8 +35,15 @@
     size_t instanceSize = class_getInstanceSize([self class]);
     memcpy((__bridge void *)(copyInstance), (__bridge const void *)(self), instanceSize);
     return copyInstance;
-    
 }
+
+-(id)mutableCopyWithZone:(NSZone *)zone{
+    
+    return [self copyWithZone:zone]; 
+}
+
+
+
 - (id)initWithSuperVC:(UIViewController *)superVC
 {
     self.superVC = superVC;

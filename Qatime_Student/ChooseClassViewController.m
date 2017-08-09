@@ -197,17 +197,12 @@
     
 }
 
-
-
-
 #pragma mark- collectionview datasource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
     return _tags.count;
-    
 }
-
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -680,14 +675,10 @@
 }
 
 
-
-
-
-
 //多项筛选
 - (void)multiFilters{
     
-    NSArray *arr = @[@"range",@"q[status_eq]",@"试听状态"];
+    NSArray *arr = @[@"range",@"q[status_eq]",@"q[sell_type_eq]"];
     
     NSMutableDictionary *filters = _filterDic.mutableCopy;
     
@@ -698,10 +689,8 @@
         }
     }
     
-    
     MultifiltersViewController *controller = [[MultifiltersViewController alloc]init];
     [self.navigationController pushViewController:controller animated:YES];
-    
     
     /**
      多项筛选页面pop后传值回来
@@ -741,9 +730,11 @@
         [filter setValue:@"" forKey:@"q[status_eq]"];
     }
     
-    
+    if ([filterDic[@"q[sell_type_eq]"]isEqualToString:@"all"]) {
+        [filter setValue:@"" forKey:@"q[sell_type_eq]"];
+    }
+  
     [[NSNotificationCenter defaultCenter]postNotificationName:@"Filters" object:filter];
-    
     
 }
 

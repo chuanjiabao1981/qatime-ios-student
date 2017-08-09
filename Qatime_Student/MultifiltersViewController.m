@@ -67,13 +67,13 @@
     _filters = @[
                  @[@"所有",@"近一个月",@"近两个月",@"近三个月",@"近半年",@"近一年"],
                  @[@"不限",@"招生中",@"开课中"],
-//                 @[@"不限",@"免费试听",@"无试听"]
+                 @[@"不限",@"付费课程",@"免费课程"]
                  ];
     
     _filtersCompare =@[
                        @[@"allTime",@"1_months",@"2_months",@"3_months",@"6_months",@"1_year"],
                        @[@"allStatus",@"published",@"teaching"],
-//                       @[@"all",@"免费试听",@"无试听"]
+                       @[@"all",@"charge",@"free"]
                        ];
     
     //如果有数据,加载已选数据
@@ -132,7 +132,6 @@
             }
             
         }else if ([key isEqualToString:@"range"]){
-            
             if ([filtDic[key] isEqualToString:@"近一个月"]) {
                 [_filtersDic setValue:@"1_months" forKey:key];
             }else if ([filtDic[key] isEqualToString:@"近两个月"]) {
@@ -144,8 +143,13 @@
             }else if ([filtDic[key] isEqualToString:@"近一年"]) {
                 [_filtersDic setValue:@"1_year" forKey:key];
             }
-        }else if ([key isEqualToString:@"课程状态"]){
-            
+        }else if ([key isEqualToString:@"q[sell_type_eq]"]){
+            if ([filtDic[key] isEqualToString:@"收费课程"]) {
+                [_filtersDic setValue:@"charge" forKey:key];
+            }else if ([filtDic[key] isEqualToString:@"免费课程"]) {
+                [_filtersDic setValue:@"free" forKey:key];
+            }
+
         }
     }
     
@@ -191,6 +195,7 @@
     /* collectionView 注册cell、headerID、footerId*/
     [_multiFiltersView.filtersCollection registerClass:[ClassSubjectCollectionViewCell class] forCellWithReuseIdentifier:@"cellId"];
     [_multiFiltersView.filtersCollection registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId"];
+    [_multiFiltersView.filtersCollection registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId2"];
     [_multiFiltersView.filtersCollection registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId"];
     [_multiFiltersView.filtersCollection registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId2"];
     
@@ -290,113 +295,81 @@
                 cell.subject.textColor = TITLECOLOR;
             }
         }
+        if (indexPath.section == 2) {
+            if (indexPath.row == 0) {
+                
+                cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
+                cell.subject.textColor = NAVIGATIONRED;
+                
+            }else{
+                
+                cell.subject.layer.borderColor = TITLECOLOR.CGColor;
+                cell.subject.textColor = TITLECOLOR;
+            }
+        }
         
     }else{
         //先全部弄成默认
         if (indexPath.section == 0) {
-            
-            cell.subject.layer.borderColor = TITLECOLOR.CGColor;
-            cell.subject.textColor = TITLECOLOR;
+            if (indexPath.row == 0) {
+                
+                cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
+                cell.subject.textColor = NAVIGATIONRED;
+                
+            }else{
+                
+                cell.subject.layer.borderColor = TITLECOLOR.CGColor;
+                cell.subject.textColor = TITLECOLOR;
+            }
             
         }
         if (indexPath.section == 1) {
-            cell.subject.layer.borderColor = TITLECOLOR.CGColor;
-            cell.subject.textColor = TITLECOLOR;
+            if (indexPath.row == 0) {
+                
+                cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
+                cell.subject.textColor = NAVIGATIONRED;
+                
+            }else{
+                
+                cell.subject.layer.borderColor = TITLECOLOR.CGColor;
+                cell.subject.textColor = TITLECOLOR;
+            }
+        }
+        if (indexPath.section == 2) {
+            if (indexPath.row == 0) {
+                
+                cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
+                cell.subject.textColor = NAVIGATIONRED;
+                
+            }else{
+                
+                cell.subject.layer.borderColor = TITLECOLOR.CGColor;
+                cell.subject.textColor = TITLECOLOR;
+            }
         }
         
         
-        if (_filtedArray.count==2) {
-            
-            for (NSIndexPath *indexpath in _filtedArray) {
+        for (NSIndexPath *indexpath in _filtedArray) {
+            if ([indexpath isEqual:indexPath]) {
                 
-                if (indexPath.section ==0) {
+                if (indexpath.row!=0) {
                     
-                    if (indexpath.section == indexPath.section &&indexpath.row == indexPath.row) {
-                        
-                        cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
-                        cell.subject.textColor = NAVIGATIONRED;
-                    }
-                    
-                }else if (indexPath.section == 1){
-                    
-                    if (indexpath.section == indexPath.section &&indexpath.row == indexPath.row) {
-                        
-                        cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
-                        cell.subject.textColor = NAVIGATIONRED;
-                    }
+                    ClassSubjectCollectionViewCell *cell2 = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:indexpath.section]];
+                    cell2.subject.layer.borderColor = TITLECOLOR.CGColor;
+                    cell2.subject.textColor = TITLECOLOR;
                 }
                 
-            }
-
-        }else if (_filtedArray.count == 1){
-           
-            NSMutableArray *filtArr = _filtedArray.mutableCopy;
-            for (NSIndexPath *indexpath in filtArr) {
-                if (indexpath.section == 0) {
-                    
-                    [_filtedArray addObject:[NSIndexPath indexPathForRow:0 inSection:1]];
-                    
-                }else if (indexpath.section == 1){
-                    
-                    [_filtedArray addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
-                }
+                cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
+                cell.subject.textColor = NAVIGATIONRED;
             }
             
-            for (NSIndexPath *indexpath in _filtedArray) {
-               
-                if (indexPath.section ==0) {
-                    
-                    if (indexpath.section == indexPath.section &&indexpath.row == indexPath.row) {
-                        cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
-                        cell.subject.textColor = NAVIGATIONRED;
-                    }
-                    
-                }else if (indexPath.section == 1){
-                    
-                    if (indexpath.section == indexPath.section &&indexpath.row == indexPath.row) {
-                        
-                        cell.subject.layer.borderColor = NAVIGATIONRED.CGColor;
-                        cell.subject.textColor = NAVIGATIONRED;
-                    }
-                }
-            }
-            
-        } else{
-            
-            //遍历成初始化状态
-            //先全部弄成默认
-            if (indexPath.section == 0) {
-                if (indexPath.row ==0) {
-                    cell.subject.layer.borderColor = TITLERED.CGColor;
-                    cell.subject.textColor = TITLERED;
-                }else{
-                    cell.subject.layer.borderColor = TITLECOLOR.CGColor;
-                    cell.subject.textColor = TITLECOLOR;
-                }
-            }
-            if (indexPath.section == 1) {
-                if (indexPath.row ==0) {
-                    cell.subject.layer.borderColor = TITLERED.CGColor;
-                    cell.subject.textColor = TITLERED;
-                }else{
-                    cell.subject.layer.borderColor = TITLECOLOR.CGColor;
-                    cell.subject.textColor = TITLECOLOR;
-                }
-            }
-
         }
         
     }
     
-    
     //数组里缺少哪个  就补充哪个
     
-    
-    
-    
-    
     return cell;
-    
 }
 
 
@@ -427,6 +400,7 @@
     hasChange = YES;
     
     NSInteger item = 0;
+    //同一section全变成未选
     for (NSString *title in _filters[indexPath.section]) {
         
         ClassSubjectCollectionViewCell *cell = (ClassSubjectCollectionViewCell *)[collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:item inSection:indexPath.section]];
@@ -474,21 +448,20 @@
             }
         }
             break;
-//        case 2:{
-//            if ([cell.subject.text isEqualToString:@"不限"]) {
-//                if (_filtersDic[@"试听状态"]) {
-//                    [_filtersDic setValue:@"all" forKey:@"试听状态"];
-//                }
-//                
-//            }else{
-//                
-//                [_filtersDic setValue:cell.subject.text forKey:@"试听状态"];
-//            }
-//            
-//        }
-//            break;
+        case 2:{
+            if ([cell.subject.text isEqualToString:@"不限"]) {
+                if (_filtersDic[@"q[sell_type_eq]"]) {
+                    [_filtersDic removeObjectForKey:@"q[sell_type_eq]"];
+                }
+            }else if ([cell.subject.text isEqualToString:@"收费课程"]){
+                [_filtersDic setValue:@"charge" forKey:@"q[sell_type_eq]"];
+            }else if ([cell.subject.text isEqualToString:@"免费课程"]){
+                [_filtersDic setValue:@"free" forKey:@"q[sell_type_eq]"];
+            }
+            
+        }
+            break;
     }
-    
     
 }
 
@@ -545,7 +518,31 @@
             
             view = header;
         }
-        
+        if (kind == UICollectionElementKindSectionFooter){
+            UICollectionReusableView *footer = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId" forIndexPath:indexPath];
+            footer.backgroundColor = [UIColor whiteColor];
+            view = footer;
+        }
+    }
+    
+    //section 2
+    if (indexPath.section == 2) {
+        //header
+        if (kind == UICollectionElementKindSectionHeader){
+            UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId2" forIndexPath:indexPath];
+            UILabel *label = [[UILabel alloc]init];
+            label.font = TEXT_FONTSIZE;
+            label.text = @"课程费用";
+            label.textColor = TITLECOLOR;
+            [header addSubview:label];
+            label.sd_layout
+            .leftSpaceToView(header,20*ScrenScale)
+            .bottomSpaceToView(header,0)
+            .autoHeightRatio(0);
+            [label setSingleLineAutoResizeWithMaxWidth:100];
+            
+            view = header;
+        }
         //footer
         if (kind == UICollectionElementKindSectionFooter){
             UICollectionReusableView *footer = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId2" forIndexPath:indexPath];
@@ -640,27 +637,8 @@
             
             view = footer;
         }
+
     }
-    
-    //    //section 2
-    //    if (indexPath.section == 2) {
-    //        //header
-    //        if (kind == UICollectionElementKindSectionHeader){
-    //            UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId" forIndexPath:indexPath];
-    //            UILabel *label = [[UILabel alloc]init];
-    //            label.font = TEXT_FONTSIZE;
-    //            label.text = @"试听状态";
-    //            label.textColor = TITLECOLOR;
-    //            [header addSubview:label];
-    //            label.sd_layout
-    //            .leftSpaceToView(header,20*ScrenScale)
-    //            .bottomSpaceToView(header,0)
-    //            .autoHeightRatio(0);
-    //            [label setSingleLineAutoResizeWithMaxWidth:100];
-    //
-    //            view = header;
-    //        }
-    //    }
     
     return view;
     
@@ -678,7 +656,7 @@
     
     CGSize size = CGSizeZero;
     
-    if (section == 1) {
+    if (section == 2) {
         size = CGSizeMake(self.view.width_sd, 200*ScrenScale);
     }else{
         

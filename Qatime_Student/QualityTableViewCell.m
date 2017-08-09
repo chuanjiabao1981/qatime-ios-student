@@ -268,10 +268,16 @@
     
     _newestModel = newestModel;
     
+    NSURL *pubURL ;
+    if (newestModel.publicizes_url) {
+        pubURL = [NSURL URLWithString:newestModel.publicizes_url[@"list"]];
+    }else{
+        pubURL = [NSURL URLWithString:newestModel.publicize];
+    }
     /**加载缓存图片*/
-    [_classImage sd_setImageWithURL:[NSURL URLWithString:newestModel.publicizes_url[@"list"]] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+    [_classImage sd_setImageWithURL:pubURL placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         
-        [manager diskImageExistsForURL:[NSURL URLWithString:newestModel.publicizes_url[@"list"]] completion:^(BOOL isInCache) {
+        [manager diskImageExistsForURL:pubURL completion:^(BOOL isInCache) {
             if (isInCache == YES) {
                 
             }else{

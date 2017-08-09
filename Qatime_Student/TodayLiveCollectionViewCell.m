@@ -103,7 +103,6 @@
         url = model.publicize;
     }
     
-    
     /* 如果本地已经保留了图片缓存*/
     [_classImageView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         
@@ -130,7 +129,7 @@
 
     _classNameLabel.text = model.className;
     
-    if ([model.lesson_type isEqualToString:@"Lesson"]) {
+    if ([model.lesson_type isEqualToString:@"LiveStudio::Lesson"]) {
         
         _liveTimeLabel .text = model.live_time;
         

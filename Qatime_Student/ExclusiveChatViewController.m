@@ -74,7 +74,7 @@
     
     //是否被禁言
     BOOL _shutUp;
-
+    
 }
 /* 刷新聊天记录*/
 @property (strong, nonatomic) MJRefreshHeader *head;
@@ -228,8 +228,6 @@
     .heightIs(50);
     
     
-    
-    
 }
 
 /* 开始检测麦克风声音*/
@@ -342,7 +340,7 @@
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/realtime",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/play",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
@@ -351,12 +349,12 @@
         
         NSMutableArray *users ;
         if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
-            if ([[dic[@"data"][@"members"]description] isEqualToString:@"0(NSNull)"]) {
+            if ([[dic[@"data"][@"chat_team"][@"accounts"]description] isEqualToString:@"0(NSNull)"]) {
                 
                 users = @[].mutableCopy;
             }else{
                 
-                users =[NSMutableArray arrayWithArray:[dic[@"data"][@"members"]isEqual:[NSNull null]]?@[]:dic[@"data"][@"members"]];
+                users =[NSMutableArray arrayWithArray:[dic[@"data"][@"chat_team"][@"accounts"]isEqual:[NSNull null]]?@[]:dic[@"data"][@"chat_team"][@"accounts"]];
             }
             
             for (NSDictionary *dic in users) {
@@ -443,7 +441,7 @@
             
         }else{
             
-            if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio||message.messageType == NIMMessageTypeNotification) {
+            if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio||message.messageType == NIMMessageTypeNotification||message.messageType == NIMMessageTypeCustom) {
                 
                 _chatTableView.hidden = NO;
                 /* 如果是文本消息*/
@@ -719,11 +717,39 @@
                     
                     [self.chatModel addSpecifiedNotificationItem:notice];
                     
+                }else if (message.messageType == NIMMessageTypeCustom){
+                    
+                    //自定义消息 改为 课程的开启关闭
+                    if ([message valueForKeyPath:@"rawAttachContent"]!=nil) {
+                        NSLog(@"%@",[message valueForKeyPath:@"rawAttachContent"]);
+                        NSData *data = [[message valueForKeyPath:@"rawAttachContent"] dataUsingEncoding:NSUTF8StringEncoding];
+                        NSError *err;
+                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
+                        NSString *result;
+                        if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                            result = @"直播关闭";
+                        }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                            result = @"直播开启";
+                        }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                            result = @"老师关闭了互动答疑";
+                        }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                            result = @"老师开启了互动答疑";
+                        }
+                        [self.chatModel addSpecifiedNotificationItem:result];
+                        [self.chatTableView reloadData];
+                        [self tableViewScrollToBottom];
+                        
+                    }else{
+                        
+                    }
+                    
+                }else{
+                    
                 }
                 
             }
+            
         }
-        
         
     }
     
@@ -922,7 +948,35 @@
             
             [self.chatTableView reloadData];
             [self tableViewScrollToBottom];
+        }else if (message.messageType == NIMMessageTypeCustom){
+            
+            //自定义消息 改为 课程的开启关闭
+            if ([message valueForKeyPath:@"rawAttachContent"]!=nil) {
+                NSLog(@"%@",[message valueForKeyPath:@"rawAttachContent"]);
+                NSData *data = [[message valueForKeyPath:@"rawAttachContent"] dataUsingEncoding:NSUTF8StringEncoding];
+                NSError *err;
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
+                NSString *result;
+                if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                    result = @"直播关闭";
+                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                    result = @"直播开启";
+                }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                    result = @"老师关闭了互动答疑";
+                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                    result = @"老师开启了互动答疑";
+                }
+                [self.chatModel addSpecifiedNotificationItem:result];
+                [self.chatTableView reloadData];
+                [self tableViewScrollToBottom];
+            }else{
+                
+            }
+            
+        }else{
+            
         }
+        
     }
     
 }
@@ -1480,9 +1534,22 @@
     
     [UIView animateWithDuration:animationDuration animations:^{
         
-        [_inputView setFrame:CGRectMake(0, self.view.height_sd -50-keyboardRect.size.height , self.view.width_sd, 50)];
+        //        [_inputView setFrame:CGRectMake(0, self.view.height_sd -50-keyboardRect.size.height , self.view.width_sd, 50)];
+        _inputView.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .bottomSpaceToView(self.view, keyboardRect.size.height)
+        .heightIs(50);
+        [_inputView updateLayout];
+        //        [ _chatTableView setFrame:CGRectMake(0, -keyboardRect.size.height , self.view.width_sd, self.view.height_sd-50)];
         
-        [ _chatTableView setFrame:CGRectMake(0, -keyboardRect.size.height , self.view.width_sd, self.view.height_sd-50)];
+        _chatTableView.sd_layout
+        .leftSpaceToView(self.view, 0)
+        //        .topSpaceToView(self.view, -keyboardRect.size.height)
+        .rightSpaceToView(self.view, 0)
+        .bottomSpaceToView(_inputView, 0)
+        .heightIs(self.view.width_sd-50);
+        [_chatTableView updateLayout];
         
     }];
     
@@ -1503,10 +1570,22 @@
     
     [UIView animateWithDuration:animationDuration animations:^{
         
-        [_inputView setFrame:CGRectMake(0, self.view.height_sd -50, self.view.width_sd, 50)];
+        //        [_inputView setFrame:CGRectMake(0, self.view.height_sd -50, self.view.width_sd, 50)];
         
-        [_chatTableView setFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-50)];
+        _inputView.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .bottomSpaceToView(self.view, 0)
+        .heightIs(50);
+        [_inputView updateLayout];
         
+        //        [_chatTableView setFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-50)];
+        _chatTableView.sd_layout
+        .leftSpaceToView(self.view, 0)
+        .topSpaceToView(self.view, 0)
+        .rightSpaceToView(self.view, 0)
+        .heightIs(self.view.height_sd-50);
+        [_chatTableView updateLayout];
     }];
     
     [self tableViewScrollToBottom];
@@ -1635,13 +1714,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

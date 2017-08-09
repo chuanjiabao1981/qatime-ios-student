@@ -43,6 +43,7 @@
 @property (nonatomic, assign) BOOL is_tasting ;
 @property (nonatomic, assign) BOOL is_bought ;
 @property (nonatomic, assign) BOOL tastes ;
+@property (nonatomic, assign) BOOL off_shelve ;
 
 @property (nonatomic, strong) NSString *product_type ;
 

@@ -437,9 +437,11 @@
                 RecommandClasses *mod;
                 if (dics[@"course"]) {
                     mod = [RecommandClasses yy_modelWithJSON:dics];
-                    mod.live_time = dics[@"course"][@"live_time"];
+                    mod.live_time = dics[@"live_time"];
+                    mod.class_date = dics[@"class_date"];
                     mod.className = dics[@"course"][@"name"];
                     mod.classID = dics[@"course"][@"id"];
+                    mod.publicize = dics[@"course"][@"publicize"];
                 }
                 if (dics[@"customized_group"]){
                     mod = [RecommandClasses yy_modelWithJSON:dics];
@@ -1021,6 +1023,7 @@
         if (_todayLives.count>indexPath.row) {
             
             liveCell.model = _todayLives[indexPath.row];
+            
         }else{
             [liveCell.classImageView setImage:[UIImage imageNamed:@"school"]];
             liveCell.classNameLabel.text = @"今日无直播课程";
@@ -1157,7 +1160,7 @@
             
             TodayLiveCollectionViewCell *cell = (TodayLiveCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
             UIViewController *controller;
-            if ([cell.model.lesson_type isEqualToString:@"Lesson"]) {
+            if ([cell.model.lesson_type isEqualToString:@"LiveStudio::Lesson"]) {
                 
                 controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
             }else{
@@ -1301,7 +1304,6 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
     QualityTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     __kindof UIViewController *controller;
@@ -1340,7 +1342,7 @@
                 
                 controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.freeModel.classID];
             }else if ([cell.freeModel.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
-                controller = [[InteractionClassInfoViewController alloc]initWithClassID:cell.freeModel.classID];
+                controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.freeModel.classID];
             }else{
                 
                 controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.freeModel.classID];
@@ -1359,9 +1361,8 @@
                 
                 controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.newestModel.classID];
             }else if ([cell.newestModel.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
-                controller = [[InteractionClassInfoViewController alloc]initWithClassID:cell.newestModel.classID];
+                controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.newestModel.classID];
             }else{
-                
                 controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.newestModel.classID];
             }
         }

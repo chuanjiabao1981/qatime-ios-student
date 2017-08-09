@@ -447,7 +447,7 @@
             
         }else{
             
-            if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio||message.messageType == NIMMessageTypeNotification) {
+            if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio||message.messageType == NIMMessageTypeNotification||message.messageType == NIMMessageTypeCustom) {
                 
                 _chatTableView.hidden = NO;
                 /* 如果是文本消息*/
@@ -723,8 +723,41 @@
                     
                     [self.chatModel addSpecifiedNotificationItem:notice];
 
+                }else if (message.messageType == NIMMessageTypeCustom){
+                    
+                    //自定义消息 改为 课程的开启关闭
+                    NSLog(@"%@",message.text);
+                    
+                    if ([message.text containsString:@"/"]) {
+                        
+                        NSArray *content = [message.text componentsSeparatedByString:@"/"];
+                        NSString *action = [NSString stringWithFormat:@"%@",content[0]];
+                        NSString *type = [NSString stringWithFormat:@"%@",content[1]];
+                        NSString *result;
+                        if ([action isEqualToString:@"close"]&&[type isEqualToString:@"Scheduled"]) {
+                            result = @"直播关闭";
+                        }else if ([action isEqualToString:@"start"]&&[type isEqualToString:@"Scheduled"]){
+                            result = @"直播开启";
+                        }else if ([action isEqualToString:@"close"]&&[type isEqualToString:@"Instant"]){
+                            result = @"老师关闭了互动答疑";
+                        }else if ([action isEqualToString:@"start"]&&[type isEqualToString:@"Instant"]){
+                            result = @"老师开启了互动答疑";
+                            
+                        }else{
+                            
+                            return;
+                        }
+                        [self.chatModel addSpecifiedNotificationItem:result];
+                        [self.chatTableView reloadData];
+                        [self tableViewScrollToBottom];
+                    }else{
+                        
+                    }
+                    
+                }else{
+                    
                 }
-                
+ 
             }
         }
         
@@ -926,7 +959,41 @@
 
             [self.chatTableView reloadData];
             [self tableViewScrollToBottom];
+        }else if (message.messageType == NIMMessageTypeCustom){
+            
+            //自定义消息 改为 课程的开启关闭
+            NSLog(@"%@",message.text);
+            
+            if ([message.text containsString:@"/"]) {
+                
+                NSArray *content = [message.text componentsSeparatedByString:@"/"];
+                NSString *action = [NSString stringWithFormat:@"%@",content[0]];
+                NSString *type = [NSString stringWithFormat:@"%@",content[1]];
+                NSString *result;
+                if ([action isEqualToString:@"close"]&&[type isEqualToString:@"Scheduled"]) {
+                    result = @"直播关闭";
+                }else if ([action isEqualToString:@"start"]&&[type isEqualToString:@"Scheduled"]){
+                    result = @"直播开启";
+                }else if ([action isEqualToString:@"close"]&&[type isEqualToString:@"Instant"]){
+                    result = @"老师关闭了互动答疑";
+                }else if ([action isEqualToString:@"start"]&&[type isEqualToString:@"Instant"]){
+                    result = @"老师开启了互动答疑";
+                    
+                }else{
+                    
+                    return;
+                }
+                [self.chatModel addSpecifiedNotificationItem:result];
+                [self.chatTableView reloadData];
+                [self tableViewScrollToBottom];
+            }else{
+                
+            }
+            
+        }else{
+            
         }
+
     }
     
 }
