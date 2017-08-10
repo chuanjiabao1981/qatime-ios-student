@@ -67,7 +67,7 @@
     _filters = @[
                  @[@"所有",@"近一个月",@"近两个月",@"近三个月",@"近半年",@"近一年"],
                  @[@"不限",@"招生中",@"开课中"],
-                 @[@"不限",@"付费课程",@"免费课程"]
+                 @[@"不限",@"收费课程",@"免费课程"]
                  ];
     
     _filtersCompare =@[
@@ -353,7 +353,7 @@
             if ([indexpath isEqual:indexPath]) {
                 
                 if (indexpath.row!=0) {
-                    
+                
                     ClassSubjectCollectionViewCell *cell2 = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:indexpath.section]];
                     cell2.subject.layer.borderColor = TITLECOLOR.CGColor;
                     cell2.subject.textColor = TITLECOLOR;
