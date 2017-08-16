@@ -26,6 +26,12 @@
 #import "VideoPlayerViewController.h"
 #import "WorkFlowTableViewCell.h"
 #import "NSNull+Json.h"
+#import "CommonMenuView.h"
+#import "ChatViewController.h"
+#import "ExclusiveAskViewController.h"
+#import "ExclusiveHomeworkViewController.h"
+#import "ExclusiveCoursewareViewController.h"
+#import "ExclusiveMembersViewController.h"
 
 @interface ExclusiveInfoViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDataSource,UITableViewDelegate>{
     
@@ -33,15 +39,30 @@
     
     NSMutableArray *_onlineClassArray;
     NSMutableArray *_offlineClassArray;
+
+    
+    //专属课独有的 导航栏右侧按钮
+//    UIButton *_exclusiveMenuButton;
     
 }
+
 
 @end
 
 @implementation ExclusiveInfoViewController
 
+-(void)viewDidDisappear:(BOOL)animated{
+    [CommonMenuView clearMenu];
+}
+-(void)viewDidAppear:(BOOL)animated{
+    [self makeMenu];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //导航栏右侧按钮
+    [self setupNavigationButton];
     
     _onlineClassArray = @[].mutableCopy;
     _offlineClassArray = @[].mutableCopy;
@@ -60,6 +81,93 @@
     self.tutoriumInfoView.workFlowView.dataSource = self;
     self.tutoriumInfoView.workFlowView.tag = 2;
 
+}
+
+/**
+ 导航栏右侧按钮
+ */
+- (void)setupNavigationButton{
+    
+    [self.navigationBar.rightButton setImage:[UIImage imageNamed:@"moreMenu"] forState:UIControlStateNormal];
+    [self.navigationBar addSubview:self.navigationBar.rightButton];
+    self.navigationBar.rightButton.hidden = YES;
+    [self.navigationBar.rightButton addTarget:self action:@selector(moreMenu) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)makeMenu{
+    NSDictionary *dict1 = @{@"imageName" : @"icon_button_affirm",
+                            @"itemName" : @"进入聊天"
+                            };
+    NSDictionary *dict2 = @{@"imageName" : @"icon_button_recall",
+                            @"itemName" : @"课程作业"
+                            };
+    NSDictionary *dict3 = @{@"imageName" : @"icon_button_record",
+                            @"itemName" : @"全部提问"
+                            };
+    NSDictionary *dict4 = @{@"imageName" : @"icon_button_record",
+                            @"itemName" : @"课件文件"
+                            };
+    NSDictionary *dict5 = @{@"imageName" : @"icon_button_record",
+                            @"itemName" : @"成员列表"
+                            };
+    NSArray *menuArray = @[dict1,dict2,dict3,dict4,dict5];
+    
+    __weak __typeof(&*self)weakSelf = self;
+    /**
+     *  创建普通的MenuView，frame可以传递空值，宽度默认120，高度自适应
+     */
+    [CommonMenuView createMenuWithFrame:CGRectZero target:self dataArray:menuArray itemsClickBlock:^(NSString *str, NSInteger tag) {
+        [weakSelf doSomething:(NSString *)str tag:(NSInteger)tag]; // do something
+    } backViewTap:^{
+        weakSelf.navigationBar.rightButton .selected = NO;; // 这里的目的是，让rightButton点击，可再次pop出menu
+    }];
+}
+/** 更多菜单 */
+- (void)moreMenu{
+    
+    [self popMenu:CGPointMake(self.navigationBar.rightButton.centerX_sd,self.navigationBar.bottom_sd)];
+}
+- (void)popMenu:(CGPoint)point{
+    if (self.navigationBar.rightButton.selected == NO) {
+        [CommonMenuView showMenuAtPoint:point];
+        self.navigationBar.rightButton.selected = YES;
+    }else{
+        [CommonMenuView hidden];
+        self.navigationBar.rightButton.selected = NO;
+    }
+}
+
+#pragma mark -- 专属菜单点击 回调事件(自定义)
+- (void)doSomething:(NSString *)str tag:(NSInteger)tag{
+    
+    UIViewController *controller ;
+    switch (tag) {
+        case 1:{
+            controller = [[ChatViewController alloc]initWithClass:self.classID andClassType:ExclusiveCourseType];
+        }
+            break;
+        case 2:{
+            
+        }
+            break;
+        case 3:{
+            controller = [[ExclusiveAskViewController alloc]init];
+        }
+            break;
+        case 4:{
+            
+        }
+            break;
+        case 5:{
+            
+        }
+            break;
+    }
+    
+    self.navigationBar.rightButton.selected = NO;
+    [self.navigationController pushViewController:controller animated:YES];
+    
+    [CommonMenuView hidden];
 }
 
 //重写父类方法
@@ -85,6 +193,8 @@
             ExclusiveInfo *model = [ExclusiveInfo yy_modelWithJSON:dic[@"data"][@"customized_group"]];
             model.classID = dic[@"data"][@"customized_group"][@"id"];
             model.descriptions = dic[@"data"][@"customized_group"][@"description"];
+            
+            self.classID = dic[@"data"][@"customized_group"][@"id"];
             
             self.tutoriumInfoView.exclusiveModel = model;
             self.navigationBar.titleLabel.text = model.name;
@@ -334,6 +444,10 @@
         }
         
     }
+    //显示更多按钮啊
+    if (self.isBought == YES) {
+        self.navigationBar.rightButton.hidden = NO;
+    }
 }
 
 - (void)listen{
@@ -345,12 +459,12 @@
         [self HUDStopWithTitle:nil];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
-            if (![[dic[@"data"][@"chat_team"]description]isEqualToString:@"0(NSNull)"]) {
-                if (dic[@"data"][@"chat_team"][@"team_id"]) {
-                    self.chatTeamID = dic[@"data"][@"chat_team"][@"team_id"];
+            if (![[dic[@"data"][@"customized_group"][@"chat_team"]description]isEqualToString:@"0(NSNull)"]) {
+                if (dic[@"data"][@"customized_group"][@"chat_team"][@"team_id"]) {
+                    self.chatTeamID = dic[@"data"][@"customized_group"][@"chat_team"][@"team_id"];
                 }
             }
-            ExclusivePlayerViewController *controller = [[ExclusivePlayerViewController alloc]initWithClassID:self.classID andChatTeamID:self.chatTeamID andBoardAddress:dic[@"data"][@"board_pull_stream"] andTeacherAddress:dic[@"data"][@"camera_pull_stream"]];
+            ExclusivePlayerViewController *controller = [[ExclusivePlayerViewController alloc]initWithClassID:self.classID andChatTeamID:self.chatTeamID andBoardAddress:dic[@"data"][@"customized_group"][@"board_pull_stream"] andTeacherAddress:dic[@"data"][@"customized_group"][@"camera_pull_stream"]];
             [self.navigationController pushViewController:controller animated:YES];
 
         }else{
@@ -437,6 +551,24 @@
             }
             if (_onlineClassArray.count>indexPath.row) {
                 cell.exclusiveModel = _onlineClassArray[indexPath.row];
+            
+                if ([cell.exclusiveModel.status isEqualToString:@"closed"]||[cell.exclusiveModel.status isEqualToString:@"billing"]||[cell.exclusiveModel.status isEqualToString:@"finished"]||[cell.exclusiveModel.status isEqualToString:@"completed"]) {
+                    
+                    if (self.isBought == YES) {
+                        if (cell.exclusiveModel.replayable == YES) {
+                            cell.status.text = @"观看回放";
+                            cell.status.textColor = BUTTONRED;
+                        }else{
+                            [cell switchStatus:cell.exclusiveModel];
+                        }
+                        
+                    }else{
+                       [cell switchStatus:cell.exclusiveModel];
+                        
+                    }
+                    
+                }
+                
             }
             
             tableCell = cell;
@@ -449,6 +581,7 @@
             }
             if (_offlineClassArray.count>indexPath.row) {
                 cell.model = _offlineClassArray[indexPath.row];
+                
             }
             
             tableCell = cell;
@@ -477,120 +610,59 @@
     
 }
 
-
 /* 点击课程表,进入回放的点击事件*/
 
-//暂时没有接口吧
-//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//    if (tableView.tag == 1) {
-//        if (indexPath.section == 0) {
-//          ClassesListTableViewCell *cell = (ClassesListTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-//            if (self.isBought ==YES) {
-//                if (cell.model.replayable == YES) {
-//                    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-//                        
-//                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-//                        
-//                        if ([dic[@"status"]isEqualToNumber:@1]) {
-//                            
-//                            if ([dic[@"data"][@"replayable"]boolValue]== YES) {
-//                                
-//                                if ([dic[@"data"][@"left_replay_times"]integerValue]>0) {
-//                                    
-//                                    if (dic[@"data"][@"replay"]==nil) {
-//                                        
-//                                    }else{
-//                                        NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
-//                                        [decodeParm addObject:@"software"];
-//                                        [decodeParm addObject:@"videoOnDemand"];
-//                                        
-//                                        VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
-//                                        [self presentViewController:video animated:YES completion:^{
-//                                            
-//                                        }];
-//                                    }
-//                                    
-//                                }else{
-//                                    
-//                                    [self HUDStopWithTitle:@"回放次数已耗尽"];
-//                                    
-//                                }
-//                                
-//                            }else{
-//                                [self HUDStopWithTitle:@"暂无回放视频"];
-//                            }
-//                        }else{
-//                            [self HUDStopWithTitle:@"服务器繁忙,请稍后重试"];
-//                        }
-//                        
-//                    }];
-//                }else{
-//                    
-//                    
-//                }
-//                
-//                
-//            }else{
-//                
-//            }
-//        }else{
-//            ExclusiveOfflineClassTableViewCell *cell = (ExclusiveOfflineClassTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-//            if (self.isBought ==YES) {
-//                if (cell.model.replayable == YES) {
-//                    
-//                    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-//                        
-//                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-//                        
-//                        if ([dic[@"status"]isEqualToNumber:@1]) {
-//                            
-//                            if ([dic[@"data"][@"replayable"]boolValue]== YES) {
-//                                
-//                                if ([dic[@"data"][@"left_replay_times"]integerValue]>0) {
-//                                    
-//                                    if (dic[@"data"][@"replay"]==nil) {
-//                                        
-//                                    }else{
-//                                        NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
-//                                        [decodeParm addObject:@"software"];
-//                                        [decodeParm addObject:@"videoOnDemand"];
-//                                        
-//                                        VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
-//                                        [self presentViewController:video animated:YES completion:^{
-//                                            
-//                                        }];
-//                                    }
-//                                    
-//                                }else{
-//                                    
-//                                    [self HUDStopWithTitle:@"回放次数已耗尽"];
-//                                    
-//                                }
-//                                
-//                            }else{
-//                                [self HUDStopWithTitle:@"暂无回放视频"];
-//                            }
-//                        }else{
-//                            [self HUDStopWithTitle:@"服务器繁忙,请稍后重试"];
-//                        }
-//                        
-//                    }];
-//                }else{
-//                    
-//                    
-//                }
-//                
-//                
-//            }else{
-//                
-//            }
-//        }
-//        
-//       
-//        
-//    }
-//}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (tableView.tag == 1) {
+        if (indexPath.section == 0) {
+          ClassesListTableViewCell *cell = (ClassesListTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+            if (self.isBought ==YES) {
+                if (cell.exclusiveModel.replayable == YES) {
+                    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/scheduled_lessons/%@/replay",Request_Header,cell.exclusiveModel.lessonId] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+                        
+                        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                        
+                        if ([dic[@"status"]isEqualToNumber:@1]) {
+                            
+                            if ([dic[@"data"][@"replayable"]boolValue]== YES) {
+                                if (dic[@"data"][@"replay"]==nil) {
+                                    
+                                }else{
+                                    NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+                                    [decodeParm addObject:@"software"];
+                                    [decodeParm addObject:@"videoOnDemand"];
+                                    
+                                    VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+                                    [self presentViewController:video animated:YES completion:^{
+                                        
+                                    }];
+                                }
+                                
+                            }else{
+                              [self HUDStopWithTitle:@"服务器繁忙"];
+                            }
+                            
+                        }else{
+                            [self HUDStopWithTitle:@"暂无回放视频"];
+                        }
+                        
+                    }failure:^(id  _Nullable erros) {
+                        
+                    }];
+                }else{
+                    
+                    
+                }
+                
+                
+            }else{
+                
+            }
+        }
+        
+    }
+}
 
 #pragma mark- UITableView delegate
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

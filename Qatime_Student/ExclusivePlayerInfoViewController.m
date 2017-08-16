@@ -20,6 +20,8 @@
 #import "ExclusiveLessons.h"
 #import "TeachersPublicViewController.h"
 #import "ExclusiveInfo.h"
+#import "VideoPlayerViewController.h"
+#import "UIViewController+HUD.h"
 
 @interface ExclusivePlayerInfoViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
@@ -29,6 +31,8 @@
     
     NSString *_teacherID;
     NSString *_classID;
+    
+    BOOL _isBought;
     
 }
 
@@ -118,6 +122,10 @@
             _headView.model = mod;
             [_headView updateLayout];
             
+            if (dic[@"data"][@"ticket"]) {
+                _isBought = YES;
+            }
+            
             //lessons
             for (NSDictionary *lesson in dic[@"data"][@"customized_group"][@"scheduled_lessons"]) {
                 ExclusiveLesson *mod = [ExclusiveLesson yy_modelWithJSON:lesson];
@@ -179,6 +187,23 @@
         }
         if (_onlineLessonsArray.count>indexPath.row) {
             cell.exclusiveModel = _onlineLessonsArray[indexPath.row];
+            if ([cell.exclusiveModel.status isEqualToString:@"closed"]||[cell.exclusiveModel.status isEqualToString:@"billing"]||[cell.exclusiveModel.status isEqualToString:@"finished"]||[cell.exclusiveModel.status isEqualToString:@"completed"]) {
+                
+                if (_isBought == YES) {
+                    if (cell.exclusiveModel.replayable == YES) {
+                        cell.status.text = @"观看回放";
+                        cell.status.textColor = BUTTONRED;
+                    }else{
+                        [cell switchStatus:cell.exclusiveModel];
+                    }
+                    
+                }else{
+                    [cell switchStatus:cell.exclusiveModel];
+                    
+                }
+                
+            }
+
         }
         
         tableCell = cell;
@@ -221,6 +246,57 @@
     }
     
     return height;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (indexPath.section == 0) {
+        ClassesListTableViewCell *cell = (ClassesListTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+        if (_isBought ==YES) {
+            if (cell.exclusiveModel.replayable == YES) {
+                [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/scheduled_lessons/%@/replay",Request_Header,cell.exclusiveModel.lessonId] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+                    
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                    
+                    if ([dic[@"status"]isEqualToNumber:@1]) {
+                        
+                        if ([dic[@"data"][@"replayable"]boolValue]== YES) {
+                            if (dic[@"data"][@"replay"]==nil) {
+                                
+                            }else{
+                                NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+                                [decodeParm addObject:@"software"];
+                                [decodeParm addObject:@"videoOnDemand"];
+                                
+                                VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+                                [self presentViewController:video animated:YES completion:^{
+                                    
+                                }];
+                            }
+                            
+                        }else{
+                            [self HUDStopWithTitle:@"服务器繁忙"];
+                        }
+                        
+                    }else{
+                        [self HUDStopWithTitle:@"暂无回放视频"];
+                    }
+                    
+                }failure:^(id  _Nullable erros) {
+                    
+                }];
+            }else{
+                
+                
+            }
+            
+            
+        }else{
+            
+        }
+    }
+
+    
 }
 
 - (UIView *)makePlaceHolderView{

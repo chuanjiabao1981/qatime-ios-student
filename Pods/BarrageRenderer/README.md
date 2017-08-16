@@ -22,13 +22,15 @@
 
 ![效果动画](./BarrageRendererDemo.gif)
 
+![效果动画](./BarrageRendererDemo1.gif)
+
 视频演示地址: [http://v.youku.com/v_show/id_XMTI5NDM4ODk3Ng==.html](http://v.youku.com/v_show/id_XMTI5NDM4ODk3Ng==.html)
 
 ## 使用方式
 
 1. 下载版本库,进入BarrageRendererDemo目录. 运行pod update拉取相关库, 即可以运行BarrageRendererDemo.xcworkspace
 1. 也可以在您工程的podfile中添加一条引用: *pod 'BarrageRenderer', '1.9.1'*  并在工程目录下的命令行中运行 pod update, (CocoaPods 版本 0.39)
-1. 或者尝试使用 2.0.0 版本，此版本使用更方便，在部分特殊情况下的性能也有所提升.
+1. 或者尝试使用 2.1.0 版本，此版本使用更方便，在部分特殊情况下的性能也有所提升.
 1. 或者将代码下载下来, 将BarrageRenderer/目录添加到您的工程当中
 1. 在需要使用弹幕渲染功能的地方 ```#import<BarrageRenderer/BarrageRenderer.h>```
 1. 创建BarrageRenderer,添加BarrageRenderer.view, 执行start方法, 通过receive方法输入弹幕描述符descriptor, 即可以显示弹幕. 详见demo.
@@ -45,6 +47,27 @@
 当你想要添加一条弹幕到屏幕上的时候，你只需要创建一个弹幕描述符 BarrageDescriptor, 为其指定弹幕 Sprite 的类名，然后通过 params 设置一些属性, 调用 BarrageRenderer 的 receive 方法即可成功将弹幕显示在屏幕上.
 
 弹幕支持的属性可参照 ```BarrageSpriteProtocol.h``` 文件. 以及在 BarrageSprite 族的属性
+
+### 动态移除弹幕
+
+2.1.0 新增特性。
+
+在某些情况下，你可能需要从屏幕中动态地移除弹幕。2.1.0版本为此提供了一个默认的弹幕标识符 ```params[@"identifier"]``` 以及 一个移除弹幕的方法 ```- (void)removeSpriteWithIdentifier:(NSString *)identifier;```。 举例而言，你可以在用户点击弹幕的时候，移除弹幕，代码如下：
+
+``` objective-c
+    __weak BarrageRenderer *render = _renderer;
+    descriptor.params[@"clickAction"] = ^(NSDictionary *params){
+        [render removeSpriteWithIdentifier:params[@"identifier"]];
+    };
+```
+
+### 更新弹幕视图
+
+2.1.0 新增特性。
+
+有时候，你想要为你的弹幕精灵 view 添加动画。当然，你可以使用 animation 或者 NSTimer. 由于 BarrageRenderer 整体由 CADisplayLink 驱动，你可以借用 BarrageRenderer 的时钟，来更新你的精灵 view 。这样做的好处在于，当你通过 BarrageRenderer 暂停弹幕时，你的 弹幕精灵 view 也将暂停。为此，你可以在自定义弹幕精灵 view 的时候，实现协议方法 ```- (void)updateWithTime:(NSTimeInterval)time```来依据时间更新你的 view 。连贯起来就成了动画。你可以参考 demo 中 AvatarBarrageView 类的实现。
+
+需要注意的是，```- (void)updateWithTime:(NSTimeInterval)time``` 中不要放置过多的计算逻辑。在大量弹幕下，这样有可能造成动画的卡顿。
 
 ### 设置靠边位置
 
@@ -101,7 +124,7 @@ descriptor.params[@"fadeOutTime"] = @(1); // 隐出时间
 
 1. 在视频初始化的时候，批量添加弹幕
 1. 设置 BarrageRenderer 的 redisplay 属性为 YES, 指定其 delegate.
-1. 对于条被添加的 BarrageDescriptor, 为其指定 delay， delay 是此条弹幕对应的视频时间点
+1. 对于1条被添加的 BarrageDescriptor, 为其指定 delay， delay 是此条弹幕对应的视频时间点
 1. 实现 BarrageRendererDelegate 协议方法, 在 ```- (NSTimeInterval)timeForBarrageRenderer:(BarrageRenderer *)renderer;``` 方法中返回当前的视频时间点. 当你的视频播放、快进或者快退时，这个时间也会有变。
 
 在 Demo 的 AdvancedBarrageController 中演示了这一流程，可以参照。
@@ -146,7 +169,7 @@ BarrageRenderer 默认关闭了交互行为的，但如果需要，你可以启�
 
 弹幕一般呈现在视频之上，而视频解码会消耗大量的 CPU，当可用 CPU 不足时，弹幕动画会出现卡顿。为使弹幕流畅，你可以将 trackNumber 调低一些。另外可以对屏幕上的弹幕数量进行限流。
 
-实测中，如果多个弹幕的delay时间相同(或相距在1/60s之内)，可能使这些弹幕同时进入屏幕，进而导致瞬间卡顿。真实直播弹幕环境下，这种情况出现的比较少。针对性能较好的iPhone，可以设置 BarrageRenderer 的平滑系数 smoothness ，以优化此问题。
+实测中，如果多个弹幕的delay时间相同(或相距在1/60s之内)，可能使这些弹幕同时进入屏幕，进而导致瞬间卡顿。真实直播弹幕环境下，这种情况出现的比较少。针对性能较好的iPhone，可以设置 BarrageRenderer 的平滑系数 smoothness ，以优化此问题。此参数从 V2 开始支持。
 
 ## V2 重构
 
@@ -159,7 +182,7 @@ BarrageRenderer 默认关闭了交互行为的，但如果需要，你可以启�
 
 如果你在使用 V1 系列时，没有创建自己的 sprite 子类，那么你可以在不改动业务代码的时候，升级到 V2 版本; 否则，你需要改动你的 sprite 子类，当然，改动不会太大。
 
-**虽然我对V2版本做了测试，但是无法涵盖所有情况。**如果你的应用难以承担较高风险，那么你也可以保持使用 V1 系列，等到 V2 版本相对稳定时再行迁移, V1 不会再添加新的 feature, 但对于显著的 bug 我还是会提供修复; 如果你刚刚接入 V2, 那么建议你尝试使用 V2。
+**虽然我对V2版本做了测试，但是无法涵盖所有情况。** 如果你的应用难以承担较高风险，那么你也可以保持使用 V1 系列，等到 V2 版本相对稳定时再行迁移, V1 不会再添加新的 feature, 但对于显著的 bug 我还是会提供修复; 如果你刚刚接入 V2, 那么建议你尝试使用 V2。
 
 V2 在创建自定义弹幕的时候，涉及到两部分：
 
@@ -173,7 +196,11 @@ descriptor.params[@"viewClassName"] = @"UILabel";
 
 更详细的使用，你可以参考 BarrageRenderer 中提供的 sprite 默认实现或者 demo。
 
+### load 方法的语义变化
+
+在 v2.1.0 及之后的版本, load 语义有所调整。之前，load 方法所触发的 receive 调用, 会调整 descriptor 的 delay 参数; 而之后的版本，不再整 descriptor 的 delay 参数。所以对于播放弹幕 前/过程中 从网络加载的批量弹幕(delay属性是具体不变的)，推荐使用 load 方法。
+
 ## 支持与联系
 
-* 欢迎加入qq群讨论:325298378;
-* 欢迎在GitHub上提出相关的issue.
+* 欢迎在GitHub上提出相关的issue;
+* 欢迎加入qq群讨论:325298378(回复不一定及时).

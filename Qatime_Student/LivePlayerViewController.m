@@ -92,7 +92,7 @@ typedef enum : NSUInteger {
     
 } ViewsArrangementMode;
 
-@interface LivePlayerViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UUInputFunctionViewDelegate,UUMessageCellDelegate,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate,NIMLoginManagerDelegate,TTGTextTagCollectionViewDelegate,PhotoBrowserDelegate,UIGestureRecognizerDelegate,NIMMediaManagerDelegate>{
+@interface LivePlayerViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UUInputFunctionViewDelegate,UUMessageCellDelegate,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate,NIMLoginManagerDelegate,TTGTextTagCollectionViewDelegate,PhotoBrowserDelegate,UIGestureRecognizerDelegate,NIMMediaManagerDelegate,NIMTeamManagerDelegate>{
     
     /* token/id*/
     
@@ -2556,15 +2556,10 @@ bool ismute     = NO;
     
     NSDictionary *dat  = [NSDictionary dictionaryWithContentsOfFile:plistPath];
     
-    
-    
-    
     _faces = [NSMutableArray arrayWithArray:[dat allValues]];
-    
     
     /* 白板视图放到subview数组里最上一层*/
     //    [self.view bringSubviewToFront:_boardPlayerView];
-    
     
     
     /* 最后,添加一个覆盖层.在视频播放器为平级视图的时候,上方的视频播放器可以点击,下方不可以点击*/
@@ -2636,11 +2631,8 @@ bool ismute     = NO;
     newNotice.edit_at = [notice[@"time"] changeTimeStampToDateString];
     newNotice.announcement = notice[@"notice"];
     
-    if (_noticesArr) {
-        [_noticesArr removeAllObjects];
-    }else{
-        _noticesArr = @[].mutableCopy;
-    }
+    _noticesArr = @[].mutableCopy;
+    
     [_noticesArr addObject:newNotice];
     [_classNotice.classNotice cyl_reloadData];
 }
@@ -3112,7 +3104,7 @@ bool ismute     = NO;
     }
     
     [[NIMSDK sharedSDK].chatManager addDelegate:self];
-    [[NIMSDK sharedSDK].chatroomManager addDelegate:self];
+    [[NIMSDK sharedSDK].teamManager addDelegate:self];
     
     //查一下禁言状态
     [[NIMSDK sharedSDK].teamManager fetchTeamMutedMembers:_session.sessionId completion:^(NSError * _Nullable error, NSArray<NIMTeamMember *> * _Nullable members) {
@@ -4425,12 +4417,16 @@ bool ismute     = NO;
     [_classNotice.classNotice cyl_reloadData];
     //    [_liveClassInfoView.noticeTabelView setNeedsDisplay];
     
-    
 }
 
 - (void)updateViewsInfos{
     
     [_classList.classListTableView reloadData];
+    
+}
+
+//群组公告更新了
+-(void)onTeamUpdated:(NIMTeam *)team{
     
     
 }
@@ -4455,7 +4451,7 @@ bool ismute     = NO;
         // 获取cell高度
         height= [tableView cellHeightForIndexPath:indexPath model:_noticesArr[indexPath.row] keyPath:@"model" cellClass:[NoticeTableViewCell class] contentViewWidth: self.view.width_sd];
         
-        height = 100;
+//        height = 100;
         
     }
     
@@ -4619,9 +4615,9 @@ bool ismute     = NO;
                 cell=[[NoticeTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
                 
             }
+            [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
             if (_noticesArr.count>indexPath.row){
                 
-                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
                 cell.model = _noticesArr[indexPath.row];
                 
             }

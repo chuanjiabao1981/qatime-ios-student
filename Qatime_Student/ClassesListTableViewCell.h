@@ -50,5 +50,7 @@
 /** 专属课model */
 @property (nonatomic, strong) ExclusiveLesson *exclusiveModel ;
 
+- (void)switchStatus:(ExclusiveLesson *)exclusiveModel;
+
 
 @end

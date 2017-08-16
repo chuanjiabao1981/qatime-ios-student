@@ -102,7 +102,7 @@
     
     _edit_at.text = model.edit_at;
     
-    _announcement.text = model.content;
+    _announcement.text = model.announcement;
     
 }
 

@@ -25,6 +25,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[ExclusiveInfoViewController tableView:cellForRowAtIndexPath:]:ExclusiveInfoViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "main:main.m">
          <PersistentStrings>
             <PersistentString
@@ -34,6 +37,9 @@
       </ContextState>
       <ContextState
          contextName = "__44-[NoticeIndexViewController requestMyClass:]_block_invoke_2:NoticeIndexViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__65-[ExclusiveInfoViewController tableView:didSelectRowAtIndexPath:]_block_invoke.423:ExclusiveInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "__37-[ExclusiveInfoViewController listen]_block_invoke:ExclusiveInfoViewController.m">
@@ -292,6 +298,14 @@
          contextName = "__44-[PersonalInfoEditViewController updateInfo]_block_invoke.345:PersonalInfoEditViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[ExclusiveChatViewController viewDidLoad]:ExclusiveChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chat_teamID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[TLCityPickerController commonCitys]:TLCityPickerController.m">
          <PersistentStrings>
             <PersistentString
@@ -481,6 +495,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__49-[ExclusivePlayerViewController checkVideoStatus]_block_invoke:ExclusivePlayerViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[ChooseClassViewController multiFiltersRequest:]:ChooseClassViewController.m">
       </ContextState>
       <ContextState
@@ -607,13 +624,13 @@
          contextName = "-[TeachersPublicViewController numberOfSectionsInCollectionView:]:TeachersPublicViewController.m">
          <PersistentStrings>
             <PersistentString
+               value = "_publicCount">
+            </PersistentString>
+            <PersistentString
                value = "_oneOnOneCount">
             </PersistentString>
             <PersistentString
                value = "_videoCount">
-            </PersistentString>
-            <PersistentString
-               value = "_publicCount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -786,6 +803,14 @@
          contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
       </ContextState>
       <ContextState
+         contextName = "__81-[NewQuestionViewController imagePickerController:didFinishPickingMediaWithInfo:]_block_invoke:NewQuestionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_phototsArray">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[QRCodeController captureOutput:didOutputMetadataObjects:fromConnection:]:QRCodeController.m">
          <PersistentStrings>
             <PersistentString
@@ -896,6 +921,9 @@
       </ContextState>
       <ContextState
          contextName = "-[VideoClassFilterViewController tableView:didSelectRowAtIndexPath:]:VideoClassFilterViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ExclusiveChatViewController onTeamUpdated:]:ExclusiveChatViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController changePlayersMode]:NELivePlayerViewController.m">
@@ -1401,6 +1429,9 @@
       </ContextState>
       <ContextState
          contextName = "__33-[LoginViewController userLogin:]_block_invoke:LoginViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__65-[ExclusiveInfoViewController tableView:didSelectRowAtIndexPath:]_block_invoke:ExclusiveInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "__45-[SafeViewController RequestToBindingWechat:]_block_invoke_2:SafeViewController.m">
@@ -2108,6 +2139,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[ExclusiveChatViewController onRecvMessages:]:ExclusiveChatViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__68-[LiveClassFilterViewController requestClass:withContentDictionary:]_block_invoke:LiveClassFilterViewController.m">
       </ContextState>
       <ContextState
@@ -2227,6 +2261,9 @@
                value = "_stateLabel.frame.size.width">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__39-[FindPasswordViewController nextStep:]_block_invoke:FindPasswordViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[LivePlayerViewController tableView:cellForRowAtIndexPath:]:LivePlayerViewController.m">

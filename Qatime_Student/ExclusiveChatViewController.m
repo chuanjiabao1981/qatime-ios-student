@@ -45,7 +45,7 @@
 #import "NSNull+Json.h"
 #import "TutoriumList.h"
 
-@interface ExclusiveChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate,PhotoBrowserDelegate>{
+@interface ExclusiveChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate,PhotoBrowserDelegate,NIMTeamManagerDelegate>{
     
     NSString *_token;
     NSString *_idNumber;
@@ -126,6 +126,7 @@
     
     //千万别登录云信
     [[NIMSDK sharedSDK].chatManager addDelegate:self];
+    [[NIMSDK sharedSDK].teamManager addDelegate:self];
     
     NSLog(@"聊天未读消息%ld条",[[[NIMSDK sharedSDK]conversationManager] allUnreadCount]);
     
@@ -349,12 +350,12 @@
         
         NSMutableArray *users ;
         if ([dic[@"status"] isEqual:[NSNumber numberWithInteger:1]]) {
-            if ([[dic[@"data"][@"chat_team"][@"accounts"]description] isEqualToString:@"0(NSNull)"]) {
+            if ([[dic[@"data"][@"customized_group"][@"chat_team"][@"accounts"]description] isEqualToString:@"0(NSNull)"]) {
                 
                 users = @[].mutableCopy;
             }else{
                 
-                users =[NSMutableArray arrayWithArray:[dic[@"data"][@"chat_team"][@"accounts"]isEqual:[NSNull null]]?@[]:dic[@"data"][@"chat_team"][@"accounts"]];
+                users =[NSMutableArray arrayWithArray:dic[@"data"][@"customized_group"][@"chat_team"][@"accounts"]];
             }
             
             for (NSDictionary *dic in users) {
@@ -957,18 +958,21 @@
                 NSError *err;
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
                 NSString *result;
-                if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"type"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
                     result = @"直播关闭";
-                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"type"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
                     result = @"直播开启";
-                }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"type"]isEqualToString:@"LiveStudio::InstantLesson"]){
                     result = @"老师关闭了互动答疑";
-                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"type"]isEqualToString:@"LiveStudio::InstantLesson"]){
                     result = @"老师开启了互动答疑";
                 }
-                [self.chatModel addSpecifiedNotificationItem:result];
-                [self.chatTableView reloadData];
-                [self tableViewScrollToBottom];
+                if (result) {
+                    
+                    [self.chatModel addSpecifiedNotificationItem:result];
+                    [self.chatTableView reloadData];
+                    [self tableViewScrollToBottom];
+                }
             }else{
                 
             }
@@ -1088,6 +1092,15 @@
     [self.chatModel.dataSource addObject:message];
     
 }
+
+//接收群公告的
+- (void)onTeamUpdated:(NIMTeam *)team{
+    
+    //公告就直接从聊天获取
+//    [[NSNotificationCenter defaultCenter]postNotificationName:@"NewNotice" object:@{@"notice":team.announcement,@"time":[NSString stringWithFormat:@"%f",[[team valueForKeyPath:@"time"] floatValue] ]}];
+    
+}
+
 
 #pragma mark- tableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

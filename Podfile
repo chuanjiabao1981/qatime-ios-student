@@ -20,6 +20,7 @@ pod 'YYImage'
 pod 'SDCycleScrollView'
 pod 'BarrageRenderer'
 pod 'KSPhotoBrowser'
+pod 'DACircularProgress'
 
 pod 'CocoaLumberjack'
 pod 'Toast'

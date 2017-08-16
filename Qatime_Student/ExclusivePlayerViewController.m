@@ -389,6 +389,7 @@ typedef enum : NSUInteger {
         boardPlayerInitSuccess = YES;
         [_boardPlayerView makePlaceHolderImage:nil];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"BoardPlayerInitSuccess" object:nil];
+//        [self boardPlayerInitSuccess];
         if (![_boardPlayerView.subviews containsObject:_liveplayerBoard.view]) {
             
             [_boardPlayerView addSubview:_liveplayerBoard.view];
@@ -873,7 +874,7 @@ typedef enum : NSUInteger {
     //    [self setupTeacherPlayer];
     
     //不管是否创建成功,都去后台拿直播状态
-    [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:10];
+//    [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:10];
 }
 
 #pragma mark- 分屏部分
@@ -2140,6 +2141,18 @@ typedef enum : NSUInteger {
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     
+    
+    /* 监听播放器的初始化状态*/
+    
+    /* 白板初始化成功*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(boardPlayerInitSuccess) name:@"BoardPlayerInitSuccess" object:nil];
+    
+    /* 摄像头初始化成功*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(teacherPlayerInitSuccess) name:@"TeacherPlayerInitSuccess" object:nil];
+    
+    
+    /* 两个播放器都初始化成功*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(allPlayerInitSuccess) name:@"AllPlayerInitSuccess" object:nil];
     [self makeData];
     [self setupPlayer];
     [self setupChildController];
@@ -2212,17 +2225,7 @@ typedef enum : NSUInteger {
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
-    /* 监听播放器的初始化状态*/
     
-    /* 白板初始化成功*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(boardPlayerInitSuccess) name:@"BoardPlayerInitSuccess" object:nil];
-    
-    /* 摄像头初始化成功*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(teacherPlayerInitSuccess) name:@"TeacherPlayerInitSuccess" object:nil];
-    
-    
-    /* 两个播放器都初始化成功*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(allPlayerInitSuccess) name:@"AllPlayerInitSuccess" object:nil];
     
 #pragma mark- 以下是页面和功能逻辑
     
@@ -2271,6 +2274,10 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordEnd) name:@"RecordEnd" object:nil];
     
     
+    
+    [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
+    
+    
 }
 
 
@@ -2294,6 +2301,9 @@ typedef enum : NSUInteger {
     
     [self performSelector:@selector(switchBothScreen:)];
     
+    
+    
+    
 }
 
 
@@ -2307,7 +2317,6 @@ typedef enum : NSUInteger {
         
         
     }
-    
     
 }
 
@@ -2885,15 +2894,19 @@ typedef enum : NSUInteger {
             [self switchOnlineNumbersWithArrayrs:dic[@"data"][@"online_users"]];
             
             //            完事儿,每隔五秒轮询一次
+            [NSObject cancelPreviousPerformRequestsWithTarget:self];
             [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
             
         }else{
             /* 获取数据失败*/
+            [NSObject cancelPreviousPerformRequestsWithTarget:self];
             [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
             
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
         [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
     }];
     
@@ -2918,8 +2931,13 @@ typedef enum : NSUInteger {
         
         if (_liveplayerBoard!=nil) {
             if (_liveplayerBoard.isPlaying == YES) {
+                
+                [_liveplayerBoard.view updateLayout];
+                
             }else{
-                [self setupBoardPlayer];
+//                [self setupBoardPlayer];
+                [_liveplayerBoard play];
+//                [self setupBoardPlayer];
                 [_boardPlayerView makePlaceHolderImage:nil];
                 [_liveplayerBoard shouldAutoplay];
                 
@@ -2932,8 +2950,12 @@ typedef enum : NSUInteger {
         
         if (_liveplayerTeacher!=nil) {
             if (_liveplayerTeacher.isPlaying ==YES) {
+                
+                [_liveplayerTeacher.view updateLayout];
             }else{
-                [self setupTeacherPlayer];
+//                [self setupTeacherPlayer];
+                [_liveplayerTeacher play];
+//                [self setupTeacherPlayer];
                 [_teacherPlayerView makePlaceHolderImage:nil];
                 [_liveplayerTeacher shouldAutoplay];
                 
@@ -2965,12 +2987,12 @@ typedef enum : NSUInteger {
     }else if ([statusDic[@"board"]isEqualToString:@"0"]&&[statusDic[@"camera"]isEqualToString:@"0"]){
         //都成了初始状态了
         if (_liveplayerBoard!=nil) {
-            [_liveplayerBoard stop];
+            [_liveplayerBoard pause];
         }
         [_boardPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
         
         if (_liveplayerTeacher!=nil) {
-            [_liveplayerTeacher stop];
+            [_liveplayerTeacher pause];
         }
         [_teacherPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
         
@@ -3018,20 +3040,11 @@ typedef enum : NSUInteger {
     else{
         
         //其他的状态吧
-        
-        /**
-         测试 5s一次 正常值30s一次
-         继续轮询该接口
-         @param checkVideoStatus
-         @return void
-         */
-        
-        
         //白板的各种状态
         if ([statusDic[@"board"]isEqualToString:@"0"]) {
             //白板未开启
             if (_liveplayerBoard!=nil) {
-                [_liveplayerBoard stop];
+                [_liveplayerBoard pause];
             }
             [_boardPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
         }else if ([statusDic[@"board"]isEqualToString:@"1"]){
@@ -3046,7 +3059,7 @@ typedef enum : NSUInteger {
         }else if ([statusDic[@"board"]isEqualToString:@"2"]){
             //直播已经结束了
             if (_liveplayerBoard!=nil) {
-                [_liveplayerBoard stop];
+                [_liveplayerBoard pause];
             }
             [_boardPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_ClosedVideo"]];
         }
@@ -3055,7 +3068,7 @@ typedef enum : NSUInteger {
         if ([statusDic[@"camera"]isEqualToString:@"0"]) {
             //摄像头未开启
             if (_liveplayerTeacher!=nil) {
-                [_liveplayerTeacher stop];
+                [_liveplayerTeacher pause];
             }
             [_teacherPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
             
@@ -3071,7 +3084,7 @@ typedef enum : NSUInteger {
         }else if ([statusDic[@"camera"]isEqualToString:@"2"]){
             //直播已经结束了
             if (_liveplayerTeacher!=nil) {
-                [_liveplayerTeacher stop];
+                [_liveplayerTeacher pause];
             }
             [_teacherPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_ClosedVideo"]];
             

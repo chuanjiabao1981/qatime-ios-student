@@ -100,7 +100,7 @@
             //获取数据正常 没问题
             
 //            _owner = [NSString stringWithFormat:@"%@",dic[@"data"][@"owner"]];
-            NSArray *members = [NSArray arrayWithArray:dic[@"data"][@"chat_team"][@"accounts"]];
+            NSArray *members = [NSArray arrayWithArray:dic[@"data"][@"customized_group"][@"chat_team"][@"accounts"]];
             
             if (members.count!=0) {
                 //有成员

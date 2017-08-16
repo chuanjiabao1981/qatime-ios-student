@@ -51,6 +51,9 @@
 #import "TutoriumList.h"
 #import "InteractionViewController.h"
 
+#import "CommonMenuView.h"
+#import "ExclusivePlayerViewController.h"
+#import "UIViewController+Token.h"
 
 
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate,NIMMediaManagerDelgate>{
@@ -83,6 +86,8 @@
     
     NSString *_lesson;
     
+    NSString *_classID;
+    
 }
 
 /* 刷新聊天记录*/
@@ -110,16 +115,11 @@
             _tutoriumInfo =(InteractiveCourse *)tutorium;
             _chat_teamID = [(InteractiveCourse *)tutorium valueForKey:@"chat_team_id"];
         }
-        
         _classType = type;
-        
-        
-        
+        _classID = [_tutoriumInfo valueForKey:@"classID"];
     }
     return self;
 }
-
-
 
 - (void)loadView{
     
@@ -165,6 +165,11 @@
         [self.view addSubview:_];
         _;
     });
+    
+    if (_classType == ExclusiveCourseType) {
+        //导航栏右侧按钮
+        [self setupNavigationButton];
+    }
     
 }
 
@@ -268,6 +273,117 @@
 //    [[NIMSDK sharedSDK].mediaManager addDelegate:self];
     
 }
+
+
+//右侧菜单
+/**
+ 导航栏右侧按钮
+ */
+- (void)setupNavigationButton{
+    
+    [self.navigationBar.rightButton setImage:[UIImage imageNamed:@"moreMenu"] forState:UIControlStateNormal];
+    [self.navigationBar addSubview:self.navigationBar.rightButton];
+    self.navigationBar.rightButton.hidden = YES;
+    
+    [self.navigationBar.rightButton addTarget:self action:@selector(moreMenu) forControlEvents:UIControlEventTouchUpInside];
+}
+/** 更多菜单 */
+- (void)moreMenu{
+    
+    NSDictionary *dict1 = @{@"imageName" : @"icon_button_affirm",
+                            @"itemName" : @"进入聊天"
+                            };
+    NSDictionary *dict2 = @{@"imageName" : @"icon_button_recall",
+                            @"itemName" : @"课程作业"
+                            };
+    NSDictionary *dict3 = @{@"imageName" : @"icon_button_record",
+                            @"itemName" : @"全部提问"
+                            };
+    NSDictionary *dict4 = @{@"imageName" : @"icon_button_record",
+                            @"itemName" : @"课件文件"
+                            };
+    NSDictionary *dict5 = @{@"imageName" : @"icon_button_record",
+                            @"itemName" : @"成员列表"
+                            };
+    NSArray *menuArray = @[dict1,dict2,dict3,dict4,dict5];
+    
+    __weak __typeof(&*self)weakSelf = self;
+    /**
+     *  创建普通的MenuView，frame可以传递空值，宽度默认120，高度自适应
+     */
+    [CommonMenuView createMenuWithFrame:CGRectZero target:self dataArray:menuArray itemsClickBlock:^(NSString *str, NSInteger tag) {
+        [weakSelf doSomething:(NSString *)str tag:(NSInteger)tag]; // do something
+    } backViewTap:^{
+        weakSelf.navigationBar.rightButton .selected = NO;; // 这里的目的是，让rightButton点击，可再次pop出menu
+    }];
+    
+    [self popMenu:CGPointMake(self.navigationBar.rightButton.centerX_sd,self.navigationBar.bottom_sd)];
+}
+- (void)popMenu:(CGPoint)point{
+    if (self.navigationBar.rightButton.selected == NO) {
+        [CommonMenuView showMenuAtPoint:point];
+        self.navigationBar.rightButton.selected = YES;
+    }else{
+        [CommonMenuView hidden];
+        self.navigationBar.rightButton.selected = NO;
+    }
+}
+
+#pragma mark -- 专属菜单点击 回调事件(自定义)
+- (void)doSomething:(NSString *)str tag:(NSInteger)tag{
+    
+    __block UIViewController *controller ;
+    switch (tag) {
+        case 1:{
+            
+            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/play",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+                
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                if ([dic[@"status"]isEqualToNumber:@1]) {
+                    _chat_teamID = dic[@"data"][@"customized_group"][@"chat_team"][@"team_id"];
+                    NSString *boardAddress = dic[@"data"][@"customized_group"][@"board_pull_stream"];
+                    NSString *cameraAddress = dic[@"data"][@"customized_group"][@"camera_pull_stream"];
+                    controller = [[ExclusivePlayerViewController alloc]initWithClassID:_classID andChatTeamID:_chat_teamID andBoardAddress:boardAddress andTeacherAddress:cameraAddress];
+                }else{
+                    
+                    [self HUDStopWithTitle:@"请稍后再试"];
+                    
+                    [CommonMenuView hidden];
+                }
+                
+                
+            } failure:^(id  _Nullable erros) {
+                
+                [self HUDStopWithTitle:@"请检查网络"];
+                [CommonMenuView hidden];
+            }];
+            
+        }
+            break;
+        case 2:{
+            
+        }
+            break;
+        case 3:{
+            
+        }
+            break;
+        case 4:{
+            
+        }
+            break;
+        case 5:{
+            
+        }
+            break;
+    }
+    
+    self.navigationBar.rightButton.selected = NO;
+    [self.navigationController pushViewController:controller animated:YES];
+    
+    [CommonMenuView hidden];
+}
+
 
 
 
@@ -778,7 +894,7 @@
                 //如果收到系统/公告消息
                 else if (message.messageType==NIMMessageTypeNotification){
                     
-                    /** 收到公告消息a */
+                    /** 收到公告消息 */
                     
                     /**
                      解析收到的message字段

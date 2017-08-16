@@ -31,11 +31,19 @@
 @class BarrageDescriptor;
 @class BarrageRenderer;
 
+typedef NS_ENUM(NSInteger, BarrageSpriteStage) {
+    BarrageSpriteStageBegin = 1, // 弹幕进入屏幕阶段
+    BarrageSpriteStageEnd   = 2  // 弹幕退出屏幕阶段
+};
+
 @protocol BarrageRendererDelegate <NSObject>
 
 @optional
 /// 通过外部渠道获取当前时间,用于内部时间系统; 当依附的视频具有快进快退功能时,必须实现这个函数,并返回时间轴上的当前时刻,即已经播放的时间.
 - (NSTimeInterval)timeForBarrageRenderer:(BarrageRenderer *)renderer;
+
+/// 弹幕生命周期行为，实验特性; 可试用, 亦可以通过继承 BarrageRenderer 来实现相同功能
+- (void)barrageRenderer:(BarrageRenderer *)renderer spriteStage:(BarrageSpriteStage)stage spriteParams:(NSDictionary *)params;
 
 @end
 
@@ -73,7 +81,7 @@
 /// 对于 CPU 性能不错的手机(比如>=iphone7)，推荐开启此功能
 /// 设置时间平滑, 应对弹幕激增;
 /// 范围为[0,1],当为0时，无平滑; 否则越大，越平滑;
-/// 高平滑值在大量弹幕的时候(一般100+)，可能造成弹幕丢失
+/// 高平滑值在大量弹幕(一般100+)的时候，可能造成弹幕丢失
 @property(nonatomic,assign)CGFloat smoothness;
 
 /// 调整弹幕整体速度, 需要>0, 否则会被抛弃.
@@ -97,6 +105,9 @@
 /// spriteName表示弹幕类名,如果传入nil,则计算屏幕显示出的所有弹幕数量.
 - (void)removePresentSpritesWithName:(NSString *)spriteName;
 
+/// 移除标识符为 identifier 的弹幕
+- (void)removeSpriteWithIdentifier:(NSString *)identifier;
+
 /// 逻辑时间,露出参考.
 @property(nonatomic,assign,readonly)NSTimeInterval time;
 
@@ -112,6 +123,7 @@
 @property(nonatomic,assign)BOOL recording;
 
 /// 加载已经存在的弹幕,如果已经start, 会立刻被调用receive; 否则, 会等到start的时候再调用receive.
+/// 在 v2.1 之后, 使用 load 不会重新调整 descriptor 的 delay; 而在之前的版本, 会调整 descriptor 的 delay
 - (void)load:(NSArray *)descriptors;
 
 /// 弹幕记录数组.
