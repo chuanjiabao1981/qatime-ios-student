@@ -83,60 +83,16 @@
         .topSpaceToView(questionLine, 20*ScrenScale)
         .heightIs((WIDTHS -30*ScrenScale-40)/5.f);
                 
-        //录音
-        _recordView = [[UIView alloc]init];
-        [self addSubview:_recordView];
-        _recordView.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
-        _recordView.layer.borderWidth = 1;
-        _recordView.backgroundColor = [UIColor whiteColor];
-        _recordView.sd_layout
-        .leftEqualToView(titleLine)
-        .rightEqualToView(titleLine)
+        _recorder = [[YZReorder alloc]init];
+        [self addSubview:_recorder.view];
+        _recorder.view.sd_layout
+        .leftEqualToView(questionLine)
+        .rightEqualToView(questionLine)
         .topSpaceToView(_photosView, 20*ScrenScale)
-        .heightRatioToView(titleLine, 1.0f);
+        .heightRatioToView(titleLine, 1.0);
         
         
-        //右侧多功能按钮
-        _rightBtn = [[UIButton alloc]init];
-        [_recordView addSubview:_rightBtn];
-        [_rightBtn setImage:[UIImage imageNamed:@"question_record"] forState:UIControlStateNormal];
-        _rightBtn.sd_layout
-        .topSpaceToView(_recordView, 5*ScrenScale)
-        .rightSpaceToView(_recordView, 5*ScrenScale)
-        .bottomSpaceToView(_recordView, 5*ScrenScale)
-        .widthEqualToHeight();
-        
-        _secend = [[UILabel alloc]init];
-        _secend.text = @"60'";
-        [_recordView addSubview:_secend];
-        _secend.font = TEXT_FONTSIZE_MIN;
-        _secend.textColor = TITLECOLOR;
-        _secend.sd_layout
-        .rightSpaceToView(_rightBtn, 10*ScrenScale)
-        .centerYEqualToView(_rightBtn)
-        .autoHeightRatio(0);
-        [_secend setSingleLineAutoResizeWithMaxWidth:200];
-        
-        _slider = [[YZSlider alloc]init];
-        _slider.enabled = NO;
-        [_recordView addSubview:_slider];
-        _slider.sd_layout
-        .rightSpaceToView(_secend, 10*ScrenScale)
-        .centerYEqualToView(_secend)
-        .heightRatioToView(_secend, 1.0f)
-        .leftSpaceToView(_recordView, 10*ScrenScale);
-        
-        _playBtn = [[UIButton alloc]init];
-        [_playBtn setImage:[UIImage imageNamed:@"question_play"] forState:UIControlStateNormal];
-        [_recordView addSubview:_playBtn];
-        _playBtn.sd_layout
-        .topEqualToView(_rightBtn)
-        .bottomEqualToView(_rightBtn)
-        .leftSpaceToView(_recordView, 10*ScrenScale)
-        .widthEqualToHeight();
-        _playBtn.hidden = YES;
-        
-        [self setupAutoContentSizeWithBottomView:_recordView bottomMargin:20];
+        [self setupAutoContentSizeWithBottomView:_recorder.view bottomMargin:20];
         
         
     }
