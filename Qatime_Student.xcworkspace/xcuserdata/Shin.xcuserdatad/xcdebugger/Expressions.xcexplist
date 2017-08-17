@@ -549,16 +549,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke:LivePlayerViewController.m">
+         contextName = "__81-[NewQuestionViewController imagePickerController:didFinishPickingMediaWithInfo:]_block_invoke:NewQuestionViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_noticeAndMembers">
-            </PersistentString>
-            <PersistentString
-               value = "_classesArr">
-            </PersistentString>
-            <PersistentString
-               value = "_videoClassInfo">
+               value = "_phototsArray">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -566,16 +560,16 @@
          contextName = "__34-[MyOrderViewController buyAgain:]_block_invoke_3:MyOrderViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__46-[NELivePlayerViewController requestClassInfo]_block_invoke:NELivePlayerViewController.m">
+         contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke:LivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_membersArr">
+               value = "_videoClassInfo">
             </PersistentString>
             <PersistentString
-               value = "_teacher">
+               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -624,13 +618,13 @@
          contextName = "-[TeachersPublicViewController numberOfSectionsInCollectionView:]:TeachersPublicViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_publicCount">
-            </PersistentString>
-            <PersistentString
                value = "_oneOnOneCount">
             </PersistentString>
             <PersistentString
                value = "_videoCount">
+            </PersistentString>
+            <PersistentString
+               value = "_publicCount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -784,6 +778,20 @@
          contextName = "__42-[PayConfirmViewController payWithBalance]_block_invoke_3:PayConfirmViewController.m">
       </ContextState>
       <ContextState
+         contextName = "__46-[NELivePlayerViewController requestClassInfo]_block_invoke:NELivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_noticeAndMembers">
+            </PersistentString>
+            <PersistentString
+               value = "_membersArr">
+            </PersistentString>
+            <PersistentString
+               value = "_teacher">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[ProvinceChosenViewController tableView:didSelectRowAtIndexPath:]:ProvinceChosenViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -801,14 +809,6 @@
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController NELivePlayerReleaseSuccess:]:NELivePlayerViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__81-[NewQuestionViewController imagePickerController:didFinishPickingMediaWithInfo:]_block_invoke:NewQuestionViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_phototsArray">
-            </PersistentString>
-         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[QRCodeController captureOutput:didOutputMetadataObjects:fromConnection:]:QRCodeController.m">
@@ -860,10 +860,10 @@
          contextName = "-[NTESPageView reloadPage]:NTESPageView.m">
          <PersistentStrings>
             <PersistentString
-               value = "_currentPage">
+               value = "_pages">
             </PersistentString>
             <PersistentString
-               value = "_pages">
+               value = "_currentPage">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -904,6 +904,11 @@
       </ContextState>
       <ContextState
          contextName = "__49-[OneOnOneTutoriumInfoViewController requestData]_block_invoke:OneOnOneTutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__44-[PersonalInfoViewController updateUserInfo]_block_invoke.450:PersonalInfoViewController.m">
@@ -1712,10 +1717,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -2092,6 +2097,9 @@
       </ContextState>
       <ContextState
          contextName = "-[NTESWhiteboardCmdHandler handleReceivedData:sender:]:NTESWhiteboardCmdHandler.m">
+      </ContextState>
+      <ContextState
+         contextName = "__51-[ReplayViewController requestDataWithRefreshType:]_block_invoke:ReplayViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[PersonalInfoViewController updateUserInfo]:PersonalInfoViewController.m">

@@ -121,7 +121,6 @@ typedef enum : NSUInteger {
     [_filterView.newestBtn addTarget:self action:@selector(newestAction:) forControlEvents:UIControlEventTouchUpInside];
     [_filterView.popularityBtn addTarget:self action:@selector(popularAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    
 }
 
 /**请求数据 ,传入个下拉/上滑方式就行了*/
@@ -147,7 +146,16 @@ typedef enum : NSUInteger {
                 for (NSDictionary *dics in dic[@"data"]) {
                     ReplayLesson *mod = [ReplayLesson yy_modelWithJSON:dics];
                     mod.classID = dics[@"id"];
-                    mod.live_studio_lesson = [Live_studio_lesson yy_modelWithJSON:dics[@"live_studio_lesson"]];
+                    
+                    if ([dics[@"target_type"]isEqualToString:@"LiveStudio::Lesson"]) {
+                        mod.live_studio_lesson = [Live_studio_lesson yy_modelWithJSON:dics[@"live_studio_lesson"]];
+                        
+                    }else if ([dics[@"target_type"]isEqualToString:@"LiveStudio::InteractiveLesson"]){
+                        mod.live_studio_interactive_lesson = [Live_studio_interactive_lesson yy_modelWithJSON:dics[@"live_studio_interactive_lesson"]];
+                    }else if ([dics[@"target_type"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                        mod.live_studio_scheduled_leddson = [Live_studio_scheduled_lesson yy_modelWithJSON:dics[@"live_studio_scheduled_lesson"]];
+                    }
+                    
                     [_replaysArr addObject:mod];
                 }
                 

@@ -22,10 +22,30 @@
 @property (nonatomic, strong) NSString *left_replay_times ;
 @property (nonatomic, strong) NSString *modal_type ;
 
+@end
 
+@interface Live_studio_interactive_lesson : NSObject
 
+@property (nonatomic, strong) NSString *classID ;
+@property (nonatomic, strong) NSString *name ;
+@property (nonatomic, strong) NSString *class_date ;
+@property (nonatomic, strong) NSString *start_time ;
+@property (nonatomic, strong) NSString *end_time ;
+@property (nonatomic, strong) NSString *status ;
 
 @end
+
+@interface Live_studio_scheduled_lesson : NSObject
+@property (nonatomic, strong) NSString *classID ;
+@property (nonatomic, strong) NSString *name ;
+@property (nonatomic, strong) NSString *class_date ;
+@property (nonatomic, strong) NSString *start_time ;
+@property (nonatomic, strong) NSString *end_time ;
+@property (nonatomic, strong) NSString *status ;
+@property (nonatomic, assign) BOOL replayable ;
+
+@end
+
 
 @interface ReplayLesson : NSObject
 
@@ -40,6 +60,8 @@
 @property (nonatomic, strong) NSString *target_type ;
 @property (nonatomic, strong) NSString *target_id ;
 @property (nonatomic, strong) Live_studio_lesson *live_studio_lesson;
+@property (nonatomic, strong) Live_studio_interactive_lesson *live_studio_interactive_lesson ;
+@property (nonatomic, strong) Live_studio_scheduled_lesson *live_studio_scheduled_leddson ;
 @property (nonatomic, strong) NSString *grade ;
 @property (nonatomic, strong) NSString *subject ;
 @property (nonatomic, strong) NSString *teacher_name ;

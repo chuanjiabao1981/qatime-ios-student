@@ -10,10 +10,15 @@
 
 @implementation Live_studio_lesson
 
+@end
 
+@implementation Live_studio_scheduled_lesson
 
 @end
 
+@implementation Live_studio_interactive_lesson
+
+@end
 
 @implementation ReplayLesson
 

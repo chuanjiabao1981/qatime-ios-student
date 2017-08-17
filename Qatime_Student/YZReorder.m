@@ -88,7 +88,7 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     .widthEqualToHeight();
     
     _secend = [[UILabel alloc]init];
-    _secend.text = @"60'";
+    _secend.text = @"60''";
     [_recordView addSubview:_secend];
     _secend.font = TEXT_FONTSIZE_MIN;
     _secend.textColor = TITLECOLOR;
@@ -98,14 +98,19 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     .autoHeightRatio(0);
     [_secend setSingleLineAutoResizeWithMaxWidth:200];
     
-    _slider = [[YZSlider alloc]init];
-    _slider.enabled = NO;
+    _slider = [[M13ProgressViewBar alloc]initWithFrame:CGRectZero];
     [_recordView addSubview:_slider];
     _slider.sd_layout
     .rightSpaceToView(_secend, 10*ScrenScale)
     .centerYEqualToView(_secend)
     .heightRatioToView(_secend, 1.0f)
     .leftSpaceToView(_recordView, 10*ScrenScale);
+    [_slider updateLayout];
+    _slider.progressDirection = M13ProgressViewBarProgressDirectionLeftToRight;
+    _slider.progressBarCornerRadius = 0.0;
+    _slider.showPercentage = NO;
+    [_slider setProgress:0.0 animated:YES];
+
     
     _playBtn = [[UIButton alloc]init];
     [_playBtn setImage:[UIImage imageNamed:@"question_play"] forState:UIControlStateNormal];
@@ -154,16 +159,16 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
                                    [NSNumber numberWithInt:AVAudioQualityHigh],AVEncoderAudioQualityKey,
                                    nil];
     _recorder = [[AVAudioRecorder alloc] initWithURL:self.recordFileUrl settings:recordSetting error:nil];
-    _secendTime = 0;
     if (_recorder) {
         _recorder.meteringEnabled = YES;
         [_recorder prepareToRecord];
         [_recorder record];
-        [self addTimer];
-        [self changeRecorder:RecorderStateRecording];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(countDown * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self stopRecorder:nil];
         });
+        
+        [self addTimer];
+        [self changeRecorder:RecorderStateRecording];
     }else{
         NSLog(@"音频格式和文件存储格式不匹配,无法初始化Recorder");
     }
@@ -172,13 +177,15 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
 - (void)stopRecorder:(UIButton *)sender{
     [self removeTimer];
     NSLog(@"停止录音");
-    _secendTime = 0;
+    _playingTime = _secendTime;
+//    _secendTime = 0;
     if ([self.recorder isRecording]) {
         [self.recorder stop];
         [self changeRecorder:RecorderStateRecordFinished];
     }
     //同时 slider归零
-    [_slider setValue:0 animated:YES];
+    [_slider setProgress:0.0 animated:YES];
+    [_slider performAction:M13ProgressViewActionNone animated:YES];
     NSFileManager *manager = [NSFileManager defaultManager];
     if ([manager fileExistsAtPath:filePath]){
         NSLog(@"%@",[NSString stringWithFormat:@"录了 %ld 秒,文件大小为 %.2fKb",countDown - (long)countDown,[[manager attributesOfItemAtPath:filePath error:nil] fileSize]/1024.0]);
@@ -206,15 +213,19 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     
 }
 - (void)playingSlider{
-    _playingTime = (NSInteger)self.player.duration;
-    [_slider setValue:_slider.value+1.0/_playingTime animated:YES];
+    _playingTime--;
+    [_slider setProgress:_slider.progress+1.0/_secendTime animated:YES];
+    _secend.text = [NSString stringWithFormat:@"%ld''",_playingTime];
 }
 
 - (void)stopPlaying{
     [self.player stop];
     [self removePlayerTimer];
-    [_slider setValue:0 animated:YES];
+    [_slider setProgress:0.0 animated:YES];
     [self changeRecorder:RecorderStateRecordFinished];
+    [_slider performAction:M13ProgressViewActionNone animated:YES];
+    _secend.text = [NSString stringWithFormat:@"%ld''",_secendTime];
+    _playingTime = _secendTime;
     
 }
 
@@ -233,8 +244,11 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     if (flag) {
         //停止播放
         [self removePlayerTimer];
-        [_slider setValue:0 animated:YES];
+        [_slider setProgress:0.0 animated:YES];
+        [_slider performAction:M13ProgressViewActionNone animated:YES];
         [self changeRecorder:RecorderStateRecordFinished];
+        _secend.text = [NSString stringWithFormat:@"%ld''",_secendTime];
+        _playingTime = _secendTime;
     }
 }
 
@@ -242,14 +256,16 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
  *  添加定时器
  */
 - (void)addTimer{
+    
+    _secendTime = 0;
     _timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(refreshSlider) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
 - (void)refreshSlider{
     _secendTime++;
-    _secend.text = [NSString stringWithFormat:@"%ld'",_secendTime];
-    [_slider setValue:_slider.value+1.0/countDown animated:YES];
+    _secend.text = [NSString stringWithFormat:@"%ld''",_secendTime];
+    [_slider setProgress:_slider.progress+1.0/countDown animated:YES];
 }
 
 /**
@@ -271,7 +287,7 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
         case RecorderStateNormal:{
             
             [_rightBtn setImage:[UIImage imageNamed:@"question_record"] forState:UIControlStateNormal];
-            _secend.text = @"60'";
+            _secend.text = @"60''";
             [_rightBtn removeAllTargets];
             [_rightBtn addTarget:self action:@selector(startRecording:) forControlEvents:UIControlEventTouchUpInside];
             _playBtn.hidden = YES;

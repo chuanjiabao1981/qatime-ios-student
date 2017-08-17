@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "YZSlider.h"
+#import "M13ProgressViewBar.h"
 
 @interface YZReorder : UIViewController
 
@@ -19,7 +19,7 @@
 @property (nonatomic, strong) UIButton *playBtn ;
 
 /** 音频播放时候的滑竿 */
-@property (nonatomic, strong) YZSlider *slider ;
+@property (nonatomic, strong) M13ProgressViewBar *slider ;
 
 /** 时间 */
 @property (nonatomic, strong) UILabel *secend ;

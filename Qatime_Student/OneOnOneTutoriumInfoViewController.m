@@ -22,12 +22,18 @@
 #import "Features.h"
 #import "TeacherFeatureTagCollectionViewCell.h"
 #import "WorkFlowTableViewCell.h"
+#import "UIViewController+Token.h"
+#import "VideoPlayerViewController.h"
+
+
 
 @interface OneOnOneTutoriumInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,OneOnOneTeacherTableViewCellDelegate,UICollectionViewDelegate,UICollectionViewDataSource>{
     
     NavigationBar *_navigationBar;
     NSString  *_token;
     NSString *_idNumber;
+    
+    UIView *_buyView;
     
     /**购买按钮*/
     UIButton *_buyButton;
@@ -54,6 +60,8 @@
     NSArray *_workFlowArr;
     
     NSString *_lesson;
+    
+    BOOL _isBought;
 
 }
 
@@ -116,7 +124,7 @@
 /**请求一对一辅导班详情*/
 - (void)requestData{
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/detail",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         
@@ -124,34 +132,32 @@
             
             _dataDic = [dic[@"data"] copy];
             //首页赋值
-            OneOnOneClass *classMod = [OneOnOneClass yy_modelWithJSON:dic[@"data"]];
-            classMod.classID = dic[@"data"][@"id"];
-            classMod.descriptions = dic[@"data"][@"description"];
-            classMod.attributeDescriptions = [[NSMutableAttributedString alloc]initWithData:[dic[@"data"][@"description"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+            OneOnOneClass *classMod = [OneOnOneClass yy_modelWithJSON:dic[@"data"][@"interactive_course"]];
+            classMod.classID = dic[@"data"][@"interactive_course"][@"id"];
+            classMod.descriptions = dic[@"data"][@"interactive_course"][@"description"];
+            classMod.attributeDescriptions = [[NSMutableAttributedString alloc]initWithData:[dic[@"data"][@"interactive_course"][@"description"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
             //标题
-            _navigationBar.titleLabel.text = classMod.current_lesson_name;
+            _navigationBar.titleLabel.text = classMod.name;
             
             //特色
-            for (NSString *key in _dataDic[@"icons"]) {
+            for (NSString *key in _dataDic[@"interactive_course"][@"icons"]) {
                 
                 if (![key isEqualToString:@"cheap_moment"]) {
-                    if ([_dataDic[@"icons"][key]boolValue]==YES) {
+                    if ([_dataDic[@"interactive_course"][@"icons"][key]boolValue]==YES) {
                         Features *mod = [[Features alloc]init];
                         mod.include = [_dataDic[@"icons"][key] boolValue];
                         mod.content = key;
                         [_classFeaturesArray addObject:mod];
                     }
                 }
-                
             }
             
             //课时名称
-            for (NSDictionary *lesson in dic[@"data"][@"interactive_lesson"]) {
+            for (NSDictionary *lesson in dic[@"data"][@"interactive_course"][@"interactive_lesson"]) {
                 if ([lesson[@"status"]isEqualToString:@"teaching"]) {
                     _lesson = lesson[@"name"];
                 }
             }
-            
             
             [self.view addSubview:self.myView];
             [self setupBuyBar];
@@ -184,19 +190,16 @@
             }
             
             //判断购买状态
-            if (classMod.is_bought == NO) {
-                [_buyButton setTitle:@"立即购买" forState:UIControlStateNormal];
-                [_buyButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
-                [_buyButton addTarget:self action:@selector(buyClass:) forControlEvents:UIControlEventTouchUpInside];
-            }else{
-                
+            if (![dic[@"ticket"] isEqual:[NSNull null]]) {
+                _isBought = YES;
                 [_buyButton setTitle:@"立即学习" forState:UIControlStateNormal];
                 [_buyButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
                 [_buyButton addTarget:self action:@selector(enterClass) forControlEvents:UIControlEventTouchUpInside];
-                
+            }else{
+                [_buyButton setTitle:@"立即购买" forState:UIControlStateNormal];
+                [_buyButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
+                [_buyButton addTarget:self action:@selector(buyClass:) forControlEvents:UIControlEventTouchUpInside];
             }
-            
-            //
             
         }else{
             //数据错误
@@ -246,9 +249,7 @@
     
     [self.navigationController pushViewController:orderVC animated:YES];
 
-    
 }
-
 
 
 
@@ -320,35 +321,35 @@
 - (void)setupBuyBar{
     
     /* 购买bar*/
-    UIView *buyView = [[UIView alloc]init];
-    buyView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:buyView];
-    buyView.sd_layout
+    _buyView = [[UIView alloc]init];
+    _buyView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:_buyView];
+    _buyView.sd_layout
     .leftSpaceToView(self.view, 0)
     .bottomSpaceToView(self.view, 0)
     .rightSpaceToView(self.view, 0)
     .heightIs(TabBar_Height);
     
-    [self.view bringSubviewToFront:buyView];
+    [self.view bringSubviewToFront:_buyView];
     
     UIView *lines = [[UIView alloc]init];
     lines.backgroundColor = SEPERATELINECOLOR_2;
-    [buyView addSubview:lines];
+    [_buyView addSubview:lines];
     lines.sd_layout
-    .leftSpaceToView(buyView, 0)
-    .rightSpaceToView(buyView, 0)
-    .topSpaceToView(buyView, 0)
+    .leftSpaceToView(_buyView, 0)
+    .rightSpaceToView(_buyView, 0)
+    .topSpaceToView(_buyView, 0)
     .heightIs(0.5);
     _buyButton = [[UIButton alloc]init];
     
     _buyButton.layer.borderColor = NAVIGATIONRED.CGColor;
     _buyButton.layer.borderWidth = 1;
-    [buyView addSubview:_buyButton];
+    [_buyView addSubview:_buyButton];
     _buyButton.sd_layout
-    .leftSpaceToView(buyView, 10)
-    .topSpaceToView(buyView, 10)
-    .bottomSpaceToView(buyView, 10)
-    .rightSpaceToView(buyView, 10);
+    .leftSpaceToView(_buyView, 10)
+    .topSpaceToView(_buyView, 10)
+    .bottomSpaceToView(_buyView, 10)
+    .rightSpaceToView(_buyView, 10);
     _buyButton.sd_cornerRadius = @2;
     
     
@@ -461,65 +462,50 @@
         }
     }
     
-    
     return height;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-//    NIMChatroom *chatroom = [[NIMChatroom alloc]init];
-//    chatroom.roomId = @"8130727";
-//    chatroom.name = @"哈喽";
-//    
-//    //创建数据
-//    NSMutableArray *noticeArr = @[].mutableCopy;
-//    TutoriumListInfo *tutoium;
-//    NSMutableArray <Teacher *> *teachers = @[].mutableCopy;
-//    NSMutableArray *classArr = @[].mutableCopy;
-//    NSMutableArray *membersArr = @[].mutableCopy;
-//    
-//    if (![_dataDic[@"chat_team"] isEqual:[NSNull null]]) {
-//        
-//        if (![_dataDic[@"chat_team"][@"announcement"] isEqual:[NSNull null]]) {
-//            
-//            for (NSDictionary *dic in _dataDic[@"chat_team"][@"announcement"]) {
-//                
-//                Notice *mod  = [Notice yy_modelWithJSON:dic];
-//                [noticeArr addObject:mod];
-//            }
-//        }
-//        
-//        if (![_dataDic[@"chat_team"][@"accounts"] isEqual:[NSNull null]]) {
-//            for (NSMutableDictionary *dic in _dataDic[@"chat_team"][@"accounts"]) {
-//                Members *mod = [Members yy_modelWithJSON:dic];
-//                [membersArr addObject:mod];
-//            }
-//        }
-//    }
-//    
-//    tutoium = [TutoriumListInfo yy_modelWithJSON:_dataDic];
-//    tutoium.describe = _dataDic[@"description"];
-//    
-//    if (![_dataDic[@"teachers"]isEqual:[NSNull null]]) {
-//        for (NSDictionary *dic in _dataDic[@"teachers"]) {
-//            Teacher *mod = [Teacher yy_modelWithJSON:dic];
-//            mod.teacherID = dic[@"id"];
-//            [teachers addObject:mod];
-//        }
-//    }
-//    
-//    if (![_dataDic[@"interactive_lessons"]isEqual:[NSNull null]]) {
-//        
-//        for (NSDictionary *dic in _dataDic[@"interactive_lessons"]) {
-//            Classes *mod = [Classes yy_modelWithJSON:dic];
-//            mod.classID = dic[@"id"];
-//            [classArr addObject:mod];
-//        }
-//    }
-//    
-//    InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatroom andNotice:noticeArr andTutorium:tutoium andTeacher:_teachersArray andClasses:classArr andOnlineMembers:membersArr];
-//    [self.navigationController pushViewController:controller animated:YES];
-
+    OneOnOneLessonTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (_isBought ==YES) {
+        if (cell.model.replayable == YES) {
+            //专属课回放详情
+            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/scheduled_lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+                
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                
+                if ([dic[@"status"]isEqualToNumber:@1]) {
+                    
+                    if ([dic[@"data"][@"replayable"]boolValue]== YES) {
+                        if (dic[@"data"][@"replay"]==nil) {
+                            
+                        }else{
+                            NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+                            [decodeParm addObject:@"software"];
+                            [decodeParm addObject:@"videoOnDemand"];
+                            
+                            VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+                            [self presentViewController:video animated:YES completion:^{
+                                
+                            }];
+                        }
+                        
+                    }else{
+                        [self HUDStopWithTitle:@"服务器繁忙"];
+                    }
+                    
+                }else{
+                    [self HUDStopWithTitle:@"暂无回放视频"];
+                }
+                
+            }failure:^(id  _Nullable erros) {
+                
+            }];
+        }else{
+            
+        }
+    }
     
 }
 

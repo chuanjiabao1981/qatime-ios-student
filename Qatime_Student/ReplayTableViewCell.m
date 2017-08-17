@@ -93,7 +93,14 @@
     
     _model = model;
     [_classImage sd_setImageWithURL:model.logo_url];
-    _className.text = model.live_studio_lesson.name;
+    
+    if ([model.target_type isEqualToString:@"LiveStudio::Lesson"]) {
+        _className.text = model.live_studio_lesson.name;
+    }else if ([model.target_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
+        _className.text = model.live_studio_interactive_lesson.name;
+    }else if ([model.target_type isEqualToString:@"LiveStudio::ScheduledLesson"]){
+        _className.text = model.live_studio_scheduled_leddson.name;
+    }
     _classInfo.text = [[[model.grade stringByAppendingString:model.subject]stringByAppendingString:@" | "]stringByAppendingString:model.teacher_name];
     _counts.text = model.replay_times;
     

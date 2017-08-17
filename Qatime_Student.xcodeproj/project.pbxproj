@@ -150,6 +150,8 @@
 		544AD3C21EC02C7B002F567D /* UINavigationController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 544AD3BF1EC02C7B002F567D /* UINavigationController+ZFPlayerRotation.m */; };
 		544AD3D11EC098FE002F567D /* WorkFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 544AD3D01EC098FE002F567D /* WorkFlowView.m */; };
 		544AD3D41EC0993E002F567D /* WorkFlowTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544AD3D31EC0993E002F567D /* WorkFlowTableViewCell.m */; };
+		544B54731F447675004A8E18 /* M13ProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B54701F447675004A8E18 /* M13ProgressView.m */; };
+		544B54741F447675004A8E18 /* M13ProgressViewBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B54721F447675004A8E18 /* M13ProgressViewBar.m */; };
 		544B61EB1E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B61EA1E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.m */; };
 		544B61FA1E9647F100D7B160 /* LCActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B61F11E9647F100D7B160 /* LCActionSheet.m */; };
 		544B61FB1E9647F100D7B160 /* LCActionSheetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B61F31E9647F100D7B160 /* LCActionSheetCell.m */; };
@@ -985,6 +987,10 @@
 		544AD3D01EC098FE002F567D /* WorkFlowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkFlowView.m; sourceTree = "<group>"; };
 		544AD3D21EC0993E002F567D /* WorkFlowTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkFlowTableViewCell.h; sourceTree = "<group>"; };
 		544AD3D31EC0993E002F567D /* WorkFlowTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkFlowTableViewCell.m; sourceTree = "<group>"; };
+		544B546F1F447675004A8E18 /* M13ProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M13ProgressView.h; sourceTree = "<group>"; };
+		544B54701F447675004A8E18 /* M13ProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = M13ProgressView.m; sourceTree = "<group>"; };
+		544B54711F447675004A8E18 /* M13ProgressViewBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M13ProgressViewBar.h; sourceTree = "<group>"; };
+		544B54721F447675004A8E18 /* M13ProgressViewBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = M13ProgressViewBar.m; sourceTree = "<group>"; };
 		544B61E91E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionTeacherListTableViewCell.h; sourceTree = "<group>"; };
 		544B61EA1E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionTeacherListTableViewCell.m; sourceTree = "<group>"; };
 		544B61F01E9647F100D7B160 /* LCActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCActionSheet.h; sourceTree = "<group>"; };
@@ -2849,6 +2855,17 @@
 			path = libs;
 			sourceTree = "<group>";
 		};
+		544B546E1F44765D004A8E18 /* M13ProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				544B546F1F447675004A8E18 /* M13ProgressView.h */,
+				544B54701F447675004A8E18 /* M13ProgressView.m */,
+				544B54711F447675004A8E18 /* M13ProgressViewBar.h */,
+				544B54721F447675004A8E18 /* M13ProgressViewBar.m */,
+			);
+			name = M13ProgressView;
+			sourceTree = "<group>";
+		};
 		544B61E81E95DBD200D7B160 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -4284,6 +4301,7 @@
 		54A153A81DC6F09D0070B508 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				544B546E1F44765D004A8E18 /* M13ProgressView */,
 				54774CFC1F444A5200150C05 /* ZLPhotoPicker */,
 				54774CC21F4448C700150C05 /* ZLPhotoBrowser */,
 				544B75FA1F4150C200B8B20A /* PopMenu */,
@@ -7473,6 +7491,7 @@
 				54AC02821E892D3C00817767 /* UIView+NTES.m in Sources */,
 				546448B01F274B35001C52FF /* ExclusiveChatViewController.m in Sources */,
 				54DBA4AE1DE4423300A67A90 /* UITextField+YZEmotion.m in Sources */,
+				544B54741F447675004A8E18 /* M13ProgressViewBar.m in Sources */,
 				547E92CB1E8E51F300160C6D /* OneOnOneTutorimInfoView.m in Sources */,
 				5454D2B11EC1824F0045F4C9 /* UITabBarController+Rotation.m in Sources */,
 				544B76291F417E5600B8B20A /* ExclusiveCoursewareViewController.m in Sources */,
@@ -7529,6 +7548,7 @@
 				54AB48CE1DED31D3008E3BC5 /* HeadBackView.m in Sources */,
 				54AC03E51E8938E100817767 /* NIMFileContentConfig.m in Sources */,
 				54FB1DCD1DF172F300BA9A3C /* BindingViewController.m in Sources */,
+				544B54731F447675004A8E18 /* M13ProgressView.m in Sources */,
 				54B9CAF91DFE4A9D003961FF /* WithdrawConfirmView.m in Sources */,
 				54AC03D91E8938E100817767 /* NIMInputEmoticonTabView.m in Sources */,
 				54AC03C11E8938E100817767 /* NSString+NIM.m in Sources */,
