@@ -157,8 +157,6 @@
 
     if ([unpaidModel.status isEqualToString:@"unpaid"]) {
         _status.text = @"等待付款";
-    }else if ([unpaidModel.status isEqualToString:@"paid"]){
-        _status.text = @"交易完成";
     }else if ([unpaidModel.status isEqualToString:@"shipped"]){
         _status.text = @"交易完成";
     }else if ([unpaidModel.status isEqualToString:@"canceled"]){

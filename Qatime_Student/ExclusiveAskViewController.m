@@ -45,6 +45,8 @@
     [self makeData];
     
     [self setupViews];
+    
+    
 }
 
 - (void)makeData{
@@ -119,6 +121,7 @@
     [cell setModelWithModel:_questionsArray[indexPath.row]];
     
     return  cell;
+    
 }
 
 
@@ -140,6 +143,8 @@
         [self.mainView.segmentControl setSelectedSegmentIndex:pages animated:YES];
         
     }
+
+    
 }
 
 

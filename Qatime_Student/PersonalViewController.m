@@ -33,7 +33,6 @@
 #import "GuestBindingViewController.h"
 
 #import "MyQuestionViewController.h"
-#import "DownloadManagerViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.width
@@ -461,8 +460,7 @@
                 }
                     break;
                 case 9:{
-                    //下载
-                    controller = [[DownloadManagerViewController alloc]init];
+                    
                 }
                     break;
                     

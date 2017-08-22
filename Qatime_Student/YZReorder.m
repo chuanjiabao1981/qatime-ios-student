@@ -7,7 +7,9 @@
 //
 
 #import "YZReorder.h"
-
+#import <AVFoundation/AVFoundation.h>
+#import "UIControl+RemoveTarget.h"
+#import "UIAlertController+Blocks.h"
 
 /**
  录音机的 状态
@@ -39,7 +41,12 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
 
 }
 
+@property (nonatomic, strong) AVAudioSession *session;
 
+@property (nonatomic, strong) AVAudioRecorder *recorder;//录音器
+
+@property (nonatomic, strong) AVAudioPlayer *player; //播放器
+@property (nonatomic, strong) NSURL *recordFileUrl; //文件地址
 
 @end
 
