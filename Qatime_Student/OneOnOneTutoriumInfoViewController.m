@@ -24,6 +24,7 @@
 #import "WorkFlowTableViewCell.h"
 #import "UIViewController+Token.h"
 #import "VideoPlayerViewController.h"
+#import "InteractionReplayPlayerViewController.h"
 
 
 
@@ -485,7 +486,7 @@
                             [decodeParm addObject:@"software"];
                             [decodeParm addObject:@"videoOnDemand"];
                             
-                            VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+                            InteractionReplayPlayerViewController *video  = [[InteractionReplayPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
                             [self presentViewController:video animated:YES completion:^{
                                 
                             }];

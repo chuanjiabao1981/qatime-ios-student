@@ -20,3 +20,6 @@
 #import "UIViewController+HUD.h"
 #import "HMSegmentedControl+Category.h"
 #import "Questions.h"
+#import "UIColor+HcdCustom.h"
+#import "YZReorder.h"
+#import "YZPlayerRecorder.h"

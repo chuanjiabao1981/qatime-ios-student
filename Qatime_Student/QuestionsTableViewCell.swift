@@ -28,16 +28,19 @@ class QuestionsTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.backgroundColor = UIColor.white
+        self.backgroundColor = UIColor.clear
         self.selectionStyle = .none
         content = UIView.init()
+        content.backgroundColor = UIColor.white
         self.contentView.addSubview(content)
-        content.layer.borderColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0).cgColor
-        content.layer.borderWidth = 0.5
+//        content.layer.borderColor = UIColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0).cgColor
+//        content.layer.borderWidth = 0.5
+        content.layer.shadowOffset = CGSize(width:1,height:1)
+        content.layer.shadowColor = TITLECOLOR.cgColor
         content.sd_layout()
         .leftSpaceToView(self.contentView,10*ScrenScale)?
         .rightSpaceToView(self.contentView,10*ScrenScale)?
-        .topSpaceToView(self.contentView,10*ScrenScale)?
+        .topSpaceToView(self.contentView,0*ScrenScale)?
         .bottomSpaceToView(self.contentView,10*ScrenScale)
         
         //标题
@@ -91,7 +94,7 @@ class QuestionsTableViewCell: UITableViewCell {
         asker.text = model.name
         infos.text = "创建时间 "+model.creat_at
         if model.resolve == true{
-            status.textColor = UIColor.green
+            status.textColor = UIColor.init(hexString: "20ad65")
             status.text = "已回复"
         }else{
             status.textColor = UIColor.red
@@ -102,7 +105,6 @@ class QuestionsTableViewCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()

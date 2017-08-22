@@ -17,9 +17,10 @@ class ExclusiveAskView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        self.backgroundColor = UIColor.init(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.0)
         segmentControl = HMSegmentedControl.segmentControl(withTitles: ["全部","我的"])
         segmentControl.selectionIndicatorLocation = .none
+        segmentControl.backgroundColor = UIColor.clear
         segmentControl.borderType = HMSegmentedControlBorderType(rawValue: 0)
         self.addSubview(segmentControl)
         segmentControl.sd_layout()
@@ -42,9 +43,8 @@ class ExclusiveAskView: UIView {
         scrollView.contentSize = CGSize(width:100,height:100)
         
         allQuestionsList = UITableView.init()
-        
         allQuestionsList.separatorStyle = .none
-        
+        allQuestionsList.backgroundColor = UIColor.init(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.0)
         scrollView.addSubview(allQuestionsList)
         allQuestionsList.sd_layout()
             .leftSpaceToView(scrollView,0)?
@@ -55,7 +55,8 @@ class ExclusiveAskView: UIView {
         allQuestionsList.showsVerticalScrollIndicator = false
         
         myQuestionsList = UITableView.init()
-        
+        myQuestionsList.backgroundColor = UIColor.init(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.0)
+
         myQuestionsList.separatorStyle = .none
         scrollView.addSubview(myQuestionsList)
         myQuestionsList.sd_layout()
