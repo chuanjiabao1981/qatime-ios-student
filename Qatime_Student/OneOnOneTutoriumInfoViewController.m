@@ -205,6 +205,7 @@
             //数据错误
         }
         [self HUDStopWithTitle:nil];
+    }failure:^(id  _Nullable erros) {
     }];
     
 }
@@ -502,6 +503,8 @@
             }failure:^(id  _Nullable erros) {
                 
             }];
+            
+            
         }else{
             
         }

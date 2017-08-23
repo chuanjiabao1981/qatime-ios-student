@@ -134,6 +134,7 @@
             [_chargeView.chargeMenu reloadSections:[NSIndexSet indexSetWithIndex:0]];
         }
         
+    }failure:^(id  _Nullable erros) {
     }];
         
 }

@@ -254,11 +254,13 @@
                      
                      [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/orders/%@/pay",Request_Header,dataInfo[@"id"] ] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
                          
+                     }failure:^(id  _Nullable erros) {
                      }];
                  }else{
                      
                      
                  }
+             }failure:^(id  _Nullable erros) {
              }];
              
          }];

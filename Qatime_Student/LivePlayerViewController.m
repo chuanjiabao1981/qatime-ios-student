@@ -2934,6 +2934,7 @@ bool ismute     = NO;
                 }
                 
                 
+            }failure:^(id  _Nullable erros) {
             }];
             
             
@@ -4522,6 +4523,7 @@ bool ismute     = NO;
                     [self HUDStopWithTitle:@"服务器正忙,请稍后再试"];
                 }
                 
+            }failure:^(id  _Nullable erros) {
             }];
             
             

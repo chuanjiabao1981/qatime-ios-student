@@ -457,6 +457,7 @@
             [_headerView.todayLiveScrollView reloadData];
         }
         
+    }failure:^(id  _Nullable erros) {
     }];
     
 }
@@ -497,6 +498,7 @@
             
         }
         
+    }failure:^(id  _Nullable erros) {
     }];
     
 }
@@ -562,6 +564,7 @@
         }
         
         
+    }failure:^(id  _Nullable erros) {
     }];
     
     
@@ -859,6 +862,7 @@
             
         }
         
+    }failure:^(id  _Nullable erros) {
     }];
     
 }
