@@ -153,7 +153,7 @@
     
     /* 导航栏加载*/
     _navigationBar = ({
-        NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+        NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
         [self .view addSubview:_];
         //右边扫描
         [_.rightButton setImage:[UIImage imageNamed:@"scan"] forState:UIControlStateNormal];

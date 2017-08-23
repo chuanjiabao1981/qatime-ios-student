@@ -317,8 +317,23 @@
     /* 所有消息变为已读*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(allMessageRead) name:@"AllMessageRead" object:nil];
     
+    
+    //查看本地是否有download文件夹,有则跳过,没有创建
+    [self setDownloadFilePath];
+    
 }
-
+- (void)setDownloadFilePath{
+    //download文件夹创建在Documents下面
+    
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSString *downloadPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject stringByAppendingPathComponent:@"download"];
+    if ([manager fileExistsAtPath:downloadPath]) {
+        
+    }else{
+        [manager createDirectoryAtPath:downloadPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    
+}
 
 
 //收到新消息

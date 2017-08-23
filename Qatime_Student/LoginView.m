@@ -51,7 +51,7 @@
         
         _logoImage.sd_layout
         .centerXEqualToView(self)
-        .topSpaceToView(_acrossLogin, Navigation_Height*2)
+        .topSpaceToView(_acrossLogin, UIScreenHeight*0.2)
         .widthRatioToView(self, 2/3.0)
         .autoHeightRatio(112/479.0);
         [_logoImage updateLayout];
@@ -110,7 +110,7 @@
         
         _text1.sd_layout
         .leftSpaceToView(self,30*ScrenScale)
-        .topSpaceToView(_logoImage,Navigation_Height*2)
+        .topSpaceToView(_logoImage,UIScreenHeight*0.2)
         .rightSpaceToView(self,30*ScrenScale)
         .heightIs(50*ScrenScale);
         

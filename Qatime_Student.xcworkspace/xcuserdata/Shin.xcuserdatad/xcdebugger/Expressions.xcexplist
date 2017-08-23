@@ -112,6 +112,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[DownloadManagerViewController selecteAllItem:]:DownloadManagerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_filesArray">
+            </PersistentString>
+            <PersistentString
+               value = "_selectedItems">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__37-[OrderViewController requestBalance]_block_invoke:OrderViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -618,13 +629,13 @@
          contextName = "-[TeachersPublicViewController numberOfSectionsInCollectionView:]:TeachersPublicViewController.m">
          <PersistentStrings>
             <PersistentString
+               value = "_publicCount">
+            </PersistentString>
+            <PersistentString
                value = "_oneOnOneCount">
             </PersistentString>
             <PersistentString
                value = "_videoCount">
-            </PersistentString>
-            <PersistentString
-               value = "_publicCount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1154,6 +1165,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[DownloadManagerViewController editTableView:]:DownloadManagerViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__82-[PersonalInfoViewController imagePickerController:didFinishPickingMediaWithInfo:]_block_invoke:PersonalInfoViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1239,6 +1253,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_currentPage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__45-[DownloadManagerViewController deleteItems:]_block_invoke:DownloadManagerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_selectedItems">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -2181,6 +2203,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_dataDic">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[DownloadManagerViewController loadFiles]:DownloadManagerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_enumerator">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
