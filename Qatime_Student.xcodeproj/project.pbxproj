@@ -6218,6 +6218,8 @@
 		54DBD95D1F4AF2160045D5CC /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				54DBD96A1F4AF90C0045D5CC /* KsFileObjModel.h */,
+				54DBD96B1F4AF90C0045D5CC /* KsFileObjModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -6238,8 +6240,6 @@
 				54DBD9781F4AFC7D0045D5CC /* UIColor+CJColorCategory.m */,
 				54DBD96D1F4AF9270045D5CC /* UIImage+TYHSetting.h */,
 				54DBD96E1F4AF9270045D5CC /* UIImage+TYHSetting.m */,
-				54DBD96A1F4AF90C0045D5CC /* KsFileObjModel.h */,
-				54DBD96B1F4AF90C0045D5CC /* KsFileObjModel.m */,
 				54DBD97A1F4AFD200045D5CC /* KsFlieLookUpVC.h */,
 				54DBD97B1F4AFD200045D5CC /* KsFlieLookUpVC.m */,
 				54DBD9921F4AFDFC0045D5CC /* KsHttp.h */,
