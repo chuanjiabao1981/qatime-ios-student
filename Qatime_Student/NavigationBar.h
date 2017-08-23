@@ -12,7 +12,6 @@
 
 #import <UIKit/UIKit.h>
 
-
 typedef enum : NSUInteger {
     /* 默认绿色*/
     DefaultColor,

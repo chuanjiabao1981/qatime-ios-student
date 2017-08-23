@@ -84,49 +84,20 @@
     _lessonName.text = model.name;
     _date.text = [NSString stringWithFormat:@"%@ %@ - %@ | 老师:%@",model.class_date,model.start_time,model.end_time,model.teacher.name];
     _status.text = [NSString statusSwitchWithStatus:model.status];
-    
-    if ([model.status isEqualToString:@"finished"]||[model.status isEqualToString:@"missed"]||[model.status isEqualToString:@"billing"]||[model.status isEqualToString:@"completed"]||[model.status isEqualToString:@"missed"]) {
-        
-        if (model.replayable) {
+    if ([[NSString statusSwitchWithStatus:model.status] isEqualToString:@"已结束"]) {
+        if (@"replayable") {
             _status.textColor = BUTTONRED;
             _status.text = @"观看回放";
         }else{
             _status.textColor = TITLECOLOR;
-            [self switchStatus:model];
         }
+        
+        
     }else{
-        _status.textColor = TITLECOLOR;
-        [self switchStatus:model];
+        self.status.textColor = [UIColor blackColor];
     }
     
 }
-- (void)switchStatus:(InteractionLesson *)model{
-    
-    /* 已开课的状态*/
-    if ([model.status isEqualToString:@"init"]) {
-        _status.text =@"未开始";
-    }else if([model.status isEqualToString:@"ready"]){
-        _status.text =@"待上课";
-    }else if([model.status isEqualToString:@"teaching"]){
-        _status.text =@"直播中";
-    }else if([model.status isEqualToString:@"closed"]){
-        _status.text =@"已直播";
-    }else if([model.status isEqualToString:@"finished"]){
-        _status.textColor = TITLECOLOR;
-        _status.text =@"已结束";
-    }else if([model.status isEqualToString:@"pause"]){
-        _status.text =@"暂停中";
-    }else if([model.status isEqualToString:@"missed"]){
-        _status.text =@"待补课";
-    }else if([model.status isEqualToString:@"billing"]){
-        _status.textColor = TITLECOLOR;
-        _status.text =@"已结束";
-    }else if([model.status isEqualToString:@"completed"]){
-        _status.text =@"已结束";
-    }
-    
-}
-
 
 
 - (void)awakeFromNib {
