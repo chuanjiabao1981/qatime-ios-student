@@ -3635,6 +3635,13 @@
 			name = Cell;
 			sourceTree = "<group>";
 		};
+		5465CFFB1F4D6B7700F9A696 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "New Group";
+			sourceTree = "<group>";
+		};
 		54689A961F04AC6900CD01ED /* KSCrash */ = {
 			isa = PBXGroup;
 			children = (
@@ -6830,6 +6837,7 @@
 		54FCBAC61DD591AA0094BF58 /* 视频播放页 */ = {
 			isa = PBXGroup;
 			children = (
+				5465CFFB1F4D6B7700F9A696 /* New Group */,
 				546448A31F2747AF001C52FF /* ExclusivePlayer */,
 				54294C741DDB354400677333 /* LivePlayer */,
 				547B6C3C1E2E14ED00C52F1B /* ReplayVideoPlayer */,
