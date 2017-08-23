@@ -647,6 +647,8 @@
 		54D82B001EAF350A0034015F /* ChargeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D82AFF1EAF350A0034015F /* ChargeCollectionViewCell.m */; };
 		54D86EDC1EFBAD8B0059932C /* ReplayLessonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D86EDB1EFBAD8B0059932C /* ReplayLessonsView.m */; };
 		54D8DDBB1DCB634100F0B408 /* PersonalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D8DDBA1DCB634100F0B408 /* PersonalView.m */; };
+		54D9A5951F4D76B300F30C2F /* InteractionReplayLesson.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D9A5941F4D76B300F30C2F /* InteractionReplayLesson.m */; };
+		54D9A5981F4D771200F30C2F /* InteractionReplayLessonsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D9A5971F4D771200F30C2F /* InteractionReplayLessonsTableViewCell.m */; };
 		54DBA4AB1DE4423300A67A90 /* Emotion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 54DBA4981DE4423300A67A90 /* Emotion.bundle */; };
 		54DBA4AC1DE4423300A67A90 /* emotion.plist in Resources */ = {isa = PBXBuildFile; fileRef = 54DBA4991DE4423300A67A90 /* emotion.plist */; };
 		54DBA4AD1DE4423300A67A90 /* emotionToText.plist in Resources */ = {isa = PBXBuildFile; fileRef = 54DBA49A1DE4423300A67A90 /* emotionToText.plist */; };
@@ -2032,6 +2034,10 @@
 		54D86EDB1EFBAD8B0059932C /* ReplayLessonsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplayLessonsView.m; sourceTree = "<group>"; };
 		54D8DDB91DCB634100F0B408 /* PersonalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalView.h; sourceTree = "<group>"; };
 		54D8DDBA1DCB634100F0B408 /* PersonalView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalView.m; sourceTree = "<group>"; };
+		54D9A5931F4D76B300F30C2F /* InteractionReplayLesson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionReplayLesson.h; sourceTree = "<group>"; };
+		54D9A5941F4D76B300F30C2F /* InteractionReplayLesson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionReplayLesson.m; sourceTree = "<group>"; };
+		54D9A5961F4D771200F30C2F /* InteractionReplayLessonsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionReplayLessonsTableViewCell.h; sourceTree = "<group>"; };
+		54D9A5971F4D771200F30C2F /* InteractionReplayLessonsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionReplayLessonsTableViewCell.m; sourceTree = "<group>"; };
 		54DBA4981DE4423300A67A90 /* Emotion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Emotion.bundle; sourceTree = "<group>"; };
 		54DBA4991DE4423300A67A90 /* emotion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = emotion.plist; sourceTree = "<group>"; };
 		54DBA49A1DE4423300A67A90 /* emotionToText.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = emotionToText.plist; sourceTree = "<group>"; };
@@ -6147,6 +6153,41 @@
 			name = View;
 			sourceTree = "<group>";
 		};
+		54D9A58F1F4D768100F30C2F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54E0C27B1F4C5537002D6DE0 /* InteractionReplayPlayerViewController.h */,
+				54E0C27C1F4C5537002D6DE0 /* InteractionReplayPlayerViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54D9A5901F4D768300F30C2F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54D9A5921F4D769800F30C2F /* Cell */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54D9A5911F4D768500F30C2F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54D9A5931F4D76B300F30C2F /* InteractionReplayLesson.h */,
+				54D9A5941F4D76B300F30C2F /* InteractionReplayLesson.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		54D9A5921F4D769800F30C2F /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				54D9A5961F4D771200F30C2F /* InteractionReplayLessonsTableViewCell.h */,
+				54D9A5971F4D771200F30C2F /* InteractionReplayLessonsTableViewCell.m */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
 		54DBA4961DE4423300A67A90 /* YZEmotionKeyboard */ = {
 			isa = PBXGroup;
 			children = (
@@ -6391,8 +6432,9 @@
 		54E0C27A1F4C5468002D6DE0 /* 一对一回放播放器 */ = {
 			isa = PBXGroup;
 			children = (
-				54E0C27B1F4C5537002D6DE0 /* InteractionReplayPlayerViewController.h */,
-				54E0C27C1F4C5537002D6DE0 /* InteractionReplayPlayerViewController.m */,
+				54D9A5911F4D768500F30C2F /* Model */,
+				54D9A5901F4D768300F30C2F /* View */,
+				54D9A58F1F4D768100F30C2F /* Controller */,
 			);
 			name = "一对一回放播放器";
 			sourceTree = "<group>";
@@ -7532,6 +7574,7 @@
 				546448AD1F274A08001C52FF /* ExclusivePlayerViewController.m in Sources */,
 				54DF02DC1F3078D200F6C1D1 /* NewestClass.m in Sources */,
 				544B76061F4150E900B8B20A /* UIView+AdjustFrame.m in Sources */,
+				54D9A5981F4D771200F30C2F /* InteractionReplayLessonsTableViewCell.m in Sources */,
 				545162D81DF55DD0000BD17A /* PersonalTableViewCell.m in Sources */,
 				548D1D7F1EA7421400B120C8 /* AllClassViewController.m in Sources */,
 				54DBA4B01DE4423300A67A90 /* YZEmotionCell.m in Sources */,
@@ -7589,6 +7632,7 @@
 				54AB48CB1DED2DC7008E3BC5 /* SettingViewController.m in Sources */,
 				54652E0F1DEE9D4B00F4607C /* AboutUsViewController.m in Sources */,
 				54FCBAEC1DD5CA9F0094BF58 /* NoticeAndMembers.m in Sources */,
+				54D9A5951F4D76B300F30C2F /* InteractionReplayLesson.m in Sources */,
 				54FB1DCA1DF172E600BA9A3C /* BindingView.m in Sources */,
 				54AC03CB1E8938E100817767 /* NIMPageView.m in Sources */,
 				54DBD9761F4AFC650045D5CC /* KsFileViewCell.m in Sources */,

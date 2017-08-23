@@ -7,9 +7,20 @@
 //
 
 #import "VideoPlayerViewController.h"
+#import "InteractionReplayLesson.h"
+#import "InteractionReplayLessonsTableViewCell.h"
 
 @interface InteractionReplayPlayerViewController : VideoPlayerViewController
 
 @property (nonatomic, strong) UITableView *lessonList ;
+
+@property (nonatomic, strong) UIButton *lessonListBtn ;
+
+@property (nonatomic, strong) NSArray *replayArray ;
+
+@property (nonatomic, strong) NSMutableArray *replayLessonsArray ;
+
+- (id)initWithURL:(NSURL *)url  andTitle:(NSString *)title andReplayArray:(NSArray *)replaysArray andPlayingIndex:(NSIndexPath *)indexPath;
+
 
 @end

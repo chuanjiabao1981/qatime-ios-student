@@ -11,33 +11,10 @@
 
 @interface VideoPlayerViewController (){
     
-    NSString *_videoTitle;
     
 }
 
-@property (nonatomic, strong) UIView *playerView;
-@property (nonatomic, strong) UIControl *controlOverlay;
-@property (nonatomic, strong) UIView *topControlView;
-@property (nonatomic, strong) UIView *bottomControlView;
-@property (nonatomic, strong) UIButton *playQuitBtn;
-@property (nonatomic, strong) UILabel *fileName;
 
-
-@property (nonatomic, strong) UILabel *currentTime;
-@property (nonatomic, strong) UILabel *totalDuration;
-@property (nonatomic, strong) UISlider *videoProgress;
-
-@property (nonatomic, strong) UIActivityIndicatorView *bufferingIndicate;
-@property (nonatomic, strong) UILabel *bufferingReminder;
-
-@property (nonatomic, strong) UIButton *playBtn;
-@property (nonatomic, strong) UIButton *pauseBtn;
-@property (nonatomic, strong) UIButton *audioBtn;
-@property (nonatomic, strong) UIButton *muteBtn;
-@property (nonatomic, strong) UIButton *scaleModeBtn;
-@property (nonatomic, strong) UIButton *snapshotBtn;
-
-@property (nonatomic, strong) UIButton *resolutionBtn;
 
 @end
 

@@ -156,4 +156,43 @@
     }];
 }
 
+
+- (void)GETSessionURL:(NSString * _Nonnull)url withHeaderInfo:(NSString * _Nullable)headinfo andHeaderfield:(NSString *_Nullable)headerField parameters:(nullable id)parameters withDownloadProgress:(progressHandle _Nullable)progress  completeSuccess:(successHandle _Nullable)success failure:(faildHandel _Nullable)faild{
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    if (headinfo!=nil&&headerField!=nil) {
+        [manager.requestSerializer setValue:headinfo forHTTPHeaderField:headerField];
+    }else{
+        
+    }
+    [manager GET:url parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
+        progress(downloadProgress);
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        faild(error);
+    }];
+    
+}
+- (void)POSTSessionURL:(NSString * _Nonnull)url withHeaderInfo:(NSString * _Nullable)headinfo andHeaderfield:(NSString *_Nullable)headerField parameters:(nullable id)parameters  withUploadProgress:(progressHandle _Nullable)progress completeSuccess:(successHandle _Nullable )success failure:(faildHandel _Nullable)faild{
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    if (headinfo!=nil&&headerField!=nil) {
+        [manager.requestSerializer setValue:headinfo forHTTPHeaderField:headerField];
+    }else{
+        
+    }
+    
+    [manager POST:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        progress(uploadProgress);
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        faild(error);
+    }];
+}
+
+
 @end

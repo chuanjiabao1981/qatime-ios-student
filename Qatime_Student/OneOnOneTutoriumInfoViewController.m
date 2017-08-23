@@ -28,6 +28,7 @@
 
 
 
+
 @interface OneOnOneTutoriumInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,OneOnOneTeacherTableViewCellDelegate,UICollectionViewDelegate,UICollectionViewDataSource>{
     
     NavigationBar *_navigationBar;
@@ -472,37 +473,56 @@
     if (_isBought ==YES) {
         if (cell.model.replayable == YES) {
             //专属课回放详情
-            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/scheduled_lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-                
+//            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/scheduled_lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+//                
+//                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+//                
+//                if ([dic[@"status"]isEqualToNumber:@1]) {
+//                    
+//                    if ([dic[@"data"][@"replayable"]boolValue]== YES) {
+//                        if (dic[@"data"][@"replay"]==nil) {
+//                            
+//                        }else{
+//                            NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+//                            [decodeParm addObject:@"software"];
+//                            [decodeParm addObject:@"videoOnDemand"];
+//                            
+//                            InteractionReplayPlayerViewController *video  = [[InteractionReplayPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+//                            [self presentViewController:video animated:YES completion:^{
+//                                
+//                            }];
+//                        }
+//                        
+//                    }else{
+//                        [self HUDStopWithTitle:@"服务器繁忙"];
+//                    }
+//                    
+//                }else{
+//                    [self HUDStopWithTitle:@"暂无回放视频"];
+//                }
+//                
+//            }failure:^(id  _Nullable erros) {
+//                
+//            }];
+            
+            
+            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-                
                 if ([dic[@"status"]isEqualToNumber:@1]) {
-                    
-                    if ([dic[@"data"][@"replayable"]boolValue]== YES) {
-                        if (dic[@"data"][@"replay"]==nil) {
-                            
-                        }else{
-                            NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
-                            [decodeParm addObject:@"software"];
-                            [decodeParm addObject:@"videoOnDemand"];
-                            
-                            InteractionReplayPlayerViewController *video  = [[InteractionReplayPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
-                            [self presentViewController:video animated:YES completion:^{
-                                
-                            }];
-                        }
+                    if ([dic[@"data"][@"replayable"]boolValue]==YES) {
+                        //可以随便播放
                         
-                    }else{
-                        [self HUDStopWithTitle:@"服务器繁忙"];
+                        NSArray *replayArr = dic[@"data"][@"replay"];
+                        NSURL *playingURL = [NSURL URLWithString:replayArr[indexPath.row][@"shd_url"]];
+                        InteractionReplayPlayerViewController *controller = [[InteractionReplayPlayerViewController alloc]initWithURL:playingURL andTitle:dic[@"data"][@"name"] andReplayArray:replayArr andPlayingIndex:indexPath];
+                        [self.navigationController pushViewController:controller animated:YES];
                     }
-                    
-                }else{
-                    [self HUDStopWithTitle:@"暂无回放视频"];
                 }
                 
-            }failure:^(id  _Nullable erros) {
+            } failure:^(id  _Nullable erros) {
                 
             }];
+            
         }else{
             
         }
@@ -566,8 +586,6 @@
     
     return  CGSizeMake(self.view.width_sd/3.0,20);
 }
-
-
 
 
 /**无数据占位图*/
