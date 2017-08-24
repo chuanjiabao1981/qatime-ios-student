@@ -33,7 +33,7 @@
  *
  * 收到一个来自微信的处理结果。调用一次sendReq后会收到onResp。
  * 可能收到的处理结果有SendMessageToWXResp、SendAuthResp等。
- * @param resp 具体的回应内容，是自动释放的
+ * @param resp具体的回应内容，是自动释放的
  */
 -(void) onResp:(BaseResp*)resp;
 
@@ -59,7 +59,6 @@
  * @return 成功返回YES，失败返回NO。
  */
 +(BOOL) registerApp:(NSString *)appid;
-
 
 /*! @brief WXApi的成员函数，向微信终端程序注册第三方应用。
  *

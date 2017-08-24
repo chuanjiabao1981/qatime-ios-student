@@ -203,7 +203,7 @@
     
     /* 推送设置*/
     /* 友盟推送设置初始化*/
-    [UMessage startWithAppkey:@"5846465b1c5dd042ae000732" launchOptions:launchOptions httpsenable:YES];
+    [UMessage startWithAppkey:@"5846465b1c5dd042ae000732" launchOptions:launchOptions httpsEnable:YES];
     
     /* 程序运行时,开启捕获异常,在程序出现不可避免的崩溃和闪退的时候,弹窗提醒而不闪退*/
     [UncaughtExceptionHandler installUncaughtExceptionHandler:YES showAlert:YES];
@@ -213,14 +213,12 @@
     [GLobalRealReachability startNotifier];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkChanged:) name:kRealReachabilityChangedNotification object:nil];
 
-
     /** 置入KSCrash */
 //    KSCrashInstallationStandard* installation = [KSCrashInstallationStandard sharedInstance];
 //    installation.url = [NSURL URLWithString:@"https://collector.bughd.com/kscrash?key=ee0afdebf41d63c77c6ff5c3f5c705bf"];
 //    [installation install];
 //    [installation sendAllReportsWithCompletion:nil];
 
-    
     /** 置入友盟统计工具*/
     UMConfigInstance.appKey = @"5846465b1c5dd042ae000732";
     [MobClick startWithConfigure:UMConfigInstance];//配置以上参数后调用此方法初始化SDK！

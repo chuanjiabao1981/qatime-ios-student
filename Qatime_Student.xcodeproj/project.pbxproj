@@ -310,6 +310,8 @@
 		545074681EDFB4CC0012A383 /* InteractionClassInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545074671EDFB4CC0012A383 /* InteractionClassInfoViewController.m */; };
 		5450746E1EE005F80012A383 /* SAMKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5450746B1EE005F80012A383 /* SAMKeychain.m */; };
 		5450746F1EE005F80012A383 /* SAMKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 5450746D1EE005F80012A383 /* SAMKeychainQuery.m */; };
+		5450B3EF1F4EAFC500E7A64B /* libUMessage_Sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5450B3EE1F4EAFC500E7A64B /* libUMessage_Sdk.a */; };
+		5450B3F51F4EB1C500E7A64B /* libUMessage_Sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5450B3F11F4EB1C500E7A64B /* libUMessage_Sdk.a */; };
 		545162B11DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162B01DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m */; };
 		545162BB1DF50D85000BD17A /* ChangePasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162BA1DF50D85000BD17A /* ChangePasswordView.m */; };
 		545162BE1DF50D99000BD17A /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162BD1DF50D99000BD17A /* ChangePasswordViewController.m */; };
@@ -418,7 +420,6 @@
 		547E92D11E8E56F100160C6D /* OneOnOneWorkFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E92D01E8E56F100160C6D /* OneOnOneWorkFlowView.m */; };
 		547E92D41E8E813B00160C6D /* OneOnOneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E92D31E8E813B00160C6D /* OneOnOneClass.m */; };
 		547FBF1E1DF658C000955A9E /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547FBF1D1DF658C000955A9E /* UserNotifications.framework */; };
-		547FBF2A1DF681B300955A9E /* libUMessage_Sdk_1.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 547FBF291DF681B300955A9E /* libUMessage_Sdk_1.4.0.a */; };
 		547FBF351DF6CEC800955A9E /* PersonalDescTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF341DF6CEC800955A9E /* PersonalDescTableViewCell.m */; };
 		547FBF381DF6CFD700955A9E /* MyWalletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF371DF6CFD700955A9E /* MyWalletView.m */; };
 		54813C4F1E14F30000D6F739 /* NoticeSwitchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54813C4E1E14F30000D6F739 /* NoticeSwitchTableViewCell.m */; };
@@ -1335,6 +1336,9 @@
 		5450746B1EE005F80012A383 /* SAMKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMKeychain.m; sourceTree = "<group>"; };
 		5450746C1EE005F80012A383 /* SAMKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMKeychainQuery.h; sourceTree = "<group>"; };
 		5450746D1EE005F80012A383 /* SAMKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMKeychainQuery.m; sourceTree = "<group>"; };
+		5450B3EE1F4EAFC500E7A64B /* libUMessage_Sdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libUMessage_Sdk.a; path = Qatime_Student/UMessage_Sdk_1.4.0/libUMessage_Sdk.a; sourceTree = "<group>"; };
+		5450B3F11F4EB1C500E7A64B /* libUMessage_Sdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMessage_Sdk.a; sourceTree = "<group>"; };
+		5450B3F41F4EB1C500E7A64B /* UMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMessage.h; sourceTree = "<group>"; };
 		545162AF1DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+EnlargeTouchArea.h"; sourceTree = "<group>"; };
 		545162B01DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+EnlargeTouchArea.m"; sourceTree = "<group>"; };
 		545162B91DF50D85000BD17A /* ChangePasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordView.h; sourceTree = "<group>"; };
@@ -1585,7 +1589,6 @@
 		547FBF1A1DF657FE00955A9E /* jpush-ios-3.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "jpush-ios-3.0.0.a"; path = "Qatime_Student/JPush-iOS-SDK-3.0.0/Lib/jpush-ios-3.0.0.a"; sourceTree = "<group>"; };
 		547FBF1D1DF658C000955A9E /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		547FBF1F1DF658C800955A9E /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
-		547FBF271DF6817300955A9E /* UMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMessage.h; sourceTree = "<group>"; };
 		547FBF291DF681B300955A9E /* libUMessage_Sdk_1.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libUMessage_Sdk_1.4.0.a; path = Qatime_Student/UMessage_Sdk_1.4.0/libUMessage_Sdk_1.4.0.a; sourceTree = "<group>"; };
 		547FBF331DF6CEC800955A9E /* PersonalDescTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDescTableViewCell.h; sourceTree = "<group>"; };
 		547FBF341DF6CEC800955A9E /* PersonalDescTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDescTableViewCell.m; sourceTree = "<group>"; };
@@ -2233,6 +2236,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5450B3EF1F4EAFC500E7A64B /* libUMessage_Sdk.a in Frameworks */,
 				5472B5A81F4EA64800C3110D /* libresolv.tbd in Frameworks */,
 				5472B59F1F4EA4B300C3110D /* libsqlite3.tbd in Frameworks */,
 				54EA78AF1F386D6C00CB8E08 /* UMMobClick.framework in Frameworks */,
@@ -2250,7 +2254,6 @@
 				5472B5A61F4EA5EA00C3110D /* libNMCBasicModule.a in Frameworks */,
 				5493D4A51E0B98F70085A39E /* MapKit.framework in Frameworks */,
 				5493D48C1E0B81A40085A39E /* CoreLocation.framework in Frameworks */,
-				547FBF2A1DF681B300955A9E /* libUMessage_Sdk_1.4.0.a in Frameworks */,
 				547FBF1E1DF658C000955A9E /* UserNotifications.framework in Frameworks */,
 				54294CD61DDB3CD500677333 /* libz.1.tbd in Frameworks */,
 				54294CC31DDB3AC400677333 /* libstdc++.tbd in Frameworks */,
@@ -2277,6 +2280,7 @@
 				5422E7CE1F4E77B6008B0A96 /* libevent.a in Frameworks */,
 				5429159C1DD9DDD300EE1A70 /* VideoToolbox.framework in Frameworks */,
 				5422E7D61F4E77B6008B0A96 /* libopenh264.a in Frameworks */,
+				5450B3F51F4EB1C500E7A64B /* libUMessage_Sdk.a in Frameworks */,
 				5429159B1DD9DDCE00EE1A70 /* AudioToolbox.framework in Frameworks */,
 				5422E7D51F4E77B6008B0A96 /* libnvs.a in Frameworks */,
 				5429159A1DD9DDC900EE1A70 /* CoreMedia.framework in Frameworks */,
@@ -4593,11 +4597,13 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
-		547FBF251DF6817300955A9E /* UMessage_Sdk_1.4.0 */ = {
+		547FBF251DF6817300955A9E /* UMessage_Sdk */ = {
 			isa = PBXGroup;
 			children = (
-				547FBF271DF6817300955A9E /* UMessage.h */,
+				5450B3F11F4EB1C500E7A64B /* libUMessage_Sdk.a */,
+				5450B3F41F4EB1C500E7A64B /* UMessage.h */,
 			);
+			name = UMessage_Sdk;
 			path = UMessage_Sdk_1.4.0;
 			sourceTree = "<group>";
 		};
@@ -4956,7 +4962,7 @@
 				54B73CFF1DE3E85A00B7A7EB /* ChineseSorting */,
 				549C8D4F1EB1C64500CCD2FB /* JBWatchActivityIndicator */,
 				5493D4BC1E0BE1050085A39E /* TLCityPicker */,
-				547FBF251DF6817300955A9E /* UMessage_Sdk_1.4.0 */,
+				547FBF251DF6817300955A9E /* UMessage_Sdk */,
 				54C525081E7BAC000005B5A0 /* TTGTagCollectionView */,
 				54CB266C1DF02FC600AE7414 /* WeChatSDK */,
 				54955D601DDBF1180079EB99 /* 网易云信 */,
@@ -7199,6 +7205,7 @@
 		B493EB6DEDE6DB14F293C15A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5450B3EE1F4EAFC500E7A64B /* libUMessage_Sdk.a */,
 				5472B59E1F4EA4B300C3110D /* libsqlite3.tbd */,
 				54504AD11E9E220500EFCF8E /* libNELivePlayer.a */,
 				54A6C4A01E97393700B56135 /* StoreKit.framework */,
