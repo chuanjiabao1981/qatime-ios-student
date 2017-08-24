@@ -243,7 +243,7 @@ bool videoIsmute     = NO;
     [super viewWillAppear:animated];
     NSLog(@"viewWillAppear");
     NSLog(@"Version = %@", [self.liveplayer getSDKVersion]);
-    [self.liveplayer isLogToFile:YES];
+    [self.liveplayer isLogToFile:NO];
     
     if ([self.mediaType isEqualToString:@"livestream"] ) {
         [self.liveplayer setBufferStrategy:NELPLowDelay]; //直播低延时模式

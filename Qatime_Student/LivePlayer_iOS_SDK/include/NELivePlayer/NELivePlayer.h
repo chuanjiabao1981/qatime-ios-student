@@ -67,20 +67,20 @@ typedef enum NELPMovieFinishReason {
  */
 typedef struct NELPVideoInfo {
     const char *codec_type;  //!< 视频编码器类型 如: h264
-    NSInteger width;   //!< 视频宽度
-    NSInteger height;  //!< 视频高度
-    CGFloat fps;       //!< 视频的帧率
-    NSInteger bitrate; //!< 码率 (单位: kb/s)
+    NSInteger   width;       //!< 视频宽度
+    NSInteger   height;      //!< 视频高度
+    CGFloat     fps;         //!< 视频的帧率
+    NSInteger   bitrate;     //!< 码率 (单位: kb/s)
 }NELPVideoInfo;
 
 /**
  * @brief 音频信息
  */
 typedef struct NELPAudioInfo {
-    const char *codec_type;  //!< 音频编码器类型 如: aac
-    NSInteger sample_rate;   //!< 音频的采样率
-    NSInteger bitrate;       //!< 码率 (单位: kb/s)
-    NSInteger numOfChannels; //!< 音频的通道数
+    const char *codec_type;   //!< 音频编码器类型 如: aac
+    NSInteger  sample_rate;   //!< 音频的采样率
+    NSInteger  bitrate;       //!< 码率 (单位: kb/s)
+    NSInteger  numOfChannels; //!< 音频的通道数
 }NELPAudioInfo;
 
 /**
@@ -93,12 +93,21 @@ typedef enum NELPVideoFormat {
 /**
  * @brief 回调的视频数据结构
  */
-typedef struct NELPVideoFrame {
-    int             width;    //!< 视频宽度
-    int             height;   //!< 视频高度
-    unsigned char   *UsrData; //!< 视频数据
-    NELPVideoFormat vFormat;  //!< 视频格式
-} NELPVideoFrame;
+typedef struct NELPVideoRawData {
+    int            width;    //!< 视频宽度
+    int            height;   //!< 视频高度
+    unsigned char *UsrData;  //!< 视频数据
+} NELPVideoRawData;
+
+/**
+ * @brief 回调的音频数据结构
+ */
+typedef struct NELPAudioRawData {
+    int            channels;   //!< 通道数
+    int            samplerate; //!< 采样率
+    int            data_size;  //!< 数据长度
+    unsigned char *usrData;    //!< 音频数据
+} NELPAudioRawData;
 
 /**
  * @brief 密钥校验结果
@@ -114,6 +123,32 @@ typedef enum NELPKeyCheckResult {
 } NELPKeyCheckResult;
 
 
+typedef enum NELPMultiMediaType {
+    NELP_MEDIA_INVALID = -1, // 无效的
+    NELP_MEDIA_SD      = 0,  // 低清
+    NELP_MEDIA_MD      = 1,  // 标清
+    NELP_MEDIA_HD      = 2,  // 高清
+    NELP_MEDIA_SHD     = 3,  // 超清
+} NELPMultiMediaType;
+
+typedef enum NELPSwitchStreamState {
+    NELP_SWITCH_SUCCESS   = 0, // 切换成功
+    NELP_SWITCH_NO_STREAM = 1, // 没有对应的流
+    NELP_SWITCH_FAILED    = 2, // 切换失败
+} NELPSwitchStreamState;
+
+typedef struct NELPSwitchStreamResult {
+    NELPSwitchStreamState state;
+}NELPSwitchStreamResult;
+
+
+//typedef struct NELPAudioQueue {
+//    float first_pts;
+//    float last_pts;
+//    int nb_packets;
+//}NELPAudioQueue;
+
+
 // ----------------------------------------------------------------------------
 
 @protocol NELivePlayer;
@@ -126,8 +161,6 @@ typedef enum NELPKeyCheckResult {
  * @brief  设置缓冲策略，在播放器初始化后，prepareToPlay之前调用
  *
  * @discussion 缓冲策略有直播低延时模式、直播流畅模式以及点播抗抖动模式，如果是直播，建议采用低延时模式或流畅模式，如果是点播或本地视频，建议采用抗抖动模式
- *
- * @return 无
  */
 - (void)setBufferStrategy:(NELPBufferStrategy)bufferStrategy;
 
@@ -135,8 +168,6 @@ typedef enum NELPKeyCheckResult {
  *	@brief	设置数据源，初始化视频文件为播放做准备，在播放前调用
  *
  *  @discussion 当prepareToPlay完成时,若shouldAutoplay 为YES，则会自动调用play进行播放，若shouldAutoplay为 NO，则需手动调用play进行播放
- *
- *	@return	无
  */
 - (void)prepareToPlay;
 
@@ -146,8 +177,6 @@ typedef enum NELPKeyCheckResult {
  *  @discussion
  *  如果当前正在播放，则调用该方法将无效果\\\n
  *  此时播放器状态为: NELPMoviePlaybackStatePlaying
- *
- *	@return	无
  */
 - (void)play;
 
@@ -157,8 +186,6 @@ typedef enum NELPKeyCheckResult {
  *  @discussion
  *  调用play方法继续播放。如果当前播放已经暂停，则调用该方法将无效果。\\\n
  *  此时播放器状态为: NELPMoviePlaybackStatePaused
- *
- *	@return	无
  */
 - (void)pause;
 
@@ -167,8 +194,6 @@ typedef enum NELPKeyCheckResult {
  *
  *  @discussion
  *  此时播放器状态为:NELPMoviePlaybackStateStopped
- *
- *	@return	无
  */
 - (void)stop;
 
@@ -184,8 +209,6 @@ typedef enum NELPKeyCheckResult {
  *  @discussion
  *  在播放器退出时，需要调用该方法用于释放资源。\\\n
  *  若在播放过程中需要切换URL，首先需要调用该方法停止播放，然后调用removeFromSuperview 将view移除，并将player置为nil，再初始化，prepareToPlay，最后调用play方法。
- *
- *	@return	无
  */
 - (void)shutdown;
 
@@ -199,8 +222,6 @@ typedef enum NELPKeyCheckResult {
  *  注意：仅播放点播流时支持后台暂停；对于直播流，若在切入后台时不需要继续播放，则需要在切入后台的过程中将播放器关闭并释放相关资源，切回前台再重新开始播放。
  *
  *	@param 	pause 	YES：后台暂停 NO：继续播放
- *
- *	@return	无
  */
 - (void)setPauseInBackground:(BOOL)pause;
 
@@ -223,8 +244,6 @@ typedef enum NELPKeyCheckResult {
  *	@brief	静音功能
  *
  *	@param 	isMute 	YES：开启静音 NO：关闭静音
- *
- *	@return	无
  */
 - (void)setMute: (BOOL)isMute;
 
@@ -232,18 +251,14 @@ typedef enum NELPKeyCheckResult {
  *	@brief	设置是否开启硬件解码，仅IOS 8.0以上支持，默认不开启
  *
  *  @param 	isOpen 	YES：硬件解码 NO：软件解码
- *
- *	@return	无
  */
 - (void)setHardwareDecoder :(BOOL)isOpen;
 
 /**
- *	@brief	截图
+ *	@brief	截图，以UIImage格式保存
  *
  *  @discussion
  *  调用prepareToPlay方法，播放器发出NELivePlayerDidPreparedToPlayNotification通知后，才能调用该方法。
- *
- *	@return	截图结果，以UIImage格式保存
  */
 - (UIImage *)getSnapshot;
 
@@ -255,8 +270,6 @@ typedef enum NELPKeyCheckResult {
  *  @discussion
  *  调用prepareToPlay方法，播放器发出NELivePlayerDidPreparedToPlayNotification通知后，调用该方法才能获取到有效的视频信息。
  *  注意：其中帧率和码率都是从视频头中读取，若头中没有该信息，则返回0.
- *
- *	@return	无
  */
 - (void)getVideoInfo :(NELPVideoInfo *)videoInfo;
 
@@ -267,8 +280,6 @@ typedef enum NELPKeyCheckResult {
  *
  *  @discussion
  *  调用prepareToPlay方法，播放器发出NELivePlayerDidPreparedToPlayNotification通知后，调用该方法才能获取到有效的音频信息。
- *
- *	@return	无
  */
 - (void)getAudioInfo :(NELPAudioInfo *)audioInfo;
 
@@ -289,9 +300,7 @@ typedef enum NELPKeyCheckResult {
 /**
  * @brief	设置播放速度，仅适用于点播
  *
- * @param	speed 	播放速度(范围 0.5 ~ 2.0)
- *
- * @return	无
+ * @param	playbackSpeed 	播放速度(范围 0.5 ~ 2.0)
  */
 - (void)setPlaybackSpeed:(float)playbackSpeed;
 
@@ -299,8 +308,6 @@ typedef enum NELPKeyCheckResult {
  * @brief 设置播放音量
  *
  * @param volume  音量大小(范围 0.0 ~ 1.0，0.0为最小，1.0为最大)
- *
- * @return	无
  */
 - (void)setVolume:(float)volume;
 
@@ -308,25 +315,32 @@ typedef enum NELPKeyCheckResult {
  * @brief 设置拉流超时时间，在prepareToPlay之前调用
  *
  * @param timeout 超时时间 (单位: 毫秒 ms 范围:0 ~ 30000ms)
- *
- * @return 无
  */
 - (void)setPlaybackTimeout:(long)timeout;
 
 /**
- * @brief 解密模块初始化，并校验密钥是否正确
+ * @brief 解密模块初始化，并校验密钥是否正确，返回密钥检测的状态
  *
  * @param transferToken 获取密钥的令牌
  * @param accid 视频云用户创建的其子用户id
  * @param appKey 开发者平台分配的AppKey
  * @param token 视频云用户子用户的token
  *
- * @return ret 返回密钥检测的状态
+ * @discussion 该接口不可与setDecryptionKey同时使用
  */
 - (void)initDecryption:(NSString *)transferToken :(NSString *)accid :(NSString *)appKey :(NSString *)token :(void(^)(NELPKeyCheckResult ret))completionBlock;
 
 /**
- * @brief 播放过程中切换播放地址，第一次播放不能调用该接口，仅限于播放过程中或播放结束后切换播放地址
+ * @brief 设置flv加密视频解密所需的密钥,在已知密钥的情况下可以调用该接口进行解密
+ * @param key 密钥
+ * @param length 密钥的长度
+ * @discussion 该接口不可与initDecryption接口同时使用, 在prepareToPlay前调用。
+ * ret 返回密钥检测的状态,只有密钥检测正确或没有加密的情况下才能prepareToPlay进行拉流解码，否则会解密失败
+ */
+- (void)setDecryptionKey:(Byte *)key andKeyLength:(int)length :(void(^)(NELPKeyCheckResult ret))completionBlock;
+
+/**
+ * @brief 播放过程中切换播放地址
  *
  * @param aUrl 待切换的播放地址
  *
@@ -334,6 +348,45 @@ typedef enum NELPKeyCheckResult {
  */
 - (int)switchContentUrl:(NSURL *)aUrl;
 
+/**
+ * @brief 视频数据的回调
+ *
+ * @param 回调的视频信息
+ */
+typedef void(^NELPVideoRawDataCB)(NELPVideoRawData *frame);
+
+/**
+ * @brief 注册获取视频帧数据的回调(只支持软件解码)，用户需要实现回调函数cb来接收视频帧
+ *
+ * @param mFormat         回调的视频数据格式
+ * @param videoRawDataCB  获取视频数据的回调函数
+ *
+ * @return < 0 获取失败
+ */
+- (int)registerGetVideoRawDataCB:(NELPVideoFormat)neVFormat and:(NELPVideoRawDataCB)videoRawDataCB;
+
+/**
+ * @brief 音频数据的回调
+ *
+ * @param 回调的音频信息
+ */
+typedef void(^NELPAudioRawDataCB)(NELPAudioRawData *frame);
+
+/**
+ * @brief 注册获取音频帧数据的回调，用户需要实现回调函数cb来接收音频帧
+ *
+ * @param audioRawDataCB  获取音频数据的回调函数
+ *
+ * @return < 0 获取失败
+ */
+- (int)registerGetAudioRawDataCB:(NELPAudioRawDataCB)audioRawDataCB;
+
+/**
+ * @brief 清晰度切换的结果回调
+ *
+ * @param result 回调的切换结果
+ */
+typedef void (^NELPSwitchStreamResultCB)(NELPSwitchStreamResult result);
 
 /**
  *	@brief	用于显示的view (只读)
@@ -376,8 +429,6 @@ typedef enum NELPKeyCheckResult {
  *	@brief	获取当前可播放的视频时长(单位：秒) (只读)
  *
  *  @discussion 当播放网络视频时，该值表示已经缓冲的视频的最大时长，若此时网络端开，则只能播放到该时刻为止。
- *
- *	@return	当前缓冲时长(单位：秒)
  */
 @property(nonatomic, readonly)  NSTimeInterval playableDuration;
 
@@ -404,12 +455,10 @@ typedef enum NELPKeyCheckResult {
  *
  *  播放状态的变换如下：\\\n
  *
- *  播放器调用initWithContentURL方法后处于NELPMoviePlaybackStateStopped状态，\\\n
+ *  播放器调用initWithContentURL方法后处于NELPMoviePlaybackStatePaused状态，\\\n
  *  调用prepareToPlay方法，如果完成对视频文件的初始化则进入NELPMoviePlaybackStatePlaying状态；\\\n
  *  当调用setCurrentPlaybackTime方法时转成NELPMoviePlaybackStateSeeking状态，\\\n
  *  调用pause方法转NELPMoviePlaybackStatePaused状态，调用stop方法转到NELPMoviePlaybackStateStopped状态。
- *
- *	@return	当前播放状态
  */
 @property(nonatomic, readonly)  NELPMoviePlaybackState playbackState;
 
@@ -427,7 +476,6 @@ typedef enum NELPKeyCheckResult {
  *  当播放器需要缓冲的时候，缓冲开始时，播放会暂停，此时播放器会收到NELivePlayerLoadStateChangedNotification通知，此时的加载状态为 NEPMovieLoadStateStalled \\\n
  *  当缓冲结束时，播放会继续，此时播放器会收到NELivePlayerLoadStateChangedNotification通知，此时的加载状态为 NELPMovieLoadStatePlaythroughOK
  *
- *	@return	当前加载状态
  */
 @property(nonatomic, readonly)  NELPMovieLoadState loadState;
 
@@ -437,8 +485,6 @@ typedef enum NELPKeyCheckResult {
  *  @param 	shouldAutoplay 	YES：自动播放 NO：手动播放
  *
  *  @discussion 当设置为YES后，则在调用prepareToPlay初始化视频文件完成后会自动调用play方法进行播放
- *
- *	@return	无
  */
 @property(nonatomic) BOOL shouldAutoplay;
 
@@ -473,6 +519,8 @@ NELP_EXTERN NSString *const NELivePlayerPlaybackDidFinishReasonUserInfoKey;
 NELP_EXTERN NSString *const NELivePlayerMoviePlayerSeekCompletedNotification;
 ///视频码流包解析异常时的消息通知
 NELP_EXTERN NSString *const NELivePlayerVideoParseErrorNotification;
+///不同清晰度视频流的条数通知
+NELP_EXTERN NSString *const NELivePlayerMulitDefinitionMediaNumberNotification;
 
 
 @end

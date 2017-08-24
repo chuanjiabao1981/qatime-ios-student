@@ -195,7 +195,7 @@ typedef enum : NSUInteger {
         [_videoPlayer setScalingMode:NELPMovieScalingModeAspectFit];
         
         /* 播放器的设置*/
-        [_videoPlayer isLogToFile:YES];
+        [_videoPlayer isLogToFile:NO];
         [_videoPlayer setBufferStrategy:NELPLowDelay]; //直播低延时模式
         [_videoPlayer setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
         [_videoPlayer setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
@@ -1181,7 +1181,7 @@ typedef enum : NSUInteger {
     [_videoPlayer setScalingMode:NELPMovieScalingModeAspectFit];
     
     /* 播放器的设置*/
-    [_videoPlayer isLogToFile:YES];
+    [_videoPlayer isLogToFile:NO];
     [_videoPlayer setBufferStrategy:NELPLowDelay]; //直播低延时模式
     [_videoPlayer setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
     [_videoPlayer setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放

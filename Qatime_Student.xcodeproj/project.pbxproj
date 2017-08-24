@@ -263,9 +263,6 @@
 		5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA31E042D45007B1DF9 /* NoticeIndexView.m */; };
 		5448AEA81E054C7A007B1DF9 /* ChatListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA71E054C7A007B1DF9 /* ChatListTableViewCell.m */; };
 		5448AEAB1E054CA4007B1DF9 /* NoticeListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEAA1E054CA4007B1DF9 /* NoticeListTableViewCell.m */; };
-		544AD3B91EC01AE2002F567D /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 544AD3B51EC01AE2002F567D /* libcrypto.a */; };
-		544AD3BA1EC01AE2002F567D /* libNELivePlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 544AD3B61EC01AE2002F567D /* libNELivePlayer.a */; };
-		544AD3BB1EC01AE2002F567D /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 544AD3B71EC01AE2002F567D /* libssl.a */; };
 		544AD3BC1EC01AE2002F567D /* ReleaseNote.md in Sources */ = {isa = PBXBuildFile; fileRef = 544AD3B81EC01AE2002F567D /* ReleaseNote.md */; };
 		544AD3C11EC02C7B002F567D /* UIViewController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 544AD3BE1EC02C7B002F567D /* UIViewController+ZFPlayerRotation.m */; };
 		544AD3C21EC02C7B002F567D /* UINavigationController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 544AD3BF1EC02C7B002F567D /* UINavigationController+ZFPlayerRotation.m */; };
@@ -376,6 +373,12 @@
 		5471C7FF1E8F87ED0098E509 /* TeachersGroupTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5471C7FE1E8F87ED0098E509 /* TeachersGroupTableView.m */; };
 		5471C8021E8F87FD0098E509 /* ClassListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5471C8011E8F87FD0098E509 /* ClassListTableView.m */; };
 		547210351EFBA24B00EA791C /* ReplayLessonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547210341EFBA24B00EA791C /* ReplayLessonsViewController.m */; };
+		5472B59F1F4EA4B300C3110D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5472B59E1F4EA4B300C3110D /* libsqlite3.tbd */; };
+		5472B5A41F4EA5EA00C3110D /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5472B5A01F4EA5EA00C3110D /* libcrypto.a */; };
+		5472B5A51F4EA5EA00C3110D /* libNELivePlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5472B5A11F4EA5EA00C3110D /* libNELivePlayer.a */; };
+		5472B5A61F4EA5EA00C3110D /* libNMCBasicModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5472B5A21F4EA5EA00C3110D /* libNMCBasicModule.a */; };
+		5472B5A71F4EA5EA00C3110D /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5472B5A31F4EA5EA00C3110D /* libssl.a */; };
+		5472B5A81F4EA64800C3110D /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 547FBF1F1DF658C800955A9E /* libresolv.tbd */; };
 		547610271F010B85007775B5 /* AmountExplainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547610261F010B85007775B5 /* AmountExplainViewController.swift */; };
 		547610291F0121DC007775B5 /* explain.html in Resources */ = {isa = PBXBuildFile; fileRef = 547610281F0121DC007775B5 /* explain.html */; };
 		54774CE81F44498800150C05 /* ZLPhotoPickerBrowserPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 54774CE51F44498800150C05 /* ZLPhotoPickerBrowserPhoto.m */; };
@@ -1242,9 +1245,6 @@
 		5448AEAA1E054CA4007B1DF9 /* NoticeListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeListTableViewCell.m; sourceTree = "<group>"; };
 		544AD3B21EC01AE2002F567D /* NELivePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NELivePlayer.h; sourceTree = "<group>"; };
 		544AD3B31EC01AE2002F567D /* NELivePlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NELivePlayerController.h; sourceTree = "<group>"; };
-		544AD3B51EC01AE2002F567D /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
-		544AD3B61EC01AE2002F567D /* libNELivePlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libNELivePlayer.a; sourceTree = "<group>"; };
-		544AD3B71EC01AE2002F567D /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
 		544AD3B81EC01AE2002F567D /* ReleaseNote.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ReleaseNote.md; sourceTree = "<group>"; };
 		544AD3BD1EC02C7B002F567D /* UIViewController+ZFPlayerRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ZFPlayerRotation.h"; sourceTree = "<group>"; };
 		544AD3BE1EC02C7B002F567D /* UIViewController+ZFPlayerRotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ZFPlayerRotation.m"; sourceTree = "<group>"; };
@@ -1463,6 +1463,11 @@
 		5471C8011E8F87FD0098E509 /* ClassListTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassListTableView.m; sourceTree = "<group>"; };
 		547210331EFBA24B00EA791C /* ReplayLessonsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayLessonsViewController.h; sourceTree = "<group>"; };
 		547210341EFBA24B00EA791C /* ReplayLessonsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplayLessonsViewController.m; sourceTree = "<group>"; };
+		5472B59E1F4EA4B300C3110D /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		5472B5A01F4EA5EA00C3110D /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
+		5472B5A11F4EA5EA00C3110D /* libNELivePlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libNELivePlayer.a; sourceTree = "<group>"; };
+		5472B5A21F4EA5EA00C3110D /* libNMCBasicModule.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libNMCBasicModule.a; sourceTree = "<group>"; };
+		5472B5A31F4EA5EA00C3110D /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
 		547388651DD9876E00A50CCC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		547388681DD987AD00A50CCC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		547389FD1DD9A3FA00A50CCC /* libaacplus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libaacplus.a; path = Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/Libs/libaacplus.a; sourceTree = "<group>"; };
@@ -2228,6 +2233,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5472B5A81F4EA64800C3110D /* libresolv.tbd in Frameworks */,
+				5472B59F1F4EA4B300C3110D /* libsqlite3.tbd in Frameworks */,
 				54EA78AF1F386D6C00CB8E08 /* UMMobClick.framework in Frameworks */,
 				54CB26731DF0302900AE7414 /* Security.framework in Frameworks */,
 				5422E7D71F4E77B6008B0A96 /* libopus.a in Frameworks */,
@@ -2236,11 +2243,11 @@
 				54504AD21E9E220500EFCF8E /* libNELivePlayer.a in Frameworks */,
 				5422E7D21F4E77B6008B0A96 /* libnio.a in Frameworks */,
 				54A6C4A11E97393700B56135 /* StoreKit.framework in Frameworks */,
-				544AD3B91EC01AE2002F567D /* libcrypto.a in Frameworks */,
-				544AD3BB1EC01AE2002F567D /* libssl.a in Frameworks */,
 				54E8B6A31E5EF1B600A9703F /* AddressBook.framework in Frameworks */,
+				5472B5A41F4EA5EA00C3110D /* libcrypto.a in Frameworks */,
 				54E8B6A11E5EF1AF00A9703F /* Contacts.framework in Frameworks */,
 				54689A981F04AC8600CD01ED /* KSCrash.framework in Frameworks */,
+				5472B5A61F4EA5EA00C3110D /* libNMCBasicModule.a in Frameworks */,
 				5493D4A51E0B98F70085A39E /* MapKit.framework in Frameworks */,
 				5493D48C1E0B81A40085A39E /* CoreLocation.framework in Frameworks */,
 				547FBF2A1DF681B300955A9E /* libUMessage_Sdk_1.4.0.a in Frameworks */,
@@ -2249,6 +2256,7 @@
 				54294CC31DDB3AC400677333 /* libstdc++.tbd in Frameworks */,
 				5429159F1DD9DDED00EE1A70 /* libz.tbd in Frameworks */,
 				5422E7D11F4E77B6008B0A96 /* libGPUImage.a in Frameworks */,
+				5472B5A51F4EA5EA00C3110D /* libNELivePlayer.a in Frameworks */,
 				5422E7D31F4E77B6008B0A96 /* libNMCVideoModule.a in Frameworks */,
 				54294CC21DDB3AAE00677333 /* libbz2.tbd in Frameworks */,
 				5429159E1DD9DDE600EE1A70 /* libsqlite3.0.tbd in Frameworks */,
@@ -2261,6 +2269,7 @@
 				548328E71DDC6F360053AB29 /* libmp3lame.a in Frameworks */,
 				54294F641DDB44DC00677333 /* CoreGraphics.framework in Frameworks */,
 				54294F631DDB44C200677333 /* CoreAudio.framework in Frameworks */,
+				5472B5A71F4EA5EA00C3110D /* libssl.a in Frameworks */,
 				54294F621DDB44A500677333 /* Foundation.framework in Frameworks */,
 				54294CD71DDB3CF000677333 /* CFNetwork.framework in Frameworks */,
 				54294CD51DDB3CCA00677333 /* OpenGLES.framework in Frameworks */,
@@ -2270,7 +2279,6 @@
 				5422E7D61F4E77B6008B0A96 /* libopenh264.a in Frameworks */,
 				5429159B1DD9DDCE00EE1A70 /* AudioToolbox.framework in Frameworks */,
 				5422E7D51F4E77B6008B0A96 /* libnvs.a in Frameworks */,
-				544AD3BA1EC01AE2002F567D /* libNELivePlayer.a in Frameworks */,
 				5429159A1DD9DDC900EE1A70 /* CoreMedia.framework in Frameworks */,
 				54CB26711DF02FE400AE7414 /* libWeChatSDK.a in Frameworks */,
 				542915991DD9DDC300EE1A70 /* CoreTelephony.framework in Frameworks */,
@@ -3470,9 +3478,10 @@
 		544AD3B41EC01AE2002F567D /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				544AD3B51EC01AE2002F567D /* libcrypto.a */,
-				544AD3B61EC01AE2002F567D /* libNELivePlayer.a */,
-				544AD3B71EC01AE2002F567D /* libssl.a */,
+				5472B5A01F4EA5EA00C3110D /* libcrypto.a */,
+				5472B5A11F4EA5EA00C3110D /* libNELivePlayer.a */,
+				5472B5A21F4EA5EA00C3110D /* libNMCBasicModule.a */,
+				5472B5A31F4EA5EA00C3110D /* libssl.a */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -7190,6 +7199,7 @@
 		B493EB6DEDE6DB14F293C15A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5472B59E1F4EA4B300C3110D /* libsqlite3.tbd */,
 				54504AD11E9E220500EFCF8E /* libNELivePlayer.a */,
 				54A6C4A01E97393700B56135 /* StoreKit.framework */,
 				54E8B6A21E5EF1B600A9703F /* AddressBook.framework */,
