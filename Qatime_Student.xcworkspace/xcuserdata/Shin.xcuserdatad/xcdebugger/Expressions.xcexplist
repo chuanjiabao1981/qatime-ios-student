@@ -104,21 +104,21 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[MessageSettingViewController viewDidLoad]:MessageSettingViewController.m">
+         contextName = "-[DownloadManagerViewController selecteAllItem:]:DownloadManagerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "allowNotification">
+               value = "_selectedItems">
+            </PersistentString>
+            <PersistentString
+               value = "_filesArray">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[DownloadManagerViewController selecteAllItem:]:DownloadManagerViewController.m">
+         contextName = "-[MessageSettingViewController viewDidLoad]:MessageSettingViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_filesArray">
-            </PersistentString>
-            <PersistentString
-               value = "_selectedItems">
+               value = "allowNotification">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -577,10 +577,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -629,13 +629,13 @@
          contextName = "-[TeachersPublicViewController numberOfSectionsInCollectionView:]:TeachersPublicViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_publicCount">
-            </PersistentString>
-            <PersistentString
                value = "_oneOnOneCount">
             </PersistentString>
             <PersistentString
                value = "_videoCount">
+            </PersistentString>
+            <PersistentString
+               value = "_publicCount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -871,10 +871,10 @@
          contextName = "-[NTESPageView reloadPage]:NTESPageView.m">
          <PersistentStrings>
             <PersistentString
-               value = "_pages">
+               value = "_currentPage">
             </PersistentString>
             <PersistentString
-               value = "_currentPage">
+               value = "_pages">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1514,6 +1514,11 @@
       </ContextState>
       <ContextState
          contextName = "__52-[InteractionChatViewController requestChatTeamUser]_block_invoke:InteractionChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_userList">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[ChooseGradeAndSubjectViewController userSelectedGrade:]:ChooseGradeAndSubjectViewController.m">
@@ -1739,10 +1744,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

@@ -23,7 +23,9 @@
 
 - (BOOL)serverRecordVideo;                          //服务器录制视频
 
-- (BOOL)videochatAutoCropping;                      //自动裁剪画面
+- (NIMNetCallVideoCrop)videochatVideoCrop;          //视频画面裁剪比例
+
+- (UIViewContentMode)videochatRemoteVideoContentMode; //对端画面的填充模式
 
 - (BOOL)videochatAutoRotateRemoteVideo;             //自动旋转视频聊天远端画面
 
@@ -47,10 +49,14 @@
 
 - (BOOL)preferHDAudio;                              //期望高清语音
 
-- (NSUInteger)bypassVideoMixMode;                   //互动直播推流混屏模式
+- (NIMAVChatScene)scene;                            //音视频场景设置
 
 - (BOOL)serverRecordWhiteboardData;                 //服务器录制白板数据
 
 - (BOOL)testerToolUI;                               //打开测试者菜单
+
+- (BOOL)provideLocalProcess;                        //视频前处理
+
+- (NSInteger)beautifyType;                          //美颜类型
 
 @end

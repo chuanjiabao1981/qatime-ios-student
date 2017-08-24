@@ -365,9 +365,11 @@
             
             for (NSDictionary *dic in users) {
                 Chat_Account *mod  = [Chat_Account yy_modelWithJSON:dic];
-                
-                /* 获取到的用户信息存到userlist里*/
-                [_userList addObject:mod];
+                if (mod) {
+                    /* 获取到的用户信息存到userlist里*/
+                    [_userList addObject:mod];
+                    
+                }
             }
             
             [self requestChatHitstory];

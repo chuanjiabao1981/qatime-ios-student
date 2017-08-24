@@ -88,10 +88,10 @@
     _isInMeeting = NO;
 }
 
-- (BOOL)setBypassLiveStreaming:(BOOL)enabled
-{
-    return [NTESNetcallManager setBypassStreamingEnabled:enabled];
-}
+//- (BOOL)setBypassLiveStreaming:(BOOL)enabled
+//{
+//    return [NTESNetcallManager setBypassStreamingEnabled:enabled];
+//}
 
 #pragma mark - NIMNetCallManagerDelegate
 - (void)onUserJoined:(NSString *)uid
@@ -162,35 +162,44 @@
 {
     NIMNetCallOption *option = [[NIMNetCallOption alloc] init];
     
-    option.disableVideoCropping = ![[NTESBundleSetting sharedConfig] videochatAutoCropping];
     option.autoRotateRemoteVideo = [[NTESBundleSetting sharedConfig] videochatAutoRotateRemoteVideo];
     option.serverRecordAudio     = [[NTESBundleSetting sharedConfig] serverRecordAudio];
     option.serverRecordVideo     = [[NTESBundleSetting sharedConfig] serverRecordVideo];
     option.preferredVideoEncoder = [[NTESBundleSetting sharedConfig] perferredVideoEncoder];
     option.preferredVideoDecoder = [[NTESBundleSetting sharedConfig] perferredVideoDecoder];
     option.videoMaxEncodeBitrate = [[NTESBundleSetting sharedConfig] videoMaxEncodeKbps] * 1000;
-    option.startWithBackCamera   = [[NTESBundleSetting sharedConfig] startWithBackCamera];
     option.autoDeactivateAudioSession = [[NTESBundleSetting sharedConfig] autoDeactivateAudioSession];
     option.audioDenoise = [[NTESBundleSetting sharedConfig] audioDenoise];
     option.voiceDetect = [[NTESBundleSetting sharedConfig] voiceDetect];
     option.preferHDAudio = [[NTESBundleSetting sharedConfig] preferHDAudio];
-    option.preferredVideoQuality = [[NTESBundleSetting sharedConfig] preferredVideoQuality];
-    option.bypassStreamingVideoMixMode = [[NTESBundleSetting sharedConfig] bypassVideoMixMode];
-    
-    BOOL isManager = [NTESMeetingRolesManager defaultManager].myRole.isManager;
-    
-    //会议的观众这里默认用低清发送视频
-    if (option.preferredVideoQuality == NIMNetCallVideoQualityDefault) {
-        if (!isManager) {
-            option.preferredVideoQuality = NIMNetCallVideoQualityLow;
-        }
-    }
-    
-    option.bypassStreamingUrl = isManager ? [[NTESMeetingRolesManager defaultManager] livePushUrl] : nil;
-    option.enableBypassStreaming = isManager;
-    
+    option.scene = [[NTESBundleSetting sharedConfig] scene];
+    option.videoCaptureParam = [self videoCaptureParam];
     _meeting.option = option;
 }
+
+- (NIMNetCallVideoCaptureParam *)videoCaptureParam
+{
+    NIMNetCallVideoCaptureParam *param = [[NIMNetCallVideoCaptureParam alloc] init];
+    
+    param.videoCrop = [[NTESBundleSetting sharedConfig] videochatVideoCrop];
+    
+    param.startWithBackCamera   = [[NTESBundleSetting sharedConfig] startWithBackCamera];
+    
+    param.preferredVideoQuality = [[NTESBundleSetting sharedConfig] preferredVideoQuality];
+    
+    param.provideLocalVideoProcess = [[NTESBundleSetting sharedConfig] provideLocalProcess];
+    
+    BOOL isManager = [NTESMeetingRolesManager sharedInstance].myRole.isManager;
+    
+    //会议的观众这里默认用低清发送视频
+    if (param.preferredVideoQuality == NIMNetCallVideoQualityDefault) {
+        if (!isManager) {
+            param.preferredVideoQuality = NIMNetCallVideoQualityLow;
+        }
+    }
+    return param;
+}
+
 
 
 -(NSNumber *)volumeLevel:(UInt16)volume

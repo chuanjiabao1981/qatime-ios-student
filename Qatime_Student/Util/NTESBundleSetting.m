@@ -30,9 +30,17 @@
     return [[[NSUserDefaults standardUserDefaults] objectForKey:@"server_record_video"] boolValue];
 }
 
-- (BOOL)videochatAutoCropping
+- (NIMNetCallVideoCrop)videochatVideoCrop
 {
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:@"videochat_auto_cropping"] boolValue];
+    id setting = [[NSUserDefaults standardUserDefaults] objectForKey:@"videochat_video_crop"];
+    
+    return setting ? [setting integerValue] : NIMNetCallVideoCrop1x1;
+}
+
+- (UIViewContentMode)videochatRemoteVideoContentMode
+{
+    NSInteger setting = [[[NSUserDefaults standardUserDefaults] objectForKey:@"videochat_remote_video_content_mode"] integerValue];
+    return (setting == 0) ? UIViewContentModeScaleAspectFill : UIViewContentModeScaleAspectFit;
 }
 
 - (BOOL)videochatAutoRotateRemoteVideo
@@ -110,7 +118,7 @@
     else {
         return YES;
     }
-
+    
 }
 
 - (BOOL)voiceDetect
@@ -123,7 +131,7 @@
     else {
         return YES;
     }
-
+    
 }
 
 - (BOOL)preferHDAudio
@@ -138,17 +146,18 @@
     }
 }
 
-- (NSUInteger)bypassVideoMixMode
+- (NIMAVChatScene)scene
 {
-    id setting = [[NSUserDefaults standardUserDefaults] objectForKey:@"videochat_bypass_mix_mode"];
-
+    id setting = [[NSUserDefaults standardUserDefaults] objectForKey:@"avchat_scene"];
+    
     if (setting) {
-        return [setting integerValue];
+        return [setting unsignedIntegerValue];
     }
     else {
-        return NIMNetCallVideoMixModeLatticeAspectFit;
+        return NIMAVChatSceneDefault;
     }
 }
+
 
 - (BOOL)serverRecordWhiteboardData
 {
@@ -160,13 +169,33 @@
     return [[[NSUserDefaults standardUserDefaults] objectForKey:@"tester_tool_ui"] boolValue];
 }
 
+- (BOOL)provideLocalProcess
+{
+    id setting = [[NSUserDefaults standardUserDefaults] objectForKey:@"local_video_process"];
+    
+    if (setting) {
+        return [setting boolValue];
+    }
+    else
+    {
+        return YES;
+    }
+}
+
+- (NSInteger)beautifyType
+{
+    NSInteger localBeautifyType = [[[NSUserDefaults standardUserDefaults] objectForKey:@"video_beautify"] integerValue];
+    
+    return localBeautifyType;
+}
+
 - (NSString *)description
 {
     return [NSString stringWithFormat:
             @"\n\n\n" \
             "server_record_audio %d\n" \
             "server_record_video %d\n" \
-            "videochat_auto_cropping %d\n" \
+            "videochat_video_crop %zd\n" \
             "videochat_auto_rotate_remote_video %d \n" \
             "videochat_preferred_video_quality %zd\n" \
             "videochat_start_with_back_camera %zd\n" \
@@ -178,13 +207,13 @@
             "videochat_audio_denoise %zd\n" \
             "videochat_voice_detect %zd\n" \
             "videochat_prefer_hd_audio %zd\n" \
-            "videochat_bypass_mix_mode %zd\n" \
+            "avchat_scene %zd\n" \
             "server_record_rts_data %zd\n" \
             "tester_tool_ui %zd\n" \
             "\n\n\n",
             [self serverRecordAudio],
             [self serverRecordVideo],
-            [self videochatAutoCropping],
+            [self videochatVideoCrop],
             [self videochatAutoRotateRemoteVideo],
             [self preferredVideoQuality],
             [self startWithBackCamera],
@@ -196,7 +225,7 @@
             [self audioDenoise],
             [self voiceDetect],
             [self preferHDAudio],
-            [self bypassVideoMixMode],
+            [self scene],
             [self serverRecordWhiteboardData],
             [self testerToolUI]
             ];
