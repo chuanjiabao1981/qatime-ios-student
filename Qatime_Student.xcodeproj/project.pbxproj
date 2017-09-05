@@ -624,6 +624,10 @@
 		54B9CB001DFE4E8A003961FF /* BuyBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9CAFF1DFE4E8A003961FF /* BuyBar.m */; };
 		54BB2D691E55879000446141 /* chat_voice_record.png in Resources */ = {isa = PBXBuildFile; fileRef = 54BB2D681E55879000446141 /* chat_voice_record.png */; };
 		54BB2D6B1E5587B900446141 /* chat_ipunt_message.png in Resources */ = {isa = PBXBuildFile; fileRef = 54BB2D6A1E5587B900446141 /* chat_ipunt_message.png */; };
+		54C107A11F5E8FD80091171E /* CourseFileInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C107A01F5E8FD80091171E /* CourseFileInfoView.m */; };
+		54C107A61F5E8FF40091171E /* CourseFileInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C107A51F5E8FF40091171E /* CourseFileInfoViewController.m */; };
+		54C107AC1F5EA94A0091171E /* MyDownloadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C107AB1F5EA94A0091171E /* MyDownloadFile.m */; };
+		54C107AF1F5EA9EA0091171E /* MyDownloadFileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C107AE1F5EA9EA0091171E /* MyDownloadFileTableViewCell.m */; };
 		54C452041E9CA5D1002108F4 /* MyVideoClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C452031E9CA5D1002108F4 /* MyVideoClassView.m */; };
 		54C452071E9CA5DF002108F4 /* MyVideoClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C452061E9CA5DF002108F4 /* MyVideoClassViewController.m */; };
 		54C525191E7BAC000005B5A0 /* TTGTagCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C525121E7BAC000005B5A0 /* TTGTagCollectionView.m */; };
@@ -1990,6 +1994,14 @@
 		54B9CAFF1DFE4E8A003961FF /* BuyBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyBar.m; sourceTree = "<group>"; };
 		54BB2D681E55879000446141 /* chat_voice_record.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat_voice_record.png; sourceTree = "<group>"; };
 		54BB2D6A1E5587B900446141 /* chat_ipunt_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat_ipunt_message.png; sourceTree = "<group>"; };
+		54C1079F1F5E8FD80091171E /* CourseFileInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseFileInfoView.h; sourceTree = "<group>"; };
+		54C107A01F5E8FD80091171E /* CourseFileInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseFileInfoView.m; sourceTree = "<group>"; };
+		54C107A41F5E8FF40091171E /* CourseFileInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseFileInfoViewController.h; sourceTree = "<group>"; };
+		54C107A51F5E8FF40091171E /* CourseFileInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseFileInfoViewController.m; sourceTree = "<group>"; };
+		54C107AA1F5EA94A0091171E /* MyDownloadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDownloadFile.h; sourceTree = "<group>"; };
+		54C107AB1F5EA94A0091171E /* MyDownloadFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDownloadFile.m; sourceTree = "<group>"; };
+		54C107AD1F5EA9EA0091171E /* MyDownloadFileTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDownloadFileTableViewCell.h; sourceTree = "<group>"; };
+		54C107AE1F5EA9EA0091171E /* MyDownloadFileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDownloadFileTableViewCell.m; sourceTree = "<group>"; };
 		54C21F8A1DDDB06E000549F2 /* Qatime_Student.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Qatime_Student.entitlements; sourceTree = "<group>"; };
 		54C452021E9CA5D1002108F4 /* MyVideoClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyVideoClassView.h; sourceTree = "<group>"; };
 		54C452031E9CA5D1002108F4 /* MyVideoClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyVideoClassView.m; sourceTree = "<group>"; };
@@ -3564,6 +3576,7 @@
 		544B76081F417CFB00B8B20A /* 课程课件 */ = {
 			isa = PBXGroup;
 			children = (
+				54C1079E1F5E8FBA0091171E /* 课件详情下载页面 */,
 				544B76141F417D7700B8B20A /* Model */,
 				544B76131F417D7500B8B20A /* View */,
 				544B76121F417D7100B8B20A /* Controller */,
@@ -5821,6 +5834,33 @@
 			name = "试听购买栏";
 			sourceTree = "<group>";
 		};
+		54C1079E1F5E8FBA0091171E /* 课件详情下载页面 */ = {
+			isa = PBXGroup;
+			children = (
+				54C107A21F5E8FDA0091171E /* View */,
+				54C107A31F5E8FE00091171E /* Controller */,
+			);
+			name = "课件详情下载页面";
+			sourceTree = "<group>";
+		};
+		54C107A21F5E8FDA0091171E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54C1079F1F5E8FD80091171E /* CourseFileInfoView.h */,
+				54C107A01F5E8FD80091171E /* CourseFileInfoView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54C107A31F5E8FE00091171E /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54C107A41F5E8FF40091171E /* CourseFileInfoViewController.h */,
+				54C107A51F5E8FF40091171E /* CourseFileInfoViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
 		54C451FE1E9C94B8002108F4 /* 我的视频课 */ = {
 			isa = PBXGroup;
 			children = (
@@ -6303,6 +6343,8 @@
 			children = (
 				54DBD96A1F4AF90C0045D5CC /* KsFileObjModel.h */,
 				54DBD96B1F4AF90C0045D5CC /* KsFileObjModel.m */,
+				54C107AA1F5EA94A0091171E /* MyDownloadFile.h */,
+				54C107AB1F5EA94A0091171E /* MyDownloadFile.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -6312,6 +6354,8 @@
 			children = (
 				54DBD9741F4AFC650045D5CC /* KsFileViewCell.h */,
 				54DBD9751F4AFC650045D5CC /* KsFileViewCell.m */,
+				54C107AD1F5EA9EA0091171E /* MyDownloadFileTableViewCell.h */,
+				54C107AE1F5EA9EA0091171E /* MyDownloadFileTableViewCell.m */,
 			);
 			name = cell;
 			sourceTree = "<group>";
@@ -7752,6 +7796,7 @@
 				5422EA951F4E7AC9008B0A96 /* UITableView+NIMScrollToBottom.m in Sources */,
 				546448C31F274F5A001C52FF /* ExclusivePlayerInfoView.m in Sources */,
 				541390B01EFA57BC00EF51AA /* ReplayViewController.m in Sources */,
+				54C107A11F5E8FD80091171E /* CourseFileInfoView.m in Sources */,
 				5422EAAA1F4E7AC9008B0A96 /* NIMInputEmoticonParser.m in Sources */,
 				5422EAAB1F4E7AC9008B0A96 /* NIMInputEmoticonTabView.m in Sources */,
 				54774D2C1F444ADC00150C05 /* UIView+ZLExtension.m in Sources */,
@@ -7918,6 +7963,7 @@
 				540CC97F1EB96FA700387E8F /* NSNull+Json.m in Sources */,
 				54AC02801E892D3C00817767 /* UIScrollView+NTESDirection.m in Sources */,
 				54774D141F444A8200150C05 /* ZLPhotoPickerCollectionViewCell.m in Sources */,
+				54C107AC1F5EA94A0091171E /* MyDownloadFile.m in Sources */,
 				54F47E8B1E09367900D896DB /* ChatList.m in Sources */,
 				54AB48ED1DED608A008E3BC5 /* EndedClassView.m in Sources */,
 				546978641DC725A5001695F4 /* NavigationBar.m in Sources */,
@@ -8063,6 +8109,7 @@
 				5407C9961DE7DE8400DB04C8 /* NSNumber+YYAdd.m in Sources */,
 				54C7343E1EE8FAA200CB86BE /* InteractionNotice.m in Sources */,
 				541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */,
+				54C107A61F5E8FF40091171E /* CourseFileInfoViewController.m in Sources */,
 				5422EAA61F4E7AC9008B0A96 /* NIMInputAudioRecordIndicatorView.m in Sources */,
 				546A54771DEEDDC100E70BA5 /* ClassNoticeTimeSettingTableViewCell.m in Sources */,
 				545162C41DF53DF9000BD17A /* ChangePhoneGetCodeViewController.m in Sources */,
@@ -8163,6 +8210,7 @@
 				5471C7FC1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.m in Sources */,
 				54EBCFF41EB2E6190011344D /* AuthenCode.m in Sources */,
 				5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */,
+				54C107AF1F5EA9EA0091171E /* MyDownloadFileTableViewCell.m in Sources */,
 				543E23521E2CE88B00381F10 /* DCPaymentView.m in Sources */,
 				54AC04D81E89398E00817767 /* NTESActorSelectView.m in Sources */,
 				545B2A4C1F05213300DBDB78 /* NTESPageView.m in Sources */,

@@ -1,24 +1,16 @@
 //
-//  FileViewCell.m
-//  fileManage
+//  MyDownloadFileTableViewCell.m
+//  Qatime_Student
 //
-//  Created by Vieene on 2016/10/13.
-//  Copyright © 2016年 Vieene. All rights reserved.
+//  Created by Shin on 2017/9/5.
+//  Copyright © 2017年 WWTD. All rights reserved.
 //
 
-#import "KsFileViewCell.h"
-#import "Masonry.h"
-#import "KsFileObjModel.h"
-#import "UIColor+CJColorCategory.h"
-@interface KsFileViewCell (){
-    
-}
+#import "MyDownloadFileTableViewCell.h"
+#import "UIColor+HcdCustom.h"
 
-@end
-@implementation KsFileViewCell
-CGFloat margin = 12;
-CGFloat w = 48;
-CGFloat h = 48;
+@implementation MyDownloadFileTableViewCell
+
 - (instancetype) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -27,7 +19,7 @@ CGFloat h = 48;
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = TEXT_FONTSIZE;
         _titleLabel.lineBreakMode=NSLineBreakByTruncatingMiddle;
-
+        
         _titleLabel.numberOfLines = 1;
         _detailLabel = [[UILabel alloc] init];
         _detailLabel.font = [UIFont systemFontOfSize:14];
@@ -37,7 +29,7 @@ CGFloat h = 48;
         _sendBtn = [[UIButton alloc] init];
         [_sendBtn setImage:[UIImage imageNamed:@"未选-10"] forState:UIControlStateNormal];
         [_sendBtn setImage:[UIImage imageNamed:@"选中-10"] forState:UIControlStateSelected];
-
+        
         [_sendBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_sendBtn setTitleColor:[UIColor redColor] forState:UIControlStateSelected];
         [_sendBtn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];
@@ -53,12 +45,12 @@ CGFloat h = 48;
     }
     return self;
 }
-- (void)setModel:(KsFileObjModel *)model
+- (void)setModel:(MyDownloadFile *)model
 {
     _model = model;
     self.headImagV.image = model.image;
     self.titleLabel.text = model.name;
-    self.detailLabel.text = [model.fileSize stringByAppendingString:[NSString stringWithFormat:@"   %@",model.creatTime]];
+    self.detailLabel.text = [model.size stringByAppendingString:[NSString stringWithFormat:@"   %@",model.created_at]];
     self.sendBtn.selected = model.select;
     
     if (model.onEdit == YES) {
@@ -66,9 +58,6 @@ CGFloat h = 48;
     }else{
         [self exitEditeMode];
     }
-    
-    
-    
     
 }
 - (void)clickBtn:(UIButton *)btn{
@@ -78,11 +67,11 @@ CGFloat h = 48;
     if (_Clickblock) {
         _Clickblock(_model,btn);
     }
-
+    
 }
 - (void)layoutSubviews{
     [super layoutSubviews];
-
+    
     _sendBtn.sd_layout
     .leftSpaceToView(self.contentView, -40)
     .centerYEqualToView(self.contentView)
@@ -94,13 +83,13 @@ CGFloat h = 48;
     }else{
         [self exitEditeMode];
     }
-
+    
     _headImagV.sd_layout
-    .leftSpaceToView(_sendBtn, margin)
+    .leftSpaceToView(_sendBtn, 12)
     .centerYEqualToView(self.contentView)
-    .widthIs(w)
-    .heightIs(h);
-
+    .widthIs(48)
+    .heightIs(48);
+    
     _titleLabel.sd_layout
     .leftSpaceToView(_headImagV, 10)
     .topEqualToView(_headImagV)
@@ -119,7 +108,7 @@ CGFloat h = 48;
     
     [UIView animateWithDuration:0.3 animations:^{
         _sendBtn.sd_layout
-        .leftSpaceToView(self.contentView, margin);
+        .leftSpaceToView(self.contentView, 12);
         [_sendBtn updateLayout];
     }];
 }
@@ -131,6 +120,18 @@ CGFloat h = 48;
         .leftSpaceToView(self.contentView, -40);
         [_sendBtn updateLayout];
     }];
+}
+
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
 }
 
 @end

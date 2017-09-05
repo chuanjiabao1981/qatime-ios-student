@@ -8,6 +8,7 @@
 
 #import "CourseFileTableViewCell.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "NSString+TimeStamp.h"
 
 @implementation CourseFileTableViewCell
 
@@ -19,17 +20,17 @@
         _fileImage = [[UIImageView alloc]init];
         [self.contentView addSubview:_fileImage];
         _fileImage.sd_layout
-        .leftSpaceToView(self.contentView, 10*ScrenScale)
-        .topSpaceToView(self.contentView, 10*ScrenScale)
-        .bottomSpaceToView(self.contentView, 10*ScrenScale)
+        .leftSpaceToView(self.contentView, 15*ScrenScale)
+        .topSpaceToView(self.contentView, 15*ScrenScale)
+        .bottomSpaceToView(self.contentView, 15*ScrenScale)
         .widthEqualToHeight();
-        _fileImage.sd_cornerRadius = @(M_PI);
+        _fileImage.sd_cornerRadius = @2;
         
         _name = [[UILabel alloc]init];
         [self.contentView addSubview: _name];
         _name.sd_layout
-        .leftSpaceToView(_fileImage, 5*ScrenScale)
-        .topEqualToView(_name)
+        .leftSpaceToView(_fileImage, 10*ScrenScale)
+        .topEqualToView(_fileImage)
         .rightSpaceToView(self.contentView, 10*ScrenScale)
         .autoHeightRatio(0);
         [_name setMaxNumberOfLinesToShow:1];
@@ -91,27 +92,33 @@
         _fileImage.image = [UIImage imageNamed:@"未知"];
     }
     
-    _name.text = model.name;
-    _info.text = [NSString stringWithFormat:@"%@  上传时间:%@",[self switchFileSize:model.file_size],@""];
+    if (model.name) {
+        _name.text = model.name;
+    }else{
+        _name.text = [NSString stringWithFormat:@"%@",model.fileID];
+    }
+    
+    _size.text = [self switchFileSize:model.file_size];
+    _info.text = [NSString stringWithFormat:@"上传时间:%@",[model.created_at changeTimeStampToDateString]];
     
 }
 
 - (NSString *)switchFileSize:(NSString *)bitSize{
     
-    NSString *sizeString;
-    
-    NSNumber *fileSize = [NSNumber numberWithLong:[bitSize longLongValue]];
-    CGFloat size = [fileSize unsignedLongLongValue];
-    NSString *sizestr = [NSString stringWithFormat:@"%qi",[fileSize unsignedLongLongValue]];
-    //            NSLog(@"File size: %@\n",fileSize);
-    if (sizestr.length <=3) {
-        sizeString = [NSString stringWithFormat:@"%.1f B",size];
-    } else if(sizestr.length>3 && sizestr.length<7){
-        sizeString = [NSString stringWithFormat:@"%.1f KB",size/1000.0];
-    }else{
-        sizeString = [NSString stringWithFormat:@"%.1f M",size/(1000.0 * 1000)];
+    NSString *sizeText;
+    long long size;
+    size = bitSize.longLongValue;
+    if (size >= pow(10, 9)) { // size >= 1GB
+        sizeText = [NSString stringWithFormat:@"%.2fGB", size / pow(10, 9)];
+    } else if (size >= pow(10, 6)) { // 1GB > size >= 1MB
+        sizeText = [NSString stringWithFormat:@"%.2fMB", size / pow(10, 6)];
+    } else if (size >= pow(10, 3)) { // 1MB > size >= 1KB
+        sizeText = [NSString stringWithFormat:@"%.2fKB", size / pow(10, 3)];
+    } else { // 1KB > size
+        sizeText = [NSString stringWithFormat:@"%zdB", size];
     }
-    return sizeString;
+    
+    return sizeText;
 }
 
 

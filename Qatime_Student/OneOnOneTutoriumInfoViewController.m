@@ -510,7 +510,7 @@
     OneOnOneLessonTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (_isBought ==YES) {
         if (cell.model.replayable == YES) {
-            //专属课回放详情
+            //一对一课回放详情
 //            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/scheduled_lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
 //                
 //                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];

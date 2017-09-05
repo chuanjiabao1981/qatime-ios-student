@@ -9,8 +9,8 @@
 #import "DownloadManagerViewController.h"
 #import "NavigationBar.h"
 #import "UIViewController+ReturnLastPage.h"
-#import "KsFileObjModel.h"
-#import "KsFileViewCell.h"
+//#import "KsFileObjModel.h"
+//#import "KsFileViewCell.h"
 #import "KsFlieLookUpVC.h"
 #import "UIView+Toast.h"
 #import "UIControl+RemoveTarget.h"
@@ -18,9 +18,13 @@
 #import "UIAlertController+Blocks.h"
 #import "CYLTableViewPlaceHolder.h"
 #import "HaveNoClassView.h"
+#import "CourseFile.h"
+#import "CourseFileTableViewCell.h"
 #import "UIViewController+HUD.h"
+#import "MyDownloadFileTableViewCell.h"
+#import <QuickLook/QuickLook.h>
 
-@interface DownloadManagerViewController ()<UITableViewDelegate,UITableViewDataSource>{
+@interface DownloadManagerViewController ()<UITableViewDelegate,UITableViewDataSource,QLPreviewControllerDelegate,QLPreviewControllerDataSource>{
     
     NavigationBar *_navigationBar;
     
@@ -35,6 +39,8 @@
     BOOL _onEdit;
     
     BOOL _selectAll;
+    
+    NSURL *_savedFileURL;
     
 }
 
@@ -88,7 +94,7 @@
     
      NSArray<NSString *> *downLoadFiles = [_fileManager contentsOfDirectoryAtPath:_downloadPath error: NULL];
     for(NSString *str in downLoadFiles){
-        KsFileObjModel *mod = [[KsFileObjModel alloc] initWithFilePath: [NSString stringWithFormat:@"%@/%@",_downloadPath, str]];
+        MyDownloadFile *mod = [[MyDownloadFile alloc] initWithFilePath: [NSString stringWithFormat:@"%@/%@",_downloadPath, str]];
         [_filesArray addObject: mod];
     }
     
@@ -144,10 +150,10 @@
                     _navigationBar.rightButton.sd_layout.autoWidthRatio(2.f);
                     [_navigationBar.rightButton updateLayout];
 
-                    for (KsFileViewCell *cell in _mainView.visibleCells) {
+                    for (MyDownloadFileTableViewCell *cell in _mainView.visibleCells) {
                         [cell enterEditMode];
                     }
-                    for (KsFileObjModel *mod in _filesArray) {
+                    for (MyDownloadFile *mod in _filesArray) {
                         mod.onEdit = !_onEdit;
                     }
                     _onEdit = !_onEdit;
@@ -165,10 +171,10 @@
             [_navigationBar.rightButton setTitle:@"取消" forState:UIControlStateNormal];
             _navigationBar.rightButton.sd_layout.autoWidthRatio(2.f);
             [_navigationBar.rightButton updateLayout];
-            for (KsFileViewCell *cell in _mainView.visibleCells) {
+            for (MyDownloadFileTableViewCell *cell in _mainView.visibleCells) {
                 [cell enterEditMode];
             }
-            for (KsFileObjModel *mod in _filesArray) {
+            for (MyDownloadFile *mod in _filesArray) {
                 mod.onEdit = !_onEdit;
             }
         }else{
@@ -177,15 +183,15 @@
             [_navigationBar.rightButton setTitle:nil forState:UIControlStateNormal];
             _navigationBar.rightButton.sd_layout.autoWidthRatio(1.0);
             [_navigationBar.rightButton updateLayout];
-            for (KsFileViewCell *cell in _mainView.visibleCells) {
+            for (MyDownloadFileTableViewCell *cell in _mainView.visibleCells) {
                 [cell exitEditeMode];
                 
             }
-            for (KsFileObjModel *mod in _filesArray) {
+            for (MyDownloadFile *mod in _filesArray) {
                 mod.onEdit = !_onEdit;
             }
             if (_selectedItems.count!=0) {
-                for (KsFileViewCell *cell in _mainView.visibleCells) {
+                for (MyDownloadFileTableViewCell *cell in _mainView.visibleCells) {
                     if (cell.sendBtn.selected) {
                         [cell clickBtn:cell.sendBtn];
                     }
@@ -201,17 +207,17 @@
   
     if (_selectedItems.count == _filesArray.count) {
         //现在已经是全选的了,那就直接, 不选了
-        for (KsFileViewCell *cell in _mainView.visibleCells) {
+        for (MyDownloadFileTableViewCell *cell in _mainView.visibleCells) {
             [cell clickBtn:cell.sendBtn];
         }
         _selectedItems = @[].mutableCopy;
-        for (KsFileObjModel *mod in _filesArray) {
+        for (MyDownloadFile *mod in _filesArray) {
             mod.select = NO;
         }
         [_toolBar.selectAllBtn setTitle:@"全选" forState:UIControlStateNormal];
         [_toolBar.deletBtn setTitle:@"删除" forState:UIControlStateNormal];
     }else{
-        for (KsFileViewCell *cell in _mainView.visibleCells) {
+        for (MyDownloadFileTableViewCell *cell in _mainView.visibleCells) {
             if (cell.sendBtn.selected) {
                 
             }else{
@@ -219,7 +225,7 @@
             }
         }
         _selectedItems = @[].mutableCopy;
-        for (KsFileObjModel *mod in _filesArray) {
+        for (MyDownloadFile *mod in _filesArray) {
             mod.select = YES;
             [_selectedItems addObject:mod];
         }
@@ -240,8 +246,7 @@
                 [self HUDStartWithTitle:@"删除中"];
                 //删除文件
                 NSMutableArray *items = _selectedItems.copy;
-                for (KsFileObjModel *mod in items) {
-                    
+                for (MyDownloadFile *mod in items) {
                     [_fileManager removeItemAtPath:mod.filePath error:nil];
                     [_selectedItems removeObject:mod];
                 }
@@ -305,11 +310,12 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    KsFileViewCell *cell = (KsFileViewCell *)[tableView dequeueReusableCellWithIdentifier:@"fileCell"];
+   
+    MyDownloadFileTableViewCell *cell = (MyDownloadFileTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"fileCell"];
     if (cell == nil) {
-        cell = [[KsFileViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"fileCell"];
+        cell = [[MyDownloadFileTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"fileCell"];
     }
-    KsFileObjModel *actualFile = [_filesArray objectAtIndex:indexPath.row];
+    MyDownloadFile *actualFile = [_filesArray objectAtIndex:indexPath.row];
     actualFile.onEdit = _onEdit;
     cell.model = actualFile;
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(editTableView:)];
@@ -319,7 +325,7 @@
    
     __weak typeof(self) weakSelf = self;
     //设置cell的选中事件
-    cell.Clickblock = ^(KsFileObjModel *model,UIButton *btn){
+    cell.Clickblock = ^(MyDownloadFile *model,UIButton *btn){
       
         if (btn.isSelected) {
             [weakSelf.selectedItems addObject:model];
@@ -347,11 +353,42 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    KsFileObjModel *actualFile = [_filesArray objectAtIndex:indexPath.row];
+    MyDownloadFile *actualFile = [_filesArray objectAtIndex:indexPath.row];
     NSString *cachePath =actualFile.filePath;
+    
     NSLog(@"调用文件查看控制器%@---type %zd, %@",actualFile.name,actualFile.fileType,cachePath);
-    KsFlieLookUpVC *vc = [[KsFlieLookUpVC alloc] initWithFileModel:actualFile];
-    [self.navigationController pushViewController:vc animated:YES];
+//    KsFlieLookUpVC *vc = [[KsFlieLookUpVC alloc] initWithFileModel:actualFile];
+//    [self.navigationController pushViewController:vc animated:YES];
+    
+    
+    _savedFileURL = [NSURL fileURLWithPath:actualFile.filePath];
+    QLPreviewController *myQlPreViewController = [[QLPreviewController alloc]init];
+    
+    myQlPreViewController.delegate =self;
+    
+    myQlPreViewController.dataSource =self;
+    
+    [myQlPreViewController setCurrentPreviewItemIndex:0];
+    
+    [self presentViewController:myQlPreViewController animated:YES completion:nil];
+    
+}
+#pragma mark - QLPreviewControllerDataSource
+
+- (NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller
+
+{
+    
+    return 1;
+    
+}
+
+
+
+- (id)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index{
+    
+    return _savedFileURL; //返回文件路径
+    
 }
 
 

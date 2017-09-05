@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-@class KsFileObjModel;
+#import "MyDownloadFile.h"
 @protocol FileSelectVcDelegate <NSObject>
 @required
 //点击发送的事件
-- (void)fileViewControlerSelected:(NSArray <KsFileObjModel *> *)fileModels;
+- (void)fileViewControlerSelected:(NSArray <MyDownloadFile *> *)fileModels;
 @end
 
 @interface DownloadManagerViewController : UIViewController

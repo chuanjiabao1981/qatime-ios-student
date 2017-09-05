@@ -155,7 +155,7 @@
         }
             break;
         case 4:{
-            controller = [[ExclusiveCoursewareViewController alloc]init];
+            controller = [[ExclusiveCoursewareViewController alloc]initWithClassID:self.classID];
         }
             break;
         case 5:{
