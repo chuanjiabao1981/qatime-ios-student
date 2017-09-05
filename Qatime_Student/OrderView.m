@@ -463,14 +463,14 @@
     _className.text = tutorium.name;
     _gradeLabel.text = tutorium.grade;
     _teacheNameLabel.text = tutorium.teacher_name;
-    _classTimeLabel.text = [NSString stringWithFormat:@"共%@课",tutorium.preset_lesson_count];
+    _classTimeLabel.text = [NSString stringWithFormat:@"共%@课",tutorium.video_lessons_count];
     if ([tutorium.current_price containsString:@"."]) {
-        _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.current_price];
-        _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.current_price];
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.price];
+        _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.price];
         
     }else{
-        _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.current_price];
-        _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.current_price];
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.price];
+        _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.price];
         
     }
 
@@ -498,6 +498,25 @@
     }else{
         _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",interaction.price];
         _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",interaction.price];
+        
+    }
+    
+}
+
+- (void)setupExclusiveClassData:(TutoriumListInfo *)tutorium{
+    
+    _subjectLabel.text = tutorium.subject;
+    _className.text = tutorium.name;
+    _gradeLabel.text = tutorium.grade;
+    _teacheNameLabel.text = tutorium.teacher_name;
+    _classTimeLabel.text = [NSString stringWithFormat:@"共%@课",tutorium.events_count];
+    if ([tutorium.current_price containsString:@"."]) {
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.price];
+        _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.price];
+        
+    }else{
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.price];
+        _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.price];
         
     }
     

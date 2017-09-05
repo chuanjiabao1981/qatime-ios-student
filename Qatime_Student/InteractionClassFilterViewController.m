@@ -38,7 +38,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign) NSInteger perPage;
 
 //存课程数据的数组
-@property (nonatomic, strong) NSMutableArray *classesArray;
+//@property (nonatomic, strong) NSMutableArray *classesArray;
 
 //筛选用的字典
 @property (nonatomic, strong) NSMutableDictionary *filterDic;
@@ -59,8 +59,8 @@ typedef enum : NSUInteger {
     if (self) {
         
         //初始化数据
-        if (!_classesArray) {
-            self.classesArray = @[].mutableCopy;
+        if (!_classArray) {
+            self.classArray = @[].mutableCopy;
         }
         if (!_filterDic) {
             self.filterDic = @{}.mutableCopy;
@@ -145,7 +145,7 @@ typedef enum : NSUInteger {
     if (mode==PullToRefresh) {
         _page = 1;
         [_filterDic setObject:[NSString stringWithFormat:@"%ld",_page] forKey:@"page"];
-        _classesArray = @[].mutableCopy;
+        _classArray = @[].mutableCopy;
         
         if (_classTableView.mj_footer.state == MJRefreshStateNoMoreData) {
             _classTableView.mj_footer.state = MJRefreshStateIdle;
@@ -193,14 +193,14 @@ typedef enum : NSUInteger {
             if ([dic[@"data"] count] !=0) {
                 
                 /**直播课类型*/
-                if ([_course isEqualToString:@"courses"]) {
+                if ([_course isEqualToString:@"interactive_courses"]) {
                     
                     for (NSDictionary *dics in dic[@"data"]) {
                         
                         OneOnOneClass *mod = [OneOnOneClass yy_modelWithJSON:dics];
                         mod.classID = dics[@"id"];
                         
-                        [_classesArray addObject:mod];
+                        [_classArray addObject:mod];
                     }
                 }
                 
@@ -265,11 +265,7 @@ typedef enum : NSUInteger {
 #pragma mark- UITableView datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    if (_classArray.count>0) {
-        return _classArray.count;
-    }
-    
-    return 0;
+    return _classArray.count;
     
 }
 
@@ -282,9 +278,9 @@ typedef enum : NSUInteger {
         cell=[[ChooseClassTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
     }
     
+    [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     if (self.classArray.count>indexPath.row) {
         cell.interactionModel = _classArray[indexPath.row];
-        [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     }
     
     return  cell;

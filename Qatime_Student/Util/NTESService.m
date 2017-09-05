@@ -8,7 +8,6 @@
 
 #import "NTESService.h"
 #import "NTESSessionUtil.h"
- 
 
 #pragma mark - NIMServiceManagerImpl
 @interface NIMServiceManagerImpl : NSObject
@@ -72,15 +71,10 @@
 
 #pragma mark - NIMService
 @implementation NTESService
-
-
-
-
 + (instancetype)sharedInstance
 {
     return [[NTESServiceManager sharedManager] singletonByClass:[self class]];
 }
-
 
 - (void)start
 {
@@ -123,7 +117,7 @@
                                                  selector:@selector(callAppWillTerminate)
                                                      name:UIApplicationWillTerminateNotification
                                                    object:nil];
-
+        
     }
     return self;
 }

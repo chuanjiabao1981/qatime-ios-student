@@ -83,4 +83,11 @@
  */
 - (void)setupInteractionData:(OneOnOneClass *)interaction;
 
+/**
+ 专属课页面赋值方法
+ 
+ @param tutorium id
+ */
+- (void)setupExclusiveClassData:(TutoriumListInfo *)tutorium;
+
 @end

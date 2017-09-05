@@ -216,11 +216,10 @@
             
             case NTESDesktopShared:{
                 
-                
-                
             }
                 
             case NTESDesktopSharedReply:{
+               
                 /**
                  问题来了.
                  收到屏幕共享之后,一定要给白板返回一个"我收到你的通知了"的回复.
@@ -238,27 +237,32 @@
                     * 回复数据的时候,给白板回复的数据类型里,parentID使用收到的时间戳
                  */
                 
-                NSLog(@"%@",cmdString);
                 
-                if ([cmdString containsString:@"board"]) {
-                    //当前是白板在直播,切换到白板,白板可用
-                    //此时白板开启,恢复正常模式
-                    NSLog(@"收到开启白板命令");
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"DesktopSharedOff" object:nil];
-                    
-                }else if([cmdString containsString:@"desktop"]){
-                    //当前是屏幕共享,切换到屏幕共享,白板不可用(自动切换全屏?看需求)
-                    //此时关闭白板,自动全屏模式
-                    NSLog(@"收到屏幕共享命令");
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"DesktopSharedOn" object:nil];
-                }
+                /**
+                 2017-08-30  不再使用白板通讯进行切换 暂时保留接口 
+                 */
                 
-                //再给白板发送"我收到你开启屏幕共享了,或者我收到你关闭屏幕共享回到白板了"的消息
-                //要是不回复,桌面端就一直给你发 发 发 ,一直变 变 变.
-                
-                //把收到的cmdstring的时间戳取出来
-                NSString *timeStamp = [cmdString substringWithRange:NSMakeRange(3, 13)];
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"RecivedDestopShared" object:timeStamp];
+//                NSLog(@"%@",cmdString);
+//                
+//                if ([cmdString containsString:@"board"]) {
+//                    //当前是白板在直播,切换到白板,白板可用
+//                    //此时白板开启,恢复正常模式
+//                    NSLog(@"收到开启白板命令");
+//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"DesktopSharedOff" object:nil];
+//                    
+//                }else if([cmdString containsString:@"desktop"]){
+//                    //当前是屏幕共享,切换到屏幕共享,白板不可用(自动切换全屏?看需求)
+//                    //此时关闭白板,自动全屏模式
+//                    NSLog(@"收到屏幕共享命令");
+//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"DesktopSharedOn" object:nil];
+//                }
+//                
+//                //再给白板发送"我收到你开启屏幕共享了,或者我收到你关闭屏幕共享回到白板了"的消息
+//                //要是不回复,桌面端就一直给你发 发 发 ,一直变 变 变.
+//                
+//                //把收到的cmdstring的时间戳取出来
+//                NSString *timeStamp = [cmdString substringWithRange:NSMakeRange(3, 13)];
+//                [[NSNotificationCenter defaultCenter]postNotificationName:@"RecivedDestopShared" object:timeStamp];
             }
 
             default:

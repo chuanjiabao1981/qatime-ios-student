@@ -107,10 +107,10 @@
          contextName = "-[DownloadManagerViewController selecteAllItem:]:DownloadManagerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_selectedItems">
+               value = "_filesArray">
             </PersistentString>
             <PersistentString
-               value = "_filesArray">
+               value = "_selectedItems">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -127,6 +127,14 @@
          <PersistentStrings>
             <PersistentString
                value = "price">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NTESMeetingActorsView onLocalDisplayviewReady:]:NTESMeetingActorsView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[NTESMeetingRolesManager defaultManager].myRole">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -577,10 +585,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -629,13 +637,13 @@
          contextName = "-[TeachersPublicViewController numberOfSectionsInCollectionView:]:TeachersPublicViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_oneOnOneCount">
-            </PersistentString>
-            <PersistentString
                value = "_videoCount">
             </PersistentString>
             <PersistentString
                value = "_publicCount">
+            </PersistentString>
+            <PersistentString
+               value = "_oneOnOneCount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -816,6 +824,9 @@
             <PersistentString
                value = "_localVideoLayer">
             </PersistentString>
+            <PersistentString
+               value = "[NTESMeetingRolesManager defaultManager].myRole">
+            </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
@@ -871,10 +882,10 @@
          contextName = "-[NTESPageView reloadPage]:NTESPageView.m">
          <PersistentStrings>
             <PersistentString
-               value = "_currentPage">
+               value = "_pages">
             </PersistentString>
             <PersistentString
-               value = "_pages">
+               value = "_currentPage">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1096,6 +1107,14 @@
          <PersistentStrings>
             <PersistentString
                value = "_classesArray">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[OneOnOneTutoriumInfoViewController enterClass]:OneOnOneTutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1461,6 +1480,9 @@
          contextName = "__65-[ExclusiveInfoViewController tableView:didSelectRowAtIndexPath:]_block_invoke:ExclusiveInfoViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[ExclusiveInfoViewController switchClassData:]:ExclusiveInfoViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "__45-[SafeViewController RequestToBindingWechat:]_block_invoke_2:SafeViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -1744,10 +1766,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

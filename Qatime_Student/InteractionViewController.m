@@ -719,11 +719,11 @@ NTES_FORBID_INTERACTIVE_POP
         [[NTESMeetingRolesManager defaultManager] setMyWhiteBoard:NO];
     }
     
-    BOOL accepted = [[NTESMeetingNetCallManager defaultManager] setBypassLiveStreaming:YES];
-    
-    if (!accepted) {
-//        [self.view.window makeToast:@"开启互动直播被拒绝" duration:3.0 position:CSToastPositionTop];
-    }
+//    BOOL accepted = [[NTESMeetingNetCallManager defaultManager] setBypassLiveStreaming:YES];
+//    
+//    if (!accepted) {
+////        [self.view.window makeToast:@"开启互动直播被拒绝" duration:3.0 position:CSToastPositionTop];
+//    }
 }
 
 

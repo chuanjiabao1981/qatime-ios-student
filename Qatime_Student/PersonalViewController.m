@@ -104,7 +104,7 @@
                    [UIImage imageNamed:@"我的试听课"],
                    [UIImage imageNamed:@"我的试听课"],
                    [UIImage imageNamed:@"我的试听课"],
-                   [UIImage imageNamed:@"我的试听课"],
+                   [UIImage imageNamed:@"文件管理"],
                    [UIImage imageNamed:@"安全管理"],
                    [UIImage imageNamed:@"系统设置"],
                    [UIImage imageNamed:@"关于我们"]];

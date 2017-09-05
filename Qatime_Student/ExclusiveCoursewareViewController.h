@@ -10,4 +10,8 @@
 
 @interface ExclusiveCoursewareViewController : UIViewController
 
+@property (nonatomic, strong) UITableView *mainView ;
+
+-(instancetype)initWithClassID:(NSString *)classID;
+
 @end

@@ -55,7 +55,6 @@ static const NSString *IMAGES_TYPES[IMAGES_TYPES_COUNT] = {@"png", @"PNG", @"jpg
             self.image =[UIImage imageWithFileModel:self];
         }
         
-        
         NSError *error = nil;
         NSDictionary *fileAttributes = [fileMgr attributesOfItemAtPath:filePath error:&error];
         

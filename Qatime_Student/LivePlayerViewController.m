@@ -92,7 +92,7 @@ typedef enum : NSUInteger {
     
 } ViewsArrangementMode;
 
-@interface LivePlayerViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UUInputFunctionViewDelegate,UUMessageCellDelegate,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate,NIMLoginManagerDelegate,TTGTextTagCollectionViewDelegate,PhotoBrowserDelegate,UIGestureRecognizerDelegate,NIMMediaManagerDelegate,NIMTeamManagerDelegate>{
+@interface LivePlayerViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UUInputFunctionViewDelegate,UUMessageCellDelegate,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate,NIMLoginManagerDelegate,TTGTextTagCollectionViewDelegate,PhotoBrowserDelegate,UIGestureRecognizerDelegate,NIMMediaManagerDelegate,NIMTeamManagerDelegate,NIMTeamManagerDelegate,NIMSystemNotificationManagerDelegate>{
     
     /* token/id*/
     
@@ -521,7 +521,7 @@ bool ismute     = NO;
     /* 白板的 播放器*/
     _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:_boardPullAddress];
     _liveplayerBoard.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    [_liveplayerBoard setScalingMode:NELPMovieScalingModeAspectFit];
+    [_liveplayerBoard setScalingMode:NELPMovieScalingModeNone];
     
     [_boardPlayerView makePlaceHolderImage:nil];
     [_boardPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadingHolder_Landscape"]];
@@ -559,23 +559,36 @@ bool ismute     = NO;
             .rightEqualToView(_boardPlayerView)
             .topEqualToView(_boardPlayerView)
             .bottomEqualToView(_boardPlayerView);
-            
+            [_liveplayerBoard.view updateLayout];
             [_boardPlayerView bringSubviewToFront:_liveplayerBoard.view];
             //            [_boardPlayerView makePlaceHolderImage:nil];
         }
-        
         
     }
     
     /* 白板播放器的设置*/
     [_liveplayerBoard isLogToFile:NO];
     [_liveplayerBoard setBufferStrategy:NELPLowDelay]; //直播低延时模式
-    [_liveplayerBoard setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
+    [_liveplayerBoard setScalingMode:NELPMovieScalingModeNone]; //设置画面显示模式，默认原始大小
     [_liveplayerBoard setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
     [_liveplayerBoard setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
     [_liveplayerBoard setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
-    [_liveplayerBoard prepareToPlay]; //初始化视频文件
+    [_liveplayerBoard setPlaybackTimeout:15 *1000]; // 设置拉流超时时间
     
+    NSString *key = @"HelloWorld";
+    NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+    Byte *flv_key = (Byte *)[keyData bytes];
+    
+    unsigned long len = [keyData length];
+    flv_key[len] = '\0';
+    __weak typeof(self) weakSelf = self;
+    [_liveplayerBoard setDecryptionKey:flv_key andKeyLength:(int)len :^(NELPKeyCheckResult ret) {
+        if (ret == 0 || ret == 1) {
+            [weakSelf.liveplayerBoard prepareToPlay];
+        }
+    }];
+
+//    [_liveplayerBoard prepareToPlay]; //初始化视频文件
     
 }
 
@@ -587,7 +600,7 @@ bool ismute     = NO;
     [_teacherPlayerView makePlaceHolderImage:nil];
     [_teacherPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadingHolder_Landscape"]];
     _liveplayerTeacher.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    [_liveplayerTeacher setScalingMode:NELPMovieScalingModeAspectFit];
+    [_liveplayerTeacher setScalingMode:NELPMovieScalingModeNone];
     if (_liveplayerTeacher == nil) {
         // 返回空则表示初始化失败
         //            NSLog(@"player initilize failed, please tay again!");
@@ -617,7 +630,7 @@ bool ismute     = NO;
             .rightEqualToView(_teacherPlayerView)
             .topEqualToView(_teacherPlayerView)
             .bottomEqualToView(_teacherPlayerView);
-            
+            [_liveplayerTeacher.view updateLayout];
             [_teacherPlayerView bringSubviewToFront:_liveplayerTeacher.view];
             //            [_teacherPlayerView makePlaceHolderImage:nil];
         }
@@ -627,7 +640,7 @@ bool ismute     = NO;
     
     /* 教师播放器的设置*/
     [_liveplayerTeacher setBufferStrategy:NELPLowDelay]; //直播低延时模式
-    [_liveplayerTeacher setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
+    [_liveplayerTeacher setScalingMode:NELPMovieScalingModeNone]; //设置画面显示模式，默认原始大小
     [_liveplayerTeacher setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
     [_liveplayerTeacher setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
     [_liveplayerTeacher setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
@@ -635,7 +648,6 @@ bool ismute     = NO;
     
     [self.view bringSubviewToFront:_mediaControl];
     [self.view bringSubviewToFront:_controlOverlay];
-    
     
     
 }
@@ -3091,6 +3103,8 @@ bool ismute     = NO;
     if ([[NSUserDefaults standardUserDefaults]boolForKey:@"NIMSDKLogin"]) {
         
         [[NIMSDK sharedSDK].chatManager addDelegate:self];
+        [[NIMSDK sharedSDK].teamManager addDelegate:self];
+        [[NIMSDK sharedSDK].systemNotificationManager addDelegate:self];
         
     }else{
         
@@ -3109,21 +3123,27 @@ bool ismute     = NO;
     //查一下禁言状态
     [[NIMSDK sharedSDK].teamManager fetchTeamMutedMembers:_session.sessionId completion:^(NSError * _Nullable error, NSArray<NIMTeamMember *> * _Nullable members) {
         
-        for (NIMTeamMember *member in members) {
+        if (members) {
             
-            if ([member.userId isEqualToString:_chat_Account.user_id]) {
-                //这是被禁言了
-                _shutUp = YES;
-                [self shutUpTalking];
-            }else{
-                _shutUp = NO;
-                [self keepOnTalking];
+            for (NIMTeamMember *member in members) {
+                
+                if ([member.userId isEqualToString:_chat_Account.user_id]) {
+                    //这是被禁言了
+                    _shutUp = YES;
+                    [self shutUpTalking];
+                }else{
+                    _shutUp = NO;
+                    [self keepOnTalking];
+                }
             }
+            
+        }else{
+            _shutUp = NO;
+            [self keepOnTalking];
         }
         
     }];
     //
-    
     
     
 }
@@ -3424,12 +3444,12 @@ bool ismute     = NO;
                     if (msgContent[@"data"][@"mute"]) {
                         if ([msgContent[@"data"][@"mute"]isEqualToNumber:@1]) {
                             //禁言了
-                            [self shutUpTalking];
-                            messageText = @"您已被禁言";
+//                            [self shutUpTalking];
+//                            messageText = @"您已被禁言";
                         }else{
                             //解除禁言
-                            [self keepOnTalking];
-                            messageText = @"您已解除禁言";
+//                            [self keepOnTalking];
+//                            messageText = @"您已解除禁言";
                         }
                     }else{
                         
@@ -4132,7 +4152,6 @@ bool ismute     = NO;
         }
             break;
     }
-    
     
 }
 
@@ -4918,8 +4937,8 @@ bool ismute     = NO;
     UIAlertController *alertController = NULL;
     UIAlertAction *action = NULL;
     ///新的状态加载
-    
     //同时直播的时候
+    NSLog(@"%@",statusDic);
     if ([statusDic[@"board"]isEqualToString:@"1"]&&[statusDic[@"camera"]isEqualToString:@"1"]) {
         /* 不用再向服务器发送查询请求*/
         NSLog(@"白板读取状态:%u",_liveplayerBoard.loadState);
@@ -5246,6 +5265,27 @@ bool ismute     = NO;
 /* 把弹幕给释放掉*/
 -(void)dealloc{
     
+    
+}
+
+//收到系统消息
+- (void)onReceiveCustomSystemNotification:(NIMCustomSystemNotification *)notification{
+    
+    //测试阶段暂时写到这儿
+    //格式:
+    //{"SwitchVedioObject":"Board"}
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[notification.content dataUsingEncoding:NSUnicodeStringEncoding]  options:NSJSONReadingMutableLeaves error:nil];
+    NSLog(@"%@",dic);
+    
+    //Board 和 Desktop 来切换一对一的白板和全屏桌面
+    if (dic[@"SwitchVedioObject"]) {
+        if ([dic[@"SwitchVedioObject"]isEqualToString:@"Board"]) {
+            //切换到竖屏白板
+        }else if ([dic[@"SwitchVedioObject"]isEqualToString:@"Desktop"]){
+            //切换到全屏桌面
+            
+        }
+    }
     
 }
 

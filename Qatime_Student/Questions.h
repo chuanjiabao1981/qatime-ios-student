@@ -13,6 +13,7 @@
 @property (nonatomic, strong) NSString *title ;
 @property (nonatomic, strong) NSString *name ;
 @property (nonatomic, strong) NSString *creat_at ;
+@property (nonatomic, strong) NSString *lessons ;
 @property (nonatomic, assign) BOOL resolve ;
 
 @end

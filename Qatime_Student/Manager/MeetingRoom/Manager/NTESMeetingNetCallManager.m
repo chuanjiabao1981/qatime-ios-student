@@ -88,11 +88,6 @@
     _isInMeeting = NO;
 }
 
-//- (BOOL)setBypassLiveStreaming:(BOOL)enabled
-//{
-//    return [NTESNetcallManager setBypassStreamingEnabled:enabled];
-//}
-
 #pragma mark - NIMNetCallManagerDelegate
 - (void)onUserJoined:(NSString *)uid
              meeting:(NIMNetCallMeeting *)meeting
@@ -121,8 +116,6 @@
     [_delegate onMeetingConntectStatus:NO];
 }
 
-
-
 - (void)onMyVolumeUpdate:(UInt16)volume
 {
     _myVolume = volume;
@@ -141,14 +134,14 @@
     [[NTESMeetingRolesManager defaultManager] updateVolumes:volumes];
 }
 
-- (void)onSetBypassStreamingEnabled:(BOOL)enabled result:(NSError *)result
-{
-    if (result) {
-        if (self.delegate) {
-            [self.delegate onSetBypassStreamingEnabled:enabled error:result.code];
-        }
-    }
-}
+//- (void)onSetBypassStreamingEnabled:(BOOL)enabled result:(NSError *)result
+//{
+//    if (result) {
+//        if (self.delegate) {
+//            [self.delegate onSetBypassStreamingEnabled:enabled error:result.code];
+//        }
+//    }
+//}
 
 - (void)onNetStatus:(NIMNetCallNetStatus)status user:(NSString *)user
 {
@@ -189,7 +182,7 @@
     
     param.provideLocalVideoProcess = [[NTESBundleSetting sharedConfig] provideLocalProcess];
     
-    BOOL isManager = [NTESMeetingRolesManager sharedInstance].myRole.isManager;
+    BOOL isManager = [NTESMeetingRolesManager defaultManager].myRole.isManager;
     
     //会议的观众这里默认用低清发送视频
     if (param.preferredVideoQuality == NIMNetCallVideoQualityDefault) {
@@ -199,7 +192,6 @@
     }
     return param;
 }
-
 
 
 -(NSNumber *)volumeLevel:(UInt16)volume

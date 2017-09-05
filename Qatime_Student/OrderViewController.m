@@ -273,8 +273,8 @@ typedef enum : NSUInteger {
                     
                     if (_orderType == LiveClassType) {
                         /* 数据请求成功*/
-                        mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"live_course"]];
-                        [(TutoriumListInfo *)mod setClassID:dic[@"data"][@"live_course"][@"id"]];
+                        mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"course"]];
+                        [(TutoriumListInfo *)mod setClassID:dic[@"data"][@"course"][@"id"]];
                         _orderView.classType.text = @"直播课";
                         //页面赋值
                         [_orderView setupLiveClassData:mod];
@@ -302,7 +302,7 @@ typedef enum : NSUInteger {
                         //页面赋值
                         [_orderView setupLiveClassData:mod];
                         //价格
-                        price = [[(TutoriumListInfo *)mod current_price]floatValue];
+                        price = [[(TutoriumListInfo *)mod price]floatValue];
                         
                     }else if (_orderType == ExclusiveType){
                         /* 数据请求成功*/
@@ -310,7 +310,7 @@ typedef enum : NSUInteger {
                         [(VideoClassInfo *)mod setClassID:dic[@"data"][@"customized_group"][@"id"]];
                         _orderView.classType.text = @"专属课";
                         //页面赋值
-                        [_orderView setupLiveClassData:mod];
+                        [_orderView setupExclusiveClassData:mod];
                         
                         //价格
                         price = [[(TutoriumListInfo *)mod current_price]floatValue];

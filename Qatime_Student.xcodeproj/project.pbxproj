@@ -17,6 +17,8 @@
 		54081A711F28821C0063C391 /* ExclusiveLessons.m in Sources */ = {isa = PBXBuildFile; fileRef = 54081A701F28821C0063C391 /* ExclusiveLessons.m */; };
 		540CC97F1EB96FA700387E8F /* NSNull+Json.m in Sources */ = {isa = PBXBuildFile; fileRef = 540CC97E1EB96FA700387E8F /* NSNull+Json.m */; };
 		540F85BC1EB03789007AE08A /* ConfirmRechargeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 540F85BB1EB03789007AE08A /* ConfirmRechargeView.m */; };
+		5411F48D1F5E416E0023D576 /* CourseFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5411F48C1F5E416E0023D576 /* CourseFile.m */; };
+		5411F4901F5E42170023D576 /* CourseFileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5411F48F1F5E42170023D576 /* CourseFileTableViewCell.m */; };
 		541390AD1EFA57B000EF51AA /* ReplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 541390AC1EFA57B000EF51AA /* ReplayView.m */; };
 		541390B01EFA57BC00EF51AA /* ReplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 541390AF1EFA57BC00EF51AA /* ReplayViewController.m */; };
 		541390B31EFA583500EF51AA /* ReplayFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 541390B21EFA583500EF51AA /* ReplayFilterView.m */; };
@@ -52,9 +54,7 @@
 		542021171E2DF90400517A47 /* RefundTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 542021161E2DF90400517A47 /* RefundTableView.m */; };
 		5422337E1E15F6100092AB66 /* UIAlertController+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 5422337D1E15F6100092AB66 /* UIAlertController+Blocks.m */; };
 		5422E7CC1F4E77B6008B0A96 /* libaacplus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5422E7BB1F4E77B6008B0A96 /* libaacplus.a */; };
-		5422E7CD1F4E77B6008B0A96 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5422E7BC1F4E77B6008B0A96 /* libcrypto.a */; };
 		5422E7CE1F4E77B6008B0A96 /* libevent.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5422E7BD1F4E77B6008B0A96 /* libevent.a */; };
-		5422E7CF1F4E77B6008B0A96 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5422E7BE1F4E77B6008B0A96 /* libssl.a */; };
 		5422E7D01F4E77B6008B0A96 /* NIMSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5422E7BF1F4E77B6008B0A96 /* NIMSDK.framework */; };
 		5422E7D11F4E77B6008B0A96 /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5422E7C21F4E77B6008B0A96 /* libGPUImage.a */; };
 		5422E7D21F4E77B6008B0A96 /* libnio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5422E7C31F4E77B6008B0A96 /* libnio.a */; };
@@ -172,7 +172,6 @@
 		5422EAFA1F4E7AC9008B0A96 /* NIMIndefiniteAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5422EA8A1F4E7AC9008B0A96 /* NIMIndefiniteAnimatedView.m */; };
 		5422EAFB1F4E7AC9008B0A96 /* NIMProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 5422EA8C1F4E7AC9008B0A96 /* NIMProgressHUD.m */; };
 		5422EAFC1F4E7AC9008B0A96 /* UIView+NIMKitToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 5422EA911F4E7AC9008B0A96 /* UIView+NIMKitToast.m */; };
-		542915911DD9DAF700EE1A70 /* libPods-Qatime_Student.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E892881DD9B3E100C47095 /* libPods-Qatime_Student.a */; };
 		542915961DD9DDB000EE1A70 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547388651DD9876E00A50CCC /* MobileCoreServices.framework */; };
 		542915971DD9DDB700EE1A70 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FBC1DD4710600F1282B /* SystemConfiguration.framework */; };
 		542915981DD9DDBC00EE1A70 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FCE1DD4715500F1282B /* AVFoundation.framework */; };
@@ -283,7 +282,6 @@
 		544B761A1F417DDF00B8B20A /* ExclusiveHomeworkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B76191F417DDF00B8B20A /* ExclusiveHomeworkView.m */; };
 		544B761D1F417DF200B8B20A /* ExclusiveHomeworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B761C1F417DF200B8B20A /* ExclusiveHomeworkViewController.m */; };
 		544B76231F417E1800B8B20A /* ExclusiveAskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B76221F417E1800B8B20A /* ExclusiveAskViewController.m */; };
-		544B76261F417E4300B8B20A /* ExclusiveCoursewareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B76251F417E4300B8B20A /* ExclusiveCoursewareView.m */; };
 		544B76291F417E5600B8B20A /* ExclusiveCoursewareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B76281F417E5600B8B20A /* ExclusiveCoursewareViewController.m */; };
 		544B762B1F41927300B8B20A /* ExclusiveAskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 544B762A1F41927300B8B20A /* ExclusiveAskView.swift */; };
 		544B762E1F41A71200B8B20A /* QuestionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 544B762D1F41A71200B8B20A /* QuestionsTableViewCell.swift */; };
@@ -302,7 +300,6 @@
 		54504AC91E9E0E5F00EFCF8E /* VideoClassPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54504AC81E9E0E5F00EFCF8E /* VideoClassPlayerViewController.m */; };
 		54504ACC1E9E0E7F00EFCF8E /* VideoClassPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54504ACB1E9E0E7F00EFCF8E /* VideoClassPlayerView.m */; };
 		54504AD01E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54504ACF1E9E0EC800EFCF8E /* VideoClassProgressTableViewCell.m */; };
-		54504AD21E9E220500EFCF8E /* libNELivePlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54504AD11E9E220500EFCF8E /* libNELivePlayer.a */; };
 		545074581EDFB2970012A383 /* UIViewController+Token.m in Sources */ = {isa = PBXBuildFile; fileRef = 545074571EDFB2970012A383 /* UIViewController+Token.m */; };
 		5450745F1EDFB3830012A383 /* InteractionChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5450745E1EDFB3830012A383 /* InteractionChatViewController.m */; };
 		545074621EDFB4400012A383 /* InteractionMemberListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545074611EDFB4400012A383 /* InteractionMemberListViewController.m */; };
@@ -489,6 +486,8 @@
 		549A051A1DC86EBB00B3564D /* MXSCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05161DC86EBB00B3564D /* MXSCycleScrollView.m */; };
 		549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A05181DC86EBB00B3564D /* UIColor+HcdCustom.m */; };
 		549A979E1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 549A979D1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m */; };
+		549AB81A1F5D4BB400DD1EA8 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 547A7FB81DD4701C00F1282B /* libiconv.tbd */; };
+		549AB8201F5D67D700DD1EA8 /* NTESBundleSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AB81F1F5D67D700DD1EA8 /* NTESBundleSetting.m */; };
 		549AE7621E013DAC001DD2ED /* BindingMailInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */; };
 		549AE7651E013DBD001DD2ED /* BindingMailInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 549AE7641E013DBD001DD2ED /* BindingMailInfoViewController.m */; };
 		549C8D4E1EB1992C00CCD2FB /* ItunesProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 549C8D4D1EB1992C00CCD2FB /* ItunesProduct.m */; };
@@ -707,7 +706,6 @@
 		54EBCFF41EB2E6190011344D /* AuthenCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EBCFF31EB2E6190011344D /* AuthenCode.m */; };
 		54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC41DFE8D67001A98CE /* OrderView.m */; };
 		54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC71DFE8D75001A98CE /* OrderViewController.m */; };
-		54F1D0C91F062B47003CA80C /* NTESBundleSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F1D0C81F062B47003CA80C /* NTESBundleSetting.m */; };
 		54F292281E8287170076D499 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F292271E8287170076D499 /* Assets.xcassets */; };
 		54F32F721E372E57000F8926 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F32F711E372E57000F8926 /* Reachability.m */; };
 		54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F34D7C1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m */; };
@@ -793,6 +791,10 @@
 		540CC97E1EB96FA700387E8F /* NSNull+Json.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNull+Json.m"; sourceTree = "<group>"; };
 		540F85BA1EB03789007AE08A /* ConfirmRechargeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmRechargeView.h; sourceTree = "<group>"; };
 		540F85BB1EB03789007AE08A /* ConfirmRechargeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmRechargeView.m; sourceTree = "<group>"; };
+		5411F48B1F5E416E0023D576 /* CourseFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseFile.h; sourceTree = "<group>"; };
+		5411F48C1F5E416E0023D576 /* CourseFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseFile.m; sourceTree = "<group>"; };
+		5411F48E1F5E42170023D576 /* CourseFileTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseFileTableViewCell.h; sourceTree = "<group>"; };
+		5411F48F1F5E42170023D576 /* CourseFileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseFileTableViewCell.m; sourceTree = "<group>"; };
 		541390AB1EFA57B000EF51AA /* ReplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayView.h; sourceTree = "<group>"; };
 		541390AC1EFA57B000EF51AA /* ReplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplayView.m; sourceTree = "<group>"; };
 		541390AE1EFA57BC00EF51AA /* ReplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayViewController.h; sourceTree = "<group>"; };
@@ -1285,8 +1287,6 @@
 		544B761C1F417DF200B8B20A /* ExclusiveHomeworkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveHomeworkViewController.m; sourceTree = "<group>"; };
 		544B76211F417E1800B8B20A /* ExclusiveAskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusiveAskViewController.h; sourceTree = "<group>"; };
 		544B76221F417E1800B8B20A /* ExclusiveAskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveAskViewController.m; sourceTree = "<group>"; };
-		544B76241F417E4300B8B20A /* ExclusiveCoursewareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusiveCoursewareView.h; sourceTree = "<group>"; };
-		544B76251F417E4300B8B20A /* ExclusiveCoursewareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveCoursewareView.m; sourceTree = "<group>"; };
 		544B76271F417E5600B8B20A /* ExclusiveCoursewareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExclusiveCoursewareViewController.h; sourceTree = "<group>"; };
 		544B76281F417E5600B8B20A /* ExclusiveCoursewareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveCoursewareViewController.m; sourceTree = "<group>"; };
 		544B762A1F41927300B8B20A /* ExclusiveAskView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExclusiveAskView.swift; sourceTree = "<group>"; };
@@ -1716,6 +1716,8 @@
 		549A05181DC86EBB00B3564D /* UIColor+HcdCustom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HcdCustom.m"; sourceTree = "<group>"; };
 		549A979C1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoClassFullScreenListTableViewCell.h; sourceTree = "<group>"; };
 		549A979D1EA60628008FF9F4 /* VideoClassFullScreenListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoClassFullScreenListTableViewCell.m; sourceTree = "<group>"; };
+		549AB81E1F5D67D700DD1EA8 /* NTESBundleSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESBundleSetting.h; sourceTree = "<group>"; };
+		549AB81F1F5D67D700DD1EA8 /* NTESBundleSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESBundleSetting.m; sourceTree = "<group>"; };
 		549AE7601E013DAC001DD2ED /* BindingMailInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailInfoView.h; sourceTree = "<group>"; };
 		549AE7611E013DAC001DD2ED /* BindingMailInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindingMailInfoView.m; sourceTree = "<group>"; };
 		549AE7631E013DBD001DD2ED /* BindingMailInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindingMailInfoViewController.h; sourceTree = "<group>"; };
@@ -2165,8 +2167,6 @@
 		54ECFEC41DFE8D67001A98CE /* OrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderView.m; sourceTree = "<group>"; };
 		54ECFEC61DFE8D75001A98CE /* OrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
 		54ECFEC71DFE8D75001A98CE /* OrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
-		54F1D0C71F062B47003CA80C /* NTESBundleSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESBundleSetting.h; sourceTree = "<group>"; };
-		54F1D0C81F062B47003CA80C /* NTESBundleSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESBundleSetting.m; sourceTree = "<group>"; };
 		54F292271E8287170076D499 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		54F32F701E372E57000F8926 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		54F32F711E372E57000F8926 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
@@ -2236,60 +2236,58 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5450B3EF1F4EAFC500E7A64B /* libUMessage_Sdk.a in Frameworks */,
+				54294F651DDB44EC00677333 /* CoreVideo.framework in Frameworks */,
+				5429159C1DD9DDD300EE1A70 /* VideoToolbox.framework in Frameworks */,
 				5472B5A81F4EA64800C3110D /* libresolv.tbd in Frameworks */,
+				5429159A1DD9DDC900EE1A70 /* CoreMedia.framework in Frameworks */,
+				54294F641DDB44DC00677333 /* CoreGraphics.framework in Frameworks */,
+				54294CD51DDB3CCA00677333 /* OpenGLES.framework in Frameworks */,
+				549AB81A1F5D4BB400DD1EA8 /* libiconv.tbd in Frameworks */,
+				54294CC31DDB3AC400677333 /* libstdc++.tbd in Frameworks */,
+				54294CC21DDB3AAE00677333 /* libbz2.tbd in Frameworks */,
 				5472B59F1F4EA4B300C3110D /* libsqlite3.tbd in Frameworks */,
+				5450B3EF1F4EAFC500E7A64B /* libUMessage_Sdk.a in Frameworks */,
 				54EA78AF1F386D6C00CB8E08 /* UMMobClick.framework in Frameworks */,
+				5472B5A41F4EA5EA00C3110D /* libcrypto.a in Frameworks */,
+				5472B5A51F4EA5EA00C3110D /* libNELivePlayer.a in Frameworks */,
+				5472B5A61F4EA5EA00C3110D /* libNMCBasicModule.a in Frameworks */,
+				5472B5A71F4EA5EA00C3110D /* libssl.a in Frameworks */,
 				54CB26731DF0302900AE7414 /* Security.framework in Frameworks */,
 				5422E7D71F4E77B6008B0A96 /* libopus.a in Frameworks */,
 				5422E7CC1F4E77B6008B0A96 /* libaacplus.a in Frameworks */,
 				5422E7D01F4E77B6008B0A96 /* NIMSDK.framework in Frameworks */,
-				54504AD21E9E220500EFCF8E /* libNELivePlayer.a in Frameworks */,
 				5422E7D21F4E77B6008B0A96 /* libnio.a in Frameworks */,
 				54A6C4A11E97393700B56135 /* StoreKit.framework in Frameworks */,
 				54E8B6A31E5EF1B600A9703F /* AddressBook.framework in Frameworks */,
-				5472B5A41F4EA5EA00C3110D /* libcrypto.a in Frameworks */,
 				54E8B6A11E5EF1AF00A9703F /* Contacts.framework in Frameworks */,
 				54689A981F04AC8600CD01ED /* KSCrash.framework in Frameworks */,
-				5472B5A61F4EA5EA00C3110D /* libNMCBasicModule.a in Frameworks */,
 				5493D4A51E0B98F70085A39E /* MapKit.framework in Frameworks */,
 				5493D48C1E0B81A40085A39E /* CoreLocation.framework in Frameworks */,
 				547FBF1E1DF658C000955A9E /* UserNotifications.framework in Frameworks */,
 				54294CD61DDB3CD500677333 /* libz.1.tbd in Frameworks */,
-				54294CC31DDB3AC400677333 /* libstdc++.tbd in Frameworks */,
 				5429159F1DD9DDED00EE1A70 /* libz.tbd in Frameworks */,
 				5422E7D11F4E77B6008B0A96 /* libGPUImage.a in Frameworks */,
 				5472B5A51F4EA5EA00C3110D /* libNELivePlayer.a in Frameworks */,
 				5422E7D31F4E77B6008B0A96 /* libNMCVideoModule.a in Frameworks */,
-				54294CC21DDB3AAE00677333 /* libbz2.tbd in Frameworks */,
 				5429159E1DD9DDE600EE1A70 /* libsqlite3.0.tbd in Frameworks */,
 				5429159D1DD9DDDE00EE1A70 /* libc++.tbd in Frameworks */,
-				5422E7CD1F4E77B6008B0A96 /* libcrypto.a in Frameworks */,
 				54E120CE1DDC2CA5004F8012 /* CoreText.framework in Frameworks */,
 				54294CD41DDB3CC200677333 /* UIKit.framework in Frameworks */,
-				54294F651DDB44EC00677333 /* CoreVideo.framework in Frameworks */,
-				5422E7CF1F4E77B6008B0A96 /* libssl.a in Frameworks */,
 				548328E71DDC6F360053AB29 /* libmp3lame.a in Frameworks */,
-				54294F641DDB44DC00677333 /* CoreGraphics.framework in Frameworks */,
 				54294F631DDB44C200677333 /* CoreAudio.framework in Frameworks */,
-				5472B5A71F4EA5EA00C3110D /* libssl.a in Frameworks */,
 				54294F621DDB44A500677333 /* Foundation.framework in Frameworks */,
 				54294CD71DDB3CF000677333 /* CFNetwork.framework in Frameworks */,
-				54294CD51DDB3CCA00677333 /* OpenGLES.framework in Frameworks */,
 				54294CD31DDB3CB500677333 /* QuartzCore.framework in Frameworks */,
 				5422E7CE1F4E77B6008B0A96 /* libevent.a in Frameworks */,
-				5429159C1DD9DDD300EE1A70 /* VideoToolbox.framework in Frameworks */,
 				5422E7D61F4E77B6008B0A96 /* libopenh264.a in Frameworks */,
 				5450B3F51F4EB1C500E7A64B /* libUMessage_Sdk.a in Frameworks */,
 				5429159B1DD9DDCE00EE1A70 /* AudioToolbox.framework in Frameworks */,
 				5422E7D51F4E77B6008B0A96 /* libnvs.a in Frameworks */,
-				5429159A1DD9DDC900EE1A70 /* CoreMedia.framework in Frameworks */,
 				54CB26711DF02FE400AE7414 /* libWeChatSDK.a in Frameworks */,
 				542915991DD9DDC300EE1A70 /* CoreTelephony.framework in Frameworks */,
 				542915981DD9DDBC00EE1A70 /* AVFoundation.framework in Frameworks */,
 				542915971DD9DDB700EE1A70 /* SystemConfiguration.framework in Frameworks */,
 				542915961DD9DDB000EE1A70 /* MobileCoreServices.framework in Frameworks */,
-				542915911DD9DAF700EE1A70 /* libPods-Qatime_Student.a in Frameworks */,
 				5422E7D41F4E77B6008B0A96 /* libnts.a in Frameworks */,
 				F249EFD4707A4E4121B5BF4D /* libPods-Qatime_Student.a in Frameworks */,
 				5422E7D81F4E77B6008B0A96 /* NIMAVChat.framework in Frameworks */,
@@ -2320,6 +2318,15 @@
 				54081A701F28821C0063C391 /* ExclusiveLessons.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		5411F4871F5E40E40023D576 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				5411F48E1F5E42170023D576 /* CourseFileTableViewCell.h */,
+				5411F48F1F5E42170023D576 /* CourseFileTableViewCell.m */,
+			);
+			name = Cell;
 			sourceTree = "<group>";
 		};
 		541390B41EFA641100EF51AA /* Model */ = {
@@ -3660,8 +3667,7 @@
 		544B76131F417D7500B8B20A /* View */ = {
 			isa = PBXGroup;
 			children = (
-				544B76241F417E4300B8B20A /* ExclusiveCoursewareView.h */,
-				544B76251F417E4300B8B20A /* ExclusiveCoursewareView.m */,
+				5411F4871F5E40E40023D576 /* Cell */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -3669,6 +3675,8 @@
 		544B76141F417D7700B8B20A /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5411F48B1F5E416E0023D576 /* CourseFile.h */,
+				5411F48C1F5E416E0023D576 /* CourseFile.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -5416,8 +5424,8 @@
 		54AC022F1E892CEE00817767 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				54F1D0C71F062B47003CA80C /* NTESBundleSetting.h */,
-				54F1D0C81F062B47003CA80C /* NTESBundleSetting.m */,
+				549AB81E1F5D67D700DD1EA8 /* NTESBundleSetting.h */,
+				549AB81F1F5D67D700DD1EA8 /* NTESBundleSetting.m */,
 				54AC02321E892CEE00817767 /* NTESCADisplayLinkHolder.h */,
 				54AC02331E892CEE00817767 /* NTESCADisplayLinkHolder.m */,
 				54AC02341E892CEE00817767 /* NTESClientUtil.h */,
@@ -7520,7 +7528,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				54B9CB001DFE4E8A003961FF /* BuyBar.m in Sources */,
-				544B76261F417E4300B8B20A /* ExclusiveCoursewareView.m in Sources */,
 				54294C671DDAD82400677333 /* InfoHeaderView.m in Sources */,
 				54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */,
 				548328E81DDC6F360053AB29 /* Mp3Recorder.m in Sources */,
@@ -7661,6 +7668,7 @@
 				5492FC8F1E7A7BB800F89593 /* MultifiltersViewController.m in Sources */,
 				5442009B1E77914200797E6C /* TodayLiveCollectionViewCell.m in Sources */,
 				544AD3BC1EC01AE2002F567D /* ReleaseNote.md in Sources */,
+				5411F48D1F5E416E0023D576 /* CourseFile.m in Sources */,
 				54774D161F444A8200150C05 /* ZLPhotoPickerGroupTableViewCell.m in Sources */,
 				548328F01DDC6F370053AB29 /* UUProgressHUD.m in Sources */,
 				5422EAED1F4E7AC9008B0A96 /* NIMAttributedLabelURL.m in Sources */,
@@ -7688,7 +7696,6 @@
 				5422EABC1F4E7AC9008B0A96 /* NIMTipContentConfig.m in Sources */,
 				545162BE1DF50D99000BD17A /* ChangePasswordViewController.m in Sources */,
 				54C9A8D11E12159700B81EBF /* PlayerView.m in Sources */,
-				54F1D0C91F062B47003CA80C /* NTESBundleSetting.m in Sources */,
 				54AC04D71E89398E00817767 /* IJKSDLGLView.m in Sources */,
 				5469786C1DC72A54001695F4 /* SignUpView.m in Sources */,
 				5422EACF1F4E7AC9008B0A96 /* NIMSessionTextContentView.m in Sources */,
@@ -7748,6 +7755,7 @@
 				5422EAAA1F4E7AC9008B0A96 /* NIMInputEmoticonParser.m in Sources */,
 				5422EAAB1F4E7AC9008B0A96 /* NIMInputEmoticonTabView.m in Sources */,
 				54774D2C1F444ADC00150C05 /* UIView+ZLExtension.m in Sources */,
+				5411F4901F5E42170023D576 /* CourseFileTableViewCell.m in Sources */,
 				548328F31DDC75050053AB29 /* ChatModel.m in Sources */,
 				54774D151F444A8200150C05 /* ZLPhotoPickerFooterCollectionReusableView.m in Sources */,
 				54B9149D1E6D676D00F377ED /* ProvinceHeaderView.m in Sources */,
@@ -8016,6 +8024,7 @@
 				545731811E022E7700F45C03 /* HaveNoClassView.m in Sources */,
 				54AC04D21E89398E00817767 /* mvp.vsh.c in Sources */,
 				54E0C27D1F4C5537002D6DE0 /* InteractionReplayPlayerViewController.m in Sources */,
+				549AB8201F5D67D700DD1EA8 /* NTESBundleSetting.m in Sources */,
 				547FBF381DF6CFD700955A9E /* MyWalletView.m in Sources */,
 				5422EAAD1F4E7AC9008B0A96 /* NIMInputTextView.m in Sources */,
 				54B610381E83BA0B00DA8E7A /* ClassNotice.m in Sources */,

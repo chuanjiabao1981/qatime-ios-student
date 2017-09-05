@@ -73,7 +73,6 @@
     [_navigationBar.rightButton setImage:[UIImage imageNamed:@"垃圾桶"] forState:UIControlStateNormal];
     [_navigationBar.rightButton addTarget:self action:@selector(editTableView:) forControlEvents:UIControlEventTouchUpInside];
     
-    
 }
 
 - (void)makeData{

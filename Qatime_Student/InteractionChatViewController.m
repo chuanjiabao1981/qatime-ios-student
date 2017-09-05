@@ -1,4 +1,4 @@
-//
+//////
 //  InteractionChatViewController.m
 //  Qatime_Student
 //
@@ -48,7 +48,7 @@
 #import "TutoriumList.h"
 
 
-@interface InteractionChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate,PhotoBrowserDelegate>{
+@interface InteractionChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate,PhotoBrowserDelegate,NIMTeamManagerDelegate,NIMSystemNotificationManagerDelegate>{
     
     NSString *_token;
     NSString *_idNumber;
@@ -129,6 +129,8 @@
     
     //千万别登录云信
     [[NIMSDK sharedSDK].chatManager addDelegate:self];
+    [[NIMSDK sharedSDK].teamManager addDelegate:self];
+    [[NIMSDK sharedSDK].systemNotificationManager addDelegate:self];
     
     NSLog(@"聊天未读消息%ld条",[[[NIMSDK sharedSDK]conversationManager] allUnreadCount]);
     
@@ -190,9 +192,7 @@
     /* 添加录音是否取消的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordCancel) name:@"RecordCancel" object:nil];
     
-    
 }
-
 
 
 
@@ -432,7 +432,6 @@
         [self makeMessages:messages];
         
     }];
-    
     
 }
 
@@ -1670,6 +1669,8 @@
     
 }
 
+
+
 /**浏览大图*/
 -(void)showImage:(UIImageView *)imageView andImage:(UIImage *)image{
     
@@ -1681,10 +1682,54 @@
     
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
+- (void)updateTeamAnnouncement:(NSString *)announcement
+                        teamId:(NSString *)teamId
+                    completion:(nullable NIMTeamHandler)completion{
+    
 }
+
+/**
+ *  更新群自定义信息
+ *
+ *  @param info         群自定义信息
+ *  @param teamId       群组ID
+ *  @param completion   完成后的回调
+ */
+- (void)updateTeamCustomInfo:(NSString *)info
+                      teamId:(NSString *)teamId
+                  completion:(nullable NIMTeamHandler)completion{
+    
+}
+
+//收到系统消息
+- (void)onReceiveCustomSystemNotification:(NIMCustomSystemNotification *)notification{
+
+    //格式:
+    //{"SwitchVedioObject":"Board"}
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[notification.content dataUsingEncoding:NSUnicodeStringEncoding]  options:NSJSONReadingMutableLeaves error:nil];
+    NSLog(@"%@",dic);
+    
+    //Board 和 Desktop 来切换一对一的白板和全屏桌面
+    if (dic[@"SwitchVedioObject"]) {
+        if ([dic[@"SwitchVedioObject"]isEqualToString:@"Board"]) {
+            //切换到竖屏白板
+            NSLog(@"收到开启白板命令");
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"DesktopSharedOff" object:nil];
+        }else if ([dic[@"SwitchVedioObject"]isEqualToString:@"Desktop"]){
+            //切换到全屏桌面
+            NSLog(@"收到屏幕共享命令");
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"DesktopSharedOn" object:nil];
+        }
+    }
+}
+
+
+
+//- (void)didReceiveMemoryWarning {
+//    [super didReceiveMemoryWarning];
+//    // Dispose of any resources that can be recreated.
+//}
 
 /*
 #pragma mark - Navigation

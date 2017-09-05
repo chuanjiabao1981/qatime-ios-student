@@ -25,9 +25,7 @@
 #import "UIViewController+Token.h"
 #import "VideoPlayerViewController.h"
 #import "InteractionReplayPlayerViewController.h"
-
-
-
+#import "UIControl+RemoveTarget.h"
 
 @interface OneOnOneTutoriumInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,OneOnOneTeacherTableViewCellDelegate,UICollectionViewDelegate,UICollectionViewDataSource>{
     
@@ -191,18 +189,9 @@
                 [self.myView.classListTableView cyl_reloadData];
             }
             
-            //判断购买状态
-            if (![dic[@"ticket"] isEqual:[NSNull null]]) {
-                _isBought = YES;
-                [_buyButton setTitle:@"立即学习" forState:UIControlStateNormal];
-                [_buyButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
-                [_buyButton addTarget:self action:@selector(enterClass) forControlEvents:UIControlEventTouchUpInside];
-            }else{
-                [_buyButton setTitle:@"立即购买" forState:UIControlStateNormal];
-                [_buyButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
-                [_buyButton addTarget:self action:@selector(buyClass:) forControlEvents:UIControlEventTouchUpInside];
-            }
-            
+            /* 判断课程状态*/
+            [self switchClassData:dic];
+                       
         }else{
             //数据错误
         }
@@ -210,6 +199,55 @@
     }];
     
 }
+
+
+#pragma mark- 判断课程状态
+- (void)switchClassData:(NSDictionary *)dic{
+    
+    if (dic[@"data"][@"interactive_course"]) {//一对一都不是免费课
+        if (![dic[@"data"][@"ticket"]isEqual:[NSNull null]]) {//已试听过或已购买过
+            //如果课程未结束
+            if (![dic[@"data"][@"interactive_course"][@"status"]isEqualToString:@"completed"]) {
+                if (dic[@"data"][@"ticket"][@"type"]) {
+                    if ([dic[@"data"][@"ticket"][@"type"]isEqualToString:@"LiveStudio::BuyTicket"]) {//已购买,显示开始学习按钮
+                        _isBought = YES;
+                        /* 已经购买的情况下*/
+                        [_buyButton setTitle:@"开始学习" forState:UIControlStateNormal];
+                        _buyButton.backgroundColor = NAVIGATIONRED;
+                        [_buyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                        [_buyButton addTarget:self action:@selector(enterClass) forControlEvents:UIControlEventTouchUpInside];
+                        
+                    }else{//未购买,显示进入试听按钮 购买按钮照常使用
+                        _isBought = NO;
+                        [_buyButton removeAllTargets];
+                        [_buyButton setTitle:@"立即报名" forState:UIControlStateNormal];
+                        _buyButton.backgroundColor = [UIColor whiteColor];
+                        [_buyButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+                        [_buyButton addTarget:self action:@selector(buyClass:) forControlEvents:UIControlEventTouchUpInside];
+                    }
+                }
+            }else{//课程已经结束了
+                //整个购买栏直接隐藏吧
+                _buyView.hidden = YES;
+            }
+            
+        }else{//需要购买
+            [_buyButton setTitle:@"立即报名" forState:UIControlStateNormal];
+            [_buyButton setTitleColor:BUTTONRED forState:UIControlStateNormal];
+            [_buyButton removeAllTargets];
+            [_buyButton addTarget:self action:@selector(buyClass:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        if ([dic[@"data"][@"course"][@"off_shelve"]boolValue]==YES) {//已下架
+            //已经下架
+            _buyView.hidden = YES;
+            _myView.priceLabel.text = @"已下架";
+        }else{
+            
+            
+        }
+    }
+}
+
 
 /**进入教师详情页*/
 - (void)selectedTeacher:(NSString *)teacherID{
@@ -226,9 +264,9 @@
      直接进入一对一互动直播
      */
     NIMChatroom *chatRoom = [[NIMChatroom alloc]init];
-    chatRoom.roomId = _dataDic[@"chat_team_id"] ;
+    chatRoom.roomId = _dataDic[@"interactive_course"][@"chat_team"][@"team_id"] ;
     
-    InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatRoom andClassID:_classID andChatTeamID:_dataDic[@"chat_team_id"] andLessonName:_lesson==nil?@"暂无直播":_lesson];
+    InteractionViewController *controller = [[InteractionViewController alloc]initWithChatroom:chatRoom andClassID:_classID andChatTeamID:_dataDic[@"interactive_course"][@"chat_team"][@"team_id"] andLessonName:_lesson==nil?@"暂无直播":_lesson];
     
 //    OneOnOneTutoriumInfoViewController *controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:_classID];
     [self.navigationController pushViewController:controller animated:YES];

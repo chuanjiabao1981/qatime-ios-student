@@ -31,6 +31,11 @@ typedef NS_ENUM(NSUInteger, CourseType) {
 @property(nonatomic,strong) NSString *preset_lesson_count ;
 @property(nonatomic,strong) NSString *taste_count ;
 @property(nonatomic,strong) NSString *completed_lesson_count ;
+
+@property (nonatomic, strong) NSString *completed_lessons_count ;
+@property (nonatomic, strong) NSString *closed_lessons_count ;
+@property (nonatomic, strong) NSString *started_lessons_count ;
+
 @property(nonatomic,strong) NSString *live_start_time ;
 @property(nonatomic,strong) NSString *live_end_time ;
 @property(nonatomic,strong) NSString *publicize ;
@@ -52,6 +57,10 @@ typedef NS_ENUM(NSUInteger, CourseType) {
 @property (nonatomic, strong) NSArray *tag_list ;
 @property (nonatomic, strong) NSString *objective ; //目标
 @property (nonatomic, strong) NSString *suit_crowd ;
+@property (nonatomic, strong) NSString *lessons_count ;
+
+@property (nonatomic, strong) NSString *video_lessons_count ;
+@property (nonatomic, strong) NSString *events_count ;
 
 /* 在加载消息列表页时该属性才有用,其他接口用不到*/
 @property(nonatomic,assign) BOOL notify ;
@@ -60,8 +69,6 @@ typedef NS_ENUM(NSUInteger, CourseType) {
 @property (nonatomic, assign) CourseType classType ;
 
 @end
-
-
 
 /* 类声明*/
 

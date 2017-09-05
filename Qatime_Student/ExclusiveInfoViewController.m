@@ -155,7 +155,7 @@
         }
             break;
         case 4:{
-            
+            controller = [[ExclusiveCoursewareViewController alloc]init];
         }
             break;
         case 5:{
@@ -402,7 +402,7 @@
                     self.buyBar.hidden = YES;
                     self.tutoriumInfoView.priceLabel.text = @"已下架";
                 }else{
-                    
+                    //如果没下架
                     self.buyBar.listenButton.hidden = YES;
                     self.buyBar.applyButton.sd_resetLayout
                     .leftSpaceToView(self.buyBar, 10)
@@ -768,6 +768,9 @@
 }
 
 
+/**
+ 购买免费专属课
+ */
 - (void)addFreeClass{
     
 }

@@ -11,7 +11,7 @@
 #import "KsDownloadManager.h"
 #import "KsFileTools.h"
 #import "UIImageView+WebCache.h"
-#import "NSString+hash.h"
+#import "NSString+Hash.h"
 #import "UIImage+TYHSetting.h"
 #import "UIColor+CJColorCategory.h"
 #import "KsHttp.h"

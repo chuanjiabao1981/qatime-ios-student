@@ -827,9 +827,6 @@
 }
 
 
-
-
-
 #pragma mark - NIMLoginManagerDelegate
 - (void)onLogin:(NIMLoginStep)step
 {
@@ -889,18 +886,14 @@
         if (_whiteBoardON == YES) {
             self.maskView.hidden = YES;
         }else{
-            
             self.maskView.hidden = NO;
         }
         
-        
     }else if(toInterfaceOrientation == UIInterfaceOrientationLandscapeRight){
         //白板转到全屏的时候 ,直接关闭
-         
-        
     }
-    
 }
+
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
     

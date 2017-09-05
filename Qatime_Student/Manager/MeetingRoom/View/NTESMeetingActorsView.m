@@ -12,6 +12,7 @@
 #import "NTESGLView.h"
 #import <NIMAVChat/NIMAVChat.h>
 #import "NTESVideoFSViewController.h"
+#import "NTESBundleSetting.h"
 
 
 #define NTESMeetingMaxActors 2
@@ -23,9 +24,10 @@
     NSMutableArray *_backgroundViews;
 }
 
-@property (nonatomic, weak) CALayer *localVideoLayer;
+//@property (nonatomic, weak) CALayer *localVideoLayer;
 @property (nonatomic, strong) NTESVideoFSViewController *videoVc;
 @property (nonatomic, strong) UIButton *fullScreenBtn;
+@property (nonatomic, weak) UIView *localPreview;
 
 
 @end
@@ -90,12 +92,27 @@
 }
 
 //本地摄像头准备就绪
-- (void)onLocalPreviewReady:(CALayer *)layer{
-    
-    [self startLocalPreview:layer];
-    _localVideoLayer = layer;
+//- (void)onLocalPreviewReady:(CALayer *)layer{
+//    
+//    [self startLocalPreview:layer];
+////    _localVideoLayer = layer;
+//
+//}
 
+- (void)onLocalDisplayviewReady:(UIView *)displayView
+{
+    
+        [self startLocalPreview:displayView];
+        
+        NSInteger type = [[NTESBundleSetting sharedConfig] beautifyType];
+        //美颜
+        [[NIMAVChatSDK sharedSDK].netCallManager selectBeautifyType:type] ;
+   
+        _localPreview = displayView;
+    
 }
+
+
 //这是拉流播放器正在拉流
 - (void)onRemoteYUVReady:(NSData *)yuvData width:(NSUInteger)width height:(NSUInteger)height from:(NSString *)user{
     
@@ -160,23 +177,23 @@
     }];
 }
 
-- (void)startLocalPreview:(CALayer *)layer
+- (void)startLocalPreview:(UIView *)view
 {
     [self stopLocalPreview];
     
-    _localVideoLayer = layer;
+    _localPreview = view;
 
     IJKFloatingView *localView = _actorViews[1];
     [localView render:nil width:0 height:0];
-    [localView.layer addSublayer:_localVideoLayer];
+    [localView addSubview:view];
     [self layoutLocalPreviewLayer];
 }
 
 
 -(void)stopLocalPreview
 {
-    if (_localVideoLayer) {
-        [_localVideoLayer removeFromSuperlayer];
+    if (_localPreview) {
+        [_localPreview removeFromSuperview];
     }
 }
 
@@ -201,11 +218,13 @@
             break;
     }
     
-    [_localVideoLayer setAffineTransform:CGAffineTransformMakeRotation(rotateDegree)];
-    IJKFloatingView *localView = _actorViews[1];
-    localView.frame = CGRectMake(0, 0, UIScreenWidth/4, UIScreenWidth/4/9*16);
-    localView.canMove = YES;
-    _localVideoLayer.frame = localView.bounds;
+     UIView *localView = _actorViews[1];
+    _localPreview.transform = CGAffineTransformMakeRotation(rotateDegree);
+    
+    IJKFloatingView *localsView = _actorViews[1];
+    localsView.frame = CGRectMake(0, 0, UIScreenWidth/4, UIScreenWidth/4/9*16);
+    localsView.canMove = YES;
+    _localPreview.frame = localView.bounds;
     
     //发送本地摄像头准备就绪的通知
     [[NSNotificationCenter defaultCenter]postNotificationName:@"SelfCameraReady" object:nil];
@@ -241,15 +260,16 @@
     if ([NTESMeetingRolesManager defaultManager].myRole.videoOn==NO) {
         [[NTESMeetingRolesManager defaultManager].myRole setVideoOn:YES];
         
-        if (_localVideoLayer) {
+        if (_localPreview) {
             
-            [self onLocalPreviewReady:_localVideoLayer];
+//            [self onLocalPreviewReady:_localVideoLayer];
+            [self onLocalDisplayviewReady:_localPreview];
         }
         
     }else{
-        if (_localVideoLayer) {
+        if (_localPreview) {
             
-            [self onLocalPreviewReady:_localVideoLayer];
+            [self onLocalDisplayviewReady:_localPreview];
         }
     }
     

@@ -169,18 +169,8 @@
     [WXApi registerApp:@"wxf2dfbeb5f641ce40"];
     
     /* 初始化云信SDK*/
-    [[NIMSDK sharedSDK] registerWithAppID:IM_APPKEY cerName:PushCerName];
-    [[NIMSDK sharedSDK].loginManager addDelegate:self];
+    [self setupNIM];
     
-    /* 登录云信*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"]) {
-        NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"];
-        NIMAutoLoginData *lodata = [[NIMAutoLoginData alloc]init];
-        lodata.account =chatDic [@"accid"];
-        lodata.token = chatDic[@"token"];
-        [[[NIMSDK sharedSDK]loginManager]autoLogin:lodata];
-        
-    }
     
     /* 推送状态读取*/
     /* 读取本地存储的默认是否要开启推送的声音和震动的设置数据*/
@@ -506,6 +496,11 @@
     if (step == NIMLoginStepSyncOK) {
         
     }
+    
+    if (step ==NIMLoginStepLoginFailed) {
+        
+    }
+    
     
 }
 
@@ -842,6 +837,44 @@
 - (void)hideTabbar{
     
     [_viewController removeOriginControls];
+    
+}
+
+
+#pragma mark- 云信
+- (void)setupNIM{
+    
+    __block NSString *IMAPPKEY;
+    //从服务器里 直接拿云信的appkey ,如果没有 ,就用本地宏存储的云信信息
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/app_constant/im_app_key",Request_Header] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            IMAPPKEY = [NSString stringWithFormat:@"%@",dic[@"data"][@"im_app_key"]];
+            
+            [[NIMSDK sharedSDK].loginManager addDelegate:self];
+            [[NIMSDK sharedSDK] registerWithAppID:IMAPPKEY==nil?IM_APPKEY:IMAPPKEY cerName:PushCerName];
+            
+            /* 登录云信*/
+            if ([[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"]) {
+                NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"];
+                NIMAutoLoginData *lodata = [[NIMAutoLoginData alloc]init];
+                lodata.account =chatDic [@"accid"];
+                lodata.token = chatDic[@"token"];
+                [[[NIMSDK sharedSDK]loginManager]autoLogin:lodata];
+                
+            }
+
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
     
 }
 
