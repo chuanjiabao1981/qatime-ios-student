@@ -107,10 +107,10 @@
          contextName = "-[DownloadManagerViewController selecteAllItem:]:DownloadManagerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_selectedItems">
+               value = "_filesArray">
             </PersistentString>
             <PersistentString
-               value = "_filesArray">
+               value = "_selectedItems">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -226,10 +226,10 @@
          contextName = "__46-[NELivePlayerViewController requestClassInfo]_block_invoke_2:NELivePlayerViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__37-[NoticeIndexViewController loadView]_block_invoke_2:NoticeIndexViewController.m">
+         contextName = "-[ExclusiveCoursewareViewController tableView:cellForRowAtIndexPath:]:ExclusiveCoursewareViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_noticeArray">
+               value = "_filesArray">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -240,18 +240,18 @@
          contextName = "__44-[LivePlayerViewController requestClassInfo]_block_invoke.679:LivePlayerViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[MultifiltersViewController collectionView:didSelectItemAtIndexPath:]:MultifiltersViewController.m">
+         contextName = "__37-[NoticeIndexViewController loadView]_block_invoke_2:NoticeIndexViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_filtersDic">
+               value = "_noticeArray">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[ExclusiveCoursewareViewController tableView:cellForRowAtIndexPath:]:ExclusiveCoursewareViewController.m">
+         contextName = "-[MultifiltersViewController collectionView:didSelectItemAtIndexPath:]:MultifiltersViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_filesArray">
+               value = "_filtersDic">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -593,10 +593,10 @@
                value = "_noticeAndMembers">
             </PersistentString>
             <PersistentString
-               value = "_classesArr">
+               value = "_videoClassInfo">
             </PersistentString>
             <PersistentString
-               value = "_videoClassInfo">
+               value = "_classesArr">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -645,13 +645,13 @@
          contextName = "-[TeachersPublicViewController numberOfSectionsInCollectionView:]:TeachersPublicViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_publicCount">
-            </PersistentString>
-            <PersistentString
                value = "_oneOnOneCount">
             </PersistentString>
             <PersistentString
                value = "_videoCount">
+            </PersistentString>
+            <PersistentString
+               value = "_publicCount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -890,10 +890,10 @@
          contextName = "-[NTESPageView reloadPage]:NTESPageView.m">
          <PersistentStrings>
             <PersistentString
-               value = "_currentPage">
+               value = "_pages">
             </PersistentString>
             <PersistentString
-               value = "_pages">
+               value = "_currentPage">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1231,10 +1231,10 @@
          contextName = "__50-[ChangePhoneViewController requestChangePasswrod]_block_invoke_2:ChangePhoneViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__33-[SignUpViewController nextStep:]_block_invoke:SignUpViewController.m">
+         contextName = "-[CourseFileTableViewCell setModel:]:CourseFileTableViewCell.m">
       </ContextState>
       <ContextState
-         contextName = "-[CourseFileTableViewCell setModel:]:CourseFileTableViewCell.m">
+         contextName = "__33-[SignUpViewController nextStep:]_block_invoke:SignUpViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[UUInputFunctionView sendMessage:]:UUInputFunctionView.m">
@@ -1629,6 +1629,14 @@
          contextName = "-[InteractionViewController setupChatRoomFunc]:InteractionViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[VideoPlayerViewController loadView]:VideoPlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.liveplayer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[TutoriumInfoViewController scrollViewDidScroll:]:TutoriumInfoViewController.m">
       </ContextState>
       <ContextState
@@ -1799,10 +1807,10 @@
          contextName = "-[TutoriumInfoViewController autoScrollHeight]:TutoriumInfoViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_tutoriumInfoView.view2.contentSize">
+               value = "_tutoriumInfoView.view1.contentSize">
             </PersistentString>
             <PersistentString
-               value = "_tutoriumInfoView.view1.contentSize">
+               value = "_tutoriumInfoView.view2.contentSize">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -2081,6 +2089,14 @@
             </PersistentString>
             <PersistentString
                value = "_rechargeArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[VideoPlayerViewController viewWillAppear:]:VideoPlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "videoIsHardware">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

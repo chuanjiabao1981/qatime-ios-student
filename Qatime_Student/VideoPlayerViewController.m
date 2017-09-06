@@ -10,30 +10,55 @@
 #import "NELivePlayerControl.h"
 
 @interface VideoPlayerViewController (){
-    
-    
+   
+    BOOL _isMediaSliderBeingDragged;
 }
-
-
 
 @end
 
 @implementation VideoPlayerViewController
+@synthesize playerView;
+@synthesize controlOverlay;
+@synthesize topControlView;
+@synthesize bottomControlView;
+@synthesize playQuitBtn;
+@synthesize fileName;
 
+@synthesize currentTime;
+@synthesize totalDuration;
+@synthesize videoProgress;
+
+@synthesize bufferingIndicate;
+@synthesize bufferingReminder;
+
+@synthesize playBtn;
+@synthesize pauseBtn;
+@synthesize audioBtn;
+@synthesize muteBtn;
+@synthesize scaleModeBtn;
+@synthesize snapshotBtn;
+@synthesize mediaControl;
+
+@synthesize timer;
+//为了避免变量冲突无法编译  把这些都改了
 NSTimeInterval mDuration;
 NSTimeInterval mCurrPos;
-CGFloat videoScreenWidth;
-CGFloat videoScreenHeight;
-bool videoIsHardware = YES;
-bool videoIsmute     = NO;
+CGFloat videoscreenWidth;
+CGFloat videoscreenHeight;
+bool videoisHardware = NO;
+bool videoismute     = NO;
+
+int mCurrentPostion;
 
 + (void)presentFromViewController:(UIViewController *)viewController withTitle:(NSString *)title URL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm andTitle:(NSString *)title completion:(void (^)())completion {
+    
     [viewController presentViewController:[[VideoPlayerViewController alloc] initWithURL:url andDecodeParm:decodeParm andTitle:title] animated:YES completion:completion];
 }
 
 - (instancetype)initWithURL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm andTitle:(NSString *)title {
     self = [self initWithNibName:@"NELivePlayerViewController" bundle:nil];
     if (self) {
+        
         self.url = url;
         self.decodeType = [decodeParm objectAtIndex:0];
         self.mediaType = [decodeParm objectAtIndex:1];
@@ -48,7 +73,7 @@ bool videoIsmute     = NO;
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        [self syncUIStatus:NO];
+//        [self syncUIStatus];
     }
     return self;
 }
@@ -65,20 +90,20 @@ bool videoIsmute     = NO;
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
     self.view.backgroundColor = [UIColor whiteColor];
     //当前屏幕宽高
-    videoScreenWidth  = CGRectGetWidth([UIScreen mainScreen].bounds);
-    videoScreenHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
+    videoscreenWidth  = CGRectGetWidth([UIScreen mainScreen].bounds);
+    videoscreenHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
     
-    self.playerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, videoScreenWidth, videoScreenHeight-20)];
+    self.playerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, videoscreenWidth, videoscreenHeight-20)];
     
-    self.mediaControl = [[NELivePlayerControl alloc] initWithFrame:CGRectMake(0, 0, videoScreenHeight, videoScreenWidth)];
+    self.mediaControl = [[NELivePlayerControl alloc] initWithFrame:CGRectMake(0, 0, videoscreenHeight, videoscreenWidth)];
     [self.mediaControl addTarget:self action:@selector(onClickMediaControl:) forControlEvents:UIControlEventTouchDown];
     
     //控制
-    self.controlOverlay = [[UIControl alloc] initWithFrame:CGRectMake(0, 0, videoScreenHeight, videoScreenWidth)];
+    self.controlOverlay = [[UIControl alloc] initWithFrame:CGRectMake(0, 0, videoscreenHeight, videoscreenWidth)];
     [self.controlOverlay addTarget:self action:@selector(onClickOverlay:) forControlEvents:UIControlEventTouchDown];
     
     //顶部控制栏
-    self.topControlView    = [[UIView alloc] initWithFrame:CGRectMake(0, 0, videoScreenHeight, 40)];
+    self.topControlView    = [[UIView alloc] initWithFrame:CGRectMake(0, 0, videoscreenHeight, 40)];
     self.topControlView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ic_background_black.png"]];
     self.topControlView.alpha = 0.8;
     //退出按钮
@@ -89,7 +114,7 @@ bool videoIsmute     = NO;
     [self.topControlView addSubview:self.playQuitBtn];
     
     //文件名
-    self.fileName = [[UILabel alloc] initWithFrame:CGRectMake(70, 0, videoScreenHeight - 140, 40)];
+    self.fileName = [[UILabel alloc] initWithFrame:CGRectMake(70, 0, videoscreenHeight - 140, 40)];
     self.fileName.text = _videoTitle;
     self.fileName.textAlignment = NSTextAlignmentCenter; //文字居中
     self.fileName.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
@@ -98,19 +123,19 @@ bool videoIsmute     = NO;
     
     //缓冲提示
     self.bufferingIndicate = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [self.bufferingIndicate setCenter:CGPointMake(videoScreenHeight/2, videoScreenWidth/2)];
+    [self.bufferingIndicate setCenter:CGPointMake(videoscreenHeight/2, videoscreenWidth/2)];
     [self.bufferingIndicate setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
     self.bufferingIndicate.hidden = YES;
     
     self.bufferingReminder = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
-    [self.bufferingReminder setCenter:CGPointMake(videoScreenHeight/2, videoScreenWidth/2 - 50)];
+    [self.bufferingReminder setCenter:CGPointMake(videoscreenHeight/2, videoscreenWidth/2 - 50)];
     self.bufferingReminder.text = @"缓冲中";
     self.bufferingReminder.textAlignment = NSTextAlignmentCenter; //文字居中
     self.bufferingReminder.textColor = [UIColor whiteColor];
     self.bufferingReminder.hidden = YES;
 
     //底部控制栏
-    self.bottomControlView = [[UIView alloc] initWithFrame:CGRectMake(0, videoScreenWidth - 50, videoScreenHeight, 50)];
+    self.bottomControlView = [[UIView alloc] initWithFrame:CGRectMake(0, videoscreenWidth - 50, videoscreenHeight, 50)];
     self.bottomControlView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ic_background_black.png"]];
     self.bottomControlView.alpha = 0.8;
     
@@ -139,7 +164,7 @@ bool videoIsmute     = NO;
 //    [self.bottomControlView addSubview:self.currentTime];
     
     //播放进度条
-    self.videoProgress = [[UISlider alloc] initWithFrame:CGRectMake(50, 10, videoScreenHeight-200, 30)];
+    self.videoProgress = [[UISlider alloc] initWithFrame:CGRectMake(50, 10, videoscreenHeight-200, 30)];
     [[UISlider appearance] setThumbImage:[UIImage imageNamed:@"btn_player_slider_thumb"] forState:UIControlStateNormal];
     [[UISlider appearance] setMaximumTrackImage:[UIImage imageNamed:@"btn_player_slider_all"] forState:UIControlStateNormal];
     [[UISlider appearance] setMinimumTrackImage:[UIImage imageNamed:@"btn_player_slider_played"] forState:UIControlStateNormal];
@@ -149,7 +174,7 @@ bool videoIsmute     = NO;
 
     
     //文件总时长
-    self.totalDuration = [[UILabel alloc] initWithFrame:CGRectMake(videoScreenHeight-140, 10, 70, 25)];
+    self.totalDuration = [[UILabel alloc] initWithFrame:CGRectMake(videoscreenHeight-140, 10, 70, 25)];
     self.totalDuration.text = @"--:--:--";
     self.totalDuration.textAlignment = NSTextAlignmentCenter;
     self.totalDuration.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
@@ -202,16 +227,16 @@ bool videoIsmute     = NO;
     
 
     if ([self.decodeType isEqualToString:@"hardware"]) {
-        videoIsHardware = YES;
+        videoisHardware = YES;
     }
     else if ([self.decodeType isEqualToString:@"software"]) {
-        videoIsHardware = NO;
+        videoisHardware = NO;
     }
     
     [self.controlOverlay addSubview:self.topControlView];
     [self.controlOverlay addSubview:self.bottomControlView];
     
-    [NELivePlayerController setLogLevel:NELP_LOG_DEBUG];
+    [NELivePlayerController setLogLevel:NELP_LOG_VERBOSE];
 
     self.liveplayer = [[NELivePlayerController alloc] initWithContentURL:self.url];
     if (self.liveplayer == nil) { // 返回空则表示初始化失败
@@ -219,7 +244,7 @@ bool videoIsmute     = NO;
     }
     self.liveplayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     self.liveplayer.view.frame = self.playerView.bounds;
-    [self.liveplayer setScalingMode:NELPMovieScalingModeFill];
+    [self.liveplayer setScalingMode:NELPMovieScalingModeAspectFit];
     
     self.view.autoresizesSubviews = YES;
     
@@ -242,8 +267,6 @@ bool videoIsmute     = NO;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     NSLog(@"viewWillAppear");
-    NSLog(@"Version = %@", [self.liveplayer getSDKVersion]);
-    [self.liveplayer isLogToFile:NO];
     
     if ([self.mediaType isEqualToString:@"livestream"] ) {
         [self.liveplayer setBufferStrategy:NELPLowDelay]; //直播低延时模式
@@ -251,11 +274,82 @@ bool videoIsmute     = NO;
     else {
         [self.liveplayer setBufferStrategy:NELPAntiJitter]; //点播抗抖动
     }
-    [self.liveplayer setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
+    [self.liveplayer setScalingMode:NELPMovieScalingModeNone]; //设置画面显示模式，默认原始大小
     [self.liveplayer setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
-    [self.liveplayer setHardwareDecoder:videoIsHardware]; //设置解码模式，是否开启硬件解码
+    [self.liveplayer setHardwareDecoder:videoisHardware]; //设置解码模式，是否开启硬件解码
     [self.liveplayer setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
+    [self.liveplayer setPlaybackTimeout:15 *1000]; // 设置拉流超时时间
+
+#ifdef KEY_IS_KNOWN // 视频云加密的视频，自己已知密钥
+    NSString *key = @"HelloWorld";
+    NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+    Byte *flv_key = (Byte *)[keyData bytes];
+    
+    unsigned long len = [keyData length];
+    flv_key[len] = '\0';
+    __weak typeof(self) weakSelf = self;
+    [self.liveplayer setDecryptionKey:flv_key andKeyLength:(int)len :^(NELPKeyCheckResult ret) {
+        if (ret == 0 || ret == 1) {
+            [weakSelf.liveplayer prepareToPlay];
+        }
+    }];
+    
+#else
+    
+#ifdef DECRYPT //用视频云整套加解密系统
+    if ([self.mediaType isEqualToString:@"videoOnDemand"]) {
+        NSString *transferToken = NULL;
+        NSString *accid = NULL;
+        NSString *appKey = NULL;
+        NSString *token = NULL;
+        
+        
+        [self.liveplayer initDecryption:transferToken :accid :appKey :token :^(NELPKeyCheckResult ret) {
+            NSLog(@"ret = %d", ret);
+            switch (ret) {
+                case NELP_NO_ENCRYPTION:
+                case NELP_ENCRYPTION_CHECK_OK:
+                    [self.liveplayer prepareToPlay];
+                    break;
+                case NELP_ENCRYPTION_UNSUPPORT_PROTOCAL:
+                    [self decryptWarning:@"NELP_ENCRYPTION_UNSUPPORT_PROTOCAL"];
+                    break;
+                case NELP_ENCRYPTION_KEY_CHECK_ERROR:
+                    [self decryptWarning:@"NELP_ENCRYPTION_KEY_CHECK_ERROR"];
+                    break;
+                case NELP_ENCRYPTION_INPUT_INVALIED:
+                    [self decryptWarning:@"NELP_ENCRYPTION_INPUT_INVALIED"];
+                    break;
+                case NELP_ENCRYPTION_UNKNOWN_ERROR:
+                    [self decryptWarning:@"NELP_ENCRYPTION_UNKNOWN_ERROR"];
+                    break;
+                case NELP_ENCRYPTION_GET_KEY_TIMEOUT:
+                    [self decryptWarning:@"NELP_ENCRYPTION_GET_KEY_TIMEOUT"];
+                    break;
+                default:
+                    break;
+            }
+        }];
+    }
+#else
     [self.liveplayer prepareToPlay]; //初始化视频文件
+#endif
+#endif
+
+}
+
+- (void)decryptWarning:(NSString *)msg {
+    UIAlertController *alertController = NULL;
+    UIAlertAction *action = NULL;
+    
+    alertController = [UIAlertController alertControllerWithTitle:@"注意" message:msg preferredStyle:UIAlertControllerStyleAlert];
+    action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+        if (self.presentingViewController) {
+            [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
+    [alertController addAction:action];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -283,6 +377,11 @@ bool videoIsmute     = NO;
                                                object:_liveplayer];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(NELivePlayerPlaybackStateChanged:)
+                                                 name:NELivePlayerPlaybackStateChangedNotification
+                                               object:_liveplayer];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(NeLivePlayerloadStateChanged:)
                                                  name:NELivePlayerLoadStateChangedNotification
                                                object:_liveplayer];
@@ -305,11 +404,16 @@ bool videoIsmute     = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(NELivePlayerReleaseSuccess:)
                                                  name:NELivePlayerReleaseSueecssNotification
-                                               object:_liveplayer];
+                                               object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(NELivePlayerVideoParseError:)
                                                  name:NELivePlayerVideoParseErrorNotification
+                                               object:_liveplayer];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(NELivePlayerSeekComplete:)
+                                                 name:NELivePlayerMoviePlayerSeekCompletedNotification
                                                object:_liveplayer];
 }
 
@@ -320,7 +424,7 @@ bool videoIsmute     = NO;
 
 - (BOOL)shouldAutorotate
 {
-    return YES;
+    return NO;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
@@ -354,16 +458,31 @@ bool videoIsmute     = NO;
         return;
     }
     NSTimeInterval currentPlayTime = self.videoProgress.value;
-    [self.liveplayer setCurrentPlaybackTime:currentPlayTime];
-    [self syncUIStatus:NO];
+    mCurrentPostion = (int)currentPlayTime;
+    self.currentTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(mCurrentPostion / 3600), (int)(mCurrentPostion > 3600 ? (mCurrentPostion - (mCurrentPostion / 3600)*3600) / 60 : mCurrentPostion/60), (int)(mCurrentPostion % 60)];
+
 }
+
+- (void)onClickSeekTouchUpInside:(id)sender
+{
+    NSLog(@"onClickSeekTouchUpInside");
+    self.liveplayer.currentPlaybackTime = mCurrentPostion;
+    _isMediaSliderBeingDragged = NO;
+}
+
+- (void)onClickSeekTouchUpOutside:(id)sender
+{
+    NSLog(@"onClickSeekTouchUpOutside");
+    _isMediaSliderBeingDragged = NO;
+}
+
 
 //开始播放
 - (void)onClickPlay:(id)sender
 {
     NSLog(@"click play");
     [self.liveplayer play];
-    [self syncUIStatus:NO];
+    [self syncUIStatus];
 }
 
 //暂停播放
@@ -371,24 +490,24 @@ bool videoIsmute     = NO;
 {
     NSLog(@"click pause");
     [self.liveplayer pause];
-    [self syncUIStatus:NO];
+    [self syncUIStatus];
 }
 
 //静音
 - (void)onClickMute:(id)sender
 {
     NSLog(@"click mute");
-    if (videoIsmute) {
-        [self.liveplayer setMute:!videoIsmute];
+    if (videoismute) {
+        [self.liveplayer setMute:!videoismute];
         self.muteBtn.hidden = YES;
         self.audioBtn.hidden = NO;
-        videoIsmute = NO;
+        videoismute = NO;
     }
     else {
-        [self.liveplayer setMute:!videoIsmute];
+        [self.liveplayer setMute:!videoismute];
         self.muteBtn.hidden = NO;
         self.audioBtn.hidden = YES;
-        videoIsmute = YES;
+        videoismute = YES;
     }
 }
 
@@ -445,7 +564,7 @@ bool videoIsmute     = NO;
     NSLog(@"click mediacontrol");
     self.controlOverlay.hidden = NO;
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlOverlayHide) object:nil];
-    [self syncUIStatus:NO];
+    [self syncUIStatus];
     [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:8];
 }
 
@@ -454,39 +573,69 @@ bool videoIsmute     = NO;
     self.controlOverlay.hidden = YES;
 }
 
-- (void)syncUIStatus:(BOOL)isSync
+dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t queue, dispatch_block_t block)
 {
-    mDuration = [self.liveplayer duration];
-    NSInteger duration = round(mDuration);
-    
-    mCurrPos  = [self.liveplayer currentPlaybackTime];
-    NSInteger currPos  = round(mCurrPos);
-    
-     self.currentTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(currPos / 3600), (int)(currPos > 3600 ? (currPos - (currPos / 3600)*3600) / 60 : currPos/60), (int)(currPos % 60)];
-    
-    if (duration > 0) {
-        self.totalDuration.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(duration / 3600), (int)(duration > 3600 ? (duration - 3600 * (duration / 3600)) / 60 : duration/60), (int)(duration > 3600 ? ((duration - 3600 * (duration / 3600)) % 60) :(duration % 60))];
-        self.videoProgress.value = mCurrPos;
-        self.videoProgress.maximumValue = mDuration;
-    } else {
-        [self.videoProgress setValue:0.0f];
+    //创建Timer
+    dispatch_source_t timer  = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);//queue是一个专门执行timer回调的GCD队列
+    if (timer) {
+        //使用dispatch_source_set_timer函数设置timer参数
+        dispatch_source_set_timer(timer, dispatch_time(DISPATCH_TIME_NOW, interval*NSEC_PER_SEC), interval*NSEC_PER_SEC, (1ull * NSEC_PER_SEC)/10);
+        //设置回调
+        dispatch_source_set_event_handler(timer, block);
+        //dispatch_source默认是Suspended状态，通过dispatch_resume函数开始它
+        dispatch_resume(timer);
     }
     
+    return timer;
+}
+
+- (void)syncUIStatus
+{
+    self.playBtn.hidden = YES;
+    self.pauseBtn.hidden = NO;
     
-    
-    if ([self.liveplayer playbackState] == NELPMoviePlaybackStatePlaying) {
-        self.playBtn.hidden = YES;
-        self.pauseBtn.hidden = NO;
-    }
-    else {
-        self.playBtn.hidden = NO;
-        self.pauseBtn.hidden = YES;
-    }
-    
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncUIStatus:) object:nil];
-    if (!self.playQuitBtn.hidden && !isSync) {
-        [self performSelector:@selector(syncUIStatus:) withObject:nil afterDelay:0.5];
-    }
+    __block bool getDurFlag = false;
+    __weak typeof(self) weakSelf = self;
+    dispatch_queue_t syncUIQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    timer = CreateDispatchSyncUITimer(1.0, syncUIQueue, ^{
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([self.mediaType isEqualToString:@"videoOnDemand"] || !getDurFlag) {
+                mDuration = [weakSelf.liveplayer duration];
+                if (mDuration > 0) {
+                    getDurFlag = true;
+                }
+            }
+            NSInteger duration = round(mDuration);
+            
+            if (_isMediaSliderBeingDragged) {
+                mCurrPos = self.videoProgress.value;
+            }
+            else {
+                mCurrPos  = [weakSelf.liveplayer currentPlaybackTime];
+            }
+            NSInteger currPos  = round(mCurrPos);
+            
+            self.currentTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(currPos / 3600), (int)(currPos > 3600 ? (currPos - (currPos / 3600)*3600) / 60 : currPos/60), (int)(currPos % 60)];
+            
+            if (duration > 0) {
+                self.totalDuration.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(duration / 3600), (int)(duration > 3600 ? (duration - 3600 * (duration / 3600)) / 60 : duration/60), (int)(duration > 3600 ? ((duration - 3600 * (duration / 3600)) % 60) :(duration % 60))];
+                self.videoProgress.value = mCurrPos;
+                self.videoProgress.maximumValue = mDuration;
+            } else {
+                [self.videoProgress setValue:0.0f];
+            }
+            
+            if ([self.liveplayer playbackState] == NELPMoviePlaybackStatePlaying) {
+                self.playBtn.hidden = YES;
+                self.pauseBtn.hidden = NO;
+            }
+            else {
+                self.playBtn.hidden = NO;
+                self.pauseBtn.hidden = YES;
+            }
+        });
+    });
 }
 
 /* 切换清晰度功能*/
@@ -495,12 +644,17 @@ bool videoIsmute     = NO;
     
 }
 
+- (void)NELivePlayerPlaybackStateChanged:(NSNotification*)notification
+{
+    //    NSLog(@"NELivePlayerPlaybackStateChanged");
+}
+
 
 - (void)NELivePlayerDidPreparedToPlay:(NSNotification*)notification
 {
     //add some methods
     NSLog(@"NELivePlayerDidPreparedToPlay");
-    [self syncUIStatus:NO];
+    [self syncUIStatus];
     [self.liveplayer play]; //开始播放
 }
 
@@ -522,6 +676,7 @@ bool videoIsmute     = NO;
         self.bufferingReminder.hidden = NO;
         [self.bufferingIndicate startAnimating];
     }
+
 }
 
 - (void)NELivePlayerPlayBackFinished:(NSNotification*)notification
@@ -543,11 +698,17 @@ bool videoIsmute     = NO;
             break;
             
         case NELPMovieFinishReasonPlaybackError:
+        {
             alertController = [UIAlertController alertControllerWithTitle:@"注意" message:@"播放失败" preferredStyle:UIAlertControllerStyleAlert];
-            action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){}];
+            action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+                if (self.presentingViewController) {
+                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                }
+            }];
             [alertController addAction:action];
             [self presentViewController:alertController animated:YES completion:nil];
             break;
+        }
             
         case NELPMovieFinishReasonUserExited:
             break;
@@ -572,11 +733,22 @@ bool videoIsmute     = NO;
     NSLog(@"video parse error!");
 }
 
+- (void)NELivePlayerSeekComplete:(NSNotification*)notification
+{
+    NSLog(@"seek complete!");
+}
+
 - (void)NELivePlayerReleaseSuccess:(NSNotification*)notification
 {
     NSLog(@"resource release success!!!");
+    // 释放timer
+    if (timer != nil) {
+        dispatch_source_cancel(timer);
+        timer = nil;
+    }
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayer];
 }
+
 
 // 支持哪些转屏方向
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations

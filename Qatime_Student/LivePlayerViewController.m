@@ -567,7 +567,7 @@ bool ismute     = NO;
     }
     
     /* 白板播放器的设置*/
-    [_liveplayerBoard isLogToFile:NO];
+    
     [_liveplayerBoard setBufferStrategy:NELPLowDelay]; //直播低延时模式
     [_liveplayerBoard setScalingMode:NELPMovieScalingModeNone]; //设置画面显示模式，默认原始大小
     [_liveplayerBoard setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
@@ -635,8 +635,6 @@ bool ismute     = NO;
             //            [_teacherPlayerView makePlaceHolderImage:nil];
         }
     }
-    
-    [_liveplayerTeacher isLogToFile:NO];
     
     /* 教师播放器的设置*/
     [_liveplayerTeacher setBufferStrategy:NELPLowDelay]; //直播低延时模式

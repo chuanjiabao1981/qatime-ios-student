@@ -32,8 +32,18 @@ typedef enum NELPLogLevel
 
 @interface NELivePlayerController : NSObject <NELivePlayer>
 
+/**
+ *	@brief	初始化（禁用方法）
+ *
+ *	@return	返回nil
+ */
 + (instancetype)new NS_UNAVAILABLE;
 
+/**
+ *	@brief	初始化（禁用方法）
+ *
+ *	@return	返回nil
+ */
 - (instancetype)init NS_UNAVAILABLE;
 
 /**
@@ -64,5 +74,12 @@ typedef enum NELPLogLevel
  *	@return	无
  */
 + (void)setLogLevel:(NELPLogLevel)logLevel;
+
+/**
+ *	@brief	获取当前SDK版本号
+ *
+ *	@return	SDK版本号
+ */
++ (NSString *)getSDKVersion;
 
 @end

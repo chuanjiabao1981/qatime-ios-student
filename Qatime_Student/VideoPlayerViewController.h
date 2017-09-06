@@ -19,11 +19,12 @@
 @property(nonatomic, strong) NSString *decodeType;
 @property(nonatomic, strong) NSString *mediaType;
 @property(nonatomic, strong) id<NELivePlayer> liveplayer;
-
+@property(nonatomic, strong) dispatch_source_t timer;
 
 - (id)initWithURL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm andTitle:(NSString *)title;
 
 + (void)presentFromViewController:(UIViewController *)viewController withTitle:(NSString *)title URL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm andTitle:(NSString *)title completion:(void(^)())completion;
+
 
 //给子类重写方法
 - (void)controlOverlayHide;
