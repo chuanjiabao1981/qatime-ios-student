@@ -33,20 +33,6 @@ typedef enum NELPLogLevel
 @interface NELivePlayerController : NSObject <NELivePlayer>
 
 /**
- *	@brief	初始化（禁用方法）
- *
- *	@return	返回nil
- */
-+ (instancetype)new NS_UNAVAILABLE;
-
-/**
- *	@brief	初始化（禁用方法）
- *
- *	@return	返回nil
- */
-- (instancetype)init NS_UNAVAILABLE;
-
-/**
  *	@brief	初始化播放器，输入播放文件路径
  *
  *	@param 	aUrl 	播放文件的路径
@@ -54,17 +40,6 @@ typedef enum NELPLogLevel
  *	@return	返回播放器实例
  */
 - (id)initWithContentURL:(NSURL *)aUrl;
-
-
-/**
- *	@brief	初始化播放器，输入播放文件路径
- *
- *	@param 	aUrl 	播放文件的路径
- *	@param 	isNeed 	是否需要内部配置audio session
- *
- *	@return	返回播放器实例
- */
-- (id)initWithContentURL:(NSURL *)aUrl needConfigAudioSession:(BOOL)isNeed;
 
 /**
  *	@brief	设置log级别
@@ -74,12 +49,5 @@ typedef enum NELPLogLevel
  *	@return	无
  */
 + (void)setLogLevel:(NELPLogLevel)logLevel;
-
-/**
- *	@brief	获取当前SDK版本号
- *
- *	@return	SDK版本号
- */
-+ (NSString *)getSDKVersion;
 
 @end

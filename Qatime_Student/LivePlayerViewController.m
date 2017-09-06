@@ -519,7 +519,8 @@ bool ismute     = NO;
 - (void)setupBoardPlayer{
     
     /* 白板的 播放器*/
-    _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:_boardPullAddress];
+    _liveplayerBoard = nil;
+    _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:_teacherPullAddress];
     _liveplayerBoard.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     [_liveplayerBoard setScalingMode:NELPMovieScalingModeNone];
     
@@ -575,18 +576,18 @@ bool ismute     = NO;
     [_liveplayerBoard setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
     [_liveplayerBoard setPlaybackTimeout:15 *1000]; // 设置拉流超时时间
     
-    NSString *key = @"HelloWorld";
-    NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
-    Byte *flv_key = (Byte *)[keyData bytes];
-    
-    unsigned long len = [keyData length];
-    flv_key[len] = '\0';
-    __weak typeof(self) weakSelf = self;
-    [_liveplayerBoard setDecryptionKey:flv_key andKeyLength:(int)len :^(NELPKeyCheckResult ret) {
-        if (ret == 0 || ret == 1) {
-            [weakSelf.liveplayerBoard prepareToPlay];
-        }
-    }];
+//    NSString *key = @"HelloWorld";
+//    NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+//    Byte *flv_key = (Byte *)[keyData bytes];
+//    
+//    unsigned long len = [keyData length];
+//    flv_key[len] = '\0';
+//    __weak typeof(self) weakSelf = self;
+//    [_liveplayerBoard setDecryptionKey:flv_key andKeyLength:(int)len :^(NELPKeyCheckResult ret) {
+//        if (ret == 0 || ret == 1) {
+//            [weakSelf.liveplayerBoard prepareToPlay];
+//        }
+//    }];
 
 //    [_liveplayerBoard prepareToPlay]; //初始化视频文件
     
@@ -596,6 +597,7 @@ bool ismute     = NO;
 - (void)setupTeacherPlayer{
     
     /* 老师摄像头的 播放器*/
+    _liveplayerTeacher = nil;
     _liveplayerTeacher = [[NELivePlayerController alloc] initWithContentURL:_teacherPullAddress];
     [_teacherPlayerView makePlaceHolderImage:nil];
     [_teacherPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadingHolder_Landscape"]];
@@ -4937,7 +4939,7 @@ bool ismute     = NO;
     ///新的状态加载
     //同时直播的时候
     NSLog(@"%@",statusDic);
-    if ([statusDic[@"board"]isEqualToString:@"1"]&&[statusDic[@"camera"]isEqualToString:@"1"]) {
+    if ([(NSString *)statusDic[@"board"]isEqualToString:@"1"]&&[(NSString *)statusDic[@"camera"]isEqualToString:@"1"]) {
         /* 不用再向服务器发送查询请求*/
         NSLog(@"白板读取状态:%u",_liveplayerBoard.loadState);
         NSLog(@"白板播放状态:%u",_liveplayerBoard.playbackState);
@@ -4952,12 +4954,14 @@ bool ismute     = NO;
                 [self setupBoardPlayer];
                 [_boardPlayerView makePlaceHolderImage:nil];
                 [_liveplayerBoard shouldAutoplay];
+                [_liveplayerBoard play];
                 
             }
         }else{
             [self setupBoardPlayer];
             [_boardPlayerView makePlaceHolderImage:nil];
             [_liveplayerBoard shouldAutoplay];
+            [_liveplayerBoard play];
         }
         
         if (_liveplayerTeacher!=nil) {
@@ -4966,12 +4970,14 @@ bool ismute     = NO;
                 [self setupTeacherPlayer];
                 [_teacherPlayerView makePlaceHolderImage:nil];
                 [_liveplayerTeacher shouldAutoplay];
+                [_liveplayerTeacher play];
                 
             }
         }else{
             [self setupTeacherPlayer];
             [_teacherPlayerView makePlaceHolderImage:nil];
             [_liveplayerTeacher shouldAutoplay];
+            [_liveplayerTeacher play];
             
         }
         

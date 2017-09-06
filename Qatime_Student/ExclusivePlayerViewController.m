@@ -2919,7 +2919,7 @@ typedef enum : NSUInteger {
     ///新的状态加载
     
     //同时直播的时候
-    if ([statusDic[@"board"]isEqualToString:@"1"]&&[statusDic[@"camera"]isEqualToString:@"1"]) {
+    if ([(NSString *)statusDic[@"board"] isEqualToString:@"1"]&&[(NSString *)statusDic[@"camera"] isEqualToString:@"1"]) {
         /* 不用再向服务器发送查询请求*/
         NSLog(@"白板读取状态:%u",_liveplayerBoard.loadState);
         NSLog(@"白板播放状态:%u",_liveplayerBoard.playbackState);

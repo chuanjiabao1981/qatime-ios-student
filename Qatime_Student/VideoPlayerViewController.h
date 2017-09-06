@@ -24,6 +24,10 @@
 - (id)initWithURL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm andTitle:(NSString *)title;
 
 + (void)presentFromViewController:(UIViewController *)viewController withTitle:(NSString *)title URL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm andTitle:(NSString *)title completion:(void(^)())completion;
+- (id)initWithURL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm;
+
+//+ (void)presentFromViewController:(UIViewController *)viewController withTitle:(NSString *)title URL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm completion:(void(^)())completion;
+
 
 
 //给子类重写方法

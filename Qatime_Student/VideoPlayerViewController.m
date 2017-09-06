@@ -56,7 +56,7 @@ int mCurrentPostion;
 }
 
 - (instancetype)initWithURL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm andTitle:(NSString *)title {
-    self = [self initWithNibName:@"NELivePlayerViewController" bundle:nil];
+    self = [self initWithNibName:@"VideoPlayerViewController" bundle:nil];
     if (self) {
         
         self.url = url;
@@ -72,18 +72,14 @@ int mCurrentPostion;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-//        [self syncUIStatus];
-    }
+    
     return self;
 }
 
 - (void)dealloc{
-    
-//    [_liveplayer shutdown];
-//    [_liveplayer.view removeFromSuperview];
-//    _liveplayer = nil;
-    
+    //    [_liveplayer shutdown];
+    //    [_liveplayer.view removeFromSuperview];
+    //    _liveplayer = nil;
 }
 
 - (void)loadView {
@@ -153,13 +149,14 @@ int mCurrentPostion;
     [self.pauseBtn addTarget:self action:@selector(onClickPause:) forControlEvents:UIControlEventTouchUpInside];
     self.pauseBtn.hidden = YES;
     [self.bottomControlView addSubview:self.pauseBtn];
-
     
-//    //当前播放的时间点
+    //当前播放的时间点
 //    self.currentTime = [[UILabel alloc] initWithFrame:CGRectMake(50, 15, 50, 20)];
 //    self.currentTime.text = @"00:00:00"; //for test
 //    self.currentTime.textAlignment = NSTextAlignmentCenter;
+//    //self.currentTime.textColor = [UIColor whiteColor];
 //    self.currentTime.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
+//    //self.fileName.adjustsFontSizeToFitWidth = YES;
 //    self.currentTime.font = [UIFont fontWithName:self.currentTime.font.fontName size:10.0];
 //    [self.bottomControlView addSubview:self.currentTime];
     
@@ -169,7 +166,9 @@ int mCurrentPostion;
     [[UISlider appearance] setMaximumTrackImage:[UIImage imageNamed:@"btn_player_slider_all"] forState:UIControlStateNormal];
     [[UISlider appearance] setMinimumTrackImage:[UIImage imageNamed:@"btn_player_slider_played"] forState:UIControlStateNormal];
     
-    [self.videoProgress addTarget:self action:@selector(onClickSeek:) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoProgress addTarget:self action:@selector(onClickSeek:) forControlEvents:UIControlEventValueChanged];
+    [self.videoProgress addTarget:self action:@selector(onClickSeekTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoProgress addTarget:self action:@selector(onClickSeekTouchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
     [self.bottomControlView addSubview:self.videoProgress];
 
     
@@ -177,54 +176,54 @@ int mCurrentPostion;
     self.totalDuration = [[UILabel alloc] initWithFrame:CGRectMake(videoscreenHeight-140, 10, 70, 25)];
     self.totalDuration.text = @"--:--:--";
     self.totalDuration.textAlignment = NSTextAlignmentCenter;
+    //self.totalDuration.textColor = [UIColor whiteColor];
     self.totalDuration.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
     self.totalDuration.font = [UIFont fontWithName:self.totalDuration.font.fontName size:13.0];
     [self.bottomControlView addSubview:self.totalDuration];
     
     
-//    //声音打开按钮
+    //声音打开按钮
 //    self.audioBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 //    [self.audioBtn setImage:[UIImage imageNamed:@"btn_player_mute02"] forState:UIControlStateNormal];
-//    self.audioBtn.frame = CGRectMake(videoScreenHeight-150, 5, 40, 40);
+//    self.audioBtn.frame = CGRectMake(videoscreenHeight-150, 5, 40, 40);
 //    [self.audioBtn addTarget:self action:@selector(onClickMute:) forControlEvents:UIControlEventTouchUpInside];
 //    [self.bottomControlView addSubview:self.audioBtn];
 //    
 //    //静音按钮
 //    self.muteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 //    [self.muteBtn setImage:[UIImage imageNamed:@"btn_player_mute01"] forState:UIControlStateNormal];
-//    self.muteBtn.frame = CGRectMake(videoScreenHeight-150, 5, 40, 40);
+//    self.muteBtn.frame = CGRectMake(videoscreenHeight-150, 5, 40, 40);
 //    [self.muteBtn addTarget:self action:@selector(onClickMute:) forControlEvents:UIControlEventTouchUpInside];
 //    self.muteBtn.hidden = YES;
 //    [self.bottomControlView addSubview:self.muteBtn];
-    
+//    
 //    //截图
 //    self.snapshotBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 //    [self.snapshotBtn setImage:[UIImage imageNamed:@"btn_player_snap"] forState:UIControlStateNormal];
-//    self.snapshotBtn.frame = CGRectMake(videoScreenHeight-100, 5, 40, 40);
+//    self.snapshotBtn.frame = CGRectMake(videoscreenHeight-100, 5, 40, 40);
 //    if ([self.mediaType isEqualToString:@"localAudio"]) {
 //        self.snapshotBtn.hidden = YES;
 //    }
 //    [self.snapshotBtn addTarget:self action:@selector(onClickSnapshot:) forControlEvents:UIControlEventTouchUpInside];
 //    [self.bottomControlView addSubview:self.snapshotBtn];
-    
+//    
+//    
 //    //显示模式
 //    self.scaleModeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 //    [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
-//    self.scaleModeBtn.frame = CGRectMake(videoScreenHeight-50, 5, 40, 40);
+//    self.scaleModeBtn.frame = CGRectMake(videoscreenHeight-50, 5, 40, 40);
 //    if ([self.mediaType isEqualToString:@"localAudio"]) {
 //        self.scaleModeBtn.hidden = YES;
 //    }
-//
+//    
 //    [self.scaleModeBtn addTarget:self action:@selector(onClickScaleMode:) forControlEvents:UIControlEventTouchUpInside];
 //    [self.bottomControlView addSubview:self.scaleModeBtn];
-    
     //切换清晰度按钮
-//    self.resolutionBtn = [[UIButton alloc]initWithFrame:CGRectMake(videoScreenHeight-60, 5, 40, 40)];
-//    [self.resolutionBtn setTitle:@"高清" forState:UIControlStateNormal];
-//    [self.resolutionBtn setTitleColor:[[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1] forState:UIControlStateNormal];
-//    [self.bottomControlView addSubview:self.resolutionBtn];
-//    [self.resolutionBtn addTarget:self action:@selector(chooseResolution:) forControlEvents:UIControlEventTouchUpInside];
-    
+    //    self.resolutionBtn = [[UIButton alloc]initWithFrame:CGRectMake(videoScreenHeight-60, 5, 40, 40)];
+    //    [self.resolutionBtn setTitle:@"高清" forState:UIControlStateNormal];
+    //    [self.resolutionBtn setTitleColor:[[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1] forState:UIControlStateNormal];
+    //    [self.bottomControlView addSubview:self.resolutionBtn];
+    //    [self.resolutionBtn addTarget:self action:@selector(chooseResolution:) forControlEvents:UIControlEventTouchUpInside];
 
     if ([self.decodeType isEqualToString:@"hardware"]) {
         videoisHardware = YES;
@@ -237,9 +236,10 @@ int mCurrentPostion;
     [self.controlOverlay addSubview:self.bottomControlView];
     
     [NELivePlayerController setLogLevel:NELP_LOG_VERBOSE];
-
+    
     self.liveplayer = [[NELivePlayerController alloc] initWithContentURL:self.url];
-    if (self.liveplayer == nil) { // 返回空则表示初始化失败
+    if (self.liveplayer == nil) {// 返回空则表示初始化失败
+
         NSLog(@"player initilize failed, please tay again!");
     }
     self.liveplayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -264,20 +264,19 @@ int mCurrentPostion;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSLog(@"viewWillAppear");
     
     if ([self.mediaType isEqualToString:@"livestream"] ) {
-        [self.liveplayer setBufferStrategy:NELPLowDelay]; //直播低延时模式
+        [self.liveplayer setBufferStrategy:NELPLowDelay]; // 直播低延时模式
     }
     else {
-        [self.liveplayer setBufferStrategy:NELPAntiJitter]; //点播抗抖动
+        [self.liveplayer setBufferStrategy:NELPAntiJitter]; // 点播抗抖动
     }
-    [self.liveplayer setScalingMode:NELPMovieScalingModeNone]; //设置画面显示模式，默认原始大小
-    [self.liveplayer setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
-    [self.liveplayer setHardwareDecoder:videoisHardware]; //设置解码模式，是否开启硬件解码
-    [self.liveplayer setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
+    [self.liveplayer setScalingMode:NELPMovieScalingModeNone]; // 设置画面显示模式，默认原始大小
+    [self.liveplayer setShouldAutoplay:YES]; // 设置prepareToPlay完成后是否自动播放
+    [self.liveplayer setHardwareDecoder:videoisHardware]; // 设置解码模式，是否开启硬件解码
+    [self.liveplayer setPauseInBackground:NO]; // 设置切入后台时的状态，暂停还是继续播放
     [self.liveplayer setPlaybackTimeout:15 *1000]; // 设置拉流超时时间
-
+    
 #ifdef KEY_IS_KNOWN // 视频云加密的视频，自己已知密钥
     NSString *key = @"HelloWorld";
     NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
@@ -300,8 +299,6 @@ int mCurrentPostion;
         NSString *accid = NULL;
         NSString *appKey = NULL;
         NSString *token = NULL;
-        
-        
         [self.liveplayer initDecryption:transferToken :accid :appKey :token :^(NELPKeyCheckResult ret) {
             NSLog(@"ret = %d", ret);
             switch (ret) {
@@ -330,11 +327,9 @@ int mCurrentPostion;
         }];
     }
 #else
-    [self.liveplayer prepareToPlay]; //初始化视频文件
-    
+    [self.liveplayer prepareToPlay];
 #endif
 #endif
-
 }
 
 - (void)decryptWarning:(NSString *)msg {
@@ -354,22 +349,12 @@ int mCurrentPostion;
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear");
-    
-//    [self.liveplayer shutdown]; //退出播放并释放相关资源
-//    [self.liveplayer.view removeFromSuperview];
-//    self.liveplayer = nil;
-//    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerDidPreparedToPlayNotification object:_liveplayer];
-//    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerLoadStateChangedNotification object:_liveplayer];
-//    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerPlaybackFinishedNotification object:_liveplayer];
-//    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstVideoDisplayedNotification object:_liveplayer];
-//    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstAudioDisplayedNotification object:_liveplayer];
-//    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerVideoParseErrorNotification object:_liveplayer];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    NSLog(@"viewDidLoad");
+        NSLog(@"viewDidLoad");
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(NELivePlayerDidPreparedToPlay:)
                                                  name:NELivePlayerDidPreparedToPlayNotification
@@ -415,6 +400,7 @@ int mCurrentPostion;
                                                  name:NELivePlayerMoviePlayerSeekCompletedNotification
                                                object:_liveplayer];
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -569,8 +555,8 @@ int mCurrentPostion;
     NSLog(@"click mediacontrol");
     self.controlOverlay.hidden = NO;
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlOverlayHide) object:nil];
-    [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:8];}
-
+    [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:8];
+}
 
 - (void)controlOverlayHide
 {
@@ -644,10 +630,9 @@ dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t qu
 
 /* 切换清晰度功能*/
 - (void)chooseResolution:(UIButton *)sender{
-   
+
     
 }
-
 - (void)NELivePlayerDidPreparedToPlay:(NSNotification*)notification
 {
     //add some methods
@@ -660,7 +645,6 @@ dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t qu
 {
     //    NSLog(@"NELivePlayerPlaybackStateChanged");
 }
-
 
 - (void)NeLivePlayerloadStateChanged:(NSNotification*)notification
 {
@@ -721,7 +705,6 @@ dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t qu
     }
 }
 
-
 - (void)NELivePlayerFirstVideoDisplayed:(NSNotification*)notification
 {
     NSLog(@"first video frame rendered!");
@@ -752,7 +735,6 @@ dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t qu
     }
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_liveplayer];
 }
-
 
 // 支持哪些转屏方向
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations

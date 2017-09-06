@@ -635,6 +635,7 @@
                                     [decodeParm addObject:@"videoOnDemand"];
                                     
                                     VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+//                                    VideoPlayerViewController *video = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm];
                                     [self presentViewController:video animated:YES completion:^{
                                         
                                     }];
