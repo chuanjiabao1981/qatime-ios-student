@@ -262,7 +262,6 @@
 		5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA31E042D45007B1DF9 /* NoticeIndexView.m */; };
 		5448AEA81E054C7A007B1DF9 /* ChatListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEA71E054C7A007B1DF9 /* ChatListTableViewCell.m */; };
 		5448AEAB1E054CA4007B1DF9 /* NoticeListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5448AEAA1E054CA4007B1DF9 /* NoticeListTableViewCell.m */; };
-		544AD3BC1EC01AE2002F567D /* ReleaseNote.md in Sources */ = {isa = PBXBuildFile; fileRef = 544AD3B81EC01AE2002F567D /* ReleaseNote.md */; };
 		544AD3C11EC02C7B002F567D /* UIViewController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 544AD3BE1EC02C7B002F567D /* UIViewController+ZFPlayerRotation.m */; };
 		544AD3C21EC02C7B002F567D /* UINavigationController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 544AD3BF1EC02C7B002F567D /* UINavigationController+ZFPlayerRotation.m */; };
 		544AD3D11EC098FE002F567D /* WorkFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 544AD3D01EC098FE002F567D /* WorkFlowView.m */; };
@@ -448,6 +447,7 @@
 		5483E84A1E45730C00C3C1B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5483E84C1E45730C00C3C1B4 /* InfoPlist.strings */; };
 		5483E8511E4576BF00C3C1B4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5483E8531E4576BF00C3C1B4 /* Localizable.strings */; };
 		5484B7421DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 5484B7411DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m */; };
+		548513501F5FD2660014CDCE /* 版本更新记录.md in Sources */ = {isa = PBXBuildFile; fileRef = 5485134F1F5FD2660014CDCE /* 版本更新记录.md */; };
 		548D144F1EA7101A00B120C8 /* TeacherFeatureTagCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D144E1EA7101A00B120C8 /* TeacherFeatureTagCollectionViewCell.m */; };
 		548D1D661EA740CA00B120C8 /* ClassTimeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D651EA740CA00B120C8 /* ClassTimeModel.m */; };
 		548D1D6A1EA740E300B120C8 /* ClassTimeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D691EA740E300B120C8 /* ClassTimeTableViewCell.m */; };
@@ -869,9 +869,7 @@
 		5422337C1E15F6100092AB66 /* UIAlertController+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+Blocks.h"; sourceTree = "<group>"; };
 		5422337D1E15F6100092AB66 /* UIAlertController+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+Blocks.m"; sourceTree = "<group>"; };
 		5422E7BB1F4E77B6008B0A96 /* libaacplus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libaacplus.a; sourceTree = "<group>"; };
-		5422E7BC1F4E77B6008B0A96 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
 		5422E7BD1F4E77B6008B0A96 /* libevent.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libevent.a; sourceTree = "<group>"; };
-		5422E7BE1F4E77B6008B0A96 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
 		5422E7BF1F4E77B6008B0A96 /* NIMSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NIMSDK.framework; sourceTree = "<group>"; };
 		5422E7C21F4E77B6008B0A96 /* libGPUImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGPUImage.a; sourceTree = "<group>"; };
 		5422E7C31F4E77B6008B0A96 /* libnio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libnio.a; sourceTree = "<group>"; };
@@ -1250,9 +1248,6 @@
 		5448AEA71E054C7A007B1DF9 /* ChatListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatListTableViewCell.m; sourceTree = "<group>"; };
 		5448AEA91E054CA4007B1DF9 /* NoticeListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeListTableViewCell.h; sourceTree = "<group>"; };
 		5448AEAA1E054CA4007B1DF9 /* NoticeListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeListTableViewCell.m; sourceTree = "<group>"; };
-		544AD3B21EC01AE2002F567D /* NELivePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NELivePlayer.h; sourceTree = "<group>"; };
-		544AD3B31EC01AE2002F567D /* NELivePlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NELivePlayerController.h; sourceTree = "<group>"; };
-		544AD3B81EC01AE2002F567D /* ReleaseNote.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ReleaseNote.md; sourceTree = "<group>"; };
 		544AD3BD1EC02C7B002F567D /* UIViewController+ZFPlayerRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ZFPlayerRotation.h"; sourceTree = "<group>"; };
 		544AD3BE1EC02C7B002F567D /* UIViewController+ZFPlayerRotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ZFPlayerRotation.m"; sourceTree = "<group>"; };
 		544AD3BF1EC02C7B002F567D /* UINavigationController+ZFPlayerRotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+ZFPlayerRotation.m"; sourceTree = "<group>"; };
@@ -1645,6 +1640,9 @@
 		5483E8551E4576C200C3C1B4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5484B7401DE7DC9600CF9EC0 /* YYTextView+YZEmotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "YYTextView+YZEmotion.h"; sourceTree = "<group>"; };
 		5484B7411DE7DC9600CF9EC0 /* YYTextView+YZEmotion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YYTextView+YZEmotion.m"; sourceTree = "<group>"; };
+		5485134F1F5FD2660014CDCE /* 版本更新记录.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "版本更新记录.md"; sourceTree = "<group>"; };
+		548513511F5FD2AC0014CDCE /* NELivePlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NELivePlayerController.h; sourceTree = "<group>"; };
+		548513521F5FD2AC0014CDCE /* NELivePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NELivePlayer.h; sourceTree = "<group>"; };
 		548D144D1EA7101A00B120C8 /* TeacherFeatureTagCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeacherFeatureTagCollectionViewCell.h; sourceTree = "<group>"; };
 		548D144E1EA7101A00B120C8 /* TeacherFeatureTagCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeacherFeatureTagCollectionViewCell.m; sourceTree = "<group>"; };
 		548D1D641EA740CA00B120C8 /* ClassTimeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassTimeModel.h; sourceTree = "<group>"; };
@@ -2248,16 +2246,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54294F651DDB44EC00677333 /* CoreVideo.framework in Frameworks */,
-				5429159C1DD9DDD300EE1A70 /* VideoToolbox.framework in Frameworks */,
 				5472B5A81F4EA64800C3110D /* libresolv.tbd in Frameworks */,
+				54294CD41DDB3CC200677333 /* UIKit.framework in Frameworks */,
+				5429159B1DD9DDCE00EE1A70 /* AudioToolbox.framework in Frameworks */,
+				5429159C1DD9DDD300EE1A70 /* VideoToolbox.framework in Frameworks */,
+				542915981DD9DDBC00EE1A70 /* AVFoundation.framework in Frameworks */,
 				5429159A1DD9DDC900EE1A70 /* CoreMedia.framework in Frameworks */,
 				54294F641DDB44DC00677333 /* CoreGraphics.framework in Frameworks */,
+				54294F651DDB44EC00677333 /* CoreVideo.framework in Frameworks */,
+				54294F631DDB44C200677333 /* CoreAudio.framework in Frameworks */,
+				54294CD31DDB3CB500677333 /* QuartzCore.framework in Frameworks */,
 				54294CD51DDB3CCA00677333 /* OpenGLES.framework in Frameworks */,
+				54294F621DDB44A500677333 /* Foundation.framework in Frameworks */,
 				549AB81A1F5D4BB400DD1EA8 /* libiconv.tbd in Frameworks */,
 				54294CC31DDB3AC400677333 /* libstdc++.tbd in Frameworks */,
 				54294CC21DDB3AAE00677333 /* libbz2.tbd in Frameworks */,
+				5429159F1DD9DDED00EE1A70 /* libz.tbd in Frameworks */,
 				5472B59F1F4EA4B300C3110D /* libsqlite3.tbd in Frameworks */,
+				54294CD71DDB3CF000677333 /* CFNetwork.framework in Frameworks */,
+				542915991DD9DDC300EE1A70 /* CoreTelephony.framework in Frameworks */,
+				542915971DD9DDB700EE1A70 /* SystemConfiguration.framework in Frameworks */,
 				5450B3EF1F4EAFC500E7A64B /* libUMessage_Sdk.a in Frameworks */,
 				54EA78AF1F386D6C00CB8E08 /* UMMobClick.framework in Frameworks */,
 				5472B5A41F4EA5EA00C3110D /* libcrypto.a in Frameworks */,
@@ -2277,28 +2285,18 @@
 				5493D48C1E0B81A40085A39E /* CoreLocation.framework in Frameworks */,
 				547FBF1E1DF658C000955A9E /* UserNotifications.framework in Frameworks */,
 				54294CD61DDB3CD500677333 /* libz.1.tbd in Frameworks */,
-				5429159F1DD9DDED00EE1A70 /* libz.tbd in Frameworks */,
 				5422E7D11F4E77B6008B0A96 /* libGPUImage.a in Frameworks */,
 				5472B5A51F4EA5EA00C3110D /* libNELivePlayer.a in Frameworks */,
 				5422E7D31F4E77B6008B0A96 /* libNMCVideoModule.a in Frameworks */,
 				5429159E1DD9DDE600EE1A70 /* libsqlite3.0.tbd in Frameworks */,
 				5429159D1DD9DDDE00EE1A70 /* libc++.tbd in Frameworks */,
 				54E120CE1DDC2CA5004F8012 /* CoreText.framework in Frameworks */,
-				54294CD41DDB3CC200677333 /* UIKit.framework in Frameworks */,
 				548328E71DDC6F360053AB29 /* libmp3lame.a in Frameworks */,
-				54294F631DDB44C200677333 /* CoreAudio.framework in Frameworks */,
-				54294F621DDB44A500677333 /* Foundation.framework in Frameworks */,
-				54294CD71DDB3CF000677333 /* CFNetwork.framework in Frameworks */,
-				54294CD31DDB3CB500677333 /* QuartzCore.framework in Frameworks */,
 				5422E7CE1F4E77B6008B0A96 /* libevent.a in Frameworks */,
 				5422E7D61F4E77B6008B0A96 /* libopenh264.a in Frameworks */,
 				5450B3F51F4EB1C500E7A64B /* libUMessage_Sdk.a in Frameworks */,
-				5429159B1DD9DDCE00EE1A70 /* AudioToolbox.framework in Frameworks */,
 				5422E7D51F4E77B6008B0A96 /* libnvs.a in Frameworks */,
 				54CB26711DF02FE400AE7414 /* libWeChatSDK.a in Frameworks */,
-				542915991DD9DDC300EE1A70 /* CoreTelephony.framework in Frameworks */,
-				542915981DD9DDBC00EE1A70 /* AVFoundation.framework in Frameworks */,
-				542915971DD9DDB700EE1A70 /* SystemConfiguration.framework in Frameworks */,
 				542915961DD9DDB000EE1A70 /* MobileCoreServices.framework in Frameworks */,
 				5422E7D41F4E77B6008B0A96 /* libnts.a in Frameworks */,
 				F249EFD4707A4E4121B5BF4D /* libPods-Qatime_Student.a in Frameworks */,
@@ -2506,9 +2504,7 @@
 			isa = PBXGroup;
 			children = (
 				5422E7BB1F4E77B6008B0A96 /* libaacplus.a */,
-				5422E7BC1F4E77B6008B0A96 /* libcrypto.a */,
 				5422E7BD1F4E77B6008B0A96 /* libevent.a */,
-				5422E7BE1F4E77B6008B0A96 /* libssl.a */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -3474,9 +3470,9 @@
 		544AD3AF1EC01AE2002F567D /* LivePlayer_iOS_SDK */ = {
 			isa = PBXGroup;
 			children = (
+				5485134F1F5FD2660014CDCE /* 版本更新记录.md */,
 				544AD3B01EC01AE2002F567D /* include */,
 				544AD3B41EC01AE2002F567D /* libs */,
-				544AD3B81EC01AE2002F567D /* ReleaseNote.md */,
 			);
 			path = LivePlayer_iOS_SDK;
 			sourceTree = "<group>";
@@ -3484,18 +3480,10 @@
 		544AD3B01EC01AE2002F567D /* include */ = {
 			isa = PBXGroup;
 			children = (
-				544AD3B11EC01AE2002F567D /* NELivePlayer */,
+				548513511F5FD2AC0014CDCE /* NELivePlayerController.h */,
+				548513521F5FD2AC0014CDCE /* NELivePlayer.h */,
 			);
 			path = include;
-			sourceTree = "<group>";
-		};
-		544AD3B11EC01AE2002F567D /* NELivePlayer */ = {
-			isa = PBXGroup;
-			children = (
-				544AD3B21EC01AE2002F567D /* NELivePlayer.h */,
-				544AD3B31EC01AE2002F567D /* NELivePlayerController.h */,
-			);
-			path = NELivePlayer;
 			sourceTree = "<group>";
 		};
 		544AD3B41EC01AE2002F567D /* libs */ = {
@@ -7711,7 +7699,6 @@
 				54AC02521E892CEE00817767 /* NTESClientUtil.m in Sources */,
 				5492FC8F1E7A7BB800F89593 /* MultifiltersViewController.m in Sources */,
 				5442009B1E77914200797E6C /* TodayLiveCollectionViewCell.m in Sources */,
-				544AD3BC1EC01AE2002F567D /* ReleaseNote.md in Sources */,
 				5411F48D1F5E416E0023D576 /* CourseFile.m in Sources */,
 				54774D161F444A8200150C05 /* ZLPhotoPickerGroupTableViewCell.m in Sources */,
 				548328F01DDC6F370053AB29 /* UUProgressHUD.m in Sources */,
@@ -8127,6 +8114,7 @@
 				5471C7FF1E8F87ED0098E509 /* TeachersGroupTableView.m in Sources */,
 				5413D25E1DF7BC8A00A8FDEC /* WidthDrawTableView.m in Sources */,
 				54CB26601DEFFBD300AE7414 /* ChangPhoneView.m in Sources */,
+				548513501F5FD2660014CDCE /* 版本更新记录.md in Sources */,
 				5422EAF31F4E7AC9008B0A96 /* NIMWebImageDownloaderOperation.m in Sources */,
 				54AC04C51E89398E00817767 /* color.c in Sources */,
 				54CCE2271F428EDC004933D3 /* NewQuestionView.m in Sources */,
@@ -8398,7 +8386,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/include/NELivePlayer",
+					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/include/",
 					"$(inherited)",
 					"$(PROJECT_DIR)/Qatime_Student",
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",
@@ -8493,7 +8481,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/include/NELivePlayer",
+					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/include/",
 					"$(inherited)",
 					"$(PROJECT_DIR)/Qatime_Student",
 					"$(PROJECT_DIR)/Qatime_Student/UMessage_Sdk_1.4.0",

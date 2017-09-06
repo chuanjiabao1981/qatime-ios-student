@@ -80,9 +80,9 @@ int mCurrentPostion;
 
 - (void)dealloc{
     
-    [_liveplayer shutdown];
-    [_liveplayer.view removeFromSuperview];
-    _liveplayer = nil;
+//    [_liveplayer shutdown];
+//    [_liveplayer.view removeFromSuperview];
+//    _liveplayer = nil;
     
 }
 
@@ -244,7 +244,6 @@ int mCurrentPostion;
     }
     self.liveplayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     self.liveplayer.view.frame = self.playerView.bounds;
-    [self.liveplayer setScalingMode:NELPMovieScalingModeAspectFit];
     
     self.view.autoresizesSubviews = YES;
     
@@ -254,7 +253,6 @@ int mCurrentPostion;
     [self.view addSubview:self.bufferingIndicate];
     [self.view addSubview:self.bufferingReminder];
     self.mediaControl.delegatePlayer = self.liveplayer;
-
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -333,6 +331,7 @@ int mCurrentPostion;
     }
 #else
     [self.liveplayer prepareToPlay]; //初始化视频文件
+    
 #endif
 #endif
 
@@ -356,15 +355,15 @@ int mCurrentPostion;
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear");
     
-    [self.liveplayer shutdown]; //退出播放并释放相关资源
-    [self.liveplayer.view removeFromSuperview];
-    self.liveplayer = nil;
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerDidPreparedToPlayNotification object:_liveplayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerLoadStateChangedNotification object:_liveplayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerPlaybackFinishedNotification object:_liveplayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstVideoDisplayedNotification object:_liveplayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstAudioDisplayedNotification object:_liveplayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerVideoParseErrorNotification object:_liveplayer];
+//    [self.liveplayer shutdown]; //退出播放并释放相关资源
+//    [self.liveplayer.view removeFromSuperview];
+//    self.liveplayer = nil;
+//    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerDidPreparedToPlayNotification object:_liveplayer];
+//    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerLoadStateChangedNotification object:_liveplayer];
+//    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerPlaybackFinishedNotification object:_liveplayer];
+//    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstVideoDisplayedNotification object:_liveplayer];
+//    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstAudioDisplayedNotification object:_liveplayer];
+//    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerVideoParseErrorNotification object:_liveplayer];
 }
 
 - (void)viewDidLoad {
@@ -416,14 +415,12 @@ int mCurrentPostion;
                                                  name:NELivePlayerMoviePlayerSeekCompletedNotification
                                                object:_liveplayer];
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (BOOL)shouldAutorotate
-{
+- (BOOL)shouldAutorotate{
     return NO;
 }
 
@@ -437,8 +434,18 @@ int mCurrentPostion;
 - (void)onClickBack:(id)sender
 {
     NSLog(@"click back!");
+    [self.liveplayer shutdown]; // 退出播放并释放相关资源
+    [self.liveplayer.view removeFromSuperview];
+    self.liveplayer = nil;
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerDidPreparedToPlayNotification object:_liveplayer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerLoadStateChangedNotification object:_liveplayer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerPlaybackFinishedNotification object:_liveplayer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstVideoDisplayedNotification object:_liveplayer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstAudioDisplayedNotification object:_liveplayer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerVideoParseErrorNotification object:_liveplayer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerPlaybackStateChangedNotification object:_liveplayer];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerMoviePlayerSeekCompletedNotification object:_liveplayer];
     
-   // [self syncUIStatus:YES];
     if (self.presentingViewController) {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }
@@ -476,13 +483,11 @@ int mCurrentPostion;
     _isMediaSliderBeingDragged = NO;
 }
 
-
 //开始播放
 - (void)onClickPlay:(id)sender
 {
     NSLog(@"click play");
     [self.liveplayer play];
-    [self syncUIStatus];
 }
 
 //暂停播放
@@ -490,7 +495,6 @@ int mCurrentPostion;
 {
     NSLog(@"click pause");
     [self.liveplayer pause];
-    [self syncUIStatus];
 }
 
 //静音
@@ -511,9 +515,10 @@ int mCurrentPostion;
     }
 }
 
-////显示模式
+//显示模式
 //- (void)onClickScaleMode:(id)sender
 //{
+//    //    NSLog(@"click scale mode %ld", scaleModeBtn.titleLabel.tag);
 //    switch (self.scaleModeBtn.titleLabel.tag) {
 //        case 0:
 //            [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
@@ -523,12 +528,12 @@ int mCurrentPostion;
 //            break;
 //        case 1:
 //            [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
-//            [self.liveplayer setScalingMode:NELPMovieScalingModeAspectFit];
+//            [self.liveplayer setScalingMode:NELPMovieScalingModeAspectFill];
 //            self.scaleModeBtn.titleLabel.tag = 0;
 //            break;
 //        default:
 //            [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
-//            [self.liveplayer setScalingMode:NELPMovieScalingModeAspectFit];
+//            [self.liveplayer setScalingMode:NELPMovieScalingModeAspectFill];
 //            self.scaleModeBtn.titleLabel.tag = 0;
 //            break;
 //    }
@@ -564,9 +569,8 @@ int mCurrentPostion;
     NSLog(@"click mediacontrol");
     self.controlOverlay.hidden = NO;
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlOverlayHide) object:nil];
-    [self syncUIStatus];
-    [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:8];
-}
+    [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:8];}
+
 
 - (void)controlOverlayHide
 {
@@ -644,12 +648,6 @@ dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t qu
     
 }
 
-- (void)NELivePlayerPlaybackStateChanged:(NSNotification*)notification
-{
-    //    NSLog(@"NELivePlayerPlaybackStateChanged");
-}
-
-
 - (void)NELivePlayerDidPreparedToPlay:(NSNotification*)notification
 {
     //add some methods
@@ -657,6 +655,12 @@ dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t qu
     [self syncUIStatus];
     [self.liveplayer play]; //开始播放
 }
+
+- (void)NELivePlayerPlaybackStateChanged:(NSNotification*)notification
+{
+    //    NSLog(@"NELivePlayerPlaybackStateChanged");
+}
+
 
 - (void)NeLivePlayerloadStateChanged:(NSNotification*)notification
 {
@@ -676,7 +680,6 @@ dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t qu
         self.bufferingReminder.hidden = NO;
         [self.bufferingIndicate startAnimating];
     }
-
 }
 
 - (void)NELivePlayerPlayBackFinished:(NSNotification*)notification
@@ -717,6 +720,7 @@ dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t qu
             break;
     }
 }
+
 
 - (void)NELivePlayerFirstVideoDisplayed:(NSNotification*)notification
 {
