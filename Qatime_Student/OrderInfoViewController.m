@@ -298,6 +298,7 @@
             
         }
 
+    }failure:^(id  _Nullable erros) {
     }];
     
 }
@@ -327,6 +328,7 @@
                     }
                     
                     
+                }failure:^(id  _Nullable erros) {
                 }];
         }
     }];
@@ -472,6 +474,7 @@
                     
                 }
                 
+            }failure:^(id  _Nullable erros) {
             }];
         }
     }];

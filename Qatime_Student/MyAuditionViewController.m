@@ -229,6 +229,7 @@ typedef enum : NSUInteger {
                 
             }
             
+        }failure:^(id  _Nullable erros) {
         }];
         
     }else if (classType == VideoClassType){
@@ -266,6 +267,7 @@ typedef enum : NSUInteger {
                 [_myAudioView.videoClassList.mj_footer endRefreshing];
             }
             
+        }failure:^(id  _Nullable erros) {
         }];
     }
     

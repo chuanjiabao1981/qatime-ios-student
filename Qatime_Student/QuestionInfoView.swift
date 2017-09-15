@@ -58,7 +58,7 @@ class QuestionInfoView: UIView {
 //        .leftSpaceToView(self,10*ScrenScale)?
 //        .rightSpaceToView(self,10*ScrenScale)?
 //        .heightIs((ScreenWidth-20*ScrenScale-10)*0.5*3+20)
-//    
+//
 //        //录音机
 //        recorder = YZPlayerRecorder.init()
 //        self.addSubview(recorder.view)
@@ -67,7 +67,7 @@ class QuestionInfoView: UIView {
 //        .rightSpaceToView(self,10*ScrenScale)?
 //        .topSpaceToView(photosView,10*ScrenScale)?
 //        .heightIs(40)
-//        
+//
 //        ///该隐藏的都隐藏
 //        photosView.isHidden = true
 //        recorder.view.isHidden = true

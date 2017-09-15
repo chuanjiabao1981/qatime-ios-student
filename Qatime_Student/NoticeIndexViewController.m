@@ -442,6 +442,7 @@ typedef enum : NSUInteger {
                     [_noticeIndexView.chatListTableView.mj_header endRefreshing];
                     [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                 }
+            }failure:^(id  _Nullable erros) {
             }];
             
         }else{

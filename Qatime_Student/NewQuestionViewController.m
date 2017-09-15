@@ -191,6 +191,7 @@
             pickerBrowser.currentIndex = indexPath.row;
             // 展示控制器
             [pickerBrowser showPickerVc:self];
+
         }
     }
 }

@@ -112,8 +112,7 @@
 //服务名 KeyChain专用
 #define Qatime_Service @"Qatime_Student"
 
-//下载文件目录
-#define DownloadPath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject stringByAppendingPathComponent:@"download"];
+
 
 
 // 判断系统版本

@@ -22,7 +22,7 @@ class QuestionSubTitle: UIView {
     var name = UILabel()
     
     override init(frame: CGRect) {
-       super.init(frame: frame)
+        super.init(frame: frame)
         self.backgroundColor = UIColor.init(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.0)
         //标题
         title = UILabel.init()
@@ -30,10 +30,10 @@ class QuestionSubTitle: UIView {
         title.font = TITLEFONTSIZE
         title.textColor = UIColor.black
         title.sd_layout()
-        .leftSpaceToView(self,10*ScrenScale)?
-        .topSpaceToView(self,10*ScrenScale)?
-        .rightSpaceToView(self,10*ScrenScale)?
-        .autoHeightRatio(0)
+            .leftSpaceToView(self,10*ScrenScale)?
+            .topSpaceToView(self,10*ScrenScale)?
+            .rightSpaceToView(self,10*ScrenScale)?
+            .autoHeightRatio(0)
         
         //添加时间和姓名
         creat_at = UILabel.init()
@@ -41,9 +41,9 @@ class QuestionSubTitle: UIView {
         creat_at.font = TEXT_FONTSIZE_MIN
         creat_at.textColor = TITLECOLOR
         creat_at.sd_layout()
-        .leftEqualToView(title)?
-        .topSpaceToView(title,10*ScrenScale)?
-        .autoHeightRatio(0)
+            .leftEqualToView(title)?
+            .topSpaceToView(title,10*ScrenScale)?
+            .autoHeightRatio(0)
         creat_at.setSingleLineAutoResizeWithMaxWidth(5000)
         
         name = UILabel.init()
@@ -51,9 +51,9 @@ class QuestionSubTitle: UIView {
         name.font = TEXT_FONTSIZE_MIN
         name.textColor = TITLECOLOR
         name.sd_layout()
-        .rightSpaceToView(self,10*ScrenScale)?
-        .topEqualToView(creat_at)?
-        .autoHeightRatio(0)
+            .rightSpaceToView(self,10*ScrenScale)?
+            .topEqualToView(creat_at)?
+            .autoHeightRatio(0)
         name.setSingleLineAutoResizeWithMaxWidth(500)
         
         name.updateLayout()
@@ -67,5 +67,6 @@ class QuestionSubTitle: UIView {
     
     
     
-
+    
 }
+

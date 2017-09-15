@@ -8,7 +8,6 @@
 
 #import "NavigationBar.h"
 
-
 @implementation NavigationBar
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -118,8 +117,6 @@
         
         bar.backgroundColor = [UIColor redColor];
     }
-    
-    
     
     return bar;
     

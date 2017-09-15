@@ -79,8 +79,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "461"
             endingLineNumber = "461"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "7">
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2134,7 +2134,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "427"
             endingLineNumber = "427"
-            landmarkName = "-requestTodayLive"
+            landmarkName = "-navigation"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2150,7 +2150,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1155"
             endingLineNumber = "1155"
-            landmarkName = "-collectionView:didSelectItemAtIndexPath:"
+            landmarkName = "-collectionView:cellForItemAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2166,7 +2166,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "457"
             endingLineNumber = "457"
-            landmarkName = "-requestTodayLive"
+            landmarkName = "-setupHeaderView"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2182,7 +2182,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1016"
             endingLineNumber = "1016"
-            landmarkName = "-collectionView:cellForItemAtIndexPath:"
+            landmarkName = "-requestTeachers:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2615,22 +2615,6 @@
             startingLineNumber = "267"
             endingLineNumber = "267"
             landmarkName = "-ask"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Qatime_Student/QuestionsTableViewCell.swift"
-            timestampString = "527065680.311134"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "101"
-            endingLineNumber = "101"
-            landmarkName = "setModel(question:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

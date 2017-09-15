@@ -1,18 +1,19 @@
 //
 //  UIViewController+ReturnLastPage.m
-//  Qatime_Student
+//  Qatime_Teacher
 //
-//  Created by Shin on 2017/8/21.
-//  Copyright © 2017年 WWTD. All rights reserved.
+//  Created by Shin on 2017/5/26.
+//  Copyright © 2017年 Shin. All rights reserved.
 //
 
 #import "UIViewController+ReturnLastPage.h"
 
 @implementation UIViewController (ReturnLastPage)
 
--(void)returnLastPage{
+- (void)returnLastPage{
     
     [self.navigationController popViewControllerAnimated:YES];
+    
 }
 
 @end

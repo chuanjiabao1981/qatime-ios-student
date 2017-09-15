@@ -69,6 +69,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
 - (void)refresh{
     [_mainView.allQuestionsList.mj_header beginRefreshing];
     [_mainView.myQuestionsList.mj_header beginRefreshing];
+
 }
 
 - (void)makeData{
@@ -255,6 +256,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
     }
     
     return  cell;
+    
 }
 
 
@@ -283,6 +285,8 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
         [self.mainView.segmentControl setSelectedSegmentIndex:pages animated:YES];
         
     }
+
+    
 }
 
 /** 添加新问题 */

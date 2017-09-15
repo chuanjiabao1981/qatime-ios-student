@@ -1,9 +1,9 @@
 //
 //  UIViewController+ReturnLastPage.h
-//  Qatime_Student
+//  Qatime_Teacher
 //
-//  Created by Shin on 2017/8/21.
-//  Copyright © 2017年 WWTD. All rights reserved.
+//  Created by Shin on 2017/5/26.
+//  Copyright © 2017年 Shin. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

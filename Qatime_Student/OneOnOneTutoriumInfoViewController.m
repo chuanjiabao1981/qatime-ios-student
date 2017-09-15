@@ -27,6 +27,7 @@
 #import "InteractionReplayPlayerViewController.h"
 #import "UIControl+RemoveTarget.h"
 
+
 @interface OneOnOneTutoriumInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,OneOnOneTeacherTableViewCellDelegate,UICollectionViewDelegate,UICollectionViewDataSource>{
     
     NavigationBar *_navigationBar;
@@ -196,6 +197,7 @@
             //数据错误
         }
         [self HUDStopWithTitle:nil];
+    }failure:^(id  _Nullable erros) {
     }];
     
 }
@@ -547,8 +549,21 @@
             [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
                 if ([dic[@"status"]isEqualToNumber:@1]) {
-                    if ([dic[@"data"][@"replayable"]boolValue]==YES) {
-                        //可以随便播放
+
+                    if ([dic[@"data"][@"replayable"]boolValue]== YES) {
+                        if (dic[@"data"][@"replay"]==nil) {
+                            
+                        }else{
+                            NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+                            [decodeParm addObject:@"software"];
+                            [decodeParm addObject:@"videoOnDemand"];
+                            
+                            VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+                            [self presentViewController:video animated:YES completion:^{
+                                
+                            }];
+                        }
+
                         
                         NSArray *replayArr = dic[@"data"][@"replay"];
                         NSURL *playingURL = [NSURL URLWithString:replayArr[indexPath.row][@"shd_url"]];
@@ -561,6 +576,7 @@
                 
             }];
             
+
         }else{
             
         }

@@ -12,7 +12,7 @@
 #import "NSString+TimeStamp.h"
 #import "NetWorkTool.h"
 #import "DoHomeworkViewController.h"
-
+#import "Qatime_Student-Swift.h"
 
 
 @interface HomeworkInfoViewController ()<UITableViewDataSource,UITableViewDelegate>{

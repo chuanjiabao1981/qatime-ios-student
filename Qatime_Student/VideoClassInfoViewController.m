@@ -322,6 +322,7 @@ typedef enum : NSUInteger {
             [self HUDStopWithTitle:nil];
         }
         
+    }failure:^(id  _Nullable erros) {
     }];
     
 }
@@ -413,6 +414,7 @@ typedef enum : NSUInteger {
                     
                 }
                 
+            }failure:^(id  _Nullable erros) {
             }];
         }
         

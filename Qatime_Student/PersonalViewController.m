@@ -33,6 +33,7 @@
 #import "GuestBindingViewController.h"
 
 #import "MyQuestionViewController.h"
+
 #import "DownloadManagerViewController.h"
 #import "MyHomeworkViewController.h"
 
@@ -462,8 +463,7 @@
                 }
                     break;
                 case 9:{
-                    //下载
-                    controller = [[DownloadManagerViewController alloc]init];
+                    
                 }
                     break;
                     

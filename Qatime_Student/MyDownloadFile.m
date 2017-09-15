@@ -7,7 +7,7 @@
 //
 
 #import "MyDownloadFile.h"
-#import "UIImage+TYHSetting.h"
+//#import "UIImage+TYHSetting.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
 

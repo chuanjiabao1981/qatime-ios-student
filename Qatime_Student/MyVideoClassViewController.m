@@ -274,6 +274,7 @@ typedef enum : NSUInteger {
             
         }
         
+    }failure:^(id  _Nullable erros) {
     }];
     
 }

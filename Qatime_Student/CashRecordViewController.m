@@ -877,6 +877,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
            
        }
        
+   }failure:^(id  _Nullable erros) {
    }];
     
 }

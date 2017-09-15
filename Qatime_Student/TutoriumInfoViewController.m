@@ -1041,6 +1041,7 @@
                         [self HUDStopWithTitle:@"服务器繁忙,请稍后重试"];
                     }
                     
+                }failure:^(id  _Nullable erros) {
                 }];
             }else{
                 

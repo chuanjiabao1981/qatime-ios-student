@@ -149,7 +149,96 @@
 
 - (void)loadView{
     [super loadView];
+
+    [self HUDStartWithTitle:NSLocalizedString(@"正在加载数据", nil)];
     
+    /* 导航栏加载*/
+    _navigationBar = ({
+        NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+        [self .view addSubview:_];
+        //右边扫描
+        [_.rightButton setImage:[UIImage imageNamed:@"scan"] forState:UIControlStateNormal];
+        
+        //左侧 定位两个按钮
+        _location = [UIButton new];
+        _location.titleLabel.font = TEXT_FONTSIZE;
+        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Location"]) {
+            [_location setTitle:[[NSUserDefaults standardUserDefaults]valueForKey:@"Location"] forState:UIControlStateNormal];
+        }else{
+            [_location setTitle:@"全国" forState:UIControlStateNormal];
+        }
+        [_location setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        [_ addSubview:_location];
+        _location.sd_layout
+        .leftSpaceToView(_,0*ScrenScale)
+        .topEqualToView(_.rightButton)
+        .bottomEqualToView(_.rightButton)
+        .widthIs(100*ScrenScale);
+        [_location setupAutoSizeWithHorizontalPadding:10*ScrenScale buttonHeight:_.rightButton.height_sd];
+        [_location setSd_maxWidth:@(100*ScrenScale)];
+        [_location updateLayout];
+        
+        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+        CGAffineTransform transform= CGAffineTransformMakeRotation(M_PI*3/2);
+        _.leftButton.imageView.transform = transform;//旋转
+        _.leftButton.sd_resetLayout
+        .leftSpaceToView(_location, 0)
+        .centerYEqualToView(_location)
+        .heightRatioToView(_location, 0.6)
+        .widthEqualToHeight();
+        
+        [_location setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+        [_location addTarget:self action:@selector(choseLocation) forControlEvents:UIControlEventTouchUpInside];
+        [_.leftButton addTarget:self action:@selector(choseLocation) forControlEvents:UIControlEventTouchUpInside];
+        
+        [_.leftButton updateLayout];
+        
+        
+        //左右按钮都设置完了 中间增加一个自定义搜索框
+        _searchBar = [[UIView alloc]init];
+        [_ addSubview:_searchBar];
+        _searchBar.backgroundColor = [UIColor whiteColor];
+        _searchBar.sd_layout
+        .leftSpaceToView(_.leftButton, 10*ScrenScale)
+        .rightSpaceToView(_.rightButton, 10*ScrenScale)
+        .topEqualToView(_.rightButton)
+        .bottomEqualToView(_.rightButton);
+        [_searchBar updateLayout];
+        _searchBar.sd_cornerRadiusFromHeightRatio = @0.5;
+        
+        UITapGestureRecognizer *tapSearch = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(search)];
+        _searchBar.userInteractionEnabled = YES;
+        [_searchBar addGestureRecognizer:tapSearch];
+        
+        //搜索图标
+        UIImageView *scopeImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"scope"]];
+        [_searchBar addSubview:scopeImage];
+        scopeImage.sd_layout
+        .leftSpaceToView(_searchBar, 10)
+        .centerYEqualToView(_searchBar)
+        .heightRatioToView(_searchBar, 0.5)
+        .widthEqualToHeight();
+        //假的输入框而已
+        UILabel *searchLabel = [[UILabel alloc]init];
+        [_searchBar addSubview:searchLabel];
+        searchLabel.text = @"搜索课程/教师";
+        searchLabel.font = TEXT_FONTSIZE;
+        searchLabel.textColor = SEPERATELINECOLOR_2;
+        searchLabel.sd_layout
+        .leftSpaceToView(scopeImage, 10)
+        .topEqualToView(scopeImage)
+        .bottomEqualToView(scopeImage);
+        [searchLabel setSingleLineAutoResizeWithMaxWidth:200];
+        
+        _;
+    });
+    
+    [_navigationBar.rightButton addTarget:self action:@selector(enterScanPage) forControlEvents:UIControlEventTouchUpInside];
+    
+    //偷偷的加载未设置支付密码提示栏
+    [self makeWarningView];
+
     
 }
 
@@ -457,6 +546,7 @@
             [_headerView.todayLiveScrollView reloadData];
         }
         
+    }failure:^(id  _Nullable erros) {
     }];
     
 }
@@ -496,6 +586,7 @@
             
         }
         
+    }failure:^(id  _Nullable erros) {
     }];
     
 }
@@ -557,6 +648,7 @@
         }
         
         
+    }failure:^(id  _Nullable erros) {
     }];
     
     
@@ -854,6 +946,7 @@
             
         }
         
+    }failure:^(id  _Nullable erros) {
     }];
     
 }
