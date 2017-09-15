@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TodayLive.h"
 #import "RecommandClasses.h"
+#import "TodayLive.h"
 
 @interface TodayLiveCollectionViewCell : UICollectionViewCell
 
@@ -36,5 +37,7 @@
  model
  */
 @property (nonatomic, strong) RecommandClasses *model ;
+
+@property (nonatomic, strong) TodayLive *todayLiveModel ;
 
 @end

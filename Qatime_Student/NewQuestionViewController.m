@@ -14,6 +14,7 @@
 #import "UIViewController+HUD.h"
 #import "UIControl+RemoveTarget.h"
 #import "UIAlertController+Blocks.h"
+#import "NetWorkTool.h"
 #import "ZLPhotoPickerBrowserViewController.h"
 
 
@@ -23,6 +24,8 @@
     
     NSMutableArray *_phototsArray;
     
+    NSString *_classID;
+    
 }
 
 
@@ -31,6 +34,14 @@
 
 @implementation NewQuestionViewController
 
+-(instancetype)initWithClassID:(NSString *)classID{
+    
+    self = [super init];
+    if (self) {
+        _classID  = classID;
+    }
+    return self;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = BACKGROUNDGRAY;
@@ -40,7 +51,9 @@
     
      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
     
+  
 }
+
 
 - (void)makeData{
     
@@ -54,6 +67,7 @@
     _navigationBar.titleLabel.text = @"提问";
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.rightButton setImage:[UIImage imageNamed:@"send"] forState:UIControlStateNormal];
+    [_navigationBar.rightButton addTarget:self action:@selector(ask) forControlEvents:UIControlEventTouchUpInside];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
     //mainView
@@ -244,6 +258,28 @@
         
     }
     
+}
+/** 提问 */
+- (void)ask{
+    if (_mainView.title.text.length>0&&_mainView.questions.text.length>0) {
+        [self HUDStartWithTitle:nil];
+        [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/groups/%@/questions",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:@{@"title":_mainView.title.text,@"body":_mainView.questions.text} withUploadProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                //提问成功
+                [self HUDStopWithTitle:@"提交成功"];
+                [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"AskDone" object:nil];
+            }else{
+                [self HUDStopWithTitle:@"请稍后重试"];
+            }
+            
+        } failure:^(id  _Nullable erros) {
+            [self HUDStopWithTitle:@"请检查网络"];
+        }];
+    }else{
+        [self HUDStopWithTitle:@"请输入正确信息"];
+    }
 }
 
 

@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RecommandClasses.h"
+//#import "RecommandClasses.h"
+#import "FreeCourse.h"
 
-@interface NewestClass : RecommandClasses
+@interface NewestClass : FreeCourse
 
 @end

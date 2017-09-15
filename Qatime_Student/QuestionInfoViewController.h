@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Qatime_Student-Swift.h"
+#import "AnswerInfoView.h"
 
 
 @interface QuestionInfoViewController : UIViewController
@@ -16,7 +17,9 @@
 @property (nonatomic, strong) QuestionInfoView *questionInfoView ;
 
 /** 回答详情 如果有的话 */
-@property (nonatomic, strong) QuestionInfoView *answerInfoView ;
+@property (nonatomic, strong) AnswerInfoView *answerInfoView ;
+
+-(instancetype)initWithQuestion:(Questions *)question;
 
 
 @end

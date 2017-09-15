@@ -1575,9 +1575,9 @@
     
     [UIView animateWithDuration:animationDuration animations:^{
     
-        [_inputView setFrame:CGRectMake(0, self.view.height_sd -50, self.view.width_sd, 50)];
+        [_inputView setFrame:CGRectMake(0, self.view.height_sd -TabBar_Height, self.view.width_sd, TabBar_Height)];
         
-        [_chatTableView setFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-50)];
+        [_chatTableView setFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height-TabBar_Height)];
         
     }];
     

@@ -89,7 +89,6 @@
 - (void)setupNavigationButton{
     
     [self.navigationBar.rightButton setImage:[UIImage imageNamed:@"moreMenu"] forState:UIControlStateNormal];
-    [self.navigationBar addSubview:self.navigationBar.rightButton];
     self.navigationBar.rightButton.hidden = YES;
     [self.navigationBar.rightButton addTarget:self action:@selector(moreMenu) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -151,7 +150,7 @@
         }
             break;
         case 3:{
-            controller = [[ExclusiveAskViewController alloc]init];
+            controller = [[ExclusiveAskViewController alloc]initWithClassID:self.classID];
         }
             break;
         case 4:{

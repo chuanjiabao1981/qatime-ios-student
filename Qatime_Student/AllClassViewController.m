@@ -27,6 +27,7 @@
 #import "VideoClassPlayerViewController.h"
 #import "InteractionViewController.h"
 #import "UIViewController+AFHTTP.h"
+#import "ExclusiveInfoViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -85,7 +86,7 @@
 /**加载导航栏*/
 - (void)setupNavigatoin{
     //导航栏
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, Navigation_Height)];
     [self.view addSubview:_navigationBar];
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
@@ -271,7 +272,7 @@
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
         [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule_data",Request_Header,_idNumber] parameters:@{@"date":dateString,@"state":@"unclosed"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager GET:[NSString stringWithFormat:@"%@/api/v2/live_studio/students/%@/schedule_data",Request_Header,_idNumber] parameters:@{@"date":dateString,@"state":@"unclosed"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             _unclosedArr = @[].mutableCopy;
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -497,16 +498,18 @@
     
     ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    if ([cell.model.product_type isEqualToString:@"LiveStudio::Course"]) {
+    if ([cell.model.model_name isEqualToString:@"LiveStudio::Course"]) {
         //直播课
-        controller= [[TutoriumInfoViewController alloc]initWithClassID:cell.model.product_id];
-    }else if ([cell.model.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
+        controller= [[TutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
+    }else if ([cell.model.model_name isEqualToString:@"LiveStudio::VideoCourse"]){
         //视频课
-        controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.product_id];
-    }else if ([cell.model.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+        controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.course_id];
+    }else if ([cell.model.model_name isEqualToString:@"LiveStudio::InteractiveCourse"]){
         //一对一
-        //                [self HUDStopWithTitle:@"正在开发中,敬请期待"];
-        controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.model.product_id];
+        controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
+    }else{
+        //专属课
+        controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.model.course_id];
     }
     
     controller.hidesBottomBarWhenPushed = YES;
@@ -519,11 +522,11 @@
     
     ClassTimeTableViewCell *cell = [_classTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag inSection:0]];
     __block UIViewController *controller;
-    if ([cell.model.model_type isEqualToString:@"LiveStudio::Lesson"]) {
+    if ([cell.model.model_name isEqualToString:@"LiveStudio::Lesson"]) {
         //直播课
-        controller= [[LivePlayerViewController alloc]initWithClassID:cell.model.product_id];
+        controller= [[LivePlayerViewController alloc]initWithClassID:cell.model.course_id];
          [self.navigationController pushViewController:controller animated:YES];
-    }else if ([cell.model.model_type isEqualToString:@"LiveStudio::VideoLesson"]){
+    }else if ([cell.model.model_name isEqualToString:@"LiveStudio::VideoLesson"]){
         //视频课
         //先获取视频课程的详情吧
         [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@",Request_Header,cell.model.classID] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
@@ -532,15 +535,15 @@
             
         }];
      
-    }else if ([cell.model.model_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
+    }else if ([cell.model.model_name isEqualToString:@"LiveStudio::InteractiveLesson"]){
         //一对一
         //加工数据
         //1.聊天室
         NIMChatroom *chatroom = [[NIMChatroom alloc]init];
-        chatroom.roomId = cell.model.classID;
+        chatroom.roomId = cell.model.course_id;
         //2.lessonname
         __block NSString *lessonName ;
-        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/detail",Request_Header,cell.model.product_id] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/detail",Request_Header,cell.model.course_id] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqualToNumber:@1]) {
                 
@@ -550,7 +553,7 @@
                     }
                 }
                 
-                controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:cell.model.classID andChatTeamID:cell.model.product_id andLessonName:lessonName==nil?@"暂无直播":lessonName];
+                controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:cell.model.course_id andChatTeamID:cell.model.course_id andLessonName:lessonName==nil?@"暂无直播":lessonName];
                  [self.navigationController pushViewController:controller animated:YES];
             }else{
                 [self HUDStopWithTitle:@"网络繁忙,请稍后重试"];

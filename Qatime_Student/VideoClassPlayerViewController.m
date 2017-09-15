@@ -990,7 +990,7 @@ typedef enum : NSUInteger {
     
     [self playerViewTurnPotraitScreenLayout];
     _scaleModeBtn.hidden = NO;
-    [self.mainView.scrollView scrollRectToVisible:CGRectMake(self.mainView.segmentControl.selectedSegmentIndex * self.view.width_sd, 0, self.view.width_sd, self.view.height_sd-64-49) animated:NO];
+    [self.mainView.scrollView scrollRectToVisible:CGRectMake(self.mainView.segmentControl.selectedSegmentIndex * self.view.width_sd, 0, self.view.width_sd, self.view.height_sd-Navigation_Height-TabBar_Height) animated:NO];
     
     [self mediaControlTurnDownFullScreenModeWithMainView:_playerView];
     

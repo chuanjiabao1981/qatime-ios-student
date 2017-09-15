@@ -44,10 +44,10 @@
     
     [super loadView];
     
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
     [self.view addSubview:_navigationBar];
     
-    _setPayPasswordView = [[SetPayPasswordView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
+    _setPayPasswordView = [[SetPayPasswordView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height)];
    
     
     

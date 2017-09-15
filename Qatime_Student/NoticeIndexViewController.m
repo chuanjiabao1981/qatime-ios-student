@@ -91,7 +91,7 @@ typedef enum : NSUInteger {
     [super loadView];
     
     _navigationBar = ({
-        NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+        NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
         _.titleLabel.text = @"消息中心";
         //        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         //        [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
@@ -100,7 +100,7 @@ typedef enum : NSUInteger {
     });
     
     _noticeIndexView = ({
-        NoticeIndexView *_=[[NoticeIndexView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-TabBar_Height)];
+        NoticeIndexView *_=[[NoticeIndexView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height-TabBar_Height)];
         
         _.segmentControl.delegate = self;
         
@@ -183,7 +183,7 @@ typedef enum : NSUInteger {
     
     /* 上滑加载功能*/
     
-    _noticeIndexView.noticeTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _noticeIndexView.noticeTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         
         /* 系统消息上滑加载更多*/
         [self requestNotices:RefreshStatePushLoadMore];
@@ -967,7 +967,7 @@ typedef enum : NSUInteger {
     
     typeof(self) __weak weakSelf = self;
     
-    [weakSelf.noticeIndexView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64) animated:YES];
+    [weakSelf.noticeIndexView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-Navigation_Height) animated:YES];
     
     if (index == 0) {
         [_noticeIndexView.segmentControl showBridgeWithShow:NO index:0];

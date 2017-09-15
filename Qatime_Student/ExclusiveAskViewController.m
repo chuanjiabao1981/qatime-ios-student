@@ -13,6 +13,18 @@
 #import "Qatime_Student-Swift.h"
 #import "HMSegmentedControl+Category.h"
 #import "NewQuestionViewController.h"
+#import "NetWorkTool.h"
+#import "QuestionInfoViewController.h"
+
+typedef NS_ENUM(NSUInteger, DataType) {
+    AllType,
+    MineType,
+};
+
+typedef NS_ENUM(NSUInteger, RefreshType) {
+    PullToReload,
+    PushToLoadMore,
+};
 
 
 @interface ExclusiveAskViewController ()<UITableViewDelegate,UITableViewDataSource>{
@@ -21,7 +33,12 @@
     
     NSString *_classID;
     
-    NSMutableArray *_questionsArray;
+    NSMutableArray *_allQuestionsArray;
+    NSMutableArray *_myQuestionsArray;
+    
+    NSInteger _allPage;
+    NSInteger _myPage;
+    NSInteger _page;
     
 }
 
@@ -45,32 +62,21 @@
     [self makeData];
     
     [self setupViews];
+    
+      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refresh) name:@"Ask" object:nil];
+    
+}
+- (void)refresh{
+    [_mainView.allQuestionsList.mj_header beginRefreshing];
+    [_mainView.myQuestionsList.mj_header beginRefreshing];
 }
 
 - (void)makeData{
-    _questionsArray = @[].mutableCopy;
-    
-    NSDictionary *dic = @{@"title":@"如何长高?",
-                          @"name":@"王牡丹",
-                          @"creat_at":@"2017-08-23 23:00:00",
-                          @"resolve":@"false"};
-    NSDictionary *dic2 = @{@"title":@"如何长高?",
-                           @"name":@"王牡丹",
-                           @"creat_at":@"2017-08-23 23:00:00",
-                           @"resolve":@"true"};
-    NSDictionary *dic3 = @{@"title":@"如何长高?",
-                           @"name":@"王牡丹",
-                           @"creat_at":@"2017-08-23 23:00:00",
-                           @"resolve":@"false"};
-    
-    NSArray *ques = @[dic,dic2,dic3];
-    for (NSDictionary *dic in ques) {
-        
-        Questions *mod = [Questions yy_modelWithJSON:dic];
-        [_questionsArray addObject:mod];
-    }
-    
-    
+    _allQuestionsArray = @[].mutableCopy;
+    _myQuestionsArray = @[].mutableCopy;
+    _allPage = 1;
+    _myPage = 1;
+    _page = 1;
 }
 
 - (void)setupViews{
@@ -95,17 +101,137 @@
     
     _mainView.allQuestionsList.delegate = self;
     _mainView.allQuestionsList.dataSource = self;
+    _mainView.allQuestionsList.tag = 1;
     _mainView.myQuestionsList.delegate = self;
     _mainView.myQuestionsList.dataSource = self;
+    _mainView.myQuestionsList.tag = 2;
     
     _mainView.scrollView.delegate = self;
     
+    _mainView.allQuestionsList.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _allQuestionsArray = @[].mutableCopy;
+        _allPage = 1;
+        _page = _allPage;
+        [_mainView.allQuestionsList.mj_footer resetNoMoreData];
+        [self requestDataWithType:AllType andRefreshType:PullToReload];
+    }];
+    _mainView.allQuestionsList.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        _allPage++;
+        _page = _allPage;
+        [self requestDataWithType:AllType andRefreshType:PushToLoadMore];
+    }];
+    _mainView.myQuestionsList.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _myQuestionsArray = @[].mutableCopy;
+        _myPage = 1;
+        _page = _myPage;
+        [_mainView.myQuestionsList.mj_footer resetNoMoreData];
+        [self requestDataWithType:MineType andRefreshType:PullToReload];
+    }];
+    _mainView.myQuestionsList.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        _myPage++;
+        _page = _myPage;
+        [self requestDataWithType:MineType andRefreshType:PushToLoadMore];
+    }];
+    
+    [_mainView.allQuestionsList.mj_header beginRefreshing];
+    [_mainView.myQuestionsList.mj_header beginRefreshing];
+
 }
+
+/** 请求数据 */
+- (void)requestDataWithType:(DataType)dataType andRefreshType:(RefreshType)refreshType{
+   
+    NSDictionary *formDic ;
+    if (dataType == AllType) {
+        formDic = @{@"page":[NSString stringWithFormat:@"%ld",_page],@"per_page":@"10"};
+    }else if (dataType ==MineType){
+        formDic = @{@"page":[NSString stringWithFormat:@"%ld",_page],@"per_page":@"10",@"user_id":[self getStudentID]};
+    }
+    typeof(self) __weak weakSelf = self;
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/groups/%@/questions",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:formDic withDownloadProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
+        NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            //有数
+            if ([dic[@"data"] count]!=0) {
+                
+                for (NSDictionary *question in dic[@"data"]) {
+                    Questions *mod = [Questions yy_modelWithJSON:question];
+                    mod.questionID = question[@"id"];
+                    if (![question[@"answer"] isEqual:[NSNull null]]) {
+                        if ([question[@"answer"]count]!=0) {
+                            mod.answer = [Answers yy_modelWithJSON:question[@"answer"]];
+                        }
+                    }
+                    
+                    if (dataType == AllType) {
+                        [_allQuestionsArray addObject:mod];
+                    }else{
+                        [_myQuestionsArray addObject:mod];
+                    }
+                }
+                
+                if (dataType == AllType) {
+                    if (refreshType == PullToReload) {
+                        [_mainView.allQuestionsList.mj_header endRefreshingWithCompletionBlock:^{
+                            [weakSelf.mainView.allQuestionsList cyl_reloadData];
+                        }];
+                    }else{
+                        [_mainView.allQuestionsList.mj_footer endRefreshingWithCompletionBlock:^{
+                            [weakSelf.mainView.myQuestionsList cyl_reloadData];
+                        }];
+                    }
+                }else{
+                    if (refreshType == PullToReload) {
+                        [_mainView.myQuestionsList.mj_header endRefreshingWithCompletionBlock:^{
+                            [weakSelf.mainView.myQuestionsList cyl_reloadData];
+                        }];
+                    }else{
+                        [_mainView.myQuestionsList.mj_footer endRefreshingWithCompletionBlock:^{
+                            [weakSelf.mainView.myQuestionsList cyl_reloadData];
+                        }];
+                    }
+                }
+            }else{
+                if (refreshType == PullToReload) {
+                    if (dataType == AllType) {
+                        [_mainView.allQuestionsList.mj_header endRefreshingWithCompletionBlock:^{
+                            [weakSelf.mainView.allQuestionsList cyl_reloadData];
+                        }];
+                    }else{
+                        [_mainView.myQuestionsList.mj_header endRefreshingWithCompletionBlock:^{
+                            [weakSelf.mainView.myQuestionsList cyl_reloadData];
+                        }];
+                    }
+                }else{
+                    if (dataType == AllType) {
+                        [_mainView.allQuestionsList.mj_footer endRefreshingWithNoMoreData];
+                    }else{
+                        [_mainView.myQuestionsList.mj_footer endRefreshingWithNoMoreData];
+                    }
+                }
+                
+            }
+        }else{
+            [self HUDStopWithTitle:@"请稍后重试"];
+            
+        }
+    } failure:^(id  _Nullable erros) {
+        [self HUDStopWithTitle:@"请检查网络"];
+    }];
+    
+}
+
+
 
 #pragma mark- UITableview datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    return _questionsArray.count;
+    NSInteger row = 0;
+    if (tableView.tag == 1) {
+        row = _allQuestionsArray.count;
+    }else{
+        row = _myQuestionsArray.count;
+    }
+    return row;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -115,12 +241,21 @@
     if (cell==nil) {
         cell=[[QuestionsTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
     }
-    
-    [cell setModelWithModel:_questionsArray[indexPath.row]];
+    [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+    if (tableView.tag == 1) {
+        if (_allQuestionsArray.count>indexPath.row) {
+            [cell setModelWithQuestion:_allQuestionsArray[indexPath.row]];
+        }
+        
+    }else{
+        if (_myQuestionsArray.count>indexPath.row) {
+            [cell setModelWithQuestion:_myQuestionsArray[indexPath.row]];
+        }
+       
+    }
     
     return  cell;
 }
-
 
 
 #pragma mark- UITableView delegate
@@ -128,6 +263,14 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return 130;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    QuestionsTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    QuestionInfoViewController *controller = [[QuestionInfoViewController alloc]initWithQuestion:cell.model];
+    [self.navigationController pushViewController:controller animated:YES];
+    
 }
 
 
@@ -142,12 +285,20 @@
     }
 }
 
-
 /** 添加新问题 */
 - (void)newQuestion{
     
-    NewQuestionViewController *controller = [[NewQuestionViewController alloc]init];
+    NewQuestionViewController *controller = [[NewQuestionViewController alloc]initWithClassID:_classID];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+
+- (UIView *)makePlaceHolderView{
+    HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"暂无数据"];
+    return  view;
+}
+- (BOOL)enableScrollWhenPlaceHolderViewShowing{
+    return YES;
 }
 
 - (void)returnLastPage{

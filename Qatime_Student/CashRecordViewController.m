@@ -130,7 +130,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
 
 - (void)setupNavigation{
     
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), Navigation_Height)];
     [self.view addSubview:_navigationBar];
     _navigationBar.titleLabel.text = @"资金记录";
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
@@ -144,7 +144,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
     /* view的初始化*/
     _mainView = ({
         
-        CashRecordView *_ = [[CashRecordView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
+        CashRecordView *_ = [[CashRecordView alloc]initWithFrame:CGRectMake(0, Navigation_Height, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-Navigation_Height)];
         [self.view addSubview:_];
         _;
     });
@@ -173,7 +173,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
        
         [self requestRechargeWithRefreshType:PullToRefresh];
     }];
-    _mainView.rechargeView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _mainView.rechargeView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
        
         [self requestRechargeWithRefreshType:PushToLoadMore];
     }];
@@ -183,7 +183,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
         
         [self requestWithDrawWithRefreshType:PullToRefresh];
     }];
-    _mainView.withDrawView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _mainView.withDrawView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         
         [self requestWithDrawWithRefreshType:PushToLoadMore];
     }];
@@ -193,7 +193,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
         
         [self requestPaymentWithRefreshType:PullToRefresh];
     }];
-    _mainView.paymentView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _mainView.paymentView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         
         [self requestPaymentWithRefreshType:PushToLoadMore];
     }];
@@ -203,7 +203,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
         
         [self requestRefundWithRefreshType:PullToRefresh];
     }];
-    _mainView.refundView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _mainView.refundView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         
         [self requestRefundWithRefreshType:PushToLoadMore];
     }];
@@ -212,7 +212,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
     /* 滑动效果*/
     typeof(self) __weak weakSelf = self;
     [ _mainView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-        [weakSelf.mainView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-40) animated:YES];
+        [weakSelf.mainView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-Navigation_Height-40) animated:YES];
     }];
     
     [_mainView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd*(_selectedItem.integerValue-1), 0, self.view.width_sd, self.view.height_sd) animated:YES];

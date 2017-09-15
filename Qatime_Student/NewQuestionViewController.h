@@ -13,4 +13,6 @@
 
 @property (nonatomic, strong) NewQuestionView *mainView ;
 
+-(instancetype)initWithClassID:(NSString *)classID;
+
 @end

@@ -129,7 +129,7 @@ typedef enum : NSUInteger {
             
         }];
         
-        _.onStudyTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        _.onStudyTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             [self requestOneOnOneWithRefreshStyle:PushToLoadMore andClassStatus:ClassStatusTeaching];
         }];
         
@@ -138,7 +138,7 @@ typedef enum : NSUInteger {
             [self requestOneOnOneWithRefreshStyle:PullToRefresh andClassStatus:ClassStatusFinished];
         }];
         
-        _.finishStudyTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        _.finishStudyTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             [self requestOneOnOneWithRefreshStyle:PushToLoadMore andClassStatus:ClassStatusFinished];
         }];
         

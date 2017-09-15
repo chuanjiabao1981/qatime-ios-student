@@ -145,7 +145,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), Navigation_Height)];
     [self .view addSubview:_navigationBar];
     _navigationBar.titleLabel.text = @"个人信息";
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
@@ -155,7 +155,7 @@
     [_navigationBar.rightButton addTarget:self action:@selector(editInfo) forControlEvents:UIControlEventTouchUpInside];
 //    _navigationBar.rightButton.hidden = YES;
     
-    _personalInfoView = [[PersonalInfoView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
+    _personalInfoView = [[PersonalInfoView alloc]initWithFrame:CGRectMake(0, Navigation_Height, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-Navigation_Height)];
     [self.view addSubview:_personalInfoView];
     _personalInfoView.delegate = self;
     _personalInfoView.dataSource = self;

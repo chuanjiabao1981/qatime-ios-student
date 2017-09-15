@@ -42,4 +42,11 @@
 @property (nonatomic, strong) NSDictionary *publicizes_url ;
 
 
+//v2版本的属性
+
+@property (nonatomic, strong) NSDictionary *publicizes ;
+@property (nonatomic, strong) NSString *published_at ;
+@property (nonatomic, strong) NSString *model_name ;
+@property (nonatomic, strong) NSString *teacher_id ;
+
 @end

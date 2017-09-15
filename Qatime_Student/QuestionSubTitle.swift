@@ -57,7 +57,7 @@ class QuestionSubTitle: UIView {
         name.setSingleLineAutoResizeWithMaxWidth(500)
         
         name.updateLayout()
-        self.setupAutoHeight(withBottomView: name, bottomMargin: 10*ScrenScale)
+        self.setupAutoHeight(withBottomView: creat_at, bottomMargin: 10*ScrenScale)
         
     }
     

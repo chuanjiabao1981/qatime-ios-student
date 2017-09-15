@@ -43,6 +43,10 @@
 		54197A931EA0D9C300770B7C /* VideoClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 54197A921EA0D9C300770B7C /* VideoClass.m */; };
 		5419C2A01EA9E4A000AF5763 /* MyVideoClassTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C29F1EA9E4A000AF5763 /* MyVideoClassTableViewCell.m */; };
 		541A468C1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m in Sources */ = {isa = PBXBuildFile; fileRef = 541A468B1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m */; };
+		541CCD461F67F68E0099A520 /* HomeworkInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 541CCD451F67F68E0099A520 /* HomeworkInfoView.m */; };
+		541CCD491F67F6A10099A520 /* HomeworkInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 541CCD481F67F6A10099A520 /* HomeworkInfoViewController.m */; };
+		541CCD4D1F67FA6B0099A520 /* HomeworkInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 541CCD4C1F67FA6B0099A520 /* HomeworkInfo.m */; };
+		541CCD511F67FACF0099A520 /* HomeworkInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 541CCD501F67FACF0099A520 /* HomeworkInfoTableViewCell.m */; };
 		541E20041E139967007CF5D1 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */; };
 		541E20071E13B9AF007CF5D1 /* NSDate+ChangeUTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20061E13B9AF007CF5D1 /* NSDate+ChangeUTC.m */; };
 		541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */; };
@@ -287,7 +291,6 @@
 		544B76311F41AB0100B8B20A /* Questions.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B76301F41AB0100B8B20A /* Questions.m */; };
 		544B763A1F41B81C00B8B20A /* MyQuestionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B76391F41B81C00B8B20A /* MyQuestionView.m */; };
 		544B763D1F41B82700B8B20A /* MyQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B763C1F41B82700B8B20A /* MyQuestionViewController.m */; };
-		544B76411F41B84D00B8B20A /* MyQuestionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B76401F41B84D00B8B20A /* MyQuestionTableViewCell.m */; };
 		544B76451F41B9C900B8B20A /* MyQuestion_UnresolvedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B76441F41B9C900B8B20A /* MyQuestion_UnresolvedViewController.m */; };
 		544B76481F41B9D800B8B20A /* MyQuestion_ResolvedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544B76471F41B9D800B8B20A /* MyQuestion_ResolvedViewController.m */; };
 		544DAB121F258CB200E43E23 /* ExclusiveClassFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544DAB111F258CB200E43E23 /* ExclusiveClassFilterViewController.m */; };
@@ -326,6 +329,9 @@
 		545226151E24CDD300F36280 /* OrderInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545226141E24CDD300F36280 /* OrderInfoView.m */; };
 		545226181E24CDE100F36280 /* OrderInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545226171E24CDE100F36280 /* OrderInfoViewController.m */; };
 		5452EF671F44649A00074C0D /* YZReorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5452EF661F44649A00074C0D /* YZReorder.m */; };
+		5453ADE91F6A26B300064BD7 /* MyQuestionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5453ADE81F6A26B300064BD7 /* MyQuestionsTableViewCell.swift */; };
+		5453ADED1F6A586200064BD7 /* AnswerInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5453ADEC1F6A586200064BD7 /* AnswerInfoView.m */; };
+		5453ADF01F6A59CD00064BD7 /* Answers.m in Sources */ = {isa = PBXBuildFile; fileRef = 5453ADEF1F6A59CD00064BD7 /* Answers.m */; };
 		5454D2B11EC1824F0045F4C9 /* UITabBarController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5454D2B01EC1824F0045F4C9 /* UITabBarController+Rotation.m */; };
 		545731811E022E7700F45C03 /* HaveNoClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545731801E022E7700F45C03 /* HaveNoClassView.m */; };
 		545B2A4C1F05213300DBDB78 /* NTESPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545B2A4B1F05213300DBDB78 /* NTESPageView.m */; };
@@ -374,7 +380,6 @@
 		5472B59F1F4EA4B300C3110D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5472B59E1F4EA4B300C3110D /* libsqlite3.tbd */; };
 		5472B5A41F4EA5EA00C3110D /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5472B5A01F4EA5EA00C3110D /* libcrypto.a */; };
 		5472B5A51F4EA5EA00C3110D /* libNELivePlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5472B5A11F4EA5EA00C3110D /* libNELivePlayer.a */; };
-		5472B5A61F4EA5EA00C3110D /* libNMCBasicModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5472B5A21F4EA5EA00C3110D /* libNMCBasicModule.a */; };
 		5472B5A71F4EA5EA00C3110D /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5472B5A31F4EA5EA00C3110D /* libssl.a */; };
 		5472B5A81F4EA64800C3110D /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 547FBF1F1DF658C800955A9E /* libresolv.tbd */; };
 		547610271F010B85007775B5 /* AmountExplainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547610261F010B85007775B5 /* AmountExplainViewController.swift */; };
@@ -418,6 +423,9 @@
 		547FBF1E1DF658C000955A9E /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547FBF1D1DF658C000955A9E /* UserNotifications.framework */; };
 		547FBF351DF6CEC800955A9E /* PersonalDescTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF341DF6CEC800955A9E /* PersonalDescTableViewCell.m */; };
 		547FBF381DF6CFD700955A9E /* MyWalletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547FBF371DF6CFD700955A9E /* MyWalletView.m */; };
+		548126A01F62A0100078F782 /* MyHomeworkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5481269F1F62A0100078F782 /* MyHomeworkView.m */; };
+		548126A31F62A0210078F782 /* MyHomeworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548126A21F62A0210078F782 /* MyHomeworkViewController.m */; };
+		548126A61F62A2CF0078F782 /* ClassHomework.m in Sources */ = {isa = PBXBuildFile; fileRef = 548126A51F62A2CF0078F782 /* ClassHomework.m */; };
 		54813C4F1E14F30000D6F739 /* NoticeSwitchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54813C4E1E14F30000D6F739 /* NoticeSwitchTableViewCell.m */; };
 		548328CC1DDC6F360053AB29 /* NSDate+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 548328901DDC6F360053AB29 /* NSDate+Utils.m */; };
 		548328CD1DDC6F360053AB29 /* chat_animation1.png in Resources */ = {isa = PBXBuildFile; fileRef = 548328921DDC6F360053AB29 /* chat_animation1.png */; };
@@ -501,6 +509,9 @@
 		54A153CE1DC6F09E0070B508 /* Qatime_StudentUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A153CD1DC6F09E0070B508 /* Qatime_StudentUITests.m */; };
 		54A4D9351F18641700938B4F /* FreeCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A4D9341F18641700938B4F /* FreeCourse.m */; };
 		54A6C4A11E97393700B56135 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54A6C4A01E97393700B56135 /* StoreKit.framework */; };
+		54A7CD0E1F6635F8003CB5C6 /* MyHomewoekTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A7CD0D1F6635F8003CB5C6 /* MyHomewoekTableViewCell.m */; };
+		54A7CD191F669435003CB5C6 /* Homework.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A7CD161F669435003CB5C6 /* Homework.m */; };
+		54A7CD1A1F669435003CB5C6 /* HomeworkManage.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A7CD181F669435003CB5C6 /* HomeworkManage.m */; };
 		54A991851E34BCB20001D3D9 /* NoticeWaysTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A991841E34BCB20001D3D9 /* NoticeWaysTableViewCell.m */; };
 		54AA307C1DF9427D009E0D04 /* NSString+TimeStamp.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA307B1DF9427D009E0D04 /* NSString+TimeStamp.m */; };
 		54AA30821DF950CA009E0D04 /* CheckChargeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AA30811DF950CA009E0D04 /* CheckChargeView.m */; };
@@ -722,6 +733,8 @@
 		54F47E851E08F77600D896DB /* UIButton+Touch.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F47E841E08F77600D896DB /* UIButton+Touch.m */; };
 		54F47E881E092AF100D896DB /* SystemNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F47E871E092AF100D896DB /* SystemNotice.m */; };
 		54F47E8B1E09367900D896DB /* ChatList.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F47E8A1E09367900D896DB /* ChatList.m */; };
+		54F4FB281F68DE80001A2136 /* DoHomeworkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F4FB271F68DE80001A2136 /* DoHomeworkView.m */; };
+		54F4FB2B1F68DE8E001A2136 /* DoHomeworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F4FB2A1F68DE8E001A2136 /* DoHomeworkViewController.m */; };
 		54F63A161E1F9EBB00758B42 /* UITextView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F63A151E1F9EBB00758B42 /* UITextView+Placeholder.m */; };
 		54F6B71E1F43DDA300801526 /* YZSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F6B71D1F43DDA300801526 /* YZSlider.m */; };
 		54F7E1B91EC40F1600337594 /* MyVideoClassList.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F7E1B81EC40F1600337594 /* MyVideoClassList.m */; };
@@ -848,6 +861,14 @@
 		5419C29F1EA9E4A000AF5763 /* MyVideoClassTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyVideoClassTableViewCell.m; sourceTree = "<group>"; };
 		541A468A1E52E7C100F0B36D /* UIViewController+CheckMicVolum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+CheckMicVolum.h"; sourceTree = "<group>"; };
 		541A468B1E52E7C100F0B36D /* UIViewController+CheckMicVolum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+CheckMicVolum.m"; sourceTree = "<group>"; };
+		541CCD441F67F68E0099A520 /* HomeworkInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkInfoView.h; sourceTree = "<group>"; };
+		541CCD451F67F68E0099A520 /* HomeworkInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkInfoView.m; sourceTree = "<group>"; };
+		541CCD471F67F6A10099A520 /* HomeworkInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkInfoViewController.h; sourceTree = "<group>"; };
+		541CCD481F67F6A10099A520 /* HomeworkInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkInfoViewController.m; sourceTree = "<group>"; };
+		541CCD4B1F67FA6B0099A520 /* HomeworkInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkInfo.h; sourceTree = "<group>"; };
+		541CCD4C1F67FA6B0099A520 /* HomeworkInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkInfo.m; sourceTree = "<group>"; };
+		541CCD4F1F67FACF0099A520 /* HomeworkInfoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkInfoTableViewCell.h; sourceTree = "<group>"; };
+		541CCD501F67FACF0099A520 /* HomeworkInfoTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkInfoTableViewCell.m; sourceTree = "<group>"; };
 		541E20021E139967007CF5D1 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
 		541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionHandler.m; sourceTree = "<group>"; };
 		541E20051E13B9AF007CF5D1 /* NSDate+ChangeUTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+ChangeUTC.h"; sourceTree = "<group>"; };
@@ -1296,8 +1317,6 @@
 		544B76391F41B81C00B8B20A /* MyQuestionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyQuestionView.m; sourceTree = "<group>"; };
 		544B763B1F41B82700B8B20A /* MyQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyQuestionViewController.h; sourceTree = "<group>"; };
 		544B763C1F41B82700B8B20A /* MyQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyQuestionViewController.m; sourceTree = "<group>"; };
-		544B763F1F41B84D00B8B20A /* MyQuestionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyQuestionTableViewCell.h; sourceTree = "<group>"; };
-		544B76401F41B84D00B8B20A /* MyQuestionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyQuestionTableViewCell.m; sourceTree = "<group>"; };
 		544B76431F41B9C900B8B20A /* MyQuestion_UnresolvedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyQuestion_UnresolvedViewController.h; sourceTree = "<group>"; };
 		544B76441F41B9C900B8B20A /* MyQuestion_UnresolvedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyQuestion_UnresolvedViewController.m; sourceTree = "<group>"; };
 		544B76461F41B9D800B8B20A /* MyQuestion_ResolvedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyQuestion_ResolvedViewController.h; sourceTree = "<group>"; };
@@ -1374,6 +1393,12 @@
 		545226171E24CDE100F36280 /* OrderInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderInfoViewController.m; sourceTree = "<group>"; };
 		5452EF651F44649A00074C0D /* YZReorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZReorder.h; sourceTree = "<group>"; };
 		5452EF661F44649A00074C0D /* YZReorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZReorder.m; sourceTree = "<group>"; };
+		5453ADE61F6A1AE200064BD7 /* 代码已开光 */ = {isa = PBXFileReference; lastKnownFileType = text; path = "代码已开光"; sourceTree = "<group>"; };
+		5453ADE81F6A26B300064BD7 /* MyQuestionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyQuestionsTableViewCell.swift; sourceTree = "<group>"; };
+		5453ADEB1F6A586200064BD7 /* AnswerInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnswerInfoView.h; sourceTree = "<group>"; };
+		5453ADEC1F6A586200064BD7 /* AnswerInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnswerInfoView.m; sourceTree = "<group>"; };
+		5453ADEE1F6A59CD00064BD7 /* Answers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Answers.h; sourceTree = "<group>"; };
+		5453ADEF1F6A59CD00064BD7 /* Answers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Answers.m; sourceTree = "<group>"; };
 		5454D2AF1EC1824F0045F4C9 /* UITabBarController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+Rotation.h"; sourceTree = "<group>"; };
 		5454D2B01EC1824F0045F4C9 /* UITabBarController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+Rotation.m"; sourceTree = "<group>"; };
 		5457317F1E022E7700F45C03 /* HaveNoClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HaveNoClassView.h; sourceTree = "<group>"; };
@@ -1469,7 +1494,6 @@
 		5472B59E1F4EA4B300C3110D /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		5472B5A01F4EA5EA00C3110D /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
 		5472B5A11F4EA5EA00C3110D /* libNELivePlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libNELivePlayer.a; sourceTree = "<group>"; };
-		5472B5A21F4EA5EA00C3110D /* libNMCBasicModule.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libNMCBasicModule.a; sourceTree = "<group>"; };
 		5472B5A31F4EA5EA00C3110D /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
 		547388651DD9876E00A50CCC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		547388681DD987AD00A50CCC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -1593,6 +1617,13 @@
 		547FBF341DF6CEC800955A9E /* PersonalDescTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDescTableViewCell.m; sourceTree = "<group>"; };
 		547FBF361DF6CFD700955A9E /* MyWalletView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWalletView.h; sourceTree = "<group>"; };
 		547FBF371DF6CFD700955A9E /* MyWalletView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWalletView.m; sourceTree = "<group>"; };
+		5481269E1F62A0100078F782 /* MyHomeworkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyHomeworkView.h; sourceTree = "<group>"; };
+		5481269F1F62A0100078F782 /* MyHomeworkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyHomeworkView.m; sourceTree = "<group>"; };
+		548126A11F62A0210078F782 /* MyHomeworkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyHomeworkViewController.h; sourceTree = "<group>"; };
+		548126A21F62A0210078F782 /* MyHomeworkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyHomeworkViewController.m; sourceTree = "<group>"; };
+		548126A41F62A2CF0078F782 /* ClassHomework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassHomework.h; sourceTree = "<group>"; };
+		548126A51F62A2CF0078F782 /* ClassHomework.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassHomework.m; sourceTree = "<group>"; };
+		548126A71F62A2F80078F782 /* NetWorkTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetWorkTool.h; sourceTree = "<group>"; };
 		54813C4D1E14F30000D6F739 /* NoticeSwitchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeSwitchTableViewCell.h; sourceTree = "<group>"; };
 		54813C4E1E14F30000D6F739 /* NoticeSwitchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeSwitchTableViewCell.m; sourceTree = "<group>"; };
 		5483288E1DDC6F360053AB29 /* ACMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMacros.h; sourceTree = "<group>"; };
@@ -1748,6 +1779,12 @@
 		54A4D9331F18641700938B4F /* FreeCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FreeCourse.h; sourceTree = "<group>"; };
 		54A4D9341F18641700938B4F /* FreeCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FreeCourse.m; sourceTree = "<group>"; };
 		54A6C4A01E97393700B56135 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		54A7CD0C1F6635F8003CB5C6 /* MyHomewoekTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyHomewoekTableViewCell.h; sourceTree = "<group>"; };
+		54A7CD0D1F6635F8003CB5C6 /* MyHomewoekTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyHomewoekTableViewCell.m; sourceTree = "<group>"; };
+		54A7CD151F669435003CB5C6 /* Homework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Homework.h; sourceTree = "<group>"; };
+		54A7CD161F669435003CB5C6 /* Homework.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Homework.m; sourceTree = "<group>"; };
+		54A7CD171F669435003CB5C6 /* HomeworkManage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkManage.h; sourceTree = "<group>"; };
+		54A7CD181F669435003CB5C6 /* HomeworkManage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkManage.m; sourceTree = "<group>"; };
 		54A991831E34BCB20001D3D9 /* NoticeWaysTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeWaysTableViewCell.h; sourceTree = "<group>"; };
 		54A991841E34BCB20001D3D9 /* NoticeWaysTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeWaysTableViewCell.m; sourceTree = "<group>"; };
 		54AA307A1DF9427D009E0D04 /* NSString+TimeStamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TimeStamp.h"; sourceTree = "<group>"; };
@@ -2201,6 +2238,10 @@
 		54F47E871E092AF100D896DB /* SystemNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNotice.m; sourceTree = "<group>"; };
 		54F47E891E09367900D896DB /* ChatList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatList.h; sourceTree = "<group>"; };
 		54F47E8A1E09367900D896DB /* ChatList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatList.m; sourceTree = "<group>"; };
+		54F4FB261F68DE80001A2136 /* DoHomeworkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoHomeworkView.h; sourceTree = "<group>"; };
+		54F4FB271F68DE80001A2136 /* DoHomeworkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoHomeworkView.m; sourceTree = "<group>"; };
+		54F4FB291F68DE8E001A2136 /* DoHomeworkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoHomeworkViewController.h; sourceTree = "<group>"; };
+		54F4FB2A1F68DE8E001A2136 /* DoHomeworkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoHomeworkViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		54F63A141E1F9EBB00758B42 /* UITextView+Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+Placeholder.h"; sourceTree = "<group>"; };
 		54F63A151E1F9EBB00758B42 /* UITextView+Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Placeholder.m"; sourceTree = "<group>"; };
 		54F63A1B1E1FA1B800758B42 /* UITextView_Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextView_Placeholder.h; sourceTree = "<group>"; };
@@ -2270,7 +2311,6 @@
 				54EA78AF1F386D6C00CB8E08 /* UMMobClick.framework in Frameworks */,
 				5472B5A41F4EA5EA00C3110D /* libcrypto.a in Frameworks */,
 				5472B5A51F4EA5EA00C3110D /* libNELivePlayer.a in Frameworks */,
-				5472B5A61F4EA5EA00C3110D /* libNMCBasicModule.a in Frameworks */,
 				5472B5A71F4EA5EA00C3110D /* libssl.a in Frameworks */,
 				54CB26731DF0302900AE7414 /* Security.framework in Frameworks */,
 				5422E7D71F4E77B6008B0A96 /* libopus.a in Frameworks */,
@@ -2438,6 +2478,54 @@
 			name = Cell;
 			sourceTree = "<group>";
 		};
+		541CCD401F67F6320099A520 /* 作业详情 */ = {
+			isa = PBXGroup;
+			children = (
+				54F4FB221F68DE3C001A2136 /* 做作业页面 */,
+				541CCD431F67F63C0099A520 /* Model */,
+				541CCD421F67F63B0099A520 /* View */,
+				541CCD411F67F63A0099A520 /* Controller */,
+			);
+			name = "作业详情";
+			sourceTree = "<group>";
+		};
+		541CCD411F67F63A0099A520 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				541CCD471F67F6A10099A520 /* HomeworkInfoViewController.h */,
+				541CCD481F67F6A10099A520 /* HomeworkInfoViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		541CCD421F67F63B0099A520 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				541CCD4A1F67FA530099A520 /* Cell */,
+				541CCD441F67F68E0099A520 /* HomeworkInfoView.h */,
+				541CCD451F67F68E0099A520 /* HomeworkInfoView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		541CCD431F67F63C0099A520 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				541CCD4B1F67FA6B0099A520 /* HomeworkInfo.h */,
+				541CCD4C1F67FA6B0099A520 /* HomeworkInfo.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		541CCD4A1F67FA530099A520 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				541CCD4F1F67FACF0099A520 /* HomeworkInfoTableViewCell.h */,
+				541CCD501F67FACF0099A520 /* HomeworkInfoTableViewCell.m */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
 		541E20011E1398DB007CF5D1 /* 异常捕获 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2480,10 +2568,10 @@
 		541F91DE1DC9BBAA00180BE8 /* 主页页面 */ = {
 			isa = PBXGroup;
 			children = (
+				54FCBAAD1DD58A530094BF58 /* 主页 */,
 				54DD7E731EF3AF0700EAE234 /* 全部老师 */,
 				54DD7E721EF3AF0600EAE234 /* 精彩回放 */,
 				54AB63B81EF25BF50022E573 /* 搜索 */,
-				54FCBAAD1DD58A530094BF58 /* 主页 */,
 				545B86F81E650F0E00A157F0 /* 二维码扫描 */,
 				547A7EF81DD4128C00F1282B /* 教师公开页 */,
 			);
@@ -3491,7 +3579,6 @@
 			children = (
 				5472B5A01F4EA5EA00C3110D /* libcrypto.a */,
 				5472B5A11F4EA5EA00C3110D /* libNELivePlayer.a */,
-				5472B5A21F4EA5EA00C3110D /* libNMCBasicModule.a */,
 				5472B5A31F4EA5EA00C3110D /* libssl.a */,
 			);
 			path = libs;
@@ -3652,6 +3739,8 @@
 			children = (
 				544B762F1F41AB0100B8B20A /* Questions.h */,
 				544B76301F41AB0100B8B20A /* Questions.m */,
+				5453ADEE1F6A59CD00064BD7 /* Answers.h */,
+				5453ADEF1F6A59CD00064BD7 /* Answers.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -3735,6 +3824,10 @@
 		544B76341F41B7CC00B8B20A /* 我的作业 */ = {
 			isa = PBXGroup;
 			children = (
+				541CCD401F67F6320099A520 /* 作业详情 */,
+				5481269D1F629FF60078F782 /* Model */,
+				5481269C1F629FF50078F782 /* View */,
+				5481269B1F629FF40078F782 /* Controller */,
 			);
 			name = "我的作业";
 			sourceTree = "<group>";
@@ -3769,8 +3862,7 @@
 		544B763E1F41B83900B8B20A /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				544B763F1F41B84D00B8B20A /* MyQuestionTableViewCell.h */,
-				544B76401F41B84D00B8B20A /* MyQuestionTableViewCell.m */,
+				5453ADE81F6A26B300064BD7 /* MyQuestionsTableViewCell.swift */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -4616,6 +4708,38 @@
 			path = UMessage_Sdk_1.4.0;
 			sourceTree = "<group>";
 		};
+		5481269B1F629FF40078F782 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				548126A11F62A0210078F782 /* MyHomeworkViewController.h */,
+				548126A21F62A0210078F782 /* MyHomeworkViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		5481269C1F629FF50078F782 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54A7CD0B1F6635EA003CB5C6 /* Cell */,
+				5481269E1F62A0100078F782 /* MyHomeworkView.h */,
+				5481269F1F62A0100078F782 /* MyHomeworkView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		5481269D1F629FF60078F782 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54A7CD151F669435003CB5C6 /* Homework.h */,
+				54A7CD161F669435003CB5C6 /* Homework.m */,
+				54A7CD171F669435003CB5C6 /* HomeworkManage.h */,
+				54A7CD181F669435003CB5C6 /* HomeworkManage.m */,
+				548126A41F62A2CF0078F782 /* ClassHomework.h */,
+				548126A51F62A2CF0078F782 /* ClassHomework.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		5483288C1DDC6F360053AB29 /* UUChat */ = {
 			isa = PBXGroup;
 			children = (
@@ -4901,6 +5025,7 @@
 		54A1539C1DC6F09D0070B508 = {
 			isa = PBXGroup;
 			children = (
+				5453ADE61F6A1AE200064BD7 /* 代码已开光 */,
 				54A153A71DC6F09D0070B508 /* Qatime_Student */,
 				5483E8571E4576D200C3C1B4 /* Localizable */,
 				54A153C11DC6F09E0070B508 /* Qatime_StudentTests */,
@@ -4954,6 +5079,7 @@
 		54A153A81DC6F09D0070B508 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				548126A71F62A2F80078F782 /* NetWorkTool.h */,
 				544B546E1F44765D004A8E18 /* M13ProgressView */,
 				54774CFC1F444A5200150C05 /* ZLPhotoPicker */,
 				54774CC21F4448C700150C05 /* ZLPhotoBrowser */,
@@ -5014,6 +5140,15 @@
 				5430DBF31E03F45C0097E7B4 /* Controller */,
 			);
 			name = "消息主页";
+			sourceTree = "<group>";
+		};
+		54A7CD0B1F6635EA003CB5C6 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				54A7CD0C1F6635F8003CB5C6 /* MyHomewoekTableViewCell.h */,
+				54A7CD0D1F6635F8003CB5C6 /* MyHomewoekTableViewCell.m */,
+			);
+			name = Cell;
 			sourceTree = "<group>";
 		};
 		54AA307D1DF950A3009E0D04 /* 充值结果查询页面 */ = {
@@ -6547,6 +6682,8 @@
 			children = (
 				54E9E69A1F46989F007EC0A5 /* 二级标题 */,
 				54E9E6981F4697B2007EC0A5 /* QuestionInfoView.swift */,
+				5453ADEB1F6A586200064BD7 /* AnswerInfoView.h */,
+				5453ADEC1F6A586200064BD7 /* AnswerInfoView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -6704,6 +6841,41 @@
 				54B9CAF81DFE4A9D003961FF /* WithdrawConfirmView.m */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		54F4FB221F68DE3C001A2136 /* 做作业页面 */ = {
+			isa = PBXGroup;
+			children = (
+				54F4FB251F68DE4F001A2136 /* Model */,
+				54F4FB241F68DE4E001A2136 /* View */,
+				54F4FB231F68DE49001A2136 /* Controller */,
+			);
+			name = "做作业页面";
+			sourceTree = "<group>";
+		};
+		54F4FB231F68DE49001A2136 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54F4FB291F68DE8E001A2136 /* DoHomeworkViewController.h */,
+				54F4FB2A1F68DE8E001A2136 /* DoHomeworkViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54F4FB241F68DE4E001A2136 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54F4FB261F68DE80001A2136 /* DoHomeworkView.h */,
+				54F4FB271F68DE80001A2136 /* DoHomeworkView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54F4FB251F68DE4F001A2136 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		54FA714F1E07B0B4009D81FE /* 聊天页面 */ = {
@@ -7672,10 +7844,12 @@
 				543E23491E2C8D4000381F10 /* AuthenticationViewController.m in Sources */,
 				543E0CBE1DFFDA77004B24FD /* PayConfirmView.m in Sources */,
 				5435D9401DD3125800DD4FCC /* TeachersPublicViewController.m in Sources */,
+				548126A01F62A0100078F782 /* MyHomeworkView.m in Sources */,
 				54AC02781E892D3C00817767 /* NSData+NTES.m in Sources */,
 				5422EAC41F4E7AC9008B0A96 /* NIMSessionViewLayoutManager.m in Sources */,
 				54AC04CB1E89398E00817767 /* renderer.c in Sources */,
 				54DBD9821F4AFD4C0045D5CC /* KsUnOpenFileView.m in Sources */,
+				54A7CD0E1F6635F8003CB5C6 /* MyHomewoekTableViewCell.m in Sources */,
 				544B762B1F41927300B8B20A /* ExclusiveAskView.swift in Sources */,
 				54DBD97C1F4AFD200045D5CC /* KsFlieLookUpVC.m in Sources */,
 				54AC02191E892C4A00817767 /* NTESMeetingRTSManager.m in Sources */,
@@ -7732,6 +7906,7 @@
 				5422EACF1F4E7AC9008B0A96 /* NIMSessionTextContentView.m in Sources */,
 				5422EAA71F4E7AC9008B0A96 /* NIMInputEmoticonButton.m in Sources */,
 				54B73D051DE3E85A00B7A7EB /* pinyin.m in Sources */,
+				548126A31F62A0210078F782 /* MyHomeworkViewController.m in Sources */,
 				540F85BC1EB03789007AE08A /* ConfirmRechargeView.m in Sources */,
 				54F3BA211DFC4427003998D0 /* LoginAgainView.m in Sources */,
 				5422EAB01F4E7AC9008B0A96 /* NIMKitEvent.m in Sources */,
@@ -7804,6 +7979,7 @@
 				54AB63D51EF2AA500022E573 /* ClassSearch.m in Sources */,
 				54E0C2791F4C063C002D6DE0 /* FileToolBar.m in Sources */,
 				5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */,
+				54A7CD1A1F669435003CB5C6 /* HomeworkManage.m in Sources */,
 				542C17411DFA507E0088DB3F /* Paid.m in Sources */,
 				5417AC181E715CF70068941D /* CityListTableViewCell.m in Sources */,
 				547E89901DD1D03100749366 /* TutoriumInfoViewController.m in Sources */,
@@ -7819,6 +7995,7 @@
 				54774D261F444A8A00150C05 /* ZLPhotoPickerViewController.m in Sources */,
 				546448AA1F2749F7001C52FF /* ExclusivePlayerView.m in Sources */,
 				54AC02821E892D3C00817767 /* UIView+NTES.m in Sources */,
+				541CCD461F67F68E0099A520 /* HomeworkInfoView.m in Sources */,
 				546448B01F274B35001C52FF /* ExclusiveChatViewController.m in Sources */,
 				54DBA4AE1DE4423300A67A90 /* UITextField+YZEmotion.m in Sources */,
 				5422EAB11F4E7AC9008B0A96 /* NIMMediaItem.m in Sources */,
@@ -7834,6 +8011,7 @@
 				545162B11DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m in Sources */,
 				54AC02811E892D3C00817767 /* UIScrollView+NTESPullToRefresh.m in Sources */,
 				544200A71E77FB6300797E6C /* QualityClass.m in Sources */,
+				5453ADED1F6A586200064BD7 /* AnswerInfoView.m in Sources */,
 				54DBEB101E9B55DB000EEB00 /* InteractionClassFilterViewController.m in Sources */,
 				54E9E69F1F46C9E5007EC0A5 /* YZPlayerRecorder.m in Sources */,
 				54B73D041DE3E85A00B7A7EB /* ChineseString.m in Sources */,
@@ -7864,6 +8042,7 @@
 				54D82AF91EAF17730034015F /* MyAudioClassTableViewCell.m in Sources */,
 				54D59A7A1E23417B006066EC /* DrawBackViewController.m in Sources */,
 				5422EAE21F4E7AC9008B0A96 /* NIMTeamAnnouncementListCell.m in Sources */,
+				541CCD4D1F67FA6B0099A520 /* HomeworkInfo.m in Sources */,
 				54DBA4B21DE4423300A67A90 /* YZEmotionKeyboard.m in Sources */,
 				54AC02551E892CEE00817767 /* NTESDevice.m in Sources */,
 				54AB48D81DED5183008E3BC5 /* MyWalletViewController.m in Sources */,
@@ -7902,6 +8081,7 @@
 				549A051B1DC86EBB00B3564D /* UIColor+HcdCustom.m in Sources */,
 				5422EAE71F4E7AC9008B0A96 /* NIMKitUtil.m in Sources */,
 				54AA307C1DF9427D009E0D04 /* NSString+TimeStamp.m in Sources */,
+				54F4FB2B1F68DE8E001A2136 /* DoHomeworkViewController.m in Sources */,
 				547610271F010B85007775B5 /* AmountExplainViewController.swift in Sources */,
 				543BCB111E7932AF00AD6721 /* ClassFilterView.m in Sources */,
 				54AC02251E892C5300817767 /* NTESWhiteboardCommand.m in Sources */,
@@ -7926,6 +8106,7 @@
 				541E20071E13B9AF007CF5D1 /* NSDate+ChangeUTC.m in Sources */,
 				54774D241F444A8A00150C05 /* ZLPhotoPickerAssetsViewController.m in Sources */,
 				5407C9991DE7DE9200DB04C8 /* UIDevice+YYAdd.m in Sources */,
+				54A7CD191F669435003CB5C6 /* Homework.m in Sources */,
 				54E8B6A71E601B0300A9703F /* UIViewController+TimeInterval.m in Sources */,
 				543BCB0E1E79173700AD6721 /* ClassSubjectCollectionViewCell.m in Sources */,
 				54AC02261E892C5300817767 /* NTESWhiteboardLines.m in Sources */,
@@ -7955,6 +8136,7 @@
 				54AB48ED1DED608A008E3BC5 /* EndedClassView.m in Sources */,
 				546978641DC725A5001695F4 /* NavigationBar.m in Sources */,
 				54294C731DDB071700677333 /* Chat_Account.m in Sources */,
+				541CCD491F67F6A10099A520 /* HomeworkInfoViewController.m in Sources */,
 				54AB48E11DED51B8008E3BC5 /* SafeViewController.m in Sources */,
 				5422EAF41F4E7AC9008B0A96 /* NIMWebImageManager.m in Sources */,
 				54FB1DB51DF10B9B00BA9A3C /* UIViewController+VideoStatus.m in Sources */,
@@ -7982,7 +8164,6 @@
 				548D1D8E1EA7551F00B120C8 /* Features.m in Sources */,
 				548D1D701EA7417800B120C8 /* NotClassView.m in Sources */,
 				5422EA991F4E7AC9008B0A96 /* NIMBadgeView.m in Sources */,
-				544B76411F41B84D00B8B20A /* MyQuestionTableViewCell.m in Sources */,
 				548328EF1DDC6F360053AB29 /* UUMessageFrame.m in Sources */,
 				5422EAD51F4E7AC9008B0A96 /* NIMCardMemberItem.m in Sources */,
 				54DBD9941F4AFDFC0045D5CC /* KsHttp.m in Sources */,
@@ -7998,6 +8179,7 @@
 				5407C98D1DE7DDED00DB04C8 /* NSObject+YYAdd.m in Sources */,
 				54AC02511E892CEE00817767 /* NTESCADisplayLinkHolder.m in Sources */,
 				544B76231F417E1800B8B20A /* ExclusiveAskViewController.m in Sources */,
+				5453ADE91F6A26B300064BD7 /* MyQuestionsTableViewCell.swift in Sources */,
 				5442009E1E7793E900797E6C /* TodayLive.m in Sources */,
 				5422EAA01F4E7AC9008B0A96 /* NIMGroupedUsrInfo.m in Sources */,
 				54F47E851E08F77600D896DB /* UIButton+Touch.m in Sources */,
@@ -8008,6 +8190,7 @@
 				5413D2741DF7CF3000A8FDEC /* Payment.m in Sources */,
 				54483D691F02659A008F4BA9 /* DevieceManager.m in Sources */,
 				549C8D4E1EB1992C00CCD2FB /* ItunesProduct.m in Sources */,
+				5453ADF01F6A59CD00064BD7 /* Answers.m in Sources */,
 				54CCE22E1F42CB50004933D3 /* QuestionPhotosCollectionViewCell.m in Sources */,
 				54443E281E0D252F000D8E8B /* LocalChoseView.m in Sources */,
 				54C452071E9CA5DF002108F4 /* MyVideoClassViewController.m in Sources */,
@@ -8017,6 +8200,7 @@
 				54294C7D1DDB373400677333 /* LivePlayerViewController.m in Sources */,
 				54774CFB1F44499A00150C05 /* ZLPhotoPickerCustomToolBarView.m in Sources */,
 				54AB48D21DED3389008E3BC5 /* SettingTableViewCell.m in Sources */,
+				548126A61F62A2CF0078F782 /* ClassHomework.m in Sources */,
 				5422EABF1F4E7AC9008B0A96 /* NIMDefaultValueMaker.m in Sources */,
 				54652E311DEEBDC300F4607C /* ClassNoticeSettingView.m in Sources */,
 				54DBD9881F4AFD720045D5CC /* KsDownFileView.m in Sources */,
@@ -8093,6 +8277,7 @@
 				5422EACC1F4E7AC9008B0A96 /* NIMSessionMessageContentView.m in Sources */,
 				5492FC891E7A6DC600F89593 /* ChooseClassTableViewCell.m in Sources */,
 				54DBA4BA1DE442D900A67A90 /* YZInputView.m in Sources */,
+				54F4FB281F68DE80001A2136 /* DoHomeworkView.m in Sources */,
 				5407C9961DE7DE8400DB04C8 /* NSNumber+YYAdd.m in Sources */,
 				54C7343E1EE8FAA200CB86BE /* InteractionNotice.m in Sources */,
 				541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */,
@@ -8175,6 +8360,7 @@
 				5422EAC31F4E7AC9008B0A96 /* NIMSessionViewController.m in Sources */,
 				54AC02541E892CEE00817767 /* NTESDemoConfig.m in Sources */,
 				542F4DA61F29C0F80070E321 /* ExclusiveList.m in Sources */,
+				541CCD511F67FACF0099A520 /* HomeworkInfoTableViewCell.m in Sources */,
 				5422EAA21F4E7AC9008B0A96 /* NIMContactPickedView.m in Sources */,
 				543BCB001E79156300AD6721 /* ChooseGradeAndSubjectView.m in Sources */,
 				54197A901EA0CAB500770B7C /* Video.m in Sources */,

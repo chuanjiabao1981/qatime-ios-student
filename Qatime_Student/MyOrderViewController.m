@@ -118,7 +118,7 @@ typedef enum : NSUInteger {
 - (void)setupOrderViews{
     
     /*加载页面视图*/
-    _myOrderView = [[MyOrderView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
+    _myOrderView = [[MyOrderView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height)];
     [self.view addSubview:_myOrderView];
     
     /* 设置代理*/
@@ -135,7 +135,7 @@ typedef enum : NSUInteger {
         
     }];
     
-    _myOrderView.unpaidView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _myOrderView.unpaidView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [self requestDataWithRefreshType:PushToLoadMore andOrderType:UnpaidType];
     }];
     
@@ -150,7 +150,7 @@ typedef enum : NSUInteger {
         
     }];
     
-    _myOrderView.paidView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _myOrderView.paidView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [self requestDataWithRefreshType:PushToLoadMore andOrderType:PaidType];
     }];
     
@@ -165,14 +165,14 @@ typedef enum : NSUInteger {
         
     }];
     
-    _myOrderView.cancelView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _myOrderView.cancelView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [self requestDataWithRefreshType:PushToLoadMore andOrderType:CancelType];
     }];
     
     /* 滑动效果*/
     typeof(self) __weak weakSelf = self;
     [ _myOrderView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-        [weakSelf.myOrderView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64) animated:YES];
+        [weakSelf.myOrderView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-Navigation_Height) animated:YES];
         switch (index) {
                 
             case 1:{
@@ -209,7 +209,7 @@ typedef enum : NSUInteger {
     self.view.backgroundColor = [UIColor whiteColor];
     
     _navigationBar = ({
-        NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+        NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
         _.titleLabel.text = @"我的订单";
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];

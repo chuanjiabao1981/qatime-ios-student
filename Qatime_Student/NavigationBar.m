@@ -23,7 +23,8 @@
         UIView *lanView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, 20)];
         lanView.backgroundColor = [UIColor blackColor];
         
-//        [self addSubview:lanView];
+//        [self.contentView updateLayout];
+//        [self updateLayout];
     
     }
     return self;
@@ -40,7 +41,6 @@
     if (!_contentView) {
         _contentView = [[UIView alloc]initWithFrame:self.bounds];
         [self addSubview:_contentView];
-        
     }
     
     return _contentView;
@@ -52,12 +52,15 @@
 - (UIButton *)leftButton{
     
     if (!_leftButton) {
-        
-        _leftButton = [[UIButton alloc]initWithFrame:CGRectMake(10*ScrenScale, 25, 30*ScrenScale, 30*ScrenScale)];
+        _leftButton = [[UIButton alloc]init];
         _leftButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-        //    [_leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [self.contentView addSubview:_leftButton];
-        
+//        [self.contentView updateLayout];
+        _leftButton.sd_layout
+        .leftSpaceToView(self.contentView, 10*ScrenScale)
+        .topSpaceToView(self.contentView, [UIApplication sharedApplication].statusBarFrame.size.height+5)
+        .widthIs(30*ScrenScale)
+        .heightEqualToWidth();
         [_leftButton setEnlargeEdge:20];
     }
     
@@ -67,9 +70,13 @@
 -(UIButton *)rightButton{
     
     if (!_rightButton) {
-        
-        _rightButton = [[UIButton alloc]initWithFrame:CGRectMake(self.width_sd-50*ScrenScale, 25, 30*ScrenScale, 30*ScrenScale)];
+        _rightButton = [[UIButton alloc]init];
         [self.contentView addSubview:_rightButton];
+        _rightButton.sd_layout
+        .rightSpaceToView(self.contentView, 10*ScrenScale)
+        .topSpaceToView(self.contentView, [UIApplication sharedApplication].statusBarFrame.size.height+5)
+        .widthIs(30*ScrenScale)
+        .heightEqualToWidth();
         [_rightButton setEnlargeEdge:20];
     }
     
@@ -82,7 +89,12 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(120, 20, self.width_sd -240, 40)];
         [self.contentView addSubview:_titleLabel];
-        
+        [self updateLayout];
+        _titleLabel.sd_layout
+        .leftSpaceToView(self.contentView, 120)
+        .topSpaceToView(self.contentView, [UIApplication sharedApplication].statusBarFrame.size.height)
+        .widthIs(self.width_sd-240)
+        .heightIs(40);
         [_titleLabel setTextColor:[UIColor whiteColor]];
         [_titleLabel setTextAlignment:NSTextAlignmentCenter];
         [_titleLabel setFont:[UIFont systemFontOfSize:20*ScrenScale]];

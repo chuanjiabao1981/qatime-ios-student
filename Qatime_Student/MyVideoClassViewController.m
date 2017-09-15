@@ -127,7 +127,7 @@ typedef enum : NSUInteger {
         
     }];
     
-    _myVideoClassView.boughtClassTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _myVideoClassView.boughtClassTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [self requestMyVideoClassDataWithClassType:MyVideoClassRequestTypeBought andRefreshType:PushToLoadMore];
     }];
     
@@ -135,7 +135,7 @@ typedef enum : NSUInteger {
         [self requestMyVideoClassDataWithClassType:MyVideoClassRequestTypeFree andRefreshType:PullToRefresh];
     }];
     
-    _myVideoClassView.freeClasstableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _myVideoClassView.freeClasstableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [self requestMyVideoClassDataWithClassType:MyVideoClassRequestTypeFree andRefreshType:PushToLoadMore];
     }];
     

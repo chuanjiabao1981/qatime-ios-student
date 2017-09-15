@@ -28,6 +28,7 @@
 #import "LCTabBarController.h"
 #import "LCTabBarCONST.h"
 #import "LCTabBarItem.h"
+#import <Availability.h>
 
 @interface LCTabBarController () <LCTabBarDelegate>
 
@@ -91,7 +92,9 @@
         LCTabBar *tabBar = [[LCTabBar alloc] init];
         tabBar.frame     = self.tabBar.bounds;
         tabBar.delegate  = self;
-        
+#ifdef __IPHONE_11_0
+        [self setValue:_lcTabBar forKey:@"tabBar"];
+#endif
         self.lcTabBar = tabBar;
     })];
 //    UIKeyboardWillShowNotification

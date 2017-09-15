@@ -147,9 +147,9 @@
     _freeModel = freeModel;
     
     /**加载缓存图片*/
-    [_classImage sd_setImageWithURL:[NSURL URLWithString:freeModel.publicizes_url[@"list"]] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:freeModel.publicizes[@"list"][@"url"]] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         
-        [manager diskImageExistsForURL:[NSURL URLWithString:freeModel.publicizes_url[@"list"]] completion:^(BOOL isInCache) {
+        [manager diskImageExistsForURL:[NSURL URLWithString:freeModel.publicizes[@"list"][@"url"]] completion:^(BOOL isInCache) {
             if (isInCache == YES) {
                 
             }else{
@@ -269,10 +269,8 @@
     _newestModel = newestModel;
     
     NSURL *pubURL ;
-    if (newestModel.publicizes_url) {
-        pubURL = [NSURL URLWithString:newestModel.publicizes_url[@"list"]];
-    }else{
-        pubURL = [NSURL URLWithString:newestModel.publicize];
+    if (newestModel.publicizes) {
+        pubURL = [NSURL URLWithString:newestModel.publicizes[@"list"][@"url"]];
     }
     /**加载缓存图片*/
     [_classImage sd_setImageWithURL:pubURL placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
@@ -298,7 +296,6 @@
         
     }];
     
-    
     //课程名
     _className.text = newestModel.name;
     
@@ -309,8 +306,8 @@
     
     
     //标签
-    _left_StateLabel.text = [self transStateTag:newestModel.tag_one];
-    _right_StateLabel.text =[self transStateTag:newestModel.tag_two];
+//    _left_StateLabel.text = [self transStateTag:newestModel.tag_one];
+//    _right_StateLabel.text =[self transStateTag:newestModel.tag_two];
     
 }
 

@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Qatime_Student-Swift.h"
 
 @interface MyQuestion_UnresolvedViewController : UIViewController
 
 @property (nonatomic, strong) UITableView *mainView ;
+
+@property (nonatomic, strong) NSString *course ;
 
 @end

@@ -109,7 +109,7 @@
 /**导航栏*/
 - (void)setupNavigation{
     
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
     [self.view addSubview: _navigationBar];
     _navigationBar.titleLabel.text = @"充值选择";
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
@@ -142,7 +142,7 @@
 /**加载主视图*/
 - (void)setupMainView{
     
-    _chargeView = [[ChargeView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
+    _chargeView = [[ChargeView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height)];
     [self.view addSubview:_chargeView];
     [_chargeView.chargeMenu registerClass:[ChargeCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
     _chargeView.chargeMenu.delegate = self;

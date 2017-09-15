@@ -126,7 +126,7 @@
     [super loadView ];
     
     _navigationBar = ({
-        NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+        NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
         _.titleLabel.text = [_tutoriumInfo valueForKey:@"name"];
         
         //
@@ -143,7 +143,7 @@
     
     
     _chatTableView = ({
-        UITableView *_=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-50) style:UITableViewStylePlain];
+        UITableView *_=[[UITableView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height-TabBar_Height) style:UITableViewStylePlain];
         _.separatorStyle = UITableViewCellSeparatorStyleNone;
         _.delegate = self;
         _.dataSource = self;
@@ -1758,7 +1758,7 @@
         
         [_inputView setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height -50-keyboardRect.size.height , self.view.width_sd, 50)];
         
-        [ _chatTableView setFrame:CGRectMake(0, 64 , self.view.width_sd, self.view.height_sd-64-50-keyboardRect.size.height)];
+        [ _chatTableView setFrame:CGRectMake(0, Navigation_Height , self.view.width_sd, self.view.height_sd-Navigation_Height-TabBar_Height-keyboardRect.size.height)];
         
     }];
     
@@ -1781,7 +1781,7 @@
         
         [_inputView setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height -50, self.view.width_sd, 50)];
         
-        [_chatTableView setFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-50)];
+        [_chatTableView setFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height-TabBar_Height)];
         
     }];
     

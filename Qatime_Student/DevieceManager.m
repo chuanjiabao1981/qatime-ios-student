@@ -39,7 +39,6 @@ static id manager;
     uname(&systemInfo);
     
     NSString *platform = [NSString stringWithCString:systemInfo.machine encoding:NSASCIIStringEncoding];
-    
     if ([platform isEqualToString:@"iPhone1,1"]) return @"iPhone 2G";
     if ([platform isEqualToString:@"iPhone1,2"]) return @"iPhone 3G";
     if ([platform isEqualToString:@"iPhone2,1"]) return @"iPhone 3GS";
@@ -61,6 +60,7 @@ static id manager;
     if ([platform isEqualToString:@"iPhone9,1"]) return @"iPhone 7";
     if ([platform isEqualToString:@"iPhone9,2"]) return @"iPhone 7 Plus";
     if ([platform isEqualToString:@"iPhone8,4"]) return @"iPhone SE";
+    
     if ([platform isEqualToString:@"iPod1,1"])   return @"iPod Touch 1G";
     if ([platform isEqualToString:@"iPod2,1"])   return @"iPod Touch 2G";
     if ([platform isEqualToString:@"iPod3,1"])   return @"iPod Touch 3G";

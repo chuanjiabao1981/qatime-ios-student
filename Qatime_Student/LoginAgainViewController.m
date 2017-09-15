@@ -85,7 +85,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
     
     _navigationBar.titleLabel.text = @"登录";
     
@@ -99,7 +99,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     _wrongTimes = 0;
     _captcha =[NSMutableString string ];
     
-    _loginAgainView = [[LoginAgainView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
+    _loginAgainView = [[LoginAgainView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height)];
     [self.view addSubview:_loginAgainView];
     
     [_loginAgainView.signUpButton addTarget:self action:@selector(enterSignUpPage:) forControlEvents:UIControlEventTouchUpInside];

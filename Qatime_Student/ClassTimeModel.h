@@ -59,6 +59,8 @@
 @property (nonatomic, strong) NSString *product_id ;
 @property (nonatomic, strong) NSString *product_type ;
 
+@property (nonatomic, strong) NSString *model_name ;
+
 
 
 

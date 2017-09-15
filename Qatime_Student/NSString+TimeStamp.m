@@ -51,6 +51,29 @@
     return currentDateStr;
 }
 
++ (NSString *)changeTimeStampToDateString:(NSString*)timeStamp{
+   
+    NSTimeInterval time=[timeStamp doubleValue];//因为时差问题要加8小时 == 28800 sec
+    
+    NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
+    
+    NSLog(@"date:%@",[detaildate description]);
+    
+    //实例化一个NSDateFormatter对象
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    //这句话比较吊
+    [dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];
+    //设定时间格式,这里可以设置成自己需要的格式
+    
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    
+    NSString *currentDateStr = [dateFormatter stringFromDate: detaildate];
+    
+    return currentDateStr;
+}
+
 //获取当前时间的时间戳
 -(NSString*)getCurrentTimestamp{
     NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];

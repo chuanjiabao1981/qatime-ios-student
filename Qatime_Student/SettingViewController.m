@@ -54,7 +54,7 @@
     
     _navigationBar = ({
     
-        NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
+        NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, Navigation_Height)];
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         _.titleLabel.text = @"系统设置";
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
@@ -69,7 +69,7 @@
     
     menus = @[@"通知设置",/*@"检查更新",*/@"清理缓存"/*,@"关于我们",@"学习流程"*/];
     
-    _settingView = [[SettingView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT)];
+    _settingView = [[SettingView alloc]initWithFrame:CGRectMake(0, Navigation_Height, SCREENWIDTH, SCREENHEIGHT)];
     [self.view addSubview:_settingView];
     [_settingView.logOutButton addTarget:self action:@selector(userLogOut) forControlEvents:UIControlEventTouchUpInside];
     

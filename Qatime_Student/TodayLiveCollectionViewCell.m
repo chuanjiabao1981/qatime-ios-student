@@ -145,6 +145,53 @@
     
 }
 
+-(void)setTodayLiveModel:(TodayLive *)todayLiveModel{
+    
+    _todayLiveModel = todayLiveModel;
+    
+    NSString *url;
+    if (todayLiveModel.publicizes) {
+        if (todayLiveModel.publicizes[@"list"]) {
+            url = todayLiveModel.publicizes[@"list"][@"url"];
+        }
+    }
+    
+    /* 如果本地已经保留了图片缓存*/
+    [_classImageView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"school"] options:SDWebImageRefreshCached completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        
+        [manager diskImageExistsForURL:[NSURL URLWithString:url] completion:^(BOOL isInCache) {
+            if (isInCache == YES) {
+                
+            }else{
+                _classImageView.alpha = 0.0;
+                [UIView transitionWithView:_classImageView duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                    if (image) {
+                        
+                        [_classImageView setImage:image];
+                    }else{
+                        [_classImageView setImage:[UIImage imageNamed:@"school"]];
+                    }
+                    _classImageView.alpha = 1.0;
+                } completion:NULL];
+                
+            }
+            
+        }];
+        
+    }];
+    
+    _classNameLabel.text = todayLiveModel.course_name;
+    
+    _liveTimeLabel.text = todayLiveModel.live_time;
+    _stateLabel.text = [self statusChange:todayLiveModel.status];
+    
+    _liveTimeLabel.sd_layout
+    .leftSpaceToView(self.contentView,(self.contentView.width_sd-(_liveTimeLabel.width_sd+_stateLabel.width_sd))/2);
+    [_liveTimeLabel updateLayout];
+
+}
+
+
 - (NSString *)statusChange:(NSString *)status{
     
     NSString *str  = @"".mutableCopy;

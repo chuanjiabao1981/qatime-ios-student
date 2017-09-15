@@ -86,7 +86,7 @@
 #define TabBar_Height 49
 
 /* navigation高度*/
-#define Navigation_Height 64
+#define Navigation_Height ([UIApplication sharedApplication].statusBarFrame.size.height+44)
 
 //系统导航栏高度
 #define NavBar_Height [[[[UIApplication sharedApplication] statusBarFrame]size]height]+self.navigationController.navigationBar.frame.size.height
@@ -120,6 +120,9 @@
 #define iOS7 ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
 
 #define iOS10 ([[UIDevice currentDevice].systemVersion doubleValue] >= 10.0)
+
+#define iOS11 ([[UIDevice currentDevice].systemVersion doubleValue] >= 11.0)
+
 
 /* 全局引用文件*/
 

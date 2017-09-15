@@ -13,11 +13,7 @@
 
 @interface ViewController (){
     
-
-    
 }
-
-
 
 @end
 
@@ -27,12 +23,17 @@
 {
     [super viewWillAppear:animated];
     self.tabBar.hidden = NO;
+//     [self setValue:self.lcTabBar forKey:@"tabBar"];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-self.tabBar.hidden = NO;
+    self.tabBar.hidden = NO;
 
+    
+#ifdef iOS11
+#endif
+    
 }
 
 - (void)showNIMPage:(NSNotification *)notification{

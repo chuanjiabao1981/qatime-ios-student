@@ -29,14 +29,14 @@
     [super viewDidLoad];
     self.navigationController.navigationBar.hidden=YES;
     
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), Navigation_Height)];
     [self.view addSubview:_navigationBar];
     [_navigationBar.titleLabel setText:NSLocalizedString(@"注册", nil)];
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(backToFrontPage:) forControlEvents:UIControlEventTouchUpInside];
     
     /* 视图*/
-    _signUpView = [[SignUpView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
+    _signUpView = [[SignUpView alloc]initWithFrame:CGRectMake(0, Navigation_Height, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-Navigation_Height)];
     [self .view addSubview:_signUpView];
     
     _signUpView.phoneNumber.delegate = self;

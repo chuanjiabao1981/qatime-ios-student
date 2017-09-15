@@ -26,6 +26,9 @@ class QuestionsTableViewCell: UITableViewCell {
     //状态
     var status = UILabel()
     
+    var model = Questions()
+    
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = UIColor.clear
@@ -88,12 +91,14 @@ class QuestionsTableViewCell: UITableViewCell {
         
     }
     
-    public func setModel(model:Questions!) {
+    public func setModel(question:Questions!) {
         
-        title.text = model.title
-        asker.text = model.name
-        infos.text = "创建时间 "+model.creat_at
-        if model.resolve == true{
+        model = question;
+        
+        title.text = question.title
+        asker.text = question.user_name
+        infos.text = "创建时间 " + question.created_at
+        if (question.answer != nil) {
             status.textColor = UIColor.init(hexString: "20ad65")
             status.text = "已回复"
         }else{
@@ -101,6 +106,7 @@ class QuestionsTableViewCell: UITableViewCell {
             status.text = "待回复"
         }
     }
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

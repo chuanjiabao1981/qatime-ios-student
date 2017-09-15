@@ -27,7 +27,7 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.tableView setFrame:CGRectMake(0, 64, self.view.frame.size.width, [UIScreen mainScreen].bounds.size.height - 64)];
+    [self.tableView setFrame:CGRectMake(0, Navigation_Height, self.view.frame.size.width, [UIScreen mainScreen].bounds.size.height - Navigation_Height)];
 }
 
 #pragma mark - UITableViewDataSource

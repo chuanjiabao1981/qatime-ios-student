@@ -291,12 +291,19 @@
     
     if (!_viewController) {
         
-        _viewController = [[LCTabBarController alloc]init];
+        _viewController = [[ViewController alloc]init];
         _viewController.tabBar.backgroundColor = [UIColor whiteColor];
         _viewController.itemTitleColor = [UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:1.00];
         _viewController.selectedItemTitleColor = NAVIGATIONRED;
         _viewController.viewControllers = @[indexPageVC,/*tutoriumVC,*/chooseVC,classTimeVC,noticeVC,personalVC];
     
+//        [_viewController.tabBarController setValue:_viewController.lcTabBar forKeyPath:@"tabBar"];
+        [_viewController.tabBarController.tabBar setHidden:YES];
+#ifdef __IPHONE_11_0
+        [_viewController setSelectedItemTitleColor:BUTTONRED];
+        _viewController.tabBarController.selectedIndex = 0 ;
+        [_viewController.tabBar setSelectedItem:_viewController.tabBar.items[0]];
+#endif
     }
     
     /* 新收到消息的监听*/
@@ -361,32 +368,30 @@
     _indexPageViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_home_h"];
     _indexPageViewController.tabBarItem.image = [UIImage imageNamed:@"tab_home_n"];
     _indexPageViewController.title = NSLocalizedString(@"首页", comment:"");
-    
-    
-//    _tutoriumViewController = [[TutoriumViewController alloc]init];
-//    _tutoriumViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_tutorium_h"];
-//    _tutoriumViewController.tabBarItem.image = [UIImage imageNamed:@"tab_tutorium_n"];
-//    _tutoriumViewController.title = NSLocalizedString(@"辅导班", comment:"");
-    
-    
+     [_indexPageViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:BUTTONRED} forState:UIControlStateSelected];
+
     _chooseClassViewController = [[ChooseGradeAndSubjectViewController alloc]init];
     _chooseClassViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_tutorium_h"];
     _chooseClassViewController.tabBarItem.image = [UIImage imageNamed:@"tab_tutorium_n"];
     _chooseClassViewController.title = NSLocalizedString(@"选课", comment:"");
+     [_chooseClassViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:BUTTONRED} forState:UIControlStateSelected];
     
     _classTimeViewController = [[ClassTimeViewController alloc]init];
     _classTimeViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_class_h"];
     _classTimeViewController.tabBarItem.image = [UIImage imageNamed:@"tab_class_n"];
     _classTimeViewController.title = NSLocalizedString(@"课程表", comment:"");
+     [_classTimeViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:BUTTONRED} forState:UIControlStateSelected];
     
     _noticeIndexViewController = [[NoticeIndexViewController alloc]init];
     _noticeIndexViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_message_h"];
     _noticeIndexViewController.tabBarItem.image = [UIImage imageNamed:@"tab_message_n"];
     _noticeIndexViewController.title = NSLocalizedString(@"消息", comment:"");
+    [_noticeIndexViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:BUTTONRED} forState:UIControlStateSelected];
     
     _personalViewController = [[PersonalViewController alloc]init];
     _personalViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_me_h"];
     _personalViewController.tabBarItem.image = [UIImage imageNamed:@"tab_me_n"];
+    [_personalViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:BUTTONRED} forState:UIControlStateSelected];
     _personalViewController.title = NSLocalizedString(@"个人", comment:"");
     
     /* 初始化五个navigationcontroller*/

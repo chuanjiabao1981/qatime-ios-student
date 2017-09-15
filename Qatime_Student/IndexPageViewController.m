@@ -58,13 +58,14 @@
 #import "NewestClass.h"
 #import "UIControl+EnloargeTouchArea.h"
 
+#import "UIViewController+Token.h"
+
+#import "TodayLive.h"
+
 
 
 @interface IndexPageViewController ()<UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,CLLocationManagerDelegate,TLCityPickerDelegate,UIGestureRecognizerDelegate,NIMLoginManagerDelegate,NIMConversationManagerDelegate,LCTabBarDelegate,UITableViewDelegate,UITableViewDataSource>{
     
-    /* token*/
-    NSString *_token;
-    NSString *_idNumber;
     //    IndexHeaderPageView *headerView ;
     
     NSArray *menuImages;
@@ -149,94 +150,6 @@
 - (void)loadView{
     [super loadView];
     
-    [self HUDStartWithTitle:NSLocalizedString(@"正在加载数据", nil)];
-    
-    /* 导航栏加载*/
-    _navigationBar = ({
-        NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
-        [self .view addSubview:_];
-        //右边扫描
-        [_.rightButton setImage:[UIImage imageNamed:@"scan"] forState:UIControlStateNormal];
-        
-        //左侧 定位两个按钮
-        _location = [UIButton new];
-        _location.titleLabel.font = TEXT_FONTSIZE;
-        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Location"]) {
-            [_location setTitle:[[NSUserDefaults standardUserDefaults]valueForKey:@"Location"] forState:UIControlStateNormal];
-        }else{
-            [_location setTitle:@"全国" forState:UIControlStateNormal];
-        }
-        [_location setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        
-        [_ addSubview:_location];
-        _location.sd_layout
-        .leftSpaceToView(_,0*ScrenScale)
-        .topEqualToView(_.rightButton)
-        .bottomEqualToView(_.rightButton)
-        .widthIs(100*ScrenScale);
-        [_location setupAutoSizeWithHorizontalPadding:10*ScrenScale buttonHeight:_.rightButton.height_sd];
-        [_location setSd_maxWidth:@(100*ScrenScale)];
-        [_location updateLayout];
-        
-        [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-        CGAffineTransform transform= CGAffineTransformMakeRotation(M_PI*3/2);
-        _.leftButton.imageView.transform = transform;//旋转
-        _.leftButton.sd_resetLayout
-        .leftSpaceToView(_location, 0)
-        .centerYEqualToView(_location)
-        .heightRatioToView(_location, 0.6)
-        .widthEqualToHeight();
-        
-        [_location setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-        [_location addTarget:self action:@selector(choseLocation) forControlEvents:UIControlEventTouchUpInside];
-        [_.leftButton addTarget:self action:@selector(choseLocation) forControlEvents:UIControlEventTouchUpInside];
-        
-        [_.leftButton updateLayout];
-        
-        
-        //左右按钮都设置完了 中间增加一个自定义搜索框
-        _searchBar = [[UIView alloc]init];
-        [_ addSubview:_searchBar];
-        _searchBar.backgroundColor = [UIColor whiteColor];
-        _searchBar.sd_layout
-        .leftSpaceToView(_.leftButton, 10*ScrenScale)
-        .rightSpaceToView(_.rightButton, 10*ScrenScale)
-        .topEqualToView(_.rightButton)
-        .bottomEqualToView(_.rightButton);
-        [_searchBar updateLayout];
-        _searchBar.sd_cornerRadiusFromHeightRatio = @0.5;
-        
-        UITapGestureRecognizer *tapSearch = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(search)];
-        _searchBar.userInteractionEnabled = YES;
-        [_searchBar addGestureRecognizer:tapSearch];
-        
-        //搜索图标
-        UIImageView *scopeImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"scope"]];
-        [_searchBar addSubview:scopeImage];
-        scopeImage.sd_layout
-        .leftSpaceToView(_searchBar, 10)
-        .centerYEqualToView(_searchBar)
-        .heightRatioToView(_searchBar, 0.5)
-        .widthEqualToHeight();
-        //假的输入框而已
-        UILabel *searchLabel = [[UILabel alloc]init];
-        [_searchBar addSubview:searchLabel];
-        searchLabel.text = @"搜索课程/教师";
-        searchLabel.font = TEXT_FONTSIZE;
-        searchLabel.textColor = SEPERATELINECOLOR_2;
-        searchLabel.sd_layout
-        .leftSpaceToView(scopeImage, 10)
-        .topEqualToView(scopeImage)
-        .bottomEqualToView(scopeImage);
-        [searchLabel setSingleLineAutoResizeWithMaxWidth:200];
-        
-        _;
-    });
-    
-    [_navigationBar.rightButton addTarget:self action:@selector(enterScanPage) forControlEvents:UIControlEventTouchUpInside];
-    
-    //偷偷的加载未设置支付密码提示栏
-    [self makeWarningView];
     
 }
 
@@ -244,62 +157,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self HUDStartWithTitle:NSLocalizedString(@"正在加载数据", nil)];
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = BACKGROUNDGRAY ;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
+    [self makeData];
+    [self navigation];
     
-    //初始化变量
-    page = 1;
-    per_page =10;
-    
-    _kee_teacher = [NSString string];
-    _kee_class = [NSString string];
-    
-    _teachers =@[].mutableCopy;
-    _classes = @[].mutableCopy;
-    
-    _todayLives = @[].mutableCopy;
-    
-    _newestRelease = @[].mutableCopy;
-    
-    _freeCourses = @[].mutableCopy;
-    
-    
-    //加载头视图
-    _headerView = [[IndexHeaderPageView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd*3.1/5.0)];
-    //    [self.view addSubview:_headerView];
-    _headerView.todayLiveScrollView.delegate = self;
-    _headerView.todayLiveScrollView.dataSource = self;
-    _headerView.todayLiveScrollView.tag = 1;        //今日直播 tag = 1
-    
-    _headerView.recommandTeachersView.delegate = self;
-    _headerView.recommandTeachersView.dataSource = self;
-    _headerView.recommandTeachersView.tag = 2;
-    
-    [_headerView.moreFancyButton addTarget:self action:@selector(chooseGrade) forControlEvents:UIControlEventTouchUpInside];
-    
-    //选择年级功能
-    NSInteger tags = 100;
-    for (UIButton *button in _headerView.buttons) {
-        
-        button.tag = tags++;
-        [button addTarget:self action:@selector(chooseGrade:) forControlEvents:UIControlEventTouchUpInside];
-        
-    }
-    
-    
-    
-    /* 头视图的 今日直播 注册cell*/
-    [_headerView.todayLiveScrollView registerClass:[TodayLiveCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
+    [self setupHeaderView];
     
     /* 主页视图
      三部分的tableview组成
@@ -309,8 +176,13 @@
      4.新科发布+sectionheader
      */
     
-    _indexPageView  = [[IndexPageView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64-49) style:UITableViewStyleGrouped];
+    _indexPageView  = [[IndexPageView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height-TabBar_Height) style:UITableViewStyleGrouped];
     _indexPageView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _indexPageView.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .topSpaceToView(_navigationBar, 0)
+    .bottomSpaceToView(self.view, TabBar_Height);
     
     [self.view addSubview:_indexPageView];
     _indexPageView.backgroundColor = [UIColor whiteColor];
@@ -326,24 +198,6 @@
         [self requestDataWithLocation:_location.titleLabel.text];
         
     }];
-    
-    //target action
-    
-    [_headerView .allTeachersBtn addTarget:self action:@selector(allTeachers) forControlEvents:UIControlEventTouchUpInside];
-    [_headerView.reviewBtn addTarget:self action:@selector(review) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
-    
-    //推荐教师视图  0.1.5首页修改的时候干掉
-    //    UICollectionViewFlowLayout *teacherLayout = [[UICollectionViewFlowLayout alloc]init];
-    //    teacherLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    //    _recommandTeacherScrollView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 100) collectionViewLayout:teacherLayout];
-    //
-    //    _recommandTeacherScrollView.showsHorizontalScrollIndicator = NO;
-    //    _recommandTeacherScrollView.tag = 2;        //推荐教师 tag = 2
-    //    _recommandTeacherScrollView.delegate = self;
-    //    _recommandTeacherScrollView.dataSource = self;
     
     /* 推荐教师视图 注册cell */
     [_headerView.recommandTeachersView registerClass:[YZSquareMenuCell class] forCellWithReuseIdentifier:@"RecommandCell"];
@@ -364,6 +218,7 @@
     
     /* 请求最新发布内容*/
     [self requestNewest];
+    
     /**请求免费课程*/
     [self requestFreeCourses];
     
@@ -387,10 +242,148 @@
 }
 
 
+- (void)makeData{
+    
+    //初始化变量
+    page = 1;
+    per_page =10;
+    
+    _kee_teacher = [NSString string];
+    _kee_class = [NSString string];
+    
+    _teachers =@[].mutableCopy;
+    _classes = @[].mutableCopy;
+    
+    _todayLives = @[].mutableCopy;
+    
+    _newestRelease = @[].mutableCopy;
+    
+    _freeCourses = @[].mutableCopy;
+}
+
+- (void)navigation{
+    /* 导航栏加载*/
+    
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
+    [self .view addSubview:_navigationBar];
+    //右边扫描
+    [_navigationBar.rightButton setImage:[UIImage imageNamed:@"scan"] forState:UIControlStateNormal];
+    
+    //左侧 定位两个按钮
+    _location = [UIButton new];
+    _location.titleLabel.font = TEXT_FONTSIZE;
+    if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Location"]) {
+        [_location setTitle:[[NSUserDefaults standardUserDefaults]valueForKey:@"Location"] forState:UIControlStateNormal];
+    }else{
+        [_location setTitle:@"全国" forState:UIControlStateNormal];
+    }
+    [_location setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    [_navigationBar.contentView addSubview:_location];
+    _location.sd_layout
+    .leftSpaceToView(_navigationBar.contentView,0*ScrenScale)
+    .topEqualToView(_navigationBar.rightButton)
+    .bottomEqualToView(_navigationBar.rightButton)
+    .widthIs(100*ScrenScale);
+    [_location setupAutoSizeWithHorizontalPadding:10*ScrenScale buttonHeight:_navigationBar.rightButton.height_sd];
+    [_location setSd_maxWidth:@(100*ScrenScale)];
+    [_location updateLayout];
+    
+    [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+    CGAffineTransform transform= CGAffineTransformMakeRotation(M_PI*3/2);
+    _navigationBar.leftButton.imageView.transform = transform;//旋转
+    _navigationBar.leftButton.sd_resetLayout
+    .leftSpaceToView(_location, 0)
+    .centerYEqualToView(_location)
+    .heightRatioToView(_location, 0.6)
+    .widthEqualToHeight();
+    
+    [_location setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    [_location addTarget:self action:@selector(choseLocation) forControlEvents:UIControlEventTouchUpInside];
+    [_navigationBar.leftButton addTarget:self action:@selector(choseLocation) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_navigationBar.leftButton updateLayout];
+    
+    
+    //左右按钮都设置完了 中间增加一个自定义搜索框
+    _searchBar = [[UIView alloc]init];
+    [_navigationBar.contentView addSubview:_searchBar];
+    _searchBar.backgroundColor = [UIColor whiteColor];
+    _searchBar.sd_layout
+    .leftSpaceToView(_navigationBar.leftButton, 10*ScrenScale)
+    .rightSpaceToView(_navigationBar.rightButton, 10*ScrenScale)
+    .topEqualToView(_navigationBar.rightButton)
+    .bottomEqualToView(_navigationBar.rightButton);
+    [_searchBar updateLayout];
+    _searchBar.sd_cornerRadiusFromHeightRatio = @0.5;
+    
+    UITapGestureRecognizer *tapSearch = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(search)];
+    _searchBar.userInteractionEnabled = YES;
+    [_searchBar addGestureRecognizer:tapSearch];
+    
+    //搜索图标
+    UIImageView *scopeImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"scope"]];
+    [_searchBar addSubview:scopeImage];
+    scopeImage.sd_layout
+    .leftSpaceToView(_searchBar, 10)
+    .centerYEqualToView(_searchBar)
+    .heightRatioToView(_searchBar, 0.5)
+    .widthEqualToHeight();
+    //假的输入框而已
+    UILabel *searchLabel = [[UILabel alloc]init];
+    [_searchBar addSubview:searchLabel];
+    searchLabel.text = @"搜索课程/教师";
+    searchLabel.font = TEXT_FONTSIZE;
+    searchLabel.textColor = SEPERATELINECOLOR_2;
+    searchLabel.sd_layout
+    .leftSpaceToView(scopeImage, 10)
+    .topEqualToView(scopeImage)
+    .bottomEqualToView(scopeImage);
+    [searchLabel setSingleLineAutoResizeWithMaxWidth:200];
+    
+    [_navigationBar.rightButton addTarget:self action:@selector(enterScanPage) forControlEvents:UIControlEventTouchUpInside];
+    
+    //偷偷的加载未设置支付密码提示栏
+    [self makeWarningView];
+    
+}
+
+- (void)setupHeaderView{
+    
+    //加载头视图
+    _headerView = [[IndexHeaderPageView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd*3.1/5.0)];
+    //    [self.view addSubview:_headerView];
+    _headerView.todayLiveScrollView.delegate = self;
+    _headerView.todayLiveScrollView.dataSource = self;
+    _headerView.todayLiveScrollView.tag = 1;        //今日直播 tag = 1
+    
+    _headerView.recommandTeachersView.delegate = self;
+    _headerView.recommandTeachersView.dataSource = self;
+    _headerView.recommandTeachersView.tag = 2;
+    
+    [_headerView.moreFancyButton addTarget:self action:@selector(chooseGrade) forControlEvents:UIControlEventTouchUpInside];
+    //选择年级功能
+    NSInteger tags = 100;
+    for (UIButton *button in _headerView.buttons) {
+        
+        button.tag = tags++;
+        [button addTarget:self action:@selector(chooseGrade:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    /* 头视图的 今日直播 注册cell*/
+    [_headerView.todayLiveScrollView registerClass:[TodayLiveCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
+    
+    //target action
+    
+    [_headerView .allTeachersBtn addTarget:self action:@selector(allTeachers) forControlEvents:UIControlEventTouchUpInside];
+    [_headerView.reviewBtn addTarget:self action:@selector(review) forControlEvents:UIControlEventTouchUpInside];
+}
+
+
 - (void)checkPayPassword{
     
     /**异步线程请求账户信息,是否设置了支付密码*/
-    if (_token&&_idNumber) {
+    if ([self getToken]&&[self getStudentID]) {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
@@ -423,35 +416,42 @@
 }
 
 
-#pragma mark- 请求今日直播数据
+#pragma mark- 请求今日直播数据  2017-09-11 v2接口版本 支持专属课
 - (void)requestTodayLive{
     
     _todayLives = @[].mutableCopy;
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/lessons/today",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v2/live_studio/lessons/today",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         
         if ([dic[@"status"]isEqualToNumber:@1]) {
             
             for (NSDictionary *dics in dic[@"data"]) {
-                RecommandClasses *mod;
-                if (dics[@"course"]) {
-                    mod = [RecommandClasses yy_modelWithJSON:dics];
-                    mod.live_time = dics[@"live_time"];
-                    mod.class_date = dics[@"class_date"];
-                    mod.className = dics[@"course"][@"name"];
-                    mod.classID = dics[@"course"][@"id"];
-                    mod.publicize = dics[@"course"][@"publicize"];
-                }
-                if (dics[@"customized_group"]){
-                    mod = [RecommandClasses yy_modelWithJSON:dics];
-                    mod.className = dics[@"customized_group"][@"name"];
-                    mod.classID = dics[@"customized_group"][@"id"];
-                    mod.publicizes_url = dics[@"customized_group"][@"publicizes_url"];
-                }
+                //                RecommandClasses *mod;
+                //                if (dics[@"course"]) {
+                //                    mod = [RecommandClasses yy_modelWithJSON:dics];
+                //                    mod.live_time = dics[@"live_time"];
+                //                    mod.class_date = dics[@"class_date"];
+                //                    mod.className = dics[@"course"][@"name"];
+                //                    mod.classID = dics[@"course"][@"id"];
+                //                    mod.publicize = dics[@"course"][@"publicize"];
+                //                }
+                //                if (dics[@"customized_group"]){
+                //                    mod = [RecommandClasses yy_modelWithJSON:dics];
+                //                    mod.className = dics[@"customized_group"][@"name"];
+                //                    mod.classID = dics[@"customized_group"][@"id"];
+                //                    mod.publicizes_url = dics[@"customized_group"][@"publicizes_url"];
+                //                }
+                //                if (mod) {
+                //                    [_todayLives addObject:mod];
+                //                }
+                
+                TodayLive *mod = [TodayLive yy_modelWithJSON:dics];
+                mod.classID = dics[@"id"];
                 if (mod) {
                     [_todayLives addObject:mod];
                 }
+                
             }
             
             [_headerView.todayLiveScrollView reloadData];
@@ -476,21 +476,20 @@
         }
     }
     
-    
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/rank_all/all_published_rank",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"count":@"2",@"city_id":cityID==nil?@"":cityID} completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v2/live_studio/courses/latest",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"count":@"2"} completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         
         if ([dic[@"status"]isEqualToNumber:@1]) {
             //返回的data字段里是两个数组,key对应的是返回的数组
-            for (NSDictionary *dics in dic[@"data"][@"all_published_rank"]) {
-                NewestClass *mod = [NewestClass yy_modelWithJSON:dics[@"product"]];
-                mod.classID = dics[@"product"][@"id"];
-                mod.product_type = dics[@"product_type"];
-                [_newestRelease addObject:mod];
+            for (NSDictionary *dics in dic[@"data"]) {
+                NewestClass *mod = [NewestClass yy_modelWithJSON:dics];
+                mod.classID = dics[@"id"];
+                if (mod) {
+                    [_newestRelease addObject:mod];
+                }
             }
             [_indexPageView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationFade];
-            
             
         }else{
             
@@ -504,27 +503,23 @@
 #pragma mark- 请求免费课程
 - (void)requestFreeCourses{
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/free_courses",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"count":@"2"} completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v2/live_studio/courses/free",Request_Header] withHeaderInfo:nil andHeaderfield:nil parameters:@{@"count":@"2"} completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             //数据是没问题的
             
             for (NSDictionary *dics in dic[@"data"]) {
-                
-                FreeCourse *mod = [FreeCourse yy_modelWithJSON:dics[@"product"]];
-                mod.classID = dics[@"product"][@"id"];
-                mod.product_type = dics[@"product_type"];
-                [_freeCourses addObject:mod];
-                
+                FreeCourse *mod = [FreeCourse yy_modelWithJSON:dics];
+                mod.classID = dics[@"id"];
+                if (mod) {
+                    [_freeCourses addObject:mod];
+                }
             }
             [_indexPageView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
-            
         }else{
             
-            
         }
-        
         
     } failure:^(id  _Nullable erros) {
         
@@ -535,7 +530,7 @@
 /**获取用户的资金概况*/
 - (void)getCashInfos{
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,[self getStudentID]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         
         if ([dic[@"status"]isEqualToNumber:@1]) {
@@ -606,8 +601,8 @@
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-        [manager GET:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
+        [manager GET:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications",Request_Header,[self getStudentID]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 /* 请求成功*/
@@ -1022,13 +1017,12 @@
         
         if (_todayLives.count>indexPath.row) {
             
-            liveCell.model = _todayLives[indexPath.row];
+            liveCell.todayLiveModel = _todayLives[indexPath.row];
             
         }else{
             [liveCell.classImageView setImage:[UIImage imageNamed:@"school"]];
             liveCell.classNameLabel.text = @"今日无直播课程";
             liveCell.stateLabel.text = @"今日无直播课程";
-            
         }
         
         cell = liveCell;
@@ -1160,12 +1154,18 @@
             
             TodayLiveCollectionViewCell *cell = (TodayLiveCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
             UIViewController *controller;
-            if ([cell.model.lesson_type isEqualToString:@"LiveStudio::Lesson"]) {
-                
-                controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
-            }else{
-                
-                controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.model.classID];
+            //            if ([cell.model.lesson_type isEqualToString:@"LiveStudio::Lesson"]) {
+            //
+            //                controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.model.classID];
+            //            }else{
+            //
+            //                controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.model.classID];
+            //            }
+            
+            if ([cell.todayLiveModel.model_name isEqualToString:@"LiveStudio::Lesson"]) {
+                controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.todayLiveModel.course_id];
+            }else if ([cell.todayLiveModel.model_name isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.todayLiveModel.course_id];
             }
             
             controller.hidesBottomBarWhenPushed = YES;
@@ -1232,7 +1232,6 @@
     QualityTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
     if (cell==nil) {
         cell=[[QualityTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-        
         
     }
     
@@ -1334,14 +1333,14 @@
             break;
             
         case 1:{
-            
-            if ([cell.freeModel.product_type isEqualToString:@"LiveStudio::Course"]) {
+            //免费课程分类
+            if ([cell.freeModel.model_name isEqualToString:@"LiveStudio::Course"]) {
                 
                 controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.freeModel.classID];
-            }else if ([cell.freeModel.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
+            }else if ([cell.freeModel.model_name isEqualToString:@"LiveStudio::VideoCourse"]){
                 
                 controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.freeModel.classID];
-            }else if ([cell.freeModel.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+            }else if ([cell.freeModel.model_name isEqualToString:@"LiveStudio::InteractiveCourse"]){
                 controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.freeModel.classID];
             }else{
                 
@@ -1354,13 +1353,11 @@
             
         case 2:{
             
-            if ([cell.newestModel.product_type isEqualToString:@"LiveStudio::Course"]) {
-                
+            if ([cell.newestModel.model_name isEqualToString:@"LiveStudio::Course"]) {
                 controller = [[TutoriumInfoViewController alloc]initWithClassID:cell.newestModel.classID];
-            }else if ([cell.newestModel.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
-                
+            }else if ([cell.newestModel.model_name isEqualToString:@"LiveStudio::VideoCourse"]){
                 controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.newestModel.classID];
-            }else if ([cell.newestModel.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+            }else if ([cell.newestModel.model_name isEqualToString:@"LiveStudio::InteractiveCourse"]){
                 controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.newestModel.classID];
             }else{
                 controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.newestModel.classID];

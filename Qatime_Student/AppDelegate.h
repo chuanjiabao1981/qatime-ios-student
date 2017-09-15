@@ -28,7 +28,7 @@
 
 @property(nonatomic,strong) LoginViewController *loginViewController ;
 
-@property(nonatomic,strong) LCTabBarController *viewController ;
+@property(nonatomic,strong) ViewController *viewController ;
 
 
 

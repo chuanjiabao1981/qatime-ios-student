@@ -110,7 +110,7 @@ typedef enum : NSUInteger {
         [self requestDataWithRefreshType:PullToReload];
     }];
     
-    _mainView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _mainView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         
         [self requestDataWithRefreshType:PushToLoadMore];
     }];

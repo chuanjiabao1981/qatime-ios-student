@@ -10,6 +10,16 @@
 
 @interface TodayLive : NSObject
 
+@property (nonatomic, copy) NSString *classID ;
+@property (nonatomic, copy) NSString *name ;
+@property (nonatomic, strong) NSString *grade ;
+@property (nonatomic, strong) NSString *subject ;
+@property (nonatomic, strong) NSString *status ;
+@property (nonatomic, strong) NSDictionary *publicizes ;
+@property (nonatomic, strong) NSString *course_id ;
+@property (nonatomic, strong) NSString *course_name ;
+@property (nonatomic, strong) NSString *model_name ;
+@property (nonatomic, strong) NSString *live_time ;
 
 
 @end

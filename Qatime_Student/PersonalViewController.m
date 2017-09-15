@@ -34,6 +34,7 @@
 
 #import "MyQuestionViewController.h"
 #import "DownloadManagerViewController.h"
+#import "MyHomeworkViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.width
@@ -453,7 +454,7 @@
                 }
                     break;
                 case 7:{
-                    
+                    controller = [[MyHomeworkViewController alloc]init];
                 }
                     break;
                 case 8:{

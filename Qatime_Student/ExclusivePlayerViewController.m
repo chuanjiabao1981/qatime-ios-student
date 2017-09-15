@@ -1336,47 +1336,44 @@ typedef enum : NSUInteger {
 #pragma mark- 全屏状态下双击小视频窗口的点击事件
 - (void)switchVideoOnFullScreenMode:(UITapGestureRecognizer *)sender{
     
-    /* 条件1:白板是主屏*/
-    if (_boardPlayerView.becomeMainPlayer == YES) {
+    if (isFullScreen) {
         
-        [self turnToFullScreenMode:_teacherPlayerView];
-        [_teacherPlayerView removeGestureRecognizer:_doubelTap];
-        [_boardPlayerView addGestureRecognizer:_doubelTap];
-        [_teacherPlayerView addSubview:_aBarrage.view];
-        [_aBarrage.view sd_clearAutoLayoutSettings];
-        _aBarrage.view.sd_layout
-        .leftEqualToView(_teacherPlayerView)
-        .rightEqualToView(_teacherPlayerView)
-        .topEqualToView(_teacherPlayerView)
-        .bottomEqualToView(_teacherPlayerView);
-        [_aBarrage.view updateLayout];
-        [self mediaControlTurnToFullScreenModeWithMainView:_teacherPlayerView];
-        [self makeFloatingPlayer:_boardPlayerView];
-        
-        
-        
-    }else if (_teacherPlayerView.becomeMainPlayer == YES){
-        /* 条件2:摄像头是主屏*/
-        [self turnToFullScreenMode:_boardPlayerView];
-        [_boardPlayerView removeGestureRecognizer:_doubelTap];
-        [_teacherPlayerView addGestureRecognizer:_doubelTap];
-        [_boardPlayerView addSubview:_aBarrage.view];
-        [_aBarrage.view sd_clearAutoLayoutSettings];
-        _aBarrage.view.sd_layout
-        .leftEqualToView(_boardPlayerView)
-        .rightEqualToView(_boardPlayerView)
-        .topEqualToView(_boardPlayerView)
-        .bottomEqualToView(_boardPlayerView);
-        [_aBarrage.view updateLayout];
-        [self mediaControlTurnToFullScreenModeWithMainView:_boardPlayerView];
-        [self makeFloatingPlayer:_teacherPlayerView];
-        
-        
+        /* 条件1:白板是主屏*/
+        if (_boardPlayerView.becomeMainPlayer == YES) {
+            
+            [self turnToFullScreenMode:_teacherPlayerView];
+            [_teacherPlayerView removeGestureRecognizer:_doubelTap];
+            [_boardPlayerView addGestureRecognizer:_doubelTap];
+            [_teacherPlayerView addSubview:_aBarrage.view];
+            [_aBarrage.view sd_clearAutoLayoutSettings];
+            _aBarrage.view.sd_layout
+            .leftEqualToView(_teacherPlayerView)
+            .rightEqualToView(_teacherPlayerView)
+            .topEqualToView(_teacherPlayerView)
+            .bottomEqualToView(_teacherPlayerView);
+            [_aBarrage.view updateLayout];
+            [self mediaControlTurnToFullScreenModeWithMainView:_teacherPlayerView];
+            [self makeFloatingPlayer:_boardPlayerView];
+            
+            
+            
+        }else if (_teacherPlayerView.becomeMainPlayer == YES){
+            /* 条件2:摄像头是主屏*/
+            [self turnToFullScreenMode:_boardPlayerView];
+            [_boardPlayerView removeGestureRecognizer:_doubelTap];
+            [_teacherPlayerView addGestureRecognizer:_doubelTap];
+            [_boardPlayerView addSubview:_aBarrage.view];
+            [_aBarrage.view sd_clearAutoLayoutSettings];
+            _aBarrage.view.sd_layout
+            .leftEqualToView(_boardPlayerView)
+            .rightEqualToView(_boardPlayerView)
+            .topEqualToView(_boardPlayerView)
+            .bottomEqualToView(_boardPlayerView);
+            [_aBarrage.view updateLayout];
+            [self mediaControlTurnToFullScreenModeWithMainView:_boardPlayerView];
+            [self makeFloatingPlayer:_teacherPlayerView];
+        }
     }
-    
-    
-    
-    
     
 }
 

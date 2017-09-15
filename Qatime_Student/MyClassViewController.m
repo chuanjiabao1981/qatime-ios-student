@@ -98,14 +98,14 @@ typedef NS_ENUM(NSUInteger, ClassType) {
 
 - (void)setupMainView{
     
-    _navigationBar  = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
+    _navigationBar  = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, Navigation_Height)];
     [self.view addSubview:_navigationBar];
     _navigationBar.titleLabel.text = @"我的直播课";
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
     /* 加载课程视图*/
-    _myClassView = [[MyClassView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT-64)];
+    _myClassView = [[MyClassView alloc]initWithFrame:CGRectMake(0, Navigation_Height, SCREENWIDTH, SCREENHEIGHT-Navigation_Height)];
     [self.view addSubview:_myClassView];
     
     _myClassView.scrollView .delegate = self;
@@ -113,7 +113,7 @@ typedef NS_ENUM(NSUInteger, ClassType) {
     /* 滑动效果*/
     typeof(self) __weak weakSelf = self;
     [ _myClassView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-        [weakSelf.myClassView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-40) animated:YES];
+        [weakSelf.myClassView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-Navigation_Height-40) animated:YES];
     }];
     [_myClassView.scrollView scrollRectToVisible:CGRectMake(-self.view.width_sd, 0, self.view.width_sd, self.view.height_sd) animated:YES];
     
@@ -128,7 +128,7 @@ typedef NS_ENUM(NSUInteger, ClassType) {
 /* 加载未开课数据*/
 - (void)setupUnstartView{
     _unStartClassView = ({
-        UnStartClassView *_ = [[UnStartClassView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT-64-40)];
+        UnStartClassView *_ = [[UnStartClassView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT-Navigation_Height-40)];
         [_myClassView.scrollView addSubview:_];
         _.classTableView.tag =1;
         _.classTableView.delegate = self;
@@ -141,7 +141,7 @@ typedef NS_ENUM(NSUInteger, ClassType) {
             [self requestDataWithRefreshType:PullToReload andClassType:UnstartedClass];
             
         }];
-        _.classTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        _.classTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             _unStartPage++;
             _course = @"published";
             _page = _unStartPage;
@@ -159,7 +159,7 @@ typedef NS_ENUM(NSUInteger, ClassType) {
 /* 加载已开课数据*/
 - (void)setupStartedView{
     _startedClassView = ({
-        StartedClassView *_ = [[StartedClassView alloc]initWithFrame:CGRectMake(SCREENWIDTH, 0, SCREENWIDTH, SCREENHEIGHT-64-40)];
+        StartedClassView *_ = [[StartedClassView alloc]initWithFrame:CGRectMake(SCREENWIDTH, 0, SCREENWIDTH, SCREENHEIGHT-Navigation_Height-40)];
         [_myClassView.scrollView addSubview:_];
         _.classTableView.tag =2;
         _.classTableView.delegate = self;
@@ -175,7 +175,7 @@ typedef NS_ENUM(NSUInteger, ClassType) {
             
         }];
         
-        _.classTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        _.classTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             _startedPage++;
             _page = _startedPage;
             _course = @"teaching";
@@ -193,7 +193,7 @@ typedef NS_ENUM(NSUInteger, ClassType) {
 - (void)setupEndedView{
     
     _endedClassView = ({
-        EndedClassView *_ = [[EndedClassView alloc]initWithFrame:CGRectMake(SCREENWIDTH*2, 0, SCREENWIDTH, SCREENHEIGHT-64-40)];
+        EndedClassView *_ = [[EndedClassView alloc]initWithFrame:CGRectMake(SCREENWIDTH*2, 0, SCREENWIDTH, SCREENHEIGHT-Navigation_Height-40)];
         [_myClassView.scrollView addSubview:_];
         _.classTableView.tag =3;
         _.classTableView.delegate = self;
@@ -209,7 +209,7 @@ typedef NS_ENUM(NSUInteger, ClassType) {
             
         }];
         
-        _.classTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        _.classTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             _endedPage++;
             _page = _endedPage;
             _course = @"completed";

@@ -59,6 +59,7 @@
 @property (nonatomic, strong) NSString *product_type ;
 
 
+
 @property(nonatomic,copy) NSString *reason ;
 @property(nonatomic,copy) NSString *logo_url ;
 
@@ -99,6 +100,9 @@
 
 /** 课程名 */
 @property (nonatomic, copy) NSString *className ;
+
+
+
 
 
 @end

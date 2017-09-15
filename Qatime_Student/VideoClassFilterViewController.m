@@ -135,7 +135,7 @@ typedef enum : NSUInteger {
         [self requestClass:PullToRefresh withContentDictionary:nil];
         
         
-        _.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        _.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             
             //上滑加载更多
             [self requestClass:PushToReadMore withContentDictionary:nil];

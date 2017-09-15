@@ -46,7 +46,7 @@
     
     _navigationBar=({
     
-        NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+        NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
         [self.view addSubview:_];
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"]forState:UIControlStateNormal];
         _.titleLabel.text = NSLocalizedString(@"选择地区", nil);
@@ -92,10 +92,10 @@
 //加载视图
 - (void)setUpViews{
     
-    _provinceHeader = [[ProvinceHeaderView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd*0.07)];
+    _provinceHeader = [[ProvinceHeaderView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd*0.07)];
     [self.view addSubview:_provinceHeader];
     
-    _provinceTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64+_provinceHeader.height_sd, self.view.width_sd, self.view.height_sd-(64+_provinceHeader.height_sd)) style:UITableViewStylePlain];
+    _provinceTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, Navigation_Height+_provinceHeader.height_sd, self.view.width_sd, self.view.height_sd-(Navigation_Height+_provinceHeader.height_sd)) style:UITableViewStylePlain];
     [self.view addSubview:_provinceTableView];
     
     _provinceTableView.delegate = self;

@@ -32,6 +32,7 @@
 #import "VideoClassInfoViewController.h"
 #import "InteractionViewController.h"
 #import "ExclusiveInfoViewController.h"
+#import "UIViewController+Token.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -49,9 +50,6 @@ typedef enum : NSUInteger {
 } ClassType;
 
 @interface ClassTimeViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIGestureRecognizerDelegate>{
-    
-    NSString  *_token;
-    NSString *_idNumber;
     
     /* 保存未上课数据的数组*/
     __block  NSMutableArray *_unclosedArr;
@@ -131,17 +129,15 @@ typedef enum : NSUInteger {
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     self.view.backgroundColor = BACKGROUNDGRAY;
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 64)];
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, Navigation_Height)];
     [self.view addSubview:_navigationBar];
     [_navigationBar.titleLabel setText:@"课程表"];
     [_navigationBar.rightButton setImage:[UIImage imageNamed:@"日历"] forState:UIControlStateNormal];
     [_navigationBar.rightButton addTarget:self action:@selector(calenderViews) forControlEvents:UIControlEventTouchUpInside];
     
-    [self getToken];
-    
     /* 判断是否登录*/
     isLogin = [[NSUserDefaults standardUserDefaults]boolForKey:@"Login"];
-    if (isLogin==YES&&_token&&_idNumber) {
+    if (isLogin==YES&&[self getToken]&&[self getStudentID]) {
         _notLoginView.hidden = YES;
         //        [self HUDStartWithTitle:nil];
     }else{
@@ -168,15 +164,6 @@ typedef enum : NSUInteger {
     
 }
 
-- (void)getToken{
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-}
 
 /* 登录成功后加载数据*/
 - (void)refreshPage{
@@ -213,7 +200,8 @@ typedef enum : NSUInteger {
         
     }
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/schedule_data",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"state":classTypes} completeSuccess:^(id  _Nullable responds) {
+    //2017-09-11 v2版本接口
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v2/live_studio/students/%@/schedule_data",Request_Header,[self getStudentID]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:@{@"state":classTypes} completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         
@@ -329,7 +317,7 @@ typedef enum : NSUInteger {
 - (void)loadClassView{
     
     _classTimeView = ({
-        ClassTimeView *_ = [[ClassTimeView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT-64-49)];
+        ClassTimeView *_ = [[ClassTimeView alloc]initWithFrame:CGRectMake(0, Navigation_Height, SCREENWIDTH, SCREENHEIGHT-Navigation_Height-TabBar_Height)];
         [self.view addSubview:_];
         _.scrollView.delegate = self;
         _.segmentControl.selectedSegmentIndex =0;
@@ -342,7 +330,7 @@ typedef enum : NSUInteger {
         
         typeof(self) __weak weakSelf = self;
         [_.segmentControl setIndexChangeBlock:^(NSInteger index) {
-            [weakSelf.classTimeView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-64-49) animated:YES];
+            [weakSelf.classTimeView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-Navigation_Height-TabBar_Height) animated:YES];
             if (index ==1) {
                 if (checkTime == 0) {
                     [_classTimeView.alreadyClassView.alreadyClassTableView.mj_header beginRefreshing];
@@ -500,18 +488,18 @@ typedef enum : NSUInteger {
             ClassTimeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             classID = cell.model.course_id;
             
-            if ([cell.model.product_type isEqualToString:@"LiveStudio::Course"]) {
+            if ([cell.model.model_name isEqualToString:@"LiveStudio::Lesson"]) {
                 //直播课
-                controller= [[TutoriumInfoViewController alloc]initWithClassID:cell.model.product_id];
-            }else if ([cell.model.product_type isEqualToString:@"LiveStudio::VideoCourse"]){
+                controller= [[TutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
+            }else if ([cell.model.model_name isEqualToString:@"LiveStudio::VideoLesson"]){
                 //视频课
-                controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.product_id];
-            }else if ([cell.model.product_type isEqualToString:@"LiveStudio::InteractiveCourse"]){
+                controller = [[VideoClassInfoViewController alloc]initWithClassID:cell.model.course_id];
+            }else if ([cell.model.model_name isEqualToString:@"LiveStudio::InteractiveLesson"]){
                 //一对一
-                controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.model.product_id];
+                controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
             }else{
                 //专属课
-                controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.model.product_id];
+                controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.model.course_id];
             }
         }
     }
@@ -539,14 +527,14 @@ typedef enum : NSUInteger {
     
     ClassTimeTableViewCell *cell = [_classTimeView.notClassView.notClassTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag inSection:0]];
     __block UIViewController *controller;
-    if ([cell.model.model_type isEqualToString:@"LiveStudio::Lesson"]) {
+    if ([cell.model.model_name isEqualToString:@"LiveStudio::Lesson"]) {
         //直播课
         controller= [[LivePlayerViewController alloc]initWithClassID:cell.model.product_id];
         [self.navigationController pushViewController:controller animated:YES];
-    }else if ([cell.model.model_type isEqualToString:@"LiveStudio::VideoLesson"]){
+    }else if ([cell.model.model_name isEqualToString:@"LiveStudio::VideoLesson"]){
         //视频课
         //先获取视频课程的详情吧
-        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@",Request_Header,cell.model.classID] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@",Request_Header,cell.model.course_id] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
             
         } failure:^(id  _Nullable erros) {
             
@@ -557,10 +545,10 @@ typedef enum : NSUInteger {
         //加工数据
         //1.聊天室
         NIMChatroom *chatroom = [[NIMChatroom alloc]init];
-        chatroom.roomId = cell.model.classID;
+        chatroom.roomId = cell.model.course_id;
         //2.lessonname
         __block NSString *lessonName ;
-        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/detail",Request_Header,cell.model.product_id] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/detail",Request_Header,cell.model.course_id] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqualToNumber:@1]) {
                 
@@ -570,7 +558,7 @@ typedef enum : NSUInteger {
                     }
                 }
                 
-                controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:cell.model.classID andChatTeamID:cell.model.product_id andLessonName:lessonName==nil?@"暂无直播":lessonName];
+                controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:cell.model.course_id andChatTeamID:cell.model.course_id andLessonName:lessonName==nil?@"暂无直播":lessonName];
                 [self.navigationController pushViewController:controller animated:YES];
             }else{
                 [self HUDStopWithTitle:@"网络繁忙,请稍后重试"];

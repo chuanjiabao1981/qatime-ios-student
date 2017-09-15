@@ -205,13 +205,11 @@
 
 -(void)setModel:(ClassTimeModel *)model{
     _model = model;
-    [_classImage sd_setImageWithURL:[NSURL URLWithString:_model.course_publicize]];
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:_model.course_publicize] placeholderImage:[UIImage imageNamed:@"school"]];
     _name .text = model.name;
     _className.text = model.course_name;
     _date.text = [NSString stringWithFormat:@"%@ %@",model.class_date,model.live_time];
     _teacherName.text = model.teacher_name;
-    NSLog(@"%@",model.status);
-    NSLog(@"%@",[NSString statusSwitchWithStatus:model.status]);
     _status.text = [NSString statusSwitchWithStatus:model.status];
     _grade.text = model.grade;
     _subject.text = model.subject;
@@ -225,13 +223,13 @@
     }
     
     //课程类型
-    if ([model.model_type isEqualToString:@"LiveStudio::Lesson"]) {
+    if ([model.model_name isEqualToString:@"LiveStudio::Lesson"]) {
         _type.text = @"直播课";
         _type.backgroundColor = NAVIGATIONRED;
-    }else if ([model.model_type isEqualToString:@"LiveStudio::InteractiveLesson"]){
+    }else if ([model.model_name isEqualToString:@"LiveStudio::InteractiveLesson"]){
         _type.text = @"一对一";
         _type.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:1.0 alpha:1.0];
-    }else if ([model.model_type isEqualToString:@"LiveStudio::VideoLesson"]){
+    }else if ([model.model_name isEqualToString:@"LiveStudio::VideoLesson"]){
         _type.text = @"视频课";
         _type.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:1.0 alpha:1.0];
     }else {

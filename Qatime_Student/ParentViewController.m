@@ -46,7 +46,7 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), Navigation_Height)];
     [self.view addSubview:_navigationBar];
     
     _navigationBar.titleLabel.text = @"家长手机";
@@ -65,7 +65,7 @@
     }
     
     
-    _parentView = [[ParentView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
+    _parentView = [[ParentView alloc]initWithFrame:CGRectMake(0, Navigation_Height, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-Navigation_Height)];
     [self.view addSubview:_parentView];
     
     _parentView.parentPhoneLabel.text = _parentPhone;

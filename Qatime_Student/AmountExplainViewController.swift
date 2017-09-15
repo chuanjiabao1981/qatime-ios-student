@@ -25,7 +25,7 @@ class AmountExplainViewController: UIViewController ,UIWebViewDelegate{
         self.view.backgroundColor = UIColor.white
         
         //加载导航栏
-        _navigationBar = NavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.width_sd, height: 64))
+        _navigationBar = NavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.width_sd, height: UIApplication.shared.statusBarFrame.size.height+44))
         _navigationBar.titleLabel.text = "说明"
         self.view.addSubview(_navigationBar)
         _navigationBar.leftButton .setImage(UIImage.init(named: "back_arrow"), for: .normal)

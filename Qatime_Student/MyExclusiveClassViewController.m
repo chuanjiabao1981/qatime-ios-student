@@ -100,7 +100,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
         [_mainView.publishedView.mj_footer resetNoMoreData];
         [self requestDataWithRefreshType:PullToReload andClassType:PublisedClass];
     }];
-    _mainView.publishedView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _mainView.publishedView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         _publishedPage++;
         _page = _publishedPage;
         _course = @"published";
@@ -119,7 +119,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
         [_mainView.teachingView.mj_footer resetNoMoreData];
         [self requestDataWithRefreshType:PullToReload andClassType:TeachingClass];
     }];
-    _mainView.teachingView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _mainView.teachingView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         _teachingPage++;
         _page = _teachingPage;
         _course = @"teaching";
@@ -138,7 +138,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
         [_mainView.publishedView.mj_footer resetNoMoreData];
         [self requestDataWithRefreshType:PullToReload andClassType:CompletedClass];
     }];
-    _mainView.publishedView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _mainView.publishedView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         _completedPage++;
         _page = _completedPage;
         _course = @"completed";

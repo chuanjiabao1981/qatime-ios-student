@@ -20,6 +20,8 @@
 
 - (NSString *)dateToTimeStamp:(NSDate *)date;
 
++ (NSString *)dateToTimeStamp:(NSDate *)date;
+
 
 /**
  时间戳转成dateString
@@ -27,6 +29,8 @@
  @return  时间str
  */
 - (NSString *)changeTimeStampToDateString;
+
++ (NSString *)changeTimeStampToDateString:(NSString*)timeStamp;
 
 
 /** 获取当前时间戳 */

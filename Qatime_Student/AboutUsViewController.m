@@ -30,7 +30,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
       
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), Navigation_Height)];
     
     _navigationBar.titleLabel.text = @"关于我们";
     [self.view addSubview:_navigationBar];
@@ -39,7 +39,7 @@
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
 
-    _aboutUsView  = [[AboutUsView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
+    _aboutUsView  = [[AboutUsView alloc]initWithFrame:CGRectMake(0, Navigation_Height, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-Navigation_Height)];
     [self.view addSubview:_aboutUsView];
    
     _aboutUsView.menuTableView.delegate = self;

@@ -30,7 +30,11 @@
         _scrollView.showsVerticalScrollIndicator = NO;
         _scrollView.showsHorizontalScrollIndicator = NO;
         _scrollView.pagingEnabled = YES;
-        
+        _scrollView.sd_layout
+        .leftSpaceToView(self, 0)
+        .topSpaceToView(_segmentControl, 0)
+        .bottomSpaceToView(self, 0)
+        .rightSpaceToView(self, 0);
         
     }
     return self;

@@ -71,7 +71,7 @@
     
     _navigationBar  = ({
         
-        NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+        NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
         [self.view addSubview:_];
         _.backgroundColor = [UIColor clearColor];
         _.contentView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.6];
@@ -216,7 +216,7 @@
     cropLayer = [[CAShapeLayer alloc] init];
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathAddRect(path, nil, cropRect);
-    CGPathAddRect(path, nil, CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64));
+    CGPathAddRect(path, nil, CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height));
 //    CGPathAddRect(path, nil, _qrcodeImage.frame);
 //    CGPathAddRect(path, nil, tipsLabel.frame);
 //    CGPathAddRect(path, nil, torchButton.frame);

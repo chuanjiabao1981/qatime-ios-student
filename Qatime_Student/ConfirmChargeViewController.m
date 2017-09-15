@@ -123,7 +123,7 @@
     
     _navigationBar = ({
         
-        NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+        NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
         
         _.titleLabel.text = @"交易确认";
         
@@ -137,7 +137,7 @@
     
     _confirmView = ({
         
-        ConfirmChargeView *_=[[ConfirmChargeView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
+        ConfirmChargeView *_=[[ConfirmChargeView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height)];
         
         if (dataInfo) {
             _.number.text = dataInfo[@"id"];

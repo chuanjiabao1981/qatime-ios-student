@@ -31,7 +31,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     _navigationBar = ({
-        NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 64)];
+        NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
         _.titleLabel.text = @"绑定邮箱";
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
@@ -40,7 +40,7 @@
     });
     
     _bindingMailInfoView = ({
-        BindingMailInfoView *_=[[BindingMailInfoView alloc]initWithFrame:CGRectMake(0, 64, self.view.width_sd, self.view.height_sd-64)];
+        BindingMailInfoView *_=[[BindingMailInfoView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height)];
         [_.getKeyCodeButton addTarget:self action:@selector(getCode:) forControlEvents:UIControlEventTouchUpInside];
         [_.nextStepButton addTarget:self action:@selector(finish) forControlEvents:UIControlEventTouchUpInside];
         _.mailText.delegate = self;

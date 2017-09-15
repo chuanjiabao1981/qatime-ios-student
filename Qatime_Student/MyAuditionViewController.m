@@ -111,7 +111,7 @@ typedef enum : NSUInteger {
         
     }];
     
-    _myAudioView.liveClassList.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _myAudioView.liveClassList.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [self requestMyVideoClassDataWithClassType:LiveClassType andRefreshType:PushToLoadMore];
     }];
     
@@ -119,7 +119,7 @@ typedef enum : NSUInteger {
         [self requestMyVideoClassDataWithClassType:VideoClassType andRefreshType:PullToRefresh];
     }];
     
-    _myAudioView.videoClassList.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    _myAudioView.videoClassList.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [self requestMyVideoClassDataWithClassType:VideoClassType andRefreshType:PushToLoadMore];
     }];
     

@@ -61,7 +61,7 @@
     
     _navigationBar = ({
         
-        NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
+        NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), Navigation_Height)];
         
         [self.view addSubview:_];
         _.titleLabel.text = @"安全设置";
@@ -179,7 +179,7 @@
             NSLog(@"%@",_contentArr);
             
             /* 菜单初始化*/
-            _menuTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-64)];
+            _menuTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, Navigation_Height, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-Navigation_Height)];
             _menuTableView.delegate = self;
             _menuTableView.dataSource = self;
             _menuTableView.bounces = NO;

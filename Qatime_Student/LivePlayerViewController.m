@@ -520,9 +520,9 @@ bool ismute     = NO;
     
     /* 白板的 播放器*/
     _liveplayerBoard = nil;
-    _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:_teacherPullAddress];
+    _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:_boardPullAddress];
     _liveplayerBoard.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    [_liveplayerBoard setScalingMode:NELPMovieScalingModeNone];
+    [_liveplayerBoard setScalingMode:NELPMovieScalingModeAspectFit];
     
     [_boardPlayerView makePlaceHolderImage:nil];
     [_boardPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadingHolder_Landscape"]];
@@ -570,26 +570,13 @@ bool ismute     = NO;
     /* 白板播放器的设置*/
     
     [_liveplayerBoard setBufferStrategy:NELPLowDelay]; //直播低延时模式
-    [_liveplayerBoard setScalingMode:NELPMovieScalingModeNone]; //设置画面显示模式，默认原始大小
+    [_liveplayerBoard setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
     [_liveplayerBoard setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
     [_liveplayerBoard setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
     [_liveplayerBoard setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
     [_liveplayerBoard setPlaybackTimeout:15 *1000]; // 设置拉流超时时间
-    
-//    NSString *key = @"HelloWorld";
-//    NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
-//    Byte *flv_key = (Byte *)[keyData bytes];
-//    
-//    unsigned long len = [keyData length];
-//    flv_key[len] = '\0';
-//    __weak typeof(self) weakSelf = self;
-//    [_liveplayerBoard setDecryptionKey:flv_key andKeyLength:(int)len :^(NELPKeyCheckResult ret) {
-//        if (ret == 0 || ret == 1) {
-//            [weakSelf.liveplayerBoard prepareToPlay];
-//        }
-//    }];
 
-//    [_liveplayerBoard prepareToPlay]; //初始化视频文件
+    [_liveplayerBoard prepareToPlay]; //初始化视频文件
     
 }
 
@@ -1199,7 +1186,7 @@ bool ismute     = NO;
     [_liveClassInfoView updateLayout];
     [_liveClassInfoView.scrollView updateLayout];
     
-    [self.liveClassInfoView.scrollView scrollRectToVisible:CGRectMake(self.liveClassInfoView.segmentControl.selectedSegmentIndex * self.view.width_sd, 0, self.view.width_sd, self.view.height_sd-64-49) animated:NO];
+    [self.liveClassInfoView.scrollView scrollRectToVisible:CGRectMake(self.liveClassInfoView.segmentControl.selectedSegmentIndex * self.view.width_sd, 0, self.view.width_sd, self.view.height_sd-Navigation_Height-TabBar_Height) animated:NO];
     
     //    if (isFullScreen == NO) {
     //
@@ -2438,7 +2425,7 @@ bool ismute     = NO;
         typeof(self) __weak weakSelf = self;
         [ _liveClassInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
             NSLog(@"%ld", (long)index);
-            [weakSelf.liveClassInfoView.scrollView scrollRectToVisible:CGRectMake(weakSelf.view.width_sd * index, 0, weakSelf.view.width_sd, weakSelf.view.height_sd-64-49) animated:YES];
+            [weakSelf.liveClassInfoView.scrollView scrollRectToVisible:CGRectMake(weakSelf.view.width_sd * index, 0, weakSelf.view.width_sd, weakSelf.view.height_sd-Navigation_Height-TabBar_Height) animated:YES];
         }];
     }
     
@@ -3839,15 +3826,23 @@ bool ismute     = NO;
 #pragma mark- 发消息的同时发弹幕
             
             /* 发弹幕*/
-            [self sendBarrage:barragTitle withAttibute:text];
+            @synchronized (self) {
+                
+                [self sendBarrage:barragTitle withAttibute:text];
+            }
             
             [IFView.TextViewInput setText:@""];
-            [IFView.TextViewInput resignFirstResponder];
             [IFView changeSendBtnWithPhoto:YES];
+            [IFView.TextViewInput resignFirstResponder];
+            
+            
             
         }
-        [self.chatTableView reloadData];
-        [self tableViewScrollToBottom];
+        
+            
+            [self.chatTableView reloadData];
+            [self tableViewScrollToBottom];
+        
     }
     
     
@@ -3964,17 +3959,20 @@ bool ismute     = NO;
         
         if (_viewsArrangementMode != DifferentLevel) {
             
-            [_aBarrage.view removeFromSuperview];
-            [_teacherPlayerView addSubview:_aBarrage.view];
-            [_aBarrage.view sd_clearAutoLayoutSettings];
-            _aBarrage.view.sd_layout
-            .leftEqualToView(_teacherPlayerView)
-            .rightEqualToView(_teacherPlayerView)
-            .topEqualToView(_teacherPlayerView)
-            .bottomEqualToView(_teacherPlayerView);
-            [_aBarrage.view updateLayout];
-            _aBarrage.view.hidden = NO;
-            [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                
+                [_aBarrage.view removeFromSuperview];
+                [_teacherPlayerView addSubview:_aBarrage.view];
+                [_aBarrage.view sd_clearAutoLayoutSettings];
+                _aBarrage.view.sd_layout
+                .leftEqualToView(_teacherPlayerView)
+                .rightEqualToView(_teacherPlayerView)
+                .topEqualToView(_teacherPlayerView)
+                .bottomEqualToView(_teacherPlayerView);
+                [_aBarrage.view updateLayout];
+                _aBarrage.view.hidden = NO;
+                [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
+            });
             
         }else{
             
@@ -3989,13 +3987,16 @@ bool ismute     = NO;
                 
             }else{
                 
-                [_boardPlayerView addSubview:_aBarrage.view];
-                _aBarrage.view.sd_layout
-                .leftEqualToView(_boardPlayerView)
-                .rightEqualToView(_boardPlayerView)
-                .topEqualToView(_boardPlayerView)
-                .bottomEqualToView(_boardPlayerView);
-                [_aBarrage.view updateLayout];
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    
+                    [_boardPlayerView addSubview:_aBarrage.view];
+                    _aBarrage.view.sd_layout
+                    .leftEqualToView(_boardPlayerView)
+                    .rightEqualToView(_boardPlayerView)
+                    .topEqualToView(_boardPlayerView)
+                    .bottomEqualToView(_boardPlayerView);
+                    [_aBarrage.view updateLayout];
+                });
             }
             //            if (_aBarrage.view.hidden == YES) {
             //
@@ -4013,13 +4014,16 @@ bool ismute     = NO;
                     [_aBarrage.view removeFromSuperview];
                 }
                 
-                [_teacherPlayerView addSubview:_aBarrage.view];
-                _aBarrage.view.sd_layout
-                .leftEqualToView(_teacherPlayerView)
-                .rightEqualToView(_teacherPlayerView)
-                .topEqualToView(_teacherPlayerView)
-                .bottomEqualToView(_teacherPlayerView);
-                [_aBarrage.view updateLayout];
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    
+                    [_teacherPlayerView addSubview:_aBarrage.view];
+                    _aBarrage.view.sd_layout
+                    .leftEqualToView(_teacherPlayerView)
+                    .rightEqualToView(_teacherPlayerView)
+                    .topEqualToView(_teacherPlayerView)
+                    .bottomEqualToView(_teacherPlayerView);
+                    [_aBarrage.view updateLayout];
+                });
                 
             }
             
