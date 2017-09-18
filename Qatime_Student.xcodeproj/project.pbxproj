@@ -49,6 +49,8 @@
 		541CCD511F67FACF0099A520 /* HomeworkInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 541CCD501F67FACF0099A520 /* HomeworkInfoTableViewCell.m */; };
 		541E20041E139967007CF5D1 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */; };
 		541E20071E13B9AF007CF5D1 /* NSDate+ChangeUTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E20061E13B9AF007CF5D1 /* NSDate+ChangeUTC.m */; };
+		541F56731F6F66A4001FA7DD /* InteractionReplayPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F56721F6F66A4001FA7DD /* InteractionReplayPlayerViewController.m */; };
+		541F56741F6F66E3001FA7DD /* InteractionReplayPlayerViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 541F56711F6F66A4001FA7DD /* InteractionReplayPlayerViewController.h */; };
 		541F91D01DC97FED00180BE8 /* FindPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */; };
 		541F91D31DC97FFB00180BE8 /* FindPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91D21DC97FFB00180BE8 /* FindPasswordView.m */; };
 		541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */ = {isa = PBXBuildFile; fileRef = 541F91EC1DCA09CC00180BE8 /* TutoriumList.m */; };
@@ -854,6 +856,8 @@
 		541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionHandler.m; sourceTree = "<group>"; };
 		541E20051E13B9AF007CF5D1 /* NSDate+ChangeUTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+ChangeUTC.h"; sourceTree = "<group>"; };
 		541E20061E13B9AF007CF5D1 /* NSDate+ChangeUTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+ChangeUTC.m"; sourceTree = "<group>"; };
+		541F56711F6F66A4001FA7DD /* InteractionReplayPlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InteractionReplayPlayerViewController.h; sourceTree = "<group>"; };
+		541F56721F6F66A4001FA7DD /* InteractionReplayPlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InteractionReplayPlayerViewController.m; sourceTree = "<group>"; };
 		541F91CE1DC97FED00180BE8 /* FindPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindPasswordViewController.h; sourceTree = "<group>"; };
 		541F91CF1DC97FED00180BE8 /* FindPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindPasswordViewController.m; sourceTree = "<group>"; };
 		541F91D11DC97FFB00180BE8 /* FindPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindPasswordView.h; sourceTree = "<group>"; };
@@ -4516,6 +4520,8 @@
 				547B6C3F1E2E150100C52F1B /* Model */,
 				547B6C3E1E2E150000C52F1B /* View */,
 				547B6C3D1E2E14FE00C52F1B /* Controller */,
+				541F56711F6F66A4001FA7DD /* InteractionReplayPlayerViewController.h */,
+				541F56721F6F66A4001FA7DD /* InteractionReplayPlayerViewController.m */,
 			);
 			name = ReplayVideoPlayer;
 			sourceTree = "<group>";
@@ -7604,6 +7610,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				541F56741F6F66E3001FA7DD /* InteractionReplayPlayerViewController.h in Sources */,
 				5489FBCC1F6BE51200534DCC /* renderer_yuv420p.c in Sources */,
 				5489FBCB1F6BE4EB00534DCC /* UICollectionViewLeftAlignedLayout.m in Sources */,
 				5489FBC81F6BE4CA00534DCC /* SAMKeychain.h in Sources */,
@@ -7997,6 +8004,7 @@
 				54AB48ED1DED608A008E3BC5 /* EndedClassView.m in Sources */,
 				546978641DC725A5001695F4 /* NavigationBar.m in Sources */,
 				54294C731DDB071700677333 /* Chat_Account.m in Sources */,
+				541F56731F6F66A4001FA7DD /* InteractionReplayPlayerViewController.m in Sources */,
 				541CCD491F67F6A10099A520 /* HomeworkInfoViewController.m in Sources */,
 				54AB48E11DED51B8008E3BC5 /* SafeViewController.m in Sources */,
 				5422EAF41F4E7AC9008B0A96 /* NIMWebImageManager.m in Sources */,

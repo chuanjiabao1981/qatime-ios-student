@@ -140,7 +140,7 @@
     cell.model = _replayLessonsArray[indexPath.row];
     
     return  cell;
-
+    
 }
 
 #pragma mark- UITableView delegate
@@ -165,7 +165,7 @@
     //切换播放源
     
     InteractionReplayLesson *mod = _replayLessonsArray[indexPath.row];
-//    mod.shd_url
+    //    mod.shd_url
     
 }
 
@@ -178,13 +178,14 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
+
