@@ -9,6 +9,7 @@
 #import "MultifiltersViewController.h"
 #import "NavigationBar.h"
 #import "ClassSubjectCollectionViewCell.h"
+#import "UIControl+RemoveTarget.h"
 
 @interface MultifiltersViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>{
     
@@ -66,13 +67,12 @@
     
     _filters = @[
                  @[@"所有",@"近一个月",@"近两个月",@"近三个月",@"近半年",@"近一年"],
-                 @[@"不限",@"招生中",@"开课中"],
+//                 @[@"不限",@"招生中",@"开课中"],
                  @[@"不限",@"收费课程",@"免费课程"]
                  ];
     
-    _filtersCompare =@[
-                       @[@"allTime",@"1_months",@"2_months",@"3_months",@"6_months",@"1_year"],
-                       @[@"allStatus",@"published",@"teaching"],
+    _filtersCompare =@[@[@"allTime",@"1_months",@"2_months",@"3_months",@"6_months",@"1_year"],
+//                       @[@"allStatus",@"published",@"teaching"],
                        @[@"all",@"charge",@"free"]
                        ];
     
@@ -124,14 +124,15 @@
     NSDictionary *filtDic = dics.mutableCopy;
     
     for (NSString *key in filtDic) {
-        if ([key isEqualToString:@"q[status_eq]"]) {
-            if ([filtDic[key] isEqualToString:@"招生中"]) {
-                [_filtersDic setValue:@"published" forKey:key];
-            }else if ([filtDic[key] isEqualToString:@"开课中"]) {
-                [_filtersDic setValue:@"teaching" forKey:key];
-            }
-            
-        }else if ([key isEqualToString:@"range"]){
+//        if ([key isEqualToString:@"q[status_eq]"]) {
+//            if ([filtDic[key] isEqualToString:@"招生中"]) {
+//                [_filtersDic setValue:@"published" forKey:key];
+//            }else if ([filtDic[key] isEqualToString:@"开课中"]) {
+//                [_filtersDic setValue:@"teaching" forKey:key];
+//            }
+//
+//        }else
+        if ([key isEqualToString:@"range"]){
             if ([filtDic[key] isEqualToString:@"近一个月"]) {
                 [_filtersDic setValue:@"1_months" forKey:key];
             }else if ([filtDic[key] isEqualToString:@"近两个月"]) {
@@ -438,17 +439,17 @@
             }
         }
             break;
+//        case 1:{
+//            if ([cell.subject.text isEqualToString:@"不限"]) {
+//                [_filtersDic removeObjectForKey:@"q[status_eq]"];
+//            }else if ([cell.subject.text isEqualToString:@"招生中"]) {
+//                [_filtersDic setValue:@"published" forKey:@"q[status_eq]"];
+//            }else if ([cell.subject.text isEqualToString:@"开课中"]) {
+//                [_filtersDic setValue:@"teaching" forKey:@"q[status_eq]"];
+//            }
+//        }
+//            break;
         case 1:{
-            if ([cell.subject.text isEqualToString:@"不限"]) {
-                [_filtersDic removeObjectForKey:@"q[status_eq]"];
-            }else if ([cell.subject.text isEqualToString:@"招生中"]) {
-                [_filtersDic setValue:@"published" forKey:@"q[status_eq]"];
-            }else if ([cell.subject.text isEqualToString:@"开课中"]) {
-                [_filtersDic setValue:@"teaching" forKey:@"q[status_eq]"];
-            }
-        }
-            break;
-        case 2:{
             if ([cell.subject.text isEqualToString:@"不限"]) {
                 if (_filtersDic[@"q[sell_type_eq]"]) {
                     [_filtersDic removeObjectForKey:@"q[sell_type_eq]"];
@@ -500,33 +501,33 @@
     }
     
     //section 1
-    if (indexPath.section == 1) {
-        //header
-        if (kind == UICollectionElementKindSectionHeader){
-            UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId" forIndexPath:indexPath];
-            
-            sectionLabel2 = [[UILabel alloc]init];
-            sectionLabel2.text = @"课程状态";
-            sectionLabel2.font = TEXT_FONTSIZE;
-            sectionLabel2.textColor = TITLECOLOR;
-            [header addSubview:sectionLabel2];
-            sectionLabel2.sd_layout
-            .leftSpaceToView(header,20*ScrenScale)
-            .bottomSpaceToView(header,0)
-            .autoHeightRatio(0);
-            [sectionLabel2 setSingleLineAutoResizeWithMaxWidth:100];
-            
-            view = header;
-        }
-        if (kind == UICollectionElementKindSectionFooter){
-            UICollectionReusableView *footer = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId" forIndexPath:indexPath];
-            footer.backgroundColor = [UIColor whiteColor];
-            view = footer;
-        }
-    }
+//    if (indexPath.section == 1) {
+//        //header
+//        if (kind == UICollectionElementKindSectionHeader){
+//            UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId" forIndexPath:indexPath];
+//
+//            sectionLabel2 = [[UILabel alloc]init];
+//            sectionLabel2.text = @"课程状态";
+//            sectionLabel2.font = TEXT_FONTSIZE;
+//            sectionLabel2.textColor = TITLECOLOR;
+//            [header addSubview:sectionLabel2];
+//            sectionLabel2.sd_layout
+//            .leftSpaceToView(header,20*ScrenScale)
+//            .bottomSpaceToView(header,0)
+//            .autoHeightRatio(0);
+//            [sectionLabel2 setSingleLineAutoResizeWithMaxWidth:100];
+//
+//            view = header;
+//        }
+//        if (kind == UICollectionElementKindSectionFooter){
+//            UICollectionReusableView *footer = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footerId" forIndexPath:indexPath];
+//            footer.backgroundColor = [UIColor whiteColor];
+//            view = footer;
+//        }
+//    }
     
     //section 2
-    if (indexPath.section == 2) {
+    if (indexPath.section == 1) {
         //header
         if (kind == UICollectionElementKindSectionHeader){
             UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId2" forIndexPath:indexPath];
@@ -582,22 +583,22 @@
             [_startTime setTitle:@"选择开始时间" forState:UIControlStateNormal];
             [_startTime setTitleColor:TITLECOLOR forState:UIControlStateNormal];
             _startTime.titleLabel.font = [UIFont systemFontOfSize:15*ScrenScale];
-            [_startTime setEnlargeEdge:20];
-            
+            [_startTime removeAllTargets];
             [_startTime addTarget:self action:@selector(selectTime:) forControlEvents:UIControlEventTouchUpInside];
             [start addSubview:_startTime];
+            start.userInteractionEnabled = YES;
             _startTime.sd_layout
             .leftSpaceToView(start,10*ScrenScale)
             .topSpaceToView(start,5*ScrenScale)
             .bottomSpaceToView(start,5*ScrenScale)
             .rightSpaceToView(image1,10*ScrenScale);
-            
+            [_startTime setEnlargeEdge:20];
+            _startTime.titleLabel.font = TEXT_FONTSIZE_MIN;
             //结束时间
             UIView *end = [[UIView alloc]init];
             [footer addSubview:end];
             end.layer.borderColor = TITLECOLOR.CGColor;
             end.layer.borderWidth = 1;
-            
             end.sd_layout
             .topEqualToView(start)
             .bottomEqualToView(start)
@@ -606,6 +607,7 @@
             
             UIImageView *image2 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"日历灰"]];
             [end addSubview:image2];
+            
             image2.sd_layout
             .rightSpaceToView(end,10*ScrenScale)
             .topSpaceToView(end,5*ScrenScale)
@@ -616,14 +618,17 @@
             [_endTime setTitle:@"选择结束时间" forState:UIControlStateNormal];
             [_endTime setTitleColor:TITLECOLOR forState:UIControlStateNormal];
             _endTime.titleLabel.font = [UIFont systemFontOfSize:15*ScrenScale];
-            [_endTime setEnlargeEdge:20];
+            [_endTime removeAllTargets];
             [_endTime addTarget:self action:@selector(selectTime:) forControlEvents:UIControlEventTouchUpInside];
             [end addSubview:_endTime];
+            end.userInteractionEnabled = YES;
+            _endTime.titleLabel.font = TEXT_FONTSIZE_MIN;
             _endTime.sd_layout
             .leftSpaceToView(end,10*ScrenScale)
             .topSpaceToView(end,5*ScrenScale)
             .bottomSpaceToView(end,5*ScrenScale)
             .rightSpaceToView(image2,10*ScrenScale);
+//            [_endTime setEnlargeEdge:20];
             
             //杠
             UILabel *dots = [[UILabel alloc]init];
@@ -656,7 +661,7 @@
     
     CGSize size = CGSizeZero;
     
-    if (section == 2) {
+    if (section == 1) {
         size = CGSizeMake(self.view.width_sd, 200*ScrenScale);
     }else{
         
@@ -678,7 +683,6 @@
         [self.view addSubview:_picker];
         [_picker showHcdDateTimePicker];
     }
-    
     
     _picker.clickedOkBtn =  ^(NSString * datetimeStr){
         

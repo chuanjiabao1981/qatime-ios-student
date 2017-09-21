@@ -159,6 +159,9 @@
         
         _cellHeight = _contentF.size.height+20;
         
+    }else if (message.from == UUMessageFromeNoticeTips){
+        //作业/问题什么的加载frame
+        
     }
     
 }

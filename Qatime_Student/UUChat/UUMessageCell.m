@@ -167,7 +167,6 @@
         _noticeContentView.backgroundColor =SEPERATELINECOLOR;
         [self.contentView addSubview:_noticeContentView];
         
-        
         //系统消息label
         _noticeLabel = [[UILabel alloc]init];
         _noticeLabel.textColor = [UIColor grayColor];
@@ -175,6 +174,24 @@
         [_noticeContentView addSubview:_noticeLabel];
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(UUAVAudioPlayerDidFinishPlay) name:@"StopPlayVoice" object:nil];
+        
+        /** 作业/问答部分 */
+        //底部
+        _noticeTipsContentView = [[UIView alloc]init];
+        _noticeTipsContentView.backgroundColor = SEPERATELINECOLOR_2;
+        [self.contentView addSubview:_noticeTipsContentView];
+        _noticeTipsContentView.layer.borderColor = TITLECOLOR.CGColor;
+        _noticeTipsContentView.layer.borderWidth = 0.5;
+        
+        //左侧标签
+        _noticeTipsCategoryContent = [[UIView alloc]init];
+        _noticeTipsCategoryContent.backgroundColor = [UIColor blueColor];
+        [_noticeTipsContentView addSubview:_noticeTipsCategoryContent];
+        
+        //标题
+        _noticeTipsTitle = [[UILabel alloc]init];
+        [_noticeTipsContentView addSubview:_noticeTipsTitle];
+        
         
     }
     return self;
@@ -193,7 +210,6 @@
     // 显示文字
     if (self.messageFrame.message.type == UUMessageTypeText){
         
-
     }
     /* 显示图片*/
     else if (self.messageFrame.message.type == UUMessageTypePicture){
@@ -203,18 +219,13 @@
         if (self.messageFrame.message.from == UUMessageFromMe) {
             /* 自己发送的消息*/
             if (self.messageFrame.message.thumbPath) {
-                
                 image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]];
                 btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
-                
             }else{
-                
                 image = self.btnContent.backImageView.image;
                 btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
                 btnImageView.image = image;
-    
             }
-            
             [_photoDelegate showImage:btnImageView andImage:image];
             
         }else{
@@ -244,6 +255,11 @@
             
             [self UUAVAudioPlayerDidFinishPlay];
         }
+        
+    }else if (self.messageFrame.message.type == UUMessageTypeNotificationTips){
+        //跳转到作业或者问答 🙃
+        //在这儿点击跳转啊魂淡
+        
         
     }
     
@@ -333,7 +349,7 @@
     
     _messageFrame = messageFrame;
     
-    if (messageFrame.message.type != UUMessagetypeNotice) {
+    if (messageFrame.message.type != UUMessagetypeNotice && messageFrame.message.type != UUMessageTypeNotificationTips) {
         
         self.labelTime.hidden = NO;
         self.labelNum.hidden = NO;
@@ -345,7 +361,7 @@
         self.title.hidden = NO;
         self.sendfaild.hidden = YES;
         headImageBackView.hidden = NO;
-        
+        self.noticeTipsContentView.hidden = YES;
         // 1、设置时间
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
@@ -503,7 +519,6 @@
                 _timeLabel.text = [times substringFromIndex:5];
             }
             
-            
         }else if(messageFrame.message.from == UUMessageFromOther){
             [_timeLabel sd_clearAutoLayoutSettings];
             _timeLabel.sd_layout
@@ -616,6 +631,7 @@
                     self.btnContent.contentTextView.hidden= NO;
                     self.btnContent.backImageView.hidden = YES;
                     self.btnContent.voiceBackView.hidden = YES;
+                    self.noticeTipsContentView.hidden = YES;
                     
                     NSString *title = messageFrame.message.strContent;
                     if (title ==nil) {
@@ -729,6 +745,7 @@
                     self.btnContent.contentTextView.hidden= YES;
                     self.btnContent.voiceBackView.hidden = YES;
                     self.btnContent.backImageView.hidden = NO;
+                    self.noticeTipsContentView.hidden = YES;
                     self.btnContent.backImageView.image = messageFrame.message.picture;
                     self.btnContent.backImageView.frame = CGRectMake(0, 0, self.btnContent.frame.size.width, self.btnContent.frame.size.height);
                     [self makeMaskView:self.btnContent.backImageView withImage:normal];
@@ -744,7 +761,7 @@
                     self.btnContent.backImageView.hidden = YES;
                     self.btnContent.titleLabel.hidden=YES;
                     self.btnContent.voiceBackView.hidden = NO;
-                    
+                    self.noticeTipsContentView.hidden = YES;
                     self.btnContent.voiceBackView.transform = CGAffineTransformMakeScale(1, 1);
                     self.btnContent.second.transform = CGAffineTransformMakeScale(1, 1);
                     self.btnContent.second.textAlignment = NSTextAlignmentLeft;
@@ -768,6 +785,7 @@
                     self.btnContent.contentTextView.hidden= NO;
                     self.btnContent.titleLabel.hidden=NO;
                     self.btnContent.voiceBackView.hidden = YES;
+                    self.noticeTipsContentView.hidden = YES;
                     NSString *title = messageFrame.message.strContent;
                     if (title ==nil) {
                         title =@"";
@@ -874,6 +892,7 @@
                     self.btnContent.backImageView.hidden = NO;
                     self.btnContent.voiceBackView.hidden = YES;
                     self.btnContent.titleLabel.hidden=YES;
+                    self.noticeTipsContentView.hidden = YES;
                     [self.btnContent.backImageView setImage:messageFrame.message.picture];
                     self.btnContent.backImageView.frame = CGRectMake(0, 0, self.btnContent.frame.size.width, self.btnContent.frame.size.height);
                     
@@ -889,6 +908,7 @@
                     self.btnContent.backImageView.hidden = YES;
                     self.btnContent.titleLabel.hidden=YES;
                     self.btnContent.voiceBackView.hidden = NO;
+                    self.noticeTipsContentView.hidden = YES;
                     
                     self.btnContent.voiceBackView.transform = CGAffineTransformMakeScale(-1, 1);
                     self.btnContent.second.transform = CGAffineTransformMakeScale(-1, 1);
@@ -905,7 +925,9 @@
             }
         }
 
-    }else{
+    }
+    
+    if(messageFrame.message.type == UUMessagetypeNotice){
        //系统公告类消息
         
         self.labelTime.hidden = YES;
@@ -918,6 +940,7 @@
         self.timeLabel.hidden = YES;
         self.title.hidden = YES;
         self.sendfaild.hidden = YES;
+        self.noticeTipsContentView.hidden = YES;
         
         self.noticeLabel.textAlignment = NSTextAlignmentLeft;
         
@@ -948,6 +971,21 @@
         .heightIs(self.noticeLabel.height_sd+20)
         .widthIs(self.noticeLabel.width_sd+20);
         [self.noticeContentView updateLayout];
+        
+    }else if (messageFrame.message.type == UUMessageTypeNotificationTips){
+        
+        self.labelTime.hidden = YES;
+        self.labelNum.hidden = YES;
+        self.btnHeadImage.hidden = YES;
+        self.btnContent.hidden = YES;
+        self.noticeContentView.hidden = YES;
+        self.noticeLabel.hidden = YES;
+        headImageBackView.hidden = YES;
+        self.timeLabel.hidden = YES;
+        self.title.hidden = YES;
+        self.sendfaild.hidden = YES;
+        self.noticeTipsContentView.hidden = NO;
+        
         
     }
 }

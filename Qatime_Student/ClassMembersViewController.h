@@ -1,17 +1,14 @@
 //
-//  ExclusiveHomeworkViewController.h
+//  ClassMembersViewController.h
 //  Qatime_Student
 //
-//  Created by Shin on 2017/8/14.
+//  Created by Shin on 2017/9/18.
 //  Copyright © 2017年 WWTD. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "ClassHomeworkCell.h"
-#import "ClassHomework.h"
-#import "HomeworkManage.h"
 
-@interface ExclusiveHomeworkViewController : UIViewController
+@interface ClassMembersViewController : UIViewController
 
 @property (nonatomic, strong) UITableView *mainView ;
 

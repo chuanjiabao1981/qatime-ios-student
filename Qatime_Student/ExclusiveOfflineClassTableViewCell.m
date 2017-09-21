@@ -109,9 +109,7 @@
     .autoHeightRatio(0);
     _replay.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     
-    
     [self setupAutoHeightWithBottomView:_status bottomMargin:10];
-    
     
 }
 
@@ -124,34 +122,65 @@
     _address.text = model.class_address;
     _classTime .text = [NSString stringWithFormat:@"%@",model.start_time];
     
-    /* 已开课的状态*/
-    if ([model.status isEqualToString:@"init"]) {
-        _status.text =@"未开始";
-        _class_status = [NSString stringWithFormat:@"未开始"];
-    }else if([model.status isEqualToString:@"ready"]){
-        _status.text =@"待上课";
-        _class_status = [NSString stringWithFormat:@"待上课"];
-    }else if([model.status isEqualToString:@"teaching"]){
-        _status.text =@"直播中";
-        _class_status = [NSString stringWithFormat:@"直播中"];
-    }else if([model.status isEqualToString:@"closed"]){
-        _status.text =@"已直播";
-        _class_status = [NSString stringWithFormat:@"已直播"];
-    }else if([model.status isEqualToString:@"finished"]){
-        _status.text =@"已结束";
-        _class_status = [NSString stringWithFormat:@"已结束"];
-    }else if([model.status isEqualToString:@"pause"]){
-        _status.text =@"暂停中";
-        _class_status = [NSString stringWithFormat:@"暂停中"];
-    }else if([model.status isEqualToString:@"missed"]){
-        _status.text =@"待补课";
-        _class_status = [NSString stringWithFormat:@"待补课"];
-    }else if([model.status isEqualToString:@"billing"]){
-        _status.text =@"已结束";
-        _class_status = [NSString stringWithFormat:@"已结束"];
-    }else if([model.status isEqualToString:@"completed"]){
-        _status.text =@"已结束";
-        _class_status = [NSString stringWithFormat:@"已结束"];
+    if (model.isOfflineClass == NO) {
+        /* 已开课的状态*/
+        if ([model.status isEqualToString:@"init"]) {
+            _status.text =@"未开始";
+            _class_status = [NSString stringWithFormat:@"未开始"];
+        }else if([model.status isEqualToString:@"ready"]){
+            _status.text =@"待上课";
+            _class_status = [NSString stringWithFormat:@"待上课"];
+        }else if([model.status isEqualToString:@"teaching"]){
+            _status.text =@"直播中";
+            _class_status = [NSString stringWithFormat:@"直播中"];
+        }else if([model.status isEqualToString:@"closed"]){
+            _status.text =@"已直播";
+            _class_status = [NSString stringWithFormat:@"已直播"];
+        }else if([model.status isEqualToString:@"finished"]){
+            _status.text =@"已结束";
+            _class_status = [NSString stringWithFormat:@"已结束"];
+        }else if([model.status isEqualToString:@"pause"]){
+            _status.text =@"暂停中";
+            _class_status = [NSString stringWithFormat:@"暂停中"];
+        }else if([model.status isEqualToString:@"missed"]){
+            _status.text =@"待补课";
+            _class_status = [NSString stringWithFormat:@"待补课"];
+        }else if([model.status isEqualToString:@"billing"]){
+            _status.text =@"已结束";
+            _class_status = [NSString stringWithFormat:@"已结束"];
+        }else if([model.status isEqualToString:@"completed"]){
+            _status.text =@"已结束";
+            _class_status = [NSString stringWithFormat:@"已结束"];
+        }
+    }else{
+        if ([model.status isEqualToString:@"init"]) {
+            _status.text =@"未开始";
+            _class_status = [NSString stringWithFormat:@"未开始"];
+        }else if([model.status isEqualToString:@"ready"]){
+            _status.text =@"待上课";
+            _class_status = [NSString stringWithFormat:@"待上课"];
+        }else if([model.status isEqualToString:@"teaching"]){
+            _status.text =@"上课中";
+            _class_status = [NSString stringWithFormat:@"上课中"];
+        }else if([model.status isEqualToString:@"closed"]){
+            _status.text =@"已结束";
+            _class_status = [NSString stringWithFormat:@"已结束"];
+        }else if([model.status isEqualToString:@"finished"]){
+            _status.text =@"已结束";
+            _class_status = [NSString stringWithFormat:@"已结束"];
+        }else if([model.status isEqualToString:@"pause"]){
+            _status.text =@"暂停中";
+            _class_status = [NSString stringWithFormat:@"暂停中"];
+        }else if([model.status isEqualToString:@"missed"]){
+            _status.text =@"已结束";
+            _class_status = [NSString stringWithFormat:@"已结束"];
+        }else if([model.status isEqualToString:@"billing"]){
+            _status.text =@"已结束";
+            _class_status = [NSString stringWithFormat:@"已结束"];
+        }else if([model.status isEqualToString:@"completed"]){
+            _status.text =@"已结束";
+            _class_status = [NSString stringWithFormat:@"已结束"];
+        }
     }
 
 }

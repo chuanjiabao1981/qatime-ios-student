@@ -32,6 +32,7 @@
 #import "ExclusiveHomeworkViewController.h"
 #import "ExclusiveCoursewareViewController.h"
 #import "ExclusiveMembersViewController.h"
+#import "ClassMembersViewController.h"
 
 @interface ExclusiveInfoViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDataSource,UITableViewDelegate>{
     
@@ -146,7 +147,7 @@
         }
             break;
         case 2:{
-            
+            controller = [[ExclusiveHomeworkViewController alloc]initWithClassID:self.classID];
         }
             break;
         case 3:{
@@ -158,7 +159,7 @@
         }
             break;
         case 5:{
-            
+            controller = [[ClassMembersViewController alloc]initWithClassID:self.classID];
         }
             break;
     }
@@ -196,6 +197,7 @@
             self.classID = dic[@"data"][@"customized_group"][@"id"];
             
             self.tutoriumInfoView.exclusiveModel = model;
+            self.tutoriumInfoView.classFeature.hidden = YES;
             self.navigationBar.titleLabel.text = model.name;
             if ([model.status isEqualToString:@"finished"]||[model.status isEqualToString:@"billing"]||[model.status isEqualToString:@"completed"]){
                 //如果课程已结束,buybar不显示.什么都不显示了
@@ -206,16 +208,18 @@
                 
             }
             
-            //课程
+            //线上课
             for (NSDictionary *lesson in dic[@"data"][@"customized_group"][@"scheduled_lessons"]) {
                 ExclusiveLesson *mod = [ExclusiveLesson yy_modelWithJSON:lesson];
                 mod.lessonId = lesson[@"id"];
+                mod.isOfflineClass = NO;
                 [_onlineClassArray addObject:mod];
             }
-            
+            //线下课
             for (NSDictionary *lesson in dic[@"data"][@"customized_group"][@"offline_lessons"]) {
                 ExclusiveLesson *mod = [ExclusiveLesson yy_modelWithJSON:lesson];
                 mod.lessonId = lesson[@"id"];
+                mod.isOfflineClass = YES;
                 [_offlineClassArray addObject:mod];
             }
             

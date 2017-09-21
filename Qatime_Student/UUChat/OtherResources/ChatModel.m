@@ -320,5 +320,21 @@ static NSString *previousTime = nil;
 
 }
 
+/** 添加作业/问答模块提醒消息 */
+- (void)addSpecifiedNotificationTipsItem:(NSString *)notifications{
+    
+    UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
+    UUMessage *message = [[UUMessage alloc] init];
+    message.isRichText = NO;
+    message.strContent = notifications;
+    //    message.attributedStrContent = notification;
+    message.type = UUMessageTypeNotificationTips;
+    message.from = UUMessageFromeNoticeTips;
+    
+    [messageFrame setMessage:message];
+    [self.dataSource addObject:messageFrame];
+    
+}
+
 
 @end
