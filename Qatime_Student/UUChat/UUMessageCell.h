@@ -14,6 +14,22 @@
 @class UUMessageCell;
 
 
+/**
+ 作业/课件的类型
+
+ - HomeWork: 作业
+ - Question: 提问
+ - Answer: 回答
+ - Files: 文件
+ */
+typedef NS_ENUM(NSUInteger, NotificationTipsType) {
+    HomeWork,
+    Question,
+    Answer,
+    Files,
+};
+
+
 @protocol UUMessageCellDelegate <NSObject>
 @optional
 
@@ -26,6 +42,13 @@
 @protocol PhotoBrowserDelegate <NSObject>
 
 - (void)showImage:(UIImageView*)imageView andImage:(UIImage *)image;
+
+@end
+
+@protocol NotificationTipsDelegat <NSObject>
+@optional
+
+- (void)notificationDidClick:(UUMessageCell *)cell notificationTipsType:(NotificationTipsType)notificationTipsType andNotifications:(NSDictionary *)notifications;
 
 @end
 
@@ -52,6 +75,8 @@
 
 @property (nonatomic, strong) id<PhotoBrowserDelegate> photoDelegate ;
 
+@property (nonatomic, weak) id<NotificationTipsDelegat> notificationTipsDelegate  ;
+
 @property(nonatomic,strong) YYTextView *title ;
 
 /* 增加一个 真正的时间label*/
@@ -65,7 +90,7 @@
 //作业 / 问答类型的内容
 
 /** 底下那层view */
-@property (nonatomic, strong) UIView *noticeTipsContentView;
+@property (nonatomic, strong) UIButton *noticeTipsContentView;
 /** 标题 */
 @property (nonatomic, strong) UILabel *noticeTipsTitle ;
 /** 内容 */
@@ -73,7 +98,6 @@
 /** 左侧的分类条吧 */
 @property (nonatomic, strong) UIView *noticeTipsCategoryContent ;
 @property (nonatomic, strong) UILabel *noticeTipsCategory ;
-
 
 
 @end

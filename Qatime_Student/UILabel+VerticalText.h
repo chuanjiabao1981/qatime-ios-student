@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface UILabel (VerticalText)
-
+@property (nonatomic) NSString *verticalText;
 @end

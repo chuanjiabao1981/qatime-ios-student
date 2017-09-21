@@ -10,4 +10,7 @@
 
 @interface FileToolBar : UIView
 
+@property (nonatomic, strong) UIButton *deletBtn;
+@property (nonatomic, strong) UIButton *selectAllBtn;
+
 @end

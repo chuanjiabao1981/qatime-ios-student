@@ -91,7 +91,7 @@
                      @"我的试听",
                      @"我的作业",
                      @"我的提问",
-                     @"下载管理",
+                     @"我的下载",
                      @"安全管理",
                      @"系统设置",
                      @"关于我们"];
@@ -463,7 +463,7 @@
                 }
                     break;
                 case 9:{
-                    
+                    controller = [[DownloadManagerViewController alloc]init];
                 }
                     break;
                     

@@ -727,18 +727,46 @@
                         NSError *err;
                         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
                         NSString *result;
-                        if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
-                            result = @"直播关闭";
-                        }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
-                            result = @"直播开启";
-                        }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
-                            result = @"老师关闭了互动答疑";
-                        }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
-                            result = @"老师开启了互动答疑";
+                        
+                        if (dic[@"event"]) {
+                            if (dic[@"type"]){
+                                //这大概就是 什么作业了 什么问答了那种类型的消息了
+                                //不用加工数据,按照原数据直接写进Model就行了.改改方法
+                                //增加一个发送人吧.
+                                __block NSMutableDictionary *senders = dic.mutableCopy;
+                                
+                                for (Chat_Account *user in _userList) {
+                                    if ([user.accid isEqualToString:message.from]) {
+                                        [senders setValue:user.accid forKey:@"accid"];
+                                        [senders setValue:user.icon forKey:@"icon"];
+                                        [senders setValue:user.name forKey:@"name"];
+                                    }
+                                }
+                                if ([message.from isEqualToString:_chat_Account.accid]) {
+                                    [senders setValue:@"FromMe" forKey:@"from"];
+                                }else{
+                                    [senders setValue:@"FromOther" forKey:@"from"];
+                                }
+                                [senders setValue:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString] forKey:@"time"];
+                                
+                                [self.chatModel addSpecifiedNotificationTipsItem:senders];
+                                
+                            }else{
+                                
+                                if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                                    result = @"直播关闭";
+                                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                                    result = @"直播开启";
+                                }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                                    result = @"老师关闭了互动答疑";
+                                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                                    result = @"老师开启了互动答疑";
+                                }
+                                [self.chatModel addSpecifiedNotificationItem:result];
+                                [self.chatTableView reloadData];
+                                [self tableViewScrollToBottom];
+                            }
                         }
-                        [self.chatModel addSpecifiedNotificationItem:result];
-                        [self.chatTableView reloadData];
-                        [self tableViewScrollToBottom];
                         
                     }else{
                         
@@ -958,21 +986,50 @@
                 NSError *err;
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
                 NSString *result;
-                if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"type"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
-                    result = @"直播关闭";
-                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"type"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
-                    result = @"直播开启";
-                }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"type"]isEqualToString:@"LiveStudio::InstantLesson"]){
-                    result = @"老师关闭了互动答疑";
-                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"type"]isEqualToString:@"LiveStudio::InstantLesson"]){
-                    result = @"老师开启了互动答疑";
+                
+                if (dic[@"event"]) {
+                    if (dic[@"type"]){
+                        //这大概就是 什么作业了 什么问答了那种类型的消息了
+                        //不用加工数据,按照原数据直接写进Model就行了.改改方法
+                        //增加一个发送人吧.
+                        __block NSMutableDictionary *senders = dic.mutableCopy;
+                        
+                        for (Chat_Account *user in _userList) {
+                            if ([user.accid isEqualToString:message.from]) {
+                                [senders setValue:user.accid forKey:@"accid"];
+                                [senders setValue:user.icon forKey:@"icon"];
+                                [senders setValue:user.name forKey:@"name"];
+                            }
+                        }
+                        if ([message.from isEqualToString:_chat_Account.accid]) {
+                            [senders setValue:@"FromMe" forKey:@"from"];
+                        }else{
+                            [senders setValue:@"FromOther" forKey:@"from"];
+                        }
+                        [senders setValue:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString] forKey:@"time"];
+                        
+                        [self.chatModel addSpecifiedNotificationTipsItem:senders];
+                        
+                    }else{
+                        
+                        if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"type"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                            result = @"直播关闭";
+                        }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"type"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                            result = @"直播开启";
+                        }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"type"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                            result = @"老师关闭了互动答疑";
+                        }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"type"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                            result = @"老师开启了互动答疑";
+                        }
+                        if (result) {
+                            
+                            [self.chatModel addSpecifiedNotificationItem:result];
+                            [self.chatTableView reloadData];
+                            [self tableViewScrollToBottom];
+                        }
+                    }
                 }
-                if (result) {
-                    
-                    [self.chatModel addSpecifiedNotificationItem:result];
-                    [self.chatTableView reloadData];
-                    [self tableViewScrollToBottom];
-                }
+                
             }else{
                 
             }
@@ -984,6 +1041,7 @@
     }
     
 }
+
 /** 禁言 */
 - (void)shutUpTalking{
     
@@ -1097,7 +1155,7 @@
 - (void)onTeamUpdated:(NIMTeam *)team{
     
     //公告就直接从聊天获取
-//    [[NSNotificationCenter defaultCenter]postNotificationName:@"NewNotice" object:@{@"notice":team.announcement,@"time":[NSString stringWithFormat:@"%f",[[team valueForKeyPath:@"time"] floatValue] ]}];
+    //    [[NSNotificationCenter defaultCenter]postNotificationName:@"NewNotice" object:@{@"notice":team.announcement,@"time":[NSString stringWithFormat:@"%f",[[team valueForKeyPath:@"time"] floatValue] ]}];
     
 }
 

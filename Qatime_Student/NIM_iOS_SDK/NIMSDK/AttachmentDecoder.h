@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Attachment.h"
 
-@interface AttachmentDecoder : NSObject
+@interface AttachmentDecoder : NSObject<NIMCustomAttachmentCoding>
 
 @end

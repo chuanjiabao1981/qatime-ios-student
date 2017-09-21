@@ -143,10 +143,20 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property(nonatomic,assign) BOOL sendFaild ;
 
 
-
-
 /* 最强大的属性->消息直接存成属性*/
 @property(nonatomic,strong) NIMMessage *message ;
+
+
+/** 作业/问答属性. */
+@property (nonatomic, strong) NSString *notificationTipsContent ;
+@property (nonatomic, strong) NSString *notificationTipsType ;
+@property (nonatomic, strong) NSString *notificationEvents ;
+@property (nonatomic, strong) NSString *taskable_id ;
+@property (nonatomic, strong) NSString *taskable_type ;
+
+/** 操蛋属性 -> 把收到后并且加工完成的字典整个传进来 */
+@property (nonatomic, strong) NSDictionary *notificationTipsContentDic ;
+
 
 
 - (void)setWithDict:(NSDictionary *)dic;

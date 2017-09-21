@@ -30,7 +30,7 @@
 #import "NSDate+ChangeUTC.h"
 #import "NSString+Date.h"
 #import "NSDate+Utils.h"
-
+#import "UILabel+VerticalText.h"
 
 
 //#import "YYPhotoBrowseView.h"
@@ -45,6 +45,9 @@
     
     UIView *headImageBackView;
     BOOL contentVoiceIsPlaying;
+    
+    NotificationTipsType _notificationTypes;
+    
 }
 @end
 
@@ -177,19 +180,28 @@
         
         /** 作业/问答部分 */
         //底部
-        _noticeTipsContentView = [[UIView alloc]init];
-        _noticeTipsContentView.backgroundColor = SEPERATELINECOLOR_2;
+        _noticeTipsContentView = [[UIButton alloc]init];
+        _noticeTipsContentView.backgroundColor = BACKGROUNDGRAY;
         [self.contentView addSubview:_noticeTipsContentView];
-        _noticeTipsContentView.layer.borderColor = TITLECOLOR.CGColor;
+        _noticeTipsContentView.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
         _noticeTipsContentView.layer.borderWidth = 0.5;
+        [_noticeTipsContentView addTarget:self action:@selector(clickOnNotificationTips:) forControlEvents:UIControlEventTouchUpInside];
         
         //左侧标签
         _noticeTipsCategoryContent = [[UIView alloc]init];
         _noticeTipsCategoryContent.backgroundColor = [UIColor blueColor];
         [_noticeTipsContentView addSubview:_noticeTipsCategoryContent];
         
+        _noticeTipsCategory = [[UILabel alloc]init];
+        _noticeTipsCategory.font = TEXT_FONTSIZE_MIN;
+        _noticeTipsCategory.textColor = [UIColor whiteColor];
+        _noticeTipsCategory.textAlignment = NSTextAlignmentCenter;
+        [_noticeTipsCategoryContent addSubview:_noticeTipsCategory];
+        
         //标题
         _noticeTipsTitle = [[UILabel alloc]init];
+        _noticeTipsTitle.font = TEXT_FONTSIZE_MIN;
+        _noticeTipsTitle.textColor = [UIColor blackColor];
         [_noticeTipsContentView addSubview:_noticeTipsTitle];
         
         
@@ -349,7 +361,7 @@
     
     _messageFrame = messageFrame;
     
-    if (messageFrame.message.type != UUMessagetypeNotice && messageFrame.message.type != UUMessageTypeNotificationTips) {
+    if (messageFrame.message.type != UUMessagetypeNotice ) {
         
         self.labelTime.hidden = NO;
         self.labelNum.hidden = NO;
@@ -381,7 +393,6 @@
         if (messageFrame.message.strIcon==nil) {
             messageFrame.message.strIcon = @"";
         }
-        
         
         headImageBackView.frame = messageFrame.iconF;
         self.btnHeadImage.frame = CGRectMake(0, 0, ChatIconWH, ChatIconWH);
@@ -457,6 +468,8 @@
             }else if(messageFrame.message.type == UUMessageTypeVoice){
                 
                 
+            }else if (messageFrame.message.type == UUMessageTypeNotificationTips){
+                //作业/问答提示消息
             }
             
         }else{
@@ -488,11 +501,12 @@
             }else if(messageFrame.message.type == UUMessageTypeVoice){
                 
                 
+            }else if (messageFrame.message.type == UUMessageTypeNotificationTips){
+                //作业/问答提示消息
             }
         }
         
         /* 5.发送设置时间戳(头像旁边)*/
-        
         if (messageFrame.message.from == UUMessageFromMe) {
             [_timeLabel sd_clearAutoLayoutSettings];
             _timeLabel.sd_layout
@@ -929,7 +943,6 @@
     
     if(messageFrame.message.type == UUMessagetypeNotice){
        //系统公告类消息
-        
         self.labelTime.hidden = YES;
         self.labelNum.hidden = YES;
         self.btnHeadImage.hidden = YES;
@@ -947,11 +960,9 @@
         if (messageFrame.message.strContent==nil) {
             self.noticeLabel.text = messageFrame.message.strContent;
             self.noticeLabel.textAlignment = NSTextAlignmentCenter;
-            
         }else{
             self.noticeLabel.text = messageFrame.message.strContent;
             self.noticeLabel.textAlignment = NSTextAlignmentCenter;
-            
         }
         self.noticeContentView.sd_layout
         .centerYEqualToView(self.contentView)
@@ -972,21 +983,89 @@
         .widthIs(self.noticeLabel.width_sd+20);
         [self.noticeContentView updateLayout];
         
-    }else if (messageFrame.message.type == UUMessageTypeNotificationTips){
-        
-        self.labelTime.hidden = YES;
-        self.labelNum.hidden = YES;
-        self.btnHeadImage.hidden = YES;
+    }
+    
+    if (messageFrame.message.type == UUMessageTypeNotificationTips){
+        //作业/问答什么的
+        self.labelTime.hidden = NO;
+        self.btnHeadImage.hidden = NO;
         self.btnContent.hidden = YES;
         self.noticeContentView.hidden = YES;
         self.noticeLabel.hidden = YES;
-        headImageBackView.hidden = YES;
-        self.timeLabel.hidden = YES;
+        headImageBackView.hidden = NO;
+        self.timeLabel.hidden = NO;
+        [self.timeLabel updateLayout];
         self.title.hidden = YES;
         self.sendfaild.hidden = YES;
         self.noticeTipsContentView.hidden = NO;
+//
+        _noticeTipsTitle.text = messageFrame.message.notificationTipsContent;
         
+////        LiveStudio::Homework 作业
+////        LiveStudio::Question 提问
+////        LiveStudio::Answer 回答
+////        Resource::File 课件
         
+        if ([messageFrame.message.notificationTipsType isEqualToString:@"LiveStudio::Homework"]) {
+            //作业
+            _noticeTipsCategory.verticalText = @"作业";
+            _noticeTipsCategoryContent.backgroundColor = BUTTONRED;
+            _notificationTypes = HomeWork;
+        }else if ([messageFrame.message.notificationTipsType isEqualToString:@"LiveStudio::Question"]){
+            //问题
+            _noticeTipsCategory.verticalText = @"问题";
+            _noticeTipsCategoryContent.backgroundColor = THEMECOLOR;
+            _notificationTypes = Question;
+        }else if ([messageFrame.message.notificationTipsType isEqualToString:@"LiveStudio::Answer"]){
+            //回答
+            _noticeTipsCategory.verticalText = @"回答";
+            _noticeTipsCategoryContent.backgroundColor = THEMECOLOR;
+            _notificationTypes = Answer;
+        }else if ([messageFrame.message.notificationTipsType isEqualToString:@"Resource::File"]){
+            //课件
+            _noticeTipsCategory.verticalText = @"课件";
+            _noticeTipsCategoryContent.backgroundColor = BUTTONRED;
+            _notificationTypes = Files;
+        }
+
+        if (messageFrame.message.from == UUMessageFromMe) {
+            
+            _noticeTipsContentView.sd_layout
+            .topSpaceToView(self.timeLabel, 15)
+            .rightSpaceToView(headImageBackView, 10)
+            .heightIs(50)
+            .leftSpaceToView(self.contentView, 60);
+            self.labelNum.hidden = YES;
+            
+        }else if (messageFrame.message.from == UUMessageFromOther){
+
+            _noticeTipsContentView.sd_layout
+            .topSpaceToView(self.timeLabel, 15)
+            .leftSpaceToView(headImageBackView, 10)
+            .heightIs(50)
+            .rightSpaceToView(self.contentView, 60);
+            self.labelNum.hidden = NO;
+
+        }
+        [_noticeTipsContentView updateLayout];
+        _noticeTipsCategoryContent.sd_layout
+        .leftSpaceToView(_noticeTipsContentView, 0)
+        .topSpaceToView(_noticeTipsContentView, 0)
+        .bottomSpaceToView(_noticeTipsContentView, 0)
+        .widthIs(35);
+
+        _noticeTipsCategory.sd_layout
+        .topSpaceToView(_noticeTipsCategoryContent, 5)
+        .bottomSpaceToView(_noticeTipsCategoryContent, 5)
+        .leftSpaceToView(_noticeTipsCategoryContent, 5)
+        .rightSpaceToView(_noticeTipsCategoryContent, 5);
+
+        _noticeTipsTitle.sd_layout
+        .leftSpaceToView(_noticeTipsCategoryContent, 5*ScrenScale)
+        .rightSpaceToView(_noticeTipsContentView, 10*ScrenScale)
+        .topSpaceToView(_noticeTipsContentView, 10*ScrenScale)
+        .bottomSpaceToView(_noticeTipsContentView, 10*ScrenScale);
+
     }
 }
 
@@ -1013,6 +1092,17 @@
         [[NIMSDK sharedSDK].mediaManager switchAudioOutputDevice:NIMAudioOutputDeviceSpeaker];
     }
 }
+
+/** 写个代理 */
+- (void)clickOnNotificationTips:(UIButton *)sender{
+    if (_messageFrame.message.type  == UUMessageTypeNotificationTips) {
+        if ([_notificationTipsDelegate respondsToSelector:@selector(notificationDidClick:notificationTipsType:andNotifications:)]) {
+            [_notificationTipsDelegate notificationDidClick:self notificationTipsType:_notificationTypes andNotifications:_messageFrame.message.notificationTipsContentDic];
+        }
+    }
+}
+
+
 
 @end
 

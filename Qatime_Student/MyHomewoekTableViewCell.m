@@ -76,17 +76,8 @@
     _title.text = model.title;
     _created_at.text = [@"创建时间: " stringByAppendingString:[model.created_at changeTimeStampToDateString]];
     
-    _aboutClass.text = @"相关课程 :xxxxxxxx";
-//    if ([model.status isEqualToString:@"submitted"]) {
-//        _status.text = @"待批";
-//        _status.textColor = [UIColor greenColor];
-//    }else if ([model.status isEqualToString:@"pending"]){
-//        _status.text = @"未交";
-//        _status.textColor = [UIColor redColor];
-//    }else if ([model.status isEqualToString:@"resolved"]){
-//        _status.text = @"已批";
-//        _status.textColor = TITLECOLOR;
-//    }
+    _aboutClass.text = [@"相关课程 : " stringByAppendingString:model.course_name];
+
     
 }
 

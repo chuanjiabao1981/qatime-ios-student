@@ -135,16 +135,29 @@
         case UUMessagetypeNotice:
             
             break;
+        case UUMessageTypeNotificationTips:{
+            
+        }
+            
+            break;
     }
     
     if (_message.from == UUMessageFromMe) {
         contentX = iconX - contentSize.width - ChatContentLeft - ChatContentRight - ChatMargin;
         _contentF = CGRectMake(contentX, contentY, contentSize.width + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);
         
+        if (message.type == UUMessageTypeNotificationTips) {
+            _contentF = CGRectMake(0, 0, UIScreenWidth/2 ,60);
+        }
         _cellHeight = CGRectGetMaxY(_contentF) + 40;
+        
+        
     }else if(_message.from == UUMessageFromOther){
         _contentF = CGRectMake(contentX, contentY, contentSize.width + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);
         
+        if (message.type == UUMessageTypeNotificationTips) {
+            _contentF = CGRectMake(0, 0, UIScreenWidth/2 ,60);
+        }
         _cellHeight = CGRectGetMaxY(_contentF) + 40;
         
     }else if (message.from == UUMessageFromeSystem){
@@ -158,9 +171,6 @@
         _contentF = CGRectMake(0, 0, tmpRect.size.width+20 ,tmpRect.size.height+20);
         
         _cellHeight = _contentF.size.height+20;
-        
-    }else if (message.from == UUMessageFromeNoticeTips){
-        //作业/问题什么的加载frame
         
     }
     

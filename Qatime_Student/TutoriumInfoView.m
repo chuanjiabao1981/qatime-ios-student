@@ -285,7 +285,7 @@
         .leftEqualToView(_classCount)
         .topSpaceToView(_classCount,10)
         .autoHeightRatio(0);
-        [_liveTimeLabel setSingleLineAutoResizeWithMaxWidth:300];
+        [_liveTimeLabel setSingleLineAutoResizeWithMaxWidth:2000];
         
         clock.sd_layout
         .centerYEqualToView(_liveTimeLabel)

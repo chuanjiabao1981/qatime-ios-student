@@ -18,4 +18,5 @@
 @property (nonatomic, strong) NSString *created_at ;
 @property (nonatomic, strong) NSArray *items ;
 @property (nonatomic, strong) NSString *model_name ;
+@property (nonatomic, strong) NSString *course_name ;
 @end

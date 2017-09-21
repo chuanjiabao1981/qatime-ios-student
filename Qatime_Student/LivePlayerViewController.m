@@ -92,7 +92,7 @@ typedef enum : NSUInteger {
     
 } ViewsArrangementMode;
 
-@interface LivePlayerViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UUInputFunctionViewDelegate,UUMessageCellDelegate,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate,NIMLoginManagerDelegate,TTGTextTagCollectionViewDelegate,PhotoBrowserDelegate,UIGestureRecognizerDelegate,NIMMediaManagerDelegate,NIMTeamManagerDelegate,NIMTeamManagerDelegate,NIMSystemNotificationManagerDelegate>{
+@interface LivePlayerViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UUInputFunctionViewDelegate,UUMessageCellDelegate,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate,NIMLoginManagerDelegate,TTGTextTagCollectionViewDelegate,PhotoBrowserDelegate,UIGestureRecognizerDelegate,NIMMediaManagerDelegate,NIMTeamManagerDelegate,NIMTeamManagerDelegate,NIMSystemNotificationManagerDelegate,NotificationTipsDelegat>{
     
     /* token/id*/
     
@@ -575,7 +575,7 @@ bool ismute     = NO;
     [_liveplayerBoard setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
     [_liveplayerBoard setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
     [_liveplayerBoard setPlaybackTimeout:15 *1000]; // 设置拉流超时时间
-
+    
     [_liveplayerBoard prepareToPlay]; //初始化视频文件
     
 }
@@ -3432,12 +3432,12 @@ bool ismute     = NO;
                     if (msgContent[@"data"][@"mute"]) {
                         if ([msgContent[@"data"][@"mute"]isEqualToNumber:@1]) {
                             //禁言了
-//                            [self shutUpTalking];
-//                            messageText = @"您已被禁言";
+                            //                            [self shutUpTalking];
+                            //                            messageText = @"您已被禁言";
                         }else{
                             //解除禁言
-//                            [self keepOnTalking];
-//                            messageText = @"您已解除禁言";
+                            //                            [self keepOnTalking];
+                            //                            messageText = @"您已解除禁言";
                         }
                     }else{
                         
@@ -3470,18 +3470,44 @@ bool ismute     = NO;
                     NSError *err;
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
                     NSString *result;
-                    if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
-                        result = @"直播关闭";
-                    }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
-                        result = @"直播开启";
-                    }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
-                        result = @"老师关闭了互动答疑";
-                    }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
-                        result = @"老师开启了互动答疑";
+                    if (dic[@"event"]) {
+                        if (dic[@"type"]) {
+                            //这大概就是 什么作业了 什么问答了那种类型的消息了
+                            //不用加工数据,按照原数据直接写进Model就行了.改改方法
+                            //增加一个发送人吧.
+                            __block NSMutableDictionary *senders = dic.mutableCopy;
+                            
+                            for (Members *user in _membersArr) {
+                                if ([user.accid isEqualToString:message.from]) {
+                                    [senders setValue:user.accid forKey:@"accid"];
+                                    [senders setValue:user.icon forKey:@"icon"];
+                                    [senders setValue:user.name forKey:@"name"];
+                                }
+                            }
+                            if ([message.from isEqualToString:_chat_Account.accid]) {
+                                [senders setValue:@"FromMe" forKey:@"from"];
+                            }else{
+                                [senders setValue:@"FromOther" forKey:@"from"];
+                            }
+                            [senders setValue:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString] forKey:@"time"];
+                            
+                            [self.chatModel addSpecifiedNotificationTipsItem:senders];
+                        }else{
+                            if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                                result = @"直播关闭";
+                            }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                                result = @"直播开启";
+                            }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                                result = @"老师关闭了互动答疑";
+                            }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                                result = @"老师开启了互动答疑";
+                            }
+                            [self.chatModel addSpecifiedNotificationItem:result];
+                            [self.chatTableView reloadData];
+                            [self tableViewScrollToBottom];
+                        }
                     }
-                    [self.chatModel addSpecifiedNotificationItem:result];
-                    [self.chatTableView reloadData];
-                    [self tableViewScrollToBottom];
+                    
                 }else{
                     
                 }
@@ -3841,9 +3867,9 @@ bool ismute     = NO;
             
         }
         
-            
-            [self.chatTableView reloadData];
-            [self tableViewScrollToBottom];
+        
+        [self.chatTableView reloadData];
+        [self tableViewScrollToBottom];
         
     }
     
@@ -4259,6 +4285,7 @@ bool ismute     = NO;
             //收到公告了就发个消息,自动刷新公告
             [self requestNotice];
         }else if (message.messageType == NIMMessageTypeCustom){
+            
             //自定义消息 改为 课程的开启关闭
             if ([message valueForKeyPath:@"rawAttachContent"]!=nil) {
                 NSLog(@"%@",[message valueForKeyPath:@"rawAttachContent"]);
@@ -4266,28 +4293,60 @@ bool ismute     = NO;
                 NSError *err;
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
                 NSString *result;
-                if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
-                    result = @"直播关闭";
-                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
-                    result = @"直播开启";
-                }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
-                    result = @"老师关闭了互动答疑";
-                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
-                    result = @"老师开启了互动答疑";
+                
+                if (dic[@"event"]) {
+                    if (dic[@"type"]){
+                        //这大概就是 什么作业了 什么问答了那种类型的消息了
+                        //不用加工数据,按照原数据直接写进Model就行了.改改方法
+                        //增加一个发送人吧.
+                        __block NSMutableDictionary *senders = dic.mutableCopy;
+                        
+                        for (Members *user in _membersArr) {
+                            if ([user.accid isEqualToString:message.from]) {
+                                [senders setValue:user.accid forKey:@"accid"];
+                                [senders setValue:user.icon forKey:@"icon"];
+                                [senders setValue:user.name forKey:@"name"];
+                            }
+                        }
+                        if ([message.from isEqualToString:_chat_Account.accid]) {
+                            [senders setValue:@"FromMe" forKey:@"from"];
+                        }else{
+                            [senders setValue:@"FromOther" forKey:@"from"];
+                        }
+                        [senders setValue:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString] forKey:@"time"];
+                        
+                        [self.chatModel addSpecifiedNotificationTipsItem:senders];
+                        
+                    }else{
+                        if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                            result = @"直播关闭";
+                        }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                            result = @"直播开启";
+                        }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                            result = @"老师关闭了互动答疑";
+                        }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                            result = @"老师开启了互动答疑";
+                        }
+                        [self.chatModel addSpecifiedNotificationItem:result];
+                        [self.chatTableView reloadData];
+                        [self tableViewScrollToBottom];
+                        
+                    }
                 }
-                [self.chatModel addSpecifiedNotificationItem:result];
-                [self.chatTableView reloadData];
-                [self tableViewScrollToBottom];
             }else{
                 
             }
-        }else{
+        }
+        
+        
+        else{
             
         }
-
+        
     }
     
 }
+
 
 /* 发送消息进度*/
 - (void)sendMessage:(NIMMessage *)message progress:(CGFloat)progress{
@@ -4475,7 +4534,7 @@ bool ismute     = NO;
         // 获取cell高度
         height= [tableView cellHeightForIndexPath:indexPath model:_noticesArr[indexPath.row] keyPath:@"model" cellClass:[NoticeTableViewCell class] contentViewWidth: self.view.width_sd];
         
-//        height = 100;
+        //        height = 100;
         
     }
     
@@ -4707,6 +4766,7 @@ bool ismute     = NO;
                 
                 cell.delegate = self;
                 cell.photoDelegate = self;
+                cell.notificationTipsDelegate = self;
                 [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
                 
                 [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
@@ -5297,6 +5357,11 @@ bool ismute     = NO;
             
         }
     }
+    
+}
+
+/** 作业/问答的点击回调 */
+- (void)notificationDidClick:(UUMessageCell *)cell notificationTipsType:(NotificationTipsType)notificationTipsType andNotifications:(NSDictionary *)notifications{
     
 }
 

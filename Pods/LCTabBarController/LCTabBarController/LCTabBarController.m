@@ -28,15 +28,12 @@
 #import "LCTabBarController.h"
 #import "LCTabBarCONST.h"
 #import "LCTabBarItem.h"
-#import <Availability.h>
 
 @interface LCTabBarController () <LCTabBarDelegate>
 
 @end
 
 @implementation LCTabBarController
-
-#pragma mark -
 
 - (UIColor *)itemTitleColor {
     
@@ -92,38 +89,41 @@
         LCTabBar *tabBar = [[LCTabBar alloc] init];
         tabBar.frame     = self.tabBar.bounds;
         tabBar.delegate  = self;
-#ifdef __IPHONE_11_0
-        [self setValue:_lcTabBar forKey:@"tabBar"];
-#endif
+        
         self.lcTabBar = tabBar;
     })];
-//    UIKeyboardWillShowNotification
-//    [[NSNotificationCenter defaultCenter] addobserver];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTabBarItemChanged)
+                                                 name:LCNotificationTabBarItemChanged
+                                               object:nil];
 }
 
-//- (void)viewWillLayoutSubviews {
-//    
-//    [super viewWillLayoutSubviews];
-//    
-//    
-//}
+- (void)handleTabBarItemChanged {
+    [self hideOriginControls];
+}
 
 - (void)viewWillAppear:(BOOL)animated {
-    
     [super viewWillAppear:animated];
     
-    [self removeOriginControls];
+    [self hideOriginControls];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self hideOriginControls];
+}
+
+- (void)hideOriginControls {
+    [self.tabBar.subviews enumerateObjectsUsingBlock:^(__kindof UIView * obj, NSUInteger idx, BOOL * stop) {
+        if ([obj isKindOfClass:[UIControl class]]) {
+            [obj setHidden:YES];
+        }
+    }];
 }
 
 - (void)removeOriginControls {
-    
-    [self.tabBar.subviews enumerateObjectsUsingBlock:^(__kindof UIView * obj, NSUInteger idx, BOOL * stop) {
-        
-        if ([obj isKindOfClass:[UIControl class]]) {
-            
-            [obj removeFromSuperview];
-        }
-    }];
+    [self hideOriginControls];
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers {

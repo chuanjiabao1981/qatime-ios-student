@@ -55,8 +55,18 @@
 #import "ExclusivePlayerViewController.h"
 #import "UIViewController+Token.h"
 
+#import "HomeworkInfoViewController.h"
 
-@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate,NIMMediaManagerDelegate>{
+#import "HomeworkManage.h"
+
+#import "CourseFile.h"
+#import "CourseFileInfoViewController.h"
+#import "Questions.h"
+#import "QuestionInfoViewController.h"
+
+
+
+@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate,NIMMediaManagerDelegate,NotificationTipsDelegat>{
     
     NSString *_token;
     NSString *_idNumber;
@@ -190,7 +200,6 @@
     
     _userList = @[].mutableCopy;
     
-    
     self.chatModel = [[ChatModel alloc]init];
     self.chatModel.isGroupChat = YES;
     [self.chatModel populateRandomDataSource];
@@ -227,7 +236,6 @@
         }
         
     }];
-
     
     NSLog(@"%ld",[[[NIMSDK sharedSDK]conversationManager] allUnreadCount]);
     
@@ -589,9 +597,40 @@
             [self HUDStopWithTitle:@"网络正忙,请稍后重试"];
         }];
         
-    }else{
-        //视频课程
-        
+    }else if (_classType == ExclusiveCourseType){
+        //专属课程
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/play",Request_Header,[_tutoriumInfo valueForKey:@"classID"]] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+            
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            NSMutableArray *users ;
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                if ([[dic[@"data"][@"customized_group"][@"chat_team"]description] isEqualToString:@"0(NSNull)"]) {
+                    users = @[].mutableCopy;
+                }else{
+                    users =[NSMutableArray arrayWithArray:[dic[@"data"][@"customized_group"][@"chat_team"][@"accounts"]isEqual:[NSNull null]]?@"":dic[@"data"][@"customized_group"][@"chat_team"][@"accounts"]];
+                }
+                for (NSDictionary *dic in users) {
+                    Chat_Account *mod  = [Chat_Account yy_modelWithJSON:dic];
+                    /* 获取到的用户信息存到userlist里*/
+                    [_userList addObject:mod];
+                }
+                [self requestChatHitstory];
+                
+                for (NSDictionary *lesson in dic[@"data"][@"customized_group"][@"scheduled_lessons"]) {
+                    if ([lesson[@"status"]isEqualToString:@"teaching"]) {
+                        _lesson = lesson[@"name"];
+                    }
+                }
+                
+            }else{
+                /* 获取成员信息失败*/
+                [self HUDStopWithTitle:@"聊天成员加载失败,请稍后重试"];
+            }
+            
+        } failure:^(id  _Nullable erros) {
+            /* 获取成员信息失败*/
+            [self HUDStopWithTitle:@"网络正忙,请稍后重试"];
+        }];
         
     }
 }
@@ -645,7 +684,7 @@
     option.limit = 100;
     option.order = NIMMessageSearchOrderAsc;
     option.sync = YES;
-    
+
     [[[NIMSDK sharedSDK]conversationManager]fetchMessageHistory:_session option:option result:^(NSError * _Nullable error, NSArray<NIMMessage *> * _Nullable messages) {
         
         [self makeMessages:messages];
@@ -949,18 +988,44 @@
                         NSError *err;
                         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
                         NSString *result;
-                        if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
-                            result = @"直播关闭";
-                        }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
-                            result = @"直播开启";
-                        }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
-                            result = @"老师关闭了互动答疑";
-                        }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
-                            result = @"老师开启了互动答疑";
+                        
+                        if (dic[@"event"]) {
+                            
+                            if (dic[@"type"]){
+                                //这大概就是 什么作业了 什么问答了那种类型的消息了
+                                //不用加工数据,按照原数据直接写进Model就行了.改改方法
+                                __block NSMutableDictionary *senders = dic.mutableCopy;
+                                
+                                for (Chat_Account *user in _userList) {
+                                    if ([user.accid isEqualToString:message.from]) {
+                                        [senders setValue:user.accid forKey:@"accid"];
+                                        [senders setValue:user.icon forKey:@"icon"];
+                                        [senders setValue:user.name forKey:@"name"];
+                                    }
+                                }
+                                if ([message.from isEqualToString:_chat_Account.accid]) {
+                                    [senders setValue:@"FromMe" forKey:@"from"];
+                                }else{
+                                    [senders setValue:@"FromOther" forKey:@"from"];
+                                }
+                                
+                                [self.chatModel addSpecifiedNotificationTipsItem:senders];
+                                
+                            }else{
+                                if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                                    result = @"直播关闭";
+                                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                                    result = @"直播开启";
+                                }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                                    result = @"老师关闭了互动答疑";
+                                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                                    result = @"老师开启了互动答疑";
+                                }
+                                [self.chatModel addSpecifiedNotificationItem:result];
+                            }
+                            [self.chatTableView reloadData];
+                            [self tableViewScrollToBottom];
                         }
-                        [self.chatModel addSpecifiedNotificationItem:result];
-                        [self.chatTableView reloadData];
-                        [self tableViewScrollToBottom];
                     }else{
                         
                     }
@@ -1154,6 +1219,11 @@
                 __block NSString *messageText = @"";
                 
                 if (msgContent) {
+                    
+                    /** 分个类
+                     1.直播开始/结束通知
+                     2.作业/问答通知
+                     */
                     if (msgContent[@"data"][@"mute"]) {
                         if ([msgContent[@"data"][@"mute"] isEqualToNumber:@1]) {
                             //禁言了
@@ -1181,18 +1251,48 @@
                     NSLog(@"%@",[message valueForKeyPath:@"rawAttachContent"]);
                     NSData *data = [[message valueForKeyPath:@"rawAttachContent"] dataUsingEncoding:NSUTF8StringEncoding];
                     NSError *err;
-                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&err];
                     NSString *result;
-                    if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
-                        result = @"直播关闭";
-                    }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
-                        result = @"直播开启";
-                    }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
-                        result = @"老师关闭了互动答疑";
-                    }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
-                        result = @"老师开启了互动答疑";
+                    
+                    if (dic[@"event"]) {
+                        if (dic[@"type"]){
+                            //这大概就是 什么作业了 什么问答了那种类型的消息了
+                            //不用加工数据,按照原数据直接写进Model就行了.改改方法
+                            //增加一个发送人吧.
+                            __block NSMutableDictionary *senders = dic.mutableCopy;
+                            
+                            for (Chat_Account *user in _userList) {
+                                if ([user.accid isEqualToString:message.from]) {
+                                    [senders setValue:user.accid forKey:@"accid"];
+                                    [senders setValue:user.icon forKey:@"icon"];
+                                    [senders setValue:user.name forKey:@"name"];
+                                }
+                            }
+                            if ([message.from isEqualToString:_chat_Account.accid]) {
+                                [senders setValue:@"FromMe" forKey:@"from"];
+                            }else{
+                                [senders setValue:@"FromOther" forKey:@"from"];
+                            }
+                            [senders setValue:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString] forKey:@"time"];
+                            
+                            [self.chatModel addSpecifiedNotificationTipsItem:senders];
+                            
+                        }else{
+                            
+                            if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                                result = @"直播关闭";
+                            }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                                result = @"直播开启";
+                            }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                                result = @"老师关闭了互动答疑";
+                            }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                                result = @"老师开启了互动答疑";
+                            }
+                            [self.chatModel addSpecifiedNotificationItem:result];
+                        }
+                        
                     }
-                    [self.chatModel addSpecifiedNotificationItem:result];
+                    
                     [self.chatTableView reloadData];
                     [self tableViewScrollToBottom];
                 }else{
@@ -1325,6 +1425,7 @@
         
         cell.delegate = self;
         cell.photoDelegate = self;
+        cell.notificationTipsDelegate = self;
         [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
         
         /* 消息发送状态*/
@@ -1873,6 +1974,73 @@
     [items addObject:item];
     KSPhotoBrowser *browser = [KSPhotoBrowser browserWithPhotoItems:items selectedIndex:0];
     [browser showFromViewController:self];
+    
+}
+
+//点击作业/问题的回调,直接干.
+- (void)notificationDidClick:(UUMessageCell *)cell notificationTipsType:(NotificationTipsType)notificationTipsType andNotifications:(NSDictionary *)notifications{
+    
+    
+    __block UIViewController *controller ;
+    if (notificationTipsType == HomeWork) {
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/homeworks/%@",Request_Header,notifications[@"id"]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
+            
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                
+                HomeworkManage *homework = [HomeworkManage yy_modelWithJSON:dic[@"data"][@"student_homework"]];
+                homework.homeworkID =dic[@"data"][@"student_homework"][@"id"];
+                homework.homework = [Homework yy_modelWithJSON:dic[@"data"][@"student_homework"][@"homework"]];
+                homework.homework.homeworkID =dic[@"data"][@"student_homework"][@"homework"][@"id"];
+                controller = [[HomeworkInfoViewController alloc]initWithHomework:homework];
+                [self.navigationController pushViewController:controller animated:YES];
+            }else{
+                
+            }
+            
+        } failure:^(id  _Nullable erros) {
+            
+        }];
+        
+    }else if (notificationTipsType == Files){
+        
+        
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/groups/%@/files/%@",Request_Header,_classID,notifications[@"id"]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                CourseFile *file = [CourseFile yy_modelWithJSON:dic[@"data"]];
+                file.fileID =dic[@"data"][@"id"];
+                controller = [[CourseFileInfoViewController alloc]initWithFile:file];
+                [self.navigationController pushViewController:controller animated:YES];
+                
+            }else{
+                
+                
+            }
+            
+        } failure:^(id  _Nullable erros) {
+            
+        }];
+        
+    }else if (notificationTipsType == Question ||notificationTipsType == Answer){
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/questions/%@",Request_Header,notifications[@"id"]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                Questions *mod = [Questions yy_modelWithJSON:dic[@"data"]];
+                mod.questionID = dic[@"data"][@"id"];
+                if (![dic[@"data"][@"answer"] isEqual:[NSNull null]]) {
+                    mod.answer = [Answers yy_modelWithJSON:dic[@"data"][@"answer"]];
+                }
+                
+                controller = [[QuestionInfoViewController alloc]initWithQuestion:mod];
+                [self.navigationController pushViewController:controller animated:YES];
+            }
+            
+        } failure:^(id  _Nullable erros) {
+            
+        }];
+        
+    }
     
 }
 

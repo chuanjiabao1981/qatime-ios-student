@@ -113,8 +113,10 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
             }else{
                 if (refreshType == PullType) {
                     [_mainView .mj_header endRefreshing];
+                    [_mainView cyl_reloadData];
                 }else{
                     [_mainView.mj_footer endRefreshingWithNoMoreData];
+                    [_mainView cyl_reloadData];
                 }
             }
         }else{

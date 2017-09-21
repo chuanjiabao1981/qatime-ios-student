@@ -14,7 +14,7 @@ class MyQuestionsTableViewCell: QuestionsTableViewCell {
         self.model = question;
         self.status.isHidden = true
         self.title.text = question.title
-        self.asker.text = "创建时间: " + NSString.changeTimeStamp(toDateString: question.created_at)
+        self.asker.text = "提问时间: " + NSString.changeTimeStamp(toDateString: question.created_at)
         self.infos.text = "相关课程: " + question.course_name
         
     }

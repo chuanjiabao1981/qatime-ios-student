@@ -53,7 +53,7 @@
 
 
 #pragma mark- 作业/提问 模块提醒消息
-- (void)addSpecifiedNotificationTipsItem:(NSString *)notifications;
+- (void)addSpecifiedNotificationTipsItem:(NSDictionary *)notifications;
 
 
 @end

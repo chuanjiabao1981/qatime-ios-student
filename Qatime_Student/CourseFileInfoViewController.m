@@ -188,14 +188,15 @@
 - (void)previewFile:(UIButton *)sender{
     
     QLPreviewController *myQlPreViewController = [[QLPreviewController alloc]init];
-    
+//    myQlPreViewController.tabBarController.tabBar.hidden = YES;
     myQlPreViewController.delegate =self;
     
     myQlPreViewController.dataSource =self;
     
     [myQlPreViewController setCurrentPreviewItemIndex:0];
-    
-    [self presentViewController:myQlPreViewController animated:YES completion:nil];
+    myQlPreViewController.hidesBottomBarWhenPushed = YES;
+//    [self presentViewController:myQlPreViewController animated:YES completion:nil];
+    [self.navigationController pushViewController:myQlPreViewController animated:YES];
     
 }
 #pragma mark - QLPreviewControllerDataSource
@@ -207,7 +208,6 @@
     return 1;
     
 }
-
 
 
 - (id)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index{

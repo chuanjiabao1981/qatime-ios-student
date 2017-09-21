@@ -7,7 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <NIMSDK/NIMCustomObject.h>
 
-@interface Attachment : NSObject
+@interface Attachment : NSObject<NIMCustomAttachment>
+//简单新建一个有标题和副标题的自定义消息
 
+@property (nonatomic,copy) NSString *title;
+
+@property (nonatomic,copy) NSString *subTitle;
 @end
