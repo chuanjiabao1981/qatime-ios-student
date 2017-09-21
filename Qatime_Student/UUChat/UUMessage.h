@@ -13,14 +13,16 @@ typedef NS_ENUM(NSInteger, MessageType) {
     UUMessageTypeText     = 0 , // 文字
     UUMessageTypePicture  = 1 , // 图片
     UUMessageTypeVoice    = 2 , // 语音
-    UUMessagetypeNotice   = 3   // 系统消息
+    UUMessagetypeNotice   = 3 ,  // 系统消息
+    UUMessageTypeNotificationTips   =4  //作业/问答提醒模块消息
 };
 
 
 typedef NS_ENUM(NSInteger, MessageFrom) {
     UUMessageFromMe    = 0,   // 自己发的
     UUMessageFromOther = 1,   // 别人发得
-    UUMessageFromeSystem = 2  //系统发的
+    UUMessageFromeSystem = 2,  //系统发的
+    UUMessageFromeNoticeTips = 3    //系统发的专门用于作业/问答模块的类型
 };
 
 
@@ -103,6 +105,8 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
  UUMessageTypeText     = 0 , // 文字
  UUMessageTypePicture  = 1 , // 图片
  UUMessageTypeVoice    = 2   // 语音
+ UUMessagetypeNotice   = 3 ,  // 系统消息
+ UUMessageTypeNotificationTips   =4  //作业/问答提醒模块消息
  */
 @property (nonatomic, assign) MessageType type;
 
@@ -139,10 +143,20 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property(nonatomic,assign) BOOL sendFaild ;
 
 
-
-
 /* 最强大的属性->消息直接存成属性*/
 @property(nonatomic,strong) NIMMessage *message ;
+
+
+/** 作业/问答属性. */
+@property (nonatomic, strong) NSString *notificationTipsContent ;
+@property (nonatomic, strong) NSString *notificationTipsType ;
+@property (nonatomic, strong) NSString *notificationEvents ;
+@property (nonatomic, strong) NSString *taskable_id ;
+@property (nonatomic, strong) NSString *taskable_type ;
+
+/** 操蛋属性 -> 把收到后并且加工完成的字典整个传进来 */
+@property (nonatomic, strong) NSDictionary *notificationTipsContentDic ;
+
 
 
 - (void)setWithDict:(NSDictionary *)dic;

@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSString *end_time ;
 @property (nonatomic, strong) NSString *status ;
 @property (nonatomic, strong) NSString *class_address ;
+@property (nonatomic, assign) BOOL isOfflineClass ;
 
 @property (nonatomic, assign) BOOL replayable ;
 

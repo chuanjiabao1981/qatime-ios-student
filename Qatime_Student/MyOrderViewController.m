@@ -385,8 +385,7 @@ typedef enum : NSUInteger {
                     for (NSDictionary *paid in dic[@"data"]) {
                         Paid *mod = [Paid yy_modelWithJSON:paid];
                         mod.orderID = paid[@"id"];
-                        if (mod.teacher_name == nil) {
-                            
+//                        if (mod.teacher_name == nil) {
                             if (![paid[@"product"]isEqual:[NSNull null]]) {
                                 if (paid[@"product"][@"teacher_name"]) {
                                     
@@ -418,7 +417,7 @@ typedef enum : NSUInteger {
 
                             }
                             
-                        }
+//                        }
                         [_paidArr addObject:mod];
                     }
                     [_myOrderView.paidView.mj_header endRefreshing];

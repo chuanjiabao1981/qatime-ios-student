@@ -573,8 +573,13 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "514"
             endingLineNumber = "514"
+<<<<<<< HEAD
             landmarkName = "AppDelegate"
             landmarkType = "3">
+=======
+            landmarkName = "-application:didRegisterForRemoteNotificationsWithDeviceToken:"
+            landmarkType = "7">
+>>>>>>> 9-18测试修改
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -589,7 +594,11 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "875"
             endingLineNumber = "875"
+<<<<<<< HEAD
             landmarkName = "-application:handleOpenURL:"
+=======
+            landmarkName = "-setupNIM"
+>>>>>>> 9-18测试修改
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -621,8 +630,13 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "505"
             endingLineNumber = "505"
+<<<<<<< HEAD
             landmarkName = "-application:didRegisterForRemoteNotificationsWithDeviceToken:"
             landmarkType = "7">
+=======
+            landmarkName = "AppDelegate"
+            landmarkType = "3">
+>>>>>>> 9-18测试修改
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -637,8 +651,13 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "504"
             endingLineNumber = "504"
+<<<<<<< HEAD
             landmarkName = "-application:didRegisterForRemoteNotificationsWithDeviceToken:"
             landmarkType = "7">
+=======
+            landmarkName = "AppDelegate"
+            landmarkType = "3">
+>>>>>>> 9-18测试修改
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -716,8 +735,13 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "870"
             endingLineNumber = "870"
+<<<<<<< HEAD
             landmarkName = "AppDelegate"
             landmarkType = "3">
+=======
+            landmarkName = "-setupNIM"
+            landmarkType = "7">
+>>>>>>> 9-18测试修改
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3252,7 +3276,11 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "290"
             endingLineNumber = "290"
+<<<<<<< HEAD
             landmarkName = "-setTabBarController"
+=======
+            landmarkName = "-application:didFinishLaunchingWithOptions:"
+>>>>>>> 9-18测试修改
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3268,7 +3296,11 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "291"
             endingLineNumber = "291"
+<<<<<<< HEAD
             landmarkName = "-setTabBarController"
+=======
+            landmarkName = "-application:didFinishLaunchingWithOptions:"
+>>>>>>> 9-18测试修改
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

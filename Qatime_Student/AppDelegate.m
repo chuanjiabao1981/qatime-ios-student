@@ -27,6 +27,9 @@
 
 #import "DevieceManager.h"
 #import "UMMobClick/MobClick.h"
+#import <NIMSDK/NIMCustomObject.h>
+#import "AttachmentDecoder.h"
+
 
 //#import <iflyMSC/iflyMSC.h>
 
@@ -280,6 +283,18 @@
    remoteNotification =  [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     
     
+    
+    /** 添加下载目录 */
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL isDic = NO;
+    [fileManager fileExistsAtPath:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject stringByAppendingPathComponent:@"download"] isDirectory:&isDic];
+    if (isDic == YES) {
+        
+    }else{
+        [fileManager createDirectoryAtPath:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject stringByAppendingPathComponent:@"download"] withIntermediateDirectories:YES attributes:nil error:nil];
+        
+    }
+   
     return YES;
 }
 
@@ -296,14 +311,7 @@
         _viewController.itemTitleColor = [UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:1.00];
         _viewController.selectedItemTitleColor = NAVIGATIONRED;
         _viewController.viewControllers = @[indexPageVC,/*tutoriumVC,*/chooseVC,classTimeVC,noticeVC,personalVC];
-    
-//        [_viewController.tabBarController setValue:_viewController.lcTabBar forKeyPath:@"tabBar"];
-        [_viewController.tabBarController.tabBar setHidden:YES];
-#ifdef __IPHONE_11_0
-        [_viewController setSelectedItemTitleColor:BUTTONRED];
-        _viewController.tabBarController.selectedIndex = 0 ;
-        [_viewController.tabBar setSelectedItem:_viewController.tabBar.items[0]];
-#endif
+
     }
     
     /* 新收到消息的监听*/
@@ -857,6 +865,7 @@
                 lodata.account =chatDic [@"accid"];
                 lodata.token = chatDic[@"token"];
                 [[[NIMSDK sharedSDK]loginManager]autoLogin:lodata];
+                [NIMCustomObject registerCustomDecoder:[[AttachmentDecoder alloc]init]];
                 
             }
 

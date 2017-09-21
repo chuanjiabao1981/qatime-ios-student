@@ -369,8 +369,8 @@
     myQlPreViewController.dataSource =self;
     
     [myQlPreViewController setCurrentPreviewItemIndex:0];
-    
-    [self presentViewController:myQlPreViewController animated:YES completion:nil];
+    myQlPreViewController.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:myQlPreViewController animated:YES];
     
 }
 #pragma mark - QLPreviewControllerDataSource

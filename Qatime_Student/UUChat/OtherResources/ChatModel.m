@@ -320,5 +320,34 @@ static NSString *previousTime = nil;
 
 }
 
+/** 添加作业/问答模块提醒消息 */
+- (void)addSpecifiedNotificationTipsItem:(NSDictionary *)notifications{
+    
+    UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
+    UUMessage *message = [[UUMessage alloc] init];
+    message.isRichText = NO;
+    message.strContent = notifications[@"title"];
+    message.type = UUMessageTypeNotificationTips;
+//    message.from = UUMessageFromOther;
+    message.notificationTipsType = notifications[@"type"];
+    message.notificationEvents = notifications[@"event"];
+    message.taskable_id = notifications[@"taskable_id"];
+    message.taskable_type = notifications[@"taskable_type"];
+    message.notificationTipsContent = notifications[@"title"];
+    message.strName = notifications[@"name"];
+    message.strIcon = notifications[@"icon"];
+    message.strTime = notifications[@"time"];
+    message.notificationTipsContentDic = notifications;
+    
+    if ([notifications[@"from"] isEqualToString:@"FromMe"]) {
+        message.from = UUMessageFromMe;
+    }else{
+        message.from = UUMessageFromOther;
+    }
+    
+    [messageFrame setMessage:message];
+    [self.dataSource addObject:messageFrame];
+    
+}
 
 @end

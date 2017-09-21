@@ -34,5 +34,4 @@
 @property (nonatomic, strong) NSDictionary *scheduled_lessons ;
 
 
-
 @end

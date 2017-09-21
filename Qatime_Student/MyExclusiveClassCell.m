@@ -86,7 +86,7 @@
         /* 当前时间*/
         NSDate *nowDate=[NSDate date];
         //取两个日期对象的时间间隔：
-        NSTimeInterval time = [startDate timeIntervalSinceDate:nowDate];
+        NSTimeInterval time = [nowDate timeIntervalSinceDate:startDate];
         int days=((int)time)/(3600*24);
         if (days>=1) {
             _status.text = [NSString stringWithFormat:@"距开课%d天",days];
@@ -137,7 +137,6 @@
     [_classImage sd_setImageWithURL:[NSURL URLWithString:model.customized_group.publicizes_url[@"list"]]];
     _className.text = model.customized_group.name;
     _classInfo.text = [[[model.customized_group.grade stringByAppendingString:model.customized_group.subject]stringByAppendingString:@"/"]stringByAppendingString:model.customized_group.teacher_name];
-    
     
 }
 

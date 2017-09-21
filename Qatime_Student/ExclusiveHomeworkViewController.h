@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ClassHomeworkCell.h"
+#import "ClassHomework.h"
+#import "HomeworkManage.h"
 
 @interface ExclusiveHomeworkViewController : UIViewController
+
+@property (nonatomic, strong) UITableView *mainView ;
+
+-(instancetype)initWithClassID:(NSString *)classID;
 
 @end

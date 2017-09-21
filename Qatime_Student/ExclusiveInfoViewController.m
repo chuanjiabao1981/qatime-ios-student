@@ -32,6 +32,7 @@
 #import "ExclusiveHomeworkViewController.h"
 #import "ExclusiveCoursewareViewController.h"
 #import "ExclusiveMembersViewController.h"
+#import "ClassMembersViewController.h"
 
 @interface ExclusiveInfoViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDataSource,UITableViewDelegate>{
     
@@ -43,6 +44,8 @@
     
     //专属课独有的 导航栏右侧按钮
 //    UIButton *_exclusiveMenuButton;
+    
+    NSString *_chatTeamID;
     
 }
 
@@ -80,6 +83,11 @@
     self.tutoriumInfoView.workFlowView.delegate = self;
     self.tutoriumInfoView.workFlowView.dataSource = self;
     self.tutoriumInfoView.workFlowView.tag = 2;
+    
+    //分一线程,请求chateamid
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self requestChatTeam];
+    });
 
 }
 
@@ -139,14 +147,20 @@
 #pragma mark -- 专属菜单点击 回调事件(自定义)
 - (void)doSomething:(NSString *)str tag:(NSInteger)tag{
     
-    UIViewController *controller ;
+    __block UIViewController *controller ;
     switch (tag) {
         case 1:{
-            controller = [[ChatViewController alloc]initWithClass:self.classID andClassType:ExclusiveCourseType];
+            
+            __block TutoriumListInfo *tutorium = [[TutoriumListInfo alloc]init];
+            tutorium.classID = self.classID;
+            if (_chatTeamID) {
+                tutorium.chat_team_id = _chatTeamID;
+            }
+            controller = [[ChatViewController alloc]initWithClass:tutorium andClassType:ExclusiveCourseType];
         }
             break;
         case 2:{
-            
+            controller = [[ExclusiveHomeworkViewController alloc]initWithClassID:self.classID];
         }
             break;
         case 3:{
@@ -158,7 +172,7 @@
         }
             break;
         case 5:{
-            
+            controller = [[ClassMembersViewController alloc]initWithClassID:self.classID];
         }
             break;
     }
@@ -196,6 +210,7 @@
             self.classID = dic[@"data"][@"customized_group"][@"id"];
             
             self.tutoriumInfoView.exclusiveModel = model;
+            self.tutoriumInfoView.classFeature.hidden = YES;
             self.navigationBar.titleLabel.text = model.name;
             if ([model.status isEqualToString:@"finished"]||[model.status isEqualToString:@"billing"]||[model.status isEqualToString:@"completed"]){
                 //如果课程已结束,buybar不显示.什么都不显示了
@@ -206,16 +221,18 @@
                 
             }
             
-            //课程
+            //线上课
             for (NSDictionary *lesson in dic[@"data"][@"customized_group"][@"scheduled_lessons"]) {
                 ExclusiveLesson *mod = [ExclusiveLesson yy_modelWithJSON:lesson];
                 mod.lessonId = lesson[@"id"];
+                mod.isOfflineClass = NO;
                 [_onlineClassArray addObject:mod];
             }
-            
+            //线下课
             for (NSDictionary *lesson in dic[@"data"][@"customized_group"][@"offline_lessons"]) {
                 ExclusiveLesson *mod = [ExclusiveLesson yy_modelWithJSON:lesson];
                 mod.lessonId = lesson[@"id"];
+                mod.isOfflineClass = YES;
                 [_offlineClassArray addObject:mod];
             }
             
@@ -750,6 +767,22 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     return  CGSizeMake(self.view.width_sd/3.0,20);
+}
+
+/** 请求chatteamid */
+- (void)requestChatTeam{
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/play",Request_Header,self.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {
+    } completeSuccess:^(id  _Nullable responds) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            _chatTeamID = [NSString stringWithFormat:@"%@", dic[@"data"][@"customized_group"][@"chat_team"][@"team_id"]];
+        }else{
+            
+        }
+    } failure:^(id  _Nullable erros) {
+        
+    }];
+    
 }
 
 #pragma mark- 收集订单信息,并传入下一页,开始提交订单

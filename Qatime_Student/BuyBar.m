@@ -62,6 +62,9 @@
         .topEqualToView(self)
         .heightIs(0.4);
         
+        _listenButton.sd_cornerRadius = @(M_PI);
+        _applyButton.sd_cornerRadius = @(M_PI);
+        
         
     }
     return self;

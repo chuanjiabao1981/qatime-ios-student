@@ -112,7 +112,7 @@
         .leftEqualToView(_classCount)
         .topSpaceToView(_classCount,10)
         .autoHeightRatio(0);
-        [_liveTimeLabel setSingleLineAutoResizeWithMaxWidth:200];
+        [_liveTimeLabel setSingleLineAutoResizeWithMaxWidth:2000];
         
         UIImageView *image4  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"菱形"]];
         [self addSubview:image4];

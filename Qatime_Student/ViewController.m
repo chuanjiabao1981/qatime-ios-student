@@ -31,9 +31,6 @@
     self.tabBar.hidden = NO;
 
     
-#ifdef iOS11
-#endif
-    
 }
 
 - (void)showNIMPage:(NSNotification *)notification{

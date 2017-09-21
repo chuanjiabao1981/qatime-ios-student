@@ -42,8 +42,6 @@
 - (void)addSpecifiedVoiceItem:(NSDictionary *)dic andIconURL:(NSString *)iconURL andName:(NSString *)name andMessage:(NIMMessage *)voiceMessage;
 
 
-
-
 /* 组成别人发送的语音消息*/
 - (NSDictionary *)getDicWithName:(NSString *)name andIcon:(NSString *)URLString type:(MessageType)type andVoicePath:(NSString *)voicePath andTime:(NSString *)time andMessage:(NIMMessage *)message;
 
@@ -52,6 +50,10 @@
 #pragma mark- 公告消息
 /**添加公告消息*/
 - (void)addSpecifiedNotificationItem:(NSString *)notification;
+
+
+#pragma mark- 作业/提问 模块提醒消息
+- (void)addSpecifiedNotificationTipsItem:(NSDictionary *)notifications;
 
 
 @end

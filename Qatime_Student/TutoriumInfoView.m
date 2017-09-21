@@ -35,9 +35,9 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-//        self.contentSize = CGSizeMake(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
-//        self.bounces = NO;
-//        self.showsVerticalScrollIndicator = NO;
+        //        self.contentSize = CGSizeMake(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
+        //        self.bounces = NO;
+        //        self.showsVerticalScrollIndicator = NO;
         self.backgroundColor = [UIColor whiteColor];
         self.opaque = NO;
         /* 课程名称*/
@@ -53,7 +53,7 @@
         [_className setFont:TITLEFONTSIZE];
         
         
-       //课程状态
+        //课程状态
         _status = [[UILabel alloc]init];
         [self addSubview:_status];
         _status.font = TEXT_FONTSIZE;
@@ -63,7 +63,7 @@
         .topSpaceToView(_className, 10)
         .autoHeightRatio(0);
         [_status setSingleLineAutoResizeWithMaxWidth:200];
-    
+        
         
         //课程特色
         UICollectionViewLeftAlignedLayout *layout = [[UICollectionViewLeftAlignedLayout alloc]init];
@@ -285,7 +285,7 @@
         .leftEqualToView(_classCount)
         .topSpaceToView(_classCount,10)
         .autoHeightRatio(0);
-        [_liveTimeLabel setSingleLineAutoResizeWithMaxWidth:300];
+        [_liveTimeLabel setSingleLineAutoResizeWithMaxWidth:2000];
         
         clock.sd_layout
         .centerYEqualToView(_liveTimeLabel)
@@ -587,7 +587,7 @@
         .topSpaceToView(workYears,10)
         .autoHeightRatio(0);
         [_workYearsLabel setSingleLineAutoResizeWithMaxWidth:200];
-
+        
         
         //目前不做的教师标签
         UILabel *teacherTag = [[UILabel alloc]init];
@@ -651,10 +651,10 @@
         
         //scrollview横向自适应
         [_scrollView setupAutoContentSizeWithRightView:_view3 rightMargin:0];
-//        [_scrollView setupAutoContentSizeWithBottomView:_view3 bottomMargin:10];
+        //        [_scrollView setupAutoContentSizeWithBottomView:_view3 bottomMargin:10];
         
         //视图自适应
-//        [self setupAutoContentSizeWithBottomView:_scrollView bottomMargin:10];
+        //        [self setupAutoContentSizeWithBottomView:_scrollView bottomMargin:10];
         
         
     }
@@ -670,13 +670,10 @@
     _subjectLabel.text = exclusiveModel.subject;
     _classCount.text = [NSString stringWithFormat:@"共%@课",exclusiveModel.events_count];
     _liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[exclusiveModel.start_at changeTimeStampToDateString].length>=10?[[exclusiveModel.start_at changeTimeStampToDateString]substringToIndex:10]:[exclusiveModel.start_at changeTimeStampToDateString],[exclusiveModel.end_at changeTimeStampToDateString].length>=10?[[exclusiveModel.end_at changeTimeStampToDateString]substringToIndex:10]:[exclusiveModel.end_at changeTimeStampToDateString]];
-    /* 已经开课->插班价*/
-    if ([exclusiveModel.status isEqualToString:@"teaching"]||[exclusiveModel.status isEqualToString:@"pause"]||[exclusiveModel.status isEqualToString:@"closed"]) {
-        _priceLabel.text = [NSString stringWithFormat:@"¥%@(插班价)",exclusiveModel.current_price];
-    }else{
-        /* 未开课 总价*/
-        _priceLabel.text = [NSString stringWithFormat:@"¥%@",exclusiveModel.price];
-    }
+    
+    /* 未开课*/
+    _priceLabel.text = [NSString stringWithFormat:@"¥%@",exclusiveModel.price];
+    
     /* 已开课的状态*/
     
     if ([exclusiveModel.status isEqualToString:@"teaching"]||[exclusiveModel.status isEqualToString:@"pause"]||[exclusiveModel.status isEqualToString:@"closed"]) {

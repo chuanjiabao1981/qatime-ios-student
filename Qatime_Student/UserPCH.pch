@@ -70,7 +70,8 @@
 /**placeholder灰*/
 #define PLACEHOLDERGRAY [UIColor colorWithRed:0.78 green:0.78 blue:0.80 alpha:1.00]
 
-
+/**主题蓝色*/
+#define THEMECOLOR [UIColor colorWithRed:0.11 green:0.62 blue:0.83 alpha:1.00]
 /*按钮红色*/
 #define BUTTONRED [UIColor colorWithRed:0.99 green:0.35 blue:0.29 alpha:1.00]
 

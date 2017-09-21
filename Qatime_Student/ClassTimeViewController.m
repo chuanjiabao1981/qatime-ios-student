@@ -87,7 +87,11 @@ typedef enum : NSUInteger {
     [self loadClassView];
     [self makeViews];
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"WechatLoginSucess" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"LoginSucess" object:nil];
+    
 }
+
 
 /**课程表未登录的视图*/
 - (void)makeViews{
@@ -139,7 +143,7 @@ typedef enum : NSUInteger {
     isLogin = [[NSUserDefaults standardUserDefaults]boolForKey:@"Login"];
     if (isLogin==YES&&[self getToken]&&[self getStudentID]) {
         _notLoginView.hidden = YES;
-        //        [self HUDStartWithTitle:nil];
+        //     [self HUDStartWithTitle:nil];
     }else{
         _notLoginView.hidden = NO;
     }
@@ -171,6 +175,8 @@ typedef enum : NSUInteger {
     _notLoginView.hidden = YES;
     _unclosedArr = @[].mutableCopy;
     _closedArr = @[].mutableCopy;
+    [_classTimeView.notClassView.notClassTableView.mj_header beginRefreshing];
+    [_classTimeView.alreadyClassView.alreadyClassTableView.mj_header beginRefreshing];
 }
 
 #pragma mark- 请求数据方法
@@ -251,7 +257,6 @@ typedef enum : NSUInteger {
                 }
                 
             }else{
-                
                 if (classtype == UnstartClass) {
                     [_classTimeView.notClassView.notClassTableView cyl_reloadData];
                     [_classTimeView.notClassView.notClassTableView.mj_header endRefreshing];
@@ -263,7 +268,12 @@ typedef enum : NSUInteger {
             }
             
         }else{
-            
+            if (dic[@"error"]) {
+                if ([dic[@"error"][@"code"] isEqualToNumber:@1002]) {
+                    //得登录啊
+                    _notLoginView.hidden = NO;
+                }
+            }
             if (classtype == UnstartClass) {
                 if (refreshType == PullToRefresh) {
                     

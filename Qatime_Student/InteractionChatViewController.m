@@ -48,7 +48,7 @@
 #import "TutoriumList.h"
 
 
-@interface InteractionChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate,PhotoBrowserDelegate,NIMTeamManagerDelegate,NIMSystemNotificationManagerDelegate>{
+@interface InteractionChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate,PhotoBrowserDelegate,NIMTeamManagerDelegate,NIMSystemNotificationManagerDelegate,NotificationTipsDelegat>{
     
     NSString *_token;
     NSString *_idNumber;
@@ -1137,6 +1137,7 @@
         
         cell.delegate = self;
         cell.photoDelegate = self;
+        cell.notificationTipsDelegate = self;
         [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
         
         /* 消息发送状态*/
@@ -1722,6 +1723,11 @@
             [[NSNotificationCenter defaultCenter]postNotificationName:@"DesktopSharedOn" object:nil];
         }
     }
+}
+
+/** 作业/问答的点击回调 */
+- (void)notificationDidClick:(UUMessageCell *)cell notificationTipsType:(NotificationTipsType)notificationTipsType andNotifications:(NSDictionary *)notifications{
+    
 }
 
 

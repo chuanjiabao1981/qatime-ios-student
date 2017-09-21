@@ -194,6 +194,13 @@ Just drag the LCTabBarController folder into your project.
 
 ## ChangeLog
 
+### V 1.3.7
+
+* Adapt for iOS 11.
+
+* Improve framework with [#27](https://github.com/iTofu/LCTabBarController/issues/27) by [tbl00c](https://github.com/tbl00c).
+
+
 ### V 1.3.6
 
 * About [#15](https://github.com/iTofu/LCTabBarController/issues/15), public `lcTabBar`.
@@ -318,13 +325,21 @@ Just drag the LCTabBarController folder into your project.
 
 * If you have any question, just [commit a issue](https://github.com/iTofu/LCTabBarController/issues/new).
 
-* Mail: `echo bGVvZGF4aWFAZ21haWwuY29tCg== | base64 -D` || `echo ZGV2dGlwQDE2My5jb20K | base64 -D`
+* Mail: `echo bGVvZGF4aWFAZ21haWwuY29tCg== | base64 -D`
 
 * Blog: https://LeoDev.me
 
-* Friendly sponsorship with [Alipay or Wechat Pay](https://cdnqiniu.leodev.me/paid_to_leo.png), thank you!
+* Donations:
 
-  ![Leo](https://cdnqiniu.leodev.me/paid_to_leo.png)
+  * PayPal:
+  
+    [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=leodaxia@gmail.com&item_name=leodaxia@gmail.com)
+  
+  * Alipay or Wechat Pay:
+  
+    <img src="https://cdnqiniu.leodev.me/donate.png?v=1" alt="Donate with Alipay or Wechat Pay" title="Donate with Alipay or Wechat Pay" width="320"/>
+    
+  Please note: donation does not imply any type of service contract.
 
 
 
