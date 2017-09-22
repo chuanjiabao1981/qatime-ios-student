@@ -700,6 +700,7 @@
         
         if (![message.session.sessionId isEqualToString:_session.sessionId]) {
             
+            
         }else{
             
             if (message.messageType == NIMMessageTypeText||message.messageType==NIMMessageTypeImage||message.messageType == NIMMessageTypeAudio||message.messageType == NIMMessageTypeNotification||message.messageType == NIMMessageTypeCustom) {

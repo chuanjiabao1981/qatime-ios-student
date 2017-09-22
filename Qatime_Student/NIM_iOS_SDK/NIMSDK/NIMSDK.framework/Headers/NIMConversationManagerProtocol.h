@@ -180,7 +180,7 @@ typedef void(^NIMGlobalSearchMessageBlock)(NSError * __nullable error,NSDictiona
  *  写入消息
  *
  *  @param message 需要更新的消息
- *  @param session 需要更新的会话
+ *  @param session 需要更新的消息
  *  @param completion 完成后的回调
  *  @discussion 当保存消息成功之后，会收到 NIMChatManagerDelegate 中的 onRecvMessages: 回调。目前支持消息类型:NIMMessageTypeText,NIMMessageTypeTip,NIMMessageTypeCustom
  */

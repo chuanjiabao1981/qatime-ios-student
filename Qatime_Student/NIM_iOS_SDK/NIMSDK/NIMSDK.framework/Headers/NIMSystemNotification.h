@@ -188,13 +188,6 @@ typedef NS_ENUM(NSInteger, NIMSystemNotificationType){
 @property (nullable,nonatomic,strong)                NIMAntiSpamOption *antiSpamOption;
 
 
-/**
- *  自定义系统通知初始化方法
- *
- *  @param content 自定义系统通知内容
- *
- *  @return 自定义系统通知实例
- */
 - (instancetype)initWithContent:(NSString *)content;
 
 @end
