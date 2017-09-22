@@ -1980,14 +1980,13 @@
 //点击作业/问题的回调,直接干.
 - (void)notificationDidClick:(UUMessageCell *)cell notificationTipsType:(NotificationTipsType)notificationTipsType andNotifications:(NSDictionary *)notifications{
     
-    
     __block UIViewController *controller ;
     if (notificationTipsType == HomeWork) {
+        [self HUDStartWithTitle:nil];
         [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/homeworks/%@",Request_Header,notifications[@"id"]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
-            
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqualToNumber:@1]) {
-                
+                [self HUDStopWithTitle:nil];
                 HomeworkManage *homework = [HomeworkManage yy_modelWithJSON:dic[@"data"][@"student_homework"]];
                 homework.homeworkID =dic[@"data"][@"student_homework"][@"id"];
                 homework.homework = [Homework yy_modelWithJSON:dic[@"data"][@"student_homework"][@"homework"]];
@@ -1995,37 +1994,39 @@
                 controller = [[HomeworkInfoViewController alloc]initWithHomework:homework];
                 [self.navigationController pushViewController:controller animated:YES];
             }else{
-                
+                [self HUDStopWithTitle:@"请稍后重试"];
             }
             
         } failure:^(id  _Nullable erros) {
-            
+             [self HUDStopWithTitle:@"请检查网络"];
         }];
         
     }else if (notificationTipsType == Files){
-        
-        
+        [self HUDStartWithTitle:nil];
         [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/groups/%@/files/%@",Request_Header,_classID,notifications[@"id"]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
+            
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqualToNumber:@1]) {
+                [self HUDStopWithTitle:nil];
                 CourseFile *file = [CourseFile yy_modelWithJSON:dic[@"data"]];
                 file.fileID =dic[@"data"][@"id"];
                 controller = [[CourseFileInfoViewController alloc]initWithFile:file];
                 [self.navigationController pushViewController:controller animated:YES];
                 
             }else{
-                
-                
+                [self HUDStopWithTitle:@"请稍后重试"];
             }
             
         } failure:^(id  _Nullable erros) {
-            
+             [self HUDStopWithTitle:@"请检查网络"];
         }];
         
     }else if (notificationTipsType == Question ||notificationTipsType == Answer){
+        [self HUDStartWithTitle:nil];
         [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/questions/%@",Request_Header,notifications[@"id"]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqualToNumber:@1]) {
+                 [self HUDStopWithTitle:nil];
                 Questions *mod = [Questions yy_modelWithJSON:dic[@"data"]];
                 mod.questionID = dic[@"data"][@"id"];
                 if (![dic[@"data"][@"answer"] isEqual:[NSNull null]]) {
@@ -2034,12 +2035,13 @@
                 
                 controller = [[QuestionInfoViewController alloc]initWithQuestion:mod];
                 [self.navigationController pushViewController:controller animated:YES];
+            }else{
+                 [self HUDStopWithTitle:@"请稍后重试"];
             }
             
         } failure:^(id  _Nullable erros) {
-            
+             [self HUDStopWithTitle:@"请检查网络"];
         }];
-        
     }
     
 }
