@@ -250,7 +250,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"SupportedLandscape"];
     [self HUDStartWithTitle:NSLocalizedString(@"正在加载数据", nil)];
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = BACKGROUNDGRAY ;
@@ -2126,9 +2126,6 @@
     
     
 }
-
-
-
 
 
 - (void)didReceiveMemoryWarning {

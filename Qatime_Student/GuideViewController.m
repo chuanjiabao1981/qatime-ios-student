@@ -55,6 +55,10 @@
         guide1 = [UIImage imageNamed:@"guide1_640"];
         guide2 = [UIImage imageNamed:@"guide2_640"];
         guide3 = [UIImage imageNamed:@"guide3_640"];
+    }else{
+        guide1 = [UIImage imageNamed:@"guide1_1242"];
+        guide2 = [UIImage imageNamed:@"guide2_1242"];
+        guide3 = [UIImage imageNamed:@"guide3_1242"];
     }
     
     NSArray *imageArr = @[guide1,guide2,guide3];

@@ -29,7 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tabBar.hidden = NO;
-
+    [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"NO"];
     
 }
 
@@ -47,15 +47,17 @@
     
 }
 
-
 -(UIInterfaceOrientationMask)supportedInterfaceOrientations{
     
-    return UIInterfaceOrientationMaskAllButUpsideDown;
-    
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:@"SupportedLandscape"]==YES) {
+        
+        return  UIInterfaceOrientationMaskAllButUpsideDown;
+    }else{
+        
+        return UIInterfaceOrientationMaskPortrait;
+    }
+  
 }
-
-
-
 
 
 
