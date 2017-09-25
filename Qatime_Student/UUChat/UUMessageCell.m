@@ -113,8 +113,8 @@
                 [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
                 //扬声器播放情况下,增加红外线感应监听
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:)  name:UIDeviceProximityStateDidChangeNotification object:nil];
-//                [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];  //可以关闭掉红外感应
-
+                //                [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];  //可以关闭掉红外感应
+                
             }else if([[[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]isEqualToString:@"earphone"]){
                 
                 
@@ -128,7 +128,7 @@
             
             //扬声器播放情况下,增加红外线感应监听
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:UIDeviceProximityStateDidChangeNotification object:nil];
-//                [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];  //可以关闭掉红外感应
+            //                [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];  //可以关闭掉红外感应
             
         }
         
@@ -204,6 +204,11 @@
         _noticeTipsTitle.textColor = [UIColor blackColor];
         [_noticeTipsContentView addSubview:_noticeTipsTitle];
         
+        _notificationTipsTag = [[UILabel alloc]init];
+        _notificationTipsTag.font = TEXT_FONTSIZE_MIN;
+        _notificationTipsTag.textColor = TITLECOLOR;
+        [_noticeTipsContentView addSubview:_notificationTipsTag];
+        
         
     }
     return self;
@@ -245,10 +250,10 @@
             
             image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]];
             btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
-
+            
             [_photoDelegate showImage:btnImageView andImage:image];
         }
-
+        
         
     }else if (self.messageFrame.message.type == UUMessageTypeVoice){
         
@@ -256,10 +261,10 @@
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"VoicePlayHasInterrupt" object:nil];
             contentVoiceIsPlaying = YES;
-//            audio = [UUAVAudioPlayer sharedInstance];
-//            audio.delegate = self;
-//                    [audio playSongWithUrl:voiceURL];
-//            [audio playSongWithData:songData];
+            //            audio = [UUAVAudioPlayer sharedInstance];
+            //            audio.delegate = self;
+            //                    [audio playSongWithUrl:voiceURL];
+            //            [audio playSongWithData:songData];
             [self UUAVAudioPlayerBeiginPlay];
             [[NIMSDK sharedSDK].mediaManager play:self.messageFrame.message.voicePath];
             
@@ -325,7 +330,7 @@
  */
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-
+    
     return NO; // 除了上面的操作，都不支持
 }
 
@@ -339,7 +344,7 @@
 - (void)UUAVAudioPlayerBeiginPlay
 {
     //开启红外线感应
-//    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+    //    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
     [[NIMSDK sharedSDK].mediaManager setNeedProximityMonitor:YES];
     [self.btnContent didLoadVoice];
 }
@@ -347,7 +352,7 @@
 {
     [[NIMSDK sharedSDK].mediaManager stopPlay];
     //关闭红外线感应
-//    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+    //    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
     [[NIMSDK sharedSDK].mediaManager setNeedProximityMonitor:YES];
     contentVoiceIsPlaying = NO;
     [self.btnContent stopPlay];
@@ -384,8 +389,8 @@
         NSLog(@"%@",times);
         
         self.labelTime.text = messageFrame.message.strTime;
-//        self.labelTime.text = [times substringFromIndex:5];
-
+        //        self.labelTime.text = [times substringFromIndex:5];
+        
         self.labelTime.frame = messageFrame.timeF;
         
         // 2、设置头像
@@ -938,11 +943,11 @@
                     
             }
         }
-
+        
     }
     
     if(messageFrame.message.type == UUMessagetypeNotice){
-       //系统公告类消息
+        //系统公告类消息
         self.labelTime.hidden = YES;
         self.labelNum.hidden = YES;
         self.btnHeadImage.hidden = YES;
@@ -998,54 +1003,58 @@
         self.title.hidden = YES;
         self.sendfaild.hidden = YES;
         self.noticeTipsContentView.hidden = NO;
-//
+        //
         _noticeTipsTitle.text = messageFrame.message.notificationTipsContent;
         
-////        LiveStudio::Homework 作业
-////        LiveStudio::Question 提问
-////        LiveStudio::Answer 回答
-////        Resource::File 课件
+        ////        LiveStudio::Homework 作业
+        ////        LiveStudio::Question 提问
+        ////        LiveStudio::Answer 回答
+        ////        Resource::File 课件
         
         if ([messageFrame.message.notificationTipsType isEqualToString:@"LiveStudio::Homework"]) {
             //作业
             _noticeTipsCategory.verticalText = @"作业";
             _noticeTipsCategoryContent.backgroundColor = BUTTONRED;
             _notificationTypes = HomeWork;
+            _notificationTipsTag.text = @"发布作业";
         }else if ([messageFrame.message.notificationTipsType isEqualToString:@"LiveStudio::Question"]){
             //问题
             _noticeTipsCategory.verticalText = @"问题";
             _noticeTipsCategoryContent.backgroundColor = THEMECOLOR;
             _notificationTypes = Question;
+            _notificationTipsTag.text = @"创建问题";
         }else if ([messageFrame.message.notificationTipsType isEqualToString:@"LiveStudio::Answer"]){
             //回答
             _noticeTipsCategory.verticalText = @"回答";
             _noticeTipsCategoryContent.backgroundColor = THEMECOLOR;
             _notificationTypes = Answer;
+            _notificationTipsTag.text = @"回复提问";
         }else if ([messageFrame.message.notificationTipsType isEqualToString:@"Resource::File"]){
             //课件
             _noticeTipsCategory.verticalText = @"课件";
             _noticeTipsCategoryContent.backgroundColor = BUTTONRED;
             _notificationTypes = Files;
+            _notificationTipsTag.text = @"上传课件";
         }
-
+        
         if (messageFrame.message.from == UUMessageFromMe) {
             
             _noticeTipsContentView.sd_layout
             .topSpaceToView(self.timeLabel, 15)
             .rightSpaceToView(headImageBackView, 10)
-            .heightIs(50)
+            .heightIs(65)
             .leftSpaceToView(self.contentView, 60);
             self.labelNum.hidden = YES;
             
         }else if (messageFrame.message.from == UUMessageFromOther){
-
+            
             _noticeTipsContentView.sd_layout
             .topSpaceToView(self.timeLabel, 15)
             .leftSpaceToView(headImageBackView, 10)
-            .heightIs(50)
+            .heightIs(65)
             .rightSpaceToView(self.contentView, 60);
             self.labelNum.hidden = NO;
-
+            
         }
         [_noticeTipsContentView updateLayout];
         _noticeTipsCategoryContent.sd_layout
@@ -1053,19 +1062,26 @@
         .topSpaceToView(_noticeTipsContentView, 0)
         .bottomSpaceToView(_noticeTipsContentView, 0)
         .widthIs(35);
-
+        
         _noticeTipsCategory.sd_layout
         .topSpaceToView(_noticeTipsCategoryContent, 5)
         .bottomSpaceToView(_noticeTipsCategoryContent, 5)
         .leftSpaceToView(_noticeTipsCategoryContent, 5)
         .rightSpaceToView(_noticeTipsCategoryContent, 5);
-
+        
         _noticeTipsTitle.sd_layout
         .leftSpaceToView(_noticeTipsCategoryContent, 5*ScrenScale)
         .rightSpaceToView(_noticeTipsContentView, 10*ScrenScale)
         .topSpaceToView(_noticeTipsContentView, 10*ScrenScale)
-        .bottomSpaceToView(_noticeTipsContentView, 10*ScrenScale);
-
+        .autoHeightRatio(0);
+        
+        
+        _notificationTipsTag.sd_layout
+        .rightSpaceToView(_noticeTipsContentView, 10*ScrenScale)
+        .bottomSpaceToView(_noticeTipsContentView, 5*ScrenScale)
+        .autoHeightRatio(0);
+        [_notificationTipsTag setSingleLineAutoResizeWithMaxWidth:400];
+        
     }
 }
 
@@ -1082,13 +1098,13 @@
 {
     if ([[UIDevice currentDevice] proximityState] == YES){
         NSLog(@"靠近耳朵,使用听筒播放");
-//        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+        //        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
         [[NIMSDK sharedSDK].mediaManager switchAudioOutputDevice:NIMAudioOutputDeviceReceiver];
         
     }
     else{
         NSLog(@"远离耳朵,使用扬声器播放");
-//        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+        //        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
         [[NIMSDK sharedSDK].mediaManager switchAudioOutputDevice:NIMAudioOutputDeviceSpeaker];
     }
 }

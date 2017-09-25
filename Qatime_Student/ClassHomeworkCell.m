@@ -29,7 +29,7 @@
         
         _title = [[UILabel alloc]init];
         [content addSubview:_title];
-        _title.font = TITLEFONTSIZE;
+        _title.font = TEXT_FONTSIZE;
         _title.textColor = [UIColor blackColor];
         _title.sd_layout
         .leftSpaceToView(content, 10*ScrenScale)
@@ -50,7 +50,7 @@
         
         _created_at = [[UILabel alloc]init];
         [content addSubview:_created_at];
-        _created_at.font = TEXT_FONTSIZE;
+        _created_at.font = TEXT_FONTSIZE_MIN;
         _created_at.textColor = TITLECOLOR;
         _created_at.sd_layout
         .leftEqualToView(_title)

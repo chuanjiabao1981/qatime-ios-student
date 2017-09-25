@@ -27,6 +27,8 @@
 #import "TutoriumInfoViewController.h"
 #import "Interactive.h"
 #import "CYLTableViewPlaceHolder.h"
+#import "UIViewController+Token.h"
+#import "ExclusiveInfo.h"
 
 typedef enum : NSUInteger {
     RefreshStatePushLoadMore,
@@ -39,9 +41,6 @@ typedef enum : NSUInteger {
 @interface NoticeIndexViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,NIMConversationManagerDelegate,NIMLoginManagerDelegate,UIGestureRecognizerDelegate,JTSegmentControlDelegate,NIMChatManagerDelegate>{
     
     NavigationBar *_navigationBar;
-    
-    NSString *_token;
-    NSString *_idNumber;
     
     /* 我的辅导班列表*/
     NSMutableArray *_myClassArray;
@@ -62,7 +61,6 @@ typedef enum : NSUInteger {
     NSInteger unreadCont;
     
     NSString *unreadCountStr;//专门用来监听的
-    
     
     
     /* 下拉刷新页数*/
@@ -203,24 +201,9 @@ typedef enum : NSUInteger {
     [self addObserver:self forKeyPath:@"unreadCountStr" options:NSKeyValueObservingOptionNew context:nil];
 }
 
-- (void)getToken{
-    
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-    
-}
-
-
 
 /* 读取消息后,该页面接受通知消息,tablecell的badge数量变化*/
 - (void)markRead:(NSNotification *)notification{
-    
     
     
 }
@@ -238,15 +221,6 @@ typedef enum : NSUInteger {
     
     [[[NIMSDK sharedSDK]conversationManager]addDelegate:self];
     [[[NIMSDK sharedSDK]chatManager]addDelegate:self];
-    
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
     
     
     /* 初始化*/
@@ -301,8 +275,8 @@ typedef enum : NSUInteger {
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses",Request_Header,[self getStudentID]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
@@ -314,7 +288,7 @@ typedef enum : NSUInteger {
             _recentArr =  [NSMutableArray arrayWithArray:[[[NIMSDK sharedSDK]conversationManager]allRecentSessions]];
             
             /**在请求一次一对一聊天数据*/
-            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/interactive_courses",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/interactive_courses",Request_Header,[self getStudentID]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
                 
                 NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
                 if ([dataDic[@"status"]isEqualToNumber:@1]) {
@@ -327,127 +301,160 @@ typedef enum : NSUInteger {
                             
                             [dicArr addObjectsFromArray:[NSMutableArray arrayWithArray:dataDic[@"data"]]];
                             
-                            
-                            //制作chatlist数组
-                            for (NSDictionary *tutorium in dicArr) {
-                                /**
-                                 用teachers字段进行区分课程类型
-                                 */
-                                if (![[tutorium allKeys]containsObject:@"teachers"]) {
-                                    //不包含就是直播课
+                            //在这儿再请求一次近期专属课
+                            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/customized_groups",Request_Header,[self getStudentID]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
+                                
+                                NSDictionary *clasDic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                                if ([clasDic[@"status"]isEqualToNumber:@1]) {
+                                    [dicArr addObjectsFromArray:clasDic[@"data"]];
                                     
-                                    TutoriumListInfo *info = [TutoriumListInfo yy_modelWithJSON:tutorium];
-                                    info.classID = tutorium[@"id"];
-                                    
-                                    info.notify =  [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.chat_team_id];
-                                    /* 已购买的或者试听尚未结束的 ,加入聊天列表*/
-                                    if ([info.taste_count integerValue]<[info.preset_lesson_count integerValue]||info.is_bought == YES) {
-                                        [_myClassArray addObject:info];
+                                    //制作chatlist数组
+                                    for (NSDictionary *tutorium in dicArr) {
+                                        /**
+                                         用teachers字段进行区分课程类型
+                                         */
+                                        if (![[tutorium allKeys]containsObject:@"teachers"]) {
+                                            //不包含就是直播课/专属课
+                                            if ([[tutorium allKeys]containsObject:@"customized_group"]) {
+                                                //专属课
+                                                //这儿得好好研究研究怎么改改
+                                                ExclusiveInfo *exclusive = [ExclusiveInfo yy_modelWithJSON:tutorium[@"customized_group"]];
+                                                exclusive.classID =tutorium[@"customized_group"][@"id"];
+                                                exclusive.notify = YES;
+                                                [_myClassArray addObject:exclusive];
+                                                
+                                            }else{
+                                                TutoriumListInfo *info = [TutoriumListInfo yy_modelWithJSON:tutorium];
+                                                info.classID = tutorium[@"id"];
+                                                
+                                                info.notify =  [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:info.chat_team_id];
+                                                /* 已购买的或者试听尚未结束的 ,加入聊天列表*/
+                                                if ([info.taste_count integerValue]<[info.preset_lesson_count integerValue]||info.is_bought == YES) {
+                                                    [_myClassArray addObject:info];
+                                                }
+                                            }
+                                            
+                                        }else{
+                                            //包含就是一对一
+                                            InteractiveCourse  *mod = [InteractiveCourse yy_modelWithJSON:tutorium ];
+                                            mod.classID = tutorium[@"id"];
+                                            mod.notify = [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:mod.chat_team_id];
+                                            [_myClassArray addObject:mod];
+                                        }
                                     }
                                     
-                                }else{
-                                    //包含就是一对一
-                                    InteractiveCourse  *mod = [InteractiveCourse yy_modelWithJSON:tutorium ];
-                                    mod.classID = tutorium[@"id"];
-                                    mod.notify = [[[NIMSDK sharedSDK]teamManager]notifyForNewMsg:mod.chat_team_id];
-                                    [_myClassArray addObject:mod];
-                                }
-                            }
-                            
-                            if (_myClassArray&&_recentArr) {
-                                
-                                /* 把badge结果遍历给chatlist的cell*/
-                                
-                                //同时也是制作chatlist的方法. 2017.7.5重写
-                                for (id obj in _myClassArray) {
-                                    
-                                    if ([obj isMemberOfClass:[TutoriumListInfo class]]) {
+                                    if (_myClassArray&&_recentArr) {
                                         
-                                        ChatList *mod = [[ChatList alloc]init];
-                                        mod.tutorium = (TutoriumListInfo *)obj;
-                                        mod.name = [(TutoriumListInfo *)obj valueForKeyPath:@"name"];
-                                        mod.classType = LiveCourseType;
-                                        for (NIMRecentSession *session in _recentArr) {
-                                            if ([session.session.sessionId isEqualToString:[(TutoriumListInfo *)obj valueForKeyPath:@"chat_team_id"]]) {
-                                                mod.badge = session.unreadCount;
-                                                unreadCont +=session.unreadCount;
-                                                mod.lastTime = session.lastMessage.timestamp;
-                                                if (unreadCont>0) {
-                                                    self.tabBarItem.badgeValue = @"";
+                                        /* 把badge结果遍历给chatlist的cell*/
+                                        
+                                        //同时也是制作chatlist的方法. 2017.7.5重写
+                                        for (id obj in _myClassArray) {
+                                            
+                                            if ([obj isMemberOfClass:[TutoriumListInfo class]]) {
+                                                
+                                                ChatList *mod = [[ChatList alloc]init];
+                                                mod.tutorium = (TutoriumListInfo *)obj;
+                                                mod.name = [(TutoriumListInfo *)obj valueForKeyPath:@"name"];
+                                                mod.classType = LiveCourseType;
+                                                for (NIMRecentSession *session in _recentArr) {
+                                                    if ([session.session.sessionId isEqualToString:[(TutoriumListInfo *)obj valueForKeyPath:@"chat_team_id"]]) {
+                                                        mod.badge = session.unreadCount;
+                                                        unreadCont +=session.unreadCount;
+                                                        mod.lastTime = session.lastMessage.timestamp;
+                                                        if (unreadCont>0) {
+                                                            self.tabBarItem.badgeValue = @"";
+                                                        }
+                                                    }
+                                                    unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
                                                 }
-                                            }
-                                            unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
-                                        }
-                                        [_chatListArr addObject:mod];
-
-                                    }else if ([obj isMemberOfClass:[InteractiveCourse class]]){
-                                        ChatList *mod = [[ChatList alloc]init];
-                                        mod.interaction = (InteractiveCourse *)obj;
-                                        mod.name = [(InteractiveCourse *)obj valueForKeyPath:@"name"];
-                                        mod.classType = InteractionCourseType;
-                                        for (NIMRecentSession *session in _recentArr) {
-                                            if ([session.session.sessionId isEqualToString:[(InteractiveCourse *)obj valueForKeyPath:@"chat_team_id"]]) {
-                                                mod.badge = session.unreadCount;
-                                                unreadCont +=session.unreadCount;
-                                                mod.lastTime = session.lastMessage.timestamp;
-                                                if (unreadCont>0) {
-                                                    self.tabBarItem.badgeValue = @"";
+                                                [_chatListArr addObject:mod];
+                                                
+                                            }else if ([obj isMemberOfClass:[InteractiveCourse class]]){
+                                                ChatList *mod = [[ChatList alloc]init];
+                                                mod.interaction = (InteractiveCourse *)obj;
+                                                mod.name = [(InteractiveCourse *)obj valueForKeyPath:@"name"];
+                                                mod.classType = InteractionCourseType;
+                                                for (NIMRecentSession *session in _recentArr) {
+                                                    if ([session.session.sessionId isEqualToString:[(InteractiveCourse *)obj valueForKeyPath:@"chat_team_id"]]) {
+                                                        mod.badge = session.unreadCount;
+                                                        unreadCont +=session.unreadCount;
+                                                        mod.lastTime = session.lastMessage.timestamp;
+                                                        if (unreadCont>0) {
+                                                            self.tabBarItem.badgeValue = @"";
+                                                        }
+                                                    }
+                                                    unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
                                                 }
+                                                [_chatListArr addObject:mod];
+                                                
+                                            }else if ([obj isMemberOfClass:[ExclusiveInfo class]]){
+                                                ChatList *mod = [[ChatList alloc]init];
+                                                mod.exclusive = (ExclusiveInfo *)obj;
+                                                mod.name = [(ExclusiveInfo *)obj valueForKeyPath:@"name"];
+                                                mod.classType = ExclusiveCourseType;
+                                                [_chatListArr addObject:mod];
                                             }
-                                            unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
                                         }
-                                        [_chatListArr addObject:mod];
-
+                                        
+                                        /**
+                                         在这儿进行一次_chatListArr的排序
+                                         根据数组里的每一个元素(ChatList类型)的lastTime属性进行比较
+                                         */
+                                        NSArray *tempArr = _chatListArr.mutableCopy;
+                                        _chatListArr = (NSMutableArray *)[tempArr sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                                            
+                                            ChatList *mod1 = (ChatList *)obj1;
+                                            ChatList *mod2 = (ChatList *)obj2;
+                                            
+                                            if (mod1.lastTime<mod2.lastTime) {
+                                                
+                                                // 按时间戳降序排列
+                                                return NSOrderedDescending;
+                                            }else{
+                                                
+                                                // 相同不变
+                                                return NSOrderedSame;
+                                            }
+                                        }];
+                                        
+                                        for (ChatList *mod in _chatListArr) {
+                                            NSLog(@"%f",mod.lastTime);
+                                        }
                                     }
-                                    
-                                }
-                            }
-                            
-                            /**
-                             在这儿进行一次_chatListArr的排序
-                             根据数组里的每一个元素(ChatList类型)的lastTime属性进行比较
-                             */
-                            NSArray *tempArr = _chatListArr.mutableCopy;
-                            _chatListArr = (NSMutableArray *)[tempArr sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                                
-                                ChatList *mod1 = (ChatList *)obj1;
-                                ChatList *mod2 = (ChatList *)obj2;
-                                
-                                if (mod1.lastTime<mod2.lastTime) {
-                                    
-                                    // 按时间戳降序排列
-                                    return NSOrderedDescending;
+                                    if (state == RefreshStatePushLoadMore) {
+                                        
+                                        [_noticeIndexView.chatListTableView.mj_header endRefreshing];
+                                        [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                                        
+                                    }else{
+                                        [self HUDStopWithTitle:nil];
+                                        [_noticeIndexView.chatListTableView.mj_header endRefreshing];
+                                        [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                                    }
                                 }else{
+                                    /* 数据错误*/
                                     
-                                    // 相同不变
-                                    return NSOrderedSame;
+                                    [self HUDStopWithTitle:@"加载失败,请稍后重试!"];
+                                    [_noticeIndexView.chatListTableView.mj_header endRefreshing];
+                                    [_noticeIndexView.chatListTableView cyl_reloadData];
                                 }
+                                
+                            } failure:^(id  _Nullable erros) {
+                                [_noticeIndexView.chatListTableView.mj_header endRefreshing];
+                                [_noticeIndexView.chatListTableView cyl_reloadData];
                             }];
-                            
-                            for (ChatList *mod in _chatListArr) {
-                                NSLog(@"%f",mod.lastTime);
-                            }
                             
                         }
                     }
                 }
                 
-                if (state == RefreshStatePushLoadMore) {
-                    
-                    [_noticeIndexView.chatListTableView.mj_header endRefreshing];
-                    [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-                    
-                }else{
-                    [self HUDStopWithTitle:nil];
-                    [_noticeIndexView.chatListTableView.mj_header endRefreshing];
-                    [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-                }
             }failure:^(id  _Nullable erros) {
+                [_noticeIndexView.chatListTableView.mj_header endRefreshing];
+                [_noticeIndexView.chatListTableView cyl_reloadData];
             }];
             
         }else{
             /* 数据错误*/
-            
             [self HUDStopWithTitle:@"加载失败,请稍后重试!"];
             [_noticeIndexView.chatListTableView.mj_header endRefreshing];
             [_noticeIndexView.chatListTableView cyl_reloadData];
@@ -455,7 +462,7 @@ typedef enum : NSUInteger {
         
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-         [_noticeIndexView.chatListTableView.mj_header endRefreshing];
+        [_noticeIndexView.chatListTableView.mj_header endRefreshing];
         [_noticeIndexView.chatListTableView cyl_reloadData];
     }];
     
@@ -492,7 +499,7 @@ typedef enum : NSUInteger {
     
     unreadArr = @[].mutableCopy;
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications",Request_Header,_idNumber] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:@{@"page":[NSString stringWithFormat:@"%ld",noticePage]} completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications",Request_Header,[self getStudentID]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:@{@"page":[NSString stringWithFormat:@"%ld",noticePage]} completeSuccess:^(id  _Nullable responds) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         
         [self loginStates:dic];
@@ -576,17 +583,17 @@ typedef enum : NSUInteger {
                 
                 [_noticeIndexView.noticeTableView.mj_header endRefreshing];
             }else{
-              
+                
                 [_noticeIndexView.noticeTableView.mj_header endRefreshing];
             }
             [_noticeIndexView.noticeTableView cyl_reloadData];
-
+            
             
             [self HUDStopWithTitle:@"公告刷新失败,请稍后重试"];
             
         }
         
-
+        
     } failure:^(id  _Nullable erros) {
         if (state == RefreshStatePushLoadMore) {
             
@@ -737,12 +744,32 @@ typedef enum : NSUInteger {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (tableView.tag == 2) {
-        ChatViewController *chatVC;
+        __block ChatViewController *chatVC;
         ChatListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         
         if (cell.model.tutorium.name==nil) {
             if (cell.model.interaction.name!=nil) {
                 chatVC = [[ChatViewController alloc]initWithClass:cell.model.interaction andClassType:cell.model.classType];
+            }else if (cell.model.exclusive.name !=nil){
+                [self HUDStartWithTitle:nil];
+                [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/play",Request_Header,cell.model.exclusive.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
+                    
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                    if ([dic[@"status"]isEqualToNumber:@1]) {
+                        [self HUDStopWithTitle:nil];
+                        cell.model.exclusive.chat_team_id = dic[@"data"][@"customized_group"][@"chat_team"][@"team_id"];
+                        chatVC = [[ChatViewController alloc]initWithClass:cell.model.exclusive andClassType:cell.model.classType];
+                        chatVC.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:chatVC animated:YES];
+                        
+                    }else{
+                         [self HUDStopWithTitle:@"请稍后再试"];
+                    }
+                    
+                } failure:^(id  _Nullable erros) {
+                    [self HUDStopWithTitle:@"请检查网络"];
+                }];
+                
             }
         }else{
             if (cell.model.tutorium.name!=nil) {
@@ -825,7 +852,7 @@ typedef enum : NSUInteger {
         }
         
         UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:title handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-
+            
             NSString *sendID;
             if (cell.model.tutorium.name == nil) {
                 sendID = cell.model.interaction.chat_team_id;
@@ -997,8 +1024,8 @@ typedef enum : NSUInteger {
                         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
                         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
                         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-                        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-                        [manager PUT:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications/batch_read",Request_Header,_idNumber] parameters:@{@"ids":idsStr} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                        [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
+                        [manager PUT:[NSString stringWithFormat:@"%@/api/v1/users/%@/notifications/batch_read",Request_Header,[self getStudentID]] parameters:@{@"ids":idsStr} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                             
                             NSError *error = [[NSError alloc]init];
                             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:&error];
@@ -1019,7 +1046,7 @@ typedef enum : NSUInteger {
                                     [[NSNotificationCenter defaultCenter]postNotificationName:@"AllMessageRead" object:nil];
                                     self.tabBarItem.badgeValue = nil;
                                 }
-                               
+                                
                             }else{
                                 
                                 

@@ -36,6 +36,7 @@
         _title = [[UITextField alloc]init];
         [titleLine addSubview:_title];
         _title.backgroundColor = [UIColor whiteColor];
+        _title.font = TEXT_FONTSIZE;
         _title.placeholder = @"输入提问标题（最多20字）";
         _title.sd_layout
         .leftSpaceToView(titleLine, 10*ScrenScale)
@@ -61,7 +62,7 @@
         _questions.backgroundColor = [UIColor whiteColor];
         _questions.font = TEXT_FONTSIZE;
         _questions.placeholderLabel.font = TEXT_FONTSIZE;
-        _questions.placeholder = @"输入提问标题（最多100字）";
+        _questions.placeholder = @"输入提问内容";
         _questions.sd_layout
         .leftSpaceToView(questionLine, 10*ScrenScale)
         .topSpaceToView(questionLine, 10*ScrenScale)

@@ -49,14 +49,14 @@
         
         _info = [[UILabel alloc]init];
         [self.contentView addSubview:_info];
-        _info.sd_layout
-        .leftSpaceToView(_size, 10*ScrenScale)
-        .bottomEqualToView(_size)
-        .rightSpaceToView(self.contentView, 10*ScrenScale)
-        .autoHeightRatio(0);
         _info.font = TEXT_FONTSIZE_MIN;
         _info.textColor = TITLECOLOR;
         
+        _info.sd_layout
+        .bottomEqualToView(_size)
+        .leftSpaceToView(_size, 20*ScrenScale)
+        .autoHeightRatio(0);
+        [_info setSingleLineAutoResizeWithMaxWidth:1000];
         
     }
     

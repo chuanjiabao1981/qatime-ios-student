@@ -47,6 +47,10 @@
     
     NSString *_chatTeamID;
     
+    BOOL _isFinished;
+    
+    NSArray *_newWorkFlowArr;
+    
 }
 
 
@@ -66,6 +70,11 @@
     
     //导航栏右侧按钮
     [self setupNavigationButton];
+    
+    _newWorkFlowArr = @[@{@"image":@"work1",@"title":@"1.购买课程",@"subTitle":@"支持退款,放心购买"},
+                        @{@"image":@"work2",@"title":@"2.准时上课",@"subTitle":@"提前预习,按时上课"},
+                        @{@"image":@"work3",@"title":@"3.在线授课",@"subTitle":@"多人交流,生动直播"},
+                        @{@"image":@"work4",@"title":@"4.上课结束",@"subTitle":@"互动答疑,随时解惑"}];
     
     _onlineClassArray = @[].mutableCopy;
     _offlineClassArray = @[].mutableCopy;
@@ -88,7 +97,44 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self requestChatTeam];
     });
-
+    
+    self.tutoriumInfoView.tags.hidden = YES;
+    self.tutoriumInfoView.classTagsView.hidden = YES;
+    self.tutoriumInfoView.taget.sd_layout.topSpaceToView(self.tutoriumInfoView.liveTimeLabel, 20);
+    [self.tutoriumInfoView.taget updateLayout];
+    
+    UILabel *replay = [[UILabel alloc]init];
+    replay.text = @"回放说明";
+    replay.font = TITLEFONTSIZE;
+    [self.tutoriumInfoView.view1 addSubview:replay];
+    
+    replay.sd_layout
+    .leftEqualToView(self.tutoriumInfoView.afterLabel)
+    .topSpaceToView(self.tutoriumInfoView.afterLabel,20)
+    .autoHeightRatio(0);
+    [replay setSingleLineAutoResizeWithMaxWidth:100];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc]init];
+    style.lineSpacing = 5;
+    NSDictionary *attribute = @{NSFontAttributeName:TEXT_FONTSIZE,
+                                NSParagraphStyleAttributeName:style};
+    UILabel *replayLabel = [[UILabel alloc]init];
+     [self.tutoriumInfoView.view1 addSubview:replayLabel];
+    replayLabel.font = TEXT_FONTSIZE;
+    replayLabel.textColor = TITLECOLOR;
+    replayLabel.textAlignment = NSTextAlignmentLeft;
+    replayLabel.isAttributedContent = YES;
+    replayLabel.attributedText = [[NSMutableAttributedString alloc]initWithString:@"1、购买课程后方可观看回放；\n2、专属课课程回放暂无任何观看限制，学生可任意观看；\n3、直播结束后最晚于24小时内上传回放；\n4、回放内容不完全等于直播内容，请尽量观看直播进行学习；\n5、回放内容仅供学生学习使用，未经允许不得进行录制。" attributes:attribute];
+    replayLabel.sd_layout
+    .topSpaceToView(replay,10)
+    .leftEqualToView(replay)
+    .rightSpaceToView(self.tutoriumInfoView.view1,20)
+    .autoHeightRatio(0);
+    [replayLabel updateLayout];
+    
+    [self.tutoriumInfoView.view1 setupAutoContentSizeWithBottomView:replayLabel bottomMargin:20];
+    
+    
+    
 }
 
 /**
@@ -97,7 +143,7 @@
 - (void)setupNavigationButton{
     
     [self.navigationBar.rightButton setImage:[UIImage imageNamed:@"moreMenu"] forState:UIControlStateNormal];
-    self.navigationBar.rightButton.hidden = YES;
+//    self.navigationBar.rightButton.hidden = YES;
     [self.navigationBar.rightButton addTarget:self action:@selector(moreMenu) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -118,6 +164,12 @@
                             @"itemName" : @"成员列表"
                             };
     NSArray *menuArray = @[dict1,dict2,dict3,dict4,dict5];
+    
+    if (_isFinished == NO) {
+        menuArray = @[dict1,dict2,dict3,dict4,dict5];
+    }else{
+        menuArray = @[dict2,dict3,dict4,dict5];
+    }
     
     __weak __typeof(&*self)weakSelf = self;
     /**
@@ -148,34 +200,63 @@
 - (void)doSomething:(NSString *)str tag:(NSInteger)tag{
     
     __block UIViewController *controller ;
-    switch (tag) {
-        case 1:{
-            
-            __block TutoriumListInfo *tutorium = [[TutoriumListInfo alloc]init];
-            tutorium.classID = self.classID;
-            if (_chatTeamID) {
-                tutorium.chat_team_id = _chatTeamID;
+    
+    if (_isFinished == YES) {
+        switch (tag) {
+            case 1:{
+                controller = [[ExclusiveHomeworkViewController alloc]initWithClassID:self.classID];
             }
-            controller = [[ChatViewController alloc]initWithClass:tutorium andClassType:ExclusiveCourseType];
+                break;
+            case 2:{
+                controller = [[ExclusiveAskViewController alloc]initWithClassID:self.classID];
+            }
+                break;
+            case 3:{
+                controller = [[ExclusiveCoursewareViewController alloc]initWithClassID:self.classID];
+            }
+                break;
+            case 4:{
+                controller = [[ClassMembersViewController alloc]initWithClassID:self.classID];
+            }
+                break;
         }
-            break;
-        case 2:{
-            controller = [[ExclusiveHomeworkViewController alloc]initWithClassID:self.classID];
+        
+    }else{
+        switch (tag) {
+            case 1:{
+                
+                __block TutoriumListInfo *tutorium = [[TutoriumListInfo alloc]init];
+                tutorium.classID = self.classID;
+                if (_chatTeamID) {
+                    tutorium.chat_team_id = _chatTeamID;
+                }
+                controller = [[ChatViewController alloc]initWithClass:tutorium andClassType:ExclusiveCourseType];
+            }
+                break;
+            case 2:{
+                controller = [[ExclusiveHomeworkViewController alloc]initWithClassID:self.classID];
+            }
+                break;
+            case 3:{
+                controller = [[ExclusiveAskViewController alloc]initWithClassID:self.classID];
+            }
+                break;
+            case 4:{
+                controller = [[ExclusiveCoursewareViewController alloc]initWithClassID:self.classID];
+            }
+                break;
+            case 5:{
+                controller = [[ClassMembersViewController alloc]initWithClassID:self.classID];
+            }
+                break;
         }
-            break;
-        case 3:{
-            controller = [[ExclusiveAskViewController alloc]initWithClassID:self.classID];
-        }
-            break;
-        case 4:{
-            controller = [[ExclusiveCoursewareViewController alloc]initWithClassID:self.classID];
-        }
-            break;
-        case 5:{
-            controller = [[ClassMembersViewController alloc]initWithClassID:self.classID];
-        }
-            break;
+        
     }
+    
+    
+    
+    
+   
     
     self.navigationBar.rightButton.selected = NO;
     [self.navigationController pushViewController:controller animated:YES];
@@ -210,7 +291,7 @@
             self.classID = dic[@"data"][@"customized_group"][@"id"];
             
             self.tutoriumInfoView.exclusiveModel = model;
-            self.tutoriumInfoView.classFeature.hidden = YES;
+//            self.tutoriumInfoView.classFeature.hidden = YES;
             self.navigationBar.titleLabel.text = model.name;
             if ([model.status isEqualToString:@"finished"]||[model.status isEqualToString:@"billing"]||[model.status isEqualToString:@"completed"]){
                 //如果课程已结束,buybar不显示.什么都不显示了
@@ -340,11 +421,14 @@
                         }
                     }
                 }
+                _isFinished = NO;
+                self.navigationBar.rightButton.hidden = NO;
             }else{//课程已经结束了
                 //整个购买栏直接隐藏吧
                 self.buyBar.hidden = YES;
+                _isFinished = YES;
+                self.navigationBar.rightButton.hidden = NO;
             }
-            
         }else{//需要加入试听或购买
             if ([dic[@"data"][@"customized_group"][@"tastable"]boolValue]==YES) {//可以加入试听
                 //显示加入试听,和立即购买两个按钮
@@ -379,6 +463,7 @@
             //已经下架
             self.buyBar.hidden = YES;
             self.tutoriumInfoView.priceLabel.text = @"已下架";
+            _isFinished = YES;
         }
         
     }else if ([dic[@"data"][@"customized_group"][@"sell_type"]isEqualToString:@"free"]){//免费课
@@ -547,7 +632,7 @@
         }
     }else {
         
-        row = self.workFlowArr.count;
+        row = _newWorkFlowArr.count;
     }
     
     return row;
@@ -614,8 +699,8 @@
         
         if (self.workFlowArr.count>indexPath.row) {
             [cell.image setImage:[UIImage imageNamed:self.workFlowArr[indexPath.row][@"image"]]];
-            cell.title.text = self.workFlowArr[indexPath.row][@"title"];
-            cell.subTitle.text = self.workFlowArr[indexPath.row][@"subTitle"];
+            cell.title.text = _newWorkFlowArr[indexPath.row][@"title"];
+            cell.subTitle.text = _newWorkFlowArr[indexPath.row][@"subTitle"];
         }
         
         return  cell;
@@ -684,9 +769,14 @@
 
 #pragma mark- UITableView delegate
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    
     if (tableView.tag == 1) {
+        if (_offlineClassArray.count>0) {
+            return 2;
+        }else{
+            return 1;
+        }
         
-        return 2;
     }else{
         return 1;
     }

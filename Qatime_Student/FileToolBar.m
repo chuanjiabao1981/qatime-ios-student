@@ -25,6 +25,7 @@
         .leftSpaceToView(self, 0)
         .widthRatioToView(self, 0.5);
         [_selectAllBtn setTitleColor:BUTTONRED forState:UIControlStateNormal];
+        [_selectAllBtn setTitle:@"全选" forState:UIControlStateNormal];
         _selectAllBtn.layer.borderWidth = 0.5;
         _selectAllBtn.layer.borderColor = BUTTONRED.CGColor;
         _selectAllBtn.titleLabel.font = TEXT_FONTSIZE;
@@ -37,6 +38,7 @@
         .leftSpaceToView(_selectAllBtn, 0)
         .rightSpaceToView(self, 0);
         [_deletBtn setTitleColor:BUTTONRED forState:UIControlStateNormal];
+         [_deletBtn setTitle:@"删除" forState:UIControlStateNormal];
         _deletBtn.layer.borderWidth = 0.5;
         _deletBtn.layer.borderColor = BUTTONRED.CGColor;
         _deletBtn.titleLabel.font = TEXT_FONTSIZE;

@@ -108,6 +108,7 @@
     _buyBar= [[BuyBar alloc]initWithFrame:CGRectMake(0, self.view.height_sd-49, self.view.width_sd, 49)];
     
     [self.view addSubview:_buyBar];
+    _buyBar.hidden = YES;
     
     if (![self isLogin]) {
         [_buyBar.listenButton addTarget:self action:@selector(loginAgain) forControlEvents:UIControlEventTouchUpInside];
@@ -171,7 +172,6 @@
     _tutoriumInfoView.classesListTableView.dataSource = self;
     _tutoriumInfoView.classesListTableView.bounces = YES;
     _tutoriumInfoView.classesListTableView.tag = 1;
-    
     
     
     /* 根据传递过来的id 进行网络请求model*/
@@ -464,6 +464,7 @@
                     
                     
                     [self HUDStopWithTitle:nil];
+                    _buyBar.hidden = NO;
                     
                 }else{
                     /* 返回的教师数据是错误的*/

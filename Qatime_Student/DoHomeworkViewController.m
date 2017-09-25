@@ -44,7 +44,9 @@
     [_navBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     [_navBar.rightButton setTitle:@"提交" forState:UIControlStateNormal];
     [_navBar.rightButton addTarget:self action:@selector(handinWork) forControlEvents:UIControlEventTouchUpInside];
-    
+    [_navBar.rightButton setupAutoSizeWithHorizontalPadding:10 buttonHeight:30];
+    [_navBar.rightButton updateLayout];
+    _navBar.titleLabel.text = @"做作业";
     self.view.backgroundColor = [UIColor whiteColor];
     _mainView = [[DoHomeworkView alloc]init];
     [self.view addSubview:_mainView];

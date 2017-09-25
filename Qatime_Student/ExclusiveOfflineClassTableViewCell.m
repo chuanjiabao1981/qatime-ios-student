@@ -7,6 +7,7 @@
 //
 
 #import "ExclusiveOfflineClassTableViewCell.h"
+#import "NSString+TimeStamp.h"
 
 @implementation ExclusiveOfflineClassTableViewCell
 

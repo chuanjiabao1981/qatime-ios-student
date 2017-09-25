@@ -295,17 +295,17 @@
         
         
         /* 标签*/
-        UILabel *tags = [[UILabel alloc]init];
-        tags.text = @"课程标签";
-        tags.textColor = [UIColor blackColor];
-        tags.font = TITLEFONTSIZE;
-        [_view1 addSubview:tags];
-        tags.sd_layout
+        _tags = [[UILabel alloc]init];
+        _tags.text = @"课程标签";
+        _tags.textColor = [UIColor blackColor];
+        _tags.font = TITLEFONTSIZE;
+        [_view1 addSubview:_tags];
+        _tags.sd_layout
         .leftEqualToView(desLabel)
         .topSpaceToView(clock,20)
         .autoHeightRatio(0);
-        [tags setSingleLineAutoResizeWithMaxWidth:100.0f];
-        [tags updateLayout];
+        [_tags setSingleLineAutoResizeWithMaxWidth:100.0f];
+        [_tags updateLayout];
         
         
         //课程标签
@@ -316,20 +316,20 @@
         _classTagsView.sd_layout
         .leftEqualToView(clock)
         .rightSpaceToView(_view1,20)
-        .topSpaceToView(tags,10)
+        .topSpaceToView(_tags,10)
         .heightIs(200);
         
         //课程目标
-        UILabel *taget = [[UILabel alloc]init];
-        [_view1 addSubview:taget];
-        taget.textColor = [UIColor blackColor];
-        taget.font = TITLEFONTSIZE;
-        taget.text = @"课程目标";
-        taget.sd_layout
-        .leftEqualToView(tags)
+        _taget = [[UILabel alloc]init];
+        [_view1 addSubview:_taget];
+        _taget.textColor = [UIColor blackColor];
+        _taget.font = TITLEFONTSIZE;
+        _taget.text = @"课程目标";
+        _taget.sd_layout
+        .leftEqualToView(_tags)
         .topSpaceToView(_classTagsView,20)
         .autoHeightRatio(0);
-        [taget setSingleLineAutoResizeWithMaxWidth:100];
+        [_taget setSingleLineAutoResizeWithMaxWidth:100];
         
         _classTarget = [[UILabel alloc]init];
         [_view1 addSubview:_classTarget];
@@ -337,11 +337,10 @@
         _classTarget.textColor = TITLECOLOR;
         
         _classTarget.sd_layout
-        .topSpaceToView(taget,10)
-        .leftEqualToView(taget)
+        .topSpaceToView(_taget,10)
+        .leftEqualToView(_taget)
         .rightSpaceToView(_view1,20)
         .autoHeightRatio(0);
-        
         
         //适合人群
         UILabel *suit = [[UILabel alloc]init];
@@ -350,7 +349,7 @@
         suit.textColor = [UIColor blackColor];
         suit.text = @"适合人群";
         suit.sd_layout
-        .leftEqualToView(taget)
+        .leftEqualToView(_taget)
         .topSpaceToView(_classTarget,20)
         .autoHeightRatio(0);
         [suit setSingleLineAutoResizeWithMaxWidth:100];
@@ -439,16 +438,16 @@
         .autoHeightRatio(0);
         [before setSingleLineAutoResizeWithMaxWidth:100];
         
-        UILabel *beforeLabel = [[UILabel alloc]init];
-        [_view1 addSubview:beforeLabel];
-        beforeLabel.font = TEXT_FONTSIZE;
-        beforeLabel.textColor = TITLECOLOR;
-        beforeLabel.textAlignment = NSTextAlignmentLeft;
-        beforeLabel.isAttributedContent = YES;
+        _beforeLabel = [[UILabel alloc]init];
+        [_view1 addSubview:_beforeLabel];
+        _beforeLabel.font = TEXT_FONTSIZE;
+        _beforeLabel.textColor = TITLECOLOR;
+        _beforeLabel.textAlignment = NSTextAlignmentLeft;
+        _beforeLabel.isAttributedContent = YES;
         
-        beforeLabel.attributedText = [[NSMutableAttributedString alloc]initWithString:@"1、做好课程预习，预先了解本课所讲内容，更好的吸收课程精华；\n2、准备好相关的学习工具（如：纸、笔等）并在上课前调试好电脑，使用手机请保持电量充足。\n3、选择安静的学习环境，并将与学习无关的事物置于远处；选择安静的环境避免影响听课。\n4、三年级以下的同学请在家长帮助下学习。\n5、遇到网页不能打开或者不能登陆等情况请及时联系客服。"  attributes:attribute];
+        _beforeLabel.attributedText = [[NSMutableAttributedString alloc]initWithString:@"1、做好课程预习，预先了解本课所讲内容，更好的吸收课程精华；\n2、准备好相关的学习工具（如：纸、笔等）并在上课前调试好电脑，使用手机请保持电量充足。\n3、选择安静的学习环境，并将与学习无关的事物置于远处；选择安静的环境避免影响听课。\n4、三年级以下的同学请在家长帮助下学习。\n5、遇到网页不能打开或者不能登陆等情况请及时联系客服。"  attributes:attribute];
         
-        beforeLabel.sd_layout
+        _beforeLabel.sd_layout
         .topSpaceToView(before,10)
         .leftEqualToView(before)
         .rightSpaceToView(_view1,20)
@@ -462,53 +461,52 @@
         
         [_view1 addSubview:during];
         during.sd_layout
-        .leftEqualToView(beforeLabel)
-        .topSpaceToView(beforeLabel,20)
+        .leftEqualToView(_beforeLabel)
+        .topSpaceToView(_beforeLabel,20)
         .autoHeightRatio(0);
         [during setSingleLineAutoResizeWithMaxWidth:100];
         
-        UILabel *duringLabel = [[UILabel alloc]init];
-        [_view1 addSubview:duringLabel];
-        duringLabel.font = TEXT_FONTSIZE;
-        duringLabel.textColor = TITLECOLOR;
-        duringLabel.textAlignment = NSTextAlignmentLeft;
-        duringLabel.isAttributedContent = YES;
-        duringLabel.attributedText = [[NSMutableAttributedString alloc]initWithString:@"1、时刻保持注意力集中，认真听讲才能更好的提升学习；\n2、课程中遇到听不懂的问题及时通过聊天或互动申请向老师提问，老师收到后会给予解答；\n3、积极响应老师的授课，完成老师布置的课上任务；\n4、禁止在上课中闲聊或发送一切与本课无关的内容，如有发现，一律禁言；\n5、上课途中如突遇屏幕卡顿，直播中断等特殊情况，请刷新后等待直播恢复；超过15分钟未恢复去请致电客服。" attributes:attribute];
+        _duringLabel = [[UILabel alloc]init];
+        [_view1 addSubview:_duringLabel];
+        _duringLabel.font = TEXT_FONTSIZE;
+        _duringLabel.textColor = TITLECOLOR;
+        _duringLabel.textAlignment = NSTextAlignmentLeft;
+        _duringLabel.isAttributedContent = YES;
+        _duringLabel.attributedText = [[NSMutableAttributedString alloc]initWithString:@"1、时刻保持注意力集中，认真听讲才能更好的提升学习；\n2、课程中遇到听不懂的问题及时通过聊天或互动申请向老师提问，老师收到后会给予解答；\n3、积极响应老师的授课，完成老师布置的课上任务；\n4、禁止在上课中闲聊或发送一切与本课无关的内容，如有发现，一律禁言；\n5、上课途中如突遇屏幕卡顿，直播中断等特殊情况，请刷新后等待直播恢复；超过15分钟未恢复去请致电客服。" attributes:attribute];
         
-        duringLabel.sd_layout
+        _duringLabel.sd_layout
         .topSpaceToView(during,10)
-        .leftEqualToView(beforeLabel)
+        .leftEqualToView(_beforeLabel)
         .rightSpaceToView(_view1,20)
         .autoHeightRatio(0);
         
         //上课后
-        UILabel *after = [[UILabel alloc]init];
-        after.text = @"上课后";
-        after.font = TITLEFONTSIZE;
+        UILabel * _after = [[UILabel alloc]init];
+        _after.text = @"上课后";
+        _after.font = TITLEFONTSIZE;
         
-        [_view1 addSubview:after];
-        after.sd_layout
+        [_view1 addSubview:_after];
+        _after.sd_layout
         .leftEqualToView(during)
-        .topSpaceToView(duringLabel,20)
+        .topSpaceToView(_duringLabel,20)
         .autoHeightRatio(0);
-        [after setSingleLineAutoResizeWithMaxWidth:100];
+        [_after setSingleLineAutoResizeWithMaxWidth:100];
         
-        UILabel *afterLabel = [[UILabel alloc]init];
-        [_view1 addSubview:afterLabel];
-        afterLabel.font = TEXT_FONTSIZE;
-        afterLabel.textColor = TITLECOLOR;
-        afterLabel.textAlignment = NSTextAlignmentLeft;
-        afterLabel.isAttributedContent = YES;
-        afterLabel.attributedText = [[NSMutableAttributedString alloc]initWithString:@"1、直播结束后请大家仍可以在直播教室内进行聊天和讨论，老师也会适时解答；\n2、请同学按时完成老师布置的作业任务。" attributes:attribute];
-        afterLabel.sd_layout
-        .topSpaceToView(after,10)
-        .leftEqualToView(duringLabel)
+        _afterLabel = [[UILabel alloc]init];
+        [_view1 addSubview:_afterLabel];
+        _afterLabel.font = TEXT_FONTSIZE;
+        _afterLabel.textColor = TITLECOLOR;
+        _afterLabel.textAlignment = NSTextAlignmentLeft;
+        _afterLabel.isAttributedContent = YES;
+        _afterLabel.attributedText = [[NSMutableAttributedString alloc]initWithString:@"1、直播结束后请大家仍可以在直播教室内进行聊天和讨论，老师也会适时解答；\n2、请同学按时完成老师布置的作业任务。" attributes:attribute];
+        _afterLabel.sd_layout
+        .topSpaceToView(_after,10)
+        .leftEqualToView(_duringLabel)
         .rightSpaceToView(_view1,20)
         .autoHeightRatio(0);
         
-        
         //sdautolayout 自适应scrollview的contentsize 方法
-        [_view1 setupAutoContentSizeWithBottomView:afterLabel bottomMargin:20];
+        [_view1 setupAutoContentSizeWithBottomView:_afterLabel bottomMargin:20];
         
         
         /* 教师简介 。。。view2*/

@@ -160,7 +160,6 @@
 		5422EAE71F4E7AC9008B0A96 /* NIMKitUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 5422EA5C1F4E7AC8008B0A96 /* NIMKitUtil.m */; };
 		5422EAE81F4E7AC9008B0A96 /* NIMPinyinConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5422EA5F1F4E7AC8008B0A96 /* NIMPinyinConverter.m */; };
 		5422EAE91F4E7AC9008B0A96 /* NIMSpellingCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5422EA611F4E7AC8008B0A96 /* NIMSpellingCenter.m */; };
-		5422EAEA1F4E7AC9008B0A96 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5422EA631F4E7AC8008B0A96 /* Info.plist */; };
 		5422EAEB1F4E7AC9008B0A96 /* NIMAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5422EA671F4E7AC9008B0A96 /* NIMAttributedLabel.m */; };
 		5422EAEC1F4E7AC9008B0A96 /* NIMAttributedLabelAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5422EA691F4E7AC9008B0A96 /* NIMAttributedLabelAttachment.m */; };
 		5422EAED1F4E7AC9008B0A96 /* NIMAttributedLabelURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 5422EA6C1F4E7AC9008B0A96 /* NIMAttributedLabelURL.m */; };
@@ -1086,7 +1085,6 @@
 		5422EA5F1F4E7AC8008B0A96 /* NIMPinyinConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIMPinyinConverter.m; sourceTree = "<group>"; };
 		5422EA601F4E7AC8008B0A96 /* NIMSpellingCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIMSpellingCenter.h; sourceTree = "<group>"; };
 		5422EA611F4E7AC8008B0A96 /* NIMSpellingCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIMSpellingCenter.m; sourceTree = "<group>"; };
-		5422EA631F4E7AC8008B0A96 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5422EA661F4E7AC8008B0A96 /* NIMAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIMAttributedLabel.h; sourceTree = "<group>"; };
 		5422EA671F4E7AC9008B0A96 /* NIMAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIMAttributedLabel.m; sourceTree = "<group>"; };
 		5422EA681F4E7AC9008B0A96 /* NIMAttributedLabelAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIMAttributedLabelAttachment.h; sourceTree = "<group>"; };
@@ -3017,7 +3015,6 @@
 		5422EA621F4E7AC8008B0A96 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5422EA631F4E7AC8008B0A96 /* Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -3643,6 +3640,7 @@
 		544B76071F417CDF00B8B20A /* 问答.作业.课件.成员列表 */ = {
 			isa = PBXGroup;
 			children = (
+				54F5E3DA1F78AA8E0015BF7D /* 专属课的聊天页面 */,
 				544B760A1F417CFD00B8B20A /* 课程作业 */,
 				544B76091F417CFC00B8B20A /* 课程提问 */,
 				544B76081F417CFB00B8B20A /* 课程课件 */,
@@ -6843,6 +6841,21 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		54F5E3DA1F78AA8E0015BF7D /* 专属课的聊天页面 */ = {
+			isa = PBXGroup;
+			children = (
+				54F5E3DB1F78AAA00015BF7D /* Controller */,
+			);
+			name = "专属课的聊天页面";
+			sourceTree = "<group>";
+		};
+		54F5E3DB1F78AAA00015BF7D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
 		54FA714F1E07B0B4009D81FE /* 聊天页面 */ = {
 			isa = PBXGroup;
 			children = (
@@ -7622,7 +7635,6 @@
 				548328DE1DDC6F360053AB29 /* headImage.jpeg in Resources */,
 				548328DD1DDC6F360053AB29 /* 1.jpeg in Resources */,
 				54BB2D6B1E5587B900446141 /* chat_ipunt_message.png in Resources */,
-				5422EAEA1F4E7AC9008B0A96 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

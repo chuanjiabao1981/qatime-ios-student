@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TutoriumList.h"
 #import "InteractiveCourse.h"
+#import "ExclusiveInfo.h"
 
 @interface ChatList : NSObject
 /**辅导班名称*/
@@ -20,6 +21,8 @@
 
 /**一对一 */
 @property (nonatomic, strong) InteractiveCourse *interaction ;
+
+@property (nonatomic, strong) ExclusiveInfo *exclusive ;
 
 /**收到最后一条消息的时间*/
 @property (nonatomic, assign) NSTimeInterval lastTime ;

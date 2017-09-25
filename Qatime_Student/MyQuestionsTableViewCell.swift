@@ -14,9 +14,14 @@ class MyQuestionsTableViewCell: QuestionsTableViewCell {
         self.model = question;
         self.status.isHidden = true
         self.title.text = question.title
-        self.asker.text = "提问时间: " + NSString.changeTimeStamp(toDateString: question.created_at)
+       
         self.infos.text = "相关课程: " + question.course_name
         
+        if question.status == "pending" {
+             self.asker.text = "提问时间: " + NSString.changeTimeStamp(toDateString: question.created_at)
+        }else{
+             self.asker.text = "回复时间: " + NSString.changeTimeStamp(toDateString: question.created_at)
+        }
     }
     
     override func awakeFromNib() {

@@ -169,7 +169,7 @@
             [self showToolBar];
             [_navigationBar.rightButton setImage:nil forState:UIControlStateNormal];
             [_navigationBar.rightButton setTitle:@"取消" forState:UIControlStateNormal];
-            _navigationBar.rightButton.sd_layout.autoWidthRatio(2.f);
+            [_navigationBar.rightButton setupAutoSizeWithHorizontalPadding:10 buttonHeight:30];
             [_navigationBar.rightButton updateLayout];
             for (MyDownloadFileTableViewCell *cell in _mainView.visibleCells) {
                 [cell enterEditMode];
@@ -181,7 +181,10 @@
             [self hideToolBar];
             [_navigationBar.rightButton setImage:[UIImage imageNamed:@"垃圾桶"] forState:UIControlStateNormal];
             [_navigationBar.rightButton setTitle:nil forState:UIControlStateNormal];
-            _navigationBar.rightButton.sd_layout.autoWidthRatio(1.0);
+             [_navigationBar.rightButton setupAutoSizeWithHorizontalPadding:0 buttonHeight:25];
+            _navigationBar.rightButton.sd_layout
+            .topEqualToView(_navigationBar.leftButton)
+            .bottomEqualToView(_navigationBar.leftButton);
             [_navigationBar.rightButton updateLayout];
             for (MyDownloadFileTableViewCell *cell in _mainView.visibleCells) {
                 [cell exitEditeMode];

@@ -33,6 +33,7 @@
 #import "InteractionViewController.h"
 #import "ExclusiveInfoViewController.h"
 #import "UIViewController+Token.h"
+#import "ExclusivePlayerViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -429,6 +430,7 @@ typedef enum : NSUInteger {
             
             cell.enterButton.tag = indexPath.row+10;
             [cell.enterButton addTarget:self action:@selector(enterLive:) forControlEvents:UIControlEventTouchUpInside];
+//            cell.enterButton.hidden = YES;
         }
         
         tableCell = cell;
@@ -534,18 +536,21 @@ typedef enum : NSUInteger {
 
 /* 进入直播*/
 - (void)enterLive:(UIButton *)sender{
-    
-    ClassTimeTableViewCell *cell = [_classTimeView.notClassView.notClassTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag inSection:0]];
+    [self HUDStartWithTitle:nil];
+    ClassTimeTableViewCell *cell = [_classTimeView.notClassView.notClassTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag-10 inSection:0]];
     __block UIViewController *controller;
+    
     if ([cell.model.model_name isEqualToString:@"LiveStudio::Lesson"]) {
         //直播课
+        [self HUDStopWithTitle:nil];
         controller= [[LivePlayerViewController alloc]initWithClassID:cell.model.product_id];
+        controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
     }else if ([cell.model.model_name isEqualToString:@"LiveStudio::VideoLesson"]){
         //视频课
         //先获取视频课程的详情吧
         [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@",Request_Header,cell.model.course_id] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
-            
+            [self HUDStopWithTitle:nil];
         } failure:^(id  _Nullable erros) {
             
         }];
@@ -561,7 +566,7 @@ typedef enum : NSUInteger {
         [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/detail",Request_Header,cell.model.course_id] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqualToNumber:@1]) {
-                
+                [self HUDStopWithTitle:nil];
                 for (NSDictionary *lesson in dic[@"data"][@"interactive_course"][@"interactive_lessons"]) {
                     if ([lesson[@"status"]isEqualToString:@"teaching"]) {
                         lessonName = lesson[@"name"];
@@ -569,9 +574,30 @@ typedef enum : NSUInteger {
                 }
                 
                 controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:cell.model.course_id andChatTeamID:cell.model.course_id andLessonName:lessonName==nil?@"暂无直播":lessonName];
+                controller.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:controller animated:YES];
             }else{
                 [self HUDStopWithTitle:@"网络繁忙,请稍后重试"];
+            }
+            
+        } failure:^(id  _Nullable erros) {
+            [self HUDStopWithTitle:@"请检查网络"];
+        }];
+        
+    }else if ([cell.model.model_name isEqualToString:@"LiveStudio::ScheduledLesson"]){
+        
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/play",Request_Header,cell.model.course_id] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {
+        } completeSuccess:^(id  _Nullable responds) {
+            
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                [self HUDStopWithTitle:nil];
+                controller = [[ExclusivePlayerViewController alloc]initWithClassID:cell.model.course_id andChatTeamID:dic[@"data"][@"customized_group"][@"chat_team"][@"team_id"] andBoardAddress:dic[@"data"][@"customized_group"][@"board_pull_stream"] andTeacherAddress:dic[@"data"][@"customized_group"][@"camera_pull_stream"]];
+                controller.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:controller animated:YES];
+                
+            }else{
+                 [self HUDStopWithTitle:@"网络繁忙,请稍后重试"];
             }
             
         } failure:^(id  _Nullable erros) {

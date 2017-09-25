@@ -95,13 +95,15 @@ class QuestionsTableViewCell: UITableViewCell {
         
         title.text = question.title
         asker.text = question.user_name
-        infos.text = "创建时间 " + question.created_at
+        
         if (question.answer != nil) {
             status.textColor = UIColor.init(hexString: "20ad65")
             status.text = "已回复"
+            infos.text = "回复时间: " + NSString.changeTimeStamp(toDateString: question.created_at)
         }else{
             status.textColor = UIColor.red
             status.text = "待回复"
+            infos.text = "创建时间: " + NSString.changeTimeStamp(toDateString: question.created_at)
         }
     }
     

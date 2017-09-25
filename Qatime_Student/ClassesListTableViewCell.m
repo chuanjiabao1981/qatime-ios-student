@@ -357,7 +357,6 @@
     _classDate .text = exclusiveModel.class_date;
     _classTime .text = [NSString stringWithFormat:@"%@",exclusiveModel.start_time];
     
-    
     /* 已开课的状态*/
     if ([exclusiveModel.status isEqualToString:@"init"]) {
         _status.text =@"未开始";

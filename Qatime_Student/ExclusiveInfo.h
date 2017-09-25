@@ -32,6 +32,9 @@
 @property (nonatomic, strong) NSDictionary *icons ;
 @property (nonatomic, strong) NSDictionary *offline_lessons ;
 @property (nonatomic, strong) NSDictionary *scheduled_lessons ;
+@property (nonatomic, strong) NSString *chat_team_id ;
+
+@property (nonatomic, assign) BOOL notify ;
 
 
 @end

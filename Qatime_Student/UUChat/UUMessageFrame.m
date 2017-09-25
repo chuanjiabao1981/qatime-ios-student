@@ -147,7 +147,7 @@
         _contentF = CGRectMake(contentX, contentY, contentSize.width + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);
         
         if (message.type == UUMessageTypeNotificationTips) {
-            _contentF = CGRectMake(0, 0, UIScreenWidth/2 ,60);
+            _contentF = CGRectMake(0, 0, UIScreenWidth/2 ,80);
         }
         _cellHeight = CGRectGetMaxY(_contentF) + 40;
         
@@ -156,7 +156,7 @@
         _contentF = CGRectMake(contentX, contentY, contentSize.width + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);
         
         if (message.type == UUMessageTypeNotificationTips) {
-            _contentF = CGRectMake(0, 0, UIScreenWidth/2 ,60);
+            _contentF = CGRectMake(0, 0, UIScreenWidth/2 ,80);
         }
         _cellHeight = CGRectGetMaxY(_contentF) + 40;
         

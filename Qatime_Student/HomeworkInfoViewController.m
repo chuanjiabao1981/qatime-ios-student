@@ -126,6 +126,8 @@
     .rightSpaceToView(self.view, 0)
     .topSpaceToView(self.view, 0)
     .heightIs(Navigation_Height);
+    [_naviBar.rightButton setupAutoSizeWithHorizontalPadding:10 buttonHeight:30];
+    [_naviBar.rightButton updateLayout];
     
     _mainView = [[HomeworkInfoView alloc]init];
     [self.view addSubview:_mainView];
@@ -139,9 +141,16 @@
     _mainView.homeworkList.delegate = self;
     
     _mainView.subtitle.title.text = _homework.title;
-    _mainView.subtitle.creat_at .text =[_homework.created_at changeTimeStampToDateString];
+    _mainView.subtitle.creat_at .text = [@"创建时间:" stringByAppendingString:[_homework.created_at changeTimeStampToDateString]];
     [_mainView updateLayout];
     [_mainView.homeworkList updateLayout];
+    
+    if (_homework.items.count>0) {
+        _naviBar.rightButton.hidden = YES;
+    }else{
+        
+    }
+    
     
 }
 

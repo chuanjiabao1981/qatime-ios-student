@@ -97,7 +97,17 @@
 -(void)setModel:(ChatList *)model{
     
     _model = model;
-    [_image sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",model.tutorium.name==nil?model.interaction.publicize:model.tutorium.publicize]]];
+    
+    __block NSURL *imageURL;
+    if (model.classType == LiveCourseType) {
+        imageURL = [NSURL URLWithString:model.tutorium.publicize];
+    }else if (model.classType == InteractionCourseType){
+        imageURL = [NSURL URLWithString:model.interaction.publicize[@"list"]];
+    }else if (model.classType == ExclusiveCourseType){
+        imageURL = [NSURL URLWithString:model.exclusive.publicizes_url[@"list"]];
+    }
+    
+    [_image sd_setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"school"]];
     _className.text = model.name;
     _lastTime.text = [self timeStampSwitcher:model.lastTime];
     self.badgeNumber = model.badge;

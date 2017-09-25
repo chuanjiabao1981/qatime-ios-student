@@ -98,6 +98,7 @@ typedef NS_ENUM(NSUInteger, NotificationTipsType) {
 /** 左侧的分类条吧 */
 @property (nonatomic, strong) UIView *noticeTipsCategoryContent ;
 @property (nonatomic, strong) UILabel *noticeTipsCategory ;
+@property (nonatomic, strong) UILabel *notificationTipsTag ;
 
 
 @end

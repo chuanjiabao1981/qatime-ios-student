@@ -225,7 +225,11 @@
 
 #pragma mark- UITableView delegate
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    if (_offlineLessonArray.count>0) {
+        return 2;
+    }else{
+        return 1;
+    }
 }
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     

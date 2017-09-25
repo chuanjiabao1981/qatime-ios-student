@@ -63,7 +63,7 @@
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
     [self.view addSubview:_navigationBar];
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-    _navigationBar.titleLabel.text = @"课件管理";
+    _navigationBar.titleLabel.text = @"课件文件";
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
     _mainView = [[UITableView alloc]init];

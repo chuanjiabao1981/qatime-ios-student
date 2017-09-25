@@ -13,6 +13,7 @@
 #import "UUInputFunctionView.h"
 #import "TutoriumList.h"
 #import "NavigationBar.h"
+#import "CommonMenuView.h"
 
 
 /* 聊天页面*/

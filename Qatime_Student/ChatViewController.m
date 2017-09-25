@@ -41,7 +41,7 @@
 
 
 #import "UUMessageFrame.h"
-
+#import "UIControl+RemoveTarget.h"
 
 #import "NSString+YYAdd.h"
 #import "UIViewController+TimeInterval.h"
@@ -63,8 +63,12 @@
 #import "CourseFileInfoViewController.h"
 #import "Questions.h"
 #import "QuestionInfoViewController.h"
+#import "ExclusiveHomeworkViewController.h"
 
-
+#import "ExclusiveAskViewController.h"
+#import "ExclusiveCoursewareViewController.h"
+#import "ClassMembersViewController.h"
+#import "ExclusiveInfo.h"
 
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate,NIMMediaManagerDelegate,NotificationTipsDelegat>{
     
@@ -98,6 +102,8 @@
     
     NSString *_classID;
     
+    BOOL _isExclusive;
+    
 }
 
 /* 刷新聊天记录*/
@@ -124,6 +130,9 @@
         }else if ([tutorium isMemberOfClass:[InteractiveCourse class]]){
             _tutoriumInfo =(InteractiveCourse *)tutorium;
             _chat_teamID = [(InteractiveCourse *)tutorium valueForKey:@"chat_team_id"];
+        }else if ([tutorium isMemberOfClass:[ExclusiveInfo class]]){
+            _tutoriumInfo =(ExclusiveInfo *)tutorium;
+            _chat_teamID = [(ExclusiveInfo *)tutorium valueForKey:@"chat_team_id"];
         }
         _classType = type;
         _classID = [_tutoriumInfo valueForKey:@"classID"];
@@ -150,7 +159,6 @@
         _;
         
     });
-    
     
     _chatTableView = ({
         UITableView *_=[[UITableView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height-TabBar_Height) style:UITableViewStylePlain];
@@ -290,16 +298,14 @@
 - (void)setupNavigationButton{
     
     [self.navigationBar.rightButton setImage:[UIImage imageNamed:@"moreMenu"] forState:UIControlStateNormal];
-    [self.navigationBar addSubview:self.navigationBar.rightButton];
-    self.navigationBar.rightButton.hidden = YES;
-    
+    [self.navigationBar.rightButton removeAllTargets];
     [self.navigationBar.rightButton addTarget:self action:@selector(moreMenu) forControlEvents:UIControlEventTouchUpInside];
 }
 /** 更多菜单 */
 - (void)moreMenu{
     
     NSDictionary *dict1 = @{@"imageName" : @"icon_button_affirm",
-                            @"itemName" : @"进入聊天"
+                            @"itemName" : @"进直播室"
                             };
     NSDictionary *dict2 = @{@"imageName" : @"icon_button_recall",
                             @"itemName" : @"课程作业"
@@ -339,7 +345,7 @@
 
 #pragma mark -- 专属菜单点击 回调事件(自定义)
 - (void)doSomething:(NSString *)str tag:(NSInteger)tag{
-    
+    [self HUDStartWithTitle:nil];
     __block UIViewController *controller ;
     switch (tag) {
         case 1:{
@@ -348,10 +354,14 @@
                 
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
                 if ([dic[@"status"]isEqualToNumber:@1]) {
+                    [self HUDStopWithTitle:nil];
                     _chat_teamID = dic[@"data"][@"customized_group"][@"chat_team"][@"team_id"];
                     NSString *boardAddress = dic[@"data"][@"customized_group"][@"board_pull_stream"];
                     NSString *cameraAddress = dic[@"data"][@"customized_group"][@"camera_pull_stream"];
                     controller = [[ExclusivePlayerViewController alloc]initWithClassID:_classID andChatTeamID:_chat_teamID andBoardAddress:boardAddress andTeacherAddress:cameraAddress];
+                    self.navigationBar.rightButton.selected = NO;
+                    [self.navigationController pushViewController:controller animated:YES];
+                    [CommonMenuView hidden];
                 }else{
                     
                     [self HUDStopWithTitle:@"请稍后再试"];
@@ -369,27 +379,31 @@
         }
             break;
         case 2:{
-            
+            [self HUDStopWithTitle:nil];
+             controller = [[ExclusiveHomeworkViewController alloc]initWithClassID:_classID];
         }
             break;
         case 3:{
-            
+            [self HUDStopWithTitle:nil];
+            controller = [[ExclusiveAskViewController alloc]initWithClassID:_classID];
         }
             break;
         case 4:{
-            
+            [self HUDStopWithTitle:nil];
+            controller = [[ExclusiveCoursewareViewController alloc]initWithClassID:_classID];
         }
             break;
         case 5:{
-            
+            [self HUDStopWithTitle:nil];
+            controller = [[ClassMembersViewController alloc]initWithClassID:_classID];
         }
             break;
     }
     
     self.navigationBar.rightButton.selected = NO;
     [self.navigationController pushViewController:controller animated:YES];
-    
     [CommonMenuView hidden];
+    
 }
 
 
@@ -621,6 +635,7 @@
                         _lesson = lesson[@"name"];
                     }
                 }
+                _navigationBar.titleLabel.text = dic[@"data"][@"customized_group"][@"name"];
                 
             }else{
                 /* 获取成员信息失败*/
@@ -635,7 +650,6 @@
     }
 }
 
-    
 
 - (void)registerForKeyboardNotifications
 {

@@ -62,10 +62,14 @@
 /* 直播时间*/
 @property(nonatomic,strong) UILabel *liveTimeLabel ;
 
+/** 标签 */
+@property (nonatomic, strong) UILabel *tags ;
 
 /* 课程标签图*/
 @property (nonatomic, strong) TTGTextTagCollectionView *classTagsView ;
 
+/** 目标 */
+@property (nonatomic, strong) UILabel *taget ;
 /* 课程目标*/
 @property (nonatomic, strong) UILabel *classTarget ;
 
@@ -113,11 +117,17 @@
 
 @property(nonatomic,strong) UIView *view3 ;
 
+
+
 /* 课程列表*/
 @property(nonatomic,strong) UITableView *classesListTableView ;
 
 @property (nonatomic, strong) ExclusiveInfo *exclusiveModel ;
 
+
+@property (nonatomic, strong) UILabel *beforeLabel ;
+@property (nonatomic, strong) UILabel *duringLabel  ;
+@property (nonatomic, strong) UILabel *afterLabel  ;
 
 
 @end

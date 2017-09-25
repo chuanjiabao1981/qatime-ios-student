@@ -73,7 +73,7 @@
         _answerTitle =[[UILabel alloc]init];
         [self.contentView addSubview:_answerTitle];
         _answerTitle.font = TEXT_FONTSIZE;
-        _answerTitle.textColor = [UIColor blackColor];
+        _answerTitle.textColor = TITLECOLOR;
         _answerTitle.sd_layout
         .leftEqualToView(_index)
         .rightSpaceToView(self.contentView, 10*ScrenScale)

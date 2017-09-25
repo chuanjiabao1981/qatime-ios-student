@@ -37,7 +37,7 @@
         .topSpaceToView(content, 10*ScrenScale)
         .rightSpaceToView(content, 10*ScrenScale)
         .autoHeightRatio(0);
-        [_title setMaxNumberOfLinesToShow:2];
+        [_title setMaxNumberOfLinesToShow:1];
         
         _created_at =[[UILabel alloc]init];
         [content addSubview:_created_at];

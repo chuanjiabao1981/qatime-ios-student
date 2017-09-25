@@ -28,6 +28,7 @@
 #import "InteractionViewController.h"
 #import "UIViewController+AFHTTP.h"
 #import "ExclusiveInfoViewController.h"
+#import "ExclusivePlayerViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -555,6 +556,26 @@
                 
                 controller = [[InteractionViewController alloc]initWithChatroom:chatroom andClassID:cell.model.course_id andChatTeamID:cell.model.course_id andLessonName:lessonName==nil?@"暂无直播":lessonName];
                  [self.navigationController pushViewController:controller animated:YES];
+            }else{
+                [self HUDStopWithTitle:@"网络繁忙,请稍后重试"];
+            }
+            
+        } failure:^(id  _Nullable erros) {
+            [self HUDStopWithTitle:@"请检查网络"];
+        }];
+        
+    }else if ([cell.model.model_name isEqualToString:@"LiveStudio::ScheduledLesson"]){
+        
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/play",Request_Header,cell.model.course_id] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {
+        } completeSuccess:^(id  _Nullable responds) {
+            
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                [self HUDStopWithTitle:nil];
+                controller = [[ExclusivePlayerViewController alloc]initWithClassID:cell.model.course_id andChatTeamID:dic[@"data"][@"customized_group"][@"chat_team"][@"team_id"] andBoardAddress:dic[@"data"][@"customized_group"][@"board_pull_stream"] andTeacherAddress:dic[@"data"][@"customized_group"][@"camera_pull_stream"]];
+                controller.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:controller animated:YES];
+                
             }else{
                 [self HUDStopWithTitle:@"网络繁忙,请稍后重试"];
             }
