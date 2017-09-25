@@ -8605,7 +8605,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Qatime_Student/Qatime_Student-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 arm64 x86_64 i386";
 			};
 			name = Debug;
@@ -8699,7 +8699,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Qatime_Student/Qatime_Student-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 arm64 x86_64 i386";
 			};
 			name = Release;

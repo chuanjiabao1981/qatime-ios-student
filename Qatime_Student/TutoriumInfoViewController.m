@@ -162,17 +162,11 @@
     }];
     
     self.tutoriumInfoView.scrollView.delegate = self;
-    self.tutoriumInfoView.scrollView.bounces=NO;
-    self.tutoriumInfoView.scrollView.alwaysBounceVertical=NO;
-    self.tutoriumInfoView.scrollView.alwaysBounceHorizontal=NO;
-    
-    [self.tutoriumInfoView.scrollView scrollRectToVisible:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd) animated:YES];
-    
+
     _tutoriumInfoView.classesListTableView.delegate = self;
     _tutoriumInfoView.classesListTableView.dataSource = self;
-    _tutoriumInfoView.classesListTableView.bounces = YES;
-    _tutoriumInfoView.classesListTableView.tag = 1;
     
+    _tutoriumInfoView.classesListTableView.tag = 1;
     
     /* 根据传递过来的id 进行网络请求model*/
     /* 初始化三个model*/
@@ -302,12 +296,11 @@
                         if (_buyBar) {
                             _buyBar.hidden = YES;
                             _tutoriumInfoView.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height);
-                            
                         }
                         
                         
                     }else if ([_dataDic[@"status"]isEqualToString:@"published"]){
-                        
+                        _buyBar.hidden = NO;
                         if (_dataDic[@"live_start_time"]) {
                             if ([_dataDic[@"live_start_time"]isEqualToString:@""]||[_dataDic[@"live_start_time"]isEqualToString:@" "]) {
                                 _tutoriumInfoView.status.text = @"招生中";
@@ -445,7 +438,7 @@
                     }
                     
                     /* 赋值完毕,开始进行自适应高度*/
-                    [self autoScrollHeight];
+                    
                     [_tutoriumInfoView.classFeature reloadData];
                     
                     if (_classFeaturesArray.count>3) {
@@ -464,7 +457,7 @@
                     
                     
                     [self HUDStopWithTitle:nil];
-                    _buyBar.hidden = NO;
+                    
                     
                 }else{
                     /* 返回的教师数据是错误的*/
@@ -516,9 +509,9 @@
                         _buyBar.listenButton.backgroundColor = NAVIGATIONRED;
                         [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                         [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
-                        
+                        _buyBar.hidden = NO;
                     }else{//未购买,显示进入试听按钮 购买按钮照常使用
-                        
+                        _buyBar.hidden = NO;
                         _isBought = NO;
                         
                         [_buyBar.applyButton removeAllTargets];
@@ -561,6 +554,7 @@
                 [_buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
             }else{
                 //不能试听,只能购买
+                _buyBar.hidden = NO;
                 _buyBar.listenButton.hidden = YES;
                 [_buyBar.applyButton removeAllTargets];
                 _buyBar.applyButton.sd_resetLayout
@@ -578,11 +572,12 @@
             _buyBar.hidden = YES;
             _tutoriumInfoView.priceLabel.text = @"已下架";
         }else{
-            
+            _buyBar.hidden = NO;
         }
         
     }else if ([dic[@"data"][@"course"][@"sell_type"]isEqualToString:@"free"]){//免费课
         //免费呀
+        _buyBar.hidden = NO;
         _tutoriumInfoView.priceLabel.text = @"免费";
         
         if (dic[@"data"][@"ticket"]) {
@@ -632,6 +627,7 @@
             }
         }else{
             _isBought  = NO;
+            _buyBar.hidden = NO;
             //未购买,立即报名 报完名变成进入学习 未曾拥有过不隐藏购买栏,只是提示下架而已
             if ([dic[@"data"][@"course"][@"off_shelve"]boolValue]==YES) {
                 //已经下架
@@ -647,7 +643,7 @@
                 .bottomSpaceToView(_buyBar, 10);
                 [_buyBar.listenButton updateLayout];
             }else{
-                
+                _buyBar.hidden = NO;
                 _buyBar.listenButton.hidden = YES;
                 _buyBar.applyButton.sd_resetLayout
                 .leftSpaceToView(_buyBar, 10)
@@ -876,12 +872,6 @@
         [_tutoriumInfoView.segmentControl setSelectedSegmentIndex:page animated:YES];
     }
 }
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
-    
-}
-
 
 
 
@@ -1181,42 +1171,6 @@
 
 
 #pragma mark- 根据课程详细内容 ,scrollview 的content 自适应高度
-- (void)autoScrollHeight{
-    //    //富文本尺寸适配
-//    [_tutoriumInfoView.classDescriptionLabel updateLayout];
-//    [_tutoriumInfoView.teacherInterviewLabel updateLayout];
-    //
-    //    /* 使用YYText的YYTextLayout来计算富文本的size*/
-    //    /* 课程信息的 高度自适应*/
-    //    CGSize classDesc_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_tutoriumInfoView.classDescriptionLabel.width_sd, CGFLOAT_MAX) text:_classModel.attributedDescribe].textBoundingSize;
-    //
-    //    /* 课程简介 富文本label先适配自动布局高度*/
-    //    [_tutoriumInfoView.classDescriptionLabel sd_clearAutoLayoutSettings];
-    //    _tutoriumInfoView.classDescriptionLabel.sd_layout
-    //    .leftEqualToView(_tutoriumInfoView.descriptions)
-    //    .topSpaceToView(_tutoriumInfoView.descriptions,20)
-    //    .rightSpaceToView(_tutoriumInfoView.view1,20)
-    //    .heightIs(classDesc_size.height+20);
-    //
-    //    [_tutoriumInfoView.classDescriptionLabel updateLayout];
-    //
-    //
-    //    /* 教师简介的  高度自适应*/
-    //    CGSize teacherDesc_size = [YYTextLayout layoutWithContainerSize:CGSizeMake(_tutoriumInfoView.teacherInterviewLabel.width_sd, CGFLOAT_MAX) text:_teacherModel.attributedDescribe].textBoundingSize;
-    //
-    //    /* 教师简介 富文本label适配自动布局高度*/
-    //    [_tutoriumInfoView.teacherInterviewLabel sd_clearAutoLayoutSettings];
-    //    _tutoriumInfoView.teacherInterviewLabel.sd_layout
-    //    .leftSpaceToView(_tutoriumInfoView.view2,20)
-    //    .rightSpaceToView(_tutoriumInfoView.view2,20)
-    //    .topSpaceToView(_tutoriumInfoView.descrip,20)
-    //    .heightIs(teacherDesc_size.height+20);
-    //
-    //    [_tutoriumInfoView.teacherInterviewLabel updateLayout];
-    
-}
-
-
 
 - (void)returnLastpage{
     

@@ -478,7 +478,11 @@ typedef enum : NSUInteger {
     
 }
 
-
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [[UIApplication sharedApplication]setStatusBarHidden:NO];
+    
+}
 
 - (void)viewDidDisappear:(BOOL)animated{
     
@@ -507,6 +511,7 @@ typedef enum : NSUInteger {
 - (void)teacherInfo{
     
     TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:_replayLessonInfo.teacher.teacherID];
+    [[UIApplication sharedApplication]setStatusBarHidden:NO];
     [self.navigationController pushViewController:controller animated:YES];
     
 }

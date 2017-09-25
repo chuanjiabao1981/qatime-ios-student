@@ -242,6 +242,11 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [_headerView.cycleScrollView adjustWhenControllerViewWillAppera];
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];

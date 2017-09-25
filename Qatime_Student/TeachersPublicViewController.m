@@ -139,10 +139,12 @@
     [self HUDStartWithTitle:nil];
     
     //比较特殊的导航栏
-    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), Navigation_Height)];
+    _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-    [_navigationBar.leftButton updateLayout];
+    [self.view addSubview:_navigationBar];
+    [_navigationBar updateLayout];
+   
     
     //头视图
     _teachersPublicHeaderView = [[TeachersPublicHeaderView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 400)];
@@ -151,9 +153,14 @@
     //collection
     _flowLayout = [[UICollectionViewFlowLayout alloc]init];
     _flowLayout.headerReferenceSize = headerSize;
-    _teachersPublicCollectionView = [[TeachersPublicCollectionView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height) collectionViewLayout:_flowLayout];
+    _teachersPublicCollectionView = [[TeachersPublicCollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:_flowLayout];
     
     [self.view addSubview:_teachersPublicCollectionView];
+    _teachersPublicCollectionView.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .bottomSpaceToView(self.view, 0)
+    .topSpaceToView(_navigationBar, 0);
     _teachersPublicCollectionView.backgroundColor = [UIColor whiteColor];
     _teachersPublicCollectionView.showsVerticalScrollIndicator = NO;
     
@@ -187,8 +194,6 @@
     _teachersPublicHeaderView.featuresView.delegate = self;
     _teachersPublicHeaderView.featuresView.dataSource = self;
     _teachersPublicHeaderView.featuresView.tag = 2;
-    
-    [self.view addSubview:_navigationBar];
     
 }
 

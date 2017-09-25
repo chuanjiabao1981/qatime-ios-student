@@ -57,7 +57,7 @@
         _teacherName.textColor = TITLECOLOR;
         _teacherName.sd_layout
         .centerYEqualToView(_teacherHeaderImage)
-        .leftSpaceToView(_teacherName, 10)
+        .leftSpaceToView(_teacherHeaderImage, 10)
         .autoHeightRatio(0);
         [_teacherName setSingleLineAutoResizeWithMaxWidth:200];
         

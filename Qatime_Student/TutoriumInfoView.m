@@ -39,7 +39,7 @@
         //        self.bounces = NO;
         //        self.showsVerticalScrollIndicator = NO;
         self.backgroundColor = [UIColor whiteColor];
-        self.opaque = NO;
+        
         /* 课程名称*/
         _className = [[UILabel alloc]init];
         [self addSubview:_className];
@@ -144,11 +144,11 @@
         .bottomSpaceToView(self, 0);
         
         [_scrollView updateLayout];
-        _scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame)*3,_scrollView.height_sd );
-        
+        _scrollView.contentSize = CGSizeMake(100,100);
+        _scrollView.bounces = NO;
         _scrollView.pagingEnabled = YES;
         _scrollView.showsHorizontalScrollIndicator = NO;
-        [_scrollView scrollRectToVisible:CGRectMake(CGRectGetWidth(self.frame), 0, CGRectGetWidth(self.frame), 200) animated:NO];
+//        [_scrollView scrollRectToVisible:CGRectMake(CGRectGetWidth(self.frame), 0, CGRectGetWidth(self.frame), 200) animated:NO];
         _scrollView.backgroundColor = [UIColor whiteColor];
         
         /* 分割线2*/
@@ -159,7 +159,7 @@
         /* 分出三个view，放不同的label，用作布局参考*/
         
         _view1 =[[UIScrollView alloc]init];
-        
+        _view1.opaque = NO;
         [_scrollView addSubview:_view1];
         
         _view1.sd_layout
@@ -168,9 +168,10 @@
         .topEqualToView(_scrollView)
         .bottomSpaceToView(_scrollView, 0);
         _view1.backgroundColor = [UIColor whiteColor];
-        _view1.contentSize = CGSizeMake(self.width_sd, 500);
+        _view1.contentSize = CGSizeMake(100, 100);
         
         _view2 =[[UIScrollView alloc]init];
+        _view2.opaque = NO;
         [_scrollView addSubview:_view2];
         _view2.sd_layout
         .leftSpaceToView(_view1,0)
@@ -179,9 +180,10 @@
         .bottomSpaceToView(_scrollView, 0);
         _view2.backgroundColor = [UIColor whiteColor];
         
-        _view2.contentSize = CGSizeMake(self.width_sd,500);
+        _view2.contentSize = CGSizeMake(100,100);
         
         _view3 =[[UIView alloc]init];
+        _view3.opaque = NO;
         [_scrollView addSubview:_view3];
         _view3.sd_layout
         .leftSpaceToView(_view2,0)
@@ -648,7 +650,7 @@
         
         
         //scrollview横向自适应
-        [_scrollView setupAutoContentSizeWithRightView:_view3 rightMargin:0];
+        //        [_scrollView setupAutoContentSizeWithRightView:_view3 rightMargin:0];
         //        [_scrollView setupAutoContentSizeWithBottomView:_view3 bottomMargin:10];
         
         //视图自适应
