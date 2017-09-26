@@ -129,9 +129,7 @@
             //扬声器播放情况下,增加红外线感应监听
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:UIDeviceProximityStateDidChangeNotification object:nil];
             //                [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];  //可以关闭掉红外感应
-            
         }
-        
         
         contentVoiceIsPlaying = NO;
         

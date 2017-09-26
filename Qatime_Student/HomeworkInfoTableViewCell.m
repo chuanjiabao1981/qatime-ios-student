@@ -47,16 +47,43 @@
         .rightSpaceToView(self.contentView, 10*ScrenScale)
         .autoHeightRatio(0);
         
+        
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
+        layout.itemSize = CGSizeMake((UIScreenWidth-20*ScrenScale-10)*0.5, (UIScreenWidth-20*ScrenScale-10)*0.5);
+        layout.minimumInteritemSpacing = 10;
+        layout.minimumLineSpacing = 10;
+       
+        _homeworkPhotosView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+        _homeworkPhotosView.backgroundColor = [UIColor whiteColor];
+        
+        [self.contentView addSubview:_homeworkPhotosView];
+        _homeworkPhotosView.sd_layout
+        .leftSpaceToView(self.contentView, 10*ScrenScale)
+        .rightSpaceToView(self.contentView, 10*ScrenScale)
+        .topSpaceToView(_title, 10*ScrenScale)
+        .heightIs((UIScreenWidth-20*ScrenScale-10)*0.5*3+20);
+        
+        _homeworkRecorder = [[YZReorder alloc]init];
+        [self.contentView addSubview:_homeworkRecorder.view];
+        _homeworkRecorder.view.sd_layout
+        .leftEqualToView(_homeworkPhotosView)
+        .rightEqualToView(_homeworkPhotosView)
+        .topSpaceToView(_homeworkPhotosView, 10*ScrenScale)
+        .heightIs(40);
+        
+        
         _status = [[UILabel alloc]init];
         [self.contentView addSubview:_status];
         _status .font = TEXT_FONTSIZE;
         _status.textColor = [UIColor blackColor];
         _status.sd_layout
         .rightSpaceToView(self.contentView, 10*ScrenScale)
-        .topSpaceToView(_title, 10*ScrenScale)
+        .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale)
         .autoHeightRatio(0);
         [_status setSingleLineAutoResizeWithMaxWidth:300];
         
+        
+        ////答案区////
         
         _myLabel = [[UILabel alloc]init];
         [self.contentView addSubview:_myLabel];
@@ -81,6 +108,23 @@
         .autoHeightRatio(0);
         _answerTitle.hidden = YES;
         
+        _answerPhotosView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+        _answerPhotosView.backgroundColor = [UIColor whiteColor];
+        [self.contentView addSubview:_answerPhotosView];
+        _answerPhotosView.sd_layout
+        .leftSpaceToView(self.contentView, 10*ScrenScale)
+        .rightSpaceToView(self.contentView, 10*ScrenScale)
+        .topSpaceToView(_answerTitle, 10*ScrenScale)
+        .heightIs((UIScreenWidth-20*ScrenScale-10)*0.5*3+20);
+        
+        _answerRecorder = [[YZReorder alloc]init];
+        [self.contentView addSubview:_answerRecorder.view];
+        _answerRecorder.view.sd_layout
+        .leftEqualToView(_answerPhotosView)
+        .rightEqualToView(_answerPhotosView)
+        .topSpaceToView(_answerPhotosView, 10*ScrenScale)
+        .heightIs(40);
+        
         //老师批改的 头
         _teacherLabel =[[UILabel alloc]init];
         [self.contentView addSubview:_teacherLabel];
@@ -88,7 +132,7 @@
         _teacherLabel.textColor = [UIColor blackColor];
         _teacherLabel.sd_layout
         .leftEqualToView(_index)
-        .topSpaceToView(_answerTitle, 10*ScrenScale)
+        .topSpaceToView(_answerRecorder, 10*ScrenScale)
         .autoHeightRatio(0);
         [_teacherLabel setSingleLineAutoResizeWithMaxWidth:300];
         _teacherLabel.text = @"批改结果";
