@@ -16,6 +16,7 @@
 #import "UIAlertController+Blocks.h"
 #import "NetWorkTool.h"
 #import "ZLPhotoPickerBrowserViewController.h"
+#import "AppDelegate.h"
 
 
 @interface NewQuestionViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate,ZLPhotoPickerBrowserViewControllerDelegate>{
@@ -58,6 +59,7 @@
 - (void)makeData{
     
     _phototsArray = @[].mutableCopy;
+    
 }
 
 - (void)setupView{
@@ -86,8 +88,6 @@
     _mainView.photosView.dataSource = self;
     
     [_mainView.photosView registerClass:[QuestionPhotosCollectionViewCell class] forCellWithReuseIdentifier:@"cellID"];
-    
-    [self addChildViewController:_mainView.recorder];
     
 }
 
@@ -235,8 +235,10 @@
             }
                 break;
         }
-        [self presentViewController:picker animated:YES completion:^{}];
         
+        picker.modalPresentationStyle = UIModalPresentationCurrentContext;
+        [self presentViewController:picker animated:YES completion:^{}];
+       
     } otherButtonTitleArray:@[@"照相机",@"图库",@"相册"]];
     
     [sheet show];
@@ -253,6 +255,15 @@
         UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
         [_phototsArray addObject:image];
         [_mainView.photosView reloadData];
+        
+        /**
+         注意:选择完图片之后,直接上传!不要等都选择完了之后一起上传.
+         1.选一张上传一张.
+         2.显示上传进度.
+         */
+        
+        
+        
     } @catch (NSException *exception) {
 
     } @finally {

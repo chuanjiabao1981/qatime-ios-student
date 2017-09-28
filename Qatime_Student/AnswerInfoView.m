@@ -47,9 +47,31 @@
         .topSpaceToView(_created_at, 15*ScrenScale)
         .rightSpaceToView(self, 10*ScrenScale)
         .autoHeightRatio(0);
+     
+        UICollectionViewFlowLayout *layout =[[UICollectionViewFlowLayout alloc]init];
+        layout.itemSize = CGSizeMake((UIScreenWidth-20*ScrenScale-10)*0.5, (UIScreenWidth-20*ScrenScale-10)*0.5);
+        layout.minimumInteritemSpacing = 10;
+        layout.minimumLineSpacing = 10;
         
-        [self setupAutoHeightWithBottomView:_answer bottomMargin:20];
-         
+        _photosView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+        _photosView.backgroundColor = [UIColor whiteColor];
+        [self addSubview:_photosView];
+        _photosView.sd_layout
+        .topSpaceToView(_answer, 10*ScrenScale)
+        .leftSpaceToView(self, 10*ScrenScale)
+        .rightSpaceToView(self, 10*ScrenScale)
+        .heightIs((UIScreenWidth-20*ScrenScale-10)*0.5*3+20);
+        
+        _recorder = [[YZReorder alloc]init];
+        [self addSubview:_recorder.view];
+        _recorder.view.sd_layout
+        .leftEqualToView(_photosView)
+        .rightEqualToView(_photosView)
+        .topSpaceToView(_photosView, 10*ScrenScale)
+        .heightIs(40);
+        
+        [self setupAutoHeightWithBottomView:_recorder.view bottomMargin:20];
+        
     }
     return self;
 }

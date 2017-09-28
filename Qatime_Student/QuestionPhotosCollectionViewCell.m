@@ -8,6 +8,7 @@
 
 #import "QuestionPhotosCollectionViewCell.h"
 
+
 @implementation QuestionPhotosCollectionViewCell
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -33,6 +34,25 @@
         .widthEqualToHeight();
         
         [_deleteBtn setEnlargeEdge:10];
+        
+        _effectView = [[UIView alloc]init];
+        _effectView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.6];
+        [self.contentView addSubview:_effectView];
+        _effectView.sd_layout
+        .leftSpaceToView(self.contentView, 0)
+        .rightSpaceToView(self.contentView, 0)
+        .topSpaceToView(self.contentView, 0)
+        .bottomSpaceToView(self.contentView, 0);
+        
+        _progress = [[M13ProgressViewRing alloc]init];
+        _progress.showPercentage = YES;
+        [_effectView addSubview:_progress];
+        _progress.sd_layout
+        .leftSpaceToView(_effectView, 5*ScrenScale)
+        .rightSpaceToView(_effectView, 5*ScrenScale)
+        .topSpaceToView(_effectView, 5*ScrenScale)
+        .bottomSpaceToView(_effectView, 5*ScrenScale);
+        
         
     }
     return self;

@@ -91,11 +91,11 @@
         .rightEqualToView(questionLine)
         .topSpaceToView(_photosView, 20*ScrenScale)
         .heightRatioToView(titleLine, 1.0);
-        _photosView.hidden = YES;
-        _recorder.view.hidden = YES;
+        
+//        _photosView.hidden = YES;
+//        _recorder.view.hidden = YES;
         
         [self setupAutoContentSizeWithBottomView:_recorder.view bottomMargin:20];
-        
         
     }
     return self;

@@ -253,11 +253,6 @@
         
     }
     
-    
-    
-    
-   
-    
     self.navigationBar.rightButton.selected = NO;
     [self.navigationController pushViewController:controller animated:YES];
     
@@ -384,6 +379,7 @@
             if (![dic[@"data"][@"customized_group"][@"status"]isEqualToString:@"completed"]) {
                 if (dic[@"data"][@"ticket"][@"type"]) {
                     if ([dic[@"data"][@"ticket"][@"type"]isEqualToString:@"LiveStudio::BuyTicket"]) {//已购买,显示开始学习按钮
+                        self.buyBar.hidden = NO;
                         self.isBought = YES;
                         /* 已经购买的情况下*/
                         self.buyBar.applyButton.hidden = YES;
@@ -403,7 +399,7 @@
                     }else{//未购买,显示进入试听按钮 购买按钮照常使用
                         
                         self.isBought = NO;
-                        
+                        self.buyBar.hidden = NO;
                         [self.buyBar.applyButton removeAllTargets];
                         [self.buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
                         if ([dic[@"data"][@"ticket"][@"used_count"] integerValue] >= [dic[@"data"][@"ticket"][@"buy_count"]integerValue] ) {
@@ -428,10 +424,14 @@
                 self.buyBar.hidden = YES;
                 _isFinished = YES;
                 self.navigationBar.rightButton.hidden = NO;
+                self.tutoriumInfoView.sd_layout
+                .bottomSpaceToView(self.view, 0);
+                [self.tutoriumInfoView updateLayout];
             }
         }else{//需要加入试听或购买
             if ([dic[@"data"][@"customized_group"][@"tastable"]boolValue]==YES) {//可以加入试听
                 //显示加入试听,和立即购买两个按钮
+                self.buyBar.hidden = NO;
                 self.buyBar.hidden = NO;
                 self.buyBar.listenButton.hidden = NO;
                 [self.buyBar.listenButton removeAllTargets];
@@ -447,6 +447,7 @@
                 [self.buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
             }else{
                 //不能试听,只能购买
+                self.buyBar.hidden = NO;
                 self.buyBar.listenButton.hidden = YES;
                 [self.buyBar.applyButton removeAllTargets];
                 self.buyBar.applyButton.sd_resetLayout
@@ -464,14 +465,19 @@
             self.buyBar.hidden = YES;
             self.tutoriumInfoView.priceLabel.text = @"已下架";
             _isFinished = YES;
+            self.tutoriumInfoView.sd_layout
+            .bottomSpaceToView(self.view, 0);
+            [self.tutoriumInfoView updateLayout];
         }
         
     }else if ([dic[@"data"][@"customized_group"][@"sell_type"]isEqualToString:@"free"]){//免费课
         //免费呀
+        
         self.tutoriumInfoView.priceLabel.text = @"免费";
         
         if (dic[@"data"][@"ticket"]) {//买过
             if (![dic[@"data"][@"ticket"]isEqual:[NSNull null]]) {//已购买(已加入到我的视频课列表里了)
+                self.buyBar.hidden = NO;
                 self.isBought = YES;
                 if (![dic[@"data"][@"customized_group"][@"status"]isEqualToString:@"completed"]) {
                     //课程没结束又购买了
@@ -493,6 +499,9 @@
                 }else{
                     //课程已经结束了,干掉购买蓝
                     self.buyBar.hidden = YES;
+                    self.tutoriumInfoView.sd_layout
+                    .bottomSpaceToView(self.view, 0);
+                    [self.tutoriumInfoView updateLayout];
                 }
                 
             }else{
@@ -502,8 +511,12 @@
                     //已经下架
                     self.buyBar.hidden = YES;
                     self.tutoriumInfoView.priceLabel.text = @"已下架";
+                    self.tutoriumInfoView.sd_layout
+                    .bottomSpaceToView(self.view, 0);
+                    [self.tutoriumInfoView updateLayout];
                 }else{
                     //如果没下架
+                    self.buyBar.hidden = NO;
                     self.buyBar.listenButton.hidden = YES;
                     self.buyBar.applyButton.sd_resetLayout
                     .leftSpaceToView(self.buyBar, 10)
@@ -520,6 +533,7 @@
             //未购买,立即报名 报完名变成进入学习 未曾拥有过不隐藏购买栏,只是提示下架而已
             if ([dic[@"data"][@"customized_group"][@"off_shelve"]boolValue]==YES) {
                 //已经下架
+                self.buyBar.hidden = NO;
                 [self.buyBar.listenButton removeAllTargets];
                 self.buyBar.applyButton.hidden = YES;
                 [self.buyBar.listenButton setTitle:@"已下架" forState:UIControlStateNormal];
@@ -532,7 +546,7 @@
                 .bottomSpaceToView(self.buyBar, 10);
                 [self.buyBar.listenButton updateLayout];
             }else{
-                
+                self.buyBar.hidden = NO;
                 self.buyBar.listenButton.hidden = YES;
                 self.buyBar.applyButton.sd_resetLayout
                 .leftSpaceToView(self.buyBar, 10)

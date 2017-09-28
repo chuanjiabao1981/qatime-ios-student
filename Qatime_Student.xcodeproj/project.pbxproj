@@ -230,6 +230,8 @@
 		5435D9521DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9511DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m */; };
 		54366EA01EE102460071A5F9 /* GuestBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54366E9F1EE102460071A5F9 /* GuestBindingViewController.m */; };
 		54366EA71EE114AC0071A5F9 /* GuestBindingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54366EA61EE114AC0071A5F9 /* GuestBindingView.m */; };
+		543771F71F7CDE8700451F38 /* M13ProgressViewRing.m in Sources */ = {isa = PBXBuildFile; fileRef = 543771F31F7CDE8600451F38 /* M13ProgressViewRing.m */; };
+		543771F81F7CDE8700451F38 /* M13ProgressViewPie.m in Sources */ = {isa = PBXBuildFile; fileRef = 543771F51F7CDE8600451F38 /* M13ProgressViewPie.m */; };
 		543890FF1F0656340017DF88 /* UITableView+SDAutoTableViewCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 543890FB1F0656340017DF88 /* UITableView+SDAutoTableViewCellHeight.m */; };
 		543891001F0656340017DF88 /* UIView+SDAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 543890FD1F0656340017DF88 /* UIView+SDAutoLayout.m */; };
 		543BCB001E79156300AD6721 /* ChooseGradeAndSubjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCAFF1E79156300AD6721 /* ChooseGradeAndSubjectView.m */; };
@@ -460,7 +462,6 @@
 		5489FBB81F6BD88100534DCC /* InteractionReplayLessonsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5489FBB71F6BD88100534DCC /* InteractionReplayLessonsTableViewCell.m */; };
 		5489FBBB1F6BD8ED00534DCC /* UIViewController+ReturnLastPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5489FBBA1F6BD8EC00534DCC /* UIViewController+ReturnLastPage.m */; };
 		5489FBBE1F6BDA9E00534DCC /* QuestionSubTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5489FBBD1F6BDA9E00534DCC /* QuestionSubTitle.swift */; };
-		5489FBC21F6BDBD600534DCC /* QuestionInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5489FBC11F6BDBD600534DCC /* QuestionInfoView.swift */; };
 		5489FBC51F6BE41400534DCC /* QuestionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5489FBC41F6BDC7100534DCC /* QuestionInfoViewController.m */; };
 		5489FBC61F6BE47700534DCC /* NIMAvatarImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5422E9AA1F4E7AC8008B0A96 /* NIMAvatarImageView.m */; };
 		5489FBC71F6BE4A500534DCC /* NIMInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5422E9DF1F4E7AC8008B0A96 /* NIMInputView.m */; };
@@ -727,6 +728,7 @@
 		54F4FB281F68DE80001A2136 /* DoHomeworkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F4FB271F68DE80001A2136 /* DoHomeworkView.m */; };
 		54F4FB2B1F68DE8E001A2136 /* DoHomeworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F4FB2A1F68DE8E001A2136 /* DoHomeworkViewController.m */; };
 		54F63A161E1F9EBB00758B42 /* UITextView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F63A151E1F9EBB00758B42 /* UITextView+Placeholder.m */; };
+		54F674041F7B4015006CF211 /* QuestionInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F674031F7B4015006CF211 /* QuestionInfoView.m */; };
 		54F6B71E1F43DDA300801526 /* YZSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F6B71D1F43DDA300801526 /* YZSlider.m */; };
 		54F7E1B91EC40F1600337594 /* MyVideoClassList.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F7E1B81EC40F1600337594 /* MyVideoClassList.m */; };
 		54FA71561E07B107009D81FE /* ChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FA71551E07B107009D81FE /* ChatView.m */; };
@@ -1185,6 +1187,10 @@
 		54366E9F1EE102460071A5F9 /* GuestBindingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestBindingViewController.m; sourceTree = "<group>"; };
 		54366EA51EE114AC0071A5F9 /* GuestBindingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestBindingView.h; sourceTree = "<group>"; };
 		54366EA61EE114AC0071A5F9 /* GuestBindingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestBindingView.m; sourceTree = "<group>"; };
+		543771F31F7CDE8600451F38 /* M13ProgressViewRing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = M13ProgressViewRing.m; sourceTree = "<group>"; };
+		543771F41F7CDE8600451F38 /* M13ProgressViewPie.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = M13ProgressViewPie.h; sourceTree = "<group>"; };
+		543771F51F7CDE8600451F38 /* M13ProgressViewPie.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = M13ProgressViewPie.m; sourceTree = "<group>"; };
+		543771F61F7CDE8700451F38 /* M13ProgressViewRing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = M13ProgressViewRing.h; sourceTree = "<group>"; };
 		54386EDA1F0F5F1900828647 /* 阳泉.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "阳泉.gpx"; sourceTree = "<group>"; };
 		54386EDC1F0F5FAC00828647 /* 太原.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "太原.gpx"; sourceTree = "<group>"; };
 		543890FA1F0656340017DF88 /* UITableView+SDAutoTableViewCellHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+SDAutoTableViewCellHeight.h"; sourceTree = "<group>"; };
@@ -1676,7 +1682,6 @@
 		5489FBB91F6BD8EB00534DCC /* UIViewController+ReturnLastPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ReturnLastPage.h"; sourceTree = "<group>"; };
 		5489FBBA1F6BD8EC00534DCC /* UIViewController+ReturnLastPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ReturnLastPage.m"; sourceTree = "<group>"; };
 		5489FBBD1F6BDA9E00534DCC /* QuestionSubTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionSubTitle.swift; sourceTree = "<group>"; };
-		5489FBC11F6BDBD600534DCC /* QuestionInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionInfoView.swift; sourceTree = "<group>"; };
 		5489FBC31F6BDC7100534DCC /* QuestionInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionInfoViewController.h; sourceTree = "<group>"; };
 		5489FBC41F6BDC7100534DCC /* QuestionInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionInfoViewController.m; sourceTree = "<group>"; };
 		548D144D1EA7101A00B120C8 /* TeacherFeatureTagCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeacherFeatureTagCollectionViewCell.h; sourceTree = "<group>"; };
@@ -2233,6 +2238,10 @@
 		54F63A141E1F9EBB00758B42 /* UITextView+Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+Placeholder.h"; sourceTree = "<group>"; };
 		54F63A151E1F9EBB00758B42 /* UITextView+Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Placeholder.m"; sourceTree = "<group>"; };
 		54F63A1B1E1FA1B800758B42 /* UITextView_Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextView_Placeholder.h; sourceTree = "<group>"; };
+		54F674021F7B4015006CF211 /* QuestionInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionInfoView.h; sourceTree = "<group>"; };
+		54F674031F7B4015006CF211 /* QuestionInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionInfoView.m; sourceTree = "<group>"; };
+		54F674061F7B81AC006CF211 /* lame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lame.h; sourceTree = "<group>"; };
+		54F674071F7B81AC006CF211 /* libmp3lame.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmp3lame.a; sourceTree = "<group>"; };
 		54F6B71C1F43DDA300801526 /* YZSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZSlider.h; sourceTree = "<group>"; };
 		54F6B71D1F43DDA300801526 /* YZSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZSlider.m; sourceTree = "<group>"; };
 		54F6E1421E767A8F000E1D1D /* UIViewController_Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_Login.h; sourceTree = "<group>"; };
@@ -3591,6 +3600,10 @@
 				544B54701F447675004A8E18 /* M13ProgressView.m */,
 				544B54711F447675004A8E18 /* M13ProgressViewBar.h */,
 				544B54721F447675004A8E18 /* M13ProgressViewBar.m */,
+				543771F41F7CDE8600451F38 /* M13ProgressViewPie.h */,
+				543771F51F7CDE8600451F38 /* M13ProgressViewPie.m */,
+				543771F61F7CDE8700451F38 /* M13ProgressViewRing.h */,
+				543771F31F7CDE8600451F38 /* M13ProgressViewRing.m */,
 			);
 			name = M13ProgressView;
 			sourceTree = "<group>";
@@ -4080,6 +4093,7 @@
 		5452EF641F44645E00074C0D /* 封装录音机 */ = {
 			isa = PBXGroup;
 			children = (
+				54F674051F7B81AC006CF211 /* lame */,
 				5452EF651F44649A00074C0D /* YZReorder.h */,
 				5452EF661F44649A00074C0D /* YZReorder.m */,
 			);
@@ -6644,9 +6658,10 @@
 			isa = PBXGroup;
 			children = (
 				54E9E69A1F46989F007EC0A5 /* 二级标题 */,
+				54F674021F7B4015006CF211 /* QuestionInfoView.h */,
+				54F674031F7B4015006CF211 /* QuestionInfoView.m */,
 				5453ADEB1F6A586200064BD7 /* AnswerInfoView.h */,
 				5453ADEC1F6A586200064BD7 /* AnswerInfoView.m */,
-				5489FBC11F6BDBD600534DCC /* QuestionInfoView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -6854,6 +6869,15 @@
 			children = (
 			);
 			name = Controller;
+			sourceTree = "<group>";
+		};
+		54F674051F7B81AC006CF211 /* lame */ = {
+			isa = PBXGroup;
+			children = (
+				54F674061F7B81AC006CF211 /* lame.h */,
+				54F674071F7B81AC006CF211 /* libmp3lame.a */,
+			);
+			path = lame;
 			sourceTree = "<group>";
 		};
 		54FA714F1E07B0B4009D81FE /* 聊天页面 */ = {
@@ -7833,6 +7857,7 @@
 				5435D9401DD3125800DD4FCC /* TeachersPublicViewController.m in Sources */,
 				548126A01F62A0100078F782 /* MyHomeworkView.m in Sources */,
 				54AC02781E892D3C00817767 /* NSData+NTES.m in Sources */,
+				543771F81F7CDE8700451F38 /* M13ProgressViewPie.m in Sources */,
 				5422EAC41F4E7AC9008B0A96 /* NIMSessionViewLayoutManager.m in Sources */,
 				54AC04CB1E89398E00817767 /* renderer.c in Sources */,
 				54A7CD0E1F6635F8003CB5C6 /* MyHomewoekTableViewCell.m in Sources */,
@@ -8133,6 +8158,7 @@
 				54B45D141E5C33F00027F958 /* JTSegmentControl.swift in Sources */,
 				547210351EFBA24B00EA791C /* ReplayLessonsViewController.m in Sources */,
 				5413D26E1DF7CF1C00A8FDEC /* Recharge.m in Sources */,
+				543771F71F7CDE8700451F38 /* M13ProgressViewRing.m in Sources */,
 				54D82AF21EAEFB140034015F /* MyAuditionView.m in Sources */,
 				5422EAC51F4E7AC9008B0A96 /* NIMTimestampModel.m in Sources */,
 				548D1D8E1EA7551F00B120C8 /* Features.m in Sources */,
@@ -8246,6 +8272,7 @@
 				5492FC891E7A6DC600F89593 /* ChooseClassTableViewCell.m in Sources */,
 				54DBA4BA1DE442D900A67A90 /* YZInputView.m in Sources */,
 				54F4FB281F68DE80001A2136 /* DoHomeworkView.m in Sources */,
+				54F674041F7B4015006CF211 /* QuestionInfoView.m in Sources */,
 				5407C9961DE7DE8400DB04C8 /* NSNumber+YYAdd.m in Sources */,
 				54C7343E1EE8FAA200CB86BE /* InteractionNotice.m in Sources */,
 				541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */,
@@ -8325,7 +8352,6 @@
 				542021171E2DF90400517A47 /* RefundTableView.m in Sources */,
 				54AC04C01E89398E00817767 /* NTESMeetingRole.m in Sources */,
 				5422EAC31F4E7AC9008B0A96 /* NIMSessionViewController.m in Sources */,
-				5489FBC21F6BDBD600534DCC /* QuestionInfoView.swift in Sources */,
 				54AC02541E892CEE00817767 /* NTESDemoConfig.m in Sources */,
 				542F4DA61F29C0F80070E321 /* ExclusiveList.m in Sources */,
 				541CCD511F67FACF0099A520 /* HomeworkInfoTableViewCell.m in Sources */,

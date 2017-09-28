@@ -172,6 +172,16 @@
             
             _teacherLabel.hidden = YES;
             _teacherCheckTitle.hidden = YES;
+            
+            //这部分,根据音频/图片数据判断
+            _homeworkPhotosView.hidden = YES;
+            _homeworkRecorder.view.hidden = YES;
+            _status.sd_layout
+            .topSpaceToView(_title, 10*ScrenScale);
+            [_status updateLayout];
+            _answerPhotosView.hidden = YES;
+            _answerRecorder.view.hidden = YES;
+            
             [self setupAutoHeightWithBottomView:_answerTitle bottomMargin:10*ScrenScale];
             
         }else{
@@ -181,6 +191,17 @@
             _answerTitle.hidden = YES;
             _teacherLabel.hidden = YES;
             _teacherCheckTitle.hidden = YES;
+            
+            //这部分,根据音频/图片数据判断
+            _homeworkPhotosView.hidden = YES;
+            _homeworkRecorder.view.hidden = YES;
+            _status.sd_layout
+            .topSpaceToView(_title, 10*ScrenScale);
+            [_status updateLayout];
+            _answerPhotosView.hidden = YES;
+            _answerRecorder.view.hidden = YES;
+            
+            
             _status.text = @"做作业";
             _status.textColor = [UIColor redColor];
             [self setupAutoHeightWithBottomView:_status bottomMargin:10*ScrenScale];
@@ -196,6 +217,16 @@
         _teacherLabel.hidden = YES;
         _teacherCheckTitle.hidden = YES;
         
+        
+        //这部分,根据音频/图片数据判断
+        _homeworkPhotosView.hidden = YES;
+        _homeworkRecorder.view.hidden = YES;
+        _status.sd_layout
+        .topSpaceToView(_title, 10*ScrenScale);
+        [_status updateLayout];
+        _answerPhotosView.hidden = YES;
+        _answerRecorder.view.hidden = YES;
+        
         _answerTitle.text = model.myAnswerTitle; //暂时这么写
         [self setupAutoHeightWithBottomView:_answerTitle bottomMargin:10*ScrenScale];
         
@@ -206,6 +237,20 @@
         _answerTitle.hidden = NO;
         _teacherLabel.hidden = NO;
         _teacherCheckTitle.hidden = NO;
+       
+        //这部分,根据音频/图片数据判断
+        _homeworkPhotosView.hidden = YES;
+        _homeworkRecorder.view.hidden = YES;
+        _status.sd_layout
+        .topSpaceToView(_title, 10*ScrenScale);
+        [_status updateLayout];
+        _answerPhotosView.hidden = YES;
+        _answerRecorder.view.hidden = YES;
+        
+        _teacherLabel.sd_layout
+        .topSpaceToView(_answerTitle, 10*ScrenScale);
+        [_teacherLabel updateLayout];
+        
         _answerTitle.text = model.myAnswerTitle;
         _teacherCheckTitle.text = model.correction;
         [self setupAutoHeightWithBottomView:_teacherCheckTitle bottomMargin:10*ScrenScale];

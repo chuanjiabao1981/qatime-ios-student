@@ -32,6 +32,12 @@
 
 @implementation GuideViewController
 
+-(void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -74,11 +80,11 @@
             UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
             button.frame = CGRectMake(self.view.width_sd / 3, self.view.height_sd * 7 / 8, self.view.width_sd / 3, self.view.height_sd / 16);
             [button setTitle:@"点击进入" forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setTitleColor:BUTTONRED forState:UIControlStateNormal];
             button.layer.borderWidth = 2;
             button.layer.cornerRadius = 5;
             button.clipsToBounds = YES;
-            button.layer.borderColor = [UIColor whiteColor].CGColor;
+            button.layer.borderColor = BUTTONRED.CGColor;
             [button addTarget:self action:@selector(go:) forControlEvents:UIControlEventTouchUpInside];
             [imageView addSubview:button];
         }
