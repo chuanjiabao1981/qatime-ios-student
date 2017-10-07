@@ -61,6 +61,7 @@
         .rightSpaceToView(self, 10);
         [_widthDrawButon setupAutoSizeWithHorizontalPadding:30*ScrenScale buttonHeight:40*ScrenScale];
         _widthDrawButon.sd_cornerRadius = @1;
+        _widthDrawButon.hidden = YES;
 
         /* 充值按钮*/
         _rechargeButton = [[UIButton alloc]init];
@@ -72,8 +73,8 @@
         [self addSubview:_rechargeButton];
         
         _rechargeButton.sd_layout
-        .topEqualToView(_widthDrawButon)
-        .rightSpaceToView(_widthDrawButon,10*ScrenScale);
+        .topSpaceToView(_total,20)
+        .rightSpaceToView(self, 10);
         [_rechargeButton setupAutoSizeWithHorizontalPadding:30*ScrenScale buttonHeight:40*ScrenScale];
         _rechargeButton.sd_cornerRadius = @1;
 
