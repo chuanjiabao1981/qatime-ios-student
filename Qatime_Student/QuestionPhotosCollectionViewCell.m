@@ -43,6 +43,7 @@
         .rightSpaceToView(self.contentView, 0)
         .topSpaceToView(self.contentView, 0)
         .bottomSpaceToView(self.contentView, 0);
+        _effectView.hidden = YES;
         
         _progress = [[M13ProgressViewRing alloc]init];
         _progress.showPercentage = YES;
@@ -52,6 +53,26 @@
         .rightSpaceToView(_effectView, 5*ScrenScale)
         .topSpaceToView(_effectView, 5*ScrenScale)
         .bottomSpaceToView(_effectView, 5*ScrenScale);
+        
+        _faildEffectView = [[UIView alloc]init];
+        _faildEffectView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.6];
+        [self.contentView addSubview:_effectView];
+        _faildEffectView.sd_layout
+        .leftSpaceToView(self.contentView, 0)
+        .rightSpaceToView(self.contentView, 0)
+        .topSpaceToView(self.contentView, 0)
+        .bottomSpaceToView(self.contentView, 0);
+        _faildEffectView.hidden = YES;
+        
+        _faidBtn = [[UIButton alloc]init];
+        [_faildEffectView addSubview:_faidBtn];
+        [_faidBtn setTitle:@"重试" forState:UIControlStateNormal];
+        [_faidBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _faidBtn.sd_layout
+        .leftSpaceToView(_faildEffectView, 0)
+        .rightSpaceToView(_faildEffectView, 0)
+        .topSpaceToView(_faildEffectView, 10)
+        .bottomSpaceToView(_faildEffectView, 10);
         
         
     }

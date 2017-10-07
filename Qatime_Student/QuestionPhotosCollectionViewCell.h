@@ -19,4 +19,8 @@
 
 @property (nonatomic, strong) M13ProgressViewRing *progress ;
 
+@property (nonatomic, strong) UIView *faildEffectView ;
+
+@property (nonatomic, strong) UIButton *faidBtn ;
+
 @end

@@ -394,14 +394,11 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
             NSLog(@"删除原pcm文件");
         }
         self.recordFileUrl = [NSURL URLWithString:mp3FilePath];
+        
+        _finishedFile(mp3FilePath);
         return mp3FilePath;
     }
 }
-
-
-
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

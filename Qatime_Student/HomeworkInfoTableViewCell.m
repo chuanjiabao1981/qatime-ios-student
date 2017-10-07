@@ -161,6 +161,47 @@
     
     _title.text = model.body;
     
+    //先判断老师留的作业有没有附件 有没有语音 ,有没有图片,有几个图片
+    if (model.attachments) {
+        for (NSDictionary *atts in model.attachments) {
+            if (_havePhotos == NO) {
+                if ([atts[@"file_type"]isEqualToString:@"png"]) {
+                    _havePhotos = YES;
+                }
+            }
+            if (_haveRecord == NO) {
+                if ([atts[@"file_type"]isEqualToString:@"mp3"]) {
+                    _haveRecord = YES;
+                }
+            }
+            
+        }
+        
+    }else{
+        _havePhotos = NO;
+        _haveRecord = NO;
+    }
+    
+    //再判断学生做完作业之后,有没有图片有没有语音
+    if (model.myAnswerPhotos) {
+        _haveAnswerPhotos = YES;
+    }else{
+        _haveAnswerPhotos = NO;
+    }
+    if (model.myAnswerRecorderURL) {
+        _haveAnswerRecord = YES;
+    }else{
+        _haveAnswerRecord = NO;
+    }
+    
+    //最后再判断有没有批改
+    if (![model.correction[@"attachments"] isEqual:[NSNull null]]) {
+        
+    }
+    
+    
+    ////////////////////////////////////////////////////////
+    
     if ([model.status isEqualToString:@"pending"]) {
         //未提交过作业
         if (model.edited == YES) {
@@ -173,16 +214,40 @@
             _teacherLabel.hidden = YES;
             _teacherCheckTitle.hidden = YES;
             
-            //这部分,根据音频/图片数据判断
-            _homeworkPhotosView.hidden = YES;
-            _homeworkRecorder.view.hidden = YES;
-            _status.sd_layout
-            .topSpaceToView(_title, 10*ScrenScale);
-            [_status updateLayout];
-            _answerPhotosView.hidden = YES;
-            _answerRecorder.view.hidden = YES;
+            //判断老师的问题,是否有图片语音
+            if (_havePhotos == YES && _haveRecord == YES ) {
+                _homeworkPhotosView.hidden = NO;
+                _homeworkRecorder.view.hidden = NO;
+                _status.sd_layout
+                .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
+                [_status updateLayout];
+                
+                [self haveAnswerdTheHomeWorkLayout];
+            }
             
-            [self setupAutoHeightWithBottomView:_answerTitle bottomMargin:10*ScrenScale];
+            
+            if (_havePhotos == YES && _haveRecord == NO) {
+                _homeworkPhotosView.hidden = NO;
+                _homeworkRecorder.view.hidden = YES;
+                _status.sd_layout
+                .topSpaceToView(_homeworkPhotosView, 10*ScrenScale);
+                [_status updateLayout];
+                [self haveAnswerdTheHomeWorkLayout];
+                
+            }
+            if (_havePhotos == NO && _haveRecord == YES) {
+                
+                _homeworkPhotosView.hidden = YES;
+                _homeworkRecorder.view.hidden = NO;
+                _homeworkRecorder.view.sd_layout
+                .topSpaceToView(_title, 10*ScrenScale);
+                [_homeworkRecorder.view updateLayout];
+                _status.sd_layout
+                .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
+                [_status updateLayout];
+                
+                [self haveAnswerdTheHomeWorkLayout];
+            }
             
         }else{
             //如果没写过答案,就让他写答案去
@@ -191,16 +256,36 @@
             _answerTitle.hidden = YES;
             _teacherLabel.hidden = YES;
             _teacherCheckTitle.hidden = YES;
-            
-            //这部分,根据音频/图片数据判断
-            _homeworkPhotosView.hidden = YES;
-            _homeworkRecorder.view.hidden = YES;
-            _status.sd_layout
-            .topSpaceToView(_title, 10*ScrenScale);
-            [_status updateLayout];
             _answerPhotosView.hidden = YES;
             _answerRecorder.view.hidden = YES;
+            //反正也没有答案 , 那就只判断老师的问题,是否有图片语音
+            if (_havePhotos == YES && _haveRecord == YES ) {
+                _homeworkPhotosView.hidden = NO;
+                _homeworkRecorder.view.hidden = NO;
+                _status.sd_layout
+                .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
+                [_status updateLayout];
+            }
             
+            if (_havePhotos == YES && _haveRecord == NO) {
+                _homeworkPhotosView.hidden = NO;
+                _homeworkRecorder.view.hidden = YES;
+                _status.sd_layout
+                .topSpaceToView(_homeworkPhotosView, 10*ScrenScale);
+                [_status updateLayout];
+                
+            }
+            if (_havePhotos == NO && _haveRecord == YES) {
+                
+                _homeworkPhotosView.hidden = YES;
+                _homeworkRecorder.view.hidden = NO;
+                _homeworkRecorder.view.sd_layout
+                .topSpaceToView(_title, 10*ScrenScale);
+                [_homeworkRecorder.view updateLayout];
+                _status.sd_layout
+                .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
+                [_status updateLayout];
+            }
             
             _status.text = @"做作业";
             _status.textColor = [UIColor redColor];
@@ -219,19 +304,48 @@
         
         
         //这部分,根据音频/图片数据判断
-        _homeworkPhotosView.hidden = YES;
-        _homeworkRecorder.view.hidden = YES;
-        _status.sd_layout
-        .topSpaceToView(_title, 10*ScrenScale);
-        [_status updateLayout];
-        _answerPhotosView.hidden = YES;
-        _answerRecorder.view.hidden = YES;
+        //判断老师的问题,是否有图片语音  换汤不换药.一样.
+        if (_havePhotos == YES && _haveRecord == YES ) {
+            _homeworkPhotosView.hidden = NO;
+            _homeworkRecorder.view.hidden = NO;
+            _status.sd_layout
+            .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
+            [_status updateLayout];
+            
+            [self haveAnswerdTheHomeWorkLayout];
+        }
         
+        
+        if (_havePhotos == YES && _haveRecord == NO) {
+            _homeworkPhotosView.hidden = NO;
+            _homeworkRecorder.view.hidden = YES;
+            _status.sd_layout
+            .topSpaceToView(_homeworkPhotosView, 10*ScrenScale);
+            [_status updateLayout];
+            [self haveAnswerdTheHomeWorkLayout];
+            
+        }
+        if (_havePhotos == NO && _haveRecord == YES) {
+            
+            _homeworkPhotosView.hidden = YES;
+            _homeworkRecorder.view.hidden = NO;
+            _homeworkRecorder.view.sd_layout
+            .topSpaceToView(_title, 10*ScrenScale);
+            [_homeworkRecorder.view updateLayout];
+            _status.sd_layout
+            .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
+            [_status updateLayout];
+            
+            [self haveAnswerdTheHomeWorkLayout];
+        }
+        _status.text = @" ";
         _answerTitle.text = model.myAnswerTitle; //暂时这么写
         [self setupAutoHeightWithBottomView:_answerTitle bottomMargin:10*ScrenScale];
         
     }else if ([model.status isEqualToString:@"resolved"]){
         //已经批改过的 啥都显示啥都能看
+        //注意  暂时还没有老师的批改带图片语音的....
+        
         _status.hidden = YES;
         _myLabel.hidden = NO;
         _answerTitle.hidden = NO;
@@ -239,13 +353,40 @@
         _teacherCheckTitle.hidden = NO;
        
         //这部分,根据音频/图片数据判断
-        _homeworkPhotosView.hidden = YES;
-        _homeworkRecorder.view.hidden = YES;
-        _status.sd_layout
-        .topSpaceToView(_title, 10*ScrenScale);
-        [_status updateLayout];
-        _answerPhotosView.hidden = YES;
-        _answerRecorder.view.hidden = YES;
+        //判断老师的问题,是否有图片语音
+        if (_havePhotos == YES && _haveRecord == YES ) {
+            _homeworkPhotosView.hidden = NO;
+            _homeworkRecorder.view.hidden = NO;
+            _status.sd_layout
+            .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
+            [_status updateLayout];
+            
+            
+        }
+        
+        
+        if (_havePhotos == YES && _haveRecord == NO) {
+            _homeworkPhotosView.hidden = NO;
+            _homeworkRecorder.view.hidden = YES;
+            _status.sd_layout
+            .topSpaceToView(_homeworkPhotosView, 10*ScrenScale);
+            [_status updateLayout];
+            [self haveAnswerdTheHomeWorkLayout];
+            
+        }
+        if (_havePhotos == NO && _haveRecord == YES) {
+            
+            _homeworkPhotosView.hidden = YES;
+            _homeworkRecorder.view.hidden = NO;
+            _homeworkRecorder.view.sd_layout
+            .topSpaceToView(_title, 10*ScrenScale);
+            [_homeworkRecorder.view updateLayout];
+            _status.sd_layout
+            .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
+            [_status updateLayout];
+            
+            [self haveAnswerdTheHomeWorkLayout];
+        }
         
         _teacherLabel.sd_layout
         .topSpaceToView(_answerTitle, 10*ScrenScale);
@@ -257,6 +398,75 @@
     }
     
 }
+
+
+//1.已经写过答案的问题,的什么什么逻辑.
+- (void)haveAnswerdTheHomeWorkLayout{
+    //嵌套判断
+    //学生做完作业了 有图片和语音
+    if (_haveAnswerPhotos == YES && _haveAnswerRecord == YES) {
+        _answerPhotosView.hidden = NO;
+        _answerRecorder.view.hidden = NO;
+        [self setupAutoHeightWithBottomView:_answerRecorder.view bottomMargin:10*ScrenScale];
+    }
+    //有图片没有语音
+    if (_haveAnswerPhotos == YES && _haveAnswerRecord == NO) {
+        _answerPhotosView.hidden = NO;
+        _answerRecorder.view.hidden = YES;
+        [self setupAutoHeightWithBottomView:_answerPhotosView bottomMargin:10*ScrenScale];
+    }
+    //有语音没图片
+    if (_haveAnswerPhotos == NO && _haveAnswerRecord == YES) {
+        _answerRecorder.view.sd_layout
+        .topSpaceToView(_answerTitle, 10*ScrenScale);
+        [_homeworkRecorder.view updateLayout];
+        _answerPhotosView.hidden = YES;
+        _answerRecorder.view.hidden = YES;
+        [self setupAutoHeightWithBottomView:_answerRecorder.view bottomMargin:10*ScrenScale];
+    }
+    
+}
+
+- (void)haveAnswerdTheHomeWorkAndHaveCorrectedLayout{
+    
+    //嵌套判断 + 嵌套判断
+    //学生做完作业了 有图片和语音
+    if (_haveAnswerPhotos == YES && _haveAnswerRecord == YES) {
+        _answerPhotosView.hidden = NO;
+        _answerRecorder.view.hidden = NO;
+        
+        if (_haveCorrectPhotos == YES && _haveCorrectRecord == YES) {
+            
+        }
+        if (_haveCorrectPhotos == YES && _haveCorrectRecord == NO) {
+            
+        }
+        if (_haveCorrectPhotos == NO && _haveCorrectRecord == YES) {
+            
+        }
+      
+    }
+    //有图片没有语音
+    if (_haveAnswerPhotos == YES && _haveAnswerRecord == NO) {
+        _answerPhotosView.hidden = NO;
+        _answerRecorder.view.hidden = YES;
+     
+    }
+    //有语音没图片
+    if (_haveAnswerPhotos == NO && _haveAnswerRecord == YES) {
+        _answerRecorder.view.sd_layout
+        .topSpaceToView(_answerTitle, 10*ScrenScale);
+        [_homeworkRecorder.view updateLayout];
+        _answerPhotosView.hidden = YES;
+        _answerRecorder.view.hidden = NO;
+        
+        
+       
+    }
+    
+}
+
+
 
 - (void)awakeFromNib {
     [super awakeFromNib];

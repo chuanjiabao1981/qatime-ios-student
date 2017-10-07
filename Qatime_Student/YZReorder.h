@@ -13,6 +13,9 @@
 //使用lame转成MP3
 #include "lame.h"
 
+
+typedef void(^RecordFinished)(NSString *recordfileURL);
+
 @interface YZReorder : UIViewController
 
 @property (nonatomic, strong) UIView *recordView ;
@@ -34,6 +37,8 @@
 
 @property (nonatomic, strong) AVAudioPlayer *player; //播放器
 @property (nonatomic, strong) NSURL *recordFileUrl; //文件地址
+
+@property (nonatomic, copy) RecordFinished finishedFile ;
 
 
 @end

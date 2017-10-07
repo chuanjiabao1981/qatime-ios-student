@@ -77,6 +77,7 @@
     //先把原始的作业信息拿出来 然后对比出来答案 然后加进去
     for (NSDictionary *item in homeworkArr) {
         HomeworkInfo *mod = [HomeworkInfo yy_modelWithJSON:item];
+        mod.attachments = item[@"attachments"];
         mod.homeworkID = item[@"id"];
         if ([paretSet containsObject:[NSString stringWithFormat:@"%@",mod.homeworkID]]) {
             mod.status = @"submitted";
@@ -93,7 +94,7 @@
        
         [_itemsArray addObject:mod];
     }
-    
+    //批改
     if (resolveArr) {
         for (NSDictionary *reso in resolveArr) {
             for (NSDictionary *ans in submitArr) {
@@ -101,7 +102,7 @@
                     //这就是批改对应上答案了 ans的parent_id 就是作业的id
                     for (HomeworkInfo *mod in _itemsArray) {
                         if ([[NSString stringWithFormat:@"%@",mod.homeworkID] isEqualToString:[NSString stringWithFormat:@"%@",ans[@"parent_id"]]]) {
-                            mod.correction = reso[@"body"];
+                            mod.correction = reso;
                             mod.status = @"resolved";
                         }
                     }
@@ -190,7 +191,7 @@
     typeof(self) __weak weakSelf = self;
     if ([cell.model.status isEqualToString:@"pending"]) {
         //做作业
-        //如果没做过作业,就直接进去做,做过了还可以改
+        //如果没做过作业,就直接进去做,做过了不可以改
         DoHomeworkViewController *controller = [[DoHomeworkViewController alloc]initWithHomework:cell.model];
         [self.navigationController pushViewController:controller animated:YES];
         
