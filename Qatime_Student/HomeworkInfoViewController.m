@@ -16,7 +16,7 @@
 #import "QuestionPhotosCollectionViewCell.h"
 
 
-@interface HomeworkInfoViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate>{
+@interface HomeworkInfoViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,PhotoBrowserDelegate>{
     
     NavigationBar *_naviBar;
     
@@ -181,6 +181,7 @@
         cell.homeworkPhotosView.tag = indexPath.row +1000;
         cell.answerPhotosView.tag = indexPath.row +2000;
         
+        cell.photoDelegate = self;
         //注册教师发的作业的图片
 //        cell.homeworkPhotosView.dataSource = self;
 //        cell.homeworkPhotosView.delegate = self;
@@ -222,73 +223,21 @@
         //这方方法改了
         controller.doHomework = ^(NSDictionary *answer) {
             cell.model.myAnswerTitle = answer[@"body"];
-            cell.model.myAnswerPhotos = answer[@"attachment"];
+            
+            for (NSDictionary *atts in answer[@"attachment"]) {
+                if ([atts[@"file_type"]isEqualToString:@"png"]) {
+                    [cell.model.myAnswerPhotos addObject:atts];
+                    cell.model.haveAnswerPhotos = YES;
+                }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
+                    cell.model.myAnswerRecorderURL = atts[@"file_url"];
+                    cell.model.haveAnswerRecord = YES;
+                }
+            }
             cell.model.edited = YES;
             [weakSelf.mainView.homeworkList reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         };
     }
 }
-
-//-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-//
-//    NSInteger items = 0;
-//    if (collectionView.tag>=1000&&collectionView.tag<2000) {
-//        //老师的提问里的图片.
-//        HomeworkInfo *mode = (HomeworkInfo *)_itemsArray[collectionView.tag - 1000];
-//        NSInteger itemCount = 0;
-//        for (NSDictionary *atts in mode.attachments) {
-//            if ([atts[@"file_type"]isEqualToString:@"png"]) {
-//                itemCount++;
-//            }
-//        }
-//        items = itemCount;
-//    }else if (collectionView.tag>=2000){
-//        //学生的回答里的图片
-//        HomeworkInfo *mode = (HomeworkInfo *)_itemsArray[collectionView.tag - 2000];
-//        NSInteger itemCount = 0;
-//        for (NSDictionary *atts in mode.myAnswerPhotos) {
-//            if ([atts[@"file_type"]isEqualToString:@"png"]) {
-//                itemCount++;
-//            }
-//        }
-//        items = 0;
-//    }
-//    return items;
-//}
-//-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
-//    return 1;
-//}
-//
-//-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-//
-//    UICollectionViewCell *cells;
-//
-//    if (collectionView.tag>=1000&&collectionView.tag<2000) {
-//        //老师的提问里的图片.
-//        static NSString * CellIdentifier = @"photoCell";
-//        QuestionPhotosCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-//        HomeworkInfo *mode = (HomeworkInfo *)_itemsArray[collectionView.tag - 1000];
-//        if ([mode.attachments[indexPath.row][@"file_type"]isEqualToString:@"png"]) {
-//            [cell.image sd_setImageWithURL:[NSURL URLWithString:mode.homework.attachments[indexPath.row][@"file_url"]]];
-//        }
-//
-//        cells = cell;
-//
-//    }else if (collectionView.tag>=2000){
-//        //学生的回答里的图片.
-//        static NSString * CellIdentifier = @"answerPhotoCell";
-//        QuestionPhotosCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-//         HomeworkInfo *mode = (HomeworkInfo *)_itemsArray[collectionView.tag - 2000];
-//        if ([mode.myAnswerPhotos[indexPath.row][@"file_type"]isEqualToString:@"png"]) {
-//            [cell.image sd_setImageWithURL:[NSURL URLWithString:mode.homework.attachments[indexPath.row][@"file_url"]]];
-//        }
-//
-//        cells = cell;
-//    }
-//
-//    return cells;
-//
-//}
 
 
 
@@ -328,6 +277,10 @@
     
     [uploadTask resume];
     
+}
+-(void)showPicker:(ZLPhotoPickerBrowserViewController *)picker{
+    
+    [picker showPickerVc:self];
 }
 
 

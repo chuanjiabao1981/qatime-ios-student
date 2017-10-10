@@ -22,53 +22,53 @@
         
         self.contentSize = CGSizeMake(frame.size.width, 100);
         //title和边框
-        UIView *titleLine = [[UIView alloc]init];
-        [self addSubview:titleLine];
-        titleLine.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
-        titleLine.layer.borderWidth = 1;
-        titleLine.backgroundColor = [UIColor whiteColor];
-        titleLine.sd_layout
+        _titleLine = [[UIView alloc]init];
+        [self addSubview:_titleLine];
+        _titleLine.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+        _titleLine.layer.borderWidth = 1;
+        _titleLine.backgroundColor = [UIColor whiteColor];
+        _titleLine.sd_layout
         .leftSpaceToView(self, 15*ScrenScale)
         .topSpaceToView(self, 20*ScrenScale)
         .heightIs(40)
         .rightSpaceToView(self, 15*ScrenScale);
         
         _title = [[UITextField alloc]init];
-        [titleLine addSubview:_title];
+        [_titleLine addSubview:_title];
         _title.backgroundColor = [UIColor whiteColor];
         _title.font = TEXT_FONTSIZE;
         _title.placeholder = @"输入提问标题（最多20字）";
         _title.sd_layout
-        .leftSpaceToView(titleLine, 10*ScrenScale)
-        .rightSpaceToView(titleLine, 10*ScrenScale)
-        .topSpaceToView(titleLine, 10*ScrenScale)
-        .bottomSpaceToView(titleLine, 10*ScrenScale);
+        .leftSpaceToView(_titleLine, 10*ScrenScale)
+        .rightSpaceToView(_titleLine, 10*ScrenScale)
+        .topSpaceToView(_titleLine, 10*ScrenScale)
+        .bottomSpaceToView(_titleLine, 10*ScrenScale);
         
         
         //问题 和 边框
-        UIView *questionLine = [[UIView alloc]init];
-        [self addSubview:questionLine];
-        questionLine.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
-        questionLine.layer.borderWidth = 1;
-        questionLine.backgroundColor = [UIColor whiteColor];
-        questionLine.sd_layout
-        .leftEqualToView(titleLine)
-        .rightEqualToView(titleLine)
-        .topSpaceToView(titleLine, 15*ScrenScale)
+        _questionLine = [[UIView alloc]init];
+        [self addSubview:_questionLine];
+        _questionLine.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+        _questionLine.layer.borderWidth = 1;
+        _questionLine.backgroundColor = [UIColor whiteColor];
+        _questionLine.sd_layout
+        .leftEqualToView(_titleLine)
+        .rightEqualToView(_titleLine)
+        .topSpaceToView(_titleLine, 15*ScrenScale)
         .heightIs(200);
         
         _questions = [[UITextView alloc]init];
-        [questionLine addSubview:_questions];
+        [_questionLine addSubview:_questions];
         _questions.backgroundColor = [UIColor whiteColor];
         _questions.font = TEXT_FONTSIZE;
         _questions.placeholderLabel.font = TEXT_FONTSIZE;
         _questions.placeholder = @"输入提问内容";
         _questions.sd_layout
-        .leftSpaceToView(questionLine, 10*ScrenScale)
-        .topSpaceToView(questionLine, 10*ScrenScale)
-        .rightSpaceToView(questionLine, 10*ScrenScale)
-        .bottomSpaceToView(questionLine, 10*ScrenScale);
-        [questionLine updateLayout];
+        .leftSpaceToView(_questionLine, 10*ScrenScale)
+        .topSpaceToView(_questionLine, 10*ScrenScale)
+        .rightSpaceToView(_questionLine, 10*ScrenScale)
+        .bottomSpaceToView(_questionLine, 10*ScrenScale);
+        [_questionLine updateLayout];
         
         //照片
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
@@ -79,18 +79,18 @@
         _photosView.scrollEnabled = NO;
         [self addSubview:_photosView];
         _photosView.sd_layout
-        .leftEqualToView(questionLine)
-        .rightEqualToView(questionLine)
-        .topSpaceToView(questionLine, 20*ScrenScale)
+        .leftEqualToView(_questionLine)
+        .rightEqualToView(_questionLine)
+        .topSpaceToView(_questionLine, 20*ScrenScale)
         .heightIs((WIDTHS -30*ScrenScale-40)/5.f);
                 
         _recorder = [[YZReorder alloc]init];
         [self addSubview:_recorder.view];
         _recorder.view.sd_layout
-        .leftEqualToView(questionLine)
-        .rightEqualToView(questionLine)
+        .leftEqualToView(_questionLine)
+        .rightEqualToView(_questionLine)
         .topSpaceToView(_photosView, 20*ScrenScale)
-        .heightRatioToView(titleLine, 1.0);
+        .heightRatioToView(_titleLine, 1.0);
         
 //        _photosView.hidden = YES;
 //        _recorder.view.hidden = YES;

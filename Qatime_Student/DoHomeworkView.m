@@ -16,8 +16,10 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-     
-        
+        self.titleLine.hidden = YES;
+        self.questionLine.sd_layout
+        .topSpaceToView(self, 20);
+        [self.questions updateLayout];
         
     }
     return self;

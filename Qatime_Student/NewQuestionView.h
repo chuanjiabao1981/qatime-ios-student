@@ -12,6 +12,10 @@
 
 @interface NewQuestionView : UIScrollView
 
+@property (nonatomic, strong) UIView *titleLine ;
+
+@property (nonatomic, strong) UIView *questionLine ;
+
 @property (nonatomic, strong) UITextField *title ;
 
 @property (nonatomic, strong) UITextView *questions ;

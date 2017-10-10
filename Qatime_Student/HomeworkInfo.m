@@ -13,7 +13,9 @@
 {
     self = [super init];
     if (self) {
-        
+        _homeworkPhotos = @[].mutableCopy;
+        _myAnswerPhotos = @[].mutableCopy;
+        _correctionPhotos = @[].mutableCopy;
     }
     return self;
 }

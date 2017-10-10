@@ -415,7 +415,7 @@
             //1.attachment;
             //2.body;
             NSDictionary *answerDic = @{
-                                      @"body":@"",
+                                      @"body":_mainView.questions.text,
                                       @"attachment":_atechmentArray
                                       };
             _doHomework(answerDic);

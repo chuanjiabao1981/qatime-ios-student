@@ -18,6 +18,10 @@
 /** 问题 */
 @property (nonatomic, strong) NSString *body ;
 
+@property (nonatomic, strong) NSMutableArray  *homeworkPhotos ;
+
+@property (nonatomic, strong) NSString *homeworkRecordURL ;
+
 /** 我的答案 */
 @property (nonatomic, strong) NSString *myAnswerTitle ;
 
@@ -32,6 +36,9 @@
 /** 老师批语 */
 @property (nonatomic, strong) NSDictionary *correction ;
 
+@property (nonatomic, strong) NSMutableArray *correctionPhotos ;
+
+@property (nonatomic, strong) NSString *correctionRecordURL ;
 
 
 
@@ -46,7 +53,7 @@
 @property (nonatomic, assign) BOOL haveCorrectPhotos ;
 @property (nonatomic, assign) BOOL haveCorrectRecord ;
 
-@property (nonatomic, assign) BOOL haveCorrection ;
+@property (nonatomic, assign) BOOL haveCorrection;
 
 
 

@@ -11,6 +11,13 @@
 #import "HomeworkInfo.h"
 #import "YZReorder.h"
 
+#import "ZLPhoto.h"
+@protocol PhotoBrowserDelegate
+
+- (void)showPicker:(ZLPhotoPickerBrowserViewController*)picker;
+
+@end
+
 @interface HomeworkInfoTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) UILabel *index ;
@@ -31,7 +38,9 @@
 
 @property (nonatomic, strong) HomeworkInfo *model ;
 
+@property (nonatomic, strong) UICollectionView *correctPhotosView ;
+@property (nonatomic, strong) YZReorder *correctRecorder ;
 
-
+@property (nonatomic, weak) id<PhotoBrowserDelegate> photoDelegate ;
 
 @end
