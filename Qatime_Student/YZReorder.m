@@ -58,6 +58,8 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     return self;
 }
 
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor clearColor];
@@ -398,6 +400,18 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
         _finishedFile(mp3FilePath);
         return mp3FilePath;
     }
+}
+
+
+-(void)setRecordFileUrl:(NSURL *)recordFileUrl{
+    
+    [self changeRecorder:RecorderStateRecordFinished];
+    //获取一下音频时长
+    AVURLAsset* audioAsset =[AVURLAsset URLAssetWithURL:recordFileUrl options:nil];
+    CMTime audioDuration = audioAsset.duration;
+    NSInteger audioDurationSeconds = (NSInteger)CMTimeGetSeconds(audioDuration);
+    _secend.text = [NSString stringWithFormat:@"%ld'",audioDurationSeconds];
+    
 }
 
 - (void)didReceiveMemoryWarning {

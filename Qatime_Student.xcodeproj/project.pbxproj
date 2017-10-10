@@ -650,6 +650,7 @@
 		54B9CB001DFE4E8A003961FF /* BuyBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B9CAFF1DFE4E8A003961FF /* BuyBar.m */; };
 		54BB2D691E55879000446141 /* chat_voice_record.png in Resources */ = {isa = PBXBuildFile; fileRef = 54BB2D681E55879000446141 /* chat_voice_record.png */; };
 		54BB2D6B1E5587B900446141 /* chat_ipunt_message.png in Resources */ = {isa = PBXBuildFile; fileRef = 54BB2D6A1E5587B900446141 /* chat_ipunt_message.png */; };
+		54C0953F1F8B791E001D56A5 /* QuestionPhotosReuseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C0953E1F8B791E001D56A5 /* QuestionPhotosReuseCollectionViewCell.m */; };
 		54C107A11F5E8FD80091171E /* CourseFileInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C107A01F5E8FD80091171E /* CourseFileInfoView.m */; };
 		54C107A61F5E8FF40091171E /* CourseFileInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C107A51F5E8FF40091171E /* CourseFileInfoViewController.m */; };
 		54C107AC1F5EA94A0091171E /* MyDownloadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C107AB1F5EA94A0091171E /* MyDownloadFile.m */; };
@@ -2066,6 +2067,8 @@
 		54B9CAFF1DFE4E8A003961FF /* BuyBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyBar.m; sourceTree = "<group>"; };
 		54BB2D681E55879000446141 /* chat_voice_record.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat_voice_record.png; sourceTree = "<group>"; };
 		54BB2D6A1E5587B900446141 /* chat_ipunt_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat_ipunt_message.png; sourceTree = "<group>"; };
+		54C0953D1F8B791E001D56A5 /* QuestionPhotosReuseCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionPhotosReuseCollectionViewCell.h; sourceTree = "<group>"; };
+		54C0953E1F8B791E001D56A5 /* QuestionPhotosReuseCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionPhotosReuseCollectionViewCell.m; sourceTree = "<group>"; };
 		54C1079F1F5E8FD80091171E /* CourseFileInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseFileInfoView.h; sourceTree = "<group>"; };
 		54C107A01F5E8FD80091171E /* CourseFileInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseFileInfoView.m; sourceTree = "<group>"; };
 		54C107A41F5E8FF40091171E /* CourseFileInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseFileInfoViewController.h; sourceTree = "<group>"; };
@@ -2519,6 +2522,8 @@
 			children = (
 				541CCD4F1F67FACF0099A520 /* HomeworkInfoTableViewCell.h */,
 				541CCD501F67FACF0099A520 /* HomeworkInfoTableViewCell.m */,
+				54C0953D1F8B791E001D56A5 /* QuestionPhotosReuseCollectionViewCell.h */,
+				54C0953E1F8B791E001D56A5 /* QuestionPhotosReuseCollectionViewCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -8049,6 +8054,7 @@
 				542C17441DFA508A0088DB3F /* Canceld.m in Sources */,
 				54B914A01E6D71A100F377ED /* Province.m in Sources */,
 				545226181E24CDE100F36280 /* OrderInfoViewController.m in Sources */,
+				54C0953F1F8B791E001D56A5 /* QuestionPhotosReuseCollectionViewCell.m in Sources */,
 				544DAB1C1F259EFF00E43E23 /* ExclusiveInfoViewController.m in Sources */,
 				54B73D0F1DE40E1800B7A7EB /* NSString+ContainEmoji.m in Sources */,
 				547A7EF71DD411DB00F1282B /* TeachersPublic_Classes.m in Sources */,

@@ -19,6 +19,6 @@
 @property (nonatomic, strong) NSArray *items ;
 @property (nonatomic, strong) NSString *model_name ;
 @property (nonatomic, strong) NSString *course_name ;
-@property (nonatomic, strong) NSDictionary *attachments ;
+@property (nonatomic, strong) NSArray *attachments ;
 
 @end

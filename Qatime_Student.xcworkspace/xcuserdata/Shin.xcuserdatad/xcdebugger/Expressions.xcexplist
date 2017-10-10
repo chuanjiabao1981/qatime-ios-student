@@ -3,6 +3,12 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "__32-[NewQuestionViewController ask]_block_invoke_2:NewQuestionViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__32-[NewQuestionViewController ask]_block_invoke_3:NewQuestionViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[ChatViewController viewDidLoad]:ChatViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -11,13 +17,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__32-[NewQuestionViewController ask]_block_invoke_2:NewQuestionViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__32-[NewQuestionViewController ask]_block_invoke_3:NewQuestionViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__63-[NewQuestionViewController uploadImageWithIndexPath:andImage:]_block_invoke.270:NewQuestionViewController.m">
+         contextName = "-[QuestionInfoViewController initWithQuestion:]:QuestionInfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[HomeworkInfoViewController setupView]:HomeworkInfoViewController.m">
@@ -26,6 +26,23 @@
                value = "_itemsArray">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__63-[NewQuestionViewController uploadImageWithIndexPath:andImage:]_block_invoke.270:NewQuestionViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HomeworkInfoViewController collectionView:numberOfItemsInSection:]:HomeworkInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_itemsArray">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HomeworkInfoTableViewCell setModel:]:HomeworkInfoTableViewCell.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HomeworkInfoViewController makeData]:HomeworkInfoViewController.m">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

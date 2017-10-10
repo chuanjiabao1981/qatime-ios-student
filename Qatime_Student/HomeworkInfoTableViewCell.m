@@ -7,8 +7,11 @@
 //
 
 #import "HomeworkInfoTableViewCell.h"
+#import "QuestionPhotosCollectionViewCell.h"
+#import "QuestionPhotosReuseCollectionViewCell.h"
+#import "ZLPhoto.h"
 
-@interface HomeworkInfoTableViewCell (){
+@interface HomeworkInfoTableViewCell ()<UICollectionViewDataSource,UICollectionViewDelegate>{
     
     UILabel *_myLabel;
     
@@ -49,9 +52,10 @@
         
         
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
-        layout.itemSize = CGSizeMake((UIScreenWidth-20*ScrenScale-10)*0.5, (UIScreenWidth-20*ScrenScale-10)*0.5);
+        layout.itemSize = CGSizeMake((UIScreenWidth -30*ScrenScale-40)/5.f, (UIScreenWidth -30*ScrenScale-40)/5.f);
         layout.minimumInteritemSpacing = 10;
         layout.minimumLineSpacing = 10;
+        
        
         _homeworkPhotosView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
         _homeworkPhotosView.backgroundColor = [UIColor whiteColor];
@@ -61,8 +65,9 @@
         .leftSpaceToView(self.contentView, 10*ScrenScale)
         .rightSpaceToView(self.contentView, 10*ScrenScale)
         .topSpaceToView(_title, 10*ScrenScale)
-        .heightIs((UIScreenWidth-20*ScrenScale-10)*0.5*3+20);
+        .heightIs((UIScreenWidth -30*ScrenScale-40)/5.f);
         
+        [_homeworkPhotosView registerClass:[QuestionPhotosCollectionViewCell class] forCellWithReuseIdentifier:@"photoCell"];
         _homeworkRecorder = [[YZReorder alloc]init];
         [self.contentView addSubview:_homeworkRecorder.view];
         _homeworkRecorder.view.sd_layout
@@ -115,7 +120,9 @@
         .leftSpaceToView(self.contentView, 10*ScrenScale)
         .rightSpaceToView(self.contentView, 10*ScrenScale)
         .topSpaceToView(_answerTitle, 10*ScrenScale)
-        .heightIs((UIScreenWidth-20*ScrenScale-10)*0.5*3+20);
+        .heightIs((UIScreenWidth -30*ScrenScale-40)/5.f);
+        
+         [_answerPhotosView registerClass:[QuestionPhotosReuseCollectionViewCell class] forCellWithReuseIdentifier:@"answerPhotoCell"];
         
         _answerRecorder = [[YZReorder alloc]init];
         [self.contentView addSubview:_answerRecorder.view];
@@ -150,7 +157,11 @@
         .autoHeightRatio(0);
         _teacherCheckTitle.hidden = YES;
         
-       
+        _homeworkPhotosView.dataSource = self;
+        _homeworkPhotosView.delegate = self;
+        _answerPhotosView.dataSource = self;
+        
+        
     }
     return self;
 }
@@ -164,41 +175,45 @@
     //先判断老师留的作业有没有附件 有没有语音 ,有没有图片,有几个图片
     if (model.attachments) {
         for (NSDictionary *atts in model.attachments) {
-            if (_havePhotos == NO) {
+            if (model.havePhotos == NO) {
                 if ([atts[@"file_type"]isEqualToString:@"png"]) {
-                    _havePhotos = YES;
+                    model.havePhotos = YES;
                 }
             }
-            if (_haveRecord == NO) {
+            if (model.haveRecord == NO) {
                 if ([atts[@"file_type"]isEqualToString:@"mp3"]) {
-                    _haveRecord = YES;
+                    model.haveRecord = YES;
                 }
             }
             
         }
         
     }else{
-        _havePhotos = NO;
-        _haveRecord = NO;
+        model.havePhotos = NO;
+        model.haveRecord = NO;
     }
     
     //再判断学生做完作业之后,有没有图片有没有语音
+    
     if (model.myAnswerPhotos) {
-        _haveAnswerPhotos = YES;
+        model.haveAnswerPhotos = YES;
     }else{
-        _haveAnswerPhotos = NO;
+        model.haveAnswerPhotos = NO;
     }
     if (model.myAnswerRecorderURL) {
-        _haveAnswerRecord = YES;
+        model.haveAnswerRecord = YES;
     }else{
-        _haveAnswerRecord = NO;
+        model.haveAnswerRecord = NO;
     }
     
     //最后再判断有没有批改
     if (![model.correction[@"attachments"] isEqual:[NSNull null]]) {
+        //有批改.
+        model.haveCorrection = YES;
+    }else{
         
+        model.haveCorrection = NO;
     }
-    
     
     ////////////////////////////////////////////////////////
     
@@ -215,7 +230,7 @@
             _teacherCheckTitle.hidden = YES;
             
             //判断老师的问题,是否有图片语音
-            if (_havePhotos == YES && _haveRecord == YES ) {
+            if (model.havePhotos == YES && model.haveRecord == YES ) {
                 _homeworkPhotosView.hidden = NO;
                 _homeworkRecorder.view.hidden = NO;
                 _status.sd_layout
@@ -226,7 +241,7 @@
             }
             
             
-            if (_havePhotos == YES && _haveRecord == NO) {
+            if (model.havePhotos == YES && model.haveRecord == NO) {
                 _homeworkPhotosView.hidden = NO;
                 _homeworkRecorder.view.hidden = YES;
                 _status.sd_layout
@@ -235,7 +250,7 @@
                 [self haveAnswerdTheHomeWorkLayout];
                 
             }
-            if (_havePhotos == NO && _haveRecord == YES) {
+            if (model.havePhotos == NO && model.haveRecord == YES) {
                 
                 _homeworkPhotosView.hidden = YES;
                 _homeworkRecorder.view.hidden = NO;
@@ -259,7 +274,7 @@
             _answerPhotosView.hidden = YES;
             _answerRecorder.view.hidden = YES;
             //反正也没有答案 , 那就只判断老师的问题,是否有图片语音
-            if (_havePhotos == YES && _haveRecord == YES ) {
+            if (model.havePhotos == YES && model.haveRecord == YES ) {
                 _homeworkPhotosView.hidden = NO;
                 _homeworkRecorder.view.hidden = NO;
                 _status.sd_layout
@@ -267,7 +282,7 @@
                 [_status updateLayout];
             }
             
-            if (_havePhotos == YES && _haveRecord == NO) {
+            if (model.havePhotos == YES && model.haveRecord == NO) {
                 _homeworkPhotosView.hidden = NO;
                 _homeworkRecorder.view.hidden = YES;
                 _status.sd_layout
@@ -275,7 +290,7 @@
                 [_status updateLayout];
                 
             }
-            if (_havePhotos == NO && _haveRecord == YES) {
+            if (model.havePhotos == NO && model.haveRecord == YES) {
                 
                 _homeworkPhotosView.hidden = YES;
                 _homeworkRecorder.view.hidden = NO;
@@ -305,7 +320,7 @@
         
         //这部分,根据音频/图片数据判断
         //判断老师的问题,是否有图片语音  换汤不换药.一样.
-        if (_havePhotos == YES && _haveRecord == YES ) {
+        if (model.havePhotos == YES && model.haveRecord == YES ) {
             _homeworkPhotosView.hidden = NO;
             _homeworkRecorder.view.hidden = NO;
             _status.sd_layout
@@ -316,7 +331,7 @@
         }
         
         
-        if (_havePhotos == YES && _haveRecord == NO) {
+        if (model.havePhotos == YES && model.haveRecord == NO) {
             _homeworkPhotosView.hidden = NO;
             _homeworkRecorder.view.hidden = YES;
             _status.sd_layout
@@ -325,7 +340,7 @@
             [self haveAnswerdTheHomeWorkLayout];
             
         }
-        if (_havePhotos == NO && _haveRecord == YES) {
+        if (model.havePhotos == NO && model.haveRecord == YES) {
             
             _homeworkPhotosView.hidden = YES;
             _homeworkRecorder.view.hidden = NO;
@@ -354,7 +369,7 @@
        
         //这部分,根据音频/图片数据判断
         //判断老师的问题,是否有图片语音
-        if (_havePhotos == YES && _haveRecord == YES ) {
+        if (model.havePhotos == YES && model.haveRecord == YES ) {
             _homeworkPhotosView.hidden = NO;
             _homeworkRecorder.view.hidden = NO;
             _status.sd_layout
@@ -365,7 +380,7 @@
         }
         
         
-        if (_havePhotos == YES && _haveRecord == NO) {
+        if (model.havePhotos == YES && model.haveRecord == NO) {
             _homeworkPhotosView.hidden = NO;
             _homeworkRecorder.view.hidden = YES;
             _status.sd_layout
@@ -374,7 +389,7 @@
             [self haveAnswerdTheHomeWorkLayout];
             
         }
-        if (_havePhotos == NO && _haveRecord == YES) {
+        if (model.havePhotos == NO && model.haveRecord == YES) {
             
             _homeworkPhotosView.hidden = YES;
             _homeworkRecorder.view.hidden = NO;
@@ -393,9 +408,12 @@
         [_teacherLabel updateLayout];
         
         _answerTitle.text = model.myAnswerTitle;
-        _teacherCheckTitle.text = model.correction;
+        _teacherCheckTitle.text = model.correction[@"body"];
         [self setupAutoHeightWithBottomView:_teacherCheckTitle bottomMargin:10*ScrenScale];
     }
+    
+    [_homeworkPhotosView reloadData];
+    [_answerPhotosView reloadData];
     
 }
 
@@ -404,24 +422,27 @@
 - (void)haveAnswerdTheHomeWorkLayout{
     //嵌套判断
     //学生做完作业了 有图片和语音
-    if (_haveAnswerPhotos == YES && _haveAnswerRecord == YES) {
+    if (_model.haveAnswerPhotos == YES && _model.haveAnswerRecord == YES) {
         _answerPhotosView.hidden = NO;
         _answerRecorder.view.hidden = NO;
+        [self answerTitleLayout];
         [self setupAutoHeightWithBottomView:_answerRecorder.view bottomMargin:10*ScrenScale];
     }
     //有图片没有语音
-    if (_haveAnswerPhotos == YES && _haveAnswerRecord == NO) {
+    if (_model.haveAnswerPhotos == YES && _model.haveAnswerRecord == NO) {
         _answerPhotosView.hidden = NO;
         _answerRecorder.view.hidden = YES;
+        [self answerTitleLayout];
         [self setupAutoHeightWithBottomView:_answerPhotosView bottomMargin:10*ScrenScale];
     }
     //有语音没图片
-    if (_haveAnswerPhotos == NO && _haveAnswerRecord == YES) {
+    if (_model.haveAnswerPhotos == NO && _model.haveAnswerRecord == YES) {
         _answerRecorder.view.sd_layout
         .topSpaceToView(_answerTitle, 10*ScrenScale);
         [_homeworkRecorder.view updateLayout];
         _answerPhotosView.hidden = YES;
         _answerRecorder.view.hidden = YES;
+        [self answerTitleLayout];
         [self setupAutoHeightWithBottomView:_answerRecorder.view bottomMargin:10*ScrenScale];
     }
     
@@ -431,39 +452,188 @@
     
     //嵌套判断 + 嵌套判断
     //学生做完作业了 有图片和语音
-    if (_haveAnswerPhotos == YES && _haveAnswerRecord == YES) {
+    if (_model.haveAnswerPhotos == YES && _model.haveAnswerRecord == YES) {
         _answerPhotosView.hidden = NO;
         _answerRecorder.view.hidden = NO;
         
-        if (_haveCorrectPhotos == YES && _haveCorrectRecord == YES) {
+        if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == YES) {
             
         }
-        if (_haveCorrectPhotos == YES && _haveCorrectRecord == NO) {
+        if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == NO) {
             
         }
-        if (_haveCorrectPhotos == NO && _haveCorrectRecord == YES) {
+        if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == YES) {
             
         }
       
     }
     //有图片没有语音
-    if (_haveAnswerPhotos == YES && _haveAnswerRecord == NO) {
+    if (_model.haveAnswerPhotos == YES && _model.haveAnswerRecord == NO) {
         _answerPhotosView.hidden = NO;
         _answerRecorder.view.hidden = YES;
      
     }
     //有语音没图片
-    if (_haveAnswerPhotos == NO && _haveAnswerRecord == YES) {
+    if (_model.haveAnswerPhotos == NO && _model.haveAnswerRecord == YES) {
         _answerRecorder.view.sd_layout
         .topSpaceToView(_answerTitle, 10*ScrenScale);
         [_homeworkRecorder.view updateLayout];
         _answerPhotosView.hidden = YES;
         _answerRecorder.view.hidden = NO;
         
-        
-       
     }
     
+}
+
+
+
+
+//"我的答案"标题位置确定
+- (void)answerTitleLayout{
+    if (_homeworkRecorder.view.hidden == NO) {
+        _myLabel.sd_layout
+        .topSpaceToView(_homeworkRecorder.view, 10);
+        [_myLabel updateLayout];
+    }else {
+        if (_homeworkPhotosView.hidden == NO) {
+            _myLabel.sd_layout
+            .topSpaceToView(_homeworkPhotosView, 10);
+            [_myLabel updateLayout];
+        }else{
+            _myLabel.sd_layout
+            .topSpaceToView(_title, 10);
+            [_myLabel updateLayout];
+        }
+    }
+    
+}
+
+
+
+
+
+#pragma mark- collectionview datasource
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    NSInteger items = 0;
+    if (collectionView == _homeworkPhotosView) {
+        if (_model.attachments.count == 0) {
+            items =1;
+        }else{
+            items = _model.attachments.count;
+        }
+    }else{
+        if (_model.myAnswerPhotos.count == 0) {
+            items = 1;
+        }else{
+            items = _model.myAnswerPhotos.count;
+        }
+    }
+    return items;
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UICollectionViewCell *cells;
+    
+    if (collectionView == _homeworkPhotosView) {
+        
+        static NSString * CellIdentifier = @"photoCell";
+        QuestionPhotosCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        if (_model.attachments.count>indexPath.item) {
+            if ([_model.attachments[indexPath.row][@"file_type"] isEqualToString:@"png"]) {
+                
+                [cell.image sd_setImageWithURL:[NSURL URLWithString:_model.attachments[indexPath.row][@"file_url"]]];
+            }
+        }
+        
+        cell.deleteBtn.hidden = YES;
+        return cell;
+        
+    }else {
+        
+        static NSString * CellIdentifiers = @"answerPhotoCell";
+        QuestionPhotosReuseCollectionViewCell * cell2 = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifiers forIndexPath:indexPath];
+        if (_model.myAnswerPhotos.count>indexPath.item) {
+            if ([_model.myAnswerPhotos[indexPath.row][@"file_type"] isEqualToString:@"png"]) {
+                [cell2.image sd_setImageWithURL:[NSURL URLWithString:_model.myAnswerPhotos[indexPath.row][@"file_url"]]];
+            }
+        }
+        
+        cell2.deleteBtn.hidden = YES;
+        return cell2;
+    }
+    
+}
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return CGSizeMake((UIScreenWidth-20*ScrenScale-30)/5.f, (UIScreenWidth-20*ScrenScale-30)/5.f);
+}
+
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+    return 10;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    return 10;
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSMutableArray *photos = @[].mutableCopy;
+    ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
+    // 淡入淡出效果
+    pickerBrowser.status = UIViewAnimationAnimationStatusZoom;
+    // 数据源/delegate
+    for (QuestionPhotosCollectionViewCell *cell in collectionView.visibleCells) {
+        
+        ZLPhotoPickerBrowserPhoto *mod = [[ZLPhotoPickerBrowserPhoto alloc]init];
+        mod.toView = cell.image;
+        mod.photoImage = cell.image.image;
+        [photos addObject:mod];
+        
+    }
+    
+    pickerBrowser.editing = NO;
+    pickerBrowser.photos = photos;
+    // 当前选中的值
+    pickerBrowser.currentIndex = indexPath.row;
+    // 展示控制器
+//    [pickerBrowser showPickerVc:[self getCurrentVC]];
+    [pickerBrowser showPushPickerVc: [[UINavigationController alloc]initWithRootViewController:[self getCurrentVC]]];
+    
+}
+
+//获取当前屏幕显示的viewcontroller
+- (UIViewController *)getCurrentVC
+{
+    UIViewController *result = nil;
+    
+    UIWindow * window = [[UIApplication sharedApplication] keyWindow];
+    if (window.windowLevel != UIWindowLevelNormal)
+    {
+        NSArray *windows = [[UIApplication sharedApplication] windows];
+        for(UIWindow * tmpWin in windows)
+        {
+            if (tmpWin.windowLevel == UIWindowLevelNormal)
+            {
+                window = tmpWin;
+                break;
+            }
+        }
+    }
+    
+    UIView *frontView = [[window subviews] objectAtIndex:0];
+    id nextResponder = [frontView nextResponder];
+    
+    if ([nextResponder isKindOfClass:[UIViewController class]])
+        result = nextResponder;
+    else
+        result = window.rootViewController;
+    
+    
+    return result;
 }
 
 

@@ -58,8 +58,7 @@
     [self setupView];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
-    
-    
+
 }
 
 
@@ -83,6 +82,7 @@
     //mainView
     _mainView = [[NewQuestionView alloc]init];
     [self.view addSubview:_mainView];
+
     _mainView.sd_layout
     .leftSpaceToView(self.view, 0)
     .rightSpaceToView(self.view, 0)
@@ -174,6 +174,9 @@
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [self resign];
+    
     //没照片的时候
     if (_phototsArray.count == 0) {
         if (indexPath.row == 0) {
@@ -477,6 +480,20 @@
         [self HUDStopWithTitle:@"请输入正确信息"];
     }];
     
+}
+
+- (void)resign{
+    [_mainView.title resignFirstResponder];
+    [_mainView.questions resignFirstResponder];
+}
+
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
+    [_mainView.title resignFirstResponder];
+    [_mainView.questions resignFirstResponder];
+    
+    [self.view endEditing:YES];
 }
 
 - (void)returnLastPage{

@@ -13,15 +13,18 @@
 #import "NetWorkTool.h"
 #import "DoHomeworkViewController.h"
 #import "Qatime_Student-Swift.h"
+#import "QuestionPhotosCollectionViewCell.h"
 
 
-@interface HomeworkInfoViewController ()<UITableViewDataSource,UITableViewDelegate>{
+@interface HomeworkInfoViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate>{
     
     NavigationBar *_naviBar;
     
     HomeworkManage *_homework;
     
     NSMutableArray *_itemsArray;
+    
+    NSMutableArray *_atachmentsArray;
     
 }
 
@@ -52,6 +55,8 @@
 - (void)makeData{
     
     _itemsArray = @[].mutableCopy;
+    
+    _atachmentsArray = @[].mutableCopy;
     //原始作业
     NSArray *homeworkArr = _homework.homework.items;
     //提交过得作业
@@ -110,6 +115,7 @@
             }
         }
     }
+    
 }
 
 - (void)setupView{
@@ -152,7 +158,7 @@
         
     }
     
-    
+    self.automaticallyAdjustsScrollViewInsets = NO;//解决cellForItemAtIndexPath not called问题
 }
 
 #pragma mark- tablview datasource
@@ -169,8 +175,27 @@
     }
     [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     cell.index.text = [NSString stringWithFormat:@"%ld",indexPath.row+1];
+    
     if (_itemsArray.count>indexPath.row) {
         cell.model = _itemsArray[indexPath.row];
+        cell.homeworkPhotosView.tag = indexPath.row +1000;
+        cell.answerPhotosView.tag = indexPath.row +2000;
+        
+        //注册教师发的作业的图片
+//        cell.homeworkPhotosView.dataSource = self;
+//        cell.homeworkPhotosView.delegate = self;
+        
+        //注册学生回答的图片
+//        cell.answerPhotosView.dataSource = self;
+//        cell.answerPhotosView.delegate = self;
+        
+//        [cell.homeworkPhotosView reloadData];
+        
+        for (NSDictionary *mod in cell.model.attachments) {
+            if ([mod[@"file_type"]isEqualToString:@"mp3"]) {
+                [cell.homeworkRecorder setRecordFileUrl:[NSURL URLWithString:mod[@"file_url"]]];
+            }
+        }
     }
     
     return  cell;
@@ -181,7 +206,6 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return [tableView cellHeightForIndexPath:indexPath model:_itemsArray[indexPath.row] keyPath:@"model" cellClass:[HomeworkInfoTableViewCell class] contentViewWidth:self.view.width_sd];
-//    return 100;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -195,53 +219,81 @@
         DoHomeworkViewController *controller = [[DoHomeworkViewController alloc]initWithHomework:cell.model];
         [self.navigationController pushViewController:controller animated:YES];
         
-        controller.doHomework = ^(NSString *answer) {
-            cell.model.myAnswerTitle = answer;
+        //这方方法改了
+        controller.doHomework = ^(NSDictionary *answer) {
+            cell.model.myAnswerTitle = answer[@"body"];
+            cell.model.myAnswerPhotos = answer[@"attachment"];
             cell.model.edited = YES;
             [weakSelf.mainView.homeworkList reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         };
-        
     }
 }
 
-/**  提交作业 */
-- (void)submit{
-    
-//    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-//    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-//    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-//    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
-//    [manager.requestSerializer multipartFormRequestWithMethod:@"PATCH" URLString:[NSString stringWithFormat:@"%@/api/v1/live_studio/student_homeworks/%@",Request_Header,_homework.homeworkID] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-//        //制造数组
-//        NSMutableArray *works = @[].mutableCopy;
-//        for (HomeworkInfo *infos in _itemsArray) {
-//            if (infos.myAnswerTitle) {
-//                [works addObject:@{@"parend_id":_homework.parent_id,@"body":infos.myAnswerTitle}];
+//-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+//
+//    NSInteger items = 0;
+//    if (collectionView.tag>=1000&&collectionView.tag<2000) {
+//        //老师的提问里的图片.
+//        HomeworkInfo *mode = (HomeworkInfo *)_itemsArray[collectionView.tag - 1000];
+//        NSInteger itemCount = 0;
+//        for (NSDictionary *atts in mode.attachments) {
+//            if ([atts[@"file_type"]isEqualToString:@"png"]) {
+//                itemCount++;
 //            }
 //        }
-//
-//        [formData appendPartWithFormData:[NSJSONSerialization dataWithJSONObject:works options:NSJSONWritingPrettyPrinted error:nil] name:@"task_items_attributes"];
-//
-//    } error:nil];
-//    id<AFMultipartFormData> formData ;
-//    NSMutableArray *works = @[].mutableCopy;
-//    for (HomeworkInfo *infos in _itemsArray) {
-//        if (infos.myAnswerTitle) {
-//            [works addObject:@{@"parend_id":_homework.parent_id,@"body":infos.myAnswerTitle}];
+//        items = itemCount;
+//    }else if (collectionView.tag>=2000){
+//        //学生的回答里的图片
+//        HomeworkInfo *mode = (HomeworkInfo *)_itemsArray[collectionView.tag - 2000];
+//        NSInteger itemCount = 0;
+//        for (NSDictionary *atts in mode.myAnswerPhotos) {
+//            if ([atts[@"file_type"]isEqualToString:@"png"]) {
+//                itemCount++;
+//            }
 //        }
+//        items = 0;
 //    }
-    
-//    [formData appendPartWithFormData:[NSJSONSerialization dataWithJSONObject:works options:NSJSONWritingPrettyPrinted error:nil] name:@"task_items_attributes"];
-    
-//    [manager PATCH:[NSString stringWithFormat:@"%@/api/v1/live_studio/student_homeworks/%@",Request_Header,_homework.homeworkID] parameters:@{@"task_items_attributes":[NSJSONSerialization dataWithJSONObject:works options:NSJSONWritingPrettyPrinted error:nil]} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-//        if (dic[@"status"]) {
+//    return items;
+//}
+//-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+//    return 1;
+//}
 //
+//-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+//
+//    UICollectionViewCell *cells;
+//
+//    if (collectionView.tag>=1000&&collectionView.tag<2000) {
+//        //老师的提问里的图片.
+//        static NSString * CellIdentifier = @"photoCell";
+//        QuestionPhotosCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+//        HomeworkInfo *mode = (HomeworkInfo *)_itemsArray[collectionView.tag - 1000];
+//        if ([mode.attachments[indexPath.row][@"file_type"]isEqualToString:@"png"]) {
+//            [cell.image sd_setImageWithURL:[NSURL URLWithString:mode.homework.attachments[indexPath.row][@"file_url"]]];
 //        }
-//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
 //
-//    }];
+//        cells = cell;
 //
+//    }else if (collectionView.tag>=2000){
+//        //学生的回答里的图片.
+//        static NSString * CellIdentifier = @"answerPhotoCell";
+//        QuestionPhotosCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+//         HomeworkInfo *mode = (HomeworkInfo *)_itemsArray[collectionView.tag - 2000];
+//        if ([mode.myAnswerPhotos[indexPath.row][@"file_type"]isEqualToString:@"png"]) {
+//            [cell.image sd_setImageWithURL:[NSURL URLWithString:mode.homework.attachments[indexPath.row][@"file_url"]]];
+//        }
+//
+//        cells = cell;
+//    }
+//
+//    return cells;
+//
+//}
+
+
+
+/**  提交作业 */
+- (void)submit{
     //手动上传吧
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"PATCH" URLString:[NSString stringWithFormat:@"%@/api/v1/live_studio/student_homeworks/%@",Request_Header,_homework.homeworkID] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSMutableArray *works = @[].mutableCopy;
@@ -263,19 +315,19 @@
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSURLSessionDataTask *uploadTask;
     uploadTask = [manager uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull uploadProgress) {} completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-
+        
         NSDictionary *dics = [NSDictionary dictionaryWithDictionary:responseObject];
         if ([dics[@"status"]isEqualToNumber:@1]) {
-          //提交成功过了
+            //提交成功过了
             [self HUDStopWithTitle:@"提交成功"];
             [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
             [[NSNotificationCenter defaultCenter]postNotificationName:@"HomeworkDone" object:nil];
         }
-
+        
     }];
     
-     [uploadTask resume];
-  
+    [uploadTask resume];
+    
 }
 
 

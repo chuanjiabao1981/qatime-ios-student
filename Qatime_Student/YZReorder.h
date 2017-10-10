@@ -41,4 +41,9 @@ typedef void(^RecordFinished)(NSString *recordfileURL);
 @property (nonatomic, copy) RecordFinished finishedFile ;
 
 
+
+
+
+
+
 @end

@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "DoHomeworkView.h"
 #import "HomeworkInfo.h"
+#import "NewQuestionViewController.h"
 //做作业传值
 
-typedef void(^DoHomework)(NSString *answer);
+typedef void(^DoHomework)(NSDictionary *answer);
 
 @interface DoHomeworkViewController : UIViewController
 @property (nonatomic, strong) DoHomeworkView *mainView ;

@@ -31,14 +31,7 @@
 
 @property (nonatomic, strong) HomeworkInfo *model ;
 
-@property (nonatomic, assign) BOOL havePhotos ;
-@property (nonatomic, assign) BOOL haveRecord ;
 
-@property (nonatomic, assign) BOOL haveAnswerPhotos ;
-@property (nonatomic, assign) BOOL haveAnswerRecord ;
-
-@property (nonatomic, assign) BOOL haveCorrectPhotos ;
-@property (nonatomic, assign) BOOL haveCorrectRecord ;
 
 
 @end

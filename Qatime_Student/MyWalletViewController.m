@@ -92,7 +92,7 @@
 //    [self HUDStartWithTitle:@"正在获取数据"];
     
     //部分基础数据
-    _menuName = @[@"充值记录",@"提现记录",@"消费记录",@"退款记录"];
+    _menuName = @[@"充值记录",/*@"提现记录",*/@"消费记录",@"退款记录"];
     
     //是否游客
     is_Guest = [[NSUserDefaults standardUserDefaults]valueForKey:@"is_Guest"]?[[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"]:NO;

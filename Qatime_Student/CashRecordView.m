@@ -19,7 +19,7 @@
         
             HMSegmentedControl *_=[[HMSegmentedControl alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, self.height_sd*0.1)];
         
-            _ .sectionTitles = @[@"充值记录",@"提现记录",@"消费记录",@"退款记录"];
+            _ .sectionTitles = @[@"充值记录",/*@"提现记录",*/@"消费记录",@"退款记录"];
             _.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor lightGrayColor],
                                       NSFontAttributeName:[UIFont systemFontOfSize:18*ScrenScale]};
             _.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
@@ -37,7 +37,7 @@
         
         _scrollView =({
             UIScrollView *_=[[UIScrollView alloc]init];
-            _.contentSize = CGSizeMake(self.width_sd*4, self.height_sd-_segmentControl.height_sd);
+            _.contentSize = CGSizeMake(self.width_sd*3, self.height_sd-_segmentControl.height_sd);
             _.pagingEnabled = YES;
             _.showsHorizontalScrollIndicator = NO;
             _;
@@ -77,7 +77,7 @@
         });
     
         [self sd_addSubviews:@[_segmentControl,_scrollView]];
-        [_scrollView sd_addSubviews:@[_rechargeView,_withDrawView,_paymentView,_refundView]];
+        [_scrollView sd_addSubviews:@[_rechargeView,/*_withDrawView,*/_paymentView,_refundView]];
         
         
         /* 布局*/
@@ -101,14 +101,14 @@
         .widthRatioToView(self,1.0f);
         
         
-        _withDrawView.sd_layout
-        .leftSpaceToView(_rechargeView,0)
-        .topEqualToView(_scrollView)
-        .bottomEqualToView(_scrollView)
-        .widthRatioToView(self,1.0f);
+//        _withDrawView.sd_layout
+//        .leftSpaceToView(_rechargeView,0)
+//        .topEqualToView(_scrollView)
+//        .bottomEqualToView(_scrollView)
+//        .widthRatioToView(self,1.0f);
         
         _paymentView.sd_layout
-        .leftSpaceToView(_withDrawView,0)
+        .leftSpaceToView(_rechargeView,0)
         .topEqualToView(_scrollView)
         .bottomEqualToView(_scrollView)
         .widthRatioToView(self,1.0f);
