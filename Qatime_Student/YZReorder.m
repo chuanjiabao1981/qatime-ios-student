@@ -18,12 +18,14 @@
  - RecorderStateRecording: 录音中
  - RecorderStatePlaying: 播放中
  - RecorderStateRecordFinished: 录音完成,可以播放
+ - RecorderStateAsPlayerOnly: 只用做纯粹的播放器
  */
 typedef NS_ENUM(NSUInteger, RecorderState) {
     RecorderStateNormal,
     RecorderStateRecording,
     RecorderStatePlaying,
     RecorderStateRecordFinished,
+    RecorderStateAsPlayerOnly,  //
 };
 
 
@@ -38,7 +40,10 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     NSInteger _secendTime; //录音时间
     
     NSInteger _playingTime; //音频时长
+    
+    RecorderState _state;
 
+    NSInteger _purePlayTime; //单纯做播放器的时候的时长
 }
 
 
@@ -205,6 +210,7 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
 }
 
 - (void)playRecord:(UIButton *)sender {
+    
     NSLog(@"播放录音");
     [self.recorder stop];
     if ([self.player isPlaying])return;
@@ -213,15 +219,21 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     NSLog(@"%li",self.player.data.length/1024);
     [self.session setCategory:AVAudioSessionCategoryPlayback error:nil];
     [self.player play];
+    
     [self addPlayTimer];
+    
     [self changeRecorder:RecorderStatePlaying];
 }
 
 - (void)addPlayTimer{
+    if (_state == RecorderStateAsPlayerOnly) {
+        _playingTime =_purePlayTime;
+    }
     _playTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(playingSlider) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_playTimer forMode:NSRunLoopCommonModes];
     
 }
+
 - (void)playingSlider{
     _playingTime--;
     [_slider setProgress:_slider.progress+1.0/_secendTime animated:YES];
@@ -297,6 +309,7 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
 
 #pragma mark- 录音的时候 的录音机的变化
 - (void)changeRecorder:(RecorderState)state{
+    _state = state;
     switch (state) {
         case RecorderStateNormal:{
             
@@ -340,6 +353,17 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
             [_playBtn setImage:[UIImage imageNamed:@"question_stop"] forState:UIControlStateNormal];
             [_playBtn removeAllTargets];
             [_playBtn addTarget:self action:@selector(stopPlaying) forControlEvents:UIControlEventTouchUpInside];
+            
+        }
+            break;
+        case RecorderStateAsPlayerOnly:{
+             _playBtn.hidden = NO;
+            _slider.sd_layout
+            .leftSpaceToView(_playBtn, 10*ScrenScale);
+            [_slider updateLayout];
+            [_rightBtn setImage:[UIImage imageNamed:@"question_stop"] forState:UIControlStateNormal];
+            [_rightBtn removeAllTargets];
+            [_rightBtn addTarget:self action:@selector(stopRecorder:) forControlEvents:UIControlEventTouchUpInside];
             
         }
             break;
@@ -403,13 +427,15 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
 }
 
 
--(void)setRecordFileUrl:(NSURL *)recordFileUrl{
+-(void)setPlayerFileURL:(NSURL *)playerFileURL{
     
-    [self changeRecorder:RecorderStateRecordFinished];
+    _playerFileURL = playerFileURL;
+    [self changeRecorder:RecorderStateAsPlayerOnly];
     //获取一下音频时长
-    AVURLAsset* audioAsset =[AVURLAsset URLAssetWithURL:recordFileUrl options:nil];
+    AVURLAsset* audioAsset =[AVURLAsset URLAssetWithURL:playerFileURL options:nil];
     CMTime audioDuration = audioAsset.duration;
     NSInteger audioDurationSeconds = (NSInteger)CMTimeGetSeconds(audioDuration);
+    _purePlayTime = audioDurationSeconds;
     _secend.text = [NSString stringWithFormat:@"%ld'",audioDurationSeconds];
     
 }

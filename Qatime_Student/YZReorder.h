@@ -40,7 +40,7 @@ typedef void(^RecordFinished)(NSString *recordfileURL);
 
 @property (nonatomic, copy) RecordFinished finishedFile ;
 
-
+@property (nonatomic, strong) NSURL *playerFileURL ;
 
 
 

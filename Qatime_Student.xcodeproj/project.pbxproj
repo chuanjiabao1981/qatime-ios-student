@@ -312,7 +312,6 @@
 		545074681EDFB4CC0012A383 /* InteractionClassInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545074671EDFB4CC0012A383 /* InteractionClassInfoViewController.m */; };
 		5450746F1EE005F80012A383 /* SAMKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 5450746D1EE005F80012A383 /* SAMKeychainQuery.m */; };
 		5450B3EF1F4EAFC500E7A64B /* libUMessage_Sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5450B3EE1F4EAFC500E7A64B /* libUMessage_Sdk.a */; };
-		5450B3F51F4EB1C500E7A64B /* libUMessage_Sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5450B3F11F4EB1C500E7A64B /* libUMessage_Sdk.a */; };
 		545162B11DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162B01DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m */; };
 		545162BB1DF50D85000BD17A /* ChangePasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162BA1DF50D85000BD17A /* ChangePasswordView.m */; };
 		545162BE1DF50D99000BD17A /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545162BD1DF50D99000BD17A /* ChangePasswordViewController.m */; };
@@ -329,7 +328,6 @@
 		5452260E1E24830200F36280 /* EditBirthdayTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5452260D1E24830100F36280 /* EditBirthdayTableViewCell.m */; };
 		545226151E24CDD300F36280 /* OrderInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545226141E24CDD300F36280 /* OrderInfoView.m */; };
 		545226181E24CDE100F36280 /* OrderInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545226171E24CDE100F36280 /* OrderInfoViewController.m */; };
-		5452EF671F44649A00074C0D /* YZReorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5452EF661F44649A00074C0D /* YZReorder.m */; };
 		5453ADE91F6A26B300064BD7 /* MyQuestionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5453ADE81F6A26B300064BD7 /* MyQuestionsTableViewCell.swift */; };
 		5453ADED1F6A586200064BD7 /* AnswerInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5453ADEC1F6A586200064BD7 /* AnswerInfoView.m */; };
 		5453ADF01F6A59CD00064BD7 /* Answers.m in Sources */ = {isa = PBXBuildFile; fileRef = 5453ADEF1F6A59CD00064BD7 /* Answers.m */; };
@@ -444,7 +442,6 @@
 		548328DC1DDC6F360053AB29 /* 0.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 548328A21DDC6F360053AB29 /* 0.jpeg */; };
 		548328DD1DDC6F360053AB29 /* 1.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 548328A31DDC6F360053AB29 /* 1.jpeg */; };
 		548328DE1DDC6F360053AB29 /* headImage.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 548328A41DDC6F360053AB29 /* headImage.jpeg */; };
-		548328E71DDC6F360053AB29 /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 548328B91DDC6F360053AB29 /* libmp3lame.a */; };
 		548328E81DDC6F360053AB29 /* Mp3Recorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 548328BB1DDC6F360053AB29 /* Mp3Recorder.m */; };
 		548328EA1DDC6F360053AB29 /* UUImageAvatarBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 548328BF1DDC6F360053AB29 /* UUImageAvatarBrowser.m */; };
 		548328EB1DDC6F360053AB29 /* UUInputFunctionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548328C11DDC6F360053AB29 /* UUInputFunctionView.m */; };
@@ -481,6 +478,13 @@
 		548D1D7C1EA7420B00B120C8 /* CalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D7A1EA7420B00B120C8 /* CalendarView.m */; };
 		548D1D7F1EA7421400B120C8 /* AllClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D7E1EA7421400B120C8 /* AllClassViewController.m */; };
 		548D1D8E1EA7551F00B120C8 /* Features.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D8D1EA7551F00B120C8 /* Features.m */; };
+		548DFE0F1F8E00EC00CAFC00 /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54F674071F7B81AC006CF211 /* libmp3lame.a */; };
+		548DFE101F8E012600CAFC00 /* YZReorder.h in Sources */ = {isa = PBXBuildFile; fileRef = 548DFE0A1F8DFE6300CAFC00 /* YZReorder.h */; };
+		548DFE111F8E012600CAFC00 /* YZReorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 548DFE0B1F8DFE6400CAFC00 /* YZReorder.m */; };
+		548DFE121F8E012D00CAFC00 /* WXApi.h in Sources */ = {isa = PBXBuildFile; fileRef = 54CB266F1DF02FE400AE7414 /* WXApi.h */; };
+		548DFE131F8E012D00CAFC00 /* WXApiObject.h in Sources */ = {isa = PBXBuildFile; fileRef = 54CB26701DF02FE400AE7414 /* WXApiObject.h */; };
+		548DFE141F8E01AE00CAFC00 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 548DFE0E1F8DFF4000CAFC00 /* libWeChatSDK.a */; };
+		548DFE151F8E01C500CAFC00 /* WechatAuthSDK.h in Sources */ = {isa = PBXBuildFile; fileRef = 54CB266E1DF02FE400AE7414 /* WechatAuthSDK.h */; };
 		548F0E811E8A51B000A12C6D /* InteractionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E801E8A51B000A12C6D /* InteractionViewController.m */; };
 		548F0E9A1E8A826400A12C6D /* InteractionInfoHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F0E991E8A826400A12C6D /* InteractionInfoHeadView.m */; };
 		548F2A381F73AEB7001AEC5C /* AttachmentDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 548F2A371F73AEB7001AEC5C /* AttachmentDecoder.m */; };
@@ -664,7 +668,6 @@
 		54C9A8D11E12159700B81EBF /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C9A8D01E12159700B81EBF /* PlayerView.m */; };
 		54CB26601DEFFBD300AE7414 /* ChangPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CB265F1DEFFBD300AE7414 /* ChangPhoneView.m */; };
 		54CB26631DEFFBDF00AE7414 /* ChangePhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CB26621DEFFBDF00AE7414 /* ChangePhoneViewController.m */; };
-		54CB26711DF02FE400AE7414 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54CB266D1DF02FE400AE7414 /* libWeChatSDK.a */; };
 		54CB26731DF0302900AE7414 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54CB26721DF0302900AE7414 /* Security.framework */; };
 		54CB9B0E1F70FA5900BDC6D0 /* FileToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CB9B0D1F70FA5900BDC6D0 /* FileToolBar.m */; };
 		54CCE2271F428EDC004933D3 /* NewQuestionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CCE2261F428EDC004933D3 /* NewQuestionView.m */; };
@@ -1358,7 +1361,6 @@
 		5450746C1EE005F80012A383 /* SAMKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMKeychainQuery.h; sourceTree = "<group>"; };
 		5450746D1EE005F80012A383 /* SAMKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMKeychainQuery.m; sourceTree = "<group>"; };
 		5450B3EE1F4EAFC500E7A64B /* libUMessage_Sdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libUMessage_Sdk.a; path = Qatime_Student/UMessage_Sdk_1.4.0/libUMessage_Sdk.a; sourceTree = "<group>"; };
-		5450B3F11F4EB1C500E7A64B /* libUMessage_Sdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMessage_Sdk.a; sourceTree = "<group>"; };
 		5450B3F41F4EB1C500E7A64B /* UMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMessage.h; sourceTree = "<group>"; };
 		545162AF1DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+EnlargeTouchArea.h"; sourceTree = "<group>"; };
 		545162B01DF4FBA4000BD17A /* UIButton+EnlargeTouchArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+EnlargeTouchArea.m"; sourceTree = "<group>"; };
@@ -1394,8 +1396,6 @@
 		545226141E24CDD300F36280 /* OrderInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderInfoView.m; sourceTree = "<group>"; };
 		545226161E24CDE100F36280 /* OrderInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderInfoViewController.h; sourceTree = "<group>"; };
 		545226171E24CDE100F36280 /* OrderInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderInfoViewController.m; sourceTree = "<group>"; };
-		5452EF651F44649A00074C0D /* YZReorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZReorder.h; sourceTree = "<group>"; };
-		5452EF661F44649A00074C0D /* YZReorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YZReorder.m; sourceTree = "<group>"; };
 		5453ADE81F6A26B300064BD7 /* MyQuestionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyQuestionsTableViewCell.swift; sourceTree = "<group>"; };
 		5453ADEB1F6A586200064BD7 /* AnswerInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnswerInfoView.h; sourceTree = "<group>"; };
 		5453ADEC1F6A586200064BD7 /* AnswerInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnswerInfoView.m; sourceTree = "<group>"; };
@@ -1709,6 +1709,10 @@
 		548D1D8D1EA7551F00B120C8 /* Features.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Features.m; sourceTree = "<group>"; };
 		548D1D8F1EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICollectionViewLeftAlignedLayout.h; sourceTree = "<group>"; };
 		548D1D901EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICollectionViewLeftAlignedLayout.m; sourceTree = "<group>"; };
+		548DFE0A1F8DFE6300CAFC00 /* YZReorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZReorder.h; sourceTree = "<group>"; };
+		548DFE0B1F8DFE6400CAFC00 /* YZReorder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZReorder.m; sourceTree = "<group>"; };
+		548DFE0C1F8DFEC100CAFC00 /* libUMessage_Sdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMessage_Sdk.a; sourceTree = "<group>"; };
+		548DFE0E1F8DFF4000CAFC00 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
 		548F0E7F1E8A51B000A12C6D /* InteractionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionViewController.h; sourceTree = "<group>"; };
 		548F0E801E8A51B000A12C6D /* InteractionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionViewController.m; sourceTree = "<group>"; };
 		548F0E981E8A826400A12C6D /* InteractionInfoHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InteractionInfoHeadView.h; path = View/InteractionInfoHeadView.h; sourceTree = "<group>"; };
@@ -2096,7 +2100,6 @@
 		54CB265F1DEFFBD300AE7414 /* ChangPhoneView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangPhoneView.m; sourceTree = "<group>"; };
 		54CB26611DEFFBDF00AE7414 /* ChangePhoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePhoneViewController.h; sourceTree = "<group>"; };
 		54CB26621DEFFBDF00AE7414 /* ChangePhoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ChangePhoneViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		54CB266D1DF02FE400AE7414 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
 		54CB266E1DF02FE400AE7414 /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WechatAuthSDK.h; sourceTree = "<group>"; };
 		54CB266F1DF02FE400AE7414 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		54CB26701DF02FE400AE7414 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
@@ -2287,6 +2290,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				548DFE141F8E01AE00CAFC00 /* libWeChatSDK.a in Frameworks */,
+				548DFE0F1F8E00EC00CAFC00 /* libmp3lame.a in Frameworks */,
 				5472B5A81F4EA64800C3110D /* libresolv.tbd in Frameworks */,
 				54294CD41DDB3CC200677333 /* UIKit.framework in Frameworks */,
 				5429159B1DD9DDCE00EE1A70 /* AudioToolbox.framework in Frameworks */,
@@ -2331,12 +2336,9 @@
 				5429159E1DD9DDE600EE1A70 /* libsqlite3.0.tbd in Frameworks */,
 				5429159D1DD9DDDE00EE1A70 /* libc++.tbd in Frameworks */,
 				54E120CE1DDC2CA5004F8012 /* CoreText.framework in Frameworks */,
-				548328E71DDC6F360053AB29 /* libmp3lame.a in Frameworks */,
 				5422E7CE1F4E77B6008B0A96 /* libevent.a in Frameworks */,
 				5422E7D61F4E77B6008B0A96 /* libopenh264.a in Frameworks */,
-				5450B3F51F4EB1C500E7A64B /* libUMessage_Sdk.a in Frameworks */,
 				5422E7D51F4E77B6008B0A96 /* libnvs.a in Frameworks */,
-				54CB26711DF02FE400AE7414 /* libWeChatSDK.a in Frameworks */,
 				542915961DD9DDB000EE1A70 /* MobileCoreServices.framework in Frameworks */,
 				5422E7D41F4E77B6008B0A96 /* libnts.a in Frameworks */,
 				F249EFD4707A4E4121B5BF4D /* libPods-Qatime_Student.a in Frameworks */,
@@ -4098,9 +4100,9 @@
 		5452EF641F44645E00074C0D /* 封装录音机 */ = {
 			isa = PBXGroup;
 			children = (
+				548DFE0A1F8DFE6300CAFC00 /* YZReorder.h */,
+				548DFE0B1F8DFE6400CAFC00 /* YZReorder.m */,
 				54F674051F7B81AC006CF211 /* lame */,
-				5452EF651F44649A00074C0D /* YZReorder.h */,
-				5452EF661F44649A00074C0D /* YZReorder.m */,
 			);
 			name = "封装录音机";
 			sourceTree = "<group>";
@@ -4724,7 +4726,7 @@
 		547FBF251DF6817300955A9E /* UMessage_Sdk */ = {
 			isa = PBXGroup;
 			children = (
-				5450B3F11F4EB1C500E7A64B /* libUMessage_Sdk.a */,
+				548DFE0C1F8DFEC100CAFC00 /* libUMessage_Sdk.a */,
 				5450B3F41F4EB1C500E7A64B /* UMessage.h */,
 			);
 			name = UMessage_Sdk;
@@ -6233,7 +6235,7 @@
 		54CB266C1DF02FC600AE7414 /* WeChatSDK */ = {
 			isa = PBXGroup;
 			children = (
-				54CB266D1DF02FE400AE7414 /* libWeChatSDK.a */,
+				548DFE0E1F8DFF4000CAFC00 /* libWeChatSDK.a */,
 				54CB266E1DF02FE400AE7414 /* WechatAuthSDK.h */,
 				54CB266F1DF02FE400AE7414 /* WXApi.h */,
 				54CB26701DF02FE400AE7414 /* WXApiObject.h */,
@@ -7736,6 +7738,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				548DFE151F8E01C500CAFC00 /* WechatAuthSDK.h in Sources */,
+				548DFE121F8E012D00CAFC00 /* WXApi.h in Sources */,
+				548DFE131F8E012D00CAFC00 /* WXApiObject.h in Sources */,
+				548DFE101F8E012600CAFC00 /* YZReorder.h in Sources */,
+				548DFE111F8E012600CAFC00 /* YZReorder.m in Sources */,
 				54A627791F70F90D00CC7D00 /* DownloadManagerViewController.h in Sources */,
 				54A6277A1F70F90D00CC7D00 /* DownloadManagerViewController.m in Sources */,
 				541F56781F6FAD56001FA7DD /* ClassHomeworkCell.h in Sources */,
@@ -7981,7 +7988,6 @@
 				5435D9371DD2C12300DD4FCC /* ClassesListTableViewCell.m in Sources */,
 				5471C8021E8F87FD0098E509 /* ClassListTableView.m in Sources */,
 				542F4DAD1F29C84D0070E321 /* ExclusiveLesson.m in Sources */,
-				5452EF671F44649A00074C0D /* YZReorder.m in Sources */,
 				54AB63D51EF2AA500022E573 /* ClassSearch.m in Sources */,
 				5492101C1DCC585E00A65702 /* NSString+UTF8Coding.m in Sources */,
 				54A7CD1A1F669435003CB5C6 /* HomeworkManage.m in Sources */,
@@ -8599,6 +8605,7 @@
 					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/UUChat/OtherResources/VoiceLib",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMAVChat/Libs",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMSDK/Libs",
+					"$(PROJECT_DIR)/Qatime_Student/lame",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -8694,6 +8701,7 @@
 					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/UUChat/OtherResources/VoiceLib",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMAVChat/Libs",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMSDK/Libs",
+					"$(PROJECT_DIR)/Qatime_Student/lame",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
