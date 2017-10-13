@@ -56,6 +56,8 @@
         _widthDrawButon.layer.borderWidth = 1;
         [self addSubview:_widthDrawButon];
         
+        //隐藏了,砍掉提现功能
+        
         _widthDrawButon.sd_layout
         .topSpaceToView(_total,20)
         .rightSpaceToView(self, 10);
@@ -71,7 +73,7 @@
         _rechargeButton.layer.borderColor = NAVIGATIONRED.CGColor;
         _rechargeButton.layer.borderWidth = 1;
         [self addSubview:_rechargeButton];
-        
+      
         _rechargeButton.sd_layout
         .topSpaceToView(_total,20)
         .rightSpaceToView(self, 10);

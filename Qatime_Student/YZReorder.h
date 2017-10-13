@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "M13ProgressViewBar.h"
+#import <AVFoundation/AVFoundation.h>
+
+//使用lame转成MP3
+#include "lame.h"
+
+
+typedef void(^RecordFinished)(NSString *recordfileURL);
 
 @interface YZReorder : UIViewController
 
@@ -23,6 +30,15 @@
 
 /** 时间 */
 @property (nonatomic, strong) UILabel *secend ;
+
+@property (nonatomic, strong) AVAudioSession *session;
+
+@property (nonatomic, strong) AVAudioRecorder *recorder;//录音器
+
+@property (nonatomic, strong) AVAudioPlayer *player; //播放器
+@property (nonatomic, strong) NSURL *recordFileUrl; //文件地址
+
+@property (nonatomic, copy) RecordFinished finishedFile ;
 
 
 @end

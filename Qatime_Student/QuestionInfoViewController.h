@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Qatime_Student-Swift.h"
 #import "AnswerInfoView.h"
+#import "QuestionInfoView.h"
 
 
 @interface QuestionInfoViewController : UIViewController

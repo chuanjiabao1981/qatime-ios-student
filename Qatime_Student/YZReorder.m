@@ -7,7 +7,7 @@
 //
 
 #import "YZReorder.h"
-#import <AVFoundation/AVFoundation.h>
+
 #import "UIControl+RemoveTarget.h"
 #import "UIAlertController+Blocks.h"
 
@@ -41,17 +41,22 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
 
 }
 
-@property (nonatomic, strong) AVAudioSession *session;
 
-@property (nonatomic, strong) AVAudioRecorder *recorder;//录音器
-
-@property (nonatomic, strong) AVAudioPlayer *player; //播放器
-@property (nonatomic, strong) NSURL *recordFileUrl; //文件地址
 
 @end
 
 
 @implementation YZReorder
+
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -142,15 +147,15 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     self.session = session;
     //1.获取沙盒地址
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    filePath = [path stringByAppendingString:@"/RRecord.aac"];
+    filePath = [path stringByAppendingString:@"/RRecord.pcm"];
     //2.获取文件路径
     self.recordFileUrl = [NSURL fileURLWithPath:filePath];
     //设置参数
     NSDictionary *recordSetting = [[NSDictionary alloc] initWithObjectsAndKeys:
                                    //采样率  8000/11025/22050/44100/96000（影响音频的质量）
-                                   [NSNumber numberWithFloat: 8000.0],AVSampleRateKey,
+                                   [NSNumber numberWithFloat: 44100.0],AVSampleRateKey,
                                    // 音频格式
-                                   [NSNumber numberWithInt: kAudioFormatMPEG4AAC],AVFormatIDKey,
+                                   [NSNumber numberWithInt: kAudioFormatLinearPCM],AVFormatIDKey,
                                    //采样位数  8、16、24、32 默认为16
                                    [NSNumber numberWithInt:16],AVLinearPCMBitDepthKey,
                                    // 音频通道数 1 或 2
@@ -162,13 +167,12 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     if (_recorder) {
         _recorder.meteringEnabled = YES;
         [_recorder prepareToRecord];
+        [self addTimer];
         [_recorder record];
+        [self changeRecorder:RecorderStateRecording];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(countDown * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self stopRecorder:nil];
         });
-        
-        [self addTimer];
-        [self changeRecorder:RecorderStateRecording];
     }else{
         NSLog(@"音频格式和文件存储格式不匹配,无法初始化Recorder");
     }
@@ -189,6 +193,10 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     NSFileManager *manager = [NSFileManager defaultManager];
     if ([manager fileExistsAtPath:filePath]){
         NSLog(@"%@",[NSString stringWithFormat:@"录了 %ld 秒,文件大小为 %.2fKb",countDown - (long)countDown,[[manager attributesOfItemAtPath:filePath error:nil] fileSize]/1024.0]);
+        
+        //转换音频文件
+       [self audioPCMtoMP3:filePath];
+        
     }else{
         
     }
@@ -233,7 +241,9 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"确定删除该条语音?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"删除"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
         if (buttonIndex!=0) {
             NSError *error = [[NSError alloc]init];
+            NSError *error2 = [[NSError alloc]init];
             [[NSFileManager defaultManager]removeItemAtPath:filePath error:&error];
+             [[NSFileManager defaultManager]removeItemAtPath:self.recordFileUrl.absoluteString  error:&error2];
             [self changeRecorder:RecorderStateNormal];
         }
     }];
@@ -256,7 +266,6 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
  *  添加定时器
  */
 - (void)addTimer{
-    
     _secendTime = 0;
     _timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(refreshSlider) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
@@ -264,6 +273,9 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
 
 - (void)refreshSlider{
     _secendTime++;
+    if (_secendTime>60) {
+        _secendTime = 60;
+    }
     _secend.text = [NSString stringWithFormat:@"%ld''",_secendTime];
     [_slider setProgress:_slider.progress+1.0/countDown animated:YES];
 }
@@ -333,10 +345,60 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     
 }
 
+//转换部分
 
-
-
-
+- (NSString *)audioPCMtoMP3:(NSString *)wavPath {
+    NSString *cafFilePath = wavPath;
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *mp3FilePath = [path stringByAppendingString:@"/RRecord.mp3"];
+    
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    if([fileManager removeItemAtPath:mp3FilePath error:nil]){
+        NSLog(@"删除原MP3文件");
+    }
+    @try {
+        int read, write;
+        FILE *pcm = fopen([cafFilePath cStringUsingEncoding:1], "rb");  //source 被转换的音频文件位置
+        fseek(pcm, 4*1024, SEEK_CUR);                                   //skip file header
+        FILE *mp3 = fopen([mp3FilePath cStringUsingEncoding:1], "wb");  //output 输出生成的Mp3文件位置
+        const int PCM_SIZE = 8192;
+        const int MP3_SIZE = 8192;
+        short int pcm_buffer[PCM_SIZE*2];
+        unsigned char mp3_buffer[MP3_SIZE];
+        
+        lame_t lame = lame_init();
+        lame_set_in_samplerate(lame, 22050.0);
+        lame_set_VBR(lame, vbr_default);
+        lame_init_params(lame);
+        
+        do {
+            read = fread(pcm_buffer, 2*sizeof(short int), PCM_SIZE, pcm);
+            if (read == 0)
+                write = lame_encode_flush(lame, mp3_buffer, MP3_SIZE);
+            else
+                write = lame_encode_buffer_interleaved(lame, pcm_buffer, read, mp3_buffer, MP3_SIZE);
+            
+            fwrite(mp3_buffer, write, 1, mp3);
+            
+        } while (read != 0);
+        
+        lame_close(lame);
+        fclose(mp3);
+        fclose(pcm);
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",[exception description]);
+    }
+    @finally {
+        if([fileManager removeItemAtPath:wavPath error:nil]){
+            NSLog(@"删除原pcm文件");
+        }
+        self.recordFileUrl = [NSURL URLWithString:mp3FilePath];
+        
+        _finishedFile(mp3FilePath);
+        return mp3FilePath;
+    }
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

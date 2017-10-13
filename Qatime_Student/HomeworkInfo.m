@@ -9,6 +9,13 @@
 #import "HomeworkInfo.h"
 @implementation HomeworkInfo
 
-
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        
+    }
+    return self;
+}
 
 @end

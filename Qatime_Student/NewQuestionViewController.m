@@ -16,6 +16,7 @@
 #import "UIAlertController+Blocks.h"
 #import "NetWorkTool.h"
 #import "ZLPhotoPickerBrowserViewController.h"
+#import "AppDelegate.h"
 
 
 @interface NewQuestionViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate,ZLPhotoPickerBrowserViewControllerDelegate>{
@@ -25,6 +26,13 @@
     NSMutableArray *_phototsArray;
     
     NSString *_classID;
+    
+    NSMutableArray *_atechmentArray;
+    
+    NSIndexPath *_clickedIndexPath;
+    
+    NSString *_recorderFileURL;
+    
     
 }
 
@@ -49,15 +57,17 @@
     [self makeData];
     [self setupView];
     
-     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
     
-  
+    
 }
 
 
 - (void)makeData{
     
     _phototsArray = @[].mutableCopy;
+    _atechmentArray = @[].mutableCopy;
+    
 }
 
 - (void)setupView{
@@ -87,7 +97,11 @@
     
     [_mainView.photosView registerClass:[QuestionPhotosCollectionViewCell class] forCellWithReuseIdentifier:@"cellID"];
     
-    [self addChildViewController:_mainView.recorder];
+    _mainView.recorder.finishedFile = ^(NSString *recordfileURL) {
+        _recorderFileURL = recordfileURL;
+        
+        [self uploadRecorder];
+    };
     
 }
 
@@ -140,6 +154,8 @@
             cell.image.image = _phototsArray[indexPath.row];
             cell.deleteBtn.tag = indexPath.row;
             [cell.deleteBtn addTarget:self action:@selector(deleteImage:) forControlEvents:UIControlEventTouchUpInside];
+            cell.faidBtn .tag = indexPath.item +10;
+            [cell.faidBtn addTarget:self action:@selector(uploadAgain:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
     return cell;
@@ -161,18 +177,21 @@
     //没照片的时候
     if (_phototsArray.count == 0) {
         if (indexPath.row == 0) {
-          [self showSheet];
+            [self showSheet];
+            _clickedIndexPath = indexPath;
         }
     }else{
         if (indexPath.row == _phototsArray.count) {
             [self showSheet];
+            _clickedIndexPath = indexPath;
         }else{
             //预览照片啊
             //用ZLPhoto
+            _clickedIndexPath = nil;
             NSMutableArray *photos = @[].mutableCopy;
             ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
             // 淡入淡出效果
-             pickerBrowser.status = UIViewAnimationAnimationStatusZoom;
+            pickerBrowser.status = UIViewAnimationAnimationStatusZoom;
             // 数据源/delegate
             for (QuestionPhotosCollectionViewCell *cell in collectionView.visibleCells) {
                 if (cell.deleteBtn.hidden == NO) {
@@ -191,7 +210,7 @@
             pickerBrowser.currentIndex = indexPath.row;
             // 展示控制器
             [pickerBrowser showPickerVc:self];
-
+            
         }
     }
 }
@@ -235,6 +254,8 @@
             }
                 break;
         }
+        
+        picker.modalPresentationStyle = UIModalPresentationCurrentContext;
         [self presentViewController:picker animated:YES completion:^{}];
         
     } otherButtonTitleArray:@[@"照相机",@"图库",@"相册"]];
@@ -245,6 +266,11 @@
 //图片回调
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     
+    QuestionPhotosCollectionViewCell *cell ;
+    if (_clickedIndexPath) {
+        cell = [_mainView.photosView cellForItemAtIndexPath:_clickedIndexPath];
+    }
+    
     NSLog(@"%@",info);
     
     @try {
@@ -253,36 +279,205 @@
         UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
         [_phototsArray addObject:image];
         [_mainView.photosView reloadData];
+        
+        /**
+         注意:选择完图片之后,直接上传!不要等都选择完了之后一起上传.
+         1.选一张上传一张.
+         2.显示上传进度.
+         */
+        
+        [self uploadImageWithIndexPath:_clickedIndexPath?_clickedIndexPath:[NSIndexPath indexPathForItem:_phototsArray.count-1 inSection:0] andImage:image];
+        
+        if (cell) {
+            
+        }
+        
+        
     } @catch (NSException *exception) {
-
+        
     } @finally {
         
     }
     
 }
-/** 提问 */
-- (void)ask{
-    if (_mainView.title.text.length>0&&_mainView.questions.text.length>0) {
-        [self HUDStartWithTitle:nil];
-        [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/groups/%@/questions",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:@{@"title":_mainView.title.text,@"body":_mainView.questions.text} withUploadProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
-            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-            if ([dic[@"status"]isEqualToNumber:@1]) {
-                //提问成功
-                [self HUDStopWithTitle:@"提交成功"];
-                [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"AskDone" object:nil];
-            }else{
-                [self HUDStopWithTitle:@"请稍后重试"];
-            }
-            
-        } failure:^(id  _Nullable erros) {
-            [self HUDStopWithTitle:@"请检查网络"];
-        }];
-    }else{
-        [self HUDStopWithTitle:@"请输入正确信息"];
-    }
+
+
+/**
+ 上传图片方法
+ 
+ @param indexPath cell的indexpath
+ @param image 图片
+ */
+- (void)uploadImageWithIndexPath:(NSIndexPath *)indexPath andImage:(UIImage *)image{
+    
+    QuestionPhotosCollectionViewCell *cell = (QuestionPhotosCollectionViewCell *)[_mainView.photosView cellForItemAtIndexPath:indexPath];
+    cell.effectView.hidden = NO;
+    
+    
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
+    [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/attachments",Request_Header] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        
+        NSData *imageData =UIImageJPEGRepresentation(image,1);
+        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        formatter.dateFormat =@"yyyyMMddHHmmss";
+        NSString *str = [formatter stringFromDate:[NSDate date]];
+        NSString *fileName = [NSString stringWithFormat:@"%@.png", str];
+        [formData appendPartWithFileData:imageData name:@"file" fileName:fileName mimeType:@"image/png"];
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+        cell.effectView.hidden = NO;
+        //进度
+        // @property int64_t totalUnitCount;     需要下载文件的总大小
+        // @property int64_t completedUnitCount; 当前已经下载的大小
+        
+        // 给Progress添加监听 KVO
+        NSLog(@"%f",1.0 * uploadProgress.completedUnitCount / uploadProgress.totalUnitCount);
+        // 回到主队列刷新UI
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // 设置进度条的百分比
+            cell.effectView.hidden = NO;
+            [cell.progress setProgress:1.0 * uploadProgress.completedUnitCount / uploadProgress.totalUnitCount animated:YES];
+        });
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            //可以了
+            NSMutableDictionary * fileDic = [NSMutableDictionary dictionaryWithDictionary:dic[@"data"]];
+            [fileDic setValue:[NSString stringWithFormat:@"%ld",indexPath.item] forKey:@"index"];
+            [_atechmentArray insertObject:fileDic atIndex:indexPath.item];
+            cell.effectView.hidden = YES;
+        }else{
+            //上传失败
+            cell.faildEffectView.hidden = NO;
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        //网络错误
+        cell.faildEffectView.hidden = NO;
+        [self HUDStopWithTitle:@"请检查网络"];
+    }];
+    
 }
 
+/** 重新上传 */
+- (void)uploadAgain:(UIButton *)sender{
+    
+    NSIndexPath *indexs = [NSIndexPath indexPathForItem:sender.tag-10 inSection:0];
+    
+    QuestionPhotosCollectionViewCell *cell = [_mainView.photosView cellForItemAtIndexPath:indexs];
+    [self uploadImageWithIndexPath:indexs andImage:cell.image.image];
+    
+}
+
+- (void)uploadRecorder{
+    
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
+    [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/attachments",Request_Header] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        NSData *recorderData = [NSData dataWithContentsOfFile:_recorderFileURL];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        formatter.dateFormat =@"yyyyMMddHHmmss";
+        NSString *str = [formatter stringFromDate:[NSDate date]];
+        NSString *fileName = [NSString stringWithFormat:@"%@.mp3", str];
+        [formData appendPartWithFileData:recorderData name:@"file" fileName:fileName mimeType:@"audio/mp3"];
+        
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+        NSLog(@"%f",1.0 * uploadProgress.completedUnitCount / uploadProgress.totalUnitCount);
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            
+            [_atechmentArray addObject:dic[@"data"]];
+        }else{
+            //音频上传失败
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [self HUDStopWithTitle:@"请检查网络"];
+    }];
+    
+    
+}
+
+
+
+/** 提问 */
+- (void)ask{
+    
+    //判断是否有录音
+    if (_recorderFileURL) {
+        //有录音
+        if (_atechmentArray.count == _phototsArray.count+1) {
+            //没问题,上传.
+            [self uploadAsk];
+        }else{
+            [self HUDStopWithTitle:@"有未加载完的数据,请稍后"];
+        }
+        
+    }else{
+        if (_atechmentArray.count == _phototsArray.count) {
+            //没问题,上传.
+            [self uploadAsk];
+        }else{
+            [self HUDStopWithTitle:@"有未加载完的数据,请稍后"];
+        }
+    }
+    
+    if (_mainView.title.text.length>0&&_mainView.questions.text.length>0) {
+        [self uploadAsk];
+    }else{
+        [self HUDStopWithTitle:@"请填写完整标题和内容"];
+    }
+    
+}
+
+- (void)uploadAsk{
+    
+    [self HUDStartWithTitle:nil];
+    
+    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+    [manager.requestSerializer setValue:[self token] forHTTPHeaderField:@"Remember-Token"];
+    [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/groups/%@/questions",Request_Header,_classID] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        
+        [formData appendPartWithFormData:[_mainView.title.text dataUsingEncoding:NSUTF8StringEncoding] name:@"title"];
+        [formData appendPartWithFormData:[_mainView.questions.text dataUsingEncoding:NSUTF8StringEncoding] name:@"body"];
+        
+        NSMutableArray *atts = @[].mutableCopy;
+        for (NSDictionary *file in _atechmentArray) {
+            NSDictionary *dics = @{@"attachment_id":[NSString stringWithFormat:@"%@",file[@"id"]]};
+            [atts addObject:dics];
+        }
+        [formData appendPartWithFormData:[NSJSONSerialization dataWithJSONObject:atts options:NSJSONWritingPrettyPrinted  error:nil] name:@"quotes_attributes"];
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+    
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            // 提问成功
+            [self HUDStopWithTitle:@"提交成功"];
+            [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"AskDone" object:nil];
+        }else{
+            [self HUDStopWithTitle:@"请稍后重试"];
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [self HUDStopWithTitle:@"请输入正确信息"];
+    }];
+    
+}
 
 - (void)returnLastPage{
     
@@ -296,13 +491,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

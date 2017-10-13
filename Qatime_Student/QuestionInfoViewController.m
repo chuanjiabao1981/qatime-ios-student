@@ -10,11 +10,17 @@
 #import "Questions.h"
 #import "NavigationBar.h"
 #import "UIViewController+ReturnLastPage.h"
-@interface QuestionInfoViewController (){
+#import "QuestionPhotosCollectionViewCell.h"
+
+@interface QuestionInfoViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>{
     
     Questions *_question;
     
     NavigationBar *_navBar;
+    
+    NSMutableArray *_questionPics;
+    NSMutableArray *_answerPics;
+    
 }
 
 @end
@@ -39,6 +45,9 @@
 
 - (void)makeData{
     
+    _questionPics = @[].mutableCopy;
+    _answerPics = @[].mutableCopy;
+    
 }
 - (void)setupView{
     self.view.backgroundColor = [UIColor whiteColor];
@@ -47,9 +56,9 @@
     [_navBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     _navBar.titleLabel.text = _question.course_name;
-    _questionInfoView = [[QuestionInfoView alloc]init];
+    _questionInfoView = [[QuestionInfoView alloc]initWithFrame:CGRectZero];
     [self.view addSubview:_questionInfoView];
-    [_questionInfoView setQuestionModWithModel:_question];
+    _questionInfoView.model = _question;
     _questionInfoView.sd_layout
     .leftSpaceToView(self.view, 0)
     .topSpaceToView(_navBar, 0)
@@ -80,6 +89,50 @@
         _answerInfoView.hidden = YES;
     }
     
+    _questionInfoView.photosView.delegate = self;
+    _questionInfoView.photosView.dataSource = self;
+    _questionInfoView.photosView.tag = 1;
+    [_questionInfoView.photosView registerClass:[QuestionPhotosCollectionViewCell class] forCellWithReuseIdentifier:@"collectionCell"];
+    
+    _answerInfoView.photosView.delegate = self;
+    _answerInfoView.photosView.dataSource = self;
+    _answerInfoView.photosView.tag =2;
+    [_answerInfoView.photosView registerClass:[QuestionPhotosCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
+    
+}
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    NSInteger row = 0;
+    if (collectionView.tag == 1) {
+        row = _questionPics.count;
+    }else if (collectionView.tag == 2){
+        row = _answerPics.count;
+    }
+    return row;
+}
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UICollectionViewCell *itemCell;
+    if (collectionView.tag == 1) {
+        
+        static NSString * CellIdentifier = @"collectionCell";
+        QuestionPhotosCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        if (_questionPics.count>indexPath.row) {
+            
+        }
+        
+        itemCell = cell;
+
+    }else if (collectionView.tag == 2){
+        static NSString * CellIdentifier = @"Cell";
+        QuestionPhotosCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        if (_answerPics.count>indexPath.row) {
+            
+        }
+        
+        itemCell = cell;
+    }
+    
+    return itemCell;
 }
 
 - (void)didReceiveMemoryWarning {

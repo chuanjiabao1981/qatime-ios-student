@@ -10,5 +10,22 @@
             </PersistentString>
          </PersistentStrings>
       </ContextState>
+      <ContextState
+         contextName = "__32-[NewQuestionViewController ask]_block_invoke_2:NewQuestionViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__32-[NewQuestionViewController ask]_block_invoke_3:NewQuestionViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__63-[NewQuestionViewController uploadImageWithIndexPath:andImage:]_block_invoke.270:NewQuestionViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HomeworkInfoViewController setupView]:HomeworkInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_itemsArray">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
    </ContextStates>
 </VariablesViewState>

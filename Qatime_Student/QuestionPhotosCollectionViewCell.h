@@ -7,11 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "M13ProgressViewRing.h"
 
 @interface QuestionPhotosCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIImageView *image ;
 
 @property (nonatomic, strong) UIButton *deleteBtn ;
+
+@property (nonatomic, strong) UIView *effectView ;
+
+@property (nonatomic, strong) M13ProgressViewRing *progress ;
+
+@property (nonatomic, strong) UIView *faildEffectView ;
+
+@property (nonatomic, strong) UIButton *faidBtn ;
 
 @end

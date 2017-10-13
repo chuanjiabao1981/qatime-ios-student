@@ -37,7 +37,6 @@ typedef enum : NSUInteger {
 } RefreshState;
 
 
-
 @interface NoticeIndexViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,NIMConversationManagerDelegate,NIMLoginManagerDelegate,UIGestureRecognizerDelegate,JTSegmentControlDelegate,NIMChatManagerDelegate>{
     
     NavigationBar *_navigationBar;

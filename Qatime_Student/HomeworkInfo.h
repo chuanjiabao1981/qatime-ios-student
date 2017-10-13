@@ -21,9 +21,14 @@
 /** 我的答案 */
 @property (nonatomic, strong) NSString *myAnswerTitle ;
 
+/** 我的答案的 图片们 */
+@property (nonatomic, strong) NSMutableArray  *myAnswerPhotos ;
+/** 我的答案的 语音文件 */
+@property (nonatomic, strong) NSString *myAnswerRecorderURL ;
+
 @property (nonatomic, strong) NSDictionary *answers ;
 
 /** 老师批语 */
-@property (nonatomic, strong) NSString *correction ;
+@property (nonatomic, strong) NSDictionary *correction ;
 
 @end

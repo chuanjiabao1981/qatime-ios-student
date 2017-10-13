@@ -582,6 +582,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         if (([vc isKindOfClass:[UITableViewController class]] || [vc isKindOfClass:[UICollectionView class]]) && weakVc.navigationController != nil && self.navigationHeight == 0) {
             self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
         }
+        self.modalPresentationStyle = UIModalPresentationCurrentContext;
         [weakVc presentViewController:self animated:NO completion:nil];
     }
 }
