@@ -412,6 +412,7 @@
 		547A7EF71DD411DB00F1282B /* TeachersPublic_Classes.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EF61DD411DB00F1282B /* TeachersPublic_Classes.m */; };
 		547A7EFD1DD416F100F1282B /* ListenAndBuyTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EFC1DD416F100F1282B /* ListenAndBuyTabBar.m */; };
 		547AD51E1E4D6A7000239907 /* UUAVAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 547AD51D1E4D6A7000239907 /* UUAVAudioPlayer.m */; };
+		547DBD911F9062B200A24FCB /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54F674071F7B81AC006CF211 /* libmp3lame.a */; };
 		547E898A1DD1BC9900749366 /* RecommandTeacher.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E89891DD1BC9900749366 /* RecommandTeacher.m */; };
 		547E898D1DD1D01B00749366 /* TutoriumInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E898C1DD1D01B00749366 /* TutoriumInfoView.m */; };
 		547E89901DD1D03100749366 /* TutoriumInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E898F1DD1D03100749366 /* TutoriumInfoViewController.m */; };
@@ -444,7 +445,6 @@
 		548328DC1DDC6F360053AB29 /* 0.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 548328A21DDC6F360053AB29 /* 0.jpeg */; };
 		548328DD1DDC6F360053AB29 /* 1.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 548328A31DDC6F360053AB29 /* 1.jpeg */; };
 		548328DE1DDC6F360053AB29 /* headImage.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 548328A41DDC6F360053AB29 /* headImage.jpeg */; };
-		548328E71DDC6F360053AB29 /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 548328B91DDC6F360053AB29 /* libmp3lame.a */; };
 		548328E81DDC6F360053AB29 /* Mp3Recorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 548328BB1DDC6F360053AB29 /* Mp3Recorder.m */; };
 		548328EA1DDC6F360053AB29 /* UUImageAvatarBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 548328BF1DDC6F360053AB29 /* UUImageAvatarBrowser.m */; };
 		548328EB1DDC6F360053AB29 /* UUInputFunctionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 548328C11DDC6F360053AB29 /* UUInputFunctionView.m */; };
@@ -2284,6 +2284,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				547DBD911F9062B200A24FCB /* libmp3lame.a in Frameworks */,
 				5472B5A81F4EA64800C3110D /* libresolv.tbd in Frameworks */,
 				54294CD41DDB3CC200677333 /* UIKit.framework in Frameworks */,
 				5429159B1DD9DDCE00EE1A70 /* AudioToolbox.framework in Frameworks */,
@@ -2328,7 +2329,6 @@
 				5429159E1DD9DDE600EE1A70 /* libsqlite3.0.tbd in Frameworks */,
 				5429159D1DD9DDDE00EE1A70 /* libc++.tbd in Frameworks */,
 				54E120CE1DDC2CA5004F8012 /* CoreText.framework in Frameworks */,
-				548328E71DDC6F360053AB29 /* libmp3lame.a in Frameworks */,
 				5422E7CE1F4E77B6008B0A96 /* libevent.a in Frameworks */,
 				5422E7D61F4E77B6008B0A96 /* libopenh264.a in Frameworks */,
 				5450B3F51F4EB1C500E7A64B /* libUMessage_Sdk.a in Frameworks */,
@@ -8593,6 +8593,7 @@
 					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/UUChat/OtherResources/VoiceLib",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMAVChat/Libs",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMSDK/Libs",
+					"$(PROJECT_DIR)/Qatime_Student/lame",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -8688,6 +8689,7 @@
 					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/UUChat/OtherResources/VoiceLib",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMAVChat/Libs",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMSDK/Libs",
+					"$(PROJECT_DIR)/Qatime_Student/lame",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (

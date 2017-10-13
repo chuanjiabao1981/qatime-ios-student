@@ -298,7 +298,7 @@
     
     //分段控制器
     _segmentControl = [[UISegmentedControl alloc]initWithItems:@[@"直播课",@"一对一",@"视频课",@"专属课"]];
-    [_navigationBar addSubview:_segmentControl];
+    [_navigationBar.contentView addSubview:_segmentControl];
     _segmentControl.apportionsSegmentWidthsByContent = YES;
     _segmentControl.selectedSegmentIndex = 0;
     _segmentControl.sd_layout
@@ -306,6 +306,7 @@
     .rightSpaceToView(_navigationBar.rightButton, 25*ScrenScale)
     .topEqualToView(_navigationBar.leftButton)
     .bottomEqualToView(_navigationBar.leftButton);
+    [_segmentControl updateLayout];
     _segmentControl.tintColor = [UIColor whiteColor];
     [_segmentControl addTarget:self action:@selector(didSelectedOnSegment:) forControlEvents:UIControlEventValueChanged];
 
