@@ -97,10 +97,11 @@
     
     [_mainView.photosView registerClass:[QuestionPhotosCollectionViewCell class] forCellWithReuseIdentifier:@"cellID"];
     
+    typeof(self) __weak weakSelf = self;
     _mainView.recorder.finishedFile = ^(NSString *recordfileURL) {
         _recorderFileURL = recordfileURL;
         
-        [self uploadRecorder];
+        [weakSelf uploadRecorder];
     };
     
 }

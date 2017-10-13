@@ -30,6 +30,7 @@
 
 /** 我的答案的 语音文件 */
 @property (nonatomic, strong) NSString *myAnswerRecorderURL ;
+@property (nonatomic, strong) NSDictionary *myAnswerRecord ;
 
 @property (nonatomic, strong) NSDictionary *answers ;
 

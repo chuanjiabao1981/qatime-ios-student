@@ -214,15 +214,23 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     NSLog(@"播放录音");
     [self.recorder stop];
     if ([self.player isPlaying])return;
-    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:self.recordFileUrl error:nil];
+    if (_state == RecorderStateAsPlayerOnly) {
+        NSLog(@"%@",_playerFileURL.absoluteString);
+        self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:_playerFileURL error:nil];
+    }else{
+        self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:self.recordFileUrl error:nil];
+    }
     self.player.delegate = self;
     NSLog(@"%li",self.player.data.length/1024);
     [self.session setCategory:AVAudioSessionCategoryPlayback error:nil];
     [self.player play];
     
     [self addPlayTimer];
-    
-    [self changeRecorder:RecorderStatePlaying];
+    if (_state == RecorderStateAsPlayerOnly) {
+        [self changeRecorder:RecorderStateAsPlayerOnly];
+    }else{
+        [self changeRecorder:RecorderStatePlaying];
+    }
 }
 
 - (void)addPlayTimer{
@@ -236,15 +244,32 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
 
 - (void)playingSlider{
     _playingTime--;
-    [_slider setProgress:_slider.progress+1.0/_secendTime animated:YES];
+    if (_state == RecorderStateAsPlayerOnly) {
+        [_slider setProgress:_slider.progress+1.0/_purePlayTime animated:YES];
+    }else{
+        [_slider setProgress:_slider.progress+1.0/_secendTime animated:YES];
+    }
     _secend.text = [NSString stringWithFormat:@"%ld''",_playingTime];
+    if (_state == RecorderStateAsPlayerOnly) {
+        if (_playingTime <= 0) {
+            [self.player stop];
+            _secend.text = [NSString stringWithFormat:@"%ld'",_purePlayTime];
+            [_slider setProgress:0 animated:YES];
+            [self removePlayerTimer];
+        }
+    }
 }
 
 - (void)stopPlaying{
     [self.player stop];
     [self removePlayerTimer];
     [_slider setProgress:0.0 animated:YES];
-    [self changeRecorder:RecorderStateRecordFinished];
+    if (_state == RecorderStateAsPlayerOnly) {
+         [self changeRecorder:RecorderStateAsPlayerOnly];
+    }else{
+        [self changeRecorder:RecorderStateRecordFinished];
+    }
+    
     [_slider performAction:M13ProgressViewActionNone animated:YES];
     _secend.text = [NSString stringWithFormat:@"%ld''",_secendTime];
     _playingTime = _secendTime;
@@ -357,13 +382,13 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
         }
             break;
         case RecorderStateAsPlayerOnly:{
-             _playBtn.hidden = NO;
+            _playBtn.hidden = NO;
+            [_playBtn removeAllTargets];
+            [_playBtn addTarget:self action:@selector(playRecord:) forControlEvents:UIControlEventTouchUpInside];
             _slider.sd_layout
             .leftSpaceToView(_playBtn, 10*ScrenScale);
             [_slider updateLayout];
-            [_rightBtn setImage:[UIImage imageNamed:@"question_stop"] forState:UIControlStateNormal];
-            [_rightBtn removeAllTargets];
-            [_rightBtn addTarget:self action:@selector(stopRecorder:) forControlEvents:UIControlEventTouchUpInside];
+            _rightBtn.hidden = YES;
             
         }
             break;
@@ -428,8 +453,15 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
 
 
 -(void)setPlayerFileURL:(NSURL *)playerFileURL{
+    //这个是网络url 本地得转一下.全都存储到temp里吧
+    NSData * audioData = [NSData dataWithContentsOfURL:playerFileURL];
     
-    _playerFileURL = playerFileURL;
+    NSArray *name = [playerFileURL.absoluteString componentsSeparatedByString:@"/"];
+    
+    NSString *docDirPath = [NSTemporaryDirectory() stringByAppendingString:name.lastObject];
+    [audioData writeToFile:docDirPath atomically:YES];
+    
+    _playerFileURL = [NSURL URLWithString:docDirPath];
     [self changeRecorder:RecorderStateAsPlayerOnly];
     //获取一下音频时长
     AVURLAsset* audioAsset =[AVURLAsset URLAssetWithURL:playerFileURL options:nil];
@@ -444,6 +476,12 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError * __nullable)error{
+    
+    
+}
+
 
 /*
 #pragma mark - Navigation

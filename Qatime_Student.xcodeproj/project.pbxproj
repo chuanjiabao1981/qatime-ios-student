@@ -479,8 +479,6 @@
 		548D1D7F1EA7421400B120C8 /* AllClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D7E1EA7421400B120C8 /* AllClassViewController.m */; };
 		548D1D8E1EA7551F00B120C8 /* Features.m in Sources */ = {isa = PBXBuildFile; fileRef = 548D1D8D1EA7551F00B120C8 /* Features.m */; };
 		548DFE0F1F8E00EC00CAFC00 /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54F674071F7B81AC006CF211 /* libmp3lame.a */; };
-		548DFE101F8E012600CAFC00 /* YZReorder.h in Sources */ = {isa = PBXBuildFile; fileRef = 548DFE0A1F8DFE6300CAFC00 /* YZReorder.h */; };
-		548DFE111F8E012600CAFC00 /* YZReorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 548DFE0B1F8DFE6400CAFC00 /* YZReorder.m */; };
 		548DFE121F8E012D00CAFC00 /* WXApi.h in Sources */ = {isa = PBXBuildFile; fileRef = 54CB266F1DF02FE400AE7414 /* WXApi.h */; };
 		548DFE131F8E012D00CAFC00 /* WXApiObject.h in Sources */ = {isa = PBXBuildFile; fileRef = 54CB26701DF02FE400AE7414 /* WXApiObject.h */; };
 		548DFE141F8E01AE00CAFC00 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 548DFE0E1F8DFF4000CAFC00 /* libWeChatSDK.a */; };
@@ -721,6 +719,8 @@
 		54F32F721E372E57000F8926 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F32F711E372E57000F8926 /* Reachability.m */; };
 		54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F34D7C1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m */; };
 		54F34D801DE70BA500D6FC85 /* NSString+FindFace.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F34D7E1DE70BA500D6FC85 /* NSString+FindFace.m */; };
+		54F3B8781F8F65E600F9980A /* YZReorder.h in Sources */ = {isa = PBXBuildFile; fileRef = 54F3B8761F8F65BD00F9980A /* YZReorder.h */; };
+		54F3B8791F8F65E600F9980A /* YZReorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3B8771F8F65BD00F9980A /* YZReorder.m */; };
 		54F3BA181DFC3013003998D0 /* UIViewController+Login.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA171DFC3013003998D0 /* UIViewController+Login.m */; };
 		54F3BA211DFC4427003998D0 /* LoginAgainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA201DFC4427003998D0 /* LoginAgainView.m */; };
 		54F3BA241DFC4435003998D0 /* LoginAgainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3BA231DFC4435003998D0 /* LoginAgainViewController.m */; };
@@ -1709,8 +1709,6 @@
 		548D1D8D1EA7551F00B120C8 /* Features.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Features.m; sourceTree = "<group>"; };
 		548D1D8F1EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICollectionViewLeftAlignedLayout.h; sourceTree = "<group>"; };
 		548D1D901EA76C6600B120C8 /* UICollectionViewLeftAlignedLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICollectionViewLeftAlignedLayout.m; sourceTree = "<group>"; };
-		548DFE0A1F8DFE6300CAFC00 /* YZReorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZReorder.h; sourceTree = "<group>"; };
-		548DFE0B1F8DFE6400CAFC00 /* YZReorder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZReorder.m; sourceTree = "<group>"; };
 		548DFE0C1F8DFEC100CAFC00 /* libUMessage_Sdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMessage_Sdk.a; sourceTree = "<group>"; };
 		548DFE0E1F8DFF4000CAFC00 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
 		548F0E7F1E8A51B000A12C6D /* InteractionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionViewController.h; sourceTree = "<group>"; };
@@ -2221,6 +2219,8 @@
 		54F34D7C1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+Extention.m"; sourceTree = "<group>"; };
 		54F34D7D1DE70BA500D6FC85 /* NSString+FindFace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+FindFace.h"; sourceTree = "<group>"; };
 		54F34D7E1DE70BA500D6FC85 /* NSString+FindFace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FindFace.m"; sourceTree = "<group>"; };
+		54F3B8761F8F65BD00F9980A /* YZReorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZReorder.h; sourceTree = "<group>"; };
+		54F3B8771F8F65BD00F9980A /* YZReorder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZReorder.m; sourceTree = "<group>"; };
 		54F3BA161DFC3013003998D0 /* UIViewController+Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Login.h"; sourceTree = "<group>"; };
 		54F3BA171DFC3013003998D0 /* UIViewController+Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Login.m"; sourceTree = "<group>"; };
 		54F3BA1F1DFC4427003998D0 /* LoginAgainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginAgainView.h; sourceTree = "<group>"; };
@@ -4100,8 +4100,8 @@
 		5452EF641F44645E00074C0D /* 封装录音机 */ = {
 			isa = PBXGroup;
 			children = (
-				548DFE0A1F8DFE6300CAFC00 /* YZReorder.h */,
-				548DFE0B1F8DFE6400CAFC00 /* YZReorder.m */,
+				54F3B8761F8F65BD00F9980A /* YZReorder.h */,
+				54F3B8771F8F65BD00F9980A /* YZReorder.m */,
 				54F674051F7B81AC006CF211 /* lame */,
 			);
 			name = "封装录音机";
@@ -7738,11 +7738,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54F3B8781F8F65E600F9980A /* YZReorder.h in Sources */,
+				54F3B8791F8F65E600F9980A /* YZReorder.m in Sources */,
 				548DFE151F8E01C500CAFC00 /* WechatAuthSDK.h in Sources */,
 				548DFE121F8E012D00CAFC00 /* WXApi.h in Sources */,
 				548DFE131F8E012D00CAFC00 /* WXApiObject.h in Sources */,
-				548DFE101F8E012600CAFC00 /* YZReorder.h in Sources */,
-				548DFE111F8E012600CAFC00 /* YZReorder.m in Sources */,
 				54A627791F70F90D00CC7D00 /* DownloadManagerViewController.h in Sources */,
 				54A6277A1F70F90D00CC7D00 /* DownloadManagerViewController.m in Sources */,
 				541F56781F6FAD56001FA7DD /* ClassHomeworkCell.h in Sources */,

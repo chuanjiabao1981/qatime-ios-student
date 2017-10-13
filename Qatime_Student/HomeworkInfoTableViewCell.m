@@ -287,9 +287,6 @@
             if (_model.havePhotos == YES && _model.haveRecord == YES ) {
                 _homeworkPhotosView.hidden = NO;
                 _homeworkRecorder.view.hidden = NO;
-//                _status.sd_layout
-//                .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
-//                [_status updateLayout];
                 _myLabel.sd_layout
                 .topSpaceToView(_homeworkRecorder.view, 10);
                 [_myLabel updateLayout];
@@ -297,6 +294,10 @@
                 _homeworkRecorder.view.sd_layout
                 .topSpaceToView(_homeworkPhotosView, 10);
                 [_homeworkRecorder.view updateLayout];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_homeworkPhotosView reloadData];
+                });
                 
                 [self haveAnswerdTheHomeWorkLayout];
             }
@@ -311,6 +312,9 @@
                 _myLabel.sd_layout
                 .topSpaceToView(_homeworkPhotosView, 10);
                 [_myLabel updateLayout];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_homeworkPhotosView reloadData];
+                });
                 [self haveAnswerdTheHomeWorkLayout];
                 
             }
@@ -348,6 +352,9 @@
                 _status.sd_layout
                 .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
                 [_status updateLayout];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_homeworkPhotosView reloadData];
+                });
             }
             
             if (_model.havePhotos == YES && _model.haveRecord == NO) {
@@ -356,6 +363,9 @@
                 _status.sd_layout
                 .topSpaceToView(_homeworkPhotosView, 10*ScrenScale);
                 [_status updateLayout];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_homeworkPhotosView reloadData];
+                });
                 
             }
             if (_model.havePhotos == NO && _model.haveRecord == YES) {
@@ -393,12 +403,18 @@
         if (_model.havePhotos == YES && _model.haveRecord == YES ) {
             _homeworkPhotosView.hidden = NO;
             _homeworkRecorder.view.hidden = NO;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_homeworkPhotosView reloadData];
+            });
             [self haveAnswerdTheHomeWorkLayout];
         }
         
         if (_model.havePhotos == YES && _model.haveRecord == NO) {
             _homeworkPhotosView.hidden = NO;
             _homeworkRecorder.view.hidden = YES;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_homeworkPhotosView reloadData];
+            });
             [self haveAnswerdTheHomeWorkLayout];
             
         }
@@ -411,8 +427,6 @@
             [_homeworkRecorder.view updateLayout];
             [self haveAnswerdTheHomeWorkLayout];
         }
-        
-        //        [self setupAutoHeightWithBottomView:_answerTitle bottomMargin:10*ScrenScale];
         
     }else if ([_model.status isEqualToString:@"resolved"]){
         //已经批改过的 啥都显示啥都能看
@@ -430,7 +444,9 @@
         if (_model.havePhotos == YES && _model.haveRecord == YES ) {
             _homeworkPhotosView.hidden = NO;
             _homeworkRecorder.view.hidden = NO;
-            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_homeworkPhotosView reloadData];
+            });
             [self haveAnswerdTheHomeWorkAndHaveCorrectedLayout];
         }
         
@@ -456,28 +472,7 @@
         [self setupAutoHeightWithBottomView:_teacherCheckTitle bottomMargin:10*ScrenScale];
     }
     
-    //    });
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self refreshAllUI];
-    });
-    
 }
-
-- (void)refreshAllUI{
-    
-    if (_model.homeworkPhotos.count!=0) {
-        [_homeworkPhotosView reloadData];
-    }
-    if (_model.myAnswerPhotos.count!=0) {
-        [_answerPhotosView reloadData];
-    }
-    if (_model.correctionPhotos.count!=0) {
-        [_correctPhotosView reloadData];
-    }
-    
-}
-
 
 //1.已经写过答案的问题,的什么什么逻辑.
 - (void)haveAnswerdTheHomeWorkLayout{
@@ -487,6 +482,11 @@
         _answerPhotosView.hidden = NO;
         _answerRecorder.view.hidden = NO;
         [self answerTitleLayout];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_answerPhotosView reloadData];
+        });
+        
         [self setupAutoHeightWithBottomView:_answerRecorder.view bottomMargin:10*ScrenScale];
     }
     //有图片没有语音
@@ -494,9 +494,12 @@
         _answerPhotosView.hidden = NO;
         _answerRecorder.view.hidden = YES;
         _answerPhotosView.sd_layout
-        .topSpaceToView(_myLabel, 10);
+        .topSpaceToView(_answerTitle, 10);
         [_answerPhotosView updateLayout];
         [self answerTitleLayout];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_answerPhotosView reloadData];
+        });
         [self setupAutoHeightWithBottomView:_answerPhotosView bottomMargin:10*ScrenScale];
     }
     //有语音没图片
@@ -525,17 +528,26 @@
     if (_model.haveAnswerPhotos == YES && _model.haveAnswerRecord == YES) {
         _answerPhotosView.hidden = NO;
         _answerRecorder.view.hidden = NO;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_answerPhotosView reloadData];
+        });
         
         if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == YES) {
             _correctPhotosView.hidden = NO;
             _correctRecorder.view.hidden = NO;
             [self correctTitleLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
             [self setupAutoHeightWithBottomView:_answerRecorder.view bottomMargin:10];
         }
         if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == NO) {
             _correctPhotosView.hidden = NO;
             _correctRecorder.view.hidden = YES;
             [self correctTitleLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
             [self setupAutoHeightWithBottomView:_correctPhotosView bottomMargin:10];
             
         }
@@ -554,16 +566,25 @@
     if (_model.haveAnswerPhotos == YES && _model.haveAnswerRecord == NO) {
         _answerPhotosView.hidden = NO;
         _answerRecorder.view.hidden = YES;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_answerPhotosView reloadData];
+        });
         if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == YES) {
             _correctPhotosView.hidden = NO;
             _correctRecorder.view.hidden = NO;
             [self correctTitleLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
             [self setupAutoHeightWithBottomView:_answerRecorder.view bottomMargin:10];
         }
         if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == NO) {
             _correctPhotosView.hidden = NO;
             _correctRecorder.view.hidden = YES;
             [self correctTitleLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
             [self setupAutoHeightWithBottomView:_correctPhotosView bottomMargin:10];
             
         }
@@ -588,12 +609,18 @@
             _correctPhotosView.hidden = NO;
             _correctRecorder.view.hidden = NO;
             [self correctTitleLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
             [self setupAutoHeightWithBottomView:_answerRecorder.view bottomMargin:10];
         }
         if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == NO) {
             _correctPhotosView.hidden = NO;
             _correctRecorder.view.hidden = YES;
             [self correctTitleLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
             [self setupAutoHeightWithBottomView:_correctPhotosView bottomMargin:10];
             
         }
@@ -654,7 +681,7 @@
 
 #pragma mark- collectionview datasource
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    NSInteger items = 1;
+    NSInteger items = 0;
     if (collectionView == _homeworkPhotosView) {
         if (_model.homeworkPhotos.count == 0) {
             items = 1;

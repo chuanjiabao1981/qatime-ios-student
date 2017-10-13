@@ -182,15 +182,6 @@
         cell.answerPhotosView.tag = indexPath.row +2000;
         
         cell.photoDelegate = self;
-        //注册教师发的作业的图片
-//        cell.homeworkPhotosView.dataSource = self;
-//        cell.homeworkPhotosView.delegate = self;
-        
-        //注册学生回答的图片
-//        cell.answerPhotosView.dataSource = self;
-//        cell.answerPhotosView.delegate = self;
-        
-//        [cell.homeworkPhotosView reloadData];
         
         for (NSDictionary *mod in cell.model.attachments) {
             if ([mod[@"file_type"]isEqualToString:@"mp3"]) {
@@ -230,6 +221,7 @@
                     cell.model.haveAnswerPhotos = YES;
                 }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
                     cell.model.myAnswerRecorderURL = atts[@"file_url"];
+                    cell.model.myAnswerRecord = atts;
                     cell.model.haveAnswerRecord = YES;
                 }
             }
@@ -240,18 +232,29 @@
 }
 
 
-
 /**  提交作业 */
 - (void)submit{
     //手动上传吧
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"PATCH" URLString:[NSString stringWithFormat:@"%@/api/v1/live_studio/student_homeworks/%@",Request_Header,_homework.homeworkID] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSMutableArray *works = @[].mutableCopy;
+        
         for (HomeworkInfo *infos in _itemsArray) {
             if (infos.myAnswerTitle) {
             }else{
                 infos.myAnswerTitle = @" ";
             }
-            [works addObject:@{@"parent_id":infos.homeworkID,@"body":infos.myAnswerTitle}];
+            //增加附件字段 "quotes_attributes"
+            NSMutableArray *atechments = @[].mutableCopy;
+            for (NSDictionary *photos in infos.myAnswerPhotos) {
+                //这儿有不明数据字段 "id" 和 "destroy" , 以后要改.
+                NSDictionary *atteches = @{@"attachment_id":photos[@"id"]};
+                [atechments addObject:atteches];
+            }
+            if (infos.myAnswerRecord) {
+                [atechments addObject:@{@"attachment_id":infos.myAnswerRecord[@"id"]}];
+            }
+            
+            [works addObject:@{@"parent_id":infos.homeworkID,@"body":infos.myAnswerTitle,@"quotes_attributes":atechments}];
         }
         [formData appendPartWithFormData:[NSJSONSerialization dataWithJSONObject:works options:NSJSONWritingPrettyPrinted error:nil] name:@"task_items_attributes"];
     } error:nil];
