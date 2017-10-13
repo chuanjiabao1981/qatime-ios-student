@@ -205,30 +205,34 @@
     
     __block HomeworkInfoTableViewCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     typeof(self) __weak weakSelf = self;
+    
+    DoHomeworkViewController *controller;
     if ([cell.model.status isEqualToString:@"pending"]) {
         //做作业
         //如果没做过作业,就直接进去做,做过了不可以改
-        DoHomeworkViewController *controller = [[DoHomeworkViewController alloc]initWithHomework:cell.model];
-        [self.navigationController pushViewController:controller animated:YES];
-        
-        //这方方法改了
-        controller.doHomework = ^(NSDictionary *answer) {
-            cell.model.myAnswerTitle = answer[@"body"];
-            
-            for (NSDictionary *atts in answer[@"attachment"]) {
-                if ([atts[@"file_type"]isEqualToString:@"png"]) {
-                    [cell.model.myAnswerPhotos addObject:atts];
-                    cell.model.haveAnswerPhotos = YES;
-                }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
-                    cell.model.myAnswerRecorderURL = atts[@"file_url"];
-                    cell.model.myAnswerRecord = atts;
-                    cell.model.haveAnswerRecord = YES;
-                }
-            }
-            cell.model.edited = YES;
-            [weakSelf.mainView.homeworkList reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        };
+        controller = [[DoHomeworkViewController alloc]initWithHomework:cell.model andWriteType:Write];
+    }else if ([cell.model.status isEqualToString:@"submitted"]){
+        //重新做作业
+        controller = [[DoHomeworkViewController alloc]initWithHomework:cell.model andWriteType:Rewrite];
     }
+     [self.navigationController pushViewController:controller animated:YES];
+    //这方方法改了
+    controller.doHomework = ^(NSDictionary *answer) {
+        cell.model.myAnswerTitle = answer[@"body"];
+        
+        for (NSDictionary *atts in answer[@"attachment"]) {
+            if ([atts[@"file_type"]isEqualToString:@"png"]) {
+                [cell.model.myAnswerPhotos addObject:atts];
+                cell.model.haveAnswerPhotos = YES;
+            }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
+                cell.model.myAnswerRecorderURL = atts[@"file_url"];
+                cell.model.myAnswerRecord = atts;
+                cell.model.haveAnswerRecord = YES;
+            }
+        }
+        cell.model.edited = YES;
+        [weakSelf.mainView.homeworkList reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    };
 }
 
 

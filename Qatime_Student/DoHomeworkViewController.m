@@ -27,16 +27,19 @@
     
     NSString *_recorderFileURL;
     
+    WriteType _writeType;
+    
 }
 
 @end
 
 @implementation DoHomeworkViewController
 
--(instancetype)initWithHomework:(HomeworkInfo *)homework{
+-(instancetype)initWithHomework:(HomeworkInfo *)homework andWriteType:(WriteType)writeType{
     self = [super init];
     if (self) {
         _homework = homework;
+        _writeType = writeType;
     }
     return self;
 }
@@ -46,7 +49,6 @@
     [self makeData];
     [self setupView];
      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
-  
 }
 
 - (void)makeData{

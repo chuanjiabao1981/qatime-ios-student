@@ -21,5 +21,6 @@
 @property (nonatomic, strong) NSString *created_at ;
 @property (nonatomic, strong) NSString *model_name ;
 @property (nonatomic, strong) NSString *body ;
+@property (nonatomic, strong) NSDictionary *attachments ;
 
 @end

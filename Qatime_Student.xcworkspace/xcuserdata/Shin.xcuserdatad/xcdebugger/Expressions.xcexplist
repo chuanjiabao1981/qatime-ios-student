@@ -34,6 +34,14 @@
          contextName = "-[HomeworkInfoTableViewCell setModel:]:HomeworkInfoTableViewCell.m">
       </ContextState>
       <ContextState
+         contextName = "-[ExclusiveAskViewController tableView:didSelectRowAtIndexPath:]:ExclusiveAskViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "cell">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[ChatViewController viewDidLoad]:ChatViewController.m">
          <PersistentStrings>
             <PersistentString

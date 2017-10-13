@@ -81,6 +81,31 @@
     .topSpaceToView(line, 0)
     .rightSpaceToView(self.view,0);
     
+    //提问有没有附件
+    if (!_question.attachments) {
+        //有答案和没有答案
+        if (_question.answer) {
+             _answerInfoView.hidden = NO;
+            //有答案, 没附件
+            if (!_question.answer.attachments) {
+                _answerInfoView.photosView.hidden = YES;
+                _answerInfoView.recorder.view.hidden = YES;
+            }else{
+                
+                for (NSDictionary *atts in _question.answer.attachments) {
+                    if ([atts[@"file_type"]isEqualToString:@"png"]) {
+                        [_answerPics addObject:atts];
+                    }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
+                        //录音的玩意儿直接加载吧
+                        [_answerInfoView.recorder setPlayerFileURL:[NSURL  URLWithString:atts[@"file_url"]]];
+                    }
+                }
+                
+            }
+        }
+    }
+    
+    
     if (_question.answer) {
         _answerInfoView.hidden = NO;
         _answerInfoView.model = _question.answer;

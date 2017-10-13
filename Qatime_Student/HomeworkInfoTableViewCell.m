@@ -17,6 +17,9 @@
     
     UILabel *_teacherLabel;
     
+    UICollectionViewFlowLayout *layout1;
+    UICollectionViewFlowLayout *layout2;
+    UICollectionViewFlowLayout *layout3;
 }
 
 @end
@@ -52,13 +55,18 @@
         .autoHeightRatio(0);
         
         
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
+        layout1 = [[UICollectionViewFlowLayout alloc]init];
+        layout2 = [[UICollectionViewFlowLayout alloc]init];
+        layout3 = [[UICollectionViewFlowLayout alloc]init];
 //        layout.itemSize = CGSizeMake((UIScreenWidth -30*ScrenScale-40)/5.f, (UIScreenWidth -30*ScrenScale-40)/5.f);
-        layout.itemSize = CGSizeMake((UIScreenWidth-20*ScrenScale-30)/5.f-2, (UIScreenWidth-20*ScrenScale-30)/5.f-2);
+        layout1.itemSize = CGSizeMake((UIScreenWidth-20*ScrenScale-30)/5.f-2, (UIScreenWidth-20*ScrenScale-30)/5.f-2);
 //        layout.minimumInteritemSpacing = 10;
 //        layout.minimumLineSpacing = 10;
         
-        _homeworkPhotosView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, 10, 10) collectionViewLayout:layout];
+        layout2.itemSize = CGSizeMake((UIScreenWidth-20*ScrenScale-30)/5.f-2, (UIScreenWidth-20*ScrenScale-30)/5.f-2);
+        layout3.itemSize = CGSizeMake((UIScreenWidth-20*ScrenScale-30)/5.f-2, (UIScreenWidth-20*ScrenScale-30)/5.f-2);
+        
+        _homeworkPhotosView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, 10, 10) collectionViewLayout:layout1];
         _homeworkPhotosView.backgroundColor = [UIColor whiteColor];
         _homeworkPhotosView.scrollEnabled = NO;
         
@@ -115,7 +123,7 @@
         .autoHeightRatio(0);
         _answerTitle.hidden = YES;
         
-        _answerPhotosView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, 10, 10) collectionViewLayout:layout];
+        _answerPhotosView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, 10, 10) collectionViewLayout:layout2];
         _answerPhotosView.scrollEnabled = NO;
         _answerPhotosView.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:_answerPhotosView];
@@ -161,7 +169,7 @@
         _teacherCheckTitle.hidden = YES;
         
         //老师批改的 图片.
-        _correctPhotosView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, 10, 10) collectionViewLayout:layout];
+        _correctPhotosView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, 10, 10) collectionViewLayout:layout3];
         _correctPhotosView.scrollEnabled = NO;
         _correctPhotosView.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:_correctPhotosView];
@@ -219,7 +227,6 @@
         _model.havePhotos = NO;
         _model.haveRecord = NO;
     }
-    
     
     //加载一下搞一搞学生做作业的图片和语音
     if (_model.answers[@"attachments"]) {
@@ -438,7 +445,8 @@
         _answerTitle.hidden = NO;
         _teacherLabel.hidden = NO;
         _teacherCheckTitle.hidden = NO;
-        
+        _answerTitle.text = _model.myAnswerTitle;
+        _teacherCheckTitle.text = _model.correction[@"body"];
         //这部分,根据音频/图片数据判断
         //判断老师的问题,是否有图片语音
         if (_model.havePhotos == YES && _model.haveRecord == YES ) {
@@ -467,9 +475,7 @@
             [self haveAnswerdTheHomeWorkAndHaveCorrectedLayout];
         }
         
-        _answerTitle.text = _model.myAnswerTitle;
-        _teacherCheckTitle.text = _model.correction[@"body"];
-        [self setupAutoHeightWithBottomView:_teacherCheckTitle bottomMargin:10*ScrenScale];
+
     }
     
 }
@@ -536,19 +542,20 @@
             _correctPhotosView.hidden = NO;
             _correctRecorder.view.hidden = NO;
             [self correctTitleLayout];
+            [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_correctPhotosView reloadData];
             });
-            [self setupAutoHeightWithBottomView:_answerRecorder.view bottomMargin:10];
         }
         if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == NO) {
             _correctPhotosView.hidden = NO;
             _correctRecorder.view.hidden = YES;
             [self correctTitleLayout];
+            [_correctPhotosView updateLayout];
+            [self setupAutoHeightWithBottomView:_correctPhotosView bottomMargin:10];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_correctPhotosView reloadData];
             });
-            [self setupAutoHeightWithBottomView:_correctPhotosView bottomMargin:10];
             
         }
         if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == YES) {
@@ -576,7 +583,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_correctPhotosView reloadData];
             });
-            [self setupAutoHeightWithBottomView:_answerRecorder.view bottomMargin:10];
+            [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
         }
         if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == NO) {
             _correctPhotosView.hidden = NO;
@@ -612,7 +619,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_correctPhotosView reloadData];
             });
-            [self setupAutoHeightWithBottomView:_answerRecorder.view bottomMargin:10];
+            [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
         }
         if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == NO) {
             _correctPhotosView.hidden = NO;
@@ -632,6 +639,12 @@
             [_correctRecorder.view updateLayout];
             [self correctTitleLayout];
             [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
+        }
+        if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == NO) {
+            _correctPhotosView.hidden = YES;
+            _correctRecorder.view.hidden = YES;
+            
+            [self setupAutoHeightWithBottomView:_teacherCheckTitle bottomMargin:10];
         }
         
     }
@@ -665,12 +678,13 @@
         .topSpaceToView(_answerRecorder.view, 10);
         [_teacherLabel updateLayout];
     }else {
-        if (_correctPhotosView.hidden == NO) {
+        if (_answerPhotosView.hidden == NO ) {
             _teacherLabel.sd_layout
-            .topSpaceToView(_correctPhotosView, 10);
+            .topSpaceToView(_answerPhotosView, 10);
             [_teacherLabel updateLayout];
+            
         }else{
-            _teacherLabel.sd_layout
+           _teacherLabel.sd_layout
             .topSpaceToView(_answerTitle, 10);
             [_teacherLabel updateLayout];
         }

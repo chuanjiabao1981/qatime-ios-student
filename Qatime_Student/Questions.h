@@ -24,6 +24,8 @@
 @property (nonatomic, strong) NSString *body ;
 @property (nonatomic, strong) Answers *answer ;
 
+@property (nonatomic, strong) NSDictionary *attachments ;
+
 //"id": 95,
 //"title": "hello",
 //"parent_id": null,

@@ -270,6 +270,8 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     QuestionsTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    Questions *mod = cell.model;
     QuestionInfoViewController *controller = [[QuestionInfoViewController alloc]initWithQuestion:cell.model];
     [self.navigationController pushViewController:controller animated:YES];
     

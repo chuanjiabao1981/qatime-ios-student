@@ -16,6 +16,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         
+        
         _subTitle = [[QuestionSubTitle alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, 100)];
         [self addSubview:_subTitle];
         
