@@ -102,15 +102,17 @@
     //批改
     if (resolveArr) {
         for (NSDictionary *reso in resolveArr) {
+            //先加个correctionID进去
             for (NSDictionary *ans in submitArr) {
                 if ([[NSString stringWithFormat:@"%@",reso[@"parent_id"]] isEqualToString:[NSString stringWithFormat:@"%@",ans[@"id"]]]) {
                     //这就是批改对应上答案了 ans的parent_id 就是作业的id
                     for (HomeworkInfo *mod in _itemsArray) {
                         if ([[NSString stringWithFormat:@"%@",mod.homeworkID] isEqualToString:[NSString stringWithFormat:@"%@",ans[@"parent_id"]]]) {
                             mod.correction = reso;
-                            mod.status = @"resolved";
                         }
+                        mod.status = @"resolved";
                     }
+                    
                 }
             }
         }
@@ -153,7 +155,7 @@
     [_mainView.homeworkList updateLayout];
     
     if (_homework.items.count>0) {
-        _naviBar.rightButton.hidden = YES;
+//        _naviBar.rightButton.hidden = YES;
     }else{
         
     }
@@ -180,14 +182,7 @@
         cell.model = _itemsArray[indexPath.row];
         cell.homeworkPhotosView.tag = indexPath.row +1000;
         cell.answerPhotosView.tag = indexPath.row +2000;
-        
         cell.photoDelegate = self;
-        
-        for (NSDictionary *mod in cell.model.attachments) {
-            if ([mod[@"file_type"]isEqualToString:@"mp3"]) {
-                [cell.homeworkRecorder setRecordFileUrl:[NSURL URLWithString:mod[@"file_url"]]];
-            }
-        }
     }
     
     return  cell;
@@ -221,7 +216,7 @@
         cell.model.myAnswerTitle = answer[@"body"];
         
         for (NSDictionary *atts in answer[@"attachment"]) {
-            if ([atts[@"file_type"]isEqualToString:@"png"]) {
+            if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
                 [cell.model.myAnswerPhotos addObject:atts];
                 cell.model.haveAnswerPhotos = YES;
             }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){

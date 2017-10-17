@@ -36,7 +36,7 @@
 
 /** 老师批语 */
 @property (nonatomic, strong) NSDictionary *correction ;
-
+@property (nonatomic, strong) NSString *correctionID ;
 @property (nonatomic, strong) NSMutableArray *correctionPhotos ;
 
 @property (nonatomic, strong) NSString *correctionRecordURL ;

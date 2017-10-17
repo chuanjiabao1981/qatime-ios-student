@@ -10,6 +10,8 @@
 
 #import "UIControl+RemoveTarget.h"
 #import "UIAlertController+Blocks.h"
+#import "UIView+NIMKitToast.h"
+#import "NSString+TimeStamp.h"
 
 /**
  录音机的 状态
@@ -458,8 +460,18 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     
     NSArray *name = [playerFileURL.absoluteString componentsSeparatedByString:@"/"];
     
-    NSString *docDirPath = [NSTemporaryDirectory() stringByAppendingString:name.lastObject];
-    [audioData writeToFile:docDirPath atomically:YES];
+    __block NSString *docDirPath ;
+    if (playerFileURL) {
+        
+        if ([[NSFileManager defaultManager]fileExistsAtPath:[NSTemporaryDirectory() stringByAppendingString:name.lastObject]]== NO) {
+            docDirPath  = [NSTemporaryDirectory() stringByAppendingString:name.lastObject];
+        }else{
+            NSMutableArray *arrs = [name.lastObject componentsSeparatedByString:@"."].mutableCopy;
+            [arrs replaceObjectAtIndex:0 withObject:[@"" getCurrentTimestamp]];
+            docDirPath = [NSTemporaryDirectory() stringByAppendingString:[arrs componentsJoinedByString:@"."]];
+        }
+        [audioData writeToFile:docDirPath atomically:YES];
+    }
     
     _playerFileURL = [NSURL URLWithString:docDirPath];
     [self changeRecorder:RecorderStateAsPlayerOnly];

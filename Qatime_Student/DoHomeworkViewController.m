@@ -40,6 +40,7 @@
     if (self) {
         _homework = homework;
         _writeType = writeType;
+        
     }
     return self;
 }
@@ -52,9 +53,17 @@
 }
 
 - (void)makeData{
-    
     _phototsArray = @[].mutableCopy;
-    _atechmentArray = @[].mutableCopy;
+    if (_writeType == Rewrite) {
+        _atechmentArray = _homework.myAnswerPhotos;
+        for (NSDictionary *atts in _homework.myAnswerPhotos) {
+            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:atts[@"file_url"]]];
+            UIImage *image = [UIImage imageWithData:data];
+            [_phototsArray addObject:image];
+        }
+    }else{
+        _atechmentArray = @[].mutableCopy;
+    }
 }
 
 - (void)setupView{

@@ -283,7 +283,6 @@
    remoteNotification =  [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     
     
-    
     /** 添加下载目录 */
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL isDic = NO;

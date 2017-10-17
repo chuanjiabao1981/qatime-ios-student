@@ -3375,6 +3375,7 @@
 		543C207A1DC6F6470086B04B /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				549EC2E31F945CAA0079E38D /* 分享栏 */,
 				543E234F1E2CE80C00381F10 /* 支付密码框 */,
 				541E20011E1398DB007CF5D1 /* 异常捕获 */,
 				5457317D1E022E4700F45C03 /* 该月无课程覆盖图 */,
@@ -5054,6 +5055,13 @@
 			);
 			name = JBWatchActivityIndicator;
 			path = TLCityPicker;
+			sourceTree = "<group>";
+		};
+		549EC2E31F945CAA0079E38D /* 分享栏 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "分享栏";
 			sourceTree = "<group>";
 		};
 		54A1539C1DC6F09D0070B508 = {

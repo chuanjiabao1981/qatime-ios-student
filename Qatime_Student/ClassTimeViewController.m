@@ -166,6 +166,8 @@ typedef enum : NSUInteger {
     
     /* 添加登录成功后的 监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"UserLoginAgain" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"UserLogin" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"WechatLoginSucess" object:nil];
     
 }
 
@@ -216,7 +218,7 @@ typedef enum : NSUInteger {
             
             if ([dic[@"data"]count]!=0) {
                 
-                NSArray *sortArr = [dic[@"data"] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                NSMutableArray *sortArr = [dic[@"data"] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
                     NSDictionary *dic1 = obj1;
                     NSDictionary *dic2 = obj2;
                     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

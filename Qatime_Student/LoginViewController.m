@@ -275,7 +275,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
             
             if (dic[@"data"][@"remember_token"]) {
                 /* 在后台查到该用户的信息*/
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+//                [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
                 [self stopHUD];
                 /* 保存用户信息*/
                 [self saveUserInfo:dic[@"data"] loginType:Wechat];

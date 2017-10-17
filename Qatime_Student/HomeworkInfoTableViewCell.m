@@ -209,7 +209,7 @@
     if (_model.attachments) {
         for (NSDictionary *atts in _model.attachments) {
             if (_model.havePhotos == NO) {
-                if ([atts[@"file_type"]isEqualToString:@"png"]) {
+                if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
                     _model.havePhotos = YES;
                     [_model.homeworkPhotos addObject:atts];
                 }
@@ -220,9 +220,7 @@
                     _model.homeworkRecordURL = atts[@"file_url"];
                 }
             }
-            
         }
-        
     }else{
         _model.havePhotos = NO;
         _model.haveRecord = NO;
@@ -235,7 +233,7 @@
             _model.haveAnswerRecord = NO;
         }else{
             for (NSDictionary *atts in _model.answers[@"attachments"]) {
-                if ([atts[@"file_type"]isEqualToString:@"png"]) {
+                if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
                     _model.haveAnswerPhotos = YES;
                     [_model.myAnswerPhotos addObject:atts];
                 }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
@@ -251,7 +249,7 @@
         //有批改.
         _model.haveCorrection = YES;
         for (NSDictionary *atts in _model.correction[@"attachments"]) {
-            if ([atts[@"file_type"]isEqualToString:@"png"]) {
+            if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
                 _model.haveCorrectPhotos = YES;
                 [_model.correctionPhotos addObject:atts];
             }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
@@ -272,6 +270,7 @@
         //未提交过作业
         _correctPhotosView.hidden = YES;
         _correctRecorder.view.hidden = YES;
+        [_homeworkRecorder setPlayerFileURL:[NSURL URLWithString:model.homeworkRecordURL]];
         if (_model.edited == YES) {
             //如果已经写过答案了,那就把答案显示出来,别的不显示,可以再次编辑
             _status.hidden = YES;
@@ -373,7 +372,6 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [_homeworkPhotosView reloadData];
                 });
-                
             }
             if (_model.havePhotos == NO && _model.haveRecord == YES) {
                 
@@ -386,16 +384,16 @@
                 .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
                 [_status updateLayout];
             }
-            
             _status.text = @"做作业";
             _status.textColor = [UIColor redColor];
             [self setupAutoHeightWithBottomView:_status bottomMargin:10*ScrenScale];
         }
         
-        
     }else if ([_model.status isEqualToString:@"submitted"]){
         _correctPhotosView.hidden = YES;
         _correctRecorder.view.hidden = YES;
+        [_homeworkRecorder setPlayerFileURL:[NSURL URLWithString:model.homeworkRecordURL]];
+        [_answerRecorder setPlayerFileURL:[NSURL URLWithString:model.myAnswerRecorderURL]];
         //如果已经是提交过的作业,而且还没有批改的,能修改答案
         _status.hidden = YES;
         _myLabel.hidden = NO;
@@ -434,7 +432,15 @@
             [_homeworkRecorder.view updateLayout];
             [self haveAnswerdTheHomeWorkLayout];
         }
-        
+        if (_model.havePhotos == NO && _model.haveRecord == NO) {
+            
+            _homeworkPhotosView.hidden = YES;
+            _homeworkRecorder.view.hidden = YES;
+            _homeworkRecorder.view.sd_layout
+            .topSpaceToView(_title, 10*ScrenScale);
+            [_homeworkRecorder.view updateLayout];
+            [self haveAnswerdTheHomeWorkLayout];
+        }
     }else if ([_model.status isEqualToString:@"resolved"]){
         //已经批改过的 啥都显示啥都能看
         //注意  暂时还没有老师的批改带图片语音的....
@@ -447,6 +453,11 @@
         _teacherCheckTitle.hidden = NO;
         _answerTitle.text = _model.myAnswerTitle;
         _teacherCheckTitle.text = _model.correction[@"body"];
+        
+        [_homeworkRecorder setPlayerFileURL:[NSURL URLWithString:model.homeworkRecordURL]];
+        [_answerRecorder setPlayerFileURL:[NSURL URLWithString:model.myAnswerRecorderURL]];
+        [_correctRecorder setPlayerFileURL:[NSURL URLWithString:model.correctionRecordURL]];
+        
         //这部分,根据音频/图片数据判断
         //判断老师的问题,是否有图片语音
         if (_model.havePhotos == YES && _model.haveRecord == YES ) {
@@ -471,6 +482,18 @@
             _homeworkRecorder.view.sd_layout
             .topSpaceToView(_title, 10*ScrenScale);
             [_homeworkRecorder.view updateLayout];
+            
+            [self haveAnswerdTheHomeWorkAndHaveCorrectedLayout];
+        }
+        
+        if (_model.havePhotos == NO && _model.haveRecord == NO) {
+            
+            _homeworkPhotosView.hidden = YES;
+            _homeworkRecorder.view.hidden = YES;
+            
+            _myLabel.sd_layout
+            .topSpaceToView(_title, 10);
+            [_myLabel updateLayout];
             
             [self haveAnswerdTheHomeWorkAndHaveCorrectedLayout];
         }
@@ -567,6 +590,16 @@
             [self correctTitleLayout];
             [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
         }
+        if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == NO) {
+            _correctPhotosView.hidden = YES;
+            _correctRecorder.view.hidden = YES;
+            
+            [self correctTitleLayout];
+            _teacherLabel.sd_layout
+            .topSpaceToView(_answerTitle, 10);
+            
+            [self setupAutoHeightWithBottomView:_teacherCheckTitle bottomMargin:10];
+        }
         
     }
     //有图片没有语音
@@ -603,6 +636,17 @@
             [_correctRecorder.view updateLayout];
             [self correctTitleLayout];
             [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
+        }
+        if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == NO) {
+            _correctPhotosView.hidden = YES;
+            _correctRecorder.view.hidden = YES;
+            
+            _teacherLabel.sd_layout
+            .topSpaceToView(_answerTitle, 10);
+            [_teacherLabel updateLayout];
+            
+            [self correctTitleLayout];
+            [self setupAutoHeightWithBottomView:_teacherCheckTitle bottomMargin:10];
         }
     }
     //有语音没图片
@@ -643,7 +687,58 @@
         if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == NO) {
             _correctPhotosView.hidden = YES;
             _correctRecorder.view.hidden = YES;
+            _teacherLabel.sd_layout
+            .topSpaceToView(_answerTitle, 10);
+            [_teacherLabel updateLayout];
+            [self setupAutoHeightWithBottomView:_teacherCheckTitle bottomMargin:10];
+        }
+        
+    }
+    
+    //没语音没图片
+    if (_model.haveAnswerPhotos == NO && _model.haveAnswerRecord == NO) {
+       
+        _answerPhotosView.hidden = YES;
+        _answerRecorder.view.hidden = YES;
+        
+        _teacherLabel.sd_layout
+        .topSpaceToView(_answerTitle, 10);
+        [_teacherLabel updateLayout];
+        if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == YES) {
+            _correctPhotosView.hidden = NO;
+            _correctRecorder.view.hidden = NO;
             
+            [self correctTitleLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
+            [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
+        }
+        if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == NO) {
+            _correctPhotosView.hidden = NO;
+            _correctRecorder.view.hidden = YES;
+            [self correctTitleLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
+            [self setupAutoHeightWithBottomView:_correctPhotosView bottomMargin:10];
+            
+        }
+        if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == YES) {
+            _correctPhotosView.hidden = YES;
+            _correctRecorder.view.hidden = NO;
+            _correctRecorder.view.sd_layout
+            .topSpaceToView(_teacherCheckTitle, 10);
+            [_correctRecorder.view updateLayout];
+            [self correctTitleLayout];
+            [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
+        }
+        if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == NO) {
+            _correctPhotosView.hidden = YES;
+            _correctRecorder.view.hidden = YES;
+            _teacherLabel.sd_layout
+            .topSpaceToView(_answerTitle, 10);
+            [_teacherLabel updateLayout];
             [self setupAutoHeightWithBottomView:_teacherCheckTitle bottomMargin:10];
         }
         
@@ -745,7 +840,7 @@
         QuestionPhotosReuseCollectionViewCell * cell2 = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifiers forIndexPath:indexPath];
         
         if (_model.myAnswerPhotos.count>indexPath.item) {
-            if ([_model.myAnswerPhotos[indexPath.item][@"file_type"] isEqualToString:@"png"]) {
+            if ([_model.myAnswerPhotos[indexPath.item][@"file_type"] isEqualToString:@"png"]||[_model.myAnswerPhotos[indexPath.item][@"file_type"] isEqualToString:@"jpg"]||[_model.myAnswerPhotos[indexPath.item][@"file_type"] isEqualToString:@"jpeg"]) {
                 [cell2.image sd_setImageWithURL:[NSURL URLWithString:_model.myAnswerPhotos[indexPath.item][@"file_url"]]];
             }
         }
@@ -757,7 +852,7 @@
         QuestionPhotosReuseCollectionViewCell * cell3 = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifiers forIndexPath:indexPath];
         
         if (_model.correctionPhotos.count>indexPath.item) {
-            if ([_model.correctionPhotos[indexPath.item][@"file_type"] isEqualToString:@"png"]) {
+            if ([_model.correctionPhotos[indexPath.item][@"file_type"] isEqualToString:@"png"]||[_model.correctionPhotos[indexPath.item][@"file_type"] isEqualToString:@"jpg"]||[_model.correctionPhotos[indexPath.item][@"file_type"] isEqualToString:@"jpeg"]) {
                 [cell3.image sd_setImageWithURL:[NSURL URLWithString:_model.correctionPhotos[indexPath.item][@"file_url"]]];
             }
         }

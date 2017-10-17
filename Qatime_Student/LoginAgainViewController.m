@@ -238,7 +238,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                 [self.navigationController pushViewController:bVC animated:YES];
             }
             
-            
         }else{
             /* 登录信息拉取失败*/
             
@@ -246,16 +245,11 @@ typedef NS_ENUM(NSUInteger, LoginType) {
             
         }
         
-        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-    
-    
+
 }
-
-
-
 
 
 - (void)mypage{
@@ -413,7 +407,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                 /* 如果登录成功*/
                 if ([[dicGet allKeys]containsObject:@"remember_token" ]) {
                     
-                    
                     //不用干掉之前存储的keychain信息,增加新的keychain信息
                     NSArray *keys =  [SAMKeychain allAccounts];
 //                    NSError *error = [[NSError alloc]init];
@@ -434,7 +427,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                     [self stopHUD];
                     [self HUDStopWithTitle:@"登录成功"];
                     
-                    [[NSNotificationCenter defaultCenter]postNotificationName:@"LoginSuccess" object:nil];
+//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"LoginSuccess" object:nil];
                     
                     [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
                     
@@ -533,7 +526,8 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         case 0:
             type = [NSString stringWithFormat:@"Normal"];
             [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"is_Guest"];
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+//            [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLoginAgain" object:nil];
             [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
             /* 归档*/
             [NSKeyedArchiver archiveRootObject:userDic toFile:userTokenFilePath];
@@ -542,7 +536,8 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         case 1:
             type = [NSString stringWithFormat:@"Wechat"];
             [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"is_Guest"];
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+//            [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLogin" object:nil];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"UserLoginAgain" object:nil];
             [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"Login"];
             /* 归档*/
             [NSKeyedArchiver archiveRootObject:userDic toFile:userTokenFilePath];
@@ -701,10 +696,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     
     [self.navigationController popViewControllerAnimated:YES];
 }
-
-
-
-
 
 
 - (void)didReceiveMemoryWarning {

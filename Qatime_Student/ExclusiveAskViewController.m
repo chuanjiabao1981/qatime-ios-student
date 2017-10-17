@@ -158,6 +158,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
                 for (NSDictionary *question in dic[@"data"]) {
                     Questions *mod = [Questions yy_modelWithJSON:question];
                     mod.questionID = question[@"id"];
+                    
                     if (![question[@"answer"] isEqual:[NSNull null]]) {
                         if ([question[@"answer"]count]!=0) {
                             mod.answer = [Answers yy_modelWithJSON:question[@"answer"]];

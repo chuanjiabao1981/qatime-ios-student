@@ -20,7 +20,26 @@
          contextName = "-[QuestionInfoViewController initWithQuestion:]:QuestionInfoViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[QuestionInfoViewController setupView]:QuestionInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_question">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__65-[ExclusiveAskViewController requestDataWithType:andRefreshType:]_block_invoke_2:ExclusiveAskViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "main:main.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ExclusiveAskViewController tableView:didSelectRowAtIndexPath:]:ExclusiveAskViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "cell">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[HomeworkInfoViewController collectionView:numberOfItemsInSection:]:HomeworkInfoViewController.m">
@@ -34,14 +53,6 @@
          contextName = "-[HomeworkInfoTableViewCell setModel:]:HomeworkInfoTableViewCell.m">
       </ContextState>
       <ContextState
-         contextName = "-[ExclusiveAskViewController tableView:didSelectRowAtIndexPath:]:ExclusiveAskViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "cell">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "-[ChatViewController viewDidLoad]:ChatViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -51,9 +62,28 @@
       </ContextState>
       <ContextState
          contextName = "-[HomeworkInfoViewController makeData]:HomeworkInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_itemsArray">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__63-[NewQuestionViewController uploadImageWithIndexPath:andImage:]_block_invoke.270:NewQuestionViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__44-[NoticeIndexViewController requestMyClass:]_block_invoke_4:NoticeIndexViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatListArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__67-[MyHomeworkViewController requestDataWithRefreshType:andDataType:]_block_invoke_2:MyHomeworkViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[QuestionInfoView setModel:]:QuestionInfoView.m">
       </ContextState>
       <ContextState
          contextName = "__32-[NewQuestionViewController ask]_block_invoke_2:NewQuestionViewController.m">
