@@ -104,6 +104,12 @@
         [weakSelf uploadRecorder];
     };
     
+    [_mainView.photosView addObserver:self forKeyPath:@"visibleCells" options:NSKeyValueObservingOptionNew context:nil];
+    
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    
 }
 
 #pragma mark- UITextField 
@@ -152,7 +158,7 @@
             cell.deleteBtn.hidden = YES;
         }else{
             cell.deleteBtn.hidden = NO;
-            cell.image.image = _phototsArray[indexPath.row];
+            cell.image.image = _phototsArray[indexPath.row][@"image"];
             cell.deleteBtn.tag = indexPath.row;
             [cell.deleteBtn addTarget:self action:@selector(deleteImage:) forControlEvents:UIControlEventTouchUpInside];
             cell.faidBtn .tag = indexPath.item +10;
@@ -164,8 +170,18 @@
 
 - (void)deleteImage:(UIButton *)sender{
     
-    [_phototsArray removeObjectAtIndex:sender.tag];
+    for (NSDictionary *images in _phototsArray) {
+        if ([images[@"index"]isEqualToString:[NSString stringWithFormat:@"%ld",sender.tag]]) {
+            [_phototsArray removeObjectAtIndex:sender.tag];
+        }
+    }
     [_mainView.photosView reloadData];
+    
+    for (NSDictionary *attImges in _atechmentArray) {
+        if ([attImges[@"index"]isEqualToString:[NSString stringWithFormat:@"%ld",sender.tag]]) {
+            [_atechmentArray removeObjectAtIndex:sender.tag];
+        }
+    }
     
 }
 
@@ -225,10 +241,18 @@
  *  @param index 要删除的索引值
  */
 - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSInteger)index{
-    
-    [_phototsArray removeObjectAtIndex:index];
+    for (NSDictionary *image in _phototsArray) {
+        if ([image[@"index"]isEqualToString:[NSString stringWithFormat:@"%ld",index]]) {
+            [_phototsArray removeObjectAtIndex:index];
+        }
+    }
     [_mainView.photosView reloadData];
-    
+   
+    for (NSDictionary *image in _atechmentArray) {
+        if ([image[@"index"]isEqualToString:[NSString stringWithFormat:@"%ld",index]]) {
+            [_atechmentArray removeObjectAtIndex:index];
+        }
+    }
 }
 
 - (void)showSheet{
@@ -270,9 +294,11 @@
 //图片回调
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     
+    UIImage *image;
+    
     QuestionPhotosCollectionViewCell *cell ;
     if (_clickedIndexPath) {
-        cell = [_mainView.photosView cellForItemAtIndexPath:_clickedIndexPath];
+        cell = (QuestionPhotosCollectionViewCell *)[_mainView.photosView cellForItemAtIndexPath:_clickedIndexPath];
     }
     
     NSLog(@"%@",info);
@@ -280,26 +306,21 @@
     @try {
         [picker dismissViewControllerAnimated:YES completion:^{
         }];
-        UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-        [_phototsArray addObject:image];
+        image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        
+        [_phototsArray addObject:@{@"image":image,@"index":[NSString stringWithFormat:@"%ld",_clickedIndexPath.item]}];
         [_mainView.photosView reloadData];
         
+       
+    } @catch (NSException *exception) {
+        
+    } @finally {
         /**
          注意:选择完图片之后,直接上传!不要等都选择完了之后一起上传.
          1.选一张上传一张.
          2.显示上传进度.
          */
-        
         [self uploadImageWithIndexPath:_clickedIndexPath?_clickedIndexPath:[NSIndexPath indexPathForItem:_phototsArray.count-1 inSection:0] andImage:image];
-        
-        if (cell) {
-            
-        }
-        
-        
-    } @catch (NSException *exception) {
-        
-    } @finally {
         
     }
     
@@ -314,9 +335,12 @@
  */
 - (void)uploadImageWithIndexPath:(NSIndexPath *)indexPath andImage:(UIImage *)image{
     
-    QuestionPhotosCollectionViewCell *cell = (QuestionPhotosCollectionViewCell *)[_mainView.photosView cellForItemAtIndexPath:indexPath];
-    cell.effectView.hidden = NO;
+    QuestionPhotosCollectionViewCell *cells = [_mainView.photosView cellForItemAtIndexPath:indexPath];
+    cells.effectView.hidden = NO;
     
+    for (QuestionPhotosCollectionViewCell *views in _mainView.photosView.visibleCells) {
+        views;
+    }
     
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -332,7 +356,7 @@
         [formData appendPartWithFileData:imageData name:@"file" fileName:fileName mimeType:@"image/png"];
     } progress:^(NSProgress * _Nonnull uploadProgress) {
         
-        cell.effectView.hidden = NO;
+        cells.effectView.hidden = NO;
         //进度
         // @property int64_t totalUnitCount;     需要下载文件的总大小
         // @property int64_t completedUnitCount; 当前已经下载的大小
@@ -342,8 +366,8 @@
         // 回到主队列刷新UI
         dispatch_async(dispatch_get_main_queue(), ^{
             // 设置进度条的百分比
-            cell.effectView.hidden = NO;
-            [cell.progress setProgress:1.0 * uploadProgress.completedUnitCount / uploadProgress.totalUnitCount animated:YES];
+            cells.effectView.hidden = NO;
+            [cells.progress setProgress:1.0 * uploadProgress.completedUnitCount / uploadProgress.totalUnitCount animated:YES];
         });
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -354,15 +378,15 @@
             NSMutableDictionary * fileDic = [NSMutableDictionary dictionaryWithDictionary:dic[@"data"]];
             [fileDic setValue:[NSString stringWithFormat:@"%ld",indexPath.item] forKey:@"index"];
             [_atechmentArray insertObject:fileDic atIndex:indexPath.item];
-            cell.effectView.hidden = YES;
+            cells.effectView.hidden = YES;
         }else{
             //上传失败
-            cell.faildEffectView.hidden = NO;
+            cells.faildEffectView.hidden = NO;
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         //网络错误
-        cell.faildEffectView.hidden = NO;
+        cells.faildEffectView.hidden = NO;
         [self HUDStopWithTitle:@"请检查网络"];
     }];
     
@@ -417,27 +441,26 @@
 /** 提问 */
 - (void)ask{
     
-    //判断是否有录音
-    if (_recorderFileURL) {
-        //有录音
-        if (_atechmentArray.count == _phototsArray.count+1) {
-            //没问题,上传.
-            [self uploadAsk];
+    if (_mainView.title.text.length>0&&_mainView.questions.text.length>0) {
+        //判断是否有录音
+        if (_recorderFileURL) {
+            //有录音
+            if (_atechmentArray.count == _phototsArray.count+1) {
+                //没问题,上传.
+                [self uploadAsk];
+            }else{
+                [self HUDStopWithTitle:@"有未加载完的数据,请稍后"];
+            }
+            
         }else{
-            [self HUDStopWithTitle:@"有未加载完的数据,请稍后"];
+            if (_atechmentArray.count == _phototsArray.count) {
+                //没问题,上传.
+                [self uploadAsk];
+            }else{
+                [self HUDStopWithTitle:@"有未加载完的数据,请稍后"];
+            }
         }
         
-    }else{
-        if (_atechmentArray.count == _phototsArray.count) {
-            //没问题,上传.
-            [self uploadAsk];
-        }else{
-            [self HUDStopWithTitle:@"有未加载完的数据,请稍后"];
-        }
-    }
-    
-    if (_mainView.title.text.length>0&&_mainView.questions.text.length>0) {
-        [self uploadAsk];
     }else{
         [self HUDStopWithTitle:@"请填写完整标题和内容"];
     }
@@ -447,22 +470,22 @@
 - (void)uploadAsk{
     
     [self HUDStartWithTitle:nil];
-    
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:[self token] forHTTPHeaderField:@"Remember-Token"];
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
     [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/groups/%@/questions",Request_Header,_classID] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         
         [formData appendPartWithFormData:[_mainView.title.text dataUsingEncoding:NSUTF8StringEncoding] name:@"title"];
         [formData appendPartWithFormData:[_mainView.questions.text dataUsingEncoding:NSUTF8StringEncoding] name:@"body"];
-        
         NSMutableArray *atts = @[].mutableCopy;
         for (NSDictionary *file in _atechmentArray) {
             NSDictionary *dics = @{@"attachment_id":[NSString stringWithFormat:@"%@",file[@"id"]]};
             [atts addObject:dics];
         }
-        [formData appendPartWithFormData:[NSJSONSerialization dataWithJSONObject:atts options:NSJSONWritingPrettyPrinted  error:nil] name:@"quotes_attributes"];
+        if (atts.count>0) {
+            [formData appendPartWithFormData:[NSJSONSerialization dataWithJSONObject:atts options:NSJSONWritingPrettyPrinted  error:nil] name:@"quotes_attributes"];
+        }
     } progress:^(NSProgress * _Nonnull uploadProgress) {
     
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -471,14 +494,17 @@
         if ([dic[@"status"]isEqualToNumber:@1]) {
             // 提问成功
             [self HUDStopWithTitle:@"提交成功"];
+            [self HUDStopWithTitle:nil];
             [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
             [[NSNotificationCenter defaultCenter]postNotificationName:@"AskDone" object:nil];
         }else{
             [self HUDStopWithTitle:@"请稍后重试"];
+            [self HUDStopWithTitle:nil];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [self HUDStopWithTitle:@"请输入正确信息"];
+        [self HUDStopWithTitle:nil];
     }];
     
 }

@@ -453,7 +453,6 @@ typedef NS_ENUM(NSUInteger, RecorderState) {
     }
 }
 
-
 -(void)setPlayerFileURL:(NSURL *)playerFileURL{
     //这个是网络url 本地得转一下.全都存储到temp里吧
     NSData * audioData = [NSData dataWithContentsOfURL:playerFileURL];

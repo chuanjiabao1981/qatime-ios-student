@@ -10,7 +10,6 @@
 #import "HomeworkManage.h"
 
 
-
 @interface HomeworkInfo : HomeworkManage
 
 @property (nonatomic, assign) BOOL edited ;//是否编辑过

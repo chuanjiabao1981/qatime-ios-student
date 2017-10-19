@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import <NIMSDK/NIMSDK.h>
-
+#import <AVFoundation/AVFoundation.h>
 
 #import "BindingViewController.h"
 #import "GuideViewController.h"
@@ -282,6 +282,9 @@
     /* 获取推送消息内容 10以下系统获取方法*/
    remoteNotification =  [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     
+    
+    //加一句这个,就能播放声音了
+    [[AVAudioSession sharedInstance]setCategory:AVAudioSessionCategoryPlayback error:nil];
     
     /** 添加下载目录 */
     NSFileManager *fileManager = [NSFileManager defaultManager];

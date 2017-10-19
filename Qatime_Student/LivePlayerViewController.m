@@ -183,8 +183,6 @@ typedef enum : NSUInteger {
     CGSize scrollContentSize;
     
     
-    
-    
 #pragma mark- 聊天视图
     
     /* 聊天消息会话*/
@@ -243,7 +241,6 @@ typedef enum : NSUInteger {
     /* 语音.. 检测音量*/
     AVAudioRecorder *recorder;
     NSTimer *levelTimer;
-    
     
     //横屏文件名
     NSString *_fileNameString;
@@ -2204,6 +2201,7 @@ bool ismute     = NO;
 }
 
 #pragma mark- 直播结束的回调
+
 - (void)NELivePlayerPlayBackFinished:(NSNotification*)notification{
     
     switch ([[[notification userInfo] valueForKey:NELivePlayerPlaybackDidFinishReasonUserInfoKey] intValue])
@@ -2325,7 +2323,6 @@ bool ismute     = NO;
     
     //不允许侧滑返回
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-    
     
     /* TabBar单例隐藏*/
     _liveClassInfoView.segmentControl.selectedSegmentIndex = 1;
@@ -3483,12 +3480,11 @@ bool ismute     = NO;
                             //不用加工数据,按照原数据直接写进Model就行了.改改方法
                             //增加一个发送人吧.
                             __block NSMutableDictionary *senders = dic.mutableCopy;
-                            
-                            for (Members *user in _membersArr) {
-                                if ([user.accid isEqualToString:message.from]) {
-                                    [senders setValue:user.accid forKey:@"accid"];
-                                    [senders setValue:user.icon forKey:@"icon"];
-                                    [senders setValue:user.name forKey:@"name"];
+                            for (NSDictionary *user in _membersArr) {
+                                if ([user[@"accid"] isEqualToString:message.from]) {
+                                    [senders setValue:user[@"accid"] forKey:@"accid"];
+                                    [senders setValue:user[@"icon"] forKey:@"icon"];
+                                    [senders setValue:user[@"name"] forKey:@"name"];
                                 }
                             }
                             if ([message.from isEqualToString:_chat_Account.accid]) {
@@ -3994,11 +3990,11 @@ bool ismute     = NO;
         
         if (_viewsArrangementMode != DifferentLevel) {
             
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                
+//            dispatch_sync(dispatch_get_main_queue(), ^{
+            
                 [_aBarrage.view removeFromSuperview];
                 [_teacherPlayerView addSubview:_aBarrage.view];
-                [_aBarrage.view sd_clearAutoLayoutSettings];
+//                [_aBarrage.view sd_clearAutoLayoutSettings];
                 _aBarrage.view.sd_layout
                 .leftEqualToView(_teacherPlayerView)
                 .rightEqualToView(_teacherPlayerView)
@@ -4007,7 +4003,7 @@ bool ismute     = NO;
                 [_aBarrage.view updateLayout];
                 _aBarrage.view.hidden = NO;
                 [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
-            });
+//            });
             
         }else{
             
@@ -4974,7 +4970,6 @@ bool ismute     = NO;
         //                "timestamp": 1490595407
         //            }
         //        }
-        
         
         
         if ([dic[@"status"] isEqualToNumber:@1]) {

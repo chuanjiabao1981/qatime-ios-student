@@ -63,7 +63,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
     
     [self setupViews];
     
-      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refresh) name:@"Ask" object:nil];
+      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refresh) name:@"AskDone" object:nil];
     
 }
 - (void)refresh{
