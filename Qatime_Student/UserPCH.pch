@@ -21,14 +21,18 @@
 //https://qatime.cn
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #define Request_Header @"http://testing.qatime.cn"
 =======
 #define Request_Header @"https://qatime.cn"
 >>>>>>> 0.4.2修复10.3系统部分设备UI问题
+=======
+#define Request_Header @"http://testing.qatime.cn"
+>>>>>>> 作业问答增加语音图片
 //测试环境 @"http://testing.qatime.cn"
 //正式环境 @"https://qatime.cn"
 
-
+//
 /* 测试和生产模式-推送证书名称*/
 
 #define PushCerName @"Push"

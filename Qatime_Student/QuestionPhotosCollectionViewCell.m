@@ -36,7 +36,7 @@
         [_deleteBtn setEnlargeEdge:10];
         
         _effectView = [[UIView alloc]init];
-        _effectView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.6];
+        _effectView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.8];
         [self.contentView addSubview:_effectView];
         _effectView.sd_layout
         .leftSpaceToView(self.contentView, 0)

@@ -80,6 +80,77 @@
     _model = model;
     _created_at.text = [@"回复时间" stringByAppendingString: model.created_at.changeTimeStampToDateString];
     _answer.text = model.body;
+    
+//    再判断答案
+    if (model.body) {
+        model.haveBody = YES;
+    }else{
+        model.haveBody = NO;
+    }
+    if (model.attachments) {
+        for (NSDictionary *atts in model.attachments) {
+            if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
+                model.havePhotos = YES;
+            }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
+                model.haveRecord = YES;
+            }
+        }
+    }else{
+        model.havePhotos = NO;
+        model.haveRecord = NO;    }
+//    答案部分.整自动布局....
+    if (model.haveBody) {
+        _answer.hidden = NO;
+        if (model.havePhotos) {
+            _photosView.hidden = NO;
+            if (model.haveRecord) {
+                _recorder.view.hidden = NO;
+                [self setupAutoHeightWithBottomView:_recorder.view bottomMargin:10];
+            }else{
+                _recorder.view.hidden = YES;
+                [self setupAutoHeightWithBottomView:_photosView bottomMargin:10];
+            }
+        }else{
+            _photosView.hidden = YES;
+            if (model.haveRecord) {
+                _recorder.view.hidden = NO;
+                _recorder.view.sd_layout
+                .topSpaceToView(_answer, 15);
+                [_recorder.view updateLayout];
+                [self setupAutoHeightWithBottomView:_recorder.view bottomMargin:10];
+            }else{
+                    _recorder.view.hidden = YES;
+                [self setupAutoHeightWithBottomView:_answer bottomMargin:20];
+            }
+        }
+    }else{
+        _answer.hidden = YES;
+        _photosView.sd_layout
+        .topSpaceToView(_created_at, 20*ScrenScale);
+        [_photosView updateLayout];
+        if (model.havePhotos) {
+            _photosView.hidden = NO;
+            if (model.haveRecord) {
+                _recorder.view.hidden = NO;
+                [self setupAutoHeightWithBottomView:_recorder.view bottomMargin:10];
+            }else{
+                _recorder.view.hidden = YES;
+                [self setupAutoHeightWithBottomView:_photosView bottomMargin:10];
+            }
+        }else{
+            _photosView.hidden = YES;
+            if (model.haveRecord) {
+                _recorder.view.hidden = NO;
+                _recorder.view.sd_layout
+                .topSpaceToView(_created_at, 15);
+                [_recorder.view updateLayout];
+                [self setupAutoHeightWithBottomView:_recorder.view bottomMargin:10];
+            }else{
+                _recorder.view.hidden = YES;
+                [self setupAutoHeightWithBottomView:_answer bottomMargin:20];
+            }
+        }
+    }
 }
 
 @end

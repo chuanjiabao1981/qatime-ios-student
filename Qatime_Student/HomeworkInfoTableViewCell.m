@@ -7,12 +7,19 @@
 //
 
 #import "HomeworkInfoTableViewCell.h"
+#import "QuestionPhotosCollectionViewCell.h"
+#import "QuestionPhotosReuseCollectionViewCell.h"
+#import "ZLPhoto.h"
 
-@interface HomeworkInfoTableViewCell (){
+@interface HomeworkInfoTableViewCell ()<UICollectionViewDataSource,UICollectionViewDelegate>{
     
     UILabel *_myLabel;
     
     UILabel *_teacherLabel;
+    
+    UICollectionViewFlowLayout *layout1;
+    UICollectionViewFlowLayout *layout2;
+    UICollectionViewFlowLayout *layout3;
 }
 
 @end
@@ -48,21 +55,29 @@
         .autoHeightRatio(0);
         
         
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
-        layout.itemSize = CGSizeMake((UIScreenWidth-20*ScrenScale-10)*0.5, (UIScreenWidth-20*ScrenScale-10)*0.5);
-        layout.minimumInteritemSpacing = 10;
-        layout.minimumLineSpacing = 10;
-       
-        _homeworkPhotosView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+        layout1 = [[UICollectionViewFlowLayout alloc]init];
+        layout2 = [[UICollectionViewFlowLayout alloc]init];
+        layout3 = [[UICollectionViewFlowLayout alloc]init];
+//        layout.itemSize = CGSizeMake((UIScreenWidth -30*ScrenScale-40)/5.f, (UIScreenWidth -30*ScrenScale-40)/5.f);
+        layout1.itemSize = CGSizeMake((UIScreenWidth-20*ScrenScale-30)/5.f-2, (UIScreenWidth-20*ScrenScale-30)/5.f-2);
+//        layout.minimumInteritemSpacing = 10;
+//        layout.minimumLineSpacing = 10;
+        
+        layout2.itemSize = CGSizeMake((UIScreenWidth-20*ScrenScale-30)/5.f-2, (UIScreenWidth-20*ScrenScale-30)/5.f-2);
+        layout3.itemSize = CGSizeMake((UIScreenWidth-20*ScrenScale-30)/5.f-2, (UIScreenWidth-20*ScrenScale-30)/5.f-2);
+        
+        _homeworkPhotosView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, 10, 10) collectionViewLayout:layout1];
         _homeworkPhotosView.backgroundColor = [UIColor whiteColor];
+        _homeworkPhotosView.scrollEnabled = NO;
         
         [self.contentView addSubview:_homeworkPhotosView];
         _homeworkPhotosView.sd_layout
         .leftSpaceToView(self.contentView, 10*ScrenScale)
         .rightSpaceToView(self.contentView, 10*ScrenScale)
         .topSpaceToView(_title, 10*ScrenScale)
-        .heightIs((UIScreenWidth-20*ScrenScale-10)*0.5*3+20);
+        .heightIs((UIScreenWidth -30*ScrenScale-40)/5.f);
         
+        [_homeworkPhotosView registerClass:[QuestionPhotosCollectionViewCell class] forCellWithReuseIdentifier:@"photoCell"];
         _homeworkRecorder = [[YZReorder alloc]init];
         [self.contentView addSubview:_homeworkRecorder.view];
         _homeworkRecorder.view.sd_layout
@@ -91,7 +106,7 @@
         _myLabel.textColor = [UIColor blackColor];
         _myLabel.sd_layout
         .leftEqualToView(_index)
-        .topSpaceToView(_title, 10*ScrenScale)
+        .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale)
         .autoHeightRatio(0);
         [_myLabel setSingleLineAutoResizeWithMaxWidth:300];
         _myLabel.text = @"我的答案:";
@@ -108,14 +123,17 @@
         .autoHeightRatio(0);
         _answerTitle.hidden = YES;
         
-        _answerPhotosView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+        _answerPhotosView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, 10, 10) collectionViewLayout:layout2];
+        _answerPhotosView.scrollEnabled = NO;
         _answerPhotosView.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:_answerPhotosView];
         _answerPhotosView.sd_layout
         .leftSpaceToView(self.contentView, 10*ScrenScale)
         .rightSpaceToView(self.contentView, 10*ScrenScale)
         .topSpaceToView(_answerTitle, 10*ScrenScale)
-        .heightIs((UIScreenWidth-20*ScrenScale-10)*0.5*3+20);
+        .heightIs((UIScreenWidth -30*ScrenScale-40)/5.f);
+        
+        [_answerPhotosView registerClass:[QuestionPhotosReuseCollectionViewCell class] forCellWithReuseIdentifier:@"answerPhotoCell"];
         
         _answerRecorder = [[YZReorder alloc]init];
         [self.contentView addSubview:_answerRecorder.view];
@@ -150,7 +168,34 @@
         .autoHeightRatio(0);
         _teacherCheckTitle.hidden = YES;
         
-       
+        //老师批改的 图片.
+        _correctPhotosView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, 10, 10) collectionViewLayout:layout3];
+        _correctPhotosView.scrollEnabled = NO;
+        _correctPhotosView.backgroundColor = [UIColor whiteColor];
+        [self.contentView addSubview:_correctPhotosView];
+        _correctPhotosView.sd_layout
+        .leftSpaceToView(self.contentView, 10*ScrenScale)
+        .rightSpaceToView(self.contentView, 10*ScrenScale)
+        .topSpaceToView(_teacherCheckTitle, 10*ScrenScale)
+        .heightIs((UIScreenWidth -30*ScrenScale-40)/5.f);
+        
+        [_correctPhotosView registerClass:[QuestionPhotosReuseCollectionViewCell class] forCellWithReuseIdentifier:@"correctPhotoCell"];
+        
+        _correctRecorder = [[YZReorder alloc]init];
+        [self.contentView addSubview:_correctRecorder.view];
+        _correctRecorder.view.sd_layout
+        .leftEqualToView(_correctPhotosView)
+        .rightEqualToView(_correctPhotosView)
+        .topSpaceToView(_correctPhotosView, 10*ScrenScale)
+        .heightIs(40);
+        
+        _homeworkPhotosView.dataSource = self;
+        _homeworkPhotosView.delegate = self;
+        _answerPhotosView.dataSource = self;
+        _answerPhotosView.delegate = self;
+        _correctPhotosView.dataSource = self;
+        _correctPhotosView.delegate = self;
+        
     }
     return self;
 }
@@ -158,84 +203,128 @@
 -(void)setModel:(HomeworkInfo *)model{
     
     _model = model;
-    
     _title.text = model.body;
     
     //先判断老师留的作业有没有附件 有没有语音 ,有没有图片,有几个图片
-    if (model.attachments) {
-        for (NSDictionary *atts in model.attachments) {
-            if (_havePhotos == NO) {
-                if ([atts[@"file_type"]isEqualToString:@"png"]) {
-                    _havePhotos = YES;
+    if (_model.attachments) {
+        for (NSDictionary *atts in _model.attachments) {
+            if (_model.havePhotos == NO) {
+                if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
+                    _model.havePhotos = YES;
+                    [_model.homeworkPhotos addObject:atts];
                 }
             }
-            if (_haveRecord == NO) {
+            if (_model.haveRecord == NO) {
                 if ([atts[@"file_type"]isEqualToString:@"mp3"]) {
-                    _haveRecord = YES;
+                    _model.haveRecord = YES;
+                    _model.homeworkRecordURL = atts[@"file_url"];
                 }
             }
-            
         }
-        
     }else{
-        _havePhotos = NO;
-        _haveRecord = NO;
+        _model.havePhotos = NO;
+        _model.haveRecord = NO;
     }
     
-    //再判断学生做完作业之后,有没有图片有没有语音
-    if (model.myAnswerPhotos) {
-        _haveAnswerPhotos = YES;
-    }else{
-        _haveAnswerPhotos = NO;
-    }
-    if (model.myAnswerRecorderURL) {
-        _haveAnswerRecord = YES;
-    }else{
-        _haveAnswerRecord = NO;
+    //加载一下搞一搞学生做作业的图片和语音
+    if (_model.answers[@"attachments"]) {
+        if ([_model.answers[@"attachments"] count]==0) {
+            _model.haveAnswerPhotos = NO;
+            _model.haveAnswerRecord = NO;
+        }else{
+            for (NSDictionary *atts in _model.answers[@"attachments"]) {
+                if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
+                    _model.haveAnswerPhotos = YES;
+                    [_model.myAnswerPhotos addObject:atts];
+                }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
+                    _model.haveAnswerRecord = YES;
+                    _model.myAnswerRecorderURL  = atts[@"file_url"];
+                }
+            }
+        }
     }
     
     //最后再判断有没有批改
-    if (![model.correction[@"attachments"] isEqual:[NSNull null]]) {
+    if (_model.correction) {
+        //有批改.
+        _model.haveCorrection = YES;
+        for (NSDictionary *atts in _model.correction[@"attachments"]) {
+            if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
+                _model.haveCorrectPhotos = YES;
+                [_model.correctionPhotos addObject:atts];
+            }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
+                _model.haveCorrectRecord = YES;
+                _model.correctionRecordURL = atts[@"file_url"];
+            }
+        }
+    }else{
         
+        _model.haveCorrection = NO;
+        _model.haveCorrectPhotos = NO;
+        _model.haveCorrectRecord = NO;
     }
-    
     
     ////////////////////////////////////////////////////////
     
-    if ([model.status isEqualToString:@"pending"]) {
+    if ([_model.status isEqualToString:@"pending"]) {
         //未提交过作业
-        if (model.edited == YES) {
+        _correctPhotosView.hidden = YES;
+        _correctRecorder.view.hidden = YES;
+        [_homeworkRecorder setPlayerFileURL:[NSURL URLWithString:model.homeworkRecordURL]];
+        if (_model.edited == YES) {
             //如果已经写过答案了,那就把答案显示出来,别的不显示,可以再次编辑
             _status.hidden = YES;
             _myLabel.hidden = NO;
             _answerTitle.hidden = NO;
-            _answerTitle.text = model.myAnswerTitle;
+            _answerTitle.sd_layout
+            .topSpaceToView(_myLabel, 10);
+            [_answerTitle updateLayout];
+            
+            if (model.myAnswerTitle) {
+                _answerTitle.text = _model.myAnswerTitle;
+            }else{
+                _answerTitle.text = @" ";
+            }
             
             _teacherLabel.hidden = YES;
             _teacherCheckTitle.hidden = YES;
             
             //判断老师的问题,是否有图片语音
-            if (_havePhotos == YES && _haveRecord == YES ) {
+            if (_model.havePhotos == YES && _model.haveRecord == YES ) {
                 _homeworkPhotosView.hidden = NO;
                 _homeworkRecorder.view.hidden = NO;
-                _status.sd_layout
-                .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
-                [_status updateLayout];
+                _myLabel.sd_layout
+                .topSpaceToView(_homeworkRecorder.view, 10);
+                [_myLabel updateLayout];
+                
+                _homeworkRecorder.view.sd_layout
+                .topSpaceToView(_homeworkPhotosView, 10);
+                [_homeworkRecorder.view updateLayout];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_homeworkPhotosView reloadData];
+                });
                 
                 [self haveAnswerdTheHomeWorkLayout];
             }
             
-            
-            if (_havePhotos == YES && _haveRecord == NO) {
+            if (_model.havePhotos == YES && _model.haveRecord == NO) {
                 _homeworkPhotosView.hidden = NO;
                 _homeworkRecorder.view.hidden = YES;
                 _status.sd_layout
                 .topSpaceToView(_homeworkPhotosView, 10*ScrenScale);
                 [_status updateLayout];
+                
+                _myLabel.sd_layout
+                .topSpaceToView(_homeworkPhotosView, 10);
+                [_myLabel updateLayout];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_homeworkPhotosView reloadData];
+                });
                 [self haveAnswerdTheHomeWorkLayout];
                 
             }
-            if (_havePhotos == NO && _haveRecord == YES) {
+            if (_model.havePhotos == NO && _model.haveRecord == YES) {
                 
                 _homeworkPhotosView.hidden = YES;
                 _homeworkRecorder.view.hidden = NO;
@@ -245,6 +334,10 @@
                 _status.sd_layout
                 .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
                 [_status updateLayout];
+                
+                _myLabel.sd_layout
+                .topSpaceToView(_homeworkRecorder.view, 10);
+                [_myLabel updateLayout];
                 
                 [self haveAnswerdTheHomeWorkLayout];
             }
@@ -259,23 +352,28 @@
             _answerPhotosView.hidden = YES;
             _answerRecorder.view.hidden = YES;
             //反正也没有答案 , 那就只判断老师的问题,是否有图片语音
-            if (_havePhotos == YES && _haveRecord == YES ) {
+            if (_model.havePhotos == YES && _model.haveRecord == YES ) {
                 _homeworkPhotosView.hidden = NO;
                 _homeworkRecorder.view.hidden = NO;
                 _status.sd_layout
                 .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
                 [_status updateLayout];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_homeworkPhotosView reloadData];
+                });
             }
             
-            if (_havePhotos == YES && _haveRecord == NO) {
+            if (_model.havePhotos == YES && _model.haveRecord == NO) {
                 _homeworkPhotosView.hidden = NO;
                 _homeworkRecorder.view.hidden = YES;
                 _status.sd_layout
                 .topSpaceToView(_homeworkPhotosView, 10*ScrenScale);
                 [_status updateLayout];
-                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_homeworkPhotosView reloadData];
+                });
             }
-            if (_havePhotos == NO && _haveRecord == YES) {
+            if (_model.havePhotos == NO && _model.haveRecord == YES) {
                 
                 _homeworkPhotosView.hidden = YES;
                 _homeworkRecorder.view.hidden = NO;
@@ -286,143 +384,168 @@
                 .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
                 [_status updateLayout];
             }
-            
             _status.text = @"做作业";
             _status.textColor = [UIColor redColor];
             [self setupAutoHeightWithBottomView:_status bottomMargin:10*ScrenScale];
         }
         
-        
-    }else if ([model.status isEqualToString:@"submitted"]){
-        //如果已经是提交过的作业,而且还没有批改的,只能看
+    }else if ([_model.status isEqualToString:@"submitted"]){
+        _correctPhotosView.hidden = YES;
+        _correctRecorder.view.hidden = YES;
+        [_homeworkRecorder setPlayerFileURL:[NSURL URLWithString:model.homeworkRecordURL]];
+        [_answerRecorder setPlayerFileURL:[NSURL URLWithString:model.myAnswerRecorderURL]];
+        //如果已经是提交过的作业,而且还没有批改的,能修改答案
         _status.hidden = YES;
         _myLabel.hidden = NO;
         _answerTitle.hidden = NO;
-        
         _teacherLabel.hidden = YES;
         _teacherCheckTitle.hidden = YES;
         
-        
+        _status.text = @" ";
+        _answerTitle.text = model.myAnswerTitle; //暂时这么写
         //这部分,根据音频/图片数据判断
         //判断老师的问题,是否有图片语音  换汤不换药.一样.
-        if (_havePhotos == YES && _haveRecord == YES ) {
+        if (_model.havePhotos == YES && _model.haveRecord == YES ) {
             _homeworkPhotosView.hidden = NO;
             _homeworkRecorder.view.hidden = NO;
-            _status.sd_layout
-            .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
-            [_status updateLayout];
-            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_homeworkPhotosView reloadData];
+            });
             [self haveAnswerdTheHomeWorkLayout];
         }
         
-        
-        if (_havePhotos == YES && _haveRecord == NO) {
+        if (_model.havePhotos == YES && _model.haveRecord == NO) {
             _homeworkPhotosView.hidden = NO;
             _homeworkRecorder.view.hidden = YES;
-            _status.sd_layout
-            .topSpaceToView(_homeworkPhotosView, 10*ScrenScale);
-            [_status updateLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_homeworkPhotosView reloadData];
+            });
             [self haveAnswerdTheHomeWorkLayout];
             
         }
-        if (_havePhotos == NO && _haveRecord == YES) {
+        if (_model.havePhotos == NO && _model.haveRecord == YES) {
             
             _homeworkPhotosView.hidden = YES;
             _homeworkRecorder.view.hidden = NO;
             _homeworkRecorder.view.sd_layout
             .topSpaceToView(_title, 10*ScrenScale);
             [_homeworkRecorder.view updateLayout];
-            _status.sd_layout
-            .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
-            [_status updateLayout];
-            
             [self haveAnswerdTheHomeWorkLayout];
         }
-        _status.text = @" ";
-        _answerTitle.text = model.myAnswerTitle; //暂时这么写
-        [self setupAutoHeightWithBottomView:_answerTitle bottomMargin:10*ScrenScale];
-        
-    }else if ([model.status isEqualToString:@"resolved"]){
+        if (_model.havePhotos == NO && _model.haveRecord == NO) {
+            
+            _homeworkPhotosView.hidden = YES;
+            _homeworkRecorder.view.hidden = YES;
+            _homeworkRecorder.view.sd_layout
+            .topSpaceToView(_title, 10*ScrenScale);
+            [_homeworkRecorder.view updateLayout];
+            [self haveAnswerdTheHomeWorkLayout];
+        }
+    }else if ([_model.status isEqualToString:@"resolved"]){
         //已经批改过的 啥都显示啥都能看
         //注意  暂时还没有老师的批改带图片语音的....
-        
+        _correctPhotosView.hidden = NO;
+        _correctRecorder.view.hidden = NO;
         _status.hidden = YES;
         _myLabel.hidden = NO;
         _answerTitle.hidden = NO;
         _teacherLabel.hidden = NO;
         _teacherCheckTitle.hidden = NO;
-       
+        _answerTitle.text = _model.myAnswerTitle;
+        _teacherCheckTitle.text = _model.correction[@"body"];
+        
+        [_homeworkRecorder setPlayerFileURL:[NSURL URLWithString:model.homeworkRecordURL]];
+        [_answerRecorder setPlayerFileURL:[NSURL URLWithString:model.myAnswerRecorderURL]];
+        [_correctRecorder setPlayerFileURL:[NSURL URLWithString:model.correctionRecordURL]];
+        
         //这部分,根据音频/图片数据判断
         //判断老师的问题,是否有图片语音
-        if (_havePhotos == YES && _haveRecord == YES ) {
+        if (_model.havePhotos == YES && _model.haveRecord == YES ) {
             _homeworkPhotosView.hidden = NO;
             _homeworkRecorder.view.hidden = NO;
-            _status.sd_layout
-            .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
-            [_status updateLayout];
-            
-            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_homeworkPhotosView reloadData];
+            });
+            [self haveAnswerdTheHomeWorkAndHaveCorrectedLayout];
         }
         
-        
-        if (_havePhotos == YES && _haveRecord == NO) {
+        if (_model.havePhotos == YES && _model.haveRecord == NO) {
             _homeworkPhotosView.hidden = NO;
             _homeworkRecorder.view.hidden = YES;
-            _status.sd_layout
-            .topSpaceToView(_homeworkPhotosView, 10*ScrenScale);
-            [_status updateLayout];
-            [self haveAnswerdTheHomeWorkLayout];
             
+            [self haveAnswerdTheHomeWorkAndHaveCorrectedLayout];
         }
-        if (_havePhotos == NO && _haveRecord == YES) {
+        if (_model.havePhotos == NO && _model.haveRecord == YES) {
             
             _homeworkPhotosView.hidden = YES;
             _homeworkRecorder.view.hidden = NO;
             _homeworkRecorder.view.sd_layout
             .topSpaceToView(_title, 10*ScrenScale);
             [_homeworkRecorder.view updateLayout];
-            _status.sd_layout
-            .topSpaceToView(_homeworkRecorder.view, 10*ScrenScale);
-            [_status updateLayout];
             
-            [self haveAnswerdTheHomeWorkLayout];
+            [self haveAnswerdTheHomeWorkAndHaveCorrectedLayout];
         }
         
-        _teacherLabel.sd_layout
-        .topSpaceToView(_answerTitle, 10*ScrenScale);
-        [_teacherLabel updateLayout];
+        if (_model.havePhotos == NO && _model.haveRecord == NO) {
+            
+            _homeworkPhotosView.hidden = YES;
+            _homeworkRecorder.view.hidden = YES;
+            
+            _myLabel.sd_layout
+            .topSpaceToView(_title, 10);
+            [_myLabel updateLayout];
+            
+            [self haveAnswerdTheHomeWorkAndHaveCorrectedLayout];
+        }
         
-        _answerTitle.text = model.myAnswerTitle;
-        _teacherCheckTitle.text = model.correction;
-        [self setupAutoHeightWithBottomView:_teacherCheckTitle bottomMargin:10*ScrenScale];
+
     }
     
 }
-
 
 //1.已经写过答案的问题,的什么什么逻辑.
 - (void)haveAnswerdTheHomeWorkLayout{
     //嵌套判断
     //学生做完作业了 有图片和语音
-    if (_haveAnswerPhotos == YES && _haveAnswerRecord == YES) {
+    if (_model.haveAnswerPhotos == YES && _model.haveAnswerRecord == YES) {
         _answerPhotosView.hidden = NO;
         _answerRecorder.view.hidden = NO;
+        [self answerTitleLayout];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_answerPhotosView reloadData];
+        });
+        
         [self setupAutoHeightWithBottomView:_answerRecorder.view bottomMargin:10*ScrenScale];
     }
     //有图片没有语音
-    if (_haveAnswerPhotos == YES && _haveAnswerRecord == NO) {
+    if (_model.haveAnswerPhotos == YES && _model.haveAnswerRecord == NO) {
         _answerPhotosView.hidden = NO;
         _answerRecorder.view.hidden = YES;
+        _answerPhotosView.sd_layout
+        .topSpaceToView(_answerTitle, 10);
+        [_answerPhotosView updateLayout];
+        [self answerTitleLayout];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_answerPhotosView reloadData];
+        });
         [self setupAutoHeightWithBottomView:_answerPhotosView bottomMargin:10*ScrenScale];
     }
     //有语音没图片
-    if (_haveAnswerPhotos == NO && _haveAnswerRecord == YES) {
+    if (_model.haveAnswerPhotos == NO && _model.haveAnswerRecord == YES) {
         _answerRecorder.view.sd_layout
         .topSpaceToView(_answerTitle, 10*ScrenScale);
         [_homeworkRecorder.view updateLayout];
         _answerPhotosView.hidden = YES;
-        _answerRecorder.view.hidden = YES;
+        _answerRecorder.view.hidden = NO;
+        [self answerTitleLayout];
         [self setupAutoHeightWithBottomView:_answerRecorder.view bottomMargin:10*ScrenScale];
+    }
+    if (_model.haveAnswerPhotos == NO && _model.haveAnswerRecord == NO) {
+        _answerPhotosView.hidden = YES;
+        _answerRecorder.view.hidden = YES;
+        [self answerTitleLayout];
+        [self setupAutoHeightWithBottomView:_answerTitle bottomMargin:10*ScrenScale];
     }
     
 }
@@ -431,42 +554,354 @@
     
     //嵌套判断 + 嵌套判断
     //学生做完作业了 有图片和语音
-    if (_haveAnswerPhotos == YES && _haveAnswerRecord == YES) {
+    if (_model.haveAnswerPhotos == YES && _model.haveAnswerRecord == YES) {
         _answerPhotosView.hidden = NO;
         _answerRecorder.view.hidden = NO;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_answerPhotosView reloadData];
+        });
         
-        if (_haveCorrectPhotos == YES && _haveCorrectRecord == YES) {
+        if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == YES) {
+            _correctPhotosView.hidden = NO;
+            _correctRecorder.view.hidden = NO;
+            [self correctTitleLayout];
+            [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
+        }
+        if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == NO) {
+            _correctPhotosView.hidden = NO;
+            _correctRecorder.view.hidden = YES;
+            [self correctTitleLayout];
+            [_correctPhotosView updateLayout];
+            [self setupAutoHeightWithBottomView:_correctPhotosView bottomMargin:10];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
             
         }
-        if (_haveCorrectPhotos == YES && _haveCorrectRecord == NO) {
-            
+        if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == YES) {
+            _correctPhotosView.hidden = YES;
+            _correctRecorder.view.hidden = NO;
+            _correctRecorder.view.sd_layout
+            .topSpaceToView(_teacherCheckTitle, 10);
+            [_correctRecorder.view updateLayout];
+            [self correctTitleLayout];
+            [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
         }
-        if (_haveCorrectPhotos == NO && _haveCorrectRecord == YES) {
+        if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == NO) {
+            _correctPhotosView.hidden = YES;
+            _correctRecorder.view.hidden = YES;
             
+            [self correctTitleLayout];
+            _teacherLabel.sd_layout
+            .topSpaceToView(_answerTitle, 10);
+            
+            [self setupAutoHeightWithBottomView:_teacherCheckTitle bottomMargin:10];
         }
-      
+        
     }
     //有图片没有语音
-    if (_haveAnswerPhotos == YES && _haveAnswerRecord == NO) {
+    if (_model.haveAnswerPhotos == YES && _model.haveAnswerRecord == NO) {
         _answerPhotosView.hidden = NO;
         _answerRecorder.view.hidden = YES;
-     
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_answerPhotosView reloadData];
+        });
+        if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == YES) {
+            _correctPhotosView.hidden = NO;
+            _correctRecorder.view.hidden = NO;
+            [self correctTitleLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
+            [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
+        }
+        if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == NO) {
+            _correctPhotosView.hidden = NO;
+            _correctRecorder.view.hidden = YES;
+            [self correctTitleLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
+            [self setupAutoHeightWithBottomView:_correctPhotosView bottomMargin:10];
+            
+        }
+        if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == YES) {
+            _correctPhotosView.hidden = YES;
+            _correctRecorder.view.hidden = NO;
+            _correctRecorder.view.sd_layout
+            .topSpaceToView(_teacherCheckTitle, 10);
+            [_correctRecorder.view updateLayout];
+            [self correctTitleLayout];
+            [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
+        }
+        if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == NO) {
+            _correctPhotosView.hidden = YES;
+            _correctRecorder.view.hidden = YES;
+            
+            _teacherLabel.sd_layout
+            .topSpaceToView(_answerTitle, 10);
+            [_teacherLabel updateLayout];
+            
+            [self correctTitleLayout];
+            [self setupAutoHeightWithBottomView:_teacherCheckTitle bottomMargin:10];
+        }
     }
     //有语音没图片
-    if (_haveAnswerPhotos == NO && _haveAnswerRecord == YES) {
+    if (_model.haveAnswerPhotos == NO && _model.haveAnswerRecord == YES) {
         _answerRecorder.view.sd_layout
         .topSpaceToView(_answerTitle, 10*ScrenScale);
         [_homeworkRecorder.view updateLayout];
         _answerPhotosView.hidden = YES;
         _answerRecorder.view.hidden = NO;
+        if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == YES) {
+            _correctPhotosView.hidden = NO;
+            _correctRecorder.view.hidden = NO;
+            [self correctTitleLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
+            [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
+        }
+        if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == NO) {
+            _correctPhotosView.hidden = NO;
+            _correctRecorder.view.hidden = YES;
+            [self correctTitleLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
+            [self setupAutoHeightWithBottomView:_correctPhotosView bottomMargin:10];
+            
+        }
+        if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == YES) {
+            _correctPhotosView.hidden = YES;
+            _correctRecorder.view.hidden = NO;
+            _correctRecorder.view.sd_layout
+            .topSpaceToView(_teacherCheckTitle, 10);
+            [_correctRecorder.view updateLayout];
+            [self correctTitleLayout];
+            [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
+        }
+        if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == NO) {
+            _correctPhotosView.hidden = YES;
+            _correctRecorder.view.hidden = YES;
+            _teacherLabel.sd_layout
+            .topSpaceToView(_answerTitle, 10);
+            [_teacherLabel updateLayout];
+            [self setupAutoHeightWithBottomView:_teacherCheckTitle bottomMargin:10];
+        }
         
-        
+    }
+    
+    //没语音没图片
+    if (_model.haveAnswerPhotos == NO && _model.haveAnswerRecord == NO) {
        
+        _answerPhotosView.hidden = YES;
+        _answerRecorder.view.hidden = YES;
+        
+        _teacherLabel.sd_layout
+        .topSpaceToView(_answerTitle, 10);
+        [_teacherLabel updateLayout];
+        if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == YES) {
+            _correctPhotosView.hidden = NO;
+            _correctRecorder.view.hidden = NO;
+            
+            [self correctTitleLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
+            [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
+        }
+        if (_model.haveCorrectPhotos == YES && _model.haveCorrectRecord == NO) {
+            _correctPhotosView.hidden = NO;
+            _correctRecorder.view.hidden = YES;
+            [self correctTitleLayout];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_correctPhotosView reloadData];
+            });
+            [self setupAutoHeightWithBottomView:_correctPhotosView bottomMargin:10];
+            
+        }
+        if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == YES) {
+            _correctPhotosView.hidden = YES;
+            _correctRecorder.view.hidden = NO;
+            _correctRecorder.view.sd_layout
+            .topSpaceToView(_teacherCheckTitle, 10);
+            [_correctRecorder.view updateLayout];
+            [self correctTitleLayout];
+            [self setupAutoHeightWithBottomView:_correctRecorder.view bottomMargin:10];
+        }
+        if (_model.haveCorrectPhotos == NO && _model.haveCorrectRecord == NO) {
+            _correctPhotosView.hidden = YES;
+            _correctRecorder.view.hidden = YES;
+            _teacherLabel.sd_layout
+            .topSpaceToView(_answerTitle, 10);
+            [_teacherLabel updateLayout];
+            [self setupAutoHeightWithBottomView:_teacherCheckTitle bottomMargin:10];
+        }
+        
     }
     
 }
 
+//"我的答案"标题位置确定
+- (void)answerTitleLayout{
+    if (_homeworkRecorder.view.hidden == NO) {
+        _myLabel.sd_layout
+        .topSpaceToView(_homeworkRecorder.view, 10);
+        [_myLabel updateLayout];
+    }else {
+        if (_homeworkPhotosView.hidden == NO) {
+            _myLabel.sd_layout
+            .topSpaceToView(_homeworkPhotosView, 10);
+            [_myLabel updateLayout];
+        }else{
+            _myLabel.sd_layout
+            .topSpaceToView(_title, 10);
+            [_myLabel updateLayout];
+        }
+    }
+}
 
+/** 老师批改 - 标题位置确定 */
+- (void)correctTitleLayout{
+    
+    if (_answerRecorder.view.hidden == NO) {
+        _teacherLabel.sd_layout
+        .topSpaceToView(_answerRecorder.view, 10);
+        [_teacherLabel updateLayout];
+    }else {
+        if (_answerPhotosView.hidden == NO ) {
+            _teacherLabel.sd_layout
+            .topSpaceToView(_answerPhotosView, 10);
+            [_teacherLabel updateLayout];
+            
+        }else{
+           _teacherLabel.sd_layout
+            .topSpaceToView(_answerTitle, 10);
+            [_teacherLabel updateLayout];
+        }
+    }
+}
+
+
+
+#pragma mark- collectionview datasource
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    NSInteger items = 0;
+    if (collectionView == _homeworkPhotosView) {
+        if (_model.homeworkPhotos.count == 0) {
+            items = 1;
+        }else{
+            items = _model.homeworkPhotos.count;
+        }
+        NSLog(@"homeworkPhotosView ; %ld",items);
+    }else if (collectionView == _answerPhotosView){
+        if (_model.myAnswerPhotos.count == 0) {
+            items = 1;
+        }else{
+            items = _model.myAnswerPhotos.count;
+        }
+        NSLog(@"answerPhotosView ; %ld",items);
+    }else if (collectionView == _correctPhotosView){
+        if (_model.correctionPhotos.count == 0) {
+            items = 1;
+        }else{
+            items = _model.correctionPhotos.count;
+        }
+        NSLog(@"correctPhotosView ; %ld",items);
+    }
+    
+    return items;
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UICollectionViewCell *cells;
+    
+    if (collectionView == _homeworkPhotosView) {
+        
+        static NSString * CellIdentifier = @"photoCell";
+        QuestionPhotosCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        if (_model.homeworkPhotos.count>indexPath.item) {
+            
+            [cell.image sd_setImageWithURL:[NSURL URLWithString:_model.homeworkPhotos[indexPath.item][@"file_url"]]];
+        }
+        
+        cell.deleteBtn.hidden = YES;
+        cells = cell;
+        
+    }else if (collectionView == _answerPhotosView){
+        
+        static NSString * CellIdentifiers = @"answerPhotoCell";
+        QuestionPhotosReuseCollectionViewCell * cell2 = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifiers forIndexPath:indexPath];
+        
+        if (_model.myAnswerPhotos.count>indexPath.item) {
+            if ([_model.myAnswerPhotos[indexPath.item][@"file_type"] isEqualToString:@"png"]||[_model.myAnswerPhotos[indexPath.item][@"file_type"] isEqualToString:@"jpg"]||[_model.myAnswerPhotos[indexPath.item][@"file_type"] isEqualToString:@"jpeg"]) {
+                [cell2.image sd_setImageWithURL:[NSURL URLWithString:_model.myAnswerPhotos[indexPath.item][@"file_url"]]];
+            }
+        }
+        cell2.deleteBtn.hidden = YES;
+        cells = cell2;
+    }else if (collectionView == _correctPhotosView){
+        
+        static NSString * CellIdentifiers = @"correctPhotoCell";
+        QuestionPhotosReuseCollectionViewCell * cell3 = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifiers forIndexPath:indexPath];
+        
+        if (_model.correctionPhotos.count>indexPath.item) {
+            if ([_model.correctionPhotos[indexPath.item][@"file_type"] isEqualToString:@"png"]||[_model.correctionPhotos[indexPath.item][@"file_type"] isEqualToString:@"jpg"]||[_model.correctionPhotos[indexPath.item][@"file_type"] isEqualToString:@"jpeg"]) {
+                [cell3.image sd_setImageWithURL:[NSURL URLWithString:_model.correctionPhotos[indexPath.item][@"file_url"]]];
+            }
+        }
+        cell3.deleteBtn.hidden = YES;
+        cells = cell3;
+    }
+    return cells;
+}
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return CGSizeMake((UIScreenWidth-20*ScrenScale-30)/5.f-2, (UIScreenWidth-20*ScrenScale-30)/5.f-2);
+}
+
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+    return 5;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    return 10;
+}
+
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSMutableArray *photos = @[].mutableCopy;
+    ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
+    // 淡入淡出效果
+    pickerBrowser.status = UIViewAnimationAnimationStatusZoom;
+    // 数据源/delegate
+    for (QuestionPhotosCollectionViewCell *cell in collectionView.visibleCells) {
+        
+        ZLPhotoPickerBrowserPhoto *mod = [[ZLPhotoPickerBrowserPhoto alloc]init];
+        mod.toView = cell.image;
+        mod.photoImage = cell.image.image;
+        [photos addObject:mod];
+        
+    }
+    
+    pickerBrowser.editing = NO;
+    pickerBrowser.photos = photos;
+    // 当前选中的值
+    pickerBrowser.currentIndex = indexPath.row;
+    
+    // 展示控制器
+    // 直接调到当前展示的那个控制器上去展示图片
+    [_photoDelegate showPicker:pickerBrowser];
+    
+}
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -475,7 +910,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 

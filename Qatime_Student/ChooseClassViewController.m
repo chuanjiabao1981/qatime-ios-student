@@ -104,7 +104,6 @@
     _tags = @[].mutableCopy;
     _filterDic = @{}.mutableCopy;
     
-    
     //导航栏和主视图参考图
     [self setupNavigation];
     //第一视图

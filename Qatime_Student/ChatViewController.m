@@ -676,7 +676,7 @@
 /* 加载本地数据*/
 - (void)requestChatHitstory{
     
-    NSArray *messageArr = [[[NIMSDK sharedSDK]conversationManager]messagesInSession:_session message:nil limit:100];
+    NSMutableArray *messageArr = [[[NIMSDK sharedSDK]conversationManager]messagesInSession:_session message:nil limit:100];
     /* 如果本地没有数据,请求服务器数据,并保存到本地*/
     if (messageArr.count<=2) {
         [self requestServerHistory];

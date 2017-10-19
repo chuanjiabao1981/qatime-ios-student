@@ -317,6 +317,7 @@ typedef NS_ENUM(NSUInteger, HomeWorkType) {
     if (cell==nil) {
         cell=[[MyHomewoekTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
     }
+    [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     if (tableView.tag == 1) {
         if (_unhandedArray.count>indexPath.row) {
             cell.model = _unhandedArray[indexPath.row];
@@ -346,13 +347,12 @@ typedef NS_ENUM(NSUInteger, HomeWorkType) {
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self HUDStartWithTitle:nil];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     MyHomewoekTableViewCell *cell = (MyHomewoekTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-
     HomeworkInfoViewController *controller = [[HomeworkInfoViewController alloc]initWithHomework:cell.model];
     [self.navigationController pushViewController:controller animated:YES];
-    
+    [self HUDStopWithTitle:nil];
 }
 
 - (UIView *)makePlaceHolderView{

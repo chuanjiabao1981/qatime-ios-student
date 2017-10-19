@@ -61,7 +61,6 @@ typedef enum : NSUInteger {
     
     NSString *unreadCountStr;//专门用来监听的
     
-    
     /* 下拉刷新页数*/
     NSInteger noticePage;
     
@@ -135,7 +134,7 @@ typedef enum : NSUInteger {
     /* 初始化*/
     _myClassArray = @[].mutableCopy;
     _noticeArray = @[].mutableCopy;
-    _chatListArr = @[].mutableCopy;
+    _chatListArr = [NSMutableArray array];
     
     noticePage = 1;
     unreadCont = 0;
@@ -161,7 +160,8 @@ typedef enum : NSUInteger {
     
     /* 用户重新登录后的通知*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshAgain) name:@"UserLoginAgain" object:nil];
-    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshAgain) name:@"UserLogin" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshAgain) name:@"WechatLoginSucess" object:nil];
     
     /* 下拉刷新功能*/
     
@@ -225,7 +225,7 @@ typedef enum : NSUInteger {
     /* 初始化*/
     _myClassArray = @[].mutableCopy;
     _noticeArray = @[].mutableCopy;
-    _chatListArr = @[].mutableCopy;
+    _chatListArr = [NSMutableArray array];
     
     noticePage = 1;
     unreadCont = 0;
@@ -253,7 +253,7 @@ typedef enum : NSUInteger {
         case RefreshStatePullRefresh:{
             
             _myClassArray = @[].mutableCopy;
-            _chatListArr = @[].mutableCopy;
+            _chatListArr = [NSMutableArray array];
             
         }
             break;
@@ -265,7 +265,7 @@ typedef enum : NSUInteger {
             
         case RefreshStateNone:{
             
-            [self HUDStartWithTitle:@"正在刷新聊天列表"];
+//            [self HUDStartWithTitle:@"正在刷新聊天列表"];
         }
             break;
     }
@@ -366,7 +366,7 @@ typedef enum : NSUInteger {
                                                     }
                                                     unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
                                                 }
-                                                [_chatListArr addObject:mod];
+                                                [(NSMutableArray *)_chatListArr addObject:mod];
                                                 
                                             }else if ([obj isMemberOfClass:[InteractiveCourse class]]){
                                                 ChatList *mod = [[ChatList alloc]init];
@@ -384,14 +384,14 @@ typedef enum : NSUInteger {
                                                     }
                                                     unreadCountStr = [NSString stringWithFormat:@"%ld",unreadCont];
                                                 }
-                                                [_chatListArr addObject:mod];
+                                                [(NSMutableArray *)_chatListArr addObject:mod];
                                                 
                                             }else if ([obj isMemberOfClass:[ExclusiveInfo class]]){
                                                 ChatList *mod = [[ChatList alloc]init];
                                                 mod.exclusive = (ExclusiveInfo *)obj;
                                                 mod.name = [(ExclusiveInfo *)obj valueForKeyPath:@"name"];
                                                 mod.classType = ExclusiveCourseType;
-                                                [_chatListArr addObject:mod];
+                                                [(NSMutableArray *)_chatListArr addObject:mod];
                                             }
                                         }
                                         
@@ -399,7 +399,7 @@ typedef enum : NSUInteger {
                                          在这儿进行一次_chatListArr的排序
                                          根据数组里的每一个元素(ChatList类型)的lastTime属性进行比较
                                          */
-                                        NSArray *tempArr = _chatListArr.mutableCopy;
+                                        NSMutableArray *tempArr = _chatListArr.mutableCopy;
                                         _chatListArr = (NSMutableArray *)[tempArr sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
                                             
                                             ChatList *mod1 = (ChatList *)obj1;
@@ -414,21 +414,22 @@ typedef enum : NSUInteger {
                                                 // 相同不变
                                                 return NSOrderedSame;
                                             }
-                                        }];
+                                        }].mutableCopy;
                                         
                                         for (ChatList *mod in _chatListArr) {
                                             NSLog(@"%f",mod.lastTime);
                                         }
                                     }
                                     if (state == RefreshStatePushLoadMore) {
-                                        
-                                        [_noticeIndexView.chatListTableView.mj_header endRefreshing];
-                                        [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                                         [_noticeIndexView.chatListTableView.mj_header endRefreshing];
+                                        [_noticeIndexView.chatListTableView cyl_reloadData];
                                         
                                     }else{
                                         [self HUDStopWithTitle:nil];
+                                        [self HUDStopWithTitle:nil];
+                                        
                                         [_noticeIndexView.chatListTableView.mj_header endRefreshing];
-                                        [_noticeIndexView.chatListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                                        [_noticeIndexView.chatListTableView cyl_reloadData];
                                     }
                                 }else{
                                     /* 数据错误*/
@@ -458,7 +459,6 @@ typedef enum : NSUInteger {
             [_noticeIndexView.chatListTableView.mj_header endRefreshing];
             [_noticeIndexView.chatListTableView cyl_reloadData];
         }
-        
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [_noticeIndexView.chatListTableView.mj_header endRefreshing];
@@ -566,12 +566,12 @@ typedef enum : NSUInteger {
                 /* 根据不同类型的数据请求方式,加载结果不同,判断hud和数据刷新*/
                 if (state == RefreshStatePushLoadMore) {
                     [_noticeIndexView.noticeTableView.mj_header endRefreshing];
-                    [_noticeIndexView.noticeTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                    [_noticeIndexView.noticeTableView cyl_reloadData];
                     
                 }else{
                     [self HUDStopWithTitle:nil];
                     [_noticeIndexView.noticeTableView.mj_header endRefreshing];
-                    [_noticeIndexView.noticeTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                    [_noticeIndexView.noticeTableView cyl_reloadData];
                 }
                 
             }
@@ -586,13 +586,8 @@ typedef enum : NSUInteger {
                 [_noticeIndexView.noticeTableView.mj_header endRefreshing];
             }
             [_noticeIndexView.noticeTableView cyl_reloadData];
-            
-            
             [self HUDStopWithTitle:@"公告刷新失败,请稍后重试"];
-            
         }
-        
-        
     } failure:^(id  _Nullable erros) {
         if (state == RefreshStatePushLoadMore) {
             
@@ -604,11 +599,7 @@ typedef enum : NSUInteger {
         [self HUDStopWithTitle:@"请检查您的网络"];
         [_noticeIndexView.noticeTableView cyl_reloadData];
     }];
-    
 }
-
-
-
 
 #pragma mark- tableView datasource
 
@@ -762,7 +753,7 @@ typedef enum : NSUInteger {
                         [self.navigationController pushViewController:chatVC animated:YES];
                         
                     }else{
-                         [self HUDStopWithTitle:@"请稍后再试"];
+                        [self HUDStopWithTitle:@"请稍后再试"];
                     }
                     
                 } failure:^(id  _Nullable erros) {
@@ -930,7 +921,7 @@ typedef enum : NSUInteger {
     }
     
     //进行一次排序
-    NSArray *tempArr = _chatListArr.mutableCopy;
+    NSMutableArray *tempArr = _chatListArr.mutableCopy;
     _chatListArr = (NSMutableArray *)[tempArr sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         
         ChatList *mod1 = (ChatList *)obj1;
@@ -945,7 +936,7 @@ typedef enum : NSUInteger {
             // 相同不变
             return NSOrderedSame;
         }
-    }];
+    }].mutableCopy;
     
     [_noticeIndexView.chatListTableView reloadData];
     [_noticeIndexView.chatListTableView setNeedsDisplay];

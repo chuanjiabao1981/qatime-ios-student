@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NewQuestionView.h"
 
-@interface DoHomeworkView : UIView
+@interface DoHomeworkView : NewQuestionView
 
-@property (nonatomic, strong) UITextView *answers ;
+//@property (nonatomic, strong) UITextView *answers ;
 
 @end

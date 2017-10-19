@@ -24,6 +24,16 @@
 @property (nonatomic, strong) NSString *body ;
 @property (nonatomic, strong) Answers *answer ;
 
+@property (nonatomic, strong) NSArray *attachments ;
+
+
+//判断用的
+@property (nonatomic, assign) BOOL haveBody ;
+@property (nonatomic, assign) BOOL havePhotos ;
+@property (nonatomic, assign) BOOL haveRecord ;
+
+
+
 //"id": 95,
 //"title": "hello",
 //"parent_id": null,

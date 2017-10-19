@@ -11,6 +11,7 @@
 #import "NavigationBar.h"
 #import "UIViewController+ReturnLastPage.h"
 #import "QuestionPhotosCollectionViewCell.h"
+#import "ZLPhoto.h"
 
 @interface QuestionInfoViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>{
     
@@ -63,7 +64,6 @@
     .leftSpaceToView(self.view, 0)
     .topSpaceToView(_navBar, 0)
     .rightSpaceToView(self.view, 0);
-    [_questionInfoView updateLayout];
     
     UIView *line = [[UIView alloc]init];
     [self.view addSubview:line];
@@ -81,12 +81,32 @@
     .topSpaceToView(line, 0)
     .rightSpaceToView(self.view,0);
     
+    _questionInfoView .model = _question;
     if (_question.answer) {
-        _answerInfoView.hidden = NO;
         _answerInfoView.model = _question.answer;
-        [_answerInfoView updateLayout];
     }else{
         _answerInfoView.hidden = YES;
+    }
+    [_questionInfoView updateLayout];
+    //处理model
+    if (_question.attachments) {
+        for (NSDictionary *atts in _question.attachments) {
+            if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
+                [_questionPics addObject:atts];
+            }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
+                [_questionInfoView.recorder setPlayerFileURL:[NSURL URLWithString:atts[@"file_url"]]];
+            }
+        }
+    }
+    
+    if (_question.answer.attachments) {
+        for (NSDictionary *atts in _question.answer.attachments) {
+            if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
+                [_answerPics addObject:atts];
+            }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
+                [_answerInfoView.recorder setPlayerFileURL:[NSURL URLWithString:atts[@"file_url"]]];
+            }
+        }
     }
     
     _questionInfoView.photosView.delegate = self;
@@ -116,8 +136,9 @@
         
         static NSString * CellIdentifier = @"collectionCell";
         QuestionPhotosCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        cell.deleteBtn.hidden = YES;
         if (_questionPics.count>indexPath.row) {
-            
+            [cell.image sd_setImageWithURL:[NSURL URLWithString:_questionPics[indexPath.item][@"file_url"]]];
         }
         
         itemCell = cell;
@@ -125,8 +146,9 @@
     }else if (collectionView.tag == 2){
         static NSString * CellIdentifier = @"Cell";
         QuestionPhotosCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        cell.deleteBtn.hidden = YES;
         if (_answerPics.count>indexPath.row) {
-            
+            [cell.image sd_setImageWithURL:[NSURL URLWithString:_answerPics[indexPath.item][@"file_url"]]];
         }
         
         itemCell = cell;
@@ -134,6 +156,48 @@
     
     return itemCell;
 }
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return CGSizeMake((UIScreenWidth-40*ScrenScale-10)/5.f, (UIScreenWidth-40*ScrenScale-10)/5.f);
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
+    
+    return 10*ScrenScale;
+}
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
+    return 10*ScrenScale;
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    //预览照片啊
+    //用ZLPhoto
+    NSMutableArray *photos = @[].mutableCopy;
+    ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
+    // 淡入淡出效果
+    pickerBrowser.status = UIViewAnimationAnimationStatusZoom;
+    // 数据源/delegate
+    for (QuestionPhotosCollectionViewCell *cell in collectionView.visibleCells) {
+        
+        ZLPhotoPickerBrowserPhoto *mod = [[ZLPhotoPickerBrowserPhoto alloc]init];
+        mod.toView = cell.image;
+        mod.photoImage = cell.image.image;
+        [photos addObject:mod];
+        
+    }
+    
+    
+    pickerBrowser.photos = photos;
+    // 当前选中的值
+    pickerBrowser.currentIndex = indexPath.row;
+    // 展示控制器
+    [pickerBrowser showPickerVc:self];
+}
+
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

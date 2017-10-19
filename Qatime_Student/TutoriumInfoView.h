@@ -129,5 +129,7 @@
 @property (nonatomic, strong) UILabel *duringLabel  ;
 @property (nonatomic, strong) UILabel *afterLabel  ;
 
+@property (nonatomic, strong) UILabel *replayLabel ;
+
 
 @end

@@ -13,15 +13,18 @@
 #import "NetWorkTool.h"
 #import "DoHomeworkViewController.h"
 #import "Qatime_Student-Swift.h"
+#import "QuestionPhotosCollectionViewCell.h"
 
 
-@interface HomeworkInfoViewController ()<UITableViewDataSource,UITableViewDelegate>{
+@interface HomeworkInfoViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,PhotoBrowserDelegate>{
     
     NavigationBar *_naviBar;
     
     HomeworkManage *_homework;
     
     NSMutableArray *_itemsArray;
+    
+    NSMutableArray *_atachmentsArray;
     
 }
 
@@ -52,6 +55,8 @@
 - (void)makeData{
     
     _itemsArray = @[].mutableCopy;
+    
+    _atachmentsArray = @[].mutableCopy;
     //原始作业
     NSArray *homeworkArr = _homework.homework.items;
     //提交过得作业
@@ -97,19 +102,22 @@
     //批改
     if (resolveArr) {
         for (NSDictionary *reso in resolveArr) {
+            //先加个correctionID进去
             for (NSDictionary *ans in submitArr) {
                 if ([[NSString stringWithFormat:@"%@",reso[@"parent_id"]] isEqualToString:[NSString stringWithFormat:@"%@",ans[@"id"]]]) {
                     //这就是批改对应上答案了 ans的parent_id 就是作业的id
                     for (HomeworkInfo *mod in _itemsArray) {
                         if ([[NSString stringWithFormat:@"%@",mod.homeworkID] isEqualToString:[NSString stringWithFormat:@"%@",ans[@"parent_id"]]]) {
                             mod.correction = reso;
-                            mod.status = @"resolved";
                         }
+                        mod.status = @"resolved";
                     }
+                    
                 }
             }
         }
     }
+    
 }
 
 - (void)setupView{
@@ -147,12 +155,12 @@
     [_mainView.homeworkList updateLayout];
     
     if (_homework.items.count>0) {
-        _naviBar.rightButton.hidden = YES;
+//        _naviBar.rightButton.hidden = YES;
     }else{
         
     }
     
-    
+    self.automaticallyAdjustsScrollViewInsets = NO;//解决cellForItemAtIndexPath not called问题
 }
 
 #pragma mark- tablview datasource
@@ -169,8 +177,12 @@
     }
     [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     cell.index.text = [NSString stringWithFormat:@"%ld",indexPath.row+1];
+    
     if (_itemsArray.count>indexPath.row) {
         cell.model = _itemsArray[indexPath.row];
+        cell.homeworkPhotosView.tag = indexPath.row +1000;
+        cell.answerPhotosView.tag = indexPath.row +2000;
+        cell.photoDelegate = self;
     }
     
     return  cell;
@@ -181,7 +193,6 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return [tableView cellHeightForIndexPath:indexPath model:_itemsArray[indexPath.row] keyPath:@"model" cellClass:[HomeworkInfoTableViewCell class] contentViewWidth:self.view.width_sd];
-//    return 100;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -189,68 +200,60 @@
     
     __block HomeworkInfoTableViewCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     typeof(self) __weak weakSelf = self;
+    
+    DoHomeworkViewController *controller;
     if ([cell.model.status isEqualToString:@"pending"]) {
         //做作业
         //如果没做过作业,就直接进去做,做过了不可以改
-        DoHomeworkViewController *controller = [[DoHomeworkViewController alloc]initWithHomework:cell.model];
-        [self.navigationController pushViewController:controller animated:YES];
-        
-        controller.doHomework = ^(NSString *answer) {
-            cell.model.myAnswerTitle = answer;
-            cell.model.edited = YES;
-            [weakSelf.mainView.homeworkList reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        };
-        
+        controller = [[DoHomeworkViewController alloc]initWithHomework:cell.model andWriteType:Write];
+    }else if ([cell.model.status isEqualToString:@"submitted"]){
+        //重新做作业
+        controller = [[DoHomeworkViewController alloc]initWithHomework:cell.model andWriteType:Rewrite];
     }
+     [self.navigationController pushViewController:controller animated:YES];
+    //这方方法改了
+    controller.doHomework = ^(NSDictionary *answer) {
+        cell.model.myAnswerTitle = answer[@"body"];
+        
+        for (NSDictionary *atts in answer[@"attachment"]) {
+            if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
+                [cell.model.myAnswerPhotos addObject:atts];
+                cell.model.haveAnswerPhotos = YES;
+            }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
+                cell.model.myAnswerRecorderURL = atts[@"file_url"];
+                cell.model.myAnswerRecord = atts;
+                cell.model.haveAnswerRecord = YES;
+            }
+        }
+        cell.model.edited = YES;
+        [weakSelf.mainView.homeworkList reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    };
 }
+
 
 /**  提交作业 */
 - (void)submit{
-    
-//    AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-//    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-//    manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-//    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
-//    [manager.requestSerializer multipartFormRequestWithMethod:@"PATCH" URLString:[NSString stringWithFormat:@"%@/api/v1/live_studio/student_homeworks/%@",Request_Header,_homework.homeworkID] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-//        //制造数组
-//        NSMutableArray *works = @[].mutableCopy;
-//        for (HomeworkInfo *infos in _itemsArray) {
-//            if (infos.myAnswerTitle) {
-//                [works addObject:@{@"parend_id":_homework.parent_id,@"body":infos.myAnswerTitle}];
-//            }
-//        }
-//
-//        [formData appendPartWithFormData:[NSJSONSerialization dataWithJSONObject:works options:NSJSONWritingPrettyPrinted error:nil] name:@"task_items_attributes"];
-//
-//    } error:nil];
-//    id<AFMultipartFormData> formData ;
-//    NSMutableArray *works = @[].mutableCopy;
-//    for (HomeworkInfo *infos in _itemsArray) {
-//        if (infos.myAnswerTitle) {
-//            [works addObject:@{@"parend_id":_homework.parent_id,@"body":infos.myAnswerTitle}];
-//        }
-//    }
-    
-//    [formData appendPartWithFormData:[NSJSONSerialization dataWithJSONObject:works options:NSJSONWritingPrettyPrinted error:nil] name:@"task_items_attributes"];
-    
-//    [manager PATCH:[NSString stringWithFormat:@"%@/api/v1/live_studio/student_homeworks/%@",Request_Header,_homework.homeworkID] parameters:@{@"task_items_attributes":[NSJSONSerialization dataWithJSONObject:works options:NSJSONWritingPrettyPrinted error:nil]} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-//        if (dic[@"status"]) {
-//
-//        }
-//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//
-//    }];
-//
     //手动上传吧
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"PATCH" URLString:[NSString stringWithFormat:@"%@/api/v1/live_studio/student_homeworks/%@",Request_Header,_homework.homeworkID] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSMutableArray *works = @[].mutableCopy;
+        
         for (HomeworkInfo *infos in _itemsArray) {
             if (infos.myAnswerTitle) {
             }else{
                 infos.myAnswerTitle = @" ";
             }
-            [works addObject:@{@"parent_id":infos.homeworkID,@"body":infos.myAnswerTitle}];
+            //增加附件字段 "quotes_attributes"
+            NSMutableArray *atechments = @[].mutableCopy;
+            for (NSDictionary *photos in infos.myAnswerPhotos) {
+                //这儿有不明数据字段 "id" 和 "destroy" , 以后要改.
+                NSDictionary *atteches = @{@"attachment_id":photos[@"id"]};
+                [atechments addObject:atteches];
+            }
+            if (infos.myAnswerRecord) {
+                [atechments addObject:@{@"attachment_id":infos.myAnswerRecord[@"id"]}];
+            }
+            
+            [works addObject:@{@"parent_id":infos.homeworkID,@"body":infos.myAnswerTitle,@"quotes_attributes":atechments}];
         }
         [formData appendPartWithFormData:[NSJSONSerialization dataWithJSONObject:works options:NSJSONWritingPrettyPrinted error:nil] name:@"task_items_attributes"];
     } error:nil];
@@ -263,19 +266,23 @@
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSURLSessionDataTask *uploadTask;
     uploadTask = [manager uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull uploadProgress) {} completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-
+        
         NSDictionary *dics = [NSDictionary dictionaryWithDictionary:responseObject];
         if ([dics[@"status"]isEqualToNumber:@1]) {
-          //提交成功过了
+            //提交成功过了
             [self HUDStopWithTitle:@"提交成功"];
             [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
             [[NSNotificationCenter defaultCenter]postNotificationName:@"HomeworkDone" object:nil];
         }
-
+        
     }];
     
-     [uploadTask resume];
-  
+    [uploadTask resume];
+    
+}
+-(void)showPicker:(ZLPhotoPickerBrowserViewController *)picker{
+    
+    [picker showPickerVc:self];
 }
 
 

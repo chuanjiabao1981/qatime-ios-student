@@ -63,7 +63,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
     
     [self setupViews];
     
-      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refresh) name:@"Ask" object:nil];
+      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refresh) name:@"AskDone" object:nil];
     
 }
 - (void)refresh{
@@ -158,6 +158,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
                 for (NSDictionary *question in dic[@"data"]) {
                     Questions *mod = [Questions yy_modelWithJSON:question];
                     mod.questionID = question[@"id"];
+                    
                     if (![question[@"answer"] isEqual:[NSNull null]]) {
                         if ([question[@"answer"]count]!=0) {
                             mod.answer = [Answers yy_modelWithJSON:question[@"answer"]];
@@ -270,6 +271,8 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     QuestionsTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    Questions *mod = cell.model;
     QuestionInfoViewController *controller = [[QuestionInfoViewController alloc]initWithQuestion:cell.model];
     [self.navigationController pushViewController:controller animated:YES];
     

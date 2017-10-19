@@ -507,8 +507,32 @@
         .rightSpaceToView(_view1,20)
         .autoHeightRatio(0);
         
+        UILabel *_replay = [[UILabel alloc]init];
+        _replay.text = @"回放说明";
+        _replay.font = TITLEFONTSIZE;
+        
+        [_view1 addSubview:_replay];
+        _replay.sd_layout
+        .leftEqualToView(during)
+        .topSpaceToView(_afterLabel,20)
+        .autoHeightRatio(0);
+        [_replay setSingleLineAutoResizeWithMaxWidth:100];
+        
+        _replayLabel = [[UILabel alloc]init];
+        [_view1 addSubview:_replayLabel];
+        _replayLabel.font = TEXT_FONTSIZE;
+        _replayLabel.textColor = TITLECOLOR;
+        _replayLabel.textAlignment = NSTextAlignmentLeft;
+        _replayLabel.isAttributedContent = YES;
+        _replayLabel.attributedText = [[NSMutableAttributedString alloc]initWithString:@"1、购买课程后方可观看回放。\n2、直播课回放学生可以免费观看最多10天，同一天不限定观看次数。\n3、直播结束后最晚于24小时内上传回放。\n4、回放内容不完全等于直播内容，请尽量观看直播学习。\n5、回放内容仅供学生学习使用，未经允许不得进行录制。" attributes:attribute];
+        _replayLabel.sd_layout
+        .topSpaceToView(_replay,10)
+        .leftEqualToView(_duringLabel)
+        .rightSpaceToView(_view1,20)
+        .autoHeightRatio(0);
+        
         //sdautolayout 自适应scrollview的contentsize 方法
-        [_view1 setupAutoContentSizeWithBottomView:_afterLabel bottomMargin:20];
+        [_view1 setupAutoContentSizeWithBottomView:_replayLabel bottomMargin:20];
         
         
         /* 教师简介 。。。view2*/
