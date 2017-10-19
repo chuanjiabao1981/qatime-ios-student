@@ -17,11 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-<<<<<<< HEAD
-	<string>0.4.2</string>
-=======
 	<string>0.4.5</string>
->>>>>>> 作业问答增加语音图片
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -46,11 +42,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-<<<<<<< HEAD
-	<string>2</string>
-=======
 	<string>1</string>
->>>>>>> 作业问答增加语音图片
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>weixin</string>

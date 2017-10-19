@@ -19,11 +19,7 @@
         
             HMSegmentedControl *_=[[HMSegmentedControl alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, self.height_sd*0.1)];
         
-<<<<<<< HEAD
-            _ .sectionTitles = @[@"充值记录"/*,@"提现记录"*/,@"消费记录",@"退款记录"];
-=======
             _ .sectionTitles = @[@"充值记录",/*@"提现记录",*/@"消费记录",@"退款记录"];
->>>>>>> 作业问答增加语音图片
             _.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor lightGrayColor],
                                       NSFontAttributeName:[UIFont systemFontOfSize:18*ScrenScale]};
             _.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor],

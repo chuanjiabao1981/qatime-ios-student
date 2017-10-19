@@ -21,14 +21,13 @@
 //https://qatime.cn
 
 #define Request_Header @"http://testing.qatime.cn"
-
 //测试环境 @"http://testing.qatime.cn"
 //正式环境 @"https://qatime.cn"
 
-//
+
 /* 测试和生产模式-推送证书名称*/
 
-#define PushCerName @"Push"
+#define PushCerName @"PushDevelopment"
 
 //debug模式推送证书 @"PushDevelopment"
 //reliease模式推送证书 @"Push"
@@ -37,7 +36,7 @@
 //#云信key
 //YunXinDebugAppKey=a4e8381f3955f062cda22fbd7a2c9125 
 //YunXinReleaseAppKey=4fe3a3fba0a40a00daf011049a29d995
-#define IM_APPKEY @"4fe3a3fba0a40a00daf011049a29d995"
+#define IM_APPKEY @"a4e8381f3955f062cda22fbd7a2c9125"
 
 /* 屏幕适配比例*/
 #define ScrenScale [UIScreen mainScreen].bounds.size.width/414.0

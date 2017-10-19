@@ -410,7 +410,6 @@
 		547A7EF71DD411DB00F1282B /* TeachersPublic_Classes.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EF61DD411DB00F1282B /* TeachersPublic_Classes.m */; };
 		547A7EFD1DD416F100F1282B /* ListenAndBuyTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7EFC1DD416F100F1282B /* ListenAndBuyTabBar.m */; };
 		547AD51E1E4D6A7000239907 /* UUAVAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 547AD51D1E4D6A7000239907 /* UUAVAudioPlayer.m */; };
-		547DBD911F9062B200A24FCB /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54F674071F7B81AC006CF211 /* libmp3lame.a */; };
 		547E898A1DD1BC9900749366 /* RecommandTeacher.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E89891DD1BC9900749366 /* RecommandTeacher.m */; };
 		547E898D1DD1D01B00749366 /* TutoriumInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E898C1DD1D01B00749366 /* TutoriumInfoView.m */; };
 		547E89901DD1D03100749366 /* TutoriumInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547E898F1DD1D03100749366 /* TutoriumInfoViewController.m */; };
@@ -2291,12 +2290,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-<<<<<<< HEAD
-				547DBD911F9062B200A24FCB /* libmp3lame.a in Frameworks */,
-=======
 				548DFE141F8E01AE00CAFC00 /* libWeChatSDK.a in Frameworks */,
 				548DFE0F1F8E00EC00CAFC00 /* libmp3lame.a in Frameworks */,
->>>>>>> 作业问答增加语音图片
 				5472B5A81F4EA64800C3110D /* libresolv.tbd in Frameworks */,
 				54294CD41DDB3CC200677333 /* UIKit.framework in Frameworks */,
 				5429159B1DD9DDCE00EE1A70 /* AudioToolbox.framework in Frameworks */,
