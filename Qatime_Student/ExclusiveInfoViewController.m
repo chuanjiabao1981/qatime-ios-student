@@ -130,6 +130,7 @@
     .rightSpaceToView(self.tutoriumInfoView.view1,20)
     .autoHeightRatio(0);
     [replayLabel updateLayout];
+    self.tutoriumInfoView.replayLabel.hidden = YES;
     
     [self.tutoriumInfoView.view1 setupAutoContentSizeWithBottomView:replayLabel bottomMargin:20];
     

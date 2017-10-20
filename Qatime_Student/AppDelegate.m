@@ -96,7 +96,7 @@
     /* 设置TabBarController*/
     [self setTabBarController];
     
-    NSLog(@"沙盒路径:%@",NSHomeDirectory());
+    NSLog(@"本地沙盒存储路径:%@",NSHomeDirectory());
     
     /* 判断是否是第一次进入程序,加载引导图页面*/
     NSUserDefaults *useDef = [NSUserDefaults standardUserDefaults];
