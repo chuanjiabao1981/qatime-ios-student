@@ -52,7 +52,12 @@
          contextName = "__67-[MyHomeworkViewController requestDataWithRefreshType:andDataType:]_block_invoke_2:MyHomeworkViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__63-[NewQuestionViewController uploadImageWithIndexPath:andImage:]_block_invoke.270:NewQuestionViewController.m">
+         contextName = "-[UITableView(CYLTableViewPlaceHolder) cyl_checkEmpty]:UITableView+CYLTableViewPlaceHolder.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.placeHolderView">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[TLCityPickerController hotCityData]:TLCityPickerController.m">
@@ -61,6 +66,9 @@
                value = "item.cityName">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__63-[NewQuestionViewController uploadImageWithIndexPath:andImage:]_block_invoke.270:NewQuestionViewController.m">
       </ContextState>
       <ContextState
          contextName = "__65-[ExclusiveAskViewController requestDataWithType:andRefreshType:]_block_invoke_2:ExclusiveAskViewController.m">

@@ -30,6 +30,7 @@
         _segmentControl = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"公告",@"聊天",@"详情",@"成员"]];
         _segmentControl.borderType = HMSegmentedControlBorderTypeBottom;
         _segmentControl.borderWidth = 0.5;
+        _segmentControl.selectionIndicatorHeight = 2;
         _segmentControl.borderColor = SEPERATELINECOLOR;
         _segmentControl.titleTextAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:15*ScrenScale]};
         _segmentControl.selectionIndicatorColor = NAVIGATIONRED;
@@ -66,7 +67,7 @@
         .topEqualToView(_scrollView)
         .bottomEqualToView(_scrollView)
         .leftEqualToView(_scrollView)
-        .widthRatioToView(self,1.0f);
+        .widthRatioToView(_scrollView,1.0f);
         
         _view2= [[UIView alloc]init];
         _view2.backgroundColor = [UIColor whiteColor];
@@ -76,7 +77,7 @@
         .topEqualToView(_scrollView)
         .bottomEqualToView(_scrollView)
         .leftSpaceToView(_view1,0)
-        .widthRatioToView(self,1.0f);
+        .widthRatioToView(_view1,1.0f);
         
         _view3= [[UIView alloc]init];
         _view3.backgroundColor = [UIColor whiteColor];
@@ -86,7 +87,7 @@
         .topEqualToView(_scrollView)
         .bottomEqualToView(_scrollView)
         .leftSpaceToView(_view2,0)
-        .widthRatioToView(self,1.0f);
+        .widthRatioToView(_view2,1.0f);
         
         _view4= [[UIView alloc]init];
         _view4.backgroundColor = [UIColor whiteColor];
@@ -96,13 +97,18 @@
         .topEqualToView(_scrollView)
         .bottomEqualToView(_scrollView)
         .leftSpaceToView(_view3,0)
-        .widthRatioToView(self,1.0f);
+        .widthRatioToView(_view3,1.0f);
         
-               
+        [_scrollView setupAutoContentSizeWithRightView:_view4 rightMargin:0];
+        [_scrollView setupAutoContentSizeWithBottomView:_view4 bottomMargin:0];
+        
+        typeof(self) __weak weakSelf = self;
+        _segmentControl.indexChangeBlock = ^(NSInteger index) {
+            [weakSelf.scrollView scrollRectToVisible:CGRectMake(weakSelf.scrollView.width_sd*index, 0, weakSelf.scrollView.width_sd, weakSelf.scrollView.height_sd) animated:YES];
+        };
     }
     return self;
 }
-
 
 
 @end

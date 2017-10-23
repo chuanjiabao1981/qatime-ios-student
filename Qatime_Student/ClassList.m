@@ -24,7 +24,6 @@
         .topEqualToView(self)
         .bottomEqualToView(self);
         
-        
     }
     return self;
 }

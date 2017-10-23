@@ -1482,9 +1482,6 @@
 }
 
 
-
-
-
 // 获取表情字符串
 - (NSString *)emotionText:(UITextView *)textView{
     
