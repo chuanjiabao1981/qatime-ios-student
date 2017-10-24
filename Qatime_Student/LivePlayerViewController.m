@@ -1077,7 +1077,7 @@ bool ismute     = NO;
     
     [_aBarrage.view removeFromSuperview];
     
-    [_noticeVC.noticeList cyl_reloadData];
+    [_noticeVC.noticeList.mj_header beginRefreshing];
     
 }
 
@@ -2924,10 +2924,7 @@ bool ismute     = NO;
 }
 
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    
-//    [IFView.inputView resignFirstResponder];
-//    [IFView changeSendBtnWithPhoto:YES];
-    
+
     [self.view endEditing:YES];
     
 }
