@@ -241,6 +241,11 @@
 		543BCB0E1E79173700AD6721 /* ClassSubjectCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB0D1E79173700AD6721 /* ClassSubjectCollectionViewCell.m */; };
 		543BCB111E7932AF00AD6721 /* ClassFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB101E7932AF00AD6721 /* ClassFilterView.m */; };
 		543BCB151E794AE900AD6721 /* SnailQuickMaskPopups.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB141E794AE900AD6721 /* SnailQuickMaskPopups.m */; };
+		543BDF2D1FA095A000A4B178 /* VideoPlayerViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 54D75FD81E2F9074003744FE /* VideoPlayerViewController.h */; };
+		543BDF2E1FA095B700A4B178 /* ReplayLessonInfo.h in Sources */ = {isa = PBXBuildFile; fileRef = 54FFF41C1EFCF9410065D80C /* ReplayLessonInfo.h */; };
+		543BDF2F1FA095B700A4B178 /* ReplayLessonsView.h in Sources */ = {isa = PBXBuildFile; fileRef = 54D86EDA1EFBAD8B0059932C /* ReplayLessonsView.h */; };
+		543BDF301FA095B700A4B178 /* ReplayLessonsViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 547210331EFBA24B00EA791C /* ReplayLessonsViewController.h */; };
+		543BDF311FA095B700A4B178 /* ReplayLesson.h in Sources */ = {isa = PBXBuildFile; fileRef = 541390B51EFA644000EF51AA /* ReplayLesson.h */; };
 		543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C207D1DC6F66B0086B04B /* IndexPageViewController.m */; };
 		543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20861DC703CA0086B04B /* PersonalViewController.m */; };
 		543E0CBE1DFFDA77004B24FD /* PayConfirmView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CBD1DFFDA77004B24FD /* PayConfirmView.m */; };
@@ -717,6 +722,7 @@
 		54EC85881F9DBF5A00944708 /* ClassNoticeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EC85871F9DBF5A00944708 /* ClassNoticeViewController.m */; };
 		54EC858B1F9DC47000944708 /* LivePlayerClassInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EC858A1F9DC47000944708 /* LivePlayerClassInfoViewController.m */; };
 		54EC858E1F9DD89A00944708 /* LivePlayerMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EC858D1F9DD89A00944708 /* LivePlayerMembersViewController.m */; };
+		54EC85901F9EDA6F00944708 /* libNMCBasicModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54EC858F1F9EDA6E00944708 /* libNMCBasicModule.a */; };
 		54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC41DFE8D67001A98CE /* OrderView.m */; };
 		54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC71DFE8D75001A98CE /* OrderViewController.m */; };
 		54F292281E8287170076D499 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F292271E8287170076D499 /* Assets.xcassets */; };
@@ -2219,6 +2225,7 @@
 		54EC858A1F9DC47000944708 /* LivePlayerClassInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LivePlayerClassInfoViewController.m; sourceTree = "<group>"; };
 		54EC858C1F9DD89A00944708 /* LivePlayerMembersViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivePlayerMembersViewController.h; sourceTree = "<group>"; };
 		54EC858D1F9DD89A00944708 /* LivePlayerMembersViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LivePlayerMembersViewController.m; sourceTree = "<group>"; };
+		54EC858F1F9EDA6E00944708 /* libNMCBasicModule.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libNMCBasicModule.a; sourceTree = "<group>"; };
 		54ECFEC31DFE8D67001A98CE /* OrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderView.h; sourceTree = "<group>"; };
 		54ECFEC41DFE8D67001A98CE /* OrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderView.m; sourceTree = "<group>"; };
 		54ECFEC61DFE8D75001A98CE /* OrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
@@ -2315,6 +2322,7 @@
 				54294F631DDB44C200677333 /* CoreAudio.framework in Frameworks */,
 				54294CD31DDB3CB500677333 /* QuartzCore.framework in Frameworks */,
 				54294CD51DDB3CCA00677333 /* OpenGLES.framework in Frameworks */,
+				54EC85901F9EDA6F00944708 /* libNMCBasicModule.a in Frameworks */,
 				54294F621DDB44A500677333 /* Foundation.framework in Frameworks */,
 				549AB81A1F5D4BB400DD1EA8 /* libiconv.tbd in Frameworks */,
 				54294CC31DDB3AC400677333 /* libstdc++.tbd in Frameworks */,
@@ -3584,6 +3592,7 @@
 		544AD3B41EC01AE2002F567D /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				54EC858F1F9EDA6E00944708 /* libNMCBasicModule.a */,
 				5472B5A01F4EA5EA00C3110D /* libcrypto.a */,
 				5472B5A11F4EA5EA00C3110D /* libNELivePlayer.a */,
 				5472B5A31F4EA5EA00C3110D /* libssl.a */,
@@ -7886,6 +7895,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				543BDF2E1FA095B700A4B178 /* ReplayLessonInfo.h in Sources */,
+				543BDF2F1FA095B700A4B178 /* ReplayLessonsView.h in Sources */,
+				543BDF301FA095B700A4B178 /* ReplayLessonsViewController.h in Sources */,
+				543BDF311FA095B700A4B178 /* ReplayLesson.h in Sources */,
+				543BDF2D1FA095A000A4B178 /* VideoPlayerViewController.h in Sources */,
 				54F3B8781F8F65E600F9980A /* YZReorder.h in Sources */,
 				54F3B8791F8F65E600F9980A /* YZReorder.m in Sources */,
 				548DFE151F8E01C500CAFC00 /* WechatAuthSDK.h in Sources */,
@@ -8717,6 +8731,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMAVChat",
@@ -8726,8 +8741,10 @@
 					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/NIM_iOS_SDK/NIMSDK",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMAVChat",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMSDK",
+					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/libs",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/include/",
@@ -8813,6 +8830,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMAVChat",
@@ -8822,8 +8840,10 @@
 					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/NIM_iOS_SDK/NIMSDK",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMAVChat",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMSDK",
+					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/libs",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/include/",

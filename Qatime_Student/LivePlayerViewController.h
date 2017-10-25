@@ -106,9 +106,9 @@
 
 /* 播放器的初始化方法*/
 
-- (id)initWithURL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm;
-
-+ (void)presentFromViewController:(UIViewController *)viewController withTitle:(NSString *)title URL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm completion:(void(^)())completion;
+//- (id)initWithURL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm;
+//
+//+ (void)presentFromViewController:(UIViewController *)viewController withTitle:(NSString *)title URL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm completion:(void(^)())completion;
 
 @property(nonatomic, strong)  NELivePlayerControl *mediaControl;
 

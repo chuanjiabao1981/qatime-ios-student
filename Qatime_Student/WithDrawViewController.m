@@ -221,8 +221,6 @@
             }
         }
         
-        
-        
     }else{
         
         [UIAlertController showAlertInViewController:self withTitle:@"提示"  message:@"余额不足!" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
@@ -296,14 +294,12 @@
             [self HUDStopWithTitle:@"申请提现失败,请稍后重试"];
         }
         
-        
     } failure:^(id  _Nullable erros) {
         
         [self HUDStopWithTitle:@"网络正忙,请稍后重试"];
         
     }];
 }
-
 
 
 - (void)returnLastPage{

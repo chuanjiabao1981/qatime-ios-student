@@ -42,20 +42,24 @@
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
     [self.view addSubview:_navigationBar];
     [_navigationBar.rightButton setTitle:@"取消" forState:UIControlStateNormal];
-    [_navigationBar.rightButton setupAutoSizeWithHorizontalPadding:5 buttonHeight:30*ScrenScale];
     [_navigationBar.rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_navigationBar.rightButton addTarget:self action:@selector(cancelSearchAction) forControlEvents:UIControlEventTouchUpInside];
-    
+    _navigationBar.rightButton.sd_resetLayout
+    .rightSpaceToView(_navigationBar.contentView, 10*ScrenScale)
+    .topEqualToView(_navigationBar.leftButton)
+    .bottomEqualToView(_navigationBar.leftButton);
+    [_navigationBar.rightButton setupAutoSizeWithHorizontalPadding:5 buttonHeight:_navigationBar.leftButton.height_sd];
     [_navigationBar.rightButton updateLayout];
     //放一个能打字的搜索框上去
     UIView *searchView = [[UIView alloc]init];
     searchView.backgroundColor = [UIColor whiteColor];
-    [_navigationBar addSubview:searchView];
+    [_navigationBar.contentView addSubview:searchView];
     searchView.sd_layout
     .topEqualToView(_navigationBar.rightButton)
-    .bottomEqualToView(_navigationBar.rightButton)
     .rightSpaceToView(_navigationBar.rightButton, 10*ScrenScale)
-    .leftSpaceToView(_navigationBar, 10*ScrenScale);
+    .leftSpaceToView(_navigationBar.contentView, 10*ScrenScale)
+    .bottomEqualToView(_navigationBar.rightButton);
+    [searchView updateLayout];
     searchView.sd_cornerRadiusFromHeightRatio = @0.5;
     
     //放大镜

@@ -35,6 +35,8 @@ typedef enum : NSUInteger {
     NSTimeInterval mDuration;
     NSTimeInterval mCurrPos;
     
+    int mCurrentPostion;
+    
     /**播放器加载次数*/
     NSInteger faildTime;
     
@@ -43,6 +45,8 @@ typedef enum : NSUInteger {
     
     /** 课程详情对象 */
     ReplayLessonInfo *_replayLessonInfo;
+    
+    BOOL _isMediaSliderBeingDragged;
 }
 
 /**播放器相关的属性*/
@@ -71,9 +75,14 @@ typedef enum : NSUInteger {
 
 /**控制层*/
 @property(nonatomic, strong)  NELivePlayerControl *mediaControl;
+
+
+
 @end
 
+
 @implementation ReplayLessonsViewController
+@synthesize timer;
 
 
 -(instancetype)initWithLesson:(ReplayLesson *)replayLesson{
@@ -171,6 +180,7 @@ typedef enum : NSUInteger {
         [_videoPlayer setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
         [_videoPlayer setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
         [_videoPlayer setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
+        [_videoPlayer setPlaybackTimeout:15 *1000]; // 设置拉流超时时间
         [_videoPlayer prepareToPlay]; //初始化视频文件
         
         if (!_playerView) {
@@ -196,6 +206,10 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerReleaseSuccess:) name:NELivePlayerReleaseSueecssNotification object:_videoPlayer];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerVideoParseError:) name:NELivePlayerVideoParseErrorNotification object:_videoPlayer];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerSeekComplete:) name:NELivePlayerMoviePlayerSeekCompletedNotification object:_videoPlayer];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerSeekCompleteError:) name:NELivePlayerMoviePlayerSeekCompletedErrorKey object:_videoPlayer];
+    
     
     /* 变为全屏后的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnFullScreen:) name:@"FullScreen" object:nil];
@@ -448,7 +462,9 @@ typedef enum : NSUInteger {
     [[UISlider appearance] setThumbImage:[UIImage imageNamed:@"btn_player_slider_thumb"] forState:UIControlStateNormal];
     [[UISlider appearance] setMaximumTrackImage:[UIImage imageNamed:@"btn_player_slider_all"] forState:UIControlStateNormal];
     [[UISlider appearance] setMinimumTrackImage:[UIImage imageNamed:@"btn_player_slider_played"] forState:UIControlStateNormal];
-    [self.videoProgress addTarget:self action:@selector(onClickSeek:) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoProgress addTarget:self action:@selector(onClickSeek:) forControlEvents:UIControlEventValueChanged];
+    [self.videoProgress addTarget:self action:@selector(onClickSeekTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoProgress addTarget:self action:@selector(onClickSeekTouchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
     /*
     //    切换清晰度按钮
     self.resolutionBtn = [[UIButton alloc]init];
@@ -500,7 +516,7 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstVideoDisplayedNotification object:_videoPlayer];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstAudioDisplayedNotification object:_videoPlayer];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerVideoParseErrorNotification object:_videoPlayer];
-    
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerMoviePlayerSeekCompletedNotification object:_videoPlayer];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIDeviceOrientationDidChangeNotification object:_videoPlayer];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"TurnDownFullScreen" object:_videoPlayer];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"FullScreen" object:_videoPlayer];
@@ -516,49 +532,124 @@ typedef enum : NSUInteger {
     
 }
 
+dispatch_source_t CreateDispatchSyncUITimer2(double interval, dispatch_queue_t queue, dispatch_block_t block){
+    
+    //创建Timer
+    dispatch_source_t timer  = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);//queue是一个专门执行timer回调的GCD队列
+    if (timer) {
+        //使用dispatch_source_set_timer函数设置timer参数
+        dispatch_source_set_timer(timer, dispatch_time(DISPATCH_TIME_NOW, interval*NSEC_PER_SEC), interval*NSEC_PER_SEC, (1ull * NSEC_PER_SEC)/10);
+        //设置回调
+        dispatch_source_set_event_handler(timer, block);
+        //dispatch_source默认是Suspended状态，通过dispatch_resume函数开始它
+        dispatch_resume(timer);
+    }
+    
+    return timer;
+}
+
+//
+//dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t queue, dispatch_block_t block){
+//    //创建Timer
+//    dispatch_source_t timer  = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);//queue是一个专门执行timer回调的GCD队列
+//    if (timer) {
+//        //使用dispatch_source_set_timer函数设置timer参数
+//        dispatch_source_set_timer(timer, dispatch_time(DISPATCH_TIME_NOW, interval*NSEC_PER_SEC), interval*NSEC_PER_SEC, (1ull * NSEC_PER_SEC)/10);
+//        //设置回调
+//        dispatch_source_set_event_handler(timer, block);
+//        //dispatch_source默认是Suspended状态，通过dispatch_resume函数开始它
+//        dispatch_resume(timer);
+//    }
+//
+//    return timer;
+//}
 
 #pragma mark - 播放器的播放/停止/退出等方法
 
 - (void)syncUIStatus:(BOOL)isSync
 {
-    mDuration = [self.videoPlayer duration];
-    NSInteger duration = round(mDuration);
+    self.playBtn.hidden = YES;
+    self.pauseBtn.hidden = NO;
     
-    mCurrPos  = [self.videoPlayer currentPlaybackTime];
-    NSInteger currPos  = round(mCurrPos);
-    
-//    self.currentTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(currPos / 3600), (int)(currPos > 3600 ? (currPos - (currPos / 3600)*3600) / 60 : currPos/60), (int)(currPos % 60)];
-    
-    if (duration > 0) {
-        self.totalDuration.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(duration / 3600), (int)(duration > 3600 ? (duration - 3600 * (duration / 3600)) / 60 : duration/60), (int)(duration > 3600 ? ((duration - 3600 * (duration / 3600)) % 60) :(duration % 60))];
-        self.videoProgress.value = mCurrPos;
-        self.videoProgress.maximumValue = mDuration;
-    } else {
-        [self.videoProgress setValue:0.0f];
-    }
-    
-    if ([self.videoPlayer playbackState] == NELPMoviePlaybackStatePlaying) {
+    __block bool getDurFlag = false;
+    __weak typeof(self) weakSelf = self;
+    dispatch_queue_t syncUIQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    timer = CreateDispatchSyncUITimer2(1.0, syncUIQueue, ^{
         
-        self.playBtn.hidden = YES;
-        [self.playBtn removeAllTargets];
-        
-        self.pauseBtn.hidden = NO;
-        [_bottomControlView bringSubviewToFront:self.pauseBtn];
-        [self.pauseBtn addTarget:self action:@selector(onClickPause:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    else {
-        self.playBtn.hidden = NO;
-        [_bottomControlView bringSubviewToFront:self.playBtn];
-        self.pauseBtn.hidden = YES;
-        [self.pauseBtn removeAllTargets];
-        
-        [self.playBtn addTarget:self action:@selector(onClickPlay:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncUIStatus:) object:nil];
-    if (!self.playQuitBtn.hidden && !isSync) {
-        [self performSelector:@selector(syncUIStatus:) withObject:nil afterDelay:0.5];
-    }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            mDuration = [weakSelf.videoPlayer duration];
+            if (mDuration > 0) {
+                getDurFlag = true;
+            }
+            
+            NSInteger duration = round(mDuration);
+            
+            if (_isMediaSliderBeingDragged) {
+                mCurrPos = self.videoProgress.value;
+            }
+            else {
+                mCurrPos  = [weakSelf.videoPlayer currentPlaybackTime];
+            }
+            NSInteger currPos  = round(mCurrPos);
+            
+            //            self.currentTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(currPos / 3600), (int)(currPos > 3600 ? (currPos - (currPos / 3600)*3600) / 60 : currPos/60), (int)(currPos % 60)];
+            
+            if (duration > 0) {
+                self.totalDuration.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(duration / 3600), (int)(duration > 3600 ? (duration - 3600 * (duration / 3600)) / 60 : duration/60), (int)(duration > 3600 ? ((duration - 3600 * (duration / 3600)) % 60) :(duration % 60))];
+                self.videoProgress.value = mCurrPos;
+                self.videoProgress.maximumValue = mDuration;
+            } else {
+                [self.videoProgress setValue:0.0f];
+            }
+            
+            if ([self.videoPlayer playbackState] == NELPMoviePlaybackStatePlaying) {
+                self.playBtn.hidden = YES;
+                self.pauseBtn.hidden = NO;
+            }
+            else {
+                self.playBtn.hidden = NO;
+                self.pauseBtn.hidden = YES;
+            }
+        });
+    });
+    //    mDuration = [self.videoPlayer duration];
+    //    NSInteger duration = round(mDuration);
+    //
+    //    mCurrPos  = [self.videoPlayer currentPlaybackTime];
+    //    NSInteger currPos  = round(mCurrPos);
+    //
+    ////    self.currentTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(currPos / 3600), (int)(currPos > 3600 ? (currPos - (currPos / 3600)*3600) / 60 : currPos/60), (int)(currPos % 60)];
+    //
+    //    if (duration > 0) {
+    //        self.totalDuration.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(duration / 3600), (int)(duration > 3600 ? (duration - 3600 * (duration / 3600)) / 60 : duration/60), (int)(duration > 3600 ? ((duration - 3600 * (duration / 3600)) % 60) :(duration % 60))];
+    //        self.videoProgress.value = mCurrPos;
+    //        self.videoProgress.maximumValue = mDuration;
+    //    } else {
+    //        [self.videoProgress setValue:0.0f];
+    //    }
+    //
+    //    if ([self.videoPlayer playbackState] == NELPMoviePlaybackStatePlaying) {
+    //
+    //        self.playBtn.hidden = YES;
+    //        [self.playBtn removeAllTargets];
+    //
+    //        self.pauseBtn.hidden = NO;
+    //        [_bottomControlView bringSubviewToFront:self.pauseBtn];
+    //        [self.pauseBtn addTarget:self action:@selector(onClickPause:) forControlEvents:UIControlEventTouchUpInside];
+    //    }
+    //    else {
+    //        self.playBtn.hidden = NO;
+    //        [_bottomControlView bringSubviewToFront:self.playBtn];
+    //        self.pauseBtn.hidden = YES;
+    //        [self.pauseBtn removeAllTargets];
+    //
+    //        [self.playBtn addTarget:self action:@selector(onClickPlay:) forControlEvents:UIControlEventTouchUpInside];
+    //    }
+    //
+    //    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncUIStatus:) object:nil];
+    //    if (!self.playQuitBtn.hidden && !isSync) {
+    //        [self performSelector:@selector(syncUIStatus:) withObject:nil afterDelay:0.5];
+    //    }
 }
 
 //退出播放
@@ -569,7 +660,7 @@ typedef enum : NSUInteger {
         //
         
         NSLog(@"click back!");
-    
+        
         /* 全屏状态下的点击事件*/
     }else if (isFullScreen == YES){
         
@@ -658,8 +749,20 @@ typedef enum : NSUInteger {
 {
     NSLog(@"click seek");
     NSTimeInterval currentPlayTime = self.videoProgress.value;
-    [self.videoPlayer setCurrentPlaybackTime:currentPlayTime];
-    [self syncUIStatus:NO];
+    mCurrentPostion = (int)currentPlayTime;
+}
+
+- (void)onClickSeekTouchUpInside:(id)sender
+{
+    NSLog(@"onClickSeekTouchUpInside");
+    _videoPlayer.currentPlaybackTime = mCurrentPostion;
+    _isMediaSliderBeingDragged = NO;
+}
+
+- (void)onClickSeekTouchUpOutside:(id)sender
+{
+    NSLog(@"onClickSeekTouchUpOutside");
+    _isMediaSliderBeingDragged = NO;
 }
 
 #pragma mark- 控制层点击事件
@@ -685,6 +788,8 @@ typedef enum : NSUInteger {
     
     [self performSelector:@selector(hideControlOverlay) withObject:nil afterDelay:0.5];
 }
+
+
 /* 控制层出现,带动画*/
 - (void)controlOverlayShow{
     
@@ -772,6 +877,16 @@ typedef enum : NSUInteger {
 - (void)NELivePlayerVideoParseError:(NSNotification*)notification
 {
     NSLog(@"video parse error!");
+}
+
+- (void)NELivePlayerSeekComplete:(NSNotification*)notification
+{
+    NSLog(@"seek complete!");
+}
+
+- (void)NELivePlayerSeekCompleteError:(NSNotification*)notification{
+    
+    
 }
 
 - (void)NELivePlayerReleaseSuccess:(NSNotification*)notification
@@ -944,8 +1059,6 @@ typedef enum : NSUInteger {
     .widthEqualToHeight();
     
 }
-
-
 
 
 - (void)didReceiveMemoryWarning {

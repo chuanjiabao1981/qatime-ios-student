@@ -358,6 +358,8 @@ typedef enum : NSUInteger {
     
     /* 白板的 播放器*/
     _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:_boardPullAddress];
+    
+    
     _liveplayerBoard.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     [_liveplayerBoard setScalingMode:NELPMovieScalingModeAspectFit];
     
@@ -2025,12 +2027,11 @@ typedef enum : NSUInteger {
         {
             if ([notification object]==_liveplayerBoard){
                 
-                [_liveplayerBoard stop];
-                
+                [_liveplayerBoard shutdown];
                 
             }else if ([notification object]==_liveplayerTeacher){
                 
-                [_liveplayerTeacher stop];
+                [_liveplayerTeacher shutdown];
                 
             }
             
