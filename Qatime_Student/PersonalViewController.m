@@ -371,7 +371,7 @@
     if (cell==nil) {
         cell=[[SettingTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
     }
-    
+    [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     [cell.logoImage setImage:_cellImage[indexPath.row]];
     cell.settingName.text = _settingName[indexPath.row];
     cell.arrow.hidden = YES;

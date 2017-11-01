@@ -10,7 +10,6 @@
 #import "NELivePlayerControl.h"
 #import "NELivePlayerController.h"
 
-
 @interface PlayerView : FJFloatingView
 
 @property(nonatomic, strong) NELivePlayerController <NELivePlayer> *liveplayerBoard;

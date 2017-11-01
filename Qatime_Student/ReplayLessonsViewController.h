@@ -15,8 +15,9 @@
 @interface ReplayLessonsViewController : UIViewController
 
 /**视频播放器*/
-@property (nonatomic, strong) NELivePlayerController <NELivePlayer>* _Nullable videoPlayer ;
+@property (nonatomic, strong) id <NELivePlayer> videoPlayer ;
 
+@property(nonatomic, strong) dispatch_source_t timer;
 /**控制层*/
 @property (nonatomic, strong) NELivePlayerControl * _Nullable controlView ;
 

@@ -15,17 +15,8 @@
 /* 另一个滑动控制器....*/
 @property(nonatomic,strong) JTSegmentControl *segmentControl ;
 
-/* 滑动控制器*/
-//@property(nonatomic,strong) HMSegmentedControl *segmentControl ;
-
-
 /* 大滚动视图*/
 @property(nonatomic,strong) UIScrollView  *scrollView ;
 
-/* 聊天室列表*/
-@property(nonatomic,strong) UITableView *chatListTableView ;
-
-/* 消息列表*/
-@property(nonatomic,strong) UITableView *noticeTableView ;
 
 @end

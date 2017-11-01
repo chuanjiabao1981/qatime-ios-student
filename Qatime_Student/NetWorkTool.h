@@ -22,3 +22,4 @@
 #import "UIImage+Color.h"
 #import "UIViewController+ReturnLastPage.h"
 #import "UIViewController+Token.h"
+#import "UIAlertController+Blocks.h"

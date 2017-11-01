@@ -206,20 +206,21 @@
     _title.text = model.body;
     
     //先判断老师留的作业有没有附件 有没有语音 ,有没有图片,有几个图片
+    if (model.homeworkPhotos.count!=0) {
+        [model.homeworkPhotos removeAllObjects];
+    }
     if (_model.attachments) {
         for (NSDictionary *atts in _model.attachments) {
-            if (_model.havePhotos == NO) {
-                if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
-                    _model.havePhotos = YES;
-                    [_model.homeworkPhotos addObject:atts];
-                }
+            if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
+                _model.havePhotos = YES;
+                [_model.homeworkPhotos addObject:atts];
             }
-            if (_model.haveRecord == NO) {
-                if ([atts[@"file_type"]isEqualToString:@"mp3"]) {
-                    _model.haveRecord = YES;
-                    _model.homeworkRecordURL = atts[@"file_url"];
-                }
+            
+            if ([atts[@"file_type"]isEqualToString:@"mp3"]) {
+                _model.haveRecord = YES;
+                _model.homeworkRecordURL = atts[@"file_url"];
             }
+            
         }
     }else{
         _model.havePhotos = NO;
@@ -232,6 +233,9 @@
             _model.haveAnswerPhotos = NO;
             _model.haveAnswerRecord = NO;
         }else{
+            if (model.myAnswerPhotos.count!=0) {
+                [model.myAnswerPhotos removeAllObjects];
+            }
             for (NSDictionary *atts in _model.answers[@"attachments"]) {
                 if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
                     _model.haveAnswerPhotos = YES;
@@ -248,6 +252,9 @@
     if (_model.correction) {
         //有批改.
         _model.haveCorrection = YES;
+        if (model.correctionPhotos.count!=0) {
+            [model.correctionPhotos removeAllObjects];
+        }
         for (NSDictionary *atts in _model.correction[@"attachments"]) {
             if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
                 _model.haveCorrectPhotos = YES;

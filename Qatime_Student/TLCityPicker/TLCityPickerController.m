@@ -70,6 +70,7 @@
 - (void)loadView{
     
     [super loadView];
+    
     _navigationBar =({
         NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
         
@@ -122,11 +123,12 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _cityFilePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"City.plist"];
     
+    self.hotCitys = @[@"阳泉市",@"太原市",@"乐平市"];
+    
     /* 次级导航栏的*/
     [_localChoseView.city setTitle:_chosenCity forState:UIControlStateNormal];
     
 //    [_localChoseView.getLocal addTarget:self action:@selector(getLocation) forControlEvents:UIControlEventTouchUpInside];
-    
 }
 
 
@@ -136,10 +138,10 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0||section == 2) {
+    if (section == 2) {
         
         return 0;
-    }else if (section == 1) {
+    }else if (section == 0||section == 1) {
         return 1;
     }
     
@@ -151,12 +153,12 @@
     if (indexPath.section < 3) {
         TLCityGroupCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TLCityGroupCell"];
         if (indexPath.section == 0) {
-//            [cell setTitle:@"定位城市"];
-//            [cell setCityArray:self.localCityData];
-        }
-        else if (indexPath.section == 1) {
             [cell setTitle:@"最近选择"];
             [cell setCityArray:self.commonCityData];
+        }
+        else if (indexPath.section == 1) {
+            [cell setTitle:@"热门城市"];
+            [cell setCityArray:self.hotCityData];
         }
         else {
 //            [cell setTitle:@"全国"];
@@ -201,14 +203,12 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-//        return [TLCityGroupCell getCellHeightOfCityArray:self.localCityData];
-    }
-    else if (indexPath.section == 1) {
         return [TLCityGroupCell getCellHeightOfCityArray:self.commonCityData];
     }
-    else if (indexPath.section == 2){
-//        return [TLCityGroupCell getCellHeightOfCityArray:self.hotCityData];
+    else if (indexPath.section == 1) {
+       return [TLCityGroupCell getCellHeightOfCityArray:self.hotCityData];
     }
+    
     return 43.0f;
 }
 
@@ -300,7 +300,7 @@
             break;
         }
     }
-    [self.commonCitys insertObject:city.cityID atIndex:0];
+    [self.commonCitys insertObject:city.cityID atIndex:1]; //0位置上永远是"全国"
     [[NSUserDefaults standardUserDefaults] setValue:self.commonCitys forKey:COMMON_CITY_DATA_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
@@ -440,14 +440,14 @@
     return _localCityData;
 }
 
-- (NSMutableArray *) hotCityData
-{
+- (NSMutableArray *) hotCityData{
+    
     if (_hotCityData == nil) {
         _hotCityData = [[NSMutableArray alloc] init];
         for (NSString *str in self.hotCitys) {
             TLCity *city = nil;
             for (TLCity *item in self.cityData) {
-                if ([item.cityID isEqualToString:str]) {
+                if ([item.cityName isEqualToString:str]) {
                     city = item;
                     break;
                 }
@@ -489,7 +489,7 @@
 - (NSMutableArray *) arraySection
 {
     if (_arraySection == nil) {
-        _arraySection = [[NSMutableArray alloc] initWithObjects:UITableViewIndexSearch, @"定位", @"最近",@"", nil];
+        _arraySection = [[NSMutableArray alloc] initWithObjects:UITableViewIndexSearch, @"定位", @"最近",@"热门", nil];
     }
     return _arraySection;
 }
@@ -506,10 +506,13 @@
         }
         
     }else{
-        _commonCitys = @[].mutableCopy;
-        //在这儿添加个"全国"
-        [_commonCitys addObject:@"000"];
-        
+        if (_commonCitys.count!=0) {
+            
+        }else{
+            _commonCitys = @[].mutableCopy;
+            //在这儿添加个"全国"
+            [_commonCitys addObject:@"000"];
+        }
     }
     return _commonCitys;
 }

@@ -231,6 +231,9 @@
             }else{//课程已经结束了
                 //整个购买栏直接隐藏吧
                 _buyView.hidden = YES;
+                self.myView.sd_layout
+                .bottomSpaceToView(self.view, 0);
+                [self.myView updateLayout];
             }
             
         }else{//需要购买
@@ -242,6 +245,9 @@
         if ([dic[@"data"][@"course"][@"off_shelve"]boolValue]==YES) {//已下架
             //已经下架
             _buyView.hidden = YES;
+            self.myView.sd_layout
+            .bottomSpaceToView(self.view, 0);
+            [self.myView updateLayout];
             _myView.priceLabel.text = @"已下架";
         }else{
             
@@ -299,6 +305,8 @@
 - (void)setupMainViews{
     
     [self.view addSubview:self.myView];
+    
+    [self.myView updateLayout];
     
 }
 

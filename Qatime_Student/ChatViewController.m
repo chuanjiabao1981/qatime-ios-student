@@ -70,7 +70,7 @@
 #import "ClassMembersViewController.h"
 #import "ExclusiveInfo.h"
 
-@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate,NIMMediaManagerDelegate,NotificationTipsDelegat>{
+@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate,NIMMediaManagerDelegate,NotificationTipsDelegat,UUInputFunctionViewRecordDelegate>{
     
     NSString *_token;
     NSString *_idNumber;
@@ -179,6 +179,8 @@
         _.TextViewInput.placeholder = @"请输入要发送的信息";
         
         _.delegate= self;
+        
+        _.recordDelegate = self;
         
         [self.view addSubview:_];
         _;
@@ -1487,6 +1489,7 @@
                     reMessage.text = failMsg.message.strContent;
                     reMessage.messageObject = NIMMessageTypeText;
                     reMessage.apnsContent = @"发来了一条消息";
+                    
                     [[NIMSDK sharedSDK].chatManager addDelegate:self];
                     
                 }
@@ -1644,6 +1647,35 @@
             text_message.text = title;
             text_message.messageObject = NIMMessageTypeText;
             text_message.apnsContent = @"发来了一条消息";
+            
+            NSString *classtype;
+            
+            switch (_classType) {
+                case LiveCourseType:
+                    classtype = @"liveCourse";
+                    break;
+                case InteractionCourseType:
+                    classtype = @"interactionCourse";
+                    break;
+                case VideoCourseType:
+                    classtype = @"videoCourse";
+                    break;
+                case ExclusiveCourseType:
+                    classtype = @"exclusiveType";
+                    break;
+            }
+            
+            text_message.apnsPayload = @{
+                                         @"aps":@{
+                                                 @"alert" : @"xxxxx",
+                                                 @"badge" : @"85",
+                                                 @"sound" : @"default"
+                                                 },
+                                         @"nim" : @"1",
+                                         @"teamID":_chat_teamID,
+                                         @"classID":_classID,
+                                         @"type":classtype
+                                         };
             
             [[NIMSDK sharedSDK].chatManager addDelegate:self];
             [[NIMSDK sharedSDK].chatManager sendMessage:text_message toSession:_session error:nil];
@@ -1906,8 +1938,12 @@
 
 - (void)returnLastPage{
     
-    
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.navigationController.viewControllers.count == 1) {
+        self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self dismissViewControllerAnimated:NO completion:^{}];
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 
@@ -2059,6 +2095,8 @@
     }
     
 }
+
+
 
 
 - (void)didReceiveMemoryWarning {

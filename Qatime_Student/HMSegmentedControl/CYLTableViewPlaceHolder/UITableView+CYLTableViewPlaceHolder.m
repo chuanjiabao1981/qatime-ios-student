@@ -14,7 +14,7 @@
 @interface UITableView ()
 
 @property (nonatomic, assign) BOOL scrollWasEnabled;
-@property (nonatomic, strong) UIView *placeHolderView;
+
 
 @end
 
@@ -93,6 +93,10 @@
             }
             self.placeHolderView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
             [self addSubview:self.placeHolderView];
+//            [self.placeHolderView mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.left.right.top.bottom.mas_equalTo(self).offset(0);
+//            }];
+            
         } else {
             self.scrollEnabled = self.scrollWasEnabled;
             [self.placeHolderView removeFromSuperview];
@@ -101,7 +105,11 @@
     } else if (isEmpty) {
         // Make sure it is still above all siblings.
         [self.placeHolderView removeFromSuperview];
+        self.placeHolderView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
         [self addSubview:self.placeHolderView];
+//        [self.placeHolderView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.right.top.bottom.mas_equalTo(self).offset(0);
+//        }];
     }
 }
 

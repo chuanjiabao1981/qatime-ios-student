@@ -10,6 +10,7 @@
 #import "LivePlayerViewController.h"
 #import "ReplayVideoPlayerViewController.h"
 #import "AppDelegate.h"
+#import "ChatViewController.h"
 
 @interface ViewController (){
     
@@ -33,10 +34,7 @@
     
 }
 
-- (void)showNIMPage:(NSNotification *)notification{
-    
-    
-}
+
     
 - (BOOL)prefersStatusBarHidden{
     return NO;

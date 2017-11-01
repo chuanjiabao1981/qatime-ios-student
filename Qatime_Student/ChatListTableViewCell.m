@@ -82,7 +82,6 @@
             
         });
         
-        
         /* 默认接受推送*/
         _noticeOn = YES;
         
@@ -170,19 +169,18 @@
     }
 
     if (model.tutorium.name!=nil) {
-        if (model.tutorium.notify==YES) {
+        if (model.tutorium.notifyState == NIMTeamNotifyStateAll) {
             _noticeOn = YES;
-        }else if (model.tutorium.notify==NO){
+        }else if (model.tutorium.notifyState == NIMTeamNotifyStateNone){
             _noticeOn = NO;
         }
     }else{
         
-        if (model.interaction.notify==YES) {
+        if (model.interaction.notifyState == NIMTeamNotifyStateAll) {
             _noticeOn = YES;
-        }else if (model.interaction.notify==NO){
+        }else if (model.interaction.notifyState == NIMTeamNotifyStateNone){
             _noticeOn = NO;
         }
-        
     }
  
 }

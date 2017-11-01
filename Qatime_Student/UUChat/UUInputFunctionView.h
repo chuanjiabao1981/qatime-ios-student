@@ -19,11 +19,18 @@
 // image
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendPicture:(UIImage *)image;
 
+
+@end
+
+
+@protocol UUInputFunctionViewRecordDelegate <NSObject>
+
 // audio
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView voicePath:(NSString *)path time:(NSInteger)second;
 
-
 @end
+
+
 
 @interface UUInputFunctionView : UIView <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
@@ -46,6 +53,8 @@
 @property (nonatomic, assign) UIViewController *superVC;
 
 @property (nonatomic, assign) id<UUInputFunctionViewDelegate>delegate;
+
+@property (nonatomic, assign) id<UUInputFunctionViewRecordDelegate> recordDelegate ;
 
 - (id)initWithSuperVC:(UIViewController *)superVC;
 

@@ -28,7 +28,6 @@
             _.textColor = [UIColor grayColor];
             _.font = TITLEFONTSIZE;
         
-            
             NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc]init];
             style.lineSpacing = 5.0;
             NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:@"    北京维幄通达网络科技有限公司，成立于2012年初，主要从事教育科研产品的销售以及教育网络推广。公司实力优越，拥有一批科研技术专业能力强大的研发团队。目前，教育信息化改革的背景下，公司紧紧围绕互联网技术与教育产生信息化这一特点，重点着力于建立 独具特色的现代信息化教育模式，公司的研发成果为优化教育资源，推进教育信息改革起到了很大的促进作用。现阶段公司正积极面向全国开展销售推广业务，具有强大的发展潜力和良好的发展前景。现诚邀有志之士加入我们，与我们携手共同实现理想。" attributes:@{NSParagraphStyleAttributeName:style,

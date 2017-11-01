@@ -575,7 +575,7 @@ dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t qu
         //dispatch_source默认是Suspended状态，通过dispatch_resume函数开始它
         dispatch_resume(timer);
     }
-    
+
     return timer;
 }
 

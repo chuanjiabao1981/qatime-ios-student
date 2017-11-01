@@ -43,7 +43,7 @@
             .rightSpaceToView(self,20)
             .topSpaceToView(_menuTableView,60)
             .heightRatioToView(self,0.06f);
-            [_ setTitle:@"切换账号" forState:UIControlStateNormal];
+            [_ setTitle:@"退出登录" forState:UIControlStateNormal];
             _.sd_cornerRadius = [NSNumber numberWithFloat:M_PI*2];
             [_ setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
             _.layer.borderColor = NAVIGATIONRED.CGColor;

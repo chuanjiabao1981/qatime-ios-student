@@ -18,6 +18,7 @@
 #import "LiveClassInfoView.h"
 #import "NELivePlayerControl.h"
 
+
 @interface ExclusivePlayerViewController : UIViewController <NELivePlayer>
 
 

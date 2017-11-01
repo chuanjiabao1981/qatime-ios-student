@@ -288,10 +288,11 @@
             .topEqualToView(self)
             .bottomEqualToView(self);
             [_ setupAutoSizeWithHorizontalPadding:10 buttonHeight:self.height_sd];
-            
             _;
             
         });
+        _tagsButton.hidden = YES;
+        
         _tagImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"标签"]];
         [self addSubview: _tagImage];
         _tagImage.sd_layout
@@ -299,6 +300,7 @@
         .centerYEqualToView(_tagsButton)
         .heightRatioToView(_tagsButton,0.5)
         .widthEqualToHeight();
+        _tagImage.hidden = YES;
         
         _line = [[UIView alloc]init];
             [self addSubview:_line];
@@ -382,7 +384,8 @@
             break;
     }
     
-    
+    _tagImage.hidden = YES;
+    _tagsButton.hidden = YES;
     
 }
 

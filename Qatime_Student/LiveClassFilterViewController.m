@@ -13,7 +13,6 @@
 #import "CYLTableViewPlaceHolder.h"
 
 
-
 @interface LiveClassFilterViewController ()<UITableViewDataSource,UITableViewDelegate,CYLTableViewPlaceHolderDelegate>{
     
 }

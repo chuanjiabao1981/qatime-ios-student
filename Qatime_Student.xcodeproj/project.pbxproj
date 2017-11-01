@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		54008B051FA6BE6F0030CB91 /* ShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54008B041FA6BE6F0030CB91 /* ShareView.m */; };
+		54008B0B1FA6C83A0030CB91 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54008B0A1FA6C83A0030CB91 /* ShareViewController.m */; };
 		5407B0781EB032EA005CD82B /* ConfirmRechargeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407B0771EB032EA005CD82B /* ConfirmRechargeViewController.m */; };
 		5407C98C1DE7DDED00DB04C8 /* NSBundle+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C9881DE7DDED00DB04C8 /* NSBundle+YYAdd.m */; };
 		5407C98D1DE7DDED00DB04C8 /* NSObject+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5407C98A1DE7DDED00DB04C8 /* NSObject+YYAdd.m */; };
@@ -217,6 +219,10 @@
 		542F4DA91F29C7420070E321 /* ExclusiveInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F4DA81F29C7420070E321 /* ExclusiveInfo.m */; };
 		542F4DAD1F29C84D0070E321 /* ExclusiveLesson.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F4DAC1F29C84D0070E321 /* ExclusiveLesson.m */; };
 		542F4DB01F2AD7CE0070E321 /* MyExclusiveClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F4DAF1F2AD7CE0070E321 /* MyExclusiveClass.m */; };
+		542F55911FA2E3710005E3DC /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 542F558F1FA2E3700005E3DC /* libcrypto.a */; };
+		542F55921FA2E3710005E3DC /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 542F55901FA2E3710005E3DC /* libssl.a */; };
+		542F55941FA2E7750005E3DC /* libNELivePlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 542F55931FA2E7740005E3DC /* libNELivePlayer.a */; };
+		542F55971FA2EB200005E3DC /* NELivePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F55951FA2EB200005E3DC /* NELivePlayerViewController.m */; };
 		542F94EC1EDE73D3008279E0 /* InteractiveCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F94EB1EDE73D3008279E0 /* InteractiveCourse.m */; };
 		542F94EF1EDE8C29008279E0 /* Interactive.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F94EE1EDE8C29008279E0 /* Interactive.m */; };
 		543278661E8CE50200F7A2D9 /* IJKFloatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543278651E8CE50200F7A2D9 /* IJKFloatingView.m */; };
@@ -241,6 +247,11 @@
 		543BCB0E1E79173700AD6721 /* ClassSubjectCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB0D1E79173700AD6721 /* ClassSubjectCollectionViewCell.m */; };
 		543BCB111E7932AF00AD6721 /* ClassFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB101E7932AF00AD6721 /* ClassFilterView.m */; };
 		543BCB151E794AE900AD6721 /* SnailQuickMaskPopups.m in Sources */ = {isa = PBXBuildFile; fileRef = 543BCB141E794AE900AD6721 /* SnailQuickMaskPopups.m */; };
+		543BDF2D1FA095A000A4B178 /* VideoPlayerViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 54D75FD81E2F9074003744FE /* VideoPlayerViewController.h */; };
+		543BDF2E1FA095B700A4B178 /* ReplayLessonInfo.h in Sources */ = {isa = PBXBuildFile; fileRef = 54FFF41C1EFCF9410065D80C /* ReplayLessonInfo.h */; };
+		543BDF2F1FA095B700A4B178 /* ReplayLessonsView.h in Sources */ = {isa = PBXBuildFile; fileRef = 54D86EDA1EFBAD8B0059932C /* ReplayLessonsView.h */; };
+		543BDF301FA095B700A4B178 /* ReplayLessonsViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 547210331EFBA24B00EA791C /* ReplayLessonsViewController.h */; };
+		543BDF311FA095B700A4B178 /* ReplayLesson.h in Sources */ = {isa = PBXBuildFile; fileRef = 541390B51EFA644000EF51AA /* ReplayLesson.h */; };
 		543C207E1DC6F66B0086B04B /* IndexPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C207D1DC6F66B0086B04B /* IndexPageViewController.m */; };
 		543C20871DC703CA0086B04B /* PersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 543C20861DC703CA0086B04B /* PersonalViewController.m */; };
 		543E0CBE1DFFDA77004B24FD /* PayConfirmView.m in Sources */ = {isa = PBXBuildFile; fileRef = 543E0CBD1DFFDA77004B24FD /* PayConfirmView.m */; };
@@ -328,6 +339,7 @@
 		5452260E1E24830200F36280 /* EditBirthdayTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5452260D1E24830100F36280 /* EditBirthdayTableViewCell.m */; };
 		545226151E24CDD300F36280 /* OrderInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 545226141E24CDD300F36280 /* OrderInfoView.m */; };
 		545226181E24CDE100F36280 /* OrderInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545226171E24CDE100F36280 /* OrderInfoViewController.m */; };
+		5452F4F11FA8625F00086C16 /* NSObject+Selector.m in Sources */ = {isa = PBXBuildFile; fileRef = 5452F4F01FA8625F00086C16 /* NSObject+Selector.m */; };
 		5453ADE91F6A26B300064BD7 /* MyQuestionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5453ADE81F6A26B300064BD7 /* MyQuestionsTableViewCell.swift */; };
 		5453ADED1F6A586200064BD7 /* AnswerInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5453ADEC1F6A586200064BD7 /* AnswerInfoView.m */; };
 		5453ADF01F6A59CD00064BD7 /* Answers.m in Sources */ = {isa = PBXBuildFile; fileRef = 5453ADEF1F6A59CD00064BD7 /* Answers.m */; };
@@ -378,9 +390,6 @@
 		5471C8021E8F87FD0098E509 /* ClassListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5471C8011E8F87FD0098E509 /* ClassListTableView.m */; };
 		547210351EFBA24B00EA791C /* ReplayLessonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547210341EFBA24B00EA791C /* ReplayLessonsViewController.m */; };
 		5472B59F1F4EA4B300C3110D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5472B59E1F4EA4B300C3110D /* libsqlite3.tbd */; };
-		5472B5A41F4EA5EA00C3110D /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5472B5A01F4EA5EA00C3110D /* libcrypto.a */; };
-		5472B5A51F4EA5EA00C3110D /* libNELivePlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5472B5A11F4EA5EA00C3110D /* libNELivePlayer.a */; };
-		5472B5A71F4EA5EA00C3110D /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5472B5A31F4EA5EA00C3110D /* libssl.a */; };
 		5472B5A81F4EA64800C3110D /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 547FBF1F1DF658C800955A9E /* libresolv.tbd */; };
 		547610271F010B85007775B5 /* AmountExplainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547610261F010B85007775B5 /* AmountExplainViewController.swift */; };
 		547610291F0121DC007775B5 /* explain.html in Resources */ = {isa = PBXBuildFile; fileRef = 547610281F0121DC007775B5 /* explain.html */; };
@@ -708,11 +717,17 @@
 		54E120CE1DDC2CA5004F8012 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E120CD1DDC2CA5004F8012 /* CoreText.framework */; };
 		54E402291E65831B004935C2 /* QRMaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E402281E65831B004935C2 /* QRMaskView.m */; };
 		54E428B41DE2DC6100AF5980 /* UIControl+RemoveTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E428B31DE2DC6100AF5980 /* UIControl+RemoveTarget.m */; };
+		54E586481FA6D43100AE766A /* ChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E586471FA6D43100AE766A /* ChatListViewController.m */; };
+		54E5864B1FA6D43A00AE766A /* NoticeListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E5864A1FA6D43A00AE766A /* NoticeListViewController.m */; };
 		54E8B6A11E5EF1AF00A9703F /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E8B6A01E5EF1AF00A9703F /* Contacts.framework */; };
 		54E8B6A31E5EF1B600A9703F /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E8B6A21E5EF1B600A9703F /* AddressBook.framework */; };
 		54E8B6A71E601B0300A9703F /* UIViewController+TimeInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E8B6A61E601B0300A9703F /* UIViewController+TimeInterval.m */; };
 		54EA78AF1F386D6C00CB8E08 /* UMMobClick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54EA78AE1F386D6C00CB8E08 /* UMMobClick.framework */; };
 		54EBCFF41EB2E6190011344D /* AuthenCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EBCFF31EB2E6190011344D /* AuthenCode.m */; };
+		54EC85851F9DBDC000944708 /* LivePlayerChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EC85841F9DBDC000944708 /* LivePlayerChatViewController.m */; };
+		54EC85881F9DBF5A00944708 /* ClassNoticeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EC85871F9DBF5A00944708 /* ClassNoticeViewController.m */; };
+		54EC858B1F9DC47000944708 /* LivePlayerClassInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EC858A1F9DC47000944708 /* LivePlayerClassInfoViewController.m */; };
+		54EC858E1F9DD89A00944708 /* LivePlayerMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EC858D1F9DD89A00944708 /* LivePlayerMembersViewController.m */; };
 		54ECFEC51DFE8D67001A98CE /* OrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC41DFE8D67001A98CE /* OrderView.m */; };
 		54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECFEC71DFE8D75001A98CE /* OrderViewController.m */; };
 		54F292281E8287170076D499 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F292271E8287170076D499 /* Assets.xcassets */; };
@@ -784,6 +799,10 @@
 
 /* Begin PBXFileReference section */
 		0908EB8F55388D2CA5802D18 /* libPods-Qatime_Student.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Qatime_Student.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		54008B031FA6BE6F0030CB91 /* ShareView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareView.h; sourceTree = "<group>"; };
+		54008B041FA6BE6F0030CB91 /* ShareView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareView.m; sourceTree = "<group>"; };
+		54008B091FA6C83A0030CB91 /* ShareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		54008B0A1FA6C83A0030CB91 /* ShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
 		5407B0761EB032EA005CD82B /* ConfirmRechargeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmRechargeViewController.h; sourceTree = "<group>"; };
 		5407B0771EB032EA005CD82B /* ConfirmRechargeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmRechargeViewController.m; sourceTree = "<group>"; };
 		5407C9871DE7DDED00DB04C8 /* NSBundle+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+YYAdd.h"; sourceTree = "<group>"; };
@@ -1165,6 +1184,11 @@
 		542F4DAC1F29C84D0070E321 /* ExclusiveLesson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExclusiveLesson.m; sourceTree = "<group>"; };
 		542F4DAE1F2AD7CE0070E321 /* MyExclusiveClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyExclusiveClass.h; sourceTree = "<group>"; };
 		542F4DAF1F2AD7CE0070E321 /* MyExclusiveClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyExclusiveClass.m; sourceTree = "<group>"; };
+		542F558F1FA2E3700005E3DC /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
+		542F55901FA2E3710005E3DC /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
+		542F55931FA2E7740005E3DC /* libNELivePlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNELivePlayer.a; path = ../../../Desktop/LivePlayer_iOS_Demo_v1.3.1/Demo/NELivePlayer/libs/libNELivePlayer.a; sourceTree = "<group>"; };
+		542F55951FA2EB200005E3DC /* NELivePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NELivePlayerViewController.m; sourceTree = "<group>"; };
+		542F55961FA2EB200005E3DC /* NELivePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NELivePlayerViewController.h; sourceTree = "<group>"; };
 		542F94EA1EDE73D3008279E0 /* InteractiveCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveCourse.h; sourceTree = "<group>"; };
 		542F94EB1EDE73D3008279E0 /* InteractiveCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractiveCourse.m; sourceTree = "<group>"; };
 		542F94ED1EDE8C29008279E0 /* Interactive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Interactive.h; sourceTree = "<group>"; };
@@ -1396,6 +1420,8 @@
 		545226141E24CDD300F36280 /* OrderInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderInfoView.m; sourceTree = "<group>"; };
 		545226161E24CDE100F36280 /* OrderInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderInfoViewController.h; sourceTree = "<group>"; };
 		545226171E24CDE100F36280 /* OrderInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderInfoViewController.m; sourceTree = "<group>"; };
+		5452F4EF1FA8625F00086C16 /* NSObject+Selector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Selector.h"; sourceTree = "<group>"; };
+		5452F4F01FA8625F00086C16 /* NSObject+Selector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Selector.m"; sourceTree = "<group>"; };
 		5453ADE81F6A26B300064BD7 /* MyQuestionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyQuestionsTableViewCell.swift; sourceTree = "<group>"; };
 		5453ADEB1F6A586200064BD7 /* AnswerInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnswerInfoView.h; sourceTree = "<group>"; };
 		5453ADEC1F6A586200064BD7 /* AnswerInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnswerInfoView.m; sourceTree = "<group>"; };
@@ -1496,9 +1522,7 @@
 		547210331EFBA24B00EA791C /* ReplayLessonsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayLessonsViewController.h; sourceTree = "<group>"; };
 		547210341EFBA24B00EA791C /* ReplayLessonsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplayLessonsViewController.m; sourceTree = "<group>"; };
 		5472B59E1F4EA4B300C3110D /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		5472B5A01F4EA5EA00C3110D /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
 		5472B5A11F4EA5EA00C3110D /* libNELivePlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libNELivePlayer.a; sourceTree = "<group>"; };
-		5472B5A31F4EA5EA00C3110D /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
 		547388651DD9876E00A50CCC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		547388681DD987AD00A50CCC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		547389FD1DD9A3FA00A50CCC /* libaacplus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libaacplus.a; path = Qatime_Student/NIM_iOS_SDK_IM_v3.1.1/Libs/libaacplus.a; sourceTree = "<group>"; };
@@ -2179,6 +2203,10 @@
 		54E402281E65831B004935C2 /* QRMaskView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRMaskView.m; sourceTree = "<group>"; };
 		54E428B21DE2DC6100AF5980 /* UIControl+RemoveTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIControl+RemoveTarget.h"; sourceTree = "<group>"; };
 		54E428B31DE2DC6100AF5980 /* UIControl+RemoveTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIControl+RemoveTarget.m"; sourceTree = "<group>"; };
+		54E586461FA6D43100AE766A /* ChatListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatListViewController.h; sourceTree = "<group>"; };
+		54E586471FA6D43100AE766A /* ChatListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatListViewController.m; sourceTree = "<group>"; };
+		54E586491FA6D43A00AE766A /* NoticeListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoticeListViewController.h; sourceTree = "<group>"; };
+		54E5864A1FA6D43A00AE766A /* NoticeListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NoticeListViewController.m; sourceTree = "<group>"; };
 		54E892831DD9B3A400C47095 /* libAFNetworking.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAFNetworking.a; path = "../../../Library/Developer/Xcode/DerivedData/Qatime_Student-bkkprbzrukkoqsfxcnjbfolvixqu/Build/Products/Debug-iphonesimulator/AFNetworking/libAFNetworking.a"; sourceTree = "<group>"; };
 		54E892851DD9B3E100C47095 /* libMasonry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMasonry.a; path = "../../../Library/Developer/Xcode/DerivedData/Qatime_Student-bkkprbzrukkoqsfxcnjbfolvixqu/Build/Products/Debug-iphonesimulator/Masonry/libMasonry.a"; sourceTree = "<group>"; };
 		54E892861DD9B3E100C47095 /* libMBProgressHUD.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMBProgressHUD.a; path = "../../../Library/Developer/Xcode/DerivedData/Qatime_Student-bkkprbzrukkoqsfxcnjbfolvixqu/Build/Products/Debug-iphonesimulator/MBProgressHUD/libMBProgressHUD.a"; sourceTree = "<group>"; };
@@ -2207,6 +2235,14 @@
 		54EA9B841DD9A9D5004B8040 /* libz.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.tbd; path = usr/lib/libz.1.tbd; sourceTree = SDKROOT; };
 		54EBCFF21EB2E6190011344D /* AuthenCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenCode.h; sourceTree = "<group>"; };
 		54EBCFF31EB2E6190011344D /* AuthenCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenCode.m; sourceTree = "<group>"; };
+		54EC85831F9DBDC000944708 /* LivePlayerChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivePlayerChatViewController.h; sourceTree = "<group>"; };
+		54EC85841F9DBDC000944708 /* LivePlayerChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LivePlayerChatViewController.m; sourceTree = "<group>"; };
+		54EC85861F9DBF5A00944708 /* ClassNoticeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassNoticeViewController.h; sourceTree = "<group>"; };
+		54EC85871F9DBF5A00944708 /* ClassNoticeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClassNoticeViewController.m; sourceTree = "<group>"; };
+		54EC85891F9DC47000944708 /* LivePlayerClassInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivePlayerClassInfoViewController.h; sourceTree = "<group>"; };
+		54EC858A1F9DC47000944708 /* LivePlayerClassInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LivePlayerClassInfoViewController.m; sourceTree = "<group>"; };
+		54EC858C1F9DD89A00944708 /* LivePlayerMembersViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivePlayerMembersViewController.h; sourceTree = "<group>"; };
+		54EC858D1F9DD89A00944708 /* LivePlayerMembersViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LivePlayerMembersViewController.m; sourceTree = "<group>"; };
 		54ECFEC31DFE8D67001A98CE /* OrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderView.h; sourceTree = "<group>"; };
 		54ECFEC41DFE8D67001A98CE /* OrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderView.m; sourceTree = "<group>"; };
 		54ECFEC61DFE8D75001A98CE /* OrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
@@ -2290,6 +2326,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				542F55941FA2E7750005E3DC /* libNELivePlayer.a in Frameworks */,
+				5422E7CC1F4E77B6008B0A96 /* libaacplus.a in Frameworks */,
+				542F55911FA2E3710005E3DC /* libcrypto.a in Frameworks */,
+				5422E7CE1F4E77B6008B0A96 /* libevent.a in Frameworks */,
+				542F55921FA2E3710005E3DC /* libssl.a in Frameworks */,
 				548DFE141F8E01AE00CAFC00 /* libWeChatSDK.a in Frameworks */,
 				548DFE0F1F8E00EC00CAFC00 /* libmp3lame.a in Frameworks */,
 				5472B5A81F4EA64800C3110D /* libresolv.tbd in Frameworks */,
@@ -2314,12 +2355,8 @@
 				542915971DD9DDB700EE1A70 /* SystemConfiguration.framework in Frameworks */,
 				5450B3EF1F4EAFC500E7A64B /* libUMessage_Sdk.a in Frameworks */,
 				54EA78AF1F386D6C00CB8E08 /* UMMobClick.framework in Frameworks */,
-				5472B5A41F4EA5EA00C3110D /* libcrypto.a in Frameworks */,
-				5472B5A51F4EA5EA00C3110D /* libNELivePlayer.a in Frameworks */,
-				5472B5A71F4EA5EA00C3110D /* libssl.a in Frameworks */,
 				54CB26731DF0302900AE7414 /* Security.framework in Frameworks */,
 				5422E7D71F4E77B6008B0A96 /* libopus.a in Frameworks */,
-				5422E7CC1F4E77B6008B0A96 /* libaacplus.a in Frameworks */,
 				5422E7D01F4E77B6008B0A96 /* NIMSDK.framework in Frameworks */,
 				5422E7D21F4E77B6008B0A96 /* libnio.a in Frameworks */,
 				54A6C4A11E97393700B56135 /* StoreKit.framework in Frameworks */,
@@ -2331,12 +2368,10 @@
 				547FBF1E1DF658C000955A9E /* UserNotifications.framework in Frameworks */,
 				54294CD61DDB3CD500677333 /* libz.1.tbd in Frameworks */,
 				5422E7D11F4E77B6008B0A96 /* libGPUImage.a in Frameworks */,
-				5472B5A51F4EA5EA00C3110D /* libNELivePlayer.a in Frameworks */,
 				5422E7D31F4E77B6008B0A96 /* libNMCVideoModule.a in Frameworks */,
 				5429159E1DD9DDE600EE1A70 /* libsqlite3.0.tbd in Frameworks */,
 				5429159D1DD9DDDE00EE1A70 /* libc++.tbd in Frameworks */,
 				54E120CE1DDC2CA5004F8012 /* CoreText.framework in Frameworks */,
-				5422E7CE1F4E77B6008B0A96 /* libevent.a in Frameworks */,
 				5422E7D61F4E77B6008B0A96 /* libopenh264.a in Frameworks */,
 				5422E7D51F4E77B6008B0A96 /* libnvs.a in Frameworks */,
 				542915961DD9DDB000EE1A70 /* MobileCoreServices.framework in Frameworks */,
@@ -2363,6 +2398,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		54008B011FA6BD190030CB91 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54008B091FA6C83A0030CB91 /* ShareViewController.h */,
+				54008B0A1FA6C83A0030CB91 /* ShareViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54008B021FA6BD1C0030CB91 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54008B031FA6BE6F0030CB91 /* ShareView.h */,
+				54008B041FA6BE6F0030CB91 /* ShareView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		54081A6E1F28820D0063C391 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -2608,6 +2661,8 @@
 		5422E7BA1F4E77B6008B0A96 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				542F558F1FA2E3700005E3DC /* libcrypto.a */,
+				542F55901FA2E3710005E3DC /* libssl.a */,
 				5422E7BB1F4E77B6008B0A96 /* libaacplus.a */,
 				5422E7BD1F4E77B6008B0A96 /* libevent.a */,
 			);
@@ -3139,6 +3194,7 @@
 		54294C741DDB354400677333 /* LivePlayer */ = {
 			isa = PBXGroup;
 			children = (
+				549C0A061F9D862200901C68 /* 子控制器们 */,
 				54294C771DDB355400677333 /* Model */,
 				54294C761DDB355300677333 /* View */,
 				54294C751DDB355000677333 /* Controller */,
@@ -3158,21 +3214,12 @@
 		54294C761DDB355300677333 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				54FCBAF01DD5CB520094BF58 /* Cell */,
+				54FCBADE1DD5B3050094BF58 /* LiveClassInfoView.h */,
+				54FCBADF1DD5B3050094BF58 /* LiveClassInfoView.m */,
 				54294C781DDB373400677333 /* NELivePlayerControl.h */,
 				54294C791DDB373400677333 /* NELivePlayerControl.m */,
 				54C9A8CF1E12159700B81EBF /* PlayerView.h */,
 				54C9A8D01E12159700B81EBF /* PlayerView.m */,
-				54FCBADE1DD5B3050094BF58 /* LiveClassInfoView.h */,
-				54FCBADF1DD5B3050094BF58 /* LiveClassInfoView.m */,
-				54294C681DDAFCF600677333 /* ClassList.h */,
-				54294C691DDAFCF600677333 /* ClassList.m */,
-				54B610361E83BA0B00DA8E7A /* ClassNotice.h */,
-				54B610371E83BA0B00DA8E7A /* ClassNotice.m */,
-				54294C651DDAD82400677333 /* InfoHeaderView.h */,
-				54294C661DDAD82400677333 /* InfoHeaderView.m */,
-				54B73CF91DE3E40300B7A7EB /* MembersListView.h */,
-				54B73CFA1DE3E40300B7A7EB /* MembersListView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -3180,20 +3227,6 @@
 		54294C771DDB355400677333 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				54FCBAEA1DD5CA9F0094BF58 /* NoticeAndMembers.h */,
-				54FCBAEB1DD5CA9F0094BF58 /* NoticeAndMembers.m */,
-				54FCBAFA1DD5DCEE0094BF58 /* Members.h */,
-				54FCBAFB1DD5DCEE0094BF58 /* Members.m */,
-				54FCBAF71DD5DCE50094BF58 /* Notice.h */,
-				54FCBAF81DD5DCE50094BF58 /* Notice.m */,
-				54FCBAF41DD5D4500094BF58 /* LiveClassInfo.h */,
-				54FCBAF51DD5D4500094BF58 /* LiveClassInfo.m */,
-				54294C6B1DDB051E00677333 /* Classes.h */,
-				54294C6C1DDB051E00677333 /* Classes.m */,
-				54294C6E1DDB062000677333 /* Teacher.h */,
-				54294C6F1DDB062000677333 /* Teacher.m */,
-				54294C711DDB071700677333 /* Chat_Account.h */,
-				54294C721DDB071700677333 /* Chat_Account.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -3218,10 +3251,6 @@
 		5430DBF21E03F4540097E7B4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				54F47E861E092AF100D896DB /* SystemNotice.h */,
-				54F47E871E092AF100D896DB /* SystemNotice.m */,
-				54F47E891E09367900D896DB /* ChatList.h */,
-				54F47E8A1E09367900D896DB /* ChatList.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -3564,10 +3593,6 @@
 		5448AEA51E054C63007B1DF9 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				5448AEA61E054C7A007B1DF9 /* ChatListTableViewCell.h */,
-				5448AEA71E054C7A007B1DF9 /* ChatListTableViewCell.m */,
-				5448AEA91E054CA4007B1DF9 /* NoticeListTableViewCell.h */,
-				5448AEAA1E054CA4007B1DF9 /* NoticeListTableViewCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -3594,9 +3619,7 @@
 		544AD3B41EC01AE2002F567D /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				5472B5A01F4EA5EA00C3110D /* libcrypto.a */,
 				5472B5A11F4EA5EA00C3110D /* libNELivePlayer.a */,
-				5472B5A31F4EA5EA00C3110D /* libssl.a */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -5038,6 +5061,167 @@
 			path = MMPickerView;
 			sourceTree = "<group>";
 		};
+		549C0A061F9D862200901C68 /* 子控制器们 */ = {
+			isa = PBXGroup;
+			children = (
+				549C0A0A1F9D865600901C68 /* 公告 */,
+				549C0A091F9D865500901C68 /* 聊天 */,
+				549C0A081F9D865400901C68 /* 详情 */,
+				549C0A071F9D865300901C68 /* 成员 */,
+			);
+			name = "子控制器们";
+			sourceTree = "<group>";
+		};
+		549C0A071F9D865300901C68 /* 成员 */ = {
+			isa = PBXGroup;
+			children = (
+				549C0A111F9D86C200901C68 /* Model */,
+				549C0A101F9D86C100901C68 /* View */,
+				549C0A0F1F9D86C000901C68 /* Controller */,
+			);
+			name = "成员";
+			sourceTree = "<group>";
+		};
+		549C0A081F9D865400901C68 /* 详情 */ = {
+			isa = PBXGroup;
+			children = (
+				549C0A141F9D870C00901C68 /* Model */,
+				549C0A131F9D870C00901C68 /* View */,
+				549C0A121F9D870B00901C68 /* Controller */,
+			);
+			name = "详情";
+			sourceTree = "<group>";
+		};
+		549C0A091F9D865500901C68 /* 聊天 */ = {
+			isa = PBXGroup;
+			children = (
+				54EC85831F9DBDC000944708 /* LivePlayerChatViewController.h */,
+				54EC85841F9DBDC000944708 /* LivePlayerChatViewController.m */,
+			);
+			name = "聊天";
+			sourceTree = "<group>";
+		};
+		549C0A0A1F9D865600901C68 /* 公告 */ = {
+			isa = PBXGroup;
+			children = (
+				549C0A0E1F9D868B00901C68 /* Model */,
+				549C0A0D1F9D868B00901C68 /* View */,
+				549C0A0C1F9D868A00901C68 /* Controller */,
+			);
+			name = "公告";
+			sourceTree = "<group>";
+		};
+		549C0A0C1F9D868A00901C68 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54EC85861F9DBF5A00944708 /* ClassNoticeViewController.h */,
+				54EC85871F9DBF5A00944708 /* ClassNoticeViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		549C0A0D1F9D868B00901C68 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54B610361E83BA0B00DA8E7A /* ClassNotice.h */,
+				54B610371E83BA0B00DA8E7A /* ClassNotice.m */,
+				549C0A151F9D873600901C68 /* Cell */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		549C0A0E1F9D868B00901C68 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54FCBAEA1DD5CA9F0094BF58 /* NoticeAndMembers.h */,
+				54FCBAEB1DD5CA9F0094BF58 /* NoticeAndMembers.m */,
+				54FCBAF71DD5DCE50094BF58 /* Notice.h */,
+				54FCBAF81DD5DCE50094BF58 /* Notice.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		549C0A0F1F9D86C000901C68 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54EC858C1F9DD89A00944708 /* LivePlayerMembersViewController.h */,
+				54EC858D1F9DD89A00944708 /* LivePlayerMembersViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		549C0A101F9D86C100901C68 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54B73CF91DE3E40300B7A7EB /* MembersListView.h */,
+				54B73CFA1DE3E40300B7A7EB /* MembersListView.m */,
+				549C0A161F9D874600901C68 /* Cell */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		549C0A111F9D86C200901C68 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54FCBAFA1DD5DCEE0094BF58 /* Members.h */,
+				54FCBAFB1DD5DCEE0094BF58 /* Members.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		549C0A121F9D870B00901C68 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54EC85891F9DC47000944708 /* LivePlayerClassInfoViewController.h */,
+				54EC858A1F9DC47000944708 /* LivePlayerClassInfoViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		549C0A131F9D870C00901C68 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54294C681DDAFCF600677333 /* ClassList.h */,
+				54294C691DDAFCF600677333 /* ClassList.m */,
+				54294C651DDAD82400677333 /* InfoHeaderView.h */,
+				54294C661DDAD82400677333 /* InfoHeaderView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		549C0A141F9D870C00901C68 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54FCBAF41DD5D4500094BF58 /* LiveClassInfo.h */,
+				54FCBAF51DD5D4500094BF58 /* LiveClassInfo.m */,
+				54294C6B1DDB051E00677333 /* Classes.h */,
+				54294C6C1DDB051E00677333 /* Classes.m */,
+				54294C6E1DDB062000677333 /* Teacher.h */,
+				54294C6F1DDB062000677333 /* Teacher.m */,
+				54294C711DDB071700677333 /* Chat_Account.h */,
+				54294C721DDB071700677333 /* Chat_Account.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		549C0A151F9D873600901C68 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				54FCBAF11DD5CB6B0094BF58 /* NoticeTableViewCell.h */,
+				54FCBAF21DD5CB6B0094BF58 /* NoticeTableViewCell.m */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
+		549C0A161F9D874600901C68 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				54B73CFC1DE3E42700B7A7EB /* MemberListTableViewCell.h */,
+				54B73CFD1DE3E42700B7A7EB /* MemberListTableViewCell.m */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
 		549C8D4B1EB1991B00CCD2FB /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -5060,6 +5244,8 @@
 		549EC2E31F945CAA0079E38D /* 分享栏 */ = {
 			isa = PBXGroup;
 			children = (
+				54008B021FA6BD1C0030CB91 /* View */,
+				54008B011FA6BD190030CB91 /* Controller */,
 			);
 			name = "分享栏";
 			sourceTree = "<group>";
@@ -5067,7 +5253,6 @@
 		54A1539C1DC6F09D0070B508 = {
 			isa = PBXGroup;
 			children = (
-				54A627761F70B2AA00CC7D00 /* 代码已开光 */,
 				54A153A71DC6F09D0070B508 /* Qatime_Student */,
 				5483E8571E4576D200C3C1B4 /* Localizable */,
 				54A153C11DC6F09E0070B508 /* Qatime_StudentTests */,
@@ -5092,6 +5277,7 @@
 		54A153A71DC6F09D0070B508 /* Qatime_Student */ = {
 			isa = PBXGroup;
 			children = (
+				54A627761F70B2AA00CC7D00 /* 代码已开光 */,
 				54C21F8A1DDDB06E000549F2 /* Qatime_Student.entitlements */,
 				543C207A1DC6F6470086B04B /* Util */,
 				546978531DC723A2001695F4 /* 登录页面 */,
@@ -5178,6 +5364,8 @@
 		54A5A3531E66718C00EF19E3 /* 消息主页 */ = {
 			isa = PBXGroup;
 			children = (
+				54E5863F1FA6D37C00AE766A /* 聊天列表 */,
+				54E5863E1FA6D37B00AE766A /* 公告列表 */,
 				5430DBF21E03F4540097E7B4 /* Model */,
 				5430DBF41E03F45D0097E7B4 /* View */,
 				5430DBF31E03F45C0097E7B4 /* Controller */,
@@ -6386,6 +6574,8 @@
 		54D86ED81EFBAD740059932C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				542F55961FA2EB200005E3DC /* NELivePlayerViewController.h */,
+				542F55951FA2EB200005E3DC /* NELivePlayerViewController.m */,
 				547210331EFBA24B00EA791C /* ReplayLessonsViewController.h */,
 				547210341EFBA24B00EA791C /* ReplayLessonsViewController.m */,
 			);
@@ -6648,6 +6838,80 @@
 				5422E7C01F4E77B6008B0A96 /* NIMAVChat */,
 			);
 			name = SDK;
+			sourceTree = "<group>";
+		};
+		54E5863E1FA6D37B00AE766A /* 公告列表 */ = {
+			isa = PBXGroup;
+			children = (
+				54E586451FA6D39300AE766A /* Model */,
+				54E586441FA6D39000AE766A /* View */,
+				54E586431FA6D39000AE766A /* Controller */,
+			);
+			name = "公告列表";
+			sourceTree = "<group>";
+		};
+		54E5863F1FA6D37C00AE766A /* 聊天列表 */ = {
+			isa = PBXGroup;
+			children = (
+				54E586421FA6D38E00AE766A /* Model */,
+				54E586411FA6D38D00AE766A /* View */,
+				54E586401FA6D38C00AE766A /* Controller */,
+			);
+			name = "聊天列表";
+			sourceTree = "<group>";
+		};
+		54E586401FA6D38C00AE766A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54E586461FA6D43100AE766A /* ChatListViewController.h */,
+				54E586471FA6D43100AE766A /* ChatListViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54E586411FA6D38D00AE766A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5448AEA61E054C7A007B1DF9 /* ChatListTableViewCell.h */,
+				5448AEA71E054C7A007B1DF9 /* ChatListTableViewCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54E586421FA6D38E00AE766A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54F47E891E09367900D896DB /* ChatList.h */,
+				54F47E8A1E09367900D896DB /* ChatList.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		54E586431FA6D39000AE766A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54E586491FA6D43A00AE766A /* NoticeListViewController.h */,
+				54E5864A1FA6D43A00AE766A /* NoticeListViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54E586441FA6D39000AE766A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5448AEA91E054CA4007B1DF9 /* NoticeListTableViewCell.h */,
+				5448AEAA1E054CA4007B1DF9 /* NoticeListTableViewCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54E586451FA6D39300AE766A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				54F47E861E092AF100D896DB /* SystemNotice.h */,
+				54F47E871E092AF100D896DB /* SystemNotice.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		54E9E6941F469788007EC0A5 /* 问题详情 */ = {
@@ -7277,6 +7541,8 @@
 				5464489D1F27224F001C52FF /* HMSegmentedControl+Category.m */,
 				54542BC31F72477300DA14D9 /* UILabel+VerticalText.h */,
 				54542BC41F72477300DA14D9 /* UILabel+VerticalText.m */,
+				5452F4EF1FA8625F00086C16 /* NSObject+Selector.h */,
+				5452F4F01FA8625F00086C16 /* NSObject+Selector.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -7334,17 +7600,6 @@
 				54B907601E9CCFBE00034FDC /* VideoPlayer */,
 			);
 			name = "视频播放页";
-			sourceTree = "<group>";
-		};
-		54FCBAF01DD5CB520094BF58 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				54FCBAF11DD5CB6B0094BF58 /* NoticeTableViewCell.h */,
-				54FCBAF21DD5CB6B0094BF58 /* NoticeTableViewCell.m */,
-				54B73CFC1DE3E42700B7A7EB /* MemberListTableViewCell.h */,
-				54B73CFD1DE3E42700B7A7EB /* MemberListTableViewCell.m */,
-			);
-			name = Cell;
 			sourceTree = "<group>";
 		};
 		54FFDA771EE943D900546E01 /* 成员 */ = {
@@ -7433,6 +7688,7 @@
 		B493EB6DEDE6DB14F293C15A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				542F55931FA2E7740005E3DC /* libNELivePlayer.a */,
 				5450B3EE1F4EAFC500E7A64B /* libUMessage_Sdk.a */,
 				5472B59E1F4EA4B300C3110D /* libsqlite3.tbd */,
 				54504AD11E9E220500EFCF8E /* libNELivePlayer.a */,
@@ -7746,6 +8002,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				543BDF2E1FA095B700A4B178 /* ReplayLessonInfo.h in Sources */,
+				543BDF2F1FA095B700A4B178 /* ReplayLessonsView.h in Sources */,
+				543BDF301FA095B700A4B178 /* ReplayLessonsViewController.h in Sources */,
+				543BDF311FA095B700A4B178 /* ReplayLesson.h in Sources */,
+				543BDF2D1FA095A000A4B178 /* VideoPlayerViewController.h in Sources */,
 				54F3B8781F8F65E600F9980A /* YZReorder.h in Sources */,
 				54F3B8791F8F65E600F9980A /* YZReorder.m in Sources */,
 				548DFE151F8E01C500CAFC00 /* WechatAuthSDK.h in Sources */,
@@ -7768,6 +8029,7 @@
 				54294C671DDAD82400677333 /* InfoHeaderView.m in Sources */,
 				54F34D7F1DE70BA500D6FC85 /* NSMutableAttributedString+Extention.m in Sources */,
 				548328E81DDC6F360053AB29 /* Mp3Recorder.m in Sources */,
+				54EC858B1F9DC47000944708 /* LivePlayerClassInfoViewController.m in Sources */,
 				54AB48E41DED5415008E3BC5 /* MyClassView.m in Sources */,
 				544B76311F41AB0100B8B20A /* Questions.m in Sources */,
 				546448981F26E8E8001C52FF /* MyExclusiveClassViewController.m in Sources */,
@@ -7874,6 +8136,7 @@
 				543BCB031E79157400AD6721 /* ChooseGradeAndSubjectViewController.m in Sources */,
 				543E23491E2C8D4000381F10 /* AuthenticationViewController.m in Sources */,
 				543E0CBE1DFFDA77004B24FD /* PayConfirmView.m in Sources */,
+				542F55971FA2EB200005E3DC /* NELivePlayerViewController.m in Sources */,
 				5435D9401DD3125800DD4FCC /* TeachersPublicViewController.m in Sources */,
 				548126A01F62A0100078F782 /* MyHomeworkView.m in Sources */,
 				54AC02781E892D3C00817767 /* NSData+NTES.m in Sources */,
@@ -7899,6 +8162,7 @@
 				5422EAEE1F4E7AC9008B0A96 /* NSMutableAttributedString+NIM.m in Sources */,
 				54AC025A1E892CEE00817767 /* NTESService.m in Sources */,
 				544B61EB1E95DBEB00D7B160 /* InteractionTeacherListTableViewCell.m in Sources */,
+				54EC85881F9DBF5A00944708 /* ClassNoticeViewController.m in Sources */,
 				54652E2B1DEEB98600F4607C /* NoticeSettingViewController.m in Sources */,
 				5489FBB61F6BD85A00534DCC /* InteractionReplayLesson.m in Sources */,
 				5422337E1E15F6100092AB66 /* UIAlertController+Blocks.m in Sources */,
@@ -8008,6 +8272,7 @@
 				547E92C01E8E312200160C6D /* MyOneOnOneView.m in Sources */,
 				5435D93A1DD2C2C100DD4FCC /* ClassesInfo_Time.m in Sources */,
 				5422EAD01F4E7AC9008B0A96 /* NIMSessionUnknowContentView.m in Sources */,
+				54E586481FA6D43100AE766A /* ChatListViewController.m in Sources */,
 				54AC04D01E89398E00817767 /* renderer_yuv444p10le.c in Sources */,
 				54AC02561E892CEE00817767 /* NTESFileLocationHelper.m in Sources */,
 				54DBA4B41DE4423300A67A90 /* YZEmotionManager.m in Sources */,
@@ -8093,6 +8358,7 @@
 				54774D081F444A7A00150C05 /* ZLPhotoPickerGroup.m in Sources */,
 				54F3BA181DFC3013003998D0 /* UIViewController+Login.m in Sources */,
 				5422EAA41F4E7AC9008B0A96 /* NIMContactSelectTabView.m in Sources */,
+				5452F4F11FA8625F00086C16 /* NSObject+Selector.m in Sources */,
 				54AC027B1E892D3C00817767 /* UIActionSheet+NTESBlock.m in Sources */,
 				54AB63D81EF2AA5B0022E573 /* TeachersSearch.m in Sources */,
 				54F3BA2D1DFC7130003998D0 /* WithDrawView.m in Sources */,
@@ -8217,6 +8483,7 @@
 				543E233D1E2C78C800381F10 /* SetPayPasswordView.m in Sources */,
 				54294C7D1DDB373400677333 /* LivePlayerViewController.m in Sources */,
 				54774CFB1F44499A00150C05 /* ZLPhotoPickerCustomToolBarView.m in Sources */,
+				54EC858E1F9DD89A00944708 /* LivePlayerMembersViewController.m in Sources */,
 				54AB48D21DED3389008E3BC5 /* SettingTableViewCell.m in Sources */,
 				548126A61F62A2CF0078F782 /* ClassHomework.m in Sources */,
 				5422EABF1F4E7AC9008B0A96 /* NIMDefaultValueMaker.m in Sources */,
@@ -8269,6 +8536,7 @@
 				5413D2581DF7B5F400A8FDEC /* CashRecordViewController.m in Sources */,
 				54AC025B1E892CEE00817767 /* NTESSessionUtil.m in Sources */,
 				5413D2681DF7C75D00A8FDEC /* WithDrawTableViewCell.m in Sources */,
+				54008B051FA6BE6F0030CB91 /* ShareView.m in Sources */,
 				54B73CFE1DE3E42700B7A7EB /* MemberListTableViewCell.m in Sources */,
 				54AC04DA1E89398E00817767 /* NTESColorSelectView.m in Sources */,
 				548328EA1DDC6F360053AB29 /* UUImageAvatarBrowser.m in Sources */,
@@ -8282,6 +8550,7 @@
 				542C173E1DFA50760088DB3F /* Unpaid.m in Sources */,
 				54AC04B21E89398E00817767 /* NTESMeetingRolesManager.m in Sources */,
 				544B61FE1E9647F100D7B160 /* UIImage+LCActionSheet.m in Sources */,
+				54E5864B1FA6D43A00AE766A /* NoticeListViewController.m in Sources */,
 				542F4DB01F2AD7CE0070E321 /* MyExclusiveClass.m in Sources */,
 				54B914921E6D5B7F00F377ED /* CityChosenViewController.m in Sources */,
 				5422EAF11F4E7AC9008B0A96 /* NIMWebImageDecoder.m in Sources */,
@@ -8295,6 +8564,7 @@
 				54F674041F7B4015006CF211 /* QuestionInfoView.m in Sources */,
 				5407C9961DE7DE8400DB04C8 /* NSNumber+YYAdd.m in Sources */,
 				54C7343E1EE8FAA200CB86BE /* InteractionNotice.m in Sources */,
+				54EC85851F9DBDC000944708 /* LivePlayerChatViewController.m in Sources */,
 				541F91ED1DCA09CC00180BE8 /* TutoriumList.m in Sources */,
 				54C107A61F5E8FF40091171E /* CourseFileInfoViewController.m in Sources */,
 				5422EAA61F4E7AC9008B0A96 /* NIMInputAudioRecordIndicatorView.m in Sources */,
@@ -8397,6 +8667,7 @@
 				5407B0781EB032EA005CD82B /* ConfirmRechargeViewController.m in Sources */,
 				5471C7FC1E8F584F0098E509 /* OneOnOneTeacherTableViewCell.m in Sources */,
 				54EBCFF41EB2E6190011344D /* AuthenCode.m in Sources */,
+				54008B0B1FA6C83A0030CB91 /* ShareViewController.m in Sources */,
 				5448AEA41E042D45007B1DF9 /* NoticeIndexView.m in Sources */,
 				54C107AF1F5EA9EA0091171E /* MyDownloadFileTableViewCell.m in Sources */,
 				543E23521E2CE88B00381F10 /* DCPaymentView.m in Sources */,
@@ -8573,6 +8844,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMAVChat",
@@ -8582,8 +8854,10 @@
 					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/NIM_iOS_SDK/NIMSDK",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMAVChat",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMSDK",
+					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/libs",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/include/",
@@ -8669,6 +8943,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UMV383V3WA;
 				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMAVChat",
@@ -8678,8 +8953,10 @@
 					"$(PROJECT_DIR)/Qatime_Student/Qatime_Student/NIM_iOS_SDK/NIMSDK",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMAVChat",
 					"$(PROJECT_DIR)/Qatime_Student/NIM_iOS_SDK/NIMKit/Vendors/NIMSDK",
+					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/libs",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Qatime_Student/UserPCH.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Qatime_Student/LivePlayer_iOS_SDK/include/",
