@@ -19,14 +19,9 @@
 
 //http://testing.qatime.cn
 //https://qatime.cn
-<<<<<<< HEAD
-//
-#define Request_Header @"http://testing.qatime.cn"
-=======
 
 //#define Request_Header @"http://testing.qatime.cn"
 #define Request_Header @"https://qatime.cn"
->>>>>>> 210c91fcd6cc9e86c75ec136bdb5a2199276c474
 //测试环境 @"http://testing.qatime.cn"
 //正式环境 @"https://qatime.cn"
 
