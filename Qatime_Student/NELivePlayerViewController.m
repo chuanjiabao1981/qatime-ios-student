@@ -12,6 +12,13 @@
 @interface NELivePlayerViewController ()
 {
     BOOL _isMediaSliderBeingDragged;
+    
+    NSTimeInterval mDuration;
+    NSTimeInterval mCurrPos;
+    CGFloat screenWidth;
+    CGFloat screenHeight;
+    bool isHardware ;
+    bool ismute ;
 }
 @property (nonatomic, strong) UIView *playerView;
 @property (nonatomic, strong) UIControl *controlOverlay;
@@ -62,12 +69,7 @@
 
 @synthesize timer;
 
-NSTimeInterval mDuration;
-NSTimeInterval mCurrPos;
-CGFloat screenWidth;
-CGFloat screenHeight;
-bool isHardware = YES;
-bool ismute     = NO;
+
 
 int mCurrentPostion;
 
@@ -100,7 +102,7 @@ int mCurrentPostion;
 
 - (void)loadView {
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-    
+    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"SupportedLandscape"];
     //当前屏幕宽高
     screenWidth  = CGRectGetWidth([UIScreen mainScreen].bounds);
     screenHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
@@ -264,7 +266,7 @@ int mCurrentPostion;
     [self.view addSubview:self.mediaControl];
     [self.view addSubview:self.bufferingIndicate];
     [self.view addSubview:self.bufferingReminder];
-    self.mediaControl.delegatePlayer = self.liveplayer;
+//    self.mediaControl.delegatePlayer = self.liveplayer;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -367,6 +369,9 @@ int mCurrentPostion;
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     //    NSLog(@"viewDidLoad");
+    ismute = NO;
+    isHardware = YES;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(NELivePlayerDidPreparedToPlay:)
                                                  name:NELivePlayerDidPreparedToPlayNotification
@@ -466,7 +471,7 @@ int mCurrentPostion;
     
     NSTimeInterval currentPlayTime = self.videoProgress.value;
     
-    self.currentTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(mCurrentPostion / 3600), (int)(mCurrentPostion > 3600 ? (mCurrentPostion - (mCurrentPostion / 3600)*3600) / 60 : mCurrentPostion/60), (int)(mCurrentPostion % 60)];
+//    self.currentTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(mCurrentPostion / 3600), (int)(mCurrentPostion > 3600 ? (mCurrentPostion - (mCurrentPostion / 3600)*3600) / 60 : mCurrentPostion/60), (int)(mCurrentPostion % 60)];
 }
 
 - (void)onClickSeekTouchUpInside:(id)sender
@@ -576,7 +581,7 @@ int mCurrentPostion;
     self.controlOverlay.hidden = YES;
 }
 
-dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t queue, dispatch_block_t block)
+dispatch_source_t CreateDispatchSyncUITimer3(double interval, dispatch_queue_t queue, dispatch_block_t block)
 {
     //创建Timer
     dispatch_source_t timer  = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);//queue是一个专门执行timer回调的GCD队列
@@ -600,8 +605,7 @@ dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t qu
     __block bool getDurFlag = false;
     __weak typeof(self) weakSelf = self;
     dispatch_queue_t syncUIQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    timer = CreateDispatchSyncUITimer(1.0, syncUIQueue, ^{
-        
+    timer = CreateDispatchSyncUITimer3(1.0, syncUIQueue, ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([self.mediaType isEqualToString:@"videoOnDemand"] || !getDurFlag) {
                 mDuration = [weakSelf.liveplayer duration];

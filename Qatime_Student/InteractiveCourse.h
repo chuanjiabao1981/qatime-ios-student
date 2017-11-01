@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <NIMSDK/NIMSDK.h>
 
 @interface InteractiveCourse : NSObject
 
@@ -36,6 +37,7 @@
 
 /**专门为聊天功能增加一个notify属性*/
 @property (nonatomic, assign) BOOL notify ;
+@property (nonatomic, assign) NIMTeamNotifyState notifyState ;
 /**专门为聊天功能增加一个chat_team_id属性*/
 @property (nonatomic, strong) NSString *chat_team_id ;
 

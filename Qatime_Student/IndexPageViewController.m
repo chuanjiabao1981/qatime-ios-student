@@ -547,13 +547,11 @@
                 }
                 
             }
-            
             [_headerView.todayLiveScrollView reloadData];
         }
         
     }failure:^(id  _Nullable erros) {
     }];
-    
 }
 
 
@@ -680,19 +678,13 @@
         NSDictionary *chatDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"];
         
         [[NIMSDK sharedSDK].loginManager autoLogin:chatDic[@"accid"] token:chatDic[@"token"]];
-        //        [[[NIMSDK sharedSDK]loginManager]login:chatDic[@"accid"] token:chatDic[@"token"] completion:^(NSError * _Nullable error) {
-        //
-        //
-        //
-        //        }];
-        
+      
         [[[NIMSDK sharedSDK]conversationManager]addDelegate:self];
         
-        if ([[[NIMSDK sharedSDK]conversationManager]allUnreadCount]>0) {
-            
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"ReceiveNewNotice" object:nil];
-            
-        }
+//        if ([[[NIMSDK sharedSDK]conversationManager]allUnreadCount]>0) {
+//            NSLog(@"%ld",[[[NIMSDK sharedSDK]conversationManager]allUnreadCount]);
+//            [[NSNotificationCenter defaultCenter]postNotificationName:@"ReceiveNewNotice" object:nil];
+//        }
         
         /* 请求系统公告消息*/
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
@@ -747,12 +739,7 @@
     [self requestNewest];       //最近课程不区分地区
     
     [_indexPageView.mj_header endRefreshingWithCompletionBlock:^{
-        
-        
-        
     }];
-    
-    
 }
 
 /* 请求全部课程*/
@@ -882,8 +869,6 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-    
-    
     
 }
 

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Teacher.h"
+#import <NIMSDK/NIMSDK.h>
 
 @interface ExclusiveInfo : NSObject
 
@@ -33,8 +34,11 @@
 @property (nonatomic, strong) NSDictionary *offline_lessons ;
 @property (nonatomic, strong) NSDictionary *scheduled_lessons ;
 @property (nonatomic, strong) NSString *chat_team_id ;
+@property (nonatomic, strong) NSString *users_count ;
+@property (nonatomic, strong) NSString *max_users ;
 
 @property (nonatomic, assign) BOOL notify ;
+@property (nonatomic, assign) NIMTeamNotifyState notifyState ;
 
 
 @end

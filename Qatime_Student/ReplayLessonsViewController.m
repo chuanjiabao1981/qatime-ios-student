@@ -13,6 +13,8 @@
 #import "ReplayLessonInfo.h"
 #import "YYModel.h"
 #import "TeachersPublicViewController.h"
+#import "UIView+PlaceholderImage.h"
+#import "UIAlertController+Blocks.h"
 
 //屏幕模式
 typedef enum : NSUInteger {
@@ -104,9 +106,26 @@ typedef enum : NSUInteger {
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //加载主视图
+    [self setupMainView];
     
     //加载播放器
-    [self setupVideoPlayerWithURL:[NSURL URLWithString:_replayLesson.video_url]];
+    NSURL *playURL = [NSURL URLWithString:_replayLesson.video_url];
+//    NSURL *playURL = [NSURL URLWithString:@"http://baobab.wdjcdn.com/14525705791193.mp4"];
+    
+    //加载播放器
+    [self setupVideoPlayerWithURL:playURL];
+    
+    /* 播放器的设置*/
+    [_videoPlayer setBufferStrategy:NELPAntiJitter]; //本地视频和点播的速率解析
+    [_videoPlayer setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
+    [_videoPlayer setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
+    [_videoPlayer setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
+    [_videoPlayer setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
+    [_videoPlayer setPlaybackTimeout:15 *1000]; // 设置拉流超时时间
+    [_videoPlayer prepareToPlay]; //初始化视频文件
+    NSInteger fildTime = 0;
+
     
     //加载播放器的监听
     [self addNotifications];
@@ -118,11 +137,17 @@ typedef enum : NSUInteger {
     
     /* 支持全屏*/
     [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"SupportedLandscape"];
+    
+    //请求回放信息
+    [self requestReplyInfo];
 
 }
 
 /**加载主视图*/
 - (void)setupMainView{
+    
+    //加载播放器底部视图
+    [self setupVideoPlayerView];
     
     _mainView = [[ReplayLessonsView alloc]init];
     [self.view addSubview:_mainView];
@@ -141,6 +166,7 @@ typedef enum : NSUInteger {
 - (void)requestReplyInfo{
     
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/home/replays/%@/replay",Request_Header,_replayLesson.classID] withHeaderInfo:nil andHeaderfield:nil parameters:nil completeSuccess:^(id  _Nullable responds) {
+        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             //有数据
@@ -167,27 +193,31 @@ typedef enum : NSUInteger {
 /**加载视频播放器*/
 - (void)setupVideoPlayerWithURL:(NSURL *)urlString{
     
+    if (!_playerView) {
+        
+        [self setupVideoPlayerView];
+    }
+    
     if (!_videoPlayer) {
-        _videoPlayer = [[NELivePlayerController alloc]initWithContentURL:urlString];
+        NSError *error = [[NSError alloc]init];
+        _videoPlayer = [[NELivePlayerController alloc]initWithContentURL:urlString ];
+        if (_videoPlayer) {
+            [_playerView updateLayout];
+            [_playerView addSubview:_videoPlayer.view];
+            _videoPlayer.view.frame = _playerView.bounds;
+            self.view.autoresizesSubviews = YES;
+        }
         [NELivePlayerController setLogLevel:NELP_LOG_DEFAULT];//输出详细的加载信息
         _videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-        [_videoPlayer setScalingMode:NELPMovieScalingModeAspectFit];
         
-        /* 播放器的设置*/
-        
-        [_videoPlayer setBufferStrategy:NELPAntiJitter]; //本地视频和点播的速率解析
-        [_videoPlayer setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
-        [_videoPlayer setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
-        [_videoPlayer setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
-        [_videoPlayer setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
-        [_videoPlayer setPlaybackTimeout:15 *1000]; // 设置拉流超时时间
-        [_videoPlayer prepareToPlay]; //初始化视频文件
-        
-        if (!_playerView) {
-            
-            [self setupVideoPlayerView];
-        }
     }
+    
+    if (!_mediaControl) {
+        //加载控制层
+        [self setupControl];
+    }
+    _mediaControl.delegatePlayer = _videoPlayer;
+    
     
 }
 
@@ -208,8 +238,8 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerVideoParseError:) name:NELivePlayerVideoParseErrorNotification object:_videoPlayer];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerSeekComplete:) name:NELivePlayerMoviePlayerSeekCompletedNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerSeekCompleteError:) name:NELivePlayerMoviePlayerSeekCompletedErrorKey object:_videoPlayer];
     
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerSeekCompleteError:) name:NELivePlayerMoviePlayerSeekCompletedErrorKey object:_videoPlayer];
     
     /* 变为全屏后的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnFullScreen:) name:@"FullScreen" object:nil];
@@ -222,55 +252,14 @@ typedef enum : NSUInteger {
     
     _playerView = [[UIView alloc]init];
     [self.view addSubview:_playerView];
-    
     _playerView.sd_layout
     .leftSpaceToView(self.view, 0)
     .rightSpaceToView(self.view, 0)
     .topSpaceToView(self.view, 0)
     .heightIs(self.view.width_sd/16.0*9.0);
     
-    UIImageView *place = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"video_Playerholder"]];
-    [_playerView addSubview:place];
-    place.sd_layout
-    .leftEqualToView(_playerView)
-    .rightEqualToView(_playerView)
-    .topEqualToView(_playerView)
-    .bottomEqualToView(_playerView);
-    
-    [self setupControl];
-    //请求回放信息
-    [self requestReplyInfo];
-    //加载主视图
-    [self setupMainView];
-    
-    /**播放器初始化*/
-    
-    if (_videoPlayer==nil) {
-        // 返回空则表示初始化失败
-        faildTime ++;
-        NSLog(@"播放器初始化失败!!!!");
-        
-        if (faildTime>10) {
-            
-            [self HUDStopWithTitle:@"播放器加载失败"];
-            
-        }else{
-            //再次加载
-            [self setupVideoPlayerWithURL:[NSURL URLWithString:_replayLesson.video_url]];
-            
-        }
-        
-    }else{
-        NSLog(@"播放器初始化成功!!!!");
-        [_playerView addSubview:self.videoPlayer.view];
-        self.videoPlayer.view.sd_layout
-        .leftSpaceToView(_playerView, 0)
-        .rightSpaceToView(_playerView, 0)
-        .topSpaceToView(_playerView, 0)
-        .bottomSpaceToView(_playerView, 0);
-        
-    }
-    
+    [_playerView makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
+
 }
 
 /**加载控制层*/
@@ -296,7 +285,6 @@ typedef enum : NSUInteger {
         UIControl *_= [[UIControl alloc] init];
         [_ addTarget:self action:@selector(onClickOverlay:) forControlEvents:UIControlEventTouchUpInside];
         [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:5];
-        
         [_mediaControl addSubview:_];
         _.sd_layout
         .leftEqualToView(_mediaControl)
@@ -382,7 +370,7 @@ typedef enum : NSUInteger {
         .bottomSpaceToView(_bottomControlView,0)
         .widthEqualToHeight();
         _.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
-        [_ setEnlargeEdge:10];
+//        [_ setEnlargeEdge:10];
         _;
     });
     
@@ -390,18 +378,18 @@ typedef enum : NSUInteger {
     _pauseBtn = ({
         UIButton *_= [[UIButton alloc]init];
         [_ setImage:[UIImage imageNamed:@"ZFPlayer_pause"] forState:UIControlStateNormal];
-        
         _.alpha = 0.8;
         [_ addTarget:self action:@selector(onClickPause:) forControlEvents:UIControlEventTouchUpInside];
         _.hidden = YES;
         [_bottomControlView addSubview:_];
         _.sd_layout
-        .leftEqualToView(_playBtn)
-        .rightEqualToView(_playBtn)
-        .topEqualToView(_playBtn)
-        .bottomEqualToView(_playBtn);
+        .leftSpaceToView(_bottomControlView,8)
+        .centerYEqualToView(_bottomControlView)
+        .topSpaceToView(_bottomControlView,0)
+        .bottomSpaceToView(_bottomControlView,0)
+        .widthEqualToHeight();
         _.sd_cornerRadiusFromHeightRatio = [NSNumber numberWithFloat:0.5];
-        [_ setEnlargeEdge:20];
+//        [_ setEnlargeEdge:20];
         _;
     });
     
@@ -465,31 +453,7 @@ typedef enum : NSUInteger {
     [self.videoProgress addTarget:self action:@selector(onClickSeek:) forControlEvents:UIControlEventValueChanged];
     [self.videoProgress addTarget:self action:@selector(onClickSeekTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     [self.videoProgress addTarget:self action:@selector(onClickSeekTouchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
-    /*
-    //    切换清晰度按钮
-    self.resolutionBtn = [[UIButton alloc]init];
-    //                          WithFrame:CGRectMake(videoScreenHeight-60, 5, 40, 40)];
-    [self.resolutionBtn setTitle:@"标清" forState:UIControlStateNormal];
-    [self.resolutionBtn setTitleColor:[[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1] forState:UIControlStateNormal];
-    [self.bottomControlView addSubview:self.resolutionBtn];
-    [self.resolutionBtn addTarget:self action:@selector(chooseResolution:) forControlEvents:UIControlEventTouchUpInside];
-     */
     
-    //文件名 、课程名
-    /*_fileName = ({
-        UILabel *_=[[UILabel alloc] init ];
-        _.textAlignment = NSTextAlignmentLeft; //文字居左
-        _.textColor = [[UIColor alloc] initWithRed:191/255.0 green:191/255.0 blue:191/255.0 alpha:1];
-        _.font = [UIFont fontWithName:_fileName.font.fontName size:13.0];
-        _.hidden = YES;
-        [_topControlView addSubview:_];
-        _.sd_layout
-        .leftSpaceToView(_playQuitBtn,0)
-        .topEqualToView(_topControlView)
-        .bottomEqualToView(_topControlView)
-        .rightSpaceToView(_classListBtn,20);
-        _;
-    });*/
     
     
 }
@@ -548,25 +512,10 @@ dispatch_source_t CreateDispatchSyncUITimer2(double interval, dispatch_queue_t q
     return timer;
 }
 
-//
-//dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t queue, dispatch_block_t block){
-//    //创建Timer
-//    dispatch_source_t timer  = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);//queue是一个专门执行timer回调的GCD队列
-//    if (timer) {
-//        //使用dispatch_source_set_timer函数设置timer参数
-//        dispatch_source_set_timer(timer, dispatch_time(DISPATCH_TIME_NOW, interval*NSEC_PER_SEC), interval*NSEC_PER_SEC, (1ull * NSEC_PER_SEC)/10);
-//        //设置回调
-//        dispatch_source_set_event_handler(timer, block);
-//        //dispatch_source默认是Suspended状态，通过dispatch_resume函数开始它
-//        dispatch_resume(timer);
-//    }
-//
-//    return timer;
-//}
 
 #pragma mark - 播放器的播放/停止/退出等方法
 
-- (void)syncUIStatus:(BOOL)isSync
+- (void)syncUIStatus
 {
     self.playBtn.hidden = YES;
     self.pauseBtn.hidden = NO;
@@ -612,44 +561,7 @@ dispatch_source_t CreateDispatchSyncUITimer2(double interval, dispatch_queue_t q
             }
         });
     });
-    //    mDuration = [self.videoPlayer duration];
-    //    NSInteger duration = round(mDuration);
-    //
-    //    mCurrPos  = [self.videoPlayer currentPlaybackTime];
-    //    NSInteger currPos  = round(mCurrPos);
-    //
-    ////    self.currentTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(currPos / 3600), (int)(currPos > 3600 ? (currPos - (currPos / 3600)*3600) / 60 : currPos/60), (int)(currPos % 60)];
-    //
-    //    if (duration > 0) {
-    //        self.totalDuration.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(duration / 3600), (int)(duration > 3600 ? (duration - 3600 * (duration / 3600)) / 60 : duration/60), (int)(duration > 3600 ? ((duration - 3600 * (duration / 3600)) % 60) :(duration % 60))];
-    //        self.videoProgress.value = mCurrPos;
-    //        self.videoProgress.maximumValue = mDuration;
-    //    } else {
-    //        [self.videoProgress setValue:0.0f];
-    //    }
-    //
-    //    if ([self.videoPlayer playbackState] == NELPMoviePlaybackStatePlaying) {
-    //
-    //        self.playBtn.hidden = YES;
-    //        [self.playBtn removeAllTargets];
-    //
-    //        self.pauseBtn.hidden = NO;
-    //        [_bottomControlView bringSubviewToFront:self.pauseBtn];
-    //        [self.pauseBtn addTarget:self action:@selector(onClickPause:) forControlEvents:UIControlEventTouchUpInside];
-    //    }
-    //    else {
-    //        self.playBtn.hidden = NO;
-    //        [_bottomControlView bringSubviewToFront:self.playBtn];
-    //        self.pauseBtn.hidden = YES;
-    //        [self.pauseBtn removeAllTargets];
-    //
-    //        [self.playBtn addTarget:self action:@selector(onClickPlay:) forControlEvents:UIControlEventTouchUpInside];
-    //    }
-    //
-    //    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncUIStatus:) object:nil];
-    //    if (!self.playQuitBtn.hidden && !isSync) {
-    //        [self performSelector:@selector(syncUIStatus:) withObject:nil afterDelay:0.5];
-    //    }
+   
 }
 
 //退出播放
@@ -673,14 +585,13 @@ dispatch_source_t CreateDispatchSyncUITimer2(double interval, dispatch_queue_t q
 - (void)onClickPlay:(id)sender{
     NSLog(@"click Play");
     [self.videoPlayer play];
-    [self syncUIStatus:NO];
 }
 
 //暂停播放
 - (void)onClickPause:(id)sender{
     NSLog(@"click pause");
     [self.videoPlayer pause];
-    [self syncUIStatus:NO];
+ 
 }
 
 //触摸overlay
@@ -782,8 +693,6 @@ dispatch_source_t CreateDispatchSyncUITimer2(double interval, dispatch_queue_t q
     [UIView animateWithDuration:0.3 animations:^{
         self.controlOverlay.alpha = 0;
         NSLog(@"控制栏隐藏了");
-        
-        
     }];
     
     [self performSelector:@selector(hideControlOverlay) withObject:nil afterDelay:0.5];
@@ -792,15 +701,12 @@ dispatch_source_t CreateDispatchSyncUITimer2(double interval, dispatch_queue_t q
 
 /* 控制层出现,带动画*/
 - (void)controlOverlayShow{
-    
     [self showControlOverlay];
-    
     self.controlOverlay.alpha = 0;
     [UIView animateWithDuration:0.3 animations:^{
         self.controlOverlay.alpha = 1;
         NSLog(@"控制栏出现了");
     }];
-    
 }
 
 /* 控制层出现,不带动画*/
@@ -816,7 +722,7 @@ dispatch_source_t CreateDispatchSyncUITimer2(double interval, dispatch_queue_t q
 {
     //add some methods
     NSLog(@"NELivePlayerDidPreparedToPlay");
-    [self syncUIStatus:NO];
+    [self syncUIStatus];
     [self.videoPlayer play]; //开始播放
 }
 
@@ -866,7 +772,7 @@ dispatch_source_t CreateDispatchSyncUITimer2(double interval, dispatch_queue_t q
 
 - (void)NELivePlayerFirstVideoDisplayed:(NSNotification*)notification
 {
-    NSLog(@"first video frame rendered!");
+    [_playerView setPlaceholderImage:nil];
 }
 
 - (void)NELivePlayerFirstAudioDisplayed:(NSNotification*)notification
@@ -892,7 +798,18 @@ dispatch_source_t CreateDispatchSyncUITimer2(double interval, dispatch_queue_t q
 - (void)NELivePlayerReleaseSuccess:(NSNotification*)notification
 {
     NSLog(@"resource release success!!!");
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_videoPlayer];
+    // 释放timer
+    if (timer != nil) {
+        dispatch_source_cancel(timer);
+        timer = nil;
+    }
+    @try {
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerReleaseSueecssNotification object:_videoPlayer];
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
 }
 
 // 支持哪些转屏方向
@@ -941,8 +858,6 @@ dispatch_source_t CreateDispatchSyncUITimer2(double interval, dispatch_queue_t q
        // [self hideSegementAndScrollViews];
         /* 全屏状态  发送消息通知*/
         [[NSNotificationCenter defaultCenter]postNotificationName:@"FullScreen" object:nil];
-        
-        
     }
 }
 
@@ -958,7 +873,6 @@ dispatch_source_t CreateDispatchSyncUITimer2(double interval, dispatch_queue_t q
     [self playerViewTurnFullScreenLayout];
     
     [self mediaControlTurnToFullScreenModeWithMainView:_playerView];
-    
 }
 
 

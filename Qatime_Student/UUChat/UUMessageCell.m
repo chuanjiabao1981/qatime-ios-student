@@ -399,7 +399,7 @@
         
         headImageBackView.frame = messageFrame.iconF;
         self.btnHeadImage.frame = CGRectMake(0, 0, ChatIconWH, ChatIconWH);
-        [self.btnHeadImage setBackgroundImageForState:UIControlStateNormal withURL:[NSURL URLWithString:messageFrame.message.strIcon] placeholderImage:[UIImage imageNamed:@"headImage.jpeg"]];
+        [self.btnHeadImage setBackgroundImageForState:UIControlStateNormal withURL:[NSURL URLWithString:messageFrame.message.strIcon] placeholderImage:[UIImage imageNamed:@"headImage"]];
         
         // 3、发送人姓名
         if (messageFrame.message.strName == nil) {

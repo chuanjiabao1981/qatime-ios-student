@@ -18,7 +18,7 @@
  * @brief 视频流类型
  */
 typedef enum NELPBufferStrategy{
-    NELPTopSpeed,    //!< 极速模式，适用于视频直播，延时最小，网络抖动时容易发生卡顿
+    NELPTopSpeed,    //!< 极速模式
     NELPLowDelay,    //!< 网络直播低延时，适用于视频直播，延时低，网络抖动时偶尔有卡顿
     NELPFluent,      //!< 网络直播流畅，适用于视频直播，流畅性好，延时比低延时模式稍大
     NELPAntiJitter,  //!< 网络点播抗抖动，适用于视频点播和本地视频，抗抖动性强
@@ -67,47 +67,21 @@ typedef enum NELPMovieFinishReason {
  */
 typedef struct NELPVideoInfo {
     const char *codec_type;  //!< 视频编码器类型 如: h264
-    NSInteger   width;       //!< 视频宽度
-    NSInteger   height;      //!< 视频高度
-    CGFloat     fps;         //!< 视频的帧率
-    NSInteger   bitrate;     //!< 码率 (单位: kb/s)
+    NSInteger width;   //!< 视频宽度
+    NSInteger height;  //!< 视频高度
+    CGFloat fps;       //!< 视频的帧率
+    NSInteger bitrate; //!< 码率 (单位: kb/s)
 }NELPVideoInfo;
 
 /**
  * @brief 音频信息
  */
 typedef struct NELPAudioInfo {
-    const char *codec_type;   //!< 音频编码器类型 如: aac
-    NSInteger  sample_rate;   //!< 音频的采样率
-    NSInteger  bitrate;       //!< 码率 (单位: kb/s)
-    NSInteger  numOfChannels; //!< 音频的通道数
+    const char *codec_type;  //!< 音频编码器类型 如: aac
+    NSInteger sample_rate;   //!< 音频的采样率
+    NSInteger bitrate;       //!< 码率 (单位: kb/s)
+    NSInteger numOfChannels; //!< 音频的通道数
 }NELPAudioInfo;
-
-/**
- * @brief 回调的视频数据格式
- */
-typedef enum NELPVideoFormat {
-    NELP_YUV420 //!< YUV 420
-} NELPVideoFormat;
-
-/**
- * @brief 回调的视频数据结构
- */
-typedef struct NELPVideoRawData {
-    int            width;    //!< 视频宽度
-    int            height;   //!< 视频高度
-    unsigned char *UsrData;  //!< 视频数据
-} NELPVideoRawData;
-
-/**
- * @brief 回调的音频数据结构
- */
-typedef struct NELPAudioRawData {
-    int            channels;   //!< 通道数
-    int            samplerate; //!< 采样率
-    int            data_size;  //!< 数据长度
-    unsigned char *usrData;    //!< 音频数据
-} NELPAudioRawData;
 
 /**
  * @brief 密钥校验结果
@@ -122,40 +96,19 @@ typedef enum NELPKeyCheckResult {
     NELP_ENCRYPTION_UNKNOWN_ERROR       = 6, //!< 未知错误
 } NELPKeyCheckResult;
 
-/**
- * @brief 切片清晰度
- */
-typedef enum NELPMultiMediaType {
-    NELP_MEDIA_INVALID = -1, // 无效的
-    NELP_MEDIA_SD      = 0,  // 低清
-    NELP_MEDIA_MD      = 1,  // 标清
-    NELP_MEDIA_HD      = 2,  // 高清
-    NELP_MEDIA_SHD     = 3,  // 超清
-} NELPMultiMediaType;
+//typedef struct NELPAudioQueue {
+//    float first_pts;
+//    float last_pts;
+//    int nb_packets;
+//}NELPAudioQueue;
 
-/**
- * @brief 切换切片结果
- */
-typedef enum NELPSwitchStreamState {
-    NELP_SWITCH_SUCCESS   = 0, // 切换成功
-    NELP_SWITCH_NO_STREAM = 1, // 没有对应的流
-    NELP_SWITCH_FAILED    = 2, // 切换失败
-} NELPSwitchStreamState;
 
-/**
- * @brief 选择流的状态
- */
-typedef struct NELPSwitchStreamResult {
-    NELPSwitchStreamState state;
-}NELPSwitchStreamResult;
+// ----------------------------------------------------------------------------
 
 @protocol NELivePlayer;
 
 #pragma mark NELivePlayer
 
-/**
- *	@brief	播放器核心方法类
- */
 @protocol NELivePlayer <NSObject>
 
 /**
@@ -194,11 +147,19 @@ typedef struct NELPSwitchStreamResult {
  *  调用play方法继续播放。如果当前播放已经暂停，则调用该方法将无效果。\\\n
  *  此时播放器状态为: NELPMoviePlaybackStatePaused
  *
- *  @warning 该接口只针对点播地址有效。
- *
  *	@return	无
  */
 - (void)pause;
+
+/**
+ *	@brief	停止播放
+ *
+ *  @discussion
+ *  此时播放器状态为:NELPMoviePlaybackStateStopped
+ *
+ *	@return	无
+ */
+- (void)stop;
 
 /**
  * @brief 是否正在播放
@@ -268,9 +229,6 @@ typedef struct NELPSwitchStreamResult {
 /**
  *	@brief	截图
  *
- *  @discussion
- *  调用prepareToPlay方法，播放器发出NELivePlayerDidPreparedToPlayNotification通知后，才能调用该方法。
- *
  *	@return	截图结果，以UIImage格式保存
  */
 - (UIImage *)getSnapshot;
@@ -282,7 +240,6 @@ typedef struct NELPSwitchStreamResult {
  *
  *  @discussion
  *  调用prepareToPlay方法，播放器发出NELivePlayerDidPreparedToPlayNotification通知后，调用该方法才能获取到有效的视频信息。
- *  注意：其中帧率和码率都是从视频头中读取，若头中没有该信息，则返回0.
  *
  *	@return	无
  */
@@ -299,6 +256,20 @@ typedef struct NELPSwitchStreamResult {
  *	@return	无
  */
 - (void)getAudioInfo :(NELPAudioInfo *)audioInfo;
+
+/**
+ *	@brief	获取当前SDK版本号
+ *
+ *	@return	SDK版本号
+ */
+- (NSString *)getSDKVersion;
+
+/**
+ *  @brief 设置是否输出到文件，默认存放在／library/cache
+ *
+ *  @param  isToFile   是否输出到文件，默认是输出到文件，当为false时，则不输出到文件
+ */
+- (void)isLogToFile:(BOOL)isToFile;
 
 /**
  * @brief	设置播放速度，仅适用于点播
@@ -319,7 +290,7 @@ typedef struct NELPSwitchStreamResult {
 - (void)setVolume:(float)volume;
 
 /**
- * @brief 设置拉流超时时间，在prepareToPlay之前调用
+ * @brief 设置拉流超时时间
  *
  * @param timeout 超时时间 (单位: 毫秒 ms 范围:0 ~ 30000ms)
  *
@@ -335,76 +306,12 @@ typedef struct NELPSwitchStreamResult {
  * @param appKey 开发者平台分配的AppKey
  * @param token 视频云用户子用户的token
  *
- * @discussion 该接口不可与setDecryptionKey同时使用
- *
  * @return ret 返回密钥检测的状态
  */
 - (void)initDecryption:(NSString *)transferToken :(NSString *)accid :(NSString *)appKey :(NSString *)token :(void(^)(NELPKeyCheckResult ret))completionBlock;
 
-/**
- * @brief 设置flv加密视频解密所需的密钥,在已知密钥的情况下可以调用该接口进行解密
- * @param key 密钥
- * @param length 密钥的长度
- * @discussion 该接口不可与initDecryption接口同时使用, 在prepareToPlay前调用
- * @return  ret 返回密钥检测的状态,只有密钥检测正确或没有加密的情况下才能prepareToPlay进行拉流解码，否则会解密失败
- */
-- (void)setDecryptionKey:(Byte *)key andKeyLength:(int)length :(void(^)(NELPKeyCheckResult ret))completionBlock;
+//- (void)getAudioQueue:(NELPAudioQueue *)audioQueue;
 
-/**
- * @brief 播放过程中切换播放地址
- *
- * @param aUrl 待切换的播放地址
- *
- * @return >= 0 切换成功， < 0 切换失败
- */
-- (int)switchContentUrl:(NSURL *)aUrl;
-
-/**
- * @brief 视频数据的回调
- *
- * @param 回调的视频信息
- */
-typedef void(^NELPVideoRawDataCB)(NELPVideoRawData *frame);
-
-/**
- * @brief 注册获取视频帧数据的回调(只支持软件解码)，用户需要实现回调函数cb来接收视频帧
- *
- * @param mFormat         回调的视频数据格式
- * @param videoRawDataCB  获取视频数据的回调函数
- *
- * @return < 0 获取失败
- */
-- (int)registerGetVideoRawDataCB:(NELPVideoFormat)neVFormat and:(NELPVideoRawDataCB)videoRawDataCB;
-
-/**
- * @brief 音频数据的回调
- *
- * @param 回调的音频信息
- */
-typedef void(^NELPAudioRawDataCB)(NELPAudioRawData *frame);
-
-/**
- * @brief 注册获取音频帧数据的回调，用户需要实现回调函数cb来接收音频帧
- *
- * @param audioRawDataCB  获取音频数据的回调函数
- *
- * @return < 0 获取失败
- */
-- (int)registerGetAudioRawDataCB:(NELPAudioRawDataCB)audioRawDataCB;
-
-/**
- * @brief 清晰度切换的结果回调
- *
- * @param result 回调的切换结果
- */
-typedef void (^NELPSwitchStreamResultCB)(NELPSwitchStreamResult result);
-
-/**
- *	@brief	用于点播切换分辨率
- *
- *  @discussion 只针对于点播，直播调用该接口无效
- */
-- (void)switchMultiMedia:(NELPMultiMediaType)mediaType :(void(^)(NELPSwitchStreamResult ret))completionBlock;
 
 /**
  *	@brief	用于显示的view (只读)
@@ -416,7 +323,7 @@ typedef void (^NELPSwitchStreamResultCB)(NELPSwitchStreamResult result);
 /**
  *	@brief	设置当前播放时间点(用于seek操作)以及获取当前播放的时间点
  *
- *	@param 	currentPlaybackTime 	当前要播放的时间点(单位：秒)
+ *	@param 	aCurrentPlaybackTime 	当前要播放的时间点(单位：秒)
  *
  *  @discussion
  *  需要在播放器发送NELivePlayerDidPreparedToPlayNotification通知后，才能调用该set方法设置到某一时间点播放，\\\n
@@ -426,7 +333,7 @@ typedef void (^NELPSwitchStreamResultCB)(NELPSwitchStreamResult result);
  *
  *  @see isPreparedToPlay
  */
-@property(nonatomic)  NSTimeInterval currentPlaybackTime;
+@property(nonatomic)            NSTimeInterval currentPlaybackTime;
 
 /**
  *	@brief	获取多媒体文件总时长(单位: 秒) (只读)
@@ -475,7 +382,7 @@ typedef void (^NELPSwitchStreamResultCB)(NELPSwitchStreamResult result);
  *
  *  播放状态的变换如下：\\\n
  *
- *  播放器调用initWithContentURL方法后处于NELPMoviePlaybackStatePaused状态，\\\n
+ *  播放器调用initWithContentURL方法后处于NELPMoviePlaybackStateStopped状态，\\\n
  *  调用prepareToPlay方法，如果完成对视频文件的初始化则进入NELPMoviePlaybackStatePlaying状态；\\\n
  *  当调用setCurrentPlaybackTime方法时转成NELPMoviePlaybackStateSeeking状态，\\\n
  *  调用pause方法转NELPMoviePlaybackStatePaused状态，调用stop方法转到NELPMoviePlaybackStateStopped状态。
@@ -513,7 +420,7 @@ typedef void (^NELPSwitchStreamResultCB)(NELPSwitchStreamResult result);
  */
 @property(nonatomic) BOOL shouldAutoplay;
 
-#pragma mark - Notifications
+#pragma mark Notifications
 
 #ifdef __cplusplus
 #define NELP_EXTERN extern "C" __attribute__((visibility ("default")))
@@ -521,63 +428,31 @@ typedef void (^NELPSwitchStreamResultCB)(NELPSwitchStreamResult result);
 #define NELP_EXTERN extern __attribute__((visibility ("default")))
 #endif
 
+
 ///调用prepareToPlay后，播放器初始化视频文件完成后的消息通知
 NELP_EXTERN NSString *const NELivePlayerDidPreparedToPlayNotification;
-
 ///播放器加载状态发生改变时的消息通知
 NELP_EXTERN NSString *const NELivePlayerLoadStateChangedNotification;
-
-///播放器播放完成或播放发生错误时的消息通知。
-///携带UserInfo:{NELivePlayerPlaybackDidFinishReasonUserInfoKey : [NSNumber],
-///             NELivePlayerPlaybackDidFinishErrorKey : [NSNumber]}
+///播放器播放完成或播放发生错误时的消息通知
 NELP_EXTERN NSString *const NELivePlayerPlaybackFinishedNotification;
-NELP_EXTERN NSString *const NELivePlayerPlaybackDidFinishReasonUserInfoKey; ///播放器播放结束原因的key
-NELP_EXTERN NSString *const NELivePlayerPlaybackDidFinishErrorKey;          ///播放成功时，此字段为nil。播放器播放结束具体错误码。具体至含义见NELPPLayerErrorCode
-
 ///播放器播放状态发生改变时的消息通知
 NELP_EXTERN NSString *const NELivePlayerPlaybackStateChangedNotification;
-
 ///播放器解码器打开后的消息通知，指示硬件解码是否开启
 NELP_EXTERN NSString *const NELivePlayerHardwareDecoderOpenNotification;
-
 ///播放器第一帧视频显示时的消息通知
 NELP_EXTERN NSString *const NELivePlayerFirstVideoDisplayedNotification;
-
 ///播放器第一帧音频播放时的消息通知
 NELP_EXTERN NSString *const NELivePlayerFirstAudioDisplayedNotification;
-
 ///播放器资源释放完成时的消息通知
 NELP_EXTERN NSString *const NELivePlayerReleaseSueecssNotification;
-
-///seek完成时的消息通知，仅适用于点播，直播不支持。
-///携带UserInfo:{NELivePlayerMoviePlayerSeekCompletedTargetKey : [NSNumber],
-///             NELivePlayerMoviePlayerSeekCompletedTargetKey : [NSNumber]}
+///播放器播放结束原因的key
+NELP_EXTERN NSString *const NELivePlayerPlaybackDidFinishReasonUserInfoKey;
+/////视频分辨率发生变化时的消息通知
+//NELP_EXTERN NSString* const NELivePlayerVideoSizeChangedNotification;
+///seek完成时的消息通知，仅适用于点播，直播不支持
 NELP_EXTERN NSString *const NELivePlayerMoviePlayerSeekCompletedNotification;
-NELP_EXTERN NSString *const NELivePlayerMoviePlayerSeekCompletedErrorKey;    ///seek失败时失败原因key
-NELP_EXTERN NSString *const NELivePlayerMoviePlayerSeekCompletedTargetKey;   ///seek完成时的时间
-
 ///视频码流包解析异常时的消息通知
 NELP_EXTERN NSString *const NELivePlayerVideoParseErrorNotification;
 
-///不同清晰度视频流的条数通知。
-///携带UserInfo:{NELivePlayerMulitDefinitionMediaInfoKey : [NELivePlayerMulitDefinitionModel]}
-NELP_EXTERN NSString *const NELivePlayerMulitDefinitionMediaNotification;
-NELP_EXTERN NSString *const NELivePlayerMulitDefinitionMediaInfoKey;
 
-///播放过程中的Http状态码。
-///携带UserInfo:{NELivePlayerHttpCodeResponseInfoKey : [NELivePlayerHttpCodeModel]}
-NELP_EXTERN NSString *const NELivePlayerHttpCodeResponseNotification;
-NELP_EXTERN NSString *const NELivePlayerHttpCodeResponseInfoKey;
-
-@end
-
-#pragma mark - 分辨率通知信息
-@interface NELivePlayerMulitDefinitionModel : NSObject
-@property (nonatomic, strong) NSArray <NSNumber *> *resolutions; //支持的分辨率 @(NELPMultiMediaType)
-@property (nonatomic, assign) NELPMultiMediaType isUsed; //正在播放的分辨率
-@end
-
-#pragma mark - HTTP通知信息
-@interface NELivePlayerHttpCodeModel : NSObject
-@property (nonatomic, assign) int code;
 @end

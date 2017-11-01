@@ -105,7 +105,6 @@
             if (members.count!=0) {
                 //有成员
                 for (NSDictionary *member in members) {
-                    
                     Members *mod = [Members yy_modelWithJSON:member];
                     [_membersArr addObject:mod];
                     

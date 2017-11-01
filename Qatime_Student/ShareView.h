@@ -10,4 +10,11 @@
 
 @interface ShareView : UIView
 
+@property (nonatomic, strong) UILabel *shareLabel ;
+
+@property (nonatomic, strong) UIButton *wechatBtn ;
+
++ (instancetype)sharedView;
+
+
 @end

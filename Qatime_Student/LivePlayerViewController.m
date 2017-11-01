@@ -79,6 +79,7 @@
 #import "TeachersPublicViewController.h"
 #import "UIViewController+Token.h"
 #import "HomeworkManage.h"
+#import "NSObject+Selector.h"
 
 
 #define APP_WIDTH self.view.frame.size.width
@@ -452,9 +453,20 @@ bool ismute     = NO;
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationDidBecomeActive) name:@"ApplicationDidBecomeActive" object:nil];
     
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordEnd) name:@"RecordFinished" object:nil];
+    
     /* 全屏模式的监听-->在runtime机制下不可进行屏幕旋转的时候,强制进行屏幕旋转*/
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onDeviceOrientationChange) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+    //进入后台的监听
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    
+    //将要进入前台
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationEnterForeGround) name:UIApplicationWillEnterForegroundNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     
 }
 
@@ -526,7 +538,7 @@ bool ismute     = NO;
     _liveplayerBoard = nil;
     ///测试新播放器代码
     NSError *error = [[NSError alloc]init];
-    _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:_boardPullAddress error:&error];
+    _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:_boardPullAddress];
     
      _liveplayerBoard.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     [_boardPlayerView updateLayout];
@@ -579,16 +591,14 @@ bool ismute     = NO;
     }
     
     /* 白板播放器的设置*/
-    
+    [_liveplayerBoard isLogToFile:NO];
     [_liveplayerBoard setBufferStrategy:NELPLowDelay]; //直播低延时模式
     [_liveplayerBoard setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
     [_liveplayerBoard setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
     [_liveplayerBoard setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
-    [_liveplayerBoard setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
+    [_liveplayerBoard setPauseInBackground:YES]; //设置切入后台时的状态，暂停还是继续播放
     [_liveplayerBoard setPlaybackTimeout:15 *1000]; // 设置拉流超时时间
-    
     [_liveplayerBoard prepareToPlay]; //初始化视频文件
-    
     [NELivePlayerController setLogLevel:NELP_LOG_VERBOSE];
     
 }
@@ -601,7 +611,7 @@ bool ismute     = NO;
 
     ///测试新播放器代码
     NSError *error = [[NSError alloc]init];
-    _liveplayerTeacher = [[NELivePlayerController alloc] initWithContentURL:_teacherPullAddress error:&error];
+    _liveplayerTeacher = [[NELivePlayerController alloc] initWithContentURL:_teacherPullAddress];
     [_teacherPlayerView makePlaceHolderImage:nil];
     [_teacherPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadingHolder_Landscape"]];
     
@@ -648,11 +658,12 @@ bool ismute     = NO;
     }
     
     /* 教师播放器的设置*/
+    [_liveplayerTeacher isLogToFile:NO];
     [_liveplayerTeacher setBufferStrategy:NELPLowDelay]; //直播低延时模式
     [_liveplayerTeacher setScalingMode:NELPMovieScalingModeNone]; //设置画面显示模式，默认原始大小
     [_liveplayerTeacher setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
     [_liveplayerTeacher setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
-    [_liveplayerTeacher setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
+    [_liveplayerTeacher setPauseInBackground:YES]; //设置切入后台时的状态，暂停还是继续播放
     [_liveplayerTeacher prepareToPlay]; //初始化视频文件
     [NELivePlayerController setLogLevel:NELP_LOG_VERBOSE];
     
@@ -938,10 +949,11 @@ bool ismute     = NO;
     _inputView.delegate = self;
     //横屏先把表情给隐藏了吧....别费那劲了
     _inputView.btnChangeVoiceState.hidden = YES;
+    _inputView.btnSendMessage.imageView.contentMode = UIViewContentModeScaleAspectFit;
     _inputView.btnSendMessage.sd_layout
-    .leftSpaceToView(_inputView.TextViewInput, 10);
-    [_inputView.btnChangeVoiceState updateLayout];
-    
+    .leftSpaceToView(_inputView.TextViewInput, 10)
+    .rightSpaceToView(_inputView, 10);
+    [_inputView.btnSendMessage updateLayout];
     _inputView.hidden = YES;
     
     /* 副屏幕开关按钮*/
@@ -958,10 +970,8 @@ bool ismute     = NO;
         .widthRatioToView(_barrage,1.0)
         .heightEqualToWidth();
         [_ addTarget:self action:@selector(subScreenControl) forControlEvents:UIControlEventTouchUpInside];
-        
         _;
     });
-    
 }
 
 /* 副屏幕开关按钮*/
@@ -1111,12 +1121,15 @@ bool ismute     = NO;
 - (void)viewLevelChangDifferent:(NSNotification *)notification{
     
     [_noticeVC.noticeList.mj_header beginRefreshing];
+    
+    _barrage.hidden = YES;
 }
 
 #pragma mark- 当视频变成平级视图的监听
 - (void)viewLevelChangSame:(NSNotification *)notification{
     
     [_noticeVC.noticeList cyl_reloadData];
+    _barrage.hidden = NO;
 
 }
 
@@ -1323,6 +1336,7 @@ bool ismute     = NO;
             
             /* 切换成非平级视图后,弹幕不可点不可用*/
             _barrage.enabled = NO;
+            _barrage.hidden = YES;
             [_barrage setImage:[UIImage imageNamed:@"barrage_off"] forState:UIControlStateNormal];
             _maskView.hidden = YES;
             [_aBarrage stop];
@@ -1370,29 +1384,24 @@ bool ismute     = NO;
             }
             /* 切换回平级视图,弹幕可用,弹幕按钮可用*/
             _barrage.enabled = YES;
+            _barrage.hidden = NO;
             [_barrage setImage:[UIImage imageNamed:@"barrage_on"] forState:UIControlStateNormal];
             _maskView.hidden = NO;
-            
             [_aBarrage start];
-            
         }
-        
     }
-    
 }
 
 /* infoview的contentsize变大*/
 - (void)changInfoViewContentSizeToBig{
     
     _liveClassInfoView.scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width*4, [UIScreen mainScreen].bounds.size.height -  [UIScreen mainScreen].bounds.size.width*9/16.0f-30-4-40);
-    
 }
 
 /* infoview的contentsize变小*/
 - (void)changInfoViewContentSizeToSmall{
     
     _liveClassInfoView.scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width*4, [UIScreen mainScreen].bounds.size.height -  [UIScreen mainScreen].bounds.size.width*9/16.0f*2-30-4-40);
-    
 }
 
 #pragma mark- 切换屏顺序点击事件
@@ -1459,8 +1468,6 @@ bool ismute     = NO;
             [self makeFloatingPlayer:_teacherPlayerView];
             
         }
-        
-        
     }
     
     [_aBarrage start];
@@ -2381,16 +2388,16 @@ bool ismute     = NO;
 - (void)barragesSwitch{
     
     if (isFullScreen == YES) {
-        
-        if (_aBarrage.view.hidden == YES) {
-            _aBarrage.view.hidden = NO;
-        }
         if (barrageRunning==YES) {
+            _aBarrage.view.hidden = YES;
+            barrageRunning = NO;
             [_barrage setImage:[UIImage imageNamed:@"barrage_off"] forState:UIControlStateNormal];
+            [_aBarrage stop];
         }else{
-            [_aBarrage start];
+            _aBarrage.view.hidden = NO;
             barrageRunning = YES;
             [_barrage setImage:[UIImage imageNamed:@"barrage_on"] forState:UIControlStateNormal];
+            [_aBarrage start];
         }
         
     }else{
@@ -2415,6 +2422,9 @@ bool ismute     = NO;
     NSLog(@"%@",[self.view valueForKey:@"frame"]);
     
     NSLog(@"%@",message);
+    if (!barrageRunning) {
+        return;
+    }
     
     if (!_aBarrage.view.superview) {
         if (isFullScreen == NO) {
@@ -2853,7 +2863,7 @@ bool ismute     = NO;
     @try {
         [_boardPlayerView removeObserver:self forKeyPath:@"canMove" ];
         [_teacherPlayerView removeObserver:self forKeyPath:@"canMove" ];
-        [self removeObserver:self forKeyPath:@"headerHeight"];
+        
     } @catch (NSException *exception) {
         
     } @finally {
@@ -2933,6 +2943,55 @@ bool ismute     = NO;
     [funcView.TextViewInput resignFirstResponder];
     funcView.TextViewInput.text = @"";
 }
+
+
+/** 应用进入后台 */
+- (void)applicationEnterBackground{
+    //直接干释放了
+    [_liveplayerTeacher shutdown];
+    [_liveplayerTeacher.view removeFromSuperview];
+    _liveplayerTeacher = nil;
+    
+    [_liveplayerBoard shutdown];
+    [_liveplayerBoard.view removeFromSuperview];
+    _liveplayerBoard = nil;
+    
+    [_teacherPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadingHolder_Landscape"]];
+    [_boardPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadingHolder_Landscape"]];
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(checkVideoStatus) object:nil];
+    
+}
+
+- (void)applicationEnterForeGround{
+ 
+    
+}
+
+
+/** 进入到活动状态 */
+- (void)applicationBecomeActive{
+    
+    [self setupBoardPlayer];
+    [_boardPlayerView makePlaceHolderImage:nil];
+    [_liveplayerBoard shouldAutoplay];
+    [_liveplayerBoard play];
+    [self setupTeacherPlayer];
+    [_teacherPlayerView makePlaceHolderImage:nil];
+    [_liveplayerTeacher shouldAutoplay];
+    [_liveplayerTeacher play];
+    
+    [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:CHECKTIME];
+    
+}
+
+- (void)recordEnd{
+    
+    [_liveplayerBoard setMute:NO];
+    [_liveplayerTeacher setMute:NO];
+    
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -15,8 +15,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         _time = ({
             UILabel *_=[[UILabel alloc]init];
             

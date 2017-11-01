@@ -7,6 +7,7 @@
 //
 
 #import "ShareViewController.h"
+#import "WXApi.h"
 
 @interface ShareViewController ()
 
@@ -16,13 +17,34 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    _sharedView = [[ShareView alloc]init];
+    [self.view addSubview:_sharedView];
+    _sharedView.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .topSpaceToView(self.view, 0)
+    .bottomSpaceToView(self.view, 0);
+    
+}
+
+
+//分享实现
+-(void)sharedWithContentDic:(NSDictionary *)sharedDic{
+    
+    SendMessageToWXReq *req = [[SendMessageToWXReq alloc]init];
+    req.text = @"hellohellohellohellohello";
+    req.bText = YES;
+    req.scene = WXSceneSession;
+    [WXApi sendReq:req];
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 /*
 #pragma mark - Navigation

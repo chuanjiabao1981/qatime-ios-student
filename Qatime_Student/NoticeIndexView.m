@@ -27,7 +27,7 @@
         _segmentControl = ({
             
             JTSegmentControl *_=[[JTSegmentControl alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, self.height_sd*0.065)];
-//            _.delegate = self;
+            //            _.delegate = self;
             _.items = @[@"聊天消息",@"系统消息"];
             _.autoScrollWhenIndexChange = NO;
             _.itemSelectedTextColor = [UIColor blackColor];
@@ -51,34 +51,10 @@
             _.alwaysBounceHorizontal = NO;
             _.showsVerticalScrollIndicator = NO;
             _.showsHorizontalScrollIndicator = NO;
-            
+            _.scrollEnabled = YES;
             [self addSubview:_];
             _;
         });
-        
-        _chatListTableView = ({
-        
-            UITableView *_=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.width_sd, _scrollView.height_sd) style:UITableViewStylePlain];
-            _.backgroundColor = BACKGROUNDGRAY;
-            _.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-            _.tableFooterView = [[UIView alloc]init];
-            [_scrollView addSubview:_];
-            _;
-        
-        });
-        
-        _noticeTableView= ({
-            
-            UITableView *_=[[UITableView alloc]initWithFrame:CGRectMake(self.width_sd, 0, self.width_sd, _scrollView.height_sd) style:UITableViewStylePlain];
-            _.backgroundColor = BACKGROUNDGRAY;
-            _.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-            _.tableFooterView = [[UIView alloc]init];
-            
-            [_scrollView addSubview:_];
-            _;
-            
-        });
-        
     }
     return self;
 }

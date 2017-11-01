@@ -193,13 +193,11 @@
 
 
 - (NSString *)statusChange:(NSString *)status{
-    
     NSString *str  = @"".mutableCopy;
-    
     if ([status isEqualToString:@"teaching"]||[status isEqualToString:@"pause"]) {
         str = @"正在直播";
         _stateLabel.textColor = [UIColor colorWithHexString:@"#ff5842"];
-    }else if ([status isEqualToString:@"init"]||[status isEqualToString:@"ready"]||[status isEqualToString:@"init"]){
+    }else if ([status isEqualToString:@"init"]||[status isEqualToString:@"ready"]){
         str = @"尚未直播";
         _stateLabel.textColor = [UIColor colorWithHexString:@"#4873ff"];
     }else if ([status isEqualToString:@"closed"]||[status isEqualToString:@"finished"]||[status isEqualToString:@"missed"]||[status isEqualToString:@"billing"]||[status isEqualToString:@"completed"]){

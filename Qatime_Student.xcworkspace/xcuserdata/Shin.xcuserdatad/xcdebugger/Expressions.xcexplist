@@ -3,173 +3,24 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "-[HomeworkInfoViewController collectionView:numberOfItemsInSection:]:HomeworkInfoViewController.m">
+         contextName = "-[ViewController showNIMPage:]:ViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController initWithURL:andDecodeParm:]:NELivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_itemsArray">
+               value = "self.mediaType">
+            </PersistentString>
+            <PersistentString
+               value = "self.decodeType">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__32-[NewQuestionViewController ask]_block_invoke_2:NewQuestionViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__44-[NoticeIndexViewController requestMyClass:]_block_invoke_4:NoticeIndexViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_chatListArr">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NewQuestionViewController uploadImageWithIndexPath:andImage:]:NewQuestionViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_mainView">
-            </PersistentString>
-            <PersistentString
-               value = "_mainView.photosView">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[NewQuestionViewController collectionView:didSelectItemAtIndexPath:]:NewQuestionViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_clickedIndexPath">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[QuestionInfoViewController setupView]:QuestionInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_question">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__67-[MyHomeworkViewController requestDataWithRefreshType:andDataType:]_block_invoke_2:MyHomeworkViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[UITableView(CYLTableViewPlaceHolder) cyl_checkEmpty]:UITableView+CYLTableViewPlaceHolder.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.placeHolderView">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[TLCityPickerController hotCityData]:TLCityPickerController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "item.cityName">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__63-[NewQuestionViewController uploadImageWithIndexPath:andImage:]_block_invoke.270:NewQuestionViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "__65-[ExclusiveAskViewController requestDataWithType:andRefreshType:]_block_invoke_2:ExclusiveAskViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[ChatViewController viewDidLoad]:ChatViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_session">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[HomeworkInfoTableViewCell collectionView:didSelectItemAtIndexPath:]:HomeworkInfoTableViewCell.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "collectionView.visibleCells">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[LivePlayerViewController sendBarrage:withAttibute:]:LivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ExclusiveAskViewController tableView:didSelectRowAtIndexPath:]:ExclusiveAskViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "cell">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[TLCityPickerController tableView:numberOfRowsInSection:]:TLCityPickerController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.data">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[LivePlayerChatViewController UUInputFunctionView:sendMessage:]:LivePlayerChatViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[HomeworkInfoTableViewCell collectionView:cellForItemAtIndexPath:]:HomeworkInfoTableViewCell.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "indexPath.item">
-            </PersistentString>
-            <PersistentString
-               value = "_model.myAnswerPhotos">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[HomeworkInfoTableViewCell setModel:]:HomeworkInfoTableViewCell.m">
-      </ContextState>
-      <ContextState
-         contextName = "__63-[NewQuestionViewController uploadImageWithIndexPath:andImage:]_block_invoke.287:NewQuestionViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_clickedIndexPath">
-            </PersistentString>
-            <PersistentString
-               value = "indexPath">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[QuestionInfoView setModel:]:QuestionInfoView.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[HomeworkInfoViewController setupView]:HomeworkInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_itemsArray">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "__32-[NewQuestionViewController ask]_block_invoke_3:NewQuestionViewController.m">
       </ContextState>
       <ContextState
          contextName = "__44-[NoticeIndexViewController requestMyClass:]_block_invoke:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
-         contextName = "__39-[LivePlayerViewController getLiveInfo]_block_invoke_2:LivePlayerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_chatVC">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "__32-[NewQuestionViewController ask]_block_invoke_3:NewQuestionViewController.m">
       </ContextState>
       <ContextState
          contextName = "main:main.m">
@@ -186,6 +37,243 @@
          contextName = "-[QuestionInfoViewController initWithQuestion:]:QuestionInfoViewController.m">
       </ContextState>
       <ContextState
+         contextName = "__43-[NoticeListViewController requestNotices:]_block_invoke_2:NoticeListViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[LivePlayerChatViewController onRecvMessages:]:LivePlayerChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_userList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__44-[NoticeIndexViewController requestMyClass:]_block_invoke_4:NoticeIndexViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatListArr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[LivePlayerViewController UUInputFunctionView:voicePath:time:]:LivePlayerViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[LivePlayerViewController applicationEnterForeGround]:LivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_liveplayerTeacher">
+            </PersistentString>
+            <PersistentString
+               value = "_liveplayerBoard">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__39-[LivePlayerViewController getLiveInfo]_block_invoke_2:LivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_chatVC">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__67-[MyHomeworkViewController requestDataWithRefreshType:andDataType:]_block_invoke_2:MyHomeworkViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[TLCityPickerController hotCityData]:TLCityPickerController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "item.cityName">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__63-[NewQuestionViewController uploadImageWithIndexPath:andImage:]_block_invoke.270:NewQuestionViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[UITableView(CYLTableViewPlaceHolder) cyl_checkEmpty]:UITableView+CYLTableViewPlaceHolder.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.placeHolderView">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[LivePlayerViewController setupBoardPlayer]:LivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_liveplayerBoard">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[QuestionInfoViewController setupView]:QuestionInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_question">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NELivePlayerViewController NELivePlayerPlaybackStateChanged:]:NELivePlayerViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__32-[NewQuestionViewController ask]_block_invoke_2:NewQuestionViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HomeworkInfoTableViewCell collectionView:cellForItemAtIndexPath:]:HomeworkInfoTableViewCell.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "indexPath.item">
+            </PersistentString>
+            <PersistentString
+               value = "_model.myAnswerPhotos">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HomeworkInfoTableViewCell setModel:]:HomeworkInfoTableViewCell.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HomeworkInfoViewController setupView]:HomeworkInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_itemsArray">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NewQuestionViewController imagePickerController:didFinishPickingMediaWithInfo:]:NewQuestionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_clickedIndexPath">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__43-[LivePlayerChatViewController viewDidLoad]_block_invoke:LivePlayerChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_shutUp">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NewQuestionViewController collectionView:didSelectItemAtIndexPath:]:NewQuestionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_clickedIndexPath">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HomeworkInfoTableViewCell collectionView:didSelectItemAtIndexPath:]:HomeworkInfoTableViewCell.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "collectionView.visibleCells">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__41-[ChatListViewController requestMyClass:]_block_invoke_4:ChatListViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[NoticeIndexViewController didSelectedWithSegement:index:]:NoticeIndexViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_totalUnreadCount">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__43-[NoticeListViewController requestNotices:]_block_invoke:NoticeListViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "notice">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[LivePlayerViewController sendBarrage:withAttibute:]:LivePlayerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ReplayLessonsViewController viewDidLoad]:ReplayLessonsViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_videoPlayer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ExclusiveAskViewController tableView:didSelectRowAtIndexPath:]:ExclusiveAskViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "cell">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HomeworkInfoViewController collectionView:numberOfItemsInSection:]:HomeworkInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_itemsArray">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__65-[ExclusiveAskViewController requestDataWithType:andRefreshType:]_block_invoke_2:ExclusiveAskViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[QuestionInfoView setModel:]:QuestionInfoView.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ChatViewController viewDidLoad]:ChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_session">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__63-[NewQuestionViewController uploadImageWithIndexPath:andImage:]_block_invoke.287:NewQuestionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_clickedIndexPath">
+            </PersistentString>
+            <PersistentString
+               value = "indexPath">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[NewQuestionViewController uploadImageWithIndexPath:andImage:]:NewQuestionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_mainView">
+            </PersistentString>
+            <PersistentString
+               value = "_mainView.photosView">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[LivePlayerChatViewController UUInputFunctionView:sendMessage:]:LivePlayerChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__63-[NewQuestionViewController uploadImageWithIndexPath:andImage:]_block_invoke.283:NewQuestionViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -197,10 +285,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[NewQuestionViewController imagePickerController:didFinishPickingMediaWithInfo:]:NewQuestionViewController.m">
+         contextName = "-[ReplayLessonsViewController onClickPause:]:ReplayLessonsViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_clickedIndexPath">
+               value = "_videoPlayer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TLCityPickerController tableView:numberOfRowsInSection:]:TLCityPickerController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.data">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

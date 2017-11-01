@@ -10,4 +10,6 @@
 
 @interface NSObject (Selector)
 
+-(id)yz_performSelector:(SEL)selector withObject:(id)object,...NS_REQUIRES_NIL_TERMINATION;
+
 @end

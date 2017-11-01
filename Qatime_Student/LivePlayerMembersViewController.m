@@ -15,6 +15,9 @@
     
     NSString *_classID;
     __block NSMutableArray *_members;
+    
+    //房间拥有者的accid,也就是老师.
+    NSString *_ownerID;
 }
 
 @end
@@ -51,7 +54,6 @@
         [self getData];
     }];
     [_memeberList.mj_header beginRefreshing];
-    
 }
 
 - (void)makeData{
@@ -60,16 +62,29 @@
 
 - (void)getData{
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/play_info",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withDownloadProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/realtime",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withDownloadProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
-            
-            if (dic[@"data"][@"chat_team"]) {
-                for (NSDictionary *members in dic[@"data"][@"chat_team"][@"accounts"]) {
+            _ownerID = dic[@"data"][@"owner"];
+            if (dic[@"data"][@"members"]) {
+                for (NSDictionary *members in dic[@"data"][@"members"]) {
                     Members *mod = [Members yy_modelWithJSON:members];
                     [_members addObject:mod];
                 }
             }
+            //加工一下数据吧.
+            if (_ownerID) {
+                NSInteger teacherIndex = 0;
+                for (Members *member in _members) {
+                    if ([member.accid isEqualToString:_ownerID]) {
+                        [_members exchangeObjectAtIndex:0 withObjectAtIndex:teacherIndex];
+                         break ;
+                    }
+                    teacherIndex++;
+                }
+                
+            }
+            
             [_memeberList.mj_header endRefreshing];
             [_memeberList cyl_reloadData];
         }else{
@@ -100,6 +115,7 @@
     }
     if (_members.count>indexPath.row) {
         cell.model = _members[indexPath.row];
+        
         if (indexPath.row == 0) {
             cell.character.text = @"老师";
             cell.name.textColor = BUTTONRED;
