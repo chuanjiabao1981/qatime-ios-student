@@ -13,7 +13,6 @@
 
 @interface UUMessageContentButton : UIButton
 
-
 @property(nonatomic,strong) YYLabel *title ;
 
 @property(nonatomic,retain) YYTextView *contentTextView ;

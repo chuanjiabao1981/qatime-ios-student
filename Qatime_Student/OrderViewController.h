@@ -16,9 +16,7 @@ typedef enum : NSUInteger {
     ExclusiveType
 } ClassOrderType;
 
-
 @interface OrderViewController : UIViewController
-
 
 @property(nonatomic,strong) NSString *classID ;
 

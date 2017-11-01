@@ -214,14 +214,11 @@
 
 - (void)beginRecordVoice:(UIButton *)button{
     
-//    [MP3 startRecord];
-    
-    
-        [[NIMSDK sharedSDK].mediaManager record:NIMAudioTypeAMR duration:60];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordStart" object:nil];
-        playTime = 0;
-        playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
-        [UUProgressHUD show];
+    [[NIMSDK sharedSDK].mediaManager record:NIMAudioTypeAMR duration:60];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordStart" object:nil];
+    playTime = 0;
+    playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
+    [UUProgressHUD show];
 }
 
 - (void)endRecordVoice:(UIButton *)button
@@ -232,21 +229,18 @@
             [self failRecord];
              [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordCancel" object:nil];
         }else{
-            
+            [[NIMSDK sharedSDK].mediaManager setDeactivateAudioSessionAfterComplete:NO];
+            [[NIMSDK sharedSDK].mediaManager stopRecord];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordEnd" object:nil];
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 // 处理耗时操作的代码块...
-                [[NIMSDK sharedSDK].mediaManager stopRecord];
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordEnd" object:nil];
                 //通知主线程刷新
                 dispatch_async(dispatch_get_main_queue(), ^{
                     //回调或者说是通知主线程刷新，
-                    
+                    [UUProgressHUD dismissWithSuccess:@"发送成功"];
                     [self layoutSubviews];
                 });
-                
             });
-
-            
             
         }
         [playTimer invalidate];
@@ -303,8 +297,8 @@
 /**  录制音频完成后的回调 **/
 - (void)recordAudio:(NSString *)filePath didCompletedWithError:(NSError *)error{
     
-    [self.delegate UUInputFunctionView:self voicePath:filePath  time:playTime];
-    [UUProgressHUD dismissWithSuccess:@"发送成功"];
+    [self.recordDelegate UUInputFunctionView:self voicePath:filePath  time:playTime];
+    
     //音频消息发送方法
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSLog(@"%@",filePath);
@@ -312,6 +306,8 @@
         self.voiceSwitchTextButton.enabled = NO;
         self.voiceSwitchTextButton.enabled = YES;
     });
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordFinished" object:nil];
 }
 
 /** 音频录制进度更新回调 **/
@@ -409,6 +405,7 @@
         picker.delegate = self;
         picker.allowsEditing = YES;
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        picker.modalPresentationStyle = UIModalPresentationCurrentContext;
         [self.superVC presentViewController:picker animated:YES completion:^{}];
     }else{
         //如果没有提示用户
@@ -423,6 +420,7 @@
         picker.delegate = self;
         picker.allowsEditing = YES;
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        picker.modalPresentationStyle = UIModalPresentationCurrentContext;
         [self.superVC presentViewController:picker animated:YES completion:^{
         }];
     }

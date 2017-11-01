@@ -31,6 +31,4 @@
 @property(nonatomic,strong) UIView *view4 ;
 
 
-
-
 @end

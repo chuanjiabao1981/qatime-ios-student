@@ -62,7 +62,6 @@
     
     _iconType= iconType;
     
-    
     _collectionMenu.delegate = self;
     _collectionMenu.dataSource=self;
        

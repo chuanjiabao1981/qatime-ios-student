@@ -45,7 +45,7 @@
 #import "NSNull+Json.h"
 #import "TutoriumList.h"
 
-@interface ExclusiveChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate,PhotoBrowserDelegate,NIMTeamManagerDelegate>{
+@interface ExclusiveChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate,PhotoBrowserDelegate,NIMTeamManagerDelegate,UUInputFunctionViewRecordDelegate>{
     
     NSString *_token;
     NSString *_idNumber;
@@ -213,11 +213,15 @@
     .bottomSpaceToView(self.view, 50);
     
     _inputView = ({
-        
         UUInputFunctionView *_=[[UUInputFunctionView alloc]initWithSuperVC:self];
+        _.btnVoiceRecord.hidden = YES;
+        _.TextViewInput.sd_layout
+        .leftSpaceToView(_, 10);
+        [_.TextViewInput updateLayout];
         [_.btnChangeVoiceState addTarget:self action:@selector(emojiKeyboardShow:) forControlEvents:UIControlEventTouchUpInside];
         _.TextViewInput.placeholder = @"请输入要发送的信息";
         _.delegate= self;
+        _.recordDelegate = self;
         _;
     });
     
@@ -227,7 +231,6 @@
     .rightSpaceToView(self.view, 0)
     .bottomSpaceToView(self.view, 0)
     .heightIs(50);
-    
     
 }
 
@@ -686,17 +689,29 @@
                     
                     if (msgContent) {
                         if (msgContent[@"data"][@"mute"]) {
-                            if ([msgContent[@"data"][@"mute"]isEqualToNumber:@1]) {
+                            if ([msgContent[@"data"][@"mute"] isEqualToNumber:@1]) {
                                 //禁言了
-                                [self shutUpTalking];
-                                messageText = @"您已被禁言";
+                                //通过accid和名字看看是谁被禁言
+                                if ([msgContent[@"data"][@"uinfos"][1][@"1"]isEqualToString:_chat_Account.accid]) {
+                                    //自己被禁言了
+                                    messageText = @"您已被禁言";
+                                    [self shutUpTalking];
+                                }else{
+                                    messageText = [NSString stringWithFormat:@"%@已被禁言",msgContent[@"data"][@"uinfos"][1][@"3"]];
+                                }
+                                
                             }else{
                                 //解除禁言
-                                [self keepOnTalking];
-                                messageText = @"您已解除禁言";
+                                //通过accid和名字看看是谁被禁言
+                                if ([msgContent[@"data"][@"uinfos"][1][@"1"]isEqualToString:_chat_Account.accid]) {
+                                    //自己被禁言了
+                                    messageText = @"您已解除禁言";
+                                    [self keepOnTalking];
+                                }else{
+                                    messageText = [NSString stringWithFormat:@"%@已被禁言",msgContent[@"data"][@"uinfos"][1][@"3"]];
+                                }
                             }
                         }else{
-                            
                             messageText = msgContent[@"data"][@"tinfo"][@"15"];
                         }
                     }else{
@@ -871,7 +886,11 @@
             break;
             //消息发送成功
         case NIMMessageDeliveryStateDeliveried:{
-            
+            ///就在这儿划分消息类型然后发送弹幕,
+            if (message.messageType == NIMMessageTypeText) {
+                
+                [self sendBarrage:message.text];
+            }
             
         }
             break;
@@ -918,6 +937,7 @@
             
             [self.chatTableView reloadData];
             [self tableViewScrollToBottom];
+            [self sendBarrage:message.text];
             
         }
         
@@ -948,15 +968,27 @@
                 if (msgContent[@"data"][@"mute"]) {
                     if ([msgContent[@"data"][@"mute"] isEqualToNumber:@1]) {
                         //禁言了
-                        [self shutUpTalking];
-                        messageText = @"您已被禁言";
+                        //通过accid和名字看看是谁被禁言
+                        if ([msgContent[@"data"][@"uinfos"][1][@"1"]isEqualToString:_chat_Account.accid]) {
+                            //自己被禁言了
+                            messageText = @"您已被禁言";
+                            [self shutUpTalking];
+                        }else{
+                            messageText = [NSString stringWithFormat:@"%@已被禁言",msgContent[@"data"][@"uinfos"][1][@"3"]];
+                        }
+                        
                     }else{
                         //解除禁言
-                        [self keepOnTalking];
-                        messageText = @"您已解除禁言";
+                        //通过accid和名字看看是谁被禁言
+                        if ([msgContent[@"data"][@"uinfos"][1][@"1"]isEqualToString:_chat_Account.accid]) {
+                            //自己被禁言了
+                            messageText = @"您已解除禁言";
+                            [self keepOnTalking];
+                        }else{
+                            messageText = [NSString stringWithFormat:@"%@已被禁言",msgContent[@"data"][@"uinfos"][1][@"3"]];
+                        }
                     }
                 }else{
-                    
                     messageText = msgContent[@"data"][@"tinfo"][@"15"];
                 }
             }else{
@@ -1185,7 +1217,7 @@
         cell=[[UUMessageCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
         
     }
-    
+    [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     if (self.chatModel.dataSource.count>indexPath.row) {
         
         cell.delegate = self;
@@ -1201,11 +1233,9 @@
             cell.sendfaild.tag = indexPath.row;
             [cell.sendfaild addTarget:self action:@selector(resendMessages:) forControlEvents:UIControlEventTouchUpInside]; //让该消息可以再次发送
         }
-        [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     }
     
     return cell;
-    
 }
 
 
@@ -1406,7 +1436,7 @@
             
             
             [_inputView.TextViewInput setText:@""];
-            [_inputView.TextViewInput resignFirstResponder];
+//            [_inputView.TextViewInput resignFirstResponder];
             
         }
         
@@ -1482,9 +1512,6 @@
 }
 
 
-
-
-
 // 获取表情字符串
 - (NSString *)emotionText:(UITextView *)textView{
     
@@ -1508,12 +1535,8 @@
     }];
     
     NSLog(@"%@",strM);
-    
-    
     return strM;
-    
 }
-
 
 
 //聊天页面tableView 滚动到底部
@@ -1744,6 +1767,13 @@
         
     }];
     
+}
+
+/** 发弹幕 */
+- (void)sendBarrage:(NSString *)barrageString{
+    if (_sendBarrage) {
+        _sendBarrage(barrageString);
+    }
 }
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{

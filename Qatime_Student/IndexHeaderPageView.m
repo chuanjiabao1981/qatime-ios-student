@@ -166,7 +166,7 @@
         [_reviewBtn updateLayout];
         UILabel *title2 = [[UILabel alloc]init];
         [_reviewBtn addSubview:title2];
-        title2.text = @"精彩回放";
+        title2.text = @"直播回放";
         title2.font = TEXT_FONTSIZE;
         title2.textColor = BUTTONRED;
         title2.sd_layout

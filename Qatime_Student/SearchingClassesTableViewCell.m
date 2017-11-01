@@ -88,12 +88,11 @@
     _classInfo.text = [model.grade stringByAppendingString:model.subject];
     
     if ([model.product_type isEqualToString:@"LiveStudio::CustomizedGroup"]) {
-        [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicizes_url[@"list"]]];
+        [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicizes_url[@"list"]] placeholderImage:[UIImage imageNamed:@"school"]];
     }else{
         
-        [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize]];
+        [_classImage sd_setImageWithURL:[NSURL URLWithString:model.publicize] placeholderImage:[UIImage imageNamed:@"school"]];
     }
-    
 }
 
 

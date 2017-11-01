@@ -119,8 +119,13 @@ typedef enum : NSUInteger {
     [_navigationBar.rightButton setupAutoSizeWithHorizontalPadding:5 buttonHeight:30*ScrenScale];
     [_navigationBar.rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_navigationBar.rightButton addTarget:self action:@selector(cancelSearchAction) forControlEvents:UIControlEventTouchUpInside];
-    
+    _navigationBar.rightButton.sd_resetLayout
+    .rightSpaceToView(_navigationBar.contentView, 10*ScrenScale)
+    .topEqualToView(_navigationBar.leftButton)
+    .bottomEqualToView(_navigationBar.leftButton);
+    [_navigationBar.rightButton setupAutoSizeWithHorizontalPadding:5 buttonHeight:_navigationBar.leftButton.height_sd];
     [_navigationBar.rightButton updateLayout];
+    
     //放一个能打字的搜索框上去
     UIView *searchView = [[UIView alloc]init];
     searchView.backgroundColor = [UIColor whiteColor];

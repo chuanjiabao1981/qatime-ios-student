@@ -103,10 +103,10 @@
     pageControl.numberOfPages = pageNumber;
     // 设置页码的点的颜色
     /* 默认色*/
-//    pageControl.pageIndicatorTintColor = [UIColor whiteColor];
+    pageControl.pageIndicatorTintColor = SEPERATELINECOLOR_2;
     // 设置当前页码的点颜色
     /* 默认色*/
-//    pageControl.currentPageIndicatorTintColor = [UIColor redColor];
+    pageControl.currentPageIndicatorTintColor = BUTTONRED;
     
     [self.view addSubview:pageControl];
 }

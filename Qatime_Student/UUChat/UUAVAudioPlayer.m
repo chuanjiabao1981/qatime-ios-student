@@ -80,7 +80,6 @@
             
             [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
             [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-            
         }
     }else{
         

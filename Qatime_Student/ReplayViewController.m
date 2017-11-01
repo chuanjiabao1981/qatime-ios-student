@@ -17,6 +17,8 @@
 #import "ReplayTableViewCell.h"
 #import "ReplayLessonsViewController.h"
 
+#import "NELivePlayerViewController.h"
+
 
 typedef enum : NSUInteger {
     PullToReload,
@@ -75,7 +77,7 @@ typedef enum : NSUInteger {
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
-    _navigationBar.titleLabel.text = @"精彩回放";
+    _navigationBar.titleLabel.text = @"直播回放";
     
 }
 
@@ -296,8 +298,9 @@ typedef enum : NSUInteger {
     
     ReplayTableViewCell  *cell = [tableView cellForRowAtIndexPath:indexPath];
     ReplayLessonsViewController *controller = [[ReplayLessonsViewController alloc]initWithLesson:cell.model];
+//    NELivePlayerViewController *controller = [[NELivePlayerViewController alloc]initWithURL:[NSURL URLWithString:@"http://baobab.wdjcdn.com/14525705791193.mp4"] andDecodeParm:@[@"software",@"videoOnDemand"].mutableCopy];
     [self.navigationController pushViewController:controller animated:YES];
-    
+//    [self presentViewController:controller animated:YES completion:^{}];
 }
 
 

@@ -260,7 +260,7 @@
     
     NIMTeamCardRowItem *teamNotify = [[NIMTeamCardRowItem alloc] init];
     teamNotify.title  = @"消息提醒";
-    teamNotify.switchOn = [self.team notifyForNewMsg];
+    teamNotify.switchOn = [self.team notifyStateForNewMsg] == NIMTeamNotifyStateAll;
     teamNotify.rowHeight = 50.f;
     teamNotify.type   = TeamCardRowItemTypeSwitch;
 

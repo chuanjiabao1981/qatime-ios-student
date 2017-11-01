@@ -465,12 +465,52 @@
     _teacheNameLabel.text = tutorium.teacher_name;
     _classTimeLabel.text = [NSString stringWithFormat:@"共%@课",tutorium.video_lessons_count];
     if ([tutorium.current_price containsString:@"."]) {
-        _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.price];
-        _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.price];
+        
+        if ([tutorium.status isEqualToString:@"teaching"]||[tutorium.status isEqualToString:@"pause"]||[tutorium.status isEqualToString:@"closed"]) {
+            //已开课的
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@元(插班价)",tutorium.current_price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.current_price];
+        }else if ([tutorium.status isEqualToString:@"missed"]||[tutorium.status isEqualToString:@"init"]||[tutorium.status isEqualToString:@"ready"]){
+            //未开课
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.price];
+        }else if ([tutorium.status isEqualToString:@"finished"]||[tutorium.status isEqualToString:@"billing"]||[tutorium.status isEqualToString:@"completed"]){
+            //结束的
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.current_price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.current_price];
+        }else if ([tutorium.status isEqualToString:@"published"]){
+            //招生中
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.price];
+        }else{
+            //其他状态
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.price];
+        }
         
     }else{
-        _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.price];
-        _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.price];
+        
+        if ([tutorium.status isEqualToString:@"teaching"]||[tutorium.status isEqualToString:@"pause"]||[tutorium.status isEqualToString:@"closed"]) {
+            //已开课的
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元(插班价)",tutorium.current_price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.current_price];
+        }else if ([tutorium.status isEqualToString:@"missed"]||[tutorium.status isEqualToString:@"init"]||[tutorium.status isEqualToString:@"ready"]){
+            //未开课
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.price];
+        }else if ([tutorium.status isEqualToString:@"finished"]||[tutorium.status isEqualToString:@"billing"]||[tutorium.status isEqualToString:@"completed"]){
+            //结束的
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.price];
+        }else if ([tutorium.status isEqualToString:@"published"]){
+            //招生中
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.price];
+        }else{
+            //其他状态
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.price];
+        }
         
     }
 
@@ -511,16 +551,53 @@
     _teacheNameLabel.text = tutorium.teacher_name;
     _classTimeLabel.text = [NSString stringWithFormat:@"共%@课",tutorium.events_count];
     if ([tutorium.current_price containsString:@"."]) {
-        _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.price];
-        _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.price];
+        
+        if ([tutorium.status isEqualToString:@"teaching"]||[tutorium.status isEqualToString:@"pause"]||[tutorium.status isEqualToString:@"closed"]) {
+            //已开课的
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@元(插班价)",tutorium.current_price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@(插班价)",tutorium.current_price];
+        }else if ([tutorium.status isEqualToString:@"missed"]||[tutorium.status isEqualToString:@"init"]||[tutorium.status isEqualToString:@"ready"]){
+            //未开课
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.price];
+        }else if ([tutorium.status isEqualToString:@"finished"]||[tutorium.status isEqualToString:@"billing"]||[tutorium.status isEqualToString:@"completed"]){
+            //结束的
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.current_price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.current_price];
+        }else if ([tutorium.status isEqualToString:@"published"]){
+            //招生中
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.price];
+        }else{
+            //其他状态
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.price];
+        }
         
     }else{
-        _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.price];
-        _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.price];
         
+        if ([tutorium.status isEqualToString:@"teaching"]||[tutorium.status isEqualToString:@"pause"]||[tutorium.status isEqualToString:@"closed"]) {
+            //已开课的
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元(插班价)",tutorium.current_price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00(插班价)",tutorium.current_price];
+        }else if ([tutorium.status isEqualToString:@"missed"]||[tutorium.status isEqualToString:@"init"]||[tutorium.status isEqualToString:@"ready"]){
+            //未开课
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.price];
+        }else if ([tutorium.status isEqualToString:@"finished"]||[tutorium.status isEqualToString:@"billing"]||[tutorium.status isEqualToString:@"completed"]){
+            //结束的
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.price];
+        }else if ([tutorium.status isEqualToString:@"published"]){
+            //招生中
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.price];
+        }else{
+            //其他状态
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.price];
+        }
     }
-    
 }
-
 
 @end

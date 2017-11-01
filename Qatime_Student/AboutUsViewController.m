@@ -7,9 +7,10 @@
 //
 
 #import "AboutUsViewController.h"
-
+#import "ShareView.h"
 #import "NavigationBar.h"
-
+#import "SnailQuickMaskPopups.h"
+#import "ShareViewController.h"
  
 #import "AboutUsTableViewCell.h"
 #import "UIAlertController+Blocks.h"
@@ -17,6 +18,9 @@
 @interface AboutUsViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     NavigationBar *_navigationBar;
+    SnailQuickMaskPopups *_pops;
+    //分享控制器
+    ShareViewController *_share;
     
 }
 
@@ -52,7 +56,7 @@
 #pragma mark- tableview datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 2;
+    return 3;
     
 }
 
@@ -77,15 +81,16 @@
                 
                 break;
             case 1:
-                
                 cell.name.text = @"客服QQ";
                 cell.context.text = ServerQQ;
-                
+                break;
+            case 2:
+                cell.name.text = @"分享应用";
+                cell.context.text = @"";
                 break;
             default:
                 break;
         }
-        
         
     }
     
@@ -107,8 +112,6 @@
                 
 //                [[UIApplication sharedApplication]openURL:[NSURL URLWithString:str]];
         
-        
-        
         NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",ServersPhone];
         UIWebView *callWebview = [[UIWebView alloc] init];
         [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
@@ -117,6 +120,21 @@
 //            }
 //        }];
     }
+    else if (indexPath.row == 2){
+        
+        _share = [[ShareViewController alloc]init];
+        _share.view.frame = CGRectMake(0, 0, self.view.width_sd, TabBar_Height*1.5);
+        _pops = [SnailQuickMaskPopups popupsWithMaskStyle:MaskStyleBlackTranslucent aView:_share.view];
+        _pops.presentationStyle = PresentationStyleBottom;
+        [_pops presentWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {}];
+        [_share.sharedView.wechatBtn addTarget:self action:@selector(wechatShare:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+}
+
+- (void)wechatShare:(UIButton *)sender{
+    //在这儿传个参数.
+    [_share sharedWithContentDic:@{}];
     
 }
 

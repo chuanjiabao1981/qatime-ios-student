@@ -29,7 +29,8 @@
 #import "UMMobClick/MobClick.h"
 #import <NIMSDK/NIMCustomObject.h>
 #import "AttachmentDecoder.h"
-
+#import "ChatViewController.h"
+#import "YYModel.h"
 
 //#import <iflyMSC/iflyMSC.h>
 
@@ -282,9 +283,8 @@
     /* 获取推送消息内容 10以下系统获取方法*/
    remoteNotification =  [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     
-    
     //加一句这个,就能播放声音了
-    [[AVAudioSession sharedInstance]setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [[AVAudioSession sharedInstance]setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
     
     /** 添加下载目录 */
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -324,11 +324,10 @@
     
 }
 
-
 //收到新消息
 - (void)receiveNewNotice{
     
-    _noticeIndexViewController.tabBarItem.badgeValue=@"";
+    _noticeIndexViewController.tabBarItem.badgeValue = @"";
     
 }
 
@@ -532,8 +531,6 @@
     /* 主页消息badge通知*/
     [[NSNotificationCenter defaultCenter]postNotificationName:@"ReceiveNewNotice" object:nil];
     
-   
-
     if (notificatoin_ON == YES) {
         
         //当应用处于前台时提示设置，需要哪个可以设置哪一个
@@ -621,11 +618,10 @@
         
     }
     
-    
 }
 
 
-//iOS10新增：处理后台点击通知的代理方法
+//iOS10新增：处理后台点击通知的代理方法 -->打开应用
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler{
 
     if (notificatoin_ON == YES) {
@@ -636,16 +632,9 @@
             [UMessage didReceiveRemoteNotification:userInfo];
             /* 主页消息badge通知*/
             [[NSNotificationCenter defaultCenter]postNotificationName:@"ReceiveNewNotice" object:nil];
-            
-            
-        }else{
-            //应用处于后台点击后的本地推送接受
-            
         }
-        
         //处理推送事件
         [self pushActionWithInfo:userInfo];
-        
         
     }else{
         
@@ -660,11 +649,37 @@
         
         //接到了云信的推送消息,进入聊天列表页面
         /* 发通知跳转到聊天页面*/
-//        [[NSNotificationCenter defaultCenter]postNotificationName:@"NIMNotification" object:info];
         
-        _viewController.selectedIndex = 3;
+        //测试代码
+        CourseType _courseType = LiveCourseType;
+        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/detail",Request_Header,info[@"classID"]] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"course"]];
+                mod.classID = dic[@"data"][@"course"][@"id"];
+                ChatViewController *controller = [[ChatViewController alloc]initWithClass:mod andClassType:_courseType];
+                UINavigationController *chatVC = [[UINavigationController alloc]initWithRootViewController:controller];
+                controller.modalPresentationStyle = UIModalPresentationCurrentContext;
+                chatVC.modalPresentationStyle =UIModalPresentationPopover;
+                [_window.rootViewController presentViewController:chatVC animated:NO completion:^{
+                    controller.navigationController.navigationBar.hidden = YES;
+                }];
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+        }];
+        
+    }else{
+        //应用处于后台点击后的本地推送接受
         
     }
+        
+        
+        _viewController.selectedIndex = 3;
     
     
 }

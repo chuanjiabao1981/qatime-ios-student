@@ -39,6 +39,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import "UUInputFunctionView.h"
 #import "NSNull+Json.h"
+#import "UIViewController+Token.h"
+
+#import "NetWorkTool.h"
 
 typedef enum : NSUInteger {
     /**平级视图*/
@@ -48,11 +51,10 @@ typedef enum : NSUInteger {
     
 } ViewsArrangementMode;
 
-@interface ExclusivePlayerViewController ()<UITableViewDelegate,UITableViewDataSource,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate,NIMLoginManagerDelegate,TTGTextTagCollectionViewDelegate,KSPhotoBrowserDelegate,UIGestureRecognizerDelegate,NIMMediaManagerDelegate>{
+@interface ExclusivePlayerViewController ()<UITableViewDelegate,UITableViewDataSource,NIMLoginManager,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMConversationManager,UITextViewDelegate,NIMChatroomManagerDelegate,NIMLoginManagerDelegate,TTGTextTagCollectionViewDelegate,KSPhotoBrowserDelegate,UIGestureRecognizerDelegate,NIMMediaManagerDelegate,UUInputFunctionViewDelegate>{
     
     NSString *_token;
     NSString *_idNumber;
-    
     
     NSString *_chatTimeID;
     NSString *_classID;
@@ -184,7 +186,12 @@ typedef enum : NSUInteger {
 
 @end
 
+
 @implementation ExclusivePlayerViewController
+CGFloat screenWidth;
+CGFloat screenHeight;
+bool isHardware = YES;
+bool ismute     = NO;
 
 -(instancetype)initWithClassID:(NSString *)classID andChatTeamID:(NSString *)chatTeamID andBoardAddress:(NSString *)boardAddress andTeacherAddress:(NSString *)teacherAddress{
     self = [super init];
@@ -198,15 +205,63 @@ typedef enum : NSUInteger {
     return self;
 }
 
-
-- (void)makeData{
+- (void)viewDidLoad {
+    [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor whiteColor];
+    //不允许侧滑返回
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    
+    //加载视图
+    [self setupViews];
+    
+    //初始化子控制器们
+    [self setupControllers];
+    
+    //加载监听
+    [self addNotifications];
+    
+    /* 最后,添加一个覆盖层.在视频播放器为平级视图的时候,上方的视频播放器可以点击,下方不可以点击*/
+    
+    _maskView = ({
+        
+        UIView *_= [[UIView alloc]init];
+        [_mainView addSubview:_];
+        if (_mainView&&_viewsArrangementMode==SameLevel) {
+            _.sd_layout
+            .leftEqualToView(_mainView)
+            .rightEqualToView(_mainView)
+            .topEqualToView(_mainView)
+            .bottomEqualToView(_mainView);
+            
+        }
+        
+        UITapGestureRecognizer *maskTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeLevels:)];
+        
+        [_ addGestureRecognizer:maskTap];
+        _;
+    });
+    
+    /* 全屏模式下的双击手势*/
+    _doubelTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(switchVideoOnFullScreenMode:)];
+    [_doubelTap setNumberOfTapsRequired:2];
+    
+    /* 支持全屏*/
+    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"SupportedLandscape"];
+    
+    //获取直播信息,拿拉流地址
+//    [self getLiveInfo];
+    
+    [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:1];
     
 }
 
-- (void)setupPlayer{
+/** 加载视图 */
+- (void)setupViews{
     
-    self.view.backgroundColor = [UIColor blackColor];
+    //当前屏幕宽高
+    screenWidth  = CGRectGetWidth([UIScreen mainScreen].bounds);
+    screenHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
     
     /* 默认的视频排列方式是平级*/
     _viewsArrangementMode = SameLevel;
@@ -216,38 +271,48 @@ typedef enum : NSUInteger {
     
     /* 初始化弹幕*/
     _aBarrage = [[BarrageRenderer alloc]init];
+    _aBarrage.smoothness = YES;
     [self.teacherPlayerView addSubview: _aBarrage.view];
     _descriptor = [[BarrageDescriptor alloc]init];
+    
     /* 默认弹幕开启*/
     [_aBarrage start];
+    
     /* 加载媒体控制器*/
     [self setupMediaControl];
+    
+    /** 加载下半截的详情视图 */
+    [self setupInfoView];
+    
 }
 
-- (void)setupChildController{
+/** 加载详情视图 */
+- (void)setupInfoView{
     
-    _chatController = [[ExclusiveChatViewController alloc]initWithChatTeamID:_chatTimeID andClassID:_classID];
+    _mainView = [[ExclusivePlayerView alloc]init];
+    [self.view addSubview: _mainView];
+    _mainView.sd_layout
+    .topSpaceToView(_teacherPlayerView, 0)
+    .leftSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .bottomSpaceToView(self.view, 0);
+    _mainView.scrollView.delegate = self;
+    
+}
+
+#pragma mark- 初始化子控制器
+/** 初始化子控制器 */
+- (void)setupControllers{
+    
     _noticeController = [[ExclusivenNoticeViewController alloc]initWithClassID:_classID];
+    _chatController = [[ExclusiveChatViewController alloc]initWithChatTeamID:_chatTimeID andClassID:_classID];
     _infoController = [[ExclusivePlayerInfoViewController alloc]initWithClassID:_classID];
     _membersController = [[ExclusiveMembersViewController alloc]initWithClassID:_classID];
     
-    [self addChildViewController:_chatController];
     [self addChildViewController:_noticeController];
+    [self addChildViewController: _chatController];
     [self addChildViewController:_infoController];
     [self addChildViewController:_membersController];
-    
-}
-
-- (void)setupMainView{
-    
-    //主视图和四个控制器试图加进去
-    _mainView = [[ExclusivePlayerView alloc]initWithFrame:CGRectZero];
-    [self.view addSubview:_mainView];
-    _mainView.sd_layout
-    .leftSpaceToView(self.view, 0)
-    .rightSpaceToView(self.view, 0)
-    .topSpaceToView(_teacherPlayerView,0)
-    .bottomSpaceToView(self.view, 0);
     
     [_mainView.scrollView addSubview:_chatController.view];
     _chatController.view.sd_layout
@@ -261,39 +326,112 @@ typedef enum : NSUInteger {
     .leftSpaceToView(_chatController.view, 0)
     .topEqualToView(_chatController.view)
     .bottomEqualToView(_chatController.view)
-    .widthRatioToView(_chatController.view, 1.0);
+    .widthRatioToView(_chatController.view, 1.0f);
     
     [_mainView.scrollView addSubview:_infoController.view];
     _infoController.view.sd_layout
     .leftSpaceToView(_noticeController.view, 0)
     .topEqualToView(_noticeController.view)
     .bottomEqualToView(_noticeController.view)
-    .widthRatioToView(_noticeController.view, 1.0);
+    .widthRatioToView(_noticeController.view, 1.0f);
     
     [_mainView.scrollView addSubview:_membersController.view];
     _membersController.view.sd_layout
     .leftSpaceToView(_infoController.view, 0)
     .topEqualToView(_infoController.view)
     .bottomEqualToView(_infoController.view)
-    .widthRatioToView(_infoController.view, 1.0);
+    .widthRatioToView(_infoController.view, 1.0f);
     
-    _mainView.scrollView.contentSize = CGSizeMake(100, 100);
-    [_mainView.scrollView setupAutoContentSizeWithRightView:_membersController.view rightMargin:0];
-    [_mainView.scrollView setupAutoContentSizeWithBottomView:_chatController.view bottomMargin:0];
-    [_mainView.scrollView updateLayout];
-    
+    //发送弹幕的回调
     typeof(self) __weak weakSelf = self;
-    _mainView.segmentControl.indexChangeBlock = ^(NSInteger index) {
-        [weakSelf.mainView.scrollView scrollRectToVisible:CGRectMake(weakSelf.mainView.scrollView.width_sd*index, 0, weakSelf.mainView.scrollView.width_sd, weakSelf.mainView.scrollView.height_sd) animated:YES];
+    _chatController.sendBarrage = ^(NSString *barrageString) {
+        [weakSelf sendBarrage:barrageString];
     };
     
-    _mainView.scrollView.delegate = self;
     
-    _inputView = _chatController.inputView.copy;
+}
+/** 加载监听 */
+- (void)addNotifications{
+    /* 白板播放端的通知*/
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerDidPreparedToPlay:) name:NELivePlayerDidPreparedToPlayNotification object:_liveplayerBoard];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NeLivePlayerloadStateChanged:) name:NELivePlayerLoadStateChangedNotification object:_liveplayerBoard];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerPlayBackFinished:) name:NELivePlayerPlaybackFinishedNotification object:_liveplayerBoard];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerFirstVideoDisplayed:) name:NELivePlayerFirstVideoDisplayedNotification object:_liveplayerBoard];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerFirstAudioDisplayed:) name:NELivePlayerFirstAudioDisplayedNotification object:_liveplayerBoard];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerReleaseSuccess:) name:NELivePlayerReleaseSueecssNotification object:_liveplayerBoard];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerVideoParseError:) name:NELivePlayerVideoParseErrorNotification object:_liveplayerBoard];
+    
+    /* 老师播放端的通知*/
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerDidPreparedToPlay:) name:NELivePlayerDidPreparedToPlayNotification object:_liveplayerTeacher];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NeLivePlayerloadStateChanged:) name:NELivePlayerLoadStateChangedNotification object:_liveplayerTeacher];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerPlayBackFinished:) name:NELivePlayerPlaybackFinishedNotification object:_liveplayerTeacher];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerFirstVideoDisplayed:) name:NELivePlayerFirstVideoDisplayedNotification object:_liveplayerTeacher];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerFirstAudioDisplayed:) name:NELivePlayerFirstAudioDisplayedNotification object:_liveplayerTeacher];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerReleaseSuccess:) name:NELivePlayerReleaseSueecssNotification object:_liveplayerTeacher];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerVideoParseError:) name:NELivePlayerVideoParseErrorNotification object:_liveplayerTeacher];
+    
+    
+    /* 监听白板播放端是否可以移动*/
+    [_boardPlayerView addObserver:self forKeyPath:@"canMove" options:NSKeyValueObservingOptionNew context:nil];
+    
+    /* 监听老师播放端是否可以移动*/
+    [_teacherPlayerView addObserver:self forKeyPath:@"canMove" options:NSKeyValueObservingOptionNew context:nil];
+    
+    
+    /* 变为非平级视图的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(viewLevelChangDifferent:) name:@"DifferentLevel" object:nil];
+    /* 变为平级视图的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(viewLevelChangSame:) name:@"SameLevel" object:nil];
+    
+    /* 变为全屏后的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnFullScreen:) name:@"FullScreen" object:nil];
+    
+    /* 切换回竖屏后的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnDownFullScreen:) name:@"TurnDownFullScreen" object:nil];
+    
+    /* 监听播放器的初始化状态*/
+    
+    /* 白板初始化成功*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(boardPlayerInitSuccess) name:@"BoardPlayerInitSuccess" object:nil];
+    
+    /* 摄像头初始化成功*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(teacherPlayerInitSuccess) name:@"TeacherPlayerInitSuccess" object:nil];
+    
+    
+    /* 两个播放器都初始化成功*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(allPlayerInitSuccess) name:@"AllPlayerInitSuccess" object:nil];
+    
+    /* 聊天信息发送时间间隔*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sendeButtonCannotUse) name:@"sendButtonCannotUse" object:nil];
+    
+    /* app进入后台/回到前台的监听*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationDidEnterBackground) name:@"ApplicationDidEnterBackground" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationDidBecomeActive) name:@"ApplicationDidBecomeActive" object:nil];
+    
+    /* 全屏模式的监听-->在runtime机制下不可进行屏幕旋转的时候,强制进行屏幕旋转*/
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onDeviceOrientationChange) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
 }
 
 
 #pragma mark- 播放器的布局和初始化方法
+/** 加载两个视频播放器的背景view */
 - (void)setupVideoPlayer{
     
     /* 白板播放器view*/
@@ -307,7 +445,9 @@ typedef enum : NSUInteger {
         .topSpaceToView(self.view,0)
         .autoHeightRatio(9/16.0);
         _boardPlayerView.tag = 0;
+        
         [_ makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
+        
         /* 当前不可移动*/
         _.canMove = NO;
         /* 不可移动的情况下,移除移动手势*/
@@ -333,7 +473,6 @@ typedef enum : NSUInteger {
         .autoHeightRatio(9/16.0);
         _teacherPlayerView.tag = 1;
         [_ makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
-        //        [_ sendSubviewToBack:_.placeholderImage];
         
         /* 老师播放器不可移动*/
         _.canMove = NO;
@@ -344,10 +483,8 @@ typedef enum : NSUInteger {
         /* 老师播放器为主要播放器*/
         _.becomeMainPlayer=NO;
         _;
-        
     });
     
-    [self setupBoardPlayer];
     
 }
 
@@ -357,8 +494,16 @@ typedef enum : NSUInteger {
 - (void)setupBoardPlayer{
     
     /* 白板的 播放器*/
-    _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:_boardPullAddress];
+    _liveplayerBoard = nil;
+    ///测试新播放器代码
+    NSError *error = [[NSError alloc]init];
+    _liveplayerBoard = [[NELivePlayerController alloc] initWithContentURL:_boardPullAddress ];
+    
     _liveplayerBoard.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    [_boardPlayerView updateLayout];
+    _liveplayerBoard.view.frame = _boardPlayerView.bounds;
+    [_liveplayerBoard.view updateLayout];
+    //////
     [_liveplayerBoard setScalingMode:NELPMovieScalingModeAspectFit];
     
     [_boardPlayerView makePlaceHolderImage:nil];
@@ -385,11 +530,10 @@ typedef enum : NSUInteger {
     }else{
         
         NSLog(@"白板播放器初始化成功!!!!");
-        [self setupTeacherPlayer];
+        //            [self setupTeacherPlayer];
         boardPlayerInitSuccess = YES;
         [_boardPlayerView makePlaceHolderImage:nil];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"BoardPlayerInitSuccess" object:nil];
-//        [self boardPlayerInitSuccess];
         if (![_boardPlayerView.subviews containsObject:_liveplayerBoard.view]) {
             
             [_boardPlayerView addSubview:_liveplayerBoard.view];
@@ -398,23 +542,25 @@ typedef enum : NSUInteger {
             .rightEqualToView(_boardPlayerView)
             .topEqualToView(_boardPlayerView)
             .bottomEqualToView(_boardPlayerView);
-            
+            [_liveplayerBoard.view updateLayout];
             [_boardPlayerView bringSubviewToFront:_liveplayerBoard.view];
             //            [_boardPlayerView makePlaceHolderImage:nil];
         }
         
-        
     }
     
     /* 白板播放器的设置*/
-   
+    
     [_liveplayerBoard setBufferStrategy:NELPLowDelay]; //直播低延时模式
     [_liveplayerBoard setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
     [_liveplayerBoard setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
     [_liveplayerBoard setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
     [_liveplayerBoard setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
+    [_liveplayerBoard setPlaybackTimeout:15 *1000]; // 设置拉流超时时间
+    
     [_liveplayerBoard prepareToPlay]; //初始化视频文件
     
+    [NELivePlayerController setLogLevel:NELP_LOG_VERBOSE];
     
 }
 
@@ -422,11 +568,21 @@ typedef enum : NSUInteger {
 - (void)setupTeacherPlayer{
     
     /* 老师摄像头的 播放器*/
+    _liveplayerTeacher = nil;
+    
+    ///测试新播放器代码
+    NSError *error = [[NSError alloc]init];
     _liveplayerTeacher = [[NELivePlayerController alloc] initWithContentURL:_teacherPullAddress];
     [_teacherPlayerView makePlaceHolderImage:nil];
     [_teacherPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadingHolder_Landscape"]];
+    
     _liveplayerTeacher.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    [_liveplayerTeacher setScalingMode:NELPMovieScalingModeAspectFit];
+    [_teacherPlayerView updateLayout];
+    _liveplayerTeacher.view.frame = _teacherPlayerView.bounds;
+    [_liveplayerTeacher.view updateLayout];
+    
+    ////
+    [_liveplayerTeacher setScalingMode:NELPMovieScalingModeNone];
     if (_liveplayerTeacher == nil) {
         // 返回空则表示初始化失败
         //            NSLog(@"player initilize failed, please tay again!");
@@ -456,20 +612,20 @@ typedef enum : NSUInteger {
             .rightEqualToView(_teacherPlayerView)
             .topEqualToView(_teacherPlayerView)
             .bottomEqualToView(_teacherPlayerView);
-            
+            [_liveplayerTeacher.view updateLayout];
             [_teacherPlayerView bringSubviewToFront:_liveplayerTeacher.view];
             //            [_teacherPlayerView makePlaceHolderImage:nil];
         }
     }
     
-    
     /* 教师播放器的设置*/
     [_liveplayerTeacher setBufferStrategy:NELPLowDelay]; //直播低延时模式
-    [_liveplayerTeacher setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
+    [_liveplayerTeacher setScalingMode:NELPMovieScalingModeNone]; //设置画面显示模式，默认原始大小
     [_liveplayerTeacher setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
     [_liveplayerTeacher setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
     [_liveplayerTeacher setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
     [_liveplayerTeacher prepareToPlay]; //初始化视频文件
+    [NELivePlayerController setLogLevel:NELP_LOG_VERBOSE];
     
     [self.view bringSubviewToFront:_mediaControl];
     [self.view bringSubviewToFront:_controlOverlay];
@@ -718,11 +874,8 @@ typedef enum : NSUInteger {
     /* 弹幕开关*/
     _barrage = ({
         UIButton *_=[[UIButton alloc]init];
-        
         [_bottomControlView addSubview:_];
         [_ setImage:[UIImage imageNamed:@"barrage_on"] forState:UIControlStateNormal];
-        //    _barrage.layer.borderColor = [UIColor whiteColor].CGColor;
-        //    _barrage.layer.borderWidth = 0.8;
         [_ setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _.backgroundColor = [UIColor clearColor];
         _.alpha = 0.8;
@@ -740,6 +893,27 @@ typedef enum : NSUInteger {
         _;
         
     });
+    
+    _inputView = [[UUInputFunctionView alloc]initWithSuperVC:self];
+    [_bottomControlView addSubview:_inputView];
+    _inputView.backgroundColor = [UIColor clearColor];
+    _inputView.sd_layout
+    .topSpaceToView(_bottomControlView, 0)
+    .bottomSpaceToView(_bottomControlView, 0)
+    .leftSpaceToView(refresh_FS, 10)
+    .rightSpaceToView(_barrage, 10);
+    _inputView.TextViewInput.sd_layout
+    .leftSpaceToView(_inputView, 10);
+    [_inputView.TextViewInput updateLayout];
+    _inputView.voiceSwitchTextButton.hidden = YES;
+    _inputView.delegate = self;
+    //横屏先把表情给隐藏了吧....别费那劲了
+    _inputView.btnChangeVoiceState.hidden = YES;
+    _inputView.btnSendMessage.sd_layout
+    .leftSpaceToView(_inputView.TextViewInput, 10);
+    [_inputView.btnChangeVoiceState updateLayout];
+    
+    _inputView.hidden = YES;
     
     /* 副屏幕开关按钮*/
     _subScreenSwitch = ({
@@ -844,6 +1018,7 @@ typedef enum : NSUInteger {
                 }else if (_teacherPlayerView.becomeMainPlayer == YES){
                     _boardPlayerView.hidden = YES;
                 }
+                
             }
             
         }else if(isFullScreen == YES){
@@ -856,38 +1031,21 @@ typedef enum : NSUInteger {
                 _boardPlayerView.hidden = YES;
             }
         }
-        
     }
-    
 }
 
-/* 数据加载完成 播放器二次加载*/
-- (void)reloadPlayerView{
-    
-    /* 加载白板播放器*/
-    
-    [self setupBoardPlayer];
-    
-    /*延迟0.3s 加载摄像头播放器*/
-    [self performSelector:@selector(setupTeacherPlayer) withObject:nil afterDelay:0.5];
-    //    [self setupTeacherPlayer];
-    
-    //不管是否创建成功,都去后台拿直播状态
-//    [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:10];
-}
 
 #pragma mark- 分屏部分
 #pragma mark- 当视频变成悬浮窗、非平级视图的监听
 - (void)viewLevelChangDifferent:(NSNotification *)notification{
     
-    [_aBarrage.view removeFromSuperview];
+    [_noticeController.noticeTableView.mj_header beginRefreshing];
 }
 
 #pragma mark- 当视频变成平级视图的监听
 - (void)viewLevelChangSame:(NSNotification *)notification{
     
-    [_teacherPlayerView addSubview:_aBarrage.view];
-    [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
+    [_noticeController.noticeTableView cyl_reloadData];
     
 }
 
@@ -897,48 +1055,23 @@ typedef enum : NSUInteger {
     [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:5];
     
     isFullScreen = YES;
+    //    /* 在全屏播放状态下*/
+    //    /* 1、先添加弹幕*/
+    //    /* 2、 添加控制层 并重新布局*/
     
-    /* 在全屏播放状态下*/
-    /* 1、先添加弹幕*/
-    /* 2、 添加控制层 并重新布局*/
-    
-    [_aBarrage.view removeFromSuperview];
     
     if (_boardPlayerView.becomeMainPlayer == YES) {
         
-        [_boardPlayerView addSubview:_aBarrage.view];
-        
-        _aBarrage.view.sd_layout
-        .leftEqualToView(_boardPlayerView)
-        .rightEqualToView(_boardPlayerView)
-        .topEqualToView(_boardPlayerView)
-        .bottomEqualToView(_boardPlayerView);
-        [_aBarrage.view updateLayout];
-        
         [self mediaControlTurnToFullScreenModeWithMainView:_boardPlayerView];
-        
         [self makeFloatingPlayer:_teacherPlayerView];
-        [_aBarrage start];
+        
         
     }else if (_teacherPlayerView.becomeMainPlayer == YES){
         
-        [_teacherPlayerView addSubview:_aBarrage.view];
-        
-        _aBarrage.view.sd_layout
-        .leftEqualToView(_teacherPlayerView)
-        .rightEqualToView(_teacherPlayerView)
-        .topEqualToView(_teacherPlayerView)
-        .bottomEqualToView(_teacherPlayerView);
         [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
-        [_aBarrage.view updateLayout];
-        [_aBarrage start];
-        _aBarrage.view.hidden = NO;
-        
         [self mediaControlTurnToFullScreenModeWithMainView:_teacherPlayerView];
-        
         [self makeFloatingPlayer:_boardPlayerView];
         
-        [_aBarrage start];
     }
     
     /* 全屏页面布局的变化*/
@@ -946,25 +1079,18 @@ typedef enum : NSUInteger {
     _scaleModeBtn.hidden = YES;
     _tileScreen.hidden =YES;
     
-//    _inputView.btnChangeVoiceState.hidden = YES;
-//    [_inputView changeSendBtnWithPhoto:NO];
-//    _inputView.canNotSendImage = YES;
-    
-    
-    //    _barrageText.hidden = NO;
     _switchScreen.sd_layout
     .rightSpaceToView(_bottomControlView,5)
     .bottomEqualToView(_bottomControlView)
     .topEqualToView(_bottomControlView)
     .widthEqualToHeight();
     
+    //弹幕开关按钮
     _barrage.sd_layout
     .topEqualToView(_switchScreen)
     .bottomEqualToView(_switchScreen)
     .rightSpaceToView(_switchScreen,0)
     .widthEqualToHeight();
-    
-    
 }
 
 #pragma mark- 切回竖屏后的监听
@@ -972,55 +1098,35 @@ typedef enum : NSUInteger {
     
     isFullScreen = NO;
     _viewsArrangementMode = DifferentLevel;
-    [_aBarrage.view removeFromSuperview];
-    /* 如果是在平级视图*/
-    if (_viewsArrangementMode == SameLevel) {
-        
-        [_teacherPlayerView addSubview:_aBarrage.view];
-        _aBarrage.view.sd_layout
-        .leftEqualToView(_teacherPlayerView)
-        .rightEqualToView(_teacherPlayerView)
-        .topEqualToView(_teacherPlayerView)
-        .bottomEqualToView(_teacherPlayerView);
-        [_aBarrage.view updateLayout];
-        //        [_teacherPlayerView bringSubviewToFront:_liveplayerTeacher.view];
-        
+    if (_aBarrage.view.superview  == _teacherPlayerView) {
+    }else{
+        [_aBarrage.view removeFromSuperview];
+    }
+    
+    if (_viewsArrangementMode == DifferentLevel){
         /* 判断主视图 */
         if (_boardPlayerView.becomeMainPlayer == YES) {
             
-            [self mediaControlTurnDownFullScreenModeWithMainView:_boardPlayerView];
-            
-        }else if(_teacherPlayerView.becomeMainPlayer == YES){
-            
-            [self mediaControlTurnDownFullScreenModeWithMainView:_teacherPlayerView];
-            
-        }
-        
-        /* 如果是非平级视图*/
-    }else if (_viewsArrangementMode == DifferentLevel){
-        /* 判断主视图 */
-        if (_boardPlayerView.becomeMainPlayer == YES) {
             [self mediaControlTurnDownFullScreenModeWithMainView:_boardPlayerView];
             [self makeFloatingPlayer:_teacherPlayerView];
+            
         }else if(_teacherPlayerView.becomeMainPlayer == YES){
+            
             [self mediaControlTurnDownFullScreenModeWithMainView:_teacherPlayerView];
+            
             [self makeFloatingPlayer:_boardPlayerView];
         }
+        
     }
     
     [self.view updateLayout];
     [self.view layoutIfNeeded];
     [_mainView updateLayout];
     [_mainView.scrollView updateLayout];
-    
-    [_aBarrage start];
-    
 }
 
 /* 控制层变成全屏模式的方法*/
 - (void)mediaControlTurnToFullScreenModeWithMainView:(FJFloatingView *)playerView{
-    
-    //    [_aBarrage stop];
     
     [self.view bringSubviewToFront:_mediaControl];
     
@@ -1040,29 +1146,12 @@ typedef enum : NSUInteger {
     .rightEqualToView(playerView);
     [_mediaControl updateLayout];
     
-    /* 控制层上加输入框*/
-    [_bottomControlView addSubview:_inputView];
-    _inputView.backgroundColor = [UIColor clearColor];
-    [_inputView clearAutoHeigtSettings];
-    
-    _inputView.sd_layout
-    .leftSpaceToView(refresh_FS,0)
-    .topSpaceToView(_bottomControlView,0)
-    .bottomSpaceToView(_bottomControlView,-5)
-    .rightSpaceToView(_barrage,0);
-    [_inputView updateLayout];
-    
-    //语音输入按钮隐藏
-    _inputView.voiceSwitchTextButton.hidden = YES;
-    [_aBarrage start];
-    
-    _inputView.hidden = NO;
     
 }
 
 /* 控制层切回竖屏模式的方法*/
 - (void)mediaControlTurnDownFullScreenModeWithMainView:(FJFloatingView *)playerView{
-    //[_aBarrage stop];
+    
     _mediaControl.sd_resetLayout
     .topSpaceToView(self.view,0)
     .leftEqualToView(self.view)
@@ -1088,8 +1177,6 @@ typedef enum : NSUInteger {
     refresh_FS.hidden = NO;
     _scaleModeBtn.hidden = NO;
     _tileScreen.hidden =NO;
-//    _inputView.btnChangeVoiceState.hidden = NO;
-    
     
     
     /* 恢复布局*/
@@ -1117,23 +1204,13 @@ typedef enum : NSUInteger {
     .topSpaceToView(_bottomControlView,0)
     .widthRatioToView(_tileScreen,1.0);
     
-    _inputView.voiceSwitchTextButton.hidden = NO;
-    [_chatController.inputView removeFromSuperview];
-    [_chatController.view addSubview:_chatController.inputView];
-    _chatController.inputView.sd_layout
-    .leftSpaceToView(_chatController.view, 0)
-    .rightSpaceToView(_chatController.view, 0)
-    .bottomSpaceToView(_chatController.view, 0)
-    .heightIs(50);
-    [_chatController.inputView updateLayout];
-    
 }
 
 #pragma mark- 切换分屏(平铺)点击事件
 
 /**
  
- 切换分屏(平铺)按钮 点击事件  .infoview的覆盖层的点击事件同此
+ 切换分屏(平铺//分列)按钮 点击事件  .infoview的覆盖层的点击事件同此
  @param sender 点击来源
  */
 - (void)changeLevels:(id)sender{
@@ -1152,10 +1229,13 @@ typedef enum : NSUInteger {
                 [self makeFloatingPlayer:_boardPlayerView];
                 [self changInfoViewsWithTopView:_teacherPlayerView];
                 
+                
             }
             /* 条件1-2：如果老师是副视图*/
             if (_teacherPlayerView.becomeMainPlayer==NO) {
+                
                 [self makeFloatingPlayer:_teacherPlayerView];
+                
                 [self changInfoViewsWithTopView:_boardPlayerView];
                 
             }
@@ -1168,20 +1248,18 @@ typedef enum : NSUInteger {
                 
                 _viewsArrangementMode = DifferentLevel;
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"DifferentLevel" object:nil];
-                
             }
             
             /* 切换成非平级视图后,弹幕不可点不可用*/
             _barrage.enabled = NO;
             [_barrage setImage:[UIImage imageNamed:@"barrage_off"] forState:UIControlStateNormal];
             _maskView.hidden = YES;
-            
+            [_aBarrage stop];
         }
         
         //    /* 条件2：在非平级视图情况下切换分屏*/
         //
         else if (_viewsArrangementMode == DifferentLevel) {
-            
             
             /* 条件2-1：如果白板是主视图*/
             if (_boardPlayerView.becomeMainPlayer == YES) {
@@ -1193,14 +1271,6 @@ typedef enum : NSUInteger {
                 [self changInfoViewsWithTopView:_teacherPlayerView];
                 [self changInfoViewContentSizeToSmall];
                 
-                [_aBarrage.view sd_clearAutoLayoutSettings];
-                _aBarrage.view.sd_layout
-                .leftEqualToView(_teacherPlayerView)
-                .rightEqualToView(_teacherPlayerView)
-                .topEqualToView(_teacherPlayerView)
-                .bottomEqualToView(_teacherPlayerView);
-                
-                
             }
             /* 条件2-2：如果教师是主视图*/
             else if(_teacherPlayerView.becomeMainPlayer == YES){
@@ -1208,13 +1278,15 @@ typedef enum : NSUInteger {
                 [self makeSecondPlayer:_boardPlayerView];
                 [self changInfoViewsWithTopView:_boardPlayerView];
                 [self changInfoViewContentSizeToSmall];
-                [_aBarrage.view sd_clearAutoLayoutSettings];
+            }
+            if (!_aBarrage.view.superview) {
+                [_teacherPlayerView addSubview:_aBarrage.view];
                 _aBarrage.view.sd_layout
-                .leftEqualToView(_teacherPlayerView)
-                .rightEqualToView(_teacherPlayerView)
-                .topEqualToView(_teacherPlayerView)
-                .bottomEqualToView(_teacherPlayerView);
-                
+                .leftSpaceToView(_teacherPlayerView, 0)
+                .rightSpaceToView(_teacherPlayerView, 0)
+                .topSpaceToView(_teacherPlayerView, 0)
+                .heightRatioToView(_teacherPlayerView, 1/3.0);
+                [_aBarrage.view updateLayout];
             }
             
             if (_viewsArrangementMode == SameLevel) {
@@ -1228,11 +1300,11 @@ typedef enum : NSUInteger {
             /* 切换回平级视图,弹幕可用,弹幕按钮可用*/
             _barrage.enabled = YES;
             [_barrage setImage:[UIImage imageNamed:@"barrage_on"] forState:UIControlStateNormal];
-            _aBarrage.view.hidden = NO;
             _maskView.hidden = NO;
             
+            [_aBarrage start];
+            
         }
-        
         
     }
     
@@ -1241,37 +1313,21 @@ typedef enum : NSUInteger {
 /* infoview的contentsize变大*/
 - (void)changInfoViewContentSizeToBig{
     
-    if (_boardPlayerView.becomeMainPlayer==YES) {
-        _mainView.sd_layout
-        .topSpaceToView(_boardPlayerView, 0);
-        [_mainView updateLayout];
-    }else{
-        _mainView.sd_layout
-        .topSpaceToView(_teacherPlayerView, 0);
-        [_mainView updateLayout];
-    }
+    _mainView.scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width*4, [UIScreen mainScreen].bounds.size.height -  [UIScreen mainScreen].bounds.size.width*9/16.0f-30-4-40);
     
 }
 
 /* infoview的contentsize变小*/
 - (void)changInfoViewContentSizeToSmall{
     
-    if (_boardPlayerView.becomeMainPlayer == NO) {
-        _mainView.sd_layout
-        .topSpaceToView(_boardPlayerView, 0);
-        [_mainView updateLayout];
-    }else{
-        _mainView.sd_layout
-        .topSpaceToView(_teacherPlayerView, 0);
-        [_mainView updateLayout];
-    }
+    _mainView.scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width*4, [UIScreen mainScreen].bounds.size.height -  [UIScreen mainScreen].bounds.size.width*9/16.0f*2-30-4-40);
     
 }
 
 #pragma mark- 切换屏顺序点击事件
 - (void)switchBothScreen:(id)sender{
     
-    [_aBarrage stop];
+    //    [_aBarrage stop];
     /* 条件:在非全屏状态下*/
     if (isFullScreen == NO) {
         /* 条件1：如果现在是平级视图,白板和老师进行切换*/
@@ -1281,6 +1337,7 @@ typedef enum : NSUInteger {
         }
         /* 条件2：如果现在是非平级视图，两个非平级视图进行切换（大变小、小变大）*/
         if (_viewsArrangementMode == DifferentLevel){
+            
             [self changePlayersMode];
         }
         
@@ -1293,15 +1350,19 @@ typedef enum : NSUInteger {
             [_teacherPlayerView removeGestureRecognizer:_doubelTap];
             [_boardPlayerView addGestureRecognizer:_doubelTap];
             
-            //            [_aBarrage.view removeFromSuperview];
-            //            [_teacherPlayerView addSubview:_aBarrage.view];
-            //
-            //            _aBarrage.view.sd_layout
-            //            .leftEqualToView(_teacherPlayerView)
-            //            .rightEqualToView(_teacherPlayerView)
-            //            .topEqualToView(_teacherPlayerView)
-            //            .bottomEqualToView(_teacherPlayerView);
-            //            [_aBarrage.view updateLayout];
+            if (!_aBarrage.view.superview) {
+            }else{
+                [_aBarrage.view removeFromSuperview];
+            }
+            [_teacherPlayerView addSubview:_aBarrage.view];
+            _aBarrage.view.sd_layout
+            .topSpaceToView(_teacherPlayerView, 0)
+            .leftSpaceToView(_teacherPlayerView, 0)
+            .rightSpaceToView(_teacherPlayerView, 0)
+            .heightRatioToView(_teacherPlayerView, 1/3.0);
+            [_aBarrage.view updateLayout];
+            _aBarrage.view.hidden = NO;
+            [_aBarrage start];
             [self mediaControlTurnToFullScreenModeWithMainView:_teacherPlayerView];
             [self makeFloatingPlayer:_boardPlayerView];
             
@@ -1310,16 +1371,19 @@ typedef enum : NSUInteger {
             [self turnToFullScreenMode:_boardPlayerView];
             [_boardPlayerView removeGestureRecognizer:_doubelTap];
             [_teacherPlayerView addGestureRecognizer:_doubelTap];
-            
-            //            [_aBarrage.view removeFromSuperview];
-            //            [_boardPlayerView addSubview:_aBarrage.view];
-            //
-            //            _aBarrage.view.sd_layout
-            //            .leftEqualToView(_boardPlayerView)
-            //            .rightEqualToView(_boardPlayerView)
-            //            .topEqualToView(_boardPlayerView)
-            //            .bottomEqualToView(_boardPlayerView);
-            //            [_aBarrage.view updateLayout];
+            if (!_aBarrage.view.superview) {
+            }else{
+                [_aBarrage.view removeFromSuperview];
+            }
+            [_boardPlayerView addSubview:_aBarrage.view];
+            _aBarrage.view.sd_layout
+            .topSpaceToView(_boardPlayerView, 0)
+            .leftSpaceToView(_boardPlayerView, 0)
+            .rightSpaceToView(_boardPlayerView, 0)
+            .heightRatioToView(_boardPlayerView, 1/3.0);
+            [_aBarrage.view updateLayout];
+            _aBarrage.view.hidden = NO;
+            [_aBarrage start];
             [self mediaControlTurnToFullScreenModeWithMainView:_boardPlayerView];
             [self makeFloatingPlayer:_teacherPlayerView];
             
@@ -1336,43 +1400,41 @@ typedef enum : NSUInteger {
 #pragma mark- 全屏状态下双击小视频窗口的点击事件
 - (void)switchVideoOnFullScreenMode:(UITapGestureRecognizer *)sender{
     
-    if (isFullScreen) {
+    /* 条件1:白板是主屏*/
+    if (_boardPlayerView.becomeMainPlayer == YES) {
         
-        /* 条件1:白板是主屏*/
-        if (_boardPlayerView.becomeMainPlayer == YES) {
-            
-            [self turnToFullScreenMode:_teacherPlayerView];
-            [_teacherPlayerView removeGestureRecognizer:_doubelTap];
-            [_boardPlayerView addGestureRecognizer:_doubelTap];
-            [_teacherPlayerView addSubview:_aBarrage.view];
-            [_aBarrage.view sd_clearAutoLayoutSettings];
-            _aBarrage.view.sd_layout
-            .leftEqualToView(_teacherPlayerView)
-            .rightEqualToView(_teacherPlayerView)
-            .topEqualToView(_teacherPlayerView)
-            .bottomEqualToView(_teacherPlayerView);
-            [_aBarrage.view updateLayout];
-            [self mediaControlTurnToFullScreenModeWithMainView:_teacherPlayerView];
-            [self makeFloatingPlayer:_boardPlayerView];
-            
-            
-            
-        }else if (_teacherPlayerView.becomeMainPlayer == YES){
-            /* 条件2:摄像头是主屏*/
-            [self turnToFullScreenMode:_boardPlayerView];
-            [_boardPlayerView removeGestureRecognizer:_doubelTap];
-            [_teacherPlayerView addGestureRecognizer:_doubelTap];
-            [_boardPlayerView addSubview:_aBarrage.view];
-            [_aBarrage.view sd_clearAutoLayoutSettings];
-            _aBarrage.view.sd_layout
-            .leftEqualToView(_boardPlayerView)
-            .rightEqualToView(_boardPlayerView)
-            .topEqualToView(_boardPlayerView)
-            .bottomEqualToView(_boardPlayerView);
-            [_aBarrage.view updateLayout];
-            [self mediaControlTurnToFullScreenModeWithMainView:_boardPlayerView];
-            [self makeFloatingPlayer:_teacherPlayerView];
-        }
+        [self turnToFullScreenMode:_teacherPlayerView];
+        [_teacherPlayerView removeGestureRecognizer:_doubelTap];
+        [_boardPlayerView addGestureRecognizer:_doubelTap];
+        [_teacherPlayerView addSubview:_aBarrage.view];
+        [_aBarrage.view sd_clearAutoLayoutSettings];
+        _aBarrage.view.sd_layout
+        .leftEqualToView(_teacherPlayerView)
+        .rightEqualToView(_teacherPlayerView)
+        .topEqualToView(_teacherPlayerView)
+        .bottomEqualToView(_teacherPlayerView);
+        [_aBarrage.view updateLayout];
+        [self mediaControlTurnToFullScreenModeWithMainView:_teacherPlayerView];
+        [self makeFloatingPlayer:_boardPlayerView];
+        
+        
+        
+    }else if (_teacherPlayerView.becomeMainPlayer == YES){
+        /* 条件2:摄像头是主屏*/
+        [self turnToFullScreenMode:_boardPlayerView];
+        [_boardPlayerView removeGestureRecognizer:_doubelTap];
+        [_teacherPlayerView addGestureRecognizer:_doubelTap];
+        [_boardPlayerView addSubview:_aBarrage.view];
+        [_aBarrage.view sd_clearAutoLayoutSettings];
+        _aBarrage.view.sd_layout
+        .leftEqualToView(_boardPlayerView)
+        .rightEqualToView(_boardPlayerView)
+        .topEqualToView(_boardPlayerView)
+        .bottomEqualToView(_boardPlayerView);
+        [_aBarrage.view updateLayout];
+        [self mediaControlTurnToFullScreenModeWithMainView:_boardPlayerView];
+        [self makeFloatingPlayer:_teacherPlayerView];
+        
     }
     
 }
@@ -1427,8 +1489,6 @@ typedef enum : NSUInteger {
         .widthRatioToView(self.view,2/5.0)
         .autoHeightRatio(9/16.0);
         
-        //        [self.view bringSubviewToFront:_boardPlayerView];
-        
     }
     
     if ( _viewsArrangementMode == DifferentLevel) {
@@ -1449,6 +1509,7 @@ typedef enum : NSUInteger {
     if (_viewsArrangementMode == SameLevel) {
         /* 条件1-1：如果当前白板是主视图*/
         if (_boardPlayerView.becomeMainPlayer == YES) {
+            
             /* 白板变成副视图*/
             [self makeSecondPlayer:_boardPlayerView];
             /* 老师变成主视图*/
@@ -1459,6 +1520,7 @@ typedef enum : NSUInteger {
         }
         /* 条件1-2：如果当前老师是主视图*/
         else if (_teacherPlayerView.becomeMainPlayer == YES) {
+            
             /* 教师端变成副视图 布局改变*/
             [self makeSecondPlayer:_teacherPlayerView];
             /* 白板变成主视图*/
@@ -1549,10 +1611,6 @@ typedef enum : NSUInteger {
         
     }
     
-    //    _chatTableView.sd_layout
-    //    .bottomSpaceToView(_liveClassInfoView.view2,46);
-    //    [_chatTableView updateLayout];
-    
     /* 把可移动的这个视图放到self.view的最上层*/
     [self.view bringSubviewToFront:playerView];
     
@@ -1561,38 +1619,36 @@ typedef enum : NSUInteger {
 /* 改变infoview的top和位置*/
 - (void)changInfoViewsWithTopView:(FJFloatingView *)playerView{
     
-   _mainView.sd_layout
-    .topSpaceToView(playerView, 0);
-    [_mainView updateLayout];
+    [_mainView sd_clearAutoLayoutSettings];
     
+    _mainView.sd_layout
+    .topSpaceToView(playerView,0)
+    .leftEqualToView(self.view)
+    .rightEqualToView(self.view)
+    .bottomEqualToView(self.view);
+    
+    [_mainView updateLayout];
     
 }
 
 #pragma mark- 隐藏segment和滑动视图
 - (void)hideSegementAndScrollViews{
     
-    [_mainView removeFromSuperview];
+    _mainView.segmentControl.hidden = YES;
+    _mainView.scrollView.hidden = YES;
     
 }
 
 #pragma mark- 显示segment和滑动视图
 - (void)showSegmentAndScrollViews{
     
-    [self.view addSubview: _mainView];
-    _mainView.sd_layout
-    .leftSpaceToView(self.view, 0)
-    .rightSpaceToView(self.view, 0)
-    .bottomSpaceToView(self.view, 0);
-    if (_teacherPlayerView.becomeMainPlayer == YES) {
-        _mainView.sd_layout
-        .topSpaceToView(_teacherPlayerView, 0);
-        [_mainView updateLayout];
-    }else{
-        _mainView.sd_layout
-        .topSpaceToView(_boardPlayerView, 0);
-        [_mainView updateLayout];
-        
-    }
+    _mainView.segmentControl.hidden = NO;
+    _mainView.scrollView.hidden = NO;
+    
+    
+    [_mainView.segmentControl updateLayout];
+    [_mainView.scrollView updateLayout];
+    _mainView.scrollView.contentSize = CGSizeMake(self.view.width_sd*4, _mainView.scrollView.height_sd);
     
 }
 
@@ -1621,21 +1677,10 @@ typedef enum : NSUInteger {
         [playerView removeGestureRecognizer:_doubelTap];
     }
     
-    //    [_aBarrage.view removeFromSuperview];
-    //    [playerView addSubview:_aBarrage.view];
-    //    _aBarrage.view.sd_layout
-    //    .leftSpaceToView(playerView, 0)
-    //    .rightSpaceToView(playerView, 0)
-    //    .topSpaceToView(playerView, 0)
-    //    .bottomSpaceToView(playerView, 0);
-    //    [_aBarrage.view updateLayout];
-    //
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSLog(@"viewWillAppear");
     [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 }
 
@@ -1685,7 +1730,7 @@ typedef enum : NSUInteger {
     switch (self.scaleModeBtn.titleLabel.tag) {
         case 0:
             [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
-            //            [self.liveplayerTeacher setScalingMode:NELPMovieScalingModeAspectFit];
+            [self.liveplayerTeacher setScalingMode:NELPMovieScalingModeAspectFit];
             
             /* 强制转成横屏*/
             if (orientation == UIDeviceOrientationLandscapeRight) {
@@ -1744,16 +1789,12 @@ typedef enum : NSUInteger {
 
 //全屏播放视频后，播放器的适配和全屏旋转
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    
     [_aBarrage stop];
-    
     /* 切换到竖屏*/
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
-        //        [_aBarrage stop];
-        //        self.view.backgroundColor = [UIColor blackColor];
         [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
         self.scaleModeBtn.titleLabel.tag = 0;
-        
+        _inputView.hidden = YES;
         //谁是主视图，谁就恢复到主屏
         if (_boardPlayerView.becomeMainPlayer == YES) {
             
@@ -1766,7 +1807,6 @@ typedef enum : NSUInteger {
             if (_viewsArrangementMode == SameLevel) {
                 
                 [self makeFloatingPlayer:_teacherPlayerView];
-                
                 
             }if (_viewsArrangementMode == DifferentLevel){
                 
@@ -1788,31 +1828,23 @@ typedef enum : NSUInteger {
                 
                 [self makeFloatingPlayer:_boardPlayerView];
             }
-            
         }
-        
         /* 显示segment和scrollview*/
         [self showSegmentAndScrollViews];
-        
         [[NSNotificationCenter defaultCenter]postNotificationName:@"TurnDownFullScreen" object:nil];
-        
     }
     
     /* 切换到全屏*/
     else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
         
-        //        [_aBarrage stop];
         self.view.backgroundColor = [UIColor blackColor];
         [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale02"] forState:UIControlStateNormal];
         self.scaleModeBtn.titleLabel.tag = 1;
-        
+        _inputView.hidden = NO;
         /**
          切换两次没有别的目的,只为了防止卡死的bug出现
          */
         isFullScreen = YES;
-        //        [self switchBothScreen:self];
-        //        [self switchBothScreen:self];
-        
         //谁是主视图，谁就全屏
         if (_boardPlayerView.becomeMainPlayer == YES) {
             [self.view sendSubviewToBack:_mainView];
@@ -1822,52 +1854,51 @@ typedef enum : NSUInteger {
             [_teacherPlayerView addGestureRecognizer:_doubelTap];
             [_boardPlayerView updateLayout];
             [_teacherPlayerView updateLayout];
-            
         }else if(_teacherPlayerView.becomeMainPlayer == YES){
             [self.view sendSubviewToBack:_mainView];
             [self turnToFullScreenMode:_teacherPlayerView];
             [self makeFloatingPlayer:_boardPlayerView];
             [_boardPlayerView addGestureRecognizer:_doubelTap];
-            //            [_boardPlayerView removeFromSuperview];
+            
             [_boardPlayerView updateLayout];
             [_teacherPlayerView updateLayout];
-            
         }
         
         /* 切换到横屏 隐藏segment和scrollview*/
         [self hideSegementAndScrollViews];
         /* 全屏状态  发送消息通知*/
         [[NSNotificationCenter defaultCenter]postNotificationName:@"FullScreen" object:nil];
-        
     }
 }
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
     
-    if (fromInterfaceOrientation!=UIInterfaceOrientationPortrait) {
-        
-//        [_mainView updateLayout];
-//        [_mainView.scrollView layoutIfNeeded];
-//        [_mainView.scrollView updateLayout];
-//        _chatController.view.sd_layout
-//        .leftSpaceToView(_mainView.scrollView, 0)
-//        .topSpaceToView(_mainView.scrollView, 0)
-//        .bottomSpaceToView(_mainView.scrollView, 0)
-//        .widthRatioToView(_mainView.scrollView, 1.0);
-//        [_chatController.view updateLayout];
-//        
-//        _noticeController.view.sd_layout
-//        .leftSpaceToView(_chatController.view, 0)
-//        .topEqualToView(_chatController.view)
-//        .bottomEqualToView(_chatController.view)
-//        .widthRatioToView(_chatController.view, 1.0);
-//        [_noticeController.view updateLayout];
-        
-//        _chatController.inputView.hidden = NO;
-//        [_chatController.inputView updateLayout];
-        
+    if (fromInterfaceOrientation == UIInterfaceOrientationPortrait) {
+        [_aBarrage stop];
+        if (_aBarrage.view.superview) {
+            [_aBarrage.view removeFromSuperview];
+        }
+        if (_boardPlayerView.becomeMainPlayer == YES) {
+            [_boardPlayerView updateLayout];
+            [_boardPlayerView addSubview:_aBarrage.view];
+            _aBarrage.view.sd_layout
+            .leftSpaceToView(_boardPlayerView, 0)
+            .rightSpaceToView(_boardPlayerView, 0)
+            .topSpaceToView(_boardPlayerView, 0)
+            .heightRatioToView(_boardPlayerView, 1/3.0);
+            [_aBarrage.view updateLayout];
+        }else if (_teacherPlayerView.becomeMainPlayer == YES){
+            [_teacherPlayerView updateLayout];
+            [_teacherPlayerView addSubview:_aBarrage.view];
+            _aBarrage.view.sd_layout
+            .leftSpaceToView(_teacherPlayerView, 0)
+            .rightSpaceToView(_teacherPlayerView, 0)
+            .topSpaceToView(_teacherPlayerView, 0)
+            .heightRatioToView(_teacherPlayerView, 1/3.0);
+            [_aBarrage.view updateLayout];
+        }
     }
-    
+    [_aBarrage start];
 }
 
 #pragma mark - 播放器的播放/停止/退出等方法
@@ -1878,8 +1909,11 @@ typedef enum : NSUInteger {
     //    [_aBarrage.view removeFromSuperview];
     /* 非屏状态下的点击事件*/
     if (isFullScreen == NO) {
+        
         [self returnLastPage];
+        
         [self syncUIStatus:YES];
+        
         /* 全屏状态下的点击事件*/
     }else if (isFullScreen == YES){
         
@@ -1915,8 +1949,6 @@ typedef enum : NSUInteger {
     [self controlOverlayHide];
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlOverlayHide) object:nil];
-    [_inputView.TextViewInput resignFirstResponder];
-    [_inputView changeSendBtnWithPhoto:YES];
 }
 
 /* 控制层点击事件*/
@@ -1927,8 +1959,6 @@ typedef enum : NSUInteger {
     [self syncUIStatus:NO];
     [self performSelector:@selector(controlOverlayHide) withObject:nil afterDelay:5];
     self.controlOverlay.alpha = 1.0;
-    [_inputView.TextViewInput resignFirstResponder];
-    [_inputView changeSendBtnWithPhoto:YES];
     
 }
 
@@ -1938,6 +1968,7 @@ typedef enum : NSUInteger {
     [UIView animateWithDuration:0.3 animations:^{
         self.controlOverlay.alpha = 0;
         NSLog(@"控制栏隐藏了");
+        
     }];
     
     [self performSelector:@selector(hideControlOverlay) withObject:nil afterDelay:0.5];
@@ -1999,7 +2030,6 @@ typedef enum : NSUInteger {
         [_teacherPlayerView makePlaceHolderImage:nil];
     }
     
-    
     /* 切换播放暂停按钮*/
     [self syncUIStatus:NO];
     
@@ -2015,6 +2045,7 @@ typedef enum : NSUInteger {
 }
 
 #pragma mark- 直播结束的回调
+
 - (void)NELivePlayerPlayBackFinished:(NSNotification*)notification{
     
     switch ([[[notification userInfo] valueForKey:NELivePlayerPlaybackDidFinishReasonUserInfoKey] intValue])
@@ -2025,12 +2056,12 @@ typedef enum : NSUInteger {
         {
             if ([notification object]==_liveplayerBoard){
                 
-                [_liveplayerBoard stop];
+                [_liveplayerBoard shutdown];
                 
                 
             }else if ([notification object]==_liveplayerTeacher){
                 
-                [_liveplayerTeacher stop];
+                [_liveplayerTeacher shutdown];
                 
             }
             
@@ -2127,156 +2158,6 @@ typedef enum : NSUInteger {
     
 }
 
-#pragma mark- 以上是播放器的初始化和配置方法、接口等
-
-#pragma mark- 下为页面数据及逻辑等
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    //不允许侧滑返回
-    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-    self.view.backgroundColor = [UIColor whiteColor];
-    
-    
-    /* 监听播放器的初始化状态*/
-    
-    /* 白板初始化成功*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(boardPlayerInitSuccess) name:@"BoardPlayerInitSuccess" object:nil];
-    
-    /* 摄像头初始化成功*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(teacherPlayerInitSuccess) name:@"TeacherPlayerInitSuccess" object:nil];
-    
-    
-    /* 两个播放器都初始化成功*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(allPlayerInitSuccess) name:@"AllPlayerInitSuccess" object:nil];
-    [self makeData];
-    [self setupPlayer];
-    [self setupChildController];
-    [self setupMainView];
-    
-    /* 白板播放端的通知*/
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerDidPreparedToPlay:) name:NELivePlayerDidPreparedToPlayNotification object:_liveplayerBoard];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NeLivePlayerloadStateChanged:) name:NELivePlayerLoadStateChangedNotification object:_liveplayerBoard];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerPlayBackFinished:) name:NELivePlayerPlaybackFinishedNotification object:_liveplayerBoard];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerFirstVideoDisplayed:) name:NELivePlayerFirstVideoDisplayedNotification object:_liveplayerBoard];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerFirstAudioDisplayed:) name:NELivePlayerFirstAudioDisplayedNotification object:_liveplayerBoard];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerReleaseSuccess:) name:NELivePlayerReleaseSueecssNotification object:_liveplayerBoard];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerVideoParseError:) name:NELivePlayerVideoParseErrorNotification object:_liveplayerBoard];
-    
-    /* 老师播放端的通知*/
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerDidPreparedToPlay:) name:NELivePlayerDidPreparedToPlayNotification object:_liveplayerTeacher];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NeLivePlayerloadStateChanged:) name:NELivePlayerLoadStateChangedNotification object:_liveplayerTeacher];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerPlayBackFinished:) name:NELivePlayerPlaybackFinishedNotification object:_liveplayerTeacher];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerFirstVideoDisplayed:) name:NELivePlayerFirstVideoDisplayedNotification object:_liveplayerTeacher];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerFirstAudioDisplayed:) name:NELivePlayerFirstAudioDisplayedNotification object:_liveplayerTeacher];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerReleaseSuccess:) name:NELivePlayerReleaseSueecssNotification object:_liveplayerTeacher];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NELivePlayerVideoParseError:) name:NELivePlayerVideoParseErrorNotification object:_liveplayerTeacher];
-    
-    
-    /* 监听白板播放端是否可以移动*/
-    [_boardPlayerView addObserver:self forKeyPath:@"canMove" options:NSKeyValueObservingOptionNew context:nil];
-    
-    /* 监听老师播放端是否可以移动*/
-    [_teacherPlayerView addObserver:self forKeyPath:@"canMove" options:NSKeyValueObservingOptionNew context:nil];
-    
-    
-    
-    
-    /* 变为非平级视图的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(viewLevelChangDifferent:) name:@"DifferentLevel" object:nil];
-    /* 变为平级视图的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(viewLevelChangSame:) name:@"SameLevel" object:nil];
-    
-    /* 变为全屏后的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnFullScreen:) name:@"FullScreen" object:nil];
-    
-    /* 切换回竖屏后的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(turnDownFullScreen:) name:@"TurnDownFullScreen" object:nil];
-    
-    /* 全屏弹幕框的监听*/
-    //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(barrageTextEdit:) name:@"BarrageBecomeFirstResponder" object:nil];
-    
-    
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-    
-    
-    
-#pragma mark- 以下是页面和功能逻辑
-    
-    /* 最后,添加一个覆盖层.在视频播放器为平级视图的时候,上方的视频播放器可以点击,下方不可以点击*/
-    
-    _maskView = ({
-        UIView *_= [[UIView alloc]init];
-        [_mainView addSubview:_];
-        if (_mainView&&_viewsArrangementMode==SameLevel) {
-            _.sd_layout
-            .leftEqualToView(_mainView)
-            .rightEqualToView(_mainView)
-            .topEqualToView(_mainView)
-            .bottomEqualToView(_mainView);
-        }
-        UITapGestureRecognizer *maskTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeLevels:)];
-        [_ addGestureRecognizer:maskTap];
-        _;
-    });
-    
-    /* 聊天信息发送时间间隔*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sendeButtonCannotUse) name:@"sendButtonCannotUse" object:nil];
-    
-    /* app进入后台/回到前台的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationDidEnterBackground) name:@"ApplicationDidEnterBackground" object:nil];
-    
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationDidBecomeActive) name:@"ApplicationDidBecomeActive" object:nil];
-    
-    /* 全屏模式下的双击手势*/
-    _doubelTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(switchVideoOnFullScreenMode:)];
-    [_doubelTap setNumberOfTapsRequired:2];
-    
-    
-    /* 全屏模式的监听-->在runtime机制下不可进行屏幕旋转的时候,强制进行屏幕旋转*/
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onDeviceOrientationChange) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
-    /* 支持全屏*/
-    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"SupportedLandscape"];
-    
-    
-    /* 添加录音是否开始的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordStart) name:@"RecordStart" object:nil];
-    
-    /* 添加录音是否结束的监听*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordEnd) name:@"RecordEnd" object:nil];
-    
-    
-    
-    [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
-    
-    
-}
-
-
 
 /* 全屏模式下的双击手势,切换两个视图*/
 - (void)doubleTap:(UITapGestureRecognizer *)sender{
@@ -2297,9 +2178,6 @@ typedef enum : NSUInteger {
     
     [self performSelector:@selector(switchBothScreen:)];
     
-    
-    
-    
 }
 
 
@@ -2313,7 +2191,6 @@ typedef enum : NSUInteger {
         
         
     }
-    
 }
 
 /* 摄像头播放器创建成功 */
@@ -2333,7 +2210,7 @@ typedef enum : NSUInteger {
 #pragma mark- 视频播放状态查询功能
     
     /* 两个播放器和控制层和覆盖层都加载完成后,每隔30秒请求一次数据*/
-        [self checkVideoStatus];
+    //    [self checkVideoStatus];
     
     /**两个播放器和控制层加载完成后,加载在线人数*/
     //    [self checkOnlineNumber];
@@ -2341,142 +2218,11 @@ typedef enum : NSUInteger {
 }
 
 
-
-
 /* 发送按钮在两秒内不可以重复点击*/
 - (void)sendeButtonCannotUse{
     
     [self HUDStopWithTitle:@"请稍后"];
 }
-
-#pragma mark- 语音部分
-/* 开始检测麦克风声音*/
-- (void)checkMicVolum{
-    
-    /* 必须添加这句话，否则在模拟器可以，在真机上获取始终是0 */
-    [[AVAudioSession sharedInstance]
-     setCategory: AVAudioSessionCategoryPlayAndRecord error: nil];
-    
-    /* 不需要保存录音文件 */
-    NSURL *url = [NSURL fileURLWithPath:@"/dev/null"];
-    
-    NSDictionary *settings = [NSDictionary dictionaryWithObjectsAndKeys:
-                              [NSNumber numberWithFloat: 44100.0], AVSampleRateKey,
-                              [NSNumber numberWithInt: kAudioFormatAppleLossless], AVFormatIDKey,
-                              [NSNumber numberWithInt: 2], AVNumberOfChannelsKey,
-                              [NSNumber numberWithInt: AVAudioQualityMax], AVEncoderAudioQualityKey,
-                              nil];
-    
-    
-    
-    NSError *error;
-    
-    recorder = [[AVAudioRecorder alloc] initWithURL:url settings:settings error:&error];
-    if (recorder)
-    {
-        [recorder prepareToRecord];
-        recorder.meteringEnabled = YES;
-        [recorder record];
-        levelTimer = [NSTimer scheduledTimerWithTimeInterval: 0.1 target: self selector: @selector(levelTimerCallback) userInfo: nil repeats: YES];
-        
-        
-    }
-    else
-    {
-        NSLog(@"%@", [error description]);
-    }
-}
-
-/* 检测系统麦克风的音量值  */
-- (void)levelTimerCallback{
-    
-    [recorder updateMeters];
-    
-    float   level;                // The linear 0.0 .. 1.0 value we need.
-    float   minDecibels = -80.0f; // Or use -60dB, which I measured in a silent room.
-    float   decibels    = [recorder averagePowerForChannel:0];
-    
-    if (decibels < minDecibels)
-    {
-        level = 0.0f;
-    }
-    else if (decibels >= 0.0f)
-    {
-        level = 1.0f;
-    }
-    else
-    {
-        float   root            = 2.0f;
-        float   minAmp          = powf(10.0f, 0.05f * minDecibels);
-        float   inverseAmpRange = 1.0f / (1.0f - minAmp);
-        float   amp             = powf(10.0f, 0.05f * decibels);
-        float   adjAmp          = (amp - minAmp) * inverseAmpRange;
-        
-        level = powf(adjAmp, 1.0f / root);
-    }
-    
-    /* level 范围[0 ~ 1], 转为[0 ~120] 之间 */
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //        [_textLabel setText:[NSString stringWithFormat:@"%f", level*120]];
-        
-        NSLog(@"分贝数 :%f",level*120);
-        
-    });
-}
-
-- (void)checkMic{
-    
-    [self checkMicVolum];
-    
-    
-}
-
-//开始录制的方法
-- (void)recordStart{
-    
-    [self checkMic];
-    
-}
-//语音录制结束的方法
-- (void)recordEnd{
-    
-    [levelTimer invalidate];
-    levelTimer = nil;
-    
-}
-
-
-
-#pragma mark- 聊天及sdk
-/* 初始化聊天sdk*/
-- (void)initNIMSDK{
-    
-#pragma mark- 聊天功能初始化和自动登录
-    /* 取出存储的chatAccount*/
-//    _chat_Account =[Chat_Account yy_modelWithDictionary:[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"]];
-    
-    /* 查询登录状态*/
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:@"NIMSDKLogin"]) {
-        
-        [[NIMSDK sharedSDK].chatManager addDelegate:self];
-        
-    }else{
-        
-        /* 强制自动登录一次*/
-        [[NIMSDK sharedSDK].loginManager addDelegate:self];
-        NIMAutoLoginData *loginData = [[NIMAutoLoginData alloc]init];
-        loginData.account = [[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"accid"];
-        loginData.token =[[NSUserDefaults standardUserDefaults]objectForKey:@"chat_account"][@"token"];
-        [[NIMSDK sharedSDK].loginManager autoLogin:loginData];
-        
-    }
-    
-    [[NIMSDK sharedSDK].chatManager addDelegate:self];
-    [[NIMSDK sharedSDK].chatroomManager addDelegate:self];
-    
-}
-
-
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
@@ -2490,8 +2236,6 @@ typedef enum : NSUInteger {
     
     
 }
-
-#pragma mark- 请求历史数据的方法
 
 /* 键盘出现*/
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -2522,7 +2266,8 @@ typedef enum : NSUInteger {
     }else{
         
         [UIView animateWithDuration:animationDuration animations:^{
-            [_inputView updateLayout];
+            
+            //
         }];
     }
     
@@ -2546,15 +2291,9 @@ typedef enum : NSUInteger {
             self.view.frame = CGRectMake(0, 0, self.view.width_sd, self.view.height_sd);
         }];
         
-            [_inputView changeSendBtnWithPhoto:YES];
-        
         
     }else{
         [UIView animateWithDuration:animationDuration animations:^{
-            
-//            _inputView.sd_layout
-//            .bottomSpaceToView(_liveClassInfoView.view2,0);
-//            [IFView updateLayout];
             
         }];
         
@@ -2563,15 +2302,8 @@ typedef enum : NSUInteger {
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     
-    
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
-
-
-
-#pragma mark- 聊天功能的方法
-
-#pragma mark- 聊天ui的设置
 
 
 #pragma mark- 开始/关闭弹幕功能
@@ -2605,91 +2337,45 @@ typedef enum : NSUInteger {
         
     }
 }
+
 #pragma mark- 发送弹幕方法
-- (void)sendBarrage:(NSString *)message withAttibute:(NSAttributedString *)attribute{
+- (void)sendBarrage:(NSString *)message{
     
     NSLog(@"%@",[self.view valueForKey:@"frame"]);
     
     NSLog(@"%@",message);
     
-    /* 弹幕添加条件
-     * 1、平铺视图在老师视频上
-     * 2、在全屏视图上
-     * 3、分屏小窗口的时候没有弹幕
-     */
-    
-    /* 前提条件：必须是平级视图*/
-    /* 如果不是在全屏的情况下*/
-    if (isFullScreen== NO) {
-        
-        if (_viewsArrangementMode != DifferentLevel) {
-            
-            [_aBarrage.view removeFromSuperview];
-            [_teacherPlayerView addSubview:_aBarrage.view];
-            [_aBarrage.view sd_clearAutoLayoutSettings];
-            _aBarrage.view.sd_layout
-            .leftEqualToView(_teacherPlayerView)
-            .rightEqualToView(_teacherPlayerView)
-            .topEqualToView(_teacherPlayerView)
-            .bottomEqualToView(_teacherPlayerView);
-            [_aBarrage.view updateLayout];
-            _aBarrage.view.hidden = NO;
-            [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
-            
-        }else{
-            
-            
-        }
-        
-        /* 在全屏的条件下*/
-    }else{
-        
-        if (_boardPlayerView .becomeMainPlayer == YES) {
-            if ([_boardPlayerView.subviews containsObject:_aBarrage.view]) {
-                
-            }else{
-                
-                [_boardPlayerView addSubview:_aBarrage.view];
-                _aBarrage.view.sd_layout
-                .leftEqualToView(_boardPlayerView)
-                .rightEqualToView(_boardPlayerView)
-                .topEqualToView(_boardPlayerView)
-                .bottomEqualToView(_boardPlayerView);
-                [_aBarrage.view updateLayout];
-            }
-            //            if (_aBarrage.view.hidden == YES) {
-            //
-            //                _aBarrage.view.hidden = NO;
-            //            }
-            //            [_boardPlayerView bringSubviewToFront:_aBarrage.view];
-            
-        }else if (_teacherPlayerView.becomeMainPlayer == YES){
-            
-            if ([_teacherPlayerView .subviews containsObject:_aBarrage.view]) {
-                
-            }else{
-                
-                if (_aBarrage.view.superview!=nil) {
-                    [_aBarrage.view removeFromSuperview];
-                }
-                
+    if (!_aBarrage.view.superview) {
+        if (isFullScreen == NO) {
+            if (_viewsArrangementMode == SameLevel) {
                 [_teacherPlayerView addSubview:_aBarrage.view];
                 _aBarrage.view.sd_layout
-                .leftEqualToView(_teacherPlayerView)
-                .rightEqualToView(_teacherPlayerView)
-                .topEqualToView(_teacherPlayerView)
-                .bottomEqualToView(_teacherPlayerView);
+                .leftSpaceToView(_teacherPlayerView, 0)
+                .rightSpaceToView(_teacherPlayerView, 0)
+                .topSpaceToView(_teacherPlayerView, 0)
+                .heightRatioToView(_teacherPlayerView, 1/3.0);
                 [_aBarrage.view updateLayout];
-                
+                [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
             }
-            
-            //            if (_aBarrage.view.hidden == YES) {
-            //
-            //                _aBarrage.view.hidden = NO;
-            //            }
+        }else{
             
         }
         
+    }else{
+        
+        if (isFullScreen == NO) {
+            if (_viewsArrangementMode == SameLevel) {
+                _aBarrage.view.hidden = NO;
+                if (_teacherPlayerView.subviews.lastObject == _aBarrage.view) {
+                }else{
+                    [_teacherPlayerView bringSubviewToFront:_aBarrage.view];
+                }
+            }else{
+                _aBarrage.view.hidden = YES;
+            }
+        }else{
+            _aBarrage.view.hidden = NO;
+        }
     }
     
     _descriptor.spriteName = NSStringFromClass(BarrageWalkTextSprite.self);
@@ -2704,23 +2390,13 @@ typedef enum : NSUInteger {
         _descriptor.params[@"fontSize"]= @16;
     }
     
-    if (isFullScreen) {
-        
-        _aBarrage.canvasMargin = UIEdgeInsetsMake(30, 0, CGRectGetHeight(self.view.frame)/3.0f, 0);
-        
-    }else if (!isFullScreen){
-        _aBarrage.canvasMargin = UIEdgeInsetsMake(30, 0, (CGRectGetWidth(self.view.frame)/16*9.0f)/3.0f, 0);
-    }
-    
     [_aBarrage start];
     [_aBarrage receive:_descriptor];
-    
     
 }
 
 /* 高度变化的监听回调*/
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
-    
     
     NSLog(@"%@",change);
     /* 如果监听到的floatview是否可以移动*/
@@ -2742,62 +2418,7 @@ typedef enum : NSUInteger {
         
     }
     
-    
-    if ([keyPath isEqualToString:@"headerHeight"]) {
-        NSLog(@"%@",change);
-        headerHeight = [[change valueForKey:@"new"] floatValue];
-        
-        [_mainView setFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), headerHeight+20)];
-        
-//        _classList.classListTableView.tableHeaderView =_infoHeaderView;
-//        
-//        _classList.classListTableView.tableHeaderView.height_sd =headerHeight;
-        
-        
-        [self updateViewsInfos];
-    }
-    
-    
 }
-
-/* 刷新在线用户列表*/
-- (void)updateMembersList{
-    
-//    if (_membersArr.count!=0) {
-//        
-//        [_memberListView.memberListTableView reloadData];
-//        
-//    }
-    
-}
-
-/* tableview刷新视图*/
-
-- (void)updateViewsNotice{
-    
-//    [_classNotice.classNotice cyl_reloadData];
-    //    [_liveClassInfoView.noticeTabelView setNeedsDisplay];
-    
-}
-
-- (void)updateViewsInfos{
-    
-//    [_classList.classListTableView reloadData];
-    
-    
-}
-
-
-#pragma mark- tableview delegate
-
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    
-    return 1;
-    
-}
-
-
 
 
 
@@ -2807,10 +2428,33 @@ typedef enum : NSUInteger {
 }
 
 
-
+// segment的滑动代理
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    
+    if (isFullScreen == NO) {
+        
+        if (scrollView == _mainView.scrollView) {
+            
+            CGFloat pageWidth = scrollView.frame.size.width;
+            NSInteger page = scrollView.contentOffset.x / pageWidth;
+            
+            [_mainView.segmentControl setSelectedSegmentIndex:page animated:YES];
+            
+            //            if (_mainView.segmentControl.selectedSegmentIndex ==1) {
+            //                if (chatTime ==0) {
+            //
+            //                    [_chatTableView.mj_header beginRefreshing];
+            //
+            //                }
+            //            }
+        }
+    }
+    
+}
 
 /* 文本输入框取消响应*/
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
     
     [self.view endEditing:YES];
     
@@ -2819,19 +2463,15 @@ typedef enum : NSUInteger {
 /* 点击空白处,文本框取消响应*/
 - (void)tapSpace{
     
-        [_inputView.TextViewInput resignFirstResponder];
-        [_inputView changeSendBtnWithPhoto:YES];
 }
-
 
 #pragma mark- 查询播放状态功能的方法实现 --播放器初始化状态
 - (void)checkVideoStatus{
-    
     /* 向后台发送请求,请求视频直播状态*/
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/realtime",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -2856,7 +2496,6 @@ typedef enum : NSUInteger {
         //            }
         //        }
         
-        
         //新的状态查询接口返回数据
         //        {
         //            "status": 1,
@@ -2879,31 +2518,21 @@ typedef enum : NSUInteger {
         if ([dic[@"status"] isEqualToNumber:@1]) {
             
             /* 获取数据成功,执行下一步操作*/
-            
             _statusDic = [NSDictionary dictionaryWithDictionary:dic[@"data"][@"live_info"]];
-            
-            
             //检查播放器播放状态
             [self switchStatuseWithDictionary:_statusDic];
             
             //检查在线人数
             [self switchOnlineNumbersWithArrayrs:dic[@"data"][@"online_users"]];
-            
-            //            完事儿,每隔五秒轮询一次
-            [NSObject cancelPreviousPerformRequestsWithTarget:self];
-            [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
-            
+            //            完事儿,每隔五秒轮询一次 测试用.上线后改成十五秒
+            [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:CHECKTIME];
         }else{
             /* 获取数据失败*/
-            [NSObject cancelPreviousPerformRequestsWithTarget:self];
-            [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
-            
+            [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:CHECKTIME];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        [NSObject cancelPreviousPerformRequestsWithTarget:self];
-        [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:5];
+        [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:CHECKTIME];
     }];
     
 }
@@ -2914,9 +2543,9 @@ typedef enum : NSUInteger {
     UIAlertController *alertController = NULL;
     UIAlertAction *action = NULL;
     ///新的状态加载
-    
     //同时直播的时候
-    if ([(NSString *)statusDic[@"board"] isEqualToString:@"1"]&&[(NSString *)statusDic[@"camera"] isEqualToString:@"1"]) {
+    NSLog(@"%@",statusDic);
+    if ([(NSString *)statusDic[@"board"]isEqualToString:@"1"]&&[(NSString *)statusDic[@"camera"]isEqualToString:@"1"]) {
         /* 不用再向服务器发送查询请求*/
         NSLog(@"白板读取状态:%u",_liveplayerBoard.loadState);
         NSLog(@"白板播放状态:%u",_liveplayerBoard.playbackState);
@@ -2927,42 +2556,35 @@ typedef enum : NSUInteger {
         
         if (_liveplayerBoard!=nil) {
             if (_liveplayerBoard.isPlaying == YES) {
-                
-                [_liveplayerBoard.view updateLayout];
-                
             }else{
-//                [self setupBoardPlayer];
-                [_liveplayerBoard play];
-//                [self setupBoardPlayer];
+                [self setupBoardPlayer];
                 [_boardPlayerView makePlaceHolderImage:nil];
                 [_liveplayerBoard shouldAutoplay];
-                
+                [_liveplayerBoard play];
             }
         }else{
             [self setupBoardPlayer];
             [_boardPlayerView makePlaceHolderImage:nil];
             [_liveplayerBoard shouldAutoplay];
+            [_liveplayerBoard play];
         }
         
         if (_liveplayerTeacher!=nil) {
             if (_liveplayerTeacher.isPlaying ==YES) {
-                
-                [_liveplayerTeacher.view updateLayout];
             }else{
-//                [self setupTeacherPlayer];
-                [_liveplayerTeacher play];
-//                [self setupTeacherPlayer];
+                [self setupTeacherPlayer];
                 [_teacherPlayerView makePlaceHolderImage:nil];
                 [_liveplayerTeacher shouldAutoplay];
+                [_liveplayerTeacher play];
                 
             }
         }else{
             [self setupTeacherPlayer];
             [_teacherPlayerView makePlaceHolderImage:nil];
             [_liveplayerTeacher shouldAutoplay];
+            [_liveplayerTeacher play];
             
         }
-        
         
         if (_liveplayerBoard.playbackState != NELPMoviePlaybackStatePlaying) {
             [self playVideo:_liveplayerBoard];
@@ -2979,16 +2601,15 @@ typedef enum : NSUInteger {
             _fileName.text = _fileNameString==nil?@"暂无直播":_fileNameString;
         }
         
-        
     }else if ([statusDic[@"board"]isEqualToString:@"0"]&&[statusDic[@"camera"]isEqualToString:@"0"]){
         //都成了初始状态了
         if (_liveplayerBoard!=nil) {
-            [_liveplayerBoard pause];
+            [_liveplayerBoard shutdown];
         }
         [_boardPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
         
         if (_liveplayerTeacher!=nil) {
-            [_liveplayerTeacher pause];
+            [_liveplayerTeacher shutdown];
         }
         [_teacherPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
         
@@ -3036,11 +2657,19 @@ typedef enum : NSUInteger {
     else{
         
         //其他的状态吧
+        
+        /**
+         测试 5s一次 正常值30s一次
+         继续轮询该接口
+         @param checkVideoStatus
+         @return void
+         */
+        
         //白板的各种状态
         if ([statusDic[@"board"]isEqualToString:@"0"]) {
             //白板未开启
             if (_liveplayerBoard!=nil) {
-                [_liveplayerBoard pause];
+                [_liveplayerBoard shutdown];
             }
             [_boardPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
         }else if ([statusDic[@"board"]isEqualToString:@"1"]){
@@ -3055,7 +2684,7 @@ typedef enum : NSUInteger {
         }else if ([statusDic[@"board"]isEqualToString:@"2"]){
             //直播已经结束了
             if (_liveplayerBoard!=nil) {
-                [_liveplayerBoard pause];
+                [_liveplayerBoard shutdown];
             }
             [_boardPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_ClosedVideo"]];
         }
@@ -3064,7 +2693,7 @@ typedef enum : NSUInteger {
         if ([statusDic[@"camera"]isEqualToString:@"0"]) {
             //摄像头未开启
             if (_liveplayerTeacher!=nil) {
-                [_liveplayerTeacher pause];
+                [_liveplayerTeacher shutdown];
             }
             [_teacherPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
             
@@ -3080,21 +2709,17 @@ typedef enum : NSUInteger {
         }else if ([statusDic[@"camera"]isEqualToString:@"2"]){
             //直播已经结束了
             if (_liveplayerTeacher!=nil) {
-                [_liveplayerTeacher pause];
+                [_liveplayerTeacher shutdown];
             }
             [_teacherPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_ClosedVideo"]];
-            
         }
-        
         _fileNameString = statusDic[@"name"];
         if ([_fileName.text isEqualToString:_fileNameString]) {
             
         }else{
             _fileName.text = _fileNameString==nil?@"暂无直播":_fileNameString;
         }
-        
     }
-    
 }
 
 
@@ -3140,29 +2765,12 @@ typedef enum : NSUInteger {
 
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
-    [_inputView.inputView resignFirstResponder];
-    [_inputView changeSendBtnWithPhoto:YES];
-    
     [self.view endEditing:YES];
-    
-}
-
-
-
-/**浏览大图*/
--(void)showImage:(UIImageView *)imageView andImage:(UIImage *)image{
-    
-    NSMutableArray *items = @[].mutableCopy;
-    KSPhotoItem *item = [KSPhotoItem itemWithSourceView:imageView image:image];
-    [items addObject:item];
-    KSPhotoBrowser *browser = [KSPhotoBrowser browserWithPhotoItems:items selectedIndex:0];
-    [browser showFromViewController:self];
     
 }
 
 /** 返回上一页 */
 - (void)returnLastPage{
-    
     
     /* 防止内存泄漏,移除所有监听*/
     @try {
@@ -3174,8 +2782,6 @@ typedef enum : NSUInteger {
     } @finally {
         
     }
-    
-    
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
@@ -3228,22 +2834,28 @@ typedef enum : NSUInteger {
 }
 
 
+- (UIView *)makePlaceHolderView{
+    
+    HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"暂无数据"];
+    return view;
+}
+
+- (BOOL)enableScrollWhenPlaceHolderViewShowing{
+    
+    return YES;
+}
+
 /* 把弹幕给释放掉*/
 -(void)dealloc{
     
     
 }
 
-
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    
-    if (scrollView == _mainView.scrollView) {
-        CGFloat pageWidth = scrollView.frame.size.width;
-        NSInteger page = scrollView.contentOffset.x / pageWidth;
-        [_mainView.segmentControl setSelectedSegmentIndex:page animated:YES];
-    }
+-(void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message{
+    [_chatController performSelector:@selector(UUInputFunctionView:sendMessage:) withObject:funcView withObject:message];
+    [funcView.TextViewInput resignFirstResponder];
+    funcView.TextViewInput.text = @"";
 }
-
 
 
 - (void)didReceiveMemoryWarning {

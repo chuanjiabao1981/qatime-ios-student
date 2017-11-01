@@ -19,9 +19,7 @@
 //#define SCREENWIDTHx3 (CGRectGetWidth(self.frame)*3)
 
 
-
 @interface TutoriumInfoView (){
-    
     
     
 }
@@ -689,27 +687,33 @@
     
     _exclusiveModel = exclusiveModel;
     _className.text = exclusiveModel.name;
-    _saleNumber.text = [NSString stringWithFormat:@"报名人数 %@",exclusiveModel.view_tickets_count];
+    _saleNumber.text = [NSString stringWithFormat:@"报名人数 : %@/%@",exclusiveModel.users_count,exclusiveModel.max_users];
     _gradeLabel.text = exclusiveModel.grade;
     _subjectLabel.text = exclusiveModel.subject;
     _classCount.text = [NSString stringWithFormat:@"共%@课",exclusiveModel.events_count];
     _liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[exclusiveModel.start_at changeTimeStampToDateString].length>=10?[[exclusiveModel.start_at changeTimeStampToDateString]substringToIndex:10]:[exclusiveModel.start_at changeTimeStampToDateString],[exclusiveModel.end_at changeTimeStampToDateString].length>=10?[[exclusiveModel.end_at changeTimeStampToDateString]substringToIndex:10]:[exclusiveModel.end_at changeTimeStampToDateString]];
     
-    /* 未开课*/
-    _priceLabel.text = [NSString stringWithFormat:@"¥%@",exclusiveModel.price];
-    
     /* 已开课的状态*/
-    
     if ([exclusiveModel.status isEqualToString:@"teaching"]||[exclusiveModel.status isEqualToString:@"pause"]||[exclusiveModel.status isEqualToString:@"closed"]) {
+        /* 已开课*/
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@ (插班价)",exclusiveModel.current_price];
         _status.text = [NSString stringWithFormat:@" %@ [进度%@/%@] ",@"开课中",exclusiveModel.closed_events_count,exclusiveModel.events_count];
         _status.backgroundColor = [UIColor colorWithRed:0.14 green:0.80 blue:0.99 alpha:1.00];
     }else if ([exclusiveModel.status isEqualToString:@"missed"]||[exclusiveModel.status isEqualToString:@"init"]||[exclusiveModel.status isEqualToString:@"ready"]){
+        /* 未开课*/
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@ (插班价)",exclusiveModel.current_price];
         _status.text = [NSString stringWithFormat:@" %@ [距开课%@天]",@" 招生中",[self intervalSinceNow:exclusiveModel.start_at]];
         _status.backgroundColor = [UIColor colorWithRed:0.08 green:0.59 blue:0.09 alpha:1.00];
     }else if ([exclusiveModel.status isEqualToString:@"finished"]||[exclusiveModel.status isEqualToString:@"billing"]||[exclusiveModel.status isEqualToString:@"completed"]){
+        /* 结束了的*/
+        _priceLabel.text = [NSString stringWithFormat:@" "];
         _status.text = [NSString stringWithFormat:@" %@ [进度%@/%@]",@"已结束",exclusiveModel.events_count,exclusiveModel.events_count];
         _status.backgroundColor = SEPERATELINECOLOR_2;
     }else if ([exclusiveModel.status isEqualToString:@"published"]){
+        //招生中的课程
+        /* 未开课*/
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@",exclusiveModel.price];
+        
         if (exclusiveModel.start_at) {
             if ([exclusiveModel.start_at isEqualToString:@""]||[exclusiveModel.end_at isEqualToString:@""]) {
                 _status.text = @" 招生中 ";
@@ -726,6 +730,7 @@
                 _status.backgroundColor = [UIColor colorWithRed:0.08 green:0.59 blue:0.09 alpha:1.00];
             }
         }else{
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@ (插班价)",exclusiveModel.current_price];
             _status.text = @" 招生中 ";
             _status.backgroundColor = [UIColor colorWithRed:0.08 green:0.59 blue:0.09 alpha:1.00];
         }

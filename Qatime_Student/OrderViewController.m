@@ -319,8 +319,6 @@ typedef enum : NSUInteger {
                     /* 请求一次余额 ,判断是否可以用余额支付*/
                     [self requestBalance];
                     
-                    
-                    
                 }else{
                     /* 拉取订单信息失败*/
                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"该课程暂时不可购买!" preferredStyle:UIAlertControllerStyleAlert];
@@ -393,12 +391,9 @@ typedef enum : NSUInteger {
             
         }
         
-        
-        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-    
     
 }
 

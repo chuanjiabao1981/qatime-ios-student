@@ -7,6 +7,14 @@
 //
 
 #import "InfoHeaderView.h"
+#import "NSString+ChangeYearsToChinese.h"
+
+@interface InfoHeaderView(){
+    
+    TTGTextTagConfig *_config;
+}
+
+@end
 
 @implementation InfoHeaderView
 
@@ -315,6 +323,17 @@
         teacherTag.hidden = YES;
         
         //教师标签
+        
+        //标签设置
+        _config = [[TTGTextTagConfig alloc]init];
+        _config.tagTextColor = TITLECOLOR;
+        _config.tagBackgroundColor = [UIColor whiteColor];
+        _config.tagBorderColor = [UIColor colorWithRed:0.88 green:0.60 blue:0.60 alpha:1.00];
+        _config.tagShadowColor = [UIColor clearColor];
+        _config.tagCornerRadius = 0;
+        _config.tagExtraSpace = CGSizeMake(15, 5);
+        _config.tagTextFont = TEXT_FONTSIZE;
+        
         _teacherTagsView = [[TTGTextTagCollectionView alloc]init];
         _teacherTagsView.alignment = TTGTagCollectionAlignmentLeft;
         _teacherTagsView.enableTagSelection = NO;
@@ -361,9 +380,62 @@
         .topSpaceToView(_selfInterview,20)
         .heightIs(10);
         
+        [self setupAutoHeightWithBottomViewsArray:@[_selfInterview,_layoutLine] bottomMargin:20*ScrenScale];
+        
     }
     return self;
 }
+
+-(void)setModel:(LiveClassInfo *)model{
+    _model = model;
+    /* 课程图的信息赋值*/
+    _classNameLabel.text = model.name;
+    _gradeLabel.text = model.grade;
+    _subjectLabel.text = model.subject;
+    _classCount.text =[NSString stringWithFormat:@"共%@课", model.lesson_count];
+    
+    //课程标签 赋值
+    if (model.tag_list.count==0) {
+        _config.tagBorderColor = [UIColor clearColor];
+        [_classTagsView addTag:@"无" withConfig:_config];
+    }else{
+        [_classTagsView addTags:model.tag_list withConfig:_config];
+    }
+    //课程目标
+    _classTarget.text = model.objective==nil?@"无":model.objective;
+    
+    //适应人群
+    _suitable.text = model.suit_crowd==nil?@"无":model.suit_crowd;
+    if (model.live_start_time.length>10&&model.live_end_time.length>10) {
+        _liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[model.live_start_time substringToIndex:10],[model.live_end_time substringToIndex:10]];
+    }else{
+        _liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",model.live_start_time ,model.live_end_time];
+    }
+    /* 课程简介,富文本赋值*/
+    _classDescriptionLabel.attributedText = model.attributedDescription;
+    _classDescriptionLabel.isAttributedContent = YES;
+    [_classDescriptionLabel updateLayout];
+}
+
+-(void)setTeacher:(Teacher *)teacher{
+    _teacher = teacher;
+    /* 教师信息 赋值*/
+    _teacherNameLabel.text =_teacher.name;
+    _teaching_year.text = [_teacher.teaching_years changeEnglishYearsToChinese];
+    _workPlace .text = _teacher.school;
+    if (_teacher.gender!=nil) {
+        if ([_teacher.gender isEqualToString:@"female"]) {
+            [_genderImage setImage:[UIImage imageNamed:@"女"]];
+        }else if ([_teacher.gender isEqualToString:@"male"]){
+            [_genderImage setImage:[UIImage imageNamed:@"男"]];
+        }
+    }
+    [_teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacher.avatar_url]];
+    /* 教师简介,使用富文本*/
+    _selfInterview.attributedText = _teacher.attributedDescription;
+    [_selfInterview updateLayout];
+}
+
 
 
 @end

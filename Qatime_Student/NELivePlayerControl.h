@@ -13,7 +13,6 @@
 
 @interface NELivePlayerControl : UIControl
 
-
 @property(nonatomic, weak) id<NELivePlayer> delegatePlayer;
 
 @end

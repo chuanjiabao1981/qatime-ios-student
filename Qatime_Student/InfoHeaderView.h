@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "TTGTextTagCollectionView.h"
+#import "LiveClassInfo.h"
+#import "Teacher.h"
+
 
 @interface InfoHeaderView : UIView
 
@@ -70,6 +73,9 @@
 
 /* 自动布局参考线*/
 @property(nonatomic,strong) UIView *layoutLine;
+
+@property (nonatomic, strong) LiveClassInfo *model ;
+@property (nonatomic, strong) Teacher *teacher ;
 
 
 @end

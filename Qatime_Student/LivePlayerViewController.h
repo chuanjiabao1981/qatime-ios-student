@@ -15,7 +15,11 @@
 #import "InfoHeaderView.h"
 #import "MembersListView.h"
 
-
+//一堆子控制器
+#import "ClassNoticeViewController.h"
+#import "LivePlayerChatViewController.h"
+#import "LivePlayerClassInfoViewController.h"
+#import "LivePlayerMembersViewController.h"
 
 
 @class NELivePlayerControl;
@@ -44,10 +48,6 @@
 /* 视频信息页面*/
 @property(nonatomic,strong) LiveClassInfoView *liveClassInfoView ;
 
-@property(nonatomic,strong) InfoHeaderView *infoHeaderView ;
-/* 在线成员列表页*/
-@property(nonatomic,strong) MembersListView *memberListView;
-
 
 /* 切换屏幕按钮*/
 @property(nonatomic,strong) UIButton *switchScreen ;
@@ -68,6 +68,18 @@
  *  点击发送，会自动把文本框的内容传递过来
  */
 @property (nonatomic, strong) void(^sendContent)(NSString *content);
+
+
+/** 子控制器 */
+
+/** 公告控制器 */
+@property (nonatomic, strong) ClassNoticeViewController *noticeVC ;
+/** 聊天控制器 */
+@property (nonatomic, strong) LivePlayerChatViewController *chatVC ;
+/** 课程详情控制器 */
+@property (nonatomic, strong) LivePlayerClassInfoViewController *infoVC ;
+/** 成员控制器 */
+@property (nonatomic, strong) LivePlayerMembersViewController *memberVC ;
 
 
 /**
@@ -94,9 +106,9 @@
 
 /* 播放器的初始化方法*/
 
-- (id)initWithURL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm;
-
-+ (void)presentFromViewController:(UIViewController *)viewController withTitle:(NSString *)title URL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm completion:(void(^)())completion;
+//- (id)initWithURL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm;
+//
+//+ (void)presentFromViewController:(UIViewController *)viewController withTitle:(NSString *)title URL:(NSURL *)url andDecodeParm:(NSMutableArray *)decodeParm completion:(void(^)())completion;
 
 @property(nonatomic, strong)  NELivePlayerControl *mediaControl;
 

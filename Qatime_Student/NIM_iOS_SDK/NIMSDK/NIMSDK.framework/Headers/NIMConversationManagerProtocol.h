@@ -108,9 +108,13 @@ typedef void(^NIMGlobalSearchMessageBlock)(NSError * __nullable error,NSDictiona
 
 /**
  *  所有消息被删除的回调
- *
  */
 - (void)allMessagesDeleted;
+
+/**
+ *  所有消息已读的回调
+ */
+- (void)allMessagesRead;
 
 
 @end
@@ -153,6 +157,13 @@ typedef void(^NIMGlobalSearchMessageBlock)(NSError * __nullable error,NSDictiona
  */
 - (void)deleteRecentSession:(NIMRecentSession *)recentSession;
 
+/**
+ *  设置所有会话消息为已读
+ *
+ *  @discussion 异步方法，消息会标记为设置的状态。不会触发单条 recentSession 更新的回调，但会触发回调 - (void)allMessagesRead
+ */
+- (void)markAllMessagesRead;
+
 
 /**
  *  设置一个会话里所有消息置为已读
@@ -161,6 +172,7 @@ typedef void(^NIMGlobalSearchMessageBlock)(NSError * __nullable error,NSDictiona
  *  @discussion 异步方法，消息会标记为设置的状态
  */
 - (void)markAllMessagesReadInSession:(NIMSession *)session;
+
 
 
 /**
@@ -180,7 +192,7 @@ typedef void(^NIMGlobalSearchMessageBlock)(NSError * __nullable error,NSDictiona
  *  写入消息
  *
  *  @param message 需要更新的消息
- *  @param session 需要更新的消息
+ *  @param session 需要更新的会话
  *  @param completion 完成后的回调
  *  @discussion 当保存消息成功之后，会收到 NIMChatManagerDelegate 中的 onRecvMessages: 回调。目前支持消息类型:NIMMessageTypeText,NIMMessageTypeTip,NIMMessageTypeCustom
  */

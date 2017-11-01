@@ -232,7 +232,7 @@
 
             timeLonger = 1;
         }else{
-            timeLonger = 0.6;
+            timeLonger = 1;
         }
         _subTitleLabel.text = state;
         [UIView animateWithDuration:timeLonger

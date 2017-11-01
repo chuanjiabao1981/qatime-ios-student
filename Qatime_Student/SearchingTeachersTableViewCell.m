@@ -102,7 +102,7 @@
     
     _model = model;
     
-    [_headImage sd_setImageWithURL:[NSURL URLWithString:model.avatar_url]];
+    [_headImage sd_setImageWithURL:[NSURL URLWithString:model.avatar_url] placeholderImage:[UIImage imageNamed:@"老师"]];
     _teacherName.text = model.name;
     [_teachingYears setTitle:[model.teaching_years changeEnglishYearsToChinese] forState:UIControlStateNormal];
     _teacherInfo.text = [[[[[model.category stringByAppendingString:model.subject==nil?@"":model.subject]stringByAppendingString:@" | "]stringByAppendingString:model.province==nil?@"":model.province]stringByAppendingString:model.city==nil?@"":model.city]stringByAppendingString:model.school==nil?@"":model.school];

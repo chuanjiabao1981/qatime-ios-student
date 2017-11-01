@@ -8,12 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "Teacher.h"
+#import <NIMSDK/NIMSDK.h>
 
 typedef NS_ENUM(NSUInteger, CourseType) {
-    LiveCourseType,
-    InteractionCourseType,
-    VideoCourseType,
-    ExclusiveCourseType,
+    LiveCourseType = 0,
+    InteractionCourseType  = 1,
+    VideoCourseType = 2,
+    ExclusiveCourseType  = 3,
 };
 
 @interface TutoriumListInfo : NSObject
@@ -64,6 +65,7 @@ typedef NS_ENUM(NSUInteger, CourseType) {
 
 /* 在加载消息列表页时该属性才有用,其他接口用不到*/
 @property(nonatomic,assign) BOOL notify ;
+@property (nonatomic, assign) NIMTeamNotifyState notifyState ;
 
 /** 在课程列表混排的情况下 , 可能用到课程类型 */
 @property (nonatomic, assign) CourseType classType ;
