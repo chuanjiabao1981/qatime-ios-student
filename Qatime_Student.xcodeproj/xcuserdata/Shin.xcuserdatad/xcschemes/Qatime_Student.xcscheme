@@ -101,7 +101,12 @@
          <EnvironmentVariable
             key = "MallocStackLogging"
             value = "YES"
-            isEnabled = "YES">
+            isEnabled = "NO">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "OS_ACTIVITY_MODE"
+            value = "disable"
+            isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "NSZombieEnabled"

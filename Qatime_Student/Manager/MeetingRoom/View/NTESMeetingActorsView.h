@@ -18,6 +18,7 @@
 @property (nonatomic, strong) IJKFloatingView *selfCamera ;
 @property (nonatomic, assign) BOOL videoStart ;
 
+
 - (void)updateActors;
 
 -(void)stopLocalPreview;

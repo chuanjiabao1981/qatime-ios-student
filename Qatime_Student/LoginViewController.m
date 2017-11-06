@@ -194,21 +194,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 
 -(void)textDidChange:(id<UITextInput>)textInput{
     
-    /* 验证是否有中文字符*/
-    NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @".{0,}[\u4E00-\u9FA5].{0,}"];
-    if ([regextestmobile evaluateWithObject:_loginView.userName.text]==YES) {
-        
-        [_loginView.userName.text substringFromIndex:_loginView.userName.text.length];
-        
-        [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请勿输入中文!", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
-        
-    }
     
-    if ([regextestmobile evaluateWithObject:_loginView.passWord.text]==YES) {
-        
-        [_loginView.passWord.text substringFromIndex:_loginView.passWord.text.length];
-        [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请勿输入中文!", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
-    }
     
 }
 
@@ -501,7 +487,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 - (void)userLogin:(UIButton *)sender{
     
     /* 取消输入框响应*/
-
     [self cancelAllRespond];
     
     /* 如果用户名为空*/
@@ -514,6 +499,24 @@ typedef NS_ENUM(NSUInteger, LoginType) {
             
         }else{
             //没毛病,验证密码
+            /* 验证是否有中文字符*/
+            NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @".{0,}[\u4E00-\u9FA5].{0,}"];
+            if ([regextestmobile evaluateWithObject:_loginView.userName.text]==YES) {
+                
+                [_loginView.userName.text substringFromIndex:_loginView.userName.text.length];
+                
+                [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请勿输入中文!", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+                return;
+            }
+            
+            if ([regextestmobile evaluateWithObject:_loginView.passWord.text]==YES) {
+                
+                [_loginView.passWord.text substringFromIndex:_loginView.passWord.text.length];
+                [UIAlertController showAlertInViewController:self withTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请勿输入中文!", nil) cancelButtonTitle:NSLocalizedString(@"确定", nil) destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {}];
+                return;
+            }
+            
+            
             /* 如果密码为空*/
             if (_loginView.passWord.text) {
                 
@@ -556,9 +559,7 @@ typedef NS_ENUM(NSUInteger, LoginType) {
         [self HUDStopWithTitle:NSLocalizedString(@"账号不能为空!", nil)];
     
     }
-    
-    
-    
+
 }
 
 /**用户发起登录请求*/

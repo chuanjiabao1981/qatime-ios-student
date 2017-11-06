@@ -19,6 +19,7 @@
 #import "MJRefresh.h"
 #import "AppDelegate.h"
 #import "NSString+TimeStamp.h"
+#import "NetWorkTool.h"
 
 @interface InteractionNoticeViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
@@ -26,7 +27,6 @@
    __block NSMutableArray *_noticeArr;
     
     NSString *_classID;
-    
     
 }
 
@@ -56,6 +56,9 @@
     
     //加载视图
     [self setupMainView];
+    
+    //加载第一条公告消息
+    [self requestData];
     
     //公告信息从聊天群组里获得
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(newNotice:) name:@"NewNotice" object:nil];
@@ -111,45 +114,45 @@
 
 
 ///**请求公告数据*/
-//- (void)requestData{
-//    
-//    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/realtime",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-//        
-//        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-//        if ([dic[@"status"]isEqualToNumber:@1]) {
-//            //这就是有数据  没毛病
-//            
-//            NSArray *notices = [NSArray arrayWithArray:dic[@"data"][@"announcements"]];
-//            
-//            if (notices.count!=0) {
-//                //有公告
-//                for (NSDictionary *notice in notices) {
-//                    
-//                    InteractionNotice *mod = [InteractionNotice yy_modelWithJSON:notice];
-//                    [_noticeArr addObject:mod];
-//                    
-//                }
-//                
-//                [_noticeTableView cyl_reloadData];
-//                [_noticeTableView.mj_header endRefreshing];
-//                
-//            }else{
-//                //没公告
-//                [_noticeTableView cyl_reloadData];
-//                [_noticeTableView.mj_header endRefreshing];
-//            }
-//            
-//        }else{
-//            
-//            [_noticeTableView cyl_reloadData];
-//            [_noticeTableView.mj_header endRefreshing];
-//        }
-//        
-//    } failure:^(id  _Nullable erros) {
-//        
-//    }];
-//    
-//}
+- (void)requestData{
+    
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/realtime",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+        if ([dic[@"status"]isEqualToNumber:@1]) {
+            //这就是有数据  没毛病
+            
+            NSArray *notices = [NSArray arrayWithArray:dic[@"data"][@"announcements"]];
+            
+            if (notices.count!=0) {
+                //有公告
+                for (NSDictionary *notice in notices) {
+                    InteractionNotice *mod = [InteractionNotice yy_modelWithJSON:notice];
+                    if (mod.lastest) {
+                        [_noticeArr addObject:mod];
+                    }
+                }
+                
+                [_noticeTableView cyl_reloadData];
+                [_noticeTableView.mj_header endRefreshing];
+                
+            }else{
+                //没公告
+                [_noticeTableView cyl_reloadData];
+                [_noticeTableView.mj_header endRefreshing];
+            }
+            
+        }else{
+            
+            [_noticeTableView cyl_reloadData];
+            [_noticeTableView.mj_header endRefreshing];
+        }
+        
+    } failure:^(id  _Nullable erros) {
+        
+    }];
+    
+}
 
 #pragma mark- UITableView datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -207,8 +210,6 @@
         [_noticeTableView cyl_reloadData];
         
     }
-    
-    
 }
 
 

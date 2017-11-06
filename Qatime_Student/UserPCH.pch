@@ -20,16 +20,17 @@
 //http://testing.qatime.cn
 //https://qatime.cn
 
-//#define Request_Header @"http://testing.qatime.cn"
-#define Request_Header @"https://qatime.cn"
+
+#define Request_Header @"http://testing.qatime.cn"
+//#define Request_Header @"https://qatime.cn"
 //测试环境 @"http://testing.qatime.cn"
 //正式环境 @"https://qatime.cn"
 
 
 /* 测试和生产模式-推送证书名称*/
 
-//#define PushCerName @"PushDevelopment"
-#define PushCerName @"Push"
+#define PushCerName @"PushDevelopment"
+//#define PushCerName @"Push"
 //debug模式推送证书 @"PushDevelopment"
 //reliease模式推送证书 @"Push"
 
@@ -38,8 +39,8 @@
 //YunXinDebugAppKey=a4e8381f3955f062cda22fbd7a2c9125 
 //YunXinReleaseAppKey=4fe3a3fba0a40a00daf011049a29d995
 
-//#define IM_APPKEY @"a4e8381f3955f062cda22fbd7a2c9125"
-#define IM_APPKEY @"4fe3a3fba0a40a00daf011049a29d995"
+#define IM_APPKEY @"a4e8381f3955f062cda22fbd7a2c9125"
+//#define IM_APPKEY @"4fe3a3fba0a40a00daf011049a29d995"
 
 #define CHECKTIME 10
 
@@ -127,6 +128,21 @@
 #define iOS10 ([[UIDevice currentDevice].systemVersion doubleValue] >= 10.0)
 
 #define iOS11 ([[UIDevice currentDevice].systemVersion doubleValue] >= 11.0)
+
+//设备适配
+#define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define IS_RETINA ([[UIScreen mainScreen] scale] >= 2.0)
+
+#define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+#define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
+#define SCREEN_MAX_LENGTH (MAX(SCREEN_WIDTH, SCREEN_HEIGHT))
+#define SCREEN_MIN_LENGTH (MIN(SCREEN_WIDTH, SCREEN_HEIGHT))
+
+//适配宽度
+#define IS_IPHONE_5_SCREEN (IS_IPHONE && SCREEN_MAX_LENGTH == 568.0)
+#define IS_IPHONE_6_7_8_SCREEN (IS_IPHONE && SCREEN_MAX_LENGTH == 667.0)
+#define IS_IPHONE_6P_7P_8P_SCREEN (IS_IPHONE && SCREEN_MAX_LENGTH == 736.0)
 
 
 /* 全局引用文件*/

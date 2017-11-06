@@ -10,6 +10,9 @@
 
 @interface BuyBar : UIView
 
+
+@property (nonatomic, strong) UIButton *shareButton ;
+
 @property(nonatomic,strong) UIButton *listenButton ;
 
 @property(nonatomic,strong) UIButton *applyButton ;

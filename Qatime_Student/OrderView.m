@@ -305,7 +305,7 @@
         line4.sd_layout
         .leftEqualToView(self)
         .rightEqualToView(self)
-        .topSpaceToView(line3,self.height_sd*0.07)
+        .topSpaceToView(line3,0) //暂时封住优惠码功能
         .bottomEqualToView(self);
         
         UIView *promotionView = [[UIView alloc]init];
@@ -315,6 +315,7 @@
         .rightEqualToView(self)
         .topSpaceToView(line3,0)
         .bottomSpaceToView(line4,0);
+        promotionView.hidden = YES;
         
         /* 优惠码确定按钮*/
         _sureButton = [[UIButton alloc]init];

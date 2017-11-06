@@ -1543,9 +1543,12 @@
 - (void)tableViewScrollToBottom{
     if (self.chatModel.dataSource.count==0)
         return;
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatModel.dataSource.count-1 inSection:0];
-    [self.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatModel.dataSource.count-1 inSection:0];
+//    [self.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    if (self.chatTableView.contentSize.height > self.chatTableView.frame.size.height){
+        CGPoint offset = CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height);
+        [self.chatTableView setContentOffset:offset animated:YES];
+    }
 }
 
 #pragma mark- emoji表情键盘部分的方法
@@ -1651,7 +1654,6 @@
     
 }
 
-
 - (void)keyboardWillHide:(NSNotification *)notification {
     
     // 获取通知信息字典
@@ -1738,8 +1740,6 @@
     }else{
         voiceSwitch = @"使用听筒播放";
     }
-    
-    
     
     [UIAlertController showActionSheetInViewController:self withTitle:nil message:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[voiceSwitch] popoverPresentationControllerBlock:^(UIPopoverPresentationController * _Nonnull popover) {
         

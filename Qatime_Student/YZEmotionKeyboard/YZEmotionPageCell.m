@@ -29,9 +29,15 @@ static NSString * const ID = @"emojicell";
         // 计算间距
         CGFloat margin = (ScreenW - colsOfPage * emotionWH) / (colsOfPage + 1);
         layout.itemSize = CGSizeMake(emotionWH, emotionWH);
+        
         layout.minimumInteritemSpacing = margin;
-        layout.minimumLineSpacing = margin;
-        layout.sectionInset = UIEdgeInsetsMake(margin, margin, 0, margin);
+        if (IS_IPHONE_5_SCREEN||IS_IPHONE_6_7_8_SCREEN) {
+            layout.minimumLineSpacing = margin;
+            layout.sectionInset = UIEdgeInsetsMake(margin/2, margin/2, 0, margin/2);
+        }else if (IS_IPHONE_6P_7P_8P_SCREEN){
+            layout.minimumLineSpacing = margin*0.75;
+            layout.sectionInset = UIEdgeInsetsMake(margin*0.4, margin*0.4, 0, margin*0.4);
+        }
         
         UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:layout];
         collectionView.scrollEnabled  = NO;

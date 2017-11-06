@@ -357,37 +357,22 @@ typedef NS_ENUM(NSUInteger, ClassType) {
     
     switch (tableView.tag) {
         case 1:{
-            if (_unStartArr.count!=0) {
-                
-                return _unStartArr.count;
-            }
+            return _unStartArr.count;
         }
             break;
         case 2:{
-            if (_startedArr.count!=0) {
-                
-                return _startedArr.count;
-            }
-            
+            return _startedArr.count;
         }
             break;
         case 3:{
-            if (_endedArr.count!=0) {
-                
-                return _endedArr.count;
-            }
-            
+            return _endedArr.count;
         }
             break;
         case 4:{
-            if (_listenArr.count!=0) {
-                
-                return _listenArr.count;
-            }
             
+            return _listenArr.count;
         }
             break;
-            
     }
     
     return 1;
@@ -632,14 +617,11 @@ typedef NS_ENUM(NSUInteger, ClassType) {
     if (scrollView == _myClassView.scrollView) {
         CGFloat pageWidth = scrollView.frame.size.width;
         NSInteger page = scrollView.contentOffset.x / pageWidth;
-        
         [_myClassView.segmentControl setSelectedSegmentIndex:page animated:YES];
-        
     }
 }
 
 - (UIView *)makePlaceHolderView{
-    
     HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"当前无课程"];
     return view;
 }
@@ -647,7 +629,7 @@ typedef NS_ENUM(NSUInteger, ClassType) {
 
 - (BOOL)enableScrollWhenPlaceHolderViewShowing{
     
-    return NO;
+    return YES;
 }
 
 
@@ -655,6 +637,7 @@ typedef NS_ENUM(NSUInteger, ClassType) {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 /*
  #pragma mark - Navigation

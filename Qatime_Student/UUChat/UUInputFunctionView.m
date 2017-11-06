@@ -16,13 +16,16 @@
 #import <NIMSDK/NIMSDK.h>
 
 
-@interface UUInputFunctionView ()<YYTextViewDelegate,UITextViewDelegate,NIMMediaManagerDelegate,NSCopying,NSMutableCopying>
-
-{
+@interface UUInputFunctionView ()<YYTextViewDelegate,UITextViewDelegate,NIMMediaManagerDelegate,NSCopying,NSMutableCopying>{
+    
     BOOL isbeginVoiceRecord;
 //    Mp3Recorder *MP3;
-    NSInteger playTime;
+    CGFloat playTime;
     NSTimer *playTimer;
+    
+    ///辅助定时器///
+    CGFloat assistPlayTime;
+    NSTimer *assistPlayTimer;
     
     //    UILabel *placeHold;
 }
@@ -138,7 +141,6 @@
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeSenderButton) name:@"ChatNone" object:nil] ;
         
-        
         [[NIMSDK sharedSDK].mediaManager addDelegate:self];
         
     }
@@ -168,7 +170,6 @@
                 [self changeSendBtnWithPhoto:NO];
             }
 
-            
         }
     }else{
         
@@ -185,8 +186,6 @@
             [self.TextViewInput becomeFirstResponder];
             [self changeSendBtnWithPhoto:NO];
         }
-
-        
     }
     
 }
@@ -194,7 +193,16 @@
 //发送消息（文字图片）
 - (void)sendMessage:(UIButton *)sender{
     
+    if (_shutUp) {
+        [_TextViewInput becomeFirstResponder];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowShutUp" object:nil];
+        return;
+    }
+    
     if (self.isAbleToSendTextMessage) {
+        if ([_TextViewInput.text isEqualToString:@""]||_TextViewInput.text ==nil) {
+            return;
+        }
         NSLog(@"%@",[self.TextViewInput attributedText ]);
         NSString *resultStr = [self.TextViewInput.text stringByReplacingOccurrencesOfString:@"   " withString:@""];
         [self.delegate UUInputFunctionView:self sendMessage:resultStr];
@@ -204,28 +212,33 @@
         UIActionSheet *actionSheet= [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"来自相机",@"来自相册",nil];
         [actionSheet showInView:self.window];
     }
-    
 }
-
 
 
 
 #pragma mark- 所有的有关录音的方法
 
 - (void)beginRecordVoice:(UIButton *)button{
-    
+    if (_shutUp) {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"ShowShutUp" object:nil];
+        return;
+    }
     [[NIMSDK sharedSDK].mediaManager record:NIMAudioTypeAMR duration:60];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordStart" object:nil];
-    playTime = 0;
+    playTime = 0.0;
     playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
     [UUProgressHUD show];
+    
+    //同事启动辅助定时器.
+    assistPlayTime = 0.0;
+    assistPlayTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(assistCountVoiceTime) userInfo:nil repeats:YES];
+    
 }
 
-- (void)endRecordVoice:(UIButton *)button
-{
+- (void)endRecordVoice:(UIButton *)button{
+    
     if (playTimer) {
-        
-        if (playTime <1) {
+        if (playTime <1.0) {
             [self failRecord];
              [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordCancel" object:nil];
         }else{
@@ -241,12 +254,14 @@
                     [self layoutSubviews];
                 });
             });
-            
         }
         [playTimer invalidate];
         playTimer = nil;
+        
+        ///同时结束辅助定时器
+        [assistPlayTimer invalidate];
+        assistPlayTimer =nil;
     }
-    
 }
 
 - (void)cancelRecordVoice:(UIButton *)button
@@ -259,6 +274,12 @@
         playTimer = nil;
         
         [[NSNotificationCenter defaultCenter]postNotificationName:@"RecordCancel" object:nil];
+    }
+    
+    //取消辅助定时器
+    if (assistPlayTimer) {
+        [assistPlayTimer invalidate];
+        assistPlayTimer = nil;
     }
     
 }
@@ -276,14 +297,18 @@
 - (void)countVoiceTime
 {
     playTime ++;
-    
-    if (playTime>=60) {
+    if (playTime>=60.0) {
         [self endRecordVoice:nil];
     }
-    if (playTime<1) {
+    if (playTime<1.0) {
         [self failRecord];
     }
     
+}
+
+- (void)assistCountVoiceTime{
+    
+    assistPlayTime +=0.1;
 }
 
 
@@ -297,7 +322,7 @@
 /**  录制音频完成后的回调 **/
 - (void)recordAudio:(NSString *)filePath didCompletedWithError:(NSError *)error{
     
-    [self.recordDelegate UUInputFunctionView:self voicePath:filePath  time:playTime];
+    [self.recordDelegate UUInputFunctionView:self voicePath:filePath  time:(NSInteger)roundf(assistPlayTime)];//用辅助计时器的时间来发送语音消息,更准确,而且不用考虑UI和功能启停. 四舍五入.
     
     //音频消息发送方法
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -317,7 +342,6 @@
     NSLog(@"%f",currentTime);
     
 }
-
 
 -(void)playAudio:(NSString *)filePath didBeganWithError:(NSError *)error{
     
@@ -360,7 +384,6 @@
 - (void)changeSendBtnWithPhoto:(BOOL)isPhoto{
     
     if (_canNotSendImage == NO) {
-        
         self.isAbleToSendTextMessage = !isPhoto;
         [self.btnSendMessage setTitle:isPhoto?@"":@"发送" forState:UIControlStateNormal];
         self.btnSendMessage.frame = RECT_CHANGE_width(self.btnSendMessage, isPhoto?30:35);
@@ -406,7 +429,10 @@
         picker.allowsEditing = YES;
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         picker.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self.superVC presentViewController:picker animated:YES completion:^{}];
+        [self.superVC presentViewController:picker animated:YES completion:^{
+            
+            
+        }];
     }else{
         //如果没有提示用户
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Tip" message:@"Your device don't have camera" delegate:nil cancelButtonTitle:@"Sure" otherButtonTitles:nil];
@@ -435,7 +461,8 @@
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
-    [self.superVC dismissViewControllerAnimated:YES completion:nil];
+    [picker dismissViewControllerAnimated:YES completion:^{
+    }];
 }
 
 

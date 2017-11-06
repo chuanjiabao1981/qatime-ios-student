@@ -1478,6 +1478,9 @@ bool ismute     = NO;
 #pragma mark- 全屏状态下双击小视频窗口的点击事件
 - (void)switchVideoOnFullScreenMode:(UITapGestureRecognizer *)sender{
     
+    if (!isFullScreen) {
+        return;
+    }
     /* 条件1:白板是主屏*/
     if (_boardPlayerView.becomeMainPlayer == YES) {
         
@@ -1525,7 +1528,6 @@ bool ismute     = NO;
         
         [_boardPlayerView updateLayout];
         CGRect ovFrame = _boardPlayerView.frame;
-        
         
         /* 白板变成主视图*/
         [self makeFirstPlayer:_boardPlayerView];
@@ -1778,8 +1780,7 @@ bool ismute     = NO;
 //支持设备自动旋转
 
 //  是否支持自动转屏
-- (BOOL)shouldAutorotate
-{
+- (BOOL)shouldAutorotate{
     
     return YES;
 }
@@ -1864,10 +1865,12 @@ bool ismute     = NO;
 }
 
 
-
 //全屏播放视频后，播放器的适配和全屏旋转
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     [_aBarrage stop];
+    [_inputView resignFirstResponder];
+    //收起键盘
+     [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
     /* 切换到竖屏*/
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
         [self.scaleModeBtn setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
@@ -1952,7 +1955,12 @@ bool ismute     = NO;
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
     
     if (fromInterfaceOrientation == UIInterfaceOrientationPortrait) {
+        //从竖向转向别的方向
         [_aBarrage stop];
+        if (isFullScreen) {
+        }else{
+            isFullScreen = YES;
+        }
         if (_aBarrage.view.superview) {
             [_aBarrage.view removeFromSuperview];
         }
@@ -1974,6 +1982,13 @@ bool ismute     = NO;
             .topSpaceToView(_teacherPlayerView, 0)
             .heightRatioToView(_teacherPlayerView, 1/3.0);
             [_aBarrage.view updateLayout];
+        }
+    }else{
+        //从别的方向转到竖屏方向
+        if (isFullScreen==NO) {
+           
+        }else{
+            isFullScreen = NO;
         }
     }
     [_aBarrage start];
@@ -2043,10 +2058,12 @@ bool ismute     = NO;
 /* 控制层隐藏 带动画*/
 - (void)controlOverlayHide{
     
+    [_inputView resignFirstResponder];
+    //收起键盘
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
     [UIView animateWithDuration:0.3 animations:^{
         self.controlOverlay.alpha = 0;
         NSLog(@"控制栏隐藏了");
-        
     }];
     
     [self performSelector:@selector(hideControlOverlay) withObject:nil afterDelay:0.5];
@@ -2336,16 +2353,13 @@ bool ismute     = NO;
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlOverlayHide) object:nil];
         
         [UIView animateWithDuration:animationDuration animations:^{
-            
             self.view.frame = CGRectMake(0, -keyboardRect.size.height, self.view.width_sd, self.view.height_sd);
-            
         }];
         
     }else{
         
         [UIView animateWithDuration:animationDuration animations:^{
             
-//
         }];
     }
     
@@ -2506,6 +2520,7 @@ bool ismute     = NO;
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
     
     [self.view endEditing:YES];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"ScrollViewDidScroll" object:nil];
 }
 
 
@@ -2597,11 +2612,8 @@ bool ismute     = NO;
         //            }
         //        }
         
-        
         if ([dic[@"status"] isEqualToNumber:@1]) {
-            
             /* 获取数据成功,执行下一步操作*/
-            
             _statusDic = [NSDictionary dictionaryWithDictionary:dic[@"data"][@"live_info"]];
             
             //检查播放器播放状态
@@ -2663,7 +2675,6 @@ bool ismute     = NO;
                 [_teacherPlayerView makePlaceHolderImage:nil];
                 [_liveplayerTeacher shouldAutoplay];
                 [_liveplayerTeacher play];
-                
             }
         }else{
             [self setupTeacherPlayer];
@@ -2699,7 +2710,6 @@ bool ismute     = NO;
             [_liveplayerTeacher shutdown];
         }
         [_teacherPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_Playerholder"]];
-        
         
         _fileNameString = @"暂无直播";
         if ([_fileName.text isEqualToString:_fileNameString]) {
@@ -2973,13 +2983,24 @@ bool ismute     = NO;
 - (void)applicationBecomeActive{
     
     [self setupBoardPlayer];
+    [_boardPlayerView updateLayout];
     [_boardPlayerView makePlaceHolderImage:nil];
     [_liveplayerBoard shouldAutoplay];
     [_liveplayerBoard play];
     [self setupTeacherPlayer];
+    [_teacherPlayerView updateLayout];
     [_teacherPlayerView makePlaceHolderImage:nil];
     [_liveplayerTeacher shouldAutoplay];
     [_liveplayerTeacher play];
+    
+    if (_boardPlayerView.canMove) {
+        [self.view bringSubviewToFront:_boardPlayerView];
+    }
+    
+    if (_teacherPlayerView.canMove) {
+        [self.view bringSubviewToFront:_teacherPlayerView];
+    }
+    
     
     [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:CHECKTIME];
     

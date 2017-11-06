@@ -27,7 +27,11 @@
     }
     self.strName = dict[@"strName"];
     self.strId = dict[@"strId"];
-    self.strTime = [dict[@"strTime"]substringFromIndex:5];
+    if ([dict[@"strTime"] length]>5) {
+        self.strTime = [dict[@"strTime"]substringFromIndex:5];
+    }else{
+        self.strTime = dict[@"strTime"];
+    }
     self.from = [dict[@"from"] intValue];
     self.messageID = dict[@"messageID"];
     

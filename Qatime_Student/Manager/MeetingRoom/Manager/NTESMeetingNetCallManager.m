@@ -96,6 +96,9 @@
     if ([meeting.name isEqualToString:_meeting.name]) {
         [[NTESMeetingRolesManager defaultManager] updateMeetingUser:uid isJoined:YES];
     }
+    
+    //发个直播开始的通知
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"VideoStart" object:nil];
 }
 
 - (void)onUserLeft:(NSString *)uid
@@ -105,7 +108,11 @@
     
     if ([meeting.name isEqualToString:_meeting.name]) {
         [[NTESMeetingRolesManager defaultManager] updateMeetingUser:uid isJoined:NO];
+    }else{
     }
+    //发个结束直播的通知
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"VideoEnd" object:nil];
+    
 }
 
 - (void)onMeetingError:(NSError *)error

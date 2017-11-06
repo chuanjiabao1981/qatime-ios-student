@@ -31,10 +31,11 @@
 #import "AttachmentDecoder.h"
 #import "ChatViewController.h"
 #import "YYModel.h"
-
+#import <StoreKit/StoreKit.h>
+#import "UncaughtExceptionLogHandler.h"
 //#import <iflyMSC/iflyMSC.h>
 
-@interface AppDelegate ()<UNUserNotificationCenterDelegate,NIMSystemNotificationManager,NIMLoginManagerDelegate>{
+@interface AppDelegate ()<UNUserNotificationCenterDelegate,NIMSystemNotificationManager,NIMLoginManagerDelegate,NIMConversationManagerDelegate>{
     
     /* 推送的设置*/
     BOOL push_AlertON;
@@ -169,6 +170,10 @@
     /* 键盘管理器*/
 //    [[IQKeyboardManager sharedManager]setEnable:YES];
     
+    // Attach an observer to the payment queue
+    [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+    
+    
     /* 注册微信API*/
     [WXApi registerApp:@"wxf2dfbeb5f641ce40"];
     
@@ -201,6 +206,9 @@
     
     /* 程序运行时,开启捕获异常,在程序出现不可避免的崩溃和闪退的时候,弹窗提醒而不闪退*/
     [UncaughtExceptionHandler installUncaughtExceptionHandler:YES showAlert:YES];
+    
+#pragma mark -- 崩溃日志存取
+    [UncaughtExceptionLogHandler setDefaultHandler];
     
     /* 动态检测网络状态*/
     GLobalRealReachability.hostForPing = Request_Header;
@@ -883,6 +891,25 @@
                 [[[NIMSDK sharedSDK]loginManager]autoLogin:lodata];
                 [NIMCustomObject registerCustomDecoder:[[AttachmentDecoder alloc]init]];
                 
+                
+                //不能就这么完了.
+                //同步所有聊天数据
+                [[NIMSDK sharedSDK].conversationManager addDelegate:self];
+                
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    NSArray <NIMRecentSession *>*sessions = [NIMSDK sharedSDK].conversationManager.allRecentSessions ;
+                    NIMHistoryMessageSearchOption *option = [[NIMHistoryMessageSearchOption alloc]init];
+                    option.limit = 100;
+                    option.sync = YES;
+                    for (NIMRecentSession *session in sessions) {
+                        if (session.unreadCount>0) {
+                            [[NIMSDK sharedSDK].conversationManager fetchMessageHistory:session.session option:option result:^(NSError * _Nullable error, NSArray<NIMMessage *> * _Nullable messages) {
+                                
+                            }];
+                        }
+                    }
+                });
+                
             }
 
         }
@@ -965,7 +992,6 @@
         }else if (resp.errCode == -2){
             /* 取消登录*/
             
-            
         }
         
         SendAuthResp *respData = (SendAuthResp *)resp;
@@ -988,9 +1014,20 @@
             
         }else if (resp.errCode == -2){
             /* 取消充值*/
-            
         }
-        
+    }
+    
+    //如果是分享成功的话
+    if ([resp isKindOfClass:[SendMessageToWXResp class]]) {
+        if (resp.errCode  == 0) {
+            //分享成功
+        }else if (resp.errCode == -1){
+            //分享失败
+        }else if (resp.errCode == -2){
+            //取消分享
+        }
+        //发个消息,接收者自己判断分享是成功还是失败
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"SharedFinish" object:resp];
     }
     
     NSLog(@"%@,%d,%d",resp.errStr,resp.errCode,resp.type);
@@ -1143,6 +1180,9 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
+    // Remove the observer
+    [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
 }
 
 

@@ -44,12 +44,11 @@
 #import "KSPhotoBrowser.h"
 #import "NSNull+Json.h"
 #import "TutoriumList.h"
+#import "NetWorkTool.h"
+#import "NSDate+Utils.h"
 
 @interface LivePlayerChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate,PhotoBrowserDelegate,NIMTeamManagerDelegate,UUInputFunctionViewRecordDelegate>{
-   
-    NSString *_token;
-    NSString *_idNumber;
-    
+
     /* 聊天室的信息*/
     //    TutoriumListInfo *_tutoriumInfo;
     
@@ -129,14 +128,12 @@
     [[NIMSDK sharedSDK].teamManager addDelegate:self];
     
     NSLog(@"聊天未读消息%ld条",[[[NIMSDK sharedSDK]conversationManager] allUnreadCount]);
-    
+    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"CanSendVoice"];
     //基础数据加载完毕,开始加载视图
     [self setupMainView];
     
-    
     /* 获取一次所有成员信息*/
     [self requestChatTeamUser];
-    
     
     /* 聊天信息 加个点击手势,取消输入框响应*/
     UITapGestureRecognizer *tapSpace = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapSpace)];
@@ -151,16 +148,9 @@
     /* 添加录音是否取消的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordCancel) name:@"RecordCancel" object:nil];
     
-    [self registerForKeyboardNotifications];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(endEdit) name:@"ScrollViewDidScroll" object:nil];
     
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
+    [self registerForKeyboardNotifications];
     
     
     if (_session) {
@@ -334,7 +324,7 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/realtime",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -429,7 +419,6 @@
          按理说,加载历史消息也应该判断用户account或者session.
          */
         if (![message.session.sessionId isEqualToString:_session.sessionId]) {
-            
             
         }else{
             
@@ -600,7 +589,6 @@
                         
                         NIMImageObject *imageObject = message.messageObject;
                         
-                        
                         __block UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",imageObject.thumbPath]];
                         //如果没有这个文件的话,直接调用网络url
                         if (image == nil) {
@@ -612,8 +600,7 @@
                                 if (image == nil) {
                                     NSData * data = [[NSData alloc]initWithContentsOfURL:[NSURL URLWithString:imageObject.thumbUrl]];
                                     image = [[UIImage alloc]initWithData:data];
-                                    
-                                    
+                                     
                                 }
                             }
                         }
@@ -990,6 +977,7 @@
             
             //在这儿弄一下子 这个 富文本
             NSString *notice =[NSString stringWithFormat:@"%@更新了公告\n公告:%@",sender,messageText==nil?@"":messageText];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"NewChatNotice" object:nil];
             
             [self.chatModel addSpecifiedNotificationItem:notice];
             
@@ -1150,10 +1138,7 @@
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
     
-    
 }
-
-
 
 
 /* 接收到消息后 ，在本地创建消息*/
@@ -1167,7 +1152,7 @@
 - (void)onTeamUpdated:(NIMTeam *)team{
     
     //公告就直接从聊天获取
-    //    [[NSNotificationCenter defaultCenter]postNotificationName:@"NewNotice" object:@{@"notice":team.announcement,@"time":[NSString stringWithFormat:@"%f",[[team valueForKeyPath:@"time"] floatValue] ]}];
+//        [[NSNotificationCenter defaultCenter]postNotificationName:@"NewNotice" object:@{@"notice":team.announcement,@"time":[NSString stringWithFormat:@"%f",[[team valueForKeyPath:@"time"] floatValue] ]}];
     
 }
 
@@ -1379,7 +1364,7 @@
                     dic = @{@"strContent": [funcView.TextViewInput.attributedText getPlainString],
                             @"type": @(UUMessageTypeText),
                             @"frome":@(UUMessageFromMe),
-                            @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
+                            @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]stringYearMonthDayHourMinuteSecond]],
                             @"isRichText":@YES,
                             @"richNum":[NSString stringWithFormat:@"%ld",resultArray.count],
                             @"messageID":text_message.messageId};
@@ -1392,7 +1377,7 @@
                 dic = @{@"strContent": [funcView.TextViewInput.attributedText getPlainString],
                         @"type": @(UUMessageTypeText),
                         @"frome":@(UUMessageFromMe),
-                        @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
+                        @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]stringYearMonthDayHourMinuteSecond]],
                         @"isRichText":@NO,
                         @"richNum":@"0",
                         @"messageID":text_message.messageId};
@@ -1443,8 +1428,7 @@
         NSDictionary *dic = @{@"picture": image,
                               @"type": @(UUMessageTypePicture),
                               @"frome":@(UUMessageFromMe),
-                              @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
-                              @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
+                              @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]stringYearMonthDayHourMinuteSecond]],
                               @"messageID":message.messageId};
         
         
@@ -1474,6 +1458,7 @@
         //创建一条本地消息
         NSDictionary *dic = @{@"voicePath" :path,
                               @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)second],
+                               @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]stringYearMonthDayHourMinuteSecond]],
                               @"type": @(UUMessageTypeVoice),
                               @"messageID":message.messageId};
         
@@ -1523,7 +1508,15 @@
         return;
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatModel.dataSource.count-1 inSection:0];
+    
     [self.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    
+//    [self.chatTableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    
+//    if (self.chatTableView.contentSize.height > self.chatTableView.frame.size.height){
+//        CGPoint offset = CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height);
+//        [self.chatTableView setContentOffset:offset animated:YES];
+//    }
 }
 
 #pragma mark- emoji表情键盘部分的方法
@@ -1560,6 +1553,7 @@
             //弹出表情键盘,如果是在录音状态,那就改成文本输入状态
             _inputView.TextViewInput.yz_emotionKeyboard = self.emotionKeyboard;
             [sender setBackgroundImage:[UIImage imageNamed:@"toolbar-text"] forState:UIControlStateNormal];
+            [_inputView.TextViewInput becomeFirstResponder];
         } else {
             //收回表情键盘,如果是在输入状态,那就改成文本输入状态
             _inputView.TextViewInput.inputView = nil;
@@ -1671,6 +1665,9 @@
 
 - (void)tapSpace{
     [_inputView.TextViewInput resignFirstResponder];
+    if (![_inputView.TextViewInput.text isEqualToString:@""]) {
+        return;
+    }
     [_inputView changeSendBtnWithPhoto:YES];
     
 }
@@ -1749,14 +1746,16 @@
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     
+    [_inputView resignFirstResponder];
+    //收起键盘
+     [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
     [self.view updateLayout];
     
 }
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
-    
     [self.view updateLayout];
-    
+//    [_chatTableView layoutIfNeeded];
     _inputView.hidden = NO;
     [_inputView sd_clearAutoLayoutSettings];
     _inputView.sd_layout
@@ -1765,7 +1764,8 @@
     .rightSpaceToView(self.view, 0)
     .heightIs(50);
     [_inputView updateLayout];
-    
+    [_chatTableView cyl_reloadData];
+    [_chatTableView setNeedsDisplay];
 }
 
 
@@ -1778,6 +1778,25 @@
     KSPhotoBrowser *browser = [KSPhotoBrowser browserWithPhotoItems:items selectedIndex:0];
     [browser showFromViewController:self];
     
+}
+
+- (void)endEdit{
+    [self.view endEditing:YES];
+    [_inputView .TextViewInput resignFirstResponder];
+    if (![_inputView.TextViewInput.text isEqualToString:@""]) {
+        return;
+    }
+    [_inputView changeSendBtnWithPhoto:YES];
+}
+
+
+- (UIView *)makePlaceHolderView{
+    HaveNoClassView *view = [[HaveNoClassView alloc]initWithTitle:@"暂无聊天"];
+    return view;
+}
+
+- (BOOL)enableScrollWhenPlaceHolderViewShowing{
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning {

@@ -24,6 +24,7 @@
 //"avatar_url": "http://qatime-testing.oss-cn-beijing.aliyuncs.com/avatars/c149f03ba8dd4c3391b1815a4caac685.jpg",
 //"school": "西南舁联校",
 
+@property (nonatomic, strong) NSString *teacherID ;
 @property(nonatomic,strong) NSString *name ;
 @property(nonatomic,strong) NSString *desc ;
 @property(nonatomic,strong) NSString *teaching_years ;

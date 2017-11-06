@@ -51,7 +51,7 @@
             _.alwaysBounceHorizontal = NO;
             _.showsVerticalScrollIndicator = NO;
             _.showsHorizontalScrollIndicator = NO;
-            _.scrollEnabled = YES;
+            _.scrollEnabled = NO;
             [self addSubview:_];
             _;
         });

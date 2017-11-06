@@ -18,5 +18,7 @@
 @property(nonatomic,strong) NSString *name ;
 @property(nonatomic,strong) NSString *icon ;
 
+@property (nonatomic, assign) BOOL isOwner ;
+
 
 @end

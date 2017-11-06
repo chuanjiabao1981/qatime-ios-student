@@ -104,6 +104,7 @@
         
         typeof(self) __weak weakSelf = self;
         _segmentControl.indexChangeBlock = ^(NSInteger index) {
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"ScrollViewDidScroll" object:nil];
             [weakSelf.scrollView scrollRectToVisible:CGRectMake(weakSelf.scrollView.width_sd*index, 0, weakSelf.scrollView.width_sd, weakSelf.scrollView.height_sd) animated:YES];
         };
     }

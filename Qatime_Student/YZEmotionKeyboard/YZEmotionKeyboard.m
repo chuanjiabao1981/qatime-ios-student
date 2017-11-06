@@ -174,10 +174,10 @@ static NSString * const ID = @"emotion";
 - (void)setupCollectionView
 {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal||UICollectionViewScrollDirectionVertical;
     layout.itemSize = CGSizeMake(ScreenW, self.collectionView.bounds.size.height);
     layout.minimumLineSpacing = 0;
-    layout.minimumInteritemSpacing = 0;
+    layout.minimumInteritemSpacing = 10;
     self.collectionView.collectionViewLayout = layout;
     
     [self.collectionView registerClass:[YZEmotionPageCell class] forCellWithReuseIdentifier:ID];
@@ -194,6 +194,7 @@ static NSString * const ID = @"emotion";
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
+    
 }
 
 // 返回每组多少行
@@ -210,6 +211,16 @@ static NSString * const ID = @"emotion";
     cell.emotions = [YZEmotionManager emotionsOfPage:indexPath.row];
     
     return cell;
+}
+
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
+
+    return 0*ScrenScale;
+}
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
+
+    return 10*ScrenScale;
 }
 
 

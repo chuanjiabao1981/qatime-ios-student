@@ -395,6 +395,7 @@
     _classCount.text =[NSString stringWithFormat:@"共%@课", model.lesson_count];
     
     //课程标签 赋值
+    [_classTagsView removeAllTags];
     if (model.tag_list.count==0) {
         _config.tagBorderColor = [UIColor clearColor];
         [_classTagsView addTag:@"无" withConfig:_config];

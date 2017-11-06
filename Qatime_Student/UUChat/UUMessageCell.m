@@ -117,7 +117,6 @@
                 
             }else if([[[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]isEqualToString:@"earphone"]){
                 
-                
                 [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];  //可以关闭掉红外感应
                 [[NSNotificationCenter defaultCenter]removeObserver:self name:UIDeviceProximityStateDidChangeNotification object:nil];
                 
@@ -147,13 +146,11 @@
         self.title.userInteractionEnabled = YES;
         [self.title addGestureRecognizer:tap];
         
-        
         /* 5.真正的时间label*/
         _timeLabel = [[UILabel alloc]init];
         _timeLabel.textColor = [UIColor lightGrayColor];
         _timeLabel.font =ChatTimeFont;
         [self.contentView addSubview:_timeLabel];
-        
         
         /* 发送失败标示图*/
         _sendfaild = [[UIButton alloc]init];
@@ -161,7 +158,6 @@
         [self.contentView addSubview:_sendfaild];
         [_sendfaild setEnlargeEdge:20]; //扩大点击区域
         _sendfaild.hidden = YES;
-        
         
         //系统消息背景图
         _noticeContentView = [[UIView alloc]init];
@@ -233,13 +229,21 @@
         UIImageView * btnImageView;
         if (self.messageFrame.message.from == UUMessageFromMe) {
             /* 自己发送的消息*/
-            if (self.messageFrame.message.thumbPath) {
-                image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]];
+            
+            
+            if (self.messageFrame.message.imagePath) {
+                image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.imagePath]];
                 btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
             }else{
-                image = self.btnContent.backImageView.image;
-                btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
-                btnImageView.image = image;
+                if (self.messageFrame.message.thumbPath) {
+                    image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]];
+                    btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
+                }else{
+                    image = self.btnContent.backImageView.image;
+                    btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
+                    btnImageView.image = image;
+                }
+
             }
             [_photoDelegate showImage:btnImageView andImage:image];
             
@@ -378,10 +382,9 @@
         headImageBackView.hidden = NO;
         self.noticeTipsContentView.hidden = YES;
         // 1、设置时间
-        
         NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
         [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
-        [formatter setDateFormat:@"MM-dd HH:mm:ss Z"];
+        [formatter setDateFormat:@"MM-dd HH:mm:ss zzz"];
         NSDate *date = [formatter dateFromString:messageFrame.message.strTime];
         NSString *times = [date changeUTC];
         NSLog(@"%@",times);
@@ -400,6 +403,7 @@
         headImageBackView.frame = messageFrame.iconF;
         self.btnHeadImage.frame = CGRectMake(0, 0, ChatIconWH, ChatIconWH);
         [self.btnHeadImage setBackgroundImageForState:UIControlStateNormal withURL:[NSURL URLWithString:messageFrame.message.strIcon] placeholderImage:[UIImage imageNamed:@"headImage"]];
+//        [self.btnHeadImage setImageForState:UIControlStateNormal withURL:[NSURL URLWithString:messageFrame.message.strIcon] placeholderImage:[UIImage imageNamed:@"headImage"]];
         
         // 3、发送人姓名
         if (messageFrame.message.strName == nil) {
@@ -520,22 +524,22 @@
             
             [_timeLabel updateLayout];
             
-            if (messageFrame.message.type != UUMessageTypeVoice) {
-                
+//            if (messageFrame.message.type != UUMessageTypeVoice) {
+            
                 NSLog(@"文本%@",messageFrame.message.strTime);
                 _timeLabel.text = messageFrame.message.strTime ;
                 
-            }else {
-                NSLog(@"非文本消息时间:%@",messageFrame.message.strTime);
-                NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-                [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
-                [formatter setDateFormat:@"MM-dd HH:mm:ss Z"];
-                NSDate *date = [formatter dateFromString:messageFrame.message.strTime];
-                NSString *times = [date changeUTC];
-                NSLog(@"%@",times);
-                _timeLabel.text = [times substringFromIndex:5];
-            }
-            
+//            }else {
+//                NSLog(@"非文本消息时间:%@",messageFrame.message.strTime);
+//                NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+//                [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+//                [formatter setDateFormat:@"MM-dd HH:mm:ss Z"];
+//                NSDate *date = [formatter dateFromString:messageFrame.message.strTime];
+//                NSString *times = [date changeUTC];
+//                NSLog(@"%@",times);
+//                _timeLabel.text = [times substringFromIndex:5];
+//            }
+//
         }else if(messageFrame.message.from == UUMessageFromOther){
             [_timeLabel sd_clearAutoLayoutSettings];
             _timeLabel.sd_layout
@@ -545,20 +549,20 @@
             [_timeLabel setSingleLineAutoResizeWithMaxWidth:200];
             [_timeLabel updateLayout];
             
-            if (messageFrame.message.type != UUMessageTypeVoice) {
+//            if (messageFrame.message.type != UUMessageTypeVoice) {
                 NSLog(@"文本%@",messageFrame.message.strTime);
                 _timeLabel.text = messageFrame.message.strTime ;
                 
-            }else {
-                NSLog(@"非文本消息时间:%@",messageFrame.message.strTime);
-                NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-                [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
-                [formatter setDateFormat:@"MM-dd HH:mm:ss Z"];
-                NSDate *date = [formatter dateFromString:messageFrame.message.strTime];
-                NSString *times = [date changeUTC];
-                NSLog(@"%@",times);
-                _timeLabel.text = [times substringFromIndex:5];
-            }
+//            }else {
+//                NSLog(@"非文本消息时间:%@",messageFrame.message.strTime);
+//                NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+//                [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+//                [formatter setDateFormat:@"MM-dd HH:mm:ss Z"];
+//                NSDate *date = [formatter dateFromString:messageFrame.message.strTime];
+//                NSString *times = [date changeUTC];
+//                NSLog(@"%@",times);
+//                _timeLabel.text = [times substringFromIndex:5];
+//            }
         }
         
         /* 发送失败提示*///单独写出来这部分

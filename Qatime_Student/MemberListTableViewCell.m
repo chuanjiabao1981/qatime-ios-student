@@ -62,8 +62,6 @@
     [_memberIcon sd_setImageWithURL:[NSURL URLWithString:model.icon]];
     _name.text = model.name;
     
-    
-    
 }
 
 

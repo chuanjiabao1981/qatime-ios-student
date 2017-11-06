@@ -33,6 +33,9 @@
 #import "ExclusiveCoursewareViewController.h"
 #import "ExclusiveMembersViewController.h"
 #import "ClassMembersViewController.h"
+#import "SnailQuickMaskPopups.h"
+#import "ShareViewController.h"
+#import "WXApiObject.h"
 
 @interface ExclusiveInfoViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDataSource,UITableViewDelegate>{
     
@@ -50,6 +53,13 @@
     
     NSArray *_newWorkFlowArr;
     
+    CGFloat _buttonWidth;
+    
+    ExclusiveInfo *_model;
+    
+    ShareViewController *_share;
+    SnailQuickMaskPopups *_pops;
+    
 }
 
 
@@ -66,6 +76,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _buttonWidth = self.view.width_sd/4-15*ScrenScale;
     
     //导航栏右侧按钮
     [self setupNavigationButton];
@@ -133,6 +145,8 @@
     
     [self.tutoriumInfoView.view1 setupAutoContentSizeWithBottomView:replayLabel bottomMargin:20];
     
+    //微信分享功能的回调通知
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sharedFinish:) name:@"SharedFinish" object:nil];
 }
 
 /**
@@ -276,22 +290,21 @@
             
             _dataDic = dic[@"data"][@"customized_group"];
             
-            ExclusiveInfo *model = [ExclusiveInfo yy_modelWithJSON:dic[@"data"][@"customized_group"]];
-            model.classID = dic[@"data"][@"customized_group"][@"id"];
-            model.descriptions = dic[@"data"][@"customized_group"][@"description"];
+            _model = [ExclusiveInfo yy_modelWithJSON:dic[@"data"][@"customized_group"]];
+            _model.classID = dic[@"data"][@"customized_group"][@"id"];
+            _model.descriptions = dic[@"data"][@"customized_group"][@"description"];
             
             self.classID = dic[@"data"][@"customized_group"][@"id"];
             
-            self.tutoriumInfoView.exclusiveModel = model;
+            self.tutoriumInfoView.exclusiveModel = _model;
 //            self.tutoriumInfoView.classFeature.hidden = YES;
-            self.navigationBar.titleLabel.text = model.name;
-            if ([model.status isEqualToString:@"finished"]||[model.status isEqualToString:@"billing"]||[model.status isEqualToString:@"completed"]){
+            self.navigationBar.titleLabel.text = _model.name;
+            if ([_model.status isEqualToString:@"finished"]||[_model.status isEqualToString:@"billing"]||[_model.status isEqualToString:@"completed"]){
                 //如果课程已结束,buybar不显示.什么都不显示了
                 if (self.buyBar) {
                     self.buyBar.hidden = YES;
                     self.tutoriumInfoView.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height);
                 }
-                
             }
             
             //线上课
@@ -383,12 +396,12 @@
                             /* 已经购买的情况下*/
                             self.buyBar.applyButton.hidden = YES;
                             self.buyBar.listenButton.hidden = NO;
-                            [self.buyBar.listenButton sd_clearAutoLayoutSettings];
+//                            [self.buyBar.listenButton sd_clearAutoLayoutSettings];
                             self.buyBar.listenButton.sd_resetLayout
-                            .leftSpaceToView(self.buyBar,10)
-                            .topSpaceToView(self.buyBar,10)
-                            .bottomSpaceToView(self.buyBar,10)
-                            .rightSpaceToView(self.buyBar,10);
+                            .topSpaceToView(self.buyBar,10*ScrenScale)
+                            .bottomSpaceToView(self.buyBar,10*ScrenScale)
+                            .rightSpaceToView(self.buyBar,10*ScrenScale)
+                            .widthIs(_buttonWidth);
                             [self.buyBar.listenButton updateLayout];
                             [self.buyBar.listenButton setTitle:@"开始学习" forState:UIControlStateNormal];
                             self.buyBar.listenButton.backgroundColor = NAVIGATIONRED;
@@ -448,10 +461,10 @@
                     self.buyBar.listenButton.hidden = YES;
                     [self.buyBar.applyButton removeAllTargets];
                     self.buyBar.applyButton.sd_resetLayout
-                    .leftSpaceToView(self.buyBar, 10)
-                    .rightSpaceToView(self.buyBar, 10)
-                    .topSpaceToView(self.buyBar, 10)
-                    .bottomSpaceToView(self.buyBar, 10);
+                    .topSpaceToView(self.buyBar,10*ScrenScale)
+                    .bottomSpaceToView(self.buyBar,10*ScrenScale)
+                    .rightSpaceToView(self.buyBar,10*ScrenScale)
+                    .widthIs(_buttonWidth);
                     [self.buyBar.applyButton updateLayout];
                     [self.buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
                 }
@@ -483,10 +496,10 @@
                         self.buyBar.listenButton.hidden = NO;
                         [self.buyBar.listenButton removeAllTargets];
                         self.buyBar.listenButton.sd_resetLayout
-                        .leftSpaceToView(self.buyBar,10)
-                        .topSpaceToView(self.buyBar,10)
-                        .bottomSpaceToView(self.buyBar,10)
-                        .rightSpaceToView(self.buyBar,10);
+                        .topSpaceToView(self.buyBar,10*ScrenScale)
+                        .bottomSpaceToView(self.buyBar,10*ScrenScale)
+                        .rightSpaceToView(self.buyBar,10*ScrenScale)
+                        .widthIs(_buttonWidth);
                         [self.buyBar.listenButton updateLayout];
                         [self.buyBar.listenButton setTitle:@"开始学习" forState:UIControlStateNormal];
                         self.buyBar.listenButton.backgroundColor = NAVIGATIONRED;
@@ -516,10 +529,11 @@
                         self.buyBar.hidden = NO;
                         self.buyBar.listenButton.hidden = YES;
                         self.buyBar.applyButton.sd_resetLayout
-                        .leftSpaceToView(self.buyBar, 10)
-                        .rightSpaceToView(self.buyBar, 10)
-                        .topSpaceToView(self.buyBar, 10)
-                        .bottomSpaceToView(self.buyBar, 10);
+                        .topSpaceToView(self.buyBar,10*ScrenScale)
+                        .bottomSpaceToView(self.buyBar,10*ScrenScale)
+                        .rightSpaceToView(self.buyBar,10*ScrenScale)
+                        .widthIs(_buttonWidth);
+                        [self.buyBar.applyButton updateLayout];
                         [self.buyBar.applyButton removeAllTargets];
                         [self.buyBar.applyButton addTarget:self action:@selector(addFreeClass) forControlEvents:UIControlEventTouchUpInside];
                     }
@@ -537,19 +551,20 @@
                     [self.buyBar.listenButton setBackgroundColor:TITLECOLOR];
                     [self.buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                     self.buyBar.listenButton.sd_resetLayout
-                    .leftSpaceToView(self.buyBar, 10)
-                    .rightSpaceToView(self.buyBar, 10)
-                    .topSpaceToView(self.buyBar, 10)
-                    .bottomSpaceToView(self.buyBar, 10);
+                    .topSpaceToView(self.buyBar,10*ScrenScale)
+                    .bottomSpaceToView(self.buyBar,10*ScrenScale)
+                    .rightSpaceToView(self.buyBar,10*ScrenScale)
+                    .widthIs(_buttonWidth);
                     [self.buyBar.listenButton updateLayout];
                 }else{
                     self.buyBar.hidden = NO;
                     self.buyBar.listenButton.hidden = YES;
                     self.buyBar.applyButton.sd_resetLayout
-                    .leftSpaceToView(self.buyBar, 10)
-                    .rightSpaceToView(self.buyBar, 10)
-                    .topSpaceToView(self.buyBar, 10)
-                    .bottomSpaceToView(self.buyBar, 10);
+                    .topSpaceToView(self.buyBar,10*ScrenScale)
+                    .bottomSpaceToView(self.buyBar,10*ScrenScale)
+                    .rightSpaceToView(self.buyBar,10*ScrenScale)
+                    .widthIs(_buttonWidth);
+                    [self.buyBar.applyButton updateLayout];
                     [self.buyBar.applyButton removeAllTargets];
                     [self.buyBar.applyButton addTarget:self action:@selector(addFreeClass) forControlEvents:UIControlEventTouchUpInside];
                 }
@@ -558,10 +573,11 @@
     }else{
         self.buyBar.hidden = NO;
         self.buyBar.listenButton.sd_layout
-        .leftSpaceToView(self.buyBar, 10)
-        .rightSpaceToView(self.buyBar, 10)
-        .topSpaceToView(self.buyBar, 10)
-        .bottomSpaceToView(self.buyBar, 10);
+        .topSpaceToView(self.buyBar,10*ScrenScale)
+        .bottomSpaceToView(self.buyBar,10*ScrenScale)
+        .rightSpaceToView(self.buyBar,10*ScrenScale)
+        .widthIs(_buttonWidth);
+        [self.buyBar.listenButton updateLayout];
         [self.buyBar.listenButton setBackgroundColor:TITLECOLOR];
         [self.buyBar.listenButton removeAllTargets];
         [self.buyBar.listenButton setTitle:@"已报满" forState:UIControlStateNormal];
@@ -686,13 +702,9 @@
                         
                     }else{
                        [cell switchStatus:cell.exclusiveModel];
-                        
                     }
-                    
                 }
-                
             }
-            
             tableCell = cell;
         }else{
             /* cell的重用队列*/
@@ -845,9 +857,6 @@
 }
 
 
-
-
-
 #pragma mark- UICollectionView datasource
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
   
@@ -917,6 +926,41 @@
  */
 - (void)addFreeClass{
     
+}
+
+
+/** 分享功能 */
+- (void)share{
+    _share = [[ShareViewController alloc]init];
+    _share.view.frame = CGRectMake(0, 0, self.view.width_sd, TabBar_Height*1.5);
+    _pops = [SnailQuickMaskPopups popupsWithMaskStyle:MaskStyleBlackTranslucent aView:_share.view];
+    _pops.presentationStyle = PresentationStyleBottom;
+    [_pops presentWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {}];
+    [_share.sharedView.wechatBtn addTarget:self action:@selector(wechatShare:) forControlEvents:UIControlEventTouchUpInside];
+}
+- (void)wechatShare:(UIButton *)sender{
+    //在这儿传个参数.
+    [_share sharedWithContentDic:@{
+                                   @"type":@"link",
+                                   @"content":@{
+                                           @"title":_model.name,
+                                           @"description":@"专属课程",
+                                           @"link":[NSString stringWithFormat:@"%@/live_studio/customized_groups/%@",Request_Header,self.classID]
+                                           }
+                                   }];
+    [_pops dismissWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
+    }];
+}
+
+- (void)sharedFinish:(NSNotification *)notification{
+    SendMessageToWXResp *resp = [notification object];
+    if (resp.errCode == 0) {
+        [self HUDStopWithTitle:@"分享成功"];
+    }else if (resp.errCode == -1){
+        [self HUDStopWithTitle:@"分享失败"];
+    }else if (resp.errCode == -2){
+        [self HUDStopWithTitle:@"取消分享"];
+    }
 }
 
 

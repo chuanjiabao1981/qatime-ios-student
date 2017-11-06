@@ -84,19 +84,17 @@
     _lessonName.text = model.name;
     _date.text = [NSString stringWithFormat:@"%@ %@ - %@ | 老师:%@",model.class_date,model.start_time,model.end_time,model.teacher.name];
     _status.text = [NSString statusSwitchWithStatus:model.status];
-    if ([[NSString statusSwitchWithStatus:model.status] isEqualToString:@"已结束"]) {
-        if (@"replayable") {
-            _status.textColor = BUTTONRED;
-            _status.text = @"观看回放";
-        }else{
-            _status.textColor = TITLECOLOR;
-        }
-        
-        
-    }else{
+    //暂时不做一对一回放功能.
+//    if ([[NSString statusSwitchWithStatus:model.status] isEqualToString:@"已结束"]) {
+//        if (@"replayable") {
+//            _status.textColor = BUTTONRED;
+//            _status.text = @"观看回放";
+//        }else{
+//            _status.textColor = TITLECOLOR;
+//        }
+//    }else{
         self.status.textColor = [UIColor blackColor];
-    }
-    
+//    }
 }
 
 

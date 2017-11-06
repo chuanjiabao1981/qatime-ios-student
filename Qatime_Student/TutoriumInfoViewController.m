@@ -36,14 +36,19 @@
 #import "WorkFlowTableViewCell.h"
 #import "ClassTimeViewController.h"
 
+#import "UIViewController+Token.h"
+#import "SnailQuickMaskPopups.h"
+#import "ShareViewController.h"
 
 @interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,TTGTextTagCollectionViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>{
-    
-    NSString  *_token;
-    NSString *_idNumber;
-    
+
     /* 保存本页面数据*/
     NSMutableDictionary *_dataDic;
+    
+    CGFloat _buttonWidth;
+    
+    ShareViewController *_share;
+    SnailQuickMaskPopups *_pops;
 
 }
 
@@ -84,6 +89,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    _buttonWidth = self.view.width_sd/4-15*ScrenScale;
+    
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), Navigation_Height)];
     
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
@@ -93,19 +100,11 @@
     _tutoriumInfoView = [[TutoriumInfoView alloc]initWithFrame:CGRectMake(0, Navigation_Height, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-Navigation_Height-TabBar_Height)];
     [self.view addSubview:_tutoriumInfoView];
     
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-    
     
     /* 购买bar*/
     
     _buyBar= [[BuyBar alloc]initWithFrame:CGRectMake(0, self.view.height_sd-49, self.view.width_sd, 49)];
+    [_buyBar.shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:_buyBar];
     _buyBar.hidden = YES;
@@ -143,7 +142,6 @@
     //教师头像增加点击手势
     UITapGestureRecognizer *tap_Teacher = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(watchTeachers)];
     [_tutoriumInfoView.teacherHeadImage addGestureRecognizer:tap_Teacher];
-    
     
     //标签设置
     _config = [[TTGTextTagConfig alloc]init];
@@ -190,6 +188,9 @@
     /* 注册登录成功重新加载数据的通知*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(requestAgain) name:@"UserLoginAgain" object:nil];
     
+    //微信分享功能的回调通知
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sharedFinish:) name:@"SharedFinish" object:nil];
+    
 }
 
 
@@ -199,17 +200,7 @@
     
     [_buyBar.listenButton removeTarget:self action:@selector(loginAgain) forControlEvents:UIControlEventTouchUpInside];
     [_buyBar.applyButton removeTarget:self action:@selector(loginAgain) forControlEvents:UIControlEventTouchUpInside];
-    
-    /* 再次尝试提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-    
-    
+   
     /* 请求数据*/
     [self refreshPage];
     
@@ -224,7 +215,7 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
     
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/detail",Request_Header,classid] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -298,7 +289,6 @@
                             _tutoriumInfoView.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height);
                         }
                         
-                        
                     }else if ([_dataDic[@"status"]isEqualToString:@"published"]){
                         _buyBar.hidden = NO;
                         if (_dataDic[@"live_start_time"]) {
@@ -321,8 +311,6 @@
                                 _tutoriumInfoView.status.backgroundColor = [UIColor colorWithRed:0.08 green:0.59 blue:0.09 alpha:1.00];
                             }
                         }
-                        
-                        
                     }
                     //直播时间赋值
                     _tutoriumInfoView.liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[_dataDic[@"live_start_time"]length]>=10?[_dataDic[@"live_start_time"] substringToIndex:10]:_dataDic[@"live_start_time"],[_dataDic[@"live_end_time"] length]>=10?[_dataDic[@"live_end_time"] substringToIndex:10]:_dataDic[@"live_end_time"]];
@@ -432,9 +420,7 @@
                             [_classListArray addObject:_classInfoTimeModel];
                             
                             [self updateTableView];
-                            
                         }
-                        
                     }
                     
                     /* 赋值完毕,开始进行自适应高度*/
@@ -498,12 +484,12 @@
                         /* 已经购买的情况下*/
                         _buyBar.applyButton.hidden = YES;
                         _buyBar.listenButton.hidden = NO;
-                        [_buyBar.listenButton sd_clearAutoLayoutSettings];
+//                        [_buyBar.listenButton sd_clearAutoLayoutSettings];
                         _buyBar.listenButton.sd_resetLayout
-                        .leftSpaceToView(_buyBar,10)
-                        .topSpaceToView(_buyBar,10)
-                        .bottomSpaceToView(_buyBar,10)
-                        .rightSpaceToView(_buyBar,10);
+                        .topSpaceToView(_buyBar,10*ScrenScale)
+                        .bottomSpaceToView(_buyBar,10*ScrenScale)
+                        .rightSpaceToView(_buyBar,10*ScrenScale)
+                        .widthIs(_buttonWidth);
                         [_buyBar.listenButton updateLayout];
                         [_buyBar.listenButton setTitle:@"开始学习" forState:UIControlStateNormal];
                         _buyBar.listenButton.backgroundColor = NAVIGATIONRED;
@@ -513,7 +499,6 @@
                     }else{//未购买,显示进入试听按钮 购买按钮照常使用
                         _buyBar.hidden = NO;
                         _isBought = NO;
-                        
                         [_buyBar.applyButton removeAllTargets];
                         [_buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
                         if ([dic[@"data"][@"ticket"][@"used_count"] integerValue] >= [dic[@"data"][@"ticket"][@"buy_count"]integerValue] ) {
@@ -558,10 +543,10 @@
                 _buyBar.listenButton.hidden = YES;
                 [_buyBar.applyButton removeAllTargets];
                 _buyBar.applyButton.sd_resetLayout
-                .leftSpaceToView(_buyBar, 10)
-                .rightSpaceToView(_buyBar, 10)
-                .topSpaceToView(_buyBar, 10)
-                .bottomSpaceToView(_buyBar, 10);
+                .rightSpaceToView(_buyBar, 10*ScrenScale)
+                .topSpaceToView(_buyBar, 10*ScrenScale)
+                .bottomSpaceToView(_buyBar, 10*ScrenScale)
+                .widthIs(_buttonWidth);
                 [_buyBar.applyButton updateLayout];
                 [_buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
             }
@@ -590,10 +575,10 @@
                     _buyBar.listenButton.hidden = NO;
                     [_buyBar.listenButton removeAllTargets];
                     _buyBar.listenButton.sd_resetLayout
-                    .leftSpaceToView(_buyBar,10)
-                    .topSpaceToView(_buyBar,10)
-                    .bottomSpaceToView(_buyBar,10)
-                    .rightSpaceToView(_buyBar,10);
+                    .topSpaceToView(_buyBar,10*ScrenScale)
+                    .bottomSpaceToView(_buyBar,10*ScrenScale)
+                    .rightSpaceToView(_buyBar,10*ScrenScale)
+                    .widthIs(_buttonWidth);
                     [_buyBar.listenButton updateLayout];
                     [_buyBar.listenButton setTitle:@"开始学习" forState:UIControlStateNormal];
                     _buyBar.listenButton.backgroundColor = NAVIGATIONRED;
@@ -616,10 +601,11 @@
                     _buyBar.hidden = NO;
                     _buyBar.listenButton.hidden = YES;
                     _buyBar.applyButton.sd_resetLayout
-                    .leftSpaceToView(_buyBar, 10)
-                    .rightSpaceToView(_buyBar, 10)
-                    .topSpaceToView(_buyBar, 10)
-                    .bottomSpaceToView(_buyBar, 10);
+                    .topSpaceToView(_buyBar,10*ScrenScale)
+                    .bottomSpaceToView(_buyBar,10*ScrenScale)
+                    .rightSpaceToView(_buyBar,10*ScrenScale)
+                    .widthIs(_buttonWidth);
+                    [_buyBar.applyButton updateLayout];
                     [_buyBar.applyButton removeAllTargets];
                     [_buyBar.applyButton addTarget:self action:@selector(addFreeClass) forControlEvents:UIControlEventTouchUpInside];
                 }
@@ -637,19 +623,20 @@
                 [_buyBar.listenButton setBackgroundColor:TITLECOLOR];
                 [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 _buyBar.listenButton.sd_resetLayout
-                .leftSpaceToView(_buyBar, 10)
-                .rightSpaceToView(_buyBar, 10)
-                .topSpaceToView(_buyBar, 10)
-                .bottomSpaceToView(_buyBar, 10);
+                .topSpaceToView(_buyBar,10*ScrenScale)
+                .bottomSpaceToView(_buyBar,10*ScrenScale)
+                .rightSpaceToView(_buyBar,10*ScrenScale)
+                .widthIs(_buttonWidth);
                 [_buyBar.listenButton updateLayout];
             }else{
                 _buyBar.hidden = NO;
                 _buyBar.listenButton.hidden = YES;
                 _buyBar.applyButton.sd_resetLayout
-                .leftSpaceToView(_buyBar, 10)
-                .rightSpaceToView(_buyBar, 10)
-                .topSpaceToView(_buyBar, 10)
-                .bottomSpaceToView(_buyBar, 10);
+                .topSpaceToView(_buyBar,10*ScrenScale)
+                .bottomSpaceToView(_buyBar,10*ScrenScale)
+                .rightSpaceToView(_buyBar,10*ScrenScale)
+                .widthIs(_buttonWidth);
+                [_buyBar.applyButton updateLayout];
                 [_buyBar.applyButton removeAllTargets];
                 [_buyBar.applyButton addTarget:self action:@selector(addFreeClass) forControlEvents:UIControlEventTouchUpInside];
             }
@@ -663,7 +650,7 @@
 /** 加入免费课程 */
 - (void)addFreeClass{
     
-    [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/deliver_free",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+    [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/deliver_free",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
@@ -719,7 +706,7 @@
             AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-            [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+            [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
             [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/taste",Request_Header,_dataDic[@"id"]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -996,7 +983,7 @@
             
             if (cell.model.replayable == YES) {
                 
-                [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+                [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
                     
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
                     
@@ -1191,6 +1178,41 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
     
+}
+
+/** 分享功能 */
+- (void)share{
+    _share = [[ShareViewController alloc]init];
+    _share.view.frame = CGRectMake(0, 0, self.view.width_sd, TabBar_Height*1.5);
+    _pops = [SnailQuickMaskPopups popupsWithMaskStyle:MaskStyleBlackTranslucent aView:_share.view];
+    _pops.presentationStyle = PresentationStyleBottom;
+    [_pops presentWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {}];
+    [_share.sharedView.wechatBtn addTarget:self action:@selector(wechatShare:) forControlEvents:UIControlEventTouchUpInside];
+}
+- (void)wechatShare:(UIButton *)sender{
+    //在这儿传个参数.
+    [_share sharedWithContentDic:@{
+                                   @"type":@"link",
+                                   @"content":@{
+                                           @"title":_classModel.name,
+                                           @"description":@"直播课程",
+                                           @"link":[NSString stringWithFormat:@"%@/live_studio/courses/%@",Request_Header,_classID]
+                                           }
+                                   }];
+    [_pops dismissWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
+    }];
+}
+
+- (void)sharedFinish:(NSNotification *)notification{
+    
+    SendMessageToWXResp *resp = [notification object];
+    if (resp.errCode == 0) {
+        [self HUDStopWithTitle:@"分享成功"];
+    }else if (resp.errCode == -1){
+        [self HUDStopWithTitle:@"分享失败"];
+    }else if (resp.errCode == -2){
+        [self HUDStopWithTitle:@"取消分享"];
+    }
 }
 
 

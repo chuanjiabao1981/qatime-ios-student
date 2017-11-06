@@ -173,6 +173,9 @@
         if (_delegate) {
             [_delegate onUserLeft:uid conference:conference.name];
         }
+    }else{
+
+       
     }
 }
 

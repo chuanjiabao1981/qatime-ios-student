@@ -10,6 +10,9 @@
 
 #import "UUMessage.h"
 #import "UUMessageFrame.h"
+#import "NSString+Date.h"
+#import "NSString+TimeStamp.h"
+#import "NSDate+Utils.h"
 
 @implementation ChatModel
 
@@ -55,7 +58,6 @@
     /* 用message制作出messageframe对象*/
     [messageFrame setMessage:message];
     
-    
     if (message.showDateLabel) {
         previousTime = dataDic[@"strTime"];
     }
@@ -75,7 +77,6 @@
     if (randomNum == UUMessageTypePicture){
         //        [dictionary setObject:@"" forKey:@"picture"];
     }else{
-        
         /* 消息类型是文字 */
         randomNum = UUMessageTypeText;
         if (text == nil) {
@@ -142,7 +143,7 @@ static NSString *previousTime = nil;
     
     NSString *URLStr = iconURL;
     [dataDic setObject:@(UUMessageFromMe) forKey:@"from"];
-    [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
+    [dataDic setObject:dic[@"strTime"] forKey:@"strTime"];
     
     
     if (name ==nil) {
@@ -192,7 +193,6 @@ static NSString *previousTime = nil;
     
     if (randomNum == UUMessageTypePicture){
         
-        NSDate *date = [NSDate date];
         if ([dictionary[@"from"]isEqual:@(UUMessageFromMe)]) {
             
             [dictionary setObject:@(UUMessageFromMe) forKey:@"from"];
@@ -234,8 +234,7 @@ static NSString *previousTime = nil;
     
     NSString *URLStr = iconURL;
     [dataDic setObject:@(UUMessageFromMe) forKey:@"from"];
-    [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
-    
+    [dataDic setObject:dic[@"strTime"] forKey:@"strTime"];
     
     if (name ==nil) {
         name =@"";
@@ -243,13 +242,7 @@ static NSString *previousTime = nil;
     if (iconURL==nil) {
         iconURL = @"";
     }
-    
-    //    if (dic[@"picture"]==nil) {
-    //
-    //    }else{
-    //        [dataDic setObject:dic[@"picture"] forKey:@"picture"];
-    //    }
-    
+  
     [dataDic setObject:name forKey:@"strName"];
     [dataDic setObject:URLStr==nil?@"":URLStr forKey:@"strIcon"];
     [dataDic setObject:voiceMessage forKey:@"message"];
@@ -275,7 +268,6 @@ static NSString *previousTime = nil;
     
     if (randomNum == UUMessageTypeVoice){
         
-        NSDate *date = [NSDate date];
         if ([dictionary[@"from"]isEqual:@(UUMessageFromMe)]) {
             
             [dictionary setObject:@(UUMessageFromMe) forKey:@"from"];
@@ -285,8 +277,7 @@ static NSString *previousTime = nil;
         [dictionary setObject:@(randomNum) forKey:@"type"];
         [dictionary setObject:time forKey:@"strVoiceTime"];
         
-        
-                if (name == nil) {
+        if (name == nil) {
             name = @"";
         }
         [dictionary setObject:name forKey:@"strName"];
@@ -294,7 +285,7 @@ static NSString *previousTime = nil;
         NSLog(@"%@",URLString);
         [dictionary setObject:URLString==nil?@"":URLString forKey:@"strIcon"];
         
-        [dictionary setObject:[NSString  stringWithFormat:@"%@",date] forKey:@"strTime"];
+        [dictionary setObject:[NSString changeTimeStampToDateString:[NSString stringWithFormat:@"%f",message.timestamp]] forKey:@"strTime"];
         [dictionary setObject:message forKey:@"message"];
         [dictionary setObject:voicePath forKey:@"voicePath"];
         

@@ -65,7 +65,6 @@
         self.maskView.hidden = NO;
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recivedDesktopShared:) name:@"RecivedDestopShared" object:nil];
-        
         //开启白板
          [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(whiteBoardOn) name:@"DesktopSharedOff" object:nil];
         //关闭白板
@@ -136,24 +135,24 @@
         if ([dic[@"status"]isEqualToNumber:@1]) {
             
             if ([dic[@"data"][@"live_info"][@"room_id"] isEqualToString:@""]) {
-                //没有roomID,3秒后再次获取
-                
+                //没有roomID,5秒后再次获取
                 NSLog(@"获取roomID失败");
-                [self performSelector:@selector(getRoomID) withObject:nil afterDelay:3];
+                [self performSelector:@selector(getRoomID) withObject:nil afterDelay:5];
+                //placeholderImage换成等待状态
+                
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangePlaceHolderImageToHold" object:nil];
                 
             }else{
                 
-                [NSObject cancelPreviousPerformRequestsWithTarget:self];
-                NSLog(@"获取roomID成功!进入一对一");
                 //有roomID了 可以开始玩耍了
                 _roomID = [NSString stringWithFormat:@"%@",dic[@"data"][@"live_info"][@"room_id"]];
-                
+                //                    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+                NSLog(@"获取roomID成功!进入一对一");
                 //加入白板会话
                 [[NTESMeetingRTSManager defaultManager] setDelegate:self];
                 [[NTESMeetingRTSManager defaultManager] joinConference:_roomID];
                 
                 NSError *error =[[NTESMeetingRTSManager defaultManager] joinConference:_roomID];
-                
                 
                 //给上级controller(本页面的控制器)发送roomid消息
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"RoomID" object:_roomID];
@@ -859,22 +858,28 @@
 
 
 - (void)whiteBoardOff{
-    
-    _whiteBoardON = NO;
-    [[NTESMeetingRolesManager defaultManager]setMyWhiteBoard:NO];
-    self.maskView.hidden = NO;
-    [self.maskView updateLayout];
-    _hintLabel.text = @"正在进行屏幕共享";
-    
+    if (!_whiteBoardON) {
+        
+    }else{
+        _whiteBoardON = NO;
+        [[NTESMeetingRolesManager defaultManager]setMyWhiteBoard:NO];
+        self.maskView.hidden = NO;
+        [self.maskView updateLayout];
+        _hintLabel.text = @"正在进行屏幕共享";
+    }
 }
 
 - (void)whiteBoardOn{
     
-    _whiteBoardON = YES;
-    [[NTESMeetingRolesManager defaultManager]setMyWhiteBoard:YES];
-    self.maskView.hidden = YES;
-    [self.maskView updateLayout];
-    _hintLabel.text = @"正在进行白板互动";
+    if (_whiteBoardON) {
+        
+    }else{
+        _whiteBoardON = YES;
+        [[NTESMeetingRolesManager defaultManager]setMyWhiteBoard:YES];
+        self.maskView.hidden = YES;
+        [self.maskView updateLayout];
+        _hintLabel.text = @"正在进行白板互动";
+    }
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
@@ -897,7 +902,9 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
     
-
+    if (fromInterfaceOrientation != UIInterfaceOrientationPortrait) {
+        [_drawView layoutIfNeeded];
+    }
     
 }
 

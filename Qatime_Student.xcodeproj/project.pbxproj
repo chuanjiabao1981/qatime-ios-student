@@ -680,6 +680,7 @@
 		54CCE2271F428EDC004933D3 /* NewQuestionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CCE2261F428EDC004933D3 /* NewQuestionView.m */; };
 		54CCE22A1F428EED004933D3 /* NewQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CCE2291F428EED004933D3 /* NewQuestionViewController.m */; };
 		54CCE22E1F42CB50004933D3 /* QuestionPhotosCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CCE22D1F42CB50004933D3 /* QuestionPhotosCollectionViewCell.m */; };
+		54CDF3AE1FAAB31000AAC158 /* UncaughtExceptionLogHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CDF3AD1FAAB31000AAC158 /* UncaughtExceptionLogHandler.m */; };
 		54D59A741E234140006066EC /* DrawBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D59A731E234140006066EC /* DrawBackView.m */; };
 		54D59A7A1E23417B006066EC /* DrawBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D59A791E23417B006066EC /* DrawBackViewController.m */; };
 		54D661221DD040EF00C9A0FF /* UIViewController+HUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D661211DD040EF00C9A0FF /* UIViewController+HUD.m */; };
@@ -2134,6 +2135,8 @@
 		54CCE2291F428EED004933D3 /* NewQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewQuestionViewController.m; sourceTree = "<group>"; };
 		54CCE22C1F42CB50004933D3 /* QuestionPhotosCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionPhotosCollectionViewCell.h; sourceTree = "<group>"; };
 		54CCE22D1F42CB50004933D3 /* QuestionPhotosCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionPhotosCollectionViewCell.m; sourceTree = "<group>"; };
+		54CDF3AC1FAAB31000AAC158 /* UncaughtExceptionLogHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionLogHandler.h; sourceTree = "<group>"; };
+		54CDF3AD1FAAB31000AAC158 /* UncaughtExceptionLogHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionLogHandler.m; sourceTree = "<group>"; };
 		54D59A721E234140006066EC /* DrawBackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawBackView.h; sourceTree = "<group>"; };
 		54D59A731E234140006066EC /* DrawBackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawBackView.m; sourceTree = "<group>"; };
 		54D59A781E23417B006066EC /* DrawBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawBackViewController.h; sourceTree = "<group>"; };
@@ -2588,6 +2591,8 @@
 			children = (
 				541E20021E139967007CF5D1 /* UncaughtExceptionHandler.h */,
 				541E20031E139967007CF5D1 /* UncaughtExceptionHandler.m */,
+				54CDF3AC1FAAB31000AAC158 /* UncaughtExceptionLogHandler.h */,
+				54CDF3AD1FAAB31000AAC158 /* UncaughtExceptionLogHandler.m */,
 			);
 			name = "异常捕获";
 			sourceTree = "<group>";
@@ -5033,7 +5038,6 @@
 			isa = PBXGroup;
 			children = (
 				54F34D791DE70BA500D6FC85 /* LYCoreLabel */,
-				54DBA4961DE4423300A67A90 /* YZEmotionKeyboard */,
 				54E120D11DDC2E04004F8012 /* SDK */,
 			);
 			name = "网易云信";
@@ -5339,6 +5343,7 @@
 				549A051F1DC89B0100B3564D /* MMPickerView */,
 				549A05121DC86EBB00B3564D /* HcdDateTimePicker */,
 				5493D4A21E0B85DA0085A39E /* YYKit+Add */,
+				54DBA4961DE4423300A67A90 /* YZEmotionKeyboard */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -8171,6 +8176,7 @@
 				5492FC8F1E7A7BB800F89593 /* MultifiltersViewController.m in Sources */,
 				5442009B1E77914200797E6C /* TodayLiveCollectionViewCell.m in Sources */,
 				5411F48D1F5E416E0023D576 /* CourseFile.m in Sources */,
+				54CDF3AE1FAAB31000AAC158 /* UncaughtExceptionLogHandler.m in Sources */,
 				54774D161F444A8200150C05 /* ZLPhotoPickerGroupTableViewCell.m in Sources */,
 				548328F01DDC6F370053AB29 /* UUProgressHUD.m in Sources */,
 				5422EAED1F4E7AC9008B0A96 /* NIMAttributedLabelURL.m in Sources */,

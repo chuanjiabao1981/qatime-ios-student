@@ -26,18 +26,22 @@
 #import "VideoPlayerViewController.h"
 #import "InteractionReplayPlayerViewController.h"
 #import "UIControl+RemoveTarget.h"
+#import "SnailQuickMaskPopups.h"
+#import "ShareViewController.h"
+#import "WXApiObject.h"
 
 
 @interface OneOnOneTutoriumInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,OneOnOneTeacherTableViewCellDelegate,UICollectionViewDelegate,UICollectionViewDataSource>{
     
     NavigationBar *_navigationBar;
-    NSString  *_token;
-    NSString *_idNumber;
     
     UIView *_buyView;
     
     /**购买按钮*/
     UIButton *_buyButton;
+    
+    /** 分享按钮 */
+    UIButton *_shareButton;
     
     /* 保存本页面数据*/
     NSMutableDictionary *_dataDic;
@@ -52,7 +56,7 @@
     NSMutableArray <InteractionLesson *>*_classArray;
     
     /**课程model*/
-//    OneOnOneClass *_classMod;
+    OneOnOneClass *_classMod;
     
     /**课程特色数组*/
     NSMutableArray *_classFeaturesArray;
@@ -63,6 +67,11 @@
     NSString *_lesson;
     
     BOOL _isBought;
+    
+    CGFloat _buttonWidth;
+    
+    ShareViewController *_share;
+    SnailQuickMaskPopups *_pops;
 
 }
 
@@ -99,6 +108,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    _buttonWidth = self.view.width_sd/4-15*ScrenScale;
     //初始化数据
     _teachersArray = @[].mutableCopy;
     _classArray = @[].mutableCopy;
@@ -112,33 +122,33 @@
     //加载导航栏
     [self setupNavigation];
     
-    //提取token
-    [self getToken];
-    
     //加载数据
     [self requestData];
     
     [self HUDStartWithTitle:@"正在加载"];
+    
+    //微信分享功能的回调通知
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sharedFinish:) name:@"SharedFinish" object:nil];
     
     
 }
 /**请求一对一辅导班详情*/
 - (void)requestData{
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/detail",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/detail",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         
         if ([dic[@"status"]isEqualToNumber:@1]) {
             
             _dataDic = [dic[@"data"] copy];
-            //首页赋值
-            OneOnOneClass *classMod = [OneOnOneClass yy_modelWithJSON:dic[@"data"][@"interactive_course"]];
-            classMod.classID = dic[@"data"][@"interactive_course"][@"id"];
-            classMod.descriptions = dic[@"data"][@"interactive_course"][@"description"];
-            classMod.attributeDescriptions = [[NSMutableAttributedString alloc]initWithData:[dic[@"data"][@"interactive_course"][@"description"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+            //页面赋值
+            _classMod = [OneOnOneClass yy_modelWithJSON:dic[@"data"][@"interactive_course"]];
+            _classMod.classID = dic[@"data"][@"interactive_course"][@"id"];
+            _classMod.descriptions = dic[@"data"][@"interactive_course"][@"description"];
+            _classMod.attributeDescriptions = [[NSMutableAttributedString alloc]initWithData:[dic[@"data"][@"interactive_course"][@"description"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
             //标题
-            _navigationBar.titleLabel.text = classMod.name;
+            _navigationBar.titleLabel.text = _classMod.name;
             
             //特色
             for (NSString *key in _dataDic[@"interactive_course"][@"icons"]) {
@@ -163,12 +173,12 @@
             [self.view addSubview:self.myView];
             [self setupBuyBar];
             //赋值
-            self.myView.model = classMod;
+            self.myView.model = _classMod;
             
             //教师
-            if (classMod.teachers.count!=0) {
+            if (_classMod.teachers.count!=0) {
                 
-                for (NSDictionary *dics in classMod.teachers) {
+                for (NSDictionary *dics in _classMod.teachers) {
                     Teacher *mod = [Teacher yy_modelWithJSON:dics];
                     mod.teacherID = dics[@"id"];
                     [_teachersArray addObject:mod];
@@ -179,8 +189,8 @@
             }
             
             //课程
-            if (classMod.interactive_lessons.count!=0) {
-                for (NSDictionary *dics in classMod.interactive_lessons) {
+            if (_classMod.interactive_lessons.count!=0) {
+                for (NSDictionary *dics in _classMod.interactive_lessons) {
                     InteractionLesson *mod = [InteractionLesson yy_modelWithJSON:dics];
                     mod.classID = dics[@"id"];
                     [_classArray addObject:mod];
@@ -344,18 +354,6 @@
     return _myView;
 }
 
-/**获取token*/
-- (void)getToken{
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-
-}
 
 /**加载导航栏和购买bar*/
 - (void)setupNavigation{
@@ -396,17 +394,28 @@
     _buyButton.layer.borderWidth = 1;
     [_buyView addSubview:_buyButton];
     _buyButton.sd_layout
-    .leftSpaceToView(_buyView, 10)
-    .topSpaceToView(_buyView, 10)
-    .bottomSpaceToView(_buyView, 10)
-    .rightSpaceToView(_buyView, 10);
+    .rightSpaceToView(_buyView, 10*ScrenScale)
+    .bottomSpaceToView(_buyView, 10*ScrenScale)
+    .topSpaceToView(_buyView, 10*ScrenScale)
+    .widthIs(_buttonWidth);
     _buyButton.sd_cornerRadius = @2;
-    
+    [_buyButton updateLayout];
     
     if (![self isLogin]) {
         [_buyButton addTarget:self action:@selector(loginAgain) forControlEvents:UIControlEventTouchUpInside];
     }
-
+    
+    _shareButton  = [[UIButton alloc]init];
+    [_shareButton setImage:[UIImage imageNamed:@"share_black"] forState:UIControlStateNormal];
+    [_buyView addSubview:_shareButton];
+    _shareButton.sd_layout
+    .leftSpaceToView(_buyView, 15*ScrenScale)
+    .topSpaceToView(_buyView, 10*ScrenScale)
+    .bottomSpaceToView(_buyView, 10*ScrenScale)
+    .widthEqualToHeight();
+    [_shareButton updateLayout];
+    [_shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
+    
 }
 
 #pragma mark- UITableView datasource
@@ -660,6 +669,48 @@
     
     return YES;
 }
+
+/** 分享功能 */
+/** 分享功能 */
+- (void)share{
+    _share = [[ShareViewController alloc]init];
+    _share.view.frame = CGRectMake(0, 0, self.view.width_sd, TabBar_Height*1.5);
+    _pops = [SnailQuickMaskPopups popupsWithMaskStyle:MaskStyleBlackTranslucent aView:_share.view];
+    _pops.presentationStyle = PresentationStyleBottom;
+    [_pops presentWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {}];
+    [_share.sharedView.wechatBtn addTarget:self action:@selector(wechatShare:) forControlEvents:UIControlEventTouchUpInside];
+}
+- (void)wechatShare:(UIButton *)sender{
+    //在这儿传个参数.
+    [_share sharedWithContentDic:@{
+                                   @"type":@"link",
+                                   @"content":@{
+                                           @"title":_classMod.name,
+                                           @"description":@"一对一课程",
+                                           @"link":[NSString stringWithFormat:@"%@/live_studio/interactive_courses/%@",Request_Header,_classID]
+                                           }
+                                   }];
+    [_pops dismissWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
+    }];
+}
+
+- (void)sharedFinish:(NSNotification *)notification{
+    
+    SendMessageToWXResp *resp = [notification object];
+    if (resp.errCode == 0) {
+        [self HUDStopWithTitle:@"分享成功"];
+    }else if (resp.errCode == -1){
+        [self HUDStopWithTitle:@"分享失败"];
+    }else if (resp.errCode == -2){
+        [self HUDStopWithTitle:@"取消分享"];
+    }
+}
+
+
+
+
+
+
 
 /**返回上一页*/
 - (void)returnLastpage{

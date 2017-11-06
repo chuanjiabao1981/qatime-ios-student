@@ -13,19 +13,26 @@
 
 - (NSString *)changeUTC{
     
-   // 获得时间对象
+    //设置源日期时区
+    NSTimeZone* sourceTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];//或GMT
+    //设置转换后的目标日期时区
+    NSTimeZone* destinationTimeZone = [NSTimeZone localTimeZone];
+    //得到源日期与世界标准时间的偏移量
+    NSInteger sourceGMTOffset = [sourceTimeZone secondsFromGMTForDate:self];
+    //目标日期与本地时区的偏移量
+    NSInteger destinationGMTOffset = [destinationTimeZone secondsFromGMTForDate:self];
+    //得到时间偏移量的差值
+    NSTimeInterval interval = destinationGMTOffset - sourceGMTOffset;
+    //转为现在时间
+    NSDate* destinationDateNow = [[NSDate alloc] initWithTimeInterval:interval sinceDate:self];
     
-//    NSTimeZone *zone = [NSTimeZone systemTimeZone]; // 获得系统的时区
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
     
-//    NSTimeInterval time = [zone secondsFromGMTForDate:self];// 以秒为单位返回当前时间与系统格林尼治时间的差
+    dateFormatter.dateFormat=@"yyyy-MM-dd HH:mm:ss";
     
-//    NSDate *dateNow = [self dateByAddingTimeInterval:time];// 然后把差的时间加上,就是当前系统准确的时间
+//    NSLog(@"%@",[dateFormatter dateFromString:dateStr]);
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //输出格式
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSString *dateString =[dateFormatter stringFromDate:self];
-    return dateString;
+    return [dateFormatter stringFromDate:destinationDateNow];
 
 }
 

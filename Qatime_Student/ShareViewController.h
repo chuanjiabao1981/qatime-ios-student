@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ShareView.h"
+#import "SnailQuickMaskPopups.h"
 
 @interface ShareViewController : UIViewController
 

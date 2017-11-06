@@ -78,6 +78,7 @@
                 for (Members *member in _members) {
                     if ([member.accid isEqualToString:_ownerID]) {
                         [_members exchangeObjectAtIndex:0 withObjectAtIndex:teacherIndex];
+                        member.isOwner = YES;
                          break ;
                     }
                     teacherIndex++;
@@ -116,15 +117,25 @@
     if (_members.count>indexPath.row) {
         cell.model = _members[indexPath.row];
         
-        if (indexPath.row == 0) {
+//        if (indexPath.row == 0) {
+//            cell.character.text = @"老师";
+//            cell.name.textColor = BUTTONRED;
+//            cell.character.textColor = BUTTONRED;
+//        }else{
+//            cell.character.text = @"学生";
+//        }
+        if (cell.model.isOwner) {
             cell.character.text = @"老师";
             cell.name.textColor = BUTTONRED;
             cell.character.textColor = BUTTONRED;
         }else{
             cell.character.text = @"学生";
-            
+            cell.name.textColor = TITLECOLOR;
+            cell.character.textColor = TITLECOLOR;
         }
     }
+    
+    [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     
     return  cell;
 }

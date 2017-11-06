@@ -49,6 +49,7 @@
     _noticeList.dataSource = self;
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(newNotice) name:@"NewNotice" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(newNotice) name:@"NewChatNotice" object:nil];
     
     _noticeList.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _noticeArray = @[].mutableCopy;
@@ -60,7 +61,7 @@
 
 /** 加载公告数据 . 列表 */
 - (void)getNoticeData{
-    
+    _noticeArray = @[].mutableCopy;
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/realtime",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withDownloadProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
@@ -71,7 +72,6 @@
                     [_noticeArray addObject:mod];
                 }
             }
-            
             [_noticeList.mj_header endRefreshingWithCompletionBlock:^{
                 [_noticeList cyl_reloadData];
             }];
@@ -113,7 +113,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return [tableView cellHeightForIndexPath:indexPath model:_noticeArray[indexPath.row] keyPath:@"model" cellClass:[NoticeTableViewCell class] contentViewWidth: self.view.width_sd];
+    return  [tableView cellHeightForIndexPath:indexPath cellContentViewWidth:self.view.width_sd tableView:tableView];
 }
 
 //收到信公告消息.

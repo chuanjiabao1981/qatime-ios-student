@@ -27,6 +27,9 @@
 #import "ExclusiveInfoViewController.h"
 
 #import "VideoClassInfoViewController.h"
+#import "ShareViewController.h"
+#import "WXApiObject.h"
+
 
 @interface TeachersPublicViewController ()<UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>{
     
@@ -63,6 +66,11 @@
     
     /**教师特色*/
     NSArray *_featuresArray;
+    
+    /** 分享 */
+    ShareViewController *_share;
+    
+    SnailQuickMaskPopups *_pops;
     
 }
 /**section2的title*/
@@ -131,7 +139,10 @@
     [self setupViews];
     
     [self HUDStartWithTitle:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sharedFinish:) name:@"SharedFinish" object:nil];
 }
+
 
 //加载视图
 - (void)setupViews{
@@ -142,10 +153,13 @@
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
+    
+    [_navigationBar.rightButton setImage:[UIImage imageNamed:@"share_white"] forState:UIControlStateNormal];
+    [_navigationBar.rightButton addTarget:self action:@selector(shareTeacher) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_navigationBar];
     [_navigationBar updateLayout];
-   
     
+   
     //头视图
     _teachersPublicHeaderView = [[TeachersPublicHeaderView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 400)];
     headerSize = CGSizeMake(CGRectGetWidth(self.view.frame), 600);
@@ -1613,6 +1627,45 @@
         [label updateLayout];
     }
     return _fourthTitle;
+}
+
+/** 分享教师 */
+- (void)shareTeacher{
+    _share = [[ShareViewController alloc]init];
+    _share.view.frame = CGRectMake(0, 0, self.view.width_sd, TabBar_Height*1.5);
+    _pops = [SnailQuickMaskPopups popupsWithMaskStyle:MaskStyleBlackTranslucent aView:_share.view];
+//    _pops.isAllowMaskTouch = YES;
+    _pops.presentationStyle = PresentationStyleBottom;
+    [_pops presentWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {}];
+    [_share.sharedView.wechatBtn addTarget:self action:@selector(wechatShare:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+/** 微信分享 */
+- (void)wechatShare:(UIButton *)sender{
+    //在这儿传个参数.
+    [_share sharedWithContentDic:@{
+                                   @"type":@"link",
+                                   @"content":@{
+                                           @"title":_teacherPublicInfo.name,
+                                           @"description":[_teacherPublicInfo.category stringByAppendingString:_teacherPublicInfo.subject],
+                                           @"link":[NSString stringWithFormat:@"%@/teachers/%@/profile",Request_Header,_teacherID]
+                                           }}];
+    
+    [_pops dismissWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
+    }];
+}
+
+- (void)sharedFinish:(NSNotification *)notification{
+    
+    SendMessageToWXResp *resp = [notification object];
+    if (resp.errCode == 0) {
+        [self HUDStopWithTitle:@"分享成功"];
+    }else if (resp.errCode == -1){
+        [self HUDStopWithTitle:@"分享失败"];
+    }else if (resp.errCode == -2){
+        [self HUDStopWithTitle:@"取消分享"];
+    }
+    
 }
 
 

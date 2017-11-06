@@ -32,10 +32,47 @@
 //分享实现
 -(void)sharedWithContentDic:(NSDictionary *)sharedDic{
     
+    /** 自己写一个字段封装.
+     键值:
+     type:  text . link
+     类型    文本    链接
+     
+     content: text类型传一个字符串就行了.
+     content: link类型传title.description.link
+     
+     实例:
+     //文本类型
+     @{
+     "type" : "text",
+     "content" : "分享的文字内容balabala..."
+     }
+     
+     //链接类型
+     @{
+     "type" : "link",
+     "content" "{
+         "title" : "标题是啥啥啥",
+         "description" : "具体内容是啥啥啥",
+         "link" : "www.qatime.cn"
+         }
+     }
+     */
     SendMessageToWXReq *req = [[SendMessageToWXReq alloc]init];
-    req.text = @"hellohellohellohellohello";
-    req.bText = YES;
     req.scene = WXSceneSession;
+    if ([sharedDic[@"type"]isEqualToString:@"text"]) {
+        req.text = sharedDic[@"content"];
+        req.bText = YES;
+    }else if ([sharedDic[@"type"]isEqualToString:@"link"]){
+        WXMediaMessage *message = [WXMediaMessage message];
+        message.title = sharedDic[@"content"][@"title"];
+        message.description = sharedDic[@"content"][@"description"];
+        [message setThumbImage:[UIImage imageNamed:@"AppIcon"]];
+        WXWebpageObject *webpageObject = [WXWebpageObject object];
+        webpageObject.webpageUrl = sharedDic[@"content"][@"link"];
+        message.mediaObject = webpageObject;
+        req.bText = NO;
+        req.message = message;
+    }
     [WXApi sendReq:req];
     
 }

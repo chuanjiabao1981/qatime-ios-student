@@ -8,13 +8,15 @@
 
 #import <Foundation/Foundation.h>
 // 一页多少个
-static NSInteger const emojiCountOfPage = 28;
+static NSInteger const emojiCountOfPage = 27;
 
 // 一页多少列
 static NSInteger const colsOfPage = 7;
 
 // 每个emotion尺寸
-static NSInteger const emotionWH = 30;
+//static NSInteger const emotionWH = 30*ScrenScale;
+
+#define emotionWH 30*ScrenScale
 
 @interface YZEmotionManager : NSObject
 

@@ -24,8 +24,12 @@
 #import "TeacherFeatureTagCollectionViewCell.h"
 #import "UIViewController+HUD.h"
 #import "TeachersPublicViewController.h"
-
+#import "UIViewController+Token.h"
 #import "VideoPlayerViewController.h"
+#import "SnailQuickMaskPopups.h"
+#import "ShareViewController.h"
+#import "WXApiObject.h"
+
 typedef enum : NSUInteger {
     PullToRefresh,
     PushToLoadMore,
@@ -35,10 +39,6 @@ typedef enum : NSUInteger {
 @interface VideoClassInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CYLTableViewPlaceHolderDelegate,VideoClassBuyBarDelegate,UICollectionViewDataSource,UICollectionViewDelegate>{
     
     NavigationBar *_navigationBar;
-    
-    NSString *_token;
-    NSString *_idNumber;
-    
     /**数据源*/
     NSMutableArray <VideoClass *>*_classArray;
     
@@ -55,6 +55,12 @@ typedef enum : NSUInteger {
     NSMutableArray *_classFeaturesArray;
     
     BOOL _isBought;
+    
+    CGFloat _buttonWidth;
+    
+    ShareViewController *_share;
+    SnailQuickMaskPopups *_pops;
+    
     
 }
 /**主视图*/
@@ -89,17 +95,7 @@ typedef enum : NSUInteger {
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
 }
-/**token方法*/
-- (void)getToken{
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
-}
+
 
 /**加载主视图*/
 - (void)setupMainView{
@@ -149,9 +145,8 @@ typedef enum : NSUInteger {
     //初始化
     _classArray = @[].mutableCopy;
     _classFeaturesArray = @[].mutableCopy;
-    //加载token
-    [self getToken];
-    
+  
+    _buttonWidth = self.view.width_sd/4-15*ScrenScale;
     //加载导航栏
     [self setupNavigation];
     
@@ -165,6 +160,9 @@ typedef enum : NSUInteger {
         [self getToken];
         [self requestData];
     }];
+    
+    //微信分享功能的回调通知
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sharedFinish:) name:@"SharedFinish" object:nil];
     
 }
 
@@ -180,7 +178,7 @@ typedef enum : NSUInteger {
 /**请求数据*/
 - (void)requestData{
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@/detail",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@/detail",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             _classInfo = [VideoClassInfo yy_modelWithJSON:dic[@"data"][@"video_course"]];
@@ -243,10 +241,10 @@ typedef enum : NSUInteger {
                     [_buyBar.rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                     
                     _buyBar.rightButton.sd_resetLayout
-                    .leftSpaceToView(_buyBar, 10)
-                    .rightSpaceToView(_buyBar, 10)
-                    .topSpaceToView(_buyBar, 10)
-                    .bottomSpaceToView(_buyBar, 10);
+                    .rightSpaceToView(_buyBar, 10*ScrenScale)
+                    .topSpaceToView(_buyBar, 10*ScrenScale)
+                    .bottomSpaceToView(_buyBar, 10*ScrenScale)
+                    .widthIs(_buttonWidth);
                     [_buyBar.rightButton updateLayout];
                     
                     [_buyBar.rightButton removeAllTargets];
@@ -272,10 +270,10 @@ typedef enum : NSUInteger {
 //                        [_buyBar.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                         _buyBar.leftButton.hidden = YES;
                         _buyBar.rightButton.sd_resetLayout
-                        .leftSpaceToView(_buyBar, 10)
-                        .rightSpaceToView(_buyBar, 10)
-                        .topSpaceToView(_buyBar, 10)
-                        .bottomSpaceToView(_buyBar, 10);
+                        .rightSpaceToView(_buyBar, 10*ScrenScale)
+                        .topSpaceToView(_buyBar, 10*ScrenScale)
+                        .bottomSpaceToView(_buyBar, 10*ScrenScale)
+                        .widthIs(_buttonWidth);
                         [_buyBar updateLayout];
                         
                         [_buyBar.rightButton removeAllTargets];
@@ -308,10 +306,10 @@ typedef enum : NSUInteger {
                 
                 
                 _buyBar.rightButton.sd_resetLayout
-                .leftSpaceToView(_buyBar, 10)
-                .rightSpaceToView(_buyBar, 10)
-                .topSpaceToView(_buyBar, 10)
-                .bottomSpaceToView(_buyBar, 10);
+                .rightSpaceToView(_buyBar, 10*ScrenScale)
+                .topSpaceToView(_buyBar, 10*ScrenScale)
+                .bottomSpaceToView(_buyBar, 10*ScrenScale)
+                .widthIs(_buttonWidth);
                 [_buyBar.rightButton updateLayout];
                 
                 
@@ -400,7 +398,7 @@ typedef enum : NSUInteger {
             [self HUDStopWithTitle:nil];
         }else{
             
-            [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@/deliver_free",Request_Header,_classID] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+            [self POSTSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/video_courses/%@/deliver_free",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
                 
                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
                 if ([dic[@"status"]isEqualToNumber:@1]) {
@@ -428,6 +426,8 @@ typedef enum : NSUInteger {
     [self HUDStopWithTitle:nil];
     [self.navigationController pushViewController:controller animated:YES];
 }
+
+
 
 
 
@@ -582,6 +582,45 @@ typedef enum : NSUInteger {
     HaveNoClassView *view = [[HaveNoClassView alloc]init];
     view.titleLabel.text = @"当前无课程";
     return view;
+}
+
+
+
+
+/** 回调方法 : 分享 */
+-(void)shareVideoClass:(UIButton *)sender{
+    
+    _share = [[ShareViewController alloc]init];
+    _share.view.frame = CGRectMake(0, 0, self.view.width_sd, TabBar_Height*1.5);
+    _pops = [SnailQuickMaskPopups popupsWithMaskStyle:MaskStyleBlackTranslucent aView:_share.view];
+    _pops.presentationStyle = PresentationStyleBottom;
+    [_pops presentWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {}];
+    [_share.sharedView.wechatBtn addTarget:self action:@selector(wechatShare:) forControlEvents:UIControlEventTouchUpInside];
+}
+- (void)wechatShare:(UIButton *)sender{
+    //在这儿传个参数.
+    [_share sharedWithContentDic:@{
+                                   @"type":@"link",
+                                   @"content":@{
+                                           @"title":_classInfo.name,
+                                           @"description":@"视频课程",
+                                           @"link":[NSString stringWithFormat:@"%@/live_studio/video_courses/%@",Request_Header,_classID]
+                                           }
+                                   }];
+    [_pops dismissWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
+    }];
+}
+
+- (void)sharedFinish:(NSNotification *)notification{
+    
+    SendMessageToWXResp *resp = [notification object];
+    if (resp.errCode == 0) {
+        [self HUDStopWithTitle:@"分享成功"];
+    }else if (resp.errCode == -1){
+        [self HUDStopWithTitle:@"分享失败"];
+    }else if (resp.errCode == -2){
+        [self HUDStopWithTitle:@"取消分享"];
+    }
 }
 
 

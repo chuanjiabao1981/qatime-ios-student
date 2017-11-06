@@ -36,5 +36,10 @@
 /** 获取当前时间戳 */
 -(NSString*)getCurrentTimestamp;
 
+/** 获取当前时间 */
++ (NSString *)getCurrentTime ;
+
++ (NSString *)getCurrentTimeStamp ;
+
 
 @end

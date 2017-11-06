@@ -84,6 +84,10 @@
 /** 获取和加工数据 */
 - (void)getClassInfoData{
     
+    _classArray = @[].mutableCopy;
+    _videoClassInfo = nil;
+    _teacher = nil;
+    
     [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/play_info",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withDownloadProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
         
         //加工好多种数据吧.
@@ -261,6 +265,20 @@
         [textTagCollectionView clearAutoHeigtSettings];
         textTagCollectionView.sd_layout
         .heightIs(contentSize.height);
+    }
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    
+    
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    
+    if (fromInterfaceOrientation == UIInterfaceOrientationPortrait) {
+        
+    }else{
+        
     }
     
 }

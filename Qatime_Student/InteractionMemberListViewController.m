@@ -106,7 +106,9 @@
                 for (NSDictionary *member in members) {
                     
                     Members *mod = [Members yy_modelWithJSON:member];
-                    [_membersArr addObject:mod];
+                    if (mod) {
+                        [_membersArr addObject:mod];
+                    }
                     
                 }
                 

@@ -14,6 +14,8 @@
  
 #import "AboutUsTableViewCell.h"
 #import "UIAlertController+Blocks.h"
+#import "WXApiObject.h"
+#import "UIViewController+HUD.h"
 
 @interface AboutUsViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
@@ -49,8 +51,7 @@
     _aboutUsView.menuTableView.delegate = self;
     _aboutUsView.menuTableView.dataSource = self;
     
-    
-    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sharedFinish:) name:@"SharedFinish" object:nil];
 }
 
 #pragma mark- tableview datasource
@@ -132,18 +133,37 @@
     
 }
 
-- (void)wechatShare:(UIButton *)sender{
-    //在这儿传个参数.
-    [_share sharedWithContentDic:@{}];
-    
-}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return  60;
 }
 
+- (void)wechatShare:(UIButton *)sender{
+    //在这儿传个参数.
+    [_share sharedWithContentDic:@{
+                                   @"type":@"link",
+                                   @"content":@{
+                                           @"title":@"答疑时间-K12在线教育平台",
+                                           @"description":@"制造互联乐享教育-答疑时间与您共筑教育梦!",
+                                           @"link":Request_Header
+                                           }}];
+    [_pops dismissWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
+    }];
+    
+}
 
+- (void)sharedFinish:(NSNotification *)notification{
+    
+    SendMessageToWXResp *resp = [notification object];
+    if (resp.errCode == 0) {
+        [self HUDStopWithTitle:@"分享成功"];
+    }else if (resp.errCode == -1){
+        [self HUDStopWithTitle:@"分享失败"];
+    }else if (resp.errCode == -2){
+        [self HUDStopWithTitle:@"取消分享"];
+    }
+}
 
 
 - (void)returnLastPage{

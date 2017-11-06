@@ -82,6 +82,24 @@
     return timeString;
 }
 
+//获取当地时间
++ (NSString *)getCurrentTime {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *dateTime = [formatter stringFromDate:[NSDate date]];
+    return dateTime;
+}
+
++ (NSString *)getCurrentTimeStamp{
+    
+    NSDate *datenow = [NSDate date];//现在时间,你可以输出来看下是什么格式
+    
+    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[datenow timeIntervalSince1970]];
+    
+    return timeSp;
+}
+
+
 
 
 

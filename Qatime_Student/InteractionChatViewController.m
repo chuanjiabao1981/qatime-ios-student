@@ -53,6 +53,8 @@
 #import "HomeworkInfoViewController.h"
 #import "Questions.h"
 #import "QuestionInfoViewController.h"
+#import "NSString+TimeStamp.h"
+#import "UIView+NIMKitToast.h"
 
 
 @interface InteractionChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate,PhotoBrowserDelegate,NIMTeamManagerDelegate,NIMSystemNotificationManagerDelegate,NotificationTipsDelegat>{
@@ -139,33 +141,17 @@
     [[NIMSDK sharedSDK].teamManager addDelegate:self];
     [[NIMSDK sharedSDK].systemNotificationManager addDelegate:self];
     
+    //基础数据加载完毕,开始加载视图
+    [self setupMainView];
+    
+    /* 获取一次所有成员信息*/
+    [self requestChatTeamUser];
     NSLog(@"聊天未读消息%ld条",[[[NIMSDK sharedSDK]conversationManager] allUnreadCount]);
     
     if (_session) {
-        
-        //查一下禁言状态
-        [[NIMSDK sharedSDK].teamManager fetchTeamMutedMembers:_session.sessionId completion:^(NSError * _Nullable error, NSArray<NIMTeamMember *> * _Nullable members) {
-           
-            for (NIMTeamMember *member in members) {
-                
-                if ([member.userId isEqualToString:_chat_Account.user_id]) {
-                    //这是被禁言了
-                    _shutUp = YES;
-                    [self shutUpTalking];
-                }else{
-                    _shutUp = NO;
-                    [self keepOnTalking];
-                }
-            }
-            
-        }];
-        //
-        
         [[[NIMSDK sharedSDK]conversationManager]markAllMessagesReadInSession:_session];
-        
         [[NSNotificationCenter defaultCenter]postNotificationName:@"MarkAllRead" object:_session];
     }
-    
     
     [self registerForKeyboardNotifications];
     
@@ -178,13 +164,8 @@
         _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
     }
     
-    //基础数据加载完毕,开始加载视图
-    [self setupMainView];
-    
-    
-    /* 获取一次所有成员信息*/
-    [self requestChatTeamUser];
-    
+  
+   
     
     /* 聊天信息 加个点击手势,取消输入框响应*/
     UITapGestureRecognizer *tapSpace = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapSpace)];
@@ -199,9 +180,16 @@
     /* 添加录音是否取消的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordCancel) name:@"RecordCancel" object:nil];
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showShutUp) name:@"ShowShutUp" object:nil];
+    
 }
 
-
+- (void)showShutUp{
+    
+    [self.view nimkit_makeToast:@"您已经被禁言" duration:2 position:NIMKitToastPositionTop];
+    [_inputView.TextViewInput resignFirstResponder];
+    
+}
 
 /**加载主视图*/
 - (void)setupMainView{
@@ -225,8 +213,6 @@
         
         UUInputFunctionView *_=[[UUInputFunctionView alloc]initWithSuperVC:self];
         
-//        _.frame = CGRectMake(0, self.view.height_sd-50, self.view.width_sd, 50);
-
         [_.btnChangeVoiceState addTarget:self action:@selector(emojiKeyboardShow:) forControlEvents:UIControlEventTouchUpInside];
         _.TextViewInput.placeholder = @"请输入要发送的信息";
         
@@ -239,8 +225,11 @@
         .bottomSpaceToView(self.view, 0)
         .heightIs(50);
         _;
+        
+        
     });
-
+    
+    
 }
 
 /* 开始检测麦克风声音*/
@@ -352,7 +341,7 @@
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/realtime",Request_Header,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
@@ -379,6 +368,29 @@
                 }
             }
             
+            
+            if (_session) {
+                //查一下禁言状态
+                [[NIMSDK sharedSDK].teamManager fetchTeamMutedMembers:_session.sessionId completion:^(NSError * _Nullable error, NSArray<NIMTeamMember *> * _Nullable members) {
+                    
+                    for (NIMTeamMember *member in members) {
+                        
+                        if ([member.userId isEqualToString:_chat_Account.accid]) {
+                            //这是被禁言了
+                            _shutUp = YES;
+                            //因为加载时机的问题,inputview输入框用懒加载.
+                            _inputView.shutUp = YES;
+                            [self shutUpTalking];
+                            break;
+                        }else{
+                            _shutUp = NO;
+                            _inputView.shutUp = NO;
+                            [self keepOnTalking];
+                        }
+                    }
+                    
+                }];
+            }
             [self requestChatHitstory];
             
         }else{
@@ -744,15 +756,14 @@
                         NSString *result;
                         if ([action isEqualToString:@"close"]&&[type isEqualToString:@"Scheduled"]) {
                             result = @"直播关闭";
+                            
                         }else if ([action isEqualToString:@"start"]&&[type isEqualToString:@"Scheduled"]){
                             result = @"直播开启";
                         }else if ([action isEqualToString:@"close"]&&[type isEqualToString:@"Instant"]){
                             result = @"老师关闭了互动答疑";
                         }else if ([action isEqualToString:@"start"]&&[type isEqualToString:@"Instant"]){
                             result = @"老师开启了互动答疑";
-                            
                         }else{
-                            
                             return;
                         }
                         [self.chatModel addSpecifiedNotificationItem:result];
@@ -1009,6 +1020,7 @@
 - (void)shutUpTalking{
     
     _shutUp = YES;
+    _inputView.shutUp = YES;
     _inputView.TextViewInput.placeholder = @"您已被禁言";
     
 }
@@ -1018,6 +1030,7 @@
 - (void) keepOnTalking{
     
     _shutUp = NO;
+    _inputView.shutUp = NO;
     _inputView.TextViewInput.placeholder = @"请输入要发送的信息";
     
 }
@@ -1231,18 +1244,16 @@
 
 #pragma mark - 聊天页面 发送文字聊天信息的回调
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message{
-    
-    
+
     if (_shutUp==YES) {
-        
-        [self HUDStopWithTitle:@"您已被禁言"];
-        
-    }else{
+        [self.view nimkit_makeToast:@"您已被禁言" duration:2 position:NIMKitToastPositionTop];
+        return;
+    }
+    else{
         
         if ([funcView.TextViewInput.text isEqualToString:@""]||funcView.TextViewInput.text==nil) {
-            
-            [self HUDStopWithTitle:@"请输入聊天内容!"];
-            
+            [self.view nimkit_makeToast:@"请输入聊天内容" duration:2 position:NIMKitToastPositionTop];
+            return;
         }else{
             
             //这是最终要向云信发送的消息,放在这里是为了使用messageID来识别消息
@@ -1363,12 +1374,12 @@
             [_inputView.TextViewInput setText:@""];
             [_inputView.TextViewInput resignFirstResponder];
             
+            [self.chatTableView reloadData];
+            [self tableViewScrollToBottom];
+            
+            [funcView changeSendBtnWithPhoto:YES];
         }
         
-        [self.chatTableView reloadData];
-        [self tableViewScrollToBottom];
-        
-        [funcView changeSendBtnWithPhoto:YES];
     }
     
 }
@@ -1378,7 +1389,7 @@
     
     if (_shutUp==YES) {
         
-        [self HUDStopWithTitle:@"您已被禁言"];
+        [self.view nimkit_makeToast:@"您已被禁言" duration:2 position:NIMKitToastPositionTop];
         
     }else{
     
@@ -1410,7 +1421,7 @@
     
     if (_shutUp==YES) {
         
-        [self HUDStopWithTitle:@"您已被禁言"];
+        [self.view nimkit_makeToast:@"您已被禁言" duration:2 position:NIMKitToastPositionTop];
         
     }else{
         //创建一条云信消息
@@ -1435,9 +1446,6 @@
     }
     
 }
-
-
-
 
 
 // 获取表情字符串
@@ -1475,9 +1483,14 @@
 - (void)tableViewScrollToBottom{
     if (self.chatModel.dataSource.count==0)
         return;
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatModel.dataSource.count-1 inSection:0];
+//    [self.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+//
+    if (self.chatTableView.contentSize.height > self.chatTableView.frame.size.height){
+        CGPoint offset = CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height);
+        [self.chatTableView setContentOffset:offset animated:YES];
+    }
     
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatModel.dataSource.count-1 inSection:0];
-    [self.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 #pragma mark- emoji表情键盘部分的方法
@@ -1797,6 +1810,17 @@
             [self HUDStopWithTitle:@"请检查网络"];
         }];
     }
+}
+
+
+//接收群公告的
+- (void)onTeamUpdated:(NIMTeam *)team{
+    
+    //公告就直接从聊天获取
+    
+    NSDictionary *dic = @{@"notice":team.announcement,@"time":[NSString getCurrentTimeStamp]};
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"NewNotice" object:dic];
+    
 }
 
 

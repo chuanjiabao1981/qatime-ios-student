@@ -27,8 +27,6 @@
         _listenButton.layer.borderWidth = 1.0;
         
         
-        
-        
         _applyButton =[[UIButton alloc]init];
         _applyButton.backgroundColor = [UIColor whiteColor];
         [_applyButton setTitle:@"立即报名" forState:UIControlStateNormal];
@@ -38,23 +36,33 @@
         _applyButton.layer.borderWidth = 1.0;
         
         
+        _shareButton = [[UIButton alloc]init];
+        [_shareButton setImage:[UIImage imageNamed:@"share_black"] forState:UIControlStateNormal];
+       
+        
         UIView *line = [[UIView alloc]init];
         line .backgroundColor = [UIColor lightGrayColor];
         
         
-        [self sd_addSubviews:@[_listenButton,_applyButton,line]];
+        [self sd_addSubviews:@[_listenButton,_applyButton,_shareButton,line]];
+       
+        _applyButton.sd_layout
+        .rightSpaceToView(self,10*ScrenScale)
+        .topSpaceToView(self, 10*ScrenScale)
+        .bottomSpaceToView(self, 10*ScrenScale)
+        .widthIs(self.width_sd/4-15*ScrenScale);
     
         _listenButton.sd_layout
-        .leftSpaceToView(self,10)
-        .topSpaceToView(self,10)
-        .bottomSpaceToView(self,10)
-        .widthIs(self.width_sd/2-10-5);
+        .rightSpaceToView(_applyButton, 10*ScrenScale)
+        .topEqualToView(_applyButton)
+        .bottomEqualToView(_applyButton)
+        .widthRatioToView(_applyButton, 1.0);
         
-        _applyButton.sd_layout
-        .rightSpaceToView(self,10)
-        .topEqualToView(_listenButton)
-        .bottomEqualToView(_listenButton)
-        .widthRatioToView(_listenButton,1.0);
+        _shareButton.sd_layout
+        .leftSpaceToView(self, 15*ScrenScale)
+        .topSpaceToView(self, 10*ScrenScale)
+        .bottomSpaceToView(self, 10*ScrenScale)
+        .widthEqualToHeight();
         
         line.sd_layout
         .leftEqualToView(self)

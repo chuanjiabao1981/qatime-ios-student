@@ -56,6 +56,9 @@
 
 @property (nonatomic, assign) id<UUInputFunctionViewRecordDelegate> recordDelegate ;
 
+/** 是否被禁言 */
+@property (nonatomic, assign) BOOL shutUp ;
+
 - (id)initWithSuperVC:(UIViewController *)superVC;
 
 - (void)changeSendBtnWithPhoto:(BOOL)isPhoto;

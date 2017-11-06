@@ -67,6 +67,11 @@
 
 @implementation ChargeViewController
 
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [[SKPaymentQueue defaultQueue]removeTransactionObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -326,9 +331,13 @@
         NSLog(@"产品描述信息: %@" , product.localizedDescription);
         NSLog(@"价格: %@" , product.price);
         NSLog(@"Product id: %@" , product.productIdentifier);
-        payment =[SKPayment paymentWithProduct:product];
-        NSLog(@"---------发送购买请求------------");
-        [[SKPaymentQueue defaultQueue] addPayment:payment];
+        
+        if (product) {
+            payment =[SKPayment paymentWithProduct:product];
+            NSLog(@"---------发送购买请求------------");
+            [[SKPaymentQueue defaultQueue] addPayment:payment];
+        }
+        
     }
     
 }
@@ -381,6 +390,8 @@
                 //跳转到下一页去向服务器进行验证
                 CheckChargeViewController *controller = [[CheckChargeViewController alloc]initWithTransaction:transaction andProduct:_product];
                 [self.navigationController pushViewController:controller animated:YES];
+                
+                
                 
             } break;
             case SKPaymentTransactionStateFailed://交易失败
@@ -510,9 +521,6 @@
     
     
 }
-
-
-
 
 
 

@@ -204,10 +204,11 @@ typedef enum : NSUInteger {
 
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    
     if (scrollView ==  _noticeIndexView.scrollView) {
         CGFloat pageWidth = scrollView.frame.size.width;
         NSInteger page = scrollView.contentOffset.x / pageWidth;
-        [_noticeIndexView.segmentControl setSelectedIndex:page];
+        _noticeIndexView.segmentControl .selectedIndex = page;
     }
     
 }
