@@ -133,7 +133,7 @@
 /* 拨打帮助电话*/
 - (void)callForHelp{
 
-    NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",@"0532-34003426"];
+    NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",ServersPhone];
     UIWebView *callWebview = [[UIWebView alloc] init];
     [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
     [self.view addSubview:callWebview];

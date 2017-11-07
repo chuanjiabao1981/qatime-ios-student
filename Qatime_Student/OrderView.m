@@ -556,7 +556,7 @@
         if ([tutorium.status isEqualToString:@"teaching"]||[tutorium.status isEqualToString:@"pause"]||[tutorium.status isEqualToString:@"closed"]) {
             //已开课的
             _priceLabel.text = [NSString stringWithFormat:@"¥%@元(插班价)",tutorium.current_price];
-            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@(插班价)",tutorium.current_price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@",tutorium.current_price];
         }else if ([tutorium.status isEqualToString:@"missed"]||[tutorium.status isEqualToString:@"init"]||[tutorium.status isEqualToString:@"ready"]){
             //未开课
             _priceLabel.text = [NSString stringWithFormat:@"¥%@元",tutorium.price];
@@ -580,7 +580,7 @@
         if ([tutorium.status isEqualToString:@"teaching"]||[tutorium.status isEqualToString:@"pause"]||[tutorium.status isEqualToString:@"closed"]) {
             //已开课的
             _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元(插班价)",tutorium.current_price];
-            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00(插班价)",tutorium.current_price];
+            _totalMoneyLabel.text =[NSString stringWithFormat:@"¥%@.00",tutorium.current_price];
         }else if ([tutorium.status isEqualToString:@"missed"]||[tutorium.status isEqualToString:@"init"]||[tutorium.status isEqualToString:@"ready"]){
             //未开课
             _priceLabel.text = [NSString stringWithFormat:@"¥%@.00元",tutorium.price];

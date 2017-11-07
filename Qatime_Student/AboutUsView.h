@@ -10,14 +10,11 @@
 
 #import "YYLabel.h"
 
-@interface AboutUsView : UIScrollView
+@interface AboutUsView : UIView
 
-@property(nonatomic,strong) UIImageView *logo ;
-
-@property(nonatomic,strong) UILabel *aboutUs ;
 
 @property(nonatomic,strong) UITableView *menuTableView ;
 
-@property (nonatomic, strong) UILabel *versionLabel ;
+
 
 @end

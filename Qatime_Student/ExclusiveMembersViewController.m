@@ -110,22 +110,6 @@
                     
                 }
                 
-                //整理一下成员列表数组,把老师给弄到第一个
-                NSMutableArray *sortArr = @[].mutableCopy;
-                for (Members *mod in _membersArr) {
-                    [sortArr addObject:mod];
-                }
-//                //加完了学生再加个老师
-//                for (Members *mod in _membersArr) {
-//                    if ([mod.accid isEqualToString:_owner]) {
-//                        //把老师加到第一个里面去
-//                        [sortArr insertObject:mod atIndex:0];
-//                    }
-//                }
-                
-                //然后再把成员数组重置一下子
-                _membersArr = sortArr.mutableCopy;
-                
                 
                 [_membersTableView cyl_reloadData];
                 [_membersTableView.mj_header endRefreshing];
@@ -170,17 +154,10 @@
         cell.model = _membersArr[indexPath.row];
         [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
         
-        //判断老师
-        if (indexPath.row == 0) {
-            cell.name.textColor = BUTTONRED;
-            cell.character.textColor = BUTTONRED;
-            cell.character.text = @"老师";
-        }else{
-            cell.name.textColor = TITLECOLOR;
-            cell.character.textColor = TITLECOLOR;
-            cell.character.text = @"学生";
-            
-        }
+        cell.name.textColor = TITLECOLOR;
+        cell.character.textColor = TITLECOLOR;
+        cell.character.text = @"";
+        
     }
     
     return  cell;

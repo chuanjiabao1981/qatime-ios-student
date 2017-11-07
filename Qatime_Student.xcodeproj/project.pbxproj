@@ -236,6 +236,8 @@
 		5435D9521DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435D9511DD34C1B00DD4FCC /* TeacherPublicClassCollectionViewCell.m */; };
 		54366EA01EE102460071A5F9 /* GuestBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54366E9F1EE102460071A5F9 /* GuestBindingViewController.m */; };
 		54366EA71EE114AC0071A5F9 /* GuestBindingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54366EA61EE114AC0071A5F9 /* GuestBindingView.m */; };
+		54368E321FB0741D00CB6F07 /* AboutUsHead.m in Sources */ = {isa = PBXBuildFile; fileRef = 54368E311FB0741D00CB6F07 /* AboutUsHead.m */; };
+		54368E351FB0743300CB6F07 /* AboutUsFoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 54368E341FB0743300CB6F07 /* AboutUsFoot.m */; };
 		543771F71F7CDE8700451F38 /* M13ProgressViewRing.m in Sources */ = {isa = PBXBuildFile; fileRef = 543771F31F7CDE8600451F38 /* M13ProgressViewRing.m */; };
 		543771F81F7CDE8700451F38 /* M13ProgressViewPie.m in Sources */ = {isa = PBXBuildFile; fileRef = 543771F51F7CDE8600451F38 /* M13ProgressViewPie.m */; };
 		543890FF1F0656340017DF88 /* UITableView+SDAutoTableViewCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 543890FB1F0656340017DF88 /* UITableView+SDAutoTableViewCellHeight.m */; };
@@ -1216,6 +1218,10 @@
 		54366E9F1EE102460071A5F9 /* GuestBindingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestBindingViewController.m; sourceTree = "<group>"; };
 		54366EA51EE114AC0071A5F9 /* GuestBindingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestBindingView.h; sourceTree = "<group>"; };
 		54366EA61EE114AC0071A5F9 /* GuestBindingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestBindingView.m; sourceTree = "<group>"; };
+		54368E301FB0741D00CB6F07 /* AboutUsHead.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AboutUsHead.h; sourceTree = "<group>"; };
+		54368E311FB0741D00CB6F07 /* AboutUsHead.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AboutUsHead.m; sourceTree = "<group>"; };
+		54368E331FB0743300CB6F07 /* AboutUsFoot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AboutUsFoot.h; sourceTree = "<group>"; };
+		54368E341FB0743300CB6F07 /* AboutUsFoot.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AboutUsFoot.m; sourceTree = "<group>"; };
 		543771F31F7CDE8600451F38 /* M13ProgressViewRing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = M13ProgressViewRing.m; sourceTree = "<group>"; };
 		543771F41F7CDE8600451F38 /* M13ProgressViewPie.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = M13ProgressViewPie.h; sourceTree = "<group>"; };
 		543771F51F7CDE8600451F38 /* M13ProgressViewPie.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = M13ProgressViewPie.m; sourceTree = "<group>"; };
@@ -4377,6 +4383,10 @@
 				54652E171DEEB06200F4607C /* Cell */,
 				54652E061DEE9D1900F4607C /* AboutUsView.h */,
 				54652E071DEE9D1900F4607C /* AboutUsView.m */,
+				54368E301FB0741D00CB6F07 /* AboutUsHead.h */,
+				54368E311FB0741D00CB6F07 /* AboutUsHead.m */,
+				54368E331FB0743300CB6F07 /* AboutUsFoot.h */,
+				54368E341FB0743300CB6F07 /* AboutUsFoot.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -8486,6 +8496,7 @@
 				54C452071E9CA5DF002108F4 /* MyVideoClassViewController.m in Sources */,
 				54AB48DE1DED51A0008E3BC5 /* MyClassViewController.m in Sources */,
 				54B914A41E6D772900F377ED /* ProinceTableViewCell.m in Sources */,
+				54368E351FB0743300CB6F07 /* AboutUsFoot.m in Sources */,
 				543E233D1E2C78C800381F10 /* SetPayPasswordView.m in Sources */,
 				54294C7D1DDB373400677333 /* LivePlayerViewController.m in Sources */,
 				54774CFB1F44499A00150C05 /* ZLPhotoPickerCustomToolBarView.m in Sources */,
@@ -8556,6 +8567,7 @@
 				542C173E1DFA50760088DB3F /* Unpaid.m in Sources */,
 				54AC04B21E89398E00817767 /* NTESMeetingRolesManager.m in Sources */,
 				544B61FE1E9647F100D7B160 /* UIImage+LCActionSheet.m in Sources */,
+				54368E321FB0741D00CB6F07 /* AboutUsHead.m in Sources */,
 				54E5864B1FA6D43A00AE766A /* NoticeListViewController.m in Sources */,
 				542F4DB01F2AD7CE0070E321 /* MyExclusiveClass.m in Sources */,
 				54B914921E6D5B7F00F377ED /* CityChosenViewController.m in Sources */,

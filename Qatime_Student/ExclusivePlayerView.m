@@ -35,6 +35,13 @@
         _scrollView.showsHorizontalScrollIndicator = NO;
         _scrollView.contentSize = CGSizeMake(100, 100);
         
+        typeof(self) __weak weakSelf = self;
+        _segmentControl.indexChangeBlock = ^(NSInteger index) {
+            
+            [weakSelf.scrollView scrollRectToVisible:CGRectMake(weakSelf.scrollView.width_sd * index, 0, weakSelf.scrollView.width_sd, weakSelf.scrollView.height_sd) animated:YES];
+            
+        };
+        
         
     }
     return self;

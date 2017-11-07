@@ -80,6 +80,7 @@
 #import "UIViewController+Token.h"
 #import "HomeworkManage.h"
 #import "NSObject+Selector.h"
+#import "UIAlertController+Blocks.h"
 
 
 #define APP_WIDTH self.view.frame.size.width
@@ -143,6 +144,11 @@ typedef enum : NSUInteger {
 
     //横屏文件名
     NSString *_fileNameString;
+    
+    
+    //加一个被顶下去的bool
+    BOOL _outLogin;
+    
 }
 
 
@@ -452,7 +458,6 @@ bool ismute     = NO;
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationDidEnterBackground) name:@"ApplicationDidEnterBackground" object:nil];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationDidBecomeActive) name:@"ApplicationDidBecomeActive" object:nil];
-    
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordEnd) name:@"RecordFinished" object:nil];
     
@@ -1121,7 +1126,9 @@ bool ismute     = NO;
 - (void)viewLevelChangDifferent:(NSNotification *)notification{
     
     [_noticeVC.noticeList.mj_header beginRefreshing];
-    
+    if (isFullScreen) {
+        return;
+    }
     _barrage.hidden = YES;
 }
 
@@ -1129,6 +1136,9 @@ bool ismute     = NO;
 - (void)viewLevelChangSame:(NSNotification *)notification{
     
     [_noticeVC.noticeList cyl_reloadData];
+    if (isFullScreen) {
+        return;
+    }
     _barrage.hidden = NO;
 
 }
@@ -1466,12 +1476,9 @@ bool ismute     = NO;
             [_aBarrage start];
             [self mediaControlTurnToFullScreenModeWithMainView:_boardPlayerView];
             [self makeFloatingPlayer:_teacherPlayerView];
-            
         }
     }
-    
     [_aBarrage start];
-    
 }
 
 
@@ -1498,8 +1505,6 @@ bool ismute     = NO;
         [self mediaControlTurnToFullScreenModeWithMainView:_teacherPlayerView];
         [self makeFloatingPlayer:_boardPlayerView];
         
-        
-        
     }else if (_teacherPlayerView.becomeMainPlayer == YES){
         /* 条件2:摄像头是主屏*/
         [self turnToFullScreenMode:_boardPlayerView];
@@ -1515,9 +1520,7 @@ bool ismute     = NO;
         [_aBarrage.view updateLayout];
         [self mediaControlTurnToFullScreenModeWithMainView:_boardPlayerView];
         [self makeFloatingPlayer:_teacherPlayerView];
-        
     }
-    
 }
 
 #pragma mark- 在非平级视图下切换两个视图（大变小、小变大）
@@ -1655,7 +1658,6 @@ bool ismute     = NO;
     
     _viewsArrangementMode = SameLevel;
     
-    
 }
 
 /* 变成可移动视图*/
@@ -1772,8 +1774,6 @@ bool ismute     = NO;
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear");
-    
-    [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     
 }
 
@@ -1957,6 +1957,7 @@ bool ismute     = NO;
     if (fromInterfaceOrientation == UIInterfaceOrientationPortrait) {
         //从竖向转向别的方向
         [_aBarrage stop];
+        _barrage.hidden = NO;
         if (isFullScreen) {
         }else{
             isFullScreen = YES;
@@ -1990,6 +1991,10 @@ bool ismute     = NO;
         }else{
             isFullScreen = NO;
         }
+        
+        if (_viewsArrangementMode == DifferentLevel) {
+            _barrage.hidden = YES;
+        }
     }
     [_aBarrage start];
 }
@@ -2002,18 +2007,12 @@ bool ismute     = NO;
     //    [_aBarrage.view removeFromSuperview];
     /* 非屏状态下的点击事件*/
     if (isFullScreen == NO) {
-        
         [self returnLastPage];
-        
         [self syncUIStatus:YES];
-    
         /* 全屏状态下的点击事件*/
     }else if (isFullScreen == YES){
-        
         [self onClickScaleMode:self];
-        
     }
-    
 }
 
 //开始播放
@@ -2022,8 +2021,6 @@ bool ismute     = NO;
     
     [self.liveplayerBoard play];
     [self.liveplayerTeacher play];
-    
-    
     [self syncUIStatus:NO];
 }
 
@@ -2078,7 +2075,6 @@ bool ismute     = NO;
         self.controlOverlay.alpha = 1;
         NSLog(@"控制栏出现了");
     }];
-    
 }
 
 /* 控制层出现,不带动画*/
@@ -2222,7 +2218,6 @@ bool ismute     = NO;
     }else if(livePlayer == _liveplayerTeacher){
         NSLog(@"摄像头播放器开始播放视频!!!");
     }
-    
 }
 
 
@@ -2267,8 +2262,6 @@ bool ismute     = NO;
         
         [_boardPlayerView removeGestureRecognizer:_doubelTap];
         [_teacherPlayerView addGestureRecognizer:_doubelTap];
-        
-        
     }
     
     [self performSelector:@selector(switchBothScreen:)];
@@ -2394,6 +2387,8 @@ bool ismute     = NO;
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     
+    [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
@@ -2413,7 +2408,6 @@ bool ismute     = NO;
             [_barrage setImage:[UIImage imageNamed:@"barrage_on"] forState:UIControlStateNormal];
             [_aBarrage start];
         }
-        
     }else{
         if (barrageRunning == YES) {
             _aBarrage.view.hidden = YES;
@@ -2426,7 +2420,6 @@ bool ismute     = NO;
             [_barrage setImage:[UIImage imageNamed:@"barrage_on"] forState:UIControlStateNormal];
             [_aBarrage start];
         }
-        
     }
 }
 
@@ -2514,8 +2507,7 @@ bool ismute     = NO;
     }
     
 }
-    
-   
+
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
     
@@ -2572,7 +2564,11 @@ bool ismute     = NO;
         
         NSDictionary *dic= [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
-        [self loginStates:dic];
+        if (_outLogin == YES) {
+            
+        }else{
+            [self loginState:dic];
+        }
         
         NSLog(@"向服务器请求视频直播状态成功!");
         
@@ -3011,6 +3007,23 @@ bool ismute     = NO;
     [_liveplayerBoard setMute:NO];
     [_liveplayerTeacher setMute:NO];
     
+}
+
+- (void)loginState:(NSDictionary *)dataDic{
+    
+    if ([dataDic[@"status"]isEqualToNumber:@0]) {
+        if (dataDic[@"error"]) {
+            if ([dataDic[@"error"][@"code"]isEqualToNumber:@1002]) {
+                _outLogin = YES;
+                [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"您的账号正在使用其他同类客户端登录\n请重新登录" cancelButtonTitle:@"确定" destructiveButtonTitle:nil otherButtonTitles:nil tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                    [self loginAgain];
+                    self.loginAlertShow = NO;
+                }];
+                self.loginAlertShow = YES;
+                
+            }
+        }
+    }
 }
 
 

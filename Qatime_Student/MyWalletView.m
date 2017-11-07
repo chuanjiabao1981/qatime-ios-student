@@ -107,7 +107,7 @@
         _tips = [[UILabel alloc]init];
         _tips.textColor = TITLECOLOR;
         _tips.font = [UIFont systemFontOfSize:16*ScrenScale];
-        _tips.text = @"遇到问题请拨打客服电话0532-34003426";
+        _tips.text = [NSString stringWithFormat:@"遇到问题请拨打客服电话 %@",ServersPhone];
         NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc]initWithString:_tips.text];
         [attStr addAttributes:@{NSForegroundColorAttributeName:[UIColor blueColor]} range:NSMakeRange(11, 13)];
         _tips.attributedText = attStr;

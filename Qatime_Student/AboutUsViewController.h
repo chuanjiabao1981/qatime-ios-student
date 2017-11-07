@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "AboutUsView.h"
-
+#import "AboutUsHead.h"
+#import "AboutUsFoot.h"
 @interface AboutUsViewController : UIViewController
 
 @property(nonatomic,strong) AboutUsView *aboutUsView ;
+
+@property (nonatomic, strong) AboutUsHead *headView ;
+
+@property (nonatomic, strong) AboutUsFoot *footView ;
 
 @end

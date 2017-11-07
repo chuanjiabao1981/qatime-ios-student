@@ -23,6 +23,9 @@
 
 #import "SAMKeychain.h"
 
+#import "TutoriumInfoViewController.h"
+#import "ExclusiveInfoViewController.h"
+
 typedef NS_ENUM(NSUInteger, LoginType) {
     Normal =0, //账号密码登录
     Wechat,  //微信登录
@@ -86,7 +89,6 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
-    
     _navigationBar.titleLabel.text = @"登录";
     
     [self .view addSubview:_navigationBar];
@@ -94,6 +96,13 @@ typedef NS_ENUM(NSUInteger, LoginType) {
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+    
+    _navigationBar.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .topSpaceToView(self.view, 0)
+    .heightIs(Navigation_Height);
+    [_navigationBar updateLayout];
     
     needCheckCaptcha = NO;
     _wrongTimes = 0;
@@ -693,6 +702,14 @@ typedef NS_ENUM(NSUInteger, LoginType) {
 }
 
 - (void)returnLastPage{
+    
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isMemberOfClass:[TutoriumInfoViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"PopToRoot" object:nil];
+            return;
+        }
+    }
     
     [self.navigationController popViewControllerAnimated:YES];
 }

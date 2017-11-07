@@ -42,22 +42,22 @@
     /* 课程名称label 布局*/
     
     _className = [[UILabel alloc]init];
-    _className.font = TEXT_FONTSIZE;
+    _className.font = [UIFont systemFontOfSize:16];
     
     
     /* 课程时间*/
     _classDate = [[UILabel alloc]init];
-    [_classDate setFont:[UIFont systemFontOfSize:14*ScrenScale]];
+    [_classDate setFont:[UIFont systemFontOfSize:14]];
     _classDate.textColor = [UIColor lightGrayColor];
     
     _classTime = [[UILabel alloc]init];
-     [_classTime setFont:[UIFont systemFontOfSize:14*ScrenScale]];
+     [_classTime setFont:[UIFont systemFontOfSize:14]];
     _classTime.textColor = [UIColor lightGrayColor];
     
     /* 课程状态*/
     _status = [[UILabel alloc]init];
     _status.textColor = TITLECOLOR;
-    _status.font = [UIFont systemFontOfSize:15*ScrenScale];
+    _status.font = [UIFont systemFontOfSize:15];
     
     _class_status = @"".mutableCopy;
     
@@ -66,7 +66,7 @@
     /* 回放次数*/
     _replay = [[UIButton alloc]init];
     [_replay setTitleColor:BUTTONRED forState:UIControlStateNormal];
-    [_replay.titleLabel setFont:[UIFont systemFontOfSize:14*ScrenScale]];
+    [_replay.titleLabel setFont:[UIFont systemFontOfSize:14]];
     
     
     /* 全部进行布局*/

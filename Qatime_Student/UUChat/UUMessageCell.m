@@ -187,19 +187,19 @@
         [_noticeTipsContentView addSubview:_noticeTipsCategoryContent];
         
         _noticeTipsCategory = [[UILabel alloc]init];
-        _noticeTipsCategory.font = TEXT_FONTSIZE_MIN;
+        _noticeTipsCategory.font = ChatContentFont;
         _noticeTipsCategory.textColor = [UIColor whiteColor];
         _noticeTipsCategory.textAlignment = NSTextAlignmentCenter;
         [_noticeTipsCategoryContent addSubview:_noticeTipsCategory];
         
         //标题
         _noticeTipsTitle = [[UILabel alloc]init];
-        _noticeTipsTitle.font = TEXT_FONTSIZE_MIN;
+        _noticeTipsTitle.font = ChatContentFont;
         _noticeTipsTitle.textColor = [UIColor blackColor];
         [_noticeTipsContentView addSubview:_noticeTipsTitle];
         
         _notificationTipsTag = [[UILabel alloc]init];
-        _notificationTipsTag.font = TEXT_FONTSIZE_MIN;
+        _notificationTipsTag.font = ChatContentFont;
         _notificationTipsTag.textColor = TITLECOLOR;
         [_noticeTipsContentView addSubview:_notificationTipsTag];
         
@@ -706,7 +706,7 @@
                             image.preloadAllAnimatedImageFrames = YES;
                             YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
                             
-                            NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeScaleAspectFit attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
+                            NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeScaleAspectFit attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13] alignment:YYTextVerticalAlignmentCenter];
                             
                             
                             [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
@@ -860,7 +860,7 @@
                             image.preloadAllAnimatedImageFrames = YES;
                             YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
                             
-                            NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:12*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
+                            NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13] alignment:YYTextVerticalAlignmentCenter];
                             
                             [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
                         }

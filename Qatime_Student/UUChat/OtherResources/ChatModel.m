@@ -234,7 +234,7 @@ static NSString *previousTime = nil;
     
     NSString *URLStr = iconURL;
     [dataDic setObject:@(UUMessageFromMe) forKey:@"from"];
-    [dataDic setObject:dic[@"strTime"] forKey:@"strTime"];
+    [dataDic setObject:dic[@"strTime"]?dic[@"strTime"]:@"" forKey:@"strTime"];
     
     if (name ==nil) {
         name =@"";

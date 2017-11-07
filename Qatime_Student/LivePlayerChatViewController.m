@@ -175,7 +175,6 @@
         
         [[NSNotificationCenter defaultCenter]postNotificationName:@"MarkAllRead" object:_session];
     }
-    
 }
 
 
@@ -406,8 +405,6 @@
         [self makeMessages:messages];
         
     }];
-    
-    
 }
 
 /* 创建消息 - 加载历史消息*/
@@ -548,8 +545,8 @@
                     }
                     
                     
-                    [_chatTableView reloadData];
-                    [self tableViewScrollToBottom];
+//                    [_chatTableView reloadData];
+//                    [self tableViewScrollToBottom];
                     
                 }else if (message.messageType ==NIMMessageTypeImage){
                     /* 如果收到的消息类型是图片的话 */
@@ -719,28 +716,6 @@
                         
                         if (dic[@"event"]) {
                             if (dic[@"type"]){
-                                //这大概就是 什么作业了 什么问答了那种类型的消息了
-                                //不用加工数据,按照原数据直接写进Model就行了.改改方法
-                                //增加一个发送人吧.
-                                __block NSMutableDictionary *senders = dic.mutableCopy;
-                                
-                                for (Chat_Account *user in _userList) {
-                                    if ([user.accid isEqualToString:message.from]) {
-                                        [senders setValue:user.accid forKey:@"accid"];
-                                        [senders setValue:user.icon forKey:@"icon"];
-                                        [senders setValue:user.name forKey:@"name"];
-                                    }
-                                }
-                                if ([message.from isEqualToString:_chat_Account.accid]) {
-                                    [senders setValue:@"FromMe" forKey:@"from"];
-                                }else{
-                                    [senders setValue:@"FromOther" forKey:@"from"];
-                                }
-                                [senders setValue:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString] forKey:@"time"];
-                                
-                                [self.chatModel addSpecifiedNotificationTipsItem:senders];
-                                
-                            }else{
                                 
                                 if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
                                     result = @"直播关闭";
@@ -752,8 +727,8 @@
                                     result = @"老师开启了互动答疑";
                                 }
                                 [self.chatModel addSpecifiedNotificationItem:result];
-                                [self.chatTableView reloadData];
-                                [self tableViewScrollToBottom];
+                            }else{
+                                
                             }
                         }
                         
@@ -783,12 +758,7 @@
 
 - (void)sendNoticeIn{
     
-    //    //构造消息
-    //    NIMTipObject *tipObject = [NIMTipObject alloc];
-    //    NIMMessage *message     = [[NIMMessage alloc] init];
-    //    message.messageObject   = tipObject;
-    //    //发送消息
-    //    [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
+
     
 }
 
@@ -909,9 +879,6 @@
             
             [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
             
-            [self.chatTableView reloadData];
-            [self tableViewScrollToBottom];
-            
             [self sendBarrage:message.text];
         }
         
@@ -978,11 +945,7 @@
             //在这儿弄一下子 这个 富文本
             NSString *notice =[NSString stringWithFormat:@"%@更新了公告\n公告:%@",sender,messageText==nil?@"":messageText];
             [[NSNotificationCenter defaultCenter]postNotificationName:@"NewChatNotice" object:nil];
-            
             [self.chatModel addSpecifiedNotificationItem:notice];
-            
-            [self.chatTableView reloadData];
-            [self tableViewScrollToBottom];
         }else if (message.messageType == NIMMessageTypeCustom){
             
             //自定义消息 改为 课程的开启关闭
@@ -995,29 +958,7 @@
                 
                 if (dic[@"event"]) {
                     if (dic[@"type"]){
-                        //这大概就是 什么作业了 什么问答了那种类型的消息了
-                        //不用加工数据,按照原数据直接写进Model就行了.改改方法
-                        //增加一个发送人吧.
-                        __block NSMutableDictionary *senders = dic.mutableCopy;
-                        
-                        for (Chat_Account *user in _userList) {
-                            if ([user.accid isEqualToString:message.from]) {
-                                [senders setValue:user.accid forKey:@"accid"];
-                                [senders setValue:user.icon forKey:@"icon"];
-                                [senders setValue:user.name forKey:@"name"];
-                            }
-                        }
-                        if ([message.from isEqualToString:_chat_Account.accid]) {
-                            [senders setValue:@"FromMe" forKey:@"from"];
-                        }else{
-                            [senders setValue:@"FromOther" forKey:@"from"];
-                        }
-                        [senders setValue:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString] forKey:@"time"];
-                        
-                        [self.chatModel addSpecifiedNotificationTipsItem:senders];
-                        
-                    }else{
-                        
+                        //直播课没有作业
                         if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"type"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
                             result = @"直播关闭";
                         }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"type"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
@@ -1033,6 +974,8 @@
                             [self.chatTableView reloadData];
                             [self tableViewScrollToBottom];
                         }
+                    }else{
+                        
                     }
                 }
                 
@@ -1046,13 +989,15 @@
         
     }
     
+    [self.chatTableView reloadData];
+    [self tableViewScrollToBottom];
+    
 }
 
 /** 禁言 */
 - (void)shutUpTalking{
     _inputView.TextViewInput.placeholder = @"您已被禁言";
 }
-
 
 /** 可以继续发送消息 */
 - (void) keepOnTalking{
@@ -1199,9 +1144,8 @@
         }
     }
     [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-    [cell.contentView layoutIfNeeded];
+
     return cell;
-    
 }
 
 
@@ -1209,7 +1153,6 @@
     
     NSInteger height = 10;
     if (self.chatModel.dataSource.count>indexPath.row){
-        
         height =  [self.chatModel.dataSource[indexPath.row] cellHeight];
     }else{
         
@@ -1353,7 +1296,7 @@
                     image.preloadAllAnimatedImageFrames = YES;
                     YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
                     
-                    NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13*ScrenScale] alignment:YYTextVerticalAlignmentCenter];
+                    NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:imageView contentMode:UIViewContentModeCenter attachmentSize:imageView.size alignToFont:[UIFont systemFontOfSize:13] alignment:YYTextVerticalAlignmentCenter];
                     
                     [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
                     
@@ -1402,8 +1345,8 @@
             
         }
         
-        [self.chatTableView reloadData];
-        [self tableViewScrollToBottom];
+//        [self.chatTableView reloadData];
+//        [self tableViewScrollToBottom];
         
         [funcView changeSendBtnWithPhoto:YES];
     }
@@ -1510,13 +1453,7 @@
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatModel.dataSource.count-1 inSection:0];
     
     [self.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    
-//    [self.chatTableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    
-//    if (self.chatTableView.contentSize.height > self.chatTableView.frame.size.height){
-//        CGPoint offset = CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height);
-//        [self.chatTableView setContentOffset:offset animated:YES];
-//    }
+
 }
 
 #pragma mark- emoji表情键盘部分的方法
@@ -1619,7 +1556,7 @@
     
     // 获取通知信息字典
     NSDictionary* userInfo = [notification userInfo];
-    
+    [self endEdit];
     // 获取键盘隐藏动画时间
     NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSTimeInterval animationDuration;
@@ -1755,7 +1692,7 @@
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
     [self.view updateLayout];
-//    [_chatTableView layoutIfNeeded];
+
     _inputView.hidden = NO;
     [_inputView sd_clearAutoLayoutSettings];
     _inputView.sd_layout
@@ -1765,7 +1702,7 @@
     .heightIs(50);
     [_inputView updateLayout];
     [_chatTableView cyl_reloadData];
-    [_chatTableView setNeedsDisplay];
+    
 }
 
 

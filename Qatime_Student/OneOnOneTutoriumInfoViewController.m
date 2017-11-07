@@ -29,6 +29,7 @@
 #import "SnailQuickMaskPopups.h"
 #import "ShareViewController.h"
 #import "WXApiObject.h"
+#import "WXApi.h"
 
 
 @interface OneOnOneTutoriumInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,OneOnOneTeacherTableViewCellDelegate,UICollectionViewDelegate,UICollectionViewDataSource>{
@@ -681,6 +682,12 @@
     [_share.sharedView.wechatBtn addTarget:self action:@selector(wechatShare:) forControlEvents:UIControlEventTouchUpInside];
 }
 - (void)wechatShare:(UIButton *)sender{
+    [_pops dismissWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
+    }];
+    if (![WXApi isWXAppInstalled]) {
+        [self HUDStopWithTitle:@"您尚未安装微信"];
+        return;
+    }
     //在这儿传个参数.
     [_share sharedWithContentDic:@{
                                    @"type":@"link",
@@ -690,8 +697,7 @@
                                            @"link":[NSString stringWithFormat:@"%@/live_studio/interactive_courses/%@",Request_Header,_classID]
                                            }
                                    }];
-    [_pops dismissWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
-    }];
+    
 }
 
 - (void)sharedFinish:(NSNotification *)notification{

@@ -80,6 +80,9 @@
          contextName = "main:main.m">
       </ContextState>
       <ContextState
+         contextName = "__58-[TeachersPublicViewController requestTeachersInfoWithID:]_block_invoke:TeachersPublicViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[NoticeIndexViewController didSelectedWithSegement:index:]:NoticeIndexViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -149,6 +152,9 @@
       </ContextState>
       <ContextState
          contextName = "__65-[ExclusiveAskViewController requestDataWithType:andRefreshType:]_block_invoke_2:ExclusiveAskViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate onResp:]:AppDelegate.m">
       </ContextState>
       <ContextState
          contextName = "__43-[LivePlayerChatViewController viewDidLoad]_block_invoke:LivePlayerChatViewController.m">

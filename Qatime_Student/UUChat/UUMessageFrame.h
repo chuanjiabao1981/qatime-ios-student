@@ -19,8 +19,8 @@
 #define ChatContentBottom 10 //文本内容与按钮下边缘间隔
 #define ChatContentRight 20 //文本内容与按钮右边缘间隔
 
-#define ChatTimeFont [UIFont systemFontOfSize:11*ScrenScale]   //时间字体
-#define ChatContentFont [UIFont systemFontOfSize:14*ScrenScale]//内容字体
+#define ChatTimeFont [UIFont systemFontOfSize:11]   //时间字体
+#define ChatContentFont [UIFont systemFontOfSize:14]//内容字体
 
 #define ScrenScale [UIScreen mainScreen].bounds.size.width/414.0
 

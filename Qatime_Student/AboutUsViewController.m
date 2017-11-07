@@ -11,11 +11,12 @@
 #import "NavigationBar.h"
 #import "SnailQuickMaskPopups.h"
 #import "ShareViewController.h"
- 
+
 #import "AboutUsTableViewCell.h"
 #import "UIAlertController+Blocks.h"
 #import "WXApiObject.h"
 #import "UIViewController+HUD.h"
+#import "WXApi.h"
 
 @interface AboutUsViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
@@ -35,7 +36,7 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-      
+    self.automaticallyAdjustsScrollViewInsets = NO;
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), Navigation_Height)];
     
     _navigationBar.titleLabel.text = @"关于我们";
@@ -44,13 +45,30 @@
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     
-
-    _aboutUsView  = [[AboutUsView alloc]initWithFrame:CGRectMake(0, Navigation_Height, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-Navigation_Height)];
+    _aboutUsView  = [[AboutUsView alloc]initWithFrame:CGRectMake(0, _navigationBar.height_sd, self.view.width_sd, self.view.height_sd-_navigationBar.height_sd)];
     [self.view addSubview:_aboutUsView];
-   
+    _aboutUsView.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .bottomSpaceToView(self.view, 0)
+    .topSpaceToView(_navigationBar, 0);
     _aboutUsView.menuTableView.delegate = self;
     _aboutUsView.menuTableView.dataSource = self;
     
+    _headView = [[AboutUsHead alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 500)];
+    [self.view addSubview:_headView];
+    [_headView.aboutUs updateLayout];
+    [_headView updateLayout];
+    
+    _headView.frame = CGRectMake(0, 0, self.view.width_sd, _headView.aboutUs.bottom_sd+40*ScrenScale);
+    _footView = [[AboutUsFoot alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 100)];
+    [self.view addSubview:_footView];
+    [_footView.versionLabel updateLayout];
+    [_footView updateLayout];
+    _footView.frame = CGRectMake(0, 0, self.view.width_sd, _footView.versionLabel.bottom_sd+30*ScrenScale);
+    _aboutUsView.menuTableView.tableHeaderView = _headView;
+    _aboutUsView.menuTableView.tableFooterView = _footView;
+
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sharedFinish:) name:@"SharedFinish" object:nil];
 }
 
@@ -97,7 +115,7 @@
     
     return  cell;
     
-
+    
     
 }
 
@@ -105,21 +123,21 @@
     
     if (indexPath.row ==0) {
         
-//        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否拨打电话0353-2135828?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-//           
-//            if (buttonIndex!=0) {
+        //        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"是否拨打电话0353-2135828?" cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+        //
+        //            if (buttonIndex!=0) {
         
-//                NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://0353-2135828"];
-                
-//                [[UIApplication sharedApplication]openURL:[NSURL URLWithString:str]];
+        //                NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://0353-2135828"];
+        
+        //                [[UIApplication sharedApplication]openURL:[NSURL URLWithString:str]];
         
         NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",ServersPhone];
         UIWebView *callWebview = [[UIWebView alloc] init];
         [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
         [self.view addSubview:callWebview];
-//        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",ServersPhone]]];
-//            }
-//        }];
+        //        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",ServersPhone]]];
+        //            }
+        //        }];
     }
     else if (indexPath.row == 2){
         
@@ -140,6 +158,13 @@
 }
 
 - (void)wechatShare:(UIButton *)sender{
+    
+    [_pops dismissWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
+    }];
+    if (![WXApi isWXAppInstalled]) {
+        [self HUDStopWithTitle:@"您尚未安装微信"];
+        return;
+    }
     //在这儿传个参数.
     [_share sharedWithContentDic:@{
                                    @"type":@"link",
@@ -148,8 +173,7 @@
                                            @"description":@"制造互联乐享教育-答疑时间与您共筑教育梦!",
                                            @"link":Request_Header
                                            }}];
-    [_pops dismissWithAnimated:YES completion:^(BOOL finished, SnailQuickMaskPopups * _Nonnull popups) {
-    }];
+    
     
 }
 
@@ -169,7 +193,7 @@
 - (void)returnLastPage{
     
     [self.navigationController popViewControllerAnimated:YES];
-       
+    
     
 }
 
@@ -179,13 +203,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

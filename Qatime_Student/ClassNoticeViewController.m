@@ -50,7 +50,6 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(newNotice) name:@"NewNotice" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(newNotice) name:@"NewChatNotice" object:nil];
-    
     _noticeList.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _noticeArray = @[].mutableCopy;
         [self getNoticeData];
@@ -66,6 +65,7 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
             //成功了嘛
+            _noticeArray = @[].mutableCopy;
             for (NSDictionary *notices in dic[@"data"][@"announcements"]) {
                 Notice *mod = [Notice yy_modelWithJSON:notices];
                 if (mod.lastest) {
@@ -118,7 +118,7 @@
 
 //收到信公告消息.
 - (void)newNotice{
-    [self getNoticeData];
+    [_noticeList.mj_header beginRefreshing];
 }
 
 - (UIView *)makePlaceHolderView{
