@@ -10,14 +10,12 @@
 #import "TeachersPublicHeaderView.h"
 #import "TeachersPublicCollectionView.h"
 
-
 @interface TeachersPublicViewController : UIViewController
 
 /**教师课程列表页*/
 @property(nonatomic,strong) TeachersPublicCollectionView *teachersPublicCollectionView ;
 /**教师ID*/
 @property(nonatomic,strong) NSString *teacherID ;
-
 
 /**
  传入教师id,访问教师信息

@@ -143,7 +143,6 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sharedFinish:) name:@"SharedFinish" object:nil];
 }
 
-
 //加载视图
 - (void)setupViews{
     
@@ -1673,6 +1672,8 @@
 
 /* 返回上一页*/
 - (void)returnLastPage{
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"Refresh" object:nil];
     
     [self.navigationController popViewControllerAnimated:YES];
 }

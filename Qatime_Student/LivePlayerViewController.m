@@ -526,12 +526,12 @@ bool ismute     = NO;
         _.layer.borderWidth = 0.6f;
         _.layer.borderColor = [UIColor grayColor].CGColor;
         
+        
         /* 老师播放器为主要播放器*/
         _.becomeMainPlayer=NO;
         _;
     });
 
-    
 }
 
 /* 初始化播放器*/
@@ -843,7 +843,7 @@ bool ismute     = NO;
     //显示模式按钮
     _scaleModeBtn = ({
         UIButton *_= [UIButton buttonWithType:UIButtonTypeCustom];
-        [_ setImage:[UIImage imageNamed:@"scale"] forState:UIControlStateNormal];
+        [_ setImage:[UIImage imageNamed:@"btn_player_scale01"] forState:UIControlStateNormal];
         if ([_mediaType isEqualToString:@"localAudio"]) {
             _.hidden = YES;
         }
@@ -883,7 +883,6 @@ bool ismute     = NO;
     _tileScreen = ({
         UIButton *_=[[UIButton alloc]init];
         [_ setImage:[UIImage imageNamed:@"tile"] forState:UIControlStateNormal];
-        
         _.alpha = 0.8;
         [_bottomControlView addSubview:_];
         _.sd_layout
@@ -1315,8 +1314,8 @@ bool ismute     = NO;
         /* 条件1：在平级视图情况下切换分屏*/
         if (_viewsArrangementMode == SameLevel) {
             
+            [_tileScreen setImage:[UIImage imageNamed:@"tile_off"] forState:UIControlStateNormal];
             /* 副视图要切换成悬浮视图*/
-            
             /* 条件1-1：如果白板是副视图*/
             if (_boardPlayerView.becomeMainPlayer==NO) {
                 
@@ -1345,8 +1344,13 @@ bool ismute     = NO;
             }
             
             /* 切换成非平级视图后,弹幕不可点不可用*/
-            _barrage.enabled = NO;
-            _barrage.hidden = YES;
+            if (isFullScreen) {
+                _barrage.enabled = YES;
+                _barrage.hidden = NO;
+            }else{
+                _barrage.enabled = NO;
+                _barrage.hidden = YES;
+            }
             [_barrage setImage:[UIImage imageNamed:@"barrage_off"] forState:UIControlStateNormal];
             _maskView.hidden = YES;
             [_aBarrage stop];
@@ -1356,6 +1360,7 @@ bool ismute     = NO;
         //
         else if (_viewsArrangementMode == DifferentLevel) {
             
+            [_tileScreen setImage:[UIImage imageNamed:@"tile"] forState:UIControlStateNormal];
             /* 条件2-1：如果白板是主视图*/
             if (_boardPlayerView.becomeMainPlayer == YES) {
                 /* 教室切换为副视图*/
@@ -1393,8 +1398,14 @@ bool ismute     = NO;
                 
             }
             /* 切换回平级视图,弹幕可用,弹幕按钮可用*/
-            _barrage.enabled = YES;
-            _barrage.hidden = NO;
+            if (isFullScreen) {
+                _barrage.enabled = NO;
+                _barrage.hidden = YES;
+            }else{
+                _barrage.enabled = YES;
+                _barrage.hidden = NO;
+            }
+            
             [_barrage setImage:[UIImage imageNamed:@"barrage_on"] forState:UIControlStateNormal];
             _maskView.hidden = NO;
             [_aBarrage start];
@@ -1764,6 +1775,8 @@ bool ismute     = NO;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    //设置屏幕常亮
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
 }
 
 - (BOOL)prefersStatusBarHidden{
@@ -1958,6 +1971,7 @@ bool ismute     = NO;
         //从竖向转向别的方向
         [_aBarrage stop];
         _barrage.hidden = NO;
+        _barrage.enabled = YES;
         if (isFullScreen) {
         }else{
             isFullScreen = YES;
@@ -2131,8 +2145,31 @@ bool ismute     = NO;
 
 /* 刷新播放功能*/
 - (void)refreshVideo:(id)sender{
+    [self refresh];
+   
+}
+
+- (void)refresh{
+    [self setupBoardPlayer];
+    [_boardPlayerView updateLayout];
+    [_boardPlayerView makePlaceHolderImage:nil];
+    [_liveplayerBoard shouldAutoplay];
+    [_liveplayerBoard play];
+    [self setupTeacherPlayer];
+    [_teacherPlayerView updateLayout];
+    [_teacherPlayerView makePlaceHolderImage:nil];
+    [_liveplayerTeacher shouldAutoplay];
+    [_liveplayerTeacher play];
     
+    if (_boardPlayerView.canMove) {
+        [self.view bringSubviewToFront:_boardPlayerView];
+    }
     
+    if (_teacherPlayerView.canMove) {
+        [self.view bringSubviewToFront:_teacherPlayerView];
+    }
+    
+    [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:CHECKTIME];
 }
 
 #pragma mark- 直播结束的回调
@@ -2381,14 +2418,14 @@ bool ismute     = NO;
         [UIView animateWithDuration:animationDuration animations:^{
             
         }];
-        
     }
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     
     [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    
+    //关闭屏幕常亮
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
@@ -2941,7 +2978,14 @@ bool ismute     = NO;
 /* 把弹幕给释放掉*/
 -(void)dealloc{
     
-    
+    if (_liveplayerTeacher) {
+        [_liveplayerTeacher shutdown];
+        _liveplayerTeacher = nil;
+    }
+    if (_liveplayerBoard) {
+        [_liveplayerBoard shutdown];
+        _liveplayerBoard = nil;
+    }
 }
 
 -(void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message{
@@ -2949,7 +2993,6 @@ bool ismute     = NO;
     [funcView.TextViewInput resignFirstResponder];
     funcView.TextViewInput.text = @"";
 }
-
 
 /** 应用进入后台 */
 - (void)applicationEnterBackground{
@@ -2966,14 +3009,12 @@ bool ismute     = NO;
     [_boardPlayerView makePlaceHolderImage:[UIImage imageNamed:@"video_LoadingHolder_Landscape"]];
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(checkVideoStatus) object:nil];
-    
 }
 
 - (void)applicationEnterForeGround{
  
     
 }
-
 
 /** 进入到活动状态 */
 - (void)applicationBecomeActive{
@@ -2997,7 +3038,6 @@ bool ismute     = NO;
         [self.view bringSubviewToFront:_teacherPlayerView];
     }
     
-    
     [self performSelector:@selector(checkVideoStatus) withObject:nil afterDelay:CHECKTIME];
     
 }
@@ -3020,7 +3060,6 @@ bool ismute     = NO;
                     self.loginAlertShow = NO;
                 }];
                 self.loginAlertShow = YES;
-                
             }
         }
     }

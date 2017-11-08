@@ -1001,8 +1001,8 @@
                                     [decodeParm addObject:@"videoOnDemand"];
                                     
                                     VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+                                    video.modalPresentationStyle = UIModalPresentationFullScreen;
                                     [self presentViewController:video animated:YES completion:^{
-                                        
                                     }];
                                 }
                                 

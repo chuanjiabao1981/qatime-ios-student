@@ -1234,8 +1234,8 @@ bool ismute     = NO;
         /* 条件1：在平级视图情况下切换分屏*/
         if (_viewsArrangementMode == SameLevel) {
             
+            [_tileScreen setImage:[UIImage imageNamed:@"tile_off"] forState:UIControlStateNormal];
             /* 副视图要切换成悬浮视图*/
-            
             /* 条件1-1：如果白板是副视图*/
             if (_boardPlayerView.becomeMainPlayer==NO) {
                 
@@ -1275,6 +1275,7 @@ bool ismute     = NO;
         //
         else if (_viewsArrangementMode == DifferentLevel) {
             
+            [_tileScreen setImage:[UIImage imageNamed:@"tile"] forState:UIControlStateNormal];
             /* 条件2-1：如果白板是主视图*/
             if (_boardPlayerView.becomeMainPlayer == YES) {
                 /* 教室切换为副视图*/

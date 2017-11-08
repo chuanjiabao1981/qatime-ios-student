@@ -49,6 +49,8 @@ typedef enum : NSUInteger {
     ReplayLessonInfo *_replayLessonInfo;
     
     BOOL _isMediaSliderBeingDragged;
+    
+    NSURL *_playURL;
 }
 
 /**播放器相关的属性*/
@@ -110,18 +112,18 @@ typedef enum : NSUInteger {
     [self setupMainView];
     
     //加载播放器
-    NSURL *playURL = [NSURL URLWithString:_replayLesson.video_url];
+    _playURL = [NSURL URLWithString:_replayLesson.video_url];
 //    NSURL *playURL = [NSURL URLWithString:@"http://baobab.wdjcdn.com/14525705791193.mp4"];
     
     //加载播放器
-    [self setupVideoPlayerWithURL:playURL];
+    [self setupVideoPlayerWithURL:_playURL];
     
     /* 播放器的设置*/
     [_videoPlayer setBufferStrategy:NELPAntiJitter]; //本地视频和点播的速率解析
     [_videoPlayer setScalingMode:NELPMovieScalingModeAspectFit]; //设置画面显示模式，默认原始大小
     [_videoPlayer setShouldAutoplay:YES]; //设置prepareToPlay完成后是否自动播放
     [_videoPlayer setHardwareDecoder:NO]; //设置解码模式，是否开启硬件解码
-    [_videoPlayer setPauseInBackground:NO]; //设置切入后台时的状态，暂停还是继续播放
+    [_videoPlayer setPauseInBackground:YES]; //设置切入后台时的状态，暂停还是继续播放
     [_videoPlayer setPlaybackTimeout:15 *1000]; // 设置拉流超时时间
     [_videoPlayer prepareToPlay]; //初始化视频文件
     NSInteger fildTime = 0;
@@ -135,9 +137,8 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(onDeviceOrientationChange) name:UIDeviceOrientationDidChangeNotification object:nil
      ];
     
-    /* 支持全屏*/
-    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"SupportedLandscape"];
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refresh) name:@"Refresh" object:nil];
     //请求回放信息
     [self requestReplyInfo];
 
@@ -209,7 +210,6 @@ typedef enum : NSUInteger {
         }
         [NELivePlayerController setLogLevel:NELP_LOG_DEFAULT];//输出详细的加载信息
         _videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-        
     }
     
     if (!_mediaControl) {
@@ -457,6 +457,12 @@ typedef enum : NSUInteger {
     
     
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    /* 支持全屏*/
+    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"SupportedLandscape"];
+}
+
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
@@ -470,30 +476,26 @@ typedef enum : NSUInteger {
     
     [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"SupportedLandscape"];
     
-    [self.videoPlayer shutdown]; //退出播放并释放相关资源
-    [self.videoPlayer.view removeFromSuperview];
-    self.videoPlayer = nil;
+}
+
+- (void)refresh{
     
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerDidPreparedToPlayNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerLoadStateChangedNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerPlaybackFinishedNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstVideoDisplayedNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstAudioDisplayedNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerVideoParseErrorNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerMoviePlayerSeekCompletedNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIDeviceOrientationDidChangeNotification object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"TurnDownFullScreen" object:_videoPlayer];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"FullScreen" object:_videoPlayer];
+    if (_videoPlayer) {
+        [_videoPlayer play];
+    }
     
 }
+
 
 /** 加载教师信息 */
 - (void)teacherInfo{
     
+    if (_videoPlayer) {
+        [_videoPlayer pause];
+    }
     TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:_replayLessonInfo.teacher.teacherID];
     [[UIApplication sharedApplication]setStatusBarHidden:NO];
     [self.navigationController pushViewController:controller animated:YES];
-    
 }
 
 dispatch_source_t CreateDispatchSyncUITimer2(double interval, dispatch_queue_t queue, dispatch_block_t block){
@@ -568,11 +570,8 @@ dispatch_source_t CreateDispatchSyncUITimer2(double interval, dispatch_queue_t q
 - (void)onClickBack:(id)sender{
     /* 非屏状态下的点击事件*/
     if (isFullScreen == NO) {
-        [self.navigationController popViewControllerAnimated:YES];
-        //
-        
+        [self returnLastPage];
         NSLog(@"click back!");
-        
         /* 全屏状态下的点击事件*/
     }else if (isFullScreen == YES){
         
@@ -972,6 +971,34 @@ dispatch_source_t CreateDispatchSyncUITimer2(double interval, dispatch_queue_t q
     .bottomSpaceToView(self.bottomControlView,0)
     .widthEqualToHeight();
     
+}
+
+- (void)returnLastPage{
+    
+    
+    @try {
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerDidPreparedToPlayNotification object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerLoadStateChangedNotification object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerPlaybackFinishedNotification object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstVideoDisplayedNotification object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerFirstAudioDisplayedNotification object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerVideoParseErrorNotification object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerMoviePlayerSeekCompletedNotification object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:UIDeviceOrientationDidChangeNotification object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:@"TurnDownFullScreen" object:_videoPlayer];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:@"FullScreen" object:_videoPlayer];
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+    
+    
+    [self.videoPlayer shutdown]; //退出播放并释放相关资源
+    [self.videoPlayer.view removeFromSuperview];
+    self.videoPlayer = nil;
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
