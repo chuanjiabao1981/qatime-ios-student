@@ -37,7 +37,7 @@
         self.second.frame =CGRectMake(5, self.voiceBackView.centerY_sd, 70, 30);
         self.second.textAlignment = NSTextAlignmentLeft;
         self.second.textColor = [UIColor colorWithRed:0.43 green:0.43 blue:0.43 alpha:1.00];
-        self.second.font = [UIFont systemFontOfSize:14*ScrenScale];
+        self.second.font = [UIFont systemFontOfSize:13];
         self.voice = [[UIImageView alloc]initWithFrame:CGRectMake(80, 5, 20, 20)];
         self.voice.image = [UIImage imageNamed:@"chat_animation_white3"];
         self.voice.animationImages = [NSArray arrayWithObjects:

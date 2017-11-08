@@ -84,6 +84,21 @@
     return self;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+     self.tabBarController.tabBar.hidden = YES;
+}
+
+-(void)viewDidDisappear:(BOOL)animated{
+    
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -1001,9 +1016,18 @@
                                     [decodeParm addObject:@"videoOnDemand"];
                                     
                                     VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
-                                    video.modalPresentationStyle = UIModalPresentationFullScreen;
+//                                    video.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+                                    video.hidesBottomBarWhenPushed = YES;
+//                                    self.definesPresentationContext = YES;
+                                    typeof(self) __weak weakSelf = self;
                                     [self presentViewController:video animated:YES completion:^{
+                                        weakSelf.tabBarController.tabBar.hidden = YES;
                                     }];
+                                    
+                                    video.dismissed = ^{
+                                        weakSelf.tabBarController.tabBar.hidden = YES;
+                                    };
+//                                    [self.navigationController pushViewController:video animated:YES];
                                 }
                                 
                             }else{

@@ -1077,7 +1077,6 @@
         .topSpaceToView(_noticeTipsContentView, 10*ScrenScale)
         .autoHeightRatio(0);
         
-        
         _notificationTipsTag.sd_layout
         .rightSpaceToView(_noticeTipsContentView, 10*ScrenScale)
         .bottomSpaceToView(_noticeTipsContentView, 5*ScrenScale)

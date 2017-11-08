@@ -11,6 +11,7 @@
 #import "NELivePlayer.h"
 #import "NELivePlayerController.h"
 
+typedef void(^Dismissed)();
 
 @class NELivePlayerControl;
 @interface VideoPlayerViewController : UIViewController
@@ -60,7 +61,7 @@
 @property (nonatomic, strong) UIButton *resolutionBtn;
 @property (nonatomic, strong) NSString *videoTitle;
 
-
+@property (nonatomic, copy) Dismissed dismissed ;
 
 @end
 

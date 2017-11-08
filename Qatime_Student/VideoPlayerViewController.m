@@ -265,6 +265,7 @@ int mCurrentPostion;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    
     if ([self.mediaType isEqualToString:@"livestream"] ) {
         [self.liveplayer setBufferStrategy:NELPLowDelay]; // 直播低延时模式
     }
@@ -420,6 +421,7 @@ int mCurrentPostion;
 - (void)onClickBack:(id)sender
 {
     NSLog(@"click back!");
+    
     [self.liveplayer shutdown]; // 退出播放并释放相关资源
     [self.liveplayer.view removeFromSuperview];
     self.liveplayer = nil;
@@ -432,9 +434,18 @@ int mCurrentPostion;
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerPlaybackStateChangedNotification object:_liveplayer];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NELivePlayerMoviePlayerSeekCompletedNotification object:_liveplayer];
     
+    
+    self.hidesBottomBarWhenPushed = YES;
+    typeof(self) __weak weakSelf = self;
+    
     if (self.presentingViewController) {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
+            if (_dismissed) {
+                weakSelf.dismissed();
+            }
+        }];
     }
+
 }
 
 //seek操作
@@ -453,7 +464,6 @@ int mCurrentPostion;
     NSTimeInterval currentPlayTime = self.videoProgress.value;
     mCurrentPostion = (int)currentPlayTime;
     self.currentTime.text = [NSString stringWithFormat:@"%02d:%02d:%02d", (int)(mCurrentPostion / 3600), (int)(mCurrentPostion > 3600 ? (mCurrentPostion - (mCurrentPostion / 3600)*3600) / 60 : mCurrentPostion/60), (int)(mCurrentPostion % 60)];
-
 }
 
 - (void)onClickSeekTouchUpInside:(id)sender
@@ -677,7 +687,9 @@ dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t qu
                 alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"直播结束" preferredStyle:UIAlertControllerStyleAlert];
                 action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
                     if (self.presentingViewController) {
-                        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                        [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
+                            
+                        }];
                     }}];
                 [alertController addAction:action];
                 [self presentViewController:alertController animated:YES completion:nil];
@@ -689,7 +701,9 @@ dispatch_source_t CreateDispatchSyncUITimer(double interval, dispatch_queue_t qu
             alertController = [UIAlertController alertControllerWithTitle:@"注意" message:@"播放失败" preferredStyle:UIAlertControllerStyleAlert];
             action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
                 if (self.presentingViewController) {
-                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                    [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
+                        
+                    }];
                 }
             }];
             [alertController addAction:action];
