@@ -47,7 +47,7 @@
 #import "NetWorkTool.h"
 #import "NSDate+Utils.h"
 
-@interface ExclusiveChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate,PhotoBrowserDelegate,NIMTeamManagerDelegate,UUInputFunctionViewRecordDelegate>{
+@interface ExclusiveChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate,PhotoBrowserDelegate,NIMTeamManagerDelegate,UUInputFunctionViewRecordDelegate,UUInputFunctionViewRecordDelegate,NotificationTipsDelegat>{
     
     /* 聊天室的信息*/
     //    TutoriumListInfo *_tutoriumInfo;
@@ -563,7 +563,6 @@
                 }else if (message.messageType ==NIMMessageTypeImage){
                     /* 如果收到的消息类型是图片的话 */
                     
-                    
                     /* 如果消息是自己发的*/
                     if ([message.from isEqualToString:_chat_Account.accid]){
                         
@@ -719,7 +718,6 @@
                     [self.chatModel addSpecifiedNotificationItem:notice];
                     
                 }else if (message.messageType == NIMMessageTypeCustom){
-                    
                     //自定义消息 改为 课程的开启关闭
                     if ([message valueForKeyPath:@"rawAttachContent"]!=nil) {
                         NSLog(@"%@",[message valueForKeyPath:@"rawAttachContent"]);
@@ -916,9 +914,8 @@
             NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:senderName andIcon:iconURL type:UUMessageTypeText andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]andMessage:message]];
             
             [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
-
-            [self sendBarrage:message.text];
             
+            [self sendBarrage:message.text];
         }
         
         /* 如果收到的是图片消息*/
@@ -926,7 +923,6 @@
             
         }else if (message.messageType == NIMMessageTypeAudio){
             /* 如果收到的是音频消息*/
-            
             
         }else if (message.messageType == NIMMessageTypeNotification){
             /** 收到公告消息a */
@@ -981,13 +977,11 @@
                     sender = [user valueForKeyPath: @"name"];
                 }
             }
-            
             //在这儿弄一下子 这个 富文本
             NSString *notice =[NSString stringWithFormat:@"%@更新了公告\n公告:%@",sender,messageText==nil?@"":messageText];
             [[NSNotificationCenter defaultCenter]postNotificationName:@"NewChatNotice" object:nil];
             [self.chatModel addSpecifiedNotificationItem:notice];
         }else if (message.messageType == NIMMessageTypeCustom){
-            
             //自定义消息 改为 课程的开启关闭
             if ([message valueForKeyPath:@"rawAttachContent"]!=nil) {
                 NSLog(@"%@",[message valueForKeyPath:@"rawAttachContent"]);
@@ -997,9 +991,7 @@
                 NSString *result;
                 
                 if (dic[@"event"]) {
-                    
                     if (dic[@"type"]){
-                        
                         if ([dic[@"type"]isEqualToString:@"LiveStudio::Homework"]||[dic[@"type"]isEqualToString:@"LiveStudio::Question"]||[dic[@"type"]isEqualToString:@"LiveStudio::Answer"]||[dic[@"type"]isEqualToString:@"Resource::File"]) {
                             
                             
@@ -1042,8 +1034,18 @@
                         }
                         
                     }else{
-                        
+                        if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                            result = @"直播关闭";
+                        }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                            result = @"直播开启";
+                        }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                            result = @"老师关闭了互动答疑";
+                        }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                            result = @"老师开启了互动答疑";
+                        }
+                        [self.chatModel addSpecifiedNotificationItem:result];
                     }
+                
                 }
                 
             }else{
@@ -1123,7 +1125,6 @@
     }else if (message.messageType == NIMMessageTypeAudio){
         /* 收到语音消息*/
         NSLog(@"收到语音");
-        
         /* 在本地创建对方的消息消息*/
         NSString *iconURL = @"".mutableCopy;
         NSString *senderName = @"".mutableCopy;
@@ -1200,6 +1201,7 @@
         
         cell.delegate = self;
         cell.photoDelegate = self;
+        cell.notificationTipsDelegate = self;
         [cell setMessageFrame:self.chatModel.dataSource[indexPath.row]];
         
         /* 消息发送状态*/
@@ -1285,13 +1287,11 @@
 #pragma mark - 聊天页面 发送文字聊天信息的回调
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message{
     
-    
     if (_shutUp==YES) {
         
         [self HUDStopWithTitle:@"您已被禁言"];
         
     }else{
-        
         if ([funcView.TextViewInput.text isEqualToString:@""]||funcView.TextViewInput.text==nil) {
             
             [self HUDStopWithTitle:@"请输入聊天内容!"];
@@ -1404,7 +1404,7 @@
             text_message.text = title;
             text_message.messageObject = NIMMessageTypeText;
             text_message.apnsContent = @"发来了一条消息";
-            
+           
             [[NIMSDK sharedSDK].chatManager addDelegate:self];
             [[NIMSDK sharedSDK].chatManager sendMessage:text_message toSession:_session error:nil];
             

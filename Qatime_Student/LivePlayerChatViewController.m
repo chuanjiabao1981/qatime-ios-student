@@ -200,7 +200,6 @@
         UUInputFunctionView *_=[[UUInputFunctionView alloc]initWithSuperVC:self];
         [_.btnChangeVoiceState addTarget:self action:@selector(emojiKeyboardShow:) forControlEvents:UIControlEventTouchUpInside];
         _.TextViewInput.placeholder = @"请输入要发送的信息";
-        
         _;
     });
     
@@ -550,7 +549,6 @@
                     
                 }else if (message.messageType ==NIMMessageTypeImage){
                     /* 如果收到的消息类型是图片的话 */
-                    
                     
                     /* 如果消息是自己发的*/
                     if ([message.from isEqualToString:_chat_Account.accid]){

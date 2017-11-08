@@ -10,7 +10,6 @@
 
 @interface UUMessageContentButton ()
 
-
 @property(nonatomic,strong) YYTextView  *tView ;
 
 @end
@@ -71,7 +70,6 @@
         self.title.textAlignment = NSTextAlignmentCenter;
         self.title.userInteractionEnabled = YES;
         self.title.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10);
-        
         
         self.contentTextView = [[YYTextView alloc]init];
         

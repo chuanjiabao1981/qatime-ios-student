@@ -69,11 +69,9 @@
 #import "ExclusiveCoursewareViewController.h"
 #import "ClassMembersViewController.h"
 #import "ExclusiveInfo.h"
+#import "NSDate+Utils.h"
 
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UUMessageCellDelegate,UUInputFunctionViewDelegate,NIMChatManagerDelegate,NIMLoginManagerDelegate,UUMessageCellDelegate,NIMMediaManagerDelegate/*,IFlySpeechRecognizerDelegate*/,PhotoBrowserDelegate,NIMMediaManagerDelegate,NotificationTipsDelegat,UUInputFunctionViewRecordDelegate>{
-    
-    NSString *_token;
-    NSString *_idNumber;
     
     /* 聊天室的信息*/
     id _tutoriumInfo;
@@ -148,10 +146,8 @@
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
         _.titleLabel.text = [_tutoriumInfo valueForKey:@"name"];
         
-        //
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-        
         [_.rightButton setImage:[UIImage imageNamed:@"Enter"] forState:UIControlStateNormal];
         [_.rightButton addTarget:self action:@selector(enterLive) forControlEvents:UIControlEventTouchUpInside];
         
@@ -177,11 +173,8 @@
         _.frame = CGRectMake(0, self.view.height_sd-50, self.view.width_sd, 50);
         [_.btnChangeVoiceState addTarget:self action:@selector(emojiKeyboardShow:) forControlEvents:UIControlEventTouchUpInside];
         _.TextViewInput.placeholder = @"请输入要发送的信息";
-        
         _.delegate= self;
-        
         _.recordDelegate = self;
-        
         [self.view addSubview:_];
         _;
     });
@@ -190,7 +183,6 @@
         //导航栏右侧按钮
         [self setupNavigationButton];
     }
-    
 }
 
 - (void)viewDidLoad {
@@ -244,7 +236,6 @@
                 [self keepOnTalking];
             }
         }
-        
     }];
     
     NSLog(@"%ld",[[[NIMSDK sharedSDK]conversationManager] allUnreadCount]);
@@ -259,14 +250,6 @@
     
     [self registerForKeyboardNotifications];
     
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
     
     /* 获取一次所有成员信息*/
     [self requestChatTeamUser];
@@ -288,7 +271,7 @@
     /* 添加录音是否取消的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(recordCancel) name:@"RecordCancel" object:nil];
     
-//    [[NIMSDK sharedSDK].mediaManager addDelegate:self];
+    //    [[NIMSDK sharedSDK].mediaManager addDelegate:self];
     
 }
 
@@ -382,7 +365,7 @@
             break;
         case 2:{
             [self HUDStopWithTitle:nil];
-             controller = [[ExclusiveHomeworkViewController alloc]initWithClassID:_classID];
+            controller = [[ExclusiveHomeworkViewController alloc]initWithClassID:_classID];
         }
             break;
         case 3:{
@@ -414,20 +397,13 @@
 /** 禁言 */
 - (void)shutUpTalking{
     
-    _shutUp = YES;
     _inputView.TextViewInput.placeholder = @"您已被禁言";
-    
 }
-
 
 /** 可以继续发送消息 */
 - (void) keepOnTalking{
-    
-    _shutUp = NO;
     _inputView.TextViewInput.placeholder = @"请输入要发送的信息";
-    
 }
-
 
 /* 开始检测麦克风声音*/
 - (void)checkMicVolum{
@@ -545,8 +521,8 @@
         AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFHTTPRequestSerializer serializer];
         manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-        [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses/%@",Request_Header,_idNumber,[_tutoriumInfo valueForKey:@"classID"]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
+        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/courses/%@",Request_Header,[self getStudentID],[_tutoriumInfo valueForKey:@"classID"]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
             
@@ -578,7 +554,7 @@
         
     }else if (_classType == InteractionCourseType){
         
-        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@",Request_Header,[_tutoriumInfo valueForKey:@"classID"]] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@",Request_Header,[_tutoriumInfo valueForKey:@"classID"]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             NSMutableArray *users ;
@@ -601,7 +577,7 @@
                         _lesson = lesson[@"name"];
                     }
                 }
-
+                
             }else{
                 
                 /* 获取成员信息失败*/
@@ -615,7 +591,7 @@
         
     }else if (_classType == ExclusiveCourseType){
         //专属课程
-        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/play",Request_Header,[_tutoriumInfo valueForKey:@"classID"]] withHeaderInfo:_token andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/play",Request_Header,[_tutoriumInfo valueForKey:@"classID"]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             NSMutableArray *users ;
@@ -700,7 +676,7 @@
     option.limit = 100;
     option.order = NIMMessageSearchOrderAsc;
     option.sync = YES;
-
+    
     [[[NIMSDK sharedSDK]conversationManager]fetchMessageHistory:_session option:option result:^(NSError * _Nullable error, NSArray<NIMMessage *> * _Nullable messages) {
         
         [self makeMessages:messages];
@@ -711,6 +687,11 @@
 
 /* 创建消息 - 加载历史消息*/
 - (void)makeMessages:(NSArray<NIMMessage *> * ) messages{
+    
+    for (NIMMessage *message in messages) {
+        NSLog(@"%@",message.messageId);
+    }
+    
     
     for (NIMMessage *message in messages) {
         
@@ -844,8 +825,8 @@
                     }
                     
                     
-                    [_chatTableView reloadData];
-                    [self tableViewScrollToBottom];
+                    //                    [_chatTableView reloadData];
+                    //                    [self tableViewScrollToBottom];
                     
                 }else if (message.messageType ==NIMMessageTypeImage){
                     /* 如果收到的消息类型是图片的话 */
@@ -913,11 +894,7 @@
                     /* 如果收到的消息类型是音频的话 */
                     /* 如果消息是自己发的*/
                     if ([message.from isEqualToString:_chat_Account.accid]){
-                        
-                        // NSLog(@"收到对方发来的语音");
-                        
                         NIMAudioObject *audioObject = message.messageObject;
-                        
                         NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[self.chatModel getDicWithName:message.senderName andIcon:_chat_Account.icon type:UUMessageTypeVoice andVoicePath:audioObject.path andTime:[NSString stringWithFormat:@"%ld",(NSInteger)audioObject.duration/1000]andMessage:message]];
                         
                         [dic setObject:@(UUMessageFromMe) forKey:@"from"];
@@ -968,21 +945,31 @@
                         if (msgContent[@"data"][@"mute"]) {
                             if ([msgContent[@"data"][@"mute"]isEqualToNumber:@1]) {
                                 //禁言了
-                                [self shutUpTalking];
-                                messageText = @"您已被禁言";
+                                //通过accid和名字看看是谁被禁言
+                                if ([msgContent[@"data"][@"uinfos"][1][@"1"]isEqualToString:_chat_Account.accid]) {
+                                    //自己被禁言了
+                                    messageText = @"您已被禁言";
+                                    [self shutUpTalking];
+                                }else{
+                                    messageText = [NSString stringWithFormat:@"%@已被禁言",msgContent[@"data"][@"uinfos"][1][@"3"]];
+                                }
                             }else{
                                 //解除禁言
-                                [self keepOnTalking];
-                                messageText = @"您已解除禁言";
+                                //通过accid和名字看看是谁被禁言
+                                if ([msgContent[@"data"][@"uinfos"][1][@"1"]isEqualToString:_chat_Account.accid]) {
+                                    //自己被禁言了
+                                    messageText = @"您已解除禁言";
+                                    [self keepOnTalking];
+                                }else{
+                                    messageText = [NSString stringWithFormat:@"%@已被禁言",msgContent[@"data"][@"uinfos"][1][@"3"]];
+                                }
                             }
                         }else{
-                            
                             messageText = msgContent[@"data"][@"tinfo"][@"15"];
                         }
                     }else{
                         
                     }
-                    
                     //解析userlist,把发送者给揪出来
                     NSString *sender = @"";
                     for (Chat_Account *user in _userList) {
@@ -993,7 +980,7 @@
                     
                     //在这儿弄一下子 这个 富文本
                     NSString *notice =[NSString stringWithFormat:@"%@更新了公告\n公告:%@",sender,messageText==nil?@"":messageText];
-
+                    
                     [self.chatModel addSpecifiedNotificationItem:notice];
                     
                 }else if (message.messageType == NIMMessageTypeCustom){
@@ -1006,56 +993,59 @@
                         NSString *result;
                         
                         if (dic[@"event"]) {
-                            
                             if (dic[@"type"]){
-                                //这大概就是 什么作业了 什么问答了那种类型的消息了
-                                //不用加工数据,按照原数据直接写进Model就行了.改改方法
-                                __block NSMutableDictionary *senders = dic.mutableCopy;
-                                
-                                for (Chat_Account *user in _userList) {
-                                    if ([user.accid isEqualToString:message.from]) {
-                                        [senders setValue:user.accid forKey:@"accid"];
-                                        [senders setValue:user.icon forKey:@"icon"];
-                                        [senders setValue:user.name forKey:@"name"];
+                                if ([dic[@"type"]isEqualToString:@"LiveStudio::Homework"]||[dic[@"type"]isEqualToString:@"LiveStudio::Question"]||[dic[@"type"]isEqualToString:@"LiveStudio::Answer"]||[dic[@"type"]isEqualToString:@"Resource::File"]) {
+                                    //这大概就是 什么作业了 什么问答了那种类型的消息了
+                                    //不用加工数据,按照原数据直接写进Model就行了.改改方法
+                                    //增加一个发送人吧.
+                                    __block NSMutableDictionary *senders = dic.mutableCopy;
+                                    
+                                    for (Chat_Account *user in _userList) {
+                                        if ([user.accid isEqualToString:message.from]) {
+                                            [senders setValue:user.accid forKey:@"accid"];
+                                            [senders setValue:user.icon forKey:@"icon"];
+                                            [senders setValue:user.name forKey:@"name"];
+                                        }
                                     }
-                                }
-                                if ([message.from isEqualToString:_chat_Account.accid]) {
-                                    [senders setValue:@"FromMe" forKey:@"from"];
+                                    if ([message.from isEqualToString:_chat_Account.accid]) {
+                                        [senders setValue:@"FromMe" forKey:@"from"];
+                                    }else{
+                                        [senders setValue:@"FromOther" forKey:@"from"];
+                                    }
+                                    [senders setValue:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString] forKey:@"time"];
+                                    
+                                    [self.chatModel addSpecifiedNotificationTipsItem:senders];
+                                    
                                 }else{
-                                    [senders setValue:@"FromOther" forKey:@"from"];
+                                    if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                                        result = @"直播关闭";
+                                    }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                                        result = @"直播开启";
+                                    }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                                        result = @"老师关闭了互动答疑";
+                                    }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                                        result = @"老师开启了互动答疑";
+                                    }
+                                    [self.chatModel addSpecifiedNotificationItem:result];
+                                    
                                 }
-                                
-                                [self.chatModel addSpecifiedNotificationTipsItem:senders];
                                 
                             }else{
-                                if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
-                                    result = @"直播关闭";
-                                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
-                                    result = @"直播开启";
-                                }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
-                                    result = @"老师关闭了互动答疑";
-                                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::InstantLesson"]){
-                                    result = @"老师开启了互动答疑";
-                                }
-                                [self.chatModel addSpecifiedNotificationItem:result];
+                                
                             }
-                            [self.chatTableView reloadData];
-                            [self tableViewScrollToBottom];
                         }
+                        
                     }else{
                         
                     }
+                    
                 }else{
                     
                 }
-            }else{
                 
-                NSLog(@"其他消息类型:类型:%ld,内容:%@",(long)message.messageType,message.text);
             }
             
         }
-        
-        
         
     }
     
@@ -1071,13 +1061,7 @@
 
 - (void)sendNoticeIn{
     
-    //    //构造消息
-    //    NIMTipObject *tipObject = [NIMTipObject alloc];
-    //    NIMMessage *message     = [[NIMMessage alloc] init];
-    //    message.messageObject   = tipObject;
-    //    //发送消息
-    //    [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:_session error:nil];
-    
+  
 }
 
 /* 制作消息内容*/
@@ -1096,11 +1080,11 @@
         [self.chatModel addSpecifiedVoiceItem:dic andIconURL:_chat_Account.icon andName:_chat_Account.name andMessage:message];
     }
     
-    if (message.messageType == NIMMessageTypeNotification) {
-        
-        //公告消息类型
-        [self.chatModel addSpecifiedNotificationItem:message.text];
-    }
+//    if (message.messageType == NIMMessageTypeNotification) {
+//
+//        //公告消息类型
+//        [self.chatModel addSpecifiedNotificationItem:message.text];
+//    }
     
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
@@ -1206,9 +1190,6 @@
                 
                 [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
                 
-                [self.chatTableView reloadData];
-                [self tableViewScrollToBottom];
-                
             }
             
             /* 如果收到的是图片消息*/
@@ -1216,7 +1197,6 @@
                 
             }else if (message.messageType == NIMMessageTypeAudio){
                 /* 如果收到的是音频消息*/
-                
                 
             }else if (message.messageType == NIMMessageTypeNotification){
                 /** 收到公告消息a */
@@ -1235,32 +1215,46 @@
                 __block NSString *messageText = @"";
                 
                 if (msgContent) {
-                    
-                    /** 分个类
-                     1.直播开始/结束通知
-                     2.作业/问答通知
-                     */
                     if (msgContent[@"data"][@"mute"]) {
                         if ([msgContent[@"data"][@"mute"] isEqualToNumber:@1]) {
                             //禁言了
-                            [self shutUpTalking];
-                            messageText = @"您已被禁言";
+                            //通过accid和名字看看是谁被禁言
+                            if ([msgContent[@"data"][@"uinfos"][1][@"1"]isEqualToString:_chat_Account.accid]) {
+                                //自己被禁言了
+                                messageText = @"您已被禁言";
+                                [self shutUpTalking];
+                            }else{
+                                messageText = [NSString stringWithFormat:@"%@已被禁言",msgContent[@"data"][@"uinfos"][1][@"3"]];
+                            }
+                            
                         }else{
                             //解除禁言
-                            [self keepOnTalking];
-                            messageText = @"您已解除禁言";
+                            //通过accid和名字看看是谁被禁言
+                            if ([msgContent[@"data"][@"uinfos"][1][@"1"]isEqualToString:_chat_Account.accid]) {
+                                //自己被禁言了
+                                messageText = @"您已解除禁言";
+                                [self keepOnTalking];
+                            }else{
+                                messageText = [NSString stringWithFormat:@"%@已被禁言",msgContent[@"data"][@"uinfos"][1][@"3"]];
+                            }
                         }
                     }else{
-                        
                         messageText = msgContent[@"data"][@"tinfo"][@"15"];
                     }
                 }else{
                     
                 }
-                
-                [self.chatModel addSpecifiedNotificationItem:[@"公告:" stringByAppendingString:messageText==nil?@"":messageText]];
-                [self.chatTableView reloadData];
-                [self tableViewScrollToBottom];
+                //解析userlist,把发送者给揪出来
+                NSString *sender = @"";
+                for (Chat_Account *user in _userList) {
+                    if ([message.from isEqualToString:[user valueForKeyPath:@"accid"]]) {
+                        sender = [user valueForKeyPath: @"name"];
+                    }
+                }
+                //在这儿弄一下子 这个 富文本
+                NSString *notice =[NSString stringWithFormat:@"%@更新了公告\n公告:%@",sender,messageText==nil?@"":messageText];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"NewChatNotice" object:nil];
+                [self.chatModel addSpecifiedNotificationItem:notice];
             }else if (message.messageType == NIMMessageTypeCustom){
                 //自定义消息 改为 课程的开启关闭
                 if ([message valueForKeyPath:@"rawAttachContent"]!=nil) {
@@ -1272,29 +1266,48 @@
                     
                     if (dic[@"event"]) {
                         if (dic[@"type"]){
-                            //这大概就是 什么作业了 什么问答了那种类型的消息了
-                            //不用加工数据,按照原数据直接写进Model就行了.改改方法
-                            //增加一个发送人吧.
-                            __block NSMutableDictionary *senders = dic.mutableCopy;
-                            
-                            for (Chat_Account *user in _userList) {
-                                if ([user.accid isEqualToString:message.from]) {
-                                    [senders setValue:user.accid forKey:@"accid"];
-                                    [senders setValue:user.icon forKey:@"icon"];
-                                    [senders setValue:user.name forKey:@"name"];
+                            if ([dic[@"type"]isEqualToString:@"LiveStudio::Homework"]||[dic[@"type"]isEqualToString:@"LiveStudio::Question"]||[dic[@"type"]isEqualToString:@"LiveStudio::Answer"]||[dic[@"type"]isEqualToString:@"Resource::File"]) {
+                                
+                                
+                                //这大概就是 什么作业了 什么问答了那种类型的消息了
+                                //不用加工数据,按照原数据直接写进Model就行了.改改方法
+                                //增加一个发送人吧.
+                                __block NSMutableDictionary *senders = dic.mutableCopy;
+                                
+                                for (Chat_Account *user in _userList) {
+                                    if ([user.accid isEqualToString:message.from]) {
+                                        [senders setValue:user.accid forKey:@"accid"];
+                                        [senders setValue:user.icon forKey:@"icon"];
+                                        [senders setValue:user.name forKey:@"name"];
+                                    }
+                                }
+                                if ([message.from isEqualToString:_chat_Account.accid]) {
+                                    [senders setValue:@"FromMe" forKey:@"from"];
+                                }else{
+                                    [senders setValue:@"FromOther" forKey:@"from"];
+                                }
+                                [senders setValue:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString] forKey:@"time"];
+                                
+                                [self.chatModel addSpecifiedNotificationTipsItem:senders];
+                            }else{
+                                if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"type"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
+                                    result = @"直播关闭";
+                                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"type"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
+                                    result = @"直播开启";
+                                }else if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"type"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                                    result = @"老师关闭了互动答疑";
+                                }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"type"]isEqualToString:@"LiveStudio::InstantLesson"]){
+                                    result = @"老师开启了互动答疑";
+                                }
+                                if (result) {
+                                    
+                                    [self.chatModel addSpecifiedNotificationItem:result];
+                                    [self.chatTableView reloadData];
+                                    [self tableViewScrollToBottom];
                                 }
                             }
-                            if ([message.from isEqualToString:_chat_Account.accid]) {
-                                [senders setValue:@"FromMe" forKey:@"from"];
-                            }else{
-                                [senders setValue:@"FromOther" forKey:@"from"];
-                            }
-                            [senders setValue:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString] forKey:@"time"];
-                            
-                            [self.chatModel addSpecifiedNotificationTipsItem:senders];
                             
                         }else{
-                            
                             if ([dic[@"event"]isEqualToString:@"close"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]) {
                                 result = @"直播关闭";
                             }else if ([dic[@"event"]isEqualToString:@"start"]&&[dic[@"event"]isEqualToString:@"LiveStudio::ScheduledLesson"]){
@@ -1309,21 +1322,20 @@
                         
                     }
                     
-                    [self.chatTableView reloadData];
-                    [self tableViewScrollToBottom];
                 }else{
                     
                 }
                 
             }else{
                 
-               
+                
             }
             
         }
         
-        
     }
+    [self.chatTableView reloadData];
+    [self tableViewScrollToBottom];
     
 }
 //如果收到的是图片，视频等需要下载附件的消息，在回调的处理中还需要调用
@@ -1347,14 +1359,20 @@
     if (message.messageType == NIMMessageTypeImage) {
         /* 收到图片*/
         NSLog(@"收到图片");
-        
-        /* 在本地创建对方的消息消息*/
+        /* 筛选用户信息,拿到用户名*/
         NSString *iconURL = @"".mutableCopy;
         NSString *senderName = @"".mutableCopy;
         for (Chat_Account *mod in _userList) {
             if ([message.from isEqualToString:mod.accid]) {
                 iconURL = mod.icon;
                 senderName = mod.name;
+            }else{
+                //没有的话,如果不是通知类型 ,就直接踢出去
+                if (![message.session.sessionId isEqualToString:_session.sessionId]) {
+                    return;
+                }else{
+                    
+                }
             }
         }
         
@@ -1453,8 +1471,8 @@
             cell.sendfaild.tag = indexPath.row;
             [cell.sendfaild addTarget:self action:@selector(resendMessages:) forControlEvents:UIControlEventTouchUpInside]; //让该消息可以再次发送
         }
-        [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     }
+    [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     
     return cell;
     
@@ -1621,7 +1639,7 @@
                     dic = @{@"strContent": [funcView.TextViewInput.attributedText getPlainString],
                             @"type": @(UUMessageTypeText),
                             @"frome":@(UUMessageFromMe),
-                            @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
+                            @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]stringYearMonthDayHourMinuteSecond]],
                             @"isRichText":@YES,
                             @"richNum":[NSString stringWithFormat:@"%ld",resultArray.count],
                             @"messageID":text_message.messageId};
@@ -1634,7 +1652,7 @@
                 dic = @{@"strContent": [funcView.TextViewInput.attributedText getPlainString],
                         @"type": @(UUMessageTypeText),
                         @"frome":@(UUMessageFromMe),
-                        @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
+                        @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]stringYearMonthDayHourMinuteSecond]],
                         @"isRichText":@NO,
                         @"richNum":@"0",
                         @"messageID":text_message.messageId};
@@ -1686,17 +1704,17 @@
             
             
             [_inputView.TextViewInput setText:@""];
-            [_inputView.TextViewInput resignFirstResponder];
+//            [_inputView.TextViewInput resignFirstResponder];
             
         }
         
-        [self.chatTableView reloadData];
-        [self tableViewScrollToBottom];
+//        [self.chatTableView reloadData];
+//        [self tableViewScrollToBottom];
         
         [funcView changeSendBtnWithPhoto:YES];
     }
     
-  
+    
 }
 
 #pragma mark- 发送图片聊天信息的回调
@@ -1716,14 +1734,11 @@
         NSDictionary *dic = @{@"picture": image,
                               @"type": @(UUMessageTypePicture),
                               @"frome":@(UUMessageFromMe),
-                              @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
-                              @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]changeUTC]],
+                              @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]stringYearMonthDayHourMinuteSecond]],
                               @"messageID":message.messageId};
         
         
         [self dealTheFunctionData:dic andMessage:message];
-        
-        
         
         //发送消息
         [[NIMSDK sharedSDK].chatManager addDelegate:self];
@@ -1743,7 +1758,6 @@
     }else{
         //创建一条云信消息
         // 声音文件只支持 aac 和 amr 类型
-        
         //构造消息
         NIMAudioObject *audioObject = [[NIMAudioObject alloc] initWithSourcePath:path];
         NIMMessage *message = [[NIMMessage alloc] init];
@@ -1752,6 +1766,7 @@
         //创建一条本地消息
         NSDictionary *dic = @{@"voicePath" :path,
                               @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)second],
+                              @"strTime":[NSString stringWithFormat:@"%@",[[NSDate date]stringYearMonthDayHourMinuteSecond]],
                               @"type": @(UUMessageTypeVoice),
                               @"messageID":message.messageId};
         
@@ -1764,9 +1779,6 @@
     }
     
 }
-
-
-
 
 
 // 获取表情字符串
@@ -1806,6 +1818,7 @@
         return;
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatModel.dataSource.count-1 inSection:0];
+    
     [self.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
@@ -1867,7 +1880,7 @@
     if ([_tutoriumInfo isKindOfClass:[TutoriumListInfo class]]) {
         
         controller =[[LivePlayerViewController alloc]initWithClassID:[_tutoriumInfo valueForKey:@"classID"]];
-
+        
     }else if ([_tutoriumInfo isKindOfClass:[InteractiveCourse class]]){
         
         
@@ -1918,7 +1931,7 @@
     
     // 获取通知信息字典
     NSDictionary* userInfo = [notification userInfo];
-    
+    [self endEdit];
     // 获取键盘隐藏动画时间
     NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSTimeInterval animationDuration;
@@ -1949,15 +1962,17 @@
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
-    [_inputView.TextViewInput resignFirstResponder];
+//    [_inputView.TextViewInput resignFirstResponder];
     [_inputView changeSendBtnWithPhoto:YES];
     
 }
 
 - (void)tapSpace{
     [_inputView.TextViewInput resignFirstResponder];
+    if (![_inputView.TextViewInput.text isEqualToString:@""]) {
+        return;
+    }
     [_inputView changeSendBtnWithPhoto:YES];
-    
     
 }
 
@@ -2027,6 +2042,15 @@
     
 }
 
+- (void)endEdit{
+    [self.view endEditing:YES];
+    [_inputView .TextViewInput resignFirstResponder];
+    if (![_inputView.TextViewInput.text isEqualToString:@""]) {
+        return;
+    }
+    [_inputView changeSendBtnWithPhoto:YES];
+}
+
 //点击作业/问题的回调,直接干.
 - (void)notificationDidClick:(UUMessageCell *)cell notificationTipsType:(NotificationTipsType)notificationTipsType andNotifications:(NSDictionary *)notifications{
     
@@ -2048,7 +2072,7 @@
             }
             
         } failure:^(id  _Nullable erros) {
-             [self HUDStopWithTitle:@"请检查网络"];
+            [self HUDStopWithTitle:@"请检查网络"];
         }];
         
     }else if (notificationTipsType == Files){
@@ -2068,7 +2092,7 @@
             }
             
         } failure:^(id  _Nullable erros) {
-             [self HUDStopWithTitle:@"请检查网络"];
+            [self HUDStopWithTitle:@"请检查网络"];
         }];
         
     }else if (notificationTipsType == Question ||notificationTipsType == Answer){
@@ -2076,7 +2100,7 @@
         [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/questions/%@",Request_Header,notifications[@"id"]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
             if ([dic[@"status"]isEqualToNumber:@1]) {
-                 [self HUDStopWithTitle:nil];
+                [self HUDStopWithTitle:nil];
                 Questions *mod = [Questions yy_modelWithJSON:dic[@"data"]];
                 mod.questionID = dic[@"data"][@"id"];
                 if (![dic[@"data"][@"answer"] isEqual:[NSNull null]]) {
@@ -2086,11 +2110,11 @@
                 controller = [[QuestionInfoViewController alloc]initWithQuestion:mod];
                 [self.navigationController pushViewController:controller animated:YES];
             }else{
-                 [self HUDStopWithTitle:@"请稍后重试"];
+                [self HUDStopWithTitle:@"请稍后重试"];
             }
             
         } failure:^(id  _Nullable erros) {
-             [self HUDStopWithTitle:@"请检查网络"];
+            [self HUDStopWithTitle:@"请检查网络"];
         }];
     }
     
