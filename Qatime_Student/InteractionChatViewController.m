@@ -1097,6 +1097,13 @@
             if ([message.from isEqualToString:mod.accid]) {
                 iconURL = mod.icon;
                 senderName = mod.name;
+            }else{
+                //没有的话,如果不是通知类型 ,就直接踢出去
+                if (![message.session.sessionId isEqualToString:_session.sessionId]) {
+                    return;
+                }else{
+                    
+                }
             }
         }
         

@@ -464,7 +464,7 @@
     _className.text = tutorium.name;
     _gradeLabel.text = tutorium.grade;
     _teacheNameLabel.text = tutorium.teacher_name;
-    _classTimeLabel.text = [NSString stringWithFormat:@"共%@课",tutorium.video_lessons_count];
+    _classTimeLabel.text = [NSString stringWithFormat:@"共%@课",tutorium.lessons_count?tutorium.lessons_count:tutorium.video_lessons_count];
     if ([tutorium.current_price containsString:@"."]) {
         
         if ([tutorium.status isEqualToString:@"teaching"]||[tutorium.status isEqualToString:@"pause"]||[tutorium.status isEqualToString:@"closed"]) {

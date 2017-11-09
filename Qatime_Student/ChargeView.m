@@ -42,7 +42,7 @@
         _tips = [[UILabel alloc]init];
         [self addSubview:_tips];
         
-        NSString *string =@"充值须知：\n1、请仔细核对充值与到账差异后再进行充值；\n2、仅限使用指定价格进行充值；\n3、充值的金额可在答疑时间平台任意客户端使用；\n4、点击立即充值则表示用户同意以上说明。";
+        NSString *string =@"充值须知：\n1、请仔细核对充值与到账差异后再进行充值；\n2、仅限使用指定价格进行充值；\n3、充值的金额(学币)可在答疑时间平台任意客户端使用；\n4、点击立即充值则表示用户同意以上说明。";
         
         NSMutableParagraphStyle*style = [[NSMutableParagraphStyle alloc]init];
         style.lineSpacing = 5;

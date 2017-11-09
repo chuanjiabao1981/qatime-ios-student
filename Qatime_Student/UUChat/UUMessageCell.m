@@ -47,7 +47,6 @@
     BOOL contentVoiceIsPlaying;
     
     NotificationTipsType _notificationTypes;
-    
 }
 @end
 
@@ -113,7 +112,7 @@
                 [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
                 //扬声器播放情况下,增加红外线感应监听
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:)  name:UIDeviceProximityStateDidChangeNotification object:nil];
-                //                [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];  //可以关闭掉红外感应
+//                [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];  //可以关闭掉红外感应
                 
             }else if([[[NSUserDefaults standardUserDefaults]valueForKey:@"AVAudioSession"]isEqualToString:@"earphone"]){
                 
@@ -127,7 +126,7 @@
             
             //扬声器播放情况下,增加红外线感应监听
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:UIDeviceProximityStateDidChangeNotification object:nil];
-            //                [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];  //可以关闭掉红外感应
+//                [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];  //可以关闭掉红外感应
         }
         
         contentVoiceIsPlaying = NO;
@@ -229,8 +228,6 @@
         UIImageView * btnImageView;
         if (self.messageFrame.message.from == UUMessageFromMe) {
             /* 自己发送的消息*/
-            
-            
             if (self.messageFrame.message.imagePath) {
                 image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.imagePath]];
                 btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
@@ -243,19 +240,26 @@
                     btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
                     btnImageView.image = image;
                 }
-
             }
             [_photoDelegate showImage:btnImageView andImage:image];
             
         }else{
             /* 对方发送的消息*/
-            
-            image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]];
-            btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
-            
+            if (self.messageFrame.message.imagePath) {
+                image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.imagePath]];
+                btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
+            }else{
+                if (self.messageFrame.message.thumbPath) {
+                    image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@",_messageFrame.message.thumbPath]];
+                    btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
+                }else{
+                    image = self.btnContent.backImageView.image;
+                    btnImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,10,500,500)];
+                    btnImageView.image = image;
+                }
+            }
             [_photoDelegate showImage:btnImageView andImage:image];
         }
-        
         
     }else if (self.messageFrame.message.type == UUMessageTypeVoice){
         
@@ -277,7 +281,7 @@
         
     }else if (self.messageFrame.message.type == UUMessageTypeNotificationTips){
         //跳转到作业或者问答 🙃
-        //在这儿点击跳转啊魂淡
+       
         
         
     }
@@ -403,7 +407,6 @@
         headImageBackView.frame = messageFrame.iconF;
         self.btnHeadImage.frame = CGRectMake(0, 0, ChatIconWH, ChatIconWH);
         [self.btnHeadImage setBackgroundImageForState:UIControlStateNormal withURL:[NSURL URLWithString:messageFrame.message.strIcon] placeholderImage:[UIImage imageNamed:@"headImage"]];
-//        [self.btnHeadImage setImageForState:UIControlStateNormal withURL:[NSURL URLWithString:messageFrame.message.strIcon] placeholderImage:[UIImage imageNamed:@"headImage"]];
         
         // 3、发送人姓名
         if (messageFrame.message.strName == nil) {
@@ -710,8 +713,6 @@
                             
                             
                             [text replaceCharactersInRange:[names [i][@"range"] rangeValue] withAttributedString:attachText];
-                            
-                            
                         }
                         self.title.attributedText =text;
                         /* 富文本的title和气泡方案*/
@@ -961,7 +962,6 @@
         self.title.hidden = YES;
         self.sendfaild.hidden = YES;
         self.noticeTipsContentView.hidden = YES;
-        
         self.noticeLabel.textAlignment = NSTextAlignmentLeft;
         
         if (messageFrame.message.strContent==nil) {
@@ -1012,7 +1012,6 @@
         ////        LiveStudio::Question 提问
         ////        LiveStudio::Answer 回答
         ////        Resource::File 课件
-        
         if ([messageFrame.message.notificationTipsType isEqualToString:@"LiveStudio::Homework"]) {
             //作业
             _noticeTipsCategory.verticalText = @"作业";

@@ -406,63 +406,74 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                 
                 /* 解析返回数据*/
                 NSDictionary *userInfoGet=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                
                 NSLog(@"%@",userInfoGet);
                 
-                NSDictionary *dicGet=[NSDictionary dictionaryWithDictionary:userInfoGet[@"data"]];
-                
-                NSLog(@"%@",dicGet);
-                /* 如果返回的字段里包含key值“remember_token“ 为登录成功*/
-                /* 如果登录成功*/
-                if ([[dicGet allKeys]containsObject:@"remember_token" ]) {
+                if ([userInfoGet[@"status"]isEqualToNumber:@1]) {
+                    NSDictionary *dicGet=[NSDictionary dictionaryWithDictionary:userInfoGet[@"data"]];
                     
-                    //不用干掉之前存储的keychain信息,增加新的keychain信息
-                    NSArray *keys =  [SAMKeychain allAccounts];
-//                    NSError *error = [[NSError alloc]init];
-                    if (keys!=nil) {
+                    NSLog(@"%@",dicGet);
+                    /* 如果返回的字段里包含key值“remember_token“ 为登录成功*/
+                    /* 如果登录成功*/
+                    if ([[dicGet allKeys]containsObject:@"remember_token" ]) {
                         
-                        for (NSDictionary *acc in keys) {
+                        //不用干掉之前存储的keychain信息,增加新的keychain信息
+                        NSArray *keys =  [SAMKeychain allAccounts];
+                        //                    NSError *error = [[NSError alloc]init];
+                        if (keys!=nil) {
                             
-                            [SAMKeychain deletePasswordForService:Qatime_Service account:acc[@"acct"]];
+                            for (NSDictionary *acc in keys) {
+                                
+                                [SAMKeychain deletePasswordForService:Qatime_Service account:acc[@"acct"]];
+                            }
+                            
                         }
                         
+                        //存储新的key
+                        [SAMKeychain setPassword:_loginAgainView.passWord.text forService:Qatime_Service account:_loginAgainView.userName.text ];
+                        
+                        [self saveUserInfo:dicGet loginType:Normal];
+                        //
+                        [self stopHUD];
+                        [self HUDStopWithTitle:@"登录成功"];
+                        
+                        //                    [[NSNotificationCenter defaultCenter]postNotificationName:@"LoginSuccess" object:nil];
+                        
+                        [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
+                        
+                        
+                    }else{
+                        
+                        //                    [hud hide:YES];
+                        
+                        _wrongTimes ++;
+                        if (_wrongTimes >=5) {
+                            
+                            [[NSNotificationCenter defaultCenter]postNotificationName:@"FivethWrongTime" object:nil];
+                            
+                        }
+                        
+                        [self stopHUD];
+                        /* 账户名密码错误提示*/
+                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"警告" message:@"账户名或密码错误！" preferredStyle:UIAlertControllerStyleAlert];
+                        
+                        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+                        [alert addAction:action];
+                        
+                        [self presentViewController:alert animated:YES completion:nil];
+                        
                     }
-                    
-                    //存储新的key
-                    [SAMKeychain setPassword:_loginAgainView.passWord.text forService:Qatime_Service account:_loginAgainView.userName.text ];
-
-                    [self saveUserInfo:dicGet loginType:Normal];
-                    //
-                    [self stopHUD];
-                    [self HUDStopWithTitle:@"登录成功"];
-                    
-//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"LoginSuccess" object:nil];
-                    
-                    [self performSelector:@selector(returnLastPage) withObject:nil afterDelay:1];
-                    
-                    
                 }else{
-                    
-                    //                    [hud hide:YES];
-                    
-                    _wrongTimes ++;
-                    if (_wrongTimes >=5) {
-                        
-                        [[NSNotificationCenter defaultCenter]postNotificationName:@"FivethWrongTime" object:nil];
-                        
+                    if ([userInfoGet[@"status"]isEqualToNumber:@0]) {
+                        if (userInfoGet[@"error"]) {
+                            if ([userInfoGet[@"code"]isEqualToNumber:@2002]) {
+                                [self HUDStopWithTitle:@"不支持的客户端"];
+                            }else{
+                                [self HUDStopWithTitle:@"请检查账号或密码"];
+                            }
+                        }
                     }
-                    
-                    [self stopHUD];
-                    /* 账户名密码错误提示*/
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"警告" message:@"账户名或密码错误！" preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-                    [alert addAction:action];
-                    
-                    [self presentViewController:alert animated:YES completion:nil];
-                    
                 }
-                
+
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
                 NSLog(@"%@",error);

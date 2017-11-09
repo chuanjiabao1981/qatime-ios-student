@@ -59,29 +59,28 @@ static id manager;
     if ([platform isEqualToString:@"iPhone8,4"]) return @"iPhone SE";
     if ([platform isEqualToString:@"iPhone9,1"]) return @"iPhone 7";
     if ([platform isEqualToString:@"iPhone9,2"]) return @"iPhone 7 Plus";
-    if ([platform isEqualToString:@"iPhone9,3"])    return @"iPhone 7";
-    if ([platform isEqualToString:@"iPhone9,4"])    return @"iPhone 7 Plus";
-    if ([platform isEqualToString:@"iPhone10,1"])   return @"iPhone 8";
-    if ([platform isEqualToString:@"iPhone10,4"])   return @"iPhone 8";
-    if ([platform isEqualToString:@"iPhone10,2"])   return @"iPhone 8 Plus";
-    if ([platform isEqualToString:@"iPhone10,5"])   return @"iPhone 8 Plus";
-    if ([platform isEqualToString:@"iPhone10,3"])   return @"iPhone X";
-    if ([platform isEqualToString:@"iPhone10,6"])   return @"iPhone X";
+    if ([platform isEqualToString:@"iPhone9,3"]) return @"iPhone 7";
+    if ([platform isEqualToString:@"iPhone9,4"]) return @"iPhone 7 Plus";
+    if ([platform isEqualToString:@"iPhone10,1"]) return @"iPhone 8";
+    if ([platform isEqualToString:@"iPhone10,4"]) return @"iPhone 8";
+    if ([platform isEqualToString:@"iPhone10,2"]) return @"iPhone 8 Plus";
+    if ([platform isEqualToString:@"iPhone10,5"]) return @"iPhone 8 Plus";
+    if ([platform isEqualToString:@"iPhone10,3"]) return @"iPhone X";
+    if ([platform isEqualToString:@"iPhone10,6"]) return @"iPhone X";
     
     
-    if ([platform isEqualToString:@"iPod1,1"])   return @"iPod Touch 1G";
-    if ([platform isEqualToString:@"iPod2,1"])   return @"iPod Touch 2G";
-    if ([platform isEqualToString:@"iPod3,1"])   return @"iPod Touch 3G";
-    if ([platform isEqualToString:@"iPod4,1"])   return @"iPod Touch 4G";
-    if ([platform isEqualToString:@"iPod5,1"])   return @"iPod Touch 5G";
-    if ([platform isEqualToString:@"iPod7,1"])   return @"iPod Touch 6G";
+    if ([platform isEqualToString:@"iPod1,1"]) return @"iPod Touch 1G";
+    if ([platform isEqualToString:@"iPod2,1"]) return @"iPod Touch 2G";
+    if ([platform isEqualToString:@"iPod3,1"]) return @"iPod Touch 3G";
+    if ([platform isEqualToString:@"iPod4,1"]) return @"iPod Touch 4G";
+    if ([platform isEqualToString:@"iPod5,1"]) return @"iPod Touch 5G";
+    if ([platform isEqualToString:@"iPod7,1"]) return @"iPod Touch 6G";
     
-    
-    if ([platform isEqualToString:@"iPad1,1"])      return @"iPad";
-    if ([platform isEqualToString:@"iPad1,2"])      return @"iPad 3G";
-    if ([platform isEqualToString:@"iPad2,1"])      return @"iPad 2 (WiFi)";
-    if ([platform isEqualToString:@"iPad2,2"])      return @"iPad 2";
-    if ([platform isEqualToString:@"iPad2,3"])      return @"iPad 2 (CDMA)";
+    if ([platform isEqualToString:@"iPad1,1"]) return @"iPad";
+    if ([platform isEqualToString:@"iPad1,2"]) return @"iPad 3G";
+    if ([platform isEqualToString:@"iPad2,1"]) return @"iPad 2 (WiFi)";
+    if ([platform isEqualToString:@"iPad2,2"]) return @"iPad 2";
+    if ([platform isEqualToString:@"iPad2,3"]) return @"iPad 2 (CDMA)";
     if ([platform isEqualToString:@"iPad2,4"])      return @"iPad 2";
     if ([platform isEqualToString:@"iPad2,5"])      return @"iPad Mini (WiFi)";
     if ([platform isEqualToString:@"iPad2,6"])      return @"iPad Mini";

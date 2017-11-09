@@ -59,7 +59,7 @@
 
     _model = model;
     _title.text = [NSString stringWithFormat:@"%ld元",model.price.integerValue];
-    _subTitle.text = [NSString stringWithFormat:@"实到账%.2f元",model.amount.floatValue];
+    _subTitle.text = [NSString stringWithFormat:@"实到账%.2f学币",model.amount.floatValue];
     
 }
 

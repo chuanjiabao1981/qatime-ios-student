@@ -22,6 +22,7 @@
 #import "DCPaymentView.h"
 #import "ChargeViewController.h"
 #import "IndexPageViewController.h"
+#import "UIViewController+Token.h"
 
 typedef enum : NSUInteger {
     AutoWrite,  //扫码自动填写的优惠码
@@ -31,10 +32,6 @@ typedef enum : NSUInteger {
 @interface OrderViewController (){
     
     NavigationBar *_navigationBar;
-    
-    NSString *_token;
-    NSString *_idNumber;
-    
     /* 保存一个比较用的价格*/
     CGFloat price;
     
@@ -116,7 +113,6 @@ typedef enum : NSUInteger {
         _;
     });
     
-    
     _orderView = ({
         
         OrderView *_=[[OrderView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height)];
@@ -156,16 +152,6 @@ typedef enum : NSUInteger {
         
         _;
     });
-    
-    
-    /* 提出token和学生id*/
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]) {
-        _token =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"remember_token"]];
-    }
-    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"id"]) {
-        
-        _idNumber = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"id"]];
-    }
     
     
     /* 初始化*/
@@ -244,104 +230,104 @@ typedef enum : NSUInteger {
 - (void)requestClassInfo{
     
     [self HUDStopWithTitle:nil];
-    if (_token&&_idNumber) {
+    
+    
+    if (_classID!=nil) {
         
-        if (_classID!=nil) {
+        NSString *course ;
+        if (_orderType == LiveClassType) {
+            course = [NSString stringWithFormat:@"courses"];
+        }else if (_orderType == InteractionType){
+            course = [NSString stringWithFormat:@"interactive_courses"];
+        }else if (_orderType == VideoClassType){
+            course = [NSString stringWithFormat:@"video_courses"];
+        }else if (_orderType == ExclusiveType){
+            course = [NSString stringWithFormat:@"customized_groups"];
+        }
+        
+        AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        manager.responseSerializer =[AFHTTPResponseSerializer serializer];
+        [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
+        [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/%@/%@/detail",Request_Header,course,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
-            NSString *course ;
-            if (_orderType == LiveClassType) {
-                course = [NSString stringWithFormat:@"courses"];
-            }else if (_orderType == InteractionType){
-                course = [NSString stringWithFormat:@"interactive_courses"];
-            }else if (_orderType == VideoClassType){
-                course = [NSString stringWithFormat:@"video_courses"];
-            }else if (_orderType == ExclusiveType){
-                course = [NSString stringWithFormat:@"customized_groups"];
-            }
-            
-            AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
-            manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-            manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-            [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-            [manager GET:[NSString stringWithFormat:@"%@/api/v1/live_studio/%@/%@/detail",Request_Header,course,_classID] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            [self loginStates:dic];
+            if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
                 
-                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                [self loginStates:dic];
-                if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
+                id mod;
+                
+                if (_orderType == LiveClassType) {
+                    /* 数据请求成功*/
+                    mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"course"]];
+                    [(TutoriumListInfo *)mod setClassID:dic[@"data"][@"course"][@"id"]];
+                    _orderView.classType.text = @"直播课";
+                    //页面赋值
+                    [_orderView setupLiveClassData:mod];
                     
-                    id mod;
+                    //价格
+                    price = [[(TutoriumListInfo *)mod current_price]floatValue];
                     
-                    if (_orderType == LiveClassType) {
-                        /* 数据请求成功*/
-                        mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"course"]];
-                        [(TutoriumListInfo *)mod setClassID:dic[@"data"][@"course"][@"id"]];
-                        _orderView.classType.text = @"直播课";
-                        //页面赋值
-                        [_orderView setupLiveClassData:mod];
-                        
-                        //价格
-                        price = [[(TutoriumListInfo *)mod current_price]floatValue];
-                        
-                    }else if (_orderType == InteractionType){
-                        
-                        mod = (OneOnOneClass *)[OneOnOneClass yy_modelWithJSON:dic[@"data"][@"interactive_course"]];
-                        [(OneOnOneClass *)mod setClassID:dic[@"data"][@"interactive_course"][@"id"]];
-                        
-                        _orderView.classType.text = @"一对一课";
-                        //页面赋值
-                        [_orderView setupInteractionData:mod];
-                        
-                        //价格
-                        price = [[(OneOnOneClass *)mod price]floatValue];
-                    }else if (_orderType == VideoClassType){
-                        
-                        /* 数据请求成功*/
-                        mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"video_course"]];
-                        [(VideoClassInfo *)mod setClassID:dic[@"data"][@"video_course"][@"id"]];
-                        _orderView.classType.text = @"视频课";
-                        //页面赋值
-                        [_orderView setupLiveClassData:mod];
-                        //价格
-                        price = [[(TutoriumListInfo *)mod price]floatValue];
-                        
-                    }else if (_orderType == ExclusiveType){
-                        /* 数据请求成功*/
-                        mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"customized_group"]];
-                        [(VideoClassInfo *)mod setClassID:dic[@"data"][@"customized_group"][@"id"]];
-                        _orderView.classType.text = @"专属课";
-                        //页面赋值
-                        [_orderView setupExclusiveClassData:mod];
-                        
-                        //价格
-                        price = [[(TutoriumListInfo *)mod current_price]floatValue];
-                    }
+                }else if (_orderType == InteractionType){
                     
-                    /* 请求一次余额 ,判断是否可以用余额支付*/
-                    [self requestBalance];
+                    mod = (OneOnOneClass *)[OneOnOneClass yy_modelWithJSON:dic[@"data"][@"interactive_course"]];
+                    [(OneOnOneClass *)mod setClassID:dic[@"data"][@"interactive_course"][@"id"]];
                     
-                }else{
-                    /* 拉取订单信息失败*/
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"该课程暂时不可购买!" preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        
-                        [self returnLastPage];
-                    }] ;
-                    [alert addAction:sure];
+                    _orderView.classType.text = @"一对一课";
+                    //页面赋值
+                    [_orderView setupInteractionData:mod];
                     
-                    [self presentViewController:alert animated:YES completion:nil];
+                    //价格
+                    price = [[(OneOnOneClass *)mod price]floatValue];
+                }else if (_orderType == VideoClassType){
                     
+                    /* 数据请求成功*/
+                    mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"video_course"]];
+                    [(VideoClassInfo *)mod setClassID:dic[@"data"][@"video_course"][@"id"]];
+                    _orderView.classType.text = @"视频课";
+                    //页面赋值
+                    [_orderView setupLiveClassData:mod];
+                    //价格
+                    price = [[(TutoriumListInfo *)mod price]floatValue];
                     
+                }else if (_orderType == ExclusiveType){
+                    /* 数据请求成功*/
+                    mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"customized_group"]];
+                    [(VideoClassInfo *)mod setClassID:dic[@"data"][@"customized_group"][@"id"]];
+                    _orderView.classType.text = @"专属课";
+                    //页面赋值
+                    [_orderView setupExclusiveClassData:mod];
+                    
+                    //价格
+                    price = [[(TutoriumListInfo *)mod current_price]floatValue];
                 }
                 
-                [self stopHUD];
+                /* 请求一次余额 ,判断是否可以用余额支付*/
+                [self requestBalance];
+                
+            }else{
+                /* 拉取订单信息失败*/
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"该课程暂时不可购买!" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    
+                    [self returnLastPage];
+                }] ;
+                [alert addAction:sure];
+                
+                [self presentViewController:alert animated:YES completion:nil];
                 
                 
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                
-            }];
+            }
             
-        }
+            [self stopHUD];
+            
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+        }];
+        
     }
+    
     
     
 }
@@ -352,8 +338,8 @@ typedef enum : NSUInteger {
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
-    [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,_idNumber] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
+    [manager GET:[NSString stringWithFormat:@"%@/api/v1/payment/users/%@/cash",Request_Header,[self getStudentID]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         [self loginStates:dic];
         if ([dic[@"status"]isEqual:[NSNumber numberWithInteger:1]]) {
@@ -564,7 +550,7 @@ typedef enum : NSUInteger {
     AFHTTPSessionManager *manager=  [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:_token forHTTPHeaderField:@"Remember-Token"];
+    [manager.requestSerializer setValue:[self getToken] forHTTPHeaderField:@"Remember-Token"];
     [manager POST:[NSString stringWithFormat:@"%@/api/v1/live_studio/%@/%@/orders",Request_Header,course,_classID] parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];

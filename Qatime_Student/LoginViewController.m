@@ -634,6 +634,17 @@ typedef NS_ENUM(NSUInteger, LoginType) {
                     
                 }
             }
+        }else{
+            if ([userInfoGet[@"status"]isEqualToNumber:@0]) {
+                if (userInfoGet[@"error"]) {
+                    if ([userInfoGet[@"code"]isEqualToNumber:@2002]) {
+                        [self HUDStopWithTitle:@"不支持的客户端"];
+                    }else{
+                        [self HUDStopWithTitle:@"请检查账号或密码"];
+                    }
+                }
+            }
+            
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

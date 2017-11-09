@@ -229,7 +229,7 @@
     playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
     [UUProgressHUD show];
     
-    //同事启动辅助定时器.
+    //同时启动辅助定时器.
     assistPlayTime = 0.0;
     assistPlayTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(assistCountVoiceTime) userInfo:nil repeats:YES];
     
@@ -429,10 +429,7 @@
         picker.allowsEditing = YES;
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         picker.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self.superVC presentViewController:picker animated:YES completion:^{
-            
-            
-        }];
+        [self.superVC presentViewController:picker animated:YES completion:^{}];
     }else{
         //如果没有提示用户
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Tip" message:@"Your device don't have camera" delegate:nil cancelButtonTitle:@"Sure" otherButtonTitles:nil];

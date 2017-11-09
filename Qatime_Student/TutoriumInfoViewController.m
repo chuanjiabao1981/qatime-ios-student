@@ -49,6 +49,8 @@
     
     ShareViewController *_share;
     SnailQuickMaskPopups *_pops;
+    
+    BOOL _isGuest;
 
 }
 
@@ -115,6 +117,7 @@
     _tutoriumInfoView = [[TutoriumInfoView alloc]initWithFrame:CGRectMake(0, Navigation_Height, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-Navigation_Height-TabBar_Height)];
     [self.view addSubview:_tutoriumInfoView];
     
+    _isGuest = [[NSUserDefaults standardUserDefaults]valueForKey:@"is_Guest"];
     
     /* 购买bar*/
     

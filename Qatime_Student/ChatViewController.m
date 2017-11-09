@@ -484,7 +484,6 @@
     
     [self checkMicVolum];
     
-    
 }
 
 //开始录制的方法
@@ -636,8 +635,6 @@
     
     //使用NSNotificationCenter 鍵盤隐藏時
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    
-    
 }
 
 /* 再次强制登录后的回调*/
@@ -687,11 +684,6 @@
 
 /* 创建消息 - 加载历史消息*/
 - (void)makeMessages:(NSArray<NIMMessage *> * ) messages{
-    
-    for (NIMMessage *message in messages) {
-        NSLog(@"%@",message.messageId);
-    }
-    
     
     for (NIMMessage *message in messages) {
         
@@ -1027,18 +1019,14 @@
                                         result = @"老师开启了互动答疑";
                                     }
                                     [self.chatModel addSpecifiedNotificationItem:result];
-                                    
                                 }
-                                
                             }else{
                                 
                             }
                         }
-                        
                     }else{
                         
                     }
-                    
                 }else{
                     
                 }
@@ -1189,7 +1177,6 @@
                 NSDictionary *dic = [NSDictionary dictionaryWithDictionary:[self.chatModel getDicWithText:message.text andName:senderName andIcon:iconURL type:UUMessageTypeText andTime:[[NSString stringWithFormat:@"%f",message.timestamp]changeTimeStampToDateString]andMessage:message]];
                 
                 [self.chatModel.dataSource addObjectsFromArray:[self.chatModel additems:1 withDictionary:dic]];
-                
             }
             
             /* 如果收到的是图片消息*/
@@ -1397,6 +1384,13 @@
             if ([message.from isEqualToString:mod.accid]) {
                 iconURL = mod.icon;
                 senderName = mod.name;
+            }else{
+                //没有的话,如果不是通知类型 ,就直接踢出去
+                if (![message.session.sessionId isEqualToString:_session.sessionId]) {
+                    return;
+                }else{
+                    
+                }
             }
         }
         
@@ -1760,6 +1754,7 @@
         // 声音文件只支持 aac 和 amr 类型
         //构造消息
         NIMAudioObject *audioObject = [[NIMAudioObject alloc] initWithSourcePath:path];
+//        audioObject.duration =second;
         NIMMessage *message = [[NIMMessage alloc] init];
         message.messageObject = audioObject;
         

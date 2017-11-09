@@ -573,16 +573,17 @@
         }
     }else{
         self.buyBar.hidden = NO;
-        self.buyBar.listenButton.sd_layout
+        self.buyBar.applyButton.sd_layout
         .topSpaceToView(self.buyBar,10*ScrenScale)
         .bottomSpaceToView(self.buyBar,10*ScrenScale)
         .rightSpaceToView(self.buyBar,10*ScrenScale)
         .widthIs(_buttonWidth);
-        [self.buyBar.listenButton updateLayout];
-        [self.buyBar.listenButton setBackgroundColor:TITLECOLOR];
-        [self.buyBar.listenButton removeAllTargets];
-        [self.buyBar.listenButton setTitle:@"已报满" forState:UIControlStateNormal];
-        [self.buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.buyBar.applyButton updateLayout];
+        [self.buyBar.applyButton setBackgroundColor:TITLECOLOR];
+        self.buyBar.applyButton.layer.borderColor = TITLECOLOR.CGColor;
+        [self.buyBar.applyButton removeAllTargets];
+        [self.buyBar.applyButton setTitle:@"已报满" forState:UIControlStateNormal];
+        [self.buyBar.applyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }
     
     //显示更多按钮啊
@@ -921,14 +922,12 @@
     
 }
 
-
 /**
  购买免费专属课
  */
 - (void)addFreeClass{
-    
+    [self HUDStopWithTitle:@"暂不支持购买免费专属课"];
 }
-
 
 /** 分享功能 */
 - (void)share{

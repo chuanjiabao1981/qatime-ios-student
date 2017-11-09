@@ -101,8 +101,6 @@
     [dictionary setObject:message forKey:@"message"];
     
     
-    
-    
     return dictionary;
 }
 

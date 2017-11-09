@@ -173,13 +173,11 @@
     // Attach an observer to the payment queue
     [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     
-    
     /* 注册微信API*/
     [WXApi registerApp:@"wxf2dfbeb5f641ce40"];
     
     /* 初始化云信SDK*/
     [self setupNIM];
-    
     
     /* 推送状态读取*/
     /* 读取本地存储的默认是否要开启推送的声音和震动的设置数据*/
@@ -283,10 +281,8 @@
     /**选择年级的监听*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeItem:) name:@"ChooseGrade" object:nil];
     
-    
     /**监听游客退出登录*/
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(guestLogOut) name:@"guestLogOut" object:nil];
-    
     
     /* 获取推送消息内容 10以下系统获取方法*/
    remoteNotification =  [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -545,9 +541,7 @@
            }else{
         completionHandler();
     }
-    
-    
-    
+
 }
 
 /* 收到推送点击进入前/在前台收到推送后 的回调  /ios10收到静默推送*/
@@ -630,7 +624,7 @@
 
 
 //iOS10新增：处理后台点击通知的代理方法 -->打开应用
--(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler{
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
 
     if (notificatoin_ON == YES) {
         NSDictionary * userInfo = response.notification.request.content.userInfo;
@@ -890,7 +884,6 @@
                 lodata.token = chatDic[@"token"];
                 [[[NIMSDK sharedSDK]loginManager]autoLogin:lodata];
                 [NIMCustomObject registerCustomDecoder:[[AttachmentDecoder alloc]init]];
-                
                 
                 //不能就这么完了.
                 //同步所有聊天数据

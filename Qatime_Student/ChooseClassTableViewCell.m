@@ -59,7 +59,6 @@
         .bottomSpaceToView(_content,0)
         .autoWidthRatio(1.6);
         
-    
         //课程名
         _className = [[UILabel alloc]init];
         _className.font = [UIFont systemFontOfSize:15*ScrenScale];
@@ -70,7 +69,6 @@
         .leftSpaceToView(_classImage,10)
         .rightSpaceToView(_content,10)
         .autoHeightRatio(0);
-        
         [_className setMaxNumberOfLinesToShow:1];
         
 //        //教师图片
@@ -89,12 +87,11 @@
         _teacherName.font = [UIFont systemFontOfSize:12*ScrenScale];
         [_content addSubview:_teacherName];
         _teacherName.sd_layout
-        .leftEqualToView(_className)
+        .leftSpaceToView(_classImage, 10)
         .bottomSpaceToView(_content, 10)
         .autoHeightRatio(0);
         [_teacherName setSingleLineAutoResizeWithMaxWidth:150];
        
-        
         //年级科目label
         _price = [[UILabel alloc]init];
         _price.font = [UIFont systemFontOfSize:12*ScrenScale];
@@ -160,7 +157,6 @@
         
     }];
     
-    
     //课程名
     _className.text = model.name;
     
@@ -211,7 +207,13 @@
     _price.text = [NSString stringWithFormat:@"¥%@",interactionModel.price];
     
     //老师名字
-    _teacherName.text = [interactionModel.teacherNameString substringToIndex:interactionModel.teacherNameString.length-1];
+    //先加工
+    NSMutableString *teacherName = @"".mutableCopy;
+    for (NSDictionary *teacher in interactionModel.teachers) {
+        [teacherName appendString:teacher[@"name"]];
+        [teacherName appendString:@"/"];
+    }
+    _teacherName.text = [teacherName substringToIndex:teacherName.length-1];
     //购买人数
 //    _buyCount.text = interactionModel.buy_tickets_count;
 
