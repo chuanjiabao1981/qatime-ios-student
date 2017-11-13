@@ -10,4 +10,12 @@
 
 @interface ClassFeaturesCollectionViewCell : UICollectionViewCell
 
+@property (nonatomic, strong) UIView *circle ;
+
+@property (nonatomic, strong) UILabel *title ;
+
+@property (nonatomic, strong) UILabel *subTitle ;
+
+- (void)makeFeatures:(NSDictionary *)features;
+
 @end

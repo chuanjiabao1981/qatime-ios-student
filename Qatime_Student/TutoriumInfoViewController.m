@@ -47,6 +47,8 @@
     
     CGFloat _buttonWidth;
     
+    TutoriumListInfo *_tutorimInfo;
+    
     ShareViewController *_share;
     SnailQuickMaskPopups *_pops;
     
@@ -106,60 +108,92 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _buttonWidth = self.view.width_sd/4-15*ScrenScale;
+    [self makeData];
     
+    [self setupViews];
+    
+    /* 请求数据*/
+    [self requestClassesInfoWith:_classID];
+    
+    /* 注册重新加载页面数据的通知*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"RefreshTutoriumInfo" object:nil];
+    
+    /* 注册登录成功重新加载数据的通知*/
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(requestAgain) name:@"UserLoginAgain" object:nil];
+    
+    //微信分享功能的回调通知
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sharedFinish:) name:@"SharedFinish" object:nil];
+    
+}
+
+/** 初始化数据 */
+- (void)makeData{
+    /* 根据传递过来的id 进行网络请求model*/
+    /* 初始化三个model*/
+    _classModel = [[RecommandClasses alloc]init];
+    _teacherModel = [[RecommandTeacher alloc]init];
+    _classInfoTimeModel = [[ClassesInfo_Time alloc]init];
+    _classListArray = @[].mutableCopy;
+    _classFeaturesArray = @[].mutableCopy;
+    
+   _buttonWidth = self.view.width_sd/4-15*ScrenScale;
+    _isBought = NO;
+    
+    _isGuest = [[NSUserDefaults standardUserDefaults]valueForKey:@"is_Guest"];
+}
+
+/** 加载视图 */
+- (void)setupViews{
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), Navigation_Height)];
-    
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [self.view addSubview:_navigationBar];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastpage) forControlEvents:UIControlEventTouchUpInside];
-    
     _tutoriumInfoView = [[TutoriumInfoView alloc]initWithFrame:CGRectMake(0, Navigation_Height, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-Navigation_Height-TabBar_Height)];
     [self.view addSubview:_tutoriumInfoView];
     
-    _isGuest = [[NSUserDefaults standardUserDefaults]valueForKey:@"is_Guest"];
-    
     /* 购买bar*/
-    
     _buyBar= [[BuyBar alloc]initWithFrame:CGRectMake(0, self.view.height_sd-49, self.view.width_sd, 49)];
     [_buyBar.shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
-    
     [self.view addSubview:_buyBar];
     _buyBar.hidden = YES;
-    
     if (![self isLogin]) {
         [_buyBar.listenButton addTarget:self action:@selector(loginAgain) forControlEvents:UIControlEventTouchUpInside];
         [_buyBar.applyButton addTarget:self action:@selector(loginAgain) forControlEvents:UIControlEventTouchUpInside];
     }
-    
-    _workFlowArr = @[@{@"image":@"work1",@"title":@"1.购买课程",@"subTitle":@"支持退款,放心购买"},
-                     @{@"image":@"work2",@"title":@"2.准时上课",@"subTitle":@"提前预习,按时上课"},
-                     @{@"image":@"work3",@"title":@"3.在线授课",@"subTitle":@"多人交流,生动直播"},
-                     @{@"image":@"work4",@"title":@"4.上课结束",@"subTitle":@"视频回放,想看就看"}];
-    
-    
     _tutoriumInfoView.scrollView.delegate = self;
-    _tutoriumInfoView.view1.delegate = self;
-    _tutoriumInfoView.view2.delegate= self;
-    _tutoriumInfoView.segmentControl.selectionIndicatorHeight=2;
-    _tutoriumInfoView.segmentControl.selectedSegmentIndex=0;
-    
-    _tutoriumInfoView.classTagsView.delegate = self;
-    _tutoriumInfoView.teacherTagsView.delegate = self;
-    
     _tutoriumInfoView.classFeature.delegate = self;
     _tutoriumInfoView.classFeature.dataSource = self;
-    
-    _tutoriumInfoView.workFlowView.delegate = self;
-    _tutoriumInfoView.workFlowView.dataSource = self;
-    _tutoriumInfoView.workFlowView.tag = 2;
     
     //注册cell
     [_tutoriumInfoView.classFeature registerClass:[TeacherFeatureTagCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
     
-    //教师头像增加点击手势
-    UITapGestureRecognizer *tap_Teacher = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(watchTeachers)];
-    [_tutoriumInfoView.teacherHeadImage addGestureRecognizer:tap_Teacher];
+    //加载课程特色标签
+    [self setupTagText];
+    
+}
+
+/** 加载子控制器 */
+- (void)setupControllers{
+    
+    _infoVC = [[TutoriumInfo_InfoViewController alloc]initWithTutorium:_tutorimInfo];
+    
+    [self addChildViewController:_infoVC];
+    [_tutoriumInfoView.scrollView updateLayout];
+    [_tutoriumInfoView.scrollView addSubview:_infoVC.view];
+    _infoVC.view.sd_layout
+    .leftSpaceToView(_tutoriumInfoView.scrollView, 0)
+    .topSpaceToView(_tutoriumInfoView.scrollView, 0)
+    .bottomSpaceToView(_tutoriumInfoView.scrollView, 0)
+    .widthRatioToView(_tutoriumInfoView.scrollView, 1.0);
+    [_infoVC.view updateLayout];
+    
+    [_tutoriumInfoView.scrollView setupAutoContentSizeWithRightView:_infoVC.view rightMargin:800];
+    [_tutoriumInfoView.scrollView setupAutoContentSizeWithBottomView:_infoVC.view bottomMargin:0];
+    
+}
+
+//课程特色标签
+- (void)setupTagText{
     
     //标签设置
     _config = [[TTGTextTagConfig alloc]init];
@@ -171,46 +205,7 @@
     _config.tagExtraSpace = CGSizeMake(15, 5);
     _config.tagTextFont = TEXT_FONTSIZE;
     
-    
-    typeof(self) __weak weakSelf = self;
-    [ _tutoriumInfoView.segmentControl setIndexChangeBlock:^(NSInteger index) {
-        [weakSelf.tutoriumInfoView.scrollView scrollRectToVisible:CGRectMake(self.view.width_sd * index, 0, CGRectGetWidth(weakSelf.view.bounds), CGRectGetHeight(weakSelf.view.frame)-Navigation_Height-49) animated:YES];
-    }];
-    
-    self.tutoriumInfoView.scrollView.delegate = self;
-
-    _tutoriumInfoView.classesListTableView.delegate = self;
-    _tutoriumInfoView.classesListTableView.dataSource = self;
-    
-    _tutoriumInfoView.classesListTableView.tag = 1;
-    
-    /* 根据传递过来的id 进行网络请求model*/
-    /* 初始化三个model*/
-    _classModel = [[RecommandClasses alloc]init];
-    _teacherModel = [[RecommandTeacher alloc]init];
-    _classInfoTimeModel = [[ClassesInfo_Time alloc]init];
-    _classListArray = @[].mutableCopy;
-    _classFeaturesArray = @[].mutableCopy;
-    
-    _isBought = NO;
-    
-    /* 请求教师数据*/
-    
-    /* 请求数据*/
-    [self requestClassesInfoWith:_classID];
-    
-    /* 注册重新加载页面数据的通知*/
-    
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshPage) name:@"RefreshTutoriumInfo" object:nil];
-    
-    /* 注册登录成功重新加载数据的通知*/
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(requestAgain) name:@"UserLoginAgain" object:nil];
-    
-    //微信分享功能的回调通知
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sharedFinish:) name:@"SharedFinish" object:nil];
-    
 }
-
 
 
 /* 登录成功后,再次加载数据*/
@@ -257,13 +252,16 @@
                 
                 if ([teacherDic[@"status"]isEqualToNumber:@1]) {
                     
+                    //页面model
+                    _tutorimInfo = [TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"course"]];
+                    _tutorimInfo.classID = dic[@"data"][@"id"][@"course"];
+                    _tutorimInfo.describe = dic[@"data"][@"course"][@"description"];
                     NSString *status = [NSString stringWithFormat:@"%@",dic[@"status"]];
                     
                     _dataDic=[NSMutableDictionary dictionaryWithDictionary:dic[@"data"][@"course"]];
-                    
                     /* 课程页面信息赋值*/
-                    _tutoriumInfoView.className.text = _dataDic[@"name"];
-                    _tutoriumInfoView.saleNumber.text = [NSString stringWithFormat:@"报名人数 %@", _dataDic[@"buy_tickets_count"]];
+                    _tutoriumInfoView.className.text = _tutorimInfo.name;
+                    _tutoriumInfoView.saleNumber.text = [NSString stringWithFormat:@"报名人数 %@", _tutorimInfo.buy_tickets_count];
                     
                     //课程特色
                     for (NSString *key in _dataDic[@"icons"]) {
@@ -279,38 +277,35 @@
                     }
                     
                     /* 已经开课->插班价*/
-                    if ([_dataDic[@"status"]isEqualToString:@"teaching"]||[_dataDic[@"status"]isEqualToString:@"pause"]||[_dataDic[@"status"]isEqualToString:@"closed"]) {
+                    if ([_tutorimInfo.status isEqualToString:@"teaching"]||[_tutorimInfo.status isEqualToString:@"pause"]||[_tutorimInfo.status isEqualToString:@"closed"]) {
                         
-                        _tutoriumInfoView.priceLabel.text = [NSString stringWithFormat:@"¥%@(插班价)",_dataDic[@"current_price"]];
+                        _tutoriumInfoView.priceLabel.text = [NSString stringWithFormat:@"¥%@(插班价)",_tutorimInfo.current_price];
+                        
                     }else{
                         /* 未开课 总价*/
-                        _tutoriumInfoView.priceLabel.text = [NSString stringWithFormat:@"¥%@",_dataDic[@"price"]];
+                        _tutoriumInfoView.priceLabel.text = [NSString stringWithFormat:@"¥%@",_tutorimInfo.price];
                     }
                     
                     /* 已开课的状态*/
-                    if ([_dataDic[@"status"]isEqualToString:@"teaching"]||[_dataDic[@"status"]isEqualToString:@"pause"]||[_dataDic[@"status"]isEqualToString:@"closed"]) {
-                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ [进度%@/%@] ",@"开课中",_dataDic[@"completed_lessons_count"],_dataDic[@"lessons_count"]];
+                    if ([_tutorimInfo.status isEqualToString:@"teaching"]||[_tutorimInfo.status isEqualToString:@"pause"]||[_tutorimInfo.status isEqualToString:@"closed"]) {
+                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ [进度%@/%@] ",@"开课中",_tutorimInfo.completed_lessons_count,_tutorimInfo.lessons_count];
                         _tutoriumInfoView.status.backgroundColor = [UIColor colorWithRed:0.14 green:0.80 blue:0.99 alpha:1.00];
+                    }else if ([_tutorimInfo.status isEqualToString:@"missed"]||[_tutorimInfo.status isEqualToString:@"init"]||[_tutorimInfo.status isEqualToString:@"ready"]){
                         
-                    }else if ([_dataDic[@"status"]isEqualToString:@"missed"]||[_dataDic[@"status"]isEqualToString:@"init"]||[_dataDic[@"status"]isEqualToString:@"ready"]){
-                        
-                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ [距开课%@天]",@" 招生中",[self intervalSinceNow:_dataDic[@"live_start_time"] ]];
+                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ [距开课%@天]",@" 招生中",[self intervalSinceNow:_tutorimInfo.live_start_time ]];
                         _tutoriumInfoView.status.backgroundColor = [UIColor colorWithRed:0.08 green:0.59 blue:0.09 alpha:1.00];
-                        
-                    }else if ([_dataDic[@"status"]isEqualToString:@"finished"]||[_dataDic[@"status"]isEqualToString:@"billing"]||[_dataDic[@"status"]isEqualToString:@"completed"]){
-                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ [进度%@/%@]",@"已结束",_dataDic[@"lessons_count"],_dataDic[@"lessons_count"]];
+                    }else if ([_tutorimInfo.status isEqualToString:@"finished"]||[_tutorimInfo.status isEqualToString:@"billing"]||[_tutorimInfo.status isEqualToString:@"completed"]){
+                        _tutoriumInfoView.status.text = [NSString stringWithFormat:@" %@ [进度%@/%@]",@"已结束",_tutorimInfo.lessons_count,_tutorimInfo.lessons_count];
                         _tutoriumInfoView.status.backgroundColor = SEPERATELINECOLOR_2;
-                        
                         //如果课程已结束,buybar不显示.什么都不显示了
                         if (_buyBar) {
                             _buyBar.hidden = YES;
                             _tutoriumInfoView.frame = CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd-Navigation_Height);
                         }
-                        
-                    }else if ([_dataDic[@"status"]isEqualToString:@"published"]){
+                    }else if ([_tutorimInfo.status isEqualToString:@"published"]){
                         _buyBar.hidden = NO;
                         if (_dataDic[@"live_start_time"]) {
-                            if ([_dataDic[@"live_start_time"]isEqualToString:@""]||[_dataDic[@"live_start_time"]isEqualToString:@" "]) {
+                            if ([_tutorimInfo.live_start_time isEqualToString:@""]||[_tutorimInfo.live_start_time isEqualToString:@" "]) {
                                 _tutoriumInfoView.status.text = @"招生中";
                                 _tutoriumInfoView.status.backgroundColor = [UIColor colorWithRed:0.08 green:0.59 blue:0.09 alpha:1.00];
                                 
@@ -331,13 +326,13 @@
                         }
                     }
                     //直播时间赋值
-                    _tutoriumInfoView.liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[_dataDic[@"live_start_time"]length]>=10?[_dataDic[@"live_start_time"] substringToIndex:10]:_dataDic[@"live_start_time"],[_dataDic[@"live_end_time"] length]>=10?[_dataDic[@"live_end_time"] substringToIndex:10]:_dataDic[@"live_end_time"]];
+//                    _tutoriumInfoView.liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[_dataDic[@"live_start_time"]length]>=10?[_dataDic[@"live_start_time"] substringToIndex:10]:_dataDic[@"live_start_time"],[_dataDic[@"live_end_time"] length]>=10?[_dataDic[@"live_end_time"] substringToIndex:10]:_dataDic[@"live_end_time"]];
                     
                     //课程目标
-                    _tutoriumInfoView.classTarget.text = _dataDic[@"objective"]==[NSNull null]?@"无":_dataDic[@"objective"];
+//                    _tutoriumInfoView.classTarget.text = _dataDic[@"objective"]==[NSNull null]?@"无":_dataDic[@"objective"];
                     
                     //适合人群
-                    _tutoriumInfoView.suitable.text = _dataDic[@"suit_crowd"]==[NSNull null]?@"无":_dataDic[@"suit_crowd"];
+//                    _tutoriumInfoView.suitable.text = _dataDic[@"suit_crowd"]==[NSNull null]?@"无":_dataDic[@"suit_crowd"];
                     
                     
                     if ([status isEqualToString:@"0"]) {
@@ -369,9 +364,9 @@
                         /* 判断性别是否为空对象    预留性别判断接口*/
                         if (teacherDic[@"data"][@"gender"]!=[NSNull null]) {
                             if ([_teacherModel.gender isEqualToString:@"male"]) {
-                                [_tutoriumInfoView.genderImage setImage:[UIImage imageNamed:@"男"]];
+//                                [_tutoriumInfoView.genderImage setImage:[UIImage imageNamed:@"男"]];
                             }if ([_teacherModel.gender isEqualToString:@"female"]){
-                                [_tutoriumInfoView.genderImage setImage:[UIImage imageNamed:@"女"]];
+//                                [_tutoriumInfoView.genderImage setImage:[UIImage imageNamed:@"女"]];
                             }
                             _teacherModel.gender = [teacherDic[@"data"] valueForKey:@"gender"];
                             
@@ -380,19 +375,19 @@
                             _teacherModel.gender = @"";
                         }
                         
-                        [_tutoriumInfoView.teacherNameLabel setText: _teacherModel.teacherName];
-                        [_tutoriumInfoView.workPlaceLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.school]];
+//                        [_tutoriumInfoView.teacherNameLabel setText: _teacherModel.teacherName];
+//                        [_tutoriumInfoView.workPlaceLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.school]];
                         /* 教师简介富文本赋值*/
                         //                        [_tutoriumInfoView.teacherInterviewLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.describe]];
                         
-                        _tutoriumInfoView.teacherInterviewLabel.attributedText = _teacherModel.attributedDescribe;
+//                        _tutoriumInfoView.teacherInterviewLabel.attributedText = _teacherModel.attributedDescribe;
                         //                        _tutoriumInfoView.teacherInterviewLabel.attributedString = [[NSAttributedString alloc]initWithHTMLData:[_teacherModel.describe dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:nil];
                         
-                        [_tutoriumInfoView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacherModel.avatar_url ]];
+//                        [_tutoriumInfoView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacherModel.avatar_url ]];
                         
                         
                         /* 判断教学年限*/
-                        _tutoriumInfoView.workYearsLabel.text = [_teacherModel.teaching_years changeEnglishYearsToChinese];
+//                        _tutoriumInfoView.workYearsLabel.text = [_teacherModel.teaching_years changeEnglishYearsToChinese];
                         
                         
                         /** 手动解析classModel*/
@@ -406,24 +401,24 @@
                         //                        [_classModel.attributedDescribe addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:20]} range:NSMakeRange(0, 17)];
                         
                         /* 课程页面的label赋值*/
-                        [_tutoriumInfoView.subjectLabel setText:_classModel.subject];
-                        [_tutoriumInfoView.gradeLabel setText:_classModel.grade];
-                        [_tutoriumInfoView.classCount setText:[NSString stringWithFormat:@"共%@课",  _classModel.lessons_count]];
+//                        [_tutoriumInfoView.subjectLabel setText:_classModel.subject];
+//                        [_tutoriumInfoView.gradeLabel setText:_classModel.grade];
+//                        [_tutoriumInfoView.classCount setText:[NSString stringWithFormat:@"共%@课",  _classModel.lessons_count]];
                         //                        [_tutoriumInfoView.classDescriptionLabel setText:_classModel.describe];
                         //
-                        _tutoriumInfoView.classDescriptionLabel.attributedText = _classModel.attributedDescribe;
+//                        _tutoriumInfoView.classDescriptionLabel.attributedText = _classModel.attributedDescribe;
                         //                         _tutoriumInfoView.classDescriptionLabel.attributedString = [[NSAttributedString alloc]initWithHTMLData:[_classModel.describe dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:nil];
                         
                         //给视图赋值tag的内容
                         
                         if (_classModel.tag_list.count!=0) {
                             
-                            [_tutoriumInfoView.classTagsView addTags:_classModel.tag_list withConfig:_config];
+//                            [_tutoriumInfoView.classTagsView addTags:_classModel.tag_list withConfig:_config];
                         }else{
                             
                             _config.tagBorderColor = [UIColor whiteColor];
                             _config.tagTextColor = TITLECOLOR;
-                            [_tutoriumInfoView.classTagsView addTag:@"无" withConfig:_config];
+//                            [_tutoriumInfoView.classTagsView addTag:@"无" withConfig:_config];
                         }
                         
                         /* 课程列表的手动解析model*/
@@ -459,7 +454,8 @@
                     .heightIs(_tutoriumInfoView.classFeature.contentSize.height);
                     [_tutoriumInfoView.classFeature updateLayout];
                     
-                    
+                    //加载子控制器
+                    [self setupControllers];
                     [self HUDStopWithTitle:nil];
                     
                     
@@ -860,7 +856,7 @@
 
 - (void)updateTableView{
     
-    [_tutoriumInfoView.classesListTableView reloadData];
+//    [_tutoriumInfoView.classesListTableView reloadData];
     
     [_navigationBar .titleLabel setText:_classModel.name];
     
@@ -879,202 +875,18 @@
 }
 
 
-
-#pragma mark- tabelView datasource
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    NSInteger rows=0;
-    
-    if (tableView.tag == 1) {
-        if (_classListArray.count ==0) {
-            rows =0;
-        }else{
-            
-            rows =_classListArray.count;
-        }
-        
-    }else if (tableView.tag == 2) {
-        rows = _workFlowArr.count;
-    }
-    
-    return rows;
-    
-}
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    UITableViewCell *tableCell;
-    
-    if (tableView.tag == 1) {
-        
-        /* cell的重用队列*/
-        static NSString *cellIdenfier = @"cell";
-        ClassesListTableViewCell * cell =[tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-        if (cell==nil) {
-            cell=[[ClassesListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-        }
-        /* 教师课程安排的数据  如果为0的情况 。。。。预留判断*/
-        if (_classListArray.count>indexPath.row) {
-            
-            ClassesInfo_Time *mod = _classListArray[indexPath.row];
-            cell.model = mod;
-            
-            if (_isBought==YES) {
-                
-                if (cell.model.replayable == NO) {
-                    
-                    cell.replay.hidden = YES;
-                    
-                }else{
-                    cell.replay.hidden = NO;
-                }
-                
-            }else{
-                cell.replay.hidden = YES;
-                
-            }
-            
-            [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-            
-        }
-        tableCell = cell;
-    }else if (tableView.tag == 2){
-        
-        /* cell的重用队列*/
-        static NSString *cellIdenfier = @"tablecell";
-        WorkFlowTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-        if (cell==nil) {
-            cell=[[WorkFlowTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"tablecell"];
-        }
-        
-        if (_workFlowArr.count>indexPath.row) {
-            
-            [cell.image setImage:[UIImage imageNamed:_workFlowArr[indexPath.row][@"image"]]];
-            cell.title.text = _workFlowArr[indexPath.row][@"title"];
-            cell.subTitle.text = _workFlowArr[indexPath.row][@"subTitle"];
-        }
-        
-        return  cell;
-        
-    }
-    
-    
-    return  tableCell;
-    
-}
-
-#pragma mark- tableview delegate
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    CGFloat heights = 0;
-    
-    if (tableView.tag == 1) {
-        
-        if (_classListArray.count ==0) {
-            heights =10;
-        }else{
-            
-            ClassesInfo_Time *model = _classListArray[indexPath.row];
-            // 获取cell高度
-            heights =[tableView cellHeightForIndexPath:indexPath model:model keyPath:@"model" cellClass:[ClassesListTableViewCell class] contentViewWidth: [UIScreen mainScreen].bounds.size.width];
-        }
-    }else if (tableView.tag ==2){
-        
-        heights = (self.view.width_sd-100*ScrenScale)/4.0;
-    }
-    
-    
-    return heights;
-    
-}
-
-
-
-/* 点击课程表,进入回放的点击事件*/
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    if (tableView.tag == 1) {
-        ClassesListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        if (_isBought ==YES) {
-            
-            if (cell.model.replayable == YES) {
-                
-                [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-                    
-                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-                    
-                    if ([dic[@"status"]isEqualToNumber:@1]) {
-                        
-                        if ([dic[@"data"][@"replayable"]boolValue]== YES) {
-                            
-                            if ([dic[@"data"][@"left_replay_times"]integerValue]>0) {
-                                
-                                if (dic[@"data"][@"replay"]==nil) {
-                                    
-                                }else{
-                                    NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
-                                    [decodeParm addObject:@"software"];
-                                    [decodeParm addObject:@"videoOnDemand"];
-                                    
-                                    VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
-//                                    video.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-                                    video.hidesBottomBarWhenPushed = YES;
-//                                    self.definesPresentationContext = YES;
-                                    typeof(self) __weak weakSelf = self;
-                                    [self presentViewController:video animated:YES completion:^{
-                                        weakSelf.tabBarController.tabBar.hidden = YES;
-                                    }];
-                                    
-                                    video.dismissed = ^{
-                                        weakSelf.tabBarController.tabBar.hidden = YES;
-                                    };
-//                                    [self.navigationController pushViewController:video animated:YES];
-                                }
-                                
-                            }else{
-                                
-                                [self HUDStopWithTitle:@"回放次数已耗尽"];
-                                
-                            }
-                            
-                        }else{
-                            [self HUDStopWithTitle:@"暂无回放视频"];
-                        }
-                    }else{
-                        [self HUDStopWithTitle:@"服务器繁忙,请稍后重试"];
-                    }
-                    
-                }failure:^(id  _Nullable erros) {
-                }];
-            }else{
-                
-                
-            }
-            
-            
-        }else{
-            
-            
-        }
-        
-    }
-}
-
-
 #pragma mark- tagview delegate
 
 - (void)textTagCollectionView:(TTGTextTagCollectionView *)textTagCollectionView updateContentSize:(CGSize)contentSize{
     
-    if (textTagCollectionView == _tutoriumInfoView.classTagsView) {
-        [textTagCollectionView clearAutoHeigtSettings];
-        textTagCollectionView.sd_layout
-        .heightIs(contentSize.height);
-    }else if(textTagCollectionView == _tutoriumInfoView.teacherTagsView){
-        
-        
-    }
+//    if (textTagCollectionView == _tutoriumInfoView.classTagsView) {
+//        [textTagCollectionView clearAutoHeigtSettings];
+//        textTagCollectionView.sd_layout
+//        .heightIs(contentSize.height);
+//    }else if(textTagCollectionView == _tutoriumInfoView.teacherTagsView){
+//
+//
+//    }
 }
 
 #pragma mark- UICollectionView datasource
@@ -1101,7 +913,6 @@
         cell.model = _classFeaturesArray[indexPath.row];
         [cell updateLayoutSubviews];
     }
-    
     return cell;
     
 }
@@ -1129,7 +940,6 @@
     _classFeaturesArray = @[].mutableCopy;
     
     [self requestClassesInfoWith:_classID];
-    
     
 }
 
@@ -1246,6 +1056,11 @@
     }else if (resp.errCode == -2){
         [self HUDStopWithTitle:@"取消分享"];
     }
+}
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+ 
+    
 }
 
 

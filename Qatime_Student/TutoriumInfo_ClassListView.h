@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TutoriumInfo_ClassListView : UIView
+@interface TutoriumInfo_ClassListView : UITableView
 
 @end

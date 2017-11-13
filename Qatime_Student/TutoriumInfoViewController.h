@@ -16,6 +16,8 @@
 #import "BuyBar.h"
 #import "NavigationBar.h"
 
+#import "TutoriumInfo_InfoViewController.h"
+
 @interface TutoriumInfoViewController : UIViewController
 
 /* 课程id 用来传参数*/
@@ -55,7 +57,12 @@
 @property (nonatomic, strong) NSString *promotionCode ;
 
 /**学习流程所需的数据*/
-@property (nonatomic, strong) NSArray *workFlowArr; ;
+//@property (nonatomic, strong) NSArray *workFlowArr;
+
+
+/** 子控制器 */
+@property (nonatomic, strong) TutoriumInfo_InfoViewController *infoVC ;
+
 
 
 /**
@@ -76,9 +83,6 @@
  @return 实例
  */
 - (instancetype)initWithClassID:(NSString *)classID andPromotionCode:(NSString *)promotionCode;
-
-
-
 
 /**
  判断课程状态是否购买 公开方法,给子类重写

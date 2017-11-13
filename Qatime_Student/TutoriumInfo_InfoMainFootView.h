@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TutoriumInfo_InfoMainFootView : UIView
-
+@interface TutoriumInfo_InfoMainFootView : UICollectionReusableView
+@property (nonatomic, strong) UILabel *beforeLabel ;
+@property (nonatomic, strong) UILabel *duringLabel  ;
+@property (nonatomic, strong) UILabel *afterLabel  ;
+@property (nonatomic, strong) UILabel *replayLabel ;
 @end

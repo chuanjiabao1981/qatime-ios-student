@@ -1508,7 +1508,6 @@
             
             [_inputView voiceRecord:_inputView.voiceSwitchTextButton];
         }
-        
     }
 }
 

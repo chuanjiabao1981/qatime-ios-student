@@ -55,6 +55,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "__58-[TeachersPublicViewController requestTeachersInfoWithID:]_block_invoke:TeachersPublicViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[YZEmotionPageCell collectionView]:YZEmotionPageCell.m">
          <PersistentStrings>
             <PersistentString
@@ -69,18 +72,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "main:main.m">
+      </ContextState>
+      <ContextState
          contextName = "-[HomeworkInfoViewController collectionView:numberOfItemsInSection:]:HomeworkInfoViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_itemsArray">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "main:main.m">
-      </ContextState>
-      <ContextState
-         contextName = "__58-[TeachersPublicViewController requestTeachersInfoWithID:]_block_invoke:TeachersPublicViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[NoticeIndexViewController didSelectedWithSegement:index:]:NoticeIndexViewController.m">
@@ -121,6 +121,14 @@
          contextName = "-[NELivePlayerViewController NELivePlayerPlaybackStateChanged:]:NELivePlayerViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[TutoriumInfo_InfoMainHeadView textTagCollectionView:updateContentSize:]:TutoriumInfo_InfoMainHeadView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_tagList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[LivePlayerViewController applicationEnterForeGround]:LivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -155,6 +163,14 @@
       </ContextState>
       <ContextState
          contextName = "-[AppDelegate onResp:]:AppDelegate.m">
+      </ContextState>
+      <ContextState
+         contextName = "__53-[TutoriumInfoViewController requestClassesInfoWith:]_block_invoke_2:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_tutorimInfo">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "__43-[LivePlayerChatViewController viewDidLoad]_block_invoke:LivePlayerChatViewController.m">
@@ -234,6 +250,17 @@
          contextName = "__51-[LivePlayerChatViewController requestChatTeamUser]_block_invoke:LivePlayerChatViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[TutoriumInfo_InfoViewController collectionView:numberOfItemsInSection:]:TutoriumInfo_InfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_workflows">
+            </PersistentString>
+            <PersistentString
+               value = "_classfeatures">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[ViewController showNIMPage:]:ViewController.m">
       </ContextState>
       <ContextState
@@ -251,6 +278,9 @@
                value = "_videoPlayer">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumInfo_InfoMainHeadView setTutorium:]:TutoriumInfo_InfoMainHeadView.m">
       </ContextState>
       <ContextState
          contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
@@ -333,6 +363,9 @@
                value = "_mainView.photosView">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumInfo_InfoViewController collectionView:layout:insetForSectionAtIndex:]:TutoriumInfo_InfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[TLCityPickerController hotCityData]:TLCityPickerController.m">

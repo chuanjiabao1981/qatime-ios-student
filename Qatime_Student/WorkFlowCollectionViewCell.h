@@ -10,4 +10,10 @@
 
 @interface WorkFlowCollectionViewCell : UICollectionViewCell
 
+@property (nonatomic, strong) UIImageView *image ;
+@property (nonatomic, strong) UILabel *title ;
+@property (nonatomic, strong) UILabel *subTitle ;
+
+- (void)makeWorkFlow:(NSDictionary *)workFlow ;
+
 @end
