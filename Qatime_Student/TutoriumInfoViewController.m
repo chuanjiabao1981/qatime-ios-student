@@ -40,6 +40,18 @@
 #import "SnailQuickMaskPopups.h"
 #import "ShareViewController.h"
 
+
+/**
+ 顶部视图的折叠/展开状态
+ 
+ - LeadingViewStateFold: 折叠
+ - LeadingViewStateUnfold: 展开
+ */
+typedef NS_ENUM(NSUInteger, LeadingViewState) {
+    LeadingViewStateFold,
+    LeadingViewStateUnfold,
+};
+
 @interface TutoriumInfoViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,TTGTextTagCollectionViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>{
 
     /* 保存本页面数据*/
@@ -53,6 +65,8 @@
     SnailQuickMaskPopups *_pops;
     
     BOOL _isGuest;
+    
+    LeadingViewState _leadingViewState;
 
 }
 
@@ -124,6 +138,10 @@
     //微信分享功能的回调通知
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sharedFinish:) name:@"SharedFinish" object:nil];
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(fold) name:@"Fold" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(unFold) name:@"Unfold" object:nil];
+    
 }
 
 /** 初始化数据 */
@@ -140,6 +158,8 @@
     _isBought = NO;
     
     _isGuest = [[NSUserDefaults standardUserDefaults]valueForKey:@"is_Guest"];
+    
+    _leadingViewState = LeadingViewStateUnfold;
 }
 
 /** 加载视图 */
@@ -151,6 +171,7 @@
     _tutoriumInfoView = [[TutoriumInfoView alloc]initWithFrame:CGRectMake(0, Navigation_Height, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-Navigation_Height-TabBar_Height)];
     [self.view addSubview:_tutoriumInfoView];
     
+    [self.view bringSubviewToFront:_navigationBar];
     /* 购买bar*/
     _buyBar= [[BuyBar alloc]initWithFrame:CGRectMake(0, self.view.height_sd-49, self.view.width_sd, 49)];
     [_buyBar.shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
@@ -176,10 +197,17 @@
 - (void)setupControllers{
     
     _infoVC = [[TutoriumInfo_InfoViewController alloc]initWithTutorium:_tutorimInfo];
+    _teacherVC = [[TutoriumInfo_TeacherViewController alloc]initWithTeacher:_teacherModel];
+    _classVC = [[TutoriumInfo_ClassListViewController alloc]initWithClasses:_classListArray bought:_isBought];
     
     [self addChildViewController:_infoVC];
+    [self addChildViewController:_teacherVC];
+    [self addChildViewController:_classVC];
     [_tutoriumInfoView.scrollView updateLayout];
     [_tutoriumInfoView.scrollView addSubview:_infoVC.view];
+    [_tutoriumInfoView.scrollView addSubview:_teacherVC.view];
+    [_tutoriumInfoView.scrollView addSubview:_classVC.view];
+    
     _infoVC.view.sd_layout
     .leftSpaceToView(_tutoriumInfoView.scrollView, 0)
     .topSpaceToView(_tutoriumInfoView.scrollView, 0)
@@ -187,8 +215,22 @@
     .widthRatioToView(_tutoriumInfoView.scrollView, 1.0);
     [_infoVC.view updateLayout];
     
-    [_tutoriumInfoView.scrollView setupAutoContentSizeWithRightView:_infoVC.view rightMargin:800];
+    _teacherVC.view.sd_layout
+    .leftSpaceToView(_infoVC.view , 0)
+    .topSpaceToView(_tutoriumInfoView.scrollView, 0)
+    .bottomSpaceToView(_tutoriumInfoView.scrollView, 0)
+    .widthRatioToView(_infoVC.view , 1.0);
+    [_teacherVC.view updateLayout];
+    
+    _classVC.view.sd_layout
+    .leftSpaceToView(_teacherVC.view, 0)
+    .topSpaceToView(_tutoriumInfoView.scrollView, 0)
+    .bottomSpaceToView(_tutoriumInfoView.scrollView, 0)
+    .widthRatioToView(_infoVC.view, 1.0);
+    [_classVC.view updateLayout];
+    
     [_tutoriumInfoView.scrollView setupAutoContentSizeWithBottomView:_infoVC.view bottomMargin:0];
+    [_tutoriumInfoView.scrollView setupAutoContentSizeWithRightView:_teacherVC.view rightMargin:414];
     
 }
 
@@ -344,51 +386,13 @@
                         [self switchClassData:dic];
                         
                         /* 手动解析teacherModel*/
-                        NSLog(@"%@",teacherDic);
-                        
-                        /* teacherModel赋值与界面数据更新*/
-                        _teacherModel.teacherID = teacherDic[@"data"][@"id"];
+//                        NSLog(@"%@",teacherDic);
+                        _teacherModel = [RecommandTeacher yy_modelWithJSON:teacherDic[@"data"]];
+                        _teacherModel.teacherID = teacherID;
                         _teacherModel.teacherName =teacherDic[@"data"][@"name"];
-                        _teacherModel.school =teacherDic[@"data"][@"school"];
-                        _teacherModel.subject = teacherDic[@"data"][@"subject"];
-                        _teacherModel.teaching_years =teacherDic[@"data"][@"teaching_years"];
-                        
                         /* 教师描述的数据是html富文本,使用系统解析*/
                         _teacherModel.attributedDescribe = [[NSAttributedString alloc] initWithData:[teacherDic[@"data"][@"desc"] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-                        
                         _teacherModel.describe =teacherDic[@"data"][@"desc"];
-                        
-                        _teacherModel.gender =teacherDic[@"data"][@"gender"];
-                        _teacherModel.avatar_url =teacherDic[@"data"][@"avatar_url"];
-                        
-                        /* 判断性别是否为空对象    预留性别判断接口*/
-                        if (teacherDic[@"data"][@"gender"]!=[NSNull null]) {
-                            if ([_teacherModel.gender isEqualToString:@"male"]) {
-//                                [_tutoriumInfoView.genderImage setImage:[UIImage imageNamed:@"男"]];
-                            }if ([_teacherModel.gender isEqualToString:@"female"]){
-//                                [_tutoriumInfoView.genderImage setImage:[UIImage imageNamed:@"女"]];
-                            }
-                            _teacherModel.gender = [teacherDic[@"data"] valueForKey:@"gender"];
-                            
-                        }else{
-                            
-                            _teacherModel.gender = @"";
-                        }
-                        
-//                        [_tutoriumInfoView.teacherNameLabel setText: _teacherModel.teacherName];
-//                        [_tutoriumInfoView.workPlaceLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.school]];
-                        /* 教师简介富文本赋值*/
-                        //                        [_tutoriumInfoView.teacherInterviewLabel setText:[NSString stringWithFormat:@"%@",_teacherModel.describe]];
-                        
-//                        _tutoriumInfoView.teacherInterviewLabel.attributedText = _teacherModel.attributedDescribe;
-                        //                        _tutoriumInfoView.teacherInterviewLabel.attributedString = [[NSAttributedString alloc]initWithHTMLData:[_teacherModel.describe dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:nil];
-                        
-//                        [_tutoriumInfoView.teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:_teacherModel.avatar_url ]];
-                        
-                        
-                        /* 判断教学年限*/
-//                        _tutoriumInfoView.workYearsLabel.text = [_teacherModel.teaching_years changeEnglishYearsToChinese];
-                        
                         
                         /** 手动解析classModel*/
                         _classModel = [RecommandClasses yy_modelWithDictionary:_dataDic];
@@ -454,10 +458,11 @@
                     .heightIs(_tutoriumInfoView.classFeature.contentSize.height);
                     [_tutoriumInfoView.classFeature updateLayout];
                     
+                    [_tutoriumInfoView.headView setupAutoHeightWithBottomView:_tutoriumInfoView.saleNumber bottomMargin:10];
+                    [_tutoriumInfoView.headView updateLayout];
                     //加载子控制器
                     [self setupControllers];
                     [self HUDStopWithTitle:nil];
-                    
                     
                 }else{
                     /* 返回的教师数据是错误的*/
@@ -1058,10 +1063,49 @@
     }
 }
 
--(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
- 
-    
+/** 折叠 */
+- (void)fold{
+    if (_leadingViewState == LeadingViewStateUnfold) {
+        //折叠
+        _leadingViewState = LeadingViewStateFold;
+        [_tutoriumInfoView.headView updateLayout];
+        CGFloat bottomHeigh;
+        if (_buyBar.hidden) {
+            bottomHeigh = 0;
+        }else{
+            bottomHeigh = TabBar_Height;
+        }
+        [UIView animateWithDuration:0.3 animations:^{
+            _tutoriumInfoView.sd_layout
+            .topSpaceToView(_navigationBar, -_tutoriumInfoView.headView.height_sd);
+            [_tutoriumInfoView updateLayout];
+
+        }];
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangeFold" object:nil];
+        
+    }else{
+        NSLog(@"错误了......");
+    }
 }
+
+/** 展开 */
+- (void)unFold{
+    if (_leadingViewState == LeadingViewStateFold) {
+        //展开
+        _leadingViewState = LeadingViewStateUnfold;
+        [UIView animateWithDuration:0.3 animations:^{
+            _tutoriumInfoView.sd_layout
+            .topSpaceToView(_navigationBar, 0);
+            [_tutoriumInfoView updateLayout];
+        }];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangeUnfold" object:nil];
+    }else{
+        NSLog(@"错误了2.....");
+    }
+}
+
+
 
 
 - (void)didReceiveMemoryWarning {

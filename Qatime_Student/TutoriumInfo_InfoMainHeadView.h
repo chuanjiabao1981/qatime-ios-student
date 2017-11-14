@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TTGTextTagCollectionView.h"
 #import "TutoriumList.h"
+#import "NSAttributedString+YYText.h"
 
 typedef void(^EndfreshTTGTextTag)(CGFloat height);
 

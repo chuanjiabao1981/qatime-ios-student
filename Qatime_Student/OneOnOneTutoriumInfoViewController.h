@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "OneOnOneTutorimInfoView.h"
+#import "InteractiveInfo_InfoViewController.h"
+#import "InteractiveInfo_TeacherViewController.h"
+#import "InteractiveInfo_ClassListViewController.h"
 
 @interface OneOnOneTutoriumInfoViewController : UIViewController
-
 
 /* 课程id 用来传参数*/
 @property(nonatomic,strong) NSString *classID ;
@@ -18,14 +20,10 @@
 /**主页面*/
 @property (nonatomic, strong) OneOnOneTutorimInfoView *myView ;
 
-
-/* 三个页面的不同Model*/
-//@property(nonatomic,strong) RecommandTeacher *teacherModel;
-//
-//@property(nonatomic,strong) RecommandClasses *classModel  ;
-//
-//@property(nonatomic,strong) ClassesInfo_Time *classInfoTimeModel ;
-
+//子控制器
+@property (nonatomic, strong) InteractiveInfo_InfoViewController *infoVC ;
+@property (nonatomic, strong) InteractiveInfo_TeacherViewController *teacherVC ;
+@property (nonatomic, strong) InteractiveInfo_ClassListViewController *classVC ;
 
 /**
  辅导班编号初始化

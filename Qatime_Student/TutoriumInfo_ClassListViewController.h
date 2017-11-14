@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TutoriumInfo_ClassListView.h"
+#import "ClassesListTableViewCell.h"
 
 @interface TutoriumInfo_ClassListViewController : UIViewController
+
+@property (nonatomic, strong) TutoriumInfo_ClassListView *mainView ;
+
+
+-(instancetype)initWithClasses:(__kindof NSArray *)classes bought:(BOOL)bought;
+
 
 @end

@@ -1,13 +1,12 @@
 //
-//  TutoriumInfo_TeacherViewController.m
+//  InteractiveInfo_ClassListViewController.m
 //  Qatime_Student
 //
-//  Created by Shin on 2017/11/10.
+//  Created by Shin on 2017/11/14.
 //  Copyright © 2017年 WWTD. All rights reserved.
 //
 
-#import "TutoriumInfo_TeacherViewController.h"
-#import "TeachersPublicViewController.h"
+#import "InteractiveInfo_ClassListViewController.h"
 
 /**
  顶部视图的折叠/展开状态
@@ -20,61 +19,62 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     LeadingViewStateUnfold,
 };
 
-@interface TutoriumInfo_TeacherViewController ()<TeacherTapProtocol,UIScrollViewDelegate>{
-    
-    RecommandTeacher *_teacher;
+@interface InteractiveInfo_ClassListViewController (){
+    BOOL _isBought;
     
     LeadingViewState _leadingViewState;
 }
 
 @end
 
-@implementation TutoriumInfo_TeacherViewController
+@implementation InteractiveInfo_ClassListViewController
 
--(instancetype)initWithTeacher:(RecommandTeacher *)teacher{
+-(instancetype)initWithLessons:(__kindof NSArray *)lessons bought:(BOOL)bought{
     self = [super init];
     if (self) {
-        _teacher = teacher;
+        _lesonsArray = lessons;
+        _isBought = bought;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     //默认是展开状态
     _leadingViewState = LeadingViewStateUnfold;
-    [self setupViews];
+    self.tableView.tableHeaderView = [UIView new];
+    self.tableView.tableFooterView = [UIView new];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeFold) name:@"ChangeFold" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeUnfold) name:@"ChangeUnfold" object:nil];
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    return _lesonsArray.count;;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    /* cell的重用队列*/
+    static NSString *cellIdenfier = @"cell";
+    OneOnOneLessonTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+    if (cell==nil) {
+        cell=[[OneOnOneLessonTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+        if (_lesonsArray.count>indexPath.row) {
+            cell.model = _lesonsArray[indexPath.row];
+        }
+        [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
+    }
+    
+    return  cell;
     
 }
 
-- (void)setupViews{
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    self.view.backgroundColor = [UIColor whiteColor];
-    [self.view updateLayout];
-    _mainView = [[TutoriumInfo_TeacherView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd)];
-    [self.view addSubview:_mainView];
-    _mainView.sd_layout
-    .leftSpaceToView(self.view, 0)
-    .rightSpaceToView(self.view, 0)
-    .bottomSpaceToView(self.view, 0)
-    .topSpaceToView(self.view, 0);
-    [_mainView updateLayout];
-    _mainView.teacher = _teacher;
-    _mainView.teacherdelegate = self;
-    _mainView.delegate = self;
-    
-    
+    return 100;
 }
 
--(void)tapTeachers{
-    
-    TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:_teacher.teacherID];
-    [self.navigationController pushViewController:controller animated:YES];
-    
-}
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     CGPoint point = scrollView.contentOffset;

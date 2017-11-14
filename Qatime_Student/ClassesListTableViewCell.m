@@ -265,7 +265,6 @@
     
     [_replay setTitle:[NSString stringWithFormat:@"还可回放%@次›",classModel.left_replay_times] forState:UIControlStateNormal];
     
-    
 }
 
 -(void)setInteractionModel:(OneOnOneClass *)interactionModel{

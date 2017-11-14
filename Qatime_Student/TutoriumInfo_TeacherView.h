@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RecommandTeacher.h"
 
-@interface TutoriumInfo_TeacherView : UIView
+@protocol TeacherTapProtocol <NSObject>
+
+- (void)tapTeachers;
+@end
+
+@interface TutoriumInfo_TeacherView : UIScrollView
 /* 教师姓名*/
 @property(nonatomic,strong) UILabel *teacherNameLabel ;
 
@@ -28,5 +34,9 @@
 
 /* 老师照片*/
 @property(nonatomic,strong) UIImageView *teacherHeadImage ;
+
+@property (nonatomic, strong) RecommandTeacher *teacher ;
+
+@property (nonatomic, weak) id<TeacherTapProtocol> teacherdelegate ;
 
 @end

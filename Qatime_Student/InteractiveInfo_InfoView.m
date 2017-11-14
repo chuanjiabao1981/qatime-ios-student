@@ -1,14 +1,14 @@
 //
-//  TeachersGroupTableView.m
+//  InteractiveInfo_InfoView.m
 //  Qatime_Student
 //
-//  Created by Shin on 2017/4/1.
+//  Created by Shin on 2017/11/14.
 //  Copyright © 2017年 WWTD. All rights reserved.
 //
 
-#import "TeachersGroupTableView.h"
+#import "InteractiveInfo_InfoView.h"
 
-@implementation TeachersGroupTableView
+@implementation InteractiveInfo_InfoView
 
 /*
 // Only override drawRect: if you perform custom drawing.

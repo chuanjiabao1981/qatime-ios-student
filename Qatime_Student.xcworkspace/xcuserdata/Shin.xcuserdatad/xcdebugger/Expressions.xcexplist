@@ -208,13 +208,16 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[TutoriumInfo_InfoViewController initWithTutorium:]:TutoriumInfo_InfoViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[InteractionViewController didRotateFromInterfaceOrientation:]:InteractionViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_shouldTurnFullScreen">
+               value = "is_fullScreen">
             </PersistentString>
             <PersistentString
-               value = "is_fullScreen">
+               value = "_shouldTurnFullScreen">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -247,6 +250,14 @@
          contextName = "__44-[NoticeIndexViewController requestMyClass:]_block_invoke:NoticeIndexViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[TutoriumInfo_TeacherViewController tapTeachers]:TutoriumInfo_TeacherViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_teacher">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "__51-[LivePlayerChatViewController requestChatTeamUser]_block_invoke:LivePlayerChatViewController.m">
       </ContextState>
       <ContextState
@@ -264,12 +275,7 @@
          contextName = "-[ViewController showNIMPage:]:ViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[TLCityPickerController tableView:numberOfRowsInSection:]:TLCityPickerController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.data">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[TutoriumInfo_InfoMainHeadView setTutorium:]:TutoriumInfo_InfoMainHeadView.m">
       </ContextState>
       <ContextState
          contextName = "-[ReplayLessonsViewController viewDidLoad]:ReplayLessonsViewController.m">
@@ -280,7 +286,12 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[TutoriumInfo_InfoMainHeadView setTutorium:]:TutoriumInfo_InfoMainHeadView.m">
+         contextName = "-[TLCityPickerController tableView:numberOfRowsInSection:]:TLCityPickerController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.data">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
@@ -293,6 +304,14 @@
             </PersistentString>
             <PersistentString
                value = "self.decodeType">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumInfoViewController setupControllers]:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_infoVC">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -383,6 +402,14 @@
       </ContextState>
       <ContextState
          contextName = "-[LivePlayerViewController UUInputFunctionView:voicePath:time:]:LivePlayerViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[TutoriumInfo_ClassListViewController tableView:cellForRowAtIndexPath:]:TutoriumInfo_ClassListViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_classesArray">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[ChatViewController viewDidLoad]:ChatViewController.m">

@@ -8,6 +8,8 @@
 
 #import "TutoriumInfo_InfoMainHeadView.h"
 #import "NSString+TimeStamp.h"
+#import "NSString+HTML.h"
+
 
 @interface TutoriumInfo_InfoMainHeadView(){
     
@@ -222,7 +224,8 @@
         [_descriptions setText:@"辅导简介"];
         
         _classDescriptionLabel =[UILabel new];
-        _classDescriptionLabel.font = TITLEFONTSIZE;
+        _classDescriptionLabel.font = TEXT_FONTSIZE;
+        _classDescriptionLabel.textColor = TITLECOLOR;
         _classDescriptionLabel.isAttributedContent = YES;
         [self addSubview:_classDescriptionLabel];
         _classDescriptionLabel.sd_layout
@@ -253,7 +256,7 @@
     _gradeLabel.text = tutorium.grade;
     _subjectLabel.text = tutorium.subject;
     _classCount.text = [NSString stringWithFormat:@"共%@课",tutorium.lessons_count];
-    _liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",[tutorium.live_start_time changeTimeStampToDateString].length>=10?[[tutorium.live_start_time changeTimeStampToDateString]substringToIndex:10]:[tutorium.live_start_time changeTimeStampToDateString],[tutorium.live_end_time changeTimeStampToDateString].length>=10?[[tutorium.live_end_time changeTimeStampToDateString]substringToIndex:10]:[tutorium.live_end_time changeTimeStampToDateString]];
+    _liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",tutorium.live_start_time?tutorium.live_start_time:@"",tutorium.live_end_time?tutorium.live_end_time:@""];
     [_liveTimeLabel updateLayout];
     [_classTagsView removeAllTags];
     if (_tagList.count==0) {
@@ -265,8 +268,25 @@
     _classTarget.text = [tutorium.objective isEqual:[NSNull null]]?@"无":tutorium.objective;
     _suitable.text = [tutorium.suit_crowd isEqual:[NSNull null]]?@"无":tutorium.suit_crowd;
     
-    _classDescriptionLabel.attributedText = [[NSMutableAttributedString alloc]initWithData:[tutorium.describe?tutorium.describe:@" " dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
-    
+    NSMutableAttributedString *attDesc;
+    if (tutorium.describe) {
+        if ([[NSString getPureStringwithHTMLString:tutorium.describe]isEqualToString:tutorium.describe]) {
+            //不包html富文本
+            _classDescriptionLabel.text = tutorium.describe;
+        }else{
+            attDesc = [[NSMutableAttributedString alloc]initWithData:[tutorium.describe?[@"" stringByAppendingString:tutorium.describe]:@" " dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+            if ([attDesc.yy_font.familyName isEqualToString:@"Times New Roman"]&& attDesc.yy_font.pointSize == 12) {
+                attDesc.yy_font = [UIFont fontWithName:@".SF UI Text" size:16*ScrenScale];
+                attDesc.yy_color = TITLECOLOR;
+            }else if ([attDesc.yy_font.familyName isEqualToString:@"Times New Roman"]&&attDesc.yy_font.pointSize != 12){
+                attDesc.yy_font = [UIFont fontWithName:@".SF UI Text" size:attDesc.yy_font.pointSize];
+                attDesc.yy_color = TITLECOLOR;
+            }
+            //判断是否有字号,没有的话加上.
+            _classDescriptionLabel.attributedText = attDesc;
+        }
+    }
+   
     [_classDescriptionLabel updateLayout];
     [_features updateLayout];
 }

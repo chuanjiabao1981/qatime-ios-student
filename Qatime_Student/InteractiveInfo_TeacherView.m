@@ -1,14 +1,14 @@
 //
-//  ClassListTableView.m
+//  InteractiveInfo_TeacherView.m
 //  Qatime_Student
 //
-//  Created by Shin on 2017/4/1.
+//  Created by Shin on 2017/11/14.
 //  Copyright © 2017年 WWTD. All rights reserved.
 //
 
-#import "ClassListTableView.h"
+#import "InteractiveInfo_TeacherView.h"
 
-@implementation ClassListTableView
+@implementation InteractiveInfo_TeacherView
 
 /*
 // Only override drawRect: if you perform custom drawing.

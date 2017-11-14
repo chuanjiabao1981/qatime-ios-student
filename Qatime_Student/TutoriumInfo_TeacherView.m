@@ -7,6 +7,18 @@
 //
 
 #import "TutoriumInfo_TeacherView.h"
+#import "UIImageView+WebCache.h"
+#import "NSString+ChangeYearsToChinese.h"
+#import "NSString+HTML.h"
+#import "NSAttributedString+YYText.h"
+
+@interface TutoriumInfo_TeacherView(){
+    
+    UITapGestureRecognizer *tapTeacher;
+    
+}
+
+@end
 
 @implementation TutoriumInfo_TeacherView
 
@@ -15,6 +27,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         
+        self.backgroundColor  =[UIColor whiteColor];
+        self.contentSize = CGSizeMake(self.width_sd, 100);
         /* 教师头像*/
         _teacherHeadImage = [[UIImageView alloc]init];
         _teacherHeadImage.userInteractionEnabled = YES;
@@ -26,6 +40,9 @@
         .widthIs(80)
         .heightEqualToWidth();
         _teacherHeadImage.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
+        
+        tapTeacher = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTeacher)];
+        [_teacherHeadImage addGestureRecognizer:tapTeacher];
         
         //教师名
         _teacherNameLabel = [[UILabel alloc]init];
@@ -45,7 +62,6 @@
         .centerYEqualToView(_teacherNameLabel)
         .heightRatioToView(_teacherNameLabel,0.6)
         .widthEqualToHeight();
-        
         
         /* 所在学校*/
         UILabel *schools =[[UILabel alloc]init];
@@ -125,9 +141,51 @@
         .topSpaceToView(_descrip,20)
         .autoHeightRatio(0);
         
-        [self setupAutoHeightWithBottomView:_teacherInterviewLabel bottomMargin:20];
+        [self setupAutoContentSizeWithBottomView:_teacherInterviewLabel bottomMargin:20];
+        self.alwaysBounceVertical = YES;
     }
     return self;
+}
+
+-(void)setTeacher:(RecommandTeacher *)teacher{
+    _teacher = teacher;
+    [_teacherHeadImage sd_setImageWithURL:[NSURL URLWithString:teacher.avatar_url]];
+    _teacherNameLabel.text = teacher.teacherName;
+    if ([teacher.gender isEqualToString:@"male"]) {
+        [_genderImage setImage:[UIImage imageNamed:@"男"]];
+    }else if ([teacher.gender isEqualToString:@"female"]){
+        [_genderImage setImage:[UIImage imageNamed:@"女"]];
+    }else{
+        [_genderImage setImage:nil];
+    }
+    _workPlaceLabel.text = teacher.school;
+    _workYearsLabel.text = [teacher.teaching_years changeEnglishYearsToChinese];
+    //教师简介
+    NSMutableAttributedString *attDesc;
+    if (teacher.describe) {
+        if ([[NSString getPureStringwithHTMLString:teacher.describe]isEqualToString:teacher.describe]) {
+            //不包html富文本
+            _teacherInterviewLabel.text = teacher.describe;
+        }else{
+            attDesc = [[NSMutableAttributedString alloc]initWithData:[teacher.describe?[@"" stringByAppendingString:teacher.describe]:@" " dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+            if ([attDesc.yy_font.familyName isEqualToString:@"Times New Roman"]&& attDesc.yy_font.pointSize == 12) {
+                attDesc.yy_font = [UIFont fontWithName:@".SF UI Text" size:16*ScrenScale];
+                attDesc.yy_color = TITLECOLOR;
+            }else if ([attDesc.yy_font.familyName isEqualToString:@"Times New Roman"]&&attDesc.yy_font.pointSize != 12){
+                attDesc.yy_font = [UIFont fontWithName:@".SF UI Text" size:attDesc.yy_font.pointSize];
+                attDesc.yy_color = TITLECOLOR;
+            }
+            _teacherInterviewLabel.attributedText = attDesc;
+        }
+    }
+    [_teacherInterviewLabel updateLayout];
+    
+}
+
+- (void)tapTeacher{
+    
+    [_teacherdelegate tapTeachers];
+     
 }
 
 @end

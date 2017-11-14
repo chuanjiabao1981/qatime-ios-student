@@ -1,12 +1,12 @@
 //
-//  TutoriumInfo_TeacherViewController.m
+//  InteractiveInfo_TeacherViewController.m
 //  Qatime_Student
 //
-//  Created by Shin on 2017/11/10.
+//  Created by Shin on 2017/11/14.
 //  Copyright © 2017年 WWTD. All rights reserved.
 //
 
-#import "TutoriumInfo_TeacherViewController.h"
+#import "InteractiveInfo_TeacherViewController.h"
 #import "TeachersPublicViewController.h"
 
 /**
@@ -20,58 +20,66 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     LeadingViewStateUnfold,
 };
 
-@interface TutoriumInfo_TeacherViewController ()<TeacherTapProtocol,UIScrollViewDelegate>{
-    
-    RecommandTeacher *_teacher;
+@interface InteractiveInfo_TeacherViewController ()<OneOnOneTeacherTableViewCellDelegate>{
     
     LeadingViewState _leadingViewState;
 }
 
 @end
 
-@implementation TutoriumInfo_TeacherViewController
+@implementation InteractiveInfo_TeacherViewController
 
--(instancetype)initWithTeacher:(RecommandTeacher *)teacher{
+-(instancetype)initWithTeachers:(__kindof NSArray *)teachers{
     self = [super init];
     if (self) {
-        _teacher = teacher;
+        _teachersArray = teachers;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     //默认是展开状态
     _leadingViewState = LeadingViewStateUnfold;
-    [self setupViews];
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeFold) name:@"ChangeFold" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeUnfold) name:@"ChangeUnfold" object:nil];
+    self.tableView.tableHeaderView = [UIView new];
+    self.tableView.tableFooterView = [UIView new];
     
 }
 
-- (void)setupViews{
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    self.view.backgroundColor = [UIColor whiteColor];
-    [self.view updateLayout];
-    _mainView = [[TutoriumInfo_TeacherView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd)];
-    [self.view addSubview:_mainView];
-    _mainView.sd_layout
-    .leftSpaceToView(self.view, 0)
-    .rightSpaceToView(self.view, 0)
-    .bottomSpaceToView(self.view, 0)
-    .topSpaceToView(self.view, 0);
-    [_mainView updateLayout];
-    _mainView.teacher = _teacher;
-    _mainView.teacherdelegate = self;
-    _mainView.delegate = self;
-    
-    
+    return _teachersArray.count;
 }
 
--(void)tapTeachers{
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    /* cell的重用队列*/
+    static NSString *cellIdenfier = @"cell";
+    OneOnOneTeacherTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
+    if (cell==nil) {
+        cell=[[OneOnOneTeacherTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+    }
     
-    TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:_teacher.teacherID];
+    if (_teachersArray.count>indexPath.row) {
+        cell.model = _teachersArray[indexPath.row];
+        cell.delegate = self;
+    }
+    
+    return  cell;
+}
+
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return [tableView cellHeightForIndexPath:indexPath cellContentViewWidth:self.view.width_sd tableView:tableView];
+}
+
+
+- (void)selectedTeacher:(NSString *)teacherID{
+    
+    TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:teacherID];
     [self.navigationController pushViewController:controller animated:YES];
     
 }
@@ -128,6 +136,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
         _leadingViewState = LeadingViewStateUnfold;
     }
 }
+
 
 
 - (void)didReceiveMemoryWarning {

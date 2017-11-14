@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HMSegmentedControl.h"
 #import "TTGTextTagCollectionView.h"
-#import "OneOnOneWorkFlowView.h"
+
 #import "WorkFlowView.h"
 #import "ExclusiveInfo.h"
 

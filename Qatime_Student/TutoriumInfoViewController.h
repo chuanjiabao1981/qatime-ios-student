@@ -17,6 +17,8 @@
 #import "NavigationBar.h"
 
 #import "TutoriumInfo_InfoViewController.h"
+#import "TutoriumInfo_TeacherViewController.h"
+#import "TutoriumInfo_ClassListViewController.h"
 
 @interface TutoriumInfoViewController : UIViewController
 
@@ -62,7 +64,8 @@
 
 /** 子控制器 */
 @property (nonatomic, strong) TutoriumInfo_InfoViewController *infoVC ;
-
+@property (nonatomic, strong) TutoriumInfo_TeacherViewController *teacherVC ;
+@property (nonatomic, strong) TutoriumInfo_ClassListViewController *classVC ;
 
 
 /**

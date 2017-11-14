@@ -32,13 +32,21 @@
         
         self.backgroundColor = [UIColor whiteColor];
         
+        _headView = [[UIView alloc]init];
+        [self addSubview:_headView];
+        _headView.backgroundColor = [UIColor whiteColor];
+        _headView.sd_layout
+        .leftSpaceToView(self, 0)
+        .topSpaceToView(self, 0)
+        .rightSpaceToView(self, 0);
+        
         /* 课程名称*/
         _className = [[UILabel alloc]init];
-        [self addSubview:_className];
+        [_headView addSubview:_className];
         _className.sd_layout
-        .leftSpaceToView(self,10)
-        .rightSpaceToView(self, 10)
-        .topSpaceToView(self,20)
+        .leftSpaceToView(_headView,10)
+        .rightSpaceToView(_headView, 10)
+        .topSpaceToView(_headView,20)
         .autoHeightRatio(0);
         
         [_className setTextColor:[UIColor blackColor]];
@@ -46,7 +54,7 @@
         
         //课程状态
         _status = [[UILabel alloc]init];
-        [self addSubview:_status];
+        [_headView addSubview:_status];
         _status.font = TEXT_FONTSIZE;
         _status.textColor = [UIColor whiteColor];
         _status.sd_layout
@@ -61,16 +69,16 @@
         layout.minimumInteritemSpacing = 0;
         _classFeature = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
         _classFeature.backgroundColor = [UIColor whiteColor];
-        [self addSubview:_classFeature];
+        [_headView addSubview:_classFeature];
         _classFeature.sd_layout
-        .leftSpaceToView(self, 0)
-        .rightSpaceToView(self, 0)
+        .leftSpaceToView(_headView, 0)
+        .rightSpaceToView(_headView, 0)
         .topSpaceToView(_status, 10)
         .heightIs(20);
         
         /* 价格*/
         _priceLabel=[[UILabel alloc]init];
-        [self addSubview:_priceLabel];
+        [_headView addSubview:_priceLabel];
         _priceLabel.sd_layout
         .topSpaceToView(_classFeature,10)
         .leftEqualToView(_className)
@@ -85,22 +93,23 @@
         _saleNumber.font = [UIFont systemFontOfSize:16*ScrenScale];
         _saleNumber.textColor = TITLECOLOR;
         _saleNumber.textAlignment = NSTextAlignmentLeft;
-        [self addSubview:_saleNumber];
+        [_headView addSubview:_saleNumber];
         _saleNumber.sd_layout
         .bottomEqualToView(_priceLabel)
-        .rightSpaceToView(self,10)
+        .rightSpaceToView(_headView,10)
         .autoHeightRatio(0);
         [_saleNumber setSingleLineAutoResizeWithMaxWidth:200];
+        [_headView setupAutoHeightWithBottomView:_saleNumber bottomMargin:10];
+        
         
         /* 分割线1*/
-        
         UIView *line1 = [[UIView alloc]init];
         [self addSubview:line1];
         
         line1.sd_layout
         .leftSpaceToView(self,0)
         .rightSpaceToView(self,0)
-        .topSpaceToView(_saleNumber,10)
+        .topSpaceToView(_headView,0)
         .heightIs(1.0f);
         [line1 updateLayout];
         

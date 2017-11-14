@@ -1,16 +1,18 @@
 //
-//  TutoriumInfo_InfoViewController.m
+//  InteractiveInfo_InfoViewController.m
 //  Qatime_Student
 //
-//  Created by Shin on 2017/11/10.
+//  Created by Shin on 2017/11/14.
 //  Copyright © 2017年 WWTD. All rights reserved.
 //
 
-#import "TutoriumInfo_InfoViewController.h"
+#import "InteractiveInfo_InfoViewController.h"
+#import "WorkFlowCollectionViewCell.h"
+#import "ClassFeaturesCollectionViewCell.h"
 
 /**
  顶部视图的折叠/展开状态
-
+ 
  - LeadingViewStateFold: 折叠
  - LeadingViewStateUnfold: 展开
  */
@@ -18,29 +20,28 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     LeadingViewStateFold,
     LeadingViewStateUnfold,
 };
-
-@interface TutoriumInfo_InfoViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TTGTextTagCollectionViewDelegate>{
+@interface InteractiveInfo_InfoViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>{
+    
+    OneOnOneClass *_classInfo;
     
     UICollectionReusableView *_titlesView;
-    
-    TutoriumListInfo *_tutorium;
-    
     LeadingViewState _leadingViewState;
     
 }
 
 @end
 
-@implementation TutoriumInfo_InfoViewController
+@implementation InteractiveInfo_InfoViewController
 
--(instancetype)initWithTutorium:(TutoriumListInfo *)tutorium{
+-(instancetype)initWithOneOnOneClass:(OneOnOneClass *)oneOnOneClass{
+    
     self = [super init];
     if (self) {
-        
-        _tutorium = tutorium;
+        _classInfo = oneOnOneClass;
     }
     return self;
 }
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -108,8 +109,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
 - (void)setupViews{
     
     //写两个高度出来
-    
-    _footView = [[TutoriumInfo_InfoMainFootView alloc]init];
+    _footView = [[InteractiveInfo_InfoFootView alloc]init];
     [self.view addSubview:_footView];
     _footView .sd_layout
     .leftSpaceToView(self.view, 0)
@@ -122,7 +122,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     [_footView removeFromSuperviewAndClearAutoLayoutSettings];
     _footView = nil;
     
-    _headView = [[TutoriumInfo_InfoMainHeadView alloc]init];
+    _headView = [[InteractiveInfo_InfoHeadView alloc]init];
     [self.view addSubview:_headView];
     _headView .sd_layout
     .leftSpaceToView(self.view, 0)
@@ -130,20 +130,28 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     .topSpaceToView(self.view, 0)
     .bottomSpaceToView(self.view, 0);
     [_headView updateLayout];
-    _headView.tutorium  = _tutorium;
-    typeof(self) __weak weakSelf = self;
-    //自动高度
-    _headView.tagEndrefresh = ^(CGFloat height) {
-        if (!weakSelf.mainView) {
-            _headSize = CGSizeMake(weakSelf.headView.width_sd, height);
-            [weakSelf setupMainView];
-            [weakSelf.headView removeFromSuperviewAndClearAutoLayoutSettings];
-        }else{
-            _headSize = CGSizeMake(_mainView.width_sd, height);
-            [weakSelf.mainView reloadData];
-        }
-    };
- 
+    _headView.model  = _classInfo;
+    [_headView setupAutoHeightWithBottomView:_headView.features bottomMargin:0];
+    [_headView updateLayout];
+    _headSize = _headView.size;
+    [_headView removeFromSuperviewAndClearAutoLayoutSettings];
+    _headView = nil;
+    
+    [self setupMainView];
+    
+    //    //自动高度
+//    typeof(self) __weak weakSelf = self;
+//    _headView.tagEndrefresh = ^(CGFloat height) {
+//        if (!weakSelf.mainView) {
+//            _headSize = CGSizeMake(weakSelf.headView.width_sd, height);
+//            [weakSelf setupMainView];
+//            [weakSelf.headView removeFromSuperviewAndClearAutoLayoutSettings];
+//        }else{
+//            _headSize = CGSizeMake(_mainView.width_sd, height);
+//            [weakSelf.mainView reloadData];
+//        }
+//    };
+    
 }
 
 
@@ -152,9 +160,10 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     //主视图
     [self.view updateLayout];
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
-    _mainView = [[TutoriumInfo_InfoView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd) collectionViewLayout:layout];
+    _mainView = [[InteractiveInfo_InfoView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd) collectionViewLayout:layout];
     _mainView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_mainView];
+    _mainView.scrollEnabled = YES;
     _mainView.sd_layout
     .leftSpaceToView(self.view, 0)
     .rightSpaceToView(self.view, 0)
@@ -164,18 +173,16 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     [_mainView registerClass:[ClassFeaturesCollectionViewCell class] forCellWithReuseIdentifier:@"classfeatureCell"];
     [_mainView registerClass:[WorkFlowCollectionViewCell class] forCellWithReuseIdentifier:@"workflowCell"];
     
-    [_mainView registerClass:[TutoriumInfo_InfoMainHeadView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headID"];
+    [_mainView registerClass:[InteractiveInfo_InfoHeadView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headID"];
     [_mainView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headID2"];//是个什么都没有的视图.
     [_mainView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footID"];
-    [_mainView registerClass:[TutoriumInfo_InfoMainFootView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footID2"];
+    [_mainView registerClass:[InteractiveInfo_InfoFootView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footID2"];
     _mainView.delegate = self;
     _mainView.dataSource = self;
     _mainView.scrollEnabled = YES;
     [_mainView updateLayout];
     
 }
-
-
 #pragma mark- collectionview datasource
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
@@ -242,14 +249,14 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     if (indexPath.section == 0) {
         if (kind == UICollectionElementKindSectionHeader) {
             //第0个section的头
-            _headView = (TutoriumInfo_InfoMainHeadView *)[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"headID" forIndexPath:indexPath];
-            _headView.tutorium = _tutorium;
-            [_headView.features addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
+            _headView = (InteractiveInfo_InfoHeadView *)[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"headID" forIndexPath:indexPath];
+            _headView.model = _classInfo;
+            
             view = _headView;
         }else{
-             view =[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"footID" forIndexPath:indexPath];
-//            UICollectionReusableView *viewss= [[UICollectionReusableView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 1)];
-//            [view addSubview:viewss];
+            view =[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"footID" forIndexPath:indexPath];
+            //            UICollectionReusableView *viewss= [[UICollectionReusableView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, 1)];
+            //            [view addSubview:viewss];
         }
     }else{
         if (kind == UICollectionElementKindSectionHeader) {
@@ -270,7 +277,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
             [view addSubview:_titlesView];
         }else{
             //返回footer
-            _footView =(TutoriumInfo_InfoMainFootView *)[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"footID2" forIndexPath:indexPath];
+            _footView =(InteractiveInfo_InfoFootView *)[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"footID2" forIndexPath:indexPath];
             view = _footView;
         }
     }
@@ -375,6 +382,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     
     
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

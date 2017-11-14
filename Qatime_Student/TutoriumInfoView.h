@@ -10,12 +10,14 @@
 #import "HMSegmentedControl.h"
 
 #import "TTGTextTagCollectionView.h"
-#import "OneOnOneWorkFlowView.h"
+
 #import "WorkFlowView.h"
 #import "ExclusiveInfo.h"
 
 
 @interface TutoriumInfoView : UIView
+
+@property (nonatomic, strong) UIView *headView ;
 
 /* 课程名*/
 @property(nonatomic,strong) UILabel  *className ;
