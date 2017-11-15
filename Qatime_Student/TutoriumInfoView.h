@@ -40,6 +40,8 @@
 /* 滑动控制器*/
 @property(nonatomic,strong) HMSegmentedControl *segmentControl ;
 
+@property (nonatomic, strong) ExclusiveInfo *exclusiveModel ;
+
 
 
 @end

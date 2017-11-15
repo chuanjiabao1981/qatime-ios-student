@@ -37,6 +37,17 @@ typedef enum : NSUInteger {
     
 } RefreshType;
 
+/**
+ 顶部视图的折叠/展开状态
+ 
+ - LeadingViewStateFold: 折叠
+ - LeadingViewStateUnfold: 展开
+ */
+typedef NS_ENUM(NSUInteger, LeadingViewState) {
+    LeadingViewStateFold,
+    LeadingViewStateUnfold,
+};
+
 @interface VideoClassInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CYLTableViewPlaceHolderDelegate,VideoClassBuyBarDelegate,UICollectionViewDataSource,UICollectionViewDelegate>{
     
     NavigationBar *_navigationBar;
@@ -62,6 +73,7 @@ typedef enum : NSUInteger {
     ShareViewController *_share;
     SnailQuickMaskPopups *_pops;
     
+    LeadingViewState _leadingViewState;
     
 }
 /**主视图*/
@@ -104,14 +116,7 @@ typedef enum : NSUInteger {
     _videoClassInfoView = [[VideoClassInfoView alloc]initWithFrame:CGRectMake(0, Navigation_Height, self.view.width_sd, self.view.height_sd - Navigation_Height - TabBar_Height)];
     [self.view addSubview:_videoClassInfoView];
     
-    _videoClassInfoView.classesListTableView.delegate = self;
-    _videoClassInfoView.classesListTableView.dataSource = self;
-    _videoClassInfoView.classesListTableView.tag = 1;
-    
     _videoClassInfoView.scrollView.delegate = self;
-    _videoClassInfoView.scrollView.tag = 2;
-    _videoClassInfoView.classesListTableView.estimatedRowHeight = 100;
-    _videoClassInfoView.classesListTableView.rowHeight = UITableViewAutomaticDimension;
     
     _videoClassInfoView.classFeature.dataSource = self;
     _videoClassInfoView.classFeature.delegate = self;
@@ -122,10 +127,7 @@ typedef enum : NSUInteger {
         [weakSelf.videoClassInfoView.scrollView scrollRectToVisible:CGRectMake(weakSelf.view.width_sd*index, 0, weakSelf.view.width_sd, weakSelf.videoClassInfoView.scrollView.height_sd) animated:YES];
     }];
     
-    //教师头像点击
-    _videoClassInfoView.teacherHeadImage.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(watchTeachers)];
-    [_videoClassInfoView.teacherHeadImage addGestureRecognizer:tap];
+    [self.view bringSubviewToFront:_navigationBar];
     
 }
 
@@ -140,14 +142,53 @@ typedef enum : NSUInteger {
     
 }
 
+/** 加载子控制器 */
+- (void)setupControllers{
+    
+    _infoVC = [[VideoClassInfo_InfoViewController alloc]initWithClassInfo:_classInfo];
+    [self addChildViewController:_infoVC];
+    [_videoClassInfoView.scrollView addSubview:_infoVC.view];
+    _infoVC.view.sd_layout
+    .leftSpaceToView(_videoClassInfoView.scrollView, 0)
+    .topSpaceToView(_videoClassInfoView.scrollView, 0)
+    .bottomSpaceToView(_videoClassInfoView.scrollView, 0)
+    .widthRatioToView(_videoClassInfoView.scrollView, 1.0);
+    [_infoVC.view updateLayout];
+    
+    _teacherVC = [[VideoClassInfo_TeacherViewController alloc]initWithTeacher:_teacher];
+    [self addChildViewController:_teacherVC];
+    [_videoClassInfoView.scrollView addSubview:_teacherVC.view];
+    _teacherVC.view.sd_layout
+    .leftSpaceToView(_infoVC.view, 0)
+    .topEqualToView(_infoVC.view)
+    .bottomEqualToView(_infoVC.view)
+    .widthRatioToView(_infoVC.view, 1.0);
+    [_teacherVC.view updateLayout];
+    
+    _classVC = [[VideoClassInfo_ClassListViewController alloc]initWithClasses:_classArray bought:_isBought];
+    [self addChildViewController:_classVC];
+    [_videoClassInfoView.scrollView addSubview:_classVC.view];
+    _classVC.view.sd_layout
+    .leftSpaceToView(_teacherVC.view, 0)
+    .topEqualToView(_infoVC.view)
+    .bottomEqualToView(_infoVC.view)
+    .widthRatioToView(_infoVC.view, 1.0);
+    [_classVC.view updateLayout];
+    
+    [_videoClassInfoView.scrollView setupAutoContentSizeWithRightView:_classVC.view rightMargin:0];
+    [_videoClassInfoView.scrollView setupAutoContentSizeWithBottomView:_infoVC.view bottomMargin:0];
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     //初始化
     _classArray = @[].mutableCopy;
     _classFeaturesArray = @[].mutableCopy;
-  
+    _leadingViewState = LeadingViewStateUnfold;
     _buttonWidth = self.view.width_sd/4-15*ScrenScale;
+    _leadingViewState = LeadingViewStateUnfold;
     //加载导航栏
     [self setupNavigation];
     
@@ -164,6 +205,10 @@ typedef enum : NSUInteger {
     
     //微信分享功能的回调通知
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sharedFinish:) name:@"SharedFinish" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(fold) name:@"Fold" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(unFold) name:@"Unfold" object:nil];
     
 }
 
@@ -222,7 +267,6 @@ typedef enum : NSUInteger {
                 
                 [_classArray addObject:mod];
             }
-            [_videoClassInfoView.classesListTableView reloadData];
             
             //加载购买栏
             [self setupBuyBar];
@@ -315,6 +359,8 @@ typedef enum : NSUInteger {
                 
                 
             }
+            //加载子控制器
+            [self setupControllers];
             
             [self HUDStopWithTitle:nil];
         }else{
@@ -430,108 +476,56 @@ typedef enum : NSUInteger {
 
 
 
-
-
-#pragma mark- UITableView datasource
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    return _classArray.count;
-}
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    /* cell的重用队列*/
-    static NSString *cellIdenfier = @"cell";
-    VideoClassListTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-    if (cell==nil) {
-        cell=[[VideoClassListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-    }
-    
-    if (_classArray.count>indexPath.row) {
-        
-        cell.model = _classArray[indexPath.row];
-        if (_isBought == YES) {
-            
-            cell.status.hidden = YES;
-        }else{
-            
-            if (cell.model.tastable == YES) {
-                cell.status.hidden= NO;
-            }else{
-                cell.status .hidden = YES;
-            }
-            
-        }
-    }
-    
-    return  cell;
-    
-}
-
-
-#pragma mark- UITableView delegate
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    return [tableView cellHeightForIndexPath:indexPath cellContentViewWidth:self.view.width_sd tableView:tableView];
-}
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    VideoClassListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    if (_isBought == YES) {
-        //进入观看
-        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
-        [self.navigationController pushViewController:controller animated:YES];
-        
-    }else{
-        
-        if ([_classInfo.sell_type isEqualToString:@"free"]) {
-            
-            //进入观看
-            VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
-            [self.navigationController pushViewController:controller animated:YES];
-            
-        }else{
-            
-            if (cell.model.tastable == YES) {
-                
-                NSMutableArray <VideoClass *>*arrs =@[].mutableCopy;
-                for (VideoClass *clas in _classArray) {
-                    if (clas.tastable == YES) {
-                        [arrs addObject:clas];
-                    }
-                }
-                
-                VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:arrs andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
-                [self.navigationController pushViewController:controller animated:YES];
-                
-            }else{
-                [self HUDStopWithTitle:@"尚未购买不够观看"];
-                
-            }
-            
-        }
-
-    }
-    
-}
-
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-}
+//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//
+//    VideoClassListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//
+//    if (_isBought == YES) {
+//        //进入观看
+//        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
+//        [self.navigationController pushViewController:controller animated:YES];
+//
+//    }else{
+//
+//        if ([_classInfo.sell_type isEqualToString:@"free"]) {
+//
+//            //进入观看
+//            VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
+//            [self.navigationController pushViewController:controller animated:YES];
+//
+//        }else{
+//
+//            if (cell.model.tastable == YES) {
+//
+//                NSMutableArray <VideoClass *>*arrs =@[].mutableCopy;
+//                for (VideoClass *clas in _classArray) {
+//                    if (clas.tastable == YES) {
+//                        [arrs addObject:clas];
+//                    }
+//                }
+//
+//                VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:arrs andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
+//                [self.navigationController pushViewController:controller animated:YES];
+//
+//            }else{
+//                [self HUDStopWithTitle:@"尚未购买不够观看"];
+//
+//            }
+//
+//        }
+//
+//    }
+//}
 
 
 #pragma mark- UIScrollView delegate
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
-    if (scrollView.tag == 2) {
-        
-        CGFloat pageWidth = scrollView.frame.size.width;
-        NSInteger pages = scrollView.contentOffset.x / pageWidth;
-        
-        [_videoClassInfoView.segmentControl setSelectedSegmentIndex:pages animated:YES];
-    }
+    CGFloat pageWidth = scrollView.frame.size.width;
+    NSInteger pages = scrollView.contentOffset.x / pageWidth;
+    
+    [_videoClassInfoView.segmentControl setSelectedSegmentIndex:pages animated:YES];
+    
 }
 
 
@@ -626,6 +620,45 @@ typedef enum : NSUInteger {
         [self HUDStopWithTitle:@"分享失败"];
     }else if (resp.errCode == -2){
         [self HUDStopWithTitle:@"取消分享"];
+    }
+}
+
+/** 折叠 */
+- (void)fold{
+    if (_leadingViewState == LeadingViewStateUnfold) {
+        //折叠
+        _leadingViewState = LeadingViewStateFold;
+        [_videoClassInfoView.headView updateLayout];
+        CGFloat bottomHeigh;
+        if (_buyBar.hidden) {
+            bottomHeigh = 0;
+        }else{
+            bottomHeigh = TabBar_Height;
+        }
+        [UIView animateWithDuration:0.3 animations:^{
+            _videoClassInfoView.sd_layout
+            .topSpaceToView(_navigationBar, -_videoClassInfoView.headView.height_sd);
+            [_videoClassInfoView updateLayout];
+        }];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangeFold" object:nil];
+    }else{
+        NSLog(@"错误了......");
+    }
+}
+
+/** 展开 */
+- (void)unFold{
+    if (_leadingViewState == LeadingViewStateFold) {
+        //展开
+        _leadingViewState = LeadingViewStateUnfold;
+        [UIView animateWithDuration:0.3 animations:^{
+            _videoClassInfoView.sd_layout
+            .topSpaceToView(_navigationBar, 0);
+            [_videoClassInfoView updateLayout];
+        }];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangeUnfold" object:nil];
+    }else{
+        NSLog(@"错误了2.....");
     }
 }
 

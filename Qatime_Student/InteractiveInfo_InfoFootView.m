@@ -18,13 +18,14 @@
         UILabel *notice = [[UILabel alloc]init];
         [self addSubview:notice];
         notice.text = @"学习须知";
+        notice.textAlignment = NSTextAlignmentCenter;
         notice.textColor = [UIColor blackColor];
         notice.font = TITLEFONTSIZE;
         notice.sd_layout
-        .leftSpaceToView(self, 10*ScrenScale)
-        .topSpaceToView(self,20*ScrenScale)
+        .leftSpaceToView(self, 0)
+        .rightSpaceToView(self, 0)
+        .topSpaceToView(self, 20*ScrenScale)
         .autoHeightRatio(0);
-        [notice setSingleLineAutoResizeWithMaxWidth:100];
         
         //说明的富文本设置
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc]init];
@@ -38,8 +39,8 @@
         before.font = TITLEFONTSIZE;
         [self addSubview:before];
         before.sd_layout
-        .leftEqualToView(notice)
-        .topSpaceToView(notice,10)
+        .leftSpaceToView(self, 15*ScrenScale)
+        .topSpaceToView(notice,20*ScrenScale)
         .autoHeightRatio(0);
         [before setSingleLineAutoResizeWithMaxWidth:100];
         
@@ -113,13 +114,13 @@
         UILabel *_replay = [[UILabel alloc]init];
         _replay.text = @"回放说明";
         _replay.font = TITLEFONTSIZE;
-        
+        _replay.textAlignment = NSTextAlignmentCenter;
         [self addSubview:_replay];
         _replay.sd_layout
-        .leftEqualToView(during)
-        .topSpaceToView(_afterLabel,20)
+        .topSpaceToView(_afterLabel, 20*ScrenScale)
+        .leftSpaceToView(self, 0)
+        .rightSpaceToView(self, 0)
         .autoHeightRatio(0);
-        [_replay setSingleLineAutoResizeWithMaxWidth:100];
         
         _replayLabel = [[UILabel alloc]init];
         [self addSubview:_replayLabel];
@@ -129,7 +130,7 @@
         _replayLabel.isAttributedContent = YES;
         _replayLabel.attributedText = [[NSMutableAttributedString alloc]initWithString:@"1、购买课程后方可观看回放。\n2、直播课回放学生可以免费观看最多10天，同一天不限定观看次数。\n3、直播结束后最晚于24小时内上传回放。\n4、回放内容不完全等于直播内容，请尽量观看直播学习。\n5、回放内容仅供学生学习使用，未经允许不得进行录制。" attributes:attribute];
         _replayLabel.sd_layout
-        .topSpaceToView(_replay,10)
+        .topSpaceToView(_replay,20*ScrenScale)
         .leftEqualToView(_duringLabel)
         .rightSpaceToView(self,20)
         .autoHeightRatio(0);

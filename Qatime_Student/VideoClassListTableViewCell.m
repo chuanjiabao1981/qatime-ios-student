@@ -18,8 +18,6 @@
 @property (nonatomic, strong) UILabel *duringTime ;
 
 
-
-
 @end
 
 

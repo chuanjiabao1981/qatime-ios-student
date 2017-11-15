@@ -17,7 +17,6 @@
     
     NSMutableArray *_tagList;
     
-    
 }
 
 @end
@@ -273,6 +272,7 @@
         if ([[NSString getPureStringwithHTMLString:tutorium.describe]isEqualToString:tutorium.describe]) {
             //不包html富文本
             _classDescriptionLabel.text = tutorium.describe;
+            _classDescriptionLabel.isAttributedContent = NO;
         }else{
             attDesc = [[NSMutableAttributedString alloc]initWithData:[tutorium.describe?[@"" stringByAppendingString:tutorium.describe]:@" " dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
             if ([attDesc.yy_font.familyName isEqualToString:@"Times New Roman"]&& attDesc.yy_font.pointSize == 12) {
@@ -284,6 +284,7 @@
             }
             //判断是否有字号,没有的话加上.
             _classDescriptionLabel.attributedText = attDesc;
+            _classDescriptionLabel.isAttributedContent = YES;
         }
     }
    

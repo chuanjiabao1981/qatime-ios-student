@@ -1,21 +1,22 @@
 //
-//  InteractiveInfo_InfoHeadView.m
+//  ExclusiveInfo_InfoHeadView.m
 //  Qatime_Student
 //
-//  Created by Shin on 2017/11/14.
+//  Created by Shin on 2017/11/15.
 //  Copyright © 2017年 WWTD. All rights reserved.
 //
 
-#import "InteractiveInfo_InfoHeadView.h"
+#import "ExclusiveInfo_InfoHeadView.h"
 #import "NSString+HTML.h"
+#import "YYText.h"
+#import "NSString+TimeStamp.h"
 
-@implementation InteractiveInfo_InfoHeadView
-
+@implementation ExclusiveInfo_InfoHeadView
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        /** -课程介绍页- */
+        
         UILabel *desLabel = [[UILabel alloc]init];
         desLabel.font = TITLEFONTSIZE;
         [self addSubview:desLabel];
@@ -26,6 +27,7 @@
         .topSpaceToView(self,10)
         .autoHeightRatio(0);
         [desLabel setSingleLineAutoResizeWithMaxWidth:100];
+        
         
         /* 年级*/
         UIImageView *book1 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"菱形"]];
@@ -70,65 +72,73 @@
         .leftSpaceToView(book2,5);
         [_subjectLabel setSingleLineAutoResizeWithMaxWidth:100.0f];
         
-        
-        /**总分钟数*/
-        _totalMinutesLabel = [[UILabel alloc]init];
-        _totalMinutesLabel.font = TEXT_FONTSIZE;
-        _totalMinutesLabel.textColor = TITLECOLOR;
-        [self addSubview:_totalMinutesLabel];
-        _totalMinutesLabel.sd_layout
-        .leftEqualToView(_gradeLabel)
-        .topSpaceToView(_gradeLabel, 10)
-        .autoHeightRatio(0);
-        [_totalMinutesLabel setSingleLineAutoResizeWithMaxWidth:100];
-        
+        /* 课时*/
         UIImageView *book3 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"菱形"]];
         [self addSubview:book3];
         book3.sd_layout
-        .leftEqualToView(book1)
-        .rightEqualToView(book1)
-        .centerYEqualToView(_totalMinutesLabel)
-        .heightRatioToView(_totalMinutesLabel, 0.6);
+        .leftEqualToView(book1);
         
-        //每节课的时长
-        
-        _minutesLabel = [[UILabel alloc]init];
-        _minutesLabel.font = TEXT_FONTSIZE;
-        _minutesLabel.textColor = TITLECOLOR;
-        [self addSubview:_minutesLabel];
-        _minutesLabel.sd_layout
-        .leftEqualToView(_subjectLabel)
-        .topSpaceToView(_subjectLabel, 10)
-        .autoHeightRatio(0);
-        [_minutesLabel setSingleLineAutoResizeWithMaxWidth:100];
-        
-        UIImageView *book4 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"菱形"]];
-        [self addSubview:book4];
-        book4.sd_layout
-        .leftEqualToView(book2)
-        .rightEqualToView(book2)
-        .centerYEqualToView(_minutesLabel)
-        .heightRatioToView(_minutesLabel, 0.6);
-        
-        
-        //总课时
-        _classCount= [[UILabel alloc]init];
+        _classCount=[[UILabel alloc]init];
         _classCount.font = TEXT_FONTSIZE;
         _classCount.textColor = TITLECOLOR;
         [self addSubview:_classCount];
         _classCount.sd_layout
-        .leftEqualToView(_totalMinutesLabel)
-        .topSpaceToView(_totalMinutesLabel, 10)
+        .leftEqualToView(_gradeLabel)
+        .topSpaceToView(_gradeLabel,10)
         .autoHeightRatio(0);
-        [_classCount setSingleLineAutoResizeWithMaxWidth:100];
+        [_classCount setSingleLineAutoResizeWithMaxWidth:150];
         
-        UIImageView *book5 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"菱形"]];
-        [self addSubview:book5] ;
-        book5.sd_layout
-        .leftEqualToView(book3)
-        .rightEqualToView(book3)
+        book3.sd_layout
         .centerYEqualToView(_classCount)
-        .heightRatioToView(_classCount, 0.6);
+        .heightRatioToView(_classCount,0.6)
+        .widthEqualToHeight();
+        [book3 updateLayout];
+        
+        /* 直播时间*/
+        UIImageView *clock  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"菱形"]];
+        [self addSubview:clock];
+        clock.sd_layout
+        .leftEqualToView(book3);
+        
+        _liveTimeLabel = [[UILabel alloc]init];
+        [self addSubview:_liveTimeLabel];
+        _liveTimeLabel.font = TEXT_FONTSIZE;
+        _liveTimeLabel.textColor = TITLECOLOR;
+        _liveTimeLabel.sd_layout
+        .leftEqualToView(_classCount)
+        .topSpaceToView(_classCount,10)
+        .autoHeightRatio(0);
+        [_liveTimeLabel setSingleLineAutoResizeWithMaxWidth:2000];
+        
+        clock.sd_layout
+        .centerYEqualToView(_liveTimeLabel)
+        .heightRatioToView(_liveTimeLabel,0.6)
+        .widthEqualToHeight();
+        [clock updateLayout];
+        
+        
+        //课程目标
+        _taget = [[UILabel alloc]init];
+        [self addSubview:_taget];
+        _taget.textColor = [UIColor blackColor];
+        _taget.font = TITLEFONTSIZE;
+        _taget.text = @"课程目标";
+        _taget.sd_layout
+        .leftEqualToView(desLabel)
+        .topSpaceToView(_liveTimeLabel,20)
+        .autoHeightRatio(0);
+        [_taget setSingleLineAutoResizeWithMaxWidth:100];
+        
+        _classTarget = [[UILabel alloc]init];
+        [self addSubview:_classTarget];
+        _classTarget.font = TEXT_FONTSIZE;
+        _classTarget.textColor = TITLECOLOR;
+        
+        _classTarget.sd_layout
+        .topSpaceToView(_taget,10)
+        .leftEqualToView(_taget)
+        .rightSpaceToView(self,20)
+        .autoHeightRatio(0);
         
         //适合人群
         UILabel *suit = [[UILabel alloc]init];
@@ -137,8 +147,8 @@
         suit.textColor = [UIColor blackColor];
         suit.text = @"适合人群";
         suit.sd_layout
-        .leftEqualToView(book5)
-        .topSpaceToView(_classCount,20)
+        .leftEqualToView(_taget)
+        .topSpaceToView(_classTarget,20)
         .autoHeightRatio(0);
         [suit setSingleLineAutoResizeWithMaxWidth:100];
         
@@ -154,44 +164,20 @@
         .rightSpaceToView(self,20);
         
         
-        //课程目标
-        UILabel *taget = [[UILabel alloc]init];
-        [self addSubview:taget];
-        taget.textColor = [UIColor blackColor];
-        taget.font = TITLEFONTSIZE;
-        taget.text = @"课程目标";
-        taget.sd_layout
-        .leftEqualToView(suit)
-        .topSpaceToView(_suitable,20)
-        .autoHeightRatio(0);
-        [taget setSingleLineAutoResizeWithMaxWidth:100];
-        
-        _classTarget = [[UILabel alloc]init];
-        [self addSubview:_classTarget];
-        _classTarget.font = TEXT_FONTSIZE;
-        _classTarget.textColor = TITLECOLOR;
-        
-        _classTarget.sd_layout
-        .topSpaceToView(taget,10)
-        .leftEqualToView(taget)
-        .rightSpaceToView(self,20)
-        .autoHeightRatio(0);
-        
-        
-        
         /* 辅导简介*/
         _descriptions=[[UILabel alloc]init];
         _descriptions.font = TITLEFONTSIZE;
         [self addSubview:_descriptions];
         _descriptions.sd_layout
         .leftEqualToView(suit)
-        .topSpaceToView(_classTarget,20)
+        .topSpaceToView(_suitable,20)
         .autoHeightRatio(0);
         [_descriptions setSingleLineAutoResizeWithMaxWidth:100];
-        [_descriptions setText:@"详细说明"];
+        [_descriptions setText:@"辅导简介"];
         
         _classDescriptionLabel =[UILabel new];
-        _classDescriptionLabel.font = TITLEFONTSIZE;
+        _classDescriptionLabel.font = TEXT_FONTSIZE;
+        _classDescriptionLabel.textColor = TITLECOLOR;
         _classDescriptionLabel.isAttributedContent = YES;
         [self addSubview:_classDescriptionLabel];
         _classDescriptionLabel.sd_layout
@@ -211,23 +197,20 @@
         .autoHeightRatio(0);
         [_features setSingleLineAutoResizeWithMaxWidth:3000];
         [_features updateLayout];
-        
     }
     return self;
 }
 
--(void)setModel:(OneOnOneClass *)model{
-    _model = model;
+-(void)setModel:(ExclusiveInfo *)model{
     
+    _model = model;
     _gradeLabel.text = model.grade;
     _subjectLabel.text = model.subject;
+    _classCount.text = [NSString stringWithFormat:@"共%@课",model.events_count];
+    _liveTimeLabel.text = [NSString stringWithFormat:@"%@ 至 %@",model.start_at?[model.start_at.changeTimeStampToDateString substringToIndex:10]:@"",model.end_at?[model.end_at.changeTimeStampToDateString substringToIndex:10]:@""];
+    [_liveTimeLabel updateLayout];
+    _suitable.text = [model.suit_crowd isEqual:[NSNull null]]?@"无":model.suit_crowd;
     
-    _totalMinutesLabel.text = @"共450分钟";
-    _minutesLabel.text = @"45分钟/课";
-    _classCount.text = [NSString stringWithFormat:@"共%@课",model.lessons_count];
-    
-    _suitable.text = model.suit_crowd;
-    _classTarget.text = model.objective;
     NSMutableAttributedString *attDesc;
     if (model.descriptions) {
         if ([[NSString getPureStringwithHTMLString:model.descriptions]isEqualToString:model.descriptions]) {
@@ -248,8 +231,8 @@
             _classDescriptionLabel.isAttributedContent = YES;
         }
     }
-    [_classDescriptionLabel updateLayout];
     
+    [_classDescriptionLabel updateLayout];
+    [_features updateLayout];
 }
-
 @end

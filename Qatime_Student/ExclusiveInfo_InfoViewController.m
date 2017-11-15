@@ -1,16 +1,15 @@
 //
-//  TutoriumInfo_InfoViewController.m
+//  ExclusiveInfo_InfoViewController.m
 //  Qatime_Student
 //
-//  Created by Shin on 2017/11/10.
+//  Created by Shin on 2017/11/15.
 //  Copyright © 2017年 WWTD. All rights reserved.
 //
 
-#import "TutoriumInfo_InfoViewController.h"
-
+#import "ExclusiveInfo_InfoViewController.h"
 /**
  顶部视图的折叠/展开状态
-
+ 
  - LeadingViewStateFold: 折叠
  - LeadingViewStateUnfold: 展开
  */
@@ -18,26 +17,25 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     LeadingViewStateFold,
     LeadingViewStateUnfold,
 };
-
-@interface TutoriumInfo_InfoViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TTGTextTagCollectionViewDelegate>{
+@interface ExclusiveInfo_InfoViewController (){
+    
     
     UICollectionReusableView *_titlesView;
     
-    TutoriumListInfo *_tutorium;
+    ExclusiveInfo *_exclusiveInfo;
     
     LeadingViewState _leadingViewState;
-    
 }
 
 @end
 
-@implementation TutoriumInfo_InfoViewController
+@implementation ExclusiveInfo_InfoViewController
 
--(instancetype)initWithTutorium:(TutoriumListInfo *)tutorium{
-    self = [super init];
+-(instancetype)initWithExclusiveClass:(ExclusiveInfo *)exclusiveInfo{
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
+    self = [super initWithCollectionViewLayout:layout];
     if (self) {
-        
-        _tutorium = tutorium;
+        _exclusiveInfo = exclusiveInfo;
     }
     return self;
 }
@@ -107,9 +105,10 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
 
 - (void)setupViews{
     
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.collectionView.backgroundColor = [UIColor whiteColor];
     //写两个高度出来
-    
-    _footView = [[TutoriumInfo_InfoMainFootView alloc]init];
+    _footView = [[ExclusiveInfo_InfoFootView alloc]init];
     [self.view addSubview:_footView];
     _footView .sd_layout
     .leftSpaceToView(self.view, 0)
@@ -122,28 +121,21 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     [_footView removeFromSuperviewAndClearAutoLayoutSettings];
     _footView = nil;
     
-    _headView = [[TutoriumInfo_InfoMainHeadView alloc]init];
+    _headView = [[ExclusiveInfo_InfoHeadView alloc]init];
     [self.view addSubview:_headView];
     _headView .sd_layout
     .leftSpaceToView(self.view, 0)
     .rightSpaceToView(self.view, 0)
     .topSpaceToView(self.view, 0)
     .bottomSpaceToView(self.view, 0);
+    _headView.model  = _exclusiveInfo;
+    [_headView setupAutoHeightWithBottomView:_headView.features bottomMargin:0];
     [_headView updateLayout];
-    _headView.tutorium  = _tutorium;
-    typeof(self) __weak weakSelf = self;
-    //自动高度
-    _headView.tagEndrefresh = ^(CGFloat height) {
-        if (!weakSelf.mainView) {
-            _headSize = CGSizeMake(weakSelf.headView.width_sd, height);
-            [weakSelf setupMainView];
-            [weakSelf.headView removeFromSuperviewAndClearAutoLayoutSettings];
-        }else{
-            _headSize = CGSizeMake(_mainView.width_sd, height);
-            [weakSelf.mainView reloadData];
-        }
-    };
- 
+    _headSize = _headView.size;
+    [_headView removeFromSuperviewAndClearAutoLayoutSettings];
+    _headView = nil;
+    [self setupMainView];
+    
 }
 
 
@@ -151,28 +143,14 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
 - (void)setupMainView{
     //主视图
     [self.view updateLayout];
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
-    _mainView = [[TutoriumInfo_InfoView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.height_sd) collectionViewLayout:layout];
-    _mainView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:_mainView];
-    _mainView.sd_layout
-    .leftSpaceToView(self.view, 0)
-    .rightSpaceToView(self.view, 0)
-    .topSpaceToView(self.view, 0)
-    .bottomSpaceToView(self.view, 0);
-    [_mainView updateLayout];
-    [_mainView registerClass:[ClassFeaturesCollectionViewCell class] forCellWithReuseIdentifier:@"classfeatureCell"];
-    [_mainView registerClass:[WorkFlowCollectionViewCell class] forCellWithReuseIdentifier:@"workflowCell"];
+    [self.collectionView updateLayout];
+    [self.collectionView registerClass:[ClassFeaturesCollectionViewCell class] forCellWithReuseIdentifier:@"classfeatureCell"];
+    [self.collectionView registerClass:[WorkFlowCollectionViewCell class] forCellWithReuseIdentifier:@"workflowCell"];
     
-    [_mainView registerClass:[TutoriumInfo_InfoMainHeadView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headID"];
-    [_mainView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headID2"];//是个什么都没有的视图.
-    [_mainView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footID"];
-    [_mainView registerClass:[TutoriumInfo_InfoMainFootView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footID2"];
-    _mainView.delegate = self;
-    _mainView.dataSource = self;
-    _mainView.scrollEnabled = YES;
-    [_mainView updateLayout];
-    
+    [self.collectionView registerClass:[ExclusiveInfo_InfoHeadView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headID"];
+    [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headID2"];//是个什么都没有的视图.
+    [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footID"];
+    [self.collectionView registerClass:[ExclusiveInfo_InfoFootView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footID2"];
 }
 
 
@@ -242,11 +220,11 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     if (indexPath.section == 0) {
         if (kind == UICollectionElementKindSectionHeader) {
             //第0个section的头
-            _headView = (TutoriumInfo_InfoMainHeadView *)[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"headID" forIndexPath:indexPath];
-            _headView.tutorium = _tutorium;
+            _headView = (ExclusiveInfo_InfoHeadView *)[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"headID" forIndexPath:indexPath];
+            _headView.model = _exclusiveInfo;
             view = _headView;
         }else{
-             view =[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"footID" forIndexPath:indexPath];
+            view =[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"footID" forIndexPath:indexPath];
         }
     }else{
         if (kind == UICollectionElementKindSectionHeader) {
@@ -267,7 +245,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
             [view addSubview:_titlesView];
         }else{
             //返回footer
-            _footView =(TutoriumInfo_InfoMainFootView *)[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"footID2" forIndexPath:indexPath];
+            _footView =(ExclusiveInfo_InfoFootView *)[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"footID2" forIndexPath:indexPath];
             view = _footView;
         }
     }
@@ -278,9 +256,9 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
 //尺寸
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
-        return CGSizeMake(_mainView.width_sd/2.f-10*ScrenScale, _mainView.width_sd/2*0.95);
+        return CGSizeMake(self.collectionView.width_sd/2.f-10*ScrenScale, self.collectionView.width_sd/2*0.95);
     }else{
-        return CGSizeMake(_mainView.width_sd-60*ScrenScale, (_mainView.width_sd)/4.0);
+        return CGSizeMake(self.collectionView.width_sd-60*ScrenScale, (self.collectionView.width_sd)/4.0);
     }
 }
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
@@ -333,10 +311,8 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
             NSLog(@"往下拉2");
         }else if (point.y>scrollView.origin_sd.y){
             NSLog(@"往上滑2");
-            
         }
     }
-    
 }
 
 /** 做成折叠 */
@@ -366,11 +342,6 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     if (_leadingViewState == LeadingViewStateFold) {
         _leadingViewState = LeadingViewStateUnfold;
     }
-}
-
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    
-    
 }
 
 - (void)didReceiveMemoryWarning {

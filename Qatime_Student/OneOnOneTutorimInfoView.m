@@ -120,7 +120,6 @@
         .topSpaceToView(_segmentControl,0)
         .heightIs(0.8f);
         
-    
     }
 
     return self;

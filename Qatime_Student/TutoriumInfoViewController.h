@@ -67,6 +67,8 @@
 @property (nonatomic, strong) TutoriumInfo_TeacherViewController *teacherVC ;
 @property (nonatomic, strong) TutoriumInfo_ClassListViewController *classVC ;
 
+/** 加载子控制器的父类化方法 */
+- (void)setupControllers;
 
 /**
  辅导班编号初始化

@@ -772,6 +772,16 @@
 		54F4FB281F68DE80001A2136 /* DoHomeworkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F4FB271F68DE80001A2136 /* DoHomeworkView.m */; };
 		54F4FB2B1F68DE8E001A2136 /* DoHomeworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F4FB2A1F68DE8E001A2136 /* DoHomeworkViewController.m */; };
 		54F63A161E1F9EBB00758B42 /* UITextView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F63A151E1F9EBB00758B42 /* UITextView+Placeholder.m */; };
+		54F66B1A1FBBE10800683B13 /* VideoClassInfo_InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F66B191FBBE10800683B13 /* VideoClassInfo_InfoView.m */; };
+		54F66B201FBBE15100683B13 /* VideoClassInfo_InfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F66B1F1FBBE15100683B13 /* VideoClassInfo_InfoViewController.m */; };
+		54F66B231FBBE16A00683B13 /* VideoClassInfo_TeacherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F66B221FBBE16A00683B13 /* VideoClassInfo_TeacherView.m */; };
+		54F66B261FBBE18500683B13 /* VideoClassInfo_TeacherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F66B251FBBE18500683B13 /* VideoClassInfo_TeacherViewController.m */; };
+		54F66B291FBBE1A400683B13 /* VideoClassInfo_ClassListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F66B281FBBE1A400683B13 /* VideoClassInfo_ClassListViewController.m */; };
+		54F66B331FBC2CA600683B13 /* ExclusiveInfo_InfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F66B321FBC2CA600683B13 /* ExclusiveInfo_InfoViewController.m */; };
+		54F66B361FBC2CBF00683B13 /* ExclusiveInfo_TeacherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F66B351FBC2CBF00683B13 /* ExclusiveInfo_TeacherViewController.m */; };
+		54F66B391FBC2CF800683B13 /* ExclusiveInfo_ClassListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F66B381FBC2CF800683B13 /* ExclusiveInfo_ClassListViewController.m */; };
+		54F66B461FBC2EE000683B13 /* ExclusiveInfo_InfoHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F66B451FBC2EE000683B13 /* ExclusiveInfo_InfoHeadView.m */; };
+		54F66B491FBC2EED00683B13 /* ExclusiveInfo_InfoFootView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F66B481FBC2EED00683B13 /* ExclusiveInfo_InfoFootView.m */; };
 		54F674041F7B4015006CF211 /* QuestionInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F674031F7B4015006CF211 /* QuestionInfoView.m */; };
 		54F6B71E1F43DDA300801526 /* YZSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F6B71D1F43DDA300801526 /* YZSlider.m */; };
 		54F7E1B91EC40F1600337594 /* MyVideoClassList.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F7E1B81EC40F1600337594 /* MyVideoClassList.m */; };
@@ -2342,6 +2352,26 @@
 		54F63A141E1F9EBB00758B42 /* UITextView+Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+Placeholder.h"; sourceTree = "<group>"; };
 		54F63A151E1F9EBB00758B42 /* UITextView+Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Placeholder.m"; sourceTree = "<group>"; };
 		54F63A1B1E1FA1B800758B42 /* UITextView_Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextView_Placeholder.h; sourceTree = "<group>"; };
+		54F66B181FBBE10800683B13 /* VideoClassInfo_InfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoClassInfo_InfoView.h; sourceTree = "<group>"; };
+		54F66B191FBBE10800683B13 /* VideoClassInfo_InfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoClassInfo_InfoView.m; sourceTree = "<group>"; };
+		54F66B1E1FBBE15100683B13 /* VideoClassInfo_InfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoClassInfo_InfoViewController.h; sourceTree = "<group>"; };
+		54F66B1F1FBBE15100683B13 /* VideoClassInfo_InfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoClassInfo_InfoViewController.m; sourceTree = "<group>"; };
+		54F66B211FBBE16A00683B13 /* VideoClassInfo_TeacherView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoClassInfo_TeacherView.h; sourceTree = "<group>"; };
+		54F66B221FBBE16A00683B13 /* VideoClassInfo_TeacherView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoClassInfo_TeacherView.m; sourceTree = "<group>"; };
+		54F66B241FBBE18500683B13 /* VideoClassInfo_TeacherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoClassInfo_TeacherViewController.h; sourceTree = "<group>"; };
+		54F66B251FBBE18500683B13 /* VideoClassInfo_TeacherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoClassInfo_TeacherViewController.m; sourceTree = "<group>"; };
+		54F66B271FBBE1A400683B13 /* VideoClassInfo_ClassListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoClassInfo_ClassListViewController.h; sourceTree = "<group>"; };
+		54F66B281FBBE1A400683B13 /* VideoClassInfo_ClassListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoClassInfo_ClassListViewController.m; sourceTree = "<group>"; };
+		54F66B311FBC2CA600683B13 /* ExclusiveInfo_InfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExclusiveInfo_InfoViewController.h; sourceTree = "<group>"; };
+		54F66B321FBC2CA600683B13 /* ExclusiveInfo_InfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExclusiveInfo_InfoViewController.m; sourceTree = "<group>"; };
+		54F66B341FBC2CBF00683B13 /* ExclusiveInfo_TeacherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExclusiveInfo_TeacherViewController.h; sourceTree = "<group>"; };
+		54F66B351FBC2CBF00683B13 /* ExclusiveInfo_TeacherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExclusiveInfo_TeacherViewController.m; sourceTree = "<group>"; };
+		54F66B371FBC2CF800683B13 /* ExclusiveInfo_ClassListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExclusiveInfo_ClassListViewController.h; sourceTree = "<group>"; };
+		54F66B381FBC2CF800683B13 /* ExclusiveInfo_ClassListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExclusiveInfo_ClassListViewController.m; sourceTree = "<group>"; };
+		54F66B441FBC2EE000683B13 /* ExclusiveInfo_InfoHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExclusiveInfo_InfoHeadView.h; sourceTree = "<group>"; };
+		54F66B451FBC2EE000683B13 /* ExclusiveInfo_InfoHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExclusiveInfo_InfoHeadView.m; sourceTree = "<group>"; };
+		54F66B471FBC2EED00683B13 /* ExclusiveInfo_InfoFootView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExclusiveInfo_InfoFootView.h; sourceTree = "<group>"; };
+		54F66B481FBC2EED00683B13 /* ExclusiveInfo_InfoFootView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExclusiveInfo_InfoFootView.m; sourceTree = "<group>"; };
 		54F674021F7B4015006CF211 /* QuestionInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionInfoView.h; sourceTree = "<group>"; };
 		54F674031F7B4015006CF211 /* QuestionInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionInfoView.m; sourceTree = "<group>"; };
 		54F674061F7B81AC006CF211 /* lame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lame.h; sourceTree = "<group>"; };
@@ -3995,6 +4025,9 @@
 		544DAB161F259EB800E43E23 /* 专属课详情页 */ = {
 			isa = PBXGroup;
 			children = (
+				54F66B2C1FBC2C5500683B13 /* 课程详情 */,
+				54F66B2B1FBC2C5500683B13 /* 教师信息 */,
+				54F66B2A1FBC2C5300683B13 /* 课程列表 */,
 				544DAB191F259EE800E43E23 /* Model */,
 				544DAB181F259EE700E43E23 /* View */,
 				544DAB171F259EE600E43E23 /* Controller */,
@@ -4023,6 +4056,7 @@
 		544DAB191F259EE800E43E23 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				54F66B301FBC2C6B00683B13 /* New Group */,
 				542F4DA71F29C7420070E321 /* ExclusiveInfo.h */,
 				542F4DA81F29C7420070E321 /* ExclusiveInfo.m */,
 				542F4DAB1F29C84D0070E321 /* ExclusiveLesson.h */,
@@ -6436,6 +6470,7 @@
 		54C4520C1E9CB6DF002108F4 /* 视频课辅导班详情 */ = {
 			isa = PBXGroup;
 			children = (
+				54F66B0E1FBBE09700683B13 /* 子控制器 */,
 				54C4520F1E9CB73B002108F4 /* Model */,
 				54C4520E1E9CB73A002108F4 /* View */,
 				54C4520D1E9CB739002108F4 /* Controller */,
@@ -7464,6 +7499,189 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
+		54F66B0B1FBBE09100683B13 /* 课程安排 */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B171FBBE0C900683B13 /* Model */,
+				54F66B161FBBE0C400683B13 /* View */,
+				54F66B151FBBE0C300683B13 /* Controller */,
+			);
+			name = "课程安排";
+			sourceTree = "<group>";
+		};
+		54F66B0C1FBBE09200683B13 /* 教师资料 */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B141FBBE0C200683B13 /* Model */,
+				54F66B131FBBE0C100683B13 /* View */,
+				54F66B121FBBE0C000683B13 /* Controller */,
+			);
+			name = "教师资料";
+			sourceTree = "<group>";
+		};
+		54F66B0D1FBBE09200683B13 /* 课程详情 */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B111FBBE0BF00683B13 /* Model */,
+				54F66B101FBBE0BE00683B13 /* View */,
+				54F66B0F1FBBE0BD00683B13 /* Controller */,
+			);
+			name = "课程详情";
+			sourceTree = "<group>";
+		};
+		54F66B0E1FBBE09700683B13 /* 子控制器 */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B0D1FBBE09200683B13 /* 课程详情 */,
+				54F66B0C1FBBE09200683B13 /* 教师资料 */,
+				54F66B0B1FBBE09100683B13 /* 课程安排 */,
+			);
+			name = "子控制器";
+			sourceTree = "<group>";
+		};
+		54F66B0F1FBBE0BD00683B13 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B1E1FBBE15100683B13 /* VideoClassInfo_InfoViewController.h */,
+				54F66B1F1FBBE15100683B13 /* VideoClassInfo_InfoViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54F66B101FBBE0BE00683B13 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B181FBBE10800683B13 /* VideoClassInfo_InfoView.h */,
+				54F66B191FBBE10800683B13 /* VideoClassInfo_InfoView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54F66B111FBBE0BF00683B13 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		54F66B121FBBE0C000683B13 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B241FBBE18500683B13 /* VideoClassInfo_TeacherViewController.h */,
+				54F66B251FBBE18500683B13 /* VideoClassInfo_TeacherViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54F66B131FBBE0C100683B13 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B211FBBE16A00683B13 /* VideoClassInfo_TeacherView.h */,
+				54F66B221FBBE16A00683B13 /* VideoClassInfo_TeacherView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54F66B141FBBE0C200683B13 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		54F66B151FBBE0C300683B13 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B271FBBE1A400683B13 /* VideoClassInfo_ClassListViewController.h */,
+				54F66B281FBBE1A400683B13 /* VideoClassInfo_ClassListViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54F66B161FBBE0C400683B13 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		54F66B171FBBE0C900683B13 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		54F66B2A1FBC2C5300683B13 /* 课程列表 */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B2F1FBC2C6A00683B13 /* Controller */,
+			);
+			name = "课程列表";
+			sourceTree = "<group>";
+		};
+		54F66B2B1FBC2C5500683B13 /* 教师信息 */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B2E1FBC2C6800683B13 /* Controller */,
+			);
+			name = "教师信息";
+			sourceTree = "<group>";
+		};
+		54F66B2C1FBC2C5500683B13 /* 课程详情 */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B3A1FBC2DF600683B13 /* View */,
+				54F66B2D1FBC2C6600683B13 /* Controller */,
+			);
+			name = "课程详情";
+			sourceTree = "<group>";
+		};
+		54F66B2D1FBC2C6600683B13 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B311FBC2CA600683B13 /* ExclusiveInfo_InfoViewController.h */,
+				54F66B321FBC2CA600683B13 /* ExclusiveInfo_InfoViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54F66B2E1FBC2C6800683B13 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B341FBC2CBF00683B13 /* ExclusiveInfo_TeacherViewController.h */,
+				54F66B351FBC2CBF00683B13 /* ExclusiveInfo_TeacherViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54F66B2F1FBC2C6A00683B13 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B371FBC2CF800683B13 /* ExclusiveInfo_ClassListViewController.h */,
+				54F66B381FBC2CF800683B13 /* ExclusiveInfo_ClassListViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		54F66B301FBC2C6B00683B13 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "New Group";
+			sourceTree = "<group>";
+		};
+		54F66B3A1FBC2DF600683B13 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B441FBC2EE000683B13 /* ExclusiveInfo_InfoHeadView.h */,
+				54F66B451FBC2EE000683B13 /* ExclusiveInfo_InfoHeadView.m */,
+				54F66B471FBC2EED00683B13 /* ExclusiveInfo_InfoFootView.h */,
+				54F66B481FBC2EED00683B13 /* ExclusiveInfo_InfoFootView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		54F674051F7B81AC006CF211 /* lame */ = {
 			isa = PBXGroup;
 			children = (
@@ -8348,6 +8566,7 @@
 				54A627791F70F90D00CC7D00 /* DownloadManagerViewController.h in Sources */,
 				54A6277A1F70F90D00CC7D00 /* DownloadManagerViewController.m in Sources */,
 				541F56781F6FAD56001FA7DD /* ClassHomeworkCell.h in Sources */,
+				54F66B261FBBE18500683B13 /* VideoClassInfo_TeacherViewController.m in Sources */,
 				541F56791F6FAD56001FA7DD /* ClassHomeworkCell.m in Sources */,
 				541F56741F6F66E3001FA7DD /* InteractionReplayPlayerViewController.h in Sources */,
 				5489FBCC1F6BE51200534DCC /* renderer_yuv420p.c in Sources */,
@@ -8384,11 +8603,13 @@
 				5422EAA51F4E7AC9008B0A96 /* NIMContactSelectViewController.m in Sources */,
 				54ECFEC81DFE8D75001A98CE /* OrderViewController.m in Sources */,
 				54F63A161E1F9EBB00758B42 /* UITextView+Placeholder.m in Sources */,
+				54F66B491FBC2EED00683B13 /* ExclusiveInfo_InfoFootView.m in Sources */,
 				548328EC1DDC6F360053AB29 /* UUMessage.m in Sources */,
 				5496A3AB1DE591680096ECE5 /* NSAttributedString+EmojiExtension.m in Sources */,
 				54AB48C81DED2D9B008E3BC5 /* SettingView.m in Sources */,
 				549A051A1DC86EBB00B3564D /* MXSCycleScrollView.m in Sources */,
 				548D1D7C1EA7420B00B120C8 /* CalendarView.m in Sources */,
+				54F66B391FBC2CF800683B13 /* ExclusiveInfo_ClassListViewController.m in Sources */,
 				5422EAF21F4E7AC9008B0A96 /* NIMWebImageDownloader.m in Sources */,
 				548D1D731EA7418C00B120C8 /* AlreadyClassView.m in Sources */,
 				54F34D801DE70BA500D6FC85 /* NSString+FindFace.m in Sources */,
@@ -8463,6 +8684,7 @@
 				54DBA4B01DE4423300A67A90 /* YZEmotionCell.m in Sources */,
 				548F70AD1E8B5FE50062C71E /* InteractionControl.m in Sources */,
 				54FB1DD71DF1AC2C00BA9A3C /* ParentView.m in Sources */,
+				54F66B1A1FBBE10800683B13 /* VideoClassInfo_InfoView.m in Sources */,
 				54AC04C71E89398E00817767 /* rgb.fsh.c in Sources */,
 				5448AEA81E054C7A007B1DF9 /* ChatListTableViewCell.m in Sources */,
 				54294C701DDB062000677333 /* Teacher.m in Sources */,
@@ -8570,6 +8792,7 @@
 				54AC04D11E89398E00817767 /* shader.c in Sources */,
 				547E92CE1E8E520400160C6D /* OneOnOneTutoriumInfoViewController.m in Sources */,
 				54B4C18A1DF8184500E31794 /* ChargeViewController.m in Sources */,
+				54F66B201FBBE15100683B13 /* VideoClassInfo_InfoViewController.m in Sources */,
 				546448B31F274B47001C52FF /* ExclusivenNoticeViewController.m in Sources */,
 				548F2A3B1F73AFAD001AEC5C /* Attachment.m in Sources */,
 				549A05101DC8398300B3564D /* SignUpInfoView.m in Sources */,
@@ -8664,6 +8887,7 @@
 				544B76481F41B9D800B8B20A /* MyQuestion_ResolvedViewController.m in Sources */,
 				54AC021A1E892C4A00817767 /* NTESWhiteboardCmdHandler.m in Sources */,
 				54C452041E9CA5D1002108F4 /* MyVideoClassView.m in Sources */,
+				54F66B291FBBE1A400683B13 /* VideoClassInfo_ClassListViewController.m in Sources */,
 				54A153B01DC6F09D0070B508 /* ViewController.m in Sources */,
 				54B9CAFC1DFE4AAC003961FF /* WithdrawConfirmViewController.m in Sources */,
 				54EA165D1FB54E2400B51351 /* TutoriumInfo_InfoMainFootView.m in Sources */,
@@ -8757,6 +8981,7 @@
 				543BCB061E79158400AD6721 /* ChooseClassView.m in Sources */,
 				5448AEAB1E054CA4007B1DF9 /* NoticeListTableViewCell.m in Sources */,
 				5422EAA81F4E7AC9008B0A96 /* NIMInputEmoticonContainerView.m in Sources */,
+				54F66B231FBBE16A00683B13 /* VideoClassInfo_TeacherView.m in Sources */,
 				54AA309B1DF98D30009E0D04 /* MyOrderTableViewCell.m in Sources */,
 				5489FBB81F6BD88100534DCC /* InteractionReplayLessonsTableViewCell.m in Sources */,
 				5493D4CD1E0BE1050085A39E /* TLCityPickerController.m in Sources */,
@@ -8764,6 +8989,7 @@
 				54AC02801E892D3C00817767 /* UIScrollView+NTESDirection.m in Sources */,
 				54774D141F444A8200150C05 /* ZLPhotoPickerCollectionViewCell.m in Sources */,
 				54C107AC1F5EA94A0091171E /* MyDownloadFile.m in Sources */,
+				54F66B361FBC2CBF00683B13 /* ExclusiveInfo_TeacherViewController.m in Sources */,
 				54F47E8B1E09367900D896DB /* ChatList.m in Sources */,
 				54AB48ED1DED608A008E3BC5 /* EndedClassView.m in Sources */,
 				546978641DC725A5001695F4 /* NavigationBar.m in Sources */,
@@ -8874,6 +9100,7 @@
 				54774CFA1F44499A00150C05 /* ZLPhotoPickerBrowserPhotoView.m in Sources */,
 				545B3BA71E0A216700751D08 /* GuideViewController.m in Sources */,
 				54A153AA1DC6F09D0070B508 /* main.m in Sources */,
+				54F66B331FBC2CA600683B13 /* ExclusiveInfo_InfoViewController.m in Sources */,
 				545731811E022E7700F45C03 /* HaveNoClassView.m in Sources */,
 				54AC04D21E89398E00817767 /* mvp.vsh.c in Sources */,
 				549AB8201F5D67D700DD1EA8 /* NTESBundleSetting.m in Sources */,
@@ -9024,6 +9251,7 @@
 				54C107AF1F5EA9EA0091171E /* MyDownloadFileTableViewCell.m in Sources */,
 				543E23521E2CE88B00381F10 /* DCPaymentView.m in Sources */,
 				54AC04D81E89398E00817767 /* NTESActorSelectView.m in Sources */,
+				54F66B461FBC2EE000683B13 /* ExclusiveInfo_InfoHeadView.m in Sources */,
 				545B2A4C1F05213300DBDB78 /* NTESPageView.m in Sources */,
 				544B761D1F417DF200B8B20A /* ExclusiveHomeworkViewController.m in Sources */,
 				5435D9491DD3160600DD4FCC /* TeachersPublicHeaderView.m in Sources */,

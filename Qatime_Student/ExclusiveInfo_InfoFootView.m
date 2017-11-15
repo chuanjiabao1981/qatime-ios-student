@@ -1,15 +1,14 @@
 //
-//  TutoriumInfo_InfoMainFootView.m
+//  ExclusiveInfo_InfoFootView.m
 //  Qatime_Student
 //
-//  Created by Shin on 2017/11/10.
+//  Created by Shin on 2017/11/15.
 //  Copyright © 2017年 WWTD. All rights reserved.
 //
 
-#import "TutoriumInfo_InfoMainFootView.h"
+#import "ExclusiveInfo_InfoFootView.h"
 
-@implementation TutoriumInfo_InfoMainFootView
-
+@implementation ExclusiveInfo_InfoFootView
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -139,5 +138,4 @@
     }
     return self;
 }
-
 @end
