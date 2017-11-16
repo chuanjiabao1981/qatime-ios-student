@@ -33,6 +33,7 @@
 #import "YYModel.h"
 #import <StoreKit/StoreKit.h>
 #import "UncaughtExceptionLogHandler.h"
+#import "UIImage+Color.h"
 //#import <iflyMSC/iflyMSC.h>
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate,NIMSystemNotificationManager,NIMLoginManagerDelegate,NIMConversationManagerDelegate>{
@@ -359,34 +360,33 @@
 
 /* 加载核心视图框架 使用tabbarcontroller + navigation*/
 - (void)updateTabBarViews{
-    
     /* 初始化五个viewcontroller*/
     _indexPageViewController = [[IndexPageViewController alloc]init];
-    _indexPageViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_home_h"];
+    _indexPageViewController.tabBarItem.selectedImage = [[UIImage imageNamed:@"tab_home_h"]imageRedrawWithColor:BUTTONRED];
     _indexPageViewController.tabBarItem.image = [UIImage imageNamed:@"tab_home_n"];
     _indexPageViewController.title = NSLocalizedString(@"首页", comment:"");
      [_indexPageViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:BUTTONRED} forState:UIControlStateSelected];
 
     _chooseClassViewController = [[ChooseGradeAndSubjectViewController alloc]init];
-    _chooseClassViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_tutorium_h"];
+    _chooseClassViewController.tabBarItem.selectedImage = [[UIImage imageNamed:@"tab_tutorium_h"]imageRedrawWithColor:BUTTONRED];
     _chooseClassViewController.tabBarItem.image = [UIImage imageNamed:@"tab_tutorium_n"];
     _chooseClassViewController.title = NSLocalizedString(@"选课", comment:"");
      [_chooseClassViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:BUTTONRED} forState:UIControlStateSelected];
     
     _classTimeViewController = [[ClassTimeViewController alloc]init];
-    _classTimeViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_class_h"];
+    _classTimeViewController.tabBarItem.selectedImage = [[UIImage imageNamed:@"tab_class_h"]imageRedrawWithColor:BUTTONRED];
     _classTimeViewController.tabBarItem.image = [UIImage imageNamed:@"tab_class_n"];
     _classTimeViewController.title = NSLocalizedString(@"课程表", comment:"");
      [_classTimeViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:BUTTONRED} forState:UIControlStateSelected];
     
     _noticeIndexViewController = [[NoticeIndexViewController alloc]init];
-    _noticeIndexViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_message_h"];
+    _noticeIndexViewController.tabBarItem.selectedImage = [[UIImage imageNamed:@"tab_message_h"]imageRedrawWithColor:BUTTONRED];
     _noticeIndexViewController.tabBarItem.image = [UIImage imageNamed:@"tab_message_n"];
     _noticeIndexViewController.title = NSLocalizedString(@"消息", comment:"");
     [_noticeIndexViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:BUTTONRED} forState:UIControlStateSelected];
     
     _personalViewController = [[PersonalViewController alloc]init];
-    _personalViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab_me_h"];
+    _personalViewController.tabBarItem.selectedImage = [[UIImage imageNamed:@"tab_me_h"]imageRedrawWithColor:BUTTONRED];
     _personalViewController.tabBarItem.image = [UIImage imageNamed:@"tab_me_n"];
     [_personalViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:BUTTONRED} forState:UIControlStateSelected];
     _personalViewController.title = NSLocalizedString(@"个人", comment:"");

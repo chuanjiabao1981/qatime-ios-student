@@ -8,7 +8,6 @@
 
 #import "PersonalView.h"
 
-
 #define SCREENWIDTH self.frame.size.width
 #define SCREENHEIGHT self.frame.size.height
 

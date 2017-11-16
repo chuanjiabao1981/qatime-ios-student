@@ -199,8 +199,9 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     __block HomeworkInfoTableViewCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
-    typeof(self) __weak weakSelf = self;
+    __block HomeworkInfo *_model = _itemsArray[indexPath.row];
     
+    typeof(self) __weak weakSelf = self;
     DoHomeworkViewController *controller;
     if ([cell.model.status isEqualToString:@"pending"]) {
         //做作业
@@ -213,20 +214,22 @@
      [self.navigationController pushViewController:controller animated:YES];
     //这方方法改了
     controller.doHomework = ^(NSDictionary *answer) {
-        cell.model.myAnswerTitle = answer[@"body"];
-        
+        _model.myAnswerTitle = answer[@"body"];
+        _model.myAnswerPhotos = @[].mutableCopy;
         for (NSDictionary *atts in answer[@"attachment"]) {
             if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
-                [cell.model.myAnswerPhotos addObject:atts];
-                cell.model.haveAnswerPhotos = YES;
+                NSDictionary *atts_copy = [NSDictionary dictionaryWithDictionary:atts];
+                [_model.myAnswerPhotos addObject:atts_copy];
+                _model.haveAnswerPhotos = YES;
             }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
-                cell.model.myAnswerRecorderURL = atts[@"file_url"];
-                cell.model.myAnswerRecord = atts;
-                cell.model.haveAnswerRecord = YES;
+                _model.myAnswerRecorderURL = atts[@"file_url"];
+                _model.myAnswerRecord = atts;
+                _model.haveAnswerRecord = YES;
             }
         }
-        cell.model.edited = YES;
+        _model.edited = YES;
         [weakSelf.mainView.homeworkList reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [cell.answerPhotosView reloadData];
     };
 }
 

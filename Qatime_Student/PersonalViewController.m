@@ -36,6 +36,7 @@
 
 #import "DownloadManagerViewController.h"
 #import "MyHomeworkViewController.h"
+#import "UIImage+Color.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.width
@@ -97,19 +98,20 @@
                      @"关于我们"];
     
     /* cell的图片*/
-    _cellImage = @[[UIImage imageNamed:@"我的钱包"],
-                   [UIImage imageNamed:@"我的订单"],
-                   [UIImage imageNamed:@"我的直播课"],
-                   [UIImage imageNamed:@"我的一对一"],
-                   [UIImage imageNamed:@"我的视频课"],
-                   [UIImage imageNamed:@"我的专属课"],
-                   [UIImage imageNamed:@"我的试听课"],
-                   [UIImage imageNamed:@"我的试听课"],
-                   [UIImage imageNamed:@"我的试听课"],
-                   [UIImage imageNamed:@"文件管理"],
-                   [UIImage imageNamed:@"安全管理"],
-                   [UIImage imageNamed:@"系统设置"],
-                   [UIImage imageNamed:@"关于我们"]];
+    
+    _cellImage = @[[[UIImage imageNamed:@"我的钱包"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"我的订单"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"我的直播课"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"我的一对一"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"我的视频课"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"我的专属课"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"我的试听课"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"我的试听课"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"我的试听课"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"文件管理"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"安全管理"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"系统设置"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"关于我们"]imageRedrawWithColor:BUTTONRED]];
     
     _headView = [[HeadBackView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT*2/5)];
     [self.view addSubview:_headView];

@@ -19,4 +19,15 @@
 
 + (UIImage *)imageWithColor:(UIColor *)color;
 
+
+
+
+/**
+ 修改图片的颜色
+
+ @param color
+ @return 
+ */
+- (UIImage *)imageRedrawWithColor:(UIColor *)color;
+
 @end

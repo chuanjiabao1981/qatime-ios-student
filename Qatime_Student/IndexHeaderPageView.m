@@ -10,7 +10,7 @@
 #import "YZSquareMenuCell.h"
 #import "TodayLiveCollectionViewCell.h"
 #import "UIControl+EnloargeTouchArea.h"
-
+#import "UIImage+Color.h"
 
 
 @interface IndexHeaderPageView (){
@@ -134,7 +134,7 @@
         [title1 setSingleLineAutoResizeWithMaxWidth:200];
         [title1 updateLayout];
         
-        UIImageView *icon1 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"allteacher"]];
+        UIImageView *icon1 = [[UIImageView alloc]initWithImage:[[UIImage imageNamed:@"allteacher"]imageRedrawWithColor:BUTTONRED]];
         [_allTeachersBtn addSubview:icon1];
         icon1.sd_layout
         .rightSpaceToView(title1, 10*ScrenScale)
@@ -174,7 +174,7 @@
         .autoHeightRatio(0);
         [title2 setSingleLineAutoResizeWithMaxWidth:200];
         [title2 updateLayout];
-        UIImageView *icon2 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"replay"]];
+        UIImageView *icon2 = [[UIImageView alloc]initWithImage:[[UIImage imageNamed:@"replay"]imageRedrawWithColor:BUTTONRED]];
         [_reviewBtn addSubview:icon2];
         icon2.sd_layout
         .rightSpaceToView(title1, 10*ScrenScale)

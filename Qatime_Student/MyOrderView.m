@@ -7,6 +7,7 @@
 //
 
 #import "MyOrderView.h"
+#import "HMSegmentedControl+Category.h"
 
 @implementation MyOrderView
 
@@ -15,27 +16,13 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        /* 滑动选项卡*/
-        _segmentControl = ({
-            HMSegmentedControl *_ = [[HMSegmentedControl alloc]initWithSectionTitles:@[@"待付款",@"已付款",@"已取消"]];
-            _.frame = CGRectMake(0, 0, self.width_sd, self.height_sd*0.05);
-            _.selectionStyle = HMSegmentedControlSelectionStyleFullWidthStripe;
-            _.borderType = HMSegmentedControlBorderTypeBottom;
-            _.borderColor = [UIColor lightGrayColor];
-            _.borderWidth = 0.4;
-            _.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
-            _.selectionIndicatorColor = [UIColor redColor];
-            _.selectionIndicatorHeight = 2;
-            _.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor lightGrayColor],
-                                      NSFontAttributeName:[UIFont systemFontOfSize:18*ScrenScale]};
-            _.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-                                              NSFontAttributeName:[UIFont systemFontOfSize:18*ScrenScale]};
-            _.selectedSegmentIndex = 0;
-            _.verticalDividerEnabled = NO;
-            [self addSubview:_];
-            _;
-        
-        });
+        _segmentControl = [HMSegmentedControl segmentControlWithTitles:@[@"待付款",@"已付款",@"已取消"]];
+        [self addSubview:_segmentControl];
+        _segmentControl.sd_layout
+        .leftSpaceToView(self, 0)
+        .rightSpaceToView(self, 0)
+        .topSpaceToView(self, 0)
+        .heightIs(40);
         
         /* 大滚动视图*/
         _scrollView = ({
