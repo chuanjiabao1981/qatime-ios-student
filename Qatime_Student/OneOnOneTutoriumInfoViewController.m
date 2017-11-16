@@ -266,6 +266,12 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     
     [self.view bringSubviewToFront:_navigationBar];
     
+    //回放的回调
+    typeof(self) __weak weakSelf = self;
+    _classVC.replayBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
+        [weakSelf replay:tableView indexPath:indexPath];
+    };
+    
 }
 
 
@@ -454,189 +460,6 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     
 }
 
-//#pragma mark- UITableView datasource
-//-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-//
-//    NSInteger rows = 0;
-//    switch (tableView.tag) {
-//        case 1:{
-//            rows = _teachersArray.count;
-//        }
-//            break;
-//        case 2:{
-//            rows = _classArray.count;
-//        }
-//            break;
-//        case 3:{
-//            rows = _workFlowArr.count;
-//        }
-//    }
-//    return rows;
-//}
-//
-//-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-//
-//    UITableViewCell *tableCell;
-//    switch (tableView.tag) {
-//        case 1:{
-//            /* cell的重用队列*/
-//            static NSString *cellIdenfier = @"cell";
-//            OneOnOneTeacherTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-//            if (cell==nil) {
-//                cell=[[OneOnOneTeacherTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-//            }
-//
-//            if (_teachersArray.count>indexPath.row) {
-//                [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-//
-//                cell.model = _teachersArray[indexPath.row];
-//                cell.delegate = self;
-//            }
-//
-//            tableCell = cell;
-//        }
-//            break;
-//
-//        case 2:{
-//            /* cell的重用队列*/
-//            static NSString *cellIdenfier = @"cellID";
-//            OneOnOneLessonTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-//            if (cell==nil) {
-//                cell=[[OneOnOneLessonTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cellID"];
-//            }
-//
-//            [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-//            if (_classArray.count>indexPath.row) {
-//                cell.model = _classArray[indexPath.row];
-//            }
-//
-//            tableCell = cell;
-//        }
-//            break;
-//
-//        case 3:{
-//            /* cell的重用队列*/
-//            static NSString *cellIdenfier = @"tablecell";
-//            WorkFlowTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
-//            if (cell==nil) {
-//                cell=[[WorkFlowTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"tablecell"];
-//            }
-//            if (_workFlowArr.count>indexPath.row) {
-//
-//                [cell.image setImage:[UIImage imageNamed:_workFlowArr[indexPath.row][@"image"]]];
-//                cell.title.text = _workFlowArr[indexPath.row][@"title"];
-//                cell.subTitle.text = _workFlowArr[indexPath.row][@"subTitle"];
-//            }
-//
-//
-//            return  cell;
-//
-//        }
-//    }
-//
-//    return tableCell;
-//}
-//
-//#pragma mark- UITableView delegate
-//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//
-//    NSInteger height = 0;
-//    switch (tableView.tag) {
-//        case 1:{
-//            height= [tableView cellHeightForIndexPath:indexPath model:_teachersArray[indexPath.row] keyPath:@"model" cellClass:[OneOnOneTeacherTableViewCell class] contentViewWidth:self.view.width_sd];
-//        }
-//            break;
-//
-//        case 2:{
-//            height= [tableView cellHeightForIndexPath:indexPath model:_classArray[indexPath.row] keyPath:@"model" cellClass:[OneOnOneLessonTableViewCell class] contentViewWidth:self.view.width_sd];
-//        }
-//            break;
-//        case 3:{
-//
-//            height = (self.view.width_sd-100*ScrenScale)/4.0;
-//        }
-//    }
-//
-//    return height;
-//}
-//
-//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//
-//    OneOnOneLessonTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-//    if (_isBought ==YES) {
-//        if (cell.model.replayable == YES) {
-//            //一对一课回放详情
-////            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/scheduled_lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-////
-////                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-////
-////                if ([dic[@"status"]isEqualToNumber:@1]) {
-////
-////                    if ([dic[@"data"][@"replayable"]boolValue]== YES) {
-////                        if (dic[@"data"][@"replay"]==nil) {
-////
-////                        }else{
-////                            NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
-////                            [decodeParm addObject:@"software"];
-////                            [decodeParm addObject:@"videoOnDemand"];
-////
-////                            InteractionReplayPlayerViewController *video  = [[InteractionReplayPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
-////                            [self presentViewController:video animated:YES completion:^{
-////
-////                            }];
-////                        }
-////
-////                    }else{
-////                        [self HUDStopWithTitle:@"服务器繁忙"];
-////                    }
-////
-////                }else{
-////                    [self HUDStopWithTitle:@"暂无回放视频"];
-////                }
-////
-////            }failure:^(id  _Nullable erros) {
-////
-////            }];
-//
-//
-//            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
-//                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-//                if ([dic[@"status"]isEqualToNumber:@1]) {
-//
-//                    if ([dic[@"data"][@"replayable"]boolValue]== YES) {
-//                        if (dic[@"data"][@"replay"]==nil) {
-//
-//                        }else{
-//                            NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
-//                            [decodeParm addObject:@"software"];
-//                            [decodeParm addObject:@"videoOnDemand"];
-//
-//                            VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
-//                            [self presentViewController:video animated:YES completion:^{
-//
-//                            }];
-//                        }
-//
-//
-//                        NSArray *replayArr = dic[@"data"][@"replay"];
-//                        NSURL *playingURL = [NSURL URLWithString:replayArr[indexPath.row][@"shd_url"]];
-//                        InteractionReplayPlayerViewController *controller = [[InteractionReplayPlayerViewController alloc]initWithURL:playingURL andTitle:dic[@"data"][@"name"] andReplayArray:replayArr andPlayingIndex:indexPath];
-//                        [self.navigationController pushViewController:controller animated:YES];
-//                    }
-//                }
-//
-//            } failure:^(id  _Nullable erros) {
-//
-//            }];
-//
-//
-//        }else{
-//
-//        }
-//    }
-//
-//}
-
 
 #pragma mark- UIScrollView delegate
 
@@ -785,6 +608,83 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     }else{
         NSLog(@"错误了2.....");
     }
+}
+
+//回放方法
+- (void)replay:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath{
+    
+    OneOnOneLessonTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (_isBought ==YES) {
+        if (cell.model.replayable == YES) {
+            //一对一课回放详情
+            //            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/scheduled_lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+            //
+            //                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            //
+            //                if ([dic[@"status"]isEqualToNumber:@1]) {
+            //
+            //                    if ([dic[@"data"][@"replayable"]boolValue]== YES) {
+            //                        if (dic[@"data"][@"replay"]==nil) {
+            //
+            //                        }else{
+            //                            NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+            //                            [decodeParm addObject:@"software"];
+            //                            [decodeParm addObject:@"videoOnDemand"];
+            //
+            //                            InteractionReplayPlayerViewController *video  = [[InteractionReplayPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+            //                            [self presentViewController:video animated:YES completion:^{
+            //
+            //                            }];
+            //                        }
+            //
+            //                    }else{
+            //                        [self HUDStopWithTitle:@"服务器繁忙"];
+            //                    }
+            //
+            //                }else{
+            //                    [self HUDStopWithTitle:@"暂无回放视频"];
+            //                }
+            //
+            //            }failure:^(id  _Nullable erros) {
+            //
+            //            }];
+            
+            
+            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                if ([dic[@"status"]isEqualToNumber:@1]) {
+                    
+                    if ([dic[@"data"][@"replayable"]boolValue]== YES) {
+                        if (dic[@"data"][@"replay"]==nil) {
+                            
+                        }else{
+                            NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+                            [decodeParm addObject:@"software"];
+                            [decodeParm addObject:@"videoOnDemand"];
+                            
+                            VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+                            [self presentViewController:video animated:YES completion:^{
+                                
+                            }];
+                        }
+                        
+                        
+                        NSArray *replayArr = dic[@"data"][@"replay"];
+                        NSURL *playingURL = [NSURL URLWithString:replayArr[indexPath.row][@"shd_url"]];
+                        InteractionReplayPlayerViewController *controller = [[InteractionReplayPlayerViewController alloc]initWithURL:playingURL andTitle:dic[@"data"][@"name"] andReplayArray:replayArr andPlayingIndex:indexPath];
+                        [self.navigationController pushViewController:controller animated:YES];
+                    }
+                }
+                
+            } failure:^(id  _Nullable erros) {
+                
+            }];
+            
+        }else{
+            
+        }
+    }
+    
 }
 
 

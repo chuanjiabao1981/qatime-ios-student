@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Teacher.h"
+#import "TutoriumInfo_TeacherView.h"
 @interface VideoClassInfo_TeacherView : UIScrollView
 
 /* 教师姓名*/
@@ -30,7 +31,7 @@
 /* 老师照片*/
 @property(nonatomic,strong) UIImageView *teacherHeadImage ;
 
-
+@property (nonatomic, weak) id <TeacherTapProtocol> teacherDelegate ;
 
 
 @property (nonatomic, strong) Teacher *model ;

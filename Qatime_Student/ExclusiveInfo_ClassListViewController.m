@@ -32,11 +32,12 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
 @implementation ExclusiveInfo_ClassListViewController
 
 //初始化器
--(instancetype)initWithOnlineClass:(__kindof NSArray *)onlineClasses andOfflineClass:(__kindof NSArray *)offlineClasses{
+-(instancetype)initWithOnlineClass:(__kindof NSArray *)onlineClasses andOfflineClass:(__kindof NSArray *)offlineClasses bought:(BOOL)bought{
     self = [super init];
     if (self) {
         _onlineClassArray = onlineClasses;
         _offlineClassArray = offlineClasses;
+        _isBought = bought;
     }
     return self;
 }
@@ -78,18 +79,20 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
             cell.exclusiveModel = _onlineClassArray[indexPath.row];
             
             if ([cell.exclusiveModel.status isEqualToString:@"closed"]||[cell.exclusiveModel.status isEqualToString:@"billing"]||[cell.exclusiveModel.status isEqualToString:@"finished"]||[cell.exclusiveModel.status isEqualToString:@"completed"]) {
-                
                 if (_isBought == YES) {
                     if (cell.exclusiveModel.replayable == YES) {
                         cell.status.text = @"观看回放";
                         cell.status.textColor = BUTTONRED;
                     }else{
                         [cell switchStatus:cell.exclusiveModel];
+                        cell.status.textColor = TITLECOLOR;
                     }
-                    
                 }else{
                     [cell switchStatus:cell.exclusiveModel];
+                    cell.status.textColor = TITLECOLOR;
                 }
+            }else{
+                cell.status.textColor = TITLECOLOR;
             }
         }
         return cell;
@@ -141,6 +144,12 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
         }
     }
     return height;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (_replayBlock) {
+        self.replayBlock(tableView, indexPath);
+    }
 }
 
 
@@ -195,6 +204,8 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
         _leadingViewState = LeadingViewStateUnfold;
     }
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

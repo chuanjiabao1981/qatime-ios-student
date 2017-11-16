@@ -232,6 +232,11 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     [_tutoriumInfoView.scrollView setupAutoContentSizeWithBottomView:_infoVC.view bottomMargin:0];
     [_tutoriumInfoView.scrollView setupAutoContentSizeWithRightView:_teacherVC.view rightMargin:414];
     
+    //block回调一个 回放
+    typeof(self) __weak weakSelf = self;
+    _classVC.clickedReplay = ^(NSIndexPath *indexPath) {
+        [weakSelf replay:indexPath];
+    };
 }
 
 //课程特色标签
@@ -628,7 +633,6 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
                     [_buyBar.applyButton removeAllTargets];
                     [_buyBar.applyButton addTarget:self action:@selector(addFreeClass) forControlEvents:UIControlEventTouchUpInside];
                 }
-                
             }
         }else{
             _isBought  = NO;
@@ -1103,6 +1107,61 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     }else{
         NSLog(@"错误了2.....");
     }
+}
+
+/** 播放回放 */
+- (void)replay:(NSIndexPath *)indexPath{
+    
+    ClassesListTableViewCell *cell = [_classVC.mainView cellForRowAtIndexPath:indexPath];
+    if (_isBought ==YES) {
+        if (cell.model.replayable == YES) {
+            [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/lessons/%@/replay",Request_Header,cell.model.classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
+                
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+                
+                if ([dic[@"status"]isEqualToNumber:@1]) {
+                    
+                    if ([dic[@"data"][@"replayable"]boolValue]== YES) {
+                        
+                        if ([dic[@"data"][@"left_replay_times"]integerValue]>0) {
+                            
+                            if (dic[@"data"][@"replay"]==nil) {
+                                
+                            }else{
+                                NSMutableArray *decodeParm = [[NSMutableArray alloc] init];
+                                [decodeParm addObject:@"software"];
+                                [decodeParm addObject:@"videoOnDemand"];
+                                
+                                VideoPlayerViewController *video  = [[VideoPlayerViewController alloc]initWithURL:[NSURL URLWithString:dic[@"data"][@"replay"][@"orig_url"]] andDecodeParm:decodeParm andTitle:dic[@"data"][@"name"]];
+                                [self presentViewController:video animated:YES completion:^{
+                                    
+                                }];
+                            }
+                            
+                        }else{
+                            
+                            [self HUDStopWithTitle:@"回放次数已耗尽"];
+                            
+                        }
+                        
+                    }else{
+                        [self HUDStopWithTitle:@"暂无回放视频"];
+                    }
+                }else{
+                    [self HUDStopWithTitle:@"服务器繁忙,请稍后重试"];
+                }
+                
+            }failure:^(id  _Nullable erros) {
+            }];
+        }else{
+            
+        }
+        
+    }else{
+        
+        
+    }
+    
 }
 
 

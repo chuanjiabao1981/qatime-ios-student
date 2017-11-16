@@ -8,8 +8,11 @@
 
 #import "TutoriumInfo_ClassListViewController.h"
 
-@interface ExclusiveInfo_ClassListViewController : UITableViewController
+typedef void(^ClickedReplay)(UITableView *tableView, NSIndexPath *indexPath);
 
+@interface ExclusiveInfo_ClassListViewController : UITableViewController
+//回放的回调
+@property (nonatomic, copy) ClickedReplay replayBlock ;
 
 /**
  重写初始化器,传两个参数,先杀线下两个课程数组
@@ -18,6 +21,6 @@
  @param offlineClasses 线下课程
  @return id
  */
--(instancetype)initWithOnlineClass:(__kindof NSArray *)onlineClasses andOfflineClass:(__kindof NSArray *)offlineClasses ;
+-(instancetype)initWithOnlineClass:(__kindof NSArray *)onlineClasses andOfflineClass:(__kindof NSArray *)offlineClasses bought:(BOOL)bought;
 
 @end

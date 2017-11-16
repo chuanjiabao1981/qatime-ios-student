@@ -84,17 +84,21 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     ClassesListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdenfier];
     if (cell==nil) {
         cell=[[ClassesListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
-        if (_classesArray.count>indexPath.row) {
-            cell.model = _classesArray[indexPath.row];
-            if (_isBought) {
+    }
+    if (_classesArray.count>indexPath.row) {
+        cell.model = _classesArray[indexPath.row];
+        if (_isBought) {
+            if (cell.model.replayable) {
                 cell.replay.hidden = NO;
             }else{
                 cell.replay.hidden = YES;
             }
+        }else{
+            cell.replay.hidden = YES;
         }
-        
-        [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     }
+    
+    [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
     
     return  cell;
     
@@ -103,6 +107,13 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return 100;
+}
+
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (_clickedReplay) {
+        self.clickedReplay(indexPath);
+    }
 }
 
 

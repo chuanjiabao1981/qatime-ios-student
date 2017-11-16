@@ -75,6 +75,14 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     return 100;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    //回放吧
+    if (_replayBlock) {
+        self.replayBlock(tableView, indexPath);
+    }
+}
+
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     CGPoint point = scrollView.contentOffset;

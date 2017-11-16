@@ -7,6 +7,7 @@
 //
 
 #import "VideoClassInfo_TeacherViewController.h"
+#import "TeachersPublicViewController.h"
 
 /**
  顶部视图的折叠/展开状态
@@ -19,7 +20,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     LeadingViewStateUnfold,
 };
 
-@interface VideoClassInfo_TeacherViewController ()<UIScrollViewDelegate>{
+@interface VideoClassInfo_TeacherViewController ()<UIScrollViewDelegate,TeacherTapProtocol>{
     
     Teacher *_teacher;
     
@@ -59,6 +60,13 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     .topSpaceToView(self.view, 0)
     .bottomSpaceToView(self.view, 0);
     _mainView.model = _teacher;
+    _mainView.teacherDelegate = self;
+    
+}
+-(void)tapTeachers{
+    
+    TeachersPublicViewController *controller = [[TeachersPublicViewController alloc]initWithTeacherID:_teacher.teacherID];
+    [self.navigationController pushViewController:controller animated:YES];
     
 }
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{

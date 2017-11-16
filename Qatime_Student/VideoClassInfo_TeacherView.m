@@ -28,6 +28,10 @@
         .widthIs(80)
         .heightEqualToWidth();
         _teacherHeadImage.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTeacher)];
+        _teacherHeadImage.userInteractionEnabled = YES;
+        [_teacherHeadImage addGestureRecognizer:tap];
+        
         
         //教师名
         _teacherNameLabel = [[UILabel alloc]init];
@@ -38,6 +42,7 @@
         .centerYEqualToView(_teacherHeadImage)
         .autoHeightRatio(0);
         [_teacherNameLabel setSingleLineAutoResizeWithMaxWidth:100];
+        
         
         /* 性别图标*/
         _genderImage  = [[UIImageView alloc]init];
@@ -158,6 +163,12 @@
         }
     }
     [_teacherInterviewLabel updateLayout];
+    
+}
+
+- (void)tapTeacher{
+    
+    [_teacherDelegate tapTeachers];
     
 }
 

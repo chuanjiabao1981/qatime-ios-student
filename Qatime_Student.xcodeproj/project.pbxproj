@@ -4025,9 +4025,7 @@
 		544DAB161F259EB800E43E23 /* 专属课详情页 */ = {
 			isa = PBXGroup;
 			children = (
-				54F66B2C1FBC2C5500683B13 /* 课程详情 */,
-				54F66B2B1FBC2C5500683B13 /* 教师信息 */,
-				54F66B2A1FBC2C5300683B13 /* 课程列表 */,
+				54F05A1B1FBD33F300B41276 /* 子控制器 */,
 				544DAB191F259EE800E43E23 /* Model */,
 				544DAB181F259EE700E43E23 /* View */,
 				544DAB171F259EE600E43E23 /* Controller */,
@@ -7368,6 +7366,16 @@
 			children = (
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		54F05A1B1FBD33F300B41276 /* 子控制器 */ = {
+			isa = PBXGroup;
+			children = (
+				54F66B2C1FBC2C5500683B13 /* 课程详情 */,
+				54F66B2B1FBC2C5500683B13 /* 教师信息 */,
+				54F66B2A1FBC2C5300683B13 /* 课程列表 */,
+			);
+			name = "子控制器";
 			sourceTree = "<group>";
 		};
 		54F32F741E373142000F8926 /* Reachability */ = {
