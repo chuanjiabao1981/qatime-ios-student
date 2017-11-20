@@ -4,7 +4,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "2436h",
-      "filename" : "Default-Port-hd55iPhonePortraitiOS89_414x736pt@3x副本.png",
+      "filename" : "学生启动页新iPhoneXPortraitiOS11_375x812pt@3x.png",
       "minimum-system-version" : "11.0",
       "orientation" : "portrait",
       "scale" : "3x"
@@ -13,7 +13,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "736h",
-      "filename" : "Default-Port-hd55iPhonePortraitiOS89_414x736pt@3x.png",
+      "filename" : "学生启动页新iPhonePortraitiOS89_414x736pt@3x.png",
       "minimum-system-version" : "8.0",
       "orientation" : "portrait",
       "scale" : "3x"
@@ -22,7 +22,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "667h",
-      "filename" : "Default-Port-hd55iPhonePortraitiOS89_375x667pt@2x.png",
+      "filename" : "学生启动页新iPhonePortraitiOS89_375x667pt@2x.png",
       "minimum-system-version" : "8.0",
       "orientation" : "portrait",
       "scale" : "2x"
@@ -30,7 +30,7 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "Default-Port-hd55iPhonePortraitiOS789_320x480pt@2x.png",
+      "filename" : "学生启动页新iPhonePortraitiOS789_320x480pt@2x.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
       "scale" : "2x"
@@ -39,7 +39,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "retina4",
-      "filename" : "Default-Port-hd55iPhonePortraitiOS789_320x568pt@2x.png",
+      "filename" : "学生启动页新iPhonePortraitiOS789_320x568pt@2x.png",
       "minimum-system-version" : "7.0",
       "orientation" : "portrait",
       "scale" : "2x"
@@ -47,7 +47,7 @@
     {
       "orientation" : "portrait",
       "idiom" : "ipad",
-      "filename" : "Default-Port-hd55iPadPortraitiOS789_768x1024pt.png",
+      "filename" : "学生启动页新iPadPortraitiOS789_768x1024pt.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
       "scale" : "1x"
@@ -55,7 +55,7 @@
     {
       "orientation" : "portrait",
       "idiom" : "ipad",
-      "filename" : "Default-Port-hd55iPadPortraitiOS789_768x1024pt@2x.png",
+      "filename" : "学生启动页新iPadPortraitiOS789_768x1024pt@2x.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
       "scale" : "2x"
@@ -63,21 +63,21 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "Default-Port-hd55iPhonePortraitiOS56_320x480pt.png",
+      "filename" : "学生启动页新iPhonePortraitiOS56_320x480pt.png",
       "extent" : "full-screen",
       "scale" : "1x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "Default-Port-hd55iPhonePortraitiOS56_320x480pt@2x.png",
+      "filename" : "学生启动页新iPhonePortraitiOS56_320x480pt@2x.png",
       "extent" : "full-screen",
       "scale" : "2x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "Default-Port-hd55iPhonePortraitiOS56_320x568pt@2x.png",
+      "filename" : "学生启动页新iPhonePortraitiOS56_320x568pt@2x.png",
       "extent" : "full-screen",
       "subtype" : "retina4",
       "scale" : "2x"
@@ -85,38 +85,29 @@
     {
       "orientation" : "portrait",
       "idiom" : "ipad",
-      "filename" : "Default-Port-hd55iPadPortraitWOSBiOS56_768x1004pt.png",
+      "filename" : "学生启动页新iPadPortraitWOSBiOS56_768x1004pt.png",
       "extent" : "to-status-bar",
       "scale" : "1x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "ipad",
-      "filename" : "Default-Port-hd55iPadPortraitiOS56_768x1024pt.png",
+      "filename" : "学生启动页新iPadPortraitiOS56_768x1024pt.png",
       "extent" : "full-screen",
       "scale" : "1x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "ipad",
-      "filename" : "Default-Port-hd55iPadPortraitWOSBiOS56_768x1004pt@2x.png",
+      "filename" : "学生启动页新iPadPortraitWOSBiOS56_768x1004pt@2x.png",
       "extent" : "to-status-bar",
       "scale" : "2x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "ipad",
-      "filename" : "Default-Port-hd55iPadPortraitiOS56_768x1024pt@2x.png",
+      "filename" : "学生启动页新iPadPortraitiOS56_768x1024pt@2x.png",
       "extent" : "full-screen",
-      "scale" : "2x"
-    },
-    {
-      "extent" : "full-screen",
-      "idiom" : "ipad",
-      "subtype" : "1366h",
-      "filename" : "Default-Port-hd55iPadProPortrait12_1024x1366pt@2x.png",
-      "minimum-system-version" : "8.0",
-      "orientation" : "portrait",
       "scale" : "2x"
     }
   ],

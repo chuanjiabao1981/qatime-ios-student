@@ -20,6 +20,8 @@
 #import "LivePlayerViewController.h"
 #import "UIAlertController+Blocks.h"
 #import "MessageSettingViewController.h"
+#import "SafeViewController.h"
+#import "GuestBindingViewController.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.height
@@ -40,7 +42,8 @@
     /* 余额*/
     NSString *_balance;
     
-    
+    /**是否是游客*/
+    BOOL is_Guest;
 }
 
 @end
@@ -53,21 +56,17 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     _navigationBar = ({
-    
+        
         NavigationBar *_ = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, Navigation_Height)];
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
-        _.titleLabel.text = @"系统设置";
+        _.titleLabel.text = @"设置";
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-        
-        
         [self.view addSubview:_];
-        
-        
         _;
-    
+        
     });
     
-    menus = @[@"通知设置",/*@"检查更新",*/@"清理缓存"/*,@"关于我们",@"学习流程"*/];
+    menus = @[@"安全管理",@"通知设置",/*@"检查更新",*/@"清理缓存",@"关于我们",@"意见反馈"];
     
     _settingView = [[SettingView alloc]initWithFrame:CGRectMake(0, Navigation_Height, SCREENWIDTH, SCREENHEIGHT)];
     [self.view addSubview:_settingView];
@@ -88,19 +87,12 @@
     [self getCacheSpace];
     
     
-    /* 测试视频按钮*/
+    /**取出是否是游客*/
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"is_Guest"]) {
+        is_Guest = [[NSUserDefaults standardUserDefaults]boolForKey:@"is_Guest"];
+    }
     
-    UIButton *but = [[UIButton alloc]init];
-    [_settingView addSubview:but];
-    but.sd_layout
-    .leftSpaceToView(_settingView,40)
-    .rightSpaceToView(_settingView,40)
-    .bottomSpaceToView(_settingView.logOutButton,40)
-    .heightIs(40);
     
-    [but setTitle:@"播放视频" forState:UIControlStateNormal];
-   
-    [but addTarget:self action:@selector(play) forControlEvents:UIControlEventTouchUpInside];
     
     //用户切换账号的时候,直接pop一页
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(returnLastPage) name:@"LogoutToRoot" object:nil];
@@ -112,7 +104,7 @@
 - (void)getCacheSpace{
     /* 获取cache文件夹的缓存*/
     NSString *cacheStr = [FileService getCachePath];
-   cache  = [FileService folderSizeAtPath:cacheStr];
+    cache  = [FileService folderSizeAtPath:cacheStr];
     
     /* 获取NIM日志日志文件夹的缓存*/
     
@@ -128,7 +120,7 @@
     
     [self getCacheSpace];
     
-    NSIndexPath *num = [NSIndexPath indexPathForRow:1 inSection:0];
+    NSIndexPath *num = [NSIndexPath indexPathForRow:2 inSection:0];
     
     [_settingView.menuTableView reloadRowsAtIndexPaths:@[num] withRowAnimation:UITableViewRowAnimationFade];
     
@@ -146,7 +138,7 @@
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer =[AFHTTPResponseSerializer serializer];
     [manager GET:[NSString stringWithFormat:@"%@/api/v1/system/check_update?category=student_client&platform=ios",Request_Header ] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-       
+        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         [self loginStates:dic];
         
@@ -186,7 +178,7 @@
             
         }else{
             
-//            请求失败
+            //            请求失败
             [self HUDStopWithTitle:@"请求数据失败"];
             
         }
@@ -225,12 +217,12 @@
         [cell.settingName setSingleLineAutoResizeWithMaxWidth:1000];
         
         cell.arrow.hidden = YES;
-       
-        if (indexPath.row ==1) {
+        
+        if (indexPath.row ==2) {
             cell.balance.hidden = NO;
             cell.balance.text = [NSString stringWithFormat:@"%.2f M",cache];
         }
-    
+        
     }
     
     return  cell;
@@ -242,39 +234,72 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return self.view.height_sd*0.08;
+    return 50;
     
 }
 
 /* 点击事件*/
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-   
+    
+    __block UIViewController *pushVC = nil;
     switch (indexPath.row) {
-       
-        case 0:{
-//            NoticeSettingViewController *noVC = [NoticeSettingViewController new];
-            MessageSettingViewController *noVC = [[MessageSettingViewController alloc]init];
-            [self.navigationController pushViewController:noVC animated:YES];
             
+        case 0:{
+            if (is_Guest == YES) {
+                //是游客就让游客去绑定
+                [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"游客账号不能进行此操作!\n请先绑定账号!" cancelButtonTitle:@"前往绑定" destructiveButtonTitle:nil otherButtonTitles:@[@"暂不绑定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
+                    
+                    if (buttonIndex == 0) {
+                        //前往绑定游客账号
+                        
+                        if ([[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]) {
+                            
+                            //                                controller  = [[GuestBindingViewController alloc]initWithPhoneNumber:[[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]];
+                            pushVC = [[GuestBindingViewController alloc]init];
+                        }else{
+                            
+                            pushVC = [[GuestBindingViewController alloc]init];
+                        }
+                        
+                        pushVC.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:pushVC animated:YES];
+                        
+                    }else{
+                        
+                    }
+                    
+                }];
+                
+            }else{
+                pushVC = [SafeViewController new];
+                
+            }
         }
             break;
-//        case 1:{
-//            
-//            [self requestVersion];
-//        }
-            break;
         case 1:{
-            
+            pushVC = [[MessageSettingViewController alloc]init];
+        }
+            break;
+        case 2:{
             [UIAlertController showAlertInViewController:self withTitle:@"提示" message:[NSString stringWithFormat:@"确定清理%.2f M的缓存?",cache] cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-               
+                
                 if (buttonIndex!=0) {
                     [self clearCache];
                 }
-                
             }];
         }
             break;
+        case 3:{
+            pushVC = [AboutUsViewController new];
+        }
+            break;
+        case 4:{
+            [self HUDStopWithTitle:@"敬请期待..."];
+        }
+            break;
     }
+    pushVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:pushVC animated:YES];
 }
 
 #pragma mark- 用户退出登录
@@ -300,7 +325,7 @@
             [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"chat_account"];
             [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"openID"];
             [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Login"];
-//            [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"avatar_url"];
+            //            [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"avatar_url"];
             
             /* 云信退出登录*/
             [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error){}];
@@ -319,7 +344,7 @@
                 
             }];
             
-
+            
             
             [self.navigationController popViewControllerAnimated:YES];
         }
@@ -359,13 +384,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

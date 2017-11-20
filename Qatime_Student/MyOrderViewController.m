@@ -410,7 +410,7 @@ typedef enum : NSUInteger {
                                 }
                                 
                             }else if (![paid[@"product_customized_group"]isEqual:[NSNull null]]){
-                                //专属课
+                                //小班课
                                 if (paid[@"product_customized_group"][@"teacher_name"]) {
                                     mod.teacher_name = paid[@"product_customized_group"][@"teacher_name"];
                                 }

@@ -510,7 +510,7 @@
 }
 
 
-#pragma mark- 请求今日直播数据  2017-09-11 v2接口版本 支持专属课
+#pragma mark- 请求今日直播数据  2017-09-11 v2接口版本 支持小班课
 - (void)requestTodayLive{
     
     _todayLives = @[].mutableCopy;
@@ -1140,7 +1140,6 @@
                 [squarecell.iconImage setImage:[UIImage imageNamed:@"老师"]];
                 
             }
-            
             
             if (tech.teacherName!=nil) {
                 

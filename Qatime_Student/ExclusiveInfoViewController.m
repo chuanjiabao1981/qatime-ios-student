@@ -58,7 +58,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     NSMutableArray *_onlineClassArray;
     NSMutableArray *_offlineClassArray;
 
-    //专属课独有的 导航栏右侧按钮
+    //小班课独有的 导航栏右侧按钮
 //    UIButton *_exclusiveMenuButton;
     
     NSString *_chatTeamID;
@@ -239,7 +239,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
             }
                 break;
             case 4:{
-                controller = [[ClassMembersViewController alloc]initWithClassID:self.classID];
+                controller = [[ClassMembersViewController alloc]initWithClassID:self.classID andCourseType:ExclusiveCourse];
             }
                 break;
         }
@@ -269,7 +269,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
             }
                 break;
             case 5:{
-                controller = [[ClassMembersViewController alloc]initWithClassID:self.classID];
+                controller = [[ClassMembersViewController alloc]initWithClassID:self.classID andCourseType:ExclusiveCourse];
             }
                 break;
         }
@@ -308,6 +308,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
             
             self.tutoriumInfoView.exclusiveModel = _model;
             _teacher = [RecommandTeacher yy_modelWithJSON:dic[@"data"][@"customized_group"][@"teacher"]];
+            _teacher.teacherName =dic[@"data"][@"customized_group"][@"teacher"][@"name"];
             _teacher.describe = dic[@"data"][@"customized_group"][@"teacher"][@"desc"];
             _teacher.teacherID =dic[@"data"][@"customized_group"][@"teacher"][@"id"];
             self.navigationBar.titleLabel.text = _model.name;
@@ -755,10 +756,10 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
 }
 
 /**
- 购买免费专属课
+ 购买免费小班课
  */
 - (void)addFreeClass{
-    [self HUDStopWithTitle:@"暂不支持购买免费专属课"];
+    [self HUDStopWithTitle:@"暂不支持购买免费小班课"];
 }
 
 /** 分享功能 */
@@ -782,7 +783,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
                                    @"type":@"link",
                                    @"content":@{
                                            @"title":_model.name,
-                                           @"description":@"专属课程",
+                                           @"description":@"小班课程",
                                            @"link":[NSString stringWithFormat:@"%@/live_studio/customized_groups/%@",Request_Header,self.classID]
                                            }
                                    }];
@@ -807,7 +808,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
         ClassesListTableViewCell *cell = (ClassesListTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
         if (self.isBought ==YES) {
             if (cell.exclusiveModel.replayable == YES) {
-                //专属课回放详情
+                //小班课回放详情
                 [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/scheduled_lessons/%@/replay",Request_Header,cell.exclusiveModel.lessonId] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
                     
                     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];

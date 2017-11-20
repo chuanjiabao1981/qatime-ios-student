@@ -37,15 +37,18 @@
 #import "DownloadManagerViewController.h"
 #import "MyHomeworkViewController.h"
 #import "UIImage+Color.h"
+#import "YZSquareMenuCell.h"
 
 #define SCREENWIDTH self.view.frame.size.width
 #define SCREENHEIGHT self.view.frame.size.width
 
-@interface PersonalViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate>{
+@interface PersonalViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>{
     
     LivePlayerViewController *neVideoVC;
     
-    //    NavigationBar *_navigationBar;
+    ///顶部菜单
+    NSArray *_menuName;
+    NSArray *_menuImages;
     
     /* 菜单名*/
     NSArray *_settingName;
@@ -81,50 +84,7 @@
     self.view.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.00];
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
-    
-    /* 菜单名*/
-    _settingName = @[@"我的钱包",
-                     @"我的订单",
-                     @"我的直播课",
-                     @"我的一对一",
-                     @"我的视频课",
-                     @"我的专属课",
-                     @"我的试听",
-                     @"我的作业",
-                     @"我的提问",
-                     @"我的下载",
-                     @"安全管理",
-                     @"系统设置",
-                     @"关于我们"];
-    
-    /* cell的图片*/
-    
-    _cellImage = @[[[UIImage imageNamed:@"我的钱包"]imageRedrawWithColor:BUTTONRED],
-                   [[UIImage imageNamed:@"我的订单"]imageRedrawWithColor:BUTTONRED],
-                   [[UIImage imageNamed:@"我的直播课"]imageRedrawWithColor:BUTTONRED],
-                   [[UIImage imageNamed:@"我的一对一"]imageRedrawWithColor:BUTTONRED],
-                   [[UIImage imageNamed:@"我的视频课"]imageRedrawWithColor:BUTTONRED],
-                   [[UIImage imageNamed:@"我的专属课"]imageRedrawWithColor:BUTTONRED],
-                   [[UIImage imageNamed:@"我的试听课"]imageRedrawWithColor:BUTTONRED],
-                   [[UIImage imageNamed:@"我的试听课"]imageRedrawWithColor:BUTTONRED],
-                   [[UIImage imageNamed:@"我的试听课"]imageRedrawWithColor:BUTTONRED],
-                   [[UIImage imageNamed:@"文件管理"]imageRedrawWithColor:BUTTONRED],
-                   [[UIImage imageNamed:@"安全管理"]imageRedrawWithColor:BUTTONRED],
-                   [[UIImage imageNamed:@"系统设置"]imageRedrawWithColor:BUTTONRED],
-                   [[UIImage imageNamed:@"关于我们"]imageRedrawWithColor:BUTTONRED]];
-    
-    _headView = [[HeadBackView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT*2/5)];
-    [self.view addSubview:_headView];
-    
-    /* 个人页面菜单*/
-    _personalView = [[PersonalView alloc]initWithFrame:CGRectMake(0, _headView.height_sd, self.view.width_sd, self.view.height_sd-_headView.height_sd-TabBar_Height)];
-    [self.view addSubview:_personalView];
-    
-    _personalView.settingTableView.delegate = self;
-    _personalView.settingTableView.dataSource = self;
-    
-    _personalView.settingTableView.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
-    
+   
     /* 加载页面方法*/
     [self setupPages];
     
@@ -160,6 +120,73 @@
 
 /* 页面加载方法*/
 - (void)setupPages{
+    
+    /* 菜单名*/
+    _settingName = @[@"我的钱包",
+                     @"我的订单",
+                     @"我的直播课",
+                     @"我的一对一",
+                     @"我的视频课",
+                     @"我的小班课",
+                     @"设置"
+                     ];
+    /* cell的图片*/
+    
+    _cellImage = @[[[UIImage imageNamed:@"我的钱包"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"我的订单"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"我的直播课"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"我的一对一"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"我的视频课"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"我的小班课"]imageRedrawWithColor:BUTTONRED],
+                   [[UIImage imageNamed:@"系统设置"]imageRedrawWithColor:BUTTONRED]
+                   ];
+    
+    _menuName = @[@"作业",@"提问",@"下载",@"试听"];
+    _menuImages = @[[[UIImage imageNamed:@"我的作业"]imageRedrawWithColor:BUTTONRED],
+                    [[UIImage imageNamed:@"我的提问"]imageRedrawWithColor:BUTTONRED],
+                    [[UIImage imageNamed:@"文件管理"]imageRedrawWithColor:BUTTONRED],
+                    [[UIImage imageNamed:@"我的试听课"]imageRedrawWithColor:BUTTONRED],
+                    ];
+    
+    _headView = [[HeadBackView alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, self.view.width_sd*2/5.0)];
+    [self.view addSubview:_headView];
+    _headView.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .topSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .autoHeightRatio(2/5.0);
+    [_headView updateLayout];
+    
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
+    _menuCollection = [[UICollectionView alloc]initWithFrame:CGRectMake(0, _headView.bottom_sd, self.view.width_sd, 60) collectionViewLayout:layout];
+    [self.view addSubview:_menuCollection];
+    _menuCollection.backgroundColor = [UIColor whiteColor];
+    _menuCollection.layer.borderWidth = 0.5;
+    _menuCollection.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+    _menuCollection.delegate = self;
+    _menuCollection.dataSource = self;
+    _menuCollection.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .topSpaceToView(_headView, 0)
+    .heightIs(75);
+    [_menuCollection updateLayout];
+    [_menuCollection registerClass:[YZSquareMenuCell class] forCellWithReuseIdentifier:@"CellID"];
+    
+    /* 个人页面菜单*/
+    _personalView = [[PersonalView alloc]initWithFrame:CGRectMake(0, _menuCollection.bottom_sd, self.view.width_sd, self.view.height_sd - TabBar_Height - _menuCollection.bottom_sd)];
+    [self.view addSubview:_personalView];
+    _personalView.sd_layout
+    .leftSpaceToView(self.view, 0)
+    .rightSpaceToView(self.view, 0)
+    .topSpaceToView(_menuCollection, 0)
+    .bottomSpaceToView(self.view, TabBar_Height);
+    [_personalView updateLayout];
+    
+    _personalView.settingTableView.delegate = self;
+    _personalView.settingTableView.dataSource = self;
+    _personalView.settingTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
+    _personalView.settingTableView.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
     
     /**取出是否是游客*/
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"is_Guest"]) {
@@ -294,16 +321,12 @@
             NSTimeInterval a=[dat timeIntervalSince1970];
             NSString *timeString = [NSString stringWithFormat:@"%f", a];//时间戳
             
-            
             if ([self compareTwoTime:[dic[@"data"][@"password_set_at"] longLongValue] time2:[timeString longLongValue]]>=24) {
                 
                 [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"PayPasswordUseable"];
-                
             }else{
                 [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"PayPasswordUseable"];
-                
             }
-            
             
             NSIndexPath *indexpath = [NSIndexPath indexPathForRow:0 inSection:0];
             SettingTableViewCell *cell = [_personalView.settingTableView cellForRowAtIndexPath:indexpath];
@@ -312,8 +335,7 @@
         }else{
             
             //            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"Login"];
-            
-            
+   
             /* 获取失败*/
         }
         
@@ -343,8 +365,6 @@
     
     NSInteger hour = [timeString intValue];
     
-    
-    
     return hour;
     
 }
@@ -355,14 +375,89 @@
     [self getCash];
 }
 
+#pragma mark- collectionview datasource
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    return 4;
+}
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    static NSString * CellIdentifier = @"CellID";
+    YZSquareMenuCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    cell.iconImage.image = _menuImages[indexPath.row];
+    cell.iconTitle.text = _menuName[indexPath.row];
+    
+    return cell;
+}
+
+
+#pragma mark- collectionview delegate
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return CGSizeMake(self.view.width_sd/4.0-60, self.view.width_sd/4.0-60);
+}
+
+
+-(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
+    
+    return 40;
+}
+
+-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+
+    return  UIEdgeInsetsMake(10, 40, 0, 40);
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    //                case 10:{
+    //                    
+    //                }
+    //                    break;
+    //                case 11:{
+    //                    controller = [SettingViewController new];
+    //                }
+    //                    break;
+    //                case 12:{
+    //                    controller = [AboutUsViewController new];
+    //                }
+    //                    break;
+    //            }
+    
+    __block UIViewController *controller = nil;
+
+    switch (indexPath.item) {
+        case 0:
+           controller = [[MyHomeworkViewController alloc]init];
+            break;
+        case 1:
+            controller = [[MyQuestionViewController alloc]init];
+            break;
+        case 2:
+            controller = [[DownloadManagerViewController alloc]init];
+            break;
+        case 3:
+             controller = [[MyAuditionViewController alloc]init];
+            break;
+    }
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
+    
+}
 
 
 #pragma mark- tableview datasource
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return _settingName.count;
-    
+    NSInteger rows = 0 ;
+    if (section == 0) {
+        rows = 2;
+    }else if (section == 1){
+        rows = 4;
+    }else if (section == 2){
+        rows = 1;
+    }
+    return rows;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -374,28 +469,32 @@
         cell=[[SettingTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
     }
     [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-    [cell.logoImage setImage:_cellImage[indexPath.row]];
-    cell.settingName.text = _settingName[indexPath.row];
     cell.arrow.hidden = YES;
-    
-    if (indexPath.row ==0) {
-        if (login) {
-            cell.balance .hidden = NO;
+    if (indexPath.section == 0) {
+        [cell.logoImage setImage:_cellImage[indexPath.row]];
+        cell.settingName.text = _settingName[indexPath.row];
+        if (indexPath.row ==0) {
+            if (login) {
+                cell.balance .hidden = NO;
+            }else{
+                cell.balance.hidden = YES;
+            }
+            if (_balance == nil) {
+            }else{
+                cell.balance.text = [NSString stringWithFormat:@"￥%@",_balance];
+            }
         }else{
             cell.balance.hidden = YES;
         }
-        
-        if (_balance == nil) {
-            
-        }else{
-            
-            cell.balance.text = [NSString stringWithFormat:@"￥%@",_balance];
-        }
-    }else{
-        
+    }else if (indexPath.section == 1){
+        [cell.logoImage setImage:_cellImage[indexPath.row + 2]];
+        cell.settingName.text = _settingName[indexPath.row + 2];
+        cell.balance.hidden = YES;
+    }else if (indexPath.section == 2){
+        [cell.logoImage setImage:_cellImage[indexPath.row + 6]];
+        cell.settingName.text = _settingName[indexPath.row + 6];
         cell.balance.hidden = YES;
     }
-    
     
     return  cell;
 }
@@ -406,123 +505,77 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
-    return 1;
+    return 3;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 55*ScrenScale;
+    return 50*ScrenScale;
 }
-
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if ([[NSUserDefaults standardUserDefaults]valueForKey:@"Login"]) {
         if ([[NSUserDefaults standardUserDefaults]boolForKey:@"Login"]==YES) {
-            
+
            __block UIViewController *controller;
-            switch (indexPath.row) {
+            
+            switch (indexPath.section) {
                 case 0:{
-                    controller = [MyWalletViewController new];
+                    switch (indexPath.row) {
+                        case 0:{
+                            controller = [MyWalletViewController new];
+                        }
+                            break;
+                        case 1:{
+                            controller = [MyOrderViewController new];
+                        }
+                            break;
+                    }
                 }
                     break;
+                    
                 case 1:{
-                    
-                    controller = [MyOrderViewController new];
-                }
-                    break;
-                case 2:{
-                    controller = [MyClassViewController new];
-                }
-                    break;
-                case 3:{
-//                    [self HUDStopWithTitle:@"正在开发中,敬请期待"];
-                    /**
-                     该版本暂时改为提示
-                     */
-                    controller = [MyOneOnOneViewController new];
-                }
-                    break;
-                case 4:{
-                    controller = [[MyVideoClassViewController alloc]init];
-                }
-                    break;
-                case 5:{
-                    controller = [[MyExclusiveClassViewController alloc]init];
-                }
-                    break;
-                case 6:{
-                    controller = [[MyAuditionViewController alloc]init];
-                }
-                    break;
-                case 7:{
-                    controller = [[MyHomeworkViewController alloc]init];
-                }
-                    break;
-                case 8:{
-                    controller = [[MyQuestionViewController alloc]init];
-                }
-                    break;
-                case 9:{
-                    controller = [[DownloadManagerViewController alloc]init];
-                }
-                    break;
-                    
-                case 10:{
-                    if (is_Guest == YES) {
-                        //是游客就让游客去绑定
-                        [UIAlertController showAlertInViewController:self withTitle:@"提示" message:@"游客账号不能进行此操作!\n请先绑定账号!" cancelButtonTitle:@"前往绑定" destructiveButtonTitle:nil otherButtonTitles:@[@"暂不绑定"] tapBlock:^(UIAlertController * _Nonnull controller, UIAlertAction * _Nonnull action, NSInteger buttonIndex) {
-                            
-                            if (buttonIndex == 0) {
-                                //前往绑定游客账号
-                                
-                                if ([[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]) {
-                                    
-//                                controller  = [[GuestBindingViewController alloc]initWithPhoneNumber:[[NSUserDefaults standardUserDefaults]valueForKey:@"login_mobile"]];
-                                    controller = [[GuestBindingViewController alloc]init];
-                                }else{
-                                    
-                                    controller = [[GuestBindingViewController alloc]init];
-                                }
-                                
-                                controller.hidesBottomBarWhenPushed = YES;
-                                [self.navigationController pushViewController:controller animated:YES];
-                                
-                            }else{
-                                
-                            }
-                            
-                        }];
-                        
-                    }else{
-                        
-                    controller = [SafeViewController new];
-                        
+                    switch (indexPath.row) {
+                        case 0:{
+                            controller = [MyClassViewController new];
+                        }
+                            break;
+                        case 1:{
+                            controller = [MyOneOnOneViewController new];
+                        }
+                            break;
+                        case 2:{
+                            controller = [[MyVideoClassViewController alloc]init];
+                        }
+                            break;
+                        case 3:{
+                            controller = [[MyExclusiveClassViewController alloc]init];
+                        }
+                            break;
                     }
                     
                 }
                     break;
-                case 11:{
+                case 2:{
                     controller = [SettingViewController new];
                 }
                     break;
-                case 12:{
-                    controller = [AboutUsViewController new];
-                }
-                    break;
             }
-            
             controller.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:controller animated:YES];
-            
+
         }else{
-            
+
             [self logOutAlert];
         }
     }
-    
 }
+
+
+
+
 
 /**用户是否登录*/
 -(BOOL)userLogin{

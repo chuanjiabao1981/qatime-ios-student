@@ -11,6 +11,8 @@
 #import "NSString+ChangeYearsToChinese.h"
 #import "NSString+HTML.h"
 #import "YYText.h"
+#import "UIColor+HcdCustom.h"
+#import "UIImage+Color.h"
 
 @implementation OneOnOneTeacherTableViewCell
 
@@ -23,121 +25,140 @@
         /* 教师头像*/
         _teacherHeadImage = [[UIImageView alloc]init];
         _teacherHeadImage.userInteractionEnabled = YES;
-        [self.contentView addSubview:_teacherHeadImage];
+        [self addSubview:_teacherHeadImage];
         
         _teacherHeadImage.sd_layout
-        .leftSpaceToView(self.contentView,10)
-        .topSpaceToView(self.contentView,10)
-        .widthIs(80*ScrenScale)
+        .leftSpaceToView(self,15*ScrenScale)
+        .topSpaceToView(self,15*ScrenScale)
+        .widthIs(80)
         .heightEqualToWidth();
-        _teacherHeadImage.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
+        _teacherHeadImage.sd_cornerRadiusFromHeightRatio = @0.5;
+        _teacherHeadImage.layer.borderColor = SEPERATELINECOLOR_2.CGColor;
+        _teacherHeadImage.layer.borderWidth = 0.5;
+        
+        //        tapTeacher = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTeacher)];
+        //        [_teacherHeadImage addGestureRecognizer:tapTeacher];
         
         //教师名
         _teacherNameLabel = [[UILabel alloc]init];
         _teacherNameLabel.font = TITLEFONTSIZE;
-        [self.contentView addSubview:_teacherNameLabel];
+        [self addSubview:_teacherNameLabel];
         _teacherNameLabel.sd_layout
-        .leftSpaceToView(_teacherHeadImage,10)
-        .centerYEqualToView(_teacherHeadImage)
+        .leftSpaceToView(_teacherHeadImage, 15*ScrenScale)
+        .topEqualToView(_teacherHeadImage)
         .autoHeightRatio(0);
-        [_teacherNameLabel setSingleLineAutoResizeWithMaxWidth:100];
+        [_teacherNameLabel setSingleLineAutoResizeWithMaxWidth:400];
         
         /* 性别图标*/
         _genderImage  = [[UIImageView alloc]init];
-        [self.contentView addSubview:_genderImage];
-        _genderImage .sd_layout
-        .leftSpaceToView(_teacherNameLabel,10)
+        [self addSubview:_genderImage];
+        _genderImage.sd_layout
+        .leftSpaceToView(_teacherNameLabel, 10*ScrenScale)
         .centerYEqualToView(_teacherNameLabel)
-        .heightRatioToView(_teacherNameLabel,0.6)
+        .heightRatioToView(_teacherNameLabel, 0.5)
         .widthEqualToHeight();
         
-        /* 所在学校*/
-        UILabel *schools =[[UILabel alloc]init];
-        schools.font = TITLEFONTSIZE;
-        [self.contentView addSubview:schools];
-        schools.sd_layout
-        .leftEqualToView(_teacherHeadImage)
-        .topSpaceToView(_teacherHeadImage,20)
-        .autoHeightRatio(0);
-        [schools setSingleLineAutoResizeWithMaxWidth:200];
-        [schools setText:@"所在学校"];
-        
-        _workPlaceLabel =[[UILabel alloc]init];
-        _workPlaceLabel.font = TEXT_FONTSIZE;
-        _workPlaceLabel.textColor = TITLECOLOR;
-        
-        [self.contentView addSubview:_workPlaceLabel];
-        _workPlaceLabel.sd_layout
-        .leftSpaceToView(self.contentView,20)
-        .topSpaceToView(schools,10)
-        .autoHeightRatio(0);
-        [_workPlaceLabel setSingleLineAutoResizeWithMaxWidth:200];
-        
-        /* 执教年数*/
-        UILabel *workYears = [[UILabel alloc]init];
-        workYears.font = TITLEFONTSIZE;
-        [self.contentView addSubview:workYears];
-        workYears.sd_layout
-        .leftEqualToView(schools)
-        .topSpaceToView(_workPlaceLabel,20)
-        .autoHeightRatio(0);
-        [workYears setSingleLineAutoResizeWithMaxWidth:200];
-        [workYears setText:@"执教年限"];
-        
-        _workYearsLabel = [[UILabel alloc]init];
-        _workYearsLabel.font = TEXT_FONTSIZE;
-        _workYearsLabel.textColor = TITLECOLOR;
-        [self.contentView addSubview:_workYearsLabel];
+        //教龄
+        _workYearsLabel = [[UIButton alloc]init];
+        _workYearsLabel .titleLabel.font = [UIFont systemFontOfSize:12*ScrenScale];
+        [_workYearsLabel setTitleColor:[UIColor colorWithHexString:@"999999"] forState:UIControlStateNormal];
+        [self addSubview:_workYearsLabel];
         _workYearsLabel.sd_layout
-        .leftEqualToView(_workPlaceLabel)
-        .topSpaceToView(workYears,10)
-        .autoHeightRatio(0);
-        [_workYearsLabel setSingleLineAutoResizeWithMaxWidth:200];
+        .leftEqualToView(_teacherNameLabel)
+        .centerYEqualToView(_teacherHeadImage);
+        [_workYearsLabel setupAutoSizeWithHorizontalPadding:5 buttonHeight:20*ScrenScale];
+        _workYearsLabel.sd_cornerRadiusFromHeightRatio = @0.5;
+        _workYearsLabel.layer.borderColor = [UIColor colorWithHexString:@"999999"].CGColor;
+        _workYearsLabel.layer.borderWidth = 0.6;
+        _workYearsLabel.enabled = NO;
         
+        //所在学校
+        _workPlaceLabel =[[UILabel alloc]init];
+        _workPlaceLabel.font = TEXT_FONTSIZE_MIN;
+        _workPlaceLabel.textColor = [UIColor colorWithHexString:@"666666"];
+        [self addSubview:_workPlaceLabel];
+        _workPlaceLabel.sd_layout
+        .leftEqualToView(_teacherNameLabel)
+        .bottomEqualToView(_teacherHeadImage)
+        .rightSpaceToView(self, 10)
+        .heightIs(15*ScrenScale);
+        
+        [_workPlaceLabel setMaxNumberOfLinesToShow:1];
+        [_workPlaceLabel updateLayout];
+        _workPlaceLabel.textAlignment = NSTextAlignmentLeft;
+        
+        //        /* 所在学校*/
+        //        UILabel *schools =[[UILabel alloc]init];
+        //        schools.font = TITLEFONTSIZE;
+        //        [self addSubview:schools];
+        //        schools.sd_layout
+        //        .leftEqualToView(_teacherHeadImage)
+        //        .topSpaceToView(_teacherHeadImage,20)
+        //        .autoHeightRatio(0);
+        //        [schools setSingleLineAutoResizeWithMaxWidth:200];
+        //        [schools setText:@"所在学校"];
+        
+        //        /* 执教年数*/
+        //        UILabel *workYears = [[UILabel alloc]init];
+        //        workYears.font = TITLEFONTSIZE;
+        //        [self addSubview:workYears];
+        //        workYears.sd_layout
+        //        .leftEqualToView(schools)
+        //        .topSpaceToView(_workPlaceLabel,20)
+        //        .autoHeightRatio(0);
+        //        [workYears setSingleLineAutoResizeWithMaxWidth:200];
+        //        [workYears setText:@"执教年限"];
         
         //目前不做的教师标签
-        UILabel *teacherTag = [[UILabel alloc]init];
-        teacherTag.font = TITLEFONTSIZE;
-        teacherTag.text = @"教师标签";
-        [self.contentView addSubview:teacherTag];
-        teacherTag.sd_layout
-        .leftEqualToView(workYears)
-        .topSpaceToView(_workYearsLabel,20)
-        .autoHeightRatio(0);
-        [teacherTag setSingleLineAutoResizeWithMaxWidth:100];
-        teacherTag.hidden = YES;
+        //        UILabel *teacherTag = [[UILabel alloc]init];
+        //        teacherTag.font = TITLEFONTSIZE;
+        //        teacherTag.text = @"教师标签";
+        //        [self addSubview:teacherTag];
+        //        teacherTag.sd_layout
+        //        .leftEqualToView(workYears)
+        //        .topSpaceToView(_workYearsLabel,20)
+        //        .autoHeightRatio(0);
+        //        [teacherTag setSingleLineAutoResizeWithMaxWidth:100];
+        //        teacherTag.hidden = YES;
+        //
+        //        /* 教师简介*/
+        //        _descrip =[[UILabel alloc]init];
+        //        _descrip.font = TITLEFONTSIZE;
+        //        [self addSubview:_descrip];
+        //        _descrip.sd_layout
+        //        .leftEqualToView(workYears)
+        //        .topSpaceToView(_workYearsLabel,20)
+        //        .autoHeightRatio(0);
+        //        [_descrip setSingleLineAutoResizeWithMaxWidth:200];
+        //        _descrip.text = @"自我介绍";
         
-        /* 教师简介*/
-        _descrip =[[UILabel alloc]init];
-        _descrip.font = TITLEFONTSIZE;
-        [self.contentView addSubview:_descrip];
-        _descrip.sd_layout
-        .leftEqualToView(workYears)
-        .topSpaceToView(_workYearsLabel,20)
-        .autoHeightRatio(0);
-        [_descrip setSingleLineAutoResizeWithMaxWidth:200];
-        _descrip.text = @"自我介绍";
+        //右箭头
+        _arrowBtn = [[UIButton alloc]init];
+        [self addSubview:_arrowBtn];
+        _arrowBtn.sd_layout
+        .centerYEqualToView(_teacherHeadImage)
+        .rightSpaceToView(self, 15*ScrenScale)
+        .heightIs(20)
+        .widthEqualToHeight();
+        [_arrowBtn setImage:[[UIImage imageNamed:@"leftArrow"]imageRedrawWithColor:TITLECOLOR] forState:UIControlStateNormal];
+        _arrowBtn.imageView.transform = CGAffineTransformMakeRotation(M_PI);
+        [_arrowBtn setEnlargeEdge:40];
+        [_arrowBtn addTarget:self action:@selector(teacherAction) forControlEvents:UIControlEventTouchUpInside];
         
+        //教师简介
         _teacherInterviewLabel =[UILabel new];
         _teacherInterviewLabel.font = TEXT_FONTSIZE;
         _teacherInterviewLabel.textColor = TITLECOLOR;
         _teacherInterviewLabel.isAttributedContent = YES;
-        [self.contentView addSubview:_teacherInterviewLabel];
+        [self addSubview:_teacherInterviewLabel];
         _teacherInterviewLabel.sd_layout
-        .leftSpaceToView(self.contentView,20)
-        .rightSpaceToView(self.contentView,20)
-        .topSpaceToView(_descrip,20)
+        .leftSpaceToView(self, 15*ScrenScale)
+        .rightSpaceToView(self, 15*ScrenScale)
+        .topSpaceToView(_teacherHeadImage, 20*ScrenScale)
         .autoHeightRatio(0);
         
-        /**点击头像*/
-        _tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(teacherAction)];
-        [_teacherHeadImage addGestureRecognizer:_tap];
-        
-        
-        
-        
-        [self setupAutoHeightWithBottomView:_teacherInterviewLabel bottomMargin:20];
- 
+        [_teacherInterviewLabel setMaxNumberOfLinesToShow:3];
+        [self setupAutoHeightWithBottomView:_teacherInterviewLabel bottomMargin:20*ScrenScale];
     }
     return self;
 }
@@ -161,7 +182,7 @@
         [_genderImage setImage:[UIImage imageNamed:@"女"]];
     }
     _workPlaceLabel.text = model.school;
-    _workYearsLabel.text = [model.teaching_years changeEnglishYearsToChinese];
+    [_workYearsLabel setTitle:[model.teaching_years changeEnglishYearsToChinese] forState:UIControlStateNormal ] ;
     NSMutableAttributedString *attDesc;
     if (model.desc) {
         if ([[NSString getPureStringwithHTMLString:model.desc]isEqualToString:model.desc]) {
@@ -183,6 +204,7 @@
         }
     }
     [_teacherInterviewLabel updateLayout];
+    [self setupAutoHeightWithBottomView:_teacherInterviewLabel bottomMargin:20*ScrenScale];
 }
 
 

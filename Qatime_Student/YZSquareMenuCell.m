@@ -26,12 +26,12 @@
         [_iconImage setFrame:CGRectMake(self.width_sd/4/2,0,self.width_sd*3/4,self.width_sd*3/4)];
         _iconImage.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5];
         
-        [_iconTitle setFrame:CGRectMake(0, self.width_sd*3/4, self.width_sd, self.width_sd/4)];
+        [_iconTitle setFrame:CGRectMake(0, self.width_sd*3/4+10*ScrenScale, self.width_sd, self.width_sd/4)];
         [_iconTitle setTextColor:[UIColor blackColor]];
 
         _iconTitle.textAlignment = NSTextAlignmentCenter;
-        _iconTitle.font = [UIFont systemFontOfSize:12*ScrenScale];
-        _iconTitle.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
+        _iconTitle.font = TEXT_FONTSIZE_MIN;
+        _iconTitle.textColor = TITLECOLOR;
         
         _teacherID =[NSString string];
         

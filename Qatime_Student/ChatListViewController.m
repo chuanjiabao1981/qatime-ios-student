@@ -129,7 +129,7 @@ typedef enum : NSUInteger {
                             
                             [dicArr addObjectsFromArray:[NSMutableArray arrayWithArray:dataDic[@"data"]]];
                             
-                            //在这儿再请求一次近期专属课
+                            //在这儿再请求一次近期小班课
                             [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/students/%@/customized_groups",Request_Header,[self getStudentID]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
                                 
                                 NSDictionary *clasDic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
@@ -142,9 +142,9 @@ typedef enum : NSUInteger {
                                          用teachers字段进行区分课程类型
                                          */
                                         if (![[tutorium allKeys]containsObject:@"teachers"]) {
-                                            //不包含就是直播课/专属课
+                                            //不包含就是直播课/小班课
                                             if ([[tutorium allKeys]containsObject:@"customized_group"]) {
-                                                //专属课
+                                                //小班课
                                                 //这儿得好好研究研究怎么改改
                                                 ExclusiveInfo *exclusive = [ExclusiveInfo yy_modelWithJSON:tutorium[@"customized_group"]];
                                                 exclusive.classID =tutorium[@"customized_group"][@"id"];

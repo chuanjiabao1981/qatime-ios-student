@@ -380,7 +380,7 @@
             break;
         case 5:{
             [self HUDStopWithTitle:nil];
-            controller = [[ClassMembersViewController alloc]initWithClassID:_classID];
+            controller = [[ClassMembersViewController alloc]initWithClassID:_classID andCourseType:ExclusiveCourse];
         }
             break;
     }
@@ -589,7 +589,7 @@
         }];
         
     }else if (_classType == ExclusiveCourseType){
-        //专属课程
+        //小班课程
         [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/play",Request_Header,[_tutoriumInfo valueForKey:@"classID"]] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil completeSuccess:^(id  _Nullable responds) {
             
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];

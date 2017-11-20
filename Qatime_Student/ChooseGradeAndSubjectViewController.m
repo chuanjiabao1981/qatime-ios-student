@@ -14,6 +14,9 @@
 #import "ClassSubjectCollectionViewCell.h"
 #import "UIViewController+AFHTTP.h"
 
+#import "SearchTipsViewController.h"
+
+
 @interface ChooseGradeAndSubjectViewController ()<ChooseGradeAndSubjectDelegate,UICollectionViewDataSource,UICollectionViewDelegate>{
     
     NavigationBar *_navigationBar;
@@ -129,10 +132,10 @@
     _navigationBar = ({
         NavigationBar *_=[[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
         _.titleLabel.text = @"选课";
-        
+        [_.rightButton setImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
+        [_.rightButton addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_];
         _;
-        
     });
     
     _chooseView = ({
@@ -140,9 +143,7 @@
         _.delegate = self;
         _.subjectCollection.dataSource = self;
         _.subjectCollection.delegate = self;
-        
         [self.view addSubview:_];
-        
         _;
         
     });
@@ -243,7 +244,12 @@
     
     [_chooseView.subjectCollection reloadSections:[NSIndexSet indexSetWithIndex:0]];
     
-    
+}
+
+- (void)search{
+    SearchTipsViewController *controller = [[SearchTipsViewController alloc]init];
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

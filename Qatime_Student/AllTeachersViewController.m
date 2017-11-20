@@ -19,6 +19,7 @@
 #import "UIViewController+HUD.h"
 #import "TeachersPublicViewController.h"
 #import "SnailPopupController.h"
+#import "SearchTipsViewController.h"
 
 typedef enum : NSUInteger {
     PullToRefresh,
@@ -128,6 +129,8 @@ typedef enum : NSUInteger {
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     _navigationBar.titleLabel.text = @"全部老师";
     
+    [_navigationBar.rightButton setImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
+    [_navigationBar.rightButton addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
 }
 
 
@@ -460,6 +463,13 @@ typedef enum : NSUInteger {
 
 - (BOOL)enableScrollWhenPlaceHolderViewShowing{
     return YES;
+}
+
+- (void)search{
+  
+    SearchTipsViewController *controller = [[SearchTipsViewController alloc]init];
+    [self.navigationController pushViewController:controller animated:YES];
+    
 }
 
 

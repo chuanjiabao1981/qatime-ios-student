@@ -12,5 +12,5 @@
 @interface SearchTipsViewController : UIViewController
 
 @property (nonatomic, strong) TTGTextTagCollectionView *mainView ;
-
+- (void)cancelSearchAction;
 @end

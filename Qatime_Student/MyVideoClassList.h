@@ -14,6 +14,8 @@
 @property (nonatomic, strong) NSString *subject;
 @property (nonatomic, strong) NSString *grade ;
 @property (nonatomic, strong) NSString *teacher_name ;
+@property (nonatomic, strong) NSString *publicize ;
+
 
 @end
 
@@ -39,6 +41,7 @@
 @property (nonatomic, strong) NSString *lesson_price ;
 @property (nonatomic, strong) Video_course *video_course ;
 @property (nonatomic, strong) NSString *status ;
+
 
 
 @end

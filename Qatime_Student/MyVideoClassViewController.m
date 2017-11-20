@@ -213,9 +213,7 @@ typedef enum : NSUInteger {
        
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
         if ([dic[@"status"]isEqualToNumber:@1]) {
-            
             if ([dic[@"data"]count]!=0) {
-                
                 if (classType == MyVideoClassRequestTypeBought) {
                     //已购课程下拉刷新
                     for (NSDictionary *dicsdata in dic[@"data"]) {

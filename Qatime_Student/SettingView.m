@@ -18,7 +18,6 @@
         self.backgroundColor = [UIColor whiteColor];
         
         /* 菜单 table*/
-        
         _menuTableView =({
             UITableView *_ =[[UITableView alloc]init];
             [self addSubview:_];

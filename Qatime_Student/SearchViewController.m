@@ -26,6 +26,9 @@
 #import "ExclusiveInfoViewController.h"
 
 #import "TeachersPublicViewController.h"
+#import "AllTeachersViewController.h"
+#import "ChooseClassViewController.h"
+#import "ChooseGradeAndSubjectViewController.h"
 
 //下拉刷新方式
 typedef enum : NSUInteger {
@@ -485,10 +488,30 @@ typedef enum : NSUInteger {
 - (void)cancelSearchAction{
     
     for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isMemberOfClass:[AllTeachersViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+            return;
+        }
+    }
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isMemberOfClass:[ChooseGradeAndSubjectViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+            return;
+        }
+    }
+    
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isMemberOfClass:[ChooseClassViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+            return;
+        }
+    }
+    
+    
+    for (UIViewController *controller in self.navigationController.viewControllers) {
         if ([controller isMemberOfClass:[IndexPageViewController class]]) {
             [self.navigationController popToViewController:controller animated:YES];
-            
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"PopToRoot" object:nil];
+            return;
         }
     }
     

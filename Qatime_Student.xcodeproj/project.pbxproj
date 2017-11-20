@@ -744,7 +744,6 @@
 		54EA16491FB548D100B51351 /* TutoriumInfo_TeacherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EA16481FB548D100B51351 /* TutoriumInfo_TeacherViewController.m */; };
 		54EA164C1FB548E900B51351 /* TutoriumInfo_ClassListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EA164B1FB548E900B51351 /* TutoriumInfo_ClassListView.m */; };
 		54EA164F1FB5490200B51351 /* TutoriumInfo_ClassListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EA164E1FB5490200B51351 /* TutoriumInfo_ClassListViewController.m */; };
-		54EA16541FB549DA00B51351 /* TuroiumInfoViewCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EA16531FB549DA00B51351 /* TuroiumInfoViewCopy.m */; };
 		54EA165A1FB54E1400B51351 /* TutoriumInfo_InfoMainHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EA16591FB54E1400B51351 /* TutoriumInfo_InfoMainHeadView.m */; };
 		54EA165D1FB54E2400B51351 /* TutoriumInfo_InfoMainFootView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EA165C1FB54E2400B51351 /* TutoriumInfo_InfoMainFootView.m */; };
 		54EA78AF1F386D6C00CB8E08 /* UMMobClick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54EA78AE1F386D6C00CB8E08 /* UMMobClick.framework */; };
@@ -2288,8 +2287,6 @@
 		54EA164B1FB548E900B51351 /* TutoriumInfo_ClassListView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TutoriumInfo_ClassListView.m; sourceTree = "<group>"; };
 		54EA164D1FB5490200B51351 /* TutoriumInfo_ClassListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TutoriumInfo_ClassListViewController.h; sourceTree = "<group>"; };
 		54EA164E1FB5490200B51351 /* TutoriumInfo_ClassListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TutoriumInfo_ClassListViewController.m; sourceTree = "<group>"; };
-		54EA16521FB549DA00B51351 /* TuroiumInfoViewCopy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TuroiumInfoViewCopy.h; sourceTree = "<group>"; };
-		54EA16531FB549DA00B51351 /* TuroiumInfoViewCopy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TuroiumInfoViewCopy.m; sourceTree = "<group>"; };
 		54EA16581FB54E1400B51351 /* TutoriumInfo_InfoMainHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TutoriumInfo_InfoMainHeadView.h; sourceTree = "<group>"; };
 		54EA16591FB54E1400B51351 /* TutoriumInfo_InfoMainHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TutoriumInfo_InfoMainHeadView.m; sourceTree = "<group>"; };
 		54EA165B1FB54E2400B51351 /* TutoriumInfo_InfoMainFootView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TutoriumInfo_InfoMainFootView.h; sourceTree = "<group>"; };
@@ -3421,6 +3418,7 @@
 		543BCAFA1E79152900AD6721 /* 选课页面 */ = {
 			isa = PBXGroup;
 			children = (
+				547559B91FBEDF5C0017C05C /* 成员列表页面 */,
 				543BCAFD1E79153800AD6721 /* Model */,
 				543BCAFC1E79153600AD6721 /* View */,
 				543BCAFB1E79153400AD6721 /* Controller */,
@@ -4576,6 +4574,13 @@
 				54D86ED81EFBAD740059932C /* Controller */,
 			);
 			name = "精彩回放播放页面";
+			sourceTree = "<group>";
+		};
+		547559B91FBEDF5C0017C05C /* 成员列表页面 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "成员列表页面";
 			sourceTree = "<group>";
 		};
 		547610201F010A56007775B5 /* 说明 */ = {
@@ -8116,8 +8121,6 @@
 				544AD3D01EC098FE002F567D /* WorkFlowView.m */,
 				547E898B1DD1D01B00749366 /* TutoriumInfoView.h */,
 				547E898C1DD1D01B00749366 /* TutoriumInfoView.m */,
-				54EA16521FB549DA00B51351 /* TuroiumInfoViewCopy.h */,
-				54EA16531FB549DA00B51351 /* TuroiumInfoViewCopy.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -8597,7 +8600,6 @@
 				5413D2521DF7B5CD00A8FDEC /* CashRecordView.m in Sources */,
 				548D1D6D1EA7415400B120C8 /* ClassTimeView.m in Sources */,
 				5422EA9A1F4E7AC9008B0A96 /* NIMCustomLeftBarView.m in Sources */,
-				54EA16541FB549DA00B51351 /* TuroiumInfoViewCopy.m in Sources */,
 				545226021E24821400F36280 /* PersonalInfoEditViewController.m in Sources */,
 				5422EAF71F4E7AC9008B0A96 /* UIImage+NIMGIF.m in Sources */,
 				54774D131F444A8200150C05 /* ZLPhotoPickerCollectionView.m in Sources */,

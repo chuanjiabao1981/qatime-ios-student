@@ -39,6 +39,10 @@
 #import "UIViewController+Token.h"
 #import "SnailQuickMaskPopups.h"
 #import "ShareViewController.h"
+#import "CommonMenuView.h"
+#import "ChatViewController.h"
+
+#import "ClassMembersViewController.h"
 
 
 /**
@@ -67,7 +71,8 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     BOOL _isGuest;
     
     LeadingViewState _leadingViewState;
-
+    
+    
 }
 
 @end
@@ -102,6 +107,10 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     return self;
 }
 
+-(void)viewDidDisappear:(BOOL)animated{
+    [CommonMenuView clearMenu];
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
@@ -110,13 +119,11 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    [self makeMenu];
      self.tabBarController.tabBar.hidden = YES;
 }
 
--(void)viewDidDisappear:(BOOL)animated{
-    
-    
-}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -156,7 +163,8 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     
    _buttonWidth = self.view.width_sd/4-15*ScrenScale;
     _isBought = NO;
-    
+    _isFinished = NO;
+    _onlyTaste = NO;
     _isGuest = [[NSUserDefaults standardUserDefaults]valueForKey:@"is_Guest"];
     
     _leadingViewState = LeadingViewStateUnfold;
@@ -168,6 +176,10 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [self.view addSubview:_navigationBar];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastpage) forControlEvents:UIControlEventTouchUpInside];
+    [_navigationBar.rightButton setImage:[UIImage imageNamed:@"moreMenu"] forState:UIControlStateNormal];
+    //    self.navigationBar.rightButton.hidden = YES;
+    [_navigationBar.rightButton addTarget:self action:@selector(moreMenu) forControlEvents:UIControlEventTouchUpInside];
+    
     _tutoriumInfoView = [[TutoriumInfoView alloc]initWithFrame:CGRectMake(0, Navigation_Height, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-Navigation_Height-TabBar_Height)];
     [self.view addSubview:_tutoriumInfoView];
     
@@ -191,6 +203,83 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     //加载课程特色标签
     [self setupTagText];
     
+}
+- (void)makeMenu{
+    
+    NSDictionary *dict1 = @{@"imageName" : @"icon_button_affirm",
+                            @"itemName" : @"进入聊天"
+                            };
+    NSDictionary *dict2 = @{@"imageName" : @"icon_button_record",
+                            @"itemName" : @"成员列表"
+                            };
+    NSArray *menuArray = @[dict1,dict2];
+    
+    if (!_freeClass) {
+        if (_isBought) {
+            if (_isFinished) {
+                menuArray = @[dict2];
+            }else{
+                menuArray = @[dict1,dict2];
+            }
+        }else{
+            if (_tasteOver) {
+                menuArray = @[dict2];
+            }else{
+                if (_onlyTaste) {
+                    //如果加入了试听
+                    menuArray = @[dict1,dict2];
+                }else{
+                    menuArray = @[dict2];
+                }
+            }
+        }
+    }else{
+        if (_isBought) {
+            //已经加入了免费课
+            menuArray = @[dict1,dict2];
+        }else{
+            menuArray = @[dict2];
+        }
+    }
+    
+    __weak __typeof(&*self)weakSelf = self;
+    /**
+     *  创建普通的MenuView，frame可以传递空值，宽度默认120，高度自适应
+     */
+    [CommonMenuView createMenuWithFrame:CGRectZero target:self dataArray:menuArray itemsClickBlock:^(NSString *str, NSInteger tag) {
+        [weakSelf doSomething:(NSString *)str tag:(NSInteger)tag]; // do something
+    } backViewTap:^{
+        weakSelf.navigationBar.rightButton .selected = NO;; // 这里的目的是，让rightButton点击，可再次pop出menu
+    }];
+}
+/** 更多菜单 */
+- (void)moreMenu{
+    
+    [self popMenu:CGPointMake(self.navigationBar.rightButton.centerX_sd,self.navigationBar.bottom_sd)];
+}
+- (void)popMenu:(CGPoint)point{
+    if (self.navigationBar.rightButton.selected == NO) {
+        [CommonMenuView showMenuAtPoint:point];
+        self.navigationBar.rightButton.selected = YES;
+    }else{
+        [CommonMenuView hidden];
+        self.navigationBar.rightButton.selected = NO;
+    }
+}
+
+#pragma mark -- 专属菜单点击 回调事件(自定义)
+- (void)doSomething:(NSString *)str tag:(NSInteger)tag{
+    __block UIViewController *controller ;
+    if ([str isEqualToString:@"进入聊天"]) {
+        controller = [[ChatViewController alloc]initWithClass:_classID andClassType:LiveCourseType];
+    }else if ([str isEqualToString:@"成员列表"]){
+        controller = [[ClassMembersViewController alloc]initWithClassID:_classID andCourseType:LiveCourse];
+    }
+    
+    self.navigationBar.rightButton.selected = NO;
+    [self.navigationController pushViewController:controller animated:YES];
+    
+    [CommonMenuView hidden];
 }
 
 /** 加载子控制器 */
@@ -458,7 +547,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
                         [_tutoriumInfoView.classFeature updateLayout];
                         [_tutoriumInfoView.classFeature layoutIfNeeded];
                     }
-                    
+                    [_tutoriumInfoView.classFeature layoutIfNeeded];
                     _tutoriumInfoView.classFeature.sd_layout
                     .heightIs(_tutoriumInfoView.classFeature.contentSize.height);
                     [_tutoriumInfoView.classFeature updateLayout];
@@ -499,6 +588,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
 - (void)switchClassData:(NSDictionary *)dic{
     
     if ([dic[@"data"][@"course"][@"sell_type"]isEqualToString:@"charge"]) {//非免费课
+        _freeClass = NO;
         if (![dic[@"data"][@"ticket"]isEqual:[NSNull null]]) {//已试听过或已购买过
             //如果课程未结束
             if (![dic[@"data"][@"course"][@"status"]isEqualToString:@"completed"]) {
@@ -520,19 +610,22 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
                         [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                         [_buyBar.listenButton addTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
                         _buyBar.hidden = NO;
-                    }else{//未购买,显示进入试听按钮 购买按钮照常使用
+                    }else{//未购买,但是已经加入试听,显示进入试听按钮 购买按钮照常使用
                         _buyBar.hidden = NO;
+                        _onlyTaste = YES;
                         _isBought = NO;
                         [_buyBar.applyButton removeAllTargets];
                         [_buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
                         if ([dic[@"data"][@"ticket"][@"used_count"] integerValue] >= [dic[@"data"][@"ticket"][@"buy_count"]integerValue] ) {
                             //试听结束,显示试听结束按钮
+                            _tasteOver = YES;
                             /* 不可以试听*/
                             [_buyBar.listenButton setTitle:@"试听结束" forState:UIControlStateNormal];
                             [_buyBar.listenButton setBackgroundColor:[UIColor colorWithRed:0.84 green:0.47 blue:0.44 alpha:1.0]];
                             [_buyBar.listenButton removeTarget:self action:@selector(listen) forControlEvents:UIControlEventTouchUpInside];
                             _buyBar.listenButton.enabled = NO;
                         }else{
+                            _tasteOver = NO;
                             [_buyBar.listenButton setTitle:@"进入试听" forState:UIControlStateNormal];
                             [_buyBar.listenButton setBackgroundColor:NAVIGATIONRED];
                             [_buyBar.listenButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -542,11 +635,16 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
                 }
             }else{//课程已经结束了
                 //整个购买栏直接隐藏吧
+                _isFinished = YES;
                 _buyBar.hidden = YES;
             }
             
         }else{//需要加入试听或购买
             if ([dic[@"data"][@"course"][@"tastable"]boolValue]==YES) {//可以加入试听
+                //也没加入试听,也没购买
+                _onlyTaste = NO;
+                _isBought = NO;
+                _isFinished = NO;
                 //显示加入试听,和立即购买两个按钮
                 _buyBar.hidden = NO;
                 _buyBar.listenButton.hidden = NO;
@@ -563,6 +661,9 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
                 [_buyBar.applyButton addTarget:self action:@selector(buyClass) forControlEvents:UIControlEventTouchUpInside];
             }else{
                 //不能试听,只能购买
+                _onlyTaste = NO;
+                _isBought = NO;
+                _isFinished = NO;
                 _buyBar.hidden = NO;
                 _buyBar.listenButton.hidden = YES;
                 [_buyBar.applyButton removeAllTargets];
@@ -580,15 +681,16 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
             //已经下架
             _buyBar.hidden = YES;
             _tutoriumInfoView.priceLabel.text = @"已下架";
+            _isFinished = YES;
         }else{
             _buyBar.hidden = NO;
+            _navigationBar.rightButton.hidden = NO;
         }
-        
     }else if ([dic[@"data"][@"course"][@"sell_type"]isEqualToString:@"free"]){//免费课
         //免费呀
+        _freeClass = YES;
         _buyBar.hidden = NO;
         _tutoriumInfoView.priceLabel.text = @"免费";
-        
         if (dic[@"data"][@"ticket"]) {
             if (![dic[@"data"][@"ticket"]isEqual:[NSNull null]]) {//已购买(已加入到我的视频课列表里了)
                 _isBought = YES;
@@ -666,6 +768,54 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
 
         }
         
+    }
+    
+    [self updateMenu];
+    
+}
+
+/** 刷新右侧菜单的视图 */
+- (void)updateMenu{
+    
+    NSDictionary *dict1 = @{@"imageName" : @"icon_button_affirm",
+                            @"itemName" : @"进入聊天"
+                            };
+    NSDictionary *dict2 = @{@"imageName" : @"icon_button_record",
+                            @"itemName" : @"成员列表"
+                            };
+    
+    NSArray *menuArray ;
+    
+    if (!_freeClass) {
+        if (_isBought) {
+            if (_isFinished) {
+                menuArray = @[dict2];
+            }else{
+                menuArray = @[dict1,dict2];
+            }
+        }else{
+            if (_tasteOver) {
+                menuArray = @[dict2];
+            }else{
+                if (_onlyTaste) {
+                    //如果加入了试听
+                    menuArray = @[dict1,dict2];
+                }else{
+                    menuArray = @[dict2];
+                }
+            }
+        }
+    }else{
+        if (_isBought) {
+            //已经加入了免费课
+            menuArray = @[dict1,dict2];
+        }else{
+            menuArray = @[dict2];
+        }
+    }
+    
+    if (menuArray) {
+        [CommonMenuView updateMenuItemsWith:menuArray];
     }
     
 }
@@ -893,7 +1043,6 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
 //        textTagCollectionView.sd_layout
 //        .heightIs(contentSize.height);
 //    }else if(textTagCollectionView == _tutoriumInfoView.teacherTagsView){
-//
 //
 //    }
 }

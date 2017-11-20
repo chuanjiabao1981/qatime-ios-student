@@ -27,7 +27,7 @@
 @property(nonatomic,strong) UILabel *teacherNameLabel ;
 
 /* 指教年限*/
-@property(nonatomic,strong) UILabel  *workYearsLabel ;
+@property(nonatomic,strong) UIButton  *workYearsLabel ;
 
 /* 所在学校*/
 @property(nonatomic,strong) UILabel *workPlaceLabel ;
@@ -36,8 +36,10 @@
 @property(nonatomic,strong) UILabel *descrip  ;//"教师简介"的label 布局用
 @property(nonatomic,strong) UILabel *teacherInterviewLabel ;
 
+@property (nonatomic, strong) UIButton *arrowBtn ;
+
 /**教师头像点击事件*/
-@property (nonatomic, strong) UITapGestureRecognizer *tap ;
+//@property (nonatomic, strong) UITapGestureRecognizer *tap ;
 
 /**代理*/
 @property (nonatomic, weak) id <OneOnOneTeacherTableViewCellDelegate> delegate ;

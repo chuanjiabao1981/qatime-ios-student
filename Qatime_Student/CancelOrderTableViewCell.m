@@ -161,7 +161,7 @@
     }else if ([type isEqualToString:@"LiveStudio::InteractiveCourse"]){
         result = @"一对一";
     }else{
-        result = @"专属课";
+        result = @"小班课";
     }
     return result;
 }

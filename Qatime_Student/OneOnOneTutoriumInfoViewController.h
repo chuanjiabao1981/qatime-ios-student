@@ -20,6 +20,22 @@
 /**主页面*/
 @property (nonatomic, strong) OneOnOneTutorimInfoView *myView ;
 
+
+/** 是否购买该课程 */
+@property (nonatomic, assign) BOOL isBought;
+
+/** 课程是否已经结束 */
+@property (nonatomic, assign) BOOL isFinished ;
+
+/** 是否加入了试听 */
+@property (nonatomic, assign) BOOL onlyTaste ;
+
+/** 试听是否结束 */
+@property (nonatomic, assign) BOOL tasteOver ;
+
+/** 是否免费课 */
+@property (nonatomic, assign) BOOL freeClass ;
+
 //子控制器
 @property (nonatomic, strong) InteractiveInfo_InfoViewController *infoVC ;
 @property (nonatomic, strong) InteractiveInfo_TeacherViewController *teacherVC ;

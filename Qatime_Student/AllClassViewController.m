@@ -509,7 +509,7 @@
         //一对一
         controller = [[OneOnOneTutoriumInfoViewController alloc]initWithClassID:cell.model.course_id];
     }else{
-        //专属课
+        //小班课
         controller = [[ExclusiveInfoViewController alloc]initWithClassID:cell.model.course_id];
     }
     

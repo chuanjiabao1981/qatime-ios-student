@@ -161,7 +161,7 @@
 /**取消搜索*/
 - (void)cancelSearchAction{
     
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

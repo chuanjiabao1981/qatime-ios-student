@@ -47,7 +47,7 @@
     NSMutableArray *_oneOnOneClasses;
     /**视频课程的数组*/
     NSMutableArray *_videoClasses;
-    /** 专属课程的数组 */
+    /** 小班课程的数组 */
     NSMutableArray *_exclusiveClasses;
     
     
@@ -217,7 +217,7 @@
     
     NSInteger num = 0;
     if (collectionView.tag == 1) {
-        //加了个专属课程
+        //加了个小班课程
         if (_publicCount!=0) {
             //四个section的情况
             if (section == 0) {
@@ -1323,7 +1323,7 @@
                             //从缓存中获取 Headercell
                             header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:CellIdentifier forIndexPath:indexPath];
                             [header addSubview:_teachersPublicHeaderView];
-                            _teachersPublicHeaderView.classList.text = @"专属课";
+                            _teachersPublicHeaderView.classList.text = @"小班课";
                             _teachersPublicHeaderView.frame = CGRectMake(0, -20, header.width_sd, header.height_sd);
                         }else if (kind == UICollectionElementKindSectionFooter){
                             NSString *CellIdentifier = @"footerId3";
@@ -1427,7 +1427,7 @@
             }
             _videoCount = _videoClasses.count;
             
-            //这部分是暂时留给专属课程的,调试阶段暂时使用直播课的数据
+            //这部分是暂时留给小班课程的,调试阶段暂时使用直播课的数据
             for (NSDictionary *classDic in dic[@"data"][@"customized_groups"]) {
                 TutoriumListInfo *mod = [TutoriumListInfo yy_modelWithJSON:classDic];
                 mod.classID = classDic[@"id"];
@@ -1615,7 +1615,7 @@
         _fourthTitle = [[UIView alloc]init];
         _fourthTitle.frame = CGRectMake(0, 0, self.view.width_sd, 40);
         UILabel *label = [[UILabel alloc]init];
-        label.text = @"专属课";
+        label.text = @"小班课";
         label.font = TITLEFONTSIZE;
         [_fourthTitle addSubview:label];
         label.sd_layout

@@ -32,7 +32,7 @@
 @property (nonatomic, strong) UILabel *school ;
 
 /**教龄*/
-@property (nonatomic, strong) UILabel *workYears ;
+@property (nonatomic, strong) UIButton *workYears ;
 
 /**箭头*/
 @property (nonatomic, strong) UIImageView *enterArrow ;
@@ -44,6 +44,7 @@
 /** 配合点击用的delegate */
 @property (nonatomic, weak) id <InteractionTeacherListProtocal> delegate ;
 
+@property (nonatomic, strong) UIButton *arrowBtn ;
 
 /**model*/
 @property (nonatomic, strong) Teacher *model ;

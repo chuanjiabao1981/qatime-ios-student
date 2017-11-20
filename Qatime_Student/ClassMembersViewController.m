@@ -11,6 +11,8 @@
 #import "NavigationBar.h"
 #import "NetWorkTool.h"
 
+
+
 @interface ClassMembersViewController ()<UITableViewDataSource,UITableViewDelegate>{
     
     NSMutableArray *_membersArray;
@@ -21,16 +23,27 @@
     
 }
 
+
+
 @end
 
 @implementation ClassMembersViewController
 
--(instancetype)initWithClassID:(NSString *)classID{
+//-(instancetype)initWithClassID:(NSString *)classID{
+//    self = [super init];
+//    if (self) {
+//        _classID = classID;
+//    }
+//    return  self;
+//}
+
+-(instancetype)initWithClassID:(NSString *)classID andCourseType:(MemberCourseType)courseType{
     self = [super init];
     if (self) {
         _classID = classID;
+        _courseType = courseType;
     }
-    return  self;
+    return self;
 }
 
 - (void)viewDidLoad {
@@ -70,27 +83,86 @@
 
 - (void)requestData{
     
-    [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/play",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {
-        
-    } completeSuccess:^(id  _Nullable responds) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
-        if ([dic[@"status"]isEqualToNumber:@1]) {
-            for (NSDictionary *member in dic[@"data"][@"customized_group"][@"chat_team"][@"accounts"]) {
-                Members *mod = [Members yy_modelWithJSON:member];
-                [_membersArray addObject:mod];
+    //后期一定要优化这个方法
+    if (_courseType == LiveCourse) {
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/courses/%@/realtime",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                if ([dic[@"data"][@"members"]isEqual:[NSNull null]]) {
+                    
+                }else{
+                    for (NSDictionary *member in dic[@"data"][@"members"]) {
+                        Members *mod = [Members yy_modelWithJSON:member];
+                        if ([mod.accid isEqualToString:dic[@"data"][@"owner"] ]) {
+                            mod.isOwner = YES;
+                        }
+                        [_membersArray addObject:mod];
+                    }
+                }
+                [_mainView.mj_header endRefreshingWithCompletionBlock:^{
+                    [_mainView cyl_reloadData];
+                }];
+            }else{
+                [self HUDStopWithTitle:@"请稍后重试"];
+                [_mainView.mj_header endRefreshing];
             }
-            [_mainView.mj_header endRefreshingWithCompletionBlock:^{
-                [_mainView cyl_reloadData];
-            }];
             
-        }else{
-            [self HUDStopWithTitle:@"请稍后重试"];
-            [_mainView.mj_header endRefreshing];
-        }
+        } failure:^(id  _Nullable erros) {
+            [self HUDStopWithTitle:@"请检查网络"];
+        }];
+    }else if (_courseType == InteractionCourse){
+       
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/interactive_courses/%@/realtime",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                if ([dic[@"data"][@"members"]isEqual:[NSNull null]]) {
+                    
+                }else{
+                    for (NSDictionary *member in dic[@"data"][@"members"]) {
+                        Members *mod = [Members yy_modelWithJSON:member];
+                        if ([mod.accid isEqualToString:dic[@"data"][@"owner"] ]) {
+                            mod.isOwner = YES;
+                        }
+                        [_membersArray addObject:mod];
+                    }
+                }
+                [_mainView.mj_header endRefreshingWithCompletionBlock:^{
+                    [_mainView cyl_reloadData];
+                }];
+            }else{
+                [self HUDStopWithTitle:@"请稍后重试"];
+                [_mainView.mj_header endRefreshing];
+            }
+            
+        } failure:^(id  _Nullable erros) {
+            [self HUDStopWithTitle:@"请检查网络"];
+        }];
         
-    } failure:^(id  _Nullable erros) {
-        [self HUDStopWithTitle:@"请检查网络"];
-    }];
+    }else if (_courseType == ExclusiveCourse) {
+        [self GETSessionURL:[NSString stringWithFormat:@"%@/api/v1/live_studio/customized_groups/%@/play",Request_Header,_classID] withHeaderInfo:[self getToken] andHeaderfield:@"Remember-Token" parameters:nil withProgress:^(NSProgress * _Nullable progress) {} completeSuccess:^(id  _Nullable responds) {
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responds options:NSJSONReadingMutableLeaves error:nil];
+            if ([dic[@"status"]isEqualToNumber:@1]) {
+                for (NSDictionary *member in dic[@"data"][@"customized_group"][@"chat_team"][@"accounts"]) {
+                    Members *mod = [Members yy_modelWithJSON:member];
+                    [_membersArray addObject:mod];
+                }
+                [_mainView.mj_header endRefreshingWithCompletionBlock:^{
+                    [_mainView cyl_reloadData];
+                }];
+            }else{
+                [self HUDStopWithTitle:@"请稍后重试"];
+                [_mainView.mj_header endRefreshing];
+            }
+            
+        } failure:^(id  _Nullable erros) {
+            [self HUDStopWithTitle:@"请检查网络"];
+        }];
+        
+    }else if (_courseType == VideoCourse){
+        
+        
+    }
+    
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

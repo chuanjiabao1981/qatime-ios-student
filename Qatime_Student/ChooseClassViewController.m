@@ -20,6 +20,7 @@
 #import "TutoriumInfoViewController.h"
 #import "OneOnOneTutoriumInfoViewController.h"
 #import "BEMCheckBox.h"
+#import "SearchTipsViewController.h"
 
 #define Filter_Height 40
 
@@ -290,13 +291,14 @@
         
         [_.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
         [_.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
-        
+        [_.rightButton setImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
+        [_.rightButton addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
         _;
         
     });
     
     //分段控制器
-    _segmentControl = [[UISegmentedControl alloc]initWithItems:@[@"直播课",@"一对一",@"视频课",@"专属课"]];
+    _segmentControl = [[UISegmentedControl alloc]initWithItems:@[@"直播课",@"一对一",@"视频课",@"小班课"]];
     [_navigationBar.contentView addSubview:_segmentControl];
     _segmentControl.apportionsSegmentWidthsByContent = YES;
     _segmentControl.selectedSegmentIndex = 0;
@@ -843,6 +845,11 @@
     
 }
 
+- (void)search{
+    SearchTipsViewController *controller = [[SearchTipsViewController alloc]init];
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

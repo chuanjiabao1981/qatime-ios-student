@@ -31,9 +31,8 @@
         _headImageView  = [[UIImageView alloc]init];
         [_backGroundView addSubview:_headImageView];
         
-        
         _name = [[UILabel alloc]init];
-        _name.font = TITLEFONTSIZE;
+        _name.font = TEXT_FONTSIZE;
         [_backGroundView addSubview:_name];
         _name.textColor = [UIColor whiteColor];
         
@@ -46,14 +45,12 @@
         
         _headImageView.sd_cornerRadiusFromWidthRatio = [NSNumber numberWithFloat:0.5f];
         
-        
         _name.sd_layout
         .topSpaceToView(_headImageView,5)
         .centerXEqualToView(_headImageView)
         .heightIs (40)
         .widthRatioToView(self,1/3.0f);
         _name.textAlignment = NSTextAlignmentCenter;
-        
         
         
     }

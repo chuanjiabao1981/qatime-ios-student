@@ -30,6 +30,8 @@
 #import "ShareViewController.h"
 #import "WXApiObject.h"
 #import "WXApi.h"
+#import "ClassMembersViewController.h"
+#import "ChatViewController.h"
 
 typedef enum : NSUInteger {
     PullToRefresh,
@@ -50,7 +52,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
 
 @interface VideoClassInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CYLTableViewPlaceHolderDelegate,VideoClassBuyBarDelegate,UICollectionViewDataSource,UICollectionViewDelegate>{
     
-    NavigationBar *_navigationBar;
+    
     /**数据源*/
     NSMutableArray <VideoClass *>*_classArray;
     
@@ -66,7 +68,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     /**课程特色 数组*/
     NSMutableArray *_classFeaturesArray;
     
-    BOOL _isBought;
+//    BOOL _isBought;
     
     CGFloat _buttonWidth;
     
@@ -76,6 +78,9 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     LeadingViewState _leadingViewState;
     
 }
+
+@property (nonatomic, strong) NavigationBar *navigationBar;;
+
 /**主视图*/
 @property (nonatomic, strong) VideoClassInfoView *videoClassInfoView ;
 
@@ -100,13 +105,103 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     
 }
 
+-(void)viewDidDisappear:(BOOL)animated{
+    [CommonMenuView clearMenu];
+}
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self makeMenu];
+    self.tabBarController.tabBar.hidden = YES;
+}
+
 /**导航栏*/
 - (void)setupNavigation{
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
     [self.view addSubview: _navigationBar];
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
+    [_navigationBar.rightButton setImage:[UIImage imageNamed:@"moreMenu"] forState:UIControlStateNormal];
+    //    self.navigationBar.rightButton.hidden = YES;
+    [_navigationBar.rightButton addTarget:self action:@selector(moreMenu) forControlEvents:UIControlEventTouchUpInside];
     
+}
+
+- (void)makeMenu{
+    
+    NSDictionary *dict1 = @{@"imageName" : @"icon_button_affirm",
+                            @"itemName" : @"进入聊天"
+                            };
+    NSDictionary *dict2 = @{@"imageName" : @"icon_button_record",
+                            @"itemName" : @"成员列表"
+                            };
+    NSArray *menuArray = @[dict1,dict2];
+    
+    if (!_freeClass) {
+        if (_isBought) {
+            if (_isFinished) {
+                menuArray = @[dict2];
+            }else{
+                menuArray = @[dict1,dict2];
+            }
+        }else{
+            if (_tasteOver) {
+                menuArray = @[dict2];
+            }else{
+                if (_onlyTaste) {
+                    //如果加入了试听
+                    menuArray = @[dict1,dict2];
+                }else{
+                    menuArray = @[dict2];
+                }
+            }
+        }
+    }else{
+        if (_isBought) {
+            //已经加入了免费课
+            menuArray = @[dict1,dict2];
+        }else{
+            menuArray = @[dict2];
+        }
+    }
+    
+    __weak __typeof(&*self)weakSelf = self;
+    /**
+     *  创建普通的MenuView，frame可以传递空值，宽度默认120，高度自适应
+     */
+    [CommonMenuView createMenuWithFrame:CGRectZero target:self dataArray:menuArray itemsClickBlock:^(NSString *str, NSInteger tag) {
+        [weakSelf doSomething:(NSString *)str tag:(NSInteger)tag]; // do something
+    } backViewTap:^{
+        weakSelf.navigationBar.rightButton .selected = NO;; // 这里的目的是，让rightButton点击，可再次pop出menu
+    }];
+}
+/** 更多菜单 */
+- (void)moreMenu{
+    
+    [self popMenu:CGPointMake(self.navigationBar.rightButton.centerX_sd,self.navigationBar.bottom_sd)];
+}
+- (void)popMenu:(CGPoint)point{
+    if (self.navigationBar.rightButton.selected == NO) {
+        [CommonMenuView showMenuAtPoint:point];
+        self.navigationBar.rightButton.selected = YES;
+    }else{
+        [CommonMenuView hidden];
+        self.navigationBar.rightButton.selected = NO;
+    }
+}
+
+#pragma mark -- 专属菜单点击 回调事件(自定义)
+- (void)doSomething:(NSString *)str tag:(NSInteger)tag{
+    __block UIViewController *controller ;
+    if ([str isEqualToString:@"进入聊天"]) {
+        controller = [[ChatViewController alloc]initWithClass:_classID andClassType:LiveCourseType];
+    }else if ([str isEqualToString:@"成员列表"]){
+        controller = [[ClassMembersViewController alloc]initWithClassID:_classID andCourseType:LiveCourse];
+    }
+    
+    self.navigationBar.rightButton.selected = NO;
+    [self.navigationController pushViewController:controller animated:YES];
+    
+    [CommonMenuView hidden];
 }
 
 
@@ -128,10 +223,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     }];
     
     [self.view bringSubviewToFront:_navigationBar];
-    
 }
-
-
 
 /**加载购买栏*/
 - (void)setupBuyBar{
@@ -276,7 +368,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
             
             //如果是需要购买的课程
             if ([_classInfo.sell_type isEqualToString:@"charge"]) {
-                
+                _freeClass = NO;
                 //如果已经购买,直接进入学习
                 if (_isBought == YES) {
                     _buyBar.leftButton.hidden = YES;
@@ -298,6 +390,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
                     //如果未购买
                 }else{
                     //如果是可以试听的
+                    _onlyTaste = YES;
                     if (_classInfo.taste_count.integerValue>0) {
                         _buyBar.leftButton.layer.borderColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0].CGColor;
                         _buyBar.leftButton.backgroundColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0];
@@ -329,26 +422,22 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
                 
             }else if ([_classInfo.sell_type isEqualToString:@"free"]){
                 //如果是免费课
+                _freeClass = YES;
                 _buyBar.leftButton.hidden = YES;
-                
                 if (_isBought == YES) {
-                    
                     _buyBar.rightButton.layer.borderColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0].CGColor;
                     _buyBar.rightButton.backgroundColor = [UIColor colorWithRed:0.0 green:0.6 blue:0.0 alpha:1.0];
                     [_buyBar.rightButton setTitle:@"观看" forState:UIControlStateNormal];
                     [_buyBar.rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 }else{
-                    
                     _buyBar.rightButton.layer.borderColor = NAVIGATIONRED.CGColor;
                     _buyBar.rightButton.backgroundColor = [UIColor whiteColor];
                     [_buyBar.rightButton setTitle:@"立即学习" forState:UIControlStateNormal];
                     [_buyBar.rightButton setTitleColor:NAVIGATIONRED forState:UIControlStateNormal];
-                    
                 }
                 
                 [_buyBar.rightButton removeAllTargets];
                 [_buyBar.rightButton addTarget:self action:@selector(enterStudy:) forControlEvents:UIControlEventTouchUpInside];
-                
                 
                 _buyBar.rightButton.sd_resetLayout
                 .rightSpaceToView(_buyBar, 10*ScrenScale)
@@ -356,7 +445,6 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
                 .bottomSpaceToView(_buyBar, 10*ScrenScale)
                 .widthIs(_buttonWidth);
                 [_buyBar.rightButton updateLayout];
-                
                 
             }
             //加载子控制器
@@ -367,8 +455,57 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
             [self HUDStopWithTitle:nil];
         }
         
+        [self updateMenu];
+        
     }failure:^(id  _Nullable erros) {
+        
     }];
+    
+}
+
+/** 刷新右侧菜单的视图 */
+- (void)updateMenu{
+    
+//    NSDictionary *dict1 = @{@"imageName" : @"icon_button_affirm",
+//                            @"itemName" : @"进入聊天"
+//                            };
+    NSDictionary *dict2 = @{@"imageName" : @"icon_button_record",
+                            @"itemName" : @"成员列表"
+                            };
+    
+    NSArray *menuArray ;
+    
+    if (!_freeClass) {
+        if (_isBought) {
+            if (_isFinished) {
+                menuArray = @[dict2];
+            }else{
+                menuArray = @[/*dict1,*/dict2];
+            }
+        }else{
+            if (_tasteOver) {
+                menuArray = @[dict2];
+            }else{
+                if (_onlyTaste) {
+                    //如果加入了试听
+                    menuArray = @[/*dict1,*/dict2];
+                }else{
+                    menuArray = @[dict2];
+                }
+            }
+        }
+    }else{
+        if (_isBought) {
+            //已经加入了免费课
+            menuArray = @[/*dict1,*/dict2];
+        }else{
+            menuArray = @[dict2];
+        }
+    }
+    
+    if (menuArray) {
+        [CommonMenuView updateMenuItemsWith:menuArray];
+    }
     
 }
 
@@ -473,49 +610,6 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     [self HUDStopWithTitle:nil];
     [self.navigationController pushViewController:controller animated:YES];
 }
-
-
-
-//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//
-//    VideoClassListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-//
-//    if (_isBought == YES) {
-//        //进入观看
-//        VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
-//        [self.navigationController pushViewController:controller animated:YES];
-//
-//    }else{
-//
-//        if ([_classInfo.sell_type isEqualToString:@"free"]) {
-//
-//            //进入观看
-//            VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:_classArray andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
-//            [self.navigationController pushViewController:controller animated:YES];
-//
-//        }else{
-//
-//            if (cell.model.tastable == YES) {
-//
-//                NSMutableArray <VideoClass *>*arrs =@[].mutableCopy;
-//                for (VideoClass *clas in _classArray) {
-//                    if (clas.tastable == YES) {
-//                        [arrs addObject:clas];
-//                    }
-//                }
-//
-//                VideoClassPlayerViewController *controller = [[VideoClassPlayerViewController alloc]initWithClasses:arrs andTeacher:_teacher andVideoClassInfos:_classInfo andURLString:cell.model.video.name_url andIndexPath:indexPath];
-//                [self.navigationController pushViewController:controller animated:YES];
-//
-//            }else{
-//                [self HUDStopWithTitle:@"尚未购买不够观看"];
-//
-//            }
-//
-//        }
-//
-//    }
-//}
 
 
 #pragma mark- UIScrollView delegate

@@ -23,7 +23,7 @@
 
 
 /* 用户名*/
-
 @property(nonatomic,strong) UILabel *name ;
+
 
 @end

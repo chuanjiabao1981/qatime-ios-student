@@ -41,7 +41,7 @@
 //"user_id": 2892,
 //"user_name": "信雅壮",
 //"course_id": 9,
-//"course_name": "IOS专属课测试",
+//"course_name": "IOS小班课测试",
 //"course_model_name": "LiveStudio::CustomizedGroup",
 //"created_at": 1505302314,
 //"model_name": "LiveStudio::Question",

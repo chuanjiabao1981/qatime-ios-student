@@ -15,7 +15,7 @@
 @property(nonatomic,strong) UILabel *teacherNameLabel ;
 
 /* 指教年限*/
-@property(nonatomic,strong) UILabel  *workYearsLabel ;
+@property(nonatomic,strong) UIButton  *workYearsLabel ;
 
 /* 所在学校*/
 @property(nonatomic,strong) UILabel *workPlaceLabel ;
@@ -31,8 +31,10 @@
 /* 老师照片*/
 @property(nonatomic,strong) UIImageView *teacherHeadImage ;
 
-@property (nonatomic, weak) id <TeacherTapProtocol> teacherDelegate ;
+/** 右箭头,跳到教师个人页 */
+@property (nonatomic, strong) UIButton *arrowBtn ;
 
+@property (nonatomic, weak) id <TeacherTapProtocol> teacherDelegate ;
 
 @property (nonatomic, strong) Teacher *model ;
 

@@ -15,7 +15,6 @@
 #import "Qatime_Student-Swift.h"
 #import "QuestionPhotosCollectionViewCell.h"
 
-
 @interface HomeworkInfoViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,PhotoBrowserDelegate>{
     
     NavigationBar *_naviBar;
@@ -112,12 +111,10 @@
                         }
                         mod.status = @"resolved";
                     }
-                    
                 }
             }
         }
     }
-    
 }
 
 - (void)setupView{

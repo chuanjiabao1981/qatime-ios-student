@@ -47,7 +47,7 @@
 /**一对一课程model 在课程列表中使用*/
 @property (nonatomic, strong) InteractionLesson *interactiveModel ;
 
-/** 专属课model */
+/** 小班课model */
 @property (nonatomic, strong) ExclusiveLesson *exclusiveModel ;
 
 - (void)switchStatus:(ExclusiveLesson *)exclusiveModel;

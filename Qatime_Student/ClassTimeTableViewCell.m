@@ -233,7 +233,7 @@
         _type.text = @"视频课";
         _type.backgroundColor = [UIColor colorWithRed:1.0 green:0.8 blue:1.0 alpha:1.0];
     }else {
-        _type.text = @"专属课";
+        _type.text = @"小班课";
         _type.backgroundColor = [UIColor brownColor];
         
     }

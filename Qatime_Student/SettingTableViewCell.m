@@ -36,8 +36,7 @@
         /* 菜单名*/
         _settingName = [[UILabel alloc]init];
         _settingName.textColor = TITLECOLOR;
-        _settingName.font = TITLEFONTSIZE  ;
-        
+        _settingName.font = TEXT_FONTSIZE  ;
         
         /* 箭头*/
         _arrow = [[UIImageView alloc]init];

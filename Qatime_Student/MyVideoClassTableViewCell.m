@@ -127,7 +127,7 @@
     
     _myVideoClassListModel = myVideoClassListModel;
     
-    [_classImage sd_setImageWithURL:[NSURL URLWithString:@""]];//接口里暂时还没有这个字段
+    [_classImage sd_setImageWithURL:[NSURL URLWithString:myVideoClassListModel.video_course.publicize]];//接口里暂时还没有这个字段
     _className.text = myVideoClassListModel.video_course.name;
     _infos.text = [NSString stringWithFormat:@"%@%@/%@",myVideoClassListModel.video_course.grade,myVideoClassListModel.video_course.subject,myVideoClassListModel.video_course.teacher_name
                    ];

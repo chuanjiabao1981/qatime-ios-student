@@ -75,7 +75,7 @@ typedef NS_ENUM(NSUInteger, RefreshType) {
     
     _navigationBar = [[NavigationBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width_sd, Navigation_Height)];
     [self.view addSubview:_navigationBar];
-    _navigationBar.titleLabel.text = @"我的专属课";
+    _navigationBar.titleLabel.text = @"我的小班课";
     [_navigationBar.leftButton setImage:[UIImage imageNamed:@"back_arrow"] forState:UIControlStateNormal];
     [_navigationBar.leftButton addTarget:self action:@selector(returnLastPage) forControlEvents:UIControlEventTouchUpInside];
     

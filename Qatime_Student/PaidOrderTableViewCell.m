@@ -188,7 +188,7 @@
         _rightButton.hidden = YES;
  
     }else{
-        //专属课类型
+        //小班课类型
         _unTips.hidden = YES;
         _unTipsImage.hidden = YES;
         _rightButton.hidden = NO; 
@@ -206,7 +206,7 @@
     }else if ([type isEqualToString:@"LiveStudio::InteractiveCourse"]){
         result = @"一对一";
     }else{
-        result = @"专属课";
+        result = @"小班课";
     }
     return result;
 }

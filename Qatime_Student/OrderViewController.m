@@ -294,7 +294,7 @@ typedef enum : NSUInteger {
                     /* 数据请求成功*/
                     mod = (TutoriumListInfo *)[TutoriumListInfo yy_modelWithJSON:dic[@"data"][@"customized_group"]];
                     [(VideoClassInfo *)mod setClassID:dic[@"data"][@"customized_group"][@"id"]];
-                    _orderView.classType.text = @"专属课";
+                    _orderView.classType.text = @"小班课";
                     //页面赋值
                     [_orderView setupExclusiveClassData:mod];
                     

@@ -53,7 +53,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
     _mainView = [[VideoClassInfo_TeacherView alloc]init];
     [self.view addSubview: _mainView];
     _mainView.delegate = self;
-    _mainView.alwaysBounceVertical = YES;
+//    _mainView.alwaysBounceVertical = YES;
     _mainView.sd_layout
     .leftSpaceToView(self.view, 0)
     .rightSpaceToView(self.view, 0)

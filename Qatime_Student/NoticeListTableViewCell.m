@@ -118,8 +118,8 @@
 //        _type.textColor =[UIColor colorWithRed:0.42 green:0.80 blue:0.80 alpha:1.0];
 //        
 //    }else if ([model.notificationable_type isEqualToString:@"action_record"]){
-//        //专属课程
-//        _type.text = @" 专属课程 ";
+//        //小班课程
+//        _type.text = @" 小班课程 ";
 //        _type.font = [UIFont systemFontOfSize:14*ScrenScale];
 //        _type.layer.borderColor = [UIColor colorWithRed:0.47 green:0.05 blue:0.46 alpha:1.0].CGColor;
 //        _type.textColor =[UIColor colorWithRed:0.47 green:0.05 blue:0.46 alpha:1.0];

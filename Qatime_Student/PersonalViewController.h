@@ -16,4 +16,7 @@
 
 @property(nonatomic,strong) HeadBackView *headView ;
 
+//中间部分的菜单按钮
+@property (nonatomic, strong) UICollectionView *menuCollection ;
+
 @end

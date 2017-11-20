@@ -56,7 +56,7 @@ typedef enum : NSUInteger {
 /**视频课筛选controller*/
 @property (nonatomic, strong) VideoClassFilterViewController *videoClassFilterController ;
 
-/** 专属课筛选controller */
+/** 小班课筛选controller */
 @property (nonatomic, strong) ExclusiveClassFilterViewController *exclusiveClassFilterController ;
 
 

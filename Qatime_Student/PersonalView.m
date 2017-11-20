@@ -25,12 +25,14 @@
     if (self) {
         
         self.backgroundColor = [UIColor clearColor];
-        _settingTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT) style:UITableViewStylePlain];
+        _settingTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT) style:UITableViewStyleGrouped];
         _settingTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-//        _settingTableView.bounces = NO;
         [self addSubview:_settingTableView];
         _settingTableView.backgroundColor = [UIColor clearColor];
-        _settingTableView.tableFooterView = [[UIView alloc]init];
+        _settingTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0,CGFLOAT_MIN )];
+        _settingTableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 10)];
+        _settingTableView.sectionFooterHeight = 5;
+        _settingTableView.sectionHeaderHeight = 5;
         
     }
     return self;
