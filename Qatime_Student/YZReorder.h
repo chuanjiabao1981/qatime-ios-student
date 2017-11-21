@@ -43,7 +43,4 @@ typedef void(^RecordFinished)(NSString *recordfileURL);
 @property (nonatomic, strong) NSURL *playerFileURL ;
 
 
-
-
-
 @end

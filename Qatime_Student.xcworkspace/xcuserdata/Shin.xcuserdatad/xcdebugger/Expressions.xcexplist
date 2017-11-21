@@ -173,18 +173,21 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__43-[LivePlayerChatViewController viewDidLoad]_block_invoke:LivePlayerChatViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_shutUp">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[TutoriumInfo_InfoViewController initWithTutorium:]:TutoriumInfo_InfoViewController.m">
       </ContextState>
       <ContextState
          contextName = "__39-[LivePlayerViewController getLiveInfo]_block_invoke_2:LivePlayerViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "_chatVC">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__43-[LivePlayerChatViewController viewDidLoad]_block_invoke:LivePlayerChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_shutUp">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -208,16 +211,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[TutoriumInfo_InfoViewController initWithTutorium:]:TutoriumInfo_InfoViewController.m">
-      </ContextState>
-      <ContextState
          contextName = "-[InteractionViewController didRotateFromInterfaceOrientation:]:InteractionViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "is_fullScreen">
+               value = "_shouldTurnFullScreen">
             </PersistentString>
             <PersistentString
-               value = "_shouldTurnFullScreen">
+               value = "is_fullScreen">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -294,7 +294,12 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
+         contextName = "-[TutoriumInfoViewController setupControllers]:TutoriumInfoViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_infoVC">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[NELivePlayerViewController initWithURL:andDecodeParm:]:NELivePlayerViewController.m">
@@ -308,12 +313,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[TutoriumInfoViewController setupControllers]:TutoriumInfoViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "_infoVC">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[AppDelegate userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]:AppDelegate.m">
       </ContextState>
       <ContextState
          contextName = "-[NewQuestionViewController collectionView:didSelectItemAtIndexPath:]:NewQuestionViewController.m">
@@ -369,6 +369,14 @@
          <PersistentStrings>
             <PersistentString
                value = "">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[DoHomeworkViewController setupView]:DoHomeworkViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_homework">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

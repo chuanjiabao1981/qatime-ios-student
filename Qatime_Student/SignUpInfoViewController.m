@@ -290,14 +290,17 @@
     
     NSLog(@"%@",info);
     
-    dispatch_queue_t imagequeue= dispatch_queue_create("image", DISPATCH_QUEUE_CONCURRENT);
-    dispatch_async(imagequeue, ^{
+//    dispatch_queue_t imagequeue= dispatch_queue_create("image", DISPATCH_QUEUE_CONCURRENT);
+//    dispatch_async(imagequeue, ^{
      UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
-    [_signUpInfoView.headImage setImage:image];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [_signUpInfoView.headImage setImage:image];
+    });
         
         changeImage = YES;
 
-    });
+//    });
     
     [picker dismissViewControllerAnimated:YES completion:nil];
     

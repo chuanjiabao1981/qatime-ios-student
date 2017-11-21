@@ -94,17 +94,16 @@
     _mainView.photosView.dataSource = self;
     
     [_mainView.photosView registerClass:[QuestionPhotosCollectionViewCell class] forCellWithReuseIdentifier:@"cellID"];
-    
+    typeof(self) __weak weakSelf = self;
     _mainView.recorder.finishedFile = ^(NSString *recordfileURL) {
         _recorderFileURL = recordfileURL;
         
-        [self uploadRecorder];
+        [weakSelf uploadRecorder];
     };
     
     if (_homework.myAnswerTitle) {
-
+        _mainView.questions.text = _homework.myAnswerTitle;
     }
-    
 }
 #pragma mark- UITextField
 -(void)textDidChange:(id<UITextInput>)textInput{
@@ -164,8 +163,10 @@
 - (void)deleteImage:(UIButton *)sender{
     
     [_phototsArray removeObjectAtIndex:sender.tag];
+    if (_atechmentArray[sender.tag]) {
+        [_atechmentArray removeObjectAtIndex:sender.tag];
+    }
     [_mainView.photosView reloadData];
-    
 }
 
 #pragma mark- collectionview delegate

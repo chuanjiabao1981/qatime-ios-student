@@ -24,6 +24,7 @@
 
 @property (nonatomic, strong) UILabel *title ;
 
+/** 状态按钮,有时候也做提示按钮 */
 @property (nonatomic, strong) UILabel *status ;
 
 @property (nonatomic, strong) YZReorder *homeworkRecorder ;

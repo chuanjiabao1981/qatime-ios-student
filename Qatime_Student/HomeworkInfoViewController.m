@@ -15,6 +15,23 @@
 #import "Qatime_Student-Swift.h"
 #import "QuestionPhotosCollectionViewCell.h"
 
+
+/**
+ 作业的当前状态
+
+ - Pending: 未交
+ - Submit: 已经交了还没批改过
+ - Resolve: 批改完事儿的
+ - Rewrited: 修改过的  *****
+ */
+typedef NS_ENUM(NSUInteger, HomeworkStatus) {
+    Pending,
+    Submit,
+    Resolve,
+    //修改过的
+    Rewrited,
+};
+
 @interface HomeworkInfoViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,PhotoBrowserDelegate>{
     
     NavigationBar *_naviBar;
@@ -24,6 +41,8 @@
     NSMutableArray *_itemsArray;
     
     NSMutableArray *_atachmentsArray;
+    
+    HomeworkStatus _homeworkStatus;
     
 }
 
@@ -85,6 +104,7 @@
         mod.homeworkID = item[@"id"];
         if ([paretSet containsObject:[NSString stringWithFormat:@"%@",mod.homeworkID]]) {
             mod.status = @"submitted";
+            _homeworkStatus = Submit;
             for (NSDictionary *anser in submitArr) {
                 if ([[NSString stringWithFormat:@"%@",mod.homeworkID]isEqualToString:[NSString stringWithFormat:@"%@",anser[@"parent_id"]]]) {
                     //这是答案的anser
@@ -94,6 +114,7 @@
             }
         }else{
             mod.status = @"pending";
+            _homeworkStatus = Pending;
         }
        
         [_itemsArray addObject:mod];
@@ -110,6 +131,7 @@
                             mod.correction = reso;
                         }
                         mod.status = @"resolved";
+                        _homeworkStatus = Resolve;
                     }
                 }
             }
@@ -134,6 +156,8 @@
     .heightIs(Navigation_Height);
     [_naviBar.rightButton setupAutoSizeWithHorizontalPadding:10 buttonHeight:30];
     [_naviBar.rightButton updateLayout];
+    _naviBar.rightButton.hidden = YES;
+    
     
     _mainView = [[HomeworkInfoView alloc]init];
     [self.view addSubview:_mainView];
@@ -180,6 +204,8 @@
         cell.homeworkPhotosView.tag = indexPath.row +1000;
         cell.answerPhotosView.tag = indexPath.row +2000;
         cell.photoDelegate = self;
+//        cell.status.tag = indexPath.row;
+//        [cell.status addTarget:self action:@selector(doHomeWork:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     return  cell;
@@ -194,10 +220,10 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+
     __block HomeworkInfoTableViewCell *cell  = [tableView cellForRowAtIndexPath:indexPath];
     __block HomeworkInfo *_model = _itemsArray[indexPath.row];
-    
+
     typeof(self) __weak weakSelf = self;
     DoHomeworkViewController *controller;
     if ([cell.model.status isEqualToString:@"pending"]) {
@@ -213,6 +239,8 @@
     controller.doHomework = ^(NSDictionary *answer) {
         _model.myAnswerTitle = answer[@"body"];
         _model.myAnswerPhotos = @[].mutableCopy;
+        _model.haveAnswerPhotos = NO;
+        _model.haveAnswerRecord = NO;
         for (NSDictionary *atts in answer[@"attachment"]) {
             if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
                 NSDictionary *atts_copy = [NSDictionary dictionaryWithDictionary:atts];
@@ -225,9 +253,61 @@
             }
         }
         _model.edited = YES;
-        [weakSelf.mainView.homeworkList reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         [cell.answerPhotosView reloadData];
+        [weakSelf.mainView.homeworkList reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+        _naviBar.rightButton.hidden = NO;
+        if (_homeworkStatus == Submit) {
+            _homeworkStatus = Rewrited;
+        }
     };
+}
+
+
+/**
+ 做作业
+
+ @param sender 传个按钮的tag
+ */
+- (void)doHomeWork:(UIButton *)sender{
+    
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender.tag inSection:0];
+//    __block __weak HomeworkInfoTableViewCell *cell  = [_mainView.homeworkList cellForRowAtIndexPath:indexPath];
+//    __block HomeworkInfo *_model = _itemsArray[indexPath.row];
+//
+//    typeof(self) __weak weakSelf = self;
+//    __block  DoHomeworkViewController *controller;
+//    if ([cell.model.status isEqualToString:@"pending"]) {
+//        //做作业
+//        //如果没做过作业,就直接进去做,做过了不可以改
+//        controller = [[DoHomeworkViewController alloc]initWithHomework:cell.model andWriteType:Write];
+//    }else if ([cell.model.status isEqualToString:@"submitted"]){
+//        //重新做作业
+//        controller = [[DoHomeworkViewController alloc]initWithHomework:cell.model andWriteType:Rewrite];
+//    }
+//    [self.navigationController pushViewController:controller animated:YES];
+//    //这方方法改了
+//    controller.doHomework = ^(NSDictionary *answer) {
+//        _model.myAnswerTitle = answer[@"body"];
+//        _model.myAnswerPhotos = @[].mutableCopy;
+//        for (NSDictionary *atts in answer[@"attachment"]) {
+//            if ([atts[@"file_type"]isEqualToString:@"png"]||[atts[@"file_type"]isEqualToString:@"jpg"]||[atts[@"file_type"]isEqualToString:@"jpeg"]) {
+//                NSDictionary *atts_copy = [NSDictionary dictionaryWithDictionary:atts];
+//                [_model.myAnswerPhotos addObject:atts_copy];
+//                _model.haveAnswerPhotos = YES;
+//            }else if ([atts[@"file_type"]isEqualToString:@"mp3"]){
+//                _model.myAnswerRecorderURL = atts[@"file_url"];
+//                _model.myAnswerRecord = atts;
+//                _model.haveAnswerRecord = YES;
+//            }
+//        }
+//        _model.edited = YES;
+//
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [weakSelf.mainView.homeworkList reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//            [cell.answerPhotosView reloadData];
+//        });
+//    };
 }
 
 

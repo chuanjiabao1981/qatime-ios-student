@@ -67,7 +67,7 @@ typedef NS_ENUM(NSUInteger, LeadingViewState) {
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+        
     if (indexPath.section == 0) {
         /* cell的重用队列*/
         static NSString *cellIdenfier = @"cells";
